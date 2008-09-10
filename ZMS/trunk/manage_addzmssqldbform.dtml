@@ -1,0 +1,67 @@
+<dtml-call "REQUEST.set('ZMS_INSERT','ZMSSqlDb')">
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></title>
+<script language="JavaScript">
+<!--//
+
+  function onFormSubmit(fm) {
+    var b = true;
+    b = b && !disallowBlank(fm.elements['connection_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%'Connection Id'">",false);
+    b = b && !disallowBlank(fm.elements['charset'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%'Charset'">",false);
+    return b;
+  }
+  
+//-->
+</script>
+</head>
+
+<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('BTN_INSERT'),'action':''}])">
+<dtml-var f_bo_area>
+
+<form name="form0" action="manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<dtml-var "REQUEST.get('id','e')">">
+<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
+<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
+<dtml-let f_submitInputFieldsTable="_.True"><dtml-var f_submitInputFields></dtml-let>
+
+<!-- ### Connection Id -->
+<tr>
+ <td><div class="form-label">Connection Id<sup style="color:red">*</sup></div></td>
+ <td>
+  <select class="form-element" name="connection_id">
+   <option value="">--- Select Connection Id ---</option>
+   <dtml-in SQLConnectionIDs>
+    <option value="<dtml-var sequence-item>"
+     <dtml-if connection_id>
+      <dtml-if "connection_id==_vars['sequence-item']">
+       selected="selected"
+      </dtml-if>
+     </dtml-if>><dtml-var sequence-key> <dtml-with "_.getattr(this(),_['sequence-item'])">(<dtml-var meta_type>)</dtml-with></option>
+   </dtml-in>
+  </select>
+ </td>
+</tr>
+<!-- ### Max. Rows -->
+<tr valign="top">
+ <td><div class="form-label">Max. Rows<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
+</tr>
+<!-- ### Charset -->
+<tr valign="top">
+ <td><div class="form-label">Charset<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value='latin-1',enum='charset')"></td>
+</tr>
+<!-- ### Model -->
+<tr valign="top">
+ <td><div class="form-label">Model<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
+</tr>
+
+</table>
+
+<dtml-var f_submitBtn>
+
+</form>
+
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>

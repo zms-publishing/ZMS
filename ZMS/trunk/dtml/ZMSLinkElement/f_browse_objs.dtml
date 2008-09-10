@@ -1,0 +1,654 @@
+<dtml-if "_.hasattr(getHome(),'browse_objs')"
+><dtml-var browse_objs
+><dtml-else>
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('TYPE_ZMSLINKELEMENT')"></title>
+
+<dtml-call "REQUEST.set('thisObj',this())">
+<dtml-call "REQUEST.set('l_thisObj',getLinkObj(REQUEST.get('elUrlValue','')))">
+<dtml-if "l_thisObj is _.None">
+ <dtml-call "REQUEST.set('l_thisObj',getSelf([PAGES,PAGEELEMENTS]))">
+</dtml-if>
+<dtml-call "REQUEST.set('l_thisPage',l_thisObj.getSelf(PAGES))">
+
+<script language="JavaScript">
+<!--//
+
+  /**
+   * Direct-Edit: Expand It
+   */
+  var directEditAutoClose = false;
+  function directEditExpandIt( div_id, poser_id, autoClose)
+  {
+    AutoClose = autoClose;
+    var coords = {x: 0, y: 0};
+    var el = document.images[ poser_id];
+    coords.x += el.width;
+    coords.y += el.height;
+    while (el) {
+      coords.x += el.offsetLeft;
+      coords.y += el.offsetTop;
+      el = el.offsetParent;
+    }
+    var div = $(div_id);
+    div.css( { left: coords['x'] + "px", top: coords['y'] + "px", position: "absolute"});
+    div.show( "fast");
+  }
+
+  /**
+   *
+   */
+  function search_quote( s, maxlen, tag) 
+  {
+    var i;
+    if (!maxlen) {
+      maxlen = 255;
+    }
+    if (!tag) {
+      tag = '.';
+    }
+    // remove all tags.
+    while ( true) {
+      var iStartTag = s.indexOf('<')
+      var iEndTag = s.indexOf('>',iStartTag)
+      if ( iStartTag >= 0 && iEndTag > iStartTag)
+        s = s.substr(0,iStartTag) + tag + s.substr(iEndTag+1);
+      else
+        break;
+    }
+    // limit characters.
+    if ( s.length > maxlen) {
+      i = s.indexOf(' ',maxlen);
+      s = s.substr(0,i) + '...';
+    }
+    // return quoted search string.
+    return s;
+  }
+
+  /**
+   * Returns internal url in {$...}-notation.
+   */
+  function getInternalUrl(url) 
+  {
+     var content = "/content";
+     var base_url = "<dtml-var BASE0>/";
+     var currntPath = "<dtml-var absolute_url>";
+     var targetPath = url;
+     currntPath = currntPath.substring( base_url.length);
+     targetPath = targetPath.substring( base_url.length);
+     var currntHome = currntPath;
+     if ( currntHome.indexOf( content) >= 0) {
+       currntHome = currntHome.substring( 0, currntHome.indexOf( content));
+     }
+     else {
+       currntPath = content + currntPath;
+       currntHome = "";
+     }
+     var targetHome = targetPath;
+     if ( targetHome.indexOf( content) >= 0) {
+       targetHome = targetHome.substring( 0, targetHome.indexOf( content));
+     } 
+     else {
+       targetPath = content + targetPath;
+       targetHome = "";
+     }
+     var j = targetHome.indexOf( "/");
+     if ( currntHome.indexOf( targetHome + "/") == 0) {
+       targetHome = targetHome.substring( j+1);
+     }
+     else {
+       if ( j == 0)
+         targetHome = targetHome.substring( j+1);
+       while ( currntHome.length > 0 && targetHome.length > 0) {
+         var i = currntHome.indexOf( "/");
+         var j = targetHome.indexOf( "/");
+         if ( i < 0)
+           currntElmnt = currntHome;
+         else
+           currntElmnt = currntHome.substring( 0, i);
+         if ( j < 0)
+           targetElmnt = targetHome;
+         else
+           targetElmnt = targetHome.substring( 0, j);
+         if ( currntElmnt != targetElmnt)
+           break;
+         if ( i < 0)
+           currntHome = '';
+         else
+           currntHome = currntHome.substring( i+1);
+         if ( j < 0)
+           targetHome = '';
+         else
+           targetHome = targetHome.substring( j+1);
+       }
+     }
+     var path = targetPath.substring( targetPath.indexOf( content) + content.length);
+     if (path.indexOf("/")==0)
+       path = path.substring(1);
+     if ( currntHome != targetHome)
+       path = targetHome + "@" + path;
+     path = "{$" + path + "}";
+     return path;
+  }
+
+  /**
+   * Returns relative url.
+   */
+  function getRelativeUrl(url, anchor) 
+  {
+     var currntPath = '<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())[_.len(SERVER_URL)+1:]">';
+     var targetPath = url.substr(<dtml-var "_.len(SERVER_URL)+1">);
+     while ( currntPath.length > 0 && targetPath.length > 0) {
+        var i = currntPath.indexOf( '/');
+        var j = targetPath.indexOf( '/');
+        if ( i < 0)
+          currntElmnt = currntPath;
+        else
+          currntElmnt = currntPath.substring( 0, i);
+        if ( j < 0)
+          targetElmnt = targetPath;
+        else 
+          targetElmnt = targetPath.substring( 0, j);
+        if ( currntElmnt != targetElmnt)
+          break;
+        if ( i < 0)
+          currntPath = '';
+        else
+          currntPath = currntPath.substring( i + 1);
+        if ( j < 0)
+          targetPath = '';
+        else
+          targetPath = targetPath.substring( j + 1);
+     }
+     if ( targetPath.length > 0)
+       targetPath = targetPath + '/';
+     while ( currntPath.length > 0) {
+        var i = currntPath.indexOf( '/');
+        if ( i < 0) {
+          currntElmnt = currntPath;
+          currntPath = '';
+        }
+        else {
+          currntElmnt = currntPath.substring( 0, i);
+          currntPath = currntPath.substring( i + 1);
+        }
+        targetPath = '../' + targetPath;
+     }
+     url = './' + targetPath;
+     if ( anchor.length > 0 && anchor.indexOf('#') == 0)
+       url = url.substring(0,url.substring(0,url.length-2).lastIndexOf( '/')+1);
+     if ( anchor.indexOf( '/') == 0)
+       url += anchor.substring( 1);
+     else
+       url += 'index_<dtml-var lang>.html' + anchor;
+    return url;
+  }
+
+  /**
+   *
+   */
+  function selectObject(url, anchor, title) 
+  {
+  <dtml-if "_.len(REQUEST.get('fmName',''))>0">
+     var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
+     if ( fm) {
+       var path = getInternalUrl(url);
+       var elUrl = fm.elements['<dtml-var elUrlName>'];
+       var elTitle = fm.elements['<dtml-var elTitleName>'];
+       elUrl.value = path;
+       <dtml-if "_.len(REQUEST.get('elTitleName',''))>0">
+       if (title.length > 0) {
+         b = true;
+         if (elTitle.value.length > 0 && elTitle.value != title) {
+           msg = '<dtml-var "getZMILangStr('MSG_REPLACE')">';
+           msg = msg.substring(0,msg.indexOf('%s')) + elTitle.value + msg.substring(msg.indexOf('%s')+2);
+           msg = msg.substring(0,msg.indexOf('%s')) + title + msg.substring(msg.indexOf('%s')+2);
+           b = confirm(msg);
+         }
+         if (b) elTitle.value = title;
+       }
+       </dtml-if>
+     }
+     else {
+       self.parent.opener.selectObject(url,title);
+     }
+   <dtml-else>
+     var el_type = document.getElementById('type');
+     var v_type = el_type.options[ el_type.selectedIndex].value;
+     if (v_type.indexOf('dtml')==0)
+       url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
+     else
+       url = getRelativeUrl(url,anchor);
+     self.parent.opener.selectObject(url,title);
+   </dtml-if>
+    self.parent.close();
+  }
+
+/**
+ *
+ */
+function clickElement(id,href) 
+{
+  var speed = "fast";
+  var img = $("#"+id+"_img");
+  var el = $("#"+id+"_children");
+  if ( img.attr("title") == "-") {
+    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
+    el.hide( speed);
+  }
+  else 
+  if ( img.attr("title") == "+") {
+    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
+    el.show( speed);
+    if ( ( el.children().length < 1) || ( el.children().length == 1 && el.children()[0].nodeType != NODE_TYPE_ELEMENT)) {
+      el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
+      el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
+      // Set wait-cursor.
+      $(document.body).css( "cursor", "wait");
+      // JQuery.AJAX.get
+      $.get( href+"/ajaxGetChildNodes?id="+id+"&lang=<dtml-var lang>&preview=preview&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
+    }
+  }
+}
+
+
+/**
+ * Process response.
+ */
+function processResponse(data) 
+{
+  // Reset wait-cursor.
+  $(document.body).css( "cursor", "auto");
+  // Get object-id.
+  var id = $("pages",data).attr("id").replace(/\./,"_").replace(/\-/,"_");
+  // Get and clear html-element (div).
+  var el = $("#"+id+"_children");
+  el.empty( );
+  // Get and iterate pages.
+  var pages = $("pages",data).children("page");
+  for (var i = 0; i < pages.length; i++) {
+    var page = pages[i];
+    var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
+    var page_absolute_url = $(page).attr("absolute_url");
+    var page_access = $(page).attr("access")=="True" || $(page).attr("access")=="1";
+    var page_meta_id = $(page).attr("meta_id");
+    var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
+    var page_titlealt = page.getAttribute("titlealt");
+    var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
+    var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
+    var div = document.createElement( "div");
+    $(div).attr( {id: "div_" + page_id});
+    $(div).addClass( "form-small");
+    if ( page_access && page_has_children) {
+      var a = document.createElement( "a");
+      a.setAttribute( "href", "javascript:clickElement('" + page_id + "','" + page_absolute_url + "');");
+      var img = document.createElement( "img");
+      $(img).attr( {id: page_id + "_img", src: "<dtml-var MISC_ZMS>pl.gif", border: 0, align: "absmiddle", title: "+"});
+      a.appendChild( img);
+      div.appendChild( a)
+    }
+    else {
+      var img = document.createElement( "img");
+      $(img).attr( {src: "<dtml-var spacer_gif>", width: 16, height: 16, border: 0, align: "absmiddle", title: ""});
+      div.appendChild( img);
+    }
+    var page_anchor = "";
+    var page_index = "";
+    if ( page_meta_id == 'ZMSFile') {
+      page_anchor = "/" + page.getElementsByTagName('file')[0].getElementsByTagName('filename')[0].firstChild.data;
+    }
+    else if ( page_is_pageelement) {
+      page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
+    }
+    var input = document.createElement( "input");
+    $(input).attr( "type", "radio");
+    $(input).addClass( "form-radio");
+    input.onclick = Function( "selectObject('"+page_absolute_url+"','"+page_anchor+"','"+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+"')");
+    div.appendChild( input);
+    var img = document.createElement( "img");
+    if ( page_meta_id == "ZMSLinkElement") {
+      $(img).attr( {src: "<dtml-var MISC_ZMS>ico_ref.gif", border: 0, align: "absmiddle", title: $(page).attr("display_type")});
+      $(img).css( {backgroundImage: "url("+$(page).attr("display_icon")+")"});
+    }
+    else if ( page.getAttribute("restricted") == "True" || page.getAttribute("restricted") == "1") {
+      $(img).attr( {src: "<dtml-var MISC_ZMS>restricted.gif", border: 0, align: "absmiddle", title: $(page).attr("display_type")});
+      $(img).css( {backgroundImage: "url("+$(page).attr("display_icon")+")"});
+    }
+    else {
+      $(img).attr( {id: "icon_" + page_id, src: $(page).attr("display_icon"), border: 0, align: "absmiddle", title: $(page).attr("display_type")});
+    }
+    div.appendChild( img);
+    if ( page_meta_id == "ZMSGraphic" || page_meta_id == "ZMSTextarea") {
+      for (var j = 0; j < page.childNodes.length; j++) {
+        var item = page.childNodes[j];
+        if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
+          div.appendChild( document.createTextNode( search_quote( item.firstChild.data, 25)));
+        }
+      }
+    }
+    else {
+      div.appendChild( document.createTextNode( page_titlealt));
+    }
+    el.append( div);
+    var div_children = document.createElement( "div");
+    $(div_children).attr( "id", page_id + "_children");
+    $(div_children).css( "margin", "4px 1px 1px 8px");
+    $(div_children).addClass( "form-small");
+    el.append( div_children);
+  }
+}
+
+/**
+ * Follow href.
+ *
+ * @param href
+ * @param extra
+ */
+function followHref( href, extra) 
+{
+  href += '?lang=<dtml-var lang>';
+  href += '&came_from=<dtml-var "REQUEST.form.get( 'came_from', getHome().absolute_url())">';
+  href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
+  href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
+  href += '&elUrlName=<dtml-var "REQUEST.get( 'elUrlName', '')" url_quote>';
+  href += '&elTitleName=<dtml-var "REQUEST.get( 'elTitleName', '')"> url_quote';
+  href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
+  if ( extra) {
+    href += extra;
+  }
+  self.location.href = href;
+}
+
+//-->
+</script>
+</head>
+<body class="zmiNeutralColorStrong0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+
+<dtml-with l_thisPage>
+
+<table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">
+<tr>
+<td align="left" valign="top" height="100%">
+
+ <form name="form0" method="get">
+ 
+ <dtml-comment>
+ ###############################################################################
+ ###  Choose type
+ ###############################################################################
+ </dtml-comment>
+ <dtml-if "_.len(REQUEST.get('came_from',''))==0 and URL.split('/')[-1].find('manage')<0">
+ <table cellspacing="0" cellpadding="1" border="0">
+ <tr id="tr_type" valign="middle">
+  <td class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
+  <td class="form-small">
+   <script language="JavaScript">
+   <!--//
+   
+     var antispam = false;
+   
+     /**
+      *
+      */
+     function typeChange(el) {
+       var fm = el.form;
+       var i = el.selectedIndex;
+       var v = el.options[i].value;
+       if ( v.indexOf( 'reference=') == 0) {
+         followHref( '<dtml-var URL>', '&' + v);
+       }
+       else {
+         antispam = false;
+         prefix = 'antispam|'
+         if (v.indexOf(prefix)==0) {
+           v = v.substring(prefix.length,v.length);
+           antispam = true;
+         }
+         if (v.indexOf('dtml')==0) {
+           $('tr_url').css( { display: "none", visibility: "hidden"});
+         }
+         else if (v.indexOf('file://')==0) {
+           $('tr_url').css( { display: "", visibility: "visible"});
+           $('input_url').css( { display: "none", visibility: "hidden"});
+           $('input_localfs').css( { display: "block", visibility: "visible"});
+         }
+         else {
+           $('tr_url').css( { display: "", visibility: "visible"});
+           $('input_url').css( { display: "block", visibility: "visible"});
+           $('input_localfs').css( { display: "none", visibility: "hidden"});
+         }
+         fm.elements['url'].value = v;
+       }
+     }
+     
+     /**
+      *
+      */
+     function btnClick(el) {
+       var fm = el.form;
+       path = fm.elements['url'].value;
+       title = '';
+       prefix = 'mailto:';
+       if (antispam && path.toLowerCase().indexOf(prefix)==0) {
+         v = '<' + 'dtml-var "encrypt_ordtype(' + "'" + path + "'" + ')">';
+         path = v;
+       }
+       if (path.indexOf('file://')==0) {
+         path = path + fm.elements['localfs'].value;
+         var i;
+         while ( ( i = path.indexOf( '\\')) >= 0) {
+           path = path.substr( 0, i) + '/' + path.substr( i + 1);
+         }
+       }
+      <dtml-if "_.len(REQUEST.get('fmName',''))>0">
+       var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
+       if ( fm) {
+         var elUrl = fm.elements['<dtml-var elUrlName>'];
+         elUrl.value = path;
+       }
+       else  {
+         self.parent.opener.selectObject(path,title);
+       }
+      <dtml-else>
+       self.parent.opener.selectObject(path,title);
+      </dtml-if>
+       self.parent.close();
+     }
+
+   //-->
+   </script>
+   <dtml-var "REQUEST.get('elTitleName','')">
+   <select class="form-small" id="type" name="type" onchange="typeChange(this)">
+    <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> ---</option>
+    <option value="dtml">DTML</option>
+    <option value="file://"><dtml-var "getZMILangStr('ATTR_FILE')"></option>
+    <option value="mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"></option>
+    <dtml-if "_.len(REQUEST.get('fmName','')) == 0">
+     <option value="antispam|mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"> (Anti-Spam)</option>
+    </dtml-if>
+    <option value="http://">http:</option>
+    <option value="https://">https:</option>
+    <option value="ftp://">ftp:</option>
+
+    <dtml-comment>
+    -- References --------------------------------------------------------------
+    </dtml-comment>
+    <dtml-call "REQUEST.set( 'meta_obs', [])">
+    <dtml-call "REQUEST.set( 'meta_ids', [])">
+    <dtml-in "breadcrumbs_obj_path()" reverse>
+     <dtml-in "getChildNodes( REQUEST, ['ZMSCustom'])">
+      <dtml-let obj=sequence-item metaobj="getMetaobj(meta_id)">
+       <dtml-if "metaobj['type']=='ZMSReference'">
+        <dtml-unless "meta_id in meta_ids">
+         <dtml-call "meta_ids.append( meta_id)">
+         <dtml-call "meta_obs.append( obj)">
+        </dtml-unless>
+       </dtml-if>
+      </dtml-let>
+     </dtml-in>
+    </dtml-in>
+    <dtml-in meta_obs>
+     <dtml-let obj=sequence-item>
+      <dtml-if sequence-start>
+       <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('SOTYPE_ZMSREFERENCE')"> ---</option>
+      </dtml-if>
+      <dtml-with thisObj><option value="reference=<dtml-var "getRefObjPath(obj)">"><dtml-var "obj.display_type(REQUEST)"></option></dtml-with>
+     </dtml-let>
+    </dtml-in>
+    <dtml-comment>
+    -- /References -------------------------------------------------------------
+    </dtml-comment>
+
+   </select>
+  </td>
+ </tr>
+ <tr id="tr_url" valign="middle">
+  <td class="form-small"><dtml-var "getZMILangStr('ATTR_URL')"></td>
+  <td>
+   <div id="input_url" class="form-small">
+    <input class="form-small" type="text" name="url" size="25" value="<dtml-var "REQUEST.get('url','')">">
+   </div>
+   <div id="input_localfs" class="form-small" style="display:none;visibility:hidden;">
+    <input class="form-small" type="file" name="localfs" size="25" onchange="btnClick(this)"><br/>
+    <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_FILE')">
+   </div>
+  </td>
+  <td class="form-small"><input class="form-submit" type="submit" name="btn" value="  OK  " onclick="btnClick(this)"></td>
+ </tr>
+ </table>
+ <br/>
+ </dtml-if>
+
+<dtml-comment>
+################################################################################
+###  Reference
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.has_key( 'reference')">
+  <dtml-with "getLinkObj( REQUEST.get( 'reference'))">
+   <dtml-var "getObjProperty( 'browse_objs', REQUEST)">
+  </dtml-with>
+
+<dtml-comment>
+################################################################################
+###  Internal link
+################################################################################
+</dtml-comment>
+ <dtml-else>
+
+<form name="form1">
+<dtml-let breadcrumbs="breadcrumbs_obj_path()" catalog_items="[]" catalog_items2="[]"
+
+ ><dtml-call "REQUEST.set('pos',0)"
+ ><dtml-in breadcrumbs
+  ><dtml-let ob=sequence-item ob_level=sequence-index ob_access="hasAccess(REQUEST)"
+   ><dtml-if "ob in catalog_items"
+    ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
+   ><dtml-else
+    ><dtml-call "catalog_items.append(ob)"
+    ><dtml-call "catalog_items2.append({'ob':ob,'ob_level':ob_level})"
+    ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+   ></dtml-if
+   ><dtml-if ob_access
+    ><dtml-in "getChildNodes(REQUEST)"
+     ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
+      ><dtml-call "catalog_items.insert(pos,ob)"
+      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
+      ><dtml-call "REQUEST.set('pos',pos+1)"
+     ></dtml-let
+    ></dtml-in
+   ></dtml-if
+   ><dtml-if "meta_type=='ZMS'"
+    ><dtml-in "getPortalClients()"
+     ><dtml-let ob=sequence-item
+      ><dtml-call "catalog_items.insert(pos,ob)"
+      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
+      ><dtml-call "REQUEST.set('pos',pos+1)"
+     ></dtml-let
+    ></dtml-in
+   ></dtml-if
+  ></dtml-let
+ ></dtml-in
+
+ ><dtml-call "REQUEST.set( 'seq_index', 0)"
+ ><dtml-call "REQUEST.set( 'seq_end', _.False)"
+ ><dtml-call "REQUEST.set( 'last_level', -1)"
+ ><dtml-in catalog_items2 mapping
+  ><dtml-with ob
+   ><dtml-let index=sequence-index ob_access="hasAccess(REQUEST)" has_children="_.len(getChildNodes(REQUEST))>0"
+    ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
+    ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
+    ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"
+    ><dtml-if "ob_access and has_children"
+     ><dtml-if "ob in breadcrumbs"
+      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
+       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" width="16" height="16" border="0" title="-" align="absmiddle"></a
+     ><dtml-else
+      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
+       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" width="16" height="16" border="0" title="+" align="absmiddle"></a
+     ></dtml-if
+    ><dtml-else
+     ><img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle"
+    ></dtml-if
+    ><input class="form-radio" type="radio" onclick="selectObject('<dtml-var absolute_url>','<dtml-if "meta_id=='ZMSFile'"><dtml-let f="getObjProperty('file',REQUEST)"><dtml-if f>/<dtml-var "f.getFilename()"></dtml-if></dtml-let><dtml-elif "isPageElement()">#<dtml-var id></dtml-if>','<dtml-var "js_quote(getTitlealt(REQUEST))">')"
+    ><dtml-if "meta_id=='ZMSGraphic'"
+     ><dtml-let value="getObjProperty('img',REQUEST)"
+       ><span id="div_img_<dtml-var id>" class="form-small" style="display:none;background-color:#FFFFE0;border:1px solid gray;padding:3px;"
+        ><img src="<dtml-var "value.getHref(REQUEST)">" title="" border="1" style="margin:1px;background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);" 
+         <dtml-try>
+          <dtml-if "_.max([_.int(value.width),_.int(value.height)])>80">
+           <dtml-if "_.int(value.width)>_.int(value.height)">
+            width="80"
+           <dtml-else>
+            height="80"
+           </dtml-if>
+          <dtml-else>
+           width="<dtml-var "value.width">"
+           height="<dtml-var "value.height">"
+          </dtml-if>
+         <dtml-except></dtml-try>
+        ><br/><dtml-var "value.getDataSizeStr()"
+       ></span
+       ><img id="img_<dtml-var id>" src="<dtml-var "display_icon(REQUEST)">" border="0" title="Preview"
+           onmouseover="ExpandIt( 'div_img_<dtml-var id>', 'img_<dtml-var id>', false);" 
+           onmouseout="document.getElementById( 'div_img_<dtml-var id>').style.display='none';document.getElementById( 'div_img_<dtml-var id>').style.visibility='hidden';"
+           align="absmiddle"
+     ></dtml-let
+    ><dtml-else
+     ><dtml-var f_display_icon
+    ></dtml-if
+    ><a href="<dtml-var absolute_url>/manage_main" class="zmi" target="_blank"
+    ><dtml-if "ob in breadcrumbs"><b></dtml-if
+    ><dtml-if "meta_id in ['ZMSTextarea','ZMSGraphic']"
+     ><dtml-var "search_quote(getObjAttrValue(getObjAttr('text'),REQUEST),25,'.')"
+    ><dtml-else
+     ><dtml-var "getTitlealt(REQUEST)"
+    ></dtml-if
+    ><dtml-if "ob in breadcrumbs"></b></dtml-if
+    ></a
+   ></div
+   ><div id="<dtml-var ob_id>_children" class="form-small" style="margin: 0px 1px 0px 8px"
+   ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"
+   ><dtml-call "REQUEST.set( 'last_level', ob_level)"
+   ></dtml-let
+  ></dtml-with
+ ></dtml-in
+ ><dtml-in "_.range( last_level + 1)"></div></dtml-in
+></dtml-let>
+</form>
+ 
+<dtml-comment>
+################################################################################
+</dtml-comment>
+ </dtml-if>
+
+</form>
+</td>
+</tr>
+</table>
+
+</dtml-with>
+
+</body>
+</html>
+</dtml-if>

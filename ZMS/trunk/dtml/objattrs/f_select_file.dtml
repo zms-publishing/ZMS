@@ -1,0 +1,70 @@
+<!-- BO f_selectFile
+	@param ob
+	@param fmName
+	@param elName
+	@param value
+	@param key
+	@param lang
+	@param REQUEST
+-->
+
+<input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">">
+<dtml-if "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">
+ <input type="hidden" name="del_<dtml-var elName>" value="0">
+ <table cellspacing="0" cellpadding="0" border="0" width="100%">
+ <!-- Border.Top -->
+ <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td></tr>
+ <tr>
+  <!-- Border.Left -->
+  <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td>
+  <td valign="top" width="100%">
+    <!-- Title -->
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr class="zmiNeutralColorMedium0">
+     <td valign="middle" nowrap="nowrap" class="form-text">
+      <dtml-if "value.getMediadbfile() is not _.None"><font class="form-label">MediaDb:</font></dtml-if>
+      <dtml-try>
+       <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "value.getMimeTypeIconSrc()">" title="<dtml-var "value.getDataSizeStr()"> (<dtml-var "value.getContentType()">)" border="0" align="absmiddle"></a>
+       <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank" class="zmi"><strong><dtml-var "value.filename"></strong></a>
+      <dtml-except></dtml-try>
+      <dtml-if "hasObjProperty(key,REQUEST) or getType()=='ZMSRecordSet'">
+       (<dtml-var "value.getDataSizeStr()">)
+      <dtml-else>
+       <i>(<dtml-var " getZMILangStr('ATTR_DEFAULT')"> / <dtml-var " getLanguageLabel( getPrimaryLanguage())">)</i>
+      </dtml-if>
+     </td>
+     <td align="right" valign="top">
+      <dtml-if "hasObjProperty(key,REQUEST) or getObjAttr(key)['multilang']==0">
+       <a href="javascript:delBlobBtnClick('<dtml-var fmName>','del_<dtml-var elName>','submitBtn<dtml-var "REQUEST.get('submitBtnCount',-1)+1">');" class="button"
+        ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var " getZMILangStr('BTN_DELETE')">" class="zmiNeutralColorMedium0"
+       ></a>
+      </dtml-if>
+     </td>
+    </tr>
+    </table>
+    <dtml-if "lang in  getLanguages(REQUEST)">
+     <table cellspacing="0" cellpadding="2" border="0">
+     <!-- Upload -->
+     <tr valign="middle">
+      <td class="form-text"><dtml-var " getZMILangStr('ATTR_FILE')"></td>
+      <td class="form-element"><input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.file.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.file.maxlength','')">"</dtml-if>></td>
+     </tr>
+     </table>
+    </dtml-if>
+   </td>
+   <!-- Border.Right -->
+   <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td>
+ </tr>
+ <!-- Border.Bottom -->
+ <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td></tr>
+ </table>
+<dtml-else>
+  <dtml-if "lang in  getLanguages(REQUEST)">
+   <!-- Upload -->
+   <div class="form-element">
+    <input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.file.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.file.maxlength','')">"</dtml-if>/>
+   </div>
+  </dtml-if>
+ </dtml-if>
+
+<!-- EO f_selectFile -->

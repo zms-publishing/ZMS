@@ -1,0 +1,237 @@
+<dtml-comment>
+###############################################################################
+###
+###   G R I D
+###   
+###   @explicit-param grid_url[string]
+###   @explicit-param grid_cols[list]
+###   @implicit-param qsize[int]
+###   @implicit-param qorder[string]
+###   @implicit-param qorderdir[string]		desc|asc
+###   @implicit-param qstart[int]
+###   @implicit-param res[list]
+###   @implicit-param REQUEST[HttpRequest]
+###
+###############################################################################
+</dtml-comment>
+
+ <dtml-var f_recordset_nav>
+
+ <table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong" width="100%">
+ <colgroup>
+  <dtml-if grid_options>
+   <col width="<dtml-var "_.max(
+     _.len(_.filter(lambda x: x in ['insert','export'],grid_options.keys())),
+     _.len(_.filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">/>
+  </dtml-if>
+  <dtml-in grid_cols mapping>
+  <dtml-let grid_col=sequence-item>
+  <dtml-unless "grid_col.get('hide')">
+   <col/>
+  </dtml-unless>
+  </dtml-let>
+  </dtml-in>
+   <col/>
+ </colgroup>
+
+
+ <dtml-try>
+ <tr class="neutralColorMedium">
+  <dtml-if grid_options>
+  <th class="form-small" align="left"
+   ><dtml-if "'insert' in grid_options.keys()"
+   ><a href="<dtml-var "grid_options['insert']['action']">" class="button"
+    ><img src="<dtml-var MISC_ZMS>btn_add.gif" alt="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    /></a
+   ></dtml-if
+   ><dtml-if "'export' in grid_options.keys()"
+   ><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('target')"> target="<dtml-var "grid_options['export'].get('target')">"</dtml-if>
+    ><img src="<dtml-var "grid_options['export']['icon']">" alt="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
+    /></a
+   ></dtml-if
+  ></th>
+  </dtml-if>
+  <dtml-in grid_cols mapping>
+  <dtml-let grid_col=sequence-item>
+  <dtml-unless "grid_col.get('hide')">
+  <th class="form-small" align="left">
+   <dtml-if pk>
+    <img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" />
+   </dtml-if>
+   <dtml-if sort>
+    <dtml-if "key==qorder">
+     <dtml-if "qorderdir=='asc'">
+      <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':key,'qorderdir':'desc'})">" style="color:black"
+         onmouseover="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc1.gif';"
+         onmouseout="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc0.gif';"
+       ><img name="<dtml-var key>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_asc0.gif" border="0" align="middle"
+         alt="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
+       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var label></i></span
+      ></a>
+     <dtml-else>
+      <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':key,'qorderdir':'asc'})">" style="color:black"
+         onmouseover="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc1.gif';"
+         onmouseout="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc0.gif';"
+       ><img name="<dtml-var key>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_desc0.gif" border="0" align="middle"
+         alt="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
+       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var label></i></span
+      ></a>
+     </dtml-if>
+    <dtml-else>
+     <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':key})">" style="color:black"
+        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label>"
+      ><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><dtml-var label></span
+     ></a>
+    </dtml-if>
+   <dtml-else>
+    <b><dtml-var label></b>
+   </dtml-if>
+  </th>
+  </dtml-unless>
+  </dtml-let>
+  </dtml-in>
+  <th>&nbsp;</th>
+ </tr>
+ <dtml-except>
+  [f_recordset_grid]: Unexpected Exception - <dtml-var error_type>: <dtml-var error_value> -->
+ </dtml-try>
+
+ <dtml-in res size=qsize start=qstart>
+ <dtml-let res-index=sequence-index>
+  <dtml-call "REQUEST.set('row',_['sequence-item'])">
+  <dtml-call f_recordset_init>
+
+  <tr valign="top"
+   class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if
+    ><dtml-if "(REQUEST.get('rindex') is not _.None and REQUEST.get('rindex',-1)==_['res-index']) or 
+               (REQUEST.get('rindex') is _.None and REQUEST.get('qindex',-1)==_['res-index'])"
+     > zmiTeaserColor</dtml-if>"
+>
+  <dtml-if grid_options>
+  <td class="neutralColorMedium" align="left" valign="top" nowrap="nowrap"
+   ><dtml-if "'delete' in grid_options.keys()"
+   ><div style="float:left;width:20px;"
+   ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_options['delete']['action']%_.str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">');" class="button"
+    ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" alt="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+   /></a
+   ></div
+   ></dtml-if
+   ><dtml-if "'sort' in grid_options.keys()"
+   ><div style="float:left;width:20px;"
+    ><dtml-if "_['res-index']==0"
+     ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
+    ><dtml-else
+     ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['up']%_.str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="hbutton"
+      ><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0"
+     ></a
+    ></dtml-if
+    ><br
+    ><dtml-if "_['res-index']==len(res)-1"
+     ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
+    ><dtml-else
+     ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['down']%_.str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="hbutton"
+      ><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0"
+     ></a
+    ></dtml-if
+   ></div
+   ></dtml-if
+   ><dtml-if "'update' in grid_options.keys()"
+   ><div style="float:left;width:20px;"
+   ><a href="<dtml-var "url_append_params(grid_options['update']['action']%_.str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="button"
+    ><img src="<dtml-var MISC_ZMS>btn_edit1.gif" alt="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+   /></a
+   ></div
+   ></dtml-if
+   ><dtml-if "'choose' in grid_options.keys()"
+   ><div style="float:left;width:20px;"
+   ><a href="<dtml-let choose="grid_options['choose']['action']%_.str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>"
+       onmouseover="chooseBtn<dtml-var res-index>.src='<dtml-var MISC_ZMS>btn_choose_on.gif';"
+       onmouseout="chooseBtn<dtml-var res-index>.src='<dtml-var MISC_ZMS>btn_choose.gif';"
+    ><img name="chooseBtn<dtml-var res-index>" src="<dtml-var MISC_ZMS>btn_choose.gif" alt="<dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+   /></a
+   ></div
+   ></dtml-if
+  ></td>
+  </dtml-if>
+   <dtml-in grid_cols mapping>
+    <dtml-let grid_col=sequence-item>
+    <dtml-unless "grid_col.get('hide')">
+     <td class="form-small">
+      <dtml-try>
+      <dtml-let v="row.get(key,_.None)">
+
+       <dtml-comment>##### Grid.DateTime #####</dtml-comment>
+       <dtml-if "type in ['date','datetime','time']">
+        <dtml-var "getLangFmtDate(v,manage_lang,'%s_FMT'%type.upper())">&nbsp;
+       <dtml-comment>##### Grid.Url #####</dtml-comment>
+       <dtml-elif "type=='url'">
+        <dtml-let ob="getLinkObj(v,REQUEST)">
+         <dtml-if ob>
+          <a href="<dtml-var "ob.absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>internal_link.gif" alt="<dtml-var "ob.getTitle(REQUEST)">" border="0" align="middle" /><dtml-var "string_maxlen(ob.getTitlealt(REQUEST),20)"></a>
+         <dtml-elif v>
+          <a href="<dtml-var v>" target="_blank"><img src="<dtml-var MISC_ZMS>external_link.gif" title="<dtml-var v>" border="0" align="middle" /></a>
+         </dtml-if>
+        </dtml-let>&nbsp;
+       <dtml-comment>##### Grid.Object #####</dtml-comment>
+       <dtml-elif "type=='object'">
+        <dtml-if "row.has_key('lang')">
+         <dtml-call "REQUEST.set('f_recordset_grid_lang',lang)">
+         <dtml-call "REQUEST.set('lang',row.get('lang'))">
+        </dtml-if>
+        <dtml-var "f_breadcrumbs(_,_,objectPathElements=v.breadcrumbs_obj_path(),no_icon=1,REQUEST=REQUEST)">
+        <dtml-var "v.renderShort(REQUEST)">
+        <dtml-if "row.has_key('lang')">
+         <dtml-call "REQUEST.set('lang',f_recordset_grid_lang)">
+        </dtml-if>
+       <dtml-comment>##### Grid.Html #####</dtml-comment>
+       <dtml-elif "type=='html'">
+        <dtml-var v>
+       <dtml-comment>##### Grid.List #####</dtml-comment>
+       <dtml-elif "type=='list'">
+        <dtml-in v>
+         <dtml-let u=sequence-item>
+          <dtml-var u>&nbsp;
+          <dtml-unless sequence-end><dtml-var "grid_col.get('listseparator',',')"></dtml-unless>
+         </dtml-let>
+        </dtml-in>
+       <dtml-comment>##### Grid.Default #####</dtml-comment>
+       <dtml-else>
+        <dtml-try>
+         <dtml-let u="string_maxlen(_.str(v),_.max(_.int(200.0/_.len(grid_cols)),grid_col.get('minsize',20)))"
+          ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
+           ><a href="<dtml-let choose="grid_options['choose']['action']%_.str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>" class="zmi"
+          ></dtml-if
+          ><dtml-if "u.find('<?xml')==0"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="XML" border="0"/><dtml-else><dtml-var u></dtml-if
+          ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
+           ></a
+          ></dtml-if
+         >&nbsp;</dtml-let>
+        <dtml-except>
+         <dtml-var v>
+        </dtml-try>
+        
+       </dtml-if>
+       <dtml-comment>#####</dtml-comment>
+
+      </dtml-let>
+      <dtml-except>
+       <div style="color:red"><dtml-var error_type>: <dtml-var error_value></div>
+        
+      </dtml-try>
+     </td>
+    </dtml-unless>
+    </dtml-let>
+   </dtml-in>
+   <td>&nbsp;</td>
+  </tr>
+ </dtml-let>
+ </dtml-in>
+
+ </table>
+ 
+ <dtml-unless res>
+  <div class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)">!</div>
+ </dtml-unless>
+
+ <dtml-var f_recordset_nav>
+

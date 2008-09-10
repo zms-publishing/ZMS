@@ -1,0 +1,198 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('BTN_EDIT')"></title>
+</head>
+
+<dtml-if manage_editorFrame>
+ <body class="zmi" onload="onResizeBody()" onresize="onResizeBody()">
+ <script language="JavaScript">
+ <!--//
+
+   var max = 100;  // maximum tries
+   var cnt = 0;
+   var elv = "";
+
+   function bodyOnLoad() {
+     cnt = 0;
+     setTimeout('initEditor()',300);
+   }
+
+   function onForm0Submit(fm) {
+     if ( self.btnClicked == '<dtml-var "getZMILangStr('BTN_CHANGE')">') {
+       var fm = parent.cameFromForm.document.forms['<dtml-var fmName>'];
+       fm.elements['<dtml-var elName>'].value = document.forms['form0'].elements['editor'].value;
+       for (var i = 0; i < fm.elements.length; i++) {
+         var el = fm.elements[i];
+         if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_CHANGE')">') {
+           // Clear div with system-msg.
+           var divs = parent.cameFromForm.document.getElementsByTagName( "div");
+           var b = false;
+           for ( var j = 0; j < divs.length && !b; j++) {
+             var div = divs[ j];
+             if ( div.className == 'system-msg') {
+               div.innerHTML = "";
+               div.style.visibility = "hidden";
+               div.style.display = "none";
+               b = true;
+             }
+           }
+           // Click change-button.
+           el.click();
+           // Process response.
+           cnt = 0;
+           setTimeout('processResponse()',300);
+         }
+       }
+     }
+     else {
+       parent.location.href = parent.cameFromForm.location.href;
+     }
+     return false;
+   }
+   
+   function processResponse() {
+     if( cnt < max) {
+       if ( parent.cameFromForm && parent.cameFromForm.document.forms['<dtml-var fmName>']) {
+         // Find div with system-msg.
+         var divs = parent.cameFromForm.document.getElementsByTagName( "div");
+         var b = false;
+         for ( var j = 0; j < divs.length && !b; j++) {
+           var div = divs[ j];
+           if ( div.className == 'system-msg') {
+             if ( div.style.visibility != "hidden" &&
+                  div.style.display != "none" &&
+                  div.innerHTML != "") {
+               <dtml-if displayPreview>
+               var sysMsg = document.getElementById('system-msg');
+               sysMsg.style.display = 'block';
+               sysMsg.style.visibility = 'visible';
+               sysMsg.innerHTML = div.innerHTML;
+               // Reload preview-form.
+               if ( parent.previewForm) {
+                 parent.previewForm.location.reload();
+               }
+               </dtml-if>
+               b = true;
+               // Set counter to maximum to finish initialization.
+               cnt = max;
+             }
+           }
+         }
+       }
+       if( cnt < max) {
+         cnt++;
+         setTimeout('processResponse()',300);
+       }
+     }
+   }
+
+   /**
+    * Editor: Initialize.
+    */
+   function initEditor() {
+     if( cnt < max) {
+       if ( parent.cameFromForm && parent.cameFromForm.document.forms['<dtml-var fmName>']) {
+         // Set titles.
+         document.title = parent.cameFromForm.document.title;
+         parent.document.title = parent.cameFromForm.document.title;
+         // Set element-value.
+         var el = document.forms['form0'].elements['editor'];
+         el.value = parent.cameFromForm.document.forms['<dtml-var fmName>'].elements['<dtml-var elName>'].value;
+         // Set counter to maximumto finish initialization.
+         cnt = max;
+       }
+       else {
+         cnt++;
+         setTimeout('initEditor()',300);
+       }
+     }
+   }
+
+   var firedChangeEditor = false;
+   var repeatChangeEditor = false;
+
+   /**
+    * Editor: onChange-Event.
+    *
+    * @param el
+    */
+   function onChangeEditor(el) {
+     if (!firedChangeEditor) {
+       firedChangeEditor = true;
+       setTimeout('changeEditor()',500);
+     }
+     else  {
+       repeatChangeEditor = true;
+     }
+   }
+   
+   /**
+    * Editor: Change.
+    */
+   function changeEditor() {
+     if (repeatChangeEditor) {
+       repeatChangeEditor = false;
+       setTimeout('changeEditor()',500);
+     }
+     else {
+       firedChangeEditor = false;
+       repeatChangeEditor = false;
+       var el = document.forms['form0'].elements['editor'];
+       if ( el.value != elv) {
+         elv = el.value;
+         if ( parent.cameFromForm.editorFormOnChange) {
+           parent.cameFromForm.editorFormOnChange( el);
+         }
+       }
+     }
+   }
+
+   /**
+    * <html-body>: onResize-Event.
+    */
+   function onResizeBody() {
+     document.forms['form0'].elements['editor'].style.width = (document.body.clientWidth * 90 / 100) + "px"; // 90%;
+     document.forms['form0'].elements['editor'].style.height = (document.body.clientHeight * 90 / 100) + "px"; // 90%;
+   }
+   
+ //-->
+ </script>
+ <table cellpadding="0" cellspacing="0" border="0" width="100%">
+ <tr valign="middle" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;">
+  <td align="left" class="form-small" style="color:#ffffff;" nowrap="nowrap"><dtml-var headline></td>
+  <td align="right" class="form-small" style="color:#ff9900;" nowrap="nowrap"><a href="#" onclick="parent.location.href=parent.cameFromForm.location.href;" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_BACK')">" border="0" align="absmiddle"/></a></td>
+ </tr>
+ </table>
+ <div class="form-small"><div id="system-msg" class="system-msg" style="display:none;visibility:hidden;"></div>
+  <form name="form0" onsubmit="return onForm0Submit(this)" style="margin:8px">
+  <input type="hidden" name="lang" value="<dtml-var lang>">
+  <div class="form-element">
+   <textarea class="form-fixed" name="editor" wrap="off" cols="80" rows="15" style="width:90%;height:90%;" onkeyup="onChangeEditor(this)" onchange="onChangeEditor(this)"></textarea>
+  </div>
+  <script language="JavaScript">
+  <!--//
+    bodyOnLoad();
+  //-->
+  </script>
+  <div class="form-element">
+   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="self.btnClicked=this.value;">
+   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
+  </div>
+  </form>
+ </div>
+ </body>
+
+<dtml-else>
+ <frameset name="editorFrameset" cols="30%,70%">
+  <frame name="editorFrame" scrolling="auto" src="<dtml-var "url_append_params(URL,{'lang':lang,'came_from':came_from,'displayPreview':_.str(REQUEST.get('displayPreview','')),'fmName':fmName,'elName':elName,'headline':headline,'manage_editorFrame':'True'})">">
+  <dtml-if displayPreview>
+   <frameset rows="0,*">
+    <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">
+    <frame name="previewForm" scrolling="auto" src="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{'css_editorform':_.True})">">
+   </frameset>
+  <dtml-else>
+   <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">
+  </dtml-if>
+ </frameset>
+</dtml-if>
+</html>
+

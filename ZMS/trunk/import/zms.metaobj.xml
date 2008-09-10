@@ -1,0 +1,3615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMS]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zms.gif" type="file">47494638396110001000b300008b5826dca7277484b0eec93ad4cbb9f7dc55d4b274ececdcfc02fc666d99e6bc3d8499c4e6f7fc7079a2f3cf47dfb12c21f90401000008002c000000001000100003046010c98908a19812a56ed64e5138deb78962672a28aa6a4ae8c4f25b3d4eae1c07ed3c17c263e0183c0e0cc6615804120203450099544207818b2130ad560f5cc384b0a80200d54449524e9ed39936e39d4cc4cde87a5cc06f341280761f831311003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zms_disabled.gif" type="file">47494638396110001000b30000fc02fc848684c4c6c4acaaaceceaec646264b4b6b4d4d6d47c7a7c9496946c6e6cb4b2b4f4f2f4cccaccbcbabc00000021f90401000000002c000000001000100003045f10c8095aa39836e76ed6c271589fb48962f79d68ea4d5b333a821cc34bdd1804d1d58b4b6350130c080c068128305a8886a332b96c0e2e8b8134c95d0e16b004b750e02a5e1271928c6428326a02d90c1f97936f4c22c04720148079258311003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[titlealt]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[title]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titleimage]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Titleimage]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[levelnfc]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Level]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_cacheable]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Cacheable]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_description]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_subject]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Subject]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_subject]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_type]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_type]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_creator]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Creator]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_creator]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_logo]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Logo]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_logo]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_navigation]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Navigation]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_navigation]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[e]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[ZMSTeaserContainer]]></item>
+<item><![CDATA[type(ZMSDocument)]]></item>
+<item><![CDATA[type(ZMSObject)]]></item>
+<item><![CDATA[type(ZMSRecordSet)]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Objects]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[*]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMS //--</dtml-comment
+
+ ><dtml-var bodyContentZMSLib_page
+
+><dtml-comment>--// EO bodyContentZMSCustom_ZMS //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMS]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMS]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">0</item>
+<item key="id"><![CDATA[ZMS]]></item>
+<item key="name"><![CDATA[ZMS]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSDocument]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSDocument]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsdocument.gif" type="file">47494638396110001000b30000fc02fc8787aeb7c7e4d6ebfcb5d8faa0a6c4c6e1fbf7fbfcb8dffc547ab484baec8f98b9afb9d17496d4acd0fc7573a521f90401000000002c00000000100010000304691008c158592bbc02ba6747281e8db0781d3886cda024a8bab606f378c53a904d7f77391d6128f80116bac36060301891a2e5d2c03406a24aa981605566a74daee7faa51a100871e7aa1da0d36a40403a4513100ee343d97c0f1d791e0f744c6f697a0f898a8b891d11003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsdocument_disabled.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c6c4e4e6e4a4a6a4d4d2d47476749c9a9cbcbabcfcfafc949294acaeacdcdadccccacc7c7a7cd4d6d421f90401000000002c000000001000100003046e1008b110512a3802ba47492826817078dd220ea2322c060a8ea1fb207147d02c86399e1daf4014003b0a5e623060308e80c388c964347380c06a496514a05a16b5e92c60b5dc66f3f1f87ac2d501bb6d7e8fd7ed4703ea583a1f0c740d461e0e7781736e1d0e0e068c8e8d8f4711003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[titlealt]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[title]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titleimage]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Titleimage]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[levelnfc]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Level]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_cacheable]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Cacheable]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_description]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_subject]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Subject]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_subject]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_type]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_type]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_creator]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Creator]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_creator]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[e]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[ZMSTeaserContainer]]></item>
+<item><![CDATA[type(ZMSObject)]]></item>
+<item><![CDATA[type(ZMSRecordSet)]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Objects]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[*]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSDocument //--</dtml-comment
+
+ ><dtml-var bodyContentZMSLib_page
+
+><dtml-comment>--// EO bodyContentZMSCustom_ZMSDocument //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSDocument]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSDocument]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSDocument]]></item>
+<item key="name"><![CDATA[ZMSDocument]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSDocument]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSFile]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsfile.gif" type="file">47494638396112001000f700000000805e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb07880ab7480b27a83b07d89b67f8ebc55a7edff00ff8195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2b0b0ffb0d7ffbddeffc2c8ffd0dae9c2e1ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffdae7f3dde9f4e4edf5eaedf0e8eff7eaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000014002c00000000120010000008bd0029500091a1a041830f042a14f8e1c78f1d3a6ed8a811a3c4030d0b057ae8d1c3e10f1f3970b07830e142c60e3c780058c972e483840b39f8f8016087cd192b4384689071c3cc9a3b70c0200120840a061931fcdc3103460b15455124c868012480a64f471435812063051c34003855314244511107324a900103c00ab222cc861061206304186d59b29c5b202304182f5ae81cac5304818c0e5cb86891e244d9b87107645cb06245e3c7904508c8a8a0b3e7cf9d03641c4d5a614000003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsfile_disabled.gif" type="file">47494638396112001000b300006666666b6b6b7373737b7b7bff00ff8181818c8c8c999999a4a4a4b7b7b7cececed7d7d7dddddde2e2e2ebebebfafafa21f90401000004002c0000000012001000000474909084aab5456a999eff8eb314c8c67de8c314c76122de55ad45b6c10ffe385592d81a9ccea140241a03d321b673341a464672b3cc859e8be854b3e4391b8b62422130194208065821269bd132a37b53f8faee3e45c0547836180c616c6c7b1b03808082830a0026038f90918f8d269596121100003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[titlealt]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[title]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[file]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[File]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[file]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[align]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[NONE]]></item>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[LEFT_FLOAT]]></item>
+<item><![CDATA[RIGHT]]></item>
+<item><![CDATA[RIGHT_FLOAT]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface0]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<script language="javascript">
+<!--//
+
+function elFileChange(el)
+{
+  var filename = $(el).val();
+  var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
+  if ( i > 0) {
+    filename = filename.substring(i+1);
+  }
+  var title = $("#title_<dtml-var lang>");
+  if ( title.val().length == 0) {
+    title.val(filename);
+  }
+  var titlealt = $("#titlealt_<dtml-var lang>");
+  if ( titlealt.val().length == 0) {
+    titlealt.val(filename);
+  }
+}
+
+$("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
+
+//-->
+</script>]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[text]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO attr_img_src //-->
+
+<dtml-return "getObjProperty('file',REQUEST).getMimeTypeIconSrc()">
+
+<!--// EO attr_img_src //-->]]></item>
+<item key="id"><![CDATA[attr_img_src]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Image]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO attr_url //-->
+
+<dtml-return "getObjProperty('file',REQUEST).getHref(REQUEST)">
+
+<!--// EO attr_url //-->]]></item>
+<item key="id"><![CDATA[attr_url]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Url]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO attr_abstract //-->
+
+<dtml-return "getObjProperty('attr_dc_description',REQUEST)">
+
+<!--// EO attr_abstract //-->]]></item>
+<item key="id"><![CDATA[attr_abstract]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO getHref2IndexHtml //-->
+
+<dtml-let file="getObjProperty('file',REQUEST)">
+ <dtml-if file>
+  <dtml-return "file.getHref(REQUEST)">
+ </dtml-if>
+</dtml-let>
+<dtml-return "''">
+
+<!--// EO getHref2IndexHtml //-->]]></item>
+<item key="id"><![CDATA[getHref2IndexHtml]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Function: index_html]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSFile //--</dtml-comment>
+
+<dtml-let
+  title="getObjProperty('title',REQUEST)"
+  titlealt="getObjProperty('titlealt',REQUEST)"
+  file="getObjProperty('file',REQUEST)"
+  align="getObjProperty('align',REQUEST)"
+  displaytype="getObjProperty('displaytype',REQUEST)"
+  abstract="getObjProperty('attr_abstract',REQUEST)"
+  subclass="[meta_id]"
+ ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
+ ><dtml-if "align in ['','NONE']"
+  ><dtml-call "subclass.append(' none')"
+ ><dtml-elif "align in [ 'LEFT', 'CENTER', 'RIGHT']"
+  ><dtml-call "subclass.append(' '+align.lower())"
+ ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatleft')"
+ ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatright')"
+ ></dtml-if
+ ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
+  <dtml-if file>
+   <div class="title">
+   <img src="<dtml-var "file.getMimeTypeIconSrc()">" title="<dtml-var "file.getContentType()"> (<dtml-var "file.getDataSizeStr()">)" border="0" alt="Icon" align="absmiddle"/>
+   <a href="<dtml-var "file.getHref(REQUEST)">" target="_blank"><dtml-var titlealt></a> (<dtml-var "file.getDataSizeStr()">)
+   </div>
+   <dtml-if title><div class="text"><dtml-var title></div></dtml-if>
+   <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
+  <dtml-else>
+   <dtml-var "getZMILangStr('ATTR_NONE')">
+  </dtml-if>
+ </div>
+ </dtml-if>
+</dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSFile //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSFile]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSFile]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSFile]]></item>
+<item key="name"><![CDATA[ZMSFile]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSFolder]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsfolder.gif" type="file">47494638396110001000b30000745e3cb4821cfcfba5efcc65fce973fcfee3d6aa3afcf58afcfec0fc02fc9088608c7e54cc9e34fcda61fcfef7e3b94321f90401000009002c000000001000100003045f30c9496b5a2feb65e57320283c4af7208820a484e66269aaaa61980d78aeeb1952fcc020f061101c8ec8e471f410109ed0e8f3403c48af8483c1406878bf602f61db1d7ccd5e3481c120ecde8371bbd1add3ef5d0620c0effbfd001d820911003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsfolder_disabled.gif" type="file">47494638396110001000b30000fc02fc848684cccacceceaecf4f6f4a4a2a4646264e4e2e4fcfefc7c7e7cbcbabcd4d6d4f4f2f4acaaacfcfafc00000021f90401000000002c000000001000100003046110c8492b482aeb64a5420811124dd02904c130eaa1bd98aaaecc008a6026ecc2b2fb3d5e26354a198f8a466dc06c3a078ccce040ad5aa983e4f4ca3d340a8785784c167b1be19e58ed3317c0bcb8dc0b5e84eff67cb86008f8ff8080061d840011003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[titlealt]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[title]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titleimage]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Titleimage]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[levelnfc]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Level]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_cacheable]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[0]]></item>
+<item><![CDATA[1]]></item>
+<item><![CDATA[2]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Cacheable]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_description]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_subject]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Subject]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_subject]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_type]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_type]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_creator]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Creator]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_creator]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_logo]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Logo]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_logo]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[e]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[ZMSTeaserContainer]]></item>
+<item><![CDATA[type(ZMSDocument)]]></item>
+<item><![CDATA[type(ZMSObject)]]></item>
+<item><![CDATA[type(ZMSRecordSet)]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Objects]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[*]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSFolder //--</dtml-comment
+
+ ><dtml-var bodyContentZMSLib_page
+
+><dtml-comment>--// EO bodyContentZMSCustom_ZMSFolder //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSFolder]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSFolder]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSFolder]]></item>
+<item key="name"><![CDATA[ZMSFolder]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSDocument]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSGraphic]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsgraphic.gif" type="file">47494638396112001000f700003d6dbd2470d54747ac5e6190604494606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb06cf93658f0500c8bf1039bf90199ff0994f20fa7e27880ab7480b27a83b07d89b67f8ebc55a7ed53abf6ef350ff93405ff3401c67b7bff00ffdcc924e5d409facd02e7c627e7c628e9c829f0cc2aeed7648195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2bdbfc2bdbfc3b0b0ffbfc38186c6fe87cff98aceff9cc6f599cbfcaed6ffb0d7ffb3d8fdb8dbffb9dcfebddeffd3c7d4d6ccd9cedef4d0dae9dde3c6c2e1ffc3e6ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffd3e9ffdae7f3dde9f4d9ecffdeefffdfefffe4edf5eaedf0e8eff7e2f1ffe4f2ffeaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000023002c00000000120010000008d000478cb801a3a0418319042a1468830d1b3467c88c11c3454986180b05d650a3c6219b3566ca4cc9d0c145461a69d2380459064c920c3033ce58c326844d114db27849a203424619346d820050a1828f2a511e647c1134048100452b1479c220630b90213e08805a94079305195994097304c9040b178a0211a22023872e5bbe68e9212102050f438424c8b861cb162d5856982841e207112108326ad87205cb12152750a4d81144c8818c18ac58a102c5891121a0411bc8e8408a94ce9f43832e90b181ebd7b05d0fc848bbb6c28000003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsgraphic_disabled.gif" type="file">47494638396112001000b300005353536565656a6a6a7575757b7b7bff00ff838383989898a5a5a5b9b9b9c2c2c2cececed3d3d3dcdcdce8e8e8fbfbfb21f90401000005002c0000000012001000000477b09484aab5466a999eff8ed318c8c67de8331e8789a4df6864dbfb08f8d1844d426b369c203018284404d3c18303108b8c4672b3bc099cc54142aaf42c16454251015686428a446270f80e4c86b383a1482b18e54d9c57af27be0270670d0d785f802604848486870b0189049293940490269899121100003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[2]]></item>
+<item key="id"><![CDATA[displaytype]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Display-Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[img]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Image]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[imghires]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Image (Hires)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[imgsuperres]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Image (Superres)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[alt="" title=""]]></item>
+<item key="id"><![CDATA[img_attrs_spec]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Image (Special-Attributes)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_url]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Image (URL)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[url]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[align]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[LEFT_FLOAT]]></item>
+<item><![CDATA[RIGHT]]></item>
+<item><![CDATA[RIGHT_FLOAT]]></item>
+<item><![CDATA[CENTER]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[text]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Text]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[richtext]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
+<item key="id"><![CDATA[format]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Format]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[textalign]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[RIGHT]]></item>
+<item><![CDATA[CENTER]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Text-Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>
+
+<dtml-let 
+  displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
+  align="getObjProperty('align',REQUEST)"
+  imgattr="'img'"
+  imghiresattr="'imghires'"
+  imgalign="''"
+  imgurl="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
+  imgthumb="URL.find('/manage')>0"
+  imgspecial="getObjProperty('img_attrs_spec',REQUEST)"
+  imgclass="'img'"
+  text="getText(REQUEST)" 
+  format="getObjProperty('format',REQUEST)"
+  renderedtext="renderText(format,'text',text,REQUEST)"
+  textalign="getObjProperty( 'textalign',REQUEST)"
+  textclass="'text'"
+  bodyContent="renderDisplaytype(displaytype,imgattr,imghiresattr,imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,REQUEST)"
+  subclass="[meta_id]"
+ ><dtml-if "align in [ 'LEFT', 'CENTER', 'RIGHT']"
+  ><dtml-call "subclass.append(' '+align.lower())"
+ ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatleft')"
+ ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatright')"
+ ></dtml-if
+ ><dtml-return "'<div class='+QUOT+' '.join(subclass)+QUOT+' id='+QUOT+id+QUOT+'>'+bodyContent+'</div>'"
+></dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSGraphic]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSGraphic]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSGraphic]]></item>
+<item key="name"><![CDATA[ZMSGraphic]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSLib]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[# --// BO getLinkList //--
+
+links = []
+return links
+
+# --// EO getLinkList //--
+]]></item>
+<item key="id"><![CDATA[getLinkList]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Function: Links (align=none)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[Script (Python)]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSLib_page //--</dtml-comment
+
+><dtml-let childNodes="getObjChildren('e',REQUEST,PAGEELEMENTS)" forced="isPreviewRequest(REQUEST) and not isActive(REQUEST)"
+ ><dtml-if childNodes
+  ><dtml-var bodyContent_PagePre
+  ><dtml-in childNodes
+   ><dtml-var "getBodyContent(REQUEST,forced)"
+  ></dtml-in
+  ><dtml-var bodyContent_PagePost
+ ></dtml-if
+></dtml-let
+
+><dtml-comment>--// EO bodyContentZMSLib_page //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSLib_page]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: Page]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSLib]]></item>
+<item key="name"><![CDATA[ZMSLib]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSLibrary]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSLinkContainer]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmslinkcontainer.gif" type="file">47494638396112001000b300000402058a8d8fc5c9c7e2ebec0402849ca2f4344448abaeb5f8fdfa677397fc02fc575e66292a30c5d5ebaebed87494b221f9040100000a002c0000000012001000030475504975820d67ea29d86aa00030c22675cbf01c0ce0028d790c60f33cefb80543df3809862117d01c1003e463715bbc1646044270c88d16092847ea10bd08b9e8a000104c1180b348e36894adb9b5e4e046076001dc1d0d9854bd706f7212656769665e681b3938568313856687537d260a61610a11003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmslinkcontainer_disabled.gif" type="file">47494638396112001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c000000001200100003047a104820861d62eaf95078a05220cf263d4c43240252bc4cb925c4f11cd6fb2233e11f0a0323a02b243482856fd5700c882f8346415828044546ca219d281656918e519cfab08745baa05617340742e150acd3278207bb30980f0c050e7b6f12687545747713736d6c69747b1b458276841a8c6b6d8a2665650011003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface0]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<dtml-comment>
+################################################################################
+##### Align: EDIT
+################################################################################
+</dtml-comment>
+<dtml-if "getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+<tr valign="middle">
+ <td><div class="form-label"><dtml-var "getZMILangStr('ALIGN')"></div></td>
+ <td><dtml-var "getObjInput('align',REQUEST)"></td>
+</tr>
+</table>
+</dtml-if>
+
+<table cellspacing="1" cellpadding="2" border="0" class="zmiNeutralColorStrong0">
+<tr class="zmiNeutralColorMedium0">
+ <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_ADD'))"></td>
+</tr>
+<tr valign="top" class="zmiNeutralColorStrong0">
+ <td> &nbsp; </td>
+ <td>
+  <span class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"><sup style="color:red">*</sup></span>
+  <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> PMID)</span>
+ </td>
+ <td>
+  <span class="form-label"><dtml-var "getZMILangStr('ATTR_TITLE')"><sup style="color:red">*</sup></span>
+  <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> &quot;Medline&quot;)</span>
+ </td>
+ <td colspan="2">
+  <span class="form-label"><dtml-var "getZMILangStr('ATTR_DESCRIPTION')"></span>
+ </td>
+</tr>
+
+<dtml-comment>
+################################################################################
+##### Link-Elements: INSERT
+################################################################################
+</dtml-comment>
+<dtml-call "REQUEST.set( 'ZMS_INSERT', 'ZMSLinkElement')">
+<tr valign="top" class="zmiNeutralColorMedium0">
+ <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="" border="0" class="button"/></td>
+ <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
+ <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
+ <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
+ <td width="100">
+   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" accesskey="<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" title="ALT+Shift+<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
+   &nbsp;&nbsp;
+ </td>
+</tr>
+
+<dtml-comment>
+################################################################################
+##### Link-Elements: EDIT
+################################################################################
+</dtml-comment>
+<dtml-call "REQUEST.set( 'ZMS_INSERT', _.None)">
+<dtml-let childNodes="getObjChildren('e',REQUEST)">
+<dtml-in childNodes>
+<dtml-let seqindex=sequence-index ob=sequence-item>
+<tr valign="top" class="zmiNeutralColorLight0">
+ <td align="center" class="zmiNeutralColorMedium0"
+  ><nobr
+   ><select class="form-small" onchange="location.href='<dtml-var id>/manage_moveObjToPos?lang=<dtml-var lang>&pos:int='+(this.selectedIndex+1)"
+    ><dtml-in "_.range(_.len(childNodes))"
+     ><option <dtml-if "_['sequence-index']==seqindex">selected="selected"</dtml-if>><dtml-var "_['sequence-index']+1"></option
+    ></dtml-in
+   ></select
+    ><a href="javascript:confirmDeleteBtnOnClick('manage_deleteObjs?ids:list=<dtml-var id>&preview=preview');" class="button"
+     ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"></a
+  ></nobr
+ </td>
+ <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='url%s'%id,elTextName='title%s'%id,size=15,value=getObjAttrValue(getObjAttr('attr_ref'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
+ <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='title%s'%id,size=15,value=getObjAttrValue(getObjAttr('title'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')"></td>
+ <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='description%s'%id,cols=20,rows=3,value=getObjAttrValue(getObjAttr('attr_dc_description'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')"></td>
+ <td width="100" class="zmiNeutralColorMedium0"><dtml-var "manage_main_change(_,_,ob=ob,REQUEST=REQUEST)"></td>
+</tr>
+</dtml-let>
+</dtml-in>
+</dtml-let>
+
+</table>
+
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])">]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[align]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[NONE]]></item>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[LEFT_FLOAT]]></item>
+<item><![CDATA[RIGHT]]></item>
+<item><![CDATA[RIGHT_FLOAT]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[e]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Link-Elements]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[ZMSLinkElement]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSLinkContainer //--</dtml-comment>
+
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSLinkContainer //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkContainer]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSLinkContainer]]></item>
+<item key="name"><![CDATA[ZMSLinkContainer]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSLinkElement]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmslinkcontainer.gif" type="file">47494638396112001000f70000000000090b0e0e0f0d11111112161e1c202e1b2230212121283938303130313131384c53395357555555505f7e585f7f4b67415f6161666666000084586597727484686fb9677cab68939e748fac7294b7ff00ff8484848a8a8a9a9a9a86a3b997a1aba8a9a9aaaaaaa2a2b8aaaab9abb2aeb3b3a7bbbbbb8e91fa8c9eff9192fd93b6c99ba1f19bbdeaa89bfebdbdceb0aeeeadcbbfb8d7e0bdd0e6c6dcb6c0c0c0c6c6c6cfcfcfc3c5d6c3c3e2c2c3fbc6c6fccedfe4d3c7f5d1d0fadadbf4d5e0decce4e9dae6e9d8ebe2e9e5dee3e8e7e8ebebebeff2e9f1f2eaf5f1ecf4f3eef6f5f6eef6f1f7f7f2fcf6f5fdf7f5fcfbf6fdfbfffffbffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100001b002c00000000120010000008bb003708dc20a283c10e22062a1c7843410319104f00507063a1c01b07220801b10201808f032a2e0c6104088f1919307cfc9860a187224a86c86841c1008395003c2814d1644992201f1c5cd0b060a5048527a044a95162650002051e54383af0849327524c08c06901858e0e48911c6142840684952954ec00ab10c78f1e3962e09c8053e1081f2e5800b031852f80be7d01282401632fcec336040f7cf1170007006b37386ebcd0f0e195892dee05fc976f668b925786fe383020003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmslinkcontainer_disabled.gif" type="file">47494638396112001000b300005b5b5b676767787878ff00ff898989939393999999a3a3a3adadadb9b9b9c2c2c2ccccccd3d3d3d9d9d9e8e8e8f4f4f421f90401000003002c000000001200100000047b70c8a190456aead90469e00208cd263541e1248a00bc41b9290ec858ef2b6c89e3370b4380900324348a876f553820882f8366f1782c14c540ea209d50ab8a40f190b84d97b5424e51466c1835862827ce211b0a2ce3b107f0f90048220c458584537e000800370681891b8c854587917b7d7f952645039c121100003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[inferface0]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<dtml-call "REQUEST.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ')">
+<dtml-call "REQUEST.set('afterSubmitBtnClick',' } ')">
+<script type="text/javascript">
+<!--//
+
+var btn = null;
+var remoteHref = null;
+var remoteHrefValid = false;
+var remoteHrefResponseWaiting = false;
+var remoteHrefResponseTimeout = 5000;
+
+function zmiOnSubmitEventHandler(el) {
+  btn = el;
+  if ($("#attr_type").val() == "remote") {
+    var href = $("#attr_ref").val();
+    if ( !remoteHrefValid || remoteHref != href) {
+      remoteHref = href;
+      remoteHrefValid = false;
+      remoteHrefResponseWaiting = true;
+      self.btnClicked = 'break';
+      // Set wait-cursor.
+      $(document.body).css( "cursor", "wait");
+      // JQuery.AJAX.get
+      $.get( remoteHref+"/getBodyContent", remoteResponse);
+      // Set time-out.
+      setTimeout("remoteResponseTimedout()",remoteHrefResponseTimeout);
+    }
+    return remoteHrefValid;
+  }
+  return true;
+}
+
+function remoteResponse(data) {
+  if (remoteHrefResponseWaiting) {
+    remoteHrefResponseWaiting = false;
+    // Reset wait-cursor.
+    $(document.body).css( "cursor", "auto");
+    //
+    $("#attr_ref").removeClass("form-error");
+    remoteHrefValid = true;
+    btn.click();
+  }
+}
+
+function remoteResponseTimedout() {
+  if (remoteHrefResponseWaiting) {
+    remoteHrefResponseWaiting = false;
+    // Reset wait-cursor.
+    $(document.body).css( "cursor", "auto");
+    //
+    $("#attr_ref").addClass("form-error");
+    remoteHrefValid = false;
+    if (confirm( "Time-Out <dtml-var "getZMILangStr('ATTR_URL')">: " + remoteHref)) {
+      remoteHrefValid = true;
+      btn.click();
+    }
+  }
+}
+
+//-->
+</script>
+
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+<dtml-comment>
+################################################################################
+##### Ref & Type: EDIT
+################################################################################
+</dtml-comment>
+<tr valign="middle">
+ <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <sup style="color:red">*</sup></div></td>
+ <td>
+  <div style="float:left"><dtml-var "getObjInput('attr_ref',REQUEST)"></div>
+  <div style="float:left">&nbsp;</div>
+  <div style="float:left"><dtml-var "getObjInput('attr_type',REQUEST)"></div>
+ </td>
+</tr>
+<dtml-comment>
+################################################################################
+##### Embedded Object: PREVIEW
+################################################################################
+</dtml-comment>
+<dtml-unless ZMS_INSERT>
+<tr valign="middle">
+ <td>&nbsp;</td>
+ <td <dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if> style="border: 1px dashed black;">
+  <dtml-var "renderShort(REQUEST)">
+ </td>
+</tr>
+</dtml-unless>
+
+</table>
+
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])">]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_ref]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Reference]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[url]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_type]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[replace]]></item>
+<item><![CDATA[new]]></item>
+<item><![CDATA[embed]]></item>
+<item><![CDATA[recursive]]></item>
+<item><![CDATA[remote]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[align]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[NONE]]></item>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[LEFT_FLOAT]]></item>
+<item><![CDATA[RIGHT]]></item>
+<item><![CDATA[RIGHT_FLOAT]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_description]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO attr_img_src //--</dtml-comment>
+
+<dtml-let
+  title="getObjProperty('title',REQUEST)"
+  ref="getObjProperty('attr_ref',REQUEST)"
+><dtml-if "ref.startswith('{$') and ref.endswith('}')">
+  <dtml-let  ref_obj="getLinkObj(ref)">
+   <dtml-if ref_obj>
+    <dtml-return "MISC_ZMS+'internal_link.gif'">
+   <dtml-else>
+    <dtml-return "MISC_ZMS+'internal_link_broken.gif'">
+   </dtml-if>
+  </dtml-let>
+ <dtml-elif "ref.startswith('mailto:')">
+  <dtml-return "MISC_ZMS+'mail_link.gif'">
+ <dtml-elif "title.lower()=='medline'">
+  <dtml-return "MISC_ZMS+'pubmed_small.gif'">
+ <dtml-else>
+  <dtml-return "MISC_ZMS+'external_link.gif'">
+ </dtml-if>
+</dtml-let>
+
+<dtml-comment>--// EO attr_img_src //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[attr_img_src]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Image]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO attr_url //--</dtml-comment>
+
+<dtml-let
+  title="getObjProperty('title',REQUEST)"
+  ref="getObjProperty('attr_ref',REQUEST)"
+> <dtml-if "title.lower()=='medline'">
+  <dtml-return "'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%_.int(ref)">
+ <dtml-else>
+  <dtml-return ref>
+ </dtml-if>
+</dtml-let>
+
+
+<dtml-comment>--// EO attr_url //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[attr_url]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Url]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO attr_abstract //--</dtml-comment>
+
+<dtml-return "getObjProperty('attr_dc_description',REQUEST)">
+
+<dtml-comment>--// EO attr_abstract //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[attr_abstract]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSLinkElement //--</dtml-comment>
+
+<dtml-let
+  title="getObjProperty('title',REQUEST)"
+  titlealt="getObjProperty('titlealt',REQUEST)"
+  ref="getObjProperty('attr_ref',REQUEST)"
+  align="getObjProperty('align',REQUEST)"
+  displaytype="getObjProperty('displaytype',REQUEST)"
+  abstract="getObjProperty('attr_abstract',REQUEST)"
+  subclass="[meta_id]"
+ ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
+ ><dtml-if "align in ['','NONE']"
+  ><dtml-call "subclass.append(' none')"
+ ><dtml-elif "align in [ 'LEFT', 'CENTER', 'RIGHT']"
+  ><dtml-call "subclass.append(' '+align.lower())"
+ ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatleft')"
+ ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
+  ><dtml-call "subclass.append(' floatright')"
+ ></dtml-if
+ ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
+  <div class="title">
+  <img src="<dtml-var "getObjProperty('attr_img_src',REQUEST)">" title="" border="0" alt="" align="absmiddle"/>
+  <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "getObjProperty('attr_type',REQUEST)=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
+  </div>
+  <dtml-if title><div class="text"><dtml-var title></div></dtml-if>
+  <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
+ </div>
+
+ </dtml-if>
+</dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSLinkElement //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkElement]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSLinkElement]]></item>
+<item key="name"><![CDATA[ZMSLinkElement]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSNote]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsnote.gif" type="file">47494638396114001000b300000000006363ce848484c6c6c6ced6f7ff00ffffffceffffffffffffffffffffffffffffffffffffffffffffffffffffff21f90401000005002c0000000014001000000453b0c849abad22eb0dae14462886434701263a8ae54910e80bac463b01448003baca9a125e8f375bd96e1d617174b4f88c400b482428362953d10c55f56443d6ae74351b64a2d841ada4417982a8b8fb4dbf4400003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
+<item key="id"><![CDATA[format]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Format]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[text]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Text]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[richtext]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-return "REQUEST.get('URL','').find('/manage')>0">]]></item>
+<item key="id"><![CDATA[active]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Active]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSNote //--</dtml-comment>
+
+<dtml-let 
+  text="getText(REQUEST)" 
+  format="getObjProperty('format',REQUEST)"
+  renderedtext="renderText(format,'text',text,REQUEST,id)"
+ ><dtml-return "'<div class='+QUOT+'note'+QUOT+'>'+renderedtext+'</div>'"
+></dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSNote //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSNote]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSNote]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSNote]]></item>
+<item key="name"><![CDATA[ZMSNote]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSSqlDb]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmssqldb.gif" type="file">47494638396112001000b30000337270754b39707170007e9c558b7e009ab501a9e9b4572efe152eff00ffa19367bed216dfbe65fed965a7a7a7e5e5e521f90401000009002c000000001200100000045930c949abbd983ae1ba93ce500c44d53d4f071a2c603aa89a38ace1ce1e9ce6452b290c8682b339200e0780f2e66834180210627af8689c5029d53ae1288620e42140b40acee7496ec18e66d4ec85fb3d8bcfdfe8347dcf8f00003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSSqlDb //--</dtml-comment>
+
+<dtml-if "REQUEST.get('URL','').find('/manage')>0">
+<h2><dtml-var "display_type(REQUEST)"></h2>
+<dtml-in "getEntities()" mapping>
+ <div class="form-small"><dtml-var id></div>
+</dtml-in>
+</dtml-if>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSSqlDb //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSSqlDb]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSSqlDb]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled"><![CDATA[0]]></item>
+<item key="id"><![CDATA[ZMSSqlDb]]></item>
+<item key="name"><![CDATA[ZMSSqlDb]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSSysFolder]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmssysfolder.gif" type="file">47494638396110001000b30000aa9d88d1b375fdfcc8f5e0a1fdf1a9fdfeede6cb87fdf8b7fdfed8ff00ffbbb69eb9b097e0c483fde89efdfefaedd48c21f90401000009002c000000001000100003045f30c9496b5a2feb65e57320283c4af7208820a484e66269aaaa61980d78aeeb1952fcc020f061101c8ec8e471f410109ed0e8f3403c48af8483c1406878bf602f61db1d7ccd5e3481c120ecde8371bbd1add3ef5d0620c0effbfd001d820911003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmssysfolder_disabled.gif" type="file">47494638396110001000b30000ff00ffbdbebde4e2e4f4f3f4f9faf9cecdceacabacf0eff0fdfefdb9bab9dbdadbe8e9e8f9f8f9d3d2d3fdfcfd78787821f90401000000002c000000001000100003046110c8492b482aeb64a5420811124dd02904c130eaa1bd98aaaecc008a6026ecc2b2fb3d5e26354a198f8a466dc06c3a078ccce040ad5aa983e4f4ca3d340a8785784c167b1be19e58ed3317c0bcb8dc0b5e84eff67cb86008f8ff8080061d840011003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title.Alt]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[titlealt]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[title]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[0]]></item>
+<item key="id"><![CDATA[attr_cacheable]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Cacheable]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[constant]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[TAB_METADATA]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[TAB_METADATA]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[delimiter]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_dc_description]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[DC.Description]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[attr_dc_description]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<dtml-var f_submitBtn>
+</form>
+<dtml-call "REQUEST.set('omit_submitBtn',_.True)">
+
+<dtml-unless ZMS_INSERT>
+
+<dtml-unless skey><dtml-call expr="REQUEST.set('skey', 'id')"></dtml-unless>
+<dtml-unless rkey><dtml-call expr="REQUEST.set('rkey', '')"></dtml-unless>
+
+<dtml-comment> ### Action_List ################################# </dtml-comment>
+<form action="&dtml-URL1;/" method="get">
+<input type="hidden" name="lang" value="<dtml-var lang>">
+<div align="right" class="form-small" width="100%">
+  <dtml-if filtered_meta_types>
+    <select class="form-small" name=":action"
+         onChange="location.href='&dtml-URL1;/'+this.options[this.selectedIndex].value">
+      <option value="manage_workspace">----- <dtml-var "getZMILangStr('ACTION_INSERT')%display_type(REQUEST)"> -----</option>
+      <dtml-in filtered_meta_types mapping sort=name>
+        <dtml-unless "name.find('ZMS')==0">
+          <option value="&dtml.url_quote-action;"><dtml-var name></option>
+        </dtml-unless>
+      </dtml-in>
+    </select>
+  </dtml-if>
+</div>
+</form>
+
+<dtml-comment> ### Object_List ################################# </dtml-comment>
+<table cellspacing="0" cellpadding="2" border="0" width="100%" class="zmiNeutralColorStrong0">
+<form name="form1" action="&dtml-URL1;/" name="objectItems" method="post">
+<tr>
+<td valign="top">
+<dtml-if objectItems>
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+<tr class="list-header">
+  <td width="5%" valign="middle"
+    ><a href="javascript:var btn=document.getElementById('slctBtn');var slct=btn.src.indexOf('btn_slctall.gif')>0;if(slct){btn.src='<dtml-var MISC_ZMS>btn_slctnone.gif'} else {btn.src='<dtml-var MISC_ZMS>btn_slctall.gif'};selectCheckboxes(document.forms['form1'],slct);" class="button"
+     ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
+    ></a
+  ></td>
+  <td width="5%" align="right"><div
+   class="list-item"><a href="./manage_main?skey=meta_type<dtml-if
+   "rkey == ''">&rkey=meta_type</dtml-if>"
+   onMouseOver="window.status='Sort objects by type'; return true"
+   onMouseOut="window.status=''; return true"><dtml-if
+   "skey == 'meta_type' or rkey == 'meta_type'"
+   ><strong><dtml-var "getZMILangStr('ATTR_TYPE')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_TYPE')"></dtml-if></a></div>
+  </td>
+  <td width="50%"><div class="list-item"><a
+   href="./manage_main?skey=id<dtml-if
+   "rkey == ''">&rkey=id</dtml-if>"
+   onMouseOver="window.status='Sort objects by name'; return true"
+   onMouseOut="window.status=''; return true"><dtml-if
+   "skey == 'id' or rkey == 'id'"
+   ><strong><dtml-var "getZMILangStr('ATTR_NAME')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_NAME')"></dtml-if></a></div>
+  </td>
+  <td width="15%"><div class="list-item"><a
+   href="./manage_main?skey=get_size<dtml-if
+   "rkey == ''">&rkey=get_size</dtml-if>"
+   onMouseOver="window.status='Sort objects by size'; return true"
+   onMouseOut="window.status=''; return true"><dtml-if
+   "skey == 'get_size' or rkey == 'get_size'"
+   ><strong><dtml-var "getZMILangStr('ATTR_SIZE')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_SIZE')"></dtml-if></a></div>
+  </td>
+  <td width="29%"><div class="list-item"><a
+   href="./manage_main?skey=bobobase_modification_time<dtml-if
+   "rkey == ''">&rkey=bobobase_modification_time</dtml-if
+   >"
+   onMouseOver="window.status='Sort objects by modification time'; return true"
+   onMouseOut="window.status=''; return true"><dtml-if
+   "skey == 'bobobase_modification_time' or rkey == 'bobobase_modification_time'"
+   ><strong><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></dtml-if></a></div>
+  </td>
+</tr>
+<dtml-in objectItems sort_expr="skey" reverse_expr="rkey">
+<dtml-unless "meta_type=='ZMSAttributeContainer'">
+<dtml-if sequence-odd>
+<tr class="zmiNeutralColorLight0">
+<dtml-else>
+<tr class="zmiNeutralColorMedium0">
+</dtml-if>
+  <td align="center" valign="top"
+    ><input type="checkbox" name="ids:list" value="&dtml-sequence-key;" /></td>
+  <td valign="top">
+  <dtml-if icon>
+  <a href="&dtml.url_quote-sequence-key;/manage_workspace">
+  <img src="&dtml-BASEPATH1;/&dtml-icon;" title="&dtml-meta_type;"
+   title="&dtml-meta_type;" border="0" /></a>
+  <dtml-else>
+  &nbsp;
+  </dtml-if>
+  </td>
+  <td valign="top">
+  <div class="list-item">
+  <a href="&dtml.url_quote-sequence-key;/manage_workspace">
+  &dtml-sequence-key; <dtml-if title>(&dtml-title;)</dtml-if>
+  </a>
+  <dtml-if locked_in_version>
+    <dtml-if modified_in_version>
+      <img src="&dtml-BASEPATH1;/p_/locked"
+       title="This item has been modified in this version" />
+    <dtml-else>
+      <img src="&dtml-BASEPATH1;/p_/lockedo"
+       title="This item has been modified in another version" />
+       (<em>&dtml-locked_in_version;</em>)
+    </dtml-if>
+  </dtml-if>
+  </div>
+  </td>
+
+  <dtml-with sequence-key>
+  <td>
+  <div class="list-item">
+  <dtml-try>
+  <dtml-if get_size>
+  <dtml-let ob_size=get_size>
+  <dtml-if "ob_size < 1024">
+  1 Kb
+  <dtml-elif "ob_size > 1048576">
+  <dtml-var "ob_size / 1048576.0" fmt="%0.02f"> Mb
+  <dtml-else>
+  <dtml-var "_.int(ob_size / 1024)"> Kb
+  </dtml-if>
+  </dtml-let>
+  <dtml-else>
+  &nbsp;
+  </dtml-if>
+  <dtml-except>
+  &nbsp;
+  </dtml-try>
+  </div>
+  </td>
+
+  <td>
+   <div class="list-item"><dtml-var "getLangFmtDate(bobobase_modification_time())"></div>
+  </td>
+  </dtml-with>
+</tr>
+</dtml-unless>
+</dtml-in>
+</table>
+
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<tr>
+  <td valign="top" width="16"></td>
+  <td valign="top" nowrap="nowrap">
+  <div class="form-element">
+  <dtml-unless dontAllowCopyAndPaste>
+  <input class="form-submit" type="submit" name="manage_renameForm:method"
+   value="<dtml-var "getZMILangStr('BTN_RENAME')" html_quote>" />
+  <input class="form-submit" type="submit" name="manage_cutObjects:method"
+   value="<dtml-var "getZMILangStr('BTN_CUT')" html_quote>" />
+  <input class="form-submit" type="submit" name="manage_copyObjects:method"
+   value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" />
+  <dtml-if cb_dataValid>
+  <input class="form-submit" type="submit" name="manage_pasteObjects:method"
+   value="<dtml-var "getZMILangStr('BTN_PASTE')" html_quote>" />
+  </dtml-if>
+  </dtml-unless>
+  <dtml-if "_.SecurityCheckPermission('Delete objects',this())">
+  <input class="form-submit" type="submit" name="manage_delObjects:method"
+   value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" />
+  </dtml-if>
+  <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
+  <input class="form-submit" type="submit"
+   name="manage_importExportForm:method"
+   value="Import/Export" />
+  </dtml-if>
+  </div>
+  </td>
+</tr>
+</table>
+
+<dtml-else>
+<table cellspacing="0" cellpadding="2" border="0">
+<tr>
+<td>
+<div class="std-text">
+<dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)">
+<br /><br />
+</div>
+<dtml-unless dontAllowCopyAndPaste>
+<dtml-if cb_dataValid>
+<div class="form-element">
+<input class="form-submit" type="submit" name="manage_pasteObjects:method"
+ value="Paste" />
+</div>
+</dtml-if>
+</dtml-unless>
+<dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
+<input class="form-submit" type="submit"
+  name="manage_importExportForm:method" value="Import/Export" />
+</dtml-if>
+</td>
+</tr>
+</table>
+</dtml-if>
+</td>
+</tr>
+</table>
+
+</dtml-unless>]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSSysFolder //--</dtml-comment>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSSysFolder //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSSysFolder]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSSysFolder]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">0</item>
+<item key="id"><![CDATA[ZMSSysFolder]]></item>
+<item key="name"><![CDATA[ZMSSysFolder]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSDocument]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSTable]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmstable.gif" type="file">47494638396112001000f700000000845e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae7880ab7a83b07d89b67f8ebcff00ff8080808195c3849bca87a1d287a9dc8aa8d98caedf92bcef94bff2b0d7ffc2e1ffc6e3ffcee6ffd1e8ffe4edf5e8eff7f3f9fffeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000011002c00000000120010000008920023081c48b020410d16122a5cb89081c00c00224a9c38d161040c14334ab47881040909233c4a00415282070f122c56101952c4c8921f502610484182cd9b387122103841a4881020467af820a1030709070442100934e850941c36483020f041ceab370b0874f0f3254a0f46256c904a406003a042891a953a56c200810bb06215205081ddbb78f30630c8b7af5fbe0101003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmstable_disabled.gif" type="file">47494638396112001000f700005c5c5c6565656767676a6a6a6d6d6d7070707373737676767979797b7b7b7c7c7c7e7e7eff00ff8080808282828585858a8a8a8e8e8e9494949999999e9e9ea4a4a4a9a9a9b5b5b5b7b7b7cfcfcfdbdbdbdddddde1e1e1e3e3e3ebebebedededf7f7f7fefefeffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100000c002c00000000120010000008920019081c48b020410c15122a5cb87081c00b00224a9c38d121030b14334ab45841848806213c36f040b201070e0d2c52101912c4c8921d502a1038a181cd9b38712210284124880f1e4672e8d060838606070446100934e850941a323430201042ceab370b087cf0f3254a0e461b64904a40a003a042891a953ab6c100810bb06215203081ddbb78f30630c8b7af5fbe0101003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[caption]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Caption]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[align]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[TOP]]></item>
+<item><![CDATA[BOTTOM]]></item>
+<item><![CDATA[LEFT]]></item>
+<item><![CDATA[RIGHT]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Align]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface0]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<dtml-comment>
+################################################################################
+##### Table(Type,Cols,Rows): INSERT
+################################################################################
+</dtml-comment>
+<dtml-if ZMS_INSERT>
+<input type="hidden" name="redirect_self:int" value="1"/>
+
+<script language="JavaScript">
+<!--//
+
+function onZMSTableFormSubmit() 
+{
+  var xml = '';
+  var type = parseInt($('input[name=table_type:int]:checked').val());
+  xml += '<list>\n';
+  for ( var y = 0; y < parseInt($('#rows').val()); y++) {
+    xml += "<item type=\"list\"><list>\n";
+    if ( y==0 && type == 2) {
+      xml += '<item type="dictionary"><dictionary>\n';
+      xml += '<item key="colspan" type="int">'+parseInt($('#cols').val())+'</item>\n';
+      xml += '<item key="content"></item>\n';
+      xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
+      xml += '<item key="tag">th</item>\n';
+      xml += '</dictionary></item>\n';
+    }
+    else {
+      for ( var x = 0; x < parseInt($('#cols').val()); x++) {
+        var tag = "td";
+        if ( (type == 1 && y == 0) ||
+             (type == 3 && x == 0) ||
+             (type == 4 && (x == 0 || y == 0)))
+          tag = "th";
+        xml += '<item type=\"dictionary\"><dictionary>\n';
+        xml += '<item key="colspan" type="int">1</item>\n';
+        xml += '<item key="content"></item>\n';
+        xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
+        xml += '<item key="tag">'+tag+'</item>\n';
+        xml += '</dictionary></item>\n';
+      }
+    }
+    xml += "</list></item>\n";
+  }
+  xml += '</list>\n';
+  $("#table").val( xml);
+  return onFormSubmit('<dtml-var fmName>');
+}
+
+$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+
+//-->
+</script>
+
+<dtml-let 
+  table_th="'<th style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></th>'"
+  table_td="'<td style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></td>'"
+>
+<img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+<tr valign="top">
+ <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_COLS')"> &times; <dtml-var "getZMILangStr('ATTR_ROWS')"><sup style="color:red">*</sup></div></td>
+ <td><div class="form-label"><dtml-var "getTextInput(fmName=fmName,elName='cols',value='3',size=2)"> &times; <dtml-var "getTextInput(fmName=fmName,elName='rows',value='3',size=2)"></div></td>
+</tr>
+<tr valign="top">
+ <td rowspan="5"><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
+ <td>
+  <table cellspacing="2" cellpadding="0" border="0">
+  <tr>
+   <td></td>
+   <td align="center" class="form-small">3 <dtml-var "getZMILangStr('ATTR_COLS')"></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" title="" border="0" /></td>
+  </tr>
+  <tr>
+   <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="table_type:int" value="1" checked="checked"></td>
+   <td>
+    <div class="ZMSTable">
+    <table>
+    <tr><dtml-var table_th><dtml-var table_th><dtml-var table_th></tr>
+    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
+    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
+    </table>
+    </div>
+   </td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="4" title="" border="0"></td>
+   <td valign="middle" class="form-small">3 <dtml-var "getZMILangStr('ATTR_ROWS')"></td>
+  </tr>
+  </table>
+ </td>
+</tr>
+<tr>
+ <td>
+  <table cellspacing="2" cellpadding="0" border="0">
+  <tr>
+   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="2"></td>
+   <td>
+    <div class="ZMSTable">
+    <table>
+    <tr><th colspan="3" style="border: solid 1px #999999;"><img src="<dtml-var spacer_gif>" width="30" height="4" title="" border="0"></th></tr>
+    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
+    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
+    </table>
+    </div>
+   </td>
+  </tr>
+  </table>
+ </td>
+</tr>
+<tr>
+ <td>
+  <table cellspacing="2" cellpadding="0" border="0">
+  <tr>
+   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="3"></td>
+   <td>
+    <div class="ZMSTable">
+    <table>
+    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
+    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
+    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
+    </table>
+    </div>
+   </td>
+  </tr>
+  </table>
+ </td>
+</tr>
+<tr>
+ <td>
+  <table cellspacing="2" cellpadding="0" border="0">
+  <tr>
+   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="4"></td>
+   <td>
+    <div class="ZMSTable">
+    <table>
+    <tr><td><img src="<dtml-var spacer_gif>" width="30" height="4" title="" border="0"></td><dtml-var table_th><dtml-var table_th></tr>
+    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
+    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
+    </table>
+    </div>
+   </td>
+  </tr>
+  </table>
+ </td>
+</tr>
+<tr>
+ <td>
+  <table cellspacing="2" cellpadding="0" border="0">
+  <tr>
+   <td></td>
+   <td align="center" class="form-small"><dtml-var "getZMILangStr('ATTR_CUSTOM')"></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" title="" border="0" /></td>
+  </tr>
+  <tr>
+   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="5"></td>
+   <td>
+    <div class="ZMSTable">
+    <table>
+    <tr>
+     <dtml-var table_th>
+     <dtml-var table_th>
+     <dtml-var table_th>
+    </tr>
+    <tr>
+     <dtml-var table_td>
+     <dtml-var table_td>
+     <dtml-var table_td>
+    </tr>
+    <tr>
+     <dtml-var table_td>
+     <dtml-var table_td>
+     <dtml-var table_td>
+    </tr>
+    </table>
+    </div>
+   </td></tr>
+  </table>
+ </td>
+</tr>
+</table>
+</dtml-let>
+
+<dtml-comment>
+################################################################################
+##### Table(Type,Cols,Rows): EDIT
+################################################################################
+</dtml-comment>
+<dtml-else>
+
+<dtml-let custom="[]"
+ ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_FORMAT')+'</td>')"
+ ><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=_.True,css='form-element',REQUEST=REQUEST)+'</td>')"
+ ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
+ ><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
+><div id="zmiImgZoomDiv" style="visibility:hidden;display:none;"></div
+><div id="zmiImgZoomImgDiv" style="visibility:hidden;display:none;"
+><div class="zmiNeutralColorMedium0">
+ <dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content',cols=25,rows=10,value='',key='cell',enabled=_.True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')">
+ <hr size="1"/>
+ <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"/>
+ <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"/>
+</div>
+</div>
+</dtml-let>
+
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_cols="_.len(table_table[-1])" table_rows="_.len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
+
+<script language="JavaScript">
+<!--//
+
+var table_cell_uid = <dtml-var "table_cols*table_rows">;
+var table_cell_id = '';
+var table_cell_bgcolor = '';
+var table_cell_offs = 2;
+
+function selectValue(el, v) 
+{
+  for (i=0; i < el.options.length; i++) {
+    if (el.options[i].value == v)
+      el.selectedIndex = i;
+  }
+}
+
+function onZMSTableFormSubmit() 
+{
+  var xml = '';
+  xml += '<list>\n';
+  var el_tbody = $($("#table_cell_editor").children()[0]);
+  var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
+  for ( var i=0; i < el_trs.length; i++) {
+    xml += "<item type=\"list\"><list>\n";
+    var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
+    for ( var j=0; j < el_tds.length; j++) {
+      xml += "<item type=\"dictionary\"><dictionary>\n";
+      var colspan = $(el_tds[j]).attr("colspan");
+      if ( colspan) {
+        xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
+        var el_inputs = $("textarea,input",el_tds[j]);
+        for ( var k=0; k < el_inputs.length; k++) {
+          var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+          xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
+        }
+      }
+      else {
+        xml += '<item key="colspan" type="int">1</item>\n';
+        xml += '<item key="content"></item>\n';
+        xml += '<item key="format"></item>\n';
+        xml += '<item key="tag">td</item>\n';
+      }
+      xml += '</dictionary></item>\n';
+    }
+    xml += '</list></item>\n';
+  }
+  xml += '</list>\n';
+  $("#table").val( xml);
+  return onFormSubmit('<dtml-var fmName>');
+}
+
+function table_cell_edit(el) 
+{
+  table_cell_id = el.name.substr(el.name.indexOf('_')+1);
+  var el_td = $('#content_'+ table_cell_id).parent();
+  table_cell_bgcolor = el_td.css( "backgroundColor");
+  el_td.css( "backgroundColor", "red");
+  var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
+  zmiImgZoomDiv.style.visibility = 'visible';
+  zmiImgZoomDiv.style.display = 'block';
+  zmiImgZoomDiv.style.position = 'absolute';
+  zmiImgZoomDiv.style.top = 0;
+  zmiImgZoomDiv.style.left = 0;
+  zmiImgZoomDiv.style.width = '100%';
+  zmiImgZoomDiv.style.height = '100%';
+  var zmiImgZoomImgDiv = document.getElementById('zmiImgZoomImgDiv');
+  zmiImgZoomImgDiv.style.visibility = 'visible';
+  zmiImgZoomImgDiv.style.display = 'block';
+  zmiImgZoomImgDiv.style.position = 'absolute';
+  var dims = getInnerDimensions();
+  zmiImgZoomImgDiv.style.top = (dims.height - zmiImgZoomImgDiv.offsetHeight) / 2;
+  zmiImgZoomImgDiv.style.left = (dims.width - zmiImgZoomImgDiv.offsetWidth) / 2;
+  // Apply values.
+  $('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+  $('#zmiStandardEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
+  $('#content').val($('#content_'+ table_cell_id).val());
+  selectValue(document.getElementById('tag'),$('#tag_'+ table_cell_id).val());
+  selectValue(document.getElementById('format'),$('#format_'+ table_cell_id).val());
+  <dtml-let elName="'content'">
+  <dtml-if "REQUEST.get('richedit_fmt')">
+  if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
+    $('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
+    $('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+    zmiStandardOnSubmitEventHandler();
+  }
+  </dtml-if>
+  </dtml-let>
+}
+
+function table_cell_change()
+{
+  zmiRichtextOnSubmitEventHandler();
+  $('#format_'+ table_cell_id).val($('#format').val());
+  $('#tag_'+ table_cell_id).val($('#tag').val());
+  $('#content_'+ table_cell_id).val($('#content').val());
+  return table_cell_cancel();
+}
+
+function table_cell_cancel()
+{
+  var el_td = $('#content_'+ table_cell_id).parent();
+  el_td.css( "backgroundColor", table_cell_bgcolor);
+  var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
+  zmiImgZoomDiv.style.visibility = 'hidden';
+  zmiImgZoomDiv.style.display = 'none';
+  var zmiImgZoomImgDiv = document.getElementById('zmiImgZoomImgDiv');
+  zmiImgZoomImgDiv.style.visibility = 'hidden';
+  zmiImgZoomImgDiv.style.display = 'none';
+  return false;
+}
+
+function actionBtnClick(el, fct)
+{
+  var x = 0;
+  var el_td = $($(el).parents("td")[1]);
+  while ( el_td.prev().length > 0) {
+    x++;
+    el_td = $(el_td.prev()[0]);
+  }
+  var y = 0;
+  var el_tr = $(el_td.parent("tr"));
+  while ( el_tr.prev().length > 0) {
+    y++;
+    el_tr = $(el_tr.prev()[0]);
+  }
+  var el_tbody = $($(el).parents("tbody")[1]);
+  el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
+  //////////////////////////////////////////////////////////////////////////////
+  /// DELETE
+  //////////////////////////////////////////////////////////////////////////////
+  if (fct.indexOf('delete') == 0) {
+    if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
+      if (fct.indexOf('delete_col') == 0) {
+        var el_trs = el_tbody.children();
+        for ( var i = 0; i < el_trs.length; i++) {
+          if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+            var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
+            el_td.attr("colspan",parseInt(el_td.attr("colspan"))-1);
+          }
+          else {
+            var el_td = $($(el_trs[i]).children().filter(":eq("+x+")")[0]);
+            el_td.remove();
+          }
+        }
+        $('#cols').val( parseInt($('#cols').val())-1);
+      }
+      else if (fct.indexOf('delete_row') == 0) {
+        var el_tr = $(el_tbody.children().filter(":eq("+y+")")[0]);
+        el_tr.remove();
+        $('#rows').val( parseInt($('#rows').val())-1);
+      }
+    }
+  }
+  //////////////////////////////////////////////////////////////////////////////
+  /// INSERT
+  //////////////////////////////////////////////////////////////////////////////
+  else if (fct.indexOf('insert_col') == 0) {
+    var el_trs = el_tbody.children();
+    for ( var i = 0; i < el_trs.length; i++) {
+      if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+        var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
+        el_td.attr("colspan",parseInt(el_td.attr("colspan"))+1);
+      }
+      else {
+        var el_tds = $(el_trs[i]).children();
+        var el_td = $(el_tds.filter(":eq("+x+")")[0]);
+        var new_td = $(el_tds[el_tds.length-2]).clone();
+        var el_inputs = $("textarea,input",new_td);
+        for ( var k = 0; k < el_inputs.length; k++) {
+          var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+          $(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
+          $(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
+          if ( key.indexOf("format") == 0) {
+            $(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
+          }
+          else if ( key.indexOf("content") == 0) {
+            $(el_inputs[k]).val( "");
+          }
+        }
+        new_td.insertBefore( el_td);
+        table_cell_uid++;
+      }
+    }
+    $('#cols').val( parseInt($('#cols').val())+1);
+  }
+  else if (fct.indexOf('insert_row') == 0) {
+    var el_trs = el_tbody.children();
+    var el_tr = $(el_trs.filter(":eq("+y+")")[0]);
+    var new_tr = $(el_trs[el_trs.length-2]).clone();
+    var el_inputs = $("textarea,input",new_tr);
+    for ( var k = 0; k < el_inputs.length; k++) {
+      var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+      $(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
+      $(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
+      if ( key.indexOf("format") == 0) {
+        $(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
+      }
+      else if ( key.indexOf("content") == 0) {
+        $(el_inputs[k]).val( "");
+      }
+    }
+    new_tr.insertBefore( el_tr);
+    table_cell_uid++;
+    $('#rows').val( parseInt($('#rows').val())-1);
+  }
+  //////////////////////////////////////////////////////////////////////////////
+  /// MOVE
+  //////////////////////////////////////////////////////////////////////////////
+  else if (fct.indexOf('move_col') == 0) {
+    var source_x = x;
+    var target_x = x;
+    if (fct == 'move_col_left')
+      target_x = target_x - 1;
+    else 
+      target_x = target_x + 1;
+    var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
+    for ( var i = 0; i < el_trs.length; i++) {
+      var source_td = $($(el_trs[i]).children().filter(":eq("+source_x+")")[0]);
+      var source_inp = $("textarea,input",source_td);
+      var target_td = $($(el_trs[i]).children().filter(":eq("+target_x+")")[0]);
+      var target_inp = $("textarea,input",target_td);
+      for ( var j = 0; j < source_inp.length; j++) {
+        var v = $(source_inp[j]).val();
+        $(source_inp[j]).val( $(target_inp[j]).val());
+        $(target_inp[j]).val( v);
+      }
+    }
+  }
+  else if (fct.indexOf('move_row') == 0) {
+    var source_y = y;
+    var target_y = y;
+    if (fct == 'move_row_up')
+      target_y = target_y - 1;
+    else 
+      target_y = target_y + 1;
+    var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
+    var source_inp = $("textarea,input",source_tr);
+    var target_tr = $(el_tbody.children().filter(":eq("+target_y+")")[0]);
+    var target_inp = $("textarea,input",target_tr);
+    for ( var j = 0; j < source_inp.length; j++) {
+      var v = $(source_inp[j]).val();
+      $(source_inp[j]).val( $(target_inp[j]).val());
+      $(target_inp[j]).val( v);
+    }
+  }
+  else {
+    var par = Math.max(x,y)-table_cell_offs;
+    var fm = document.forms['<dtml-var fmName>'];
+    fm.elements['function'].value = fct;
+    fm.elements['param'].value = par;
+    fm.submit();
+  }
+}
+
+$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+
+//-->
+</script>
+
+<img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
+<table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
+<tr valign="middle" class="zmiNeutralColorStrong0">
+ <td>&nbsp;</td>
+ <td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0" title=""></td>
+ <dtml-in "_.range(table_cols)">
+  <td
+   ><table cellspacing="0" cellpadding="0" border="0"
+   ><tr
+    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td></dtml-if
+    ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_left.gif" title="<dtml-var "getZMILangStr('ACTION_MOVELEFT')">" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td
+    ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_right.gif" title="<dtml-var "getZMILangStr('ACTION_MOVERIGHT')">" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td
+    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_COL')">" onclick="actionBtnClick(this,'delete_col')" class="button"/></a></td></dtml-if
+   ></tr
+   ></table
+  ></td>
+ </dtml-in>
+ <td
+   ><table cellspacing="0" cellpadding="0" border="0"
+   ><tr valign="middle"
+    ><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td
+    ><td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0" title=""></td
+   ></tr
+   ></table
+ ></td>
+</tr>
+ 
+<tr>
+ <td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
+ <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=_.True,REQUEST=REQUEST)"></td>
+ <dtml-in "_.range(table_cols)">
+  <dtml-let col_index=sequence-index>
+   <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>"><dtml-if "getObjProperty('colgroup',REQUEST)"><dtml-var "table_widths[col_index]">%<dtml-else>&nbsp;</dtml-if></td>
+  </dtml-let>
+</dtml-in>
+ <td>&nbsp;</td>
+</tr>
+
+<dtml-in "_.range(table_rows)"
+ ><dtml-let row_index=sequence-index
+ ><tr valign="middle">
+  <td class="zmiNeutralColorStrong0">
+   <table cellspacing="0" cellpadding="0" border="0"
+   ><tr valign="middle"
+    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td></dtml-if
+    ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td
+    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_ROW')">" onclick="actionBtnClick(this,'delete_row')" class="button"/></a></td></dtml-if
+   ></tr
+   ><tr valign="middle"
+    ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0" onclick="actionBtnClick(this,'move_row_down')" class="hbutton"/></a></td
+   ></tr
+   ></table
+  ></td
+  ><td style="border-top: solid 1px #CCCCCC; border-right: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>;">&nbsp;</td
+  ><dtml-in "table_table[row_index]" mapping
+   ><dtml-let col_index=sequence-index cell=sequence-item
+    ><dtml-if "table_type==4 and row_index==0 and col_index==0"
+     ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
+    ><dtml-else
+     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;border-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
+      <div class="ZMSTable">
+       <table cellspacing="0" cellpadding="2" border="0" style="width:100%">
+       <tr>
+       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">">
+        <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
+        <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
+        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=_.True,REQUEST=REQUEST,css='form-element',extra=' ondblclick='+QUOT+'table_cell_edit(this)'+QUOT+' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+       </<dtml-var tag>>
+       </tr>
+       </table>
+      </div>
+     </td
+    ></dtml-if
+   ></dtml-let
+  ></dtml-in
+  ><td style="border-left: solid 1px black; border-top: solid 1px #CCCCCC; border-right: solid 1px #CCCCCC;">&nbsp;</td
+ ></tr
+ ></dtml-let
+></dtml-in>
+
+<tr valign="middle">
+ <td class="zmiNeutralColorStrong0">
+   <table cellspacing="0" cellpadding="0" border="0">
+   <tr valign="middle">
+    <td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td>
+   </tr>
+   </table>
+ </td>
+ <td style="border-top: solid 1px #CCCCCC;">&nbsp;</td>
+ <dtml-in "_.range(table_cols)">
+  <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px black; border-bottom: solid 1px #CCCCCC;">&nbsp;</td>
+ </dtml-in>
+ <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px #CCCCCC;">&nbsp;</td>
+</tr>
+
+</table>
+
+<input type="hidden" id="cols" value="<dtml-var table_cols>"/>
+<input type="hidden" id="rows" value="<dtml-var table_rows>"/>
+
+</dtml-let>
+
+</dtml-if>
+
+<input type="hidden" id="table" name="table_<dtml-var lang>" value="<list></list>"/>
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup'])">]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[1]]></item>
+<item key="id"><![CDATA[type]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[table]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Table]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[list]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[1]]></item>
+<item key="id"><![CDATA[colgroup]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Colgroup]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[boolean]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO widths //--</dtml-comment>
+
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="_.len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
+ <dtml-in table_table>
+  <dtml-let table_row=sequence-item>
+   <dtml-in table_row mapping>
+    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="_.len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
+     <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
+    </dtml-let>
+   </dtml-in>
+  </dtml-let>
+ </dtml-in>
+ <dtml-return "_.map(lambda x: _.int((x*100.0)/sum(table_weights)), table_weights)">
+</dtml-let>
+
+<dtml-comment>--// EO widths //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[widths]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Col-Widths [list]]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO format(@key) //--</dtml-comment>
+
+<dtml-if key>
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(key[key.find('_')+1:key.rfind('_')])" row="_.int(key[key.rfind('_')+1:])">
+  <dtml-return "table_table[row][col]['format']">
+ </dtml-let>
+<dtml-else>
+ <dtml-return "''">
+</dtml-if>
+
+<dtml-comment>--// EO format //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[format]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[contentEditable.Cell: Get format (@key)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO setObjProperty(@pKey,@pValue)  //--</dtml-comment>
+
+<dtml-if "pKey.find('table_')==0">
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="_.int(pKey[pKey.rfind('_')+1:])">
+  <dtml-call "operator_setitem(table_table[row][col],'content',pValue)">
+  <dtml-call "setObjProperty('table',table_table,lang)">
+ </dtml-let>
+</dtml-if>
+
+<dtml-comment>--// EO setObjProperty //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[setObjProperty]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[contentEditable.Cell: Set property (@pKey,@pValue)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTable //--</dtml-comment>
+
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_summary="getObjProperty('attr_dc_description',REQUEST)"
+ ><table id="<dtml-var id>" class="<dtml-var meta_id>"<dtml-if table_summary> summary="<dtml-var table_summary>"</dtml-if>
+ ><caption align="<dtml-var "getObjProperty('align',REQUEST).lower()">"><dtml-var "getObjProperty('caption',REQUEST)"></caption
+ ><dtml-if "getObjProperty('colgroup',REQUEST)"
+  ><colgroup
+   ><dtml-in "getObjProperty('widths',REQUEST)"
+    ><col width="<dtml-var sequence-item>%"
+   /></dtml-in
+  ></colgroup
+ ></dtml-if
+ ><tbody
+ ><dtml-in table_table
+  ><dtml-let row_index=sequence-index table_row=sequence-item
+   ><tr class="<dtml-if sequence-odd>odd<dtml-else>even</dtml-if>"
+   ><dtml-in table_row mapping
+    ><dtml-let col_index=sequence-index col_text="dt_html(renderText(format,'table_%i_%i'%(col_index,row_index),content,REQUEST),REQUEST)"
+     ><<dtml-var tag><dtml-if "colspan>1"> colspan="<dtml-var colspan>"</dtml-if>
+     ><dtml-if col_text><dtml-var col_text><dtml-else>&nbsp;</dtml-if
+     ></<dtml-var tag>
+    ></dtml-let
+   ></dtml-in
+   ></tr
+  ></dtml-let
+ ></dtml-in
+ ></tbody
+ ></table
+></dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSTable //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSTable]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSTable]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSEditor]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSEditor]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSEditor]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSTable]]></item>
+<item key="name"><![CDATA[ZMSTable]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSTeaserContainer]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsteaser.gif" type="file">47494638396112001000b30000040284c48e0cfcfd99fcd25ffcfed5fcf072fcfaacfce16ffcfeeefc02fc4c4e4c8482846c6e6cfcfe84fcee84fcfebd21f90401000009002c000000001200100003047330a540ab0d324fc4bb4798161024099424253e2cf0b82e1b8059600838a0e3f8182c9280a3a103208a8d46e0116004934924342068061d850240cbcd0694cec9617cd092cb5fabf83018b7dd8740413db9040603ca98be7edf9b7b6135764d140a401a090b0c8c8c850c888992758293927411003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsteaser_disabled.gif" type="file">47494638396112001000b300004c4e4c848284cccecce4e6e4f4f2f4dcdadcfc02fceceeecfcfafc6c6e6c8c8e8cd4d6d4e4e2e4eceaecf4f6f4dcdedc21f90401000006002c0000000012001000030470d01845ab55324fc4bb4798a67cc947890442246beb8060a6100eb126ac4a8c4a20cd075c4968e3257e8d06a1214c2e678ae324394830af49a854f128141885c4d7cbd0febee034b9a068446517c562416194a59280772f8f82df22715114003e1a06014238830986878f138090909211003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[<dtml-let
+  teaserCntnr="this()"
+  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
+  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
+  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)"
+  element="[]">
+
+<dtml-call "element.append('<div class=\'ZMSTeaserElement\' style=\'width:30px;\'>')">
+<dtml-call "element.append('<div align=\'center\' class=\'title\'')">
+<dtml-if bgcolor_title><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_title,'transparent'))"></dtml-if>
+<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TITLE')))">
+<dtml-call "element.append('<div align=\'center\' class=\'text\'')">
+<dtml-if bgcolor_text><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_text,'transparent'))"></dtml-if>
+<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TEXT')))">
+<dtml-call "element.append('</div>')">
+<dtml-let element_icon="''.join(element)">
+
+<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BORDERSTYLE'))">
+
+<table cellspacing="2" cellpadding="1" border="0">
+<tr valign="top">
+
+<dtml-comment> ##### Border-Style 1=SOLID ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="1"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==1"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_SOLID')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+      <dtml-var element_icon>
+      <dtml-var element_icon>
+     </div>
+    </div>
+   </td>
+
+<dtml-comment> ##### Border-Style 2=SINGLE ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==2"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_SINGLE')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+    </div>
+   </td>
+
+<dtml-comment> ##### Border-Style 3=NONE ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="3"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==3"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_NONE')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <dtml-var element_icon>
+     <dtml-var element_icon>
+     <dtml-var element_icon>
+    </div>
+   </td>
+
+</tr>
+</table>
+
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['attr_borderstyle'])">
+
+<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BGCOLORS'))">
+
+</dtml-let>
+</dtml-let>]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[1]]></item>
+<item key="id"><![CDATA[attr_borderstyle]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Border-Style]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[primColorStrong0]]></item>
+<item key="id"><![CDATA[attr_bgcolor_border]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Background-Color (Border)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[color]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[primColorLight0]]></item>
+<item key="id"><![CDATA[attr_bgcolor_title]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Background-Color (Title)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[color]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[neutralColorWhite]]></item>
+<item key="id"><![CDATA[attr_bgcolor_text]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Background-Color (Text)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[color]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[e]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[ZMSFile]]></item>
+<item><![CDATA[ZMSLinkElement]]></item>
+<item><![CDATA[type(ZMSTeaserElement)]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Teaser-Elements]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[*]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO onChangeObjEvt //-->
+
+<dtml-in "['attr_borderstyle','attr_bgcolor_border','attr_bgcolor_title','attr_bgcolor_text']">
+ <dtml-let key=sequence-item>
+  <dtml-call "setConfProperty('%s.defaults.%s'%(meta_id,key),getObjProperty(key,REQUEST))">
+ </dtml-let>
+</dtml-in>
+
+<!--// EO onChangeObjEvt //-->]]></item>
+<item key="id"><![CDATA[onChangeObjEvt]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Event: Change]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[# --// BO getTeaserElements //--
+
+request = container.REQUEST
+teaserElmnts = []
+obs = context.breadcrumbs_obj_path(portalMaster=False)
+obs.reverse()
+for ob in obs:
+  abort_penetrance = ob.meta_type == 'ZMSLinkElement' or ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) != ''
+  if abort_penetrance:
+    break
+  temp = []
+  subobs = ob.filteredChildNodes( request, ['ZMSCustom','ZMSTeaserContainer'])
+  for subob in subobs:
+    if subob.meta_id == 'ZMSTeaserContainer':
+      temp.extend( subob.filteredChildNodes( request))
+    elif subob.getType() == 'ZMSTeaserElement':
+      temp.append( subob)
+  for teaserElmnt in temp:
+    penetrance = teaserElmnt.getObjProperty('attr_penetrance',request)
+    if ( penetrance in [0,'this',''] and context == ob) or \
+       ( penetrance in [1,'sub_nav'] and context.meta_id in ['ZMS','ZMSFolder']) or \
+       ( penetrance in [2,'sub_all']):
+      teaserElmnts.insert( 0, teaserElmnt)
+teaserElmnts.reverse()
+return teaserElmnts
+
+# --// EO getTeaserElements //--
+]]></item>
+<item key="id"><![CDATA[getTeaserElements]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Function: Teaser-Elements]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[Script (Python)]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_Teaser //--</dtml-comment>
+
+ <dtml-call "REQUEST.set('last_borderstyle',_.None)"
+ ><dtml-call "REQUEST.set('last_bgcolor_border',_.None)"
+ ><dtml-let teaserElmnts=getTeaserElements
+  ><dtml-if teaserElmnts
+   ><div id="teaser"
+   ><dtml-in teaserElmnts
+    ><dtml-let teaserElmnt=sequence-item teaserCntnr="teaserElmnt.getParentNode()"
+     ><dtml-call "REQUEST.set('borderstyle',teaserCntnr.getObjProperty('attr_borderstyle',REQUEST))"
+     ><dtml-call "REQUEST.set('bgcolor_border',teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST))"
+     ><dtml-call "REQUEST.set('bgcolor_title',teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST))"
+     ><dtml-call "REQUEST.set('bgcolor_text',teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST))"
+     ><dtml-if "last_borderstyle != borderstyle or 
+               last_bgcolor_border != bgcolor_border or 
+               borderstyle==2"
+      ><dtml-if "last_borderstyle is not _.None and last_bgcolor_border is not _.None "
+       ><dtml-if "last_borderstyle != 3"
+        ></div
+       ></dtml-if
+      ></dtml-if
+      ><dtml-if "borderstyle != 3"
+       ><div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;"</dtml-if>
+      ></dtml-if
+     ></dtml-if
+     ><dtml-if "meta_id in ['ZMSLinkElement','ZMSFile','ZMSTeaserElement']"
+      ><dtml-var pageelement_TeaserElement
+     ><dtml-else
+      ><div class="ZMSTeaserElement"<dtml-if bgcolor_text> style="background-color:<dtml-var "get_colormap().get(bgcolor_text,'transparent')">"</dtml-if>
+      ><dtml-var "_['bodyContentZMSCustom_%s'%meta_id]"
+      ></div
+     ></dtml-if
+     ><dtml-call "REQUEST.set('last_borderstyle',borderstyle)"
+     ><dtml-call "REQUEST.set('last_bgcolor_border',bgcolor_border)"
+    ></dtml-let
+   ></dtml-in
+   ><dtml-if "last_borderstyle is not _.None  and last_bgcolor_border is not _.None "
+    ><dtml-if "last_borderstyle != 3"
+     ></div
+    ></dtml-if
+   ></dtml-if
+   ></div
+  ></dtml-if
+ ></dtml-let>
+
+<dtml-comment>--// EO pageelement_Teaser //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[pageelement_Teaser]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: Teaser]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContent_Teaser //--</dtml-comment>
+
+<dtml-var pageelement_Teaser>
+
+<dtml-comment>--// EO bodyContent_Teaser //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContent_Teaser]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: Teaser]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTeaserContainer //--</dtml-comment>
+
+<dtml-if "REQUEST.get('URL','').find('/manage')>0"
+ ><dtml-in "getChildNodes(REQUEST)"
+  ><dtml-let teaserElmnt=sequence-item manage_main="'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),REQUEST['lang'])"
+   ><div class="form-small"
+    ><a href="<dtml-var manage_main>"><img src="<dtml-var MISC_ZMS>internal_link.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(REQUEST)">" border="0" align="absmiddle"/></a
+     ><dtml-let 
+       url="getLinkUrl(teaserElmnt.getObjProperty('attr_url',REQUEST))"
+       img_src="teaserElmnt.getObjProperty('attr_img_src',REQUEST)+'?'"
+       title="teaserElmnt.getObjProperty('title',REQUEST)"
+       abstract="search_quote(teaserElmnt.getObjProperty('attr_abstract',REQUEST))"
+      ><dtml-if title
+       ><dtml-if url
+        ><a href="<dtml-var url>" target="_blank" class="zmi"><b><dtml-var title></b></a
+       ><dtml-else
+        ><b><dtml-var title></b
+       ></dtml-if
+      >:<dtml-else
+       ><dtml-if img_src
+        ><i>&laquo;<dtml-var "img_src[img_src.rfind('/')+1:img_src.find('?')]">&raquo;</i><br/>
+       </dtml-if
+      ></dtml-if
+      ><dtml-var abstract><br/>
+     </dtml-let
+   ></div
+  ></dtml-let
+ ></dtml-in
+></dtml-if>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSTeaserContainer //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserContainer]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSTeaserContainer]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSTeaserContainer]]></item>
+<item key="name"><![CDATA[ZMSTeaserContainer]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSTeaserElement]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsteaser.gif" type="file">47494638396112001000f700004c4c4c6d6d6d000080ff00ffc58e08ffca56ffd760ffdc6cffe169ffe96fffe375fff277838383ffed80fff488fffc80ffff81fff88effff9ffffbabffffbdfffcc5ffffd5fffedaffffeefffff2ffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000003002c000000001200100000088a0007081c48b0a0410208132a2470300386871023322448e082858b160460bc488001c50a1428081049322481001427485829a0e5ca9527294680d05280869a1020c41c48c0c1839f357ffedc29904083050b04245d8a94e800020aa2461520554102a7040e20d8cab5abd3a70b091830801080c7820c02a8554ba0c0c9b3060f7e8d4b1125ddbb040302003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmsteaser_disabled.gif" type="file">47494638396112001000b300004c4c4c6d6d6dff00ff8383838f8f8fcdcdcdd5d5d5dadadadddddde2e2e2e6e6e6e8e8e8eeeeeef1f1f1f5f5f5fbfbfb21f90401000002002c000000001200100000045b50c849ab25386b729fffe0c351445882c4403a2ce1b86e1b900dfb62f63b4f04d364224ce3b79310168c6426a92c0a088ac5e248954e9d0484569bdd2608d8c376bc0557361883010350550681789c5000bb2d17337eafdffb2711003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_penetrance]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[this]]></item>
+<item><![CDATA[sub_nav]]></item>
+<item><![CDATA[sub_all]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Penetrance]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[2]]></item>
+<item key="id"><![CDATA[displaytype]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Display-Type]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_url]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Url]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[url]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[attr_img]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Image]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[image]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[title]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Title]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[text]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Text]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[richtext]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO attr_img_src //-->
+
+<dtml-let attr_img="getObjProperty('attr_img',REQUEST)">
+ <dtml-if attr_img>
+  <dtml-return "attr_img.getHref(REQUEST)">
+ </dtml-if>
+</dtml-let>
+<dtml-return "''">
+
+<!--// EO attr_img_src //-->]]></item>
+<item key="id"><![CDATA[attr_img_src]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Image]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO attr_abstract //-->
+
+<dtml-return "getObjProperty('text',REQUEST)">
+
+<!--// EO attr_abstract //-->]]></item>
+<item key="id"><![CDATA[attr_abstract]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Alias: Abstract]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--</dtml-comment>
+
+ <dtml-let 
+   url="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
+   img_src_attr="getObjProperty('attr_img_src',REQUEST)"
+   img_src="img_src_attr+'?'"
+   img_filename="img_src[img_src.rfind('/')+1:img_src.find('?')]"
+   abstract="getObjProperty('attr_abstract',REQUEST)"
+
+  ><div class="ZMSTeaserElement"<dtml-if bgcolor_title> style="background-color:<dtml-var "get_colormap().get(bgcolor_title,'transparent')">"</dtml-if>
+
+  ><dtml-comment>*** Use title only for href-more </dtml-comment
+  ><dtml-call "REQUEST.set('title_url',getObjProperty('title',REQUEST))"
+  ><dtml-call "REQUEST.set('title_txt',title_url)"
+  ><dtml-if "_.len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')"
+   ><dtml-call "REQUEST.set('title_url',title_url[2:-2])"
+   ><dtml-call "REQUEST.set('title_txt','')"
+  ></dtml-if
+
+  ><dtml-comment>*** Title and Image </dtml-comment
+  ><dtml-if "title_txt or img_filename"
+   ><dtml-let 
+     displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
+     img="'<img class='+QUOT+'title'+QUOT+' src='+QUOT+img_src_attr+QUOT+' alt='+QUOT+title_txt+QUOT+' border='+QUOT+'0'+QUOT+'/>'"
+    ><dtml-if "displaytype=='top'"
+     ><dtml-if img_filename><div class="graphic"><dtml-var img></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+    ><dtml-elif "displaytype=='right'"
+     ><dtml-if img_filename><div class="graphic alignright"><dtml-var img></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><div class="clearfloating" style="clear:both">&nbsp;</div
+    ><dtml-elif "displaytype=='bottom'"
+     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><dtml-if img_filename><div class="graphic"><dtml-var img></div></dtml-if
+    ><dtml-elif "displaytype=='left'"
+     ><dtml-if img_filename><div class="graphic alignleft"><dtml-var img></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><div class="clearfloating" style="clear:both">&nbsp;</div
+    ></dtml-if
+   ></dtml-let
+  ></dtml-if
+  
+  ><dtml-comment>*** Abstract </dtml-comment
+   ><dtml-if "_.len(abstract)+_.len(url)>0"
+    ><div class="text"<dtml-if bgcolor_text> style="background-color:<dtml-var "get_colormap().get(bgcolor_text,'transparent')">"</dtml-if>
+     ><dtml-var abstract
+     ><dtml-if url
+      > <dtml-var "getLangStr('HREF_MORE',REQUEST['lang'])%(' href='+QUOT+url+QUOT+' title='+QUOT+title_url+QUOT)"
+     ></dtml-if
+    ></div
+   ></dtml-if
+  ></div
+ ></dtml-let>
+
+<dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[pageelement_TeaserElement]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: Teaser-Element]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTeaserElement //--</dtml-comment>
+
+<dtml-let
+  teaserCntnr="getParentNode()"
+  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
+  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
+  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)">
+ <dtml-if "REQUEST.get('URL','').find('/manage')>0">
+  <div id="teaser">
+   <div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="border: 1px solid <dtml-var "get_colormap().get(bgcolor_border,'black')">;"</dtml-if>>
+    <dtml-var pageelement_TeaserElement>
+   </div>
+  </div>
+ <dtml-else>
+  <div class="<dtml-var "teaserCntnr.meta_id">">
+   <dtml-var pageelement_TeaserElement>
+  </div>
+ </dtml-if>
+</dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSTeaserElement //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSTeaserElement]]></item>
+<item key="name"><![CDATA[ZMSTeaserElement]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSTeaserElement]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[ZMSTextarea]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmstextarea.gif" type="file">47494638396112001000f700000000805e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb07880ab7480b27a83b07d89b67f8ebc55a7edff00ff8195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2bdbfc2bdbfc3b0b0ffb0d7ffbddeffc2c8ffd0dae9c2e1ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffdae7f3dde9f4e4edf5eaedf0e8eff7e8f4ffeaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000014002c00000000120010000008af0029500091a1a041830f042a14f84188101f3d74e4c031e3c4030d0b057a0002c4a190203c76b87830e142c60e3f7e8458c9f2c28397193904710872870d192f4c8c689071c34c0040830278c18241460c3343d69081f3c50a1509325a002934680a14083256d871e366d315294a90389051020d195581922061206304a65fc3ae2551202304193158ea5d4b20a30318309cca9d4b6240c6052d5a80154b9884808c0a224b9e1c3940c6cb98150604003b</data></item>
+<item key="id"><![CDATA[icon]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Icon]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom">
+<data content_type="image/gif" filename="zmstextarea_disabled.gif" type="file">47494638396112001000b300006666666b6b6b7373737b7b7bff00ff8181818c8c8c9d9d9da5a5a5bbbbbbcececed7d7d7dddddde3e3e3ebebebfafafa21f90401000004002c000000001200100000046c909084aab5456a999eff8eb314c8c67de8c314c761225e22cf4761bfe913364a926db0476bd86a3406a6032ae4303218c88d52486c3da31a838ee9642c14029321546d29c0626ee3f93d873785e66c7e0e980ac6b5f7ccb76f064f6c7c7c0026038788898785268d8e121100003b</data></item>
+<item key="id"><![CDATA[icon_disabled]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Icon (Disabled)]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[resource]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
+<item key="id"><![CDATA[format]]></item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Format]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[text]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Text]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[richtext]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="id"><![CDATA[interface0]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[<script language="JavaScript">
+<!--//
+
+function onZMSTextareaFormSubmit() 
+{
+  var b = true;
+  var txt = '<xml>'+$('#text_<dtml-var lang>').val()+'</xml>';
+  try {
+    if (window.DOMParser) {
+      var parser=new DOMParser();
+      var doc=parser.parseFromString(txt,"text/xml");
+      if ( doc.childNodes[0].nodeName == 'parsererror') {
+        b = confirm('<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+'<dtml-var "getZMILangStr('MSG_CHANGE_ANYWAY')">\n');
+      }
+    } else if (window.ActiveXObject) {
+      var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+      xmlDoc.async="false";
+      xmlDoc.loadXML(txt);
+      if ( xmlDoc.childNodes.length == 0) {
+        b = confirm('<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+'Invalid (X)HTML!\n'+'<dtml-var "getZMILangStr('MSG_CHANGE_ANYWAY')">\n');
+      }
+    }
+  }
+  catch(e) {
+    alert(e.message);
+  }
+  if (!b)
+    return b;
+  return onFormSubmit('<dtml-var fmName>');
+}
+
+$("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
+
+//-->
+</script>]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[interface]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTextarea //--</dtml-comment>
+
+<dtml-let 
+  text="getText(REQUEST)" 
+  format="getObjProperty('format',REQUEST)"
+  renderedtext="renderText(format,'text',text,REQUEST,id)"
+ ><dtml-return renderedtext
+></dtml-let>
+
+<dtml-comment>--// EO bodyContentZMSCustom_ZMSTextarea //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[bodyContentZMSCustom_ZMSTextarea]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Template: ZMSTextarea]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[DTML Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[ZMSTextarea]]></item>
+<item key="name"><![CDATA[ZMSTextarea]]></item>
+<item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[com.zms.foundation]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">1</item>
+<item key="id"><![CDATA[com.zms.foundation]]></item>
+<item key="name"><![CDATA[com.zms.foundation]]></item>
+<item key="package"/>
+<item key="type"><![CDATA[ZMSPackage]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+</list>

@@ -1,0 +1,852 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+<dtml-let acquire="_.int(getConfProperty('ZMS.workflow.acquire',0) == 1)"
+          init="_.len(getConfProperty('ZMS.workflow.init','')) > 0"
+          readonly="acquire or init">
+
+<dtml-if "not REQUEST.has_key('id') or not REQUEST['id']">
+ <dtml-call "REQUEST.set('id','')">
+</dtml-if>
+
+<script language="JavaScript">
+<!--//
+
+  /**
+   * @param fm
+   */
+  function onWorkflowFormSubmit(fm) 
+  {
+    var b = true;
+    var el = fm.elements["workflow:int"];
+    <dtml-unless "getAutocommit()==1">
+     if (!el.checked) {
+      if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')">") {
+        b = confirm("Deactivating the workflow means committing all pending changes!");
+        if (!b)
+          el.checked = true;
+      }
+     }
+    </dtml-unless>
+    return b;
+  }
+
+  /**
+   * @param fm
+   */
+  function onAcFormSubmit(fm) 
+  {
+    processMultiselectsOnFormSubmit();
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+    }
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['newName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+    }
+    return b;
+  }
+
+  /**
+   * @param fm
+   */
+  function onTrFormSubmit(fm) 
+  {
+    processMultiselectsOnFormSubmit();
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+    }
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['newName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+    }
+    return b;
+  }
+
+  /**
+   * @param fm
+   */
+  function onImportFormSubmit(fm) 
+  {
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") 
+    {
+        var elFile = fm.elements['file'];
+        var elInit = fm.elements['init'];
+    	if (isBlank(elFile.value) && isBlank(elInit.value))
+	{
+            b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+	}
+    }
+    return b;
+  }
+
+  /**
+   * @param fm
+   */
+  function onInitFormSubmit(fm) 
+  {
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INIT')">") {
+      b = b && confirm("<dtml-var "getZMILangStr('BTN_INIT')">?");
+    }
+    return b;
+  }
+
+  function btnClick(el) 
+  {
+    var fm = el.form;
+    self.btnClicked = el.value;
+  }
+
+//-->
+</script>
+</head>
+
+<dtml-var manage_tabs>
+<dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
+
+<dtml-var f_bo_area>
+
+<dtml-try>
+
+<dtml-comment>
+<!-- ######################################################################
+     ###
+     ###   W O R K F L O W   ( A U T O C O M M I T )
+     ###
+     ######################################################################
+-->
+</dtml-comment>
+
+<dtml-if "REQUEST.get('id','')==''">
+ <div class="form-text"><dtml-var "getZMILangStr('MSG_WORKFLOW')"></div><br />
+ <form name="workflowForm" action="manage_changeWorkflow" method="post" onsubmit="return onWorkflowFormSubmit(this)" style="margin:8px">
+ <input type="hidden" name="key" value="custom">
+ <input type="hidden" name="lang" value="<dtml-var lang>">
+ <div class="zmiHeadline">
+  <table cellspacing="0" cellpadding="0" border="0">
+  <tr valign="middle">
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ACTIVE')"></div></td>
+   <td><input class="form-checkbox" type="checkbox" name="workflow:int" value="1" <dtml-if "getConfProperty('ZMS.autocommit',1)==0">checked="checked"</dtml-if>/></td>
+   <td><textarea class="form-element" title="Nodes" cols="20" rows="1" name="nodes" wrap="virtual" style="height:20px"><dtml-var "'\n'.join(getConfProperty('ZMS.workflow.nodes',['{$}']))"></textarea></td>
+   <td><input class="form-element" type="submit" value="?" onclick="return workflowNodesDivDisplay(this);"/></td>
+  </tr>
+  </table>
+ </div>
+ <script language="JavaScript">
+ <!--//
+   function workflowNodesDivDisplay(el) {
+     var workflowNodesDiv = document.getElementById( 'workflowNodesDiv');
+     if (el) {
+       var coords = {x: 0, y: 0};
+       var element = el;
+       while (element) {
+         coords.x += element.offsetLeft;
+         coords.y += element.offsetTop;
+         element = element.offsetParent;
+       }
+       workflowNodesDiv.style.visibility = 'visible';
+       workflowNodesDiv.style.display = 'block';
+       workflowNodesDiv.style.position = 'absolute';
+       workflowNodesDiv.style.top = (coords['y']+el.height)+"px";
+       workflowNodesDiv.style.left = (coords['x']+el.width)+"px";
+     }
+     else {
+       workflowNodesDiv.style.visibility = 'hidden';
+       workflowNodesDiv.style.display = 'none';
+     }
+     return false;
+   }
+ //-->
+ </script>
+ <div id="workflowNodesDiv" class="form-small" style="background-color:#ffffe0;visibility:hidden;display:none;position:absolute;">
+  <div align="right"><a href="#" onclick="workflowNodesDivDisplay(null);" onmouseover="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_logout" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" align="absmiddle"/></a></div>
+  <div class="form-small" style="padding:4px;">
+  <dtml-in "getConfProperty('ZMS.workflow.nodes',['{$}'])">
+   <dtml-let node=sequence-item ob="getLinkObj(node,REQUEST)">
+    <div class="form-small">    
+     <dtml-if "ob is not _.None">
+      <dtml-var "f_breadcrumbs(_,_,objectPathElements=ob.breadcrumbs_obj_path(),no_icon=1,REQUEST=REQUEST)">
+     <dtml-else>
+      <img src="<dtml-var MISC_ZMS>internal_link_broken.gif" title="" alt="" border="0" align="absmiddle"/> <dtml-var node>
+     </dtml-if>
+    </div>
+   </dtml-let>
+  </dtml-in>
+  </div>
+ </div>
+
+<dtml-if "readonly or (_.len(getWfActivitiesIds()) == 0 and _.len(getWfTransitionsIds()) == 0)">
+<table cellspacing="0" cellpadding="1" border="0">
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Acquire
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+ <dtml-call "REQUEST.set('b',_.False)">
+ <dtml-let portalMaster="getPortalMaster()">
+  <dtml-if portalMaster>
+   <dtml-if "_.len(portalMaster.getWfActivitiesIds()) > 0 and _.len(portalMaster.getWfTransitionsIds()) > 0">
+    <tr valign="middle" height="22">
+     <td><div class="form-label"><dtml-var "getZMILangStr('BTN_ACQUIRE')"></div></td>
+     <td><input class="form-checkbox" type="checkbox" name="acquire:int" value="1" <dtml-if acquire>checked="checked"</dtml-if>></td>
+    </tr>
+    <dtml-call "REQUEST.set('b',_.True)">
+   </dtml-if>
+  </dtml-if>
+ </dtml-let>
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Init
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+ <dtml-if "b==0 and getConfProperty('ZMS.workflow.init','')">
+  <tr valign="middle" height="22">
+   <td><div class="form-label"><dtml-var "getZMILangStr('BTN_INIT')"></div></td>
+   <td>
+    <div class="form-text">
+     <input class="form-checkbox" type="checkbox" name="filename" value="<dtml-var "getConfProperty('ZMS.workflow.init','')">" checked="checked">
+     <img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/>
+     <code>$ZMS_HOME/import/<dtml-var "getConfProperty('ZMS.workflow.init','')"></code>
+    </div>
+   </td>
+  </tr>
+ </dtml-if>
+<dtml-else>
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Changed
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+ <tr valign="middle" height="22">
+  <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
+  <td>
+   <div class="form-text">
+    <dtml-var "getLangFmtDate(getConfProperty('ZMS.workflow.change_dt',_.None))">
+    <dtml-var "getZMILangStr('BY')"> <dtml-var "getConfProperty('ZMS.workflow.change_uid',_.None)">
+   </div>
+  </td>
+ </tr>
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+</table>
+</dtml-if>
+
+ <hr size="1"/>
+ <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="self.btnClicked=this.value;">
+ <br/><br/>
+ </form>
+</dtml-if>
+
+ <table cellspacing="0" cellpadding="0" border="0" width="100%">
+
+<dtml-comment>
+<!-- ######################################################################
+     ###
+     ###   A C T I V I T I E S
+     ###
+     ######################################################################
+-->
+</dtml-comment>
+
+<dtml-if "REQUEST.get('id','') == '' or REQUEST.get('id','') in getWfActivitiesIds()"> 
+
+ <form name="acForm" action="manage_changeWfActivities" method="post" onsubmit="return onAcFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+ <input type="hidden" name="lang" value="<dtml-var lang>">
+ <tr>
+  <td>
+   <div class="form-label">&#8594;&nbsp;Activities</div>
+   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
+   
+   <dtml-if "REQUEST.get('id','')==''">
+    <dtml-in "getWfActivities()">
+     <dtml-let itm=sequence-item>
+      <dtml-if sequence-start>
+       <dtml-unless readonly>
+        <tr>
+         <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+        </tr>
+       </dtml-unless readonly>
+       <tr>
+        <td colspan="5">
+         <table cellspacing="0" cellpadding="0" border="0" width="100%">
+	 <dtml-unless readonly>
+          <colgroup>
+           <col width="40" />
+           <col width="20" />
+          </colgroup>
+	 </dtml-unless readonly>
+      </dtml-if>
+        <tr valign="top" class="neutralColorWhite">
+	 <dtml-unless readonly>
+          <td class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,url='manage_changeWfActivities?id=%s'%(itm['id']))"></td>
+          <td class="form-small"><input class="form-element" type="radio" name="id" value="<dtml-var "itm['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+          <td class="form-small">&nbsp;</td>
+	 </dtml-unless readonly>
+         <td class="form-small">
+          <dtml-call "REQUEST.set('itm_details',getWfActivityDetails(itm['id']))">
+          <dtml-call "REQUEST.set('idx',itm_details['idx'])">
+          <dtml-call "REQUEST.set('froms',itm_details['froms'])">
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+          <tr valign="middle">
+           <dtml-in "getWfActivities()" mapping>
+           <dtml-let sidx=sequence-index>
+            <td align="center" class="form-small" width="<dtml-var "_.int(100/_.len(getWfActivities()))">%" nowrap="nowrap"
+             ><dtml-if "id==itm['id']"
+              ><table cellspacing="0" cellpadding="0" border="0" width="100%"
+              ><tr
+              ><dtml-if "_.len(froms)>0 and idx-1 in _.range(_.min(idx,froms[0]),idx)"
+               ><td width="4"><img src="<dtml-var MISC_ZMS>arr_rgt.gif" title="" border="0"/></td
+              ></dtml-if
+              ><td align="center" style="white-space: nowrap; border: 1px solid maroon; background-color: <dtml-if "itm.get('editable',1)">#FFFFE0<dtml-else>yellow</dtml-if>; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;"
+               ><div class="form-small"
+               ><dtml-if "itm.get('icon',_.None)"
+                ><img src="get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="" border="0" align="absmiddle"
+               ></dtml-if
+               ><dtml-var "string_maxlen(itm['name'],18)"
+               ></div
+              ></td
+              ><dtml-if "_.len(froms)>0 and idx+1 in _.range(idx,_.max(idx,froms[-1])+1)"
+               ><td width="4"><img src="<dtml-var MISC_ZMS>arr_lft.gif" title="" border="0"/></td
+              ></dtml-if
+              ></tr
+              ></table
+             ><dtml-else
+              ><dtml-call "REQUEST.set('jtm_details',getWfActivityDetails(_['sequence-item']['id']))"
+              ><dtml-call "REQUEST.set('tos',jtm_details['tos'])"
+              ><dtml-call "REQUEST.set('flag',sidx not in froms and _.len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1])))"
+              ><nobr
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
+              ><dtml-unless flag
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1" align="absmiddle"
+              ></dtml-unless
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" align="absmiddle" 
+                <dtml-if flag>
+                 height="12"
+                <dtml-else>
+                 height="11"
+                </dtml-if>
+                <dtml-if "_.len(tos)>0 and 
+                          ((sidx<idx and idx>=_.min(sidx,tos[0]) and idx<=tos[-1]) or
+                           (sidx>idx and idx>_.min(sidx,tos[0]) and idx<=tos[-1]))">
+                 style="background-color:navy;"
+                </dtml-if>
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
+              ><br
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "_.len(froms)>0 and sidx>_.min(idx,froms[0]) and sidx<=_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
+              ><dtml-if "sidx in froms"
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2" align="absmiddle" style="border: 1px solid navy; background-color:#D0FFD0;"
+              ><dtml-elif "_.len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1]))"
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="4" height="1" align="absmiddle" style="background-color:navy;"
+              ><dtml-elif "_.len(tos)>0 and idx in _.range(_.min(sidx,tos[0]),_.max(sidx,tos[-1]))"
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" align="absmiddle"
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" align="absmiddle" style="background-color:navy;"
+              ></dtml-if
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "_.len(froms)>0 and sidx>=_.min(idx,froms[0]) and sidx<_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
+              ><br
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
+              ><dtml-unless flag
+               ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1" align="absmiddle"
+              ></dtml-unless
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" align="absmiddle" 
+                <dtml-if flag>
+                 height="13"
+                <dtml-else>
+                 height="11"
+                </dtml-if>
+                <dtml-if "_.len(tos)>0 and 
+                          ((sidx<idx and idx>=_.min(sidx,tos[0]) and idx<tos[-1]) or 
+                           (sidx>idx and idx>=_.min(sidx,tos[0]) and idx<=tos[-1]))">
+                 style="background-color:navy;"
+                </dtml-if>
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
+              ></nobr
+             ></dtml-if
+            ></td>
+           </dtml-let>
+           </dtml-in>
+          </tr>
+          </table>
+         </td>
+         <td class="form-small">&nbsp;</td>
+        </tr>
+      <dtml-if sequence-end>
+         </table>
+        </td>
+       </tr>
+      </dtml-if>
+     </dtml-let>
+    </dtml-in>
+   <dtml-else>
+    <dtml-let itm="getWfActivity(REQUEST['id'])">
+     <tr>
+      <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+     </tr>
+     <tr class="zmiNeutralColorStrong0">
+      <td width="20"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
+      <td><div class="form-label">Icon</div></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_OBJECT')"></div></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr valign="top" class="zmiNeutralColorMedium0">
+      <td width="20"><input class="form-element" type="radio" name="id" value="<dtml-var "itm['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
+      <td><dtml-var "getTextInput(fmName='acForm', elName='inpId', size=10, value=itm['id'])"></td>
+      <td><dtml-var "getTextInput(fmName='acForm', elName='inpName', size=12, value=itm['name'])"></td>
+      <td>
+       <table cellspacing="0" cellpadding="0" border="0">
+       <tr>
+        <td colspan="2"><input class="form-small" type="file" name="inpIcon" size="15"></td>
+       </tr>
+       <tr>
+        <td>
+         <div class="form-small">
+          <dtml-if "itm.get('icon',_.None)">
+           <img src="get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="" border="0" align="absmiddle" style="background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"/>
+           <i>(<dtml-var "getDataSizeStr(_.len(itm['icon'].data))">)</i>
+          </dtml-if>
+         </div>
+	</td>
+        <td align="right"><div class="form-small"><i>Icon</i></div></td>
+       </tr>
+       </table>
+      </td>
+      <td align="center">
+       <input class="form-checkbox" type="checkbox" name="inpEditable:int" value="1" <dtml-if "itm.get('editable',1)">checked="checked</dtml-if>">
+       <div align="center" class="form-small"><dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_OBJECT')"></div>
+      </td>
+      <td nowrap="nowrap">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
+      </td>
+     </tr>
+    </dtml-let>
+   </dtml-if>
+   
+  <!-- Insert Workflow-Activity -->
+  <dtml-if "not readonly and REQUEST.get('id','')==''">
+  <tr>
+   <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td class="form-element">
+    <dtml-var "getTextInput(fmName='acForm', elName='newId', size=10, value='', type='text', enabled=1, REQUEST=REQUEST, css='form-element')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
+   </td>
+   <td class="form-element">
+    <dtml-var "getTextInput(fmName='acForm', elName='newName', size=12, value='', type='text', enabled=1, REQUEST=REQUEST, css='form-element')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
+   </td>
+   <td class="form-element">
+    <input class="form-element" type="file" name="newIcon" size="15">
+    <div align="right" class="form-small"><i>Icon</i></div>
+   </td>
+   <td align="center">
+    <input class="form-checkbox" type="checkbox" name="newEditable:int" value="1" checked="checked">
+    <div align="center" class="form-small"><dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_OBJECT')"></div>
+   </td>
+   <td class="form-element">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+  </dtml-if>
+ </table>
+ <br/>
+ </td>
+ </tr>
+ </form>
+ 
+</dtml-if>
+
+<dtml-comment>
+<!-- ######################################################################
+     ###
+     ###   T R A N S I T I O N S
+     ###
+     ######################################################################
+-->
+</dtml-comment>
+
+<dtml-if "_.len(getWfActivitiesIds()) + _.len(getWfTransitionsIds()) > 0 and (REQUEST.get('id','') == '' or REQUEST.get('id','') in getWfTransitionsIds())"> 
+
+ <dtml-call "REQUEST.set('wfItemOptpl',[])">
+ <dtml-in "getWfActivities()">
+  <dtml-let wfItem=sequence-item>
+   <dtml-call "wfItemOptpl.append([wfItem['id'],string_maxlen(wfItem['name'],12)])">
+  </dtml-let>
+ </dtml-in>
+
+ <dtml-call "REQUEST.set('wfPerformerOptpl',[])">
+ <dtml-in userdefined_roles>
+  <dtml-let role=sequence-item role_str="'ROLE_%s'%role.upper()" role_lang_str="getZMILangStr(role_str)">
+   <dtml-if "role_str==role_lang_str">
+    <dtml-call "wfPerformerOptpl.append([role,string_maxlen(role,12)])">
+   <dtml-else>
+    <dtml-call "wfPerformerOptpl.append([role,string_maxlen(role_lang_str,12)])">
+   </dtml-if>
+  </dtml-let>
+ </dtml-in>
+
+ <form name="trForm" action="manage_changeWfTransitions" method="post" onsubmit="return onTrFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+ <input type="hidden" name="lang" value="<dtml-var lang>">
+ <tr>
+  <td>
+   <div class="form-label">&#8594;&nbsp;Transitions</div>
+   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
+
+   <dtml-if "REQUEST.get('id','')==''">
+    <dtml-in "getWfTransitions()">
+     <dtml-let itm=sequence-item>
+      <dtml-if sequence-start>
+       <dtml-unless readonly>
+        <tr>
+         <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+        </tr>
+       </dtml-unless readonly>
+       <tr>
+        <td colspan="4">
+         <table cellspacing="0" cellpadding="0" border="0" width="100%">
+	 <dtml-unless readonly>
+          <colgroup>
+           <col width="40" />
+           <col width="20" />
+          </colgroup>
+	 </dtml-unless readonly>
+      </dtml-if>
+        <tr valign="top" class="neutralColorWhite">
+	 <dtml-unless readonly>
+          <td class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,url='manage_changeWfTransitions?id=%s'%(itm['id']))"></td>
+          <td class="form-small" width="20"><input class="form-element" type="radio" name="id" value="<dtml-var "itm['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+	 </dtml-unless readonly>
+         <td class="form-small" colspan="4">
+          <table cellspacing="4" cellpadding="4" border="0">
+          <tr>
+           <td class="neutralColorWhite">
+            <table cellspacing="0" cellpadding="0" border="0">
+            <tr valign="middle">
+             <td class="form-small"><dtml-if "itm['from']"><i>From</i></dtml-if></td>
+             <td class="form-small">&nbsp;</td>
+             <td class="form-small"><b>Transition</b></td>
+             <td class="form-small">&nbsp;</td>
+             <td class="form-small"><dtml-if "itm['to']"><i>To</i></dtml-if></td>
+            </tr>
+            <tr valign="middle">
+             <td class="form-small">
+              <dtml-if "itm['from']">
+               <div style="white-space: nowrap; border: 1px solid maroon; background-color: #FFFFE0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+                <dtml-in "getWfActivities()" mapping><dtml-in "itm['from']"><dtml-if "id==_['sequence-item']"><dtml-var name><br/></dtml-if></dtml-in></dtml-in>
+               </div>
+              <dtml-else>
+               <img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2" align="absmiddle" style="border: 1px solid maroon; background-color:#FFFFE0;">
+              </dtml-if>
+             </td>
+             <td class="form-small">
+              <nobr><img src="<dtml-var spacer_gif>" title="" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" /></nobr>
+             </td>
+             <td class="form-small">
+              <div style="white-space: nowrap; border: 1px solid navy; background-color: #D0FFD0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+               <b><dtml-var "itm['name']"></b>
+               <dtml-if "itm.get('performer',[])">
+                <div style="color: blue; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px; margin-left: 4px; margin-right: 4px;">
+                 Performer
+                </div>
+                <div style="white-space: nowrap; border: 1px dotted blue; background-color: #F4FFF4; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px; margin-left: 4px; margin-right: 4px; margin-bottom: 2px;">
+                <dtml-in "itm.get('performer',[])">
+                 <dtml-let role=sequence-item role_str="'ROLE_%s'%role.upper()" role_lang_str="getZMILangStr(role_str)">
+                  <dtml-if "role_str==role_lang_str">
+                   <dtml-var role><br/>
+                  <dtml-else>
+                   <dtml-var role_lang_str><br/>
+                  </dtml-if>
+                 </dtml-let>
+                </dtml-in>
+                </div>
+               </dtml-if>
+              </div>
+             </td>
+             <td class="form-small">
+              <dtml-if "itm.get('dtml','')">
+               <nobr><img src="<dtml-var spacer_gif>" title="" border="0" width="7" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle" /><img src="<dtml-var spacer_gif>" title="" border="0" width="7" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" title="" border="0"/></nobr>
+              <dtml-else>
+               <nobr><img src="<dtml-var spacer_gif>" title="" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" title="" border="0"/></nobr>
+              </dtml-if>
+             </td>
+             <td class="form-small">
+              <dtml-if "_.len(itm['to'])>0">
+               <div style="white-space: nowrap; border: 1px solid maroon; background-color: #FFFFE0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+                <dtml-in "getWfActivities()" mapping><dtml-in "itm['to']"><dtml-if "id==_['sequence-item']"><dtml-var name><br/></dtml-if><dtml-else>o</dtml-in></dtml-in>
+               </div>
+              <dtml-else>
+               <img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2" align="absmiddle" style="border: 1px solid maroon; background-color:#FFFFE0;">
+              </dtml-if>
+             </td>
+            </tr>
+            </table>
+           </td>
+          </tr>
+          </table>
+         </td>
+        </tr>
+      <dtml-if sequence-end>
+         </table>
+        </td>
+       </tr>
+      </dtml-if>
+     </dtml-let>
+    </dtml-in>
+   <dtml-else>
+    <dtml-let itm="getWfTransition(REQUEST['id'])">
+     <tr>
+      <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+     </tr>
+     <tr class="zmiNeutralColorStrong0">
+      <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr valign="top" class="zmiNeutralColorMedium0">
+      <td rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var "itm['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
+      <td><dtml-var "getTextInput(fmName='trForm',elName='inpId',size=15,value=itm['id'])"></td>
+      <td><dtml-var "getTextInput(fmName='trForm',elName='inpName',size=20,value=itm['name'])"></td>
+      <td nowrap="nowrap">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
+      </td>
+     </tr>
+     <tr valign="top" class="zmiNeutralColorMedium0">
+      <td colspan="3">
+       <!-- Transition -->
+       <table cellspacing="0" cellpadding="1" border="0" width="100%">
+       <tr class="zmiNeutralColorStrong0">
+        <td><div class="form-small"><b>Transition</b></div></td>
+       </tr>
+       </table>
+       <div align="center" class="form-fixed">
+       <table cellspacing="4" cellpadding="4" border="0">
+       <tr>
+        <td class="neutralColorWhite">
+         <table cellspacing="0" cellpadding="0" border="0">
+         <tr>
+          <td><div class="form-small"><b>From</b></div></td>
+          <td>&nbsp;</td>
+          <td><div class="form-small" style="color: blue;"><b>Performer&nbsp;</b></div></td>
+          <td>&nbsp;</td>
+          <td><div class="form-small"><b>To</b></div></td>
+         </tr>
+         <tr valign="middle">
+          <td style="white-space: nowrap; border: 1px solid maroon; background-color: #FFFFE0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+           <dtml-var "getSelect(fmName='trForm', elName='inpFrom:list', value=itm['from'], inputtype='multiline', lang_str='From', required=0, optpl=wfItemOptpl, enabled=1, REQUEST=REQUEST, css='form-small')">
+          </td>
+          <td class="form-small"><nobr><img src="<dtml-var spacer_gif>" title="" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" /></nobr></td>
+          <td style="white-space: nowrap; border: 1px dotted blue; background-color: #D0FFD0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+           <dtml-var "getSelect(fmName='trForm', elName='inpPerformer:list', value=itm.get('performer',[]), inputtype='multiline', lang_str='Performer', required=1, optpl=wfPerformerOptpl, enabled=1, REQUEST=REQUEST, css='form-small')">
+          </td>
+          <td class="form-small"><nobr><img src="<dtml-var spacer_gif>" title="" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" title="" border="0"/></nobr></td>
+          <td style="white-space: nowrap; border: 1px solid maroon; background-color: #FFFFE0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
+           <dtml-var "getSelect(fmName='trForm', elName='inpTo', value=itm['to'], inputtype='select', lang_str='To', required=0, optpl=wfItemOptpl, enabled=1, REQUEST=REQUEST, css='form-small')">
+          </td>
+         </tr>
+         </table>
+        </td>
+       </tr>
+       </table>
+       </div>
+       <!-- DTML -->
+       <table cellspacing="0" cellpadding="1" border="0" width="100%">
+       <tr class="zmiNeutralColorStrong0">
+        <td class="form-small">
+         <img src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle" />
+         <b>Template:</b> (<i><dtml-var "getDataSizeStr(_.len(itm.get('dtml','')))"></i>)
+        </td>
+       </tr>
+       <tr>
+        <td align="center">
+         <dtml-var "getTextArea(fmName='form0',elName='inpDtml:text',cols=45,rows=10,value=itm.get('dtml',''),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
+        </td>
+       </tr>
+       </table>
+       <br/>
+      </td>
+     </tr>
+    </dtml-let>
+   </dtml-if>
+
+ <!-- Insert Workflow-Transition -->
+ <dtml-if "not readonly and REQUEST.get('id','')==''">
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td class="form-element">
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr><td><dtml-var "getTextInput(fmName='trForm',elName='newId',size=10,value='', type='text', enabled=1, REQUEST=REQUEST, css='form-small')"></td></tr>
+    <tr><td align="right"><div class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div></td></tr>
+    </table>
+   </td>
+   <td class="form-element">
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr><td><dtml-var "getTextInput(fmName='trForm',elName='newName',size=12,value='', type='text', enabled=1, REQUEST=REQUEST, css='form-small')"></td></tr>
+    <tr><td align="right"><div class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td></tr>
+    </table>
+   </td>
+   <td>
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr valign="top">
+     <td><dtml-var "getSelect(fmName='trForm', elName='newFrom:list', value='', inputtype='multiline', lang_str='From', required=0, optpl=wfItemOptpl, enabled=1, REQUEST=REQUEST, css='form-small')"></td>
+     <td><dtml-var "getSelect(fmName='trForm', elName='newTo', value='', inputtype='select', lang_str='To', required=0, optpl=wfItemOptpl, enabled=1, REQUEST=REQUEST, css='form-small')"></td>
+    </tr>
+    <tr valign="top">
+     <td align="right"><div class="form-small"><i>From</i></div></td>
+     <td align="right"><div class="form-small"><i>To</i></div></td>
+    </tr>
+    </table>
+   </td>
+   <td>
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+ </dtml-if>
+ </table>
+ <br/>
+ </td>
+ </tr>
+ </form>
+
+</dtml-if>
+
+<dtml-except></dtml-try>
+
+<dtml-comment>
+<!-- ######################################################################
+     ###
+     ###   P R O T O C O L
+     ###
+     ######################################################################
+-->
+</dtml-comment>
+
+<dtml-if "_.len(getWfActivitiesIds()) > 0 and _.len(getWfTransitionsIds()) > 0 and REQUEST.get('id','') == ''"> 
+
+<tr>
+ <td>
+  <a name="_protocol"></a>
+  <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('ATTR_PROTOCOL')"></div>
+  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
+  <form name="protocolForm" action="manage_changeWorkflow" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+  <input type="hidden" name="key" value="protocol">
+  <input type="hidden" name="lang" value="<dtml-var lang>">
+  <tr>
+   <td><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_PROTOCOL'))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+     <td>
+      <table cellspacing="0" cellpadding="2" border="0">
+      <tr valign="middle">
+       <td class="form-label">Number of messages to keep</td>
+       <td class="form-element"><dtml-var "getTextInput(fmName='protocolForm',elName='keep_entries:int',size=4,value=getConfProperty('ZMS.workflow.protocol.keep_entries',0))"></td>
+       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);"></td>
+      </tr>
+      </table>
+     </td>
+     <td align="right" class="form-small">
+      <b><dtml-var "getZMILangStr('BTN_EXPORT')"></b>
+      <a href="manage_changeWorkflow?lang=<dtml-var lang>&key=protocol&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>" target="_blank"><img src="<dtml-var MISC_ZMS>mime_type.text_plain.gif" title="<dtml-var "getZMILangStr('ATTR_PROTOCOL')">" border="1" align="absmiddle"/></a>
+     </td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+  </form>
+  </table>
+  <br/>
+ </td>
+</tr>
+
+</dtml-if>
+
+<dtml-comment>
+<!-- ######################################################################
+     ###
+     ###   C O N F I G U R A T I O N
+     ###
+     ######################################################################
+-->
+</dtml-comment>
+
+<dtml-if "REQUEST.get('id','')=='' and not readonly">
+ <tr>
+  <td>
+   <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('TAB_CONFIGURATION')"></div>
+   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
+    <form name="importForm" action="manage_changeWorkflow" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+    <input type="hidden" name="key" value="import">
+    <input type="hidden" name="lang" value="<dtml-var lang>">
+    <tr>
+     <td><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+    </tr>
+    <tr class="zmiNeutralColorLight0">
+     <td>
+      <table cellspacing="0" cellpadding="2" border="0" width="100%">
+      <tr valign="middle">
+       <td class="form-label" align="right"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></td>
+       <td class="form-element"><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+       <td class="form-small" align="right" width="100%">
+        <b><dtml-var "getZMILangStr('BTN_EXPORT')"></b>
+        <a href="manage_changeWorkflow?lang=<dtml-var lang>&key=export&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>" target="_blank"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('TAB_CONFIGURATION')">" border="1" align="absmiddle"/></a>
+       </td>
+      </tr>
+    <dtml-let pattern="'workflow'" conf_files="getConfFiles(pattern)">
+     <dtml-if conf_files>
+      <tr>
+       <td class="form-label" align="right"><dtml-var "getZMILangStr('OR').lower()"></td>
+       <td class="form-element">
+        <select class="form-element" name="init">
+	 <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')"> (default)... ---</option>
+         <dtml-in conf_files>
+	  <dtml-let conf_file=sequence-item>
+           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
+	  </dtml-let>
+         </dtml-in>
+        </select>
+       </td>
+      </tr>
+     </dtml-if>
+    </dtml-let>
+      <tr valign="middle">
+       <td>&nbsp;</td>
+       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+      </tr>
+      </table>
+     </td>
+    </tr>
+    </form>
+   </table>
+   <br/>
+  </td>
+ </tr>
+</dtml-if>
+
+<dtml-comment>
+<!-- ###################################################################### -->
+</dtml-comment>
+
+ </table>
+
+<dtml-var f_eo_area>
+
+</dtml-let>
+<dtml-var manage_page_footer>

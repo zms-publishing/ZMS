@@ -1,0 +1,90 @@
+<dtml-comment> 
+********************************************************************************
+*	f_selectObject
+*	@param objLabel
+*	@param objAttr
+*	@param REQUEST
+********************************************************************************
+</dtml-comment>
+
+<dtml-if ZMS_INSERT>
+<tr valign="top">
+ <td class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></td>
+ <td class="form-element"><i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i></td>
+</tr>
+<dtml-else>
+  <!-- Object.EDIT -->
+  <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
+   <dtml-if sequence-start>
+    <tr>
+     <td colspan="2" class="zmiNeutralColorLight1"><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+    </tr>
+   </dtml-if>
+   <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0">
+    <td style="border-top:1px solid white;border-bottom:1px solid #999999;" nowrap="nowrap"
+     ><dtml-let actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
+      ><div class="form-small"
+       ><dtml-if actions
+        ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons('zmiNeutralColorMedium0')"
+       ></dtml-if
+       ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">"
+        ><dtml-var f_display_icon
+        ><dtml-if "objAttr.get('repetitive',0)==1"
+         ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
+        ><dtml-else
+         ><dtml-var "display_type(REQUEST)"
+        ></dtml-if
+       ></a
+      ></div
+      ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
+       ><dtml-if actions
+        ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+         ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
+        ></select
+       ></dtml-if
+      ></dtml-if
+     ></dtml-let
+    ></td>
+    <td valign="top" <dtml-if "isActive(REQUEST)"><dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if><dtml-else>class=" zmiNeutralColorLight1"</dtml-if> style="border-top:1px solid white;border-bottom:1px solid white;">
+     <table cellspacing="0" cellpadding="0" border="0" width="100%">
+     <tr valign="top">
+      <dtml-comment>
+      <!-- ##### renderShort ##### -->
+      </dtml-comment>
+      <td <dtml-if "isActive(REQUEST)"><dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if><dtml-else>class=" zmiNeutralColorLight1"</dtml-if>>
+       <div style="padding:3px"><dtml-var "renderShort(REQUEST)"></div>
+      </td>
+      <dtml-comment>
+      <!-- ##### change ##### -->
+      </dtml-comment>
+      <td width="100" class="zmiNeutralColorLight1">
+       <dtml-var "manage_main_change(_,_,ob=_['sequence-item'],REQUEST=REQUEST)">
+      </td>
+     </tr>
+     </table>
+    </td>
+   </tr>
+  <dtml-else>
+   <tr id="tr_<dtml-var "objAttr['id']">">
+    <td>
+     <div class="form-label<dtml-if disabled>-disabled</dtml-if>">
+      <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+     </div>
+    </td>
+    <dtml-comment>
+    <!-- ##### actions ##### -->
+    </dtml-comment>
+    <dtml-if "objAttr.get('repetitive',0)==1 or _.len(getObjChildren(objAttr['id'],REQUEST))==0"
+     ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
+      ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
+       ><td>
+        <select class="form-small" onchange="submitSelect(this,'<dtml-var "objAttr['id']">','9900')">
+         <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
+        </select>
+       </td
+      ></dtml-if
+     ></dtml-let
+    ></dtml-if>
+   </tr>
+  </dtml-in>
+</dtml-if>

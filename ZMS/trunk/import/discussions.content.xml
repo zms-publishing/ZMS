@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ZMSCustom meta_id="BulletinBoard">
+<active><lang>1</lang></active>
+<titlealt><lang><![CDATA[Bulletin-Board]]></lang></titlealt>
+<title><lang><![CDATA[Bulletin-Board]]></lang></title>
+<ZMSCustom id_fix="bbMessages"
+ id_prefix="bbMessages"
+ meta_id="BulletinBoardMessages">
+<active>
+<lang>1</lang></active>
+<records><list>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[ZMS]]></item>
+<item key="bbmBbmId"></item>
+<item key="bbmBody"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]></item>
+<item key="bbmDateTime">01.01.2000 12:00:00</item>
+<item key="bbmEmail"><![CDATA[info@myzms.com]]></item>
+<item key="bbmId"><![CDATA[e50]]></item>
+<item key="bbmSubject"><![CDATA[Topic-1]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[ZMS]]></item>
+<item key="bbmBbmId"></item>
+<item key="bbmBody"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]></item>
+<item key="bbmDateTime">01.01.2000 12:00:00</item>
+<item key="bbmEmail"><![CDATA[info@myzms.com]]></item>
+<item key="bbmId"><![CDATA[e52]]></item>
+<item key="bbmSubject"><![CDATA[Topic-2]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[ZMS]]></item>
+<item key="bbmBbmId"></item>
+<item key="bbmBody"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]></item>
+<item key="bbmDateTime">01.01.2000 12:00:00</item>
+<item key="bbmEmail"><![CDATA[info@myzms.com]]></item>
+<item key="bbmId"><![CDATA[e55]]></item>
+<item key="bbmSubject"><![CDATA[Topic-3]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[V. Liebenberg]]></item>
+<item key="bbmBbmId"><![CDATA[e50]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-1.1]]></item>
+<item key="bbmDateTime">02.01.2000 14:15:32</item>
+<item key="bbmEmail"><![CDATA[vl@hoffmannliebenberg.de]]></item>
+<item key="bbmId"><![CDATA[e57]]></item>
+<item key="bbmSubject"><![CDATA[Topic-1.1]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[F. Hoffmann]]></item>
+<item key="bbmBbmId"><![CDATA[e50]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-1.2]]></item>
+<item key="bbmDateTime">03.01.2000 02:12:09</item>
+<item key="bbmEmail"><![CDATA[fh@hoffmannliebenberg.de]]></item>
+<item key="bbmId"><![CDATA[e59]]></item>
+<item key="bbmSubject"><![CDATA[Topic-1.2]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[M. Grüterich]]></item>
+<item key="bbmBbmId"><![CDATA[e55]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-3.1]]></item>
+<item key="bbmDateTime">05.03.2000 15:07:12</item>
+<item key="bbmEmail"><![CDATA[mg@xmachina.de]]></item>
+<item key="bbmId"><![CDATA[e61]]></item>
+<item key="bbmSubject"><![CDATA[Topic-3.1]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[P. Ehrlich]]></item>
+<item key="bbmBbmId"><![CDATA[e61]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-3.1.1]]></item>
+<item key="bbmDateTime">06.07.2000 23:11:42</item>
+<item key="bbmEmail"><![CDATA[ehrlich@infosion.de]]></item>
+<item key="bbmId"><![CDATA[e63]]></item>
+<item key="bbmSubject"><![CDATA[Topic-3.1.1]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[L. Reif]]></item>
+<item key="bbmBbmId"><![CDATA[e61]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-3.1.1]]></item>
+<item key="bbmDateTime">08.04.2000 17:22:01</item>
+<item key="bbmEmail"><![CDATA[lreif@hoffmann-reif.com]]></item>
+<item key="bbmId"><![CDATA[e65]]></item>
+<item key="bbmSubject"><![CDATA[Topic-3.1.2]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[S. Hoffmann]]></item>
+<item key="bbmBbmId"><![CDATA[e52]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-2.1]]></item>
+<item key="bbmDateTime">02.01.2000 13:03:56</item>
+<item key="bbmEmail"><![CDATA[shof@hoffmann-reif.com]]></item>
+<item key="bbmId"><![CDATA[e67]]></item>
+<item key="bbmSubject"><![CDATA[Topic-2.1]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[V. Liebenberg]]></item>
+<item key="bbmBbmId"><![CDATA[e52]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-2.2]]></item>
+<item key="bbmDateTime">03.01.2000 20:00:05</item>
+<item key="bbmEmail"><![CDATA[vl@hoffmannliebenberg.de]]></item>
+<item key="bbmId"><![CDATA[e70]]></item>
+<item key="bbmSubject"><![CDATA[Topic-2.2]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[V. Liebenberg]]></item>
+<item key="bbmBbmId"><![CDATA[e52]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-2.3]]></item>
+<item key="bbmDateTime">04.01.2000 09:07:23</item>
+<item key="bbmEmail"><![CDATA[vl@hoffmannliebenberg.de]]></item>
+<item key="bbmId"><![CDATA[e72]]></item>
+<item key="bbmSubject"><![CDATA[Topic-2.3]]></item>
+</dictionary>
+</item>
+<item><dictionary>
+<item key="bbmAuthor"><![CDATA[F. Hoffmann]]></item>
+<item key="bbmBbmId"><![CDATA[e52]]></item>
+<item key="bbmBody"><![CDATA[This is the body of Topic-2.4]]></item>
+<item key="bbmDateTime">05.01.2000 19:42:18</item>
+<item key="bbmEmail"><![CDATA[fh@hoffmannliebenberg.de]]></item>
+<item key="bbmId"><![CDATA[e74]]></item>
+<item key="bbmSubject"><![CDATA[This is the bodyTopic-2.4]]></item>
+</dictionary>
+</item>
+</list>
+</records></ZMSCustom>
+</ZMSCustom>

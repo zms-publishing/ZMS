@@ -1,0 +1,175 @@
+<dtml-let obj_attrs="getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id))">
+
+<input type="hidden" name="lang" value="<dtml-var lang>"/>
+<input type="hidden" name="preview" value="preview"/>
+
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+
+<tr>
+ <td colspan="2" class="zmiHeadline">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+  <colgroup>
+   <col width="20%" />
+   <col width="80%" />
+  </colgroup>
+  <tr valign="middle">
+    <dtml-comment>
+    ##### Active.Toggle #####
+    </dtml-comment
+    ><td
+    ><dtml-unless f_submitInputFieldsInactive
+    ><dtml-if "'active' in obj_attrs.keys()"
+     ><table cellspacing="0" cellpadding="0" border="0" width="100%"
+     ><tr valign="middle"
+      ><td
+       ><div class="form-label">
+        <dtml-var "getZMILangStr('ATTR_ACTIVE')">
+        <dtml-var "getObjInput('active',REQUEST)">
+       </div>
+      </td
+      ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
+       ><td align="right"><div class="form-text"><dtml-var "getZMILangStr('ATTR_START_DAT')"></div></td
+      ></dtml-if
+     ></tr
+     ></table
+    ></dtml-if
+    ></dtml-unless
+   ></td
+   ><td align="right"
+    ><table cellspacing="0" cellpadding="0" border="0" width="100%"
+    ><tr valign="middle"
+     ><dtml-comment>
+     ##### Active.Date-Range #####
+     </dtml-comment
+     ><td
+      ><dtml-unless f_submitInputFieldsInactive
+      ><div class="form-text"
+       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
+        ><dtml-var "getObjInput('attr_active_start',REQUEST)"
+       ></dtml-if
+       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_end' in obj_attrs.keys()"
+        ><dtml-var "getZMILangStr('ATTR_END_DAT')"
+        ><dtml-var "getObjInput('attr_active_end',REQUEST)"
+       ></dtml-if
+      ></div
+      ></dtml-unless
+     ></td
+     ><dtml-comment>
+     ##### Language.Label #####
+     </dtml-comment>
+    <td align="right">
+     <div class="form-text">
+     <dtml-if "'attr_dc_coverage' in obj_attrs.keys()">
+      <dtml-let options="[]">
+      <dtml-if ZMS_INSERT
+       ><dtml-call "REQUEST.set('coverage','global.'+lang)"
+       ><dtml-call "options.append('global.'+lang)"
+      ><dtml-call "options.append('local.'+lang)"
+      ><dtml-else
+       ><dtml-call "REQUEST.set('coverage',getDCCoverage(REQUEST))"
+       ><dtml-call "REQUEST.set('coverage_lang',coverage[coverage.find('.')+1:])"
+       ><dtml-if "lang != coverage_lang"
+        ><dtml-call "options.append(coverage)"
+       ><dtml-else
+        ><dtml-call "options.append('global.'+coverage_lang)"
+        ><dtml-call "options.append('local.'+coverage_lang)"
+       ></dtml-if
+      ></dtml-if>
+      <dtml-unless ZMS_INSERT>
+      </dtml-unless>
+      <dtml-unless "_.len(options)>1">
+       <dtml-call "REQUEST.set('coverage',options[0])">
+      </dtml-unless>
+      <dtml-let seq_lang="coverage[coverage.find('.')+1:]"
+                seq_desc_langs="getDescendantLanguages(seq_lang)">
+       <dtml-if "_.len(seq_desc_langs)>1">
+        &nbsp;
+         <img name="coverageBtn" src="<dtml-var MISC_ZMS>btn_multilang<dtml-var "_.int(coverage.find('global.')==0)">.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" align="absmiddle">
+         <dtml-if "getParentLanguage(seq_lang)==''">
+          <b>global</b>
+         <dtml-else>
+          <b>local</b>
+         </dtml-if>
+         <dtml-if "lang==seq_lang">
+          <input type="hidden" name="attr_dc_coverage" value="<dtml-var coverage>">
+          <dtml-if "_.len(seq_desc_langs)>1 and _.len(options)>1">
+           <input class="form-checkbox" type="checkbox" <dtml-if "coverage.find('global.')==0">checked="checked"</dtml-if> onclick="if (this.checked) { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang1.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='global.<dtml-var lang>'; } else { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang0.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='local.<dtml-var lang>'; }"
+             title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
+          <dtml-else>
+           <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "_.int(coverage.find('global.')==0)">.gif" border="0" align="absmiddle"
+             title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
+          </dtml-if>
+         <dtml-else>
+          <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "_.int(coverage.find('global.')==0)">.gif" border="0" align="absmiddle"
+             title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
+         </dtml-if>
+       <dtml-else>
+        <input type="hidden" name="attr_dc_coverage" value="<dtml-var coverage>">
+       </dtml-if>
+      </dtml-let>
+      </dtml-let>
+     </dtml-if>
+     <img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="12" />
+     </div>
+    </td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+  </table>
+ </td>
+</tr>
+
+ <dtml-if ZMS_INSERT>
+  <tr valign="middle">
+   <td><div class="form-label"><dtml-var "getZMILangStr('BTN_INSERT')"></div></td>
+   <td>
+    <div class="form-element">
+     <dtml-var "getLangFmtDate(ZopeTime())">
+    </div>
+   </td>
+  </tr>
+ <dtml-else>
+  <dtml-if "getObjProperty('created_dt',REQUEST) and getObjProperty('created_uid',REQUEST)">
+   <tr valign="middle">
+    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_CREATED')"></div></td>
+    <td>
+     <div class="form-element">
+      <dtml-var "getLangFmtDate(getObjProperty('created_dt',REQUEST))">
+      <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('created_uid',REQUEST)">
+     </div>
+    </td>
+   </tr>
+  </dtml-if>
+  <tr valign="middle">
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
+   <td>
+    <div class="form-element">
+    <dtml-let actions="filtered_workflow_actions()">
+     <dtml-if actions>
+      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')">
+       <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
+      </select>
+     </dtml-if>
+    </dtml-let>
+    <dtml-var version_object_state>
+     <dtml-if "getObjProperty('change_dt',REQUEST)">
+      <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))">
+     </dtml-if>
+     <dtml-if "getObjProperty('change_uid',REQUEST)">
+      <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('change_uid',REQUEST)">
+     </dtml-if>
+    </div>
+   </td>
+  </tr>
+ </dtml-if>
+
+<dtml-unless f_submitInputFieldsTable>
+ </table>
+</dtml-unless>
+
+</dtml-let>

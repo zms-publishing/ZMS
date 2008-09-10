@@ -1,0 +1,84 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+<script language="JavaScript">
+<!--//
+
+  function onFormSubmit(fm) {
+    var b = true;
+    return b;
+  }
+
+//-->
+</script>
+</head>
+<dtml-var manage_tabs>
+<dtml-var f_bo_area>
+
+<form name="form0" action="manage_changeProperties" method="post">
+<input type="hidden" name="lang" value="<dtml-var lang>">
+<input type="hidden" name="preview" value="preview">
+
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+
+<tr>
+ <td colspan="2" class="zmiHeadline"><dtml-var "getZMILangStr('TAB_PROPERTIES')"></td>
+</tr>
+
+<!-- ### Connection Id -->
+<tr valign="top">
+ <td><div class="form-label">Connection Id<sup style="color:red">*</sup></div></td>
+ <td>
+  <select class="form-element" name="connection_id">
+   <option value="">--- Select Connection Id ---</option>
+   <dtml-in SQLConnectionIDs>
+    <option value="<dtml-var sequence-item>"
+     <dtml-if connection_id>
+      <dtml-if "connection_id==_vars['sequence-item']">
+       selected="selected"
+      </dtml-if>
+     </dtml-if>><dtml-var sequence-key> <dtml-with "_.getattr(this(),_['sequence-item'])">(<dtml-var meta_type>)</dtml-with></option>
+   </dtml-in>
+  </select>
+ </td>
+</tr>
+<!-- ### Max. Rows -->
+<tr valign="top">
+ <td><div class="form-label">Max. Rows<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=_.getattr(this(),'max_rows',999))"></td>
+</tr>
+<!-- ### Charset -->
+<tr valign="top">
+ <td><div class="form-label">Charset<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value=_.getattr(this(),'charset',''),enum='charset')"></td>
+</tr>
+<!-- ### Model -->
+<tr valign="top">
+ <td><div class="form-label">Model<sup style="color:red">*</sup></div></td>
+ <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=45, rows=25, value=getModelContainer().raw, enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off',extra=' style='+QUOT+'width:100%;'+QUOT)"></td>
+</tr>
+
+</table>
+
+<dtml-var f_submitBtn>
+
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<tr>
+ <td class="zmiHeadline">SQL</td>
+</tr>
+<tr>
+ <td><dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=10,value=REQUEST.get('el_data','<Enter SQL here...>'),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra=' style='+QUOT+'width:100%;color:#0000FF;background-color:#F8F8FF;'+QUOT)"></td>
+</tr>
+</table>
+<hr size="1"/>
+<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXECUTE')" html_quote>" onclick="self.btnClicked=this.value;">
+<input class="form-submit" name="btn" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value;">
+<br/><br/>
+
+</form>
+
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>

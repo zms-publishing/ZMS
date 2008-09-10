@@ -1,0 +1,73 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('BTN_EDIT')"></title>
+</head>
+<script language="JavaScript">
+<!--//
+  
+  function selectValue(el, v) {
+    for (i=0; i < el.options.length; i++) {
+      if (el.options[i].value == v)
+        el.selectedIndex = i;
+    }
+  }
+  
+  function bodyOnLoad(fmName) {
+    var thisFm = document.forms[fmName];
+    var openFm = opener.document.forms['<dtml-var fmName>'];
+    thisFm.elements['<dtml-var elName>'].value = openFm.elements['<dtml-var elName>'].value;
+  }
+  
+  function changeBtnClick(fmName) {
+    var thisFm = document.forms[fmName];
+    var openFm = opener.document.forms['<dtml-var fmName>'];
+    openFm.elements['<dtml-var elName>'].value = thisFm.elements['<dtml-var elName>'].value;
+    self.close();
+  }
+  
+  function cancelBtnClick(fmName) {
+    self.close();
+  }
+
+//-->
+</script>
+<body class="zmiNeutralColorLight0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" onload="bodyOnLoad('form0')">
+<div align="center"><center>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+ <td valign="top" class="zmiNeutralColorLight0">
+  <form name="form0">
+   <table cellspacing="1" cellpadding="2" border="0">
+   <!-- ### Caption -->
+   <tr class="zmiNeutralColorStrong0">
+    <td height="22" valign="middle" class="form-label">
+     &nbsp;<dtml-var "getZMILangStr('BTN_EDIT')">&nbsp;
+    </td>
+   </tr>
+   <tr>
+    <td height="22" valign="middle" colspan="2" class="zmiNeutralColorLight0">
+     <table cellspacing="0" cellpadding="0" border="0">
+     <tr valign="middle">
+      <!-- ### Format (Bold, Italic, Underline) -->
+      <td nowrap="nowrap"><dtml-var "f_selectCharformat(_,_,fmName=fmName,elName=elName)"></td>
+     </tr>
+     </table>
+    </td>
+   </tr>
+   <!-- ### Text -->
+   <tr>
+    <td valign="middle">
+     <dtml-var "getTextArea(fmName=fmName,elName=elName,cols=40,rows=10,value='',enabled=1,REQUEST=REQUEST,css=css,wrap=wrap,extra=' style='+QUOT+'width:100%;'+QUOT)">
+    </td>
+   </tr>
+   </table>
+   <!-- ### SUBMIT -->
+   <hr size="1">
+   <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="changeBtnClick('form0')">
+   <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="cancelBtnClick('form0')">
+   </form>
+  </td>
+</tr>
+</table>
+</center></div>
+</body>
+</html>

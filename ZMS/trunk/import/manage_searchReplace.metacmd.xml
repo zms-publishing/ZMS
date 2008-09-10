@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+<item key="data"><![CDATA[<!-- ############################################################ -->
+<!-- #
+<!-- # Execute
+<!-- #
+<!-- ############################################################ -->
+<dtml-if process>
+
+ <!-- # Init counter: -->
+ <dtml-unless count>
+  <dtml-call expr="REQUEST.set('count',0)">
+ </dtml-unless>
+
+ <!-- # Search and replace: -->
+ <dtml-in "getObjAttrs().keys()">
+  <dtml-let obj_attr="getObjAttr(_['sequence-item'])">  
+   <dtml-if "obj_attr['datatype'] in ['string','text']">
+    <dtml-call "REQUEST.set('s_src',getObjProperty(obj_attr['id'],REQUEST))">
+    <dtml-call "REQUEST.set('s_dst','')">
+    <!-- # Init subcounter: -->
+    <dtml-call "REQUEST.set('subcount',0)">
+    <dtml-if "_.len(REQUEST.get('s_old','')) > 0">
+     <dtml-in "_.string.split(s_src,REQUEST.get('s_old',''))">
+      <dtml-call "REQUEST.set('s_dst',s_dst+_['sequence-item'])">
+      <dtml-unless sequence-end>
+       <dtml-call "REQUEST.set('s_dst',s_dst+REQUEST.get('s_new',''))">
+       <!-- Increase subcounter: -->
+       <dtml-call "REQUEST.set('subcount',REQUEST['subcount']+1)">
+      </dtml-unless>
+     </dtml-in>
+    </dtml-if>
+    <dtml-if "REQUEST['subcount'] > 0">
+     <dtml-call "setObjStateModified(REQUEST)">
+     <dtml-call "setObjProperty(obj_attr['id'],s_dst,lang)">
+     <dtml-call "onChangeObj(REQUEST)">
+     <!-- Increase counter: -->
+     <dtml-call "REQUEST.set('count',REQUEST['count']+REQUEST['subcount'])">
+    </dtml-if>
+   </dtml-if>
+  </dtml-let>
+ </dtml-in>
+
+ <!-- # Recurse child-objects: -->
+ <dtml-in "getChildNodes(REQUEST)">
+  <dtml-call manage_searchReplace>
+ </dtml-in>
+
+ <!-- # Return with message: -->
+ <dtml-call expr="REQUEST.set('message','%i Vorkommnisse ersetzt.'%REQUEST['count'])">
+ <dtml-return message>
+
+<!-- ############################################################ -->
+<!-- #
+<!-- # Process execution
+<!-- #
+<!-- ############################################################ -->
+<dtml-elif "REQUEST.get('btn','') == ' Ersetzen '">
+
+ <dtml-var manage_page_header>
+ <head>
+  <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+ </head>
+ <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
+ <dtml-var f_bo_area>
+
+  <div class="form-text">
+    <dtml-var "manage_searchReplace(_,_,process=1)"><br/><br/>
+    [<a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>">Zurück...</a>]
+  </div>
+
+ <dtml-var f_eo_area>
+ <dtml-var manage_page_footer>
+
+<!-- ############################################################ -->
+<!-- #
+<!-- # Process cancellation
+<!-- #
+<!-- ############################################################ -->
+<dtml-elif "REQUEST.get('btn','') == ' Abbrechen '">
+
+ <dtml-call "RESPONSE.redirect('%s/manage_main?lang=%s'%(absolute_url(),lang))">
+
+<!-- ############################################################ -->
+<!-- #
+<!-- # Form
+<!-- #
+<!-- ############################################################ -->
+<dtml-else>
+
+ <dtml-var manage_page_header>
+ <head>
+  <title>Suchen & Ersetzen...</title>
+ </head>
+ <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
+ <dtml-var f_bo_area>
+
+  <div class="form-text">Sie können jedes oder alle Vorkommen von einem Textmuster im aktuellen Objekt und auch allen Unterobjekten suchen und ersetzen.</div>
+  <form name="form0">
+   <input type="hidden" name="preview" value="preview">
+   <input type="hidden" name="lang" value="<dtml-var lang>">
+   <table cellspacing="1" cellpadding="1" border="0">
+   <tr>
+    <td><div class="form-label">Search for:</div></td>
+    <td><input class="form-element" type="text" name="s_old" value="" size="30"></td>
+   </tr>
+   <tr>
+    <td><div class="form-label">Replace by:</div></td>
+    <td><input class="form-element" type="text" name="s_new" value="" size="30"></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td>
+     <input class="form-submit" type="submit" name="btn" value=" Ersetzen ">
+     <input class="form-submit" type="submit" name="btn" value=" Abbrechen ">
+    </td>
+   </tr>
+   </table>
+  </form>
+
+ <dtml-var f_eo_area>
+ <dtml-var manage_page_footer>
+
+</dtml-if>]]></item>
+<item key="description"></item>
+<item key="exec" type="int">0</item>
+<item key="id"><![CDATA[manage_searchReplace]]></item>
+<item key="meta_type"><![CDATA[DTML Method]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSGraphic]]></item>
+<item><![CDATA[ZMSDocument]]></item>
+<item><![CDATA[ZMSFolder]]></item>
+<item><![CDATA[ZMS]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Search+Replace...]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+</dictionary>

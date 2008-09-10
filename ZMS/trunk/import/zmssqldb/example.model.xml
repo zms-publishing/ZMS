@@ -1,0 +1,292 @@
+<list>
+<!-- ########################################
+     ### DEPARTMENTS
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">depts</item>
+    <item key="label">Departments</item>
+    <item key="columns">
+      <list>
+        <item>
+          <dictionary>
+            <item key="id">dept_id</item>
+            <item key="label">Id</item>
+            <item key="type">string</item>
+            <item key="pk" type="int">1</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">dept_name</item>
+            <item key="label">Name</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">deptemproles</item>
+            <item key="hide" type="int">1</item>
+            <item key="label">Resonsibilities</item>
+            <item key="multimultiselect">
+              <dictionary>
+                <item key="fk">dept_id</item>
+                <item key="tablename">deptemproles</item>
+                <item key="tables">
+                  <list>
+                    <item>
+                      <dictionary>
+                        <item key="fk">emp_id</item>
+                        <item key="tablename">emps</item>
+                        <item key="fieldname">emp_id</item>
+                        <item key="displayfield">emp_name</item>
+                        <item key="label">Employee</item>
+                        <item key="lazy" type="int">1</item>
+                      </dictionary>
+                    </item>
+                    <item>
+                      <dictionary>
+                        <item key="fk">role_id</item>
+                        <item key="tablename">roles</item>
+                        <item key="fieldname">role_id</item>
+                        <item key="displayfield">role_name</item>
+                        <item key="label">Role</item>
+                        <item key="nullable" type="int">1</item>
+                      </dictionary>
+                    </item>
+                  </list>
+                </item>
+              </dictionary>
+            </item>
+          </dictionary>
+        </item>
+      </list>
+    </item>
+  </dictionary>
+</item>
+<!-- ########################################
+     ### EMPLOYEES
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">emps</item>
+    <item key="label">Employees</item>
+    <item key="interface">
+    <![CDATA[<script language="JavaScript">
+<!--
+
+/**
+ * OnSubmit-Event: form0
+ */
+function form0Submit( fm)
+{
+  var b = true;
+  var emp_phone = fm.elements['new_EMP_PHONE'].value;
+  for ( var i = 0; i < emp_phone.length && b; i++) {
+    var ch = emp_phone.charAt( i)
+    if (! ( ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7' || ch == '8' || 
+            ch == '9' || ch == '0' || ch == ' ' || ch == '-' || ch == '(' || ch == ')' || ch == '/' || ch == '+' || ch == '-')) {
+      alert( "Telephone contains invalid character at position " + i + ": '" + emp_phone.substr( 0, i+1) + "'!");
+      b = false;
+    }
+  }
+  return b;
+}
+
+var fm_form0 = document.forms['form0'];
+fm_form0.onsubmit = function() { return form0Submit(this) };
+
+-->
+</script>]]>
+    </item>
+    <item key="columns">
+      <list>
+        <item>
+          <dictionary>
+            <item key="id">emp_id</item>
+            <item key="label">Id</item>
+            <item key="type">string</item>
+            <item key="pk" type="int">1</item>
+            <item key="auto">insert</item>
+            <item key="hide" type="int">1</item>
+          </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="id">emp_name</item>
+	    <item key="label">Name</item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="hide" type="int">1</item>
+	    <item key="id">emp_passwd</item>
+	    <item key="label">Password</item>
+	    <item key="password" type="int">1</item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="id">emp_addresses</item>
+	    <item key="label">Addresses</item>
+	    <item key="fk">
+               <dictionary>
+                 <item key="options">
+                   <list>
+	            <item>
+		      <list>
+                          <item>Ms</item>
+                          <item>Ms</item>
+                        </list>
+                      </item>
+                      <item>
+                        <list>
+                          <item>Mrs</item>
+                          <item>Mrs</item>
+                        </list>
+                      </item>
+                      <item>
+                        <list>
+                          <item>Mr</item>
+                          <item>Mr</item>
+                        </list>
+                      </item>
+                    </list>
+                  </item>
+                </dictionary>
+	    </item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="id">emp_dept_id</item>
+	    <item key="label">Department</item>
+	    <item key="hide" type="int">1</item>
+	    <item key="fk">
+               <dictionary>
+                 <item key="tablename">depts</item>
+                 <item key="fieldname">dept_id</item>
+                 <item key="displayfield">dept_name</item>
+                </dictionary>
+	    </item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="id">emp_active</item>
+	    <item key="label">Active</item>
+	    <item key="checkbox" type="int">1</item>
+	    <item key="hide" type="int">1</item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="hide" type="int">1</item>
+	    <item key="id">skills</item>
+	    <item key="index" type="int">7</item>
+	    <item key="label">Skills</item>
+	    <item key="multiselect">
+	      <dictionary>
+	        <item key="fk">emp_id</item>
+                 <item key="tablename">skills2emps</item>
+               </dictionary>
+	    </item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="hide" type="int">1</item>
+	    <item key="id">emp_phone</item>
+	    <item key="label">Telephone</item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="hide" type="int">1</item>
+	    <item key="id">create_dt</item>
+	    <item key="label">Created</item>
+            <item key="auto">insert</item>
+            <item key="type">datetime</item>
+	  </dictionary>
+	</item>
+	<item>
+	  <dictionary>
+	    <item key="hide" type="int">1</item>
+	    <item key="id">change_dt</item>
+	    <item key="label">Changed</item>
+            <item key="auto">update</item>
+            <item key="type">datetime</item>
+	  </dictionary>
+	</item>
+      </list>
+    </item>
+  </dictionary>
+</item>
+<!-- ########################################
+     ### SKILLS
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">skills</item>
+    <item key="label">Skills</item>
+    <item key="columns">
+      <list>
+        <item>
+	  <dictionary>
+            <item key="id">skill_id</item>
+            <item key="label">Id</item>
+            <item key="pk" type="int">1</item>
+            <item key="type">int</item>
+            <item key="auto">insert</item>
+          </dictionary>
+        </item>
+        <item>
+	  <dictionary>
+            <item key="id">skill_name</item>
+            <item key="label">Skill</item>
+          </dictionary>
+        </item>
+      </list>
+    </item>
+  </dictionary>
+</item>
+<!-- ########################################
+     ### SKILLS2EMPS
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">skills2emps</item>
+    <item key="type">intersection</item>
+    <item key="columns">
+      <list>
+        <item>
+          <dictionary>
+            <item key="id">emp_id</item>
+            <item key="label">Employee</item>
+            <item key="fk">
+               <dictionary>
+                 <item key="tablename">emps</item>
+                 <item key="fieldname">emp_id</item>
+                 <item key="displayfield">emp_name</item>
+               </dictionary>
+             </item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">skill_id</item>
+            <item key="label">Skill</item>
+            <item key="fk">
+               <dictionary>
+                 <item key="tablename">skills</item>
+                 <item key="fieldname">skill_id</item>
+                 <item key="displayfield">skill_name</item>
+               </dictionary>
+             </item>
+	  </dictionary>
+        </item>
+      </list>
+    </item>
+  </dictionary>
+</item>
+<!-- ######################################## -->
+</list>

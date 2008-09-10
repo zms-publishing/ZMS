@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<list>
+<item>
+<dictionary>
+	<item key="mandatory" type="int">0</item>
+	<item key="multilang" type="int">0</item>
+	<item key="name">SCORM Metaset</item>
+	<item key="type">SCORMmetaset</item>
+	<item key="dst_meta_types">
+		<list>
+			<item>ZMSDocument</item>
+			<item>ZMSFolder</item>
+		</list>
+	</item>
+	<item key="id">SCORMmetaset</item>
+	<item key="keys">
+		<list/>
+	</item>
+</dictionary>
+</item>
+<item>
+<dictionary>
+	<item key="mandatory" type="int">0</item> 
+	<item key="multilang" type="int">0</item> 
+	<item key="name">SCORM-Preconditions</item>
+	<item key="type">SCORMseq</item>
+	<item key="dst_meta_types">
+		<list>
+			<item>ZMSDocument</item>
+			<item>ZMSFolder</item>
+		</list>
+	</item>
+	<item key="id">SCORMseq</item>
+	<item key="keys">
+		<list/>
+	</item>
+</dictionary>
+</item>
+</list>

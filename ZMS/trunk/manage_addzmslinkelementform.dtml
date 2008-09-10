@@ -1,0 +1,30 @@
+<dtml-let meta_id="'ZMSLinkElement'" metaObj="getMetaobj(meta_id)">
+<dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></title>
+</head>
+<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('BTN_INSERT'),'action':''}])">
+<dtml-var f_bo_area>
+
+<!-- ### Meta-Object: Default -->
+<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+<form name="<dtml-var fmName>" action="manage_addZMSLinkElement" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
+<input type="hidden" name="id" value="<dtml-var "REQUEST.get('id','e')">">
+<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
+<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
+<dtml-let f_submitInputFieldsTable="_.True" f_submitInputFieldsInactive="_.len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+
+<!-- ### Attributes -->
+<dtml-var obj_input_js>
+<dtml-var obj_input_fields>
+
+</table>
+
+<!-- ### Buttons -->
+<dtml-var f_submitBtn>
+
+</form>
+
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>
+</dtml-let>

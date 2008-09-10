@@ -1,0 +1,33 @@
+<dtml-with "_(manage_options=manage_sub_options)">
+<dtml-if manage_options>
+
+<dtml-call "REQUEST.set('a_', 0)">
+
+<dtml-in manage_options mapping>
+ <dtml-if "URL[-(_.len(action)):]==action">
+  <dtml-call "REQUEST.set('a_', _['sequence-index'])">
+ </dtml-if>
+</dtml-in>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="zmiTabSub">
+<tr valign="bottom">
+ <td align="left">
+ <dtml-in manage_options mapping>
+  <dtml-let highlightThis="_['sequence-index']==a_">
+   <div class="zmiTabSub<dtml-var "_.int(_['sequence-index']==a_)">"
+   ><dtml-if "action and not action==''"
+    ><a href="<dtml-var "getSelf().absolute_url()">/<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);" class="zmi"
+     ><dtml-var "getZMILangStr(label)"
+    ></a
+   ><dtml-else
+    ><dtml-var "getZMILangStr(label)"
+   ></dtml-if
+  ></div>
+  </dtml-let>
+ </dtml-in>
+ </td>
+</tr>
+</table>
+
+</dtml-if>
+</dtml-with>

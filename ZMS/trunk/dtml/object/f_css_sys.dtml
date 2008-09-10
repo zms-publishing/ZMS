@@ -1,0 +1,624 @@
+<dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')"
+><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/css')"
+>
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- [ZMI]
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+/* BO manage_page_style.css */
+h1, h2, h3 {
+	font-family: Arial, Helvetica, sans-serif; 
+}
+
+.form-help {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	padding:4px 6px 0px 6px;
+}
+
+.std-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #333;
+}
+
+.tab-small {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 10px;
+	color: #333;
+}
+
+.location-bar {
+	background-color: #efefef;
+	border: none;
+}
+
+.strong-header {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	background-color: #000000;
+	color: #ffffff;
+}
+
+.list-header {
+	background-color: #c0c0c0;
+	border: none;
+}
+
+.list-item {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+}
+
+.list-nav {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.row-normal {
+	background-color: #fff;
+	border: none;
+
+}
+
+.row-hilite {
+	background-color: #efefef;
+	border: none;
+}
+
+.section-bar {
+	background-color: #c0c0c0;
+	border: none;
+}
+
+.system-msg {
+	font-family: Courier, Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+	background: #fff url(<dtml-var MISC_ZMS>msg_info_bg.gif) top left repeat-x;
+	border:	1px solid #000;
+	margin: 6px;
+	padding: 4px;
+	color: #603;
+}
+
+.form-title {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-weight: bold;
+	font-size: 11px;
+	color: #333;
+}
+
+.form-label {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-weight: bold;
+	font-size: 12px; 
+	color: #333;
+	padding: 0px 2px;
+	color:#666;
+}
+
+.form-optional {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-weight: bold;
+	font-style: italic;
+	font-size: 12px;
+	color: #333;
+}
+
+.form-element {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+}
+
+.form-error {
+	color: #FF0000;
+	background-color: #FFF0F0;
+	border: 1px solid #FF0000;
+}
+
+.form-warning {
+	color: #808064;
+	background-color: #FFFFE8;
+	border: 1px solid #808064;
+}
+
+.form-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333;
+}
+
+.form-mono {
+	font-family: monospace;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.form-highlight {
+}
+
+/* EO manage_page_style.css */
+
+body.zmi {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background: white;
+}
+
+body.zmi div.zmi {
+	width: 800px;
+}
+
+h1 {
+	font-size: 1.5em;
+	line-height: 2.2em;
+}
+
+h2 {
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+h3 {
+	font-size: 1.1em;
+	line-height: 1.4em;
+}
+
+a.zmi {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	text-decoration: underline;
+}
+a.zmi, a.zmi:link, a.zmi:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000;
+}
+a.zmi:hover, a.zmi:active {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #f90;
+}
+
+.zmiBlank { background-image:url(<dtml-var spacer_gif>); }
+.zmiTableRowOdd { background-color:#fafafa; }
+.zmiTableRowEven { background-color:#efefef; }
+
+.zmiNeutralColorTrans, .zmiNeutralColorWhite, .zmiNeutralColorBlack,
+.zmiNeutralColorStrong0, .zmiNeutralColorMedium0,.zmiNeutralColorLight0,
+.zmiNeutralColorLight1, .zmiTeaserColor {
+	font-family: Arial, Helvetica, sans-serif; 
+}
+
+.zmiNeutralColorTrans { background-color:#0f0; } 
+.zmiNeutralColorWhite { background-color:#fff; }
+.zmiNeutralColorBlack { background-color:#000; }
+.zmiNeutralColorStrong0 { background-color:#AAA; }
+.zmiNeutralColorMedium0 { background-color:#CCC; }
+.zmiNeutralColorLight0 { background-color:#F2F3EE; }
+.zmiNeutralColorLight1 { background-color:#E2E3DE; }
+.zmiTeaserColor, tr.zmiTeaserColor td { background-color:#FDD; }
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Columns
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmi_col_left {
+	vertical-align: middle;
+	text-align:left;
+	float:left;
+}
+
+.zmi_col_right {
+	vertical-align: middle;
+	text-align:right;
+	float:right;
+}
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Header / Footer
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmi_header, 
+.zmi_footer {
+	vertical-align: middle;
+	background: #000 url(<dtml-var MISC_ZMS>bggradient_black.gif) top left repeat-x;
+	color: #eee;
+	font-size: 10px;
+	height: 20px;
+}
+
+.zmi_header {
+	color: #FF9900;
+}
+
+.zmi_header a:link, .zmi_header a:visited, 
+.zmi_footer a:link, .zmi_footer a:visited {
+	text-decoration: none;
+	color: #eee;
+	font-size: 10px;
+}
+.zmi_footer a:hover {
+	text-decoration: underline;
+	color: #fff;
+}
+.zmi_footer {
+	height: 16px;
+	padding-top:3px;
+}
+
+.zmi_footer a#userid {
+	color: #fff;
+	font-weight:bold;
+}
+
+
+.zmi_footer select {
+	background: #000 url(<dtml-var MISC_ZMS>bggradient_black.gif) top left repeat-x;
+	color: #fff;
+	font-size: 10px;
+	border:0px;
+	padding:0px;
+	margin:0px;
+	margin-top:-2px;
+	height: 14px;
+}
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Headline
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+table.zmiHeadline tr td, td.zmiHeadline, div.zmiHeadline {
+	background-color: #c9c9c9;	
+	padding-left: 3px;
+	height: 22px;
+	line-height: 22px;
+	font-size: 11px;
+	font-weight: normal;
+	color:#666;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+div.zmiHeadline img {
+	vertical-align:bottom;
+}
+
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Button
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+img.vbutton, a.vbutton img  {
+	width: 10px;
+	height: 20px;
+}
+img.hbutton, a.hbutton img  {
+	width: 20px;
+	height: 8px;
+}
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+img.button, a.button:link img, a.button:visited img,
+img.vbutton, a.vbutton:link img, a.vbutton:visited img,
+img.hbutton, a.hbutton:link img, a.hbutton:visited img {
+}
+a.button:hover img, a.button:active img, 
+a.vbutton:hover img, a.vbutton:active img,
+a.hbutton:hover img, a.hbutton:active img {
+	background-image:url(<dtml-var MISC_ZMS>zmi_bg_button.png);
+}
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ */
+img.button, a.button:link img, a.button:visited img,
+img.vbutton, a.vbutton:link img, a.vbutton:visited img,
+img.hbutton, a.hbutton:link img, a.hbutton:visited img {
+	background-color: #CCC;
+	border-top: solid 1px #E6E4E6;
+	border-left: solid 1px #E6E4E6;
+	border-right: solid 1px #B6B4B6;
+	border-bottom: solid 1px #B6B4B6;
+}
+a.button:hover img, a.button:active img, 
+a.vbutton:hover img, a.vbutton:active img,
+a.hbutton:hover img, a.hbutton:active img {
+	background-color: #E8E8E8;
+	border-top: solid 1px #FFF;
+	border-left: solid 1px #FFF;
+	border-right: solid 1px #000;
+	border-bottom: solid 1px #000;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Separator
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmiHSep {
+	background-color: #B6B4B6;
+	border-bottom: #E6E4E6 solid 1px;
+}
+
+.zmiVSep {
+	background-color: #B6B6B6;
+	border-right: solid #E6E4E6 1px;
+	height: 22px;
+	width: 1px;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Tabs
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmiTab0 a.zmi, .zmiTab0 a.zmi:link, .zmiTab0 a.zmi:visited, .zmiTab0 a.zmi:active, .zmiTab0 a.zmi:hover, .zmiTab0 a.zmi:focus,
+.zmiTabSub0 a.zmi, .zmiTabSub0 a.zmi:link, .zmiTabSub0 a.zmi:visited, .zmiTabSub0 a.zmi:active, .zmiTabSub0 a.zmi:hover, .zmiTabSub0 a.zmi:focus {
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.zmiTab1 a.zmi, .zmiTab1 a.zmi:link, .zmiTab1 a.zmi:visited, .zmiTab1 a.zmi:active, .zmiTab1 a.zmi:hover, .zmiTab1 a.zmi:focus,
+.zmiTabSub1 a.zmi, .zmiTabSub1 a.zmi:link, .zmiTabSub1 a.zmi:visited, .zmiTabSub1 a.zmi:active, .zmiTabSub1 a.zmi:hover, .zmiTabSub1 a.zmi:focus {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/* MENU inactive */
+.zmiTab0, .zmiTab1 {
+	color: #000;
+	float: left;
+	text-align: center;
+	vertical-align: middle;
+        line-height: 20px;
+	height: 20px;
+	padding: 0px 6px; 
+	background: #F0F0F0 url(<dtml-var MISC_ZMS>zmi_nv_tabs0.gif) top left repeat-x;
+	border:1px solid #BABABA;
+	border-left:0px solid transparent;
+	border-bottom:0px solid transparent;
+}
+
+/* MENU active */
+.zmiTab1 {
+	background: #CCC;
+}
+
+.zmiTabBtn0 a.zmi:hover, .zmiTabBtn0 a.zmi:active {
+	background-color:#E2E3DE;
+}
+
+.zmiTabBtn1 {
+	border-top: solid #CCC 1px;
+	border-left: solid #CCC 1px;
+	border-right: solid #CCC 1px;
+	background-color:#E2E3DE;
+}
+
+.zmiTab0, .zmiTab1, .zmiTabSub0, .zmiTabSub1, 
+.zmiTab0 a.zmi, .zmiTab1 a.zmi, .zmiTabSub0 a.zmi, .zmiTabSub1 a.zmi {
+	white-space: nowrap;
+	font-size: 11px;
+}
+
+.zmiInfo {
+	background: #D6D6D6 url(<dtml-var MISC_ZMS>zmigradient0.gif) top left repeat-x;
+	padding: 2px;
+}
+
+.zmiTabSub0, .zmiTabSub1 {
+	color: #000;
+	float: left;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 18px;
+	height: 18px;
+	padding:0px 8px;
+	margin:0px;
+	border:1px solid #BABABA;
+	border-left:0px solid transparent;
+	border-bottom:0px solid transparent;
+	background-color:transparent;
+	background-color: #DDD;
+}
+
+.zmiTabSub1 {
+	background-color:#F2F3EE;
+}
+
+table.zmiTabSub {
+	background: #ddd;
+}
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- [ZMI] Miscellaneous
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmiDisplayIcon {
+	margin: 2px;
+}
+
+.form-submit {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #323232;
+	font-weight: bold;
+	margin: 2px;
+	background-image:url(/misc_/zms/zmisubmit.gif);
+	border: solid 1px #919191;
+	overflow:visible;
+  padding: 1px 3px;
+}
+
+.form-disabled {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: gray;
+}
+
+.form-small * {
+	font-size: 11px;
+}
+
+.form-small {
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000;
+}
+
+.collectionBtn {
+	width: 40px;
+}
+
+.form-label-disabled {
+	font-family: Arial, Helvetica, sans-serif; 
+	font-weight: bold;
+	font-size: 12px;
+	color: gray;
+}
+
+.form-small-disabled {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: gray;
+}
+
+.form-fixed {
+	font-family: Courier New, Courier, monospace;
+	font-size: 11px;
+	color: black;
+	background-color: #f4f4f4;
+}
+
+.form-fixed-disabled {
+	font-family: Courier New, Courier, monospace;
+	font-size: 11px;
+	color: gray;
+	background-color: #f4f4f4;
+}
+
+.form-radio,
+.form-checkbox {
+	border: none;
+	background-color: transparent;
+}
+
+yy.form-help {
+	font-size:11px;
+	padding:4px 6px 0px 6px;
+}
+
+
+div.note {
+	font-size: 11px;
+	background-color: #ffffd0;
+	color: black;
+	border: 1px solid #000;
+	margin: 6px 0px;
+	padding: 4px;
+	width: 100%;
+}
+
+p.teaser, span.teaser {
+	font-size: 11px;
+	margin: 2px;
+	padding: 2px;
+	width: 100%;
+}
+
+p.title, span.title {
+	margin: 2px;
+	padding: 2px;
+	width: 100%;
+}
+
+div.img-border {
+	border: 1px solid #000;
+}
+ 
+form {
+	border: none;
+	margin: 0;
+}
+
+textarea {
+	border: 1px solid #666;
+	color: black;
+	width: 88%;
+	padding: 0.1em;
+}
+
+input {
+	font: 100% Arial, Helvetica, sans-serif;
+	border: 1px solid #666;
+	color: black;
+	vertical-align: middle;
+	margin-bottom: 1px; /* IE bug fix */
+	padding: 0.1em;
+}
+
+select {
+	font: 100% Arial, Helvetica, sans-serif;
+	border: 1px solid #666666;  
+	color: black;
+	vertical-align: top;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- [ZMI] SQL DB
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+input.lazy {
+  width:26em;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- [ZMI] Sitemap
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+body#zmiSitemap {
+	background-color:#fff;
+	margin:0px;
+	padding:0px;
+	border:0px;
+}
+
+body#zmiSitemap div.form-small {
+	white-space:nowrap;
+	padding:0px;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Image-Zoom
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+#zmiImgZoomDiv {background-color:black;filter:Alpha(opacity=50);-moz-opacity:0.50;}
+#zmiImgZoomImgDiv {background-color:white;border: 1px solid black;	font-size: 11px;font-family: Arial, Helvetica, sans-serif;color: #000;}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Calendar
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+#zmiCalDiv {filter:Alpha(opacity=80);-moz-opacity:0.80;background-color:#ffffff;padding:2px;border:1px solid #646464;}
+#zmiCalLastMon,#zmiCalMon,#zmiCalNextMon,#zmiCalClose {float:left;font-size:11px;font-family:helvetica,arial;overflow:hidden;}
+a.zmiCalNorm:link, a.zmiCalNorm:visited, a.zmiCalNorm:hover, a.zmiCalNorm:active {font-size:11px;font-family:helvetica,arial;color:#000000;text-decoration:none;}
+a.zmiCalBold:link, a.zmiCalBold:visited, a.zmiCalBold:hover, a.zmiCalBold:active {font-size:11px;font-family:helvetica,arial;color:#000000;text-decoration:none;font-weight:bold;}
+a.zmiCalCurr:link, a.zmiCalCurr:visited, a.zmiCalCurr:hover, a.zmiCalCurr:active {font-size:11px;font-family:helvetica,arial;color:#FFFFFF;background-color:#FF6600;text-decoration:none;font-weight:bold;}
+a.zmiCalHead:link, a.zmiCalHead:visited, a.zmiCalHead:hover, a.zmiCalHead:active {font-size:11px;font-family:helvetica,arial;font-weight:bold;color:#000000;text-decoration:none;}
+div.zmiCalWeekday {float:left;width:14px;height:14px;font-family:helvetica,arial;font-size:11px;padding:0;clip:rect(0 14 14 0);border-right:1px solid #CCCCCC;overflow:hidden;text-align:right;padding-right:2px;}
+div.zmiCalDayname {float:left;width:14px;height:14px;font-family:helvetica,arial;font-size:11px;padding:0;clip:rect(0 14 14 0);border-right:1px solid #CCCCCC;overflow:hidden;text-align:right;padding-right:2px;color:#646464;font-weight:bold;}
+

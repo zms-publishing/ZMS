@@ -1,0 +1,267 @@
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/css')">
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- Body
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+ 
+body.print 
+	{ 
+	background-color:#fff; 
+	}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- Search Form
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+.searchresult {
+margin-bottom:20px;
+}
+.searchresult span.title {
+display:block;
+font-weight:bold;
+}
+.searchresult span.description {
+display:block;
+}
+.searchresult span.linkpath {
+display:block;
+font-size:smaller;
+line-height:1.3em;
+} 
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] ZMSLinkContainer
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+div.ZMSLinkContainer
+	{
+	background-color: #eee;
+	}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] ZMSFile / ZMSLinkElement
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+div.ZMSFile, div.ZMSLinkElement 
+	{ 
+	background-color: #F8F8F8;
+	margin: 4px;
+	}
+
+div.ZMSFile.none, div.ZMSLinkElement.none 
+	{
+	background-color: transparent;
+	border: 2px dashed #eee;
+	}
+
+div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
+	{ 
+	float:left;
+	width:50%
+	}
+
+div.ZMSFile.floatright, div.ZMSLinkElement.floatright 
+	{ 
+	float:right;
+	width:50%
+	}
+
+div.ZMSFile div.title, div.ZMSLinkElement div.title 
+	{
+	font-size:x-small;
+	white-space:nowrap;
+	}
+
+div.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, 
+div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited 
+	{
+	font-weight:bold;
+	font-size:x-small;
+	text-decoration:none;
+	color:black;
+	}
+
+div.ZMSFile div.text, div.ZMSLinkElement div.text 
+	{
+	font-size:xx-small;
+	}
+
+div.ZMSFile div.description, div.ZMSLinkElement div.description 
+	{
+	font-size:x-small;
+	}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] ZMSGraphic
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+div.ZMSGraphic {
+	background-color: #F8F8F8;
+	margin: 4px;
+}
+
+div.ZMSGraphic.left {
+	text-align:left;
+}
+
+div.ZMSGraphic.right {
+	text-align:right;
+}
+
+div.ZMSGraphic.center {
+	text-align:center;
+}
+
+div.ZMSGraphic.floatleft {
+	float:left;
+}
+
+div.ZMSGraphic.floatright {
+	float:right;
+}
+
+div.ZMSGraphic.center {
+	text-align:center;
+}
+
+div.graphic.alignleft {
+	float:left;
+	text-align:right;
+}
+
+div.graphic.alignright {
+	float:right;
+	text-align:right;
+}
+
+div.ZMSGraphic div.text {
+	padding: 4px;
+}
+
+/*-- ## FF Patch ## --*/
+div.ZMSGraphic.right div.graphic {
+	width:100% !important; 
+}
+div.ZMSGraphic.right div.graphic img {
+	display:inline !important;
+}
+
+a.zoom img.zoom {
+	width: 23px;
+	height: 21px;
+	background: url(<dtml-var MISC_ZMS>zoom.gif);
+}
+
+a.download img.download {
+	width: 23px;
+	height: 21px;
+	background: url(<dtml-var MISC_ZMS>download.gif);
+}
+
+a.superzoom img.superzoom {
+	width: 23px;
+	height: 21px;
+	background: url(<dtml-var MISC_ZMS>superzoom.gif);
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] ZMSTables
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+table.ZMSTable th {
+	background-color:#DDEFFC; 
+}
+
+table.ZMSTable td {
+	background-color:#EEEEEE; 
+}
+
+body.print table.ZMSTable th, 
+body.print table.ZMSTable td {
+	background-color:transparent; 
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] ZMSTeaser
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+div#teaser
+	{
+	width:150px;
+	font-size:x-small;
+	}
+
+div.ZMSTeaserContainer
+	{
+	padding:1px;
+	margin-bottom:10px;
+	}
+
+div.ZMSTeaserElement
+	{
+	}
+
+div.ZMSTeaserElement img.title
+	{
+	border: none;
+	}
+
+div.ZMSTeaserElement div.title a:link,
+div.ZMSTeaserElement div.title a:visited,
+div.ZMSTeaserElement div.title
+	{
+	font-weight:bold;
+	text-decoration:none;
+	color:black;
+	padding: 2px;
+	display: block;
+	}
+
+div.ZMSTeaserElement div.text a:link,
+div.ZMSTeaserElement div.text a:visited,
+div.ZMSTeaserElement div.text
+	{
+	}
+
+<dtml-in "getMetaobjIds(sort=0)"
+><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
+><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='f_css_defaults', metaObj['attrs'])" mapping
+><dtml-try
+><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
+><dtml-except
+>/* >>>>>>>>>> ERROR in <dtml-var metaObjId> - <dtml-var error_type>: <dtml-var error_value> <<<<<<<<<< */</dtml-try
+></dtml-in
+></dtml-let
+></dtml-in>
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [WAI] Misc
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+div.ZMSObject.new, div.ZMSObject.modified {
+  border: 2px dashed blue;
+  background-color: #F0F0FF;
+} 
+div.ZMSObject.deleted {
+  border: 2px dashed red;
+  background-color: #FFF0F0;
+  color: red;
+  text-decoration: line-through;
+} 
+
+span.unicode { 
+  font-family:"Lucida Sans Unicode", "Arial Unicode MS", Arial, Helvetica, sans-serif;
+}
+
+span.highlight { 
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}

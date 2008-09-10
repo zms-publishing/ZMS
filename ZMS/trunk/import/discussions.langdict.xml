@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New notification-record not inserted!]]></item>
+<item key="ger"><![CDATA[Neue Benachrichtung nicht eingetragen!]]></item>
+<item key="key"><![CDATA[bbMsgNotificationInsertNot]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Topic]]></item>
+<item key="ger"><![CDATA[Thema]]></item>
+<item key="key"><![CDATA[bbTopic]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Notification not sent!]]></item>
+<item key="ger"><![CDATA[Benachrichtigung wurde nicht versendet!]]></item>
+<item key="key"><![CDATA[bbMsgNotificationSendNot]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Your eMail-address is not registered for sending notifications!]]></item>
+<item key="ger"><![CDATA[Ihre eMail-Adresse ist nicht für Benachrichtigungen eingetragen!]]></item>
+<item key="key"><![CDATA[bbMsgUnsubcribeNot]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Send notification for coming replies]]></item>
+<item key="ger"><![CDATA[Benachrichtung bei Antworten]]></item>
+<item key="key"><![CDATA[bbSendNotification]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Reply]]></item>
+<item key="ger"><![CDATA[Antworten]]></item>
+<item key="key"><![CDATA[bbBtnReply]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Send]]></item>
+<item key="ger"><![CDATA[Senden]]></item>
+<item key="key"><![CDATA[bbBtnSend]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Messages]]></item>
+<item key="ger"><![CDATA[Beiträge]]></item>
+<item key="key"><![CDATA[bbMessages]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Votes]]></item>
+<item key="ger"><![CDATA[Abstimmungen]]></item>
+<item key="key"><![CDATA[bbVotes]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Subject]]></item>
+<item key="ger"><![CDATA[Betreff]]></item>
+<item key="key"><![CDATA[bbSubject]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Rate the usefulness of this content]]></item>
+<item key="ger"><![CDATA[Bewerten Sie die Nützlichkeit dieser Nachricht]]></item>
+<item key="key"><![CDATA[bbRateUsefulness]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[I would like to unsubscribe from notification for coming replies]]></item>
+<item key="ger"><![CDATA[Ich möchte mich von der Benachrichtigung über neue Nachrichten abmelden]]></item>
+<item key="key"><![CDATA[bbUnsubscribe]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Please choose your rating!]]></item>
+<item key="ger"><![CDATA[Bitte wählen Sie Ihre Bewertung!]]></item>
+<item key="key"><![CDATA[bbMsgRatingInsertRetry]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[of]]></item>
+<item key="ger"><![CDATA[von]]></item>
+<item key="key"><![CDATA[bbOf]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Notification sent to %i recipient(s) successfully.]]></item>
+<item key="ger"><![CDATA[Benachrichtigung erfolgreich an %i Empfänger versendet.]]></item>
+<item key="key"><![CDATA[bbMsgNotificationOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[My eMail]]></item>
+<item key="ger"><![CDATA[Meine eMail]]></item>
+<item key="key"><![CDATA[bbMyEmail]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New rating-record not inserted!]]></item>
+<item key="ger"><![CDATA[Neue Bewertung wurde nicht einfügt!]]></item>
+<item key="key"><![CDATA[bbMsgRatingInsertNot]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Search term]]></item>
+<item key="ger"><![CDATA[Suchbegriff]]></item>
+<item key="key"><![CDATA[bbSearchterm]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Created]]></item>
+<item key="ger"><![CDATA[Erstellt]]></item>
+<item key="key"><![CDATA[bbCreated]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Last Message]]></item>
+<item key="ger"><![CDATA[Letzter Beitrag]]></item>
+<item key="key"><![CDATA[bbLast]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Beginning]]></item>
+<item key="ger"><![CDATA[Weniger]]></item>
+<item key="key"><![CDATA[bbBeginning]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Unsubscribe]]></item>
+<item key="ger"><![CDATA[Abmelden]]></item>
+<item key="key"><![CDATA[bbBtnUnsubscribe]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New Topic]]></item>
+<item key="ger"><![CDATA[Neues Thema]]></item>
+<item key="key"><![CDATA[bbNewTopic]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[You are unsubscribed successfully.]]></item>
+<item key="ger"><![CDATA[Sie wurden erfolgreich abgemeldet.]]></item>
+<item key="key"><![CDATA[bbMsgUnsubscribeOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Rate]]></item>
+<item key="ger"><![CDATA[Bewerten]]></item>
+<item key="key"><![CDATA[bbBtnRate]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New rating-record inserted. (%s)]]></item>
+<item key="ger"><![CDATA[Neue Bewertung eingefügt. (%s)]]></item>
+<item key="key"><![CDATA[bbMsgRatingInsertOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Please enter your eMail-address!]]></item>
+<item key="ger"><![CDATA[Bitte geben Sie Ihre eMail-Adresse an!]]></item>
+<item key="key"><![CDATA[bbMsgNotificationInsertRetry]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Notification sent to %i recipient(s) successfully.]]></item>
+<item key="ger"><![CDATA[Benachrichtigung erfolgreich an %i Empfänger versendet.]]></item>
+<item key="key"><![CDATA[bbMsgNotificationSendOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[What's new]]></item>
+<item key="ger"><![CDATA[Was gibt es Neues]]></item>
+<item key="key"><![CDATA[bbWhatsNew]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Search]]></item>
+<item key="ger"><![CDATA[Suche]]></item>
+<item key="key"><![CDATA[bbSearch]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New message-record inserted. (%s)]]></item>
+<item key="ger"><![CDATA[Neue Nachricht eingefügt. (%s)]]></item>
+<item key="key"><![CDATA[bbMsgMessageInsertOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Overview]]></item>
+<item key="ger"><![CDATA[Übersicht]]></item>
+<item key="key"><![CDATA[bbOverview]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Exemplary]]></item>
+<item key="ger"><![CDATA[Vorbildlich]]></item>
+<item key="key"><![CDATA[bbExemplary]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[File]]></item>
+<item key="ger"><![CDATA[Datei]]></item>
+<item key="key"><![CDATA[bbFile]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Notification not sent!]]></item>
+<item key="ger"><![CDATA[Benachrichtigung wurde nicht versendet!]]></item>
+<item key="key"><![CDATA[bbMsgNotificationNot]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[New notification-record inserted. (%s)]]></item>
+<item key="ger"><![CDATA[Neue Benachrichtigung eingetragen. (%s)]]></item>
+<item key="key"><![CDATA[bbMsgNotificationInsertOk]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Reply to message]]></item>
+<item key="ger"><![CDATA[Antwort auf Nachricht]]></item>
+<item key="key"><![CDATA[bbReplyMessage]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Notify]]></item>
+<item key="ger"><![CDATA[Benachrichtigen]]></item>
+<item key="key"><![CDATA[bbBtnNotify]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Insert new Topic]]></item>
+<item key="ger"><![CDATA[Neues Thema einfügen]]></item>
+<item key="key"><![CDATA[bbInsertTopic]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="eng"><![CDATA[Author]]></item>
+<item key="ger"><![CDATA[Autor]]></item>
+<item key="key"><![CDATA[bbAuthor]]></item>
+</dictionary>
+</item>
+</list>

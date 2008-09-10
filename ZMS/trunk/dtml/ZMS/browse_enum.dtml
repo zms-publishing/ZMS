@@ -1,0 +1,57 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('TYPE_ZMSLINKELEMENT')"></title>
+
+<script language="JavaScript">
+<!--//
+
+  function selectObject() 
+  {
+    var fm = self.document.forms['form0'];
+    var el = fm.elements['newValue'];
+    var i = el.selectedIndex;
+    var v = el.options[i].value;
+    if (v.length > 0) 
+    {
+      var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
+      var el = fm.elements['<dtml-var elName>'];
+      el.value = v;
+      if (el.type == 'hidden')
+      {
+        self.parent.opener.<dtml-var elName>Change(el);
+      }
+    }
+    self.parent.close();
+  }
+
+//-->
+</script>
+</head>
+<body class="zmiNeutralColorLight0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+
+<table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">
+<tr>
+<td align="center" valign="top" height="100%">
+
+<form name="form0">
+<nobr>
+<dtml-let values="enumManager.getValues(enum)">
+ <select name="newValue" class="form-element">
+  <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_OBJECT')"> -----</option>
+  <dtml-in "_.range(_.len(values)/2)">
+   <dtml-let i=sequence-item v="values[i*2]" l="values[i*2+1]">
+    <option value="<dtml-var v>"<dtml-if "_.str(v)==_.str(elValue)"> selected="selected"</dtml-if>><dtml-var l></option>
+   </dtml-let>
+  </dtml-in>
+ </select>
+ <input class="form-element" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="selectObject()">
+</dtml-let>
+</nobr>
+</form>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

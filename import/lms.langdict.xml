@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Buchung f&uuml;r diesen Kurs aufheben]]></item>
+<item key="key"><![CDATA[LMS_COURSE_UNREG]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[E-Mail]]></item>
+<item key="key"><![CDATA[profileEmail]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Bild]]></item>
+<item key="key"><![CDATA[profileImage]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Hinweis]]></item>
+<item key="key"><![CDATA[LMS_REG_HINT]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Kursanmeldung erfolgreich]]></item>
+<item key="key"><![CDATA[LMS_COURSE_REG_OK]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Registrierung erfolgreich]]></item>
+<item key="key"><![CDATA[LMS_REG_REG_OK]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Richtige Antwort]]></item>
+<item key="key"><![CDATA[LMS_CMI_CORRECT_RESPONSE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Registrierte Benutzer]]></item>
+<item key="key"><![CDATA[LMS_REG_MEMBERS]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ausloggen]]></item>
+<item key="key"><![CDATA[LMS_REG_LOGOUT]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[f&uuml;r]]></item>
+<item key="key"><![CDATA[LMS_FOR]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Gel&ouml;scht Benutzer]]></item>
+<item key="key"><![CDATA[LMS_MEMBER_DELETED]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Institution/Firma]]></item>
+<item key="key"><![CDATA[profileCompany]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Einloggen und diesen Kurs buchen]]></item>
+<item key="key"><![CDATA[LMS_COURSE_LOGINREG]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Passwort ge&auml;ndert f&uuml;r Benutzer]]></item>
+<item key="key"><![CDATA[LMS_MEMBER_PW_MODIFIED]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ihre Kursbuchung wurde aufgehoben]]></item>
+<item key="key"><![CDATA[LMS_COURSE_UNREG_OK]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[#]]></item>
+<item key="key"><![CDATA[LMS_CMI_NO]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Gewichtung]]></item>
+<item key="key"><![CDATA[LMS_CMI_WEIGHTING]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Einloggen]]></item>
+<item key="key"><![CDATA[LMS_REG_LOGIN]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ergebnis]]></item>
+<item key="key"><![CDATA[LMS_CMI_RESULT]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Passwort]]></item>
+<item key="eng"><![CDATA[Password]]></item>
+<item key="key"><![CDATA[profilePasswd]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Antworten absenden]]></item>
+<item key="key"><![CDATA[BTN_SUBMIT_ANSWERS]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Bitte geben Sie Ihre pers&ouml;nlichen Daten ein]]></item>
+<item key="key"><![CDATA[LMS_REG_PLEASE_ENTER]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Eine Anmeldebest&auml;tigung wird Ihnen per E-mail zugesendet]]></item>
+<item key="key"><![CDATA[LMS_REG_CONFIRM_ANNOUNCE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Homepage http://]]></item>
+<item key="key"><![CDATA[profileWWW]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Registrieren]]></item>
+<item key="key"><![CDATA[LMS_REG_REGISTER]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Sehr geehrte/r]]></item>
+<item key="eng"><![CDATA[Dear]]></item>
+<item key="key"><![CDATA[LMS_REG_SALUTATION]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[PLZ]]></item>
+<item key="eng"><![CDATA[Zip]]></item>
+<item key="key"><![CDATA[profileZip]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Biographie (max. 50 Worte)]]></item>
+<item key="key"><![CDATA[profileCV]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Profil ver&ouml;ffentlichen]]></item>
+<item key="eng"><![CDATA[Publish profile]]></item>
+<item key="key"><![CDATA[profilePublic]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[registriert seit]]></item>
+<item key="eng"><![CDATA[registered since]]></item>
+<item key="key"><![CDATA[LMS_REG_SINCE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ihre Registrierung wurde aufgehoben]]></item>
+<item key="key"><![CDATA[LMS_REG_UNREG_OK]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Fachgebiet]]></item>
+<item key="eng"><![CDATA[Discipline]]></item>
+<item key="key"><![CDATA[profileDiscipline]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Land]]></item>
+<item key="eng"><![CDATA[Country]]></item>
+<item key="key"><![CDATA[profileCountry]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Frage schon beantwortet]]></item>
+<item key="key"><![CDATA[LMS_CMI_QUESTION_ALREADY_ANSWERED]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Vorname]]></item>
+<item key="eng"><![CDATA[Firstname]]></item>
+<item key="key"><![CDATA[profileFirstname]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Telefon]]></item>
+<item key="key"><![CDATA[profileTel]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Benutzer-Track]]></item>
+<item key="key"><![CDATA[LMS_PERSONAL_TRACK]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Erforderliche Information]]></item>
+<item key="key"><![CDATA[LMS_REG_MANDATORY]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Typ]]></item>
+<item key="key"><![CDATA[LMS_CMI_TYPE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Klick registriert]]></item>
+<item key="key"><![CDATA[LMS_CMI_CLICK_REGISTERED]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Frage]]></item>
+<item key="key"><![CDATA[LMS_CMI_QUESTION]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Anrede]]></item>
+<item key="key"><![CDATA[profileSalutation]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Weiter]]></item>
+<item key="key"><![CDATA[BTN_CONTINUE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Eingeloggt als]]></item>
+<item key="key"><![CDATA[LMS_REG_YOU_ARE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ihre Antwort]]></item>
+<item key="key"><![CDATA[LMS_CMI_LEARNER_RESPONSE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Registrierung]]></item>
+<item key="key"><![CDATA[LMS_REG_TITLE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Profil existiert bereits]]></item>
+<item key="key"><![CDATA[LMS_REG_PROFILE_EXISTS]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Strasse/Hausnr.]]></item>
+<item key="key"><![CDATA[profileStreet]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Rolle]]></item>
+<item key="key"><![CDATA[profileRole]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Nachname]]></item>
+<item key="key"><![CDATA[profileLastname]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Ort]]></item>
+<item key="key"><![CDATA[profileCity]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Benutzer-Profil]]></item>
+<item key="key"><![CDATA[LMS_PERSONAL_PROFILE]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Kurse]]></item>
+<item key="key"><![CDATA[LMS_COURSES]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Titel/Akadem. Grad]]></item>
+<item key="key"><![CDATA[profileAcademic]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Eine Best&auml;tigung wurde per E-Mail versendet]]></item>
+<item key="key"><![CDATA[LMS_REG_NOTIFICATION_SENT]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Neuer Benutzer]]></item>
+<item key="key"><![CDATA[LMS_MEMBER_CREATED]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Diesen Kurs buchen]]></item>
+<item key="key"><![CDATA[LMS_COURSE_REG]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Beruf]]></item>
+<item key="key"><![CDATA[profileProfession]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Telefax]]></item>
+<item key="key"><![CDATA[profileFax]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="ger"><![CDATA[Mit freundlchen Gr&uuml;ssen]]></item>
+<item key="key"><![CDATA[LMS_REG_REGARDS]]></item>
+</dictionary>
+</item>
+</list>

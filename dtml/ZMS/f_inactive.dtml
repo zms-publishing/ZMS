@@ -1,0 +1,12 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+ <title>Under construction</title>
+</head>
+<body style="background-color:#ffffff">
+ <h2 style="font-family:verdana,arial,helvetica,sans-serif;color:#001c66">
+ <img src="<dtml-var MISC_ZMS>under_construction.gif">
+  This web site is under construction!
+ </h2>
+</body>
+</html>

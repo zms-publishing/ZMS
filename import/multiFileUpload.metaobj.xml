@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+<item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_multiFileUpload -->
+<!-- modif fh 2007-12-04 -->
+<dtml-var "getObjProperty('actionDelete',REQUEST)">
+<dtml-var "getObjProperty('actionUpload',REQUEST)">
+
+<form method="post" enctype="multipart/form-data" action="."> 
+<table class="ZMSTable" width="97%">
+<tr>
+ <th colspan="2"><dtml-var "_.len(getObjChildren('files',REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></th>
+</tr>
+<dtml-in "getObjChildren('files',REQUEST)" reverse>
+ <dtml-let file="getObjProperty('file',REQUEST)">
+  <tr>
+   <td valign="top"><input type="checkbox" 
+    <dtml-if "AUTHENTICATED_USER.getId()!=getObjProperty('change_uid',REQUEST)">
+     disabled="disabled"
+    </dtml-if>
+    name="ids:list" value="<dtml-var id>"/></td>
+   <td width="100%"><a href="<dtml-var "file.getHref(REQUEST)">" 
+     title="<dtml-var "getTitle(REQUEST)">"
+     target="_blank"><img 
+     src="<dtml-var "file.getMimeTypeIconSrc()">" 
+     title="<dtml-var "file.getContentType()">" border="0" align="absmiddle"
+     /><dtml-var "file.getFilename()" size="32"></a> <dtml-var "file.getDataSizeStr()">
+     <div class="small">Von: <em><dtml-if "getObjProperty('attr_dc_creator',REQUEST)"><dtml-var "getObjProperty('attr_dc_creator',REQUEST)"><dtml-else><dtml-var "getObjProperty('created_uid',REQUEST)"></dtml-if>,</em> 
+     am: <em><dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST),lang,'DATE_FMT')"> um <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST),lang,'TIME_FMT')"></em><br />
+     <dtml-var "getTitle(REQUEST)"></div>
+   </td>
+  </tr>
+ </dtml-let>
+ <dtml-if sequence-end>
+  <tr>
+   <td colspan="2"><input  type="submit" 
+     name="btn" 
+     title="Markierte Dokumente l&ouml;schen (nur m&ouml;glich f&uuml;r die von mir selbst hochgeladenen Dokumente)" 
+     value="<dtml-var "getLangStr('BTN_DELETE',lang)">"
+     onclick="javascript:check=confirm('Wirklich L&ouml;schen?'); if (check==false) return false" 
+    /></td>
+  </tr>
+ </dtml-if>
+</dtml-in>
+</table>
+</form>
+
+<form method="post" enctype="multipart/form-data" action="."> 
+<table class="ZMSTable" width="97%">
+<tr>
+ <th>Neue Datei hochladen:</th>
+</tr>
+<tr>
+ <td><input type="file" name="upload" size="26"
+      title="W&auml;hlen Sie ein Dokument von Ihrer Festplatte zum Hochladen aus."
+     /><div class="small">Hinweis: Bitte im Dateinamen keine Umlaute oder &szlig; verwenden!</div></td>
+</tr>
+<tr>
+ <td><textarea name="title" rows="3" cols="38" title="Kurze Info bzw. Bezeichnung des Dokuments" ></textarea></td>
+</tr>
+<tr>
+ <td><input type="submit" name="btn" value="<dtml-var "getLangStr('BTN_INSERT',lang)">" /></td>
+</tr>
+</table>
+</form>
+
+<!-- EO bodyContentZMSCustom_multiFileUpload -->]]></item>
+<item key="enabled" type="int">1</item>
+<item key="key"><![CDATA[multiFileUpload]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom"></item>
+<item key="default"></item>
+<item key="id"><![CDATA[files]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[File]]></item>
+<item key="repetitive" type="int">1</item>
+<item key="type"><![CDATA[ZMSFile]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO actionDelete //-->
+
+<dtml-if "REQUEST.get('btn')==getLangStr('ACTION_DELETE',lang)">
+ <dtml-if "REQUEST.get('ids')">
+  <dtml-let count="_.len(REQUEST.get('ids'))">
+   <dtml-call "manage_delObjects(ids=REQUEST.get('ids'))">
+   <div class="system-msg" 
+    style="background-color:#FFFFD0;border:1px solid black;margin:6px 0px;padding:4px;width:100%;"
+    ><dtml-var "getLangStr('MSG_DELETED',lang)%count"></div>
+  </dtml-let>
+ </dtml-if>
+</dtml-if>
+
+<!--// EO actionDelete //-->]]></item>
+<item key="default"></item>
+<item key="id"><![CDATA[actionDelete]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Action: Delete]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<!--// BO actionUpload //-->
+
+<dtml-if "REQUEST.get('btn')==getLangStr('BTN_INSERT',lang)">
+ <dtml-if "REQUEST.get('upload')">
+ <dtml-call "REQUEST.set('creator',_.str(AUTHENTICATED_USER))">
+   <dtml-call "manage_addZMSCustom('ZMSFile',{
+     'id_prefix':'files',
+     'titlealt':REQUEST.get('upload').filename[_.max(_.string.rfind(REQUEST.get('upload').filename, '/'),
+       _.string.rfind(REQUEST.get('upload').filename, '\\'),
+       _.string.rfind(REQUEST.get('upload').filename, ':'),)+1:],
+     'title':REQUEST.get('title',REQUEST.get('upload').filename[_.max(_.string.rfind(REQUEST.get('upload').filename, '/'),
+       _.string.rfind(REQUEST.get('upload').filename, '\\'),
+       _.string.rfind(REQUEST.get('upload').filename, ':'),)+1:]),
+     'attr_dc_creator':REQUEST.get('creator'),
+     'file':{'data':REQUEST.get('upload'),'filename':REQUEST.get('upload').filename}},
+     REQUEST)">
+   <div class="system-msg"
+   style="background-color:#FFFFD0;border:1px solid black;margin:6px 0px;padding:4px;width:100%;"
+   ><dtml-var "getLangStr('MSG_INSERTED',lang)%REQUEST.get('upload').filename[_.max(_.string.rfind(REQUEST.get('upload').filename, '/'),
+       _.string.rfind(REQUEST.get('upload').filename, '\\'),
+       _.string.rfind(REQUEST.get('upload').filename, ':'),)+1:]"></div>
+ </dtml-if>
+</dtml-if>
+
+<!--// EO actionUpload //-->
+]]></item>
+<item key="default"></item>
+<item key="id"><![CDATA[actionUpload]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Action: Upload]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="name"><![CDATA[Multi-File Upload]]></item>
+<item key="package"></item>
+<item key="type"><![CDATA[ZMSObject]]></item>
+</dictionary>
+</item>
+</dictionary>
+
+

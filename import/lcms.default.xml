@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ZMS>
+	<active>
+		<lang id="ger">1</lang>
+		<lang id="eng">1</lang>
+	</active>
+	<titlealt>
+		<lang id="ger">LCMS</lang>
+		<lang id="eng">LCMS</lang>
+	</titlealt>
+	<title>
+		<lang id="ger">ZMS eLearning content management</lang>
+		<lang id="eng">ZMS eLearning content management</lang>
+	</title>
+	<ZMSFolder>
+		<active>
+			<lang id="ger">1</lang>
+			<lang id="eng">1</lang>
+		</active>
+		<titlealt>
+			<lang id="ger">Inländische Richtlinien für Wasserstrassen</lang>
+			<lang id="eng">Inland Rules of the Road</lang>
+		</titlealt>
+		<title>
+			<lang id="ger">Inländische Richtlinien für Wasserstrassen</lang>
+			<lang id="eng">Inland Rules of the Road</lang>
+		</title>
+		<ZMSCustom id_fix="SCORMmetaset" meta_id="SCORMmetaset">
+		</ZMSCustom>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Referenz und Ziel des Kurses</lang>
+				<lang id="eng">References and Lesson Objective</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Referenz und Ziel des Kurses</lang>
+				<lang id="eng">References and Lesson Objective</lang>
+			</title>
+			<attr_dc_description>
+				<lang id="ger">Ziel dieses Kurses ist, die Funktionalität und Leistungsfähigkeit der ADL BEISPIEL Lauf-zeit Umgebung zu demonstrieren. CTC does not recommend, propose or otherwise promote the style, fashion, or type of content presented in this course.</lang>
+				<lang id="eng">The purpose of this course is to demonstrate the functionality and capability of the ADL SAMPLE Run-time Environment. CTC does not recommend, propose or otherwise promote the style, fashion, or type of content presented in this course.</lang>
+			</attr_dc_description>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[<b>REFERENZ:</b> U.S. Coast Guard, Commandant Instruction M16672.2C]]></lang>
+					<lang id="ger"><![CDATA[<b>REFERENCE:</b> U.S. Coast Guard, Commandant Instruction M16672.2C]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Die Inhalte dieses Kurses entsprechen den Regeln der U.S.-Küstenwache für Wasserstrassen in Übereinstimmung mit U.S. Bestimmungen.]]></lang>
+					<lang id="ger"><![CDATA[The material of this course is of the U.S Coast Guard's Rules of the Road in compliance with U.S. Regulations.]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[<b>ZIEL DER ÜBUNG:</b> Dieser Kurs möchte dem Lernenden ein grundsätzliches Verständnis von den inländischen Richtlinien der Navigation vermitteln. These rules have been Coast Guard approved according to the instruction listed above and U.S. Law.]]></lang>
+					<lang id="eng"><![CDATA[<b>LESSON OBJECTIVE:</b> This course will give the student a basic understanding of the Inland Rules of Navigation. These rules have been Coast Guard approved according to the instruction listed above and U.S. Law.]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+		</ZMSDocument>
+		<ZMSFolder>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Richtlinien zum Steuern &amp; Segeln</lang>
+				<lang id="eng">Steering &amp; Sailing Rules</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Richtlinien zum Steuern &amp; Segeln</lang>
+				<lang id="eng">Steering &amp; Sailing Rules</lang>
+			</title>
+			<ZMSDocument>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<titlealt>
+					<lang id="ger">Führung von Schiffen bei jedweder Sicht</lang>
+					<lang id="eng">Conduct of Vessels in any Condition of Visibility</lang>
+				</titlealt>
+				<title>
+					<lang id="ger">Führung von Schiffen bei jedweder Sicht</lang>
+					<lang id="eng">Conduct of Vessels in any Condition of Visibility</lang>
+				</title>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[DEFINITIONEN:]]></lang>
+						<lang id="eng"><![CDATA[DEFINITIONS:]]></lang>
+					</text>
+					<format>headline_3</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[<dl>
+ <dt><b><i>Unterwegs</i></b><dd>Das Schiff hat keinen Anker gelassen und ist nicht auf Grund gelaufen
+ <dt><b><i>Länge</i></b><dd>Die gesamte Länge des Schiffs
+ <dt><b><i>Breite</i></b><dd>Die grösste Breite des Schiffs
+ <dt><b><i>Eingeschränkte Sicht</i></b><dd>Alle Bedingungen unter denen die Sicht durch Nebel, Dunst, Schnee, Regen oder Sandstürme behindert ist
+ <dt><b><i>Inländische Gewässer</i></b><dd>The navigable waters of the U.S. shoreward of the navigational demarcation lines dividing the high seas from harbors, rivers, and other inland waters of the U.S. and the waters of the Great Lakes on the U.S. side of the International Boundary
+ <dt><b><i>Inländische Richtlinien oder Richtlinien</i></b><dd>The Inland Navigational Rules which govern the conduct of vessels and specify the lights, shapes, and sound signals that apply to inland waters according to the above listed U.S. Coast Guard instruction
+ <dt><b><i>Internationale Regelungen</i></b><dd>International regulations for Preventing Collisions at Sea, 1972 currently in force for the U.S.
+</dl>]]></lang>
+						<lang id="eng"><![CDATA[<dl>
+ <dt><b><i>underway</i></b><dd>The vessel is not at anchor or has not run aground
+ <dt><b><i>length</i></b><dd>The vessels overall length
+ <dt><b><i>breadth</i></b><dd>The vessels greatest breadth
+ <dt><b><i>restricted visibility</i></b><dd>Any condition in which visibility is restricted by fog, mist, snow, rain, or sandstorms
+ <dt><b><i>inland waters</i></b><dd>The navigable waters of the U.S. shoreward of the navigational demarcation lines dividing the high seas from harbors, rivers, and other inland waters of the U.S. and the waters of the Great Lakes on the U.S. side of the International Boundary
+ <dt><b><i>inland rules or rules</i></b><dd>The Inland Navigational Rules which govern the conduct of vessels and specify the lights, shapes, and sound signals that apply to inland waters according to the above listed U.S. Coast Guard instruction
+ <dt><b><i>international regulations</i></b><dd>International regulations for Preventing Collisions at Sea, 1972 currently in force for the U.S.
+</dl>]]></lang>
+					</text>
+					<format>plain_html</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[Ausblick:]]></lang>
+						<lang id="eng"><![CDATA[Look-out:]]></lang>
+					</text>
+					<format>headline_3</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[Every vessel shall, at all times, maintain a proper look-out by sight and heading as well as additional look-outs should the weather and/or visibility decline]]></lang>
+						<lang id="eng"><![CDATA[Every vessel shall, at all times, maintain a proper look-out by sight and heading as well as additional look-outs should the weather and/or visibility decline]]></lang>
+					</text>
+					<format>body</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+			</ZMSDocument>
+			<ZMSDocument>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<titlealt>
+					<lang id="ger">Führung von Schiffen in Sichtweite zueinander</lang>
+					<lang id="eng">Conduct of Vessels in Sight of One Another</lang>
+				</titlealt>
+				<title>
+					<lang id="ger">Führung von Schiffen in Sichtweite zueinander</lang>
+					<lang id="eng">Conduct of Vessels in Sight of One Another</lang>
+				</title>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[Segelschiffe]]></lang>
+						<lang id="eng"><![CDATA[Sailing Vessels]]></lang>
+					</text>
+					<format>headline_3</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[<dl>
+ <dt>a) Wenn zwei Segelschiffe einander mit dem möglichen Risiko einer Kollision begegnen, soll eines von beiden dem anderen wie folgt ausweichen:
+  <dl>
+   <dt>1) When each has the wind on a different side, the vessel which has the wind on the port side shall keep out of the way of the other
+   <dt>2) When both have the wind on the same side, the vessel which is windward shall keep out of the way of the vessel which is to leeward
+   <dt>3) If a vessel with the wind on the port side sees a vessel to windward and cannot determine with certainty whether the other vessel has the wind on the port or on the starboard side, she shall keep out of the way of the other.
+  </dl>
+ <dt>b) For the purpose of this Rule the windward side shall be deemed to be the side opposite to that on which the mainsail is carried or, in the case of a square-rigged vessel, the side opposite to that on which the largest fore-and-aft sail is carried
+</dl>]]></lang>
+						<lang id="eng"><![CDATA[<dl>
+ <dt>a) When two sailing vessels are approaching one another, with a possible risk of collision, one of them shall keep out of the way of the other as follows:
+  <dl>
+   <dt>1) When each has the wind on a different side, the vessel which has the wind on the port side shall keep out of the way of the other
+   <dt>2) When both have the wind on the same side, the vessel which is windward shall keep out of the way of the vessel which is to leeward
+   <dt>3) If a vessel with the wind on the port side sees a vessel to windward and cannot determine with certainty whether the other vessel has the wind on the port or on the starboard side, she shall keep out of the way of the other.
+  </dl>
+ <dt>b) For the purpose of this Rule the windward side shall be deemed to be the side opposite to that on which the mainsail is carried or, in the case of a square-rigged vessel, the side opposite to that on which the largest fore-and-aft sail is carried
+</dl>]]></lang>
+					</text>
+					<format>plain_html</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[Überholen]]></lang>
+						<lang id="eng"><![CDATA[Overtaking]]></lang>
+					</text>
+					<format>headline_3</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[<dl>
+ <dt>a) Notwithstanding anything contained in any of the above Rules, any vessel overtaking any other shall keep out of the way of the vessel being overtaken.
+ <dt>b) A vessel shall be deemed to be overtaking when coming up with another vessel from a direction more than 22.5 degrees abaft her beam; that is, in such a position with reference to the vessel she is overtaking, that at night she would be able to see only the sternlight of that vessel but neither of her sidelights.
+ <dt>c) When a vessel is in any doubt as to whether she is overtaking another, she shall assume that this is the case and act accordingly.
+ <dt>d) Any subsequent alteration of the bearing between the two vessels shall not make the overtaking vessel a crossing vessel within the meaning of these Rules or relieve her of the duty of keeping clear of the overtaken vessel until she is finally past and clear
+</dl>]]></lang>
+						<lang id="eng"><![CDATA[<dl>
+ <dt>a) Notwithstanding anything contained in any of the above Rules, any vessel overtaking any other shall keep out of the way of the vessel being overtaken.
+ <dt>b) A vessel shall be deemed to be overtaking when coming up with another vessel from a direction more than 22.5 degrees abaft her beam; that is, in such a position with reference to the vessel she is overtaking, that at night she would be able to see only the sternlight of that vessel but neither of her sidelights.
+ <dt>c) When a vessel is in any doubt as to whether she is overtaking another, she shall assume that this is the case and act accordingly.
+ <dt>d) Any subsequent alteration of the bearing between the two vessels shall not make the overtaking vessel a crossing vessel within the meaning of these Rules or relieve her of the duty of keeping clear of the overtaken vessel until she is finally past and clear
+</dl>]]></lang>
+					</text>
+					<format>plain_html</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+			</ZMSDocument>
+			<ZMSDocument>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<titlealt>
+					<lang id="ger">Führung von Schiffen bei eingeschränkter Sicht</lang>
+					<lang id="eng">Conduct of Vessels in Restricted Visibility</lang>
+				</titlealt>
+				<title>
+					<lang id="ger">Führung von Schiffen bei eingeschränkter Sicht</lang>
+					<lang id="eng">Conduct of Vessels in Restricted Visibility</lang>
+				</title>
+				<ZMSTextarea>
+					<text>
+						<lang id="ger"><![CDATA[<dl>
+ <dt>a) Diese Regel gilt für Schiffe ohne Sicht auf einander beim Navigieren in oder nahe eines Gebiets mit eingeschränkter Sicht.
+ <dt>b) Every vessel shall proceed at a safe speed adapted to the prevailing circumstances and conditions of restricted visibility. A power driven vessel shall have her engines ready for immediate maneuver.
+ <dt>c) Every vessel shall have due regard to the prevailing circumstances and conditions of restricted visibility when complying with the above Rules
+ <dt>d) A vessel which detects by radar alone the presence of another vessel shall determine if a close-quarters situation is developing or risk of collision exists. If so, she shall take avoiding action in ample time, provided that when such action consists of an alteration of course, so far as possible the following shall be avoided:
+  <dl>
+   <dt>1) An alteration of course to port for a vessel forward of the beam, other than for a vessel being overtaken; and
+   <dt>2) An alteration of course toward a vessel abeam or abaft the beam
+  </dl>
+ <dt>e) Except where it has been determined that a risk of collision does not exist, every vessel which hears apparently forward of her beam the fog signal of another vessel, or which cannot avoid a close quarters situation with another vessel forward of her beam, shall reduce her speed to the minimum at which she can be kept on course. She shall if necessary take all her way off and, in any event, navigate with extreme caution until danger of collision is over.
+</dl>]]></lang>
+						<lang id="eng"><![CDATA[<dl>
+ <dt>a) This Rule applies to vessels not in sight of one another when navigating in or near an area of restricted visibility.
+ <dt>b) Every vessel shall proceed at a safe speed adapted to the prevailing circumstances and conditions of restricted visibility. A power driven vessel shall have her engines ready for immediate maneuver.
+ <dt>c) Every vessel shall have due regard to the prevailing circumstances and conditions of restricted visibility when complying with the above Rules
+ <dt>d) A vessel which detects by radar alone the presence of another vessel shall determine if a close-quarters situation is developing or risk of collision exists. If so, she shall take avoiding action in ample time, provided that when such action consists of an alteration of course, so far as possible the following shall be avoided:
+  <dl>
+   <dt>1) An alteration of course to port for a vessel forward of the beam, other than for a vessel being overtaken; and
+   <dt>2) An alteration of course toward a vessel abeam or abaft the beam
+  </dl>
+ <dt>e) Except where it has been determined that a risk of collision does not exist, every vessel which hears apparently forward of her beam the fog signal of another vessel, or which cannot avoid a close quarters situation with another vessel forward of her beam, shall reduce her speed to the minimum at which she can be kept on course. She shall if necessary take all her way off and, in any event, navigate with extreme caution until danger of collision is over.
+</dl>]]></lang>
+					</text>
+					<format>plain_html</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+			</ZMSDocument>
+		</ZMSFolder>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Lichter &amp; Formen</lang>
+				<lang id="eng">Lights &amp; Shapes</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Lichter &amp; Formen</lang>
+				<lang id="eng">Lights &amp; Shapes</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Anbringung]]></lang>
+					<lang id="eng"><![CDATA[Application]]></lang>
+				</text>
+				<format>headline_3</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[<dl>
+ <dt>a) Rules in this Part shall be complied with in all weathers
+ <dt>b) The Rules concerning lights shall be complied with from sunset to sunrise, and during such times no other lights shall be exhibited, except such lights as cannot be mistaken for the lights specified in these Rules or do not impair their visibility or distinctive character, or interfere with the keeping of a proper look-out
+ <dt>c) The lights prescribed by these Rules shall also be exhibited from sunrise to sunset in restricted visibility and may be exhibited in all other circumstances when it is deemed necessary
+ <dt>d) The Rules concerning shapes shall be complied with by day
+</dl>]]></lang>
+					<lang id="eng"><![CDATA[<dl>
+ <dt>a) Rules in this Part shall be complied with in all weathers
+ <dt>b) The Rules concerning lights shall be complied with from sunset to sunrise, and during such times no other lights shall be exhibited, except such lights as cannot be mistaken for the lights specified in these Rules or do not impair their visibility or distinctive character, or interfere with the keeping of a proper look-out
+ <dt>c) The lights prescribed by these Rules shall also be exhibited from sunrise to sunset in restricted visibility and may be exhibited in all other circumstances when it is deemed necessary
+ <dt>d) The Rules concerning shapes shall be complied with by day
+</dl>]]></lang>
+				</text>
+				<format>plain_html</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Definitionen]]></lang>
+					<lang id="eng"><![CDATA[Definitions]]></lang>
+				</text>
+				<format>headline_3</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[<dl>
+ <dt><b><i>masthead light</i></b><dd>A white light placed over the fore and aft centerline of the vessel showing an unbroken light over an arc of the horizon of 225 degrees and so fixed as to show the light from right ahead to 22.5 degrees abaft the beam on either side of the vessel, except that on a vessel of less than 12 meters in length the masthead light shall be placed as nearly as practicable to the fore and aft centerline of the vessel
+ <dt><b><i>Sidelights</i></b><dd>A green light on the starboard side and a red light on the port side each showing an unbroken light over an arc of the horizon of 112.5 degrees and so fixed as to show the light from right ahead to 22.5 degrees abaft the beam on its respective side. On a vessel of less than 20 meters in length the sidelights may be combined in one lantern carried on the fore and aft centerline of the vessel, except that on a vessel of less than 12 meters in length the side-lights when combined in one lantern shall be placed as nearly as practicable to the fore and aft centerline of the vessel.
+ <dt><b><i>Sternlight</i></b><dd>A white light placed as nearly as practicable at the stern showing an unbroken light over an arc of the horizon of 135 degrees and so fixed as to show the light 67.5 degrees from right aft on each side of the vessel.
+ <dt><b><i>towing light</i></b><dd>A yellow light having the same characteristics as the "sternlight"
+ <dt><b><i>all-round light</i></b><dd>A light showing an unbroken light over an arc of the horizon of 360 degrees
+ <dt><b><i>flashing light</i></b><dd>A light flashing at regular intervals at a frequency of 120 flashes or more per minute
+ <dt><b><i>special flashing light</i></b><dd>A yellow light flashing at regular intervals at a frequency of 50 to 70 flashes per minute, placed as far forward and as nearly as practicable on the fore and aft centerline of the tow and showing an unbroken light over an arc of the horizon of not less than 180 degrees nor more than 225 degrees and so fixed as to show the light from right ahead to abeam and no more than 22.5 degrees abaft the beam on either side of the vessel
+</dl>]]></lang>
+					<lang id="eng"><![CDATA[<dl>
+ <dt><b><i>masthead light</i></b><dd>A white light placed over the fore and aft centerline of the vessel showing an unbroken light over an arc of the horizon of 225 degrees and so fixed as to show the light from right ahead to 22.5 degrees abaft the beam on either side of the vessel, except that on a vessel of less than 12 meters in length the masthead light shall be placed as nearly as practicable to the fore and aft centerline of the vessel
+ <dt><b><i>Sidelights</i></b><dd>A green light on the starboard side and a red light on the port side each showing an unbroken light over an arc of the horizon of 112.5 degrees and so fixed as to show the light from right ahead to 22.5 degrees abaft the beam on its respective side. On a vessel of less than 20 meters in length the sidelights may be combined in one lantern carried on the fore and aft centerline of the vessel, except that on a vessel of less than 12 meters in length the side-lights when combined in one lantern shall be placed as nearly as practicable to the fore and aft centerline of the vessel.
+ <dt><b><i>Sternlight</i></b><dd>A white light placed as nearly as practicable at the stern showing an unbroken light over an arc of the horizon of 135 degrees and so fixed as to show the light 67.5 degrees from right aft on each side of the vessel.
+ <dt><b><i>towing light</i></b><dd>A yellow light having the same characteristics as the "sternlight"
+ <dt><b><i>all-round light</i></b><dd>A light showing an unbroken light over an arc of the horizon of 360 degrees
+ <dt><b><i>flashing light</i></b><dd>A light flashing at regular intervals at a frequency of 120 flashes or more per minute
+ <dt><b><i>special flashing light</i></b><dd>A yellow light flashing at regular intervals at a frequency of 50 to 70 flashes per minute, placed as far forward and as nearly as practicable on the fore and aft centerline of the tow and showing an unbroken light over an arc of the horizon of not less than 180 degrees nor more than 225 degrees and so fixed as to show the light from right ahead to abeam and no more than 22.5 degrees abaft the beam on either side of the vessel
+</dl>]]></lang>
+				</text>
+				<format>plain_html</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+		</ZMSDocument>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Ton- &amp; Lichtsignale</lang>
+				<lang id="eng">Sound &amp; Light Signals</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Ton- &amp; Lichtsignale</lang>
+				<lang id="eng">Sound &amp; Light Signals</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Ton und Lichtsignale]]></lang>
+					<lang id="eng"><![CDATA[Sound and Light Signals]]></lang>
+				</text>
+				<format>headline_3</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[<dl>
+ <dt><b><i>whistle</i></b>--Any sound signaling appliance capable of producing the prescribed blasts and which complies with the specifications in Annex III of the referenced instruction
+ <dt><b><i>short blast</i></b>--A blast of about a one second duration.
+ <dt><b><i>prolonged blast</i></b>--A blast of from four to six seconds' duration.
+</dl>]]></lang>
+					<lang id="eng"><![CDATA[<dl>
+ <dt><b><i>whistle</i></b>--Any sound signaling appliance capable of producing the prescribed blasts and which complies with the specifications in Annex III of the referenced instruction
+ <dt><b><i>short blast</i></b>--A blast of about a one second duration.
+ <dt><b><i>prolonged blast</i></b>--A blast of from four to six seconds' duration.
+</dl>]]></lang>
+				</text>
+				<format>plain_html</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+		</ZMSDocument>
+		<ZMSCustom meta_id="SCORMexQZMS">
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">1ste Prüfung</lang>
+				<lang id="eng">1st Exam</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Inländische Richtlinien für Wasserstrassen - 1ste Prüfung</lang>
+				<lang id="eng">Inland Rules of the Road - 1st Exam</lang>
+			</title>
+			<learningresourcetype>Exam</learningresourcetype>
+			<layout_sco_single_page>0</layout_sco_single_page>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQExplanation">
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<ZMSTextarea id_prefix="xqItems">
+					<text>
+						<lang id="ger"><![CDATA[Bitte beantworten Sie die folgenden Fragen.]]></lang>
+						<lang id="eng"><![CDATA[Please answer the following questions.]]></lang>
+					</text>
+					<format>body</format>
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+				</ZMSTextarea>
+			</ZMSCustom>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQMultipleChoice">
+				<cmi_interactions_type>choice</cmi_interactions_type>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<xqType>
+					<lang id="ger">single</lang>
+					<lang id="eng">single</lang>
+				</xqType>
+				<xqText>
+					<lang id="ger"><![CDATA[Ein motor-getriebenes Schiff soll sich unterwegs fernhalten von:]]></lang>
+					<lang id="eng"><![CDATA[A power-driven vessel underway shall keep out of:]]></lang>
+				</xqText>
+				<cmi_interactions_weighting>0.4</cmi_interactions_weighting>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Einem führerlosen Schiff]]></lang>
+						<lang id="eng"><![CDATA[A vessel not under command]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist korrekt, aber es ist nicht die einzige Antwort!]]></lang>
+						<lang id="eng"><![CDATA[This is correct, but it is not the only answer!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Einem eingeschränkt manövrierfähigen Schiff]]></lang>
+						<lang id="eng"><![CDATA[A vessel restricted in her ability to maneuver]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist korrekt, aber es ist nicht die einzige Antwort!]]></lang>
+						<lang id="eng"><![CDATA[This is correct, but it is not the only answer!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Einem Schiff beim Fischfang]]></lang>
+						<lang id="eng"><![CDATA[A vessel engaged in fishing]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist korrekt, aber es ist nicht die einzige Antwort!]]></lang>
+						<lang id="eng"><![CDATA[This is correct, but it is not the only answer!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>1</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Alles bisher genannte (*)]]></lang>
+						<lang id="eng"><![CDATA[All of the above (*)]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist richtig!]]></lang>
+						<lang id="eng"><![CDATA[This is correct!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+			</ZMSCustom>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQMultipleChoice">
+				<cmi_interactions_type>choice</cmi_interactions_type>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<xqType>
+					<lang id="ger">single</lang>
+					<lang id="eng">single</lang>
+				</xqType>
+				<xqText>
+					<lang id="ger"><![CDATA[Auf welcher Seite soll ein grünes Lauflicht angebracht werden?]]></lang>
+					<lang id="eng"><![CDATA[On which side shall a green running light be displayed?]]></lang>
+				</xqText>
+				<cmi_interactions_weighting>0.2</cmi_interactions_weighting>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Backbord]]></lang>
+						<lang id="eng"><![CDATA[Port]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>1</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Steuerbord (*)]]></lang>
+						<lang id="eng"><![CDATA[Starboard (*)]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist richtig!]]></lang>
+						<lang id="eng"><![CDATA[This is correct!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Keine von beiden]]></lang>
+						<lang id="eng"><![CDATA[None of these]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch, es soll auf einer Seite angebracht werden!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong, it shall be displayed only on either side!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Auf beiden]]></lang>
+						<lang id="eng"><![CDATA[Both of these]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch, es soll auf einer Seite angebracht werden!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong, it shall be displayed only on either side!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+			</ZMSCustom>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQMultipleChoice">
+				<cmi_interactions_type>choice</cmi_interactions_type>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<xqType>
+					<lang id="ger">single</lang>
+					<lang id="eng">single</lang>
+				</xqType>
+				<xqText>
+					<lang id="ger"><![CDATA[Ein nach allen Seiten blinkendes gelbes Licht zeigt an:]]></lang>
+					<lang id="eng"><![CDATA[An all around flashing yellow light indicates:]]></lang>
+				</xqText>
+				<cmi_interactions_weighting>0.3</cmi_interactions_weighting>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Segelschiff]]></lang>
+						<lang id="eng"><![CDATA[Sailing vessel]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Zusammengesetzte Einheit unterwegs]]></lang>
+						<lang id="eng"><![CDATA[Composite unit underway]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>1</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Lufkissenboot im Nichtversetzungs-Modus (*)]]></lang>
+						<lang id="eng"><![CDATA[Air-cushion vessel in non-displacement mode (*)]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist richtig!]]></lang>
+						<lang id="eng"><![CDATA[This is correct!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Eingeschränkt manövrierfähiges Schiff]]></lang>
+						<lang id="eng"><![CDATA[Vessel restricted in her ability to maneuver]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+			</ZMSCustom>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQMultipleChoice">
+				<cmi_interactions_type>choice</cmi_interactions_type>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<xqType>
+					<lang id="ger">single</lang>
+					<lang id="eng">single</lang>
+				</xqType>
+				<xqText>
+					<lang id="ger"><![CDATA[Ein Schiff das auf den westlichen Flüssen stromabwärts fährt begegnet einem anderen Schiff, dass stromaufwärts fährt. Welches Schiff hat Vorfahrt?]]></lang>
+					<lang id="eng"><![CDATA[A vessel proceeding downstream in a narrow channel on the Western Rivers sights another vessel moving upstream. Which vessel has the right of way?]]></lang>
+				</xqText>
+				<cmi_interactions_weighting>0.2</cmi_interactions_weighting>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Das Schiiff, das stromaufwärts gegen die Strömung fährt]]></lang>
+						<lang id="eng"><![CDATA[The vessel moving upstream against the current]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>1</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Das Schiiff, das stromabwärts mit Strömung fährt]]></lang>
+						<lang id="eng"><![CDATA[The vessel moving downstream with a following current (*)]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist richtig!]]></lang>
+						<lang id="eng"><![CDATA[This is correct!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Das Schiff, dass sich am nächsten zur Flussmitte befindet]]></lang>
+						<lang id="eng"><![CDATA[The vessel located more towards the channel centerline]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Das Schiff, dass als erstes sein Horn ertönen lässt]]></lang>
+						<lang id="eng"><![CDATA[The vessel sounding the first whistle signal]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+			</ZMSCustom>
+			<ZMSCustom id_prefix="exQuestions" meta_id="examQMultipleChoice">
+				<cmi_interactions_type>choice</cmi_interactions_type>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<xqType>
+					<lang id="ger">single</lang>
+					<lang id="eng">single</lang>
+				</xqType>
+				<xqText>
+					<lang id="ger"><![CDATA[Ein Schiff, dass auf Grund gelaufen ist, soll folgende Lichter anzeigen:]]></lang>
+					<lang id="eng"><![CDATA[A vessel aground shall exhibit which of the following lights:]]></lang>
+				</xqText>
+				<cmi_interactions_weighting>0.1</cmi_interactions_weighting>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>1</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Zwei rote Rundlichter in vertikaler Linie (*)]]></lang>
+						<lang id="eng"><![CDATA[two all-round red lights in a vertical line (*)]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist richtig!]]></lang>
+						<lang id="eng"><![CDATA[This is correct!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Zwei Rundlichter in vertikaler Linie, dass obere weiss und das untere rot]]></lang>
+						<lang id="eng"><![CDATA[two all-round lights in a vertical line, the upper being white and the lower red]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Drei grüne Rundliichter]]></lang>
+						<lang id="eng"><![CDATA[three all-round green lights]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+				<ZMSCustom id_prefix="xqItems" meta_id="examQMultipleChoiceItem">
+					<active>
+						<lang id="ger">1</lang>
+						<lang id="eng">1</lang>
+					</active>
+					<xqiValue>0</xqiValue>
+					<xqiText>
+						<lang id="ger"><![CDATA[Drei Rundlichter in vertikaler Linie, das oberste und unterste der Lichter rot und das mittlere weiss]]></lang>
+						<lang id="eng"><![CDATA[Three all-round lights in a vertical line where the highest and lowest of these lights shall be red and the middle light shall be white]]></lang>
+					</xqiText>
+					<xqiFeedback>
+						<lang id="ger"><![CDATA[Dies ist falsch!]]></lang>
+						<lang id="eng"><![CDATA[This is wrong!]]></lang>
+					</xqiFeedback>
+				</ZMSCustom>
+			</ZMSCustom>
+		</ZMSCustom>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">1ste Rückmeldung durchgefallen</lang>
+				<lang id="eng">1st Feedback Failed</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">1ste Rückmeldung durchgefallen</lang>
+				<lang id="eng">1st Feedback Failed</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Sie haben die Prüfung nicht bestanden!]]></lang>
+					<lang id="eng"><![CDATA[You failed to pass the exam!]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSCustom id_fix="SCORMseq" meta_id="SCORMseq">
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<records>
+					<list>
+						<item type="dictionary">
+							<dictionary>
+								<item key="seqCondition"><![CDATA[satisfied]]></item>
+								<item key="seqOperator"><![CDATA[not]]></item>
+								<item key="seqReferencedObjective"><![CDATA[{$e2/e28}]]></item>
+							</dictionary>
+						</item>
+					</list>
+				</records>
+			</ZMSCustom>
+		</ZMSDocument>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">1ste Rückmeldung bestanden</lang>
+				<lang id="eng">1st Feedback Passed</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">1ste Rückmeldung erfolgreich bestanden</lang>
+				<lang id="eng">1st Feedback Passed Successfully</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Herzlichen Glückwunsch!
+Sie haben die Prüfung erfolgreich bestanden!]]></lang>
+					<lang id="eng"><![CDATA[Congratulations!
+You passed the exam successfully!]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSCustom id_fix="SCORMseq" meta_id="SCORMseq">
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<records>
+					<list>
+						<item type="dictionary">
+							<dictionary>
+								<item key="seqCondition"><![CDATA[satisfied]]></item>
+								<item key="seqOperator"><![CDATA[-]]></item>
+								<item key="seqReferencedObjective"><![CDATA[{$e2/e28}]]></item>
+							</dictionary>
+						</item>
+					</list>
+				</records>
+			</ZMSCustom>
+		</ZMSDocument>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Nur für Wiederholer</lang>
+				<lang id="eng">Only for repeaters</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Nur für Wiederholer</lang>
+				<lang id="eng">Only for repeaters</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Sie sollten diesen Kurs wiederholen!]]></lang>
+					<lang id="eng"><![CDATA[You should repeat this Course!]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+			<ZMSCustom id_fix="SCORMseq" meta_id="SCORMseq">
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+				<records>
+					<list>
+						<item type="dictionary">
+							<dictionary>
+								<item key="seqCondition"><![CDATA[satisfied]]></item>
+								<item key="seqOperator"><![CDATA[not]]></item>
+								<item key="seqReferencedObjective"><![CDATA[{$e2/e28}]]></item>
+							</dictionary>
+						</item>
+						<item type="dictionary">
+							<dictionary>
+								<item key="seqCondition"><![CDATA[satisfied]]></item>
+								<item key="seqOperator"><![CDATA[-]]></item>
+								<item key="seqReferencedObjective"><![CDATA[{$e2/e54}]]></item>
+							</dictionary>
+						</item>
+					</list>
+				</records>
+			</ZMSCustom>
+		</ZMSDocument>
+		<ZMSDocument>
+			<active>
+				<lang id="ger">1</lang>
+				<lang id="eng">1</lang>
+			</active>
+			<titlealt>
+				<lang id="ger">Zusammenfassung</lang>
+				<lang id="eng">Summary</lang>
+			</titlealt>
+			<title>
+				<lang id="ger">Zusammenfassung</lang>
+				<lang id="eng">Summary</lang>
+			</title>
+			<ZMSTextarea>
+				<text>
+					<lang id="ger"><![CDATA[Hier kommt die Zusammenfassung dieses Kurses.!]]></lang>
+					<lang id="eng"><![CDATA[Here comes the summary of this Course!]]></lang>
+				</text>
+				<format>body</format>
+				<active>
+					<lang id="ger">1</lang>
+					<lang id="eng">1</lang>
+				</active>
+			</ZMSTextarea>
+		</ZMSDocument>
+	</ZMSFolder>
+</ZMS>

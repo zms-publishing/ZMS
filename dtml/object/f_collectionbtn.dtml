@@ -1,0 +1,18 @@
+<dtml-comment> 
+*******************************************************************************
+*	f_collectionBtn
+*	@param required
+*	@param url
+*******************************************************************************
+</dtml-comment>
+<nobr
+><select class="form-small collectionBtn" onchange="location.href='<dtml-var url>&btn=move_to&lang=<dtml-var lang>&pos:int='+this.selectedIndex" onfocus="collectionPositionPopulate(this,<dtml-var sequence-length>)" onmouseover="collectionPositionPopulate(this,<dtml-var sequence-length>)"
+ ><option selected="selected"><dtml-var "_['sequence-index']+1"></option
+></select
+><dtml-if required
+><img src="<dtml-var spacer_gif>" title="" border="0" class="button" width="20" height="20"
+><dtml-else
+><a href="javascript:collectionDeleteBtnOnClick('<dtml-var url>')" class="button"
+><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"></a
+></dtml-if
+></nobr>

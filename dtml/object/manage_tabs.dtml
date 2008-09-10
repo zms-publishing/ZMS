@@ -1,0 +1,125 @@
+<dtml-var manage_bodyTop>
+
+<dtml-unless my_manage_options>
+ <dtml-call "REQUEST.set('my_lang', lang)">
+ <dtml-call "REQUEST.set('my_manage_options',filtered_manage_options())">
+ <dtml-call "REQUEST.set('lang', my_lang)">
+</dtml-unless>
+<dtml-call "REQUEST.set('_mo',[])">
+<dtml-in my_manage_options>
+  <dtml-if "not (_['sequence-item']['action'].find('manage_UndoVersionForm')>=0 and not getHistory())">
+    <dtml-call "REQUEST['_mo'].append(_['sequence-item'])">
+  </dtml-if>
+</dtml-in>
+
+<dtml-with "_(manage_options=REQUEST['_mo'])">
+<dtml-if manage_options>
+
+<dtml-call "REQUEST.set('n_', _.len(manage_options)-1)">
+<dtml-call "REQUEST.set('a_', 0)">
+
+<dtml-in manage_options mapping
+ ><dtml-if expr="URL.split('/')[-1].find(action)==0 or URL[-17:]=='/manage_workspace' and _['sequence-start']"
+  ><dtml-call "REQUEST.set('a_', _['sequence-index'])"
+ ><dtml-elif manage_options_default_action
+  ><dtml-if "manage_options_default_action.find(action)==0"
+   ><dtml-call "REQUEST.set('a_', _['sequence-index'])"
+  ></dtml-if
+ ></dtml-if
+></dtml-in>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="zmiTabBg">
+<tr valign="bottom">
+ <td align="left">
+  <dtml-in manage_options mapping>
+   <div class="zmiTab<dtml-var "_.int(_['sequence-index']==a_)">"
+    ><dtml-if "action and not action==''"
+     ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);" class="zmi"
+      ><dtml-var "getZMILangStr(label)"
+     ></a
+    ><dtml-else
+     ><dtml-var "getZMILangStr(label)"
+    ></dtml-if
+   ></div>
+  </dtml-in>
+ </td>
+ <td align="right">
+ <dtml-unless ZMS_INSERT>
+  <dtml-try>
+  <table cellspacing="0" cellpadding="0" border="0">
+  <tr valign="middle">
+  <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
+   <dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] in manage_options[0]['action']">
+    <dtml-call "RESPONSE.redirect('%s/manage_system?lang=%s'%(absolute_url(),lang))">
+   </dtml-if>
+  <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
+   <td class="zmiTabBtn0"
+    ><a href="f_api_html?lang=<dtml-var lang>" class="zmi"
+     ><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14"
+    ></a
+   ></td>
+  </dtml-if>
+   <td class="zmiTabBtn<dtml-var "_.int(REQUEST.get('dtpref_system','0')=='1')">"
+    ><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi"
+     ><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14"
+    ></a
+   ></td>
+  </dtml-if>
+  <td class="zmiTabBtn<dtml-var "_.int(REQUEST.get('dtpref_sitemap','0')=='1')">"
+   ><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi"
+    ><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14"
+   ></a
+  ></td>
+  <td class="zmiTabBtn<dtml-var "_.int(URL.find('/manage_search')>0)">"
+   ><a href="manage_search?lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi" accesskey="F"
+    ><img src="<dtml-var MISC_ZMS>op_search.gif" title="<dtml-var "getZMILangStr('TAB_SEARCH')">: ALT+Shift+F" border="0" width="14" height="14"
+   ></a
+  ></td>
+  <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Author',getTrashcan())">
+  <td class="zmiTabBtn<dtml-var "_.int(URL.find(getTrashcan().id+'/')>0)">"
+   ><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>" class="zmi"
+    ><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14"
+   ></a
+  ></td>
+  </dtml-if>
+  </tr>
+  </table>
+  <dtml-except>
+  </dtml-try>
+ </dtml-unless>
+ </td>
+</tr>
+</table>
+
+</dtml-if>
+</dtml-with>
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%" class="zmiNeutralColorMedium0 zmiInfo">
+<tr valign="top">
+<td>
+<dtml-if "_.len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
+<div class="system-msg">
+<img src="<dtml-var MISC_ZMS>msg_info.gif" title="Info" border="0" align="absmiddle"/>
+<dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
+(<dtml-var "getLangFmtDate(ZopeTime())">)
+</div>
+<dtml-elif "_.len(REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message','')))>0">
+<div class="system-msg">
+<img src="<dtml-var MISC_ZMS>msg_warning.gif" title="Warning" border="0" align="absmiddle"/>
+<dtml-var "REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message',''))">
+(<dtml-var "getLangFmtDate(ZopeTime())">)
+</div>
+<dtml-elif "_.len(REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message','')))>0">
+<div class="system-msg">
+<img src="<dtml-var MISC_ZMS>msg_error.gif" title="Error" border="0" align="absmiddle"/>
+<dtml-var "REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message',''))">
+(<dtml-var "getLangFmtDate(ZopeTime())">)
+</div>
+</dtml-if>
+<dtml-unless omit_breadcrumbs>
+<div class="zmi_col_left"><dtml-var f_context><dtml-var f_breadcrumbs></div>
+<div class="zmi_col_right"><dtml-if p_languages><dtml-var f_languages><dtml-else><img src="<dtml-var spacer_gif>" width="1" height="24" title="" border="0" /></dtml-if></div>
+</dtml-unless>
+</td>
+</tr>
+</table>

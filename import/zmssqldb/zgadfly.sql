@@ -1,0 +1,25 @@
+# http://gadfly.sourceforge.net/gadfly.html
+create table depts (dept_id varchar, dept_name varchar);
+insert into depts(dept_id, dept_name) values ('SAL', 'Sales');
+insert into depts(dept_id, dept_name) values ('SER', 'Service');
+create table emps (emp_id integer, emp_name varchar, emp_passwd varchar, emp_addresses varchar, emp_active integer, emp_phone varchar, create_dt varchar, change_dt varchar);
+insert into emps (emp_id, emp_name, emp_passwd, emp_addresses, emp_active, emp_phone, create_dt, change_dt) values ( 1, 'Hoffmann', 'Hoffmann', 'Mr', 1, '+49-(0)-30 / 209 127 8-2', '2006-01-01 12:00:00.000', '2006-01-01 12:00:00.000');
+insert into emps (emp_id, emp_name, emp_passwd, emp_addresses, emp_active, emp_phone, create_dt, change_dt) values ( 2, 'Fox', 'Torsten', 'Mr', 1, '+49-(0)-30 / 209 127 8-4', '2006-01-01 12:00:00.000', '2006-01-01 12:00:00.000');
+create table skills (skill_id integer, skill_name varchar);
+insert into skills(skill_id, skill_name) values (1, 'Java');
+insert into skills(skill_id, skill_name) values (2, 'Python');
+insert into skills(skill_id, skill_name) values (3, 'HTML');
+insert into skills(skill_id, skill_name) values (4, 'Acquisition');
+insert into skills(skill_id, skill_name) values (5, 'Marketing');
+create table skills2emps (skill_id integer, emp_id integer);
+insert into skills2emps (skill_id, emp_id) values ( 4, 1);
+insert into skills2emps (skill_id, emp_id) values ( 5, 1);
+create table roles (role_id varchar, role_name varchar);
+insert into roles(role_id, role_name) values (1, 'CEO');
+insert into roles(role_id, role_name) values (2, 'CTO');
+insert into roles(role_id, role_name) values (3, 'Sales Engineer');
+insert into roles(role_id, role_name) values (4, 'Software Engineer');
+insert into roles(role_id, role_name) values (5, 'Software Architect');
+insert into roles(role_id, role_name) values (6, 'System Analyst');
+create table deptemproles (dept_id varchar, emp_id varchar, role_id varchar);
+insert into deptemproles(dept_id, emp_id, role_id) VALUES ( 'SAL', 1, 1);

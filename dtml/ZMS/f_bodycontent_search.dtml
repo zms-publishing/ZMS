@@ -1,0 +1,207 @@
+<dtml-unless search_order_by>
+ <dtml-call "REQUEST.set('search_order_by',1)">
+</dtml-unless>
+<dtml-unless option>
+ <dtml-call "REQUEST.set('option','OR')">
+</dtml-unless>
+<dtml-unless searchform>
+ <dtml-call "REQUEST.set('searchform','1')">
+</dtml-unless>
+
+<dtml-if "REQUEST.has_key('raw') and _.int(searchform)==1">
+ <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADERAGAIN',lang)"></h1>
+<dtml-else>
+ <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADER',lang)"></h1>
+</dtml-if>
+
+<form action="<dtml-var URL>" method="get">
+<input type="hidden" name="searchform" value="<dtml-var searchform>">
+
+<dtml-comment>
+######################
+### Form Input Fields 
+######################
+</dtml-comment>
+
+  <dtml-if "_.int(searchform)==1">
+  <table border="0">
+  <tr valign="middle">
+   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_SEARCHTERM',lang)">:</td>
+   <td class="searchElement">
+    <input class="form-element" type="text" name="raw" size="18"
+    <dtml-if "REQUEST.has_key('raw')">value="<dtml-var "REQUEST['raw']" html_quote>"</dtml-if>>
+   </td>
+   <td class="searchText" align="right" valign="top" rowspan="3">
+    <small><dtml-var "getLangStr('SEARCH_HINT',lang)"></small>
+   </td>
+  </tr>
+  <tr valign="middle">
+   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_OPTION',lang)">:</td>
+   <td class="searchElement">
+    <select class="form-element" name="option">
+     <dtml-in "['AND','OR']">
+      <option value="<dtml-var "_['sequence-item']">"
+       <dtml-if "REQUEST['option']==_['sequence-item']">
+        selected="selected"
+       </dtml-if>
+      ><dtml-var "getLangStr(_['sequence-item'],lang)"></option>
+     </dtml-in>
+    </select>
+   </td>
+  </tr>
+  <tr valign="middle">
+   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_ORDERBY',lang)">:</td>
+   <td class="searchElement">
+    <select class="form-element" name="search_order_by:int">
+     <dtml-in "_.range(1,2+1)">
+      <option value="<dtml-var sequence-item>"
+       <dtml-if "_.int(REQUEST['search_order_by'])==_['sequence-item']">
+        selected="selected"
+       </dtml-if>
+      ><dtml-var "getLangStr('SEARCH_ORDERBY%i'%_['sequence-item'],lang)"></option>
+     </dtml-in>
+    </select>
+   </td>
+  </tr>
+  <dtml-if "getLevel()>0">
+  <tr valign="middle">
+   <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
+   <td class="searchElement" colspan="2">
+    <small>
+     <dtml-var "getLangStr('ATTR_DC_COVERAGE',lang)">:
+     <input type="radio" name="search_range" value="" <dtml-if "REQUEST.get('search_range','')==''">checked="checked"</dtml-if>/> <dtml-var "getLangStr('SEARCH_OVERALL',lang)">&nbsp;&nbsp;
+     <input type="radio" name="search_range" value="<dtml-var "ZMS_THIS.getRefObjPath(ZMS_THIS)">" <dtml-if "getRefObjPath(ZMS_THIS) == REQUEST.get('search_range','')">checked="checked"</dtml-if>/> <dtml-var "getLangStr('SEARCH_FROMHERE',lang)">&nbsp;&nbsp;
+    </small>
+   </td>
+  </tr>
+  </dtml-if>
+  <dtml-let portalClients="getPortalClients()">
+   <dtml-if "getConfProperty('ZCatalog.portalClients',1) == 1 and _.len(portalClients)>0">
+    <tr valign="middle">
+     <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
+     <td class="searchElement" colspan="2">
+      <input type="hidden" name="search_clients:int" value="<dtml-var "REQUEST.get('search_clients',1)">">
+      <input class="searchCheckbox" type="checkbox" <dtml-if "REQUEST.get('search_clients',1)==1">checked="checked"</dtml-if> onclick="this.form.elements['search_clients:int'].value=this.checked?'1':'0';">
+      <dtml-var "getLangStr('SEARCH_CLIENTS',lang)">
+     </td>
+    </tr>
+   </dtml-if>
+  </dtml-let>
+  <tr valign="middle">
+   <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
+   <td class="searchElement" colspan="2">
+    <input class="searchSubmit" type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEARCH',lang)" html_quote>">
+   </td>
+  </tr>
+  </table>
+  </dtml-if>
+
+  </form>
+
+<dtml-comment>
+###################
+### Search Results 
+###################
+</dtml-comment>
+
+<dtml-if "REQUEST.has_key('raw')">
+
+ <dtml-call "REQUEST.set('_s',raw)">
+ <dtml-call "REQUEST.set('_s',getCatalogQueryString(raw,option))">
+ <dtml-call "REQUEST.set('res',[])">
+ <dtml-if "REQUEST['raw']"
+  ><dtml-in "submitCatalogQuery(REQUEST.get('_s',''),REQUEST.get('search_order_by',1),REQUEST.get('search_meta_types',[]),REQUEST.get('search_clients',1),REQUEST)" mapping
+   ><dtml-let row=sequence-item
+    ><dtml-call "REQUEST.set('append',_.True)"
+    ><dtml-if "REQUEST.get('search_range','')==getRefObjPath(ZMS_THIS)"
+     ><dtml-call "REQUEST.set('append',append and isAnchestor(ob))"
+    ><dtml-elif "_.len(REQUEST.get('search_range',[]))>0"
+     ><dtml-call "REQUEST.set('append',_.False)"
+     ><dtml-in "REQUEST.get('search_range',[])"
+      ><dtml-let ref=sequence-item
+       ><dtml-call "REQUEST.set('append',append or getLinkObj(ref).isAnchestor(ob))"
+      ></dtml-let
+     ></dtml-in
+    ></dtml-if
+    ><dtml-if append
+     ><dtml-call "res.append(row)"
+    ></dtml-if
+   ></dtml-let
+  ></dtml-in
+ ></dtml-if>
+
+ <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
+ <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b></p>
+
+ <dtml-if "_.len(res)==0">
+ 
+  <p><dtml-var "getLangStr('SEARCH_NORESULTS',lang)"></p>
+  
+ <dtml-else
+
+  ><dtml-comment>***** MAX. SCORE *****</dtml-comment
+  ><dtml-call "REQUEST.set('_score_factor',1.0)"
+  ><dtml-if "res[0]['score']>5"
+   ><dtml-call "REQUEST.set('_score_factor',_.float(5.0/_.float(res[0]['score'])))"
+  ></dtml-if
+
+  ><dtml-comment>***** QS: QUERY-START *****</dtml-comment
+  ><dtml-call "REQUEST.set('qs',REQUEST.get('qs',1))"
+
+  ><dtml-comment>***** QE: QUERY-END *****</dtml-comment
+  ><dtml-call "REQUEST.set('qe',_.len(res))"
+  ><dtml-in res next size=10 start=qs
+   ><dtml-in next-batches mapping
+    ><dtml-if "qe==_.len(res)"
+     ><dtml-call "REQUEST.set('qe',_['batch-start-number']-1)"
+    ></dtml-if
+   ></dtml-in
+  ></dtml-in>
+
+  <p><dtml-var "getLangStr('SEARCH_RETURNEDRESULTS',lang)">:</p>
+  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(_.int(REQUEST.get('qs')),_.int(REQUEST.get('qe')),_.len(res))"></b></p>
+
+  <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
+
+  <dtml-comment>***** NAVIGATION *****</dtml-comment>
+  <dtml-var search_nav_html>
+
+  <dtml-comment>***** FOUND *****</dtml-comment>
+  <dtml-in res size=10 start=qs mapping>
+   <dtml-let title="ob.getTitle(REQUEST)" description="ob.getDCDescription(REQUEST)">
+  <p class="searchresult">
+    <span class="title"><dtml-if "ob.meta_id=='ZMSFile'">
+      <dtml-let f="ob.getObjProperty('file',REQUEST)">
+       <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
+       <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+        ><dtml-var "search_quote(title)"></a>
+       <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
+      </dtml-let>
+     <dtml-else>
+      <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+       ><dtml-var "search_quote(title)"></a>
+     </dtml-if>
+    </span>
+   <dtml-if description>
+    <span class="description"><dtml-var "search_quote(description)"></span>
+   </dtml-if>
+
+    <span class="linkpath">
+    <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+      ><dtml-in "ob.breadcrumbs_obj_path()"
+       >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end> </dtml-unless
+      ></dtml-in
+     ></a>
+     - <dtml-var "getLangFmtDate(time,lang,'%d')"> <dtml-var "getLangFmtDate(time,lang,'Month')[:3]"> <dtml-var "getLangFmtDate(time,lang,'%Y')">
+    </span>
+   </dtml-let>
+  </dtml-in>
+  </p>
+
+  <dtml-comment>***** NAVIGATION *****</dtml-comment>
+  <dtml-var search_nav_html>
+
+ </dtml-if>
+
+</dtml-if>
+

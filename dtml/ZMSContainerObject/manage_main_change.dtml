@@ -1,0 +1,38 @@
+<dtml-comment>#####  Lock  ######################################</dtml-comment>
+<dtml-unless "REQUEST.form.has_key('ZMS_VERSION_%s'%id)">
+<dtml-if "isCheckedOut(REQUEST)">
+<img src="<dtml-var MISC_ZMS>state_locked.gif" border="0" title="<dtml-var "getZMILangStr('STATE_LOCKED')"> <dtml-var "getZMILangStr('BY')"> <dtml-var "_.getattr(ob,'co_uid_%s'%lang)"> (<dtml-var "getLangFmtDate(_.getattr(ob,'co_dat_%s'%lang),manage_lang)">)" align="middle"/>
+</dtml-if>
+</dtml-unless>
+
+<dtml-comment>#####  WebDav-Lock  ###############################</dtml-comment>
+<dtml-unless "REQUEST.form.has_key('ZMS_VERSION_%s'%id)">
+<dtml-try>
+ <dtml-if "wl_isLocked()==1">
+  <img src="/p_/davlocked" title="">
+ </dtml-if>
+<dtml-except>
+</dtml-try>
+</dtml-unless>
+
+<dtml-comment>#####  Object State  ##############################</dtml-comment>
+<span class="form-small"><dtml-var version_object_state></span>
+
+<dtml-comment>#####  Author & Date  #############################</dtml-comment>
+<dtml-let info="[]">
+<dtml-if "getObjProperty('change_uid',REQUEST)">
+ <dtml-call "info.append(string_maxlen(getObjProperty('change_uid',REQUEST),15)+'\n')">
+</dtml-if>
+<dtml-if "getObjProperty('change_dt',REQUEST)">
+ <dtml-call "info.append(getLangFmtDate(getObjProperty('change_dt',REQUEST),manage_lang,'SHORTDATETIME_FMT')+'\n')">
+</dtml-if>
+<dtml-if "isPage()">
+ <dtml-call "info.append('%i %s\n'%(_.len(getChildNodes(REQUEST)),getZMILangStr('ATTR_OBJECTS')))">
+<dtml-else>
+ <dtml-call "info.append(getDataSizeStr(get_size(REQUEST))+'\n')">
+</dtml-if>
+<div class="form-small"><dtml-var "''.join(info)" newline_to_br></div>
+</dtml-let>
+
+<dtml-comment>#####  Custom  ####################################</dtml-comment>
+<dtml-var "getObjProperty('manage_main_change',REQUEST)">

@@ -1,0 +1,44 @@
+<dtml-comment> 
+*******************************************************************************
+*	f_selectAutocomplete
+*	@param fmName
+*	@param elName
+*	@param value
+*	@param key
+*	@param lang_str
+*	@param required
+*	@param enabled
+*	@param css
+*	@param REQUEST
+*	@param css
+* @see http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/
+*******************************************************************************
+</dtml-comment>
+
+<dtml-unless "REQUEST.get('f_selectAutocompleteShow',_.False)">
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>thickbox-compressed.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>
+<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>thickbox.css" />
+<dtml-call "REQUEST.set('f_selectAutocompleteShow',_.True)">
+</dtml-unless>
+
+<script type="text/javascript">
+$().ready(function() {
+
+	$("#<dtml-var elName>").autocomplete("ajaxGetObjOptions?key=<dtml-var key>&meta_id=<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">", {
+		width: $("#<dtml-var elName>").css( "width"),
+		selectFirst: false
+	});
+	$("#<dtml-var elName>").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+
+});
+</script>
+
+<dtml-var "getTextInput(fmName=fmName,elName=elName,size=20,value=value,enabled=enabled,REQUEST=REQUEST,css=css,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">

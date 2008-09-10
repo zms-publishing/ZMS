@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_dept -->
+
+  <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
+  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+
+<!-- EO bodyContentZMSCustom_dept -->]]></item>
+<item key="enabled" type="int">0</item>
+<item key="key"><![CDATA[dept]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[records]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Records]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[list]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[deptno]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[No.]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[dname]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Name]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[loc]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Location]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert" type="list"><list>
+</list>
+</item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="name"><![CDATA[Departments]]></item>
+<item key="package"><![CDATA[com.zms.db.example]]></item>
+<item key="type"><![CDATA[ZMSRecordSet]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_com.zms.db.example -->
+
+
+<!-- EO bodyContentZMSCustom_com.zms.db.example -->
+]]></item>
+<item key="enabled" type="int">1</item>
+<item key="key"><![CDATA[com.zms.db.example]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+</list>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="name"><![CDATA[com.zms.db.example]]></item>
+<item key="type"><![CDATA[ZMSPackage]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_emp -->
+
+  <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
+  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+
+<!-- EO bodyContentZMSCustom_emp -->]]></item>
+<item key="enabled" type="int">0</item>
+<item key="key"><![CDATA[emp]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[records]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Records]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[list]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[empno]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[No.]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[int]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[ename]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Name]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[job]]></item>
+<item key="keys" type="list"><list>
+<item><![CDATA[Analyst]]></item>
+<item><![CDATA[Clerk]]></item>
+<item><![CDATA[Manager]]></item>
+<item><![CDATA[President]]></item>
+<item><![CDATA[Salesman]]></item>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Job]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[select]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[mgr]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Manager]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[emp]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[hiredate]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Hiredate]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[date]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[sal]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Salary]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[float]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">0</item>
+<item key="default"></item>
+<item key="id"><![CDATA[comm]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Comm]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[float]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom" type="int">1</item>
+<item key="default"></item>
+<item key="id"><![CDATA[deptno]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Department]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[dept]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert" type="list"><list>
+</list>
+</item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="name"><![CDATA[Employees]]></item>
+<item key="package"><![CDATA[com.zms.db.example]]></item>
+<item key="type"><![CDATA[ZMSRecordSet]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_exampleDatabase -->
+
+<dtml-call "REQUEST.set('templateUrl','%s/bodyContentZMSCustom_%s'%(absolute_url(),meta_id))">
+
+<dtml-let nav="['dept','Departments','emp','Employees']" nav_key="'NAV_%s'%meta_id.upper()">
+
+<dtml-if "REQUEST.form.has_key(nav_key)">
+ <dtml-call "SESSION.set(nav_key,REQUEST.form[nav_key])">
+</dtml-if>
+<dtml-call "SESSION.set(nav_key,SESSION.get(nav_key,nav[0*2]))">
+
+<br/>
+<dtml-let i="nav.index(SESSION[nav_key])" key="nav[i]" value="nav[i+1]">
+ <table cellspacing="0" cellpadding="0" border="0" width="480">
+ <tr>
+  <td nowrap="nowrap" width="120" align="center" style="border-left:1px solid gray; border-top:1px solid gray; border-right:1px solid black;" class="primColorLight0">
+   <a href="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{nav_key:key})">" class="navMicro"><b>&nbsp;<dtml-var value>&nbsp;</b></a>
+  </td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#AAAAAA"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#CCCCCC"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#EEEEEE"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
+  <td nowrap="nowrap" width="356" align="right" style="border-bottom:1px solid gray;">
+   <dtml-in "_.range(0,_.len(nav)/2)">
+    <dtml-let j="_['sequence-item']" key="nav[j*2]" value="nav[j*2+1]">
+     <dtml-if "i!=j*2">
+      |&nbsp;<a href="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{nav_key:key})">" class="navMicro"><dtml-var value></a>&nbsp;
+     </dtml-if>
+    </dtml-let>
+   </dtml-in>
+  </td>
+ </tr>
+ <tr>
+  <td colspan="5" align="left" valign="top" style="border-left:1px solid gray; border-right:1px solid black; border-bottom:1px solid black;" class="primColorLight0">
+   <table cellspacing="0" cellpadding="6" border="0" width="100%">
+   <tr>
+    <td align="left" valign="top">
+     <dtml-with "_[SESSION.get(nav_key)]">
+     <dtml-let metaObj="getMetaobj(meta_id)">
+
+      <!--// BO Filter records //-->
+      <dtml-let fmName="'filterForm'">
+      <dtml-if "REQUEST.get('btn','')==getLangStr('BTN_SEARCH',lang)+'...'">
+       <dtml-call "SESSION.set('qfilter',REQUEST.get('qfilter',''))">
+      <dtml-elif "REQUEST.get('btn','')==getLangStr('BTN_RESET',lang)">
+       <dtml-call "SESSION.set('qfilter','')">
+      </dtml-if>
+      <form name="<dtml-var fmName>" action="<dtml-var URL>" method="get">
+      <table>
+      <tr valign="middle">
+       <td nowrap="nowrap">
+        <b><dtml-var "getLangStr('ATTR_FILTER',lang)"></b>
+       </td>
+       <td nowrap="nowrap">
+        <dtml-var "getTextInput(fmName=fmName,elName='qfilter',size=20,value=SESSION.get('qfilter',''))">
+       </td>
+       <td nowrap="nowrap">
+        <input type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEARCH',lang)">...">
+        <input type="submit" name="btn" value="<dtml-var "getLangStr('BTN_RESET',lang)">">
+       </td>
+      </tr>
+      </table>
+      </form>
+      </dtml-let>
+      <!--// EO Filter records //-->
+
+      <!--// BO Init parameters //-->
+      <dtml-call "REQUEST.set('qstart',REQUEST.get('qstart',0))">
+      <dtml-call "REQUEST.set('qbatch',REQUEST.get('qbatch',5))">
+      <dtml-call "REQUEST.set('qsize',REQUEST.get('qsize',10))">
+      <dtml-call "recordSet_Init(REQUEST)">
+      <dtml-call "REQUEST.set('res',copy_list(res))">
+      <dtml-call "REQUEST.set('res',filter_list(res,_.None,SESSION.get('qfilter','')))">
+      <dtml-call "recordSet_Sort(REQUEST)">
+      <!--// EO Init parameters //-->
+
+      <!--// BO Display record //-->
+      <dtml-if "REQUEST.get('action','')=='choose'">
+       <dtml-var "metaobj_record_select(_,_,metaObj=metaObj,row=res[qindex])"><br/><br/>
+      </dtml-if>
+      <!--// EO Display record //-->
+
+      <!--// BO Display grid //-->
+      <dtml-if "REQUEST.get('action','')==''">
+       <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['choose'])">
+      </dtml-if>
+      <!--// EO Display grid //-->
+
+     </dtml-let>
+     </dtml-with>
+    </td>
+   </tr>
+   </table>
+  </td>
+ </tr>
+ </table>
+</dtml-let>
+<br/>
+
+</dtml-let>
+
+<!-- EO bodyContentZMSCustom_exampleDatabase -->]]></item>
+<item key="enabled" type="int">1</item>
+<item key="key"><![CDATA[exampleDatabase]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom"></item>
+<item key="default"></item>
+<item key="id"><![CDATA[titlealt]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Kurztitel]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"></item>
+<item key="default"></item>
+<item key="id"><![CDATA[title]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Titel]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[string]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"></item>
+<item key="default"></item>
+<item key="id"><![CDATA[dept]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Departments]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[dept]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="custom"></item>
+<item key="default"></item>
+<item key="id"><![CDATA[emp]]></item>
+<item key="keys" type="list"><list>
+</list>
+</item>
+<item key="mandatory" type="int">1</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[Employees]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[emp]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="name"><![CDATA[Example-Database]]></item>
+<item key="package"><![CDATA[com.zms.db.example]]></item>
+<item key="type"><![CDATA[ZMSDocument]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+</list>

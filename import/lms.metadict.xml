@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><dictionary>
+<item key="dst_meta_types"><list>
+<item><![CDATA[ZMSFolder]]></item>
+</list>
+</item>
+<item key="id"><![CDATA[COURSEmetaset]]></item>
+<item key="keys"><list>
+</list>
+</item>
+<item key="mandatory"><![CDATA[0]]></item>
+<item key="multilang"><![CDATA[1]]></item>
+<item key="name"><![CDATA[Course]]></item>
+<item key="type"><![CDATA[courseMetaset]]></item>
+</dictionary>

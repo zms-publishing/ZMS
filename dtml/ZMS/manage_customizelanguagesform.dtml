@@ -1,0 +1,367 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+
+<script language="JavaScript">
+<!--//
+
+  /**
+   */
+  function form0OnSubmit(fm) 
+  {
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['language_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['language_label'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_LANG')">",false);
+      b = b && !disallowBlank(fm.elements['language_parent'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PARENT')">",false);
+    }
+    var c = 0;
+    for (i=0; i<fm.elements.length; i++) 
+    {
+      var el  = fm.elements[i];
+      if (el.name.indexOf("_parent")>0) 
+      {
+        var si = el.selectedIndex;
+        var v = el.options[si].value;
+        if (v.length == 0) c++;
+      }
+    }
+    b = b && (c==1);
+    return b;
+  }
+
+  /**
+   */
+  function form1OnSubmit(fm) 
+  {
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") 
+    {
+        var elFile = fm.elements['file'];
+        var elInit = fm.elements['init'];
+    	if (isBlank(elFile.value) && isBlank(elInit.value))
+	{
+            b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+	}
+    }
+    return b;
+  }
+
+  /**
+   */
+  function exportBtnClick() 
+  {
+    fm = document.forms['form1'];
+    href = fm.action + '?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
+    for (i=0; i<fm.elements.length; i++) 
+    {
+      el = fm.elements[i];
+      if (el.name=='ids:list' && el.type=='checkbox' && el.checked)
+      {
+        href+='&'+el.name+'='+el.value;
+      }
+    }
+    window.open(href);
+  }
+
+  /**
+   */
+  function btnClick(el) 
+  {
+    var fm = el.form;
+    self.btnClicked = el.value;
+  }
+
+//-->
+</script>
+</head>
+
+<dtml-var manage_tabs>
+<dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
+
+<dtml-var f_bo_area>
+
+<div class="form-help"><dtml-var "getZMILangStr('MSG_MULTILANG')"> <dtml-var "getZMILangStr('MSG_MULTILANGDICT')"></div>
+<br/>
+
+<!-- ######################################################################
+     ###
+     ###   L A N G U A G E S
+     ###
+     ######################################################################
+-->
+
+<a name="lang"></a>
+  <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('TAB_LANGUAGES')"></div>
+  <form name="form0" action="manage_changeLanguages" method="post" onsubmit="return form0OnSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+  <input type="hidden" name="lang" value="<dtml-var lang>">
+  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+
+  <!-- Header -->
+  <tr>
+   <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+  </tr>
+  <tr class="zmiNeutralColorStrong0" valign="middle">
+   <td>&nbsp;</td>
+   <td title="ISO-639/2"><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LANG')"></div></td>
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_PARENT')"></div></td>
+   <td><div class="form-label">Interface</div></td>
+  </tr>
+
+  <dtml-in "getLangIds()">
+
+   <dtml-let langId=sequence-item langObj="getLang(langId)">
+    <tr valign="top" class="neutralColorWhite">
+      <td>
+       <dtml-if "langId!=getPrimaryLanguage()">
+        <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var langId>">
+       </dtml-if>
+      </td>
+      <td><div class="form-text"><dtml-var sequence-item></div></td>
+      <td><dtml-var "getTextInput('form0','%s_label'%langId,15,getLanguageLabel(langId))"></td>
+      <td>
+       <select class="form-element" name="<dtml-var langId>_parent">
+       <option value=""><dtml-var "getZMILangStr('ATTR_PRIMARY')"> (*)</option>
+       <dtml-in "getLangIds()">
+        <dtml-if "_['sequence-item']!=langId">
+         <option value="<dtml-var sequence-item>"
+          <dtml-if "getParentLanguage(langId)==_['sequence-item']">
+           selected="selected"
+          </dtml-if>
+           ><dtml-var "getLanguageLabel(_['sequence-item'])"
+         ></option>
+        </dtml-if>
+       </dtml-in>
+       </select>
+      </td>
+      <td class="form-element">
+       <select class="form-element" name="<dtml-var sequence-item>_manage">
+       <dtml-in "getManageLanguages()">
+        <option value="<dtml-var sequence-item>"
+         <dtml-if "getManageLanguage(langId)==_['sequence-item']">
+          selected="selected"
+         </dtml-if>
+          ><dtml-var "getLangStr('LANG',_['sequence-item'])"
+        ></option>
+       </dtml-in>
+       </select>
+      </td>
+     </tr>
+   </dtml-let>
+
+  <dtml-if sequence-end>
+  <!-- Footer -->
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td>&nbsp;</td>
+   <td colspan="4">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+  </dtml-if>
+
+  </dtml-in>
+
+  <!-- Insert -->
+  <tr>
+   <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td rowspan="2"><img src="<dtml-var spacer_gif>" title="" border="0" width="20" height="20"/></td>
+   <td class="form-element">
+    <dtml-var "getTextInput('form0','language_id',7,'')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
+   </td>
+   <td class="form-element">
+    <dtml-var "getTextInput('form0','language_label',15,'')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_LANG')"></div>
+   </td>
+   <td class="form-element">
+    <select class="form-element" name="language_parent">
+    <dtml-in "getLangIds()">
+     <option value="<dtml-var sequence-item>"
+      <dtml-if "_['sequence-item']==getPrimaryLanguage()">
+        selected="selected"
+      </dtml-if>
+       ><dtml-var "getLanguageLabel(_['sequence-item'])"
+     ></option>
+    </dtml-in>
+    </select>
+    <div class="form-small"><dtml-var "getZMILangStr('ATTR_PARENT')"></div>
+   </td>
+   <td class="form-element">
+    <select class="form-element" name="language_manage">
+    <dtml-in "getManageLanguages()">
+     <option value="<dtml-var sequence-item>"
+      <dtml-if "lang==_['sequence-item']">
+       selected="selected"
+      </dtml-if>
+       ><dtml-var "getLangStr('LANG',_['sequence-item'])"
+     ></option>
+    </dtml-in>
+    </select>
+    <div class="form-small">Interface</div>
+   </td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td colspan="4" class="form-element">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+  </table>
+  </form>
+  <br/>
+
+<!-- ######################################################################
+     ###
+     ###   M U L T I L A N G - D I C T I O N A R Y
+     ###
+     ######################################################################
+-->
+
+<a name="langdict"></a>
+  <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('ATTR_DICTIONARY')"></div>
+  <form name="form1" action="manage_changeLangDictProperties" method="post" onsubmit="return form1OnSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+  <input type="hidden" name="lang" value="<dtml-var lang>">
+  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+
+  <dtml-if "_.len(getLangDict()) > 0">
+
+  <!-- Header -->
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+  </tr>
+  <tr class="zmiNeutralColorStrong0" valign="middle">
+   <td><a href="javascript:exportBtnClick()"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a></td>
+   <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_KEY')"></b></td>
+   <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_LANG')"></b></td>
+   <td class="form-small"><b>DTML</b></td>
+  </tr>
+
+  <dtml-in "getLangDict()">
+  <dtml-let dict=sequence-item>
+  <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+    <td class="form-element">
+     <dtml-if "_.len(dict.get('acquired',[]))>0">
+      <img src="<dtml-var MISC_ZMS>checkbox_disabled0.gif" title="" border="0" align="absmiddle"/>
+     <dtml-else>
+      <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "dict['key']">"/>
+     </dtml-if>
+    </td>
+    <td class="form-small">
+     <dtml-var "dict['key']">
+    </td>
+    <td class="form-element">
+      <table cellspacing="0" cellpadding="0" border="0">
+      <tr>
+      <dtml-in "getLangIds()">
+      <dtml-let langId=sequence-item>
+      <td class="form-small">
+       <dtml-var "getTextInput( fmName='form1', elName='%s_value_%s'%(dict['key'],langId), size=8, value=dict.get(langId,''), enabled=langId not in dict.get('acquired',[]), css='form-small')">
+       <dtml-if "_.len(getLangIds())>1">
+        <div class="form-small" align="right"><dtml-var "getLanguageLabel(langId)"></div>
+       </dtml-if>
+      </td>
+      <dtml-if "(_['sequence-index']+1)%3==0">
+        </tr><tr>
+      </dtml-if>
+      </dtml-let>
+      </dtml-in>
+      </tr>
+      </table>
+    </td>
+    <td class="form-small">
+     <code>getLangStr('<dtml-var "dict['key']">',lang)</code>
+    </td>
+  </tr>
+  </dtml-let>
+  </dtml-in>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td>&nbsp;</td>
+   <td colspan="3" class="form-element">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+
+  </dtml-if>
+
+  <!-- Insert Multi-Language Key -->
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td rowspan="2"><img src="<dtml-var spacer_gif>" title="" border="0" width="20" height="20"/></td>
+   <td class="form-element">
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr><td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_key', size=8, value='', css='form-small')"></td></tr>
+    <tr><td class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_KEY')"></td></tr>
+    </table>
+   </td>
+   <td class="form-element" colspan="2">
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+     <dtml-in "getLangIds()">
+      <td class="form-element">
+       <table cellspacing="0" cellpadding="0" border="0">
+       <tr><td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_value_%s'%_['sequence-item'], size=8, value='', css='form-small')"></td></tr>
+       <tr><td class="form-small" align="right"><dtml-var "getLanguageLabel(_['sequence-item'])"></td></tr>
+       </table>
+      </td>
+      <dtml-if "(_['sequence-index']+1)%3==0">
+       </tr><tr>
+      </dtml-if>
+     </dtml-in>
+    </tr>
+    </table>
+   </td>
+  </tr>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td colspan="3" class="form-element">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+
+  <!-- Import Multi-Language Set -->
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td colspan="4">
+    <table cellspacing="0" cellpadding="2" border="0">
+    <tr valign="middle">
+     <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
+     <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+    </tr>
+    <dtml-let pattern="'.langdict.'" conf_files="getConfFiles(pattern)">
+     <dtml-if conf_files>
+      <tr>
+       <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
+       <td>
+        <select class="form-element" name="init">
+	 <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')"> (default)... ---</option>
+         <dtml-in conf_files>
+	  <dtml-let conf_file=sequence-item>
+           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
+	  </dtml-let>
+         </dtml-in>
+        </select>
+       </td>
+      </tr>
+     </dtml-if>
+    </dtml-let>
+    <tr valign="middle">
+     <td>&nbsp;</td>
+     <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+  </table>
+  </form>
+  <br/>
+
+<dtml-var f_eo_area>
+
+<dtml-var manage_page_footer>

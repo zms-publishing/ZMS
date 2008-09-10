@@ -1,0 +1,782 @@
+<dtml-try>
+<dtml-var "_['comlib.js']">
+<dtml-except>
+<dtml-call "REQUEST.RESPONSE.setHeader('Expires',_.DateTime(_.DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())">
+<dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
+
+  String.prototype.removeWhiteSpaces = function() {return(this.replace(/\s+/g,""));};
+  String.prototype.leftTrim = function() {return(this.replace(/^\s+/,""));};
+  String.prototype.rightTrim = function() {return(this.replace(/\s+$/,""));};
+  String.prototype.basicTrim = function() {return(this.replace(/\s+$/,"").replace(/^\s+/,""));};
+  String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
+
+// #############################################################################
+// ### getCoords:
+// #############################################################################
+function getCoords( element) {
+  var coords = {x: 0, y: 0};
+  while (element != null) {
+    coords.x += element.offsetLeft;
+    coords.y += element.offsetTop;
+    element = element.offsetParent;
+  }
+  return coords;
+}
+
+// #############################################################################
+// ### scrollToElement
+// ### @see http://radio.javaranch.com/pascarello/2005/01/09/1105293729000.html
+// #############################################################################
+function scrollToElement(theElement) {
+  var selectedPosX = 0;
+  var selectedPosY = 0;
+  while(theElement != null){
+    selectedPosX += theElement.offsetLeft;
+    selectedPosY += theElement.offsetTop;
+    theElement = theElement.offsetParent;
+  }
+  window.scrollTo(selectedPosX,selectedPosY);
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Highlight Text
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+  function capitalize(Text) {
+    c=Text.split(""); c[0]=c[0].toUpperCase(); return c.join("");
+  }
+
+  function highlight_text(text) {
+     var exp = "";
+     for (var i = 0; i < text.length; i++) 
+       exp += "(" + text.charAt(i) + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
+     var regexp = new RegExp( "(" + exp + ")", "g");
+     var el = document.getElementsByTagName("body")[0];
+     var content=el.innerHTML.split("<"); 
+     for(var mb=0; mb < content.length; mb++) {
+        var cell = content[mb].split(">");
+        if(cell[1] && cell[1]!="" && cell[1].basicTrim()!="") { 
+           cell[1] = cell[1].replace( regexp, "<span name=\"highlight\" class=\"highlight\">$1</span>"); 
+           content[mb]=cell.join(">");
+        }
+     }
+     content=content.join("<"); 
+     el.innerHTML=content; 
+     var els = document.getElementsByName('highlight');
+     if ( els.length>0) {
+       scrollToElement(els[0]);
+     }
+  }
+
+  function do_highlight(text) { 
+    window.setTimeout("highlight_text('"+text+"')",100);
+  }
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Character Format
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+var selectedText = "";
+
+/**
+ * manage_browseObjsBtnClick:
+ */
+function manage_browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
+{
+  var title = "<dtml-var "url_quote(getZMILangStr('CAPTION_CHOOSEOBJ'))">";
+  var url = "manage_browse_objs";
+  var elUrlValue = "";
+  if (fmName.length>0 && elUrlName.length>0)
+  {
+    elUrlValue = document.forms[ fmName].elements[ elUrlName].value;
+  }
+  params = 'lang=' + lang;
+  params += '&fmName=' + escape( fmName);
+  params += '&elUrlName=' + escape( elUrlName);
+  params += '&elUrlValue=' + escape( elUrlValue);
+  params += '&elTitleName=' + escape( elTitleName);
+  if ( selectedText) {
+    params += '&selectedText=' + escape( selectedText);
+  }
+  open_frame(title,url,params,420,360,",resizable=yes,scrollbars=yes");
+  return false;
+}
+
+/**
+ * browseObjsBtnClick:
+ */
+function browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
+{
+  var title = "<dtml-var "url_quote(getZMILangStr('CAPTION_CHOOSEOBJ'))">";
+  var url = "f_browse_objs";
+  var elUrlValue = "";
+  if (fmName.length>0 && elUrlName.length>0)
+  {
+    elUrlValue = document.forms[ fmName].elements[ elUrlName].value;
+  }
+  params = 'lang=' + lang;
+  params += '&fmName=' + escape( fmName);
+  params += '&elUrlName=' + escape( elUrlName);
+  params += '&elUrlValue=' + escape( elUrlValue);
+  params += '&elTitleName=' + escape( elTitleName);
+  if ( selectedText) {
+    params += '&selectedText=' + escape( selectedText);
+  }
+  open_frame(title,url,params,420,360,",resizable=yes,scrollbars=yes");
+  return false;
+}
+
+
+/**
+ */
+function selectObject(path, title) 
+{
+  if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1)
+    path = '<'+'dtml-var expr="getLinkUrl(\''+path+'\',REQUEST)"/>';
+  var fTag = 'a';
+  var aTag = '<'+fTag+' href="'+path+'">';
+  var eTag = '</'+fTag+'>';
+  tagSelectedText( aTag, eTag);
+}
+
+/**
+ * Remove tags from given string.
+ */
+function untag( s) {
+  return s.replace( /<(..*?)>/g, '');
+}
+
+/**
+ * Get tagged index of untagged string in given string.
+ */
+function taggedStart( s1, s2)
+{
+  var r = '';
+  var b = true;
+  for (var i = 0; i < s1.length; i++) {
+    var c = s1.charAt( i);
+    if ( b && c == '<')
+      b = false;
+    else if ( !b && c == '>')
+      b = true;
+    else if ( b)
+      r += c;
+    if ( r == s2)
+      return i;
+  }
+  return -1;
+}
+
+/**
+ * Tag selected text.
+ */
+function tagSelectedText( aTag, eTag) {
+  var input = self.el;
+  /* internet explorer */
+  if( typeof document.selection != 'undefined') {
+    var range = document.selection.createRange();
+    var selText = range.text;
+    /* Strip trailing blanks */
+    var trailingBlanks = '';
+    while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
+      selText = selText.substr( 0, selText.length - 1);
+      trailingBlanks += ' ';
+    }
+    if ( selText.length > 0) {
+      /* Apply value */
+      var newText;
+      if ( aTag.length > 0 && typeof eTag == 'undefined')
+        newText = aTag + trailingBlanks;
+      else
+        newText = aTag + selText + eTag + trailingBlanks;
+      range.text = newText;
+      /* Anpassen der Cursorposition */
+      range = document.selection.createRange();
+      range.moveStart('character', newText.length);
+      range.select();
+    }
+  }
+  /* newer gecko-based browsers */
+  else if( typeof input.selectionStart != 'undefined') {
+    var start = self.selectionStart;
+    var end = self.selectionEnd;
+    var inpValue = input.value;
+    var selText = inpValue.substring( start, end);
+    // Strip trailing blanks
+    var trailingBlanks = '';
+    while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
+      selText = selText.substr( 0, selText.length - 1);
+      trailingBlanks += ' ';
+    }
+    if ( selText.length > 0) {
+      /* Apply value */
+      var newText;
+      if ( aTag.length > 0 && typeof eTag == 'undefined')
+        newText = aTag + trailingBlanks;
+      else
+        newText = aTag + selText + eTag + trailingBlanks;
+      input.value = input.value.substr( 0, start) + newText + input.value.substr( end);
+      /* Anpassen der Cursorposition */
+      var pos = start + newText.length;
+      input.selectionStart = pos;
+      input.selectionEnd = pos;
+    }
+  }
+}
+
+/**
+ * Untag selected text.
+ * Returns true if selected text was untagged, false otherwise.
+ */
+function untagSelectedText( fTag, fAttrs, ld, rd, lang) {
+  var input = self.el;
+  /* internet explorer */
+  if( typeof document.selection != 'undefined') {
+    var range = document.selection.createRange();
+    var selText = range.text;
+    var startTag = ld+fTag;
+    var endTag = ld+'/'+fTag+rd;
+    if ( selText.indexOf(startTag) == 0 && selText.lastIndexOf(endTag) == selText.length - endTag.length) {
+      selText = selText.substr( startTag.length + 1, selText.lastIndexOf( endTag) - startTag.length - 1); 
+      /* Apply value */
+      range.text = selText;
+      return true;
+    }
+    else {
+      range.moveStart('character', -(startTag.length+1));
+      range.moveEnd('character', endTag.length);
+      var taggedText = range.text;
+      if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
+        /* Apply value */
+        range.text = selText;
+        return true;
+      }
+      else if ( fAttrs.length > 0) {
+        startTag += fAttrs;
+        range.moveStart('character', -fAttrs.length);
+        var taggedText = range.text;
+        if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
+          /* Apply value */
+          range.text = selText;
+          return true;
+        }
+      }
+    }
+  }
+  /* newer gecko-based browsers */
+  else if( typeof input.selectionStart != 'undefined') {
+    var start = self.selectionStart;
+    var end = self.selectionEnd;
+    var inpValue = input.value;
+    var selText = inpValue.substring( start, end);
+    var tagStart = inpValue.substr( 0, start);
+    var i = tagStart.length;
+    var c = tagStart.charAt( i - 1);
+    if ( c == '>') {
+      /* Handle DTML in a.href */
+      i--;
+      var l = 1;
+      while ( l > 0 && i > 0) {
+        c = tagStart.charAt( i - 1);
+        if ( c == rd)
+          l++;
+        if ( c == ld)
+          l--;
+        i--;
+      }
+      if ( i >= 0) {
+        var tag = tagStart.substr( i);
+        tagStart = tagStart.substr( 0, i);
+        if ( tag.indexOf(ld+fTag) == 0 && tag.indexOf(rd) > 0) {
+          var tagEnd = inpValue.substr( end);
+          if ( tagEnd.indexOf(rd) > 0) {
+            var tag = tagEnd.substr( 0, tagEnd.indexOf(rd) + 1);
+            tagEnd = tagEnd.substr( tagEnd.indexOf(rd) + 1);
+            if ( tag.indexOf(ld+'/'+fTag+rd) == 0) {
+              input.value = tagStart + selText + tagEnd;
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Set text-format.
+ */
+function setTextFormat( fTag, ld, rd, lang) 
+{
+  var fAttrs = '';
+  if (fTag.indexOf( ' ') > 0) {
+    fAttrs = fTag.substring( fTag.indexOf( ' '));
+    fTag = fTag.substring( 0, fTag.indexOf( ' '));
+  }
+  var input = self.el;
+  selectedText = '';
+  /* internet explorer */
+  if( typeof document.selection != 'undefined') {
+    var range = document.selection.createRange();
+    selectedText = range.text;
+  }
+  /* newer gecko-based browsers */
+  else if( typeof input.selectionStart != 'undefined') {
+    self.selectionStart = input.selectionStart;
+    self.selectionEnd = input.selectionEnd;
+    var start = self.selectionStart;
+    var end = self.selectionEnd
+    selectedText = input.value.substring( start, end);
+  }
+  if ( selectedText.length == 0)
+    return;
+  if ( !untagSelectedText( fTag, fAttrs, ld, rd, lang)) {
+    if (fTag == 'a' && selectedText.indexOf('http://') < 0 && selectedText.indexOf('@') < 0) {
+      if ( input.form)
+        browseObjsBtnClick('','','',lang);
+      else
+        browseObjsBtnClick('None','','',lang);
+    } 
+    else {
+      var aTag = ld
+      aTag += fTag;
+      if (fTag == 'a') {
+        if (selectedText.indexOf("@")>0)
+          aTag += ' href="mailto:' + selectedText + '"';
+        else if (selectedText.indexOf("http://") < 0)
+          aTag += ' href="http://' + selectedText + '" target="_blank"';
+        else
+          aTag += ' href="' + selectedText + '" target="_blank"';
+      }
+      else {
+        aTag += fAttrs;
+      }
+      aTag += rd;
+      var eTag = ld+'/'+fTag+rd;
+      tagSelectedText( aTag, eTag, lang);
+    }
+  }
+}
+
+/**
+ * Insert tab into richedit-textarea.
+ */
+function zmiRicheditInsertTab( fmName, elName) 
+{
+    var doc = document;
+    var fm = doc.forms[ fmName];
+    var input = fm.elements[ elName];
+    input.focus();
+    var insText = '\t';
+    /* internet explorer */
+    if( typeof doc.selection != 'undefined') {
+      var range = doc.selection.createRange();
+      // insert text
+      range.text = insText;
+    }
+    /* newer gecko-based browsers */
+    else if( typeof input.selectionStart != 'undefined') {
+      // insert text
+      var start = input.selectionStart;
+      var end = input.selectionEnd;
+      input.value = input.value.substr(0, start) + insText + input.value.substr(end);
+      // cursor-position
+      var pos = start + insText.length;
+      input.selectionStart = pos;
+      input.selectionEnd = pos;
+    }
+}
+
+/**
+ * Set text-format for input.
+ */
+function setTextFormatInput( fTag, fmName, elName, lang) 
+{
+  self.el = document.forms[ fmName].elements[ elName];
+  setTextFormat( fTag, '<', '>', lang);
+}
+
+/**
+ * Store caret.
+ */
+function storeCaret( textEl) 
+{
+  if (textEl.createTextRange)
+    textEl.caretPos = document.selection.createRange().duplicate();
+}
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Image-Zoom
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+function getInnerDimensions()
+{
+  if (window.innerWidth) {
+    return {width: window.innerWidth, height: window.innerHeight};
+  } else if (document.body && document.body.offsetWidth) {
+   // important: for IE set body width = 100%
+    document.getElementsByTagName("body")[0].style.setAttribute("width", "100%", "false");
+    document.getElementsByTagName("body")[0].style.setAttribute("height", "100%", "false");
+    return {width: document.body.offsetWidth, height: document.body.offsetHeight};
+  } else {
+    return {width: 0, height: 0};
+  }
+}
+
+function zmiImgZoomClose()
+{
+  var zmiImgZoomDiv = document.getElementById("zmiImgZoomDiv");
+  var zmiImgZoomImgDiv = document.getElementById( "zmiImgZoomImgDiv");
+  zmiImgZoomDiv.style.visibility = 'hidden';
+  zmiImgZoomDiv.style.display = 'none';
+  zmiImgZoomImgDiv.style.visibility = 'hidden';
+  zmiImgZoomImgDiv.style.display = 'none';
+}
+
+function zmiImgZoom(img_src, img_width, img_height)
+{
+  var zmiImgZoomDiv = document.getElementById("zmiImgZoomDiv");
+  var zmiImgZoomImg = document.getElementById( "zmiImgZoomImg");
+  var zmiImgZoomImgDiv = document.getElementById( "zmiImgZoomImgDiv");
+  if ( !zmiImgZoomDiv) {
+    zmiImgZoomDiv = document.createElement( "div");
+    zmiImgZoomDiv.setAttribute( "id", "zmiImgZoomDiv");
+    zmiImgZoomImgDiv = document.createElement( "div");
+    zmiImgZoomImgDiv.setAttribute( "id", "zmiImgZoomImgDiv");
+    zmiImgZoomImgDiv.setAttribute( "className", "form-small");
+    zmiImgZoomImgDiv.style.textAlign = "right";
+    a = document.createElement( "a");
+    a.setAttribute( "href", "#");
+    a.setAttribute( "title", "<dtml-var "getZMILangStr('BTN_CLOSE')">")
+    a.setAttribute( "className", "zmi");
+    a.onclick = Function("zmiImgZoomClose()");
+    strong = document.createElement( "strong");
+    strong.appendChild( document.createTextNode( String.fromCharCode(215)));
+    a.appendChild( strong);
+    zmiImgZoomImgDiv.appendChild( document.createTextNode( "<dtml-var "getZMILangStr('BTN_CLOSE')"> ["));
+    zmiImgZoomImgDiv.appendChild( a);
+    zmiImgZoomImgDiv.appendChild( document.createTextNode( "] "));
+    zmiImgZoomImgDiv.appendChild( document.createElement( "br"));
+    zmiImgZoomImg = document.createElement( "img");
+    zmiImgZoomImg.setAttribute( "id", "zmiImgZoomImg");
+    zmiImgZoomImg.setAttribute( "border", "0");
+    a = document.createElement( "a");
+    a.setAttribute( "href", "#");
+    a.onclick = Function("zmiImgZoomClose()");
+    a.appendChild( zmiImgZoomImg);
+    zmiImgZoomImgDiv.appendChild( a);
+    var body = document.getElementsByTagName('body')[0];
+    body.appendChild( zmiImgZoomDiv);
+    body.appendChild( zmiImgZoomImgDiv);
+  }
+  zmiImgZoomImg.setAttribute( "src", img_src);
+  zmiImgZoomDiv.style.visibility = 'visible';
+  zmiImgZoomDiv.style.display = 'block';
+  zmiImgZoomDiv.style.position = 'absolute';
+  zmiImgZoomDiv.style.top = 0;
+  zmiImgZoomDiv.style.left = 0;
+  zmiImgZoomDiv.style.width = '100%';
+  zmiImgZoomDiv.style.height = '100%';
+  zmiImgZoomImgDiv.style.visibility = 'visible';
+  zmiImgZoomImgDiv.style.display = 'block';
+  zmiImgZoomImgDiv.style.position = 'absolute';
+  var dims = getInnerDimensions();
+  zmiImgZoomImgDiv.style.top = (dims.height - zmiImgZoomImg.offsetHeight) / 2;
+  zmiImgZoomImgDiv.style.left = (dims.width - zmiImgZoomImg.offsetWidth) / 2;
+}
+
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Calendar
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+var zmiCalFmName;
+var zmiCalElName;
+
+/**
+ * Display calendar
+ */
+function zmiCal() 
+{
+  // First day in Month
+  m_anf = new Date(jahr,monat,1);
+  firstDay = m_anf.getDay();
+  // x Days in Month
+  m_neu = new Date(jahr, monat + 1 ,1);  // first day of next month
+  m_end = m_neu - 864e5;                 // previous day
+  m_lang = new Date(m_end);
+  m_lang = m_lang.getDate();              // date
+  // Write centered month
+  var monthnames = new Array (<dtml-in "_.range(12)">"<dtml-var "getZMILangStr('MONTH%i'%(_['sequence-item']+1))[:3]" html_quote>"<dtml-unless sequence-end>,</dtml-unless></dtml-in>);
+  document.getElementById('zmiCalMon').innerHTML = monthnames[monat] + "&nbsp;" + jahr;
+  // Write fields
+  var fld = new Array();
+  for (var k = 0; k < 42; k++) fld[k]  = new zmiCalFld(k);
+  for (var i = 0; i < 42; i++) fld[i].zmiCalDisplay();
+}
+
+/**
+ * Constructor of field
+ */
+function zmiCalFld(num) {
+  this.num = num;
+  this.zmiCalDisplay = zmiCalDisplay;
+}
+
+// Display field
+function zmiCalDisplay() {
+  firstDay = (firstDay > 0) ? firstDay : 7;
+  // Sunday is 7th day
+  var tag = (this.num + 2 - firstDay);
+  // past?
+  if(jahr < currYear)
+    var past = true;
+  else if(jahr == currYear)
+    past = (monat < currMonth)? true : ((monat == currMonth)? ((tag >= today) ? false : true) : false);
+  var now = !!(tag == today && monat == currMonth && jahr == currYear);
+  var day = ((tag < 10)? "&nbsp;" + tag : tag);
+  var txtN = '\<span class="zmiCalNorm"\>' + day + '\</span\>';
+  var txtN = '\<a class="zmiCalNorm" href="#" onclick="zmiCalSelect(' + tag + ');return false"\>' + day + '\</a\>';
+  var txtF = '\<a class="zmiCalBold" href="#" onclick="zmiCalSelect(' + tag + ');return false"\>' + day + '\</a\>';
+  var txtH = '\<a class="zmiCalCurr" href="#" onclick="zmiCalSelect(' + tag + ');return false"\>' + day + '\</a\>';
+  var txt = past? txtN : (now? txtH : txtF);
+  if (!((this.num >= firstDay - 1) && (tag <= m_lang)))
+    txt = "&nbsp;";
+  var obj = document.getElementById('field' + this.num);
+  obj.innerHTML = txt;
+}
+
+/**
+ * Scroll to next month
+ */
+function zmiCalNextMon() {
+  if (monat < 12) monat += 1;
+  if (monat == 12) {
+    jahr += 1;
+    monat = 0;
+  }
+  zmiCal();
+}
+
+/**
+ * Scroll to last month
+ */
+function zmiCalLastMon() {
+  if (monat > -1) monat -= 1;
+  if (monat == -1) {
+    jahr -= 1;
+    monat = 11;
+  }
+  zmiCal();
+}
+
+/**
+ * Select calender.
+ */
+function zmiCalSelect(num) {
+  var myTag = (num < 10)? '0' + num: num;
+  var myMon = ((monat + 1) < 10)? '0' + (monat + 1): (monat + 1);
+  <dtml-if "SESSION.get('manage_lang') in ['eng','chi']">
+  document.forms[zmiCalFmName].elements[zmiCalElName].value = jahr + "/" + myMon + "/" + myTag;
+  <dtml-else>
+  document.forms[zmiCalFmName].elements[zmiCalElName].value = myTag + "." + myMon + "." + jahr;
+  </dtml-if>
+  document.forms[zmiCalFmName].elements[zmiCalElName].focus();
+  // Close calendar.
+  zmiCalClose();
+}
+
+
+/**
+ * Close calender.
+ */
+function zmiCalClose() {
+  var zmiCalDiv = document.getElementById("zmiCalDiv");
+  zmiCalDiv.style.visibility = 'hidden';
+  zmiCalDiv.style.display = 'none';
+}
+
+/**
+ * Click calendar-button.
+ */
+function calendarBtnClick (fmName, elName) 
+{
+  // Show calendar.
+  var zmiCalDiv = document.getElementById("zmiCalDiv");
+  if ( !zmiCalDiv) {
+    var body = document.getElementsByTagName('body')[0];
+    zmiCalDiv = document.createElement( "div");
+    zmiCalDiv.setAttribute( "id", "zmiCalDiv");
+    zmiCalDiv.setAttribute( "className", "form-small");
+    body.appendChild( zmiCalDiv);
+  }
+  zmiCalDiv.style.visibility = 'visible';
+  zmiCalDiv.style.display = 'block';
+  zmiCalDiv.style.position = 'absolute';
+  var el = document.getElementById(elName);
+  var coords = {x: 0, y: 0};
+  var element = el;
+  while (element) {
+    coords.x += element.offsetLeft;
+    coords.y += element.offsetTop;
+    element = element.offsetParent;
+  }
+  zmiCalDiv.style.top = (coords['y']+el.offsetHeight)+"px";
+  zmiCalDiv.style.left = (coords['x']+el.offsetWidth)+"px";
+  var html = '';
+  html += '<div id=\"zmiCalLastMon\"><a href=\"#\" onclick=\"zmiCalLastMon(); return false;\" class=\"zmiCalHead\">&laquo;</a>&nbsp;</div>';
+  html += "<div id=\"zmiCalMon\" style=\"text-align:center;width:70px;\"></div>";
+  html += "<div id=\"zmiCalNextMon\" style=\"float:none;\">";
+  html += "&nbsp;<a href=\"#\" onclick=\"zmiCalNextMon(); return false;\" class=\"zmiCalHead\">&raquo;</a>";
+  html += "&nbsp;<a href=\"#\" onclick=\"zmiCalClose(); return false;\" class=\"zmiCalHead\">&times;</a>";
+  html += "</div>";
+  var daynames = new Array(<dtml-in "_.range(7)">"<dtml-var "getZMILangStr('WEEKDAY%i'%(_['sequence-item']))[0]" html_quote>"<dtml-unless sequence-end>,</dtml-unless></dtml-in>);
+  for(d in daynames) {
+    var st = "";
+    if ( d == 6)
+      st = " style=\"float:none;\"";
+    html += "<div class=\"zmiCalDayname\""+st+">" + daynames[d] + "</div>";
+  }
+  for(d = 0; d < 42; d++) {
+    var cn = "";
+    var st = "";
+    if ( (d+1) % 7 == 0)
+      st = " style=\"float:none;\"";
+    html += "<div id=\"field" + d + "\" class=\"zmiCalWeekday\""+st+"></div>";
+  }
+  zmiCalDiv.innerHTML = html;
+  // Init
+  zmiCalFmName = fmName;
+  zmiCalElName = elName;
+  var elValue = document.forms[zmiCalFmName].elements[zmiCalElName].value;
+  if (validDate(elValue))
+    currDate = getDate(elValue)
+  else
+    currDate = new Date();
+  today       = currDate.getDate()
+  monat       = currDate.getMonth();
+  jahr        = currDate.getYear();
+  if (jahr < 1000) jahr += 1900;
+  currYear    = jahr;
+  currMonth   = monat;
+  zmiCal();
+}
+
+
+// #############################################################################
+// ### open_frame:
+// #############################################################################
+function open_frame(title,url,params,width,height,options)
+  {
+    href = "f_frame";
+    href += "?" + params;
+    href += "&p_url=" + url;
+    href += "&p_title=" + title;
+    if ( height > screen.availHeight || width > screen.availWidth) {
+      if ( options.indexOf( "scrollbars=") < 0) {
+        if ( height > screen.availHeight)
+          height = screen.availHeight;
+        if ( width > screen.availWidth)
+          width = screen.availWidth;
+        options += ",scrollbars=yes";
+      }
+    }
+    var name = url;
+    var i = name.lastIndexOf( "/");
+    if ( i > 0) {
+      name = name.substring(i+1);
+    }
+    else {
+      name = url;
+    }
+    i = name.indexOf("?");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    i = name.indexOf("-");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    i = name.indexOf(".");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    var msgWindow = open(href,name,"width=" + width + ",height=" + height
+      + ",screenX=" + (screen.width-width)/2
+      + ",screenY=" + (screen.height-height)/2
+      + ",dependent=yes"
+      + ",left=" + (screen.width-width)/2
+      + ",top=" + (screen.height-height)/2
+      + options
+      );
+    if ( msgWindow) {
+      msgWindow.focus();
+      if ( msgWindow.opener == null) {
+        msgWindow.opener = self;
+      }
+    }
+  }
+
+
+// #############################################################################
+// ### open_function:
+// #############################################################################
+function open_function(url,width,height,options)
+  {
+    if ( height > screen.availHeight || width > screen.availWidth) {
+      if ( options.indexOf( "scrollbars=") < 0) {
+        if ( height > screen.availHeight)
+          height = screen.availHeight;
+        if ( width > screen.availWidth)
+          width = screen.availWidth;
+        options += ",scrollbars=yes,resizable=yes";
+      }
+    }
+    var name = url;
+    var i = name.lastIndexOf( "/");
+    if ( i > 0) {
+      name = name.substring(i+1);
+    }
+    else {
+      name = url;
+    }
+    i = name.indexOf("?");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    i = name.indexOf("-");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    i = name.indexOf(".");
+    if ( i > 0) {
+      name = name.substring(0,i);
+    }
+    var left = ( screen.width  - width  ) / 2;
+    var top  = ( screen.height - height ) / 2;
+    var msgWindow = open(url, name, "width=" + width + ",height=" + height
+      + ",screenX=" + left
+      + ",screenY=" + top
+      + ",dependent=yes"
+      + ",left=" + left
+      + ",top=" + top
+      + options
+      );
+    if ( msgWindow) {
+      msgWindow.focus();
+      if ( msgWindow.opener == null) {
+        msgWindow.opener = self;
+      }
+    }
+  }
+
+
+</dtml-try>

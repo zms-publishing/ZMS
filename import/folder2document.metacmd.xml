@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSDocument')">
+<dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into document.'}))">
+]]></item>
+<item key="description"/>
+<item key="exec" type="int">0</item>
+<item key="id"><![CDATA[manage_ZMSFolder2ZMSDocument]]></item>
+<item key="meta_type"><![CDATA[DTML Method]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSFolder]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Change into document!]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSFolder')">
+<dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into folder.'}))">
+]]></item>
+<item key="description"/>
+<item key="exec" type="int">0</item>
+<item key="id"><![CDATA[manage_ZMSDocument2ZMSFolder]]></item>
+<item key="meta_type"><![CDATA[DTML Method]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSDocument]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Change into folder!]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+</list>

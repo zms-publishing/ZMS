@@ -1,0 +1,90 @@
+<dtml-let oRoot="getHome()"
+
+><dtml-comment><!------- F_STANDARD_HTML_REQUEST ----------------></dtml-comment
+><dtml-call "RESPONSE.setHeader('Content-Type', 'text/html; charset=utf-8')"
+><dtml-unless lang
+><dtml-call "REQUEST.set('lang',getLanguage(REQUEST))"
+></dtml-unless
+
+><dtml-comment><!------- RESTRICT ACCESS ------------------------></dtml-comment
+><dtml-unless "hasAccess(REQUEST)"
+><dtml-comment><!-- CookieCrumbler Login Form --></dtml-comment
+><dtml-if "_.hasattr(oRoot,'login_form')"
+><dtml-return "RESPONSE.redirect('login_form%s'%(REQUEST.get('QUERY_STRING', '') and '?'+REQUEST.get('QUERY_STRING','')))"
+><dtml-comment><!-- Redirect to parent --></dtml-comment
+><dtml-elif "URL.find('/index_')>URL.find('.html')"
+><dtml-return "RESPONSE.redirect('%s/index_%s.html'%(URL1,lang))"
+><dtml-else
+><dtml-call "viewPermission()"
+></dtml-if
+></dtml-unless
+
+><dtml-comment><!------- STATIC CACHE ---------------------------></dtml-comment
+><dtml-if "isCachedPage(REQUEST)"
+><dtml-var "getCachedPage(REQUEST)"
+
+><dtml-comment><!------- DISPLAY ONLY ACTIVE --------------------></dtml-comment
+><dtml-elif "isPreviewRequest(REQUEST) or getDocumentElement().isActive(REQUEST)"
+
+><dtml-comment><!------- STANDARD_HTML_REQUEST ------------------></dtml-comment
+><dtml-var f_standard_html_request
+><dtml-try><dtml-var standard_html_request><dtml-except></dtml-try
+><dtml-in "getMetaobjIds(sort=0)"
+><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
+><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='standard_html_request', metaObj['attrs'])" mapping
+><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
+></dtml-in
+></dtml-let
+></dtml-in
+
+><dtml-comment><!------- STANDARD_HTML_HEADER -------------------></dtml-comment
+><dtml-var f_standard_html_header
+
+><dtml-comment><!------- SEARCH ---------------------------------></dtml-comment
+><dtml-if "REQUEST.get('op','')=='search'"
+><dtml-try
+><dtml-var "bodyContent_Search(_,_,this_id=ZMS_THIS.id)"
+><dtml-except
+><dtml-var "f_bodyContent_Search(_,_,this_id=ZMS_THIS.id,REQUEST=REQUEST)"
+></dtml-try
+
+><dtml-comment><!------- SITEMAP --------------------------------></dtml-comment
+><dtml-elif "REQUEST.get('op','')=='sitemap'"
+><dtml-try
+><dtml-var "bodyContent_Sitemap(_,_,ZMS_THIS=ZMS_THIS)"
+><dtml-except
+><dtml-var "f_bodyContent_Sitemap(_,_,ZMS_THIS=ZMS_THIS,REQUEST=REQUEST)"
+></dtml-try
+
+><dtml-comment>--------- NOT_FOUND -------------------------------</dtml-comment
+><dtml-elif "REQUEST.get('op','')=='not_found'"
+><dtml-try
+><dtml-var "bodyContent_NotFound(_,_,ZMS_THIS=ZMS_THIS)"
+><dtml-except
+><dtml-var "f_bodyContent_NotFound(_,_,ZMS_THIS=ZMS_THIS,REQUEST=REQUEST)"
+></dtml-try
+
+><dtml-comment>--------- FLOAT -----------------------------------</dtml-comment
+><dtml-else
+><dtml-if "isPreviewRequest(REQUEST) or isActive(REQUEST)"
+><dtml-if "isPreviewRequest(REQUEST) or getObjProperty( 'attr_cacheable', REQUEST) not in [ 2, '2']"
+><dtml-var f_bodyContent
+><dtml-else
+><dtml-var "'<dtml-var f_bodyContent>'"
+></dtml-if
+><dtml-if ZMS_HIGHLIGHT
+><script type="text/javascript"><dtml-in "REQUEST.get(ZMS_HIGHLIGHT,'').split(' ')"><dtml-if sequence-item>do_highlight('<dtml-var sequence-item>');</dtml-if></dtml-in></script></dtml-if
+><dtml-else
+><p class="standard"><dtml-var "getLangStr('MSG_INACTIVE',lang)"></p
+></dtml-if
+></dtml-if
+
+><dtml-comment>--------- STANDARD_HTML_FOOTER --------------------</dtml-comment
+><dtml-var f_standard_html_footer
+
+><dtml-comment>--------- INACTIVE --------------------------------</dtml-comment
+><dtml-else
+><dtml-try><dtml-var inactive_html><dtml-except><dtml-var f_inactive_html></dtml-try
+></dtml-if
+
+></dtml-let>

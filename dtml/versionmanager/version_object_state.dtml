@@ -1,0 +1,82 @@
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Language
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+<dtml-if "_.len(getLangIds())>1">
+<dtml-if "getObjProperty('change_uid',REQUEST)">
+<dtml-let coverage="getDCCoverage(REQUEST)"
+          seq_lang="coverage[coverage.find('.')+1:]"
+          seq_desc_langs="getDescendantLanguages(seq_lang)">
+  <dtml-if "_.len(seq_desc_langs)>1">
+   <dtml-if "coverage.find('global')>=0">
+    <dtml-if "seq_lang!=lang">
+     <dtml-if "isModifiedInParentLanguage(lang,REQUEST)">
+      <dtml-if "getHistory()"
+       ><a href="javascript:open_frame('<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang> (<dtml-var "getZMILangStr('STATE_MODIFIED')">)','<dtml-var absolute_url>/manage_VersionLangModified','lang=<dtml-var lang>',440,320,',resizable=yes,scrollbars=yes')" class="button"
+      ></dtml-if
+      ><img src="<dtml-var MISC_ZMS>btn_lang_modified.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang> (<dtml-var "getZMILangStr('STATE_MODIFIED')">)" border="0" align="absmiddle"
+      ><dtml-if "getHistory()"
+       ></a
+      ></dtml-if>
+     <dtml-else>
+      <img src="<dtml-var MISC_ZMS>btn_lang_local.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang>" border="0" align="absmiddle"/>
+     </dtml-if>
+    <dtml-else>
+     <img src="<dtml-var MISC_ZMS>btn_lang_global.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>" border="0" align="absmiddle"/>
+    </dtml-if>
+   </dtml-if>
+  </dtml-if>
+</dtml-let>
+<dtml-else>
+<img src="<dtml-var MISC_ZMS>state_untranslated.gif" border="0" title="<dtml-var "getZMILangStr('STATE_TRANSLATE')">" border="0" align="absmiddle"/>
+</dtml-if>
+</dtml-if>
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Workflow
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+<dtml-unless "getAutocommit()">
+<dtml-unless ZMS_VERSION>
+<dtml-let wfStates="getWfStates(REQUEST)"
+><dtml-if "getObjProperty('work_uid',REQUEST)"
+><dtml-if "getObjProperty('work_dt',REQUEST)"
+><dtml-in wfStates
+><dtml-let wfState=sequence-item itm="getWfActivity(wfState)"
+><dtml-if "itm.get('icon',_.None)"
+><img src="<dtml-var "getDocumentElement().absolute_url()">/get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('work_uid',REQUEST)"> (<dtml-var "getLangFmtDate(getObjProperty('work_dt',REQUEST))">)" border="0" align="absmiddle" />
+</dtml-if
+></dtml-let
+></dtml-in
+></dtml-if
+></dtml-if>
+<dtml-let filtered_obj_states="filteredObjStates(REQUEST)"
+><dtml-if "'STATE_NEW' in filtered_obj_states"
+><img src="<dtml-var MISC_ZMS>state_new.gif" title="<dtml-var "getZMILangStr('STATE_NEW')">" border="0" align="absmiddle"
+></dtml-if
+><dtml-if "'STATE_MODIFIED' in filtered_obj_states"
+><img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
+><dtml-elif "_.len(wfStates)>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)"
+><img src="<dtml-var MISC_ZMS>state_modified_objs.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
+></dtml-if
+><dtml-if "'STATE_DELETED' in filtered_obj_states"
+><img src="<dtml-var MISC_ZMS>state_deleted.gif" title="<dtml-var "getZMILangStr('STATE_DELETED')">" border="0" align="absmiddle"
+></dtml-if
+></dtml-let
+></dtml-let
+></dtml-unless
+></dtml-unless
+>
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Version Info
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+<dtml-if "getHistory()">
+<dtml-if "REQUEST.form.has_key('ZMS_VERSION_%s'%id)"><b><i></dtml-if>
+v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"><dtml-if "REQUEST.get('ZMS_VERSION_%s'%id,'').find(_.str(version_live_id))>=0"> - <dtml-var "getZMILangStr('TAB_LIVE')"><dtml-elif "REQUEST.get('ZMS_VERSION_%s'%id,'').find(_.str(version_work_id))>=0"> - <dtml-var "getZMILangStr('TAB_PREVIEW')"></dtml-if>
+<dtml-if "REQUEST.form.has_key('ZMS_VERSION_%s'%id)"></i></b></dtml-if>
+</dtml-if>

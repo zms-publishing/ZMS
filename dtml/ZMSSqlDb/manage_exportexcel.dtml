@@ -1,0 +1,92 @@
+<dtml-call "RESPONSE.setHeader('Content-Type','application/vnd.ms-excel')"><?xml version="1.0"?>
+<dtml-call "RESPONSE.setHeader('Cache-Control', 'no-cache')">
+<dtml-call "RESPONSE.setHeader('Pragma', 'no-cache')">
+
+<dtml-let entities="getEntities()" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id"
+><dtml-call "REQUEST.set('qcharset',_.getattr(this(),'charset','utf-8'))"
+><dtml-call "REQUEST.set('qstart',REQUEST.get('qstart',0))"
+><dtml-call "REQUEST.set('qbatch',REQUEST.get('qbatch',3))"
+><dtml-call "REQUEST.set('qsize',REQUEST.get('qsize',10))"
+><dtml-call "REQUEST.set('qindex',REQUEST.get('qindex',-1))"
+><dtml-call "recordSet_Init(REQUEST)"
+><dtml-call "recordSet_Filter(REQUEST)"
+><dtml-call "recordSet_Sort(REQUEST)"
+><dtml-call "REQUEST.set('res',query(''.join(REQUEST.get('sqlStatement',[])))['records'])">
+
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="head">
+   <Font x:Family="Swiss" ss:Bold="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="String">
+   <Alignment ss:Vertical="Top" />
+  </Style>
+  <Style ss:ID="Number">
+   <Alignment ss:Vertical="Top" />
+  </Style>
+  <Style ss:ID="DateTime">
+   <Alignment ss:Vertical="Top" />
+    <NumberFormat ss:Format="Short Date"/>
+  </Style>
+ </Styles>
+<Worksheet ss:Name="<dtml-var "SESSION[sessqentitykey]">">
+<Table>
+<Row>
+<dtml-comment>
+################################################################################
+##### HEADER
+################################################################################
+</dtml-comment>
+  <dtml-in grid_cols mapping>
+  <dtml-unless hide>
+   <Cell ss:StyleID="head"><Data ss:Type="String"><NamedCell ss:Name="_FilterDatabase"/><dtml-var label></Data></Cell>
+  </dtml-unless>
+  </dtml-in>
+</Row>
+<dtml-comment>
+################################################################################
+##### DATA
+################################################################################
+</dtml-comment>
+<dtml-in res>
+ <dtml-let res-index=sequence-index>
+  <dtml-call "REQUEST.set('row',_['sequence-item'])">
+  <dtml-call f_recordset_init>
+  <Row>
+   <dtml-in grid_cols mapping>
+    <dtml-unless hide>
+     <dtml-let grid_col=sequence-item>
+      <dtml-try>
+       <dtml-let v="row.get(key,_.None)">
+        <dtml-comment>##### Grid.DateTime #####</dtml-comment>
+        <dtml-if "v and type in ['date','datetime','time']">
+         <Cell ss:StyleID="DateTime"><Data ss:Type="DateTime"><dtml-var "getLangFmtDate(v,'eng','%s_FMT'%type.upper()).replace(' ','T').replace('/','-')"></Data></Cell>
+        <dtml-comment>##### Grid.Number #####</dtml-comment>
+        <dtml-elif "v and type in ['float','int']">
+         <Cell ss:StyleID="Number"><Data ss:Type="Number"><dtml-var v></Data></Cell>
+        <dtml-comment>##### Grid.Default #####</dtml-comment>
+        <dtml-else>
+         <Cell ss:StyleID="String"><Data ss:Type="String"><dtml-var v html_quote></Data></Cell>
+        </dtml-if>
+       </dtml-let>
+      <dtml-except>
+       <Cell><Data ss:Type="String">ERROR - <dtml-var error_type>: <dtml-var error_value></Data></Cell>  
+      </dtml-try>
+     </dtml-let>
+    </dtml-unless>
+   </dtml-in>
+  </Row>
+ </dtml-let>
+</dtml-in>
+</Table>
+</Worksheet>
+</Workbook>
+
+</dtml-let>
+

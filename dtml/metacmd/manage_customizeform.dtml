@@ -1,0 +1,430 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+
+<dtml-if "not REQUEST.has_key('id') or not REQUEST['id']">
+ <dtml-call "REQUEST.set('id','')">
+</dtml-if>
+
+<script language="JavaScript">
+<!--//
+
+  /**
+   *
+   * @param fm		Html-Form
+   */
+  function onFormSubmit(fm) 
+  {
+    var b = true;
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['aq_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('BTN_ACQUIRE')">",false);
+    }
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>") 
+    {
+        var elFile = fm.elements['file'];
+        var elInit = fm.elements['init'];
+    	if (isBlank(elFile.value) && isBlank(elInit.value))
+	{
+            b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+	}
+    }
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
+    {
+      b = b && !disallowBlank(fm.elements['_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+      b = b && !disallowBlank(fm.elements['_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+      b = b && !disallowBlank(fm.elements['_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
+    }
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") 
+    {
+      b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
+    }
+    return b;
+  }
+
+  /**
+   *
+   */
+  function exportBtnClick() 
+  {
+    fm = document.forms['form0'];
+    href = fm.action+'?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
+    for (i=0; i<fm.elements.length; i++) {
+      el = fm.elements[i];
+      if (el.name=='ids:list' && el.type=='checkbox' && el.checked)
+        href+='&'+el.name+'='+el.value;
+    }
+    window.open(href);
+  }
+
+  /**
+   *
+   * @param el
+   */
+  function btnClick(el) {
+    self.btnClicked = el.value;
+  }
+
+//-->
+</script>
+</head>
+
+<dtml-var manage_tabs>
+<dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
+
+<dtml-var f_bo_area>
+
+<div class="form-help"><dtml-var "getZMILangStr('MSG_METACMD')"></div><br />
+
+ <form name="form0" action="manage_changeMetacmds" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+ <input type="hidden" name="lang" value="<dtml-var lang>">
+
+  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+  <colgroup>
+   <col width="20" />
+   <col />
+   <col />
+   <col />
+   <col />
+   <col width="15%" />
+   <col width="20" />
+  </colgroup>
+
+  <dtml-in "getMetaCmdIds()">
+  <dtml-let metaCmdId=sequence-item metaCmd="getMetaCmd(metaCmdId)" ob="_.getattr(this(),metaCmd['id'])">
+
+    <dtml-call "REQUEST.set('has_acquisition',[])">
+    <dtml-in "getPortalClients()">
+     <dtml-let portalClient=sequence-item portalClientMetaCmd="portalClient.getMetaCmd(metaCmdId)">
+      <dtml-if "portalClientMetaCmd is not _.None and portalClientMetaCmd.get('acquired',0)==1">
+       <dtml-call "has_acquisition.append(portalClient.getHome().id)">
+      </dtml-if>
+     </dtml-let>
+    </dtml-in>
+    
+  <!-- Header -->
+  <dtml-if sequence-start>
+  <tr>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+  </tr>
+  <!-- Headline -->
+  <dtml-if "REQUEST.get('id','')!=''">
+   <tr class="zmiNeutralColorStrong0">
+    <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
+    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
+    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
+    <td><div class="form-label" align="center">Exec.</div></td>
+    <td colspan="2">&nbsp;</td>
+   </tr>
+  </dtml-if>
+  </dtml-if>
+
+  <dtml-if "REQUEST['id']==metaCmd['id']">
+  <dtml-if "metaCmd.get('acquired',0) == 1">
+
+  <!-- Acquired Action -->
+  <tr valign="top" class="zmiNeutralColorMedium0">
+   <td rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var "metaCmd['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
+   <td class="form-text">
+    <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
+    ><dtml-if "metaCmd.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/></dtml-if
+    ><dtml-if "metaCmd.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metaCmd['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+    ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" align="absmiddle"/></dtml-if
+    ><dtml-var "string_maxlen(metaCmd['id'],15)">
+   </td>
+   <td><div class="form-text"><dtml-var "string_maxlen(metaCmd['name'],20)"></div></td>
+   <td><div class="form-text"><i>(<dtml-var "_.getattr(this(),metaCmd['id']).meta_type">)</i></div></td>
+   <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=_.False,REQUEST=REQUEST)"></td>
+   <td valign="top" nowrap="nowrap">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this);">
+    <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
+   </td>
+   <td rowspan="2"><img src="<dtml-var MISC_ZMS>checkbox_disabled0.gif" title="" border="0" align="absmiddle" /></td>
+  </tr>
+  <!-- Acquired Action-Properties -->
+  <tr class="zmiNeutralColorMedium0">
+   <td colspan="5">
+    <table cellspacing="0" cellpadding="5" border="0" width="80%">
+    <tr>
+     <td>
+      <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
+      <tr valign="top">
+       <td><div class="form-small"><b><dtml-var "getZMILangStr('ATTR_DESCRIPTION')"></b></div></td>
+       <td><div class="form-small"><b><dtml-var "getZMILangStr('ATTR_ROLES')"></b></div></td>
+       <td><div class="form-small"><b><dtml-var "getZMILangStr('ATTR_OBJECTS')"></b></div></td>
+      </tr>
+      <tr valign="top" class="zmiNeutralColorLight0">
+       <td><div class="form-small"><dtml-var "metaCmd['description']" newline_to_br></div></td>
+       <td><div class="form-small">
+        <dtml-in "metaCmd['roles']">
+         <dtml-let role=sequence-item 
+                   role_str="'ROLE_%s'%role.upper()"
+                   role_lang_str="getZMILangStr(role_str)"
+           ><dtml-if "role_str==role_lang_str"
+            ><dtml-var role
+           ><dtml-else
+            ><dtml-var role_lang_str
+           ></dtml-if
+         ></dtml-let>
+        <br/>
+        </dtml-in>
+       </div></td>
+       <td><div class="form-small">
+        <dtml-in "metaCmd['meta_types']">
+         <dtml-var "display_type(REQUEST,_['sequence-item'])"><br />
+        </dtml-in>
+       </div></td>
+      </tr>
+      </table>
+     </td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+
+  <dtml-else>
+
+  <!-- Action -->
+  <tr valign="top" class="zmiNeutralColorMedium0">
+   <td rowspan="3"><input class="form-element" type="radio" name="id" value="<dtml-var "metaCmd['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
+   <td class="form-element" nowrap="nowrap">
+    <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
+    ><dtml-if "metaCmd.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/></dtml-if
+    ><dtml-if "metaCmd.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metaCmd['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+    ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" align="absmiddle"/></dtml-if
+    ><dtml-var "getTextInput('form0','el_id',10,metaCmd['id'])">
+   </td>
+   <td><dtml-var "getTextInput('form0','el_name',15,metaCmd['name'])"></td>
+   <td class="form-element" nowrap="nowrap"><i>(<dtml-var "_.getattr(this(),metaCmd['id']).meta_type">)</i></td>
+   <td class="form-element" align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=1,hidden=1,REQUEST=REQUEST)"></td>
+   <td nowrap="nowrap">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
+   </td>
+   <td class="form-element" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaCmd['id']">" checked="checked"></td>
+  </tr>
+  <tr class="zmiNeutralColorMedium0">
+   <td colspan="6">
+    <table cellspacing="0" cellpadding="5" border="0" width="80%">
+    <!-- DTML Method / DTML Document / Script (Python) -->
+    <tr>
+     <td>
+      <table cellspacing="0" cellpadding="1" border="0" width="100%">
+      <tr class="zmiNeutralColorStrong0" valign="middle">
+       <td class="form-small">
+        <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"/>
+        <b>&nbsp;<dtml-var "ob.meta_type">&nbsp;</b>
+       </td>
+      </tr>
+      </table>
+      <div class="form-element">
+       <dtml-if "ob.meta_type in ['DTML Method','DTML Document']">
+        <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=20,value=ob.raw,enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
+       <dtml-elif "ob.meta_type=='Script (Python)'">
+        <table cellspacing="1" cellpadding="1" border="0">
+        <dtml-if "ob.errors">
+         <tr valign="top">
+          <td class="form-label">Errors</td>
+          <td style="background-color: #FFDDDD"><pre><dtml-var expr="'\n'.join(ob.errors)" html_quote></pre></td>
+         </tr>
+        </dtml-if>
+        <dtml-if "ob.warnings">
+         <tr valign="top">
+          <td class="form-label">Warnings</td>
+          <td style="background-color: #FFEEDD"><pre><dtml-var expr="'\n'.join(ob.warnings)" html_quote></pre></td>
+         </tr>
+        </dtml-if>
+        <tr>
+         <td align="left" valign="top" colspan="2">
+          <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=20,value=ob.body(),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
+         </td>
+        </tr>
+        </table>
+       </dtml-if>
+      </div>
+     </td>
+    </tr>
+    <!-- Action-Properties -->
+    <tr>
+     <td>
+      <table cellspacing="1" cellpadding="2" border="0" class="zmiNeutralColorStrong0">
+      <tr valign="middle">
+       <td class="form-small" colspan="3"><b>&nbsp;<dtml-var "getZMILangStr('TAB_PROPERTIES')">&nbsp;</b></td>
+      </tr>
+      <tr valign="top" class="zmiNeutralColorMedium0">
+       <td class="form-small">
+        <div class="form-small"><b><dtml-var "getZMILangStr('ATTR_DESCRIPTION')"></b></div>
+        <dtml-var "getTextArea(fmName='form0',elName='el_description:text',cols=20,rows=5,value=metaCmd['description'],enabled=1,REQUEST=REQUEST,css='form-small',wrap='virtual')">
+       </td>
+       <td class="form-small">
+        <div class="form-small"><b><dtml-var "getZMILangStr('ATTR_ROLES')"></b></div>
+        <select class="form-small" name="el_roles:list" multiple="multiple" size="<dtml-var "_.min(10,_.len(userdefined_roles()))">">
+         <dtml-in userdefined_roles>
+          <dtml-let role=sequence-item 
+                    role_str="'ROLE_%s'%role.upper()"
+                    role_lang_str="getZMILangStr(role_str)">
+           <option value="<dtml-var role>" <dtml-if "role in metaCmd['roles']">selected="selected"</dtml-if>
+            ><dtml-if "role_str==role_lang_str"
+             ><dtml-var role
+            ><dtml-else
+             ><dtml-var role_lang_str
+            ></dtml-if
+           ></option>
+          </dtml-let>
+         </dtml-in>
+        </select>
+       </td>
+       <td class="form-small">
+        <div class="form-small"><b><dtml-var "getZMILangStr('ATTR_OBJECTS')"></b></div>
+        <select class="form-small" name="el_meta_types:list" size="10" multiple="multiple">
+        <dtml-in "getMetaobjIds()">
+         <dtml-let meta_type=sequence-item>
+          <option value="<dtml-var meta_type>" <dtml-if "meta_type in metaCmd['meta_types']">selected="selected"</dtml-if>><dtml-var "string_maxlen(display_type(REQUEST,meta_type),15)"></option>
+         </dtml-let>
+        </dtml-in>
+        </select>
+       </td>
+      </tr>
+      </table>
+     </td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+
+  </dtml-if>
+  <dtml-else>
+   <dtml-if "REQUEST.get('id','')==''">
+    <tr valign="top" class="neutralColorWhite">
+     <td><input class="form-element" type="radio" name="id" value="<dtml-var "metaCmd['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+     <td colspan="5">
+      <div class="form-text">
+       <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
+       ><dtml-if "metaCmd.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/></dtml-if
+       ><dtml-if "metaCmd.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metaCmd['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+       ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" align="absmiddle"/></dtml-if>
+       <b><dtml-var "metaCmd['id']"></b>
+       <i>(<dtml-var "metaCmd['name']">)</i>
+      </div>
+     </td>
+     <td><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaCmd['id']">" <dtml-if "metaCmd.get('acquired',0)==1">disabled="disabled"</dtml-if>/></td>
+    </tr>
+   </dtml-if>
+  </dtml-if>
+  </dtml-let>
+  </dtml-in>
+
+  <!-- Insert Action -->
+  <dtml-if "REQUEST.get('id','')==''">
+  <tr>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td>&nbsp;</td>
+   <td class="form-element">
+    <dtml-var "getTextInput('form0','_id',10,'')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
+   </td>
+   <td class="form-element">
+    <dtml-var "getTextInput('form0','_name',15,'')">
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
+   </td>
+   <td class="form-element">
+    <select class="form-element" name="_type">
+     <option value="DTML Method">DTML Method</option>
+     <option value="DTML Document">DTML Document</option>
+     <option value="Script (Python)">Script (Python)</option>
+    </select>
+    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
+   </td>
+   <td align="center" class="form-element">
+    <dtml-var "getCheckbox(fmName='form0',elName='_exec:int',value=1,enabled=_.True,REQUEST=REQUEST)">
+    <div class="form-small">Exec</div>
+   </td>
+   <td class="form-element" colspan="2">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+   </td>
+  </tr>
+  </dtml-if>
+
+ <!-- Acquire Action -->
+ <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not _.None">
+  <dtml-call "REQUEST.set('count',0)">
+  <dtml-let thisIds="getMetaCmdIds()" portalMaster="getPortalMaster()">
+    <dtml-in "portalMaster.getMetaCmdIds()">
+     <dtml-let metaCmdId=sequence-item metaCmd="portalMaster.getMetaCmd(metaCmdId)">
+     <dtml-if "metaCmdId not in thisIds or not ZMS_THIS.getMetaCmd(metaCmdId).get('acquired',0) == 1">
+      <dtml-unless count>
+       <tr>
+        <td colspan="7"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
+       </tr>
+       <tr class="zmiNeutralColorLight0">
+        <td>&nbsp;</td>
+        <td colspan="6" class="form-element">
+         <table cellspacing="0" cellpadding="0" border="0">
+         <tr valign="top">
+          <td class="form-element">
+           <select class="form-element" name="aq_id">
+            <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('TAB_METACMD')"> -----</option>
+      </dtml-unless>
+      <option value="<dtml-var "metaCmd['id']">"><dtml-var "metaCmd['id']"> (<dtml-var "metaCmd['name']">)</option>
+      <dtml-call "REQUEST.set('count',count+1)">
+     </dtml-if>
+     </dtml-let>
+    </dtml-in>
+  </dtml-let>
+  <dtml-if count>
+       </select> 
+       <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"> (<dtml-var "getZMILangStr('ATTR_DISPLAY')">)</div>
+      </td>
+      <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
+     </tr>
+     </table>
+    </td>
+   </tr>
+  </dtml-if>
+ </dtml-if>
+
+  <!-- Import Action -->
+  <dtml-if "REQUEST.get('id','')==''">
+  <tr>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td colspan="7">
+    <table cellspacing="0" cellpadding="2" border="0">
+    <tr valign="middle">
+     <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
+     <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+    </tr>
+    <dtml-let pattern="'.metacmd.'" conf_files="getConfFiles(pattern)">
+     <dtml-if conf_files>
+      <tr>
+       <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
+       <td colspan="7">
+        <select class="form-element" name="init">
+	 <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')"> (default)... ---</option>
+         <dtml-in conf_files>
+	  <dtml-let conf_file=sequence-item>
+           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
+	  </dtml-let>
+         </dtml-in>
+        </select>
+       </td>
+      </tr>
+     </dtml-if>
+    </dtml-let>
+    <tr valign="middle">
+     <td>&nbsp;</td>
+     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+</dtml-if
+></table
+></form>
+<br/>
+
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>

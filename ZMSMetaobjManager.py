@@ -26,6 +26,7 @@
 from __future__ import nested_scopes
 from Products.ExternalMethod import ExternalMethod
 from Products.PythonScripts import PythonScript
+from Products.ZSQLMethods import SQL
 import ZPublisher.HTTPRequest
 import copy
 import sys
@@ -53,13 +54,15 @@ def syncType( self, meta_id, attr):
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
         attr['name'] = ob.raw
-    elif attr['type'] in [ 'DTML Method', 'DTML Document', 'Script (Python)']:
+    elif attr['type'] in self.valid_zopetypes:
       home = self.getHome()
       ob = getattr( home, attr['id'])
       if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.body()
+      elif ob.meta_type in [ 'Z SQL Method']:
+        attr['custom'] = ob.src
   except:
     value = _globals.writeException(self,'[getMetaobjAttr]')
 
@@ -92,7 +95,7 @@ class ZMSMetaobjManager:
     valid_xtypes = ['constant','delimiter','hint','interface','method','resource']
     valid_datatypes = ['amount','autocomplete','boolean','color','constant','date','datetime','delimiter','dialog','dictionary','file','float','hint','identifier','image','int','interface','list','method','multiselect','password','resource','richtext','select','string','text','time','url','xml']
     valid_objtypes = [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
-    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)' ]
+    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)', 'Z SQL Method']
 
 
     ############################################################################
@@ -463,7 +466,7 @@ class ZMSMetaobjManager:
         newMultilang = 0
       
       # Defaults for Insert
-      method_types = [ 'method', 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)']
+      method_types = [ 'method'] + self.valid_zopetypes
       if oldId is None and \
          newType in method_types and \
          (newCustom == '' or type(newCustom) is not str):
@@ -496,6 +499,8 @@ class ZMSMetaobjManager:
           newCustom += 'return printed\n'
           newCustom += '\n'
           newCustom += '# --// EO '+ newId + ' //--\n'
+        elif newType in [ 'Z SQL Method']:
+          newCustom = 'SELECT * FROM tablename\n'
       
       # Handle resources.
       if newType == 'resource':
@@ -563,7 +568,7 @@ class ZMSMetaobjManager:
       ob['attrs'] = attrs
       
       # Handle Zope-Objects.
-      if newType in [ 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)']:
+      if newType in self.valid_zopetypes:
         # Remove Zope-Object (deprecated use in document-element).
         container = self.getDocumentElement()
         if oldId in container.objectIds():
@@ -590,6 +595,10 @@ class ZMSMetaobjManager:
             ExternalMethod.manage_addExternalMethod( container, newId, newName, newId, newId)
           elif newType == 'Script (Python)':
             PythonScript.manage_addPythonScript( container, newId)
+          elif newType == 'Z SQL Method':
+            connection_id = self.SQLConnectionIDs()[0][0]
+            arguments = ''
+            SQL.manage_addZSQLMethod( container, newId, newName, connection_id, arguments, newCustom)
         # Rename Zope-Object.
         elif oldId != newId:
           container.manage_renameObject( id=oldId, new_id=newId)
@@ -617,6 +626,10 @@ class ZMSMetaobjManager:
             count += 1
           obElmnt.ZPythonScript_setTitle( newName)
           obElmnt.ZPythonScript_edit( params=params, body=body)
+        elif newType == 'Z SQL Method':
+          connection_id = obElmnt.connection_id
+          arguments = obElmnt.arguments_src
+          obElmnt.manage_edit(title=newName,connection_id=connection_id,arguments=arguments,template=newCustom)
       
       # Assign Attributes to Meta-Object.
       ob['zms_system'] = int( ob['zms_system'] and (oldId is None or zms_system))
@@ -644,7 +657,7 @@ class ZMSMetaobjManager:
         if attr['id'] == attr_id:
           if id+'.'+attr['id'] in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+attr['id']])
-          if attr['type'] in [ 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)']:
+          if attr['type'] in self.valid_zopetypes:
             home = self.getHome()
             if attr['id'] in home.objectIds([attr['type']]):
               home.manage_delObjects(ids=[attr['id']])

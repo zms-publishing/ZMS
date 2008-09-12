@@ -985,7 +985,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item type="dictionary"><dictionary>
 <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>
 
-<dtml-let 
+<dtml-let
   displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
   align="getObjProperty('align',REQUEST)"
   imgattr="'img'"
@@ -995,7 +995,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
   imgthumb="URL.find('/manage')>0"
   imgspecial="getObjProperty('img_attrs_spec',REQUEST)"
   imgclass="'img'"
-  text="getText(REQUEST)" 
+  text="getText(REQUEST)"
   format="getObjProperty('format',REQUEST)"
   renderedtext="renderText(format,'text',text,REQUEST)"
   textalign="getObjProperty( 'textalign',REQUEST)"
@@ -1666,8 +1666,8 @@ function remoteResponseTimedout() {
 <item type="dictionary"><dictionary>
 <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSNote //--</dtml-comment>
 
-<dtml-let 
-  text="getText(REQUEST)" 
+<dtml-let
+  text="getText(REQUEST)"
   format="getObjProperty('format',REQUEST)"
   renderedtext="renderText(format,'text',text,REQUEST,id)"
  ><dtml-return "'<div class='+QUOT+'note'+QUOT+'>'+renderedtext+'</div>'"
@@ -2136,7 +2136,7 @@ function remoteResponseTimedout() {
 <script language="JavaScript">
 <!--//
 
-function onZMSTableFormSubmit() 
+function onZMSTableFormSubmit()
 {
   var xml = '';
   var type = parseInt($('input[name=table_type:int]:checked').val());
@@ -2178,7 +2178,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 //-->
 </script>
 
-<dtml-let 
+<dtml-let
   table_th="'<th style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></th>'"
   table_td="'<td style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></td>'"
 >
@@ -2348,7 +2348,7 @@ var table_cell_id = '';
 var table_cell_bgcolor = '';
 var table_cell_offs = 2;
 
-function selectValue(el, v) 
+function selectValue(el, v)
 {
   for (i=0; i < el.options.length; i++) {
     if (el.options[i].value == v)
@@ -2356,7 +2356,7 @@ function selectValue(el, v)
   }
 }
 
-function onZMSTableFormSubmit() 
+function onZMSTableFormSubmit()
 {
   var xml = '';
   xml += '<list>\n';
@@ -2391,7 +2391,7 @@ function onZMSTableFormSubmit()
   return onFormSubmit('<dtml-var fmName>');
 }
 
-function table_cell_edit(el) 
+function table_cell_edit(el)
 {
   table_cell_id = el.name.substr(el.name.indexOf('_')+1);
   var el_td = $('#content_'+ table_cell_id).parent();
@@ -2553,7 +2553,7 @@ function actionBtnClick(el, fct)
     var target_x = x;
     if (fct == 'move_col_left')
       target_x = target_x - 1;
-    else 
+    else
       target_x = target_x + 1;
     var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
     for ( var i = 0; i < el_trs.length; i++) {
@@ -2573,7 +2573,7 @@ function actionBtnClick(el, fct)
     var target_y = y;
     if (fct == 'move_row_up')
       target_y = target_y - 1;
-    else 
+    else
       target_y = target_y + 1;
     var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
     var source_inp = $("textarea,input",source_tr);
@@ -2625,7 +2625,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
    ></table
  ></td>
 </tr>
- 
+
 <tr>
  <td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
  <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=_.True,REQUEST=REQUEST)"></td>
@@ -2658,7 +2658,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
     ><dtml-if "table_type==4 and row_index==0 and col_index==0"
      ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
     ><dtml-else
-     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;border-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
+     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;borde=r-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
       <div class="ZMSTable">
        <table cellspacing="0" cellpadding="2" border="0" style="width:100%">
        <tr>
@@ -3120,8 +3120,8 @@ return teaserElmnts
      ><dtml-call "REQUEST.set('bgcolor_border',teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST))"
      ><dtml-call "REQUEST.set('bgcolor_title',teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST))"
      ><dtml-call "REQUEST.set('bgcolor_text',teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST))"
-     ><dtml-if "last_borderstyle != borderstyle or 
-               last_bgcolor_border != bgcolor_border or 
+     ><dtml-if "last_borderstyle != borderstyle or
+               last_bgcolor_border != bgcolor_border or
                borderstyle==2"
       ><dtml-if "last_borderstyle is not _.None and last_bgcolor_border is not _.None "
        ><dtml-if "last_borderstyle != 3"
@@ -3183,7 +3183,7 @@ return teaserElmnts
   ><dtml-let teaserElmnt=sequence-item manage_main="'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),REQUEST['lang'])"
    ><div class="form-small"
     ><a href="<dtml-var manage_main>"><img src="<dtml-var MISC_ZMS>internal_link.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(REQUEST)">" border="0" align="absmiddle"/></a
-     ><dtml-let 
+     ><dtml-let
        url="getLinkUrl(teaserElmnt.getObjProperty('attr_url',REQUEST))"
        img_src="teaserElmnt.getObjProperty('attr_img_src',REQUEST)+'?'"
        title="teaserElmnt.getObjProperty('title',REQUEST)"
@@ -3374,7 +3374,7 @@ return teaserElmnts
 <item type="dictionary"><dictionary>
 <item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--</dtml-comment>
 
- <dtml-let 
+ <dtml-let
    url="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
    img_src_attr="getObjProperty('attr_img_src',REQUEST)"
    img_src="img_src_attr+'?'"
@@ -3393,27 +3393,27 @@ return teaserElmnts
 
   ><dtml-comment>*** Title and Image </dtml-comment
   ><dtml-if "title_txt or img_filename"
-   ><dtml-let 
+   ><dtml-let
      displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
      img="'<img class='+QUOT+'title'+QUOT+' src='+QUOT+img_src_attr+QUOT+' alt='+QUOT+title_txt+QUOT+' border='+QUOT+'0'+QUOT+'/>'"
     ><dtml-if "displaytype=='top'"
-     ><dtml-if img_filename><div class="graphic"><dtml-var img></div></dtml-if
-     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><dtml-if img_filename><div class="graphic"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var title_txt><dtml-if url></a></dtml-if></div></dtml-if
     ><dtml-elif "displaytype=='right'"
-     ><dtml-if img_filename><div class="graphic alignright"><dtml-var img></div></dtml-if
-     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><dtml-if img_filename><div class="graphic alignright"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var title_txt><dtml-if url></a></dtml-if></div></dtml-if
      ><div class="clearfloating" style="clear:both">&nbsp;</div
     ><dtml-elif "displaytype=='bottom'"
-     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
-     ><dtml-if img_filename><div class="graphic"><dtml-var img></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var title_txt><dtml-if url></a></dtml-if></div></dtml-if
+     ><dtml-if img_filename><div class="graphic"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if
     ><dtml-elif "displaytype=='left'"
-     ><dtml-if img_filename><div class="graphic alignleft"><dtml-var img></div></dtml-if
-     ><dtml-if title_txt><div class="title"><dtml-var title_txt></div></dtml-if
+     ><dtml-if img_filename><div class="graphic alignleft"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if
+     ><dtml-if title_txt><div class="title"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var title_txt><dtml-if url></a></dtml-if></div></dtml-if
      ><div class="clearfloating" style="clear:both">&nbsp;</div
     ></dtml-if
    ></dtml-let
   ></dtml-if
-  
+
   ><dtml-comment>*** Abstract </dtml-comment
    ><dtml-if "_.len(abstract)+_.len(url)>0"
     ><div class="text"<dtml-if bgcolor_text> style="background-color:<dtml-var "get_colormap().get(bgcolor_text,'transparent')">"</dtml-if>
@@ -3529,7 +3529,7 @@ return teaserElmnts
 <item key="name"><![CDATA[<script language="JavaScript">
 <!--//
 
-function onZMSTextareaFormSubmit() 
+function onZMSTextareaFormSubmit()
 {
   var b = true;
   var txt = '<xml>'+$('#text_<dtml-var lang>').val()+'</xml>';
@@ -3568,8 +3568,8 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 <item type="dictionary"><dictionary>
 <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTextarea //--</dtml-comment>
 
-<dtml-let 
-  text="getText(REQUEST)" 
+<dtml-let
+  text="getText(REQUEST)"
   format="getObjProperty('format',REQUEST)"
   renderedtext="renderText(format,'text',text,REQUEST,id)"
  ><dtml-return renderedtext
@@ -3613,3 +3613,4 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 </dictionary>
 </item>
 </list>
+

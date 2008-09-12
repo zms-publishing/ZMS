@@ -958,3 +958,8 @@
 [01090] Added support for scrolling to highlighted search-elements.
 [01091] Improved performance of get_colormap() in zmi by forced caching value in request-buffer.
 --------------------------------------------------
+2008-09-11::zms-2.11.0-34
+-- MINOR CHANGES
+[01092] ZMSTeaserElement - Added support for linked image and title (contributed by tf).
+[01093] Added support for 'Z SQL Method'-attributes in special-objects.
+--------------------------------------------------

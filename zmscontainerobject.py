@@ -884,36 +884,42 @@ class ZMSContainerObject(
       order. If none, this is a empty NodeList. 
       """
       obs = []
-      types = self.dGlobalAttrs.keys()
-      # Get all object-items.
-      if REQUEST is None:
-        obs = map( lambda x: ( getattr( x, 'sort_id', ''), x), self.objectValues( types))
-      # Get selected object-items.
-      else:
-        lang = REQUEST.get('lang',None)
-        # Get coverages.
-        multilang = lang is not None and len(self.getLangs().keys()) > 1
-        if multilang:
-          key_coverage = 'attr_dc_coverage'
-          prim_lang = self.getPrimaryLanguage()
-          coverages = []
-          coverages.extend(['global.'+lang,'local.'+lang])
-          for parent in self.getParentLanguages( lang):
-            coverages.append('global.'+parent)
-        for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), self.objectValues( types)):
+      try:
+        types = self.dGlobalAttrs.keys()
+        # Get all object-items.
+        if REQUEST is None:
+          obs = map( lambda x: ( getattr( x, 'sort_id', ''), x), self.objectValues( types))
+        # Get selected object-items.
+        else:
+          lang = REQUEST.get('lang',None)
+          # Get coverages.
+          multilang = lang is not None and len(self.getLangs().keys()) > 1
           if multilang:
-            obj_vers = ob.getObjVersion( REQUEST)
-            coverage = getattr( obj_vers, key_coverage, '')
-            if coverage in [ '', None]: coverage = 'global.' + prim_lang
-          if not multilang or coverage in coverages:
-            proxy = ob.__proxy__()
-            if proxy is not None:
-              sort_id = getattr( ob, 'sort_id', '')
-              if ob.isPage():
-                sort_id = 's' + sort_id
-              obs.append( ( sort_id, proxy))
-      # Sort child-nodes.
-      obs.sort()
+            key_coverage = 'attr_dc_coverage'
+            prim_lang = self.getPrimaryLanguage()
+            coverages = []
+            coverages.extend(['global.'+lang,'local.'+lang])
+            for parent in self.getParentLanguages( lang):
+              coverages.append('global.'+parent)
+          for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), self.objectValues( types)):
+            if multilang:
+              obj_vers = ob.getObjVersion( REQUEST)
+              coverage = getattr( obj_vers, key_coverage, '')
+              if coverage in [ '', None]: coverage = 'global.' + prim_lang
+            if not multilang or coverage in coverages:
+              proxy = ob.__proxy__()
+              if proxy is not None:
+                sort_id = getattr( ob, 'sort_id', '')
+                if ob.isPage():
+                  sort_id = 's' + sort_id
+                obs.append( ( sort_id, proxy))
+        # Sort child-nodes.
+        obs.sort()
+      except Exception, exc:
+        if self.getConfProperty('ZMS.protected_mode',0):
+          _globals.writeException(self,'[getChildNodes.protected]')
+        else:
+          raise exc
       # Return child-nodes in correct sort-order.
       return map(lambda ob: ob[1],obs)
 

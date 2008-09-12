@@ -326,6 +326,7 @@
    {'key':'ZMS.export.xml.tidy','title':'Export with HTML Tidy Library','desc':'ZMS can use the HTML Tidy Library to process inline (X)HTML in the XML export to avoid CDATA-sections.','datatype':'boolean'},
    {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (\';\' separated).','datatype':'string','default':''},
    {'key':'ZMS.checkout.max_time','title':'Max. lock-time','desc':'Specify max. time [h] for locked-objects.','datatype':'int','default':1},
+   {'key':'ZMS.protected_mode','title':'Protected mode','desc':'ZMS can run in a protected mode.','datatype':'boolean'},
    {'key':'ZMS.input.file.maxlength','title':'Upload-file maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
    {'key':'ZMS.input.image.maxlength','title':'Upload-image maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
    {'key':'ZMSGraphic.zmi_max_width','title':'Image.max-width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},

@@ -32,6 +32,7 @@ from OFS.Image import File
 import Globals
 import copy
 import os
+import re
 import tempfile
 import time
 # Product Imports.
@@ -459,6 +460,8 @@ def toCdata(self, s, xhtml=0):
 
   # Return Text in CDATA.
   elif s is not None:
+    # Hack for nested CDATA
+    s = re.compile( '\<\!\[CDATA\[(.*?)\]\]\>').sub( '<!{CDATA{\\1}}>', s)
     rtn = '<![CDATA[%s]]>'%s
 
   # Return.
@@ -788,6 +791,8 @@ class XmlAttrBuilder:
       name = _globals.unencode( tag['name'])
       attrs = _globals.unencode( tag['attrs'])
       cdata = _globals.unencode( tag['cdata'])
+      # Hack for nested CDATA
+      cdata = re.compile( '\<\!\{CDATA\{(.*?)\}\}\>').sub( '<![CDATA[\\1]]>', cdata)
       
       #-- Zope < 2.9
       if type( attrs) is list:

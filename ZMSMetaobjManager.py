@@ -62,7 +62,9 @@ def syncType( self, meta_id, attr):
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.body()
       elif ob.meta_type in [ 'Z SQL Method']:
-        attr['custom'] = ob.src
+        connection = obElmnt.connection_id
+        params = ob.arguments_src
+        attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   except:
     value = _globals.writeException(self,'[getMetaobjAttr]')
 
@@ -500,7 +502,10 @@ class ZMSMetaobjManager:
           newCustom += '\n'
           newCustom += '# --// EO '+ newId + ' //--\n'
         elif newType in [ 'Z SQL Method']:
-          newCustom = 'SELECT * FROM tablename\n'
+          newCustom = ''
+          newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][0]
+          newCustom += '<params></params>\n'
+          newCustom += 'SELECT * FROM tablename\n'
       
       # Handle resources.
       if newType == 'resource':
@@ -598,7 +603,8 @@ class ZMSMetaobjManager:
           elif newType == 'Z SQL Method':
             connection_id = self.SQLConnectionIDs()[0][0]
             arguments = ''
-            SQL.manage_addZSQLMethod( container, newId, newName, connection_id, arguments, newCustom)
+            template = ''
+            SQL.manage_addZSQLMethod( container, newId, newName, connection_id, arguments, template)
         # Rename Zope-Object.
         elif oldId != newId:
           container.manage_renameObject( id=oldId, new_id=newId)
@@ -627,9 +633,20 @@ class ZMSMetaobjManager:
           obElmnt.ZPythonScript_setTitle( newName)
           obElmnt.ZPythonScript_edit( params=params, body=body)
         elif newType == 'Z SQL Method':
-          connection_id = obElmnt.connection_id
-          arguments = obElmnt.arguments_src
-          obElmnt.manage_edit(title=newName,connection_id=connection_id,arguments=arguments,template=newCustom)
+          valid_connection_ids = map( lambda x: x[0], self.SQLConnectionIDs())
+          connection = newCustom
+          connection = connection[connection.find('<connection>'):connection.find('</connection>')]
+          connection = connection[connection.find('>')+1:-1]
+          if connection not in valid_connection_ids:
+            connection = valid_connection_ids[0]
+          arguments = newCustom
+          arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
+          arguments = arguments[arguments.find('>')+1:-1]
+          template = newCustom
+          template = template[template.find('</params>'):]
+          template = template[template.find('>')+1:]
+          template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
+          obElmnt.manage_edit(title=newName,connection_id=connection_id,arguments=arguments,template=template)
       
       # Assign Attributes to Meta-Object.
       ob['zms_system'] = int( ob['zms_system'] and (oldId is None or zms_system))

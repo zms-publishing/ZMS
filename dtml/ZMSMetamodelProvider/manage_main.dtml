@@ -527,6 +527,8 @@
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'External Method'"
              ><img src="misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+            ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
+             ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
             /><dtml-elif "oAttr['type'] == 'Script (Python)'"
              ><dtml-with "_.getattr(this(),oAttr['id'])"
               ><dtml-if errors

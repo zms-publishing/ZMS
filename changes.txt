@@ -963,3 +963,7 @@
 [01092] ZMSTeaserElement - Added support for linked image and title (contributed by tf).
 [01093] Added support for 'Z SQL Method'-attributes in special-objects.
 --------------------------------------------------
+2008-09-15::zms-2.11.0-35
+-- MINOR CHANGES
+[01094] Added support for Extensions (use of External Methods) in ZMS: Google-Sitemap/Mirror-Manager (requested by xm).
+--------------------------------------------------

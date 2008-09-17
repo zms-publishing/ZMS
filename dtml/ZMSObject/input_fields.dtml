@@ -2,7 +2,7 @@
 ><dtml-let objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
            key="objAttr['id']"
            required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
-           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in [ 'constant', 'method', 'resource', 'DTML Method', 'DTML Document', 'Script (Python)' ]"
+           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in [ 'constant', 'method', 'resource', 'DTML Method', 'DTML Document', 'Script (Python)', 'Z SQL Method']"
            fmName="'form0'"
            elName="getObjAttrName(objAttr,lang)"
            elLabel="getObjAttrLabel(objAttr)"
@@ -115,10 +115,12 @@
 #####  Primitive #####
 </dtml-comment>
 <dtml-elif "not ((objAttr['meta_type']=='?') or (objAttr['id'] in ['displaytype','format']) or (objAttr['id'].find('align')>0 and _.len(filter_list(metaObj['attrs'],'id',objAttr['id'][:objAttr['id'].find('align')],'=='))>0))">
+<dtml-if "metaObj['id']!='ZMSGraphic' or key!='imgsuperres' or getConfProperty('ZMSGraphic.superres',0)==1">
 <tr id="tr_<dtml-var key>" valign="top">
  <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
  <td><dtml-var "getObjInput(key,REQUEST)"></td>
 </tr>
+</dtml-if>
 
 </dtml-if
 ></dtml-if

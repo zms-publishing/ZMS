@@ -611,8 +611,8 @@ class ZMSMetaobjManager:
         # Change Zope-Object.
         obElmnt = getattr( container, newId)
         if newType in [ 'DTML Method', 'DTML Document' ]:
-          roles=[ 'Manager']
           obElmnt.manage_edit( title=newName, data=newCustom)
+          roles=[ 'Manager']
           obElmnt._proxy_roles=tuple(roles)
           if newId.find( 'manage_') == 0:
             obElmnt.manage_role(role_to_manage='Authenticated',permissions=['View'])
@@ -632,6 +632,11 @@ class ZMSMetaobjManager:
             count += 1
           obElmnt.ZPythonScript_setTitle( newName)
           obElmnt.ZPythonScript_edit( params=params, body=body)
+          roles=[ 'Manager']
+          obElmnt._proxy_roles=tuple(roles)
+          if newId.find( 'manage_') == 0:
+            obElmnt.manage_role(role_to_manage='Authenticated',permissions=['View'])
+            obElmnt.manage_acquiredPermissions([])
         elif newType == 'Z SQL Method':
           valid_connection_ids = map( lambda x: x[0], self.SQLConnectionIDs())
           connection = newCustom

@@ -1,0 +1,108 @@
+<dtml-try>
+<dtml-var f_ZMSSqlDb_manage_configuration>
+<dtml-except>
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+<script language="JavaScript">
+<!--//
+
+  function onFormSubmit( fm) {
+    var b = true;
+    return b;
+  }
+
+  function toggleElement( sender, id) {
+    var speed = "normal";
+    var img = $('#'+sender);
+    var el = $('#'+id);
+    if ( img.attr("title") == "-") {
+      img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
+      el.hide(speed);
+    }
+    else {
+      img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
+      el.show(speed);
+    }
+  }
+
+//-->
+</script>
+</head>
+<dtml-var manage_tabs>
+<dtml-var f_bo_area>
+<div style="padding:8px;">
+
+<form name="form0" action="manage_changeConfiguration" onsubmit="return onFormSubmit(this)" method="post" enctype="multipart/form-data">
+<input type="hidden" name="lang" value="<dtml-var lang>">
+<input type="hidden" name="preview" value="preview">
+
+<table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="98%">
+<colgroup>
+ <col />
+ <col />
+ <col />
+ <col />
+ <col />
+ <col width="20" />
+</colgroup>
+
+  <!-- Header -->
+  <tr>
+   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+  </tr>
+  
+  <dtml-in "getEntities()" mapping sort=label>
+   <dtml-if "REQUEST.get('id','')==id">
+   <dtml-elif "REQUEST.get('id','')==''">
+    <tr valign="top" class="neutralColorWhite">
+     <td colspan="6">
+      <div class="form-small">
+       <a href="javascript:toggleElement('img_<dtml-var id>','columns_<dtml-var id>')"><img id="img_<dtml-var id>" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
+       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"><strong><dtml-var label></strong></a>
+       <div id="columns_<dtml-var id>" style="display:none;">
+        <table cellspacing="0" cellpadding="0" border="0">
+        <dtml-in columns mapping>
+         <tr>
+          <td><dtml-var sequence-item></td>
+         </tr>
+        </dtml-in>
+        </table>
+       </div>
+      </div>
+     </td>
+    </tr>
+   </dtml-if>
+  </dtml-in>
+  
+<dtml-comment>
+################################################################################
+### Import
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('id','')==''">
+  <tr>
+   <td colspan="8"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td colspan="6">
+    <table cellspacing="0" cellpadding="2" border="0">
+    <tr valign="middle">
+     <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
+     <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+    </tr>
+    <tr valign="middle">
+     <td>&nbsp;</td>
+     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+</dtml-if
+></table
+></form
+><br/>
+
+</div>
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>
+</dtml-try>

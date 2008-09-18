@@ -134,7 +134,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="11" ss:ExpandedRowCount="463" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="11" ss:ExpandedRowCount="470" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75" ss:Span="8"/>
@@ -4575,7 +4575,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अनुलम्ब</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">رأسي</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row ss:AutoFitHeight="0" ss:Height="13.5">
     <Cell><Data ss:Type="String">SITEMAPLAYOUT3</Data></Cell>
     <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
     <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
@@ -4683,7 +4683,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अधि-वस्तु</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">عنصر متقدم</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">SOTYPE_ZMSTEASERELEMENT</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
@@ -5118,7 +5118,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">क्रिप्या इन्तज़ार करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">رجاء الإنتظار</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">TASK_CHANGED_BY_DATE</Data></Cell>
     <Cell><Data ss:Type="String">Zuletzt geänderte Objekte</Data></Cell>
     <Cell><Data ss:Type="String">latest-modified objects</Data></Cell>
@@ -5128,7 +5128,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">नवीनतम-परिवर्तित वस्तुयें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">سرد آخر العناصر التي تم عليها تعديلات</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">TASK_UNTRANSLATED</Data></Cell>
     <Cell><Data ss:Type="String">zu übersetzende Objekte</Data></Cell>
     <Cell><Data ss:Type="String">objects to be translated</Data></Cell>
@@ -5140,7 +5140,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अनूवादित करने के लिए वस्तुयें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">سرد العناصر الواجب ترجمتها</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">TASK_ZMSNOTE</Data></Cell>
     <Cell><Data ss:Type="String">Notiz-Objekte</Data></Cell>
     <Cell><Data ss:Type="String">note-objects</Data></Cell>
@@ -5165,7 +5165,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">%H:%M:%S</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%H:%M:%S</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">TYPE_ZMS</Data></Cell>
     <Cell><Data ss:Type="String">WWW-Site</Data></Cell>
     <Cell><Data ss:Type="String">WWW-site</Data></Cell>
@@ -5338,7 +5338,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">चिढ़ानेवाला</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">لافت النظر</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0" ss:Height="13.5">
     <Cell><Data ss:Type="String">TYPE_ZMSTEASERELEMENT</Data></Cell>
     <Cell><Data ss:Type="String">Teaser-Element</Data></Cell>
     <Cell><Data ss:Type="String">Teaserelement</Data></Cell>
@@ -5468,6 +5468,97 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">الأحد</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK0</Data></Cell>
+    <Cell><Data ss:Type="String">Sonntag</Data></Cell>
+    <Cell><Data ss:Type="String">Sunday</Data></Cell>
+    <Cell><Data ss:Type="String">Dimanche</Data></Cell>
+    <Cell><Data ss:Type="String">Domenica</Data></Cell>
+    <Cell><Data ss:Type="String">Domingo</Data></Cell>
+    <Cell><Data ss:Type="String">星期日</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">يکشنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">воскресенье</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">रविवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الأحد</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK1</Data></Cell>
+    <Cell><Data ss:Type="String">Montag</Data></Cell>
+    <Cell><Data ss:Type="String">Monday</Data></Cell>
+    <Cell><Data ss:Type="String">Lundi</Data></Cell>
+    <Cell><Data ss:Type="String">Lunedi</Data></Cell>
+    <Cell><Data ss:Type="String">Lunes</Data></Cell>
+    <Cell><Data ss:Type="String">星期一</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">دوشنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">понедельник</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">सोमवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الأثنين</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK2</Data></Cell>
+    <Cell><Data ss:Type="String">Dienstag</Data></Cell>
+    <Cell><Data ss:Type="String">Tuesday</Data></Cell>
+    <Cell><Data ss:Type="String">Mardi</Data></Cell>
+    <Cell><Data ss:Type="String">Martedi</Data></Cell>
+    <Cell><Data ss:Type="String">Martes</Data></Cell>
+    <Cell><Data ss:Type="String">星期二</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">سه شنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">вторник</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">मंगलवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الثلاثاء</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK3</Data></Cell>
+    <Cell><Data ss:Type="String">Mittwoch</Data></Cell>
+    <Cell><Data ss:Type="String">Wednesday</Data></Cell>
+    <Cell><Data ss:Type="String">Mercredi</Data></Cell>
+    <Cell><Data ss:Type="String">Mercoledi</Data></Cell>
+    <Cell><Data ss:Type="String">Miércoles</Data></Cell>
+    <Cell><Data ss:Type="String">星期三</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">?هارشنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">среда</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">बुधवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الأربعاء</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK4</Data></Cell>
+    <Cell><Data ss:Type="String">Donnerstag</Data></Cell>
+    <Cell><Data ss:Type="String">Thursday</Data></Cell>
+    <Cell><Data ss:Type="String">Jeudi</Data></Cell>
+    <Cell><Data ss:Type="String">Giovedi</Data></Cell>
+    <Cell><Data ss:Type="String">Jueves</Data></Cell>
+    <Cell><Data ss:Type="String">星期四</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">?نج شنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">четверг</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">बृहस्पतिवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الخميس</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK5</Data></Cell>
+    <Cell><Data ss:Type="String">Freitag</Data></Cell>
+    <Cell><Data ss:Type="String">Friday</Data></Cell>
+    <Cell><Data ss:Type="String">Vendredi</Data></Cell>
+    <Cell><Data ss:Type="String">Venerdi</Data></Cell>
+    <Cell><Data ss:Type="String">Viernes</Data></Cell>
+    <Cell><Data ss:Type="String">星期五</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">جمعه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">пятница</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">शुक्रवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">الجمعة</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYOFWEEK6</Data></Cell>
+    <Cell><Data ss:Type="String">Samstag</Data></Cell>
+    <Cell><Data ss:Type="String">Saturday</Data></Cell>
+    <Cell><Data ss:Type="String">Samedi</Data></Cell>
+    <Cell><Data ss:Type="String">Sabato</Data></Cell>
+    <Cell><Data ss:Type="String">Sábado</Data></Cell>
+    <Cell><Data ss:Type="String">星期六</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">شنبه</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">суббота</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">शनिवार</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">السبت</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">WITH_BEST_REGARDS</Data></Cell>
     <Cell><Data ss:Type="String">Mit freundlichen Grüßen,</Data></Cell>
     <Cell><Data ss:Type="String">With best regards,</Data></Cell>
@@ -5518,12 +5609,11 @@
    </Print>
    <Zoom>75</Zoom>
    <Selected/>
-   <TopRowVisible>33</TopRowVisible>
+   <TopRowVisible>415</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>65</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>448</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

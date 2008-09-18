@@ -584,7 +584,7 @@ class ZMS(
     # Version-Info.
     # -------------
     zms_build = '131'		# Internal use only, designates object model!
-    zms_patch = 'd'		# Internal use only!
+    zms_patch = 'e'		# Internal use only!
 
     # Properties.
     # -----------

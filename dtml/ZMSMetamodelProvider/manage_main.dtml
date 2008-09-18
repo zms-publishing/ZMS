@@ -1013,7 +1013,11 @@
   ></dtml-let
  ></dtml-if>
 
- <!-- Import Special Object(s) -->
+<dtml-comment>
+################################################################################
+### Import
+################################################################################
+</dtml-comment>
  <dtml-if "REQUEST.get('id','')==''">
   <tr>
    <td colspan="8"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>

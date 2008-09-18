@@ -91,7 +91,8 @@ class ZMSSqlDb(ZMSObject):
     manage_options = ( 
 	{'label': 'TAB_EDIT',		'action': 'manage_main'},
 	{'label': 'TAB_IMPORTEXPORT',	'action': 'manage_importexport'},
-	{'label': 'TAB_CONFIGURATION',	'action': 'manage_properties'},
+	{'label': 'TAB_PROPERTIES',	'action': 'manage_properties'},
+	{'label': 'TAB_CONFIGURATION',	'action': 'manage_configuration'},
 	)
 
     # Management Permissions.
@@ -106,6 +107,7 @@ class ZMSSqlDb(ZMSObject):
 		)
     __administratorPermissions__ = (
 		'manage_properties','manage_changeProperties',
+		'manage_configuration', 'manage_changeConfiguration',
 		)
     __ac_permissions__=(
 		('ZMS Author', __authorPermissions__),
@@ -122,6 +124,7 @@ class ZMSSqlDb(ZMSObject):
     manage_main = HTMLFile('dtml/ZMSSqlDb/manage_main', globals())
     manage_importexport = HTMLFile('dtml/ZMSSqlDb/manage_importexport', globals())
     manage_properties = HTMLFile('dtml/ZMSSqlDb/manage_properties', globals())
+    manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
 
@@ -964,6 +967,40 @@ class ZMSSqlDb(ZMSObject):
       message = urllib.quote(message)
       el_data = urllib.quote(el_data)
       return RESPONSE.redirect('manage_properties?lang=%s&manage_tabs_message=%s&el_data=%s'%(lang,message,el_data))
+
+
+    ############################################################################
+    ###
+    ###   Configuration
+    ###
+    ############################################################################
+
+    ############################################################################
+    #  ZMSSqlDb.manage_changeConfiguration: 
+    #
+    #  Change Sql-Database configuration.
+    ############################################################################
+    def manage_changeConfiguration(self, lang, btn='', REQUEST=None, RESPONSE=None):
+      """ ZMSSqlDb.manage_changeConfiguration """
+      message = ''
+      t0 = time.time()
+      id = REQUEST.get('id','')
+      target = 'manage_configuration'
+      
+      # Import.
+      # -------
+      if btn == self.getZMILangStr('BTN_IMPORT'):
+        f = REQUEST['file']
+        filename = f.filename
+        self.setModel(f)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+      
+      # Return with message.
+      target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
+      if len( message) > 0:
+        message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+        target = self.url_append_params( target, { 'manage_tabs_message':message})
+      return RESPONSE.redirect( target)
 
 
     ############################################################################

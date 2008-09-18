@@ -62,7 +62,7 @@ def syncType( self, meta_id, attr):
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.body()
       elif ob.meta_type in [ 'Z SQL Method']:
-        connection = obElmnt.connection_id
+        connection = ob.connection_id
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   except:
@@ -641,17 +641,17 @@ class ZMSMetaobjManager:
           valid_connection_ids = map( lambda x: x[0], self.SQLConnectionIDs())
           connection = newCustom
           connection = connection[connection.find('<connection>'):connection.find('</connection>')]
-          connection = connection[connection.find('>')+1:-1]
+          connection = connection[connection.find('>')+1:]
           if connection not in valid_connection_ids:
             connection = valid_connection_ids[0]
           arguments = newCustom
           arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
-          arguments = arguments[arguments.find('>')+1:-1]
+          arguments = arguments[arguments.find('>')+1:]
           template = newCustom
           template = template[template.find('</params>'):]
           template = template[template.find('>')+1:]
           template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
-          obElmnt.manage_edit(title=newName,connection_id=connection_id,arguments=arguments,template=template)
+          obElmnt.manage_edit(title=newName,connection_id=connection,arguments=arguments,template=template)
       
       # Assign Attributes to Meta-Object.
       ob['zms_system'] = int( ob['zms_system'] and (oldId is None or zms_system))

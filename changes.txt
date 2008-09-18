@@ -967,3 +967,7 @@
 -- MINOR CHANGES
 [01094] Added support for Extensions (use of External Methods) in ZMS: Google-Sitemap/Mirror-Manager (requested by xm).
 --------------------------------------------------
+2008-09-17::zms-2.11.0-36
+-- MINOR CHANGES
+[01095] Revised keys in language-dictionary: WEEKDAY%i is deprecated, use DAYOFWEEK%i instead!
+--------------------------------------------------

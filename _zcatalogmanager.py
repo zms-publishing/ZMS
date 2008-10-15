@@ -205,21 +205,24 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
             s = s.replace( capital, letter)
       except ( UnicodeDecodeError, UnicodeEncodeError):
         _globals.writeException(self,"[search_encode]")
-        v = str(sys.exc_value)
-        STR_POSITION = ' position '
-        i = v.find(STR_POSITION)
-        if i > 0:
-          v = v[i+len(STR_POSITION):]
-          if v.find('-') > 0:
-            l = int( v[:v.find('-')])
-            h = int( v[v.find('-')+1:v.find(':')])
-          else:
-            l = int( v[:v.find(':')])
-            h = l
-          ln = max( l - 20, 0)
-          hn = min( h + 20, len(s))
-          print ">>>>>",s[ln:hn]
-          print ">>>>>"," "*(l-ln)+"^"*(h-l+1)
+        try:
+          v = str(sys.exc_value)
+          STR_POSITION = ' position '
+          i = v.find(STR_POSITION)
+          if i > 0:
+            v = v[i+len(STR_POSITION):]
+            if v.find('-') > 0:
+              l = int( v[:v.find('-')])
+              h = int( v[v.find('-')+1:v.find(':')])
+            else:
+              l = int( v[:v.find(':')])
+              h = l
+            ln = max( l - 20, 0)
+            hn = min( h + 20, len(s))
+            print ">>>>>",s[ln:hn]
+            print ">>>>>"," "*(l-ln)+"^"*(h-l+1)
+        except:
+          _globals.writeException(self,"[search_encode]: ignore exception")
       return s
 
 

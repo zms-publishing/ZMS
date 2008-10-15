@@ -12,13 +12,29 @@ Add External Method with the following option:
 # 
 
 import Products.zms._blobfields
-import Products.zms._fileutil
 import Products.zms._globals
 import urllib
+
+def guess_content_type( filename, default='application/octet-stream'):
+    content_type = default
+    if filename.endswith('.gif'):
+      content_type = 'image/gif'
+    elif filename.endswith('.jpg'):
+      content_type = 'image/jpeg'
+    elif filename.endswith('.png'):
+      content_type = 'image/png'
+    elif filename.endswith('.css'):
+      content_type = 'text/css'
+    elif filename.endswith('.js'):
+      content_type = 'text/javascript'
+    elif filename.endswith('.html'):
+      content_type = 'text/html'
+    return content_type
 
 # see _blobfields.py::recurse_downloadRessources
 def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
     try:
+      if REQUEST.get('DEBUG'):
         RESPONSE.write('<!-- DEBUG recurseRessources(self, %s, REQUEST, incl_embedded, RESPONSE) -->\n'%(base_path))
     except:
         RESPONSE.write('<!-- ERROR exception -->\n')
@@ -34,15 +50,15 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
     if ob is None:
         return
     
-    # Attributes.
-    keys = ob.getObjAttrs().keys()
-    for key in keys:
-        #RESPONSE.write('<!-- DEBUG %s -->\n'%(key))
+    if ob.isVisible( REQUEST):
+      
+      # Attributes.
+      keys = ob.getObjAttrs().keys()
+      for key in keys:
         obj_attr = ob.getObjAttr(key)
         datatype = obj_attr['datatype_key']
         if datatype in Products.zms._globals.DT_BLOBS:
             for lang in ob.getLangIds():
-                #RESPONSE.write('<!-- DEBUG Products.zms._globals.DT_BLOBS %s -->\n'%(lang))
                 try:
                     if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
                         req = {'lang':lang,'preview':'preview'}
@@ -52,14 +68,13 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
                             filename = blob.getFilename()
                             filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
                             filename = '%s%s'%(base_path,filename)
-                            filename = Products.zms._fileutil.getOSPath(filename)
+                            filename = filename.replace('\\','/')
                             RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
                 except:
-                    s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-                    RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+                  s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+                  RESPONSE.write('<!-- ERROR %s -->\n'%(s))
         elif datatype == Products.zms._globals.DT_LIST and obj_attr.get('type') in ['image','file']:
             for lang in ob.getLangIds():
-                #RESPONSE.write('<!-- DEBUG Products.zms._globals.DT_LIST %s -->\n'%(lang))
                 try:
                     if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
                         req = {'lang':lang,'preview':'preview'}
@@ -70,25 +85,13 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
                             filename = blob.getFilename()
                             filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
                             filename = '%s@%i/%s'%(base_path,i,filename)
-                            filename = Products.zms._fileutil.getOSPath(filename)
+                            filename = filename.replace('\\','/')
                             RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
                             i += 1
                 except:
-                    s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-                    RESPONSE.write('<!-- ERROR %s -->\n'%(s))
-    if ob.meta_type == 'ZMSCustom':
-        metaObjId = ob.meta_id
-        for metaObjAttrId in ob.getMetaobjAttrIds( metaObjId):
-            metaObjAttr = ob.getMetaobjAttr( metaObjId, metaObjAttrId)
-            if metaObjAttr['type'] == 'resource':
-                try:
-                    blob = metaObjAttr['custom']
-                    filename = blob.getFilename()
-                    filename = '%s%s'%(base_path,filename)
-                    filename = Products.zms._fileutil.getOSPath(filename)
-                    RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
-                except:
-                    Products.zms._globals.writeException( ob, "[recurse_downloadRessources]: Can't export %s.%s"%(metaObjId,metaObjAttrId))
+                  s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+                  RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+    
     # Process children.
     for child in ob.getChildNodes():
         # Return list of ressources.
@@ -100,30 +103,33 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
 # see _exportable.py::recurse_downloadHtmlPages
 def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
     try:
+      if REQUEST.get('DEBUG'):
         RESPONSE.write('<!-- DEBUG recurseHtmlPages(self, obj, %s, %s, REQUEST, RESPONSE) -->\n'%(path, lang))
     except:
         RESPONSE.write('<!-- ERROR exception -->\n')
     
-    level = obj.getLevel()
-    
-    dctOp = {'index':'','sitemap':'sitemap','index_print':'print'}
-    for key in dctOp.keys():
-        if key == 'index' and \
-                level > 0 and \
-                self.getConfProperty('ZMS.pathhandler',0) != 0 and \
-                self.getConfProperty('ZMS.export.pathhandler',0) == 1:
-            filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
-        else:
-            if key == 'sitemap':
-                pageext = '.html'
-            else:
-                pageext = obj.getPageExt( REQUEST)
-            filename = '%s/%s_%s%s'%( path, key, lang, pageext)
-        
-        RESPONSE.write('<url>%s</url>\n'%(filename))
-        
-        # Process DTML-methods of meta-objects.
-        if self.zms_build >= '131': # >= ZMS-2.11
+    if obj.isVisible( REQUEST):
+      
+      level = obj.getLevel()
+      
+      dctOp = {'index':'','sitemap':'sitemap','index_print':'print'}
+      for key in dctOp.keys():
+          if key == 'index' and \
+                  level > 0 and \
+                  self.getConfProperty('ZMS.pathhandler',0) != 0 and \
+                  self.getConfProperty('ZMS.export.pathhandler',0) == 1:
+              filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
+          else:
+              if key == 'sitemap':
+                  pageext = '.html'
+              else:
+                  pageext = obj.getPageExt( REQUEST)
+              filename = '%s/%s_%s%s'%( path, key, lang, pageext)
+          
+          content_type = 'text/html'
+          RESPONSE.write('<url lang="%s" content_type="%s">%s</url>\n'%(lang,content_type,filename))
+          
+          # Process DTML-methods of meta-objects.
           for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
             try:
               metadictAttr = self.getMetaobjAttr( obj.meta_id, metadictAttrId)
@@ -136,23 +142,8 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
                         filename = '%s/%s'%( path, metaObjAttr['id'])
                         RESPONSE.write('<url>%s</url>\n'%(filename))
             except:
-                    s = Products.zms._globals.writeException( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
-                    RESPONSE.write('<!-- ERROR %s -->\n'%(s))
-        else: # < ZMS-2.11
-          for metadictAttrId in self.getMetadictAttrs( obj.meta_type):
-              try:
-                  metadictAttr = self.getMetadictAttr( metadictAttrId)
-                  if metadictAttr['type'] in self.getMetaobjIds():
-                      metaObj = self.getMetaobj( metadictAttr['type'])
-                      if metaObj['type'] == 'ZMSResource':
-                          for metadictObj in obj.getObjChildren( metadictAttr['id'], REQUEST):
-                              for metaObjAttr in metaObj['attrs']:
-                                  if metaObjAttr['type'] in [ 'DTML Document', 'DTML Method']:
-                                      filename = '%s/%s'%( path, metaObjAttr['id'])
-                                      RESPONSE.write('<url>%s</url>\n'%(filename))
-              except:
-                  s = Products.zms._globals.writeException( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
-                  RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+              s = Products.zms._globals.writeException( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
+              RESPONSE.write('<!-- ERROR %s -->\n'%(s))
     
     # Process children.
     for child in obj.getChildNodes(REQUEST,self.PAGES):
@@ -162,6 +153,7 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
 # see _exportable.py::exportFolder
 def recurseFolder(self, root, path, id, REQUEST, RESPONSE):
     try:
+      if REQUEST.get('DEBUG'):
         RESPONSE.write('<!-- DEBUG recurseFolder(%s, %s, %s, %s, REQUEST, RESPONSE) -->\n'%(self, "root", path, id))
     except:
         RESPONSE.write('<!-- ERROR exception -->\n')
@@ -175,30 +167,37 @@ def recurseFolder(self, root, path, id, REQUEST, RESPONSE):
                     recurseFolder(self,ob,'%s/%s'%(path,id), ob_id, REQUEST, RESPONSE)
                 else:
                     try:
-                        ob_id = ob.id()
+                      ob_id = ob.id()
                     except:
-                        ob_id = str(ob.id)
+                      ob_id = str(ob.id)
                     #if ob.meta_type in [ 'DTML Document', 'DTML Method']:
                     #    ob = Products.zms._globals.dt_html(self,ob.raw,REQUEST)
-                    RESPONSE.write('<url>%s/%s/%s</url>\n'%(path,id,ob_id))
+                    content_type = getattr(ob,'content_type','application/octet-stream')
+                    if content_type == 'application/octet-stream':
+                      content_type = guess_content_type( ob_id)
+                    RESPONSE.write('<url content_type="%s">%s/%s/%s</url>\n'%(content_type,path,id,ob_id))
 
 
-# see _exportable::exportContentRessources
-def recurseContentRessources(self, REQUEST, RESPONSE):
-    try:
-        RESPONSE.write('<!-- DEBUG recurseContentRessources(self, REQUEST, RESPONSE) -->\n')
-    except:
-        RESPONSE.write('<!-- ERROR exception -->\n')
-    
-    #-- JavaScript
-    # diese müssen als comlib_ger.js usw. exportiert werden(!)
-    for js in [ 'comlib', 'formlib', 'datelib', 'formlib', 'zmilib', 'styleswitcher']:
-      attr = getattr(self,'%s_js'%(js),None)
-      if attr:
-        data = attr(self,REQUEST)
-        filename = '%s.js'%js
-        RESPONSE.write('<url>/%s</url>\n'%(filename))
-
+# see _exportable::exportMetaobjManager
+def recurseMetaobjManager(self, root, path, REQUEST, RESPONSE):
+  try:
+    if REQUEST.get('DEBUG'):
+      RESPONSE.write('<!-- DEBUG recurseMetaobjManager(%s, %s, %s) -->\n'%(self, "root", path))
+  except:
+      RESPONSE.write('<!-- ERROR exception -->\n')
+ 
+  id = 'metaobj_manager'
+  if hasattr(root,id):
+    folder = getattr(root,id)
+    for ob in folder.objectValues(['File']):
+      try:
+        ob_id = ob.id()
+      except:
+        ob_id = str(ob.id)
+      content_type = getattr(ob,'content_type','application/octet-stream')
+      if content_type == 'application/octet-stream':
+        content_type = guess_content_type( ob_id)
+      RESPONSE.write('<url content_type="%s">%s/%s/%s</url>\n'%(content_type,path,id,ob_id))
 
 def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     lang = REQUEST.get('lang',self.getPrimaryLanguage())
@@ -208,16 +207,19 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     
     # see _exportable.py::exportRessources, etc.
     folder = '/misc_/zms'
-    for obj_id in self.misc_.zms._d.keys():
-        RESPONSE.write('<url>%s/%s</url>\n'%(folder, obj_id))
+    for ob_id in self.misc_.zms._d.keys():
+      content_type = guess_content_type( ob_id)
+      RESPONSE.write('<url content_type="%s">%s/%s</url>\n'%(content_type,folder,ob_id))
     
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)
-    
-    recurseContentRessources( self, REQUEST, RESPONSE)
-    
+
+    recurseMetaobjManager( self, self, "/content", REQUEST, RESPONSE)
     recurseRessources(self, "/content/", REQUEST, True, RESPONSE)
-    recurseHtmlPages(self, self, "/content", lang, REQUEST, RESPONSE)
+    for lang in self.getLangIds():
+      REQUEST.set('lang',lang)
+      REQUEST.set('preview',None)
+      recurseHtmlPages(self, self, "/content", lang, REQUEST, RESPONSE)
     
     RESPONSE.write('</urls>\n');
     return 

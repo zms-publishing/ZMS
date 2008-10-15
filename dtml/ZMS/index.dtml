@@ -75,6 +75,7 @@
 ><dtml-if ZMS_HIGHLIGHT
 ><script type="text/javascript"><dtml-in "REQUEST.get(ZMS_HIGHLIGHT,'').split(' ')"><dtml-if sequence-item>do_highlight('<dtml-var sequence-item>');</dtml-if></dtml-in></script></dtml-if
 ><dtml-else
+><dtml-call "RESPONSE.setStatus(503)"
 ><p class="standard"><dtml-var "getLangStr('MSG_INACTIVE',lang)"></p
 ></dtml-if
 ></dtml-if

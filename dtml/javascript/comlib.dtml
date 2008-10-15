@@ -416,15 +416,21 @@ function storeCaret( textEl)
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-function getInnerDimensions()
+function getInnerDimensions( offset)
 {
   if (window.innerWidth) {
-    return {width: window.innerWidth, height: window.innerHeight};
+    var dims = {width: window.innerWidth, height: window.innerHeight};
+    if ( offset)
+      dims = {width: dims.width+window.pageXOffset, height: dims.height+window.pageYOffset};
+    return dims
   } else if (document.body && document.body.offsetWidth) {
    // important: for IE set body width = 100%
     document.getElementsByTagName("body")[0].style.setAttribute("width", "100%", "false");
     document.getElementsByTagName("body")[0].style.setAttribute("height", "100%", "false");
-    return {width: document.body.offsetWidth, height: document.body.offsetHeight};
+    var dims = {width: document.body.offsetWidth, height: document.body.offsetHeight};
+    if ( offset)
+      dims = {width: dims.width+document.body.scrollLeft, height: dims.height+document.body.scrollTop};
+    return dims
   } else {
     return {width: 0, height: 0};
   }

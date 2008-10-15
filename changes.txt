@@ -939,7 +939,7 @@
 --------------------------------------------------
 2008-08-21::zms-2.11.0-30
 -- MINOR CHANGES
-[01083] Applied fix for display of properties-tab after cutting objects (reported by J. Klein).
+[01083] Applied fix for display of properties-tab after copying objects (reported by J. Klein).
 --------------------------------------------------
 2008-09-02::zms-2.11.0-31
 -- MINOR CHANGES
@@ -970,4 +970,36 @@
 2008-09-17::zms-2.11.0-36
 -- MINOR CHANGES
 [01095] Revised keys in language-dictionary: WEEKDAY%i is deprecated, use DAYOFWEEK%i instead!
+--------------------------------------------------
+2008-09-23:zms-2.11.1-01
+-- MINOR CHANGES
+[01096] Added support for Zope-2.11.1.
+[01097] Applied fix for Google-Sitemap/Mirror-Manager (requested by xm).
+--------------------------------------------------
+2008-10-06:zms-2.11.1-02
+-- MINOR CHANGES
+[01098] Revised special-object 'Wiki' (contributed by fh).
+--------------------------------------------------
+2008-10-08:zms-2.11.1-03
+-- MINOR CHANGES
+[01099] Applied fix for display of properties-tab after cutting objects (reported by desy).
+[01100] Applied fixes for ZMSTable (reported by desy).
+--------------------------------------------------
+2008-10-09:zms-2.11.1-04
+-- MINOR CHANGES
+[01101] Applied fix for Google-Sitemap/Mirror-Manager (requested by xm).
+[01102] Added support for simultaneous remote- (via ftp) and web-editing (via zmi) of content-object-methods.
+--------------------------------------------------
+2008-10-09:zms-2.11.1-05
+-- MINOR CHANGES
+[01103] Revised semantics of zmsobject.isModifiedInParentLanguage(): equal timestamps mean unmodified (important for xml-import).
+--------------------------------------------------
+2008-10-10:zms-2.11.1-06
+-- MINOR CHANGES
+[01104] Added support for multilingual labels to SQL-Datasource (contributed by tf).
+[01105] Added support for smtp-authentication to send_mail extension (contributed by S. Tänzer).
+--------------------------------------------------
+2008-10-13:zms-2.11.1-07
+-- MINOR CHANGES
+[01106] Applied fix for Google-Sitemap/Mirror-Manager (requested by xm).
 --------------------------------------------------

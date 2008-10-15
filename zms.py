@@ -373,6 +373,21 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
     recurse_updateVersionBuild(docElmnt, ob, REQUEST)
   
+  ##### Build 130a: ZMS Standard-Objects ####
+  if getattr( docElmnt, 'build', '000') < '130':
+    if self.meta_type == 'ZMS':
+      users = self.getConfProperty('ZMS.security.users',{})
+      for user in users.keys():
+        nodes = users[user].get('nodes',{})
+        try:
+          for node_ref in nodes.keys():
+            node_ob = self.getLinkObj(node_ref)
+            node_dict = nodes[node_ref]
+            if node_ob:
+              self.setLocalUser( user, node_ref, node_dict['roles'], node_dict['langs'])
+        except:
+          pass
+
   # Return with message.
   return message
 
@@ -588,7 +603,7 @@ class ZMS(
     # Version-Info.
     # -------------
     zms_build = '131'		# Internal use only, designates object model!
-    zms_patch = 'e'		# Internal use only!
+    zms_patch = 'f'		# Internal use only!
 
     # Properties.
     # -----------

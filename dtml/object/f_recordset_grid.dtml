@@ -55,9 +55,7 @@
   <dtml-let grid_col=sequence-item>
   <dtml-unless "grid_col.get('hide')">
   <th class="form-small" align="left">
-   <dtml-if pk>
-    <img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" />
-   </dtml-if>
+   <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /></dtml-if>
    <dtml-if sort>
     <dtml-if "key==qorder">
      <dtml-if "qorderdir=='asc'">

@@ -39,34 +39,39 @@
 <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="98%">
 <colgroup>
  <col />
- <col />
- <col />
- <col />
- <col />
- <col width="20" />
 </colgroup>
 
   <!-- Header -->
   <tr>
-   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+   <td><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
   
   <dtml-in "getEntities()" mapping sort=label>
    <dtml-if "REQUEST.get('id','')==id">
+     <!-- Headline -->
+     <tr valign="top" class="zmiNeutralColorStrong0">
+      <td><div class="form-label">Model</div></td>
+     </tr>
+     <tr valign="top" class="zmiNeutralColorMedium0">
+      <td>
+       <textarea class="form-fixed" name="model" style="width:100%" rows="10"><dtml-in "getModel()"><dtml-let x=sequence-item><dtml-if "x.get('id')==REQUEST.get('id')"><dtml-var "toXmlString(x)"></dtml-if></dtml-let></dtml-in></textarea>
+      </td>
+     </tr>
    <dtml-elif "REQUEST.get('id','')==''">
     <tr valign="top" class="neutralColorWhite">
-     <td colspan="6">
+     <td>
       <div class="form-small">
        <a href="javascript:toggleElement('img_<dtml-var id>','columns_<dtml-var id>')"><img id="img_<dtml-var id>" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"><strong><dtml-var label></strong></a>
-       <div id="columns_<dtml-var id>" style="display:none;">
-        <table cellspacing="0" cellpadding="0" border="0">
+       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"><strong><dtml-var id></strong> (<em><dtml-var label></em>)</a>
+       <div id="columns_<dtml-var id>" style="display:none;padding-left:20px;">
         <dtml-in columns mapping>
-         <tr>
-          <td><dtml-var sequence-item></td>
-         </tr>
+         <div class="form-small">
+          <img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle" />
+          <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /><span style="color:blue;"></dtml-if>
+          <dtml-var id><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>: <dtml-var type><dtml-if name> (<em><dtml-var name></em>)</dtml-if>
+          <dtml-if pk></span></dtml-if>
+         </div>
         </dtml-in>
-        </table>
        </div>
       </div>
      </td>
@@ -81,10 +86,10 @@
 </dtml-comment>
  <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="8"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+   <td><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td colspan="6">
+   <td>
     <table cellspacing="0" cellpadding="2" border="0">
     <tr valign="middle">
      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>

@@ -364,7 +364,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         req = {'lang':parent, 'preview':REQUEST.get('preview','') }
         change_dt_parent = self.getObjProperty('change_dt',req)
         try:
-          rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) >= 0
+          rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) > 0
         except:
           _globals.writeException(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
       return rtnVal

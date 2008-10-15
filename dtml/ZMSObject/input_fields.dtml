@@ -82,8 +82,8 @@
 <dtml-comment>
 ##### Cacheable #####
 </dtml-comment>
-<dtml-elif "objAttr['id']=='attr_cacheable'">
-<dtml-if "REQUEST['AUTHENTICATED_USER'].has_permission('ZMS Administrator',this()) and getConfProperty('ZMS.cache.active')==1">
+<dtml-elif "objAttr['id']=='attr_cacheable' and getConfProperty('ZMS.cache.active')==1">
+<dtml-if "REQUEST['AUTHENTICATED_USER'].has_permission('ZMS Administrator',this())">
 <tr id="tr_<dtml-var key>" valign="top">
  <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
  <td>

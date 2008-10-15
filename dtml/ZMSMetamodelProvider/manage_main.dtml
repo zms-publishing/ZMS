@@ -42,6 +42,16 @@
    *
    * @param el
    */
+  function changeCustom(el) 
+  {
+    $(el).css( 'backgroundColor', '#FFFFE8');
+    $('input[@name='+el.name+'_modified]').val( '1');
+  }
+
+  /**
+   *
+   * @param el
+   */
   function populateType(el, datatypes, metaattrs, foreignkeys, objecttypes, zopetypes) 
   {
     if ( el.options.length <= 1) {
@@ -568,7 +578,7 @@
               class="form-small" style="width:80px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
               class="form-small" style="width:80px; border-width=1;"
-             <dtml-elif "oAttr['type'] in ['method','interface'] or oAttr['type'] in valid_zopetypes">
+             <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
               class="form-fixed" style="width:80px; "
              <dtml-else>
               class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:80px;"
@@ -581,7 +591,7 @@
               class="form-small" style="width:120px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
               class="form-small" style="width:120px; border-width=1;"
-             <dtml-elif "oAttr['type'] in ['method','interface'] or oAttr['type'] in valid_zopetypes">
+             <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
               class="form-fixed" style="width:120px; "
              <dtml-else>
               class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:120px;"
@@ -590,10 +600,11 @@
           <dtml-comment>
           ##### METHOD #####
           </dtml-comment>
-          <dtml-if "oAttr['type'] == 'method' or oAttr['type'] in valid_zopetypes">
+          <dtml-if "oAttr['type'] in ['method']+valid_zopetypes">
           <td nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
-           <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;"><dtml-var "oAttr.get('custom','')" html_quote></textarea
+           <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
+           <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;" onchange="changeCustom(this);"><dtml-var "oAttr.get('custom','')" html_quote></textarea
            ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_custom_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['id']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom"></a>
           </td>
           <td align="center"

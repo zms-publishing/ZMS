@@ -1,5 +1,5 @@
 <dtml-let lurl="URL.replace('?','/').split('/')">
-<dtml-if "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_copyObjects' in lurl)">
+<dtml-if "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
 <dtml-var manage_container>
 <dtml-else>
 <dtml-var manage_page_header>

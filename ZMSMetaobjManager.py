@@ -183,7 +183,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.__get_metaobjs__:
-    # 
+    #
     #  Returns all meta-objects (including acquisitions).
     # --------------------------------------------------------------------------
     def __get_metaobjs__(self):
@@ -231,7 +231,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.__get_metaobj__:
-    # 
+    #
     #  Returns meta-object identified by id.
     # --------------------------------------------------------------------------
     def __get_metaobj__(self, id):
@@ -253,7 +253,7 @@ class ZMSMetaobjManager:
       except:
         rtnVal = False
         ob = self.__get_metaobj__( id)
-        if ob['type'] == 'ZMSDocument' or ob['id'] == 'ZMSTeaserContainer':
+        if type( ob) is dict and (ob.get('type') == 'ZMSDocument' or ob.get('id') == 'ZMSTeaserContainer'):
           ids = map( lambda x: x['id'], filter( lambda x: x['type']=='*', ob['attrs']))
           rtnVal = ids == ['e']
         
@@ -263,7 +263,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjIds:
-    # 
+    #
     #  Returns list of all meta-ids in model.
     # --------------------------------------------------------------------------
     def getMetaobjIds(self, sort=1, excl_ids=[]):
@@ -379,7 +379,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjAttrIdentifierId:
-    # 
+    #
     #  Returns attribute-id of datatable-identifier for meta-object specified by id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIdentifierId(self, meta_id):
@@ -390,7 +390,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjAttrIds:
-    # 
+    #
     #  Returns list of attribute-ids for meta-object specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIds(self, meta_id, types=[]):
@@ -411,7 +411,7 @@ class ZMSMetaobjManager:
     # 
     #  Get attribute for meta-object specified by attribute-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttr(self, meta_id, key):
+    def getMetaobjAttr(self, meta_id, key, sync=True):
       meta_objs = self.__get_metaobjs__()
       if meta_objs.get(meta_id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
@@ -438,7 +438,7 @@ class ZMSMetaobjManager:
           meta_types = meta_objs.keys()
           valid_types = self.valid_datatypes+self.valid_zopetypes+meta_types+['*']
           # type is valid: sync type (copy can be edited directly in ZODB via FTP!)
-          if attr['type'] in valid_types:
+          if sync and attr['type'] in valid_types:
             attr['meta_type'] = ''
             syncType( self, meta_id, attr)
           # type not found: may be meta-attribute (must be '?' to display error on customize-form!)
@@ -450,7 +450,7 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.setMetaobjAttr:
-    # 
+    #
     #  Set/add meta-object attribute with specified values.
     # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault='', zms_system=0):
@@ -828,6 +828,10 @@ class ZMSMetaobjManager:
               newMetaType = REQUEST.get( 'attr_meta_type_%s'%old_id, '')
               newKeys = self.string_list(REQUEST.get('attr_keys_%s'%old_id,''),'\n')
               newCustom = REQUEST.get('attr_custom_%s'%old_id,'')
+              if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0':
+                savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
+                syncType( self, id, savedAttr)
+                newCustom = savedAttr['custom']
               newDefault = REQUEST.get('attr_default_%s'%old_id,'')
               if len( newMetaType) > 0:
                 attr_id = old_id

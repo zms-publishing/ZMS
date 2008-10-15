@@ -19,11 +19,11 @@
       if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" ||
           self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") {
         if (fm.elements['<dtml-var elName>'] && fm.elements['<dtml-var "'new_%s_confirm'%id">']) {
-          b = b && !disallowBlank(fm.elements['<dtml-var elName>'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%label">",false);
-          b = b && !disallowBlank(fm.elements['<dtml-var "'new_%s_confirm'%id">'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%'%s (%s)'%(label,getZMILangStr('ATTR_CONFIRM'))">",false);
+          b = b && !disallowBlank(fm.elements['<dtml-var elName>'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getLangStr(label,lang)">",false);
+          b = b && !disallowBlank(fm.elements['<dtml-var "'new_%s_confirm'%id">'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%'%s (%s)'%(getLangStr(label,lang),getZMILangStr('ATTR_CONFIRM'))">",false);
           if (fm.elements['<dtml-var elName>'].value!=fm.elements['<dtml-var "'new_%s_confirm'%id">'].value) {
             b = false;
-            alert('<dtml-var label><><dtml-var "'%s (%s)'%(label,getZMILangStr('ATTR_CONFIRM'))">!');
+            alert('<dtml-var "getLangStr(label,lang)"><><dtml-var "'%s (%s)'%(getLangStr(label,lang),getZMILangStr('ATTR_CONFIRM'))">!');
           }
         }
       }
@@ -182,7 +182,7 @@
      <dtml-if pk>
       <img src="<dtml-var MISC_ZMS>btn_key.gif" title="" border="0" align="middle"/>
      </dtml-if>
-     <dtml-var label><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>
+     <dtml-var "getLangStr(label,lang)"><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>
     </td>
     <dtml-if "grid_col.get('details')">
     <dtml-comment>
@@ -225,7 +225,7 @@
       <table cellspacing="0" cellpadding="1" border="0">
       <tr>
        <td colspan="<dtml-var "_.len(multimultiselect.get('tables',[]))">">
-        <div class="form-small"><dtml-in "multimultiselect.get('tables',[])" mapping><dtml-var label><dtml-unless sequence-end>/</dtml-unless></dtml-in></div>
+        <div class="form-small"><dtml-in "multimultiselect.get('tables',[])" mapping><dtml-var "getLangStr(label,lang)"><dtml-unless sequence-end>/</dtml-unless></dtml-in></div>
         <dtml-let values="[]" leftjoins="[]" outerjoins="[]">
         <dtml-unless ZMS_INSERT>
          <dtml-in "multimultiselect.get('tables',[])" mapping
@@ -322,7 +322,7 @@
        ><dtml-in "multimultiselect.get('tables',[])" mapping
        ><dtml-let i=sequence-index item=sequence-item
        ><td style="vertical-align:bottom"
-        ><div class="form-small"><dtml-var label><dtml-unless "item.get('nullable') in [1,_.True]"><sup style="color:red">*</sup></dtml-unless></div
+        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><sup style="color:red">*</sup></dtml-unless></div
         ><dtml-if "item.has_key('lazy')"
          ><dtml-let fk=item
           ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
@@ -336,7 +336,7 @@
           /></dtml-let
         ><dtml-else
          ><select class="<dtml-var css>" id="<dtml-var mmsid><dtml-var sequence-index>"
-          ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%label"> -----</option></dtml-if
+          ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
           ><dtml-in "query( 'SELECT ' + fieldname + ' AS qkey, ' + displayfield + ' AS qvalue FROM ' + tablename + ' ORDER BY ' + displayfield)['records']"
            ><dtml-let row=sequence-item
             ><option value="<dtml-var "_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
@@ -406,7 +406,7 @@
        <img 
           class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>pencil_add.png"
-          title="<dtml-var "getZMILangStr('ACTION_SELECT')%label">" 
+          title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" 
           onclick="return browseDbBtnClick('form0','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
        <img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>pencil_go.png"
@@ -419,7 +419,7 @@
       <dtml-else>
        <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>">
         <dtml-if nullable>
-         <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%label"> -----</option>
+         <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option>
         </dtml-if>
         <dtml-in options>
          <dtml-let item=sequence-item key="item[0]" value="item[1]">
@@ -468,7 +468,7 @@
           ></dtml-let
          ></dtml-in
         ></dtml-if
-        ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=label, required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
+        ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
        ></dtml-let
       ><dtml-else
       ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
@@ -533,11 +533,11 @@
          </dtml-let>
         </dtml-in>
         </select>
-        <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%label">" onclick="return browseDbBtnClick('form0','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
+        <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
         <input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"/>
         <dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
        <dtml-else>
-        <dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=label, required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)">
+        <dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)">
        </dtml-if>
        </dtml-let>
       </dtml-let>
@@ -645,7 +645,7 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "type in ['richtext']">
-      <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=_.None, enabled=1, lang=lang, lang_str=label, REQUEST=REQUEST, css=css, wrap='virtual')">
+      <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=_.None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- OTHER
@@ -669,7 +669,7 @@
    </dtml-comment>
    <dtml-if password>
    <tr id="tr_<dtml-var id>_confirm">
-    <td class="form-label"><dtml-var label> (<dtml-var "getZMILangStr('ATTR_CONFIRM')">)<dtml-unless nullable><sup style="color:red">*</sup></dtml-unless></td>
+    <td class="form-label"><dtml-var "getLangStr(label,lang)"> (<dtml-var "getZMILangStr('ATTR_CONFIRM')">)<dtml-unless nullable><sup style="color:red">*</sup></dtml-unless></td>
     <td class="form-element"><dtml-var "getTextInput(fmName='form0', elName='new_%s_confirm'%id, value=row.get(id,''), type='password', css=css)"></td>
    </tr>
    </dtml-if>

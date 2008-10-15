@@ -207,6 +207,10 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
         for dst_meta_type in dst_meta_types:
           metaObj = self.getMetaobj( dst_meta_type)
           if metaObj is not None:
+            if metaDictId in self.getMetaobjAttrIds( dst_meta_type):
+              metaObjAttr = self.getMetaobjAttr( dst_meta_type, metaDictId)
+              if metaObjAttr['type'] != metaDictId:
+                self.metaobj_manager.delMetaobjAttr( dst_meta_type, metaDictId)
             if metaDictId not in self.getMetaobjAttrIds( dst_meta_type):
               try:
                 self.metaobj_manager.setMetaobjAttr(dst_meta_type,None,metaDictId,'',0,0,0,metaDictId,zms_system=int(metaObj.get('zms_system',0) and metaDictAttr.get('zms_system',0)))

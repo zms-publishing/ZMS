@@ -429,7 +429,7 @@ class ObjAttrs:
         inp = []
         inp.append(self.getTextArea(fmName,elName,cols,rows,self.toXmlString(value),enabled,REQUEST,css,wrap))
         inp.append('<a href="javascript:f_open_input(\'%s\',\'%s\',\'form-fixed\',\'off\')">'%(fmName,elName))
-        inp.append('<img src="%stable_cell_edit.gif" border="0" title="%s" align="bottom"/>'%(self.MISC_ZMS,self.getZMILangStr('BTN_CHANGE')))
+        inp.append('<img src="%stable_cell_edit.gif" border="0" title="%s" align="bottom"/>'%(self.MISC_ZMS,self.getZMILangStr('BTN_SAVE')))
         inp.append('</a>')
         return ''.join(inp)
       

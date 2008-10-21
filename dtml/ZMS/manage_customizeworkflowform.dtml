@@ -20,7 +20,7 @@
     var el = fm.elements["workflow:int"];
     <dtml-unless "getAutocommit()==1">
      if (!el.checked) {
-      if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')">") {
+      if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')">") {
         b = confirm("Deactivating the workflow means committing all pending changes!");
         if (!b)
           el.checked = true;
@@ -37,7 +37,7 @@
   {
     processMultiselectsOnFormSubmit();
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") 
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") 
     {
       b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
@@ -57,7 +57,7 @@
   {
     processMultiselectsOnFormSubmit();
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") 
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") 
     {
       b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
@@ -242,7 +242,7 @@
 </dtml-if>
 
  <hr size="1"/>
- <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="self.btnClicked=this.value;">
+ <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;">
  <br/><br/>
  </form>
 </dtml-if>
@@ -426,7 +426,7 @@
        <div align="center" class="form-small"><dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_OBJECT')"></div>
       </td>
       <td nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
       </td>
      </tr>
@@ -620,7 +620,7 @@
       <td><dtml-var "getTextInput(fmName='trForm',elName='inpId',size=15,value=itm['id'])"></td>
       <td><dtml-var "getTextInput(fmName='trForm',elName='inpName',size=20,value=itm['name'])"></td>
       <td nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
       </td>
      </tr>
@@ -758,7 +758,7 @@
       <tr valign="middle">
        <td class="form-label">Number of messages to keep</td>
        <td class="form-element"><dtml-var "getTextInput(fmName='protocolForm',elName='keep_entries:int',size=4,value=getConfProperty('ZMS.workflow.protocol.keep_entries',0))"></td>
-       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);"></td>
+       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);"></td>
       </tr>
       </table>
      </td>

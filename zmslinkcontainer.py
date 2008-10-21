@@ -142,7 +142,7 @@ class ZMSLinkContainer(ZMSContainerObject):
         self.setReqProperty('align',REQUEST)
         
         ##### Change #####
-        if REQUEST['btn'] == self.getZMILangStr('BTN_CHANGE'):
+        if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
           for ob in self.getChildNodes(REQUEST,['ZMSLinkElement']):
             id = ob.id
             url = REQUEST['url%s'%id]

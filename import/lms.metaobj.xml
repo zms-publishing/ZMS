@@ -4093,7 +4093,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 
 <dtml-let valid_types="['boolean','string','text','password','select']">
 
-<dtml-if "REQUEST.get('btn','')==getLangStr('BTN_CHANGE',lang)">
+<dtml-if "REQUEST.get('btn','')==getLangStr('BTN_SAVE',lang)">
  <dtml-call "setObjStateModified(REQUEST)">
  <dtml-in "getMetaobjAttrIds(meta_id)">
   <dtml-let metaObjAttr="getMetaobjAttr(meta_id,_['sequence-item'])">
@@ -4124,7 +4124,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 </dtml-in>
 <tr>
  <td>&nbsp;</td>
- <td><input type="submit" name="btn" value="<dtml-var "getLangStr('BTN_CHANGE',lang)">">
+ <td><input type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SAVE',lang)">">
 </tr>
 </table>
 </form>

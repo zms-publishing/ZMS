@@ -356,7 +356,7 @@
       </td>
       <td class="form-element" nowrap="nowrap">
        <nobr>
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
         <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
        </nobr>
       </td>
@@ -811,7 +811,7 @@
       <td colspan="2"><dtml-var "getTextArea(fmName='form1', elName='inpCommand', cols=25, rows=5, value=process.get('command',''), enabled=1, REQUEST=REQUEST, css='form-fixed' )"></td>
       <td nowrap="nowrap">
        <nobr>
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px"><br/>
+        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px"><br/>
         <dtml-unless filterIds>
          <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px">
         </dtml-unless>

@@ -17,7 +17,7 @@
     ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+elNameOld)"></dtml-if
     ><dtml-if password>
       if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" ||
-          self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") {
+          self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
         if (fm.elements['<dtml-var elName>'] && fm.elements['<dtml-var "'new_%s_confirm'%id">']) {
           b = b && !disallowBlank(fm.elements['<dtml-var elName>'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getLangStr(label,lang)">",false);
           b = b && !disallowBlank(fm.elements['<dtml-var "'new_%s_confirm'%id">'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%'%s (%s)'%(getLangStr(label,lang),getZMILangStr('ATTR_CONFIRM'))">",false);

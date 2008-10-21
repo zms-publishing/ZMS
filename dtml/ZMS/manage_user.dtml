@@ -16,7 +16,7 @@
 
   function form0Submit(fm) {
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") {
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
       if (fm.elements['password'] && fm.elements['confirm']) {
         b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
         b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
@@ -106,7 +106,7 @@
  </dtml-let>
  <tr>
   <td class="form-label">&nbsp;</td>
-  <td class="form-element"><input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="self.btnClicked=this.value;"></td>
+  <td class="form-element"><input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;"></td>
  </table>
  </form>
 </dtml-let>

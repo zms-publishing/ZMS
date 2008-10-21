@@ -1003,3 +1003,8 @@
 -- MINOR CHANGES
 [01106] Applied fix for Google-Sitemap/Mirror-Manager (requested by xm).
 --------------------------------------------------
+2008-10-20:zms-2.11.1-08
+-- MINOR CHANGES
+[01107] Applied fixes for ZMSTable (reported by desy).
+[01108] Implemented prototype v0.1.1 for configuration of SQL-Datasource.
+--------------------------------------------------

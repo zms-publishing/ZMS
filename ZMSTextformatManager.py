@@ -177,7 +177,7 @@ class ZMSTextformatManager:
       
       # Change.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_CHANGE'):
+      if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
         old_id = REQUEST['id']
         id = REQUEST['new_id'].strip()
         display = REQUEST['new_display'].strip()

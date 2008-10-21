@@ -115,7 +115,7 @@
        <div class="form-small"><dtml-var "getZMILangStr('ATTR_DEFAULT')"></div>
        </td>
        <td nowrap="nowrap">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
         <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
        </td>
        <td rowspan="3" class="zmiNeutralColorLight1" width="20"><input class="form-element" type="checkbox" name="ids:list" value="<dtml-var "fmt.getId()">" checked="checked"></td>

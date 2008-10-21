@@ -316,7 +316,7 @@ class AccessableObject:
       
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_CHANGE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         id = getUserId(REQUEST['AUTHENTICATED_USER'])
         userObj = self.findUser(id)
         password = REQUEST.get('password','******')
@@ -750,7 +750,7 @@ class AccessManager(AccessableContainer):
       
       # Change.
       # -------
-      elif btn == self.getZMILangStr('BTN_CHANGE'):
+      elif btn == self.getZMILangStr('BTN_SAVE'):
         userObj = self.findUser(id)
         if key=='obj':
           password = REQUEST.get('password','******')

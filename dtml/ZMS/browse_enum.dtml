@@ -43,7 +43,7 @@
    </dtml-let>
   </dtml-in>
  </select>
- <input class="form-element" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="selectObject()">
+ <input class="form-element" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="selectObject()">
 </dtml-let>
 </nobr>
 </form>

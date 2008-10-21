@@ -517,7 +517,7 @@ class ConfManager(
         
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_CHANGE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         #-- Stylesheet.
         if REQUEST.has_key('cssId'):
           if REQUEST.get('default'):

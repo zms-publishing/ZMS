@@ -155,7 +155,7 @@
   <tr valign="top" class="zmiNeutralColorLight0">
    <td>&nbsp;</td>
    <td colspan="4">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>
@@ -280,7 +280,7 @@
   <tr valign="top" class="zmiNeutralColorLight0">
    <td>&nbsp;</td>
    <td colspan="3" class="form-element">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>

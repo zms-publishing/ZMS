@@ -67,7 +67,7 @@
  <dtml-else>
   <dtml-call "REQUEST.set('message','')"> 
   <!-- ### EXEC -->
-  <dtml-if "REQUEST.get('btn','') in [getZMILangStr('BTN_CHANGE'),getZMILangStr('BTN_DELETE')]"
+  <dtml-if "REQUEST.get('btn','') in [getZMILangStr('BTN_SAVE'),getZMILangStr('BTN_DELETE')]"
    ><dtml-let values="{}" old_values="{}"
     ><dtml-in grid_cols mapping
      ><dtml-unless auto

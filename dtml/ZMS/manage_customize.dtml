@@ -46,11 +46,6 @@
 <br/>
 <dtml-in "objectValues(['Sequence','ZCatalog','ZMSLog'])">
  <div class="form-small"
-  ><dtml-if sequence-end
-   ><img src="<dtml-var MISC_ZMS>tv_last.gif" alt="" align="absmiddle" border="0"
-  ><dtml-else
-   ><img src="<dtml-var MISC_ZMS>tv_item.gif" alt="" align="absmiddle" border="0" style="background-image:url(<dtml-var MISC_ZMS>tv_line.gif);"
-  ></dtml-if
   ><input class="form-checkbox" type="checkbox" name="meta_types:list" value="<dtml-var meta_type>"<dtml-unless "meta_type in ['ZCatalog','ZMSLog']"> disabled="disabled"</dtml-unless>
   ><a href="<dtml-var id>/manage_main" class="zmi"><img src="<dtml-var icon>" alt="" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var "getZMILangStr(meta_type)"></a
  > (<dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">)</div>

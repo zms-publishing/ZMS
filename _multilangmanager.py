@@ -441,7 +441,7 @@ class MultiLanguageManager:
       
       # Change.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_CHANGE'):
+      elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
         self.initLangStr()
         for id in self.getLangIds():
           newLabel = REQUEST.get('%s_label'%id).strip()
@@ -529,7 +529,7 @@ class MultiLanguageManager:
         
         # Change.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_CHANGE'):
+        elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
           d = self.get_lang_dict()
           lang_dict = {}
           for key in d.keys():

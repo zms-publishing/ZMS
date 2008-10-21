@@ -2120,6 +2120,7 @@ function onZMSTableFormSubmit()
 }
 
 $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+$()
 
 //-->
 </script>
@@ -2371,7 +2372,9 @@ function table_cell_edit(el)
   if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
     $('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
     $('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-    zmiStandardOnSubmitEventHandler();
+    // zmiRichtextOnSubmitEventHandler();
+    <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
+    <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
   }
   </dtml-if>
   </dtml-let>
@@ -2379,7 +2382,9 @@ function table_cell_edit(el)
 
 function table_cell_change()
 {
-  zmiRichtextOnSubmitEventHandler();
+  // zmiRichtextOnSubmitEventHandler();
+  <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
+  <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
   $('#format_'+ table_cell_id).val($('#format').val());
   $('#tag_'+ table_cell_id).val($('#tag').val());
   $('#content_'+ table_cell_id).val($('#content_editor').val());
@@ -2397,6 +2402,12 @@ function table_cell_cancel()
   zmiImgZoomImgDiv.style.visibility = 'hidden';
   zmiImgZoomImgDiv.style.display = 'none';
   return false;
+}
+
+function table_cell_init()
+{
+  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).css( 'backgroundColor', '#FFFFE8');});
+  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").dblclick( function () { table_cell_edit(this);});
 }
 
 function actionBtnClick(el, fct)
@@ -2465,6 +2476,7 @@ function actionBtnClick(el, fct)
           }
           else if ( key.indexOf("content") == 0) {
             $(el_inputs[k]).val( "");
+            $(el_inputs[k]).css( 'border', '2px solid #00FF00');
           }
           table_cell_uid++;
         }
@@ -2472,6 +2484,7 @@ function actionBtnClick(el, fct)
       }
     }
     $('#cols').val( parseInt($('#cols').val())+1);
+    table_cell_init();
   }
   else if (fct.indexOf('insert_row') == 0) {
     var el_trs = el_tbody.children();
@@ -2487,11 +2500,13 @@ function actionBtnClick(el, fct)
       }
       else if ( key.indexOf("content") == 0) {
         $(el_inputs[k]).val( "");
+        $(el_inputs[k]).css( 'border', '2px solid #00FF00');
       }
       table_cell_uid++;
     }
     new_tr.insertBefore( el_tr);
     $('#rows').val( parseInt($('#rows').val())-1);
+    table_cell_init();
   }
   //////////////////////////////////////////////////////////////////////////////
   /// MOVE
@@ -2613,7 +2628,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
        <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">">
         <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
-        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=_.True,REQUEST=REQUEST,css='form-element',extra=' ondblclick='+QUOT+'table_cell_edit(this)'+QUOT+' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=_.True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
        </<dtml-var tag>>
        </tr>
        </table>
@@ -2646,6 +2661,14 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 
 <input type="hidden" id="cols" value="<dtml-var table_cols>"/>
 <input type="hidden" id="rows" value="<dtml-var table_rows>"/>
+
+<script language="JavaScript">
+<!--//
+
+table_cell_init();
+
+//-->
+</script>
 
 </dtml-let>
 
@@ -2795,23 +2818,23 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 </item>
 <item key="access" type="dictionary"><dictionary>
 <item key="delete" type="list"><list>
-<item><![CDATA[ZMSEditor]]></item>
-<item><![CDATA[ZMSAuthor]]></item>
 <item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
 <item key="delete_custom"/>
 <item key="edit" type="list"><list>
-<item><![CDATA[ZMSEditor]]></item>
-<item><![CDATA[ZMSAuthor]]></item>
 <item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
 <item key="edit_custom"/>
 <item key="insert" type="list"><list>
-<item><![CDATA[ZMSEditor]]></item>
-<item><![CDATA[ZMSAuthor]]></item>
 <item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
 <item key="insert_custom"><![CDATA[{$}]]></item>
@@ -3557,6 +3580,91 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 <item key="name"><![CDATA[com.zms.foundation]]></item>
 <item key="package"/>
 <item key="type"><![CDATA[ZMSPackage]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="key"><![CDATA[com.zms.sendmail]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="__obj_attrs__" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[# ------------------------------------------------------------------------------
+# Changes:
+# 2008-10-10 [st]: Added support for smtp-authentication.
+# ------------------------------------------------------------------------------
+
+import smtplib
+import os
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEBase import MIMEBase
+from email.MIMEText import MIMEText
+from email.Utils import COMMASPACE, formatdate
+from email import Encoders
+
+def send_mail(send_from, send_to, subject, text, files=[], server="localhost", send_cc=[], send_bcc=[], smtp_user=None, smtp_passwd=None):
+  assert type(send_to)==list
+  assert type(send_cc)==list
+  assert type(send_bcc)==list
+  assert type(files)==list
+ 
+  msg = MIMEMultipart('related')
+  msg['From'] = send_from
+  msg['To'] = COMMASPACE.join(send_to)
+  if send_cc: msg['Cc'] = COMMASPACE.join(send_cc)
+  msg['Date'] = formatdate(localtime=True)
+  msg['Subject'] = subject
+  msg.preamble = 'This is a multi-part message in MIME format.'
+
+  msg.attach( MIMEText(text, _subtype='html', _charset='utf-8'))
+
+  for f in files:
+    assert type(f)==dict
+    part = MIMEBase('application', "octet-stream")
+    part.set_payload( f['data'] )
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f['filename']))
+    msg.attach(part)
+ 
+  send_to = send_to + send_cc + send_bcc
+
+  smtp = smtplib.SMTP(server)
+  if smtp_user is not None:
+    smtp.login(smtp_user,smtp_passwd)
+  smtp.sendmail(send_from, send_to, msg.as_string())
+  
+  smtp.close()]]></item>
+<item key="id"><![CDATA[send_mail]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">0</item>
+<item key="name"><![CDATA[send_mail]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[External Method]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+</list>
+</item>
+<item key="insert_custom"/>
+</dictionary>
+</item>
+<item key="acquired" type="int">0</item>
+<item key="enabled" type="int">0</item>
+<item key="id"><![CDATA[com.zms.sendmail]]></item>
+<item key="name"><![CDATA[com.zms.sendmail]]></item>
+<item key="package"/>
+<item key="type"><![CDATA[ZMSLibrary]]></item>
 </dictionary>
 </item>
 </dictionary>

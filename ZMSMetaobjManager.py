@@ -120,7 +120,7 @@ class ZMSMetaobjManager:
         newValue['attrs'] = []
         newValue['id'] = id
         newValue['enabled'] = newValue.get('enabled',item.get('enabled',1))
-        newValue['zms_system'] = zms_system
+        newValue['zms_system'] = item.get('zms_system',zms_system)
         # Delete Object.
         oldAttrs = None
         if id in ids:
@@ -796,7 +796,7 @@ class ZMSMetaobjManager:
           
           # Change.
           # -------
-          elif key == 'all' and btn == self.getZMILangStr('BTN_CHANGE'):
+          elif key == 'all' and btn == self.getZMILangStr('BTN_SAVE'):
             sync_id = id
             savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
             # Change Object.
@@ -842,7 +842,7 @@ class ZMSMetaobjManager:
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault )
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')
-          elif key == 'obj' and btn == self.getZMILangStr('BTN_CHANGE'):
+          elif key == 'obj' and btn == self.getZMILangStr('BTN_SAVE'):
             sync_id = id
             # Change Acquired-Object.
             subobjects = REQUEST.get('obj_subobjects',0)

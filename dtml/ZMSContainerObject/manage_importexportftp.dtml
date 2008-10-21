@@ -39,7 +39,7 @@
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
   <tr valign="middle">
    <td class="form-element">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>">
     <dtml-if "getFtp(REQUEST)">
      <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_PING')" html_quote>">
     </dtml-if>

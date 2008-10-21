@@ -17,12 +17,12 @@
    }
 
    function onForm0Submit(fm) {
-     if ( self.btnClicked == '<dtml-var "getZMILangStr('BTN_CHANGE')">') {
+     if ( self.btnClicked == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
        var fm = parent.cameFromForm.document.forms['<dtml-var fmName>'];
        fm.elements['<dtml-var elName>'].value = document.forms['form0'].elements['editor'].value;
        for (var i = 0; i < fm.elements.length; i++) {
          var el = fm.elements[i];
-         if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_CHANGE')">') {
+         if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
            // Clear div with system-msg.
            var divs = parent.cameFromForm.document.getElementsByTagName( "div");
            var b = false;
@@ -174,7 +174,7 @@
   //-->
   </script>
   <div class="form-element">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="self.btnClicked=this.value;">
+   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;">
    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
   </div>
   </form>

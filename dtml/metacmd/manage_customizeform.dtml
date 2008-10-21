@@ -198,7 +198,7 @@
    <td class="form-element" nowrap="nowrap"><i>(<dtml-var "_.getattr(this(),metaCmd['id']).meta_type">)</i></td>
    <td class="form-element" align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=1,hidden=1,REQUEST=REQUEST)"></td>
    <td nowrap="nowrap">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
     <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
    </td>
    <td class="form-element" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaCmd['id']">" checked="checked"></td>

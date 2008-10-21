@@ -52,7 +52,7 @@
           }
         }
       }
-      if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>") {
+      if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
         if (fm.elements['password'] && fm.elements['confirm']) {
           b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
@@ -336,7 +336,7 @@
          </dtml-if>
         </dtml-let>
        <dtml-else>
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
         <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
         <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="btnClick(this,'obj');">
        </dtml-if>

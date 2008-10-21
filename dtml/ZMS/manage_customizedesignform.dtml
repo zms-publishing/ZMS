@@ -137,7 +137,7 @@
    <td>&nbsp;</td>
    <td>
     <div class="form-element">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="self.btnClicked=this.value;" />
+     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;" />
      <dtml-unless "getStylesheet().id()==cssId">
       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="self.btnClicked=this.value;" />
      </dtml-unless>
@@ -175,7 +175,7 @@
     </td>
   <tr>
    <td>&nbsp;</td>
-   <td><div class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>"></div></td>
+   <td><div class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"></div></td>
   </tr>
   <tr>
    <td>&nbsp;</td>

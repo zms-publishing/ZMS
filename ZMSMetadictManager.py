@@ -246,7 +246,7 @@ class ZMSMetadictManager:
           
           # Change.
           # -------
-          elif btn == self.getZMILangStr('BTN_CHANGE'): 
+          elif btn == self.getZMILangStr('BTN_SAVE'): 
             for oldId in REQUEST.get('old_ids',[]):
               if REQUEST.has_key('attr_id_%s'%oldId):
                 newId = REQUEST['attr_id_%s'%oldId].strip()

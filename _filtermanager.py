@@ -689,7 +689,7 @@ class FilterManager:
 
       # Change.
       # -------
-      elif btn == self.getZMILangStr('BTN_CHANGE'):
+      elif btn == self.getZMILangStr('BTN_SAVE'):
 	cp = self.getFilter(id)
 	# Filter.
         newId = REQUEST.get('inpId').strip()
@@ -789,7 +789,7 @@ class FilterManager:
 
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_CHANGE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         newId = REQUEST.get('inpId').strip()
         newAcquired = 0
         newName = REQUEST.get('inpName').strip()

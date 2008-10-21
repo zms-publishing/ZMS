@@ -1,29 +1,59 @@
 <dtml-try>
 <dtml-var f_ZMSSqlDb_manage_configuration>
 <dtml-except>
+<dtml-let valid_types="['blob','details','fk','html','multiselect','multimultiselect','pk','url']">
 <dtml-var manage_page_header>
 <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
 <script language="JavaScript">
 <!--//
 
-  function onFormSubmit( fm) {
-    var b = true;
-    return b;
+function onFormSubmit( fm) {
+  var b = true;
+  return b;
+}
+
+function toggleElement( sender, id) {
+  var speed = "normal";
+  var img = $('#'+sender);
+  var el = $('#'+id);
+  if ( el.css("display").toLowerCase()=="none") {
+    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
+    el.show(speed);
+  }
+  else {
+    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
+    el.hide(speed);
+  }
+}
+
+  /**
+   *
+   * @param el		Html-Form Element
+   * @param key		Key (obj|attr)
+   */
+  function btnClick(el, key) {
+    var fm = el.form;
+    fm.elements['key'].value = key;
+    self.btnClicked = el.value;
   }
 
-  function toggleElement( sender, id) {
-    var speed = "normal";
-    var img = $('#'+sender);
-    var el = $('#'+id);
-    if ( img.attr("title") == "-") {
-      img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
-      el.hide(speed);
-    }
-    else {
-      img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
-      el.show(speed);
-    }
+// #############################################################################
+// ### MULTIMULTISELECT
+// #############################################################################
+function mms_add_row(el) {
+  var el_tbody = $($(el).parents("tbody")[0]);
+  var el_trs = el_tbody.children();
+  var el_tr = $(el_trs[el_trs.length-1]);
+  var new_tr = el_tr.clone();
+  var el_inputs = $("textarea,input",new_tr);
+  for ( var k = 0; k < el_inputs.length; k++) {
+    var key = el_inputs[k].id;
+    $(el_inputs[k]).attr( "id", key+"_"+el_trs.length+"_"+k);
+    $(el_inputs[k]).attr( "name", key+"_"+el_trs.length+"_"+k);
+    $(el_inputs[k]).val( "");
   }
+  new_tr.insertBefore( el_tr);
+}
 
 //-->
 </script>
@@ -33,6 +63,7 @@
 <div style="padding:8px;">
 
 <form name="form0" action="manage_changeConfiguration" onsubmit="return onFormSubmit(this)" method="post" enctype="multipart/form-data">
+<input type="hidden" name="key" value="">
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <input type="hidden" name="preview" value="preview">
 
@@ -43,42 +74,298 @@
 
   <!-- Header -->
   <tr>
-   <td><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
   
   <dtml-in "getEntities()" mapping sort=label>
+   <dtml-let entity=sequence-item>
    <dtml-if "REQUEST.get('id','')==id">
      <!-- Headline -->
      <tr valign="top" class="zmiNeutralColorStrong0">
-      <td><div class="form-label">Model</div></td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
+      <td class="form-label">&nbsp;</td>
      </tr>
+
      <tr valign="top" class="zmiNeutralColorMedium0">
-      <td>
-       <textarea class="form-fixed" name="model" style="width:100%" rows="10"><dtml-in "getModel()"><dtml-let x=sequence-item><dtml-if "x.get('id')==REQUEST.get('id')"><dtml-var "toXmlString(x)"></dtml-if></dtml-let></dtml-in></textarea>
+      <td class="form-element"
+       ><input type="hidden" name="old_id" value="<dtml-var id>"
+       ><input type="text" name="id" value="<dtml-var id>" size="10"
+      ></td>
+      <td class="form-element"
+       ><input type="text" name="label" value="<dtml-var label>" size="10"
+      ></td>
+      <td class="form-element">
+       <select class="form-element" name="new_type">
+        <dtml-in "['table','intersection']"
+         ><dtml-let objtype=sequence-item
+          ><option value="<dtml-var objtype>"<dtml-if "objtype==type"> selected="selected"</dtml-if>><dtml-var objtype></option
+         ></dtml-let
+        ></dtml-in
+       ></select>
+      </td>
+      <td class="form-element">
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this,'all');"/>
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"/>
       </td>
      </tr>
+     
+     <tr valign="top" class="zmiNeutralColorMedium0">
+      <td colspan="4">
+        <!-- Headline -->
+       <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="80%">
+       <tr valign="middle">
+        <td class="form-small" colspan="2"><b>&nbsp;</b></td>
+        <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></td>
+        <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_DISPLAY')"></b></td>
+        <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_DESCRIPTION')"></b></td>
+        <td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>table_col.gif" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" border="0" /></td>
+        <td class="form-small">&nbsp;</td>
+       </tr>
+       <!-- Change / Delete Attributes -->
+       <dtml-in columns mapping>
+        <dtml-let column=sequence-item>
+         <tr valign="top" 
+          <dtml-if "REQUEST.form.get('attr_id','')==column['id']">
+           class="zmiTeaserColor"
+          <dtml-else>
+           class="zmiNeutralColorMedium0"
+          </dtml-if>>
+          <td valign="top" class="zmiNeutralColorStrong0">
+           <dtml-var "f_collectionBtn(_,_,url='manage_changeConfiguration?id=%s&attr_id=%s&key=attr'%(REQUEST['id'],column['id']))">
+          </td>
+          <td class="form-small" nowrap="nowrap">
+          <img src="<dtml-var MISC_ZMS><dtml-if "column.get('type')!='?'">ico_attr.gif<dtml-else>ico_item.gif</dtml-if>" title="<dtml-var "column.get('type','?').capitalize()">" border="0" style="vertical-align:middle" />
+           <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /><span style="color:blue;"></dtml-if>
+          </td>
+          <td class="form-small"
+           ><input type="hidden" name="old_ids:list" value="<dtml-var "column['id']">"
+           ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="10"
+          ></td>
+          <td class="form-small"
+           ><input type="text" name="attr_name_<dtml-var "column['id']">" value="<dtml-var "column.get('name',column['id'].capitalize())">" size="10"
+          ></td>
+          <td class="form-small"
+           ><dtml-if "column.get('description')"
+            ><input type="text" name="attr_description_<dtml-var "column['id']">" value="<dtml-var "column.get('description')">" size="20"
+           ></dtml-if
+          ></td>
+          <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')">" align="center"
+           ><dtml-var "getCheckbox(fmName='form0',elName='attr_display_%s:int'%column['id'],value=_.int(column.get('hide',0)==0),enabled=_.True,REQUEST=REQUEST)"
+          ></td>
+          <td class="form-small"
+           ><select class="form-small" name="attr_type_<dtml-var "column['id']">"
+            ><option value=""></option
+            ><dtml-in valid_types
+             ><dtml-let t=sequence-item
+              ><option value="<dtml-var t>"<dtml-if "column.has_key(t)"> selected="selected"</dtml-if>><dtml-var t></option
+             ></dtml-let
+            ></dtml-in
+           ></select
+           ><table cellpadding="1" cellspacing="1" border="0" width="100%"
+           ><colgroup>
+            <col width="20%"/>
+            <col width="80%"/>
+           </colgroup
+           ><dtml-if "column.has_key('blob')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Type</td
+             ><td class="form-small"><select name="attr_blob_path_<dtml-var "column['id']">"><dtml-in "['file','image']"><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['blob'].get('type')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Path</td
+             ><td class="form-small"><input type="text" name="attr_blob_path_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('path')">" size="20"></td
+            ></tr
+           ><dtml-elif "column.has_key('details')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Tablename</td
+             ><td class="form-small"><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['details'].get('tablename')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Foreign Key</td
+             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk')">" size="20"></td
+            ></tr
+           ><dtml-elif "column.has_key('fk')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Tablename</td
+             ><td class="form-small"><select name="attr_fk_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['fk'].get('tablename')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Fieldname</td
+             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('fieldname')">" size="20"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Displayfield</td
+             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('displayfield')">" size="20"></td
+            ></tr
+           ><dtml-elif "column.has_key('multiselect')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Foreign Key</td
+             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multiselect'].get('fk','')">" size="20"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Tablename</td
+             ><td class="form-small"><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multiselect'].get('tablename')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">MySQL-Set</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=_.int(column['multiselect'].get('mysqlset',1)==1),enabled=_.True,REQUEST=REQUEST)"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Lazy</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=_.int(column['multiselect'].get('lazy',1)==1),enabled=_.True,REQUEST=REQUEST)"></td
+            ></tr
+           ><dtml-elif "column.has_key('multimultiselect')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Foreign Key</td
+             ><td class="form-small"><input type="text" name="attr_multimultiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multimultiselect'].get('fk','')">" size="20"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Tablename</td
+             ><td class="form-small"><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multimultiselect'].get('tablename')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" colspan="2"
+              ><div class="form-small">Tables</div
+              ><table cellpadding="0" cellspacing="0" border="0" width="100%"
+              ><tr
+               ><td class="form-small">&nbsp;</td
+               ><td class="form-small">FK</td
+               ><td class="form-small">Tablename</td
+               ><td class="form-small">Fieldname</td
+               ><td class="form-small">Displayfield</td
+               ><td class="form-small">Label</td
+               ><td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>table_col.gif" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" border="0" /></td
+              ></tr
+              ><tr
+               ><td align="right" class="zmiNeutralColorStrong0"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a></td
+               ><td class="form-small"><input class="form-small" type="text" name="mms_new_fk" value="" size="5"></td
+               ><td class="form-small"><input class="form-small" type="text" name="mms_new_tablename" value="" size="5"></td
+               ><td class="form-small"><input class="form-small" type="text" name="mms_new_fieldname" value="" size="5"></td
+               ><td class="form-small"><input class="form-small" type="text" name="mms_new_displayfield" value="" size="5"></td
+               ><td class="form-small"><input class="form-small" type="text" name="mms_new_label" value="" size="5"></td
+               ><td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)"
+                ><input class="form-checkbox" type="checkbox" name="mms_display:int" value="1" checked="checked"
+               ></td
+              ></tr
+              ></table
+             ></td
+            ></tr
+           ></dtml-if
+           ></table
+          ></td>
+         </tr>
+        </dtml-let>
+       </dtml-in>
+
+       <!-- Insert Attribute -->
+       <tr valign="middle">
+        <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
+        <td class="zmiNeutralColorStrong0">
+         <img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" />
+        </td>
+        <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10"></td>
+        <td class="form-small"><input class="form-small" type="text" name="attr_name" value="" size="10"></td>
+        <td class="form-small"><input class="form-small" type="text" name="attr_description" value="" size="20"></td>
+        <td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)">
+         <input class="form-checkbox" type="checkbox" name="attr_display:int" value="1" checked="checked">
+        </td>
+        <td class="form-small"
+         ><select class="form-small" name="attr_type"
+          ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> -----</option
+          ><dtml-in valid_types
+           ><dtml-let t=sequence-item
+            ><option value="<dtml-var t>"><dtml-var t></option
+           ></dtml-let
+          ></dtml-in
+         ></select
+         ><input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
+        </td>
+       </tr>
+
+       </table>
+      </td>
+     </tr>
+
    <dtml-elif "REQUEST.get('id','')==''">
     <tr valign="top" class="neutralColorWhite">
      <td>
-      <div class="form-small">
+      <div class="form-small"<dtml-if "entity.get('custom')"> style="color:red;"</dtml-if>>
        <a href="javascript:toggleElement('img_<dtml-var id>','columns_<dtml-var id>')"><img id="img_<dtml-var id>" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"><strong><dtml-var id></strong> (<em><dtml-var label></em>)</a>
+       <a href="javascript:toggleElement('none_<dtml-var id>','sql_<dtml-var id>')"><img src="<dtml-var MISC_ZMS>btn_custom.gif" alt="SQL" title="+" border="0" align="absmiddle"/></a>
+       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"<dtml-if "entity.get('custom')"> style="color:red;"</dtml-if>><strong><dtml-var id></strong>:<dtml-var type> (<em><dtml-var label></em>)</a>
        <div id="columns_<dtml-var id>" style="display:none;padding-left:20px;">
         <dtml-in columns mapping>
-         <div class="form-small">
-          <img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle" />
+         <dtml-let column=sequence-item custom_types="intersection_list(valid_types,column.keys())">
+         <div class="form-small"<dtml-if "column.get('type') is _.None and _.len(custom_types)==0"> style="color:red;"</dtml-if>>
+          <img src="<dtml-var MISC_ZMS><dtml-if "column.get('type')!='?'">ico_attr.gif<dtml-else>ico_item.gif</dtml-if>" title="<dtml-var "column.get('type','?').capitalize()">" border="0" style="vertical-align:middle" />
           <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /><span style="color:blue;"></dtml-if>
-          <dtml-var id><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>: <dtml-var type><dtml-if name> (<em><dtml-var name></em>)</dtml-if>
+          <dtml-var id><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>:
+          <dtml-var "column.get('description','')">
+          <dtml-in custom_types><dtml-if "column.get('type')!='?'"><dtml-var "column.get('type')">&gt;</dtml-if><dtml-var sequence-item><dtml-else><dtml-var "column.get('type')"></dtml-in>
+          <dtml-if name>(<em><dtml-var name></em>)</dtml-if>
           <dtml-if pk></span></dtml-if>
          </div>
+         </dtml-let>
         </dtml-in>
+       </div>
+       <div id="sql_<dtml-var id>" style="display:none;padding-left:20px;" class="form-fixed">
+        CREATE TABLE <dtml-var id> (<br/>
+        <dtml-in "_.filter( lambda x: x.has_key('description'), columns)" mapping>
+         <dtml-let column=sequence-item custom_types="intersection_list(valid_types,column.keys())">
+          <dtml-if description>
+           <dtml-unless sequence-start>,</dtml-unless> <dtml-var id> <dtml-var description><br/>
+          </dtml-if>
+         </dtml-let>
+        </dtml-in>
+        )
        </div>
       </div>
      </td>
     </tr>
    </dtml-if>
+   </dtml-let>
   </dtml-in>
-  
+
+<dtml-comment>
+################################################################################
+### Insert
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('id','')==''">
+  <tr>
+   <td><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+  </tr>
+  <tr class="zmiNeutralColorLight0">
+   <td>
+    <table>
+    <tr valign="top">
+     <td class="form-element">
+      <dtml-var "getTextInput(fmName='form0',elName='new_id',size=12,value='')">
+      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
+     </td>
+     <td class="form-element">
+      <dtml-var "getTextInput(fmName='form0',elName='new_label',size=15,value='')">
+      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
+     </td>
+     <td class="form-element">
+      <select class="form-element" name="new_type">
+       <dtml-in "['table','intersection']"
+        ><dtml-let objtype=sequence-item
+         ><option value="<dtml-var objtype>"><dtml-var objtype></option
+        ></dtml-let
+       ></dtml-in
+      ></select>
+      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
+     </td>
+     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');"></td>
+    </tr>
+    </table>
+   </td>
+  </tr>
+ </dtml-if>
+
 <dtml-comment>
 ################################################################################
 ### Import
@@ -110,4 +397,5 @@
 </div>
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>
+</dtml-let>
 </dtml-try>

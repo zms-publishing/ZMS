@@ -333,7 +333,7 @@ class MetacmdManager:
         
         # Change.
         # -------
-        elif btn == self.getZMILangStr('BTN_CHANGE'):
+        elif btn == self.getZMILangStr('BTN_SAVE'):
           id = REQUEST['id']
           newId = REQUEST['el_id']
           newAcquired = 0

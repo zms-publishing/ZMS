@@ -62,7 +62,7 @@
     ############################################################################
   </dtml-comment
   ><dtml-elif "REQUEST.get('details_action')=='update' and 
-             REQUEST.get('details_btn')==getZMILangStr('BTN_CHANGE')"
+             REQUEST.get('details_btn')==getZMILangStr('BTN_SAVE')"
    ><dtml-let values="{}" old_values="{}"
     ><dtml-in grid_cols mapping
      ><dtml-if "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
@@ -174,7 +174,7 @@
   ><dtml-call f_recordset_init
   ><dtml-if "_.str(row.get(primary_key,''))==_.str(details_rowid)"
    ><dtml-call "REQUEST.set('details_row',row)"
-   ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_CHANGE'))"
+   ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_SAVE'))"
   ></dtml-if
  ></dtml-in
 ></dtml-if

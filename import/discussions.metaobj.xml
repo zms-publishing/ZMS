@@ -974,7 +974,7 @@ Todo:
             <dtml-in "tree_parents(resMsg,'bbmId','bbmBbmId',bbmBbmId,1)" mapping>
                 <dtml-if sequence-end>
                     <a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><img src="<dtml-var "thread_up.getHref(REQUEST)">" alt="" border="0" align="absmiddle" hspace="4" /></a><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><strong><small><dtml-var bbmSubject></small></strong></a>
-                    <br /><img src="<dtml-var MISC_ZMS>tv_line_root.gif" alt="" border="0" hspace="6">
+                    <br />
                 </dtml-if> 
             </dtml-in>
         </dtml-let>
@@ -1039,15 +1039,15 @@ Todo:
                 <tr valign="bottom">
                     <dtml-if sequence-end>
                         <dtml-if subchildren>
-                            <td><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><img src="<dtml-var MISC_ZMS>tv_last_pl.gif" alt="" border="0" align="absmiddle"></a></td>
+                            <td><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><img src="<dtml-var MISC_ZMS>pl.gif" alt="" border="0" align="absmiddle"></a></td>
                         <dtml-else>
-                            <td><img src="<dtml-var MISC_ZMS>tv_last.gif" alt="" border="0" align="absmiddle"></td>
+                            <td></td>
                         </dtml-if>
                     <dtml-else>
                         <dtml-if subchildren>
-                            <td style="background-image:url(<dtml-var MISC_ZMS>tv_line.gif);"><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><img src="<dtml-var MISC_ZMS>tv_item_pl.gif" alt="" border="0" align="absmiddle"></a></td>
+                            <td><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><img src="<dtml-var MISC_ZMS>pl.gif" alt="" border="0" align="absmiddle"></a></td>
                         <dtml-else>
-                            <td style="background-image:url(<dtml-var MISC_ZMS>tv_line.gif);"><img src="<dtml-var MISC_ZMS>tv_item.gif" alt="" border="0" align="absmiddle"></td>
+                            <td></td>
                         </dtml-if>
                     </dtml-if>
                     <td valign="top">&nbsp;<small><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><strong><dtml-var bbmSubject></strong></a> - <dtml-var bbmAuthor> <dtml-var "getLangFmtDate(bbmDateTime,lang,'DATETIME_FMT')"> <dtml-if bbmFile><img src="<dtml-var "getObjProperty('mail_appendix',REQUEST).getHref(REQUEST)">" alt="" border="0" align="absmiddle" /></small></dtml-if></td>

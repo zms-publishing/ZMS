@@ -412,6 +412,7 @@ class ZMSSqlDb(ZMSObject):
                   colType = 'string'
               col = {}
               col['key'] = colId
+              col['description'] = colDescr.strip()
               col['id'] = col['key']
               col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
               col['name'] = col['label']
@@ -471,6 +472,15 @@ class ZMSSqlDb(ZMSObject):
         # Add
         s.append((entity['label'],entity))
       
+      #-- Custom entities.
+      for entity in model:
+        tableName = entity['id'].upper()
+        if tableName not in map( lambda x: x['id'].upper(), entities):
+          entity['id'] = tableName
+          entity['custom'] = 1
+          # Add Table.
+          s.append((entity['label'],entity))
+      
       #-- Sort entities
       s.sort()
       entities = map(lambda x: x[1], s)
@@ -497,7 +507,7 @@ class ZMSSqlDb(ZMSObject):
       @rtype: C{None}
       """
       SESSION = REQUEST.SESSION
-      tabledefs = self.getEntities()
+      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
       tablename = SESSION.get('qentity_%s'%self.id)
       #-- Sanity check.
       SESSION.set('qentity_%s'%self.id,'')
@@ -535,7 +545,7 @@ class ZMSSqlDb(ZMSObject):
       """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
-      tabledefs = self.getEntities()
+      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
       #-- Sanity check.
       SESSION.set('qfilters_%s'%self.id,REQUEST.form.get('qfilters',SESSION.get('qfilters_%s'%self.id,1)))
       if len(tabledefs) > 0:
@@ -591,7 +601,7 @@ class ZMSSqlDb(ZMSObject):
       """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
-      tabledefs = self.getEntities()
+      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
       #-- Sanity check.
       qorder = REQUEST.get('qorder','')
       qorderdir = REQUEST.get('qorderdir','asc')
@@ -980,7 +990,7 @@ class ZMSSqlDb(ZMSObject):
     #
     #  Change Sql-Database configuration.
     ############################################################################
-    def manage_changeConfiguration(self, lang, btn='', REQUEST=None, RESPONSE=None):
+    def manage_changeConfiguration(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
       """ ZMSSqlDb.manage_changeConfiguration """
       message = ''
       t0 = time.time()
@@ -994,6 +1004,39 @@ class ZMSSqlDb(ZMSObject):
         filename = f.filename
         self.setModel(f)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+      
+      # Insert.
+      # -------
+      elif btn == self.getZMILangStr('BTN_INSERT'):
+        # Insert Object.
+        if key == 'obj':
+          id = REQUEST['new_id'].strip()
+          newValue = {}
+          newValue['id'] = id
+          newValue['label'] = REQUEST.get('new_label').strip()
+          newValue['type'] = REQUEST.get('new_type').strip()
+          newValue['columns'] = []
+          model = self.getModel()
+          model.append( newValue)
+          f = self.toXmlString( model)
+          self.setModel(f)
+          message += self.getZMILangStr('MSG_INSERTED')%id
+        # Insert Attribute.
+        if key == 'attr':
+          attr_id = REQUEST['attr_id'].strip()
+          model = self.getModel()
+          newValue = {}
+          newValue['id'] = attr_id
+          newValue['name'] = REQUEST.get('attr_name').strip()
+          newValue['description'] = REQUEST.get('attr_description').strip()
+          if REQUEST.get('attr_type'):
+            newValue[REQUEST.get('attr_type')] = {}
+          for entity in model:
+            if entity['id'].upper() == id.upper():
+              entity['columns'].append(newValue)
+          f = self.toXmlString( model)
+          self.setModel(f)
+          message += self.getZMILangStr('MSG_INSERTED')%attr_id
       
       # Return with message.
       target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})

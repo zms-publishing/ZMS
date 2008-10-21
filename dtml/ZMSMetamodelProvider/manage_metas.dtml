@@ -282,7 +282,7 @@ function hideDstMetaTypes( id)
  <tr class="zmiNeutralColorStrong0">
   <td colspan="2">&nbsp;</td>
   <td colspan="8" class="form-element">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="btnClick(this);">
+   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
   </td>
  </tr>
 </dtml-if>

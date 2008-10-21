@@ -221,8 +221,8 @@ window.setTimeout("$('#manage_tabs_message').hide('slow')",3000);
  style="border:0px;vertical-align:top"/>
 <a href="#" onclick="contentEditableButtonSaveClick('<dtml-var lang>')"><img 
  id="contentEditableButtonSave" src="metaobj_manager/contentEditableLib.icon_save.gif" 
- alt="<dtml-var "getZMILangStr('BTN_CHANGE')">" 
- title="<dtml-var "getZMILangStr('BTN_CHANGE')">"  
+ alt="<dtml-var "getZMILangStr('BTN_SAVE')">" 
+ title="<dtml-var "getZMILangStr('BTN_SAVE')">"  
  style="border:0px;vertical-align:top"/></a>&nbsp;
 <a href="#" onclick="contentEditableButtonFormatClick('<dtml-var lang>','Bold')"><img 
  src="metaobj_manager/contentEditableLib.icon_bold.gif" alt="Bold" title="Bold" border="0" 

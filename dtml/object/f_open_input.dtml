@@ -62,7 +62,7 @@
    </table>
    <!-- ### SUBMIT -->
    <hr size="1">
-   <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CHANGE')" html_quote>" onclick="changeBtnClick('form0')">
+   <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="changeBtnClick('form0')">
    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="cancelBtnClick('form0')">
    </form>
   </td>

@@ -157,7 +157,7 @@ class ZMSCharformatManager:
       
       # Change.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_CHANGE'):
+      if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
         newId = REQUEST['new_id'].strip()
         newBtn = REQUEST.get('new_btn','')
         if isinstance(newBtn,ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':

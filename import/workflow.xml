@@ -503,7 +503,7 @@
 </tr>
 </table>
 <hr size="1">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CHANGE'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SAVE'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
 <dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 </form>
@@ -513,7 +513,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<dtml-elif "REQUEST.get('btn','')==getZMILangStr('BTN_CHANGE')">
+<dtml-elif "REQUEST.get('btn','')==getZMILangStr('BTN_SAVE')">
  <!-- Return with message -->
  <dtml-try>
   <dtml-return "RESPONSE.redirect(url_append_params('manage_main',{'lang':lang, 'custom': custom, 'manage_tabs_message':'Created %i master versions.'%tagObjVersions(getObjProperty('master_version',REQUEST)+1,REQUEST)}))">

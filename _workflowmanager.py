@@ -453,7 +453,7 @@ class WorkflowManager:
       
       # Active.
       # -------
-      if key == 'custom' and btn == self.getZMILangStr('BTN_CHANGE'):
+      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
         # Autocommit & Nodes.
         old_autocommit = self.getConfProperty('ZMS.autocommit',1)
         new_autocommit = REQUEST.get('workflow',0) == 0
@@ -474,7 +474,7 @@ class WorkflowManager:
       # ---------
       elif key == 'protocol':
         # Change.
-        if btn == self.getZMILangStr('BTN_CHANGE'):
+        if btn == self.getZMILangStr('BTN_SAVE'):
           keep_entries = REQUEST.get('keep_entries',0)
           self.setConfProperty(CONF_PROTOCOL_KEEP,keep_entries)
           if keep_entries == 0:
@@ -526,7 +526,7 @@ class WorkflowManager:
       
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_CHANGE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         item = self.getWfActivity(id)
         newId = REQUEST.get('inpId').strip()
         newName = REQUEST.get('inpName').strip()
@@ -589,7 +589,7 @@ class WorkflowManager:
       
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_CHANGE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         item = self.getWfTransition(id)
         newId = REQUEST.get('inpId').strip()
         newName = REQUEST.get('inpName').strip()

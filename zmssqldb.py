@@ -428,8 +428,8 @@ class ZMSSqlDb(ZMSObject):
             if len(cols) > 0:
               entity = {}
               entity['id'] = tableName
-              entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
               entity['type'] = 'table'
+              entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
               entity['columns'] = cols
               # Add Table.
               entities.append(entity)
@@ -461,6 +461,7 @@ class ZMSSqlDb(ZMSObject):
             col['type'] = col.get('type','?')
             col['key'] = col.get('key',col.get('id'))
             col['label'] = col.get('label',col.get('id'))
+            col['custom'] = 1
             cols.insert(col['index'], col)
             colNames.append(col['id'].upper())
         entity['interface'] = tableInterface
@@ -477,6 +478,9 @@ class ZMSSqlDb(ZMSObject):
         tableName = entity['id'].upper()
         if tableName not in map( lambda x: x['id'].upper(), entities):
           entity['id'] = tableName
+          entity['type'] = entity.get('type','table')
+          entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())
+          entity['columns'] = entity.get('columns',[])
           entity['custom'] = 1
           # Add Table.
           s.append((entity['label'],entity))
@@ -997,9 +1001,45 @@ class ZMSSqlDb(ZMSObject):
       id = REQUEST.get('id','')
       target = 'manage_configuration'
       
+      # Change.
+      # -------
+      if key == 'all' and btn == self.getZMILangStr('BTN_SAVE'):
+        model = self.getModel()
+        for entity in model:
+          if entity['id'].upper() == REQUEST.get('old_id').upper():
+            entity['id'] = id
+            entity['label'] = REQUEST.get('label').strip()
+            entity['type'] = REQUEST.get('type').strip()
+            entity['interface'] = REQUEST.get('interface').strip()
+            entity['filter'] = REQUEST.get('filter').strip()
+        f = self.toXmlString( model)
+        self.setModel(f)
+        message = self.getZMILangStr('MSG_CHANGED')
+      
+      # Delete.
+      # -------
+      # Delete Object.
+      elif key == 'obj' and btn == self.getZMILangStr('BTN_DELETE'):
+        model = self.getModel()
+        for entity in model:
+          if entity['id'].upper() == id.upper():
+            pass
+        f = self.toXmlString( model)
+        self.setModel(f)
+        message = self.getZMILangStr('MSG_CHANGED')
+      # Delete Attribute.
+      elif key == 'attr' and btn == 'delete':
+        model = self.getModel()
+        for entity in model:
+          if entity['id'].upper() == id.upper():
+            pass
+        f = self.toXmlString( model)
+        self.setModel(f)
+        message = self.getZMILangStr('MSG_CHANGED')
+      
       # Import.
       # -------
-      if btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == self.getZMILangStr('BTN_IMPORT'):
         f = REQUEST['file']
         filename = f.filename
         self.setModel(f)
@@ -1028,7 +1068,7 @@ class ZMSSqlDb(ZMSObject):
           newValue = {}
           newValue['id'] = attr_id
           newValue['name'] = REQUEST.get('attr_name').strip()
-          newValue['description'] = REQUEST.get('attr_description').strip()
+          newValue['userdescription'] = REQUEST.get('attr_description').strip()
           if REQUEST.get('attr_type'):
             newValue[REQUEST.get('attr_type')] = {}
           for entity in model:
@@ -1037,6 +1077,13 @@ class ZMSSqlDb(ZMSObject):
           f = self.toXmlString( model)
           self.setModel(f)
           message += self.getZMILangStr('MSG_INSERTED')%attr_id
+      
+      # Move to.
+      # --------
+      elif key == 'attr' and btn == 'move_to':
+        pos = REQUEST['pos']
+        attr_id = REQUEST['attr_id']
+        message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%attr_id),(pos+1))
       
       # Return with message.
       target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})

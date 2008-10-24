@@ -128,6 +128,11 @@ class ZMSSqlDb(ZMSObject):
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
 
+    # Valid Types.
+    # ------------
+    valid_types = {'blob':{},'details':{},'fk':{},'html':1,'multiselect':{},'multimultiselect':{},'pk':1,'url':1}
+
+
     ############################################################################
     ###
     ###   CONSTRUCTOR
@@ -461,7 +466,8 @@ class ZMSSqlDb(ZMSObject):
             col['type'] = col.get('type','?')
             col['key'] = col.get('key',col.get('id'))
             col['label'] = col.get('label',col.get('id'))
-            col['custom'] = 1
+            col['stereotypes'] = self.intersection_list( self.valid_types.keys(), col.keys())
+            col['not_found'] = col.get('description') is None and len(col.get('stereotypes',[]))==0
             cols.insert(col['index'], col)
             colNames.append(col['id'].upper())
         entity['interface'] = tableInterface
@@ -481,7 +487,7 @@ class ZMSSqlDb(ZMSObject):
           entity['type'] = entity.get('type','table')
           entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())
           entity['columns'] = entity.get('columns',[])
-          entity['custom'] = 1
+          entity['not_found'] = 1
           # Add Table.
           s.append((entity['label'],entity))
       
@@ -511,7 +517,7 @@ class ZMSSqlDb(ZMSObject):
       @rtype: C{None}
       """
       SESSION = REQUEST.SESSION
-      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
+      tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       tablename = SESSION.get('qentity_%s'%self.id)
       #-- Sanity check.
       SESSION.set('qentity_%s'%self.id,'')
@@ -549,7 +555,7 @@ class ZMSSqlDb(ZMSObject):
       """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
-      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
+      tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       #-- Sanity check.
       SESSION.set('qfilters_%s'%self.id,REQUEST.form.get('qfilters',SESSION.get('qfilters_%s'%self.id,1)))
       if len(tabledefs) > 0:
@@ -605,7 +611,7 @@ class ZMSSqlDb(ZMSObject):
       """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
-      tabledefs = filter( lambda x: x.get('custom') != 1, self.getEntities())
+      tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       #-- Sanity check.
       qorder = REQUEST.get('qorder','')
       qorderdir = REQUEST.get('qorderdir','asc')
@@ -1003,36 +1009,64 @@ class ZMSSqlDb(ZMSObject):
       
       # Change.
       # -------
-      if key == 'all' and btn == self.getZMILangStr('BTN_SAVE'):
+      if btn == self.getZMILangStr('BTN_SAVE'):
         model = self.getModel()
-        for entity in model:
-          if entity['id'].upper() == REQUEST.get('old_id').upper():
-            entity['id'] = id
-            entity['label'] = REQUEST.get('label').strip()
-            entity['type'] = REQUEST.get('type').strip()
-            entity['interface'] = REQUEST.get('interface').strip()
-            entity['filter'] = REQUEST.get('filter').strip()
+        entities = filter( lambda x: x['id'].upper() == id.upper(), model)
+        if entities:
+          entity = entities[0]
+        else:
+          entity = {}
+          entity['id'] = id.upper()
+          entity['type'] = 'table'
+          entity['columns'] = []
+          model.append( entity)
+        entity['label'] = REQUEST.get('label').strip()
+        entity['type'] = REQUEST.get('type').strip()
+        entity['interface'] = REQUEST.get('interface').strip()
+        entity['filter'] = REQUEST.get('filter').strip()
+        cols = []
+        for attr_id in REQUEST.get('attr_ids',[]):
+          col = {}
+          col['id'] = REQUEST.get( 'attr_id_%s'%attr_id, attr_id).strip()
+          col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '').strip()
+          col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)==1)
+          if REQUEST.has_key( 'attr_type_%s'%attr_id):
+            t = REQUEST.get( 'attr_type_%s'%attr_id)
+            if t in self.valid_types.keys():
+              d = copy.deepcopy( self.valid_types[ t])
+              if type( d) is dict:
+                xs = 'attr_%s_'%t
+                xe = '_%s'%attr_id
+                for k in filter( lambda x: x.startswith(xs) and x.endswith(xe), REQUEST.form.keys()):
+                  xk = k[len(xs):-len(xe)].split('_')
+                  xv = REQUEST[k]
+                  if len( xk) == 1:
+                    xk = xk[ 0]
+                    if type( xv) is str:
+                      xv = xv.strip()
+                      if len( xv) > 0:
+                        d[ xk] = xv
+                    elif type( xv) is int:
+                      if xv != 0:
+                        d[ xk] = xv
+                  else:
+                    print xk, '=', xv
+              col[ t] = d
+          cols.append( col)
+        entity['columns'] = cols
         f = self.toXmlString( model)
         self.setModel(f)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.
       # -------
-      # Delete Object.
-      elif key == 'obj' and btn == self.getZMILangStr('BTN_DELETE'):
+      elif btn == 'delete':
+        attr_id = REQUEST['attr_id'].strip()
         model = self.getModel()
-        for entity in model:
-          if entity['id'].upper() == id.upper():
-            pass
-        f = self.toXmlString( model)
-        self.setModel(f)
-        message = self.getZMILangStr('MSG_CHANGED')
-      # Delete Attribute.
-      elif key == 'attr' and btn == 'delete':
-        model = self.getModel()
-        for entity in model:
-          if entity['id'].upper() == id.upper():
-            pass
+        entities = filter( lambda x: x['id'].upper() == id.upper(), model)
+        if entities:
+          entity = entities[0]
+          entity['columns'] = filter( lambda x: x['id'].upper() != attr_id.upper(), entity['columns'])
         f = self.toXmlString( model)
         self.setModel(f)
         message = self.getZMILangStr('MSG_CHANGED')
@@ -1048,35 +1082,27 @@ class ZMSSqlDb(ZMSObject):
       # Insert.
       # -------
       elif btn == self.getZMILangStr('BTN_INSERT'):
-        # Insert Object.
-        if key == 'obj':
-          id = REQUEST['new_id'].strip()
-          newValue = {}
-          newValue['id'] = id
-          newValue['label'] = REQUEST.get('new_label').strip()
-          newValue['type'] = REQUEST.get('new_type').strip()
-          newValue['columns'] = []
-          model = self.getModel()
-          model.append( newValue)
-          f = self.toXmlString( model)
-          self.setModel(f)
-          message += self.getZMILangStr('MSG_INSERTED')%id
-        # Insert Attribute.
-        if key == 'attr':
-          attr_id = REQUEST['attr_id'].strip()
-          model = self.getModel()
-          newValue = {}
-          newValue['id'] = attr_id
-          newValue['name'] = REQUEST.get('attr_name').strip()
-          newValue['userdescription'] = REQUEST.get('attr_description').strip()
-          if REQUEST.get('attr_type'):
-            newValue[REQUEST.get('attr_type')] = {}
-          for entity in model:
-            if entity['id'].upper() == id.upper():
-              entity['columns'].append(newValue)
-          f = self.toXmlString( model)
-          self.setModel(f)
-          message += self.getZMILangStr('MSG_INSERTED')%attr_id
+        attr_id = REQUEST['attr_id'].strip()
+        model = self.getModel()
+        newValue = {}
+        newValue['id'] = attr_id
+        newValue['label'] = REQUEST.get('attr_label').strip()
+        newValue['hide'] = int(not REQUEST.get('attr_display',0)==1)
+        if REQUEST.get('attr_type'):
+          newValue[REQUEST.get('attr_type')] = {}
+        entities = filter( lambda x: x['id'].upper() == id.upper(), model)
+        if entities:
+          entity = entities[0]
+        else:
+          entity = {}
+          entity['id'] = id.upper()
+          entity['type'] = 'table'
+          entity['columns'] = []
+          model.append( entity)
+        entity['columns'].append(newValue)
+        f = self.toXmlString( model)
+        self.setModel(f)
+        message += self.getZMILangStr('MSG_INSERTED')%attr_id
       
       # Move to.
       # --------

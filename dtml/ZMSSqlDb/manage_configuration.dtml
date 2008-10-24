@@ -1,7 +1,6 @@
 <dtml-try>
 <dtml-var f_ZMSSqlDb_manage_configuration>
 <dtml-except>
-<dtml-let valid_types="['blob','details','fk','html','multiselect','multimultiselect','pk','url']">
 <dtml-var manage_page_header>
 <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
 <script language="JavaScript">
@@ -105,6 +104,15 @@ function mms_normalize_rows(el_tbody) {
 //-->
 </script>
 </head>
+<dtml-in "getEntities()" mapping sort=label>
+ <dtml-let entity=sequence-item>
+  <dtml-if "REQUEST.get('id','')==id">
+   <dtml-call "REQUEST.set('additionalObjectPathElements',[
+    {'href':url_append_params(URL,{'id':id}),'title':label},
+    ])">
+  </dtml-if>
+ </dtml-let>
+</dtml-in>
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
 <div style="padding:8px;">
@@ -137,11 +145,11 @@ function mms_normalize_rows(el_tbody) {
 
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td class="form-element"
-       ><input type="hidden" name="old_id" value="<dtml-var id>"
-       ><input type="text" name="id" value="<dtml-var id>" size="10"
+       ><input type="hidden" name="id" value="<dtml-var id>"
+       ><code><dtml-var id></code
       ></td>
       <td class="form-element"
-       ><input type="text" name="label" value="<dtml-var label>" size="10"
+       ><input type="text" name="label" value="<dtml-var label>" size="20"
       ></td>
       <td class="form-element">
        <select class="form-element" name="type">
@@ -153,8 +161,8 @@ function mms_normalize_rows(el_tbody) {
        ></select>
       </td>
       <td class="form-element">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'all');"/>
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"/>
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"/>
+       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>"/>
       </td>
      </tr>
      
@@ -187,7 +195,7 @@ function mms_normalize_rows(el_tbody) {
        </tr>
        <!-- Change / Delete Attributes -->
        <dtml-in columns mapping>
-        <dtml-let column=sequence-item>
+        <dtml-let column=sequence-item column_required="column.get('description','')!=''">
          <tr valign="top" 
           <dtml-if "REQUEST.form.get('attr_id','')==column['id']">
            class="zmiTeaserColor"
@@ -195,18 +203,23 @@ function mms_normalize_rows(el_tbody) {
            class="zmiNeutralColorMedium0"
           </dtml-if>>
           <td valign="top" class="zmiNeutralColorStrong0">
-           <dtml-var "f_collectionBtn(_,_,url='manage_changeConfiguration?id=%s&attr_id=%s&key=attr'%(REQUEST['id'],column['id']))">
+           <dtml-var "f_collectionBtn(_,_,url='manage_changeConfiguration?id=%s&attr_id=%s&key=attr'%(REQUEST['id'],column['id']),required=column_required)">
           </td>
           <td class="form-small" nowrap="nowrap">
           <img src="<dtml-var MISC_ZMS><dtml-if "column.get('type')!='?'">ico_attr.gif<dtml-else>ico_item.gif</dtml-if>" title="<dtml-var "column.get('type','?').capitalize()">" border="0" style="vertical-align:middle" />
            <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /><span style="color:blue;"></dtml-if>
           </td>
           <td class="form-small"
-           ><input type="hidden" name="old_ids:list" value="<dtml-var "column['id']">"
-           ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="10"
+            ><input type="hidden" name="attr_ids:list" value="<dtml-var "column['id']">"
+            ><input type="hidden" name="attr_index_<dtml-var "column['id']">" value="<dtml-var sequence-index>"
+           ><dtml-if column_required
+            ><code><dtml-var "column['id']"></code
+           ><dtml-else
+            ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="20"
+           ></dtml-if
           ></td>
           <td class="form-small"
-           ><input type="text" name="attr_description_<dtml-var "column['id']">" value="<dtml-var "column.get('description','')">" size="20"
+           ><code><dtml-var "column.get('description','')"></code
           ></td>
           <td class="form-small"
            ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="10"
@@ -217,7 +230,7 @@ function mms_normalize_rows(el_tbody) {
           <td class="form-small"
            ><select class="form-small" name="attr_type_<dtml-var "column['id']">"
             ><option value=""></option
-            ><dtml-in valid_types
+            ><dtml-in "valid_types.keys()"
              ><dtml-let t=sequence-item
               ><option value="<dtml-var t>"<dtml-if "column.has_key(t)"> selected="selected"</dtml-if>><dtml-var t></option
              ></dtml-let
@@ -248,7 +261,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk','')">" size="20"></td
             ></tr
            ><dtml-elif "column.has_key('fk')"
             ><tr class="zmiNeutralColorLight0"
@@ -354,15 +367,15 @@ function mms_normalize_rows(el_tbody) {
          <img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" />
         </td>
         <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10"></td>
-        <td class="form-small"><input class="form-small" type="text" name="attr_description" value="" size="20"></td>
+        <td class="form-small">&nbsp;</td>
         <td class="form-small"><input class="form-small" type="text" name="attr_label" value="" size="10"></td>
         <td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)">
          <input class="form-checkbox" type="checkbox" name="attr_display:int" value="1" checked="checked">
         </td>
-        <td class="form-small"
+        <td class="form-small" nowrap="nowrap"
          ><select class="form-small" name="attr_type"
           ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> -----</option
-          ><dtml-in valid_types
+          ><dtml-in "valid_types.keys()"
            ><dtml-let t=sequence-item
             ><option value="<dtml-var t>"><dtml-var t></option
            ></dtml-let
@@ -379,20 +392,19 @@ function mms_normalize_rows(el_tbody) {
    <dtml-elif "REQUEST.get('id','')==''">
     <tr valign="top" class="neutralColorWhite">
      <td>
-      <div class="form-small"<dtml-if "entity.get('custom')"> style="color:red;"</dtml-if>>
+      <div class="form-small"<dtml-if "entity.get('not_found')"> style="color:red;"</dtml-if>>
        <a href="javascript:toggleElement('img_<dtml-var id>','columns_<dtml-var id>')"><img id="img_<dtml-var id>" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
        <a href="javascript:toggleElement('none_<dtml-var id>','sql_<dtml-var id>')"><img src="<dtml-var MISC_ZMS>btn_custom.gif" alt="SQL" title="+" border="0" align="absmiddle"/></a>
-       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"<dtml-if "entity.get('custom')"> style="color:red;"</dtml-if>><strong><dtml-var id></strong>:<dtml-var type> (<em><dtml-var label></em>)</a>
+       <a id="a_<dtml-var id>" href="?lang=<dtml-var lang>&id=<dtml-var id>" class="zmi"<dtml-if "entity.get('not_found')"> style="color:red;"</dtml-if>><strong><dtml-var id></strong>:<dtml-var type> (<em><dtml-var label></em>)</a>
        <div id="columns_<dtml-var id>" style="display:none;padding-left:20px;">
         <dtml-in columns mapping>
-         <dtml-let column=sequence-item custom_types="intersection_list(valid_types,column.keys())">
-         <div class="form-small">
-          <dtml-if "column.get('userdescription') not in ['',_.None] and column.get('userdescription')!=column.get('description') and _.len(custom_types)==0"> style="color:red;"</dtml-if>
+         <dtml-let column=sequence-item>
+         <div class="form-small"<dtml-if "column.get('not_found')"> style="color:red;"</dtml-if>>
           <img src="<dtml-var MISC_ZMS><dtml-if "column.get('type')!='?'">ico_attr.gif<dtml-else>ico_item.gif</dtml-if>" title="<dtml-var "column.get('type','?').capitalize()">" border="0" style="vertical-align:middle" />
           <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /></dtml-if>
-          <code><dtml-var id> <dtml-var "column.get('userdescription','')"></code>
+          <code><dtml-var id> <dtml-var "column.get('description','')"></code>
           <dtml-if "column.get('type') is not _.None and column.get('type')!='?'"><dtml-var "column.get('type')"></dtml-if>
-          <dtml-in custom_types>&gt;<dtml-var sequence-item></dtml-in>
+          <dtml-if stereotypes><dtml-in stereotypes>&gt;<dtml-var sequence-item></dtml-in></dtml-if>
           (<em><dtml-var label><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></em>)
          </div>
          </dtml-let>
@@ -415,44 +427,6 @@ function mms_normalize_rows(el_tbody) {
    </dtml-if>
    </dtml-let>
   </dtml-in>
-
-<dtml-comment>
-################################################################################
-### Insert
-################################################################################
-</dtml-comment>
- <dtml-if "REQUEST.get('id','')==''">
-  <tr>
-   <td><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
-  </tr>
-  <tr class="zmiNeutralColorLight0">
-   <td>
-    <table>
-    <tr valign="top">
-     <td class="form-element">
-      <dtml-var "getTextInput(fmName='form0',elName='new_id',size=12,value='')">
-      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
-     </td>
-     <td class="form-element">
-      <dtml-var "getTextInput(fmName='form0',elName='new_label',size=15,value='')">
-      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
-     </td>
-     <td class="form-element">
-      <select class="form-element" name="new_type">
-       <dtml-in "['table','intersection']"
-        ><dtml-let objtype=sequence-item
-         ><option value="<dtml-var objtype>"><dtml-var objtype></option
-        ></dtml-let
-       ></dtml-in
-      ></select>
-      <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
-     </td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');"></td>
-    </tr>
-    </table>
-   </td>
-  </tr>
- </dtml-if>
 
 <dtml-comment>
 ################################################################################
@@ -485,5 +459,4 @@ function mms_normalize_rows(el_tbody) {
 </div>
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>
-</dtml-let>
 </dtml-try>

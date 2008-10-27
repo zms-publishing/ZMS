@@ -1008,3 +1008,7 @@
 [01107] Applied fixes for ZMSTable (reported by desy).
 [01108] Implemented prototype v0.1.1 for configuration of SQL-Datasource.
 --------------------------------------------------
+2008-10-27:zms-2.11.1-09
+-- MINOR CHANGES
+[01109] Applied fix for Boolean-attributes with valid False-values in ZMSLinkElement.getObjProperty().
+--------------------------------------------------

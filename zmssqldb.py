@@ -1029,11 +1029,13 @@ class ZMSSqlDb(ZMSObject):
           col = {}
           col['id'] = REQUEST.get( 'attr_id_%s'%attr_id, attr_id).strip()
           col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '').strip()
+          col['index'] = REQUEST.get( 'attr_index_%s'%attr_id)
           col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)==1)
           if REQUEST.has_key( 'attr_type_%s'%attr_id):
             t = REQUEST.get( 'attr_type_%s'%attr_id)
             if t in self.valid_types.keys():
               d = copy.deepcopy( self.valid_types[ t])
+              c = []
               if type( d) is dict:
                 xs = 'attr_%s_'%t
                 xe = '_%s'%attr_id
@@ -1050,9 +1052,36 @@ class ZMSSqlDb(ZMSObject):
                       if xv != 0:
                         d[ xk] = xv
                   else:
-                    print xk, '=', xv
+                    if not d.has_key( xk[0]):
+                      d[ xk[0]] = {}
+                      c.append( xk[0])
+                    if not d[ xk[0]].has_key( xk[-1]):
+                      d[ xk[0]][ xk[-1]] = {}
+                    if type( xv) is str:
+                      xv = xv.strip()
+                      if len( xv) > 0:
+                        d[ xk[0]][ xk[-1]][ xk[1]] = xv
+                    elif type( xv) is int:
+                      if xv != 0:
+                        d[ xk[0]][ xk[-1]][ xk[1]] = xv
+              for i in c:
+                l = d[i].values()
+                l = map( lambda x: (x['index'],x), l)
+                l.sort()
+                l = map( lambda x: x[1], l)
+                for x in l:
+                  if not x.get('display'):
+                    x['hide'] = 1
+                  try: del x['display']
+                  except: pass
+                  try: del x['index']
+                  except: pass
+                l = filter( lambda x: len(x.keys()) > 0, l)
+                d[i] = l
               col[ t] = d
-          cols.append( col)
+          cols.append( ( col['index'], col))
+        cols.sort()
+        cols = map( lambda x: x[1], cols)
         entity['columns'] = cols
         f = self.toXmlString( model)
         self.setModel(f)
@@ -1109,6 +1138,27 @@ class ZMSSqlDb(ZMSObject):
       elif key == 'attr' and btn == 'move_to':
         pos = REQUEST['pos']
         attr_id = REQUEST['attr_id']
+        model = self.getModel()
+        entities = filter( lambda x: x['id'].upper() == id.upper(), model)
+        if entities:
+          entity = entities[0]
+        else:
+          entity = {}
+          entity['id'] = id.upper()
+          entity['type'] = 'table'
+          entity['columns'] = map( lambda x: {'id':x['id']}, self.getEntity( id)['columns'])
+          model.append( entity)
+        cols = entity['columns']
+        col = filter( lambda x: x['id'].upper() == attr_id.upper(), cols)[0]
+        i = cols.index( col)
+        cols.remove( col)
+        cols.insert( pos, col)
+        idx = 0
+        for col in cols:
+          col['index'] = idx
+          idx = idx + 1
+        f = self.toXmlString( model)
+        self.setModel(f)
         message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%attr_id),(pos+1))
       
       # Return with message.

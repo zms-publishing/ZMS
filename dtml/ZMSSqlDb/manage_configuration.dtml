@@ -47,14 +47,21 @@ function mms_add_row(el) {
   var el_trs = el_tbody.children();
   var el_tr = $(el_trs[el_trs.length-2]);
   var new_tr = el_tr.clone();
-  var el_inputs = $("textarea,input",new_tr);
-  var sender_inputs = $("textarea,input",sender_tr);
+  var el_inputs = $("textarea,input,select",new_tr);
+  var sender_inputs = $("textarea,input,select",sender_tr);
   for ( var k = 0; k < el_inputs.length; k++) {
-    var key = el_inputs[k].id;
-    $(el_inputs[k]).attr( "id", key+"_"+(mms_uid+el_trs.length));
-    $(el_inputs[k]).attr( "name", key+"_"+(mms_uid+el_trs.length));
-    $(el_inputs[k]).val( $(sender_inputs[k]).val( ));
-    $(sender_inputs[k]).val( "");
+    var key = $(el_inputs[k]).attr( "name");
+    var new_key = key.substring( 0, key.lastIndexOf('_')) + (mms_uid+el_trs.length) + key.substring( key.lastIndexOf('_'));
+    $(el_inputs[k]).attr( "id", new_key);
+    $(el_inputs[k]).attr( "name", new_key);
+    if ( $(el_inputs[k]).attr( "type") == "checkbox") {
+      $(el_inputs[k]).attr( "checked", $(sender_inputs[k]).attr( "checked"));
+      $(sender_inputs[k]).attr( "checked", "checked");
+    }
+    else {
+      $(el_inputs[k]).val( $(sender_inputs[k]).val( ));
+      $(sender_inputs[k]).val( "");
+    }
   }
   mms_uid += 1;
   new_tr.insertBefore( el_tr);
@@ -194,7 +201,7 @@ function mms_normalize_rows(el_tbody) {
         <td class="form-small">&nbsp;</td>
        </tr>
        <!-- Change / Delete Attributes -->
-       <dtml-in columns mapping>
+       <dtml-in columns mapping sort=index>
         <dtml-let column=sequence-item column_required="column.get('description','')!=''">
          <tr valign="top" 
           <dtml-if "REQUEST.form.get('attr_id','')==column['id']">
@@ -323,24 +330,27 @@ function mms_normalize_rows(el_tbody) {
                ><dtml-let sx=sequence-index si=sequence-item
                 ><tr <dtml-unless "si.keys()">style="display:none;"</dtml-unless>
                  ><td align="right" class="zmiNeutralColorStrong0" nowrap="nowrap"
-                  ><select class="form-small collectionBtn" onchange="mms_move_row(this)"
+                  ><select name="attr_multimultiselect_tables_index_<dtml-var sx>_<dtml-var "column['id']">" class="form-small collectionBtn" onchange="mms_move_row(this)"
                    ><dtml-in "column['multimultiselect'].get('tables',[])">><dtml-let ssx=sequence-index><option value="<dtml-var "ssx+1">"<dtml-if "ssx==sx"> selected="selected"</dtml-if>><dtml-var "ssx+1"></option></dtml-let></dtml-in
                   ></select
                   ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"  onclick="mms_delete_row(this)" class="button"/></a
                  ></td
-                 ><td class="form-small"><input class="form-small" type="text" name="mms_fk_<dtml-var sx>" value="<dtml-var "si.get('fk','')">" size="5"></td
-                 ><td class="form-small"><input class="form-small" type="text" name="mms_tablename_<dtml-var sx>" value="<dtml-var "si.get('tablename','')">" size="5"></td
-                 ><td class="form-small"><input class="form-small" type="text" name="mms_fieldname_<dtml-var sx>" value="<dtml-var "si.get('fieldname','')">" size="5"></td
-                 ><td class="form-small"><input class="form-small" type="text" name="mms_displayfield_<dtml-var sx>" value="<dtml-var "si.get('displayfield','')">" size="5"></td
-                 ><td class="form-small"><input class="form-small" type="text" name="mms_label_<dtml-var sx>" value="<dtml-var "si.get('label','')">" size="5"></td
+                 ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_fk_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('fk','')">" size="5"></td
+                 ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_tablename_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('tablename','')">" size="5"></td
+                 ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_fieldname_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('fieldname','')">" size="5"></td
+                 ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_displayfield_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('displayfield','')">" size="5"></td
+                 ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_label_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('label','')">" size="5"></td
                  ><td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)"
-                 ><input class="form-checkbox" type="checkbox" name="mms_display_<dtml-var sx>:int" value="1" <dtml-unless "si.get('hide','')">checked="checked"</dtml-unless>
+                  ><input class="form-checkbox" type="checkbox" name="attr_multimultiselect_tables_display_<dtml-var sx>_<dtml-var "column['id']">:int" value="1" <dtml-unless "si.get('hide')">checked="checked"</dtml-unless>
                  ></td
                 ></tr
                ></dtml-let
               ></dtml-in
               ><tr
-               ><td align="right" class="zmiNeutralColorStrong0"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a></td
+               ><td align="right" class="zmiNeutralColorStrong0"
+                ><select style="display:none;"></select
+                ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a
+               ></td
                ><td class="form-small"><input class="form-small" type="text" name="mms_new_fk" value="" size="5"></td
                ><td class="form-small"><input class="form-small" type="text" name="mms_new_tablename" value="" size="5"></td
                ><td class="form-small"><input class="form-small" type="text" name="mms_new_fieldname" value="" size="5"></td

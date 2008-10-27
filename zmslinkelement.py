@@ -587,11 +587,11 @@ class ZMSLinkElement(ZMSContainerObject):
     def getObjProperty(self, key, REQUEST={}, default=None): 
       value = self.getObjPropertyPROXY( self, key, REQUEST, default)
       # First exit...
-      if (value is None or len(str(value)) == 0 or value == 0) and \
+      if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
         key in self.getMetaobjAttrIds( self.meta_id):
         value = ZMSObject.getObjProperty( self, key, REQUEST, default)
       # Second exit...
-      if (value is None or len(str(value)) == 0 or value == 0) and \
+      if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
         key not in ['attr_ref','attr_dc_coverage','work_dt','work_uid']:
         recursive = self.isEmbeddedRecursive( REQUEST)
         if recursive:
@@ -603,7 +603,7 @@ class ZMSLinkElement(ZMSContainerObject):
           if ref_obj != self and ref_obj is not None:
             value = self.getObjPropertyPROXY( ref_obj, key, REQUEST, default)
           # Last exit...
-          if (value is None or len(str(value)) == 0 or value == 0):
+          if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)):
             value = ZMSObject.getObjProperty( self, key, REQUEST, default)
       return value
 

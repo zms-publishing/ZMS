@@ -1465,6 +1465,42 @@ class ZMSGlobals:
 
     ############################################################################
     #
+    #  PLUGINS
+    #
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSGlobals.getPlugin:
+    # --------------------------------------------------------------------------
+    def getPlugin( self, path, REQUEST, pars={}):
+      """
+      Executes plugin.
+      @param path: the plugin path in $ZMS_HOME/plugins/
+      @type path: C{string}
+      @param REQUEST: the triggering request
+      @type REQUEST: ZPublisher.HTTPRequest
+      @param pars: the request parameters
+      @type pars: C{dict}
+      @return: Result of the execution or error-message
+      """
+      try:
+        # Set request-parameters.
+        for k in pars.keys():
+          v = REQUEST.get( k, None)
+          REQUEST.set( k, pars[k])
+          pars[k] = v
+        # Execute plugin.
+        rtn = self.dt_html( self.localfs_read( self.localfs_package_home()+'/plugins/'+path), REQUEST)
+        # Restore request-parameters.
+        for k in pars.keys():
+          REQUEST.set( k, pars[k])
+      except:
+        rtn = _globals.writeException( self, '[getPlugin]')
+      return rtn
+
+
+    ############################################################################
+    #
     #  DATE TIME
     #
     ############################################################################

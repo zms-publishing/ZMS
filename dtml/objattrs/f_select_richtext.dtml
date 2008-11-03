@@ -121,11 +121,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format)
 ></table
 ></dtml-if>
 <dtml-comment> ***** RichText-Editor (custom) ***** </dtml-comment>
-<dtml-try>
-<dtml-var "dt_html(localfs_read(localfs_package_home()+'/plugins/rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml'),REQUEST)">
-<dtml-except>
-<dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br html_quote>
-</dtml-try>
+<dtml-var "getPlugin('rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml',REQUEST)">
 </div>
 </dtml-if>
 

@@ -1,5 +1,4 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
 </head>
 
 <dtml-var manage_tabs>
@@ -14,14 +13,10 @@
 
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###  Manager
-     ###
-     ######################################################################
--->
+################################################################################
+###  Manager
+################################################################################
 </dtml-comment>
-
 <a name="_Manager"></a>
 <dtml-var "f_headline(_,_,headline='Manager')">
 <form name="ManagerForm" action="manage_customizeSystem" method="post">
@@ -55,14 +50,10 @@
 <br/>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###  Configuration
-     ###
-     ######################################################################
--->
+################################################################################
+###  Configuration 
+################################################################################
 </dtml-comment>
-
 <a name="_Import"></a>
 <form name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 <input type="hidden" name="key" value="Import">
@@ -102,14 +93,10 @@
 <br/>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###  Maintenance
-     ###
-     ######################################################################
--->
+################################################################################
+###  Maintenance
+################################################################################
 </dtml-comment>
-
 <a name="_Maintenance"></a>
 <form name="CatalogForm" action="manage_customize#_Maintenance" method="post">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -152,14 +139,10 @@
 <br/>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   H I S T O R Y  ( V E R S I O N )
-     ###
-     ######################################################################
--->
+################################################################################
+###  History (Version)
+################################################################################
 </dtml-comment>
-
 <a name="_History"></a>
 <form name="HistoryForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="History">
@@ -226,12 +209,9 @@
 <br/>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   System
-     ###
-     ######################################################################
--->
+################################################################################
+###  System
+################################################################################
 </dtml-comment>
 <dtml-var "f_headline(_,_,headline='System')">
 <div class="form-fixed" style="font-size:10px;padding:4px;">
@@ -260,12 +240,9 @@
 <td width="50%">
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   Portal
-     ###
-     ######################################################################
--->
+################################################################################
+###  Portal
+################################################################################
 </dtml-comment>
 <a name="_Clients"></a>
 <form action="manage_customizeSystem" method="post">
@@ -296,12 +273,9 @@
 <br/>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   Miscelleaneous
-     ###
-     ######################################################################
--->
+################################################################################
+###  Miscellaneous
+################################################################################
 </dtml-comment>
 <dtml-let res="[
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
@@ -322,9 +296,10 @@
    {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (\';\' separated).','datatype':'string','default':''},
    {'key':'ZMS.checkout.max_time','title':'Max. lock-time','desc':'Specify max. time [h] for locked-objects.','datatype':'int','default':1},
    {'key':'ZMS.protected_mode','title':'Protected mode','desc':'ZMS can run in a protected mode.','datatype':'boolean'},
-   {'key':'ZMS.input.file.maxlength','title':'Upload-file maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
-   {'key':'ZMS.input.image.maxlength','title':'Upload-image maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
-   {'key':'ZMSGraphic.zmi_max_width','title':'Image.max-width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},
+   {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','rad_upload']},
+   {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
+   {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
+   {'key':'ZMSGraphic.zmi_max_width','title':'Image.max_width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},
    {'key':'ZMSGraphic.px2em','title':'Image.px to em conversion','desc':'Scale-factor for px to em conversion in ZMS barrier-free standard image-objects depending on the CSS used for this instance.(1em in px, e.g. 16)','datatype':'string'},
    {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean'},
    {'key':'ZCatalog.portalClients','title':'Search portal-clients','desc':'Allow search in portal-clients','datatype':'boolean','default':1},
@@ -361,6 +336,12 @@
     <td class="form-small">
      <dtml-if "datatype=='boolean'">
       <dtml-var "getCheckbox(fmName='customForm',elName='value:int',value=getConfProperty(key,item.get('default',0)),hidden=_.False,REQUEST=REQUEST)">
+     <dtml-elif "item.has_key('options')">
+      <select name="value">
+       <dtml-in "item.get('options')">
+        <option value="<dtml-var sequence-item>"<dtml-if "getConfProperty(key,item.get('default',''))==_['sequence-item']">selected="selected"</dtml-if>><dtml-var sequence-item></option>
+       </dtml-in>
+      </select>
      <dtml-else>
       <dtml-var "getTextInput(fmName='customForm',elName='value',value=getConfProperty(key,item.get('default','')),size=15,enabled=1,REQUEST=REQUEST,css='form-small')">
      </dtml-if>

@@ -1,7 +1,6 @@
 <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1' and 
           not (REQUEST.get('dtpref_system','0')=='1' and URL.find('/manage_workspace')>0)">
 <dtml-var manage_page_header>
-<title>ZMS - [<dtml-var "getTitlealt(REQUEST)">]</title>
 </head>
 <frameset cols="<dtml-var "REQUEST.get('manage_menu_width',175)">,*">
 <frame name="manage_menu" marginWidth="1" marginHeight="1" src="manage_menu?lang=<dtml-var lang>&preview=preview">

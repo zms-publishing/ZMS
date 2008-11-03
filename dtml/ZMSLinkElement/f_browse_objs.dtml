@@ -2,7 +2,6 @@
 ><dtml-var browse_objs
 ><dtml-else>
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('TYPE_ZMSLINKELEMENT')"></title>
 
 <dtml-call "REQUEST.set('thisObj',this())">
 <dtml-call "REQUEST.set('l_thisObj',getLinkObj(REQUEST.get('elUrlValue','')))">

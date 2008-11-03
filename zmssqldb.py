@@ -419,6 +419,7 @@ class ZMSSqlDb(ZMSObject):
               col['key'] = colId
               col['description'] = colDescr.strip()
               col['id'] = col['key']
+              col['index'] = col.get('index',len(cols))
               col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
               col['name'] = col['label']
               col['mandatory'] = colDescr.find('NOT NULL') > 0 or databaseAdptr.meta_type == 'Z Gadfly Database Connection'

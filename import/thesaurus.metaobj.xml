@@ -193,7 +193,6 @@
 <item key="custom"><![CDATA[<!--// BO thesDialog ( DTML Method )  //-->
 
 <dtml-var manage_page_header>
-<title>Thesaurus-Dialog</title>
 <script language="JavaScript">
 <!--//
 

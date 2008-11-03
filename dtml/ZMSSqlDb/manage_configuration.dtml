@@ -130,36 +130,32 @@ function mms_normalize_rows(el_tbody) {
 <input type="hidden" name="preview" value="preview">
 
 <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="98%">
-<colgroup>
- <col />
-</colgroup>
-
   <!-- Header -->
   <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+   <td colspan="4" style="width:100%"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'sqlmodel.xml'+QUOT+' target='+QUOT+'_blank'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
-  
+
   <dtml-in "getEntities()" mapping sort=label>
    <dtml-let entity=sequence-item>
    <dtml-if "REQUEST.get('id','')==id">
      <!-- Headline -->
      <tr valign="top" class="zmiNeutralColorStrong0">
-      <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></td>
+      <td class="form-label">&nbsp;<dtml-var "getZMILangStr('ATTR_ID')"></td>
       <td class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></td>
       <td class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
       <td class="form-label">&nbsp;</td>
      </tr>
 
      <tr valign="top" class="zmiNeutralColorMedium0">
-      <td class="form-element"
+      <td class="form-element" style="width:102px !important"
        ><input type="hidden" name="id" value="<dtml-var id>"
-       ><code><dtml-var id></code
+       >&nbsp;<code><dtml-var id></code
       ></td>
-      <td class="form-element"
-       ><input type="text" name="label" value="<dtml-var label>" size="20"
+      <td class="form-element" style="width:102px !important"
+       ><input type="text" name="label" value="<dtml-var label>" size="12"
       ></td>
-      <td class="form-element">
-       <select class="form-element" name="type">
+      <td class="form-element" style="width:102px !important"
+       ><select class="form-element" name="type">
         <dtml-in "['table','intersection']"
          ><dtml-let objtype=sequence-item
           ><option value="<dtml-var objtype>"<dtml-if "objtype==type"> selected="selected"</dtml-if>><dtml-var objtype></option
@@ -167,7 +163,7 @@ function mms_normalize_rows(el_tbody) {
         ></dtml-in
        ></select>
       </td>
-      <td class="form-element">
+      <td class="form-element" style="width:*;text-align:right">
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"/>
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>"/>
       </td>
@@ -178,20 +174,20 @@ function mms_normalize_rows(el_tbody) {
         <!-- -->
         <table cellpadding="1" cellspacing="1" border="0" width="100%"
         ><colgroup>
-         <col width="20%"/>
-         <col width="80%"/>
+         <col width="110"/>
+         <col width="*"/>
         </colgroup
         ><tr class="zmiNeutralColorLight0"
-         ><td class="form-small" nowrap="nowrap">Interface</td
-         ><td class="form-small"><textarea class="form-fixed" name="interface" cols="80" rows="1" title="Interface" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-var "entity.get('interface','')" html_quote></textarea></td
+         ><td class="form-small" nowrap="nowrap">&nbsp;Interface&nbsp;</td
+         ><td class="form-small"><textarea class="form-fixed" name="interface" cols="80" rows="1" title="Interface" wrap="virtual" style="width:98%;height:20px;background-color:#FFF;"><dtml-var "entity.get('interface','')" html_quote></textarea></td
         ></tr
         ><tr class="zmiNeutralColorLight0"
-         ><td class="form-small" nowrap="nowrap">Filter</td
-         ><td class="form-small"><textarea class="form-fixed" name="filter" cols="80" rows="1" title="Filter" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-var "entity.get('filter','')" html_quote></textarea></td
+         ><td class="form-small" nowrap="nowrap">&nbsp;Filter&nbsp;</td
+         ><td class="form-small"><textarea class="form-fixed" name="filter" cols="80" rows="1" title="Filter" wrap="virtual" style="width:98%;height:20px;background-color:#FFF;"><dtml-var "entity.get('filter','')" html_quote></textarea></td
         ></tr
         ></table>
         <!-- Headline -->
-       <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="80%">
+       <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
        <tr valign="middle">
         <td class="form-small" colspan="2"><b>&nbsp;</b></td>
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></td>
@@ -222,14 +218,14 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-if column_required
             ><code><dtml-var "column['id']"></code
            ><dtml-else
-            ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="20"
+            ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="12"
            ></dtml-if
           ></td>
           <td class="form-small"
            ><code><dtml-var "column.get('description','')"></code
           ></td>
           <td class="form-small"
-           ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="10"
+           ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="12"
           ></td>
           <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')">" align="center"
            ><dtml-var "getCheckbox(fmName='form0',elName='attr_display_%s:int'%column['id'],value=_.int(column.get('hide',0)==0),enabled=_.True,REQUEST=REQUEST)"
@@ -255,11 +251,11 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Path</td
-             ><td class="form-small"><input type="text" name="attr_blob_path_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('path','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_blob_path_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('path','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Remote [URL]</td
-             ><td class="form-small"><input type="text" name="attr_blob_remote_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('remote','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_blob_remote_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('remote','')">" size="12"></td
             ></tr
            ><dtml-elif "column.has_key('details')"
             ><tr class="zmiNeutralColorLight0"
@@ -268,20 +264,20 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk','')">" size="12"></td
             ></tr
            ><dtml-elif "column.has_key('fk')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">A.Tablename</td
-             ><td class="form-small"><select name="attr_fk_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['fk'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><select name="attr_fk_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['fk'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">A.Fieldname</td
-             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('fieldname','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('fieldname','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">A.Displayfield</td
-             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('displayfield','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('displayfield','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">B.Options</td
@@ -290,11 +286,11 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-elif "column.has_key('multiselect')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multiselect'].get('fk','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multiselect'].get('fk','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><select name="attr_multiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">MySQL-Set</td
@@ -307,11 +303,11 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-elif "column.has_key('multimultiselect')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_multimultiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multimultiselect'].get('fk','')">" size="20"></td
+             ><td class="form-small"><input type="text" name="attr_multimultiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multimultiselect'].get('fk','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multimultiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multimultiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" colspan="2"
@@ -373,17 +369,14 @@ function mms_normalize_rows(el_tbody) {
        <!-- Insert Attribute -->
        <tr valign="middle">
         <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
-        <td class="zmiNeutralColorStrong0">
-         <img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" />
-        </td>
-        <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10"></td>
+        <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" /></td>
+        <td class="form-small" style="vertical-align:middle" ><input class="form-small" type="text" name="attr_id" value="" size="12" /></td>
         <td class="form-small">&nbsp;</td>
-        <td class="form-small"><input class="form-small" type="text" name="attr_label" value="" size="10"></td>
-        <td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)">
-         <input class="form-checkbox" type="checkbox" name="attr_display:int" value="1" checked="checked">
-        </td>
+        <td class="form-small" style="vertical-align:middle"><input class="form-small" type="text" name="attr_label" value="" size="12" /></td>
+        <td style="text-align:center;vertical-align:middle" 
+            title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)"><input class="form-checkbox" type="checkbox" name="attr_display:int" value="1" checked="checked" /></td>
         <td class="form-small" nowrap="nowrap"
-         ><select class="form-small" name="attr_type"
+         ><select class="form-small" name="attr_type" 
           ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> -----</option
           ><dtml-in "valid_types.keys()"
            ><dtml-let t=sequence-item
@@ -391,7 +384,7 @@ function mms_normalize_rows(el_tbody) {
            ></dtml-let
           ></dtml-in
          ></select
-         ><input class="form-submit form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
+         >&nbsp;&nbsp;&nbsp;<input class="form-submit form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
         </td>
        </tr>
 
@@ -470,3 +463,4 @@ function mms_normalize_rows(el_tbody) {
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>
 </dtml-try>
+

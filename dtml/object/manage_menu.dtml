@@ -4,7 +4,6 @@
 ></dtml-with
 ><dtml-else>
 <dtml-var manage_page_header>
-<title>ZMS - ZOPE-based content management system for science, medicine and technology</title>
 <style type="text/css">
 <!--
   body, div, ul, li {

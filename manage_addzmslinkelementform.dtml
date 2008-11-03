@@ -1,7 +1,6 @@
 <dtml-let meta_id="'ZMSLinkElement'" metaObj="getMetaobj(meta_id)">
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('BTN_INSERT'),'action':''}])">
 <dtml-var f_bo_area>

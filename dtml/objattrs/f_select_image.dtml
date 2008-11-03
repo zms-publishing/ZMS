@@ -62,7 +62,7 @@
     <table cellspacing="0" cellpadding="2" border="0">
     <tr valign="middle">
      <td class="form-text"><dtml-var " getZMILangStr('ATTR_FILE')"></td>
-     <td class="form-element"><input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.image.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.image.maxlength','')">"</dtml-if>/></td>
+     <td class="form-element"><dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})"></td>
      <dtml-if "hasObjProperty(key,REQUEST) and (key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
       <td class="form-element"><input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is _.None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
      </dtml-if>
@@ -118,9 +118,9 @@
  <dtml-if "lang in getLanguages(REQUEST)">
   <!-- Upload -->
   <div class="form-element">
-   <input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.image.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.image.maxlength','')">"</dtml-if>/>&nbsp;&nbsp;&nbsp;
+   <dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
    <dtml-if "(key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
-    <input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is _.None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
+    &nbsp;&nbsp;<input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is _.None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
    </dtml-if>
   </div>
  </dtml-if>

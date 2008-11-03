@@ -1,4 +1,5 @@
 <dtml-var manage_page_header>
+</head>
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
 

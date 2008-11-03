@@ -1,5 +1,5 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('CAPTION_IMPORTEXPORT')%display_type(REQUEST)"></title>
+
 <script language="JavaScript">
 <!--//
 

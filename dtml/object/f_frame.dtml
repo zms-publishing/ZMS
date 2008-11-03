@@ -1,5 +1,4 @@
-<dtml-var manage_page_header>
-<title><dtml-var p_title></title>
+<dtml-var "manage_page_header(_,_,ZMS_TITLE=p_title)">
 </head>
   <frameset rows="31,*,35" border="0" frameborder="0" framespacing="0">
   <frame name="frame_top" noresize="noresize" scrolling="no"

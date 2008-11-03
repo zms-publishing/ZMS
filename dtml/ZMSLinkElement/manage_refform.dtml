@@ -1,10 +1,8 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_REFERENCES')"></title>
 </head>
-
 <dtml-var manage_tabs>
-
 <dtml-var f_bo_area>
+
 <div style="padding:4px">
 <dtml-call "synchronizeRefByObjs(strict=0)">
 <dtml-let ref_by="getRefByObjs(REQUEST)">

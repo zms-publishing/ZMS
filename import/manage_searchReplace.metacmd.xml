@@ -58,8 +58,6 @@
 <dtml-elif "REQUEST.get('btn','') == ' Ersetzen '">
 
  <dtml-var manage_page_header>
- <head>
-  <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
  </head>
  <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
  <dtml-var f_bo_area>
@@ -89,8 +87,6 @@
 <dtml-else>
 
  <dtml-var manage_page_header>
- <head>
-  <title>Suchen & Ersetzen...</title>
  </head>
  <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
  <dtml-var f_bo_area>

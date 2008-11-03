@@ -669,10 +669,13 @@ class ZMSContainerObject(
           if ob.id == current.id:
             css.append( 'current')
             css.append( 'active')
+            css.append( ob.meta_id + '1') 
           elif ob.id != self.id and ob.id in current.getPhysicalPath():
             css.append( 'active')
+            css.append( ob.meta_id + '1') 
           else: 
             css.append( 'inactive')
+            css.append( ob.meta_id + '0')            
           items.append('<li')
           items.append(' class="%s"'%(' '.join(css)))
           items.append('>')
@@ -1012,3 +1015,4 @@ class ZMSContainerObject(
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),newid,lang,urllib.quote(message)))
 
 ################################################################################
+

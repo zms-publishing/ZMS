@@ -1025,9 +1025,22 @@ class ObjAttrs:
         elif isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
           set, value = True, value
         
-        # Reset
+        # Insert
         elif REQUEST.get('ZMS_INSERT',None) is not None:
+          # Reset
           set, value = True, None
+          # Preload
+          SESSION = REQUEST.get('SESSION',None)
+          form_id = REQUEST.get('form_id',None)
+          if SESSION is not None and form_id is not None:
+            session_id = SESSION.getId()
+            temp_folder = self.temp_folder
+            id = session_id + '_' + form_id + '_' + key
+            if id in temp_folder.objectIds():
+              f = getattr( temp_folder, id).data
+              filename = getattr( temp_folder, id).title
+              value = {'data':f,'filename':filename}
+              temp_folder.manage_delObjects([id])
       
       #-- Integer-Fields
       elif datatype in _globals.DT_INTS:
@@ -1150,6 +1163,42 @@ class ObjAttrs:
       if forced:
         ob = self.getObjVersion()
         setobjattr(self,ob,obj_attr,value,lang)
+
+
+    ############################################################################
+    #  ObjAttrs.uploadObjProperty:
+    #
+    #  Upload property.
+    ############################################################################
+    def uploadObjProperty(self, REQUEST, RESPONSE=None):
+      """ ObjAttrs.uploadObjProperty """
+      # Additional parameters.
+      for qs in REQUEST['QUERY_STRING'].split('&'):
+        e = qs.find('=')
+        if e >= 0:
+          k = qs[:e]
+          v = qs[e+1:]
+          REQUEST.set(k,v)
+      # Mandatory parameters.
+      lang = REQUEST['lang']
+      key = REQUEST['key']
+      value = REQUEST['userfile[0]']
+      # Handle request.
+      if REQUEST.get('ZMS_INSERT'):
+        #-- INSERT: Add to temp-folder.
+        session_id = REQUEST['session_id']
+        form_id = REQUEST['form_id']
+        temp_folder = self.temp_folder
+        id = session_id + '_' + form_id + '_' + key
+        if id in temp_folder.objectIds():
+          temp_folder.manage_delObjects([id])
+        file = temp_folder.manage_addFile( id=id, title=value.filename, file=value)
+      else:
+        #-- SAVE: Set property.
+        self.setObjProperty( key, value, lang)
+      # Return with message.
+      message = self.getZMILangStr( 'MSG_UPLOADED')+'('+self.getLangFmtDate(time.time())+')'
+      return message
 
 
     # --------------------------------------------------------------------------

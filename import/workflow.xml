@@ -59,7 +59,6 @@
 
 <!-- ##### Form #### -->
 <dtml-var manage_page_header>
-<title>Commit</title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Commit','action':''}])">
 <dtml-var f_bo_area>
@@ -153,7 +152,6 @@
 
 <!-- ##### Form #### -->
 <dtml-var manage_page_header>
-<title>Request commit</title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Commit','action':''}])">
 <dtml-var f_bo_area>
@@ -281,7 +279,6 @@
 
 <!-- ##### Form #### -->
 <dtml-var manage_page_header>
-<title>Reject commit</title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Reject','action':''}])">
 <dtml-var f_bo_area>
@@ -481,7 +478,6 @@
 
 <!-- ##### Form #### -->
 <dtml-var manage_page_header>
-<title>Create master</title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Create master','action':'manage_createMasterVersion'}])">
 <dtml-var f_bo_area>

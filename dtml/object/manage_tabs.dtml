@@ -28,68 +28,56 @@
  ></dtml-if
 ></dtml-in>
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="zmiTabBg">
-<tr valign="bottom">
- <td align="left">
-  <dtml-in manage_options mapping>
-   <div class="zmiTab<dtml-var "_.int(_['sequence-index']==a_)">"
-    ><dtml-if "action and not action==''"
-     ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);" class="zmi"
-      ><dtml-var "getZMILangStr(label)"
-     ></a
-    ><dtml-else
-     ><dtml-var "getZMILangStr(label)"
-    ></dtml-if
-   ></div>
-  </dtml-in>
- </td>
- <td align="right">
+<div id="ZMIManageTabsBar">
+<div class="zmi_col_left">
+<div id="ZMIManageTabsContainer">
+<ul id="ZMIManageTabs">
+<dtml-in manage_options mapping>
+ <li<dtml-if "_['sequence-index']==a_"> class="on"</dtml-if>
+  ><dtml-if "action and not action==''"
+   ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);"
+    ><dtml-var "getZMILangStr(label)"
+   ></a
+  ><dtml-else
+   ><span><dtml-var "getZMILangStr(label)"></span
+  ></dtml-if
+ </li>
+</dtml-in>
+</ul>
+</div>
+</div>
+<div class="zmi_col_right">
  <dtml-unless ZMS_INSERT>
   <dtml-try>
-  <table cellspacing="0" cellpadding="0" border="0">
-  <tr valign="middle">
-  <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
-   <dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] in manage_options[0]['action']">
-    <dtml-call "RESPONSE.redirect('%s/manage_system?lang=%s'%(absolute_url(),lang))">
-   </dtml-if>
-  <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
-   <td class="zmiTabBtn0"
-    ><a href="f_api_html?lang=<dtml-var lang>" class="zmi"
-     ><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14"
-    ></a
-   ></td>
+  <div id="ZMIManageTabsContainer"
+  ><ul id="ZMIManageTabsButtons"
+  ><dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)"
+   ><dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] in manage_options[0]['action']"
+    ><dtml-call "RESPONSE.redirect('%s/manage_system?lang=%s'%(absolute_url(),lang))"
+   ></dtml-if
+   ><li
+    ><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14"></a
+   ></li>
+   <li<dtml-if "REQUEST.get('dtpref_system','0')=='1'"> class="on"</dtml-if>
+    ><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14"></a
+   ></li>
   </dtml-if>
-   <td class="zmiTabBtn<dtml-var "_.int(REQUEST.get('dtpref_system','0')=='1')">"
-    ><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi"
-     ><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14"
-    ></a
-   ></td>
-  </dtml-if>
-  <td class="zmiTabBtn<dtml-var "_.int(REQUEST.get('dtpref_sitemap','0')=='1')">"
-   ><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi"
-    ><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14"
-   ></a
-  ></td>
-  <td class="zmiTabBtn<dtml-var "_.int(URL.find('/manage_search')>0)">"
-   ><a href="manage_search?lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> class="zmi" accesskey="F"
-    ><img src="<dtml-var MISC_ZMS>op_search.gif" title="<dtml-var "getZMILangStr('TAB_SEARCH')">: ALT+Shift+F" border="0" width="14" height="14"
-   ></a
-  ></td>
-  <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Author',getTrashcan())">
-  <td class="zmiTabBtn<dtml-var "_.int(URL.find(getTrashcan().id+'/')>0)">"
-   ><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>" class="zmi"
-    ><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14"
-   ></a
-  ></td>
-  </dtml-if>
-  </tr>
-  </table>
+  <li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>
+   ><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14"></a
+  ></li>
+  <li<dtml-if "URL.find('/manage_search')>0"> class="on"</dtml-if>
+   ><a href="manage_search?lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> accesskey="F"><img src="<dtml-var MISC_ZMS>op_search.gif" title="<dtml-var "getZMILangStr('TAB_SEARCH')">: ALT+Shift+F" border="0" width="14" height="14"></a
+  ></li>
+  <li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>
+   ><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14"></a
+  ></li
+  ></ul
+  ></div>
   <dtml-except>
   </dtml-try>
  </dtml-unless>
- </td>
-</tr>
-</table>
+</div>
+</div>
 
 </dtml-if>
 </dtml-with>

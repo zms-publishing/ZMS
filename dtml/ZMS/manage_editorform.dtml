@@ -1,5 +1,5 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('BTN_EDIT')"></title>
+
 </head>
 
 <dtml-if manage_editorFrame>

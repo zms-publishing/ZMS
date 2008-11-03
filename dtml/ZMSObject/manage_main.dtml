@@ -3,13 +3,6 @@
 <dtml-var manage_container>
 <dtml-else>
 <dtml-var manage_page_header>
-<title
- ><dtml-if "URL.find('/manage_main')>0"
-  ><dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)"
- ><dtml-else
-  ><dtml-var "getZMILangStr('CAPTION_PROPERTIES')%display_type(REQUEST)"
- ></dtml-if
-></title>
 </head>
 <dtml-var "manage_tabs(_,_,p_languages=_.True)">
 <dtml-var f_bo_area>
@@ -33,6 +26,7 @@
 
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 <form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
+<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
 <input type="hidden" id="_id" name="_id">
 <input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
 <input type="hidden" name="custom" value="">

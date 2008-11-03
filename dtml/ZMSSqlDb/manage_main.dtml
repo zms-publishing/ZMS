@@ -1,9 +1,8 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_EDIT')"> <dtml-var "display_type(REQUEST)"></title>
 </head>
-
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
+
 <dtml-let entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id">
 
 <dtml-comment>***** Init parameters *****</dtml-comment

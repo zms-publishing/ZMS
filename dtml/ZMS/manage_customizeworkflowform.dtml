@@ -1,5 +1,5 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+
 <dtml-let acquire="_.int(getConfProperty('ZMS.workflow.acquire',0) == 1)"
           init="_.len(getConfProperty('ZMS.workflow.init','')) > 0"
           readonly="acquire or init">

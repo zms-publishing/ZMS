@@ -1,5 +1,4 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('BTN_COMPARE')"></title>
 </head>
 <body class="zmiNeutralColorStrong0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 <table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">

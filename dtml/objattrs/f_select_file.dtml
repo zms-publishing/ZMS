@@ -47,7 +47,7 @@
      <!-- Upload -->
      <tr valign="middle">
       <td class="form-text"><dtml-var " getZMILangStr('ATTR_FILE')"></td>
-      <td class="form-element"><input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.file.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.file.maxlength','')">"</dtml-if>></td>
+      <td class="form-element"><dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.file.maxlength',''),'key':key})"></td>
      </tr>
      </table>
     </dtml-if>
@@ -62,7 +62,7 @@
   <dtml-if "lang in  getLanguages(REQUEST)">
    <!-- Upload -->
    <div class="form-element">
-    <input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if "_.len(getConfProperty('ZMS.input.file.maxlength',''))>0">maxlength="<dtml-var "getConfProperty('ZMS.input.file.maxlength','')">"</dtml-if>/>
+    <dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
    </div>
   </dtml-if>
  </dtml-if>

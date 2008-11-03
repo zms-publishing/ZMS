@@ -1,6 +1,5 @@
 <dtml-call "REQUEST.set('ZMS_INSERT','ZMSSqlDb')">
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></title>
 <script language="JavaScript">
 <!--//
 

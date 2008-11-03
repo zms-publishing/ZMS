@@ -1,8 +1,7 @@
 <dtml-var manage_page_header>
-<title><dtml-var "display_type(REQUEST)"></title>
 
 <script type="text/javascript">
-<!--
+<!--//
 
 isSelected = false;
 

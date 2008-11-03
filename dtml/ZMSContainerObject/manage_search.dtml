@@ -1,5 +1,4 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_SEARCH')"></title>
 </head>
 <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('TAB_SEARCH'),'action':''}],p_languages=_.True)">
 <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',this())">

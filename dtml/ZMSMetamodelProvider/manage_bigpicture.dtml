@@ -1,11 +1,9 @@
 <dtml-var manage_page_header>
-<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+</head>
 
 <dtml-if "not REQUEST.has_key('id') or not REQUEST['id']">
  <dtml-call "REQUEST.set('id','')">
 </dtml-if>
-
-</head>
 
 <body bgcolor="#ffffff" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 

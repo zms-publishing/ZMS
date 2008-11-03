@@ -58,6 +58,19 @@
       el.selectedIndex=0;
   }
 
+  function submitSelect(el)
+  {
+    var v = $(el).val();
+    if ( v.indexOf( 'manage_deleteObjs') == 0) {
+      confirmDeleteBtnOnClick(v);
+    }
+    else if ( v.length > 0) {
+      location.href = v;
+    }
+    else {
+      $(el).attr( 'selectedIndex', 0);
+    }
+  }
 
 //-->
 </script>

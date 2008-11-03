@@ -1012,3 +1012,14 @@
 -- MINOR CHANGES
 [01109] Applied fix for Boolean-attributes with valid False-values in ZMSLinkElement.getObjProperty().
 --------------------------------------------------
+2008-10-28:zms-2.11.1-10
+-- MINOR CHANGES
+[01110] Revised template-sets myZMStheme40: delay of 1000msec. for popup-menus.
+--------------------------------------------------
+2008-10-30:zms-2.11.1-11
+[01111] Added support for drag & drop file-upload (RAD Upload http://www.radinks.com/upload).
+[01112] Added meta_id to css-classes in ZMSContainerObject.getNavItems() (contributed by fh).
+--------------------------------------------------
+2008-11-03:zms-2.11.1-12
+[01113] Added support for dynamic icons (requested by tf).
+--------------------------------------------------

@@ -38,17 +38,38 @@
 ><dtml-unless "REQUEST['manage_lang'] in getManageLanguages()"
  ><dtml-call "REQUEST.set('manage_lang','eng')"
 ></dtml-unless>
+
 <html <dtml-var "getConfProperty('ZMS.html_attrs','')"> lang="en">
 <head>
 <base></base>
+
 <dtml-if ZMS_CHARSET>
  <meta http-equiv="content-type" content="text/html; charset=<dtml-var ZMS_CHARSET>"/>
  <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/html; charset=%s'%ZMS_CHARSET)">
 </dtml-if>
+
+<dtml-comment>
+################################################################################
+### Title
+################################################################################
+</dtml-comment>
+<title>ZMS | <dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if></title>
+
+<dtml-comment>
+################################################################################
+### CSS
+################################################################################
+</dtml-comment>
 <link rel="stylesheet" type="text/css" href="<dtml-var BASEPATH1>/manage_page_style.css">
 <link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_sys">
 <link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_defaults">
 <dtml-var headCSS>
+
+<dtml-comment>
+################################################################################
+### JavaScript
+################################################################################
+</dtml-comment>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS>jquery-1.2.1.min.js"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>main_js?lang=<dtml-var lang>"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>zmilib_js?lang=<dtml-var lang>"></script>
@@ -56,6 +77,7 @@
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>formlib_js"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS>datelib.js"></script>
 <dtml-try><dtml-if "_['zmi.js']"><script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>zmi.js?lang=<dtml-var lang>"></script></dtml-if><dtml-except><!-- zmi.js not found! --></dtml-try>
+
 <dtml-unless "hasAccess(REQUEST)"
 ><dtml-call "RESPONSE.redirect(url_append_params('%s/manage_main'%aq_parent.absolute_url(),{'lang':lang,'manage_tabs_message':getZMILangStr('MSG_ACCESS_FORBIDDEN')%'<i>%s</i>'%display_type(REQUEST),}))"
 ></dtml-unless>

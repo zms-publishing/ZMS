@@ -1,7 +1,6 @@
 <dtml-var manage_page_header>
 <dtml-unless "REQUEST.has_key( 'lang')"><dtml-call "REQUEST.set( 'lang',getPrimaryLanguage())"></dtml-unless>
 <dtml-unless "REQUEST.has_key( 'manage_lang')"><dtml-call "REQUEST.set( 'manage_lang',getManageLanguage(lang))"></dtml-unless>
-<title>Properties</title>
 </head>
 
 <dtml-var manage_tabs>

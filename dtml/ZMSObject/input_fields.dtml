@@ -37,31 +37,47 @@
 </dtml-comment>
 <dtml-elif "objAttr['type'] in getMetaobjIds() and getMetaobj(objAttr['type'])['type']=='ZMSResource'">
  <dtml-unless ZMS_INSERT>
-  <dtml-if "_.len(getObjChildren(objAttr['id'],REQUEST))==0">
-   <tr id="tr_<dtml-var key>">
-    <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
-    <td><a href="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&target=<dtml-var URL>" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="" border="0"/></a></td>
-   </tr>
-  <dtml-else>
-   <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
+  <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
    <dtml-unless required>
-   <tr id="tr_<dtml-var key><dtml-var sequence-index>">
-    <td colspan="2">
-     <table cellspacing="0" cellpadding="1" border="0" width="100%" class="zmiHeadline">
-     <tr valign="middle">
-      <td><div class="form-label"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
-      <td align="right"><dtml-if required>&nbsp;<dtml-else><a href="javascript:confirmDeleteBtnOnClick('manage_deleteObjs?ids:list=<dtml-var id>&target=<dtml-var URL>');" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="" border="0"/></a></dtml-if></td>
-     </tr>
-     </table>
-    </td>
-   </tr>
+    <tr id="tr_<dtml-var key><dtml-var sequence-index>">
+     <td colspan="2">
+      <table cellspacing="0" cellpadding="1" border="0" width="100%" class="zmiHeadline">
+      <tr valign="middle">
+       <td><div class="form-label"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+       <td align="right">
+        <dtml-if required>
+         &nbsp;
+        <dtml-else>
+         <select class="form-small" onchange="submitSelect(this)">
+          <dtml-if "objAttr.get('repetitive',0)==1">
+           <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
+           <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
+          </dtml-if>
+          <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option>
+          <option value="manage_deleteObjs?ids:list=<dtml-var id>&target=<dtml-var URL>"><dtml-var "getZMILangStr('BTN_DELETE')"></option>
+         </select>
+        </dtml-if>
+       </td>
+      </tr>
+      </table>
+     </td>
+    </tr>
    </dtml-unless>
    <dtml-let metaObj="getMetaobj(objAttr['type'])">
     <dtml-var obj_input_fields>
    </dtml-let>
+  <dtml-else>
+   <tr id="tr_<dtml-var key>">
+    <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+    <td>
+     <select class="form-small" onchange="submitSelect(this)">
+      <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
+      <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
+     </select>
+    </td>
+   </tr>
   </dtml-in>
- </dtml-if>
-</dtml-unless>
+ </dtml-unless>
 
 <dtml-comment>
 ##### Object #####

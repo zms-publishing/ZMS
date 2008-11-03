@@ -1,0 +1,5 @@
+<!-- BO plugins/fileupload/input_file/input.dtml -->
+
+<input class="form-element" type="file" id="<dtml-var elName>" name="<dtml-var elName>" size="25" value="" <dtml-if elMaxlength>maxlength="<dtml-var elMaxlength>"</dtml-if>/>
+
+<!-- EO plugins/fileupload/input_file/input.dtml -->

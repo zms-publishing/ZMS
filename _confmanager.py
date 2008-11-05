@@ -434,6 +434,9 @@ class ConfManager(
             try:
               v = self.parseXmlString(self.getXmlHeader() + v)
               self.setConfProperty( k, v)
+              if REQUEST.get('portal_clients'):
+                for portalClient in self.getPortalClients():
+                  portalClient.setConfProperty( k, v)
             except:
               _globals.writeException( self, "[manage_customizeSystem]: can't set conf-property %s=%s"%(str(k),str(v)))
             message = self.getZMILangStr('MSG_CHANGED')
@@ -442,6 +445,9 @@ class ConfManager(
             k = REQUEST.get( 'option')
             v = REQUEST.get( 'value', '')
             self.setConfProperty( k, v)
+            if REQUEST.get('portal_clients'):
+              for portalClient in self.getPortalClients():
+                portalClient.setConfProperty( k, v)
             message = self.getZMILangStr('MSG_CHANGED')
             params.append( 'option')
       

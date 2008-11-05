@@ -525,6 +525,8 @@ class ZMSSqlDb(ZMSObject):
       REQUEST.set('primary_key','')
       REQUEST.set('grid_cols',[])
       sqlStatement = REQUEST.get('sqlStatement',[])
+      if type(sqlStatement) is not list:
+        sqlStatement = []
       if len(tabledefs) > 0:
         if tablename not in map( lambda x: x['id'], tabledefs):
           tablename = tabledefs[0]['id']

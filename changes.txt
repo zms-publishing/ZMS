@@ -1022,4 +1022,8 @@
 --------------------------------------------------
 2008-11-03:zms-2.11.1-12
 [01113] Added support for dynamic icons (requested by tf).
+[01114] Added support for saving system-configuration in portal-clients.
+--------------------------------------------------
+2008-11-05:zms-2.11.1-13
+[01115] Revised special-object 'TeX' (requested by desy).
 --------------------------------------------------

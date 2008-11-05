@@ -141,7 +141,9 @@ class ReqBuff:
     #  @throws Exception
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST, forced=False):
-      if forced or REQUEST.get('URL','/manage').find('/manage') < 0:
+      url = REQUEST.get('URL','/manage')
+      url = url[url.rfind('/'):]
+      if forced or not url.find('/manage') >= 0:
         buff = getReqBuff(self,REQUEST)
         reqBuffId = getReqBuffId(self,key,REQUEST)
         try:

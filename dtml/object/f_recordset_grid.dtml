@@ -1,19 +1,19 @@
-<dtml-comment>
+<!--
 ###############################################################################
 ###
 ###   G R I D
 ###   
 ###   @explicit-param grid_url[string]
-###   @explicit-param grid_cols[list]
+###   @explicit-param grid_cols[list]: <dtml-var grid_cols>
 ###   @implicit-param qsize[int]
 ###   @implicit-param qorder[string]
 ###   @implicit-param qorderdir[string]		desc|asc
 ###   @implicit-param qstart[int]
-###   @implicit-param res[list]
+###   @implicit-param res[list] <dtml-var "_.len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
 ###
 ###############################################################################
-</dtml-comment>
+-->
 
  <dtml-var f_recordset_nav>
 
@@ -22,7 +22,7 @@
   <dtml-if grid_options>
    <col width="<dtml-var "_.max(
      _.len(_.filter(lambda x: x in ['insert','export'],grid_options.keys())),
-     _.len(_.filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">/>
+     _.len(_.filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>

@@ -128,15 +128,16 @@
   ><dtml-if details_ordered
    ><dtml-call "sqlStatement.append( 'ORDER BY sort_id')"
   ></dtml-if
-  ><dtml-try
-   ><dtml-call "REQUEST.set('res',query(' '.join(sqlStatement))['records'])"
-  ><dtml-except
+  ><!-- input_details.dtml.SQL: <dtml-var sqlStatement> -->
+  <dtml-try
+   ><dtml-call "REQUEST.set('res',query(' '.join(sqlStatement))['records'])">
+  <dtml-except
    ><div class="form-fixed" style="border: 1px solid black; background-color:white;color: red; margin:2px; padding:2px;">SQLException - Can't select records: <dtml-var error_type html_quote>: <dtml-var error_value html_quote><br/><dtml-var error_tb newline_to_br html_quote></div
   ></dtml-try>
 
   <dtml-call "REQUEST.set('rindex',-1)"
   ><dtml-if "REQUEST.get('details_action')=='update'"
-   ><dtml-in res mapping
+   ><dtml-in "REQUEST['res']" mapping
     ><dtml-if "_.str(_[primary_key])==_.str(details_rowid)"
      ><dtml-call "REQUEST.set('rindex',_['sequence-index'])"
     ></dtml-if
@@ -157,6 +158,7 @@
             }})">
    </dtml-if>
    <dtml-var "f_recordset_grid(_,_
+     ,res=REQUEST['res']
      ,grid_url=URL
      ,grid_cols=grid_cols
      ,grid_options=grid_options
@@ -169,7 +171,7 @@
 <dtml-call "REQUEST.set('details_row',{})"
 ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_INSERT'))"
 ><dtml-if "REQUEST.get('details_action')=='update'"
- ><dtml-in res mapping
+ ><dtml-in "REQUEST['res']" mapping
   ><dtml-call "REQUEST.set('row',_['sequence-item'])"
   ><dtml-call f_recordset_init
   ><dtml-if "_.str(row.get(primary_key,''))==_.str(details_rowid)"

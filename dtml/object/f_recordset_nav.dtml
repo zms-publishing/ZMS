@@ -1,4 +1,4 @@
-<dtml-comment>
+<!--
 ###############################################################################
 ###
 ###   N A V
@@ -8,11 +8,11 @@
 ###   @implicit-param qorder[string]
 ###   @implicit-param qorderdir[string]		desc|asc
 ###   @implicit-param qstart[int]
-###   @implicit-param res[list]
+###   @implicit-param res[list]: <dtml-var "_.len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
 ###
 ###############################################################################
-</dtml-comment>
+-->
 
 <dtml-try>
 

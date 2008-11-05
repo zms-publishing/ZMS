@@ -50,8 +50,12 @@ function scrollToElement(theElement) {
 
   function highlight_text(text) {
      var exp = "";
-     for (var i = 0; i < text.length; i++) 
-       exp += "(" + text.charAt(i) + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
+     for (var i = 0; i < text.length; i++) {
+       var ch = text.charAt(i);
+       if ( ch != '*') {
+         exp += "(" + ch + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
+       }
+     }
      var regexp = new RegExp( "(" + exp + ")", "g");
      var el = document.getElementsByTagName("body")[0];
      var content=el.innerHTML.split("<"); 

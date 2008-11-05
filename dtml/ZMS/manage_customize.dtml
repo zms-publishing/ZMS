@@ -345,6 +345,9 @@
      <dtml-else>
       <dtml-var "getTextInput(fmName='customForm',elName='value',value=getConfProperty(key,item.get('default','')),size=15,enabled=1,REQUEST=REQUEST,css='form-small')">
      </dtml-if>
+     <dtml-if "getPortalClients()">
+      <input class="form-checkbox" type="checkbox" name="portal_clients" value="portal_clients"<dtml-if "REQUEST.form.get('portal_clients')"> checked="checked"</dtml-if>>&nbsp;Clients&nbsp;&nbsp;&nbsp;
+     </dtml-if>
      <input class="form-submit" type="submit" name="btn" value="Change">
     </td>
    </tr>

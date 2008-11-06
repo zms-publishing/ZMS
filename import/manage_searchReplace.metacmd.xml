@@ -21,7 +21,7 @@
     <!-- # Init subcounter: -->
     <dtml-call "REQUEST.set('subcount',0)">
     <dtml-if "_.len(REQUEST.get('s_old','')) > 0">
-     <dtml-in "_.string.split(s_src,REQUEST.get('s_old',''))">
+     <dtml-in "_.string.split(_.str(s_src),REQUEST.get('s_old',''))">
       <dtml-call "REQUEST.set('s_dst',s_dst+_['sequence-item'])">
       <dtml-unless sequence-end>
        <dtml-call "REQUEST.set('s_dst',s_dst+REQUEST.get('s_new',''))">
@@ -59,7 +59,7 @@
 
  <dtml-var manage_page_header>
  </head>
- <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
+ <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
  <dtml-var f_bo_area>
 
   <div class="form-text">
@@ -88,7 +88,7 @@
 
  <dtml-var manage_page_header>
  </head>
- <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Suchen & Ersetzen...','action':''}])">
+ <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
  <dtml-var f_bo_area>
 
   <div class="form-text">Sie können jedes oder alle Vorkommen von einem Textmuster im aktuellen Objekt und auch allen Unterobjekten suchen und ersetzen.</div>
@@ -137,3 +137,4 @@
 </list>
 </item>
 </dictionary>
+

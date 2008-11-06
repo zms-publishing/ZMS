@@ -1027,3 +1027,6 @@
 2008-11-05:zms-2.11.1-13
 [01115] Revised special-object 'TeX' (requested by desy).
 --------------------------------------------------
+2008-11-06:zms-2.11.1-14
+[01116] Revised action 'Search&Replace' (contributed by fh).
+--------------------------------------------------

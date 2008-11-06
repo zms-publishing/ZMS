@@ -225,7 +225,7 @@ class ObjChildren:
       
       #-- Headline.
       if len(actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),'',actions))
+        actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
       
       #-- Insert.
       if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0):

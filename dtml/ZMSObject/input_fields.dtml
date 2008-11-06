@@ -48,7 +48,7 @@
         <dtml-if required>
          &nbsp;
         <dtml-else>
-         <select class="form-small" onchange="submitSelect(this)">
+         <select class="form-small" onchange="submitSelectResource(this)">
           <dtml-if "objAttr.get('repetitive',0)==1">
            <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
            <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
@@ -70,7 +70,7 @@
    <tr id="tr_<dtml-var key>">
     <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
     <td>
-     <select class="form-small" onchange="submitSelect(this)">
+     <select class="form-small" onchange="submitSelectResource(this)">
       <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
       <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
      </select>

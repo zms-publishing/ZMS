@@ -64,7 +64,7 @@
          onmouseout="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc0.gif';"
        ><img name="<dtml-var key>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_asc0.gif" border="0" align="middle"
          alt="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
-       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var label></i></span
+       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var "getLangStr(label,lang)"></i></span
       ></a>
      <dtml-else>
       <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':key,'qorderdir':'asc'})">" style="color:black"
@@ -72,17 +72,17 @@
          onmouseout="<dtml-var key>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc0.gif';"
        ><img name="<dtml-var key>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_desc0.gif" border="0" align="middle"
          alt="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
-       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var label></i></span
+       /><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var "getLangStr(label,lang)"></i></span
       ></a>
      </dtml-if>
     <dtml-else>
      <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':key})">" style="color:black"
         title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var label>"
-      ><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><dtml-var label></span
+      ><span class="form-small" style="font-weight:bold;color:black;text-decoration:none;"><dtml-var "getLangStr(label,lang)"></span
      ></a>
     </dtml-if>
    <dtml-else>
-    <b><dtml-var label></b>
+    <b><dtml-var "getLangStr(label,lang)"></b>
    </dtml-if>
   </th>
   </dtml-unless>
@@ -91,7 +91,7 @@
   <th>&nbsp;</th>
  </tr>
  <dtml-except>
-  [f_recordset_grid]: Unexpected Exception - <dtml-var error_type>: <dtml-var error_value> -->
+  [f_recordset_grid]: Unexpected Exception - <dtml-var error_type>: <dtml-var error_value>
  </dtml-try>
 
  <dtml-in res size=qsize start=qstart>

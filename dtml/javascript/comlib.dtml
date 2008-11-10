@@ -39,6 +39,31 @@ function scrollToElement(theElement) {
   window.scrollTo(selectedPosX,selectedPosY);
 }
 
+// #############################################################################
+// ### fireEvent
+// ### @see http://www.rakshith.net/blog/?p=35
+// #############################################################################
+function fireEvent( el, evtName) {
+  //On IE
+  if( el.fireEvent)
+  {
+    el.fireEvent('on'+evtName);
+  }
+  //On Gecko based browsers
+  if(document.createEvent)
+  {
+    var evt = document.createEvent('HTMLEvents');
+    if(evt.initEvent)
+    {
+      evt.initEvent(evtName, true, true);
+    }
+    if ( el.dispatchEvent)
+    {
+      el.dispatchEvent(evt);
+    }
+  }
+}
+
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Highlight Text
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

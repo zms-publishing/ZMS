@@ -36,3 +36,4 @@
 
 <dtml-comment>#####  Custom  ####################################</dtml-comment>
 <dtml-var "getObjProperty('manage_main_change',REQUEST)">
+<dtml-try><dtml-var my_manage_main_change><dtml-except></dtml-try>

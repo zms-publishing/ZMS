@@ -25,7 +25,7 @@
      ><dtml-let actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
       ><div class="form-small"
        ><dtml-if actions
-        ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons('zmiNeutralColorMedium0')"
+        ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()"
        ></dtml-if
        ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">"
         ><dtml-var f_display_icon

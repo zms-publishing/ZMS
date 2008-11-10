@@ -267,29 +267,27 @@
     }
   }
 
-  /**
-   *
-   */
-  function switchButtons(uncheckedClassName) 
-  {
-    for (var i = 0; i < arrButton.length; i++) {
-       btnOnMouseOut(arrButton[i]);
+/**
+ *
+ */
+function switchButtons() 
+{
+  for (var i = 0; i < arrButton.length; i++) {
+     btnOnMouseOut(arrButton[i]);
+  }
+  // Toggle highlighting of selected rows.
+  var clazz = "zmiTeaserColor";
+  var els = $("input[@name=ids:list][@type=checkbox]");
+  for (var i = 0; i < els.length; i++) {
+    var tr = $($(els[i]).parents("tr")[0]);
+    if (els[i].checked) {
+      tr.addClass( clazz);
     }
-    var fm = document.forms['form0'];
-    var els = fm.elements;
-    for ( var i = 0; i < els.length; i++) {
-      var el = els[ i];
-      if ( el.type == 'checkbox' && el.name == 'ids:list') {
-        var tr = document.getElementById( 'tr_'+el.value);
-        if ( el.checked) 
-          tr.className = "zmiTeaserColor";
-        else if (uncheckedClassName)
-          tr.className = uncheckedClassName;
-        else
-          tr.className = "";
-      }
+    else {
+      tr.removeClass( clazz);
     }
   }
+}
 
   /**
    * Hover button on mouse-over event.

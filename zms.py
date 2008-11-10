@@ -603,7 +603,7 @@ class ZMS(
     # Version-Info.
     # -------------
     zms_build = '131'		# Internal use only, designates object model!
-    zms_patch = 'g'		# Internal use only!
+    zms_patch = 'h'		# Internal use only!
 
     # Properties.
     # -----------
@@ -896,7 +896,10 @@ class ZMS(
         setattr( self, 'patch', self.zms_patch)
         message += 'Synchronized object-model from patch #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
       if maintenance:
-        self.getTrashcan().run_garbage_collection()
+        try:
+          self.getTrashcan().run_garbage_collection()
+        except:
+          _globals.writeException( self, '[updateVersion]: can\'t run garbage collection')
       
       # Process clients.
       for portalClient in self.getPortalClients():

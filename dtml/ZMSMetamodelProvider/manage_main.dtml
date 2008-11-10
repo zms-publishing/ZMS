@@ -14,28 +14,48 @@
 <script language="JavaScript">
 <!--//
 
-  /**
-   *
-   * @param el
-   */
-  function changeType(el) 
-  {
-    disallowBlank(el,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-    var v = el.options[el.selectedIndex].value;
-    var arr = new Array();
-    <dtml-in meta_attrs
-     ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
-      ><dtml-if metadictAttr
-       >arr['<dtml-var sequence-item>'] = '<dtml-var "metadictAttr['name']">';
-      </dtml-if
-     ></dtml-let
-    ></dtml-in>
-    if (arr[v]) {
-      var fm = el.form;
-      fm.elements['attr_id'].value = v;
-      fm.elements['attr_name'].value = arr[v];
+/**
+ * Toggle highlighting of selected rows.
+ *
+ * @param el
+ */
+function toggleRow( el)
+{
+  var clazz = "zmiTeaserColor";
+  var els = $("input[@name=ids:list][@type=checkbox]");
+  for (var i = 0; i < els.length; i++) {
+    var tr = $($(els[i]).parents("tr")[1]);
+    if (els[i].checked) {
+      tr.addClass( clazz);
+    }
+    else {
+      tr.removeClass( clazz);
     }
   }
+}
+
+/**
+ *
+ * @param el
+ */
+function changeType( el)
+{
+  disallowBlank(el,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
+  var v = el.options[el.selectedIndex].value;
+  var arr = new Array();
+  <dtml-in meta_attrs
+   ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
+    ><dtml-if metadictAttr
+     >arr['<dtml-var sequence-item>'] = '<dtml-var "metadictAttr['name']">';
+    </dtml-if
+   ></dtml-let
+  ></dtml-in>
+  if (arr[v]) {
+    var fm = el.form;
+    fm.elements['attr_id'].value = v;
+    fm.elements['attr_name'].value = arr[v];
+  }
+}
 
   /**
    *
@@ -346,12 +366,13 @@
    <col />
    <col />
    <col />
+   <col />
    <col width="20" />
   </colgroup>
 
   <!-- Header -->
   <tr>
-   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
 
  <dtml-call "REQUEST.set('acquisitions',{})"
@@ -380,6 +401,7 @@
      <tr class="zmiNeutralColorStrong0">
       <td><div class="form-label">&nbsp;</div></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
+      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_VERSION')"></div></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('SOTYPE_ZMSPACKAGE')"></div></td>
       <td colspan="2">&nbsp;</td>
@@ -396,6 +418,7 @@
        ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
       </td>
       <td><div class="form-element"><dtml-if "metaObj['enabled']==1"><strong></dtml-if><dtml-var "metaObj['name']"><dtml-if "metaObj['enabled']==1"></strong></dtml-if></div></td>
+      <td><div class="form-element">v<dtml-var "metaObj.get('revision','0.0.0')"></td>
       <td><div class="form-element"><dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())"></div></td>
       <td align="center"
        ><dtml-if "metaObj['type']=='ZMSPackage'"
@@ -420,6 +443,7 @@
        ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if
       ></td>
       <td><dtml-var "getTextInput(fmName='form0',elName='obj_name',size=12,value=metaObj['name'])"></td>
+      <td><dtml-var "getTextInput(fmName='form0',elName='obj_revision',size=6,value=metaObj.get('revision','0.0.0'))"></td>
       <td>
        <select class="form-element" name="obj_type">
         <dtml-in valid_objtypes
@@ -441,7 +465,7 @@
         ></dtml-in
        ></select>
       </td>
-      <td class="form-element" colspan="2">
+      <td colspan="2" nowrap="nowrap" class="form-element">
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'all');"/>
        <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"/></dtml-unless>
       </td>
@@ -449,7 +473,7 @@
      <dtml-unless "metaObj['type'] in ['ZMSPackage']">
      <!-- Object-Attributes -->
      <tr class="zmiNeutralColorMedium0">
-      <td colspan="6">
+      <td colspan="7">
        <table cellspacing="0" cellpadding="5" border="0" width="90%">
        <tr>
        <td>
@@ -890,7 +914,7 @@
     <dtml-else>
      <dtml-if "REQUEST.get('id','') == '' and (metaObj['package'] == '' or metaObj['type'] == 'ZMSPackage')">
      <tr valign="top" class="neutralColorWhite">
-      <td colspan="6">
+      <td colspan="7">
        <table cellspacing="0" cellpadding="0" border="0" width="100%">
         <dtml-let metaObjs="[metaObj]"
          ><dtml-if "metaObj['type'] == 'ZMSPackage'"
@@ -925,6 +949,7 @@
                ><dtml-else><dtml-var "metaObj['name']"
                ></dtml-if
               ></a>
+             v<dtml-var "metaObj.get('revision','0.0.0')">
              <dtml-unless "metaObj['type'] == 'ZMSPackage'"
               ><i>(<dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">)</i
              ></dtml-unless>
@@ -932,7 +957,7 @@
             ></td>
             <dtml-if sequence-start>
              <td align="right" width="20">
-              <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaObj['id']">" <dtml-if "metaObj.get('acquired',0) == 1">disabled="disabled"</dtml-if>/>
+              <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaObj['id']">" <dtml-if "metaObj.get('acquired',0) == 1">disabled="disabled"</dtml-if> onclick="toggleRow(this)"/>
              </td>
             </dtml-if>
            </tr>
@@ -950,10 +975,10 @@
  <!-- Insert Special Object -->
  <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td colspan="6">
+   <td colspan="7">
     <table>
     <tr valign="top">
      <td class="form-element">
@@ -996,10 +1021,10 @@
    ><dtml-call "res.sort()"
    ><dtml-if res>
     <tr>
-     <td colspan="6"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
+     <td colspan="7"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
     </tr>
     <tr class="zmiNeutralColorLight0">
-     <td colspan="6" class="form-element">
+     <td colspan="7" class="form-element">
       <table cellspacing="0" cellpadding="0" border="0">
       <tr valign="top">
        <td>
@@ -1026,10 +1051,10 @@
 </dtml-comment>
  <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="8"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td colspan="6">
+   <td colspan="7">
     <table cellspacing="0" cellpadding="2" border="0">
     <tr valign="middle">
      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>

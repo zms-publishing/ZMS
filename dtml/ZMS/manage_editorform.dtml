@@ -20,6 +20,7 @@
      if ( self.btnClicked == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
        var fm = parent.cameFromForm.document.forms['<dtml-var fmName>'];
        fm.elements['<dtml-var elName>'].value = document.forms['form0'].elements['editor'].value;
+       fireEvent( fm.elements['<dtml-var elName>'], 'change');
        for (var i = 0; i < fm.elements.length; i++) {
          var el = fm.elements[i];
          if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_SAVE')">') {

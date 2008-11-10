@@ -309,6 +309,7 @@ class ZMSMetaobjManager:
       obs = self.model
       ob = ob.copy()
       ob[ 'name'] = ob.get( 'name', '')
+      ob[ 'revision'] = ob.get( 'revision', '0.0.0')
       ob[ 'type'] = ob.get( 'type', '')
       ob[ 'package'] = ob.get( 'package', '')
       ob[ 'attrs'] = ob.get( 'attrs', ob.get( '__obj_attrs__', []))
@@ -804,6 +805,7 @@ class ZMSMetaobjManager:
             newValue = {}
             newValue['id'] = id
             newValue['name'] = REQUEST.get('obj_name').strip()
+            newValue['revision'] = REQUEST.get('obj_revision').strip()
             newValue['type'] = REQUEST.get('obj_type').strip()
             newValue['package'] = REQUEST.get('obj_package').strip()
             newValue['attrs'] = savedAttrs
@@ -889,9 +891,9 @@ class ZMSMetaobjManager:
                       del attr[key]
                   attrs.append( attr)
                 ob['__obj_attrs__'] = attrs
-                del ob['attrs']
-                if ob.has_key('zms_system'):
-                  del ob['zms_system']
+                for key in ['attrs','zms_system','acquired']:
+                  if ob.has_key(key):
+                    del ob[key]
                 # Value.
                 value.append({'key':id,'value':ob})
             # XML.

@@ -1029,4 +1029,5 @@
 --------------------------------------------------
 2008-11-06:zms-2.11.1-14
 [01116] Revised action 'Search&Replace' (contributed by fh).
+[01117] Applied fix for support of simultaneous remote- (via ftp) and web-editing (via zmi) of content-object-methods (requested by desy).
 --------------------------------------------------

@@ -204,10 +204,10 @@ def strip_int(s):
 #
 #  Strips non-numeric part from string.
 # ------------------------------------------------------------------------------
-def id_prefix(s): 
-  i = 0
-  while i < len(s) and ord(s[i]) not in range(ord('0'),ord('9')+1):
-    i = i + 1
+def id_prefix(s):
+  i = len(s)
+  while i > 0 and ord(s[i-1]) in range(ord('0'),ord('9')+1):
+    i = i - 1
   return s[:i]
 
 

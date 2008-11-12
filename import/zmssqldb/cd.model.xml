@@ -60,6 +60,20 @@
             </item>
           </dictionary>
         </item>
+        <item>
+          <dictionary>
+            <item key="id">reviews</item>
+            <item key="hide" type="int">1</item>
+            <item key="label">Reviews</item>
+            <item key="details">
+              <dictionary>
+                <item key="fk">cd_id</item>
+                <item key="tablename">cdreviews</item>
+                <item key="delete">cascade</item>
+              </dictionary>
+            </item>
+          </dictionary>
+        </item>
       </list>
     </item>
   </dictionary>
@@ -120,6 +134,67 @@
             <item key="id">sort_id</item>
             <item key="hide" type="int">1</item>
             <item key="label">Sort-Id</item>
+          </dictionary>
+        </item>
+      </list>
+    </item>
+  </dictionary>
+</item>
+<!-- ########################################
+     ### REVIEWS
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">cdreviews</item>
+    <item key="label">Reviews</item>
+    <item key="columns">
+      <list>
+        <item>
+          <dictionary>
+            <item key="id">review_id</item>
+            <item key="hide" type="int">1</item>
+            <item key="label">Id</item>
+            <item key="type">int</item>
+            <item key="pk" type="int">1</item>
+            <item key="auto">insert</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">cd_id</item>
+            <item key="hide" type="int">1</item>
+            <item key="label">CD</item>
+            <item key="fk">
+               <dictionary>
+                 <item key="tablename">cds</item>
+                 <item key="fieldname">cd_id</item>
+                 <item key="displayfield">cd_title</item>
+                </dictionary>
+            </item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">review_author</item>
+            <item key="label">Author</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">review_timestamp</item>
+            <item key="label">Date/Time [YYYY-MM-DD.hh.mm.ss]</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">review_title</item>
+            <item key="label">Title</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">review_content</item>
+            <item key="label">Content</item>
           </dictionary>
         </item>
       </list>

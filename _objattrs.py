@@ -901,14 +901,6 @@ class ObjAttrs:
         if type(v) in StringTypes and len(v) > 0:
           v = float(v)
       
-      #-- Password-Fields
-      elif datatype == _globals.DT_PASSWORD:
-        pass
-        """
-        if v is not None:
-          v = self.encrypt_password(v)
-        """
-      
       #-- String-Fields.
       elif datatype in _globals.DT_STRINGS:
         if v is None:
@@ -977,6 +969,11 @@ class ObjAttrs:
         elif v.find('{$') == 0 and v.find('{$__') < 0:
           # Broken link.
           v = '{$__' + v[2:-1] + '__}'
+      
+      # Hook for custom formatting.
+      name = 'formatCustomObjAttrValue'
+      if hasattr(self,name):
+        v = getattr(self,name)( context=self, obj_attr=obj_attr, v=v)
       
       return v
 

@@ -13,3 +13,5 @@ insert into cdtracks (cd_id, track_id, track_title, track_duration, track_info, 
 insert into cdtracks (cd_id, track_id, track_title, track_duration, track_info, sort_id) values ( 4712, 7, 'It Wont Take Long', '3:54', '', 30);
 insert into cdtracks (cd_id, track_id, track_title, track_duration, track_info, sort_id) values ( 4712, 8, 'Rain Fall Down', '4:54', '', 40);
 insert into cdtracks (cd_id, track_id, track_title, track_duration, track_info, sort_id) values ( 4712, 9, 'Streets of Love', '5:10', '', 50);
+create table cdreviews (cd_id integer, review_id integer, review_author varchar, review_timestamp varchar, review_title varchar, review_content varchar);
+insert into cdreviews (cd_id, review_id, review_author, review_timestamp, review_title, review_content) values ( 4711, 1, 'F. Lieberman', '2005-01-01.12.00.00', 'Excellent!', 'Excellent sound, the best Pink Floyd record ever!');

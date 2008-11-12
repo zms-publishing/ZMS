@@ -13,6 +13,8 @@
 
 <dtml-call "REQUEST.set('manage_tabs_message','')">
 
+<dtml-try>
+
 <dtml-comment> ***** Move row up ***** </dtml-comment>
  <dtml-if "REQUEST.form.get('action','')=='move_up'">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
@@ -112,12 +114,12 @@
   <dtml-call "REQUEST.set('new_row',[])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
-    <dtml-unless "type in ['constant','delimiter','hint','interface','resource','method','DTML Method','DTML Document']">
+    <dtml-if "type in metaobj_manager.valid_types">
      <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.form.get(obj_attrName),lang))">
      <dtml-try><dtml-call "operator_delattr(value,'aq_parent')"><dtml-except></dtml-try>
      <dtml-call "new_row.append(id)">
      <dtml-call "new_row.append(value)">
-    </dtml-unless>
+    </dtml-if>
    </dtml-let>
   </dtml-in>
   <dtml-let new_row="dict_list(new_row)">
@@ -142,7 +144,7 @@
   <dtml-call "REQUEST.set('new_row',[])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
-    <dtml-unless "type in ['constant','delimiter','hint','interface','resource','method','DTML Method','DTML Document']">
+    <dtml-if "type in metaobj_manager.valid_types">
      <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.form.get(obj_attrName),lang))">
      <dtml-var "writeBlock('[actions.update]: %s=%s(%s)'%(_.str(id),_.str(value),_.str(REQUEST.form.get(obj_attrName))))">
      <dtml-if "value is _.None and type in ['image','file'] and not REQUEST.get('del_%s'%obj_attrName,'0')=='1'">
@@ -151,7 +153,7 @@
      <dtml-try><dtml-call "operator_delattr(value,'aq_parent')"><dtml-except></dtml-try>
      <dtml-call "new_row.append(id)">
      <dtml-call "new_row.append(value)">
-    </dtml-unless>
+    </dtml-if>
    </dtml-let>
   </dtml-in>
   <dtml-in "row.keys()">
@@ -179,3 +181,7 @@
   </dtml-if>
 
  </dtml-if>
+
+<dtml-except>
+ <dtml-call "REQUEST.set('manage_tabs_error_message',_.str(error_type)+': '+_.str(error_value)+'<br/>'+_.str(error_tb))">
+</dtml-try>

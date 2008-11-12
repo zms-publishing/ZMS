@@ -1031,3 +1031,7 @@
 [01116] Revised action 'Search&Replace' (contributed by fh).
 [01117] Applied fix for support of simultaneous remote- (via ftp) and web-editing (via zmi) of content-object-methods (requested by desy).
 --------------------------------------------------
+2008-11-12:zms-2.11.1-15
+[01118] Applied fix for _globals.id_prefix(): ids containing numbers.
+[01119] Added support for multiple details to SQL-Datasource.
+--------------------------------------------------

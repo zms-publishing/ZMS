@@ -1,4 +1,5 @@
 <dtml-unless "REQUEST.get('f_zmiInputDetailsJavaScript')"
+><dtml-call "REQUEST.set('master_row',row)"
 ><script language="JavaScript"
 ><!--//
 
@@ -8,7 +9,7 @@
       $('#table_'+id+' input[@type=text]').removeClass('zmiTeaserColor');
       $('#submit_'+id).val('<dtml-var "getZMILangStr('BTN_INSERT')">');
       $('table.neutralColorStrong tr.zmiTeaserColor').removeClass('zmiTeaserColor');
-      $('input[@name=details_action]').val('insert');
+      $('input[@name=details_action]').val('insert_'+id);
       return;
     }
 
@@ -28,7 +29,7 @@
     ## INSERT
     ############################################################################
   </dtml-comment
-  ><dtml-if "REQUEST.get('details_action')=='insert' and 
+  ><dtml-if "REQUEST.get('details_action')=='insert_%s'%details['tablename'] and 
              REQUEST.get('details_btn')==getZMILangStr('BTN_INSERT')"
    ><dtml-let values="{}"
     ><dtml-comment>+-+-+-+- Foreign-Key +-+-+-+-</dtml-comment
@@ -38,9 +39,9 @@
      ><dtml-try
       ><dtml-call "REQUEST.set('sqlStatement',[])"
       ><dtml-call "sqlStatement.append( 'SELECT MAX(sort_id) AS c FROM '+details['tablename'])"
-      ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,row.get('id','')))"
+      ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
       ><dtml-in "query(' '.join(sqlStatement))['records']" mapping
-       ><dtml-call "operator_setitem(values,'sort_id',c)"
+       ><dtml-call "operator_setitem(values,'sort_id',c+10)"
       ></dtml-in
      ><dtml-except
       ><dtml-call "operator_setitem(values,'sort_id',10)"
@@ -61,7 +62,7 @@
     ## UPDATE
     ############################################################################
   </dtml-comment
-  ><dtml-elif "REQUEST.get('details_action')=='update' and 
+  ><dtml-elif "REQUEST.get('details_action')=='update_%s'%details['tablename'] and 
              REQUEST.get('details_btn')==getZMILangStr('BTN_SAVE')"
    ><dtml-let values="{}" old_values="{}"
     ><dtml-in grid_cols mapping
@@ -79,9 +80,9 @@
     ## DELETE
     ############################################################################
   </dtml-comment
-  ><dtml-elif "REQUEST.get('details_action')=='delete'"
+  ><dtml-elif "REQUEST.get('details_action')=='delete_%s'%details['tablename']"
    ><dtml-call "recordSet_Delete(details['tablename'],details_rowid)"
-   ><dtml-call "REQUEST.set('details_normalize',_.True)"
+   ><dtml-call "REQUEST.set('details_normalize',details_ordered)"
    ><div class="system-msg">Record deleted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('details_action','')"
   ><dtml-comment>
@@ -89,20 +90,20 @@
     ## MOVE
     ############################################################################
   </dtml-comment
-  ><dtml-elif "REQUEST.get('details_action')=='move_up' or
-               REQUEST.get('details_action')=='move_down'"
+  ><dtml-elif "REQUEST.get('details_action')=='move_up_%s'%details['tablename'] or
+               REQUEST.get('details_action')=='move_down_%s'%details['tablename']"
    ><dtml-comment>+-+-+-+- Move +-+-+-+-</dtml-comment
    ><dtml-call "REQUEST.set('sqlStatement',[])"
    ><dtml-call "sqlStatement.append( 'UPDATE '+details['tablename'])"
-   ><dtml-if "REQUEST.get('details_action')=='move_up'"
+   ><dtml-if "REQUEST.get('details_action')=='move_up_%s'%details['tablename']"
     ><dtml-call "sqlStatement.append( 'SET sort_id=sort_id-15')"
    ><dtml-else
     ><dtml-call "sqlStatement.append( 'SET sort_id=sort_id+15')"
    ></dtml-if
-   ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,row.get('id','')))"
+   ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
    ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details['tablename'],primary_key,details_rowid))"
    ><dtml-call "executeQuery(' '.join(sqlStatement))"
-   ><dtml-call "REQUEST.set('details_normalize',_.True)"
+   ><dtml-call "REQUEST.set('details_normalize',details_ordered)"
    ><div class="system-msg">Record moved! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
   ></dtml-if
 
@@ -110,21 +111,22 @@
   ><dtml-if details_normalize
    ><dtml-call "REQUEST.set('sqlStatement',[])"
    ><dtml-call "sqlStatement.append( 'SELECT * FROM '+details['tablename'])"
-   ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,row.get('id','')))"
+   ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
    ><dtml-call "sqlStatement.append( 'ORDER BY sort_id')"
    ><dtml-in "query(' '.join(sqlStatement))['records']" mapping
     ><dtml-call "REQUEST.set('sqlStatement',[])"
     ><dtml-call "sqlStatement.append( 'UPDATE '+details['tablename'])"
     ><dtml-call "sqlStatement.append( 'SET sort_id='+sql_quote__(details['tablename'],'sort_id',(_['sequence-index']+1)*10))"
-    ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,row.get('id','')))"
+    ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
     ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details['tablename'],primary_key,_[primary_key]))"
     ><dtml-call "executeQuery(' '.join(sqlStatement))"
    ></dtml-in
+   ><dtml-call "REQUEST.set('details_normalize',_.False)"
   ></dtml-if
 
   ><dtml-call "REQUEST.set('sqlStatement',[])"
   ><dtml-call "sqlStatement.append( 'SELECT * FROM '+details['tablename'])"
-  ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,row.get('id','')))"
+  ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
   ><dtml-if details_ordered
    ><dtml-call "sqlStatement.append( 'ORDER BY sort_id')"
   ></dtml-if
@@ -136,7 +138,7 @@
   ></dtml-try>
 
   <dtml-call "REQUEST.set('rindex',-1)"
-  ><dtml-if "REQUEST.get('details_action')=='update'"
+  ><dtml-if "REQUEST.get('details_action')=='update_%s'%details['tablename']"
    ><dtml-in "REQUEST['res']" mapping
     ><dtml-if "_.str(_[primary_key])==_.str(details_rowid)"
      ><dtml-call "REQUEST.set('rindex',_['sequence-index'])"
@@ -148,13 +150,13 @@
   <dtml-try>
    <dtml-call "REQUEST.set('grid_options',{})">
    <dtml-call "operator_setitem(grid_options,'insert',{'action':'javascript:detailsTableShow(\'%s\')'%details['tablename']})">
-   <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':row.get('id',''),'details_action':'update'})+'&details_rowid=%s'})">
-   <dtml-call "operator_setitem(grid_options,'delete',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':row.get('id',''),'details_action':'delete'})+'&details_rowid=%s'})">
+   <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'details_action':'update_%s'%details['tablename']})+'&details_rowid=%s'})">
+   <dtml-call "operator_setitem(grid_options,'delete',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'details_action':'delete_%s'%details['tablename']})+'&details_rowid=%s'})">
    <dtml-if details_ordered>
     <dtml-call "operator_setitem(grid_options,'sort',
         {'action':{
-            'up':url_append_params(URL,{'lang':lang,'action':'update','rowid':row.get('id',''),'details_action':'move_up'})+'&details_rowid=%s',
-            'down':url_append_params(URL,{'lang':lang,'action':'update','rowid':row.get('id',''),'details_action':'move_down'})+'&details_rowid=%s',
+            'up':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'details_action':'move_up_%s'%details['tablename']})+'&details_rowid=%s',
+            'down':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'details_action':'move_down_%s'%details['tablename']})+'&details_rowid=%s',
             }})">
    </dtml-if>
    <dtml-var "f_recordset_grid(_,_
@@ -170,7 +172,7 @@
 
 <dtml-call "REQUEST.set('details_row',{})"
 ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_INSERT'))"
-><dtml-if "REQUEST.get('details_action')=='update'"
+><dtml-if "REQUEST.get('details_action')=='update_%s'%details['tablename']"
  ><dtml-in "REQUEST['res']" mapping
   ><dtml-call "REQUEST.set('row',_['sequence-item'])"
   ><dtml-call f_recordset_init
@@ -182,7 +184,7 @@
 ></dtml-if
 ><dtml-call "REQUEST.set('row',details_row)">
 
- <div class="detailelements" id="table_<dtml-var "details['tablename']">" style="<dtml-unless "REQUEST.get('details_action')=='update'">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
+ <div class="detailelements" id="table_<dtml-var "details['tablename']">" style="<dtml-unless "REQUEST.get('details_action')=='update_%s'%details['tablename']">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
   <dtml-comment>
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
   +-+- INPUT-FORM

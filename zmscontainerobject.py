@@ -675,7 +675,9 @@ class ZMSContainerObject(
             css.append( ob.meta_id + '1') 
           else: 
             css.append( 'inactive')
-            css.append( ob.meta_id + '0')            
+            css.append( ob.meta_id + '0')
+          if ob.getObjProperty( 'attr_dc_accessrights_restricted', REQUEST):
+            css.append( 'restricted')
           items.append('<li')
           items.append(' class="%s"'%(' '.join(css)))
           items.append('>')
@@ -1015,4 +1017,5 @@ class ZMSContainerObject(
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),newid,lang,urllib.quote(message)))
 
 ################################################################################
+
 

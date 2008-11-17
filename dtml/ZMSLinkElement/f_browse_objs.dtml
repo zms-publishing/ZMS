@@ -239,7 +239,8 @@ function clickElement(id,href)
   if ( img.attr("title") == "+") {
     img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
     el.show( speed);
-    if ( ( el.children().length < 1) || ( el.children().length == 1 && el.children()[0].nodeType != NODE_TYPE_ELEMENT)) {
+    if ( !el.attr( 'class')) {
+      el.addClass( 'form-small');
       el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
       el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
       // Set wait-cursor.
@@ -332,7 +333,6 @@ function processResponse(data)
     var div_children = document.createElement( "div");
     $(div_children).attr( "id", page_id + "_children");
     $(div_children).css( "margin", "4px 1px 1px 8px");
-    $(div_children).addClass( "form-small");
     el.append( div_children);
   }
 }
@@ -548,23 +548,16 @@ function followHref( href, extra)
     ><dtml-call "catalog_items2.append({'ob':ob,'ob_level':ob_level})"
     ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
    ></dtml-if
-   ><dtml-if ob_access
-    ><dtml-in "getChildNodes(REQUEST)"
-     ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
-      ><dtml-call "catalog_items.insert(pos,ob)"
-      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
-      ><dtml-call "REQUEST.set('pos',pos+1)"
-     ></dtml-let
-    ></dtml-in
-   ></dtml-if
-   ><dtml-if "meta_type=='ZMS'"
-    ><dtml-in "getPortalClients()"
-     ><dtml-let ob=sequence-item
-      ><dtml-call "catalog_items.insert(pos,ob)"
-      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
-      ><dtml-call "REQUEST.set('pos',pos+1)"
-     ></dtml-let
-    ></dtml-in
+   ><dtml-if sequence-end
+    ><dtml-if ob_access
+     ><dtml-in "getChildNodes(REQUEST)"
+      ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
+       ><dtml-call "catalog_items.insert(pos,ob)"
+       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
+       ><dtml-call "REQUEST.set('pos',pos+1)"
+      ></dtml-let
+     ></dtml-in
+    ></dtml-if
    ></dtml-if
   ></dtml-let
  ></dtml-in
@@ -579,13 +572,8 @@ function followHref( href, extra)
     ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
     ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"
     ><dtml-if "ob_access and has_children"
-     ><dtml-if "ob in breadcrumbs"
-      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
-       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" width="16" height="16" border="0" title="-" align="absmiddle"></a
-     ><dtml-else
-      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
-       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" width="16" height="16" border="0" title="+" align="absmiddle"></a
-     ></dtml-if
+     ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
+      id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" width="16" height="16" border="0" title="+" align="absmiddle"></a
     ><dtml-else
      ><img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle"
     ></dtml-if
@@ -626,7 +614,7 @@ function followHref( href, extra)
     ><dtml-if "ob in breadcrumbs"></b></dtml-if
     ></a
    ></div
-   ><div id="<dtml-var ob_id>_children" class="form-small" style="margin: 0px 1px 0px 8px"
+   ><div id="<dtml-var ob_id>_children" style="margin: 0px 1px 0px 8px"
    ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"
    ><dtml-call "REQUEST.set( 'last_level', ob_level)"
    ></dtml-let

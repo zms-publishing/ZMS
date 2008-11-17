@@ -1035,3 +1035,8 @@
 [01118] Applied fix for _globals.id_prefix(): ids containing numbers.
 [01119] Added support for multiple details to SQL-Datasource.
 --------------------------------------------------
+2008-11-17:zms-2.11.1-16
+[01120] Revised language-dictionary.
+[01121] Added support for 'restricted' to css-classes in ZMSContainerObject.getNavItems() (contributed by fh).
+[01122] Revised display of portal-clients in object-browser (requested by desy).
+--------------------------------------------------

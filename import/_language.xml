@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
  xmlns:x="urn:schemas-microsoft-com:office:excel"
@@ -8,7 +9,7 @@
   <LastAuthor>Sebastian Hoffmann</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
   <LastSaved>2007-05-16T22:06:23Z</LastSaved>
-  <Version>10.6839</Version>
+  <Version>11.9999</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <DownloadComponents/>
@@ -16,7 +17,7 @@
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
   <WindowHeight>11325</WindowHeight>
-  <WindowWidth>19080</WindowWidth>
+  <WindowWidth>15480</WindowWidth>
   <WindowTopX>-15</WindowTopX>
   <WindowTopY>-15</WindowTopY>
   <ProtectStructure>False</ProtectStructure>
@@ -134,7 +135,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="11" ss:ExpandedRowCount="471" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="11" ss:ExpandedRowCount="472" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75" ss:Span="8"/>
@@ -1222,6 +1223,18 @@
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">सूपर रेस</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">درجة وضوح ممتازة</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">ATTR_IMPORT</Data></Cell>
+    <Cell><Data ss:Type="String">Import</Data></Cell>
+    <Cell><Data ss:Type="String">Import</Data></Cell>
+    <Cell><Data ss:Type="String">Importer</Data></Cell>
+    <Cell><Data ss:Type="String">Importare</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">导入</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">واردات</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">импортировать</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">आयात</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">استيراد</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_KEY</Data></Cell>
@@ -3936,7 +3949,7 @@
     <Cell><Data ss:Type="String">Ninguno</Data></Cell>
     <Cell><Data ss:Type="String">无</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="String">هي?ي</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">нет</Data></Cell>
+    <Cell ss:StyleID="s27"><Data s�s:Type="String">нет</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">कोई नहीं</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">لاشئ</Data></Cell>
    </Row>
@@ -4740,7 +4753,7 @@
     <Cell><Data ss:Type="String">Modifié</Data></Cell>
     <Cell><Data ss:Type="String">Cambiato</Data></Cell>
     <Cell><Data ss:Type="String">Modificado</Data></Cell>
-    <Cell><Data ss:Type="String">已更改</Data></Cell>
+    <Cell><Data ss:Type="String">已更改</Data></Cell>�
     <Cell ss:StyleID="s26"><Data ss:Type="String">تغيير ياٿته</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">изменено</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">परिवर्तित</Data></Cell>
@@ -5622,12 +5635,10 @@
    </Print>
    <Zoom>75</Zoom>
    <Selected/>
-   <TopRowVisible>171</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>182</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>1</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
@@ -5635,3 +5646,4 @@
   </WorksheetOptions>
  </Worksheet>
 </Workbook>
+

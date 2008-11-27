@@ -5199,7 +5199,7 @@
     <Cell ss:StyleID="s27"><Data ss:Type="String">доступ</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">प्रवेश</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">حقوق الإطلاع والولوج</Data></Cell>
-    <Cell><Data ss:Type="String">Trua cập</Data></Cell>
+    <Cell><Data ss:Type="String">Truy cập</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_CHARFORMATS</Data></Cell>
@@ -6106,11 +6106,12 @@
    </Print>
    <Zoom>80</Zoom>
    <Selected/>
-   <TopRowVisible>220</TopRowVisible>
+   <TopRowVisible>376</TopRowVisible>
+   <LeftColumnVisible>11</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>253</ActiveRow>
+     <ActiveRow>400</ActiveRow>
      <ActiveCol>11</ActiveCol>
     </Pane>
    </Panes>

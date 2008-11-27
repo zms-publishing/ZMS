@@ -1,8 +1,6 @@
-<dtml-if "_.hasattr(getHome(),'A_manage_menu')"
-><dtml-with "getHome()"
-><dtml-var A_manage_menu
-></dtml-with
-><dtml-else>
+<dtml-try>
+<dtml-var f_manage_menu>
+<dtml-except>
 <dtml-var manage_page_header>
 <style type="text/css">
 <!--
@@ -59,13 +57,14 @@ function clickElement(id,href)
   if ( img.attr("title") == "+") {
     img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
     el.show( speed);
-    if ( ( el.children().length < 1) || ( el.children().length == 1 && el.children()[0].nodeType != NODE_TYPE_ELEMENT)) {
+    if ( !el.attr( 'class')) {
+      el.addClass( 'form-small');
       el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
       el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
       // Set wait-cursor.
       $(document.body).css( "cursor", "wait");
       // JQuery.AJAX.get
-      $.get( href+"/ajaxGetChildNodes?id="+id+"&meta_types:list=<dtml-var PAGES>&meta_types:list=ZMSTrashcan&lang=<dtml-var lang>&preview=preview&get_users=True&get_permissions=True&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
+      $.get( href+"/ajaxGetChildNodes?id="+id+"&meta_types:list=<dtml-var PAGES>&meta_types:list=ZMSTrashcan&lang=<dtml-var lang>&preview=preview&get_children:int=0&get_attrs:int=0&get_permissions=True&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
     }
   }
 }
@@ -84,13 +83,16 @@ function processResponse(data)
   el.empty( );
   // Get and iterate pages.
   var pages = $("pages",data).children("page");
+  var img = $("#"+id+"_img");
+  if ( pages.length == 0) {
+    img.attr( { src: "<dtml-var spacer_gif>", title: "", width: 16, height: 16});
+  }
   for (var i = 0; i < pages.length; i++) {
     var page = pages[i];
     var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
     var page_absolute_url = $(page).attr("absolute_url");
     var page_access = $(page).attr("access")=="True" || $(page).attr("access")=="1";
     var page_meta_type = $(page).attr("meta_type");
-    var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
     var div = document.createElement( "div");
     $(div).attr( {id: "div_" + page_id});
     $(div).addClass( "form-small");
@@ -99,19 +101,12 @@ function processResponse(data)
       div.onmouseout=Function("divmouseout(this)");
       div.onmousemove=Function("dragmove(this)");
     }
-    if ( page_has_children) {
-      var a = document.createElement( "a");
-      $(a).attr( {href: "javascript:clickElement('" + page_id + "','" + page_absolute_url + "');"});
-      var img = document.createElement( "img");
-      $(img).attr( {id: page_id + "_img", src: "<dtml-var MISC_ZMS>pl.gif", border: 0, align: "absmiddle", title: "+"});
-      a.appendChild( img);
-      div.appendChild( a)
-    }
-    else {
-      var img = document.createElement( "img");
-      $(img).attr( {src: "<dtml-var spacer_gif>", width: 16, height: 16, border: 0, align: "absmiddle", title: ""});
-      div.appendChild( img);
-    }
+    var a = document.createElement( "a");
+    $(a).attr( {href: "javascript:clickElement('" + page_id + "','" + page_absolute_url + "');"});
+    var img = document.createElement( "img");
+    $(img).attr( {id: page_id + "_img", src: "<dtml-var MISC_ZMS>pl.gif", border: 0, align: "absmiddle", title: "+"});
+    a.appendChild( img);
+    div.appendChild( a)
     // Create Icon.
     var img = document.createElement( "img");
     if ( page_meta_type == "ZMSLinkElement") {
@@ -132,7 +127,13 @@ function processResponse(data)
       $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_main')");
       $(a).addClass( "zmi");
       a.appendChild( img);
-      a.appendChild( document.createTextNode( page.getAttribute("titlealt")));
+      var titlealt = document.createTextNode( page.getAttribute("titlealt"));
+      if ( self.location.href.indexOf(page_absolute_url)==0) {
+        var b = document.createElement( "b");
+        b.appendChild( titlealt);
+        titlealt = b;
+      }
+      a.appendChild( titlealt);
       div.appendChild( a)
       if ( page_meta_type == "ZMS") {
         div.appendChild( document.createTextNode( " "));
@@ -166,7 +167,6 @@ function processResponse(data)
     var div_children = document.createElement( "div");
     $(div_children).attr( "id", page_id + "_children");
     $(div_children).css( "margin", "4px 1px 1px 8px");
-    $(div_children).addClass( "form-small");
     el.append( div_children);
   }
 }
@@ -568,7 +568,7 @@ function drag(ereignis) {
 <!-- ###
 <!-- ####################################################################### -->
 </dtml-comment>
-<dtml-let breadcrumbs="breadcrumbs_obj_path()" catalog_items="[]" catalog_items2="[]"
+<dtml-let home_id="getHome().id" breadcrumbs="breadcrumbs_obj_path()" catalog_items="[]" catalog_items2="[]"
 
  ><dtml-call "REQUEST.set('pos',0)"
  ><dtml-in breadcrumbs
@@ -582,6 +582,7 @@ function drag(ereignis) {
      ><dtml-call "catalog_items2.append({'ob':ob,'ob_level':ob_level})"
      ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
     ></dtml-if
+    ><dtml-if "getHome().id==home_id"
     ><dtml-in "getChildNodes(REQUEST,PAGES)"
      ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
       ><dtml-if ob_access
@@ -597,6 +598,7 @@ function drag(ereignis) {
       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
       ><dtml-call "REQUEST.set('pos',pos+1)"
      ></dtml-let
+><dtml-comment
      ><dtml-in "getPortalClients()"
       ><dtml-let ob=sequence-item
        ><dtml-call "catalog_items.insert(pos,ob)"
@@ -604,6 +606,8 @@ function drag(ereignis) {
        ><dtml-call "REQUEST.set('pos',pos+1)"
       ></dtml-let
      ></dtml-in
+></dtml-comment
+    ></dtml-if
     ></dtml-if
    ></dtml-unless
    ></dtml-if
@@ -618,17 +622,13 @@ function drag(ereignis) {
    ><dtml-let index=sequence-index access="hasAccess(REQUEST)"
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
     ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
-    ><div id="div_<dtml-var ob_id>" class="form-small"
-     ><dtml-if "_.len(getChildNodes(REQUEST,PAGES))>0"
-      ><dtml-if "ob in breadcrumbs"
-       ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
-        id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" border="0" title="-" align="absmiddle"></a
-      ><dtml-else
-       ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
-        id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" title="+" align="absmiddle"></a
-      ></dtml-if
+     ><div id="div_<dtml-var ob_id>" class="form-small"
+     ><dtml-if "ob.meta_id != 'ZMS' and ob in breadcrumbs"
+      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
+       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" border="0" title="-" align="absmiddle"></a
      ><dtml-else
-      ><img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle"
+      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
+       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" title="+" align="absmiddle"></a
      ></dtml-if
      ><dtml-if access><a href="javascript:followHref('<dtml-var absolute_url>/manage_main')" class="zmi"></dtml-if
      ><dtml-var f_display_icon
@@ -643,7 +643,7 @@ function drag(ereignis) {
      <dtml-try><dtml-if "wl_isLocked()==1"><img src="/p_/davlocked"></dtml-if><dtml-except></dtml-try>
      <dtml-var "getObjProperty('manage_menu',REQUEST)">
     </div
-    ><div id="<dtml-var ob_id>_children" class="form-small" style="margin: 1px 1px 1px 8px"
+    ><div id="<dtml-var ob_id>_children" style="margin: 1px 1px 1px 8px"
     ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"
     ><dtml-call "REQUEST.set( 'last_level', ob_level)"
    ></dtml-let
@@ -654,11 +654,10 @@ function drag(ereignis) {
 ></dtml-let>
 
 <div class="form-small">
- &nbsp;<a href="javascript:refresh()" class="zmi" 
-  style="font-weight:bold"><dtml-var "getZMILangStr('BTN_REFRESH')"></a>
+ &nbsp;<a href="javascript:refresh()" class="zmi" style="font-weight:bold"><dtml-var "getZMILangStr('BTN_REFRESH')"></a>
 </div>
 
 </div>
 </body>
 </html>
-</dtml-if>
+</dtml-try>

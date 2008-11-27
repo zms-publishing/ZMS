@@ -202,12 +202,11 @@
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">0</item>
 <item key="id"><![CDATA[ZMS]]></item>
 <item key="name"><![CDATA[ZMS]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -396,12 +395,11 @@
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSDocument]]></item>
 <item key="name"><![CDATA[ZMSDocument]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -638,12 +636,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item key="access" type="dictionary"><dictionary>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSFile]]></item>
 <item key="name"><![CDATA[ZMSFile]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -842,12 +839,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSFolder]]></item>
 <item key="name"><![CDATA[ZMSFolder]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -1027,12 +1023,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSGraphic]]></item>
 <item key="name"><![CDATA[ZMSGraphic]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -1066,12 +1061,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">0</item>
 <item key="id"><![CDATA[ZMSLib]]></item>
 <item key="name"><![CDATA[ZMSLib]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSLibrary]]></item>
 </dictionary>
 </item>
@@ -1242,12 +1236,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item key="access" type="dictionary"><dictionary>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSLinkContainer]]></item>
 <item key="name"><![CDATA[ZMSLinkContainer]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -1600,12 +1593,11 @@ function remoteResponseTimedout() {
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSLinkElement]]></item>
 <item key="name"><![CDATA[ZMSLinkElement]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -1676,12 +1668,11 @@ function remoteResponseTimedout() {
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSNote]]></item>
 <item key="name"><![CDATA[ZMSNote]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -1723,12 +1714,11 @@ function remoteResponseTimedout() {
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled"><![CDATA[0]]></item>
 <item key="id"><![CDATA[ZMSSqlDb]]></item>
 <item key="name"><![CDATA[ZMSSqlDb]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -2054,12 +2044,11 @@ function remoteResponseTimedout() {
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">0</item>
 <item key="id"><![CDATA[ZMSSysFolder]]></item>
 <item key="name"><![CDATA[ZMSSysFolder]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -2888,12 +2877,11 @@ table_cell_init();
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSTable]]></item>
 <item key="name"><![CDATA[ZMSTable]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -3262,12 +3250,11 @@ return teaserElmnts
 <item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
 <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -3394,7 +3381,10 @@ return teaserElmnts
 </dictionary>
 </item>
 <item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--</dtml-comment>
+<item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--
+CHANGES:
+v1.0.1 2008-11-25 tf: display HREF_MORE only if len(text)>0
+</dtml-comment>
 
  <dtml-let
    url="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
@@ -3440,7 +3430,7 @@ return teaserElmnts
    ><dtml-if "_.len(abstract)+_.len(url)>0"
     ><div class="text"<dtml-if bgcolor_text> style="background-color:<dtml-var "get_colormap().get(bgcolor_text,'transparent')">"</dtml-if>
      ><dtml-var abstract
-     ><dtml-if url
+     ><dtml-if "_.len(abstract)>0 and _.len(url)>0"
       > <dtml-var "getLangStr('HREF_MORE',REQUEST['lang'])%(' href='+QUOT+url+QUOT+' title='+QUOT+title_url+QUOT)"
      ></dtml-if
     ></div
@@ -3448,7 +3438,8 @@ return teaserElmnts
   ></div
  ></dtml-let>
 
-<dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>]]></item>
+<dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>
+]]></item>
 <item key="id"><![CDATA[pageelement_TeaserElement]]></item>
 <item key="mandatory" type="int">0</item>
 <item key="multilang" type="int">0</item>
@@ -3489,12 +3480,35 @@ return teaserElmnts
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
+<item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
+</dictionary>
+</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSTeaserElement]]></item>
 <item key="name"><![CDATA[ZMSTeaserElement]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.1]]></item>
 <item key="type"><![CDATA[ZMSTeaserElement]]></item>
 </dictionary>
 </item>
@@ -3609,12 +3623,11 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 </item>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSTextarea]]></item>
 <item key="name"><![CDATA[ZMSTextarea]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
+<item key="revision"><![CDATA[1.0.0]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>
@@ -3626,98 +3639,12 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 <item key="__obj_attrs__" type="list"><list>
 </list>
 </item>
-<item key="acquired" type="int">0</item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[com.zms.foundation]]></item>
 <item key="name"><![CDATA[com.zms.foundation]]></item>
+<item key="package"/>
 <item key="revision"><![CDATA[1.0.0]]></item>
-<item key="package"/>
 <item key="type"><![CDATA[ZMSPackage]]></item>
-</dictionary>
-</item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="key"><![CDATA[com.zms.sendmail]]></item>
-<item key="value" type="dictionary"><dictionary>
-<item key="__obj_attrs__" type="list"><list>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[# ------------------------------------------------------------------------------
-# Changes:
-# 2008-10-10 [st]: Added support for smtp-authentication.
-# ------------------------------------------------------------------------------
-
-import smtplib
-import os
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email.MIMEText import MIMEText
-from email.Utils import COMMASPACE, formatdate
-from email import Encoders
-
-def send_mail(send_from, send_to, subject, text, files=[], server="localhost", send_cc=[], send_bcc=[], smtp_user=None, smtp_passwd=None):
-  assert type(send_to)==list
-  assert type(send_cc)==list
-  assert type(send_bcc)==list
-  assert type(files)==list
- 
-  msg = MIMEMultipart('related')
-  msg['From'] = send_from
-  msg['To'] = COMMASPACE.join(send_to)
-  if send_cc: msg['Cc'] = COMMASPACE.join(send_cc)
-  msg['Date'] = formatdate(localtime=True)
-  msg['Subject'] = subject
-  msg.preamble = 'This is a multi-part message in MIME format.'
-
-  msg.attach( MIMEText(text, _subtype='html', _charset='utf-8'))
-
-  for f in files:
-    assert type(f)==dict
-    part = MIMEBase('application', "octet-stream")
-    part.set_payload( f['data'] )
-    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f['filename']))
-    msg.attach(part)
- 
-  send_to = send_to + send_cc + send_bcc
-
-  smtp = smtplib.SMTP(server)
-  if smtp_user is not None:
-    smtp.login(smtp_user,smtp_passwd)
-  smtp.sendmail(send_from, send_to, msg.as_string())
-  
-  smtp.close()]]></item>
-<item key="id"><![CDATA[send_mail]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[send_mail]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[External Method]]></item>
-</dictionary>
-</item>
-</list>
-</item>
-<item key="access" type="dictionary"><dictionary>
-<item key="delete" type="list"><list>
-</list>
-</item>
-<item key="delete_custom"/>
-<item key="edit" type="list"><list>
-</list>
-</item>
-<item key="edit_custom"/>
-<item key="insert" type="list"><list>
-</list>
-</item>
-<item key="insert_custom"/>
-</dictionary>
-</item>
-<item key="acquired" type="int">0</item>
-<item key="enabled" type="int">0</item>
-<item key="id"><![CDATA[com.zms.sendmail]]></item>
-<item key="name"><![CDATA[com.zms.sendmail]]></item>
-<item key="package"/>
-<item key="type"><![CDATA[ZMSLibrary]]></item>
 </dictionary>
 </item>
 </dictionary>

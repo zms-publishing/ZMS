@@ -491,7 +491,9 @@ class ZReferableItem:
     message += 'Load object-tree (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
     abs_urls = obs.keys()
     abs_urls.sort()
-    map( lambda x: delattr( obs[x], 'ref_by'), filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls))
+    for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
+      try: delattr( obs[x], 'ref_by')
+      except: pass
     langs = self.getLangIds()
     for abs_url in abs_urls:
       ob = obs[ abs_url]

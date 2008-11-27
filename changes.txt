@@ -1040,3 +1040,9 @@
 [01121] Added support for 'restricted' to css-classes in ZMSContainerObject.getNavItems() (contributed by fh).
 [01122] Revised display of portal-clients in object-browser (requested by desy).
 --------------------------------------------------
+2008-11-24:zms-2.11.1-17
+[01123] Applied fix for ZMSTeaserElement v1.0.1: display HREF_MORE only if len(text)>0 (contributed by tf).
+--------------------------------------------------
+2008-11-25:zms-2.11.1-18
+[01124] Applied fix for Link-Containers in _deprecatedapi.getLinkList() (requested by fh).
+--------------------------------------------------

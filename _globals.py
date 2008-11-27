@@ -227,8 +227,11 @@ def map_key_vals(keys, vals):
 # ------------------------------------------------------------------------------
 def objectTree(self, clients=False):
   rtn = [ self]
-  for ob in self.objectValues( self.dGlobalAttrs.keys()):
-    rtn.extend( objectTree( ob))
+  try:
+    for ob in self.objectValues( self.dGlobalAttrs.keys()):
+      rtn.extend( objectTree( ob))
+  except:
+    writeException( self, '[objectTree]')
   if clients:
     for ob in self.getPortalClients():
       rtn.extend( objectTree( ob, clients))

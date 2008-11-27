@@ -115,7 +115,7 @@ class DeprecatedAPI:
       else:
         for ob in self.filteredChildNodes(REQUEST,['ZMSFile','ZMSLinkContainer','ZMSLinkElement']):
           if ob.meta_id == 'ZMSLinkContainer':
-            for sub_ob in self.filteredChildNodes(REQUEST,['ZMSLinkElement']):
+            for sub_ob in ob.filteredChildNodes(REQUEST,['ZMSLinkElement']):
               value.extend( getLinkList_ZMSLinkElement( sub_ob, REQUEST, allow_none))
           elif ob.meta_id == 'ZMSFile' and ob.getObjProperty('align',REQUEST) in ['','NONE']:
             f = ob.getFile(REQUEST)

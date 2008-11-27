@@ -1182,10 +1182,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST,deep=0))
       xml += " is_page=\"%s\""%(self.isPage())
       xml += " is_pageelement=\"%s\""%(self.isPageElement())
-      xml += " has_children=\"%s\""%str(len(self.getChildNodes(REQUEST,meta_types))>0)
       xml += " meta_id=\"%s\""%(self.meta_id)
       xml += " title=\"%s\""%_globals.html_quote(self.getTitle(REQUEST))
       xml += " titlealt=\"%s\""%_globals.html_quote(self.getTitlealt(REQUEST))
+      if REQUEST.form.get('has_children', 1):
+        xml += " has_children=\"%s\""%str(len(self.getChildNodes(REQUEST,meta_types))>0)
       if perms is not None:
         xml += " permissions=\"%s\""%str(','.join(perms))
       if restricted is not None:

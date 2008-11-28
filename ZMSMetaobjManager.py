@@ -110,10 +110,10 @@ class ZMSMetaobjManager:
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
 
-    def _importMetaobjXml(self, item, zms_system=0, createIfNotExists=1):
+    def _importMetaobjXml(self, item, zms_system=0, createIfNotExists=1, createIdsFilter=None):
       id = item['key']
       ids = filter( lambda x: self.model[x].get('zms_system',0)==1, self.model.keys())
-      if createIfNotExists == 1 or id in ids:
+      if (createIfNotExists == 1 or id in ids) and (createIdsFilter is None or id in createIdsFilter):
         newDtml = item.get('dtml')
         newValue = item.get('value')
         newAttrs = newValue.get('attrs',newValue.get('__obj_attrs__'))
@@ -162,14 +162,13 @@ class ZMSMetaobjManager:
           newDefault = ''
           self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault, zms_system)
 
-    def importMetaobjXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+    def importMetaobjXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
       v = self.parseXmlString( xml, mediadbStorable=False)
-      if type(v) is list:
-        for item in v:
-          id = self._importMetaobjXml(item,zms_system,createIfNotExists)
-      else:
-        id = self._importMetaobjXml(v,zms_system,createIfNotExists)
+      if not type(v) is list:
+        v = [v]
+      for item in v:
+        id = self._importMetaobjXml(item,zms_system,createIfNotExists,createIdsFilter)
 
 
     # --------------------------------------------------------------------------
@@ -763,6 +762,7 @@ class ZMSMetaobjManager:
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
         """ ZMSMetaobjManager.manage_changeProperties """
         message = ''
+        extra = {}
         t0 = time.time()
         id = REQUEST.get('id','')
         sync_id = None
@@ -975,15 +975,38 @@ class ZMSMetaobjManager:
           # Import.
           # -------
           elif btn == self.getZMILangStr('BTN_IMPORT'):
-            f = REQUEST['file']
-            if f:
+            immediately = False
+            xmlfile = None
+            temp_folder = self.temp_folder
+            temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
+            if temp_id in temp_folder.objectIds():
+              filename = getattr( temp_folder, temp_id).title
+              xmlfile = getattr( temp_folder, temp_id).data
+              zms_system = REQUEST.get('zms_system',0)
+              temp_folder.manage_delObjects([temp_id])
+              immediately = True
+            if REQUEST.get('file'):
+              f = REQUEST['file']
               filename = f.filename
-              self.importMetaobjXml(xml=f)
-            else:
-              filename = REQUEST['init']
-              createIfNotExists = 1
-              self.importConf(filename, REQUEST, createIfNotExists)
-            message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+              xmlfile = f
+              zms_system = 0
+            if REQUEST.get('init'):
+              file = REQUEST['init']
+              filename, xmlfile = self.getConfXmlFile( file)
+              zms_system = 1
+            if xmlfile is not None:
+              if not immediately:
+                v = self.parseXmlString( xmlfile, mediadbStorable=False)
+                immediately = not type( v) is list
+              if not immediately:
+                file = temp_folder.manage_addFile(id=temp_id,title=filename,file=xmlfile)
+                extra['section'] = 'import'
+                extra['temp_import_file_id'] = temp_id
+                extra['temp_import_zms_system:int'] = zms_system
+              else:
+                createIdsFilter = REQUEST.get('createIdsFilter')
+                self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
+                message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
           
           # Move to.
           # --------
@@ -1008,6 +1031,7 @@ class ZMSMetaobjManager:
         
         # Return with message.
         target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
+        target = self.url_append_params( target, extra)
         if len( message) > 0:
           message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
           target = self.url_append_params( target, { 'manage_tabs_message':message})

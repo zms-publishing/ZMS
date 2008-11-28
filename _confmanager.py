@@ -150,9 +150,9 @@ class ConfManager(
 
 
     # --------------------------------------------------------------------------
-    #  ConfManager.importConf:
+    #  ConfManager.getConfXmlFile:
     # --------------------------------------------------------------------------
-    def importConf(self, file, REQUEST, createIfNotExists=0):
+    def getConfXmlFile(self, file):
       if type(file) is dict:
         filename = file['filename']
         xmlfile = StringIO( file['data'])
@@ -160,6 +160,14 @@ class ConfManager(
         filename = file
         filepath = package_home(globals())+'/import/'
         xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
+      return filename, xmlfile
+
+
+    # --------------------------------------------------------------------------
+    #  ConfManager.importConf:
+    # --------------------------------------------------------------------------
+    def importConf(self, file, REQUEST, createIfNotExists=0):
+      filename, xmlfile = self.getConfXmlFile( file)
       zms_system = 1
       if filename.find('.charfmt.') > 0:
         self.format_manager.importCharformatXml(xmlfile, REQUEST, zms_system, createIfNotExists)

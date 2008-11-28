@@ -233,7 +233,7 @@ function mms_normalize_rows(el_tbody) {
           <td class="form-small"
            ><select class="form-small" name="attr_type_<dtml-var "column['id']">"
             ><option value=""></option
-            ><dtml-in "valid_types.keys()"
+            ><dtml-in "valid_types.keys()" sort
              ><dtml-let t=sequence-item
               ><option value="<dtml-var t>"<dtml-if "column.has_key(t)"> selected="selected"</dtml-if>><dtml-var t></option
              ></dtml-let
@@ -463,4 +463,3 @@ function mms_normalize_rows(el_tbody) {
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>
 </dtml-try>
-

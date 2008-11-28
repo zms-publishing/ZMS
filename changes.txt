@@ -1046,3 +1046,10 @@
 2008-11-25:zms-2.11.1-18
 [01124] Applied fix for Link-Containers in _deprecatedapi.getLinkList() (requested by fh).
 --------------------------------------------------
+2008-11-27:zms-2.11.1-19
+[01125] Added Vietnamese language (contributed by Nguyen Thi Huong Giang).
+[01126] Revised Farsi language (contributed by Laleh Baschardust).
+[01127] Added support for url-attributes to SQL-Datasource.
+[01128] Applied fix for recursive inclusions in ZMSContainerObject.getNavItems(): pass ZMI_THIS as current! (requested by tf).
+[01229] Added support for partial xml-import/-initialization of content-object packages (requested by tf).
+--------------------------------------------------

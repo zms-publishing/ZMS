@@ -370,7 +370,12 @@ function changeType( el)
    <col width="20" />
   </colgroup>
 
-  <!-- Header -->
+<dtml-comment>
+################################################################################
+### Edit
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('section','edit')=='edit'">
   <tr>
    <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
@@ -385,14 +390,11 @@ function changeType( el)
       ><dtml-call "operator_setitem(acquisitions,metaObjId,portalClientIds)"
      ></dtml-if
     ></dtml-let
- ><dtml-comment
- ></dtml-comment
    ></dtml-in 
   ></dtml-let
  ></dtml-in
- >
 
-  <dtml-in metaObjIds
+  ><dtml-in metaObjIds
    ><dtml-let x=sequence-item metaObj="metaObjMap[x]"
     ><dtml-call "REQUEST.set('has_acquisition',acquisitions.get(metaObj['id'],[]))"
     ><dtml-if "REQUEST['id']==metaObj['id']">
@@ -971,9 +973,14 @@ function changeType( el)
     </dtml-if>
    </dtml-let>
   </dtml-in>
+ </dtml-if>
 
- <!-- Insert Special Object -->
- <dtml-if "REQUEST.get('id','')==''">
+<dtml-comment>
+################################################################################
+### Insert
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','insert')=='insert'">
   <tr>
    <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
@@ -1006,8 +1013,12 @@ function changeType( el)
  </tr>
  </dtml-if>
 
- <!-- Acquire Special Object -->
- <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not _.None"
+<dtml-comment>
+################################################################################
+### Acquire
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not _.None"
   ><dtml-let thisIds="metaObjIds" portalMaster="getPortalMaster()" res="[]"
    ><dtml-in "portalMaster.getMetaobjIds()"
      ><dtml-let metaObjId=sequence-item metaObj="portalMaster.getMetaobj(metaObjId)" metaObjPackage="metaObj['package']"
@@ -1049,34 +1060,92 @@ function changeType( el)
 ### Import
 ################################################################################
 </dtml-comment>
- <dtml-if "REQUEST.get('id','')==''">
+ <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','import')=='import'">
   <tr>
    <td colspan="7"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
    <td colspan="7">
     <table cellspacing="0" cellpadding="2" border="0">
-    <tr valign="middle">
-     <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
-     <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
-    </tr>
-    <dtml-let pattern="'.metaobj.'" conf_files="getConfFiles(pattern)">
-     <dtml-if conf_files>
-      <tr>
-       <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
-       <td>
-        <select class="form-element" name="init">
-         <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
-         <dtml-in conf_files>
-          <dtml-let conf_file=sequence-item>
-           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
-          </dtml-let>
-         </dtml-in>
-        </select>
-       </td>
-      </tr>
-     </dtml-if>
-    </dtml-let>
+    <dtml-if temp_import_file_id
+     ><tr valign="top"
+     ><td colspan="2"
+     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(f.data,mediadbStorable=_.False)" packages="[]" metaObjs="[]"
+      ><dtml-in xml mapping
+       ><dtml-let metaObj="{'id':key,'name':value['name'],'type':value['type'],'package':value.get('package',None),'revision':value.get('revision','0.0.0'),'zms_system':temp_import_zms_system}"
+        ><dtml-if "metaObj['type'] == 'ZMSPackage'"
+         ><dtml-unless "metaObj['id'] in packages"
+          ><dtml-call "packages.append(metaObj['id'])"
+         ></dtml-unless
+        ><dtml-else
+         ><dtml-unless "metaObj['package'] in packages"
+          ><dtml-call "packages.append(metaObj['package'])"
+         ></dtml-unless
+         ><dtml-call "metaObjs.append(metaObj)"
+        ></dtml-if
+       ></dtml-let
+      ></dtml-in
+      ><dtml-call "packages.sort()"
+      ><input type="hidden" name="zms_system:int" value="<dtml-var temp_import_zms_system>"
+      ><div class="form-label"><dtml-var "f.title_or_id()"></div
+      ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
+      ><dtml-in packages
+       ><dtml-let package=sequence-item package_id="id_quote(package)"
+         ><div class="form-small">
+          <input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
+          ><dtml-if "not metaObjMap.get(package)"
+           ><img src="<dtml-var MISC_ZMS>btn_insert.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" style="vertical-align:middle"
+          ></dtml-if
+          ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
+          ><code style="color:navy"><b><dtml-var package missing="<default>" html_quote></b></code>
+          <dtml-in metaObjs
+           ><dtml-let metaObj=sequence-item
+            ><dtml-if "metaObj.get('package')==package"
+             ><div class="form-small" style="margin-left:10px;">
+              <input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var "metaObj['id']">" checked="checked"
+              ><dtml-if "metaObjMap.get(metaObj['id'])"
+               ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle"
+              ><dtml-else
+               ><img src="<dtml-var MISC_ZMS>btn_insert.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" style="vertical-align:middle"
+              ></dtml-if
+              ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
+              ><b><dtml-var "metaObj['name']"></b>
+              v<dtml-var "metaObj['revision']">
+              <i>(<dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">)</i>
+             </div
+            ></dtml-if
+           ></dtml-let
+          ></dtml-in
+         ></div
+       ></dtml-let
+      ></dtml-in
+      ></div
+     ></dtml-let
+     ></td
+     ></tr
+    ><dtml-else>
+     <tr valign="middle">
+      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
+      <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+     </tr>
+     <dtml-let pattern="'.metaobj.'" conf_files="getConfFiles(pattern)">
+      <dtml-if conf_files>
+       <tr>
+        <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
+        <td>
+         <select class="form-element" name="init">
+          <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
+          <dtml-in conf_files>
+           <dtml-let conf_file=sequence-item>
+            <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
+           </dtml-let>
+          </dtml-in>
+         </select>
+        </td>
+       </tr>
+      </dtml-if>
+     </dtml-let>
+    </dtml-if>
     <tr valign="middle">
      <td>&nbsp;</td>
      <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>

@@ -414,7 +414,6 @@ class ZMSContainerObject(
           into = True
         ob = self.getLinkObj( target)
         sort_id = ob.getSortId()
-        print "manage_ajaxDragDrop", self, "before=", before, "into=", into
         if into:
           sort_id = 0
         else:
@@ -689,8 +688,7 @@ class ZMSContainerObject(
           items.append('>')
           items.append('<span>%s</span>'%_globals.html_quote(ob.getTitlealt(REQUEST)))
           items.append('</a>')
-          if (depth < opt.get('maxdepth',100)) and \
-             (ob.getLevel() < opt.get('maxlevel',100)) and \
+          if (max(depth,ob.getLevel()) < opt.get('maxdepth',100)) and \
              ((opt.get('complete',False)) or \
               (opt.get('deep',True) and ob.id != self.id and ob.id in current.getPhysicalPath())):
             items.append( ob.getNavItems( current, REQUEST, opt, depth+1))

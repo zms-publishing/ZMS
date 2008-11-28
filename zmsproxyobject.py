@@ -74,6 +74,17 @@ class ZMSProxyObject(ZMSContainerObject):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSProxyObject.getPhysicalPath
+    # --------------------------------------------------------------------------
+    def getPhysicalPath(self):
+      rtn = list( self.__root__.getPhysicalPath())
+      for id in list( self.base.getPhysicalPath())+[self.id]:
+        if id not in rtn:
+          rtn.append( id)
+      return tuple( rtn)
+
+
+    # --------------------------------------------------------------------------
     #  ZMSProxyObject.__request__ 
     # --------------------------------------------------------------------------
     def __request__(self, REQUEST):

@@ -433,14 +433,14 @@
      +- PASSWORD
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif password>
+     <dtml-elif "grid_col.get('password')">
       <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), type='password',css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- CHECKBOX
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif checkbox>
+     <dtml-elif "grid_col.get('checkbox')">
       <dtml-try>
        <dtml-var "getCheckbox(fmName='form0',elName=elName,value=row.get(id,''),enabled=_.True,REQUEST=REQUEST,css=css)">
       <dtml-except>
@@ -644,8 +644,15 @@
      +- RICHTEXT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type in ['richtext']">
+     <dtml-elif "grid_col.get('richtext')">
       <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=_.None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- URL
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+     <dtml-elif "grid_col.get('url')">
+      <dtml-var "getUrlInput(fmName='form0',elName=elName,elTextName='',size=15,value=row.get(id,''),enabled=1,REQUEST=REQUEST,css='form-element')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- OTHER
@@ -688,4 +695,3 @@
   </dtml-if>
   </form>
 </dtml-unless>
-

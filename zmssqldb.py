@@ -130,7 +130,19 @@ class ZMSSqlDb(ZMSObject):
 
     # Valid Types.
     # ------------
-    valid_types = {'blob':{},'details':{},'fk':{},'html':1,'multiselect':{},'multimultiselect':{},'pk':1,'url':1}
+    valid_types = {
+      'blob':{},
+      'details':{},
+      'fk':{},
+      'html':1,
+      'multiselect':{},
+      'multimultiselect':{},
+      'pk':1,
+      'checkbox':1,
+      'html':1,
+      'richtext':1,
+      'url':1,
+    }
 
 
     ############################################################################

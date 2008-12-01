@@ -27,6 +27,7 @@ from __future__ import nested_scopes
 from Products.ExternalMethod import ExternalMethod
 from Products.PythonScripts import PythonScript
 from Products.ZSQLMethods import SQL
+from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import copy
 import sys
@@ -966,11 +967,21 @@ class ZMSMetaobjManager:
           # Acquire.
           # --------
           elif btn == self.getZMILangStr('BTN_ACQUIRE'):
+            immediately = REQUEST.get('immediately',0)
+            overwrite = []
             ids = REQUEST.get('aq_ids',[])
             for id in ids:
-              self.acquireMetaobj( id)
-            # Return with message.
-            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
+              if not immediately and id in self.getMetaobjIds():
+                overwrite.append( id)
+              else:
+                self.acquireMetaobj( id)
+            if overwrite:
+              id = ''
+              extra['section'] = 'acquire'
+              extra['temp_ids'] = ','.join(overwrite)
+            else:
+              # Return with message.
+              message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
           
           # Import.
           # -------
@@ -996,7 +1007,10 @@ class ZMSMetaobjManager:
               zms_system = 1
             if xmlfile is not None:
               if not immediately:
+                xml = xmlfile.read()
+                xmlfile = StringIO( xml)
                 v = self.parseXmlString( xmlfile, mediadbStorable=False)
+                xmlfile = StringIO( xml)
                 immediately = not type( v) is list
               if not immediately:
                 file = temp_folder.manage_addFile(id=temp_id,title=filename,file=xmlfile)

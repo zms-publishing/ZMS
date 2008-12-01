@@ -991,7 +991,7 @@ class ZMSContainerObject(
       key = self.getMetaobjAttrIds( meta_id)[0]
       attr = self.getMetaobjAttr( meta_id, key)
       zexp = attr[ 'custom']
-      filename = zexp.getFilename()
+      filename = zexp.title_or_id()
       fileid = filename[:filename.find('.')]
       path = package_home(globals()) + '/import/'
       _fileutil.exportObj( zexp, path + filename)

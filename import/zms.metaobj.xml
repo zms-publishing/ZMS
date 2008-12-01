@@ -153,6 +153,7 @@
 <item><![CDATA[type(ZMSDocument)]]></item>
 <item><![CDATA[type(ZMSObject)]]></item>
 <item><![CDATA[type(ZMSRecordSet)]]></item>
+<item><![CDATA[type(ZMSModule)]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">0</item>
@@ -206,7 +207,7 @@
 <item key="id"><![CDATA[ZMS]]></item>
 <item key="name"><![CDATA[ZMS]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
+<item key="revision"><![CDATA[1.0.1]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -346,6 +347,7 @@
 <item><![CDATA[ZMSTeaserContainer]]></item>
 <item><![CDATA[type(ZMSObject)]]></item>
 <item><![CDATA[type(ZMSRecordSet)]]></item>
+<item><![CDATA[type(ZMSModule)]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">0</item>
@@ -399,7 +401,7 @@
 <item key="id"><![CDATA[ZMSDocument]]></item>
 <item key="name"><![CDATA[ZMSDocument]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
+<item key="revision"><![CDATA[1.0.1]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -790,6 +792,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item><![CDATA[type(ZMSDocument)]]></item>
 <item><![CDATA[type(ZMSObject)]]></item>
 <item><![CDATA[type(ZMSRecordSet)]]></item>
+<item><![CDATA[type(ZMSModule)]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">0</item>
@@ -843,7 +846,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item key="id"><![CDATA[ZMSFolder]]></item>
 <item key="name"><![CDATA[ZMSFolder]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
+<item key="revision"><![CDATA[1.0.1]]></item>
 <item key="type"><![CDATA[ZMSDocument]]></item>
 </dictionary>
 </item>
@@ -3438,8 +3441,7 @@ v1.0.1 2008-11-25 tf: display HREF_MORE only if len(text)>0
   ></div
  ></dtml-let>
 
-<dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>
-]]></item>
+<dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>]]></item>
 <item key="id"><![CDATA[pageelement_TeaserElement]]></item>
 <item key="mandatory" type="int">0</item>
 <item key="multilang" type="int">0</item>

@@ -14,6 +14,20 @@
 <script language="JavaScript">
 <!--//
 
+function toggleElement( sender, id) {
+  var speed = "normal";
+  var img = $('#'+sender);
+  var el = $('#'+id);
+  if ( el.css("display").toLowerCase()=="none") {
+    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
+    el.show(speed);
+  }
+  else {
+    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
+    el.hide(speed);
+  }
+}
+
 /**
  * Toggle highlighting of selected rows.
  *
@@ -1037,18 +1051,97 @@ function changeType( el)
     <tr class="zmiNeutralColorLight0">
      <td colspan="7" class="form-element">
       <table cellspacing="0" cellpadding="0" border="0">
-      <tr valign="top">
-       <td>
-        <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
-         <dtml-in res
-          ><dtml-let metaObj=sequence-item
-           ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"><dtml-var "metaObj['package']">.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option
+      <dtml-if temp_ids
+       ><tr valign="top"
+       ><td colspan="2"
+        ><input type="hidden" name="immediately:int" value="1"
+        ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
+         ><dtml-in "temp_ids.split(',')"
+          ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)" metaObj2="getPortalMaster().getMetaobj(metaObjId)" attr_ids="[]" metaObjAttrIds="_.map(lambda x: x['id'], metaObj['attrs'])" metaObjAttrIds2="_.map(lambda x: x['id'], metaObj2['attrs'])"
+           ><dtml-call "REQUEST.set('attr_idx',0)"
+           ><dtml-call "attr_ids.extend(metaObjAttrIds)"
+           ><dtml-in metaObjAttrIds2
+            ><dtml-let attr_id=sequence-item
+             ><dtml-if "attr_id in attr_ids"
+              ><dtml-call "REQUEST.set('attr_idx',attr_ids.index(attr_id))"
+             ><dtml-else
+              ><dtml-call "attr_ids.insert(attr_idx,attr_id)"
+              ><dtml-call "REQUEST.set('attr_idx',attr_idx+1)"
+             ></dtml-if
+            ></dtml-let
+           ></dtml-in
+            ><div class="form-small" style="text-align:left;">
+             <input class="form-checkbox" type="checkbox" name="aq_ids:list" value="<dtml-var "metaObj['id']">" checked="checked"
+             ><a href="javascript:toggleElement('img_<dtml-var "metaObj['id']">','columns_<dtml-var "metaObj['id']">')"><img id="img_<dtml-var "metaObj['id']">" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a
+             ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle" 
+             ><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
+             ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
+             ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
+             ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
+              <a id="a_<dtml-var "metaObj['id']">" href="?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" class="zmi" <dtml-if "metaObj['type'] == 'ZMSPackage' or metaObj['enabled']==1">style="font-weight:bold;"</dtml-if>
+               ><dtml-if "metaObj['type'] == 'ZMSPackage'"><code style="color:navy"><dtml-var "metaObj['name']"></code
+               ><dtml-else><dtml-var "metaObj['name']"
+               ></dtml-if
+              ></a>
+             v<dtml-var "metaObj.get('revision','0.0.0')"> &#8594; v<dtml-var "metaObj2.get('revision','0.0.0')">
+             <dtml-unless "metaObj['type'] == 'ZMSPackage'"
+              ><i>(<dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">)</i
+             ></dtml-unless
+             ><div id="columns_<dtml-var "metaObj['id']">" style="display:none;padding-left:20px;"
+              ><dtml-in attr_ids
+               ><dtml-let attr_id=sequence-item
+                ><dtml-if "attr_id not in metaObjAttrIds"
+                 ><div class="form-small" style="color:green;font-weight:bold;"
+                  ><dtml-in "filter_list(metaObj2['attrs'],'id',attr_id,'==')" mapping
+                   ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                  ></dtml-in
+                 ></div
+                ><dtml-elif "attr_id not in metaObjAttrIds2"
+                 ><div class="form-small" style="color:red;text-decoration:line-through;"
+                  ><dtml-in "filter_list(metaObj['attrs'],'id',attr_id,'==')" mapping
+                   ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                  ></dtml-in
+                 ></div
+                ><dtml-else
+                 ><dtml-in "filter_list(metaObj['attrs'],'id',attr_id,'==')" mapping
+                  ><dtml-let x=sequence-item
+                   ><dtml-in "filter_list(metaObj2['attrs'],'id',attr_id,'==')" mapping
+                    ><dtml-let x2=sequence-item
+                     ><div class="form-small" <dtml-if "toXmlString(x)!=toXmlString(x2)">style="color:blue;font-weight:bold;"</dtml-if>
+                      ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                     ></div
+                    ></dtml-let
+                   ></dtml-in
+                  ></dtml-let
+                 ></dtml-in
+                ></dtml-if
+               ></dtml-let
+              ></dtml-in
+             ></div
+            ></div
           ></dtml-let
-         ></dtml-in>
-        </select>
-       </td>
-       <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
-      </tr>
+         ></dtml-in
+        ></div
+       ></td
+       ></tr
+       ><tr valign="top"
+        ><td>&nbsp;</td
+        ><td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td
+       ></tr
+      ><dtml-else>
+       <tr valign="top">
+        <td>
+         <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
+          <dtml-in res
+           ><dtml-let metaObj=sequence-item
+            ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"><dtml-var "metaObj['package']">.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option
+           ></dtml-let
+          ></dtml-in>
+         </select>
+        </td>
+        <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
+       </tr>
+      </dtml-if>
       </table>
      </tr>
    </dtml-if

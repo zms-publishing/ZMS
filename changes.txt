@@ -1053,3 +1053,7 @@
 [01128] Applied fix for recursive inclusions in ZMSContainerObject.getNavItems(): pass ZMI_THIS as current! (requested by tf).
 [01229] Added support for partial xml-import/-initialization of content-object packages (requested by tf).
 --------------------------------------------------
+2008-12-01:zms-2.11.1-20
+[01230] Applied fix for content-modules (reported by st).
+[01231] Added support for diff-display in acquisition of content-objects.
+--------------------------------------------------

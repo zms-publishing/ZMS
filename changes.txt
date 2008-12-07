@@ -1051,9 +1051,15 @@
 [01126] Revised Farsi language (contributed by Laleh Baschardust).
 [01127] Added support for url-attributes to SQL-Datasource.
 [01128] Applied fix for recursive inclusions in ZMSContainerObject.getNavItems(): pass ZMI_THIS as current! (requested by tf).
-[01229] Added support for partial xml-import/-initialization of content-object packages (requested by tf).
+[01129] Added support for partial xml-import/-initialization of content-object packages (requested by tf).
 --------------------------------------------------
 2008-12-01:zms-2.11.1-20
-[01230] Applied fix for content-modules (reported by st).
-[01231] Added support for diff-display in acquisition of content-objects.
+[01130] Applied fix for content-modules (reported by st).
+[01131] Added support for diff-display in acquisition of content-objects.
+--------------------------------------------------
+2008-12-02:zms-2.11.1-21
+[01132] Added support for multiple acquisition of meta-attributes.
+--------------------------------------------------
+2008-12-05:zms-2.11.1-22
+[01133] Added support for keeping meta-attributes after xml-import of content-objects (requested by tf).
 --------------------------------------------------

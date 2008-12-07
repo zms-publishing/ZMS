@@ -16,35 +16,6 @@
     }
     return b;
   }
-  
-  /**
-   *
-   * @param el		Html-Form-Element
-   */
-  function editorFormOnChange(el)
-  {
-    var newCSS = el.value;
-    var doc = parent.previewForm.document;
-    var zmiPreviewStyle = doc.getElementById('zmiPreviewStyle');
-    if ( doc.all) {
-      var styleSheets = doc.styleSheets;
-      for ( var i = 0; i < styleSheets.length; i++) {
-        if ( styleSheets[i].id == 'preview stylesheet') {
-          styleSheets[i].cssText = newCSS + '';
-        }
-      }
-    }
-    else {
-      if ( !zmiPreviewStyle) {
-        var head = doc.getElementsByTagName('head')[0];
-        zmiPreviewStyle = doc.createElement( "style");
-        zmiPreviewStyle.setAttribute( 'id', 'zmiPreviewStyle');
-        zmiPreviewStyle.setAttribute( 'type', 'text/css');
-        head.appendChild( zmiPreviewStyle);
-      }
-      zmiPreviewStyle.innerHTML = newCSS;
-    }
-  }
 
 //-->
 </script>

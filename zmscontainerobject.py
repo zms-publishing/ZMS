@@ -551,6 +551,10 @@ class ZMSContainerObject(
                 metaObj = self.getMetaobj( metaObjId)
                 if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
                   meta_ids.append( metaObj['id'])
+            elif objAttr['id']=='e' and meta_id in self.getMetaobjIds():
+              metaObj = self.getMetaobj( meta_id)
+              if metaObj['enabled'] == 1:
+                meta_ids.append( meta_id)
             else:
               meta_ids.append( meta_id)
         else:

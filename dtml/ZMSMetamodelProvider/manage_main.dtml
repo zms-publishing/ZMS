@@ -4,7 +4,7 @@
  <dtml-call "REQUEST.set('id','')">
 </dtml-if>
 
-<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" meta_types="_.filter( lambda x: x not in ['ZMS'], metaObjIds)"
+<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" meta_types="_.filter( lambda x: x not in ['ZMS'], metaObjIds)" valid_types="valid_datatypes+valid_zopetypes+meta_types+['*']"
 ><dtml-in metaObjIds
 ><dtml-let x=sequence-item
 ><dtml-call "operator_setitem(metaObjMap,x,getMetaobj(x))"
@@ -1071,16 +1071,16 @@ function changeType( el)
             ></dtml-let
            ></dtml-in
             ><div class="form-small" style="text-align:left;">
-             <input class="form-checkbox" type="checkbox" name="aq_ids:list" value="<dtml-var "metaObj['id']">" checked="checked"
-             ><a href="javascript:toggleElement('img_<dtml-var "metaObj['id']">','columns_<dtml-var "metaObj['id']">')"><img id="img_<dtml-var "metaObj['id']">" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a
-             ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle" 
-             ><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
-             ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
-             ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
+             <input class="form-checkbox" type="checkbox" name="aq_ids:list" value="<dtml-var "metaObj2['id']">" checked="checked"
+             ><a href="javascript:toggleElement('img_<dtml-var "metaObj2['id']">','columns_<dtml-var "metaObj2['id']">')"><img id="img_<dtml-var "metaObj2['id']">" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a
+             ><img src="<dtml-var "display_icon(REQUEST,metaObj2['id'])">" title="<dtml-var "metaObj2['id']">" border="0" style="vertical-align:middle" 
+             ><dtml-if "metaObj2.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
+             ><dtml-if "metaObj2.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
+             ><dtml-if "metaObj2.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj2['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
              ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
-              <a id="a_<dtml-var "metaObj['id']">" href="?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" class="zmi" <dtml-if "metaObj['type'] == 'ZMSPackage' or metaObj['enabled']==1">style="font-weight:bold;"</dtml-if>
-               ><dtml-if "metaObj['type'] == 'ZMSPackage'"><code style="color:navy"><dtml-var "metaObj['name']"></code
-               ><dtml-else><dtml-var "metaObj['name']"
+              <a id="a_<dtml-var "metaObj2['id']">" href="?lang=<dtml-var lang>&id=<dtml-var "metaObj2['id']">" class="zmi" <dtml-if "metaObj2['type'] == 'ZMSPackage' or metaObj2['enabled']==1">style="font-weight:bold;"</dtml-if>
+               ><dtml-if "metaObj2['type'] == 'ZMSPackage'"><code style="color:navy"><dtml-var "metaObj2['name']"></code
+               ><dtml-else><dtml-var "metaObj2['name']"
                ></dtml-if
               ></a>
              v<dtml-var "metaObj.get('revision','0.0.0')"> &#8594; v<dtml-var "metaObj2.get('revision','0.0.0')">
@@ -1093,13 +1093,31 @@ function changeType( el)
                 ><dtml-if "attr_id not in metaObjAttrIds"
                  ><div class="form-small" style="color:green;font-weight:bold;"
                   ><dtml-in "filter_list(metaObj2['attrs'],'id',attr_id,'==')" mapping
-                   ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                   ><dtml-if "type not in valid_types"
+                    ><dtml-if "type not in getMetadictAttrs()"
+                     ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                    ><dtml-else
+                     ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
+                    ></dtml-if
+                   ><dtml-else
+                    ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle"
+                   ></dtml-if
+                   ><dtml-var id>: <dtml-var type> <dtml-unless "type in ['interface']"><i>(<dtml-var name>)</i></dtml-unless
                   ></dtml-in
                  ></div
                 ><dtml-elif "attr_id not in metaObjAttrIds2"
                  ><div class="form-small" style="color:red;text-decoration:line-through;"
                   ><dtml-in "filter_list(metaObj['attrs'],'id',attr_id,'==')" mapping
-                   ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                   ><dtml-if "type not in valid_types"
+                    ><dtml-if "type not in getMetadictAttrs()"
+                     ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                    ><dtml-else
+                     ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
+                    ></dtml-if
+                   ><dtml-else
+                    ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle"
+                   ></dtml-if
+                   ><dtml-var id>: <dtml-var type> <dtml-unless "type in ['interface']"><i>(<dtml-var name>)</i></dtml-unless
                   ></dtml-in
                  ></div
                 ><dtml-else
@@ -1108,7 +1126,16 @@ function changeType( el)
                    ><dtml-in "filter_list(metaObj2['attrs'],'id',attr_id,'==')" mapping
                     ><dtml-let x2=sequence-item
                      ><div class="form-small" <dtml-if "toXmlString(x)!=toXmlString(x2)">style="color:blue;font-weight:bold;"</dtml-if>
-                      ><dtml-var id>: <dtml-var type> <i>(<dtml-var name>)</i
+                      ><dtml-if "type not in valid_types"
+                       ><dtml-if "type not in getMetadictAttrs()"
+                        ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                       ><dtml-else
+                        ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
+                       ></dtml-if
+                      ><dtml-else
+                       ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle"
+                      ></dtml-if
+                      ><dtml-var id>: <dtml-var type> <dtml-unless "type in ['interface']"><i>(<dtml-var name>)</i></dtml-unless
                      ></div
                     ></dtml-let
                    ></dtml-in
@@ -1126,7 +1153,10 @@ function changeType( el)
        ></tr
        ><tr valign="top"
         ><td>&nbsp;</td
-        ><td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td
+        ><td
+         ><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"
+         ><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this,'obj');"
+        ></td
        ></tr
       ><dtml-else>
        <tr valign="top">
@@ -1163,7 +1193,8 @@ function changeType( el)
     <dtml-if temp_import_file_id
      ><tr valign="top"
      ><td colspan="2"
-     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(f.data,mediadbStorable=_.False)" packages="[]" metaObjs="[]"
+     ><dtml-try
+     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(_.str(f.data),mediadbStorable=_.False)" packages="[]" metaObjs="[]"
       ><dtml-in xml mapping
        ><dtml-let metaObj="{'id':key,'name':value['name'],'type':value['type'],'package':value.get('package',None),'revision':value.get('revision','0.0.0'),'zms_system':temp_import_zms_system}"
         ><dtml-if "metaObj['type'] == 'ZMSPackage'"
@@ -1214,6 +1245,9 @@ function changeType( el)
       ></dtml-in
       ></div
      ></dtml-let
+     ><dtml-except
+     ><dtml-var error_type>: <dtml-var error_value><br/><dtml-var error_tb newline_to_br html_quote
+     ></dtml-try
      ></td
      ></tr
     ><dtml-else>
@@ -1255,5 +1289,3 @@ function changeType( el)
 
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>
-
-

@@ -553,13 +553,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       # Init content.
       initContent(obj,'discussions.content.xml',REQUEST)
     
-    #-- Test-Suite
-    if REQUEST.get('specobj_testsuite',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'testsuite', REQUEST)
-      # Init content.
-      initContent(obj,'testsuite.content.xml',REQUEST)
-    
     #-- Newsletter
     if REQUEST.get('specobj_newsletter',0) == 1:
       # Init configuration.

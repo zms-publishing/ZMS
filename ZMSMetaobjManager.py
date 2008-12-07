@@ -113,8 +113,17 @@ class ZMSMetaobjManager:
 
     def _importMetaobjXml(self, item, zms_system=0, createIfNotExists=1, createIdsFilter=None):
       id = item['key']
-      ids = filter( lambda x: self.model[x].get('zms_system',0)==1, self.model.keys())
+      meta_types = self.model.keys()
+      ids = filter( lambda x: self.model[x].get('zms_system',0)==1, meta_types)
       if (createIfNotExists == 1 or id in ids) and (createIdsFilter is None or id in createIdsFilter):
+        # Register Meta Attributes.
+        metadictAttrs = []
+        if id in meta_types:
+          valid_types = self.valid_datatypes+self.valid_zopetypes+meta_types+['*']
+          metaObj = self.getMetaobj( id)
+          for metaObjAttr in metaObj['attrs']:
+            if metaObjAttr['type'] not in valid_types:
+              metadictAttrs.append( metaObjAttr['type'])
         newDtml = item.get('dtml')
         newValue = item.get('value')
         newAttrs = newValue.get('attrs',newValue.get('__obj_attrs__'))
@@ -153,6 +162,20 @@ class ZMSMetaobjManager:
               oldAttrs.remove( oldAttrs[0])
           # Set Attribute.
           self.setMetaobjAttr( id, attr_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault, zms_system)
+          # Deregister Meta Attribute.
+          if attr_id in metadictAttrs:
+            metadictAttrs.remove(attr_id)
+        # Set Meta Attributes.
+        for attr_id in metadictAttrs:
+          newName = attr_id
+          newMandatory = 0
+          newMultilang = 0
+          newRepetitive = 0
+          newType = attr_id
+          newKeys = []
+          newCustom = ''
+          newDefault = ''
+          self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
         # Set Template (backwards compatibility).
         if newValue['type'] not in [ 'ZMSLibrary', 'ZMSModule', 'ZMSPackage'] and newDtml is not None:
           tmpltId = self.getTemplateId( id)
@@ -991,8 +1014,8 @@ class ZMSMetaobjManager:
             temp_folder = self.temp_folder
             temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
             if temp_id in temp_folder.objectIds():
-              filename = getattr( temp_folder, temp_id).title
-              xmlfile = getattr( temp_folder, temp_id).data
+              filename = str(getattr( temp_folder, temp_id).title)
+              xmlfile = str(getattr( temp_folder, temp_id).data)
               zms_system = REQUEST.get('zms_system',0)
               temp_folder.manage_delObjects([temp_id])
               immediately = True

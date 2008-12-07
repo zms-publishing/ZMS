@@ -217,10 +217,6 @@
  <td><div class="form-text"><em>Add Calendar</em></div></td>
  <td><input type="checkbox" name="specobj_calendar:int" value="1"></td>
 </tr>
-<tr valign="middle">
- <td><div class="form-text"><em>Add Test-Suite</em></div></td>
- <td><input type="checkbox" name="specobj_testsuite:int" value="1"></td>
-</tr>
 
 <!-- ########################################################################## -->
 <tr>

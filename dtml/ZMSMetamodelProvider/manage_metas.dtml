@@ -286,45 +286,52 @@ function hideDstMetaTypes( id)
  </tr>
 </dtml-if>
 
- <!-- Acquire Metadata -->
- <dtml-if "getPortalMaster() is not _.None">
-  <dtml-call "REQUEST.set('count',0)">
-  <dtml-let thisIds="getMetadictAttrs()" portalMaster="getPortalMaster()">
-    <dtml-in "portalMaster.metaobj_manager.getMetadictAttrs()">
-     <dtml-let metadictAttrId=sequence-item metadictAttr="portalMaster.metaobj_manager.getMetadictAttr(metadictAttrId)">
+<dtml-comment>
+################################################################################
+### Acquire
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not _.None">
+  <dtml-let thisIds="getMetadictAttrs()" portalMaster="getPortalMaster()" res="[]">
+   <dtml-in "portalMaster.metaobj_manager.getMetadictAttrs()">
+    <dtml-let metadictAttrId=sequence-item metadictAttr="portalMaster.metaobj_manager.getMetadictAttr(metadictAttrId)">
      <dtml-if "metadictAttrId not in thisIds or not ZMS_THIS.metaobj_manager.getMetadictAttr(metadictAttrId).get('acquired',0) == 1">
-      <dtml-unless count>
-       <tr>
-        <td colspan="10"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
-       </tr>
-       <tr class="zmiNeutralColorLight0">
-        <td colspan="2">&nbsp;</td>
-        <td colspan="8" class="form-element">
-         <table cellspacing="0" cellpadding="0" border="0">
-         <tr valign="top">
-          <td class="form-element">
-           <select class="form-element" name="aq_id">
-            <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('TAB_METADATA')"> -----</option>
-      </dtml-unless>
-      <option value="<dtml-var "metadictAttr['id']">"><dtml-var "metadictAttr['id']"> (<dtml-var "search_quote(metadictAttr['name'],30)">)</option>
-      <dtml-call "REQUEST.set('count',count+1)">
+      <dtml-call "res.append(metadictAttr)">
      </dtml-if>
-     </dtml-let>
-    </dtml-in>
+    </dtml-let>
+   </dtml-in>
+   <dtml-if res>
+    <tr>
+     <td colspan="10"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
+    </tr>
+    <tr class="zmiNeutralColorLight0">
+     <td colspan="10" class="form-element">
+      <table cellspacing="0" cellpadding="0" border="0">
+      <tr valign="top">
+       <td class="form-element">
+        <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
+         <dtml-in res>
+          <dtml-let metadictAttr=sequence-item>
+           <option value="<dtml-var "metadictAttr['id']">"><dtml-var "metadictAttr['id']"> (<dtml-var "search_quote(metadictAttr['name'],30)">)</option>
+          </dtml-let>
+         </dtml-in>
+        </select> 
+       </td>
+       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this);"></td>
+      </tr>
+      </table>
+     </td>
+    </tr>
+   </dtml-if>
   </dtml-let>
-  <dtml-if count>
-       </select> 
-       <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"> (<dtml-var "getZMILangStr('ATTR_DISPLAY')">)</div>
-      </td>
-      <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this);"></td>
-     </tr>
-     </table>
-    </td>
-   </tr>
-  </dtml-if>
-  </dtml-if>
+ </dtml-if>
 
-  <!-- Import Metadata-Set -->
+<dtml-comment>
+################################################################################
+### Import
+################################################################################
+</dtml-comment>
+ <dtml-if "REQUEST.get('section','import')=='import'">
   <tr>
    <td colspan="10"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
@@ -359,6 +366,7 @@ function hideDstMetaTypes( id)
     </table>
    </td>
   </tr>
+ </dtml-if>
 
 </table
 ></form

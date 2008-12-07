@@ -140,9 +140,6 @@
        var el = document.forms['form0'].elements['editor'];
        if ( el.value != elv) {
          elv = el.value;
-         if ( parent.cameFromForm.editorFormOnChange) {
-           parent.cameFromForm.editorFormOnChange( el);
-         }
        }
      }
    }

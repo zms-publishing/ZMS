@@ -80,3 +80,11 @@
 v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"><dtml-if "REQUEST.get('ZMS_VERSION_%s'%id,'').find(_.str(version_live_id))>=0"> - <dtml-var "getZMILangStr('TAB_LIVE')"><dtml-elif "REQUEST.get('ZMS_VERSION_%s'%id,'').find(_.str(version_work_id))>=0"> - <dtml-var "getZMILangStr('TAB_PREVIEW')"></dtml-if>
 <dtml-if "REQUEST.form.has_key('ZMS_VERSION_%s'%id)"></i></b></dtml-if>
 </dtml-if>
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- Custom
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+<dtml-var "getObjProperty('version_object_state',REQUEST)">
+<dtml-try><dtml-var my_version_object_state><dtml-except></dtml-try>

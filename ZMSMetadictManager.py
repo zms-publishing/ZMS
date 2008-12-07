@@ -230,6 +230,7 @@ class ZMSMetadictManager:
     def manage_changeMetaProperties(self, btn, lang, REQUEST, RESPONSE=None):
         """ MetadictManager.manage_changeMetaProperties """
         message = ''
+        extra = {}
         t0 = time.time()
         id = REQUEST.get('id','')
         target = 'manage_metas'
@@ -239,10 +240,11 @@ class ZMSMetadictManager:
           # Acquire.
           # --------
           if btn == self.getZMILangStr('BTN_ACQUIRE'):
-            newId = REQUEST['aq_id']
-            newAcquired = 1
-            id = self.setMetadictAttr( None, newId, newAcquired)
-            message = self.getZMILangStr('MSG_INSERTED')%id
+            ids = REQUEST.get('aq_ids',[])
+            for newId in ids:
+              newAcquired = 1
+              id = self.setMetadictAttr( None, newId, newAcquired)
+            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
           
           # Change.
           # -------
@@ -364,6 +366,7 @@ class ZMSMetadictManager:
         
         # Return with message.
         target = self.url_append_params( target, { 'lang':lang, 'id':id})
+        target = self.url_append_params( target, extra)
         if len( message) > 0:
           message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
           target = self.url_append_params( target, { 'manage_tabs_message':message})

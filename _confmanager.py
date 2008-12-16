@@ -519,7 +519,7 @@ class ConfManager(
           self.common.css.manage_addDTMLMethod( REQUEST.get('newCssId'), title, data)
           message = self.getZMILangStr('MSG_INSERTED')%REQUEST.get('newCssId')
           cssId = REQUEST.get('newCssId')
-        
+      
       # Delete.
       # -------
       if btn == self.getZMILangStr('BTN_DELETE'):
@@ -528,9 +528,50 @@ class ConfManager(
           self.common.css.manage_delObjects(ids=[REQUEST.get('cssId')])
           message = self.getZMILangStr('MSG_DELETED')%int(1)
           cssId = ''
-        
-      # Change.
-      # -------
+      
+      # Ex-/Import.
+      # -----------
+      if btn in [ self.getZMILangStr('BTN_EXPORT'), self.getZMILangStr('BTN_IMPORT')]:
+        #-- Theme.
+        home = self.getHome()
+        home_id = home.id
+        temp_folder = self.temp_folder
+        excl_ids = []
+        for folder in home.objectValues( ['Folder']):
+          if len( folder.objectValues( ['ZMS'])) > 0:
+            excl_ids.append( absattr( folder.id))
+        for metaObjId in self.getMetaobjIds():
+          for metaObjAttrId in self.getMetaobjAttrIds( metaObjId):
+            metaObjAttr = self.getMetaobjAttr(metaObjId,metaObjAttrId)
+            if metaObjAttr['type'] in self.metaobj_manager.valid_zopetypes:
+              excl_ids.append( metaObjAttrId)
+        ids = filter( lambda x: x not in excl_ids, home.objectIds(['DTML Document','DTML Method','Folder','Script (Python)']))
+        if btn == self.getZMILangStr('BTN_EXPORT'):
+          if home_id in temp_folder.objectIds():
+            temp_folder.manage_delObjects(ids=[home_id])
+          temp_folder.manage_addFolder(id=home_id,title=home.title_or_id())
+          folder = getattr(temp_folder,home_id)
+          home.manage_copyObjects(ids,REQUEST)
+          folder.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
+          return RESPONSE.redirect( self.url_append_params('%s/manage_exportObject'%temp_folder.absolute_url(),{'id':home_id,'download:int':1}))
+        if btn == self.getZMILangStr('BTN_IMPORT'):
+          v = REQUEST['theme']
+          temp_filename = _fileutil.extractFilename( v.filename)
+          temp_id = temp_filename[:temp_filename.rfind('.')]
+          filepath = INSTANCE_HOME+'/import/'+temp_filename
+          _fileutil.exportObj( v, filepath)
+          if temp_id in temp_folder.objectIds():
+            temp_folder.manage_delObjects(ids=[temp_id])
+          temp_folder.manage_importObject( temp_filename)
+          folder = getattr( temp_folder, temp_id)
+          home.manage_delObjects(ids=ids)
+          folder.manage_copyObjects(folder.objectIds(),REQUEST)
+          home.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
+          _fileutil.remove( filepath)
+          temp_folder.manage_delObjects(ids=[temp_id])
+      
+      # Save.
+      # -----
       if btn == self.getZMILangStr('BTN_SAVE'):
         #-- Stylesheet.
         if REQUEST.has_key('cssId'):

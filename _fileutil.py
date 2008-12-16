@@ -328,12 +328,12 @@ def exportObj(obj, filename, filetype='b'):
           data = obj.read() # REQUEST.enctype multipart/form-data
         except:
           data = str(obj)
-
+  
   #-- Save to file.
   if data is not None:
     objfile = open(filename,'w%s'%filetype)
     if type(data) is type(''):
-      objfile.write(data) 
+      objfile.write(data)
     else:
       while data is not None:
         objfile.write(data.data)

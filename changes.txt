@@ -1063,3 +1063,6 @@
 2008-12-05:zms-2.11.1-22
 [01133] Added support for keeping meta-attributes after xml-import of content-objects (requested by tf).
 --------------------------------------------------
+2008-12-09:zms-2.11.1-23
+[01134] Added support for import and export of ZMS-theme.
+--------------------------------------------------

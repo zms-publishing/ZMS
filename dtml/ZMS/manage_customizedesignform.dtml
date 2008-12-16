@@ -152,13 +152,40 @@
   </tr>
   </table>
 
-<!-- ######################################################################
-     ###
-     ###   L O G O
-     ###
-     ######################################################################
--->
+<dtml-comment>
+################################################################################
+### Theme
+################################################################################
+</dtml-comment>
+  <a name="_theme"></a>
+  <dtml-var "f_headline(_,_,headline=getZMILangStr('CAPTION_THEME'))">
+  <table cellspacing="0" cellpadding="1" border="0">
+  <tr valign="middle">
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_EXPORT')"></div></td>
+   <td>
+    <div class="form-element">
+    <select class="form-element" name="export_format">
+     <option value="ZEXP">ZEXP</option>
+    </select>
+    </div>
+   </td>
+   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>"></td>
+  </tr>
+  <tr valign="middle">
+   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_IMPORT')"></div></td>
+   <td><div class="form-element"><input class="form-element" type="file" name="theme" size="25" value=""></div></td>
+   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>"></td>
+  </tr>
+  <tr>
+   <td>&nbsp;</td>
+  </tr>
+  </table>
 
+<dtml-comment>
+################################################################################
+### Logo
+################################################################################
+</dtml-comment>
   <a name="_logo"></a>
   <dtml-var "f_headline(_,_,headline=getZMILangStr('CAPTION_LOGO'))">
   <table cellspacing="0" cellpadding="2" border="0" style="clear:left">

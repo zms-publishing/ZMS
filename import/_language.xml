@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
  xmlns:x="urn:schemas-microsoft-com:office:excel"
@@ -9,7 +8,7 @@
   <LastAuthor>Christian Meier</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
   <LastSaved>2008-11-26T15:34:08Z</LastSaved>
-  <Version>11.9999</Version>
+  <Version>10.6845</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <DownloadComponents/>
@@ -135,7 +134,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="472" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="473" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75"/>
@@ -3245,6 +3244,15 @@
     <Cell><Data ss:Type="String">Hãy lựa chọn</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">CAPTION_THEME</Data></Cell>
+    <Cell><Data ss:Type="String">Theme</Data></Cell>
+    <Cell><Data ss:Type="String">Theme</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s26"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">CAPTION_UPLOAD</Data></Cell>
     <Cell><Data ss:Type="String">%s hochladen</Data></Cell>
     <Cell><Data ss:Type="String">Upload %s</Data></Cell>
@@ -6104,16 +6112,13 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
-   <Zoom>200</Zoom>
+   <Zoom>75</Zoom>
    <Selected/>
-   <TopRowVisible>60</TopRowVisible>
-   <LeftColumnVisible>5</LeftColumnVisible>
+   <TopRowVisible>189</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>60</ActiveRow>
-     <ActiveCol>5</ActiveCol>
-     <RangeSelection>C6</RangeSelection>
+     <ActiveRow>244</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

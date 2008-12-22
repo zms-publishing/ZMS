@@ -151,23 +151,37 @@ function hideDstMetaTypes( id)
     ></dtml-if
    ></dtml-let
   ></dtml-in>
-  
-  <dtml-in "getMetadictAttrs()"
-   ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
-    ><dtml-if metadictAttr>
 
-   <!-- Acquired Metadata -->
-   <dtml-call "REQUEST.set('has_acquisition',[])"
-    ><dtml-in "getPortalClients()"
-     ><dtml-let portalClient=sequence-item portalClientMetadictAttr="portalClient.metaobj_manager.getMetadictAttr(metadictAttrId)"
-      ><dtml-if "portalClientMetadictAttr is not _.None and portalClientMetadictAttr.get('acquired',0)==1"
-       ><dtml-call "has_acquisition.append(portalClient.getHome().id)"
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-  Read acquisition from clients
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+ <dtml-call "REQUEST.set('acquisitions',{})"
+ ><dtml-let home="getHome()" metaAttrIds="getMetadictAttrs()"
+ ><dtml-in "getConfProperty('Portal.Clients',[])"
+  ><dtml-try
+   ><dtml-let clientId=sequence-item clientMetas="dict_list(_.getattr(home,clientId).content.metaobj_manager.metas)"
+    ><dtml-in "clientMetas.keys()"
+     ><dtml-let metaAttrId=sequence-item portalClientIds="acquisitions.get(metaAttrId,[])"
+      ><dtml-if "metaAttrId in metaAttrIds and clientMetas[metaAttrId].get('acquired',0)==1"
+       ><dtml-call "portalClientIds.append(clientId)"
+       ><dtml-call "operator_setitem(acquisitions,metaAttrId,portalClientIds)"
       ></dtml-if
      ></dtml-let
     ></dtml-in
-   >
+   ></dtml-let
+  ><dtml-except></dtml-try
+ ></dtml-in
+ ></dtml-let>
+
+  <dtml-in "getMetadictAttrs()"
+   ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
+    ><dtml-if metadictAttr
+     ><dtml-call "REQUEST.set('has_acquisition',acquisitions.get(metadictAttr['id'],[]))">
+
    <tr valign="middle" class="zmiNeutralColorMedium0">
-    <td valign="top" class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,required=has_acquisition or metadictAttr['id'] in ['titlealt','title'],url='manage_changeMetaProperties?id=%s'%(metadictAttr['id']))"></td>
+    <td valign="top" class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,required=metadictAttr['id'] in ['titlealt','title'],url='manage_changeMetaProperties?id=%s'%(metadictAttr['id']))"></td>
     <td class="form-small" style="white-space:nowrap;text-align:right;"
      ><nobr><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
      ><img
@@ -179,8 +193,8 @@ function hideDstMetaTypes( id)
       alt="Icon" title="" style="border:0px;vertical-align;middle;" /><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" style="vertical-align:middle;border:0px;" /></dtml-if
      ></a
      ><dtml-if "metadictAttr.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metadictAttr['id']">" target="_blank"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
-     ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" style="vertical-align;middle;" /></dtml-if
-     ><input type="hidden" name="old_ids:list" value="<dtml-var "metadictAttr['id']">" /></nobr></td>
+     ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align;middle;" /></dtml-if
+     ><input type="hidden" name="old_ids:list" value="<dtml-var "metadictAttr['id']">"/></nobr></td>
    <dtml-if "metadictAttr.get('acquired',0) == 1">
      <td class="form-text"><dtml-var "string_maxlen(metadictAttr['id'],20)"></td>
      <td class="form-text"><dtml-var "metadictAttr['name']"></td>

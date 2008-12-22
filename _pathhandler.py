@@ -285,7 +285,7 @@ class PathHandler:
                   if langfilename == TraversalRequest['path_to_handle'][-1]:
                     return value
             except:
-              _globals.writeException( self, '[__bobo_traverse__]')
+              _globals.writeError( self, '[__bobo_traverse__]')
           else:
             try:
               i = int( name[1:])
@@ -313,11 +313,11 @@ class PathHandler:
                       if langfilename == TraversalRequest['path_to_handle'][-1]:
                         return value
                     except:
-                      _globals.writeException( self, '[__bobo_traverse__]: ip=%s'%str(ip))
+                      _globals.writeError( self, '[__bobo_traverse__]: ip=%s'%str(ip))
                     par = {'fetchReqBuff':0}
                   self.REQUEST.set( 'preview', lp[ 0])
             except:
-              _globals.writeException( self, '[__bobo_traverse__]')
+              _globals.writeError( self, '[__bobo_traverse__]')
         
         # If the object has blob-fields find by filename and display data.
         v = handleBlobAttrs( self, name, req)

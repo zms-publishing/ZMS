@@ -47,6 +47,8 @@ def syncType( self, meta_id, attr):
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
         attr['custom'] = ob
+    elif not self.getConfProperty('ZMS.metaobj_manager.syncType',1):
+      return
     elif attr['type'] == 'method':
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
@@ -67,7 +69,7 @@ def syncType( self, meta_id, attr):
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   except:
-    value = _globals.writeException(self,'[getMetaobjAttr]')
+    value = _globals.writeError(self,'[getMetaobjAttr]')
 
 
 # ------------------------------------------------------------------------------
@@ -442,7 +444,7 @@ class ZMSMetaobjManager:
         if portalMaster is not None:
           attr = portalMaster.getMetaobjAttr( meta_id, key)
           return attr
-      meta_obj = meta_objs.get(meta_id)
+      meta_obj = meta_objs.get(meta_id,{})
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))
       if attrs is None:
         raise 'Can\'t getMetaobjAttr %s.%s'%(str(meta_id),str(key))
@@ -1060,7 +1062,7 @@ class ZMSMetaobjManager:
         
         # Handle exception.
         except:
-          _globals.writeException(self,"[manage_changeProperties]")
+          _globals.writeError(self,"[manage_changeProperties]")
           error = str( sys.exc_type)
           if sys.exc_value:
             error += ': ' + str( sys.exc_value)

@@ -328,7 +328,7 @@ class AccessableObject:
             domains = userObj.getDomains()
             userFldr.userFolderEditUser(id, password, roles, domains)
           except: 
-            _globals.writeException(self,'[manage_user]: can\'t change password')
+            _globals.writeError(self,'[manage_user]: can\'t change password')
         self.setUserAttr(userObj,'email',REQUEST.get('email','').strip())
         #-- Assemble message.
         message = self.getZMILangStr('MSG_CHANGED')
@@ -491,7 +491,7 @@ class AccessManager(AccessableContainer):
         del d[user]
         self.setConfProperty('ZMS.security.users',d)
       except:
-        _globals.writeException(self,'[delUserAttr]: user=%s not deleted!'%user)
+        _globals.writeError(self,'[delUserAttr]: user=%s not deleted!'%user)
 
     # --------------------------------------------------------------------------
     #  AccessManager.initRoleDefs:
@@ -597,7 +597,7 @@ class AccessManager(AccessableContainer):
       try:
         ob.manage_setLocalRoles(id,roles)
       except:
-        _globals.writeException(self,'[setLocalUser]: node=%s does not exist!'%node)
+        _globals.writeError(self,'[setLocalUser]: node=%s does not exist!'%node)
 
 
     # --------------------------------------------------------------------------
@@ -614,7 +614,7 @@ class AccessManager(AccessableContainer):
       try:
         ob.manage_delLocalRoles(userids=[id])
       except:
-        _globals.writeException(self,'[delLocalUser]: node=%s does not exist!'%node)
+        _globals.writeError(self,'[delLocalUser]: node=%s does not exist!'%node)
 
 
     ############################################################################
@@ -762,7 +762,7 @@ class AccessManager(AccessableContainer):
               domains = userObj.getDomains()
               userFldr.userFolderEditUser(id, password, roles, domains)
             except: 
-              _globals.writeException(self,'[manage_user]: can\'t change password')
+              _globals.writeError(self,'[manage_user]: can\'t change password')
           self.setUserAttr(userObj,'email',REQUEST.get('email','').strip())
           self.setUserAttr(userObj,'profile',REQUEST.get('profile','').strip())
         elif key=='attr':

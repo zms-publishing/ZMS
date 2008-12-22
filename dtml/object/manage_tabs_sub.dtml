@@ -14,7 +14,7 @@
 <dtml-in manage_options mapping>
  <li<dtml-if "_['sequence-index']==a_"> class="on"</dtml-if>
   ><dtml-if "action and not action==''"
-   ><a href="<dtml-var "getSelf().absolute_url()">/<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);"
+   ><a href="<dtml-var "url_append_params('%s/%s'%(getSelf().absolute_url(),action),{'lang':lang})">" onclick="javascript:return confirmChanges(this);"
     ><dtml-var "getZMILangStr(label)"
    ></a
   ><dtml-else

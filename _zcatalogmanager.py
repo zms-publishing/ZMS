@@ -204,7 +204,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
           while s.find( capital) >= 0:
             s = s.replace( capital, letter)
       except ( UnicodeDecodeError, UnicodeEncodeError):
-        _globals.writeException(self,"[search_encode]")
+        _globals.writeError(self,"[search_encode]")
         try:
           v = str(sys.exc_value)
           STR_POSITION = ' position '
@@ -222,7 +222,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
             print ">>>>>",s[ln:hn]
             print ">>>>>"," "*(l-ln)+"^"*(h-l+1)
         except:
-          _globals.writeException(self,"[search_encode]: ignore exception")
+          _globals.writeError(self,"[search_encode]: ignore exception")
       return s
 
 
@@ -437,11 +437,11 @@ class ZCatalogManager:
           try:
             zcatalog.manage_delColumn( [ index_name])
           except:
-            _globals.writeException(self,"[recreateCatalog]: Can't delete column '%s' from catalog"%index_name)
+            _globals.writeError(self,"[recreateCatalog]: Can't delete column '%s' from catalog"%index_name)
           try:
             zcatalog.manage_delIndex( [ index_name])
           except:
-            _globals.writeException(self,"[recreateCatalog]: Can't delete index '%s' from catalog"%index_name)
+            _globals.writeError(self,"[recreateCatalog]: Can't delete index '%s' from catalog"%index_name)
           index_names.append( index_name)
       
       #-- (Re-)create indexes on catalog

@@ -25,6 +25,7 @@
 from __future__ import nested_scopes
 from Globals import HTMLFile
 from types import StringTypes
+from webdav.Lockable import ResourceLockedError
 import ZPublisher.HTTPRequest
 import urllib
 import string
@@ -212,7 +213,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           masterDocElmnt = masterHome.content
           v = masterDocElmnt.get_conf_blob(path, REQUEST, RESPONSE)
         else:
-          _globals.writeException(self,"[get_conf_blob]: path=%s"%str(path))
+          _globals.writeError(self,"[get_conf_blob]: path=%s"%str(path))
       return v
 
 
@@ -366,7 +367,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         try:
           rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) > 0
         except:
-          _globals.writeException(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
+          _globals.writeError(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
       return rtnVal
 
 
@@ -467,7 +468,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           icon = icon[1:]
         return icon
       except:
-        _globals.writeException( self, '[icon]: An unexpected error occured!')
+        _globals.writeError( self, '[icon]: An unexpected error occured!')
 
 
     # --------------------------------------------------------------------------
@@ -545,7 +546,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           obj_item.extend(rtn)
           rtn = obj_item
         except:
-          _globals.writeException( self, '[breadcrumbs_obj_path]: An unexpected error occured while handling portal master!')
+          _globals.writeError( self, '[breadcrumbs_obj_path]: An unexpected error occured while handling portal master!')
       return rtn
 
 
@@ -570,6 +571,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def manage_changeProperties(self, lang, REQUEST, RESPONSE=None):
       """ ZMSObject.manage_changeProperties """
       
+      self._checkZMSLock()
       self._checkWebDAVLock()
       message = ''
       messagekey = 'manage_tabs_message'
@@ -667,13 +669,13 @@ class ZMSObject(ZMSItem.ZMSItem,
           message = self.getZMILangStr('MSG_CHANGED')
         
         except:
-          message = _globals.writeException(self,"[manage_changeProperties]")
+          message = _globals.writeError(self,"[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
         
         message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
-      self.checkIn(REQUEST)
+      self.manage_checkin(REQUEST)
       target = self.url_append_params( target, { 'lang': lang, 'preview': 'preview',  messagekey: message})
       target = '%s#_%s'%( target, self.id)
       if RESPONSE is not None:
@@ -861,6 +863,71 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     ############################################################################
     ###  
+    ###  Lockable
+    ### 
+    ############################################################################
+
+    # Management Interface.
+    # ---------------------
+    checkout = HTMLFile('dtml/object/checkout', globals()) 
+
+    # --------------------------------------------------------------------------
+    #  Lockable._checkZMSLock:
+    # --------------------------------------------------------------------------
+    def _checkZMSLock(self):
+      req = self.REQUEST
+      if self.isCheckedOut(req) and not self.isCheckedOutByMe(req):
+        raise ResourceLockedError, 'This Object is locked by another user'
+
+    # --------------------------------------------------------------------------
+    #  Lockable.isCheckedOut:
+    # --------------------------------------------------------------------------
+    def isCheckedOut(self, REQUEST):
+      lang = REQUEST['lang']
+      if _objattrs.hasobjattr(self,'co_dat_%s'%lang):
+        co_dat = getattr(self,'co_dat_%s'%lang)
+        try:
+          max_time = int( self.getConfProperty('ZMS.checkout.max_time',1))
+        except:
+          max_time = 1
+        if time.time() - co_dat < max_time * 60 * 60:
+          return True
+      return False
+
+    # --------------------------------------------------------------------------
+    #  Lockable.isCheckedOutByMe:
+    # --------------------------------------------------------------------------
+    def isCheckedOutByMe(self, REQUEST):
+      lang = REQUEST['lang']
+      auth_user = REQUEST['AUTHENTICATED_USER']
+      return self.isCheckedOut(REQUEST) and \
+        hasattr(self,'co_uid_%s'%lang) and \
+        getattr(self,'co_uid_%s'%lang,None) == str(auth_user)
+
+    # --------------------------------------------------------------------------
+    #  Lockable.manage_checkin:
+    # --------------------------------------------------------------------------
+    def manage_checkin(self, REQUEST):
+      lang = REQUEST['lang']
+      if _objattrs.hasobjattr(self,'co_dat_%s'%lang): 
+        delattr(self,'co_dat_%s'%lang)
+      if _objattrs.hasobjattr(self,'co_uid_%s'%lang): 
+        delattr(self,'co_uid_%s'%lang)
+
+    # --------------------------------------------------------------------------
+    #  Lockable.manage_checkout:
+    # --------------------------------------------------------------------------
+    def manage_checkout(self, REQUEST, RESPONSE=None):
+      """ manage_checkout """
+      lang = REQUEST['lang']
+      auth_user = REQUEST['AUTHENTICATED_USER']
+      setattr(self,'co_dat_%s'%lang,time.time())
+      setattr(self,'co_uid_%s'%lang,str(auth_user))
+      return 'OK'
+
+
+    ############################################################################
+    ###  
     ###  Object-actions of management interface
     ### 
     ############################################################################
@@ -892,7 +959,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           try:
             value = _globals.dt_html(self,value,REQUEST)
           except:
-            value = _globals.writeException(self,'[getMetaobjZMI]')
+            value = _globals.writeError(self,'[getMetaobjZMI]')
           html.append(self.f_submitInputFields(self,REQUEST))
           html.append(value)
           html.append('</form>\n')
@@ -1009,8 +1076,8 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # Management Interface.
     # ---------------------
-    manage_checkout = HTMLFile('dtml/object/manage_checkout', globals()) 
-    checkout = HTMLFile('dtml/object/checkout', globals()) 
+    f_bo_checkout = HTMLFile('dtml/object/f_bo_checkout', globals()) 
+    f_eo_checkout = HTMLFile('dtml/object/f_eo_checkout', globals()) 
 
 
     # --------------------------------------------------------------------------
@@ -1030,9 +1097,20 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.checkIn:
+    #  ZMSObject.isCheckedOutByMe:
     # --------------------------------------------------------------------------
-    def checkIn(self, REQUEST):
+    def isCheckedOutByMe(self, REQUEST):
+      lang = REQUEST['lang']
+      auth_user = REQUEST['AUTHENTICATED_USER']
+      return self.isCheckedOut(REQUEST) and \
+        hasattr(self,'co_uid_%s'%lang) and \
+        getattr(self,'co_uid_%s'%lang,None) == str(auth_user)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.manage_checkin:
+    # --------------------------------------------------------------------------
+    def manage_checkin(self, REQUEST):
       lang = REQUEST['lang']
       if _objattrs.hasobjattr(self,'co_dat_%s'%lang): 
         delattr(self,'co_dat_%s'%lang)
@@ -1041,13 +1119,19 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.checkOut:
+    #  ZMSObject.manage_checkout:
     # --------------------------------------------------------------------------
-    def checkOut(self, REQUEST):
+    def manage_checkout(self, REQUEST, RESPONSE=None):
+      """ manage_checkout """
+      if RESPONSE is not None:
+        RESPONSE.setHeader('Expires', '-1')
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
       lang = REQUEST['lang']
       auth_user = REQUEST['AUTHENTICATED_USER']
       setattr(self,'co_dat_%s'%lang,time.time())
       setattr(self,'co_uid_%s'%lang,str(auth_user))
+      return 'OK'
 
 
     ############################################################################
@@ -1399,7 +1483,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           if hasattr(self,name):
             html = getattr(self,name)(context=self,html=html,REQUEST=REQUEST)
         except:
-          _globals.writeException( self, '[getBodyContent]: can\'t %s'%name)
+          _globals.writeError( self, '[getBodyContent]: can\'t %s'%name)
       return html
 
 
@@ -1419,7 +1503,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:
-        html = _globals.writeException(self,"[renderShort]")
+        html = _globals.writeError(self,"[renderShort]")
         html = '<br/>'.join(html.split('\n'))
       # Return <html>.
       return html

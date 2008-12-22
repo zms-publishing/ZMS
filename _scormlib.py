@@ -94,7 +94,7 @@ def getIMSManifestResources(base, self, scoType, REQUEST):
       html = self.index_html( self, REQUEST)
     except:
       html = ''
-      _globals.writeException( self, "[getIMSManifestResources]: An unexpected error occured!")
+      _globals.writeError( self, "[getIMSManifestResources]: An unexpected error occured!")
     html = localHtml( base, self, html, REQUEST)
     hrefs = []
     i = -1

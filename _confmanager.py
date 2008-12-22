@@ -446,7 +446,7 @@ class ConfManager(
                 for portalClient in self.getPortalClients():
                   portalClient.setConfProperty( k, v)
             except:
-              _globals.writeException( self, "[manage_customizeSystem]: can't set conf-property %s=%s"%(str(k),str(v)))
+              _globals.writeError( self, "[manage_customizeSystem]: can't set conf-property %s=%s"%(str(k),str(v)))
             message = self.getZMILangStr('MSG_CHANGED')
             params.append( 'conf_key')
           else:

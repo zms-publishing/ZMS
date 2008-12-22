@@ -1495,7 +1495,7 @@ class ZMSGlobals:
         for k in pars.keys():
           REQUEST.set( k, pars[k])
       except:
-        rtn = _globals.writeException( self, '[getPlugin]')
+        rtn = _globals.writeError( self, '[getPlugin]')
       return rtn
 
 
@@ -1566,7 +1566,7 @@ class ZMSGlobals:
         t = time.localtime(time.mktime(t))
         return time.strftime(fmt,t)
       except:
-        #-- _globals.writeException(self,"[getLangFmtDate]: t=%s"%str(t))
+        #-- _globals.writeError(self,"[getLangFmtDate]: t=%s"%str(t))
         return str(t)
 
     # --------------------------------------------------------------------------

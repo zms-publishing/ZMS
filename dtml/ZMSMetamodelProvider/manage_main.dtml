@@ -394,19 +394,28 @@ function changeType( el)
    <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
   </tr>
 
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-  Read acquisition from clients
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
  <dtml-call "REQUEST.set('acquisitions',{})"
- ><dtml-in "getPortalClients()"
-  ><dtml-let portalClient=sequence-item
-   ><dtml-in "portalClient.getMetaobjIds(sort=0)"
-    ><dtml-let metaObjId=sequence-item portalClientIds="acquisitions.get(metaObjId,[])"
-     ><dtml-if "metaObjId in metaObjIds and portalClient.getMetaobj(metaObjId).get('acquired',0)==1"
-      ><dtml-call "portalClientIds.append(portalClient.getHome().id)"
-      ><dtml-call "operator_setitem(acquisitions,metaObjId,portalClientIds)"
-     ></dtml-if
-    ></dtml-let
-   ></dtml-in 
-  ></dtml-let
+ ><dtml-let home="getHome()"
+ ><dtml-in "getConfProperty('Portal.Clients',[])"
+  ><dtml-try
+   ><dtml-let clientId=sequence-item clientModel="_.getattr(home,clientId).content.metaobj_manager.model"
+    ><dtml-in "clientModel.keys()"
+     ><dtml-let metaObjId=sequence-item portalClientIds="acquisitions.get(metaObjId,[])"
+      ><dtml-if "metaObjId in metaObjIds and clientModel[metaObjId].get('acquired',0)==1"
+       ><dtml-call "portalClientIds.append(clientId)"
+       ><dtml-call "operator_setitem(acquisitions,metaObjId,portalClientIds)"
+      ></dtml-if
+     ></dtml-let
+    ></dtml-in
+   ></dtml-let
+  ><dtml-except></dtml-try
  ></dtml-in
+ ></dtml-let
 
   ><dtml-in metaObjIds
    ><dtml-let x=sequence-item metaObj="metaObjMap[x]"
@@ -1216,7 +1225,13 @@ function changeType( el)
       ><dtml-in packages
        ><dtml-let package=sequence-item package_id="id_quote(package)"
          ><div class="form-small">
-          <input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
+          <a href="javascript:slctBtnClick(false)" class="button"
+           ><img name="slctNoneBtn" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">" border="0" align="absmiddle"
+          ></a
+          ><a href="javascript:slctBtnClick(true)" class="button"
+          ><img name="slctAllBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle"
+          ></a
+          ><input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
           ><dtml-if "not metaObjMap.get(package)"
            ><img src="<dtml-var MISC_ZMS>btn_insert.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" style="vertical-align:middle"
           ></dtml-if

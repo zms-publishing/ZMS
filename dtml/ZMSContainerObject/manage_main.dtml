@@ -143,10 +143,11 @@ function focusSelectProcessResponse(data)
 <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST)"></option>
 </select>
 </dtml-unless>
+
 <dtml-comment>
-<!-- ############ -->
-<!-- ### Buttons  -->
-<!-- ############ -->
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-  Top buttons
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
 <dtml-var "manage_main_btn(_,_,offs=0,REQUEST=REQUEST)">
 </div>
@@ -351,43 +352,48 @@ function focusSelectProcessResponse(data)
 </dtml-if>
 
 <dtml-comment>
-<!-- ###################################################################### -->
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-  Display clients
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
-
-<dtml-comment>
-<!-- ################### -->
-<!-- ### Portal.Clients  -->
-<!-- ################### -->
-</dtml-comment>
-<dtml-if "getLevel()==0 and _.len(getPortalClients())>0">
-<dtml-let thisHome="getHome()" thisDocElmnt="getDocumentElement()">
-<dtml-in "getPortalClients()">
+<dtml-if "getLevel()==0"
+><dtml-let home="getHome()" clientIds="home.objectIds(['Folder'])" thisDocElmnt="getDocumentElement()" thisIcon="display_icon(REQUEST,meta_id)"
+><dtml-in "getConfProperty('Portal.Clients',[])"
+><dtml-let clientId=sequence-item
+><dtml-if sequence-start>
 <tr valign="top">
 <td>&nbsp;</td>
 <td class="zmiNeutralColorLight0">
-<div class="form-small" style="padding:2px"
-><a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>" class="zmi"
-><img src="<dtml-var "display_icon(REQUEST)">" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
->./<dtml-var "getHome().id">/<dtml-var id>:</a
->&nbsp;<b><dtml-var "getTitlealt(REQUEST)"></b
-></div>
+<div class="form-small" style="padding:2px">
+</dtml-if>
+<a href="<dtml-var clientId>/content/manage_main?lang=<dtml-var lang>" class="zmi"
+><dtml-if "clientId in clientIds"
+ ><img src="<dtml-var thisIcon>" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
+><dtml-else
+ ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var thisIcon>)" title="ERROR" border="0" align="absmiddle" class="zmiDisplayIcon"
+></dtml-if
+>./<dtml-var clientId>:</a>
+<b><dtml-if "clientId in clientIds"><dtml-var "_.getattr(home,clientId).title_or_id()"><dtml-else>None</dtml-if></b>
+<br/>
+<dtml-if sequence-end>
+</div>
 </td>
 <td style="width:100px" class="zmiNeutralColorLight1">&nbsp;</td>
 </tr>
-<dtml-if sequence-end>
 <tr>
 <td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
 <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
 </tr>
-</dtml-if>
-</dtml-in>
-</dtml-let>
-</dtml-if>
+</dtml-if
+></dtml-let
+></dtml-in
+></dtml-let
+></dtml-if>
 
 <dtml-comment>
-<!-- ############ -->
-<!-- ### Buttons  -->
-<!-- ############ -->
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-  Bottom buttons
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
 <dtml-if childNodes>
 <tr valign="top">

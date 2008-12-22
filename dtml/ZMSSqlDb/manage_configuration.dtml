@@ -156,7 +156,7 @@ function mms_normalize_rows(el_tbody) {
       ></td>
       <td class="form-element" style="width:102px !important"
        ><select class="form-element" name="type">
-        <dtml-in "['table','intersection']"
+        <dtml-in "['table','intersection','hidden']"
          ><dtml-let objtype=sequence-item
           ><option value="<dtml-var objtype>"<dtml-if "objtype==type"> selected="selected"</dtml-if>><dtml-var objtype></option
          ></dtml-let

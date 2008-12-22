@@ -88,12 +88,12 @@ def getXmlTypeSaveValue(v, attrs):
     try:
       v = float(v)
     except:
-      _globals.writeException(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      _globals.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
   elif t == 'int':
     try:
       v = int(v)
     except:
-      _globals.writeException(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      _globals.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
   elif t == 'datetime':
     new = _globals.parseLangFmtDate(v)
     if new is not None:

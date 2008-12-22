@@ -83,7 +83,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
               _fileutil.exportObj(blob,filename)
               ressources.append( { 'filepath':filename, 'content_type':blob.getContentType()})
         except:
-          _globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          _globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
     elif datatype == _globals.DT_LIST:
       for lang in langs:
         try:
@@ -110,7 +110,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
                 ressources.append( { 'filepath':filename, 'content_type':u.getContentType()})
               i = i + 1
         except:
-          _globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          _globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
   # Process children.
   for child in ob.getChildNodes():
     ressources.extend( recurse_downloadRessources( child, base_path+child.id+'/', REQUEST, incl_embedded))
@@ -173,7 +173,7 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
               blob.getFilename() # Normalize filename
               self.setObjProperty(key,blob,lang)
         except:
-          _globals.writeException(self,"[uploadRessources]")
+          _globals.writeError(self,"[uploadRessources]")
 
 
 # ------------------------------------------------------------------------------
@@ -289,7 +289,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
         loresImg = _fileutil.createThumbnail(hiresImg,maxdim)
         self.setObjProperty(loresKey,loresImg,lang)
   except:
-    _globals.writeException( self, '[thumbnailImage]')
+    _globals.writeError( self, '[thumbnailImage]')
   return message
 
 
@@ -607,7 +607,7 @@ class MyBlob:
               elif type( v) is int and v == 404:
                 return ''
           except:
-            _globals.writeException(parent,'[__call__]: can\'t %s'%name)
+            _globals.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         if not access:
           raise Unauthorized
@@ -643,7 +643,7 @@ class MyBlob:
               if type( v) is bool:
                 cacheable = cacheable and v
           except:
-            _globals.writeException(parent,'[__call__]: can\'t %s'%name)
+            _globals.writeError(parent,'[__call__]: can\'t %s'%name)
         if not cacheable:
           RESPONSE.setHeader('Expires', '-1')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -704,7 +704,7 @@ class MyBlob:
           try:
             data = mediadb.retrieveFile( mediadbfile)
           except:
-            _globals.writeException( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
+            _globals.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
       else:
         data = str(getattr(self,'data',''))
       return data

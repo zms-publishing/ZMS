@@ -1,54 +1,41 @@
-<dtml-let lurl="URL.replace('?','/').split('/')">
-<dtml-if "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
-<dtml-var manage_container>
-<dtml-else>
-<dtml-var manage_page_header>
-</head>
-<dtml-var "manage_tabs(_,_,p_languages=_.True)">
-<dtml-var f_bo_area>
-<dtml-if "URL.find('/manage_main')<0 or _['checkout']">
-
-<dtml-var f_submitHrefForm>
-
-<dtml-let metaObj="getMetaobj(meta_id)" metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
-
-<dtml-if metaObjZMI>
-
-<!-- ### Meta-Object: Custom Management Interface -->
-<dtml-var metaObjZMI>
-
-<dtml-elif "getType()=='ZMSRecordSet'">
-
-<!-- ### Meta-Object: RecordSet -->
-<dtml-var metaobj_recordset_main>
-
-<dtml-else>
-
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
-<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
-<input type="hidden" id="_id" name="_id">
-<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
-<input type="hidden" name="custom" value="">
-<dtml-let f_submitInputFieldsTable="_.True" f_submitInputFieldsInactive="_.len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
-
-<!-- ### Attributes -->
-<dtml-var obj_input_js>
-<dtml-var obj_input_fields>
-
-</table>
-
-<!-- ### Buttons -->
-<dtml-var f_submitBtn>
-
-</form>
-
-</dtml-if>
-
-</dtml-let>
-
-</dtml-if>
-<dtml-var f_eo_area>
-<dtml-var manage_page_footer>
-</dtml-if>
+<dtml-let lurl="URL.replace('?','/').split('/')" metaObj="getMetaobj(meta_id)" metaObjManage="getMetaobjAttr(meta_id,'manage')">
+ <dtml-if metaObjManage>
+  <dtml-var "dt_html(metaObjManage['custom'],REQUEST)">
+ <dtml-elif "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
+  <dtml-var manage_container>
+ <dtml-else>
+  <dtml-var manage_page_header>
+  </head>
+  <dtml-var "manage_tabs(_,_,p_languages=_.True)">
+  <dtml-var f_bo_area>
+  <dtml-var f_bo_checkout>
+  <dtml-var f_submitHrefForm>
+  <dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
+  <dtml-if metaObjZMI>
+   <!-- ### Meta-Object: Custom Management Interface -->
+   <dtml-var metaObjZMI>
+  <dtml-elif "getType()=='ZMSRecordSet'">
+   <!-- ### Meta-Object: RecordSet -->
+   <dtml-var metaobj_recordset_main>
+  <dtml-else>
+   <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+   <form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
+   <input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
+   <input type="hidden" id="_id" name="_id">
+   <input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
+   <input type="hidden" name="custom" value="">
+   <dtml-let f_submitInputFieldsTable="_.True" f_submitInputFieldsInactive="_.len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+    <!-- ### Attributes -->
+    <dtml-var obj_input_js>
+    <dtml-var obj_input_fields>
+    </table>
+    <!-- ### Buttons -->
+    <dtml-var f_submitBtn>
+    </form>
+   </dtml-if>
+  </dtml-let>
+  <dtml-var f_eo_checkout>
+  <dtml-var f_eo_area>
+  <dtml-var manage_page_footer>
+ </dtml-if>
 </dtml-let>

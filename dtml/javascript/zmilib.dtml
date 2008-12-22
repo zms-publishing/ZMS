@@ -30,6 +30,27 @@ function delBlobBtnClick(fmName, elName, submitBtn) {
 }
 
 // ############################################################################
+// ### checkoutOvertakeBtnClick:
+// ############################################################################
+function checkoutOvertakeBtnClick(href, lang) {
+  // Set wait-cursor.
+  $(document.body).css( "cursor", "wait");
+  // JQuery.AJAX.get
+  $.get( href+"/manage_checkout?lang="+escape(lang), processResponseCheckoutOvertake);
+  return false;
+}
+
+function processResponseCheckoutOvertake(data) 
+{
+  // Reset wait-cursor.
+  $(document.body).css( "cursor", "auto");
+  // Hide div.
+  $('#checkoutOvertakeDiv').hide('slow');
+  // Enable buttons.
+  $('input[@name=btn]').removeAttr('disabled');
+}
+
+// ############################################################################
 // ### browseEnumBtnClick:
 // ############################################################################
 function browseEnumBtnClick(fmName, elName, enumName)

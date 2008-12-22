@@ -1066,3 +1066,16 @@
 2008-12-09:zms-2.11.1-23
 [01134] Added support for import and export of ZMS-theme.
 --------------------------------------------------
+2008-12-11:zms-2.11.1-24
+[01135] Applied fix for relative-path to resources in (X)HTML-filter.
+--------------------------------------------------
+2008-12-16:zms-2.11.1-25
+[01136] Applied fix for xml-content-import of zipped file-uploads.
+[01137] Applied fix for undefined meta-ids in custom content-object-attributes.
+[01138] Revised locking of objects.
+[01139] Added support for hidden tables in SQL-Datasource.
+--------------------------------------------------
+2008-12-19:zms-2.11.1-26
+[01140] Improved performance of portal-clients in master (requested by desy).
+[01141] Applied fix for disabled content-objects in filtered insert-action list (requested by zms-developers).
+--------------------------------------------------

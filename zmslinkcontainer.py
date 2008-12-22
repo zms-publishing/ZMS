@@ -124,6 +124,7 @@ class ZMSLinkContainer(ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """ ZMSLinkContainer.manage_changeProperties """
         
+      self._checkZMSLock()
       self._checkWebDAVLock()
       message = ''
       
@@ -166,7 +167,7 @@ class ZMSLinkContainer(ZMSContainerObject):
       
       else:
         # Return to parent.
-        self.checkIn(REQUEST)
+        self.manage_checkin(REQUEST)
         return RESPONSE.redirect('%s/manage_main?lang=%s#_%s'%(self.getParentNode().absolute_url(),lang,self.id))
 
 

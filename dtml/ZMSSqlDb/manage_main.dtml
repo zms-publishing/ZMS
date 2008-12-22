@@ -69,13 +69,13 @@
 <dtml-call "headline.append(getZMILangStr('ATTR_TABLE')+' ')">
 <dtml-call "headline.append('<select name=qentity class=form-small onchange=this.form.submit();>')">
 <dtml-in entities mapping sort=label>
- <dtml-unless "type=='intersection'">
+ <dtml-if "type=='table'">
   <dtml-call "REQUEST.set('selected','')">
   <dtml-if "SESSION[sessqentitykey]==id">
    <dtml-call "REQUEST.set('selected','selected=selected')">
   </dtml-if>
   <dtml-call "headline.append('<option value=%s %s>%s</option>'%(id,selected,label))">
- </dtml-unless>
+ </dtml-if>
 </dtml-in>
 <dtml-call "headline.append('</select> ')">
 <dtml-call "headline.append(getZMILangStr('ATTR_ROWS')+' ')">

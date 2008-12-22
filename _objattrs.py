@@ -170,7 +170,7 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
         v = v._getCopy()
       except:
         e = "[cloneobjattr]: Can't clone object-attribute: obj_attr=%s, lang=%s, v=%s!"%(str(obj_attr), str(lang), str(v))
-        _globals.writeException( self, e)
+        _globals.writeError( self, e)
         raise e
     elif type(v) is list or type(v) is tuple:
       v = self.copy_list(v)
@@ -289,7 +289,7 @@ class ObjAttrs:
             try:
               opts = _globals.dt_html(self,dtml,REQUEST)
             except:
-              opts = _globals.writeException(self,'[getObjOptions]: key=%s'%obj_attr['id'])
+              opts = _globals.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
           else:
             for i in range(len(obj_attropts)/2):
               opts.append([obj_attropts[i*2],obj_attropts[i*2+1]])
@@ -639,7 +639,7 @@ class ObjAttrs:
             value = '{$__' + value[2:-1] + '__}'
           set = old != value
         except:
-          _globals.writeException(self,'[_getObjAttrValue]: Unexpected Exception when processing Url-Fields: value=%s!'%str(value))
+          _globals.writeError(self,'[_getObjAttrValue]: Unexpected Exception when processing Url-Fields: value=%s!'%str(value))
       
       #-- SET?
       if set: 
@@ -697,14 +697,14 @@ class ObjAttrs:
           if key not in objAttrs.keys():
             metaObjAttr = self.getMetaobjAttr( self.meta_id, key)
         except:
-          _globals.writeException( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))
+          _globals.writeError( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))
           
         #-- Special attributes.
         if metaObjAttr is not None and metaObjAttr['type'] == 'method':
           try:
             value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
           except:
-            value = _globals.writeException(self,'[getObjProperty]: key=%s'%key)
+            value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
         elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
           value = metaObjAttr.get('custom','')
         elif metaObjAttr is not None and metaObjAttr['type'] == 'resource':
@@ -719,7 +719,7 @@ class ObjAttrs:
             try:
               value = _globals.dt_html(self,value,REQUEST)
             except:
-              value = _globals.writeException(self,'[getObjProperty]: key=%s'%key)
+              value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
         
         #-- Undefined attributes.
         else:
@@ -855,7 +855,7 @@ class ObjAttrs:
           try:
            v = self.parseXmlString(self.getXmlHeader() + v)
           except:
-            _globals.writeException( self, "[formatObjAttrValue]: can't parse dict from xml - exception ignored!")
+            _globals.writeError( self, "[formatObjAttrValue]: can't parse dict from xml - exception ignored!")
             pass
         if type(v) is dict:
           v = v.copy()
@@ -880,7 +880,7 @@ class ObjAttrs:
             try:
               l = self.parseXmlString(self.getXmlHeader() + v)
             except:
-              _globals.writeException( self, "[formatObjAttrValue]: can't parse list from xml - exception ignored!")
+              _globals.writeError( self, "[formatObjAttrValue]: can't parse list from xml - exception ignored!")
               l = None
             if l is not None:
               v = l
@@ -1322,7 +1322,7 @@ class ObjAttrsManager:
           dct['datatype_key'] = _globals.datatype_key(dct['datatype'])
           return dct
       except:
-        _globals.writeException( self, '[synchronizeObjAttr]')
+        _globals.writeError( self, '[synchronizeObjAttr]')
       return None
 
     # --------------------------------------------------------------------------
@@ -1376,7 +1376,7 @@ class ObjAttrsManager:
           obj_attrs = {}
           for key in defaults_obj_attrs.keys():
             obj_attr = defaults_obj_attrs[key]
-            if obj_attr['id'].find('work_') < 0 or meta_id in ['ZMSCustom','ZMSLinkElement'] or self.getMetaobj(meta_id)['type'] == 'ZMSDocument':
+            if obj_attr['id'].find('work_') < 0 or meta_id in ['ZMSCustom','ZMSLinkElement'] or self.getMetaobj(meta_id).get('type') == 'ZMSDocument':
               obj_attrs[key] = obj_attr.copy()
         else:
           obj_attrs = self.dObjAttrs['ZMSCustom'].copy()
@@ -1399,7 +1399,7 @@ class ObjAttrsManager:
              (id in portalClient.getMetaobjIds(sort=0) and portalClient.getMetaobj(id).get('acquired',0)==1):
             portalClient.synchronizeObjAttrs(id)
         except:
-          _globals.writeException( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
+          _globals.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
       
       return ''
 

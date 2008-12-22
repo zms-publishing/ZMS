@@ -100,7 +100,7 @@ class TextFormatObject:
       if hasattr(self,name):
         text = getattr(self,name)(context=self,key=key,text=text,REQUEST=REQUEST)
     except:
-      _globals.writeException( self, '[renderText]: can\'t %s'%name)
+      _globals.writeError( self, '[renderText]: can\'t %s'%name)
     # Return.
     return text
 

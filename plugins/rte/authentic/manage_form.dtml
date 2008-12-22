@@ -171,11 +171,12 @@ editor_<dtml-var "REQUEST.get('elName')">.attachCallBack("OnDocEditCommand", OnC
 <object id="editor_<dtml-var "REQUEST.get('elName')">"
    name="editor_<dtml-var "REQUEST.get('elName')">"
    style="WIDTH:800px; HEIGHT:500px"
-   codebase="http://medvalue.net/pub/bscw.cgi/d299240/AuthenticBrowserEditionUntrusted_DE.CAB#Version=10,0,1,2"
+   codebase="http://bscw.medvalue.net/pub/bscw.cgi/d299240/AuthenticBrowserEditionUntrusted_DE.CAB#Version=10,0,1,2"
    classid="clsid:28A640E8-EAEE-4B5D-BEBE-BFA956081E66">
   <param name="EntryHelpersEnabled" value="True" />
   <param name="EntryHelperWindows" value="3" />
   <param name="HideSaveButton" value="True" />
   <textarea name="alternate_<dtml-var "REQUEST.get('elName')">" id="alternate_<dtml-var "REQUEST.get('elName')">" cols="50" rows="15" style="width:100%"><dtml-var "REQUEST.get('data')" html_quote ></textarea>
 </object>
+
 

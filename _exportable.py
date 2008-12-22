@@ -58,7 +58,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
             html = ob.raw
             html = _globals.dt_html( self, html, REQUEST)
             html = localHtml( self, ob, html, REQUEST)
-            html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html, REQUEST)
+            html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html)
             ob = html
           except:
             pass
@@ -117,7 +117,7 @@ def localHtml(self, obj, html, REQUEST):
     if charset != default_charset:
       html = unicode( html, default_charset).encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
-    _globals.writeException( obj, "[localHtml]")
+    _globals.writeError( obj, "[localHtml]")
     v = str(sys.exc_value)
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
@@ -139,7 +139,8 @@ def localHtml(self, obj, html, REQUEST):
 # ------------------------------------------------------------------------------
 #  _exportable.localIndexHtml:
 # ------------------------------------------------------------------------------
-def localIndexHtml(self, obj, level, html, REQUEST):
+def localIndexHtml(self, obj, level, html, xhtml=False):
+   REQUEST = self.REQUEST
    
    sRoot = ''
    for i in range(level):
@@ -157,7 +158,7 @@ def localIndexHtml(self, obj, level, html, REQUEST):
    # Process absolute URLs.
    s_new = '%s'%sRoot
    s_old = '%s/'%self.absolute_url()
-   if level != 0:
+   if xhtml or level != 0:
      html = html.replace( s_old, s_new)
    if self.getConfProperty('ZMS.pathhandler',0) != 0:
      s_old = '%s/'%self.getDeclUrl( REQUEST)
@@ -358,7 +359,7 @@ class Exportable:
         html += '</body>\n'
         html += '</html>\n'
       html = localHtml( self, self, html, REQUEST)
-      html = localIndexHtml( self, self, level, html, REQUEST)
+      html = localIndexHtml( self, self, level, html, xhtml=True)
       return html
 
 
@@ -449,7 +450,7 @@ class Exportable:
                     f.close()
                   html = html.replace( s_old, s_new)
                 except:
-                  _globals.writeException( self, '[exportExternalResources]: url=%s'%url)
+                  _globals.writeError( self, '[exportExternalResources]: url=%s'%url)
                 break
           i = html.find( http_prefix, i + len( http_prefix))
       return html
@@ -507,14 +508,14 @@ class Exportable:
              level > 0 and \
              self.getConfProperty('ZMS.pathhandler',0) != 0 and \
              self.getConfProperty('ZMS.export.pathhandler',0) == 1:
-            html = localIndexHtml( self, obj, level - 1, html, REQUEST)
+            html = localIndexHtml( self, obj, level - 1, html)
             filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
           else:
             if key == 'sitemap':
               pageext = '.html'
             else:
               pageext = obj.getPageExt( REQUEST)
-            html = localIndexHtml( self, obj, level - self.getLevel(), html, REQUEST)
+            html = localIndexHtml( self, obj, level - self.getLevel(), html)
             filename = '%s/%s_%s%s'%( path, key, lang, pageext)
           
           html = self.exportExternalResources( obj, html, path, REQUEST)
@@ -531,7 +532,7 @@ class Exportable:
             f.close()
         
         except:
-          _globals.writeException( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
+          _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
         
       # Process DTML-methods of meta-objects.
       for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
@@ -550,7 +551,7 @@ class Exportable:
                     f.write(html)
                     f.close()
         except:
-          _globals.writeException( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
+          _globals.writeError( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
       
       # Process children.
       for child in obj.getChildNodes(REQUEST,self.PAGES):

@@ -195,7 +195,7 @@ class ZMSSqlDb(ZMSObject):
           try:
             v = unicode(v,charset).encode(encoding)
           except:
-            row[col['id']+'_exception'] = _globals.writeException( self, '[record_encode__]: can\'t %s'%col['id'])
+            row[col['id']+'_exception'] = _globals.writeError( self, '[record_encode__]: can\'t %s'%col['id'])
         row[col['id']] = v
       return row
 
@@ -281,7 +281,7 @@ class ZMSSqlDb(ZMSObject):
           colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'string'}[result_column['type']]
         except:
           colType = result_column.get('type',None)
-          _globals.writeException(self,'[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')
+          _globals.writeError(self,'[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')
         column = {}
         column['id'] = colName
         column['key'] = colName
@@ -719,7 +719,7 @@ class ZMSSqlDb(ZMSObject):
       try:
         self.executeQuery( sqlStatement)
       except:
-        raise _globals.writeException( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement)
       # Return with row-id.
       rowid = (filter(lambda x: x['id']==primary_key, c)+[{'value':None}])[0]['value']
       if rowid is None:
@@ -731,7 +731,7 @@ class ZMSSqlDb(ZMSObject):
           for r in self.query( sqlStatement)['records']:
             rowid = r['value']
         except:
-          raise _globals.writeException( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement)
+          raise _globals.writeError( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement)
       return rowid
 
 
@@ -767,7 +767,7 @@ class ZMSSqlDb(ZMSObject):
       try:
         old = self.query( sqlStatement)['records'][0]
       except:
-        raise _globals.writeException( self, '[recordSet_Update]: can\'t get old - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[recordSet_Update]: can\'t get old - sqlStatement=' + sqlStatement)
       # Get columns to update
       c = []
       for tablecol in tablecols:
@@ -806,7 +806,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           self.executeQuery( sqlStatement)
         except:
-          raise _globals.writeException( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement)
+          raise _globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement)
       # Return with row-id.
       return rowid
 
@@ -839,7 +839,7 @@ class ZMSSqlDb(ZMSObject):
       try:
         self.executeQuery( sqlStatement)
       except:
-        raise _globals.writeException( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement)
 
 
     ############################################################################
@@ -881,7 +881,7 @@ class ZMSSqlDb(ZMSObject):
             value = self.sql_quote__(tablename,id,value)
           return value
       except:
-        raise _globals.writeException( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement)
 
 
     # --------------------------------------------------------------------------
@@ -923,7 +923,7 @@ class ZMSSqlDb(ZMSObject):
           for r in self.query( sqlStatement)['records']:
             oldfilename = r['v']
         except:
-          raise _globals.writeException( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement)
+          raise _globals.writeError( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement)
       # Remove old file from server-fs
       try:
         self.localfs_remove(path+oldfilename)
@@ -956,7 +956,7 @@ class ZMSSqlDb(ZMSObject):
           filename = r['v']
           data = self.localfs_read( path+filename, REQUEST=REQUEST)
       except:
-        raise _globals.writeException( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement)
       return data
 
 
@@ -987,7 +987,7 @@ class ZMSSqlDb(ZMSObject):
               c = c + 1
               self.executeQuery( sql)
           except:
-            message += _globals.writeException( self, '')
+            message += _globals.writeError( self, '')
             break
         message += '[%i]'%c
       

@@ -280,6 +280,10 @@ class ZMSMetadictManager:
           elif btn in ['delete',self.getZMILangStr('BTN_DELETE')]:
             oldId = id
             self.delMetadictAttr( oldId)
+            for portalClient in self.getPortalClients():
+              pcmm = portalClient.metaobj_manager
+              if oldId in pcmm.getMetadictAttrs() and pcmm.getMetadictAttr(oldId).get('acquired',0)==1:
+                pcmm.delMetadictAttr( oldId)
             message = self.getZMILangStr('MSG_DELETED')%int(1)
           
           # Export.
@@ -358,7 +362,7 @@ class ZMSMetadictManager:
         
         # Handle exception.
         except:
-          _globals.writeException(self,"[manage_changeMetaProperties]")
+          _globals.writeError(self,"[manage_changeMetaProperties]")
           error = str( sys.exc_type)
           if sys.exc_value:
             error += ': ' + str( sys.exc_value)

@@ -84,7 +84,7 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
       delProcess(self, newId)
       setProcess(self, newId, newAcquired, newName, newType, newCommand, zms_system)
   else:
-    _globals.writeException(self,"[_importXml]: Unknown type >%s<"%itemType)
+    _globals.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
 
 def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
   v = self.parseXmlString(xml)
@@ -386,7 +386,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
   try:
     value = getattr( self, processId)( self, REQUEST)
   except:
-    value = _globals.writeException( self, '[processMethod]: processId=%s'%processId)
+    value = _globals.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')
   # Return filename.
   return outfilename

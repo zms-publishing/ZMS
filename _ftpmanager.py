@@ -113,7 +113,7 @@ def ftpToProvider(self, lang, REQUEST, RESPONSE):
       ftp.quit()
       
     except:
-      message += _globals.writeException(self,"[_ftpmanager.ftpToProvider]:")+'<br/>'
+      message += _globals.writeError(self,"[_ftpmanager.ftpToProvider]:")+'<br/>'
     
     # Remove temporary local-folder.
     _fileutil.remove(tempfolder,deep=1)
@@ -185,7 +185,7 @@ class FtpManager:
           ftp.quit()
           message = 'Ping in %d sec.'%(time.time()-tStart)
         except:
-          message = _globals.writeException(self,"[manage_customizeFtp]:")
+          message = _globals.writeError(self,"[manage_customizeFtp]:")
       
       # Export.
       # -------

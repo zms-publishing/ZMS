@@ -231,7 +231,7 @@ def objectTree(self, clients=False):
     for ob in self.objectValues( self.dGlobalAttrs.keys()):
       rtn.extend( objectTree( ob))
   except:
-    writeException( self, '[objectTree]')
+    writeError( self, '[objectTree]')
   if clients:
     for ob in self.getPortalClients():
       rtn.extend( objectTree( ob, clients))
@@ -569,9 +569,9 @@ def writeBlock(self, info):
     pass
 
 # ------------------------------------------------------------------------------
-#  _globals.writeException:
+#  _globals.writeError:
 # ------------------------------------------------------------------------------
-def writeException(self, etc=''):
+def writeError(self, etc=''):
   info = '?'
   try:
     t,v,tb = sys.exc_info()

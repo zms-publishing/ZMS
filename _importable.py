@@ -24,6 +24,7 @@
 # Imports.
 from App.Common import package_home
 from Globals import HTMLFile
+import ZPublisher.HTTPRequest
 import os
 import sys
 import tempfile
@@ -100,10 +101,10 @@ def importFile(self, file, REQUEST, handler):
   message = ''
 
   # Get filename.
-  try: 
-    filename = file.name
-  except:
+  if isinstance(file,ZPublisher.HTTPRequest.FileUpload):
     filename = file.filename
+  else: 
+    filename = file.name
 
   # Create temporary folder.
   folder = tempfile.mktemp()

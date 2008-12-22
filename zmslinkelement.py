@@ -275,6 +275,7 @@ class ZMSLinkElement(ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """ ZMSLinkElement.manage_changeProperties """
       
+      self._checkZMSLock()
       self._checkWebDAVLock()
       target = REQUEST.get( 'target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
@@ -308,7 +309,7 @@ class ZMSLinkElement(ZMSContainerObject):
           message = "[ConstraintViolation]: " + str( sys.exc_value)
       
       # Return with message.
-      self.checkIn(REQUEST)
+      self.manage_checkin(REQUEST)
       target = self.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})
       target = '%s#_%s'%( target, self.id)
       return RESPONSE.redirect( target)
@@ -357,7 +358,7 @@ class ZMSLinkElement(ZMSContainerObject):
           value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
           value = self.xmlParse( value)
         except:
-          _globals.writeException(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
+          _globals.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff( reqBuffId, value, REQUEST)
 
@@ -686,7 +687,7 @@ class ZMSLinkElement(ZMSContainerObject):
         try:
           rtn += self.http_import( ref+'/getBodyContent')
         except:
-          rtn += _globals.writeException(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
+          rtn += _globals.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
       else:
         proxy = self.getProxy()
         if proxy != self and proxy is not None and self.isEmbeddedRecursive( self.REQUEST):
@@ -715,7 +716,7 @@ class ZMSLinkElement(ZMSContainerObject):
         try:
           rtn += self.http_import( ref+'/renderShort')
         except:
-          rtn += _globals.writeException(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref)
+          rtn += _globals.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref)
       
       elif self.isEmbedded(REQUEST) and ref_obj is not None:
         if ref_obj is None or ref_obj.isPage():

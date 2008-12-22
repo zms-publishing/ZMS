@@ -57,7 +57,7 @@ class CopySupport:
       try: 
         cp=_cb_decode(cp)
       except: 
-        _globals.writeException( self, '[_get_cb_copy_data]: eInvalid')
+        _globals.writeError( self, '[_get_cb_copy_data]: eInvalid')
         raise CopyError, eInvalid
       
       return cp
@@ -70,7 +70,7 @@ class CopySupport:
         try: 
           cp=_cb_decode(cp)
         except: 
-          _globals.writeException( self, '[_get_obs]: eInvalid')
+          _globals.writeError( self, '[_get_obs]: eInvalid')
           raise CopyError, eInvalid
         
         oblist=[]
@@ -82,7 +82,7 @@ class CopySupport:
           try: 
             ob = m.bind(app)
           except: 
-            _globals.writeException( self, '[_get_obs]: eNotFound')
+            _globals.writeError( self, '[_get_obs]: eNotFound')
             raise CopyError, eNotFound
           self._verifyObjectPaste(ob)
           oblist.append(ob)
@@ -180,7 +180,7 @@ class CopySupport:
             # Process referential integrity.
             ob.onCopyRefObj(REQUEST)
             # Unlock.
-            ob.checkIn(REQUEST)
+            ob.manage_checkin(REQUEST)
           REQUEST.set('lang',bk_lang)
           
           # Process tree.
@@ -233,7 +233,7 @@ class CopySupport:
             # Process referential integrity.
             ob.onMoveRefObj(REQUEST)
             # Unlock.
-            ob.checkIn(REQUEST)
+            ob.manage_checkin(REQUEST)
           REQUEST.set('lang',bk_lang)
           
           # Process tree.

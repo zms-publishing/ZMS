@@ -1012,7 +1012,7 @@ class VersionItem:
         preview = _globals.isPreviewRequest( REQUEST)
         has_version_work = self.version_work_id is not None and hasattr( self, self.version_work_id)
         has_version_live = self.version_live_id is not None and hasattr( self, self.version_live_id)
-        raise _globals.writeException( self, '[getObjVersion]: an unexpected error occured!')
+        raise _globals.writeError( self, '[getObjVersion]: an unexpected error occured!')
 
 
     # --------------------------------------------------------------------------
@@ -1033,7 +1033,7 @@ class VersionItem:
         # return object-items
         return obs
       except:
-        raise _globals.writeException( self, '[getObjVersions]: an unexpected error occured!')
+        raise _globals.writeError( self, '[getObjVersions]: an unexpected error occured!')
 
 
     # --------------------------------------------------------------------------
@@ -1312,6 +1312,10 @@ class VersionManagerContainer:
         _globals.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
+      
+      ##### ZMS.Title ####
+      if self.meta_id=='ZMS':
+        self.getHome().title = self.getTitle(REQUEST)
       
       ##### Version ####
       if (lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and (self.getHistory() and do_history):

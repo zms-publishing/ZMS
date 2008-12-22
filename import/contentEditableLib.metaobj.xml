@@ -314,7 +314,7 @@ for ob_id in ob_ids:
 
 # Return with message.
 message += self.getZMILangStr('MSG_CHANGED')
-self.checkIn(REQUEST)
+self.manage_checkin(REQUEST)
 url = REQUEST.get('HTTP_REFERER')
 i = url.find('?')
 if i >= 0:

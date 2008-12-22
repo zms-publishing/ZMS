@@ -841,7 +841,7 @@ class ZMS(
         try:
           return getattr( self, v).content
         except:
-          _globals.writeException(self, '[getPortalMaster]: %s not found!'%str(v))
+          _globals.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
       return None
 
     # --------------------------------------------------------------------------
@@ -859,7 +859,7 @@ class ZMS(
           try:
             docElmnts.append(getattr(thisHome,id).content)
           except:
-            _globals.writeException(self, '[getPortalClients]: %s not found!'%str(id))
+            _globals.writeError(self, '[getPortalClients]: %s not found!'%str(id))
       return docElmnts
 
 
@@ -892,11 +892,12 @@ class ZMS(
         try:
           self.getTrashcan().run_garbage_collection()
         except:
-          _globals.writeException( self, '[updateVersion]: can\'t run garbage collection')
+          _globals.writeError( self, '[updateVersion]: can\'t run garbage collection')
       
       # Process clients.
-      for portalClient in self.getPortalClients():
-        message += portalClient.updateVersion( lang, REQUEST, False)
+      if message:
+        for portalClient in self.getPortalClients():
+          message += portalClient.updateVersion( lang, REQUEST, False)
       
       return message
 

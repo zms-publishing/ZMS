@@ -257,7 +257,7 @@ class ZMSContainerObject(
         else:
           except_ids = ids
         if len(except_ids) > 0:
-          _globals.writeException(self,'[moveObjsToTrashcan]: Unexpected Exception: ids=%s!'%str(except_ids))
+          _globals.writeError(self,'[moveObjsToTrashcan]: Unexpected Exception: ids=%s!'%str(except_ids))
       trashcan.normalizeSortIds()
       # Sort-IDs.
       self.normalizeSortIds()
@@ -430,7 +430,7 @@ class ZMSContainerObject(
         tp, vl, tb = sys.exc_info()
         rc = -1
         message = str(tp)+': '+str(vl)
-        _globals.writeException(self,'[manage_ajaxDragDrop]')
+        _globals.writeError(self,'[manage_ajaxDragDrop]')
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
@@ -543,20 +543,23 @@ class ZMSContainerObject(
       #-- Objects.
       repetitive = objAttr.get('repetitive',0)==1
       if repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0:
+        metaObjIds = self.getMetaobjIds()
         meta_ids = []
         if objAttr['type']=='*':
           for meta_id in objAttr['keys']:
             if meta_id.startswith('type(') and meta_id.endswith(')'):
-              for metaObjId in self.getMetaobjIds():
+              for metaObjId in metaObjIds:
                 metaObj = self.getMetaobj( metaObjId)
                 if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
                   meta_ids.append( metaObj['id'])
-            elif objAttr['id']=='e' and meta_id in self.getMetaobjIds():
+            elif objAttr['id']=='e' and meta_id in metaObjIds:
               metaObj = self.getMetaobj( meta_id)
               if metaObj['enabled'] == 1:
                 meta_ids.append( meta_id)
-            else:
+            elif meta_id in metaObjIds:
               meta_ids.append( meta_id)
+            else:
+              _globals.writeError( self, '[filtered_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(self.meta_id,objAttr['id'],meta_id))
         else:
           meta_ids.append( objAttr['type'])
         for meta_id in meta_ids:
@@ -567,7 +570,7 @@ class ZMSContainerObject(
             try:
               ob_access = _globals.dt_html(self,ob_manage_access['custom'],REQUEST)
             except:
-              _globals.writeException( self, '[filtered_insert_actions]: can\'t get manage_access from %s'%meta_id)
+              _globals.writeError( self, '[filtered_insert_actions]: can\'t get manage_access from %s'%meta_id)
           can_insert = True
           if objAttr['type']=='*':
             can_insert = can_insert and (type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( self.intersection_list( ob_access.get( 'insert'), self.getUserRoles(auth_user))) > 0)
@@ -924,7 +927,7 @@ class ZMSContainerObject(
         obs.sort()
       except Exception, exc:
         if self.getConfProperty('ZMS.protected_mode',0):
-          _globals.writeException(self,'[getChildNodes.protected]')
+          _globals.writeError(self,'[getChildNodes.protected]')
         else:
           raise exc
       # Return child-nodes in correct sort-order.

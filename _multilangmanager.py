@@ -111,7 +111,7 @@ class MultiLanguageObject:
     #  Returns list of Ids of languages (primary language 1st).
     # --------------------------------------------------------------------------
     def getLanguages(self, REQUEST=None):
-    
+      
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'getLanguages'
       try:
@@ -472,23 +472,35 @@ class MultiLanguageManager:
     #  Returns language-dictionary.
     # --------------------------------------------------------------------------
     def get_lang_dict(self):
-      d = {}
-      portalMaster = self.getPortalMaster()
-      if portalMaster is not None:
-        lang_dict = portalMaster.get_lang_dict()
+      
+      #-- [ReqBuff]: Fetch buffered value from Http-Request.
+      reqBuffId = 'get_lang_dict'
+      try:
+        d = self.fetchReqBuff( reqBuffId, self.REQUEST)
+        return d
+      except:
+        
+        #-- Get value.
+        d = {}
+        portalMaster = self.getPortalMaster()
+        if portalMaster is not None:
+          lang_dict = portalMaster.get_lang_dict()
+          for key in lang_dict.keys():
+            d[key] = lang_dict[key].copy()
+            lang_ids = lang_dict[key].keys()
+            d[key]['acquired'] = self.concat_list(d[key].get('acquired',[]),lang_ids)
+        lang_dict = self.getConfProperty('ZMS.custom.langs.dict',{})
         for key in lang_dict.keys():
-          d[key] = lang_dict[key].copy()
-          lang_ids = lang_dict[key].keys()
-          d[key]['acquired'] = self.concat_list(d[key].get('acquired',[]),lang_ids)
-      lang_dict = self.getConfProperty('ZMS.custom.langs.dict',{})
-      for key in lang_dict.keys():
-        if d.has_key(key):
-          lang_ids = lang_dict[key].keys()
-          for lang_id in lang_ids:
-            d[key][lang_id] = lang_dict[key][lang_id]
-        else:
-          d[key] = lang_dict[key].copy()
-      return d
+          if d.has_key(key):
+            lang_ids = lang_dict[key].keys()
+            for lang_id in lang_ids:
+              if lang_id not in d[key].get('acquired',[]):
+                d[key][lang_id] = lang_dict[key][lang_id]
+          else:
+            d[key] = lang_dict[key].copy()
+        
+        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+        return self.storeReqBuff( reqBuffId, d, self.REQUEST)
 
 
     # --------------------------------------------------------------------------

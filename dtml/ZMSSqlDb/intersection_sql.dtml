@@ -1,14 +1,17 @@
-<dtml-in grid_cols mapping>
+<dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if
+
+><dtml-in grid_cols mapping>
   <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
        +- MULTIMULTISELECT
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
  <dtml-if multimultiselect>
-  <dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))">
+   <dtml-call "REQUEST.set('mmsid','%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk')))">
+   <dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('mmsid',ZMS_TABLE_PREFIX+'_'+mmsid)"></dtml-if>
    <dtml-call "writeBlock('[%s.intersection_sql]: mmsid=%s'%(meta_type,mmsid))">
    <!-- ### DELETE -->
    <dtml-call "REQUEST.set('sqlStatement',[])">
    <dtml-call "sqlStatement.append('DELETE FROM ' + multimultiselect['tablename'] + ' ')">
-   <dtml-call "sqlStatement.append('WHERE ' + multimultiselect['fk'] + '=' + _.str(sql_quote__(SESSION[sessqentitykey],primary_key,rowid)))">
+   <dtml-call "sqlStatement.append('WHERE ' + multimultiselect['fk'] + '=' + _.str(sql_quote__(entity,primary_key,rowid)))">
    <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
    <dtml-try>
     <dtml-call "executeQuery(sqlStatement)">
@@ -16,8 +19,8 @@
     <dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"> 
    </dtml-try>
    <!-- ### INSERT -->
-   <dtml-in "REQUEST.get(mmsid)">
-    <dtml-let value=sequence-item fieldnames="[multimultiselect.get('fk')]" values="[sql_quote__(SESSION[sessqentitykey],primary_key,rowid)]">
+   <dtml-in "REQUEST.get(mmsid,[])">
+    <dtml-let value=sequence-item fieldnames="[multimultiselect.get('fk')]" values="[sql_quote__(entity,primary_key,rowid)]">
      <dtml-in "multimultiselect.get('tables',[])" mapping>
       <dtml-let i=sequence-index item=sequence-item v="value.split('/')[i]">
        <dtml-if v>
@@ -37,7 +40,6 @@
      </dtml-try>
     </dtml-let>
    </dtml-in>
-  </dtml-let>
   <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
        +- MULTISELECT
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
@@ -48,7 +50,7 @@
     <dtml-in "intersection['columns']" mapping>
      <dtml-let col=sequence-item>
       <dtml-if fk>
-       <dtml-if "fk.get('tablename',_.None) == SESSION[sessqentitykey]">
+       <dtml-if "fk.get('tablename',_.None) == entity">
         <dtml-call "REQUEST.set('src',col)">
        <dtml-else>
         <dtml-call "REQUEST.set('dst',col)">
@@ -58,7 +60,7 @@
     </dtml-in>
     <dtml-call "REQUEST.set('sqlStatement',[])"
     ><dtml-call "sqlStatement.append('DELETE FROM ' + intersection['id'] + ' ')"
-    ><dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(SESSION[sessqentitykey],primary_key,rowid))"
+    ><dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,rowid))"
     ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
     ><dtml-try
      ><dtml-call "writeBlock('[%s.intersection_sql]: executeQuery(%s)'%(meta_type,sqlStatement))"
@@ -68,7 +70,9 @@
      ><dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"
     ></dtml-try>
     <!-- ### INSERT -->
-    <dtml-in "REQUEST.get('new_%s'%id,[])"
+    <dtml-call "REQUEST.set('mmsid','new_%s'%id)">
+    <dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('mmsid',ZMS_TABLE_PREFIX+'_'+mmsid)"></dtml-if>
+    <dtml-in "REQUEST.get(mmsid,[])"
      ><dtml-let value=sequence-item
       ><dtml-call "REQUEST.set('sqlStatement',[])"
       ><dtml-call "sqlStatement.append('INSERT INTO ' + intersection['id'] + '( ')"
@@ -92,8 +96,8 @@
          ><dtml-if c
           ><dtml-call "sqlStatement.append(', ')"
          ></dtml-if
-         ><dtml-if "fk.get('tablename',_.None) == SESSION[sessqentitykey]"
-          ><dtml-call "sqlStatement.append(sql_quote__(SESSION[sessqentitykey],primary_key,rowid))"
+         ><dtml-if "fk.get('tablename',_.None) == entity"
+          ><dtml-call "sqlStatement.append(sql_quote__(entity,primary_key,rowid))"
          ><dtml-else
           ><dtml-call "sqlStatement.append(sql_quote__(intersection['id'],col['id'],value))"
          ></dtml-if

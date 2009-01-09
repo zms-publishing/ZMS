@@ -12,30 +12,30 @@
 *	@param css
 *	@param REQUEST
 *******************************************************************************
-</dtml-comment>
+</dtml-comment
 
-<dtml-if optpl>
- <dtml-call "REQUEST.set('optpl',optpl)">
-<dtml-else>
- <dtml-call "REQUEST.set('optpl',[])">
- <dtml-if options>
-  <dtml-in options>
-   <dtml-call "REQUEST['optpl'].append([_['sequence-item'],_['sequence-item']])">
-  </dtml-in>
- </dtml-if>
-</dtml-if>
+><dtml-if optpl
+ ><dtml-call "REQUEST.set('optpl',optpl)"
+><dtml-else
+ ><dtml-call "REQUEST.set('optpl',[])"
+ ><dtml-if options
+  ><dtml-in options
+   ><dtml-call "REQUEST['optpl'].append([_['sequence-item'],_['sequence-item']])"
+  ></dtml-in
+ ></dtml-if
+></dtml-if
 
-<dtml-comment> ### Input ### </dtml-comment>
-<dtml-if "type=='string'">
- <dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST,css=css)">
+><dtml-comment> ### Input ### </dtml-comment
+><dtml-if "type=='string'"
+ ><dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST,css=css)"
 
-<dtml-comment> ### Textarea ### </dtml-comment>
-<dtml-elif "type=='text'">
- <dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST,css=css)">
+><dtml-comment> ### Textarea ### </dtml-comment
+><dtml-elif "type=='text'"
+ ><dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST,css=css)"
 
-<dtml-comment> ### Select  ### </dtml-comment>
-<dtml-elif "type in ['select', 'multiline']">
- <div class="<dtml-var css>">
+><dtml-comment> ### Select  ### </dtml-comment
+><dtml-elif "type in ['select', 'multiline']"
+ ><div class="<dtml-var css>">
   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
    <dtml-if "type=='multiline'">
     multiple="multiple" size="<dtml-var "_.min(5,_.len(optpl))">"
@@ -62,13 +62,13 @@
 
 <dtml-comment> ### Multiselect  ### </dtml-comment>
 <dtml-elif "type=='multiselect'">
- <dtml-let elKey="elName.replace(':','_')">
+ <dtml-let elSrcName="'zms_mms_src_%s'%elName">
  <table cellspacing="2" cellpadding="0" border="0">
  <tr valign="top">
  <td class="<dtml-var css>">
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></div>
   <div class="<dtml-var css>">
-   <select class="<dtml-var css>" name="<dtml-var elName>_src" multiple="multiple" size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>_src','<dtml-var elName>')">
+   <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                optdisp="_['sequence-item'][1].strip()">
@@ -89,16 +89,16 @@
  <td>
   <div class="form-small"><br/></div>
   <div class="zmiNeutralColorMedium0">
-   <div padding="1"><input class="form-submit" type="submit" value="&gt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>_src','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>_src','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elName>_src')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&lt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elName>_src')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="form-submit" type="submit" value="&gt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="form-submit" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="form-submit" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="form-submit" type="submit" value="&lt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
   </div>
  </td>
  <td class="<dtml-var css>">
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_SELECTED')"></div>
   <div class="<dtml-var css>">
-   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elName>_src')">
+   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                optdisp="_['sequence-item'][1].strip()">

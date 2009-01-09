@@ -513,18 +513,12 @@ function getSelectedCheckboxes(fm, elNamePrefix, newElNamePrefix) {
 // processMultiselectsOnFormSubmit
 //-------------------------------------------------------------------
 function processMultiselectsOnFormSubmit() {
-  for (i=0; i<document.forms.length; i++) {
-    var fm = document.forms[i];
-    for (j=0; j<fm.elements.length; j++) {
-      var el = fm.elements[j];
-      // Process multiselects.
-      if (el.type == "select-multiple") {
-        if (fm.elements[el.name + "_src"]) {
-          for (var k=0; k < el.options.length; k++) {
-            el.options[k].selected = true;
-          }
-        }
-      }
+  // lazy multiselects (all elements starting with 'src')
+  var mss = $('select[type=select-multiple]');
+  for (var i=0; i < mss.length; i++) {
+    var ms = $(mss[i]);
+    if (ms.attr('name').indexOf('zms_mms_src_')!=0) {
+      $('option',ms).attr("selected","selected");
     }
   }
 }

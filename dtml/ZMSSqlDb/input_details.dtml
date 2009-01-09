@@ -53,7 +53,11 @@
       ><dtml-call "operator_setitem(values,id,REQUEST.get('%s_new_%s'%(details['tablename'],id),''))"
      ></dtml-if
     ></dtml-in
-    ><dtml-call "recordSet_Insert(details['tablename'],values)"
+    ><dtml-call "REQUEST.set('details_rowid',recordSet_Insert(details['tablename'],values))"
+    ><dtml-if details_rowid>
+     <!-- ### INTERSECTIONS -->
+     <dtml-var "intersection_sql(_,_,rowid=details_rowid,grid_cols=grid_cols,ZMS_TABLE_PREFIX=details['tablename'],ZMS_ENTITY=details['tablename'])"
+    ></dtml-if
    ></dtml-let
    ><div class="system-msg">Record inserted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('details_action','')"
@@ -71,7 +75,11 @@
       ><dtml-call "operator_setitem(old_values,id,REQUEST.get('%s_old_%s'%(details['tablename'],id),''))"
      ></dtml-if
     ></dtml-in
-    ><dtml-call "recordSet_Update(details['tablename'],details_rowid,values,old_values)"
+    ><dtml-call "REQUEST.set('details_rowid',recordSet_Update(details['tablename'],details_rowid,values,old_values))"
+    ><dtml-if details_rowid>
+     <!-- ### INTERSECTIONS -->
+     <dtml-var "intersection_sql(_,_,rowid=details_rowid,grid_cols=grid_cols,ZMS_TABLE_PREFIX=details['tablename'],ZMS_ENTITY=details['tablename'])"
+    ></dtml-if
    ></dtml-let
    ><div class="system-msg">Record updated! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('details_action','')"
@@ -197,6 +205,7 @@
     ZMS_HIDE_FORM=_.True,
     ZMS_HIDE_HIDDEN_INPUTS=_.True,
     ZMS_TABLE_PREFIX=details['tablename'],
+    ZMS_ENTITY=details['tablename'],
     ZMS_CSS_EXTRA='zmiTeaserColor',
     ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
     )">

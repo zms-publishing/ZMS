@@ -207,6 +207,16 @@ class AccessableObject:
           ob = ob.getParentNode()
         else:
           ob = None
+      # Resolve security_roles.
+      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      for id in roles:
+        if id in security_roles.keys():
+          dict = security_roles.get(id,{})
+          for v in dict.values():
+            for perm in v.get('roles',[]):
+              role = perm.replace( ' ', '')
+              if role not in roles:
+                roles.append( role)
       return roles
 
     # --------------------------------------------------------------------------

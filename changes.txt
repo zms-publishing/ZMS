@@ -1079,3 +1079,16 @@
 [01140] Improved performance of portal-clients in master (requested by desy).
 [01141] Applied fix for disabled content-objects in filtered insert-action list (requested by zms-developers).
 --------------------------------------------------
+2009-01-06:zms-2.11.1-27
+[01142] Added support for lazy-multiselect-details in SQL-Datasource.
+--------------------------------------------------
+2009-01-07:zms-2.11.1-28
+[01143] Applied fix for acquisition of language-dictionary (reported by tf).
+--------------------------------------------------
+2009-01-08:zms-2.11.1-29
+[01144] Applied fix for multiselects in SQL-Datasource.
+--------------------------------------------------
+2009-01-08:zms-2.11.1-30
+[01145] Applied fix for multiselects.
+[01146] Applied fix for roles in filtered insert-action list of portal-clients (requested by desy).
+--------------------------------------------------

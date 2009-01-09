@@ -13,8 +13,8 @@
     var b = true;
     <dtml-in grid_cols mapping
     ><dtml-unless "id.lower() in _.map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
-    ><dtml-call "REQUEST.set('elName','new_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elName',ZMS_TABLE_PREFIX+'_'+elName)"></dtml-if
-    ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+elNameOld)"></dtml-if
+    ><dtml-call "REQUEST.set('elName','new_%s'%id)"
+    ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"
     ><dtml-if password>
       if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" ||
           self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
@@ -28,6 +28,7 @@
         }
       }
     </dtml-if
+    
     ><dtml-if multimultiselect
      ><dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))"
       >// multimultiselect
@@ -37,28 +38,22 @@
       }
      </dtml-let
     ></dtml-if
-    ><dtml-if multiselect
-    ><dtml-if "multiselect.has_key('lazy')"
-     ><dtml-let mmsid="'new_%s'%id"
-      >// lazy multiselect
-      var el = document.getElementById("<dtml-var mmsid>");
-      for (var k=0; k < el.options.length; k++) {
-        el.options[k].selected = true;
-      }
-     </dtml-let
-    ></dtml-if
-    ></dtml-if
     ></dtml-unless
     ></dtml-in>
+    
+    // lazy multiselects (all elements starting with 'new_' or containing '_new_' with prefix)
+    $('select[type=select-multiple][name^=new_] option, select[type=select-multiple][name*=_new_] option').attr("selected","selected");
+    
     return b;
   }
 
-  function browseDbBtnClick(fmName, elId, fieldname, displayfield, tablename) 
+  function browseDbBtnClick(fmName, elIdPrefix, elId, fieldname, displayfield, tablename) 
   {
     var title = "<dtml-var "url_quote(getZMILangStr('CAPTION_CHOOSEOBJ'))">";
     var url = "<dtml-var absolute_url>/browse_db";
     var params = 'lang=<dtml-var lang>';
     params += '&fmName=' + escape( fmName);
+    params += '&elIdPrefix=' + escape( elIdPrefix);
     params += '&elId=' + escape( elId);
     params += '&fieldname=' + escape( fieldname);
     params += '&displayfield=' + escape( displayfield);
@@ -110,8 +105,8 @@
       return false;
     }
 
-    function lazyMultiSelectAddElement(elid, label, value) {
-      var el = document.getElementById('new_'+elid);
+    function lazyMultiSelectAddElement(elIdPrefix, elId, label, value) {
+      var el = document.getElementById(elIdPrefix+'new_'+elId);
       if (el) { 
         if ( el.type == 'select-multiple') {
           var newoption = new Option(label, value, true, true);
@@ -128,7 +123,7 @@
         }
         else {
           el.value = value;
-          var el = document.getElementById('displayfield_'+elid);
+          var el = document.getElementById(elIdPrefix+'displayfield_'+elId);
           if (el) {
             el.value = label;
           }
@@ -332,7 +327,7 @@
               class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
               src="<dtml-var MISC_ZMS>pencil_go.png"
               title="<dtml-var "getZMILangStr('BTN_OPEN')">" 
-              onclick="return browseDbBtnClick('form0','<dtml-var mmsid><dtml-var sequence-index>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
+              onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var mmsid><dtml-var sequence-index>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
           /></dtml-let
         ><dtml-else
          ><select class="<dtml-var css>" id="<dtml-var mmsid><dtml-var sequence-index>"
@@ -407,7 +402,7 @@
           class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>pencil_add.png"
           title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" 
-          onclick="return browseDbBtnClick('form0','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
+          onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
        <img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>pencil_go.png"
             title="Linked Dataset" 
@@ -533,7 +528,7 @@
          </dtml-let>
         </dtml-in>
         </select>
-        <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
+        <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
         <input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"/>
         <dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
        <dtml-else>

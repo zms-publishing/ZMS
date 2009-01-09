@@ -60,7 +60,7 @@ function chooseObj(i) {
     field[<dtml-var sequence-index>] = '<dtml-var qkey>';
     displayfield[<dtml-var sequence-index>] = '<dtml-var qvalue>';
   </dtml-in>
-  self.parent.opener.lazyMultiSelectAddElement('<dtml-var elId>',displayfield[i],field[i]);
+  self.parent.opener.lazyMultiSelectAddElement('<dtml-var elIdPrefix>','<dtml-var elId>',displayfield[i],field[i]);
   self.parent.close();
 }
 //-->
@@ -73,6 +73,7 @@ function chooseObj(i) {
  <form name="form0">
  <input type="hidden" name="lang" value="<dtml-var lang>"/>
  <input type="hidden" name="fmName" value="<dtml-var fmName>"/>
+ <input type="hidden" name="elIdPrefix" value="<dtml-var elIdPrefix>"/>
  <input type="hidden" name="elId" value="<dtml-var elId>"/>
  <input type="hidden" name="fieldname" value="<dtml-var fieldname>"/>
  <input type="hidden" name="displayfield" value="<dtml-var displayfield>"/>
@@ -103,7 +104,7 @@ function chooseObj(i) {
      'choose':{'action':'javascript:chooseObj(%s)'},
    })">
  <dtml-var "f_recordset_grid(_,_
-   ,grid_url=url_append_params(URL,{'lang':lang,'fmName':fmName,'elId':elId,'fieldname':fieldname,'displayfield':displayfield,'tablename':tablename})
+   ,grid_url=url_append_params(URL,{'lang':lang,'fmName':fmName,'elIdPrefix':elIdPrefix,'elId':elId,'fieldname':fieldname,'displayfield':displayfield,'tablename':tablename})
    ,grid_cols=grid_cols
    ,grid_options=grid_options
    )">

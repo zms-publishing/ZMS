@@ -1092,3 +1092,9 @@
 [01145] Applied fix for multiselects.
 [01146] Applied fix for roles in filtered insert-action list of portal-clients (requested by desy).
 --------------------------------------------------
+2009-01-13:zms-2.11.1-31
+[01146] Applied fix for inline-dtml.
+--------------------------------------------------
+2009-01-14:zms-2.11.1-32
+[01147] Applied fix for Google-Sitemap/Mirror-Manager: added hook for custom pages 'urls.dctOp': return dict (requested by xm).
+--------------------------------------------------

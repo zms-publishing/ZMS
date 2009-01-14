@@ -394,7 +394,7 @@ class ObjAttrs:
           text_fmt = self.getTextFormat(fmt,REQUEST)
           form_fixed = form_fixed or ( text_fmt is not None and not text_fmt.getTag() and not text_fmt.getSubTag())
         ltxt = str(value).lower()
-        form_fixed = form_fixed or ( ltxt.find( '<form') >= 0 or ltxt.find( '<input') >= 0 or ltxt.find( '<script') >= 0 or ltxt.find( '<dtml-') >= 0)
+        form_fixed = form_fixed or ( ltxt.find( '<form') >= 0 or ltxt.find( '<input') >= 0 or ltxt.find( '<script') >= 0)
         if form_fixed:
           css = 'form-fixed'
           wrap = 'off'

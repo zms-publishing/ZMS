@@ -61,7 +61,7 @@
         }
       }
       if ( zmiStandardEditorShow) {
-        zmiRichtextEditorShow('zmiStandardEditor'+elName,'zmiRichtextEditor'+elName<dtml-if "REQUEST.get('htmledit_fmt')">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if>);
+        zmiRichtextEditorShow('zmiStandardEditor'+elName,'zmiRichtextEditor'+elName<dtml-if "REQUEST.get('htmledit_fmt')"><dtml-if "REQUEST.get('format') in [_.None,REQUEST.get('richedit_fmt').getId()]">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if></dtml-if>);
       }
     }
   }

@@ -112,7 +112,11 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
       
       level = obj.getLevel()
       
-      dctOp = {'index':'','sitemap':'sitemap','index_print':'print'}
+      try:
+        dctOp = getattr(self,'urls.dctOp')() # Hook for custom pages 'urls.dctOp': return dict.
+      except:
+        dctOp = {'index':'','sitemap':'sitemap','index_print':'print'}
+      
       for key in dctOp.keys():
           if key == 'index' and \
                   level > 0 and \

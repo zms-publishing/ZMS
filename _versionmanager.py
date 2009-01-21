@@ -520,7 +520,7 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger thumbnail generation of image fields ####
-      _blobfields.thumbnailImageFields(self,lang,REQUEST)
+      _blobfields.thumbnailImageFields( self, lang, REQUEST)
       
       ##### Trigger custom onChangeObj-Event (if there is one) ####
       triggerEvent( self, 'onChangeObjEvt', REQUEST)

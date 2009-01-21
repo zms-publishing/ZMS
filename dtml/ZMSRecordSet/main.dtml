@@ -63,8 +63,8 @@
           (REQUEST.get('action','')=='insert' and REQUEST.get('btn','')!='') or 
           (REQUEST.get('action','')=='update' and REQUEST.get('btn','')!='')">
  <dtml-var "metaobj_recordset_actions(_,_,metaObj=metaObj,qindex=REQUEST.get('qindex',-1),qindex_abs=REQUEST.get('qindex_abs',-1))">
- <dtml-if no_action>
-  <dtml-call "RESPONSE.redirect( no_action)">
+ <dtml-if ZMS_NO_ACTION>
+  <dtml-call "RESPONSE.redirect( ZMS_NO_ACTION)">
  <dtml-else>
   <dtml-call "REQUEST.set('target_url',url_append_params(URL,
  	{'lang':lang
@@ -130,7 +130,7 @@
        <div style="padding:2px; border: solid 1px black; background-color: #FFFFE0;">
         <dtml-var "metaobj_record_summary(_,_,metaObj=masterMetaObj,row=masterRow)">
         <dtml-in "getParentNode().getObjChildren(masterMetaObj['id'],REQUEST)">
-         <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>&action=update" class="zmi"><dtml-var "string_maxlen(REQUEST['summary'],80)"></a>
+         <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>&ZMS_ACTION=update" class="zmi"><dtml-var "string_maxlen(REQUEST['summary'],80)"></a>
         </dtml-in>
        </div>
       </td>
@@ -179,8 +179,8 @@
  <dtml-if "REQUEST.get('action','')=='insert'">
   <dtml-var metaobj_recordset_input_js>
   <form name="form0" action="<dtml-var URL>" method="post" onsubmit="return onFormSubmit('form0')" enctype="multipart/form-data">
-  <input type="hidden" name="action" value="<dtml-var action>">
-  <dtml-if no_action><input type="hidden" name="no_action" value="<dtml-var no_action>"></dtml-if>
+  <input type="hidden" name="ZMS_ACTION" value="<dtml-var ZMS_ACTION>">
+  <dtml-if ZMS_NO_ACTION><input type="hidden" name="ZMS_NO_ACTION" value="<dtml-var ZMS_NO_ACTION>"></dtml-if>
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <input type="hidden" name="qsize:int" value="<dtml-var qsize>">
   <input type="hidden" name="qorder" value="<dtml-var qorder>">
@@ -195,8 +195,8 @@
  <dtml-if "REQUEST.get('action','')=='update'">
   <dtml-var metaobj_recordset_input_js>
   <form name="form0" action="<dtml-var URL>" method="post" onsubmit="return onFormSubmit('form0')" enctype="multipart/form-data">
-  <input type="hidden" name="action" value="<dtml-var action>">
-  <dtml-if no_action><input type="hidden" name="no_action" value="<dtml-var no_action>"></dtml-if>
+  <input type="hidden" name="ZMS_ACTION" value="<dtml-var ZMS_ACTION>">
+  <dtml-if ZMS_NO_ACTION><input type="hidden" name="ZMS_NO_ACTION" value="<dtml-var ZMS_NO_ACTION>"></dtml-if>
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <input type="hidden" name="qsize:int" value="<dtml-var qsize>">
   <input type="hidden" name="qorder" value="<dtml-var qorder>">

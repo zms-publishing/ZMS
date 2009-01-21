@@ -1098,3 +1098,11 @@
 2009-01-14:zms-2.11.1-32
 [01147] Applied fix for Google-Sitemap/Mirror-Manager: added hook for custom pages 'urls.dctOp': return dict (requested by xm).
 --------------------------------------------------
+2009-01-16:zms-2.11.1-33
+[01148] Revised action-parameter in ZMSSqlDb/RecordSet to ZMS_ACTION (requested by fox).
+[01149] Applied fix for ZMI search: find by meta_type.
+--------------------------------------------------
+2009-01-20:zms-2.11.1-34
+[01150] Applied fix for special-object 'Wiki': '[' and ']' in regular expressions (requested by desy).
+[01151] Applied fix for action-parameter in RecordSet: ZMS_ACTION (reported by fh).
+--------------------------------------------------

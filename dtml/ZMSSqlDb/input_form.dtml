@@ -142,9 +142,9 @@
 </dtml-unless>
 
 <dtml-unless ZMS_HIDE_HIDDEN_INPUTS>
-  <input type="hidden" name="action" value="<dtml-var action>" />
+  <input type="hidden" name="ZMS_ACTION" value="<dtml-var ZMS_ACTION>" />
+  <input type="hidden" name="ZMS_DETAILS_ACTION" value="<dtml-var "REQUEST.get('ZMS_DETAILS_ACTION')">"/>
   <input type="hidden" name="rowid" value="<dtml-var rowid>" />
-  <input type="hidden" name="details_action" value="<dtml-var "REQUEST.get('details_action')">"/>
   <input type="hidden" name="details_rowid" value="<dtml-var "REQUEST.get('details_rowid')">"/>
   <input type="hidden" name="qentity" value="<dtml-var "SESSION[sessqentitykey]">" />
   <input type="hidden" name="qorder" value="<dtml-var qorder>" />

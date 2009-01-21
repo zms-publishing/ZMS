@@ -29,7 +29,7 @@
          <td><div class="form-label"><a name="_<dtml-var pk>"></a><dtml-var "metaObjDetail['name']"></div></td>
          <td class="form-element">
           <dtml-if "count == 0 and len( res) < qsize">
-           <dtml-var "metaobj_recordset_details_grid(_,_,grid_url=url_append_params(grid_url,{'no_action':url_append_params(URL,{'lang':lang,'action':action})}),grid_options=['insert','update','delete'])">
+           <dtml-var "metaobj_recordset_details_grid(_,_,grid_url=url_append_params(grid_url,{'ZMS_NO_ACTION':url_append_params(URL,{'lang':lang,'action':action})}),grid_options=['insert','update','delete'])">
           <dtml-else>
            <a href="<dtml-var "url_append_params(grid_url,{'lang':lang})">" class="zmi"><dtml-var "_.len(res)"> <dtml-var "getZMILangStr('ATTR_RECORDS')"><a><br/>
           </dtml-if>

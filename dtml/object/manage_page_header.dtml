@@ -37,8 +37,13 @@
 ></dtml-unless
 ><dtml-unless "REQUEST['manage_lang'] in getManageLanguages()"
  ><dtml-call "REQUEST.set('manage_lang','eng')"
-></dtml-unless>
-
+></dtml-unless
+><dtml-if "REQUEST.get('ZMS_ACTION') and not REQUEST.get('action')"
+><dtml-call "REQUEST.set('action',ZMS_ACTION)"
+><dtml-elif "not REQUEST.get('ZMS_ACTION') and REQUEST.get('action')"
+><dtml-call "REQUEST.set('ZMS_ACTION',action)"
+></dtml-if
+>
 <html <dtml-var "getConfProperty('ZMS.html_attrs','')"> lang="en">
 <head>
 <base></base>

@@ -103,36 +103,38 @@
 <!-- ### Search Results  -->
 <!-- ################### -->
 
-<dtml-if "REQUEST.has_key('raw')">
+<dtml-if "REQUEST.has_key('raw') or REQUEST.get('search_meta_types')"
 
- <dtml-call "REQUEST.set('_s',raw)">
- <dtml-call "REQUEST.set('_s',getCatalogQueryString(raw,option))">
- <dtml-call "REQUEST.set('res',[])">
- <dtml-if "REQUEST['raw']">
-  <dtml-call "res.extend(submitCatalogQuery(REQUEST.get('_s',''),REQUEST.get('search_order_by',1),REQUEST.get('search_meta_types',[]),REQUEST.get('search_clients',1),REQUEST))">
-  <dtml-if "_.len(res)==0 and _.len(REQUEST.get('search_meta_types',[]))>0">
-   <dtml-in "filteredTreeNodes(REQUEST,search_meta_types)">
-    <dtml-let ob=sequence-item result="[]" title="ob.getTitle(REQUEST)" description="ob.renderShort(REQUEST)">
-     <dtml-call "result.extend( [ 'ob', ob])">
-     <dtml-call "result.extend( [ 'title', title])">
-     <dtml-call "result.extend( [ 'raw', description])">
-     <dtml-call "result.extend( [ 'score', 1])">
-     <dtml-call "result.extend( [ 'time', ob.getObjProperty( 'change_dt', REQUEST)])">
-     <dtml-call "result.extend( [ 'url', '%s/manage_main'%ob.absolute_url()])">
-     <dtml-if "title.find(raw) > 0 or description.find(raw) > 0">
-      <dtml-call "res.append( dict_list( result))">
-     </dtml-if>
-    </dtml-let>
-   </dtml-in>
-  </dtml-if>
- </dtml-if>
+ ><dtml-call "REQUEST.set('_s',raw)"
+ ><dtml-call "REQUEST.set('_s',getCatalogQueryString(raw,option))"
+ ><dtml-call "REQUEST.set('qres',[])"
+ ><dtml-if "REQUEST['raw']"
+  ><dtml-call "qres.extend(submitCatalogQuery(REQUEST.get('_s',''),REQUEST.get('search_order_by',1),REQUEST.get('search_meta_types',[]),REQUEST.get('search_clients',1),REQUEST))"
+ ></dtml-if
+ ><dtml-unless qres
+  ><dtml-if search_meta_types
+   ><dtml-in "getTreeNodes(REQUEST,search_meta_types)"
+    ><dtml-let ob=sequence-item d="[]" title="ob.getTitle(REQUEST)" description="ob.renderShort(REQUEST)"
+     ><dtml-call "d.extend( [ 'ob', ob])"
+     ><dtml-call "d.extend( [ 'title', title])"
+     ><dtml-call "d.extend( [ 'raw', description])"
+     ><dtml-call "d.extend( [ 'score', 1])"
+     ><dtml-call "d.extend( [ 'time', ob.getObjProperty( 'change_dt', REQUEST)])"
+     ><dtml-call "d.extend( [ 'url', '%s/manage_main'%ob.absolute_url()])"
+     ><dtml-if "raw=='' or title.find(raw)>0 or description.find(raw)>0"
+      ><dtml-call "qres.append( dict_list( d))"
+     ></dtml-if
+    ></dtml-let
+   ></dtml-in
+  ></dtml-if
+ ></dtml-unless>
 
  <br/><br/>
  <dtml-var "f_headline(_,_,headline=getZMILangStr('SEARCH_HEADERRESULT'))">
  <div class="form-text"><dtml-var "getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%REQUEST['_s'])"> <dtml-var "getZMILangStr('SEARCH_RETURNEDRESULTS')">:</div>
  <br/><br/>
 
- <dtml-if "_.len(res)==0">
+ <dtml-if "_.len(qres)==0">
  
   <div class="form-text"><dtml-var "getZMILangStr('SEARCH_NORESULTS')"></div>
   
@@ -140,80 +142,88 @@
 
   <!-- max score -->
   <dtml-call "REQUEST.set('_score_factor',1.0)">
-  <dtml-if "res[0]['score']>5">
-   <dtml-call "REQUEST.set('_score_factor',_.float(5.0/_.float(res[0]['score'])))">
+  <dtml-if "qres[0].get('score',0)>5">
+   <dtml-call "REQUEST.set('_score_factor',_.float(5.0/_.float(qres[0].get('score',0))))">
   </dtml-if>
 
   <!-- qs: query-start -->
   <dtml-call "REQUEST.set('qs',REQUEST.get('qs',1))">
 
   <!-- qe: query-end -->
-  <dtml-call "REQUEST.set('qe',_.len(res))">
-  <dtml-in res next size=10 start=qs>
+  <dtml-call "REQUEST.set('qe',_.len(qres))">
+  <dtml-in qres next size=10 start=qs>
    <dtml-in next-batches mapping>
-    <dtml-if "qe==_.len(res)">
+    <dtml-if "qe==_.len(qres)">
      <dtml-call "REQUEST.set('qe',_['batch-start-number']-1)">
     </dtml-if>
    </dtml-in>
   </dtml-in>
 
-  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(_.int(qs),_.int(qe),_.len(res))"></b></div>
+  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(_.int(qs),_.int(qe),_.len(qres))"></b></div>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 
   <!-- NAVIGATION -->
-  <dtml-var search_nav_html>
+  <dtml-var "search_nav_html(_,_,res=qres)">
 
   <!-- FOUND -->
   <table cellspacing="0" cellpadding="1" border="0">
-  <dtml-in res size=10 start=qs mapping>
-   <dtml-let title="ob.getTitle(REQUEST)" description="ob.getDCDescription(REQUEST)">
-   <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-    <td>
-     <div class="form-small">
-      <dtml-if "ob.meta_id=='ZMSFile'">
-       <dtml-let f="ob.getObjProperty('file',REQUEST)">
-        <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
+  <dtml-in qres size=10 start=qs mapping>
+   <dtml-if ob>
+    <dtml-let title="ob.getTitle(REQUEST)" description="ob.getDCDescription(REQUEST)">
+    <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+     <td>
+      <div class="form-small">
+       <dtml-if "ob.meta_id=='ZMSFile'">
+        <dtml-let f="ob.getObjProperty('file',REQUEST)">
+         <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
+         <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">"
+          ><b><dtml-var "search_quote(title)"></b></a>
+         <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
+        </dtml-let>
+       <dtml-else>
+        <img src="<dtml-var "ob.display_icon(REQUEST)">" title="<dtml-var "ob.display_type(REQUEST)">" border="0" align="absmiddle"/>
         <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">"
          ><b><dtml-var "search_quote(title)"></b></a>
-        <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
-       </dtml-let>
-      <dtml-else>
-       <img src="<dtml-var "ob.display_icon(REQUEST)">" title="<dtml-var "ob.display_type(REQUEST)">" border="0" align="absmiddle"/>
-       <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">"
-        ><b><dtml-var "search_quote(title)"></b></a>
-      </dtml-if>
-     </div>
-    </td>
-   </tr>
-   <dtml-if description>
+       </dtml-if>
+      </div>
+     </td>
+    </tr>
+    <dtml-if description>
+     <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+      <td><div class="form-small"><dtml-var "search_quote(description)"></div></td>
+     </tr>
+    </dtml-if>
+    <dtml-if raw>
+     <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+      <td><div class="form-small"><dtml-var raw></div></td>
+     </tr>
+    </dtml-if>
     <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-     <td><div class="form-small"><dtml-var "search_quote(description)"></div></td>
+     <td>
+      <div class="form-small"
+      <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">" class="zmi"
+       ><dtml-in "ob.breadcrumbs_obj_path()"
+        >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end>&nbsp;</dtml-unless
+      > </dtml-in
+      ></a>
+      - <dtml-var "getLangFmtDate(time,lang,'%d')"> <dtml-var "getLangFmtDate(time,lang,'Month')[:3]"> <dtml-var "getLangFmtDate(time,lang,'%Y')">
+      </div>
+     </td>
+    </tr>
+    </dtml-let>
+   <dtml-else>
+    <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+     <td>
+      <div class="form-small"><dtml-var sequence-item></div>
+     </td>
     </tr>
    </dtml-if>
-   <dtml-if raw>
-    <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-     <td><div class="form-small"><dtml-var raw></div></td>
-    </tr>
-   </dtml-if>
-   <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-    <td>
-     <div class="form-small"
-     <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">" class="zmi"
-      ><dtml-in "ob.breadcrumbs_obj_path()"
-       >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end>&nbsp;</dtml-unless
-      ></dtml-in
-     ></a>
-     - <dtml-var "getLangFmtDate(time,lang,'%d')"> <dtml-var "getLangFmtDate(time,lang,'Month')[:3]"> <dtml-var "getLangFmtDate(time,lang,'%Y')">
-     </div>
-    </td>
-   </tr>
-   </dtml-let>
   </dtml-in>
   </table>
 
   <!-- NAVIGATION -->
-  <dtml-var search_nav_html>
+  <dtml-var "search_nav_html(_,_,res=qres)">
 
  </dtml-if>
 

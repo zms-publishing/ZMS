@@ -41,12 +41,12 @@
   </th>
   <th align="left" valign="top"
    ><dtml-if "'delete' in grid_options"
-    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&action=delete&'+getSelectedCheckboxes(document.forms['gridform'],'qindex','qindices'));" class="button"
+    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=delete&'+getSelectedCheckboxes(document.forms['gridform'],'qindex','qindices'));" class="button"
      ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
     ></a
    ></dtml-if
    ><dtml-if "'insert' in grid_options"
-   ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&action=insert" style="color:black" class="button"
+   ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=insert" style="color:black" class="button"
     ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
    ></a
    ></dtml-if
@@ -116,7 +116,7 @@
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr
    ><dtml-if "'delete' in grid_options"
-    ><td><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&action=delete');" class="button"
+    ><td><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=delete');" class="button"
      ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
     ></a></td
    ></dtml-if
@@ -129,7 +129,7 @@
         ><dtml-if "_['res-index']==0"
          ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
         ><dtml-else
-         ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&action=move_up" class="hbutton"
+         ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=move_up" class="hbutton"
           ><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0"
          ></a
         ></dtml-if
@@ -140,7 +140,7 @@
         ><dtml-if "_['res-index']==len(res)-1"
          ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
         ><dtml-else
-         ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&action=move_down" class="hbutton"
+         ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=move_down" class="hbutton"
           ><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0"
          ></a
         ></dtml-if
@@ -149,12 +149,12 @@
       ></table
      ></td
     ></dtml-if
-    ><td><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&action=update" class="button"
+    ><td><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=update" class="button"
     ><img src="<dtml-var MISC_ZMS>btn_edit1.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..." border="0"
     ></a></td
    ></dtml-if
    ><dtml-if "'choose' in grid_options"
-    ><td><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&action=choose" class="button"
+    ><td><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=choose" class="button"
         onmouseover="chooseBtn<dtml-var sequence-index>.src='<dtml-var MISC_ZMS>btn_choose_on.gif';"
         onmouseout="chooseBtn<dtml-var sequence-index>.src='<dtml-var MISC_ZMS>btn_choose.gif';"
      ><img name="chooseBtn<dtml-var sequence-index>" src="<dtml-var MISC_ZMS>btn_choose.gif" title="<dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_RECORD')">..." border="0"

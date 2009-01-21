@@ -16,7 +16,7 @@
 <dtml-try>
 
 <dtml-comment> ***** Move row up ***** </dtml-comment>
- <dtml-if "REQUEST.form.get('action','')=='move_up'">
+ <dtml-if "REQUEST.get('action','')=='move_up'">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-let sort_id="res[qindex]['sort_id']">
    <dtml-in "filter_list(res,'sort_id',sort_id-1,'=')">
@@ -47,7 +47,7 @@
   <dtml-call "REQUEST.set('manage_tabs_message',manage_tabs_message+getZMILangStr('MSG_MOVEDOBJUP')%getZMILangStr('ATTR_RECORD'))">
 
 <dtml-comment> ***** Move row down ***** </dtml-comment>
- <dtml-elif "REQUEST.form.get('action','')=='move_down'">
+ <dtml-elif "REQUEST.get('action','')=='move_down'">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-let sort_id="res[qindex]['sort_id']">
    <dtml-in "filter_list(res,'sort_id',sort_id+1,'=')">
@@ -78,11 +78,11 @@
   <dtml-call "REQUEST.set('manage_tabs_message',manage_tabs_message+getZMILangStr('MSG_MOVEDOBJDOWN')%getZMILangStr('ATTR_RECORD'))">
 
 <dtml-comment> ***** Delete row ***** </dtml-comment>
- <dtml-elif "REQUEST.form.get('action','')=='delete'">
+ <dtml-elif "REQUEST.get('action','')=='delete'">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
-  <dtml-if "_.len(REQUEST.form.get('qindices',[]))>0">
+  <dtml-if "_.len(REQUEST.get('qindices',[]))>0">
    <dtml-let iqindices="[]">
-   <dtml-in "REQUEST.form.get('qindices',[])">
+   <dtml-in "REQUEST.get('qindices',[])">
     <dtml-let seqitem=sequence-item>
      <dtml-call "iqindices.append(_.int(seqitem))">
     </dtml-let>
@@ -108,14 +108,14 @@
   <dtml-call "REQUEST.set('manage_tabs_message',manage_tabs_message+getZMILangStr('MSG_CHANGED'))">
 
 <dtml-comment> ***** Insert row ***** </dtml-comment>
- <dtml-elif "REQUEST.form.get('action','')=='insert' and REQUEST.get('btn','')!=''">
+ <dtml-elif "REQUEST.get('action','')=='insert' and REQUEST.get('btn','')!=''">
   <dtml-if "REQUEST.get('btn','') not in [ getZMILangStr('BTN_CANCEL'), getZMILangStr('BTN_BACK')]">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-call "REQUEST.set('new_row',[])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
     <dtml-if "type in metaobj_manager.valid_types">
-     <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.form.get(obj_attrName),lang))">
+     <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.get(obj_attrName),lang))">
      <dtml-try><dtml-call "operator_delattr(value,'aq_parent')"><dtml-except></dtml-try>
      <dtml-call "new_row.append(id)">
      <dtml-call "new_row.append(value)">
@@ -137,7 +137,7 @@
   </dtml-if>
  
 <dtml-comment> ***** Update row ***** </dtml-comment>
- <dtml-elif "REQUEST.form.get('action','')=='update' and REQUEST.get('btn','')!=''">
+ <dtml-elif "REQUEST.get('action','')=='update' and REQUEST.get('btn','')!=''">
   <dtml-if "REQUEST.get('btn','') not in [ getZMILangStr('BTN_CANCEL'), getZMILangStr('BTN_BACK')]">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-call "REQUEST.set('row',res[qindex])">
@@ -145,8 +145,8 @@
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
     <dtml-if "type in metaobj_manager.valid_types">
-     <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.form.get(obj_attrName),lang))">
-     <dtml-var "writeBlock('[actions.update]: %s=%s(%s)'%(_.str(id),_.str(value),_.str(REQUEST.form.get(obj_attrName))))">
+     <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.get(obj_attrName),lang))">
+     <dtml-var "writeBlock('[actions.update]: %s=%s(%s)'%(_.str(id),_.str(value),_.str(REQUEST.get(obj_attrName))))">
      <dtml-if "value is _.None and type in ['image','file'] and not REQUEST.get('del_%s'%obj_attrName,'0')=='1'">
       <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,row.get(id,_.None),lang))">
      </dtml-if>

@@ -44,7 +44,7 @@
            <div style="padding:2px; border: solid 1px black; background-color: #FFFFE0;">
             <dtml-var "metaobj_record_summary(_,_,metaObj=masterMetaObj,row=masterRow)">
             <dtml-in "getParentNode().getObjChildren(masterMetaObj['id'],REQUEST)">
-             <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>&action=update" class="zmi"><dtml-var "string_maxlen(REQUEST['summary'],80)"></a>
+             <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>&ZMS_ACTION=update" class="zmi"><dtml-var "string_maxlen(REQUEST['summary'],80)"></a>
             </dtml-in>
            </div>
           <dtml-else>

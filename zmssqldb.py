@@ -398,8 +398,8 @@ class ZMSSqlDb(ZMSObject):
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
         for tableBrwsr in tableBrwsrs:
-          tableName = tableBrwsr.Name()
-          tableType = tableBrwsr.Type().upper()
+          tableName = getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))()
+          tableType = getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))().upper()
           if tableType == 'TABLE':
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- COLUMNS
@@ -407,7 +407,7 @@ class ZMSSqlDb(ZMSObject):
             cols = []
             for columnBrwsr in tableBrwsr.tpValues():
               colId = columnBrwsr.tpId()
-              colDescr = columnBrwsr.Description().upper()
+              colDescr = columnBrwsr.getattr(tableBrwsr,'Description',getattr(tableBrwsr,'description',None))().upper()
               colType = 'string'
               colSize = None
               if colDescr.find('INT') >= 0:

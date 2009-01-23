@@ -1106,3 +1106,10 @@
 [01150] Applied fix for special-object 'Wiki': '[' and ']' in regular expressions (requested by desy).
 [01151] Applied fix for action-parameter in RecordSet: ZMS_ACTION (reported by fh).
 --------------------------------------------------
+2009-01-21:zms-2.11.1-35
+[01152] Applied fix for date-selector in FF.
+--------------------------------------------------
+2009-01-22:zms-2.11.1-36
+[01153] Added support for ZMySQLDA-3.0.
+[01154] Added support for unique object-ids in portal/clients.
+--------------------------------------------------

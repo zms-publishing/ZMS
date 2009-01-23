@@ -219,10 +219,22 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getSequence(self):
       id = 'acl_sequence'
-      if id not in self.objectIds(['Sequence']):
-        sequence = _sequence.Sequence()
-        self._setObject(sequence.id, sequence)
-      ob = getattr(self,id)
+      exists = id in self.objectIds(['Sequence'])
+      portalMaster = self.getPortalMaster()
+      if portalMaster is not None:
+        startvalue = 0
+        if exists:
+          ob = getattr(self,id)
+          startvalue = ob.value
+          self.manage_delObjects(ids=[id])
+        ob = portalMaster.getSequence()
+        if ob.value < startvalue:
+          ob.value = startvalue
+      else:
+        if not exists:
+          sequence = _sequence.Sequence()
+          self._setObject(sequence.id, sequence)
+        ob = getattr(self,id)
       return ob
 
     # --------------------------------------------------------------------------

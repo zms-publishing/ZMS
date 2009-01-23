@@ -769,7 +769,7 @@ class ZMSContainerObject(
         html += getattr( self, attr)( self, REQUEST)
       elif hasattr( self, 'bodyContent_PagePre'):
         html += getattr( self, 'bodyContent_PagePre')( self,REQUEST)
-    
+      
       # bodyContent
       subsectionizer = {}
       for ob in self.filteredChildNodes( REQUEST, self.PAGEELEMENTS):

@@ -22,7 +22,7 @@
 ################################################################################
 
 # Imports.
-from Globals import HTMLFile, Persistent   
+from Globals import HTMLFile, Persistent
 from ZPublisher.Iterators import filestream_iterator
 import OFS.SimpleItem
 import Acquisition
@@ -121,52 +121,11 @@ def getFilenamesFromValue( v):
 def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   """ manage_packMediaDb """
   message = ''
-  objs = [self]
-  objs.extend(objs[0].getTreeNodes())
-  objs.extend(objs[0].getTrashcan().getTreeNodes())
-  filenames = []
-  for obj in objs:
-    # Process recordset.
-    if obj.getType()=='ZMSRecordSet':
-      si = obj.getMetaobjAttrIds(obj.meta_id)[0]
-      obj_attr = obj.getObjAttr(si)
-      for lang in obj.getLangIds():
-        for obj_vers in obj.getObjVersions():
-          v = _objattrs.getobjattr(obj,obj_vers,obj_attr,lang)
-          for r in v:
-            for k in r.keys():
-              u = r[k]
-              mediadbfile = getattr(u,'mediadbfile',None)
-              if mediadbfile is not None:
-                filenamesFromValue = getFilenamesFromValue( u)
-                for filename in filenamesFromValue:
-                  if filename not in filenames:
-                    filenames.append( filename)
-    # Process object. 
-    else:
-      obj_attrs = obj.getObjAttrs()
-      for si in obj_attrs.keys():
-        obj_attr = obj_attrs[si]
-        datatype = obj_attr['datatype'] 
-        multilang = obj_attr['multilang']
-        if datatype in [ 'file', 'image', 'list', 'dictionary']:
-          for obj_vers in obj.getObjVersions():
-            obj_attr_names = []
-            if multilang:
-              for lang in self.getLangIds():
-                obj_attr_names.append('%s_%s'%(si,lang))
-            else:
-              obj_attr_names.append(si)
-            for obj_attr_name in obj_attr_names:
-              v = getattr(obj_vers,obj_attr_name,None)
-              filenamesFromValue = getFilenamesFromValue( v)
-              for filename in filenamesFromValue:
-                if filename not in filenames:
-                  filenames.append( filename)
-  
   c = 0
   t = 0
-  path = self.getMediaDb().location
+  mediadb = self.getMediaDb()
+  path = mediadb.location
+  filenames = mediadb.valid_filenames()
   for filename in os.listdir(path):
     if filename not in filenames:
       filepath = path + os.sep + filename
@@ -174,7 +133,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
         os.remove(filepath)
         c += 1
     t += 1
-
+  
   # Debug.
   if _globals.debug( self):
     _globals.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
@@ -408,6 +367,55 @@ class MediaDb(
         _fileutil.remove(filepath)
       except:
         pass
+
+
+    # --------------------------------------------------------------------------
+    #  MediaDb.valid_filenames
+    # --------------------------------------------------------------------------
+    def valid_filenames(self):
+      filenames = []
+      objs = [self.getSelf()]
+      objs.extend(objs[0].getTreeNodes())
+      objs.extend(objs[0].getTrashcan().getTreeNodes())
+      for obj in objs:
+        # Process recordset.
+        if obj.getType()=='ZMSRecordSet':
+          si = obj.getMetaobjAttrIds(obj.meta_id)[0]
+          obj_attr = obj.getObjAttr(si)
+          for lang in obj.getLangIds():
+            for obj_vers in obj.getObjVersions():
+              v = _objattrs.getobjattr(obj,obj_vers,obj_attr,lang)
+              for r in v:
+                for k in r.keys():
+                  u = r[k]
+                  mediadbfile = getattr(u,'mediadbfile',None)
+                  if mediadbfile is not None:
+                    filenamesFromValue = getFilenamesFromValue( u)
+                    for filename in filenamesFromValue:
+                      if filename not in filenames:
+                        filenames.append( filename)
+        # Process object. 
+        else:
+          obj_attrs = obj.getObjAttrs()
+          for si in obj_attrs.keys():
+            obj_attr = obj_attrs[si]
+            datatype = obj_attr['datatype'] 
+            multilang = obj_attr['multilang']
+            if datatype in [ 'file', 'image', 'list', 'dictionary']:
+              for obj_vers in obj.getObjVersions():
+                obj_attr_names = []
+                if multilang:
+                  for lang in self.getLangIds():
+                    obj_attr_names.append('%s_%s'%(si,lang))
+                else:
+                  obj_attr_names.append(si)
+                for obj_attr_name in obj_attr_names:
+                  v = getattr(obj_vers,obj_attr_name,None)
+                  filenamesFromValue = getFilenamesFromValue( v)
+                  for filename in filenamesFromValue:
+                    if filename not in filenames:
+                      filenames.append( filename)
+      return filenames
 
 
     """

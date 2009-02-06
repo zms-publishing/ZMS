@@ -520,6 +520,10 @@ class Exportable:
           
           html = self.exportExternalResources( obj, html, path, REQUEST)
           
+          # Blank lines in includes cause PHP session errors
+          # @see http://bugs.php.net/bug.php?id=8974
+          html = self.re_sub('^\s*', '', html)
+          
           f = open( filename, 'w')
           f.write( html)
           f.close()

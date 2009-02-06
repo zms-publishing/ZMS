@@ -105,6 +105,16 @@ umlautMapping = {
 
 
 # ------------------------------------------------------------------------------
+#  _globals.umlaut_quote:
+# ------------------------------------------------------------------------------
+def umlaut_quote(s, mapping={}):
+  map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
+  for key in mapping.keys():
+    s = s.replace(key,mapping[key])
+  return s
+
+
+# ------------------------------------------------------------------------------
 #  _globals.datatype_key:
 # ------------------------------------------------------------------------------
 def datatype_key(datatype):
@@ -176,9 +186,7 @@ def id_quote(s, mapping={
 		'-':'_',
 		'/':'_',
 }):
-  map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
-  for key in mapping.keys():
-    s = s.replace(key,mapping[key])
+  s = umlaut_quote(s,mapping)
   valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
   s = filter( lambda x: ord(x) in valid, s)
   while len(s) > 0 and s[0] == '_':

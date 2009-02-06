@@ -107,7 +107,7 @@
      <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%('%s%i'%(getZMILangStr('ATTR_FILTER'),_['sequence-index']+1))"> ---</option>
      <dtml-in columns mapping
       ><dtml-if "type in ['date','datetime','identifier','int','float','multiselect','text','select','string']"
-       ><option value="<dtml-var id>" <dtml-if "SESSION.get(sessionattr,'')==id">selected="selected"</dtml-if>><dtml-var "string_maxlen(label,25)"></option
+       ><option value="<dtml-var id>" <dtml-if "SESSION.get(sessionattr,'')==id">selected="selected"</dtml-if>><dtml-var "string_maxlen(getLangStr(label,lang),25)"></option
       ></dtml-if
      ></dtml-in>
     </select>

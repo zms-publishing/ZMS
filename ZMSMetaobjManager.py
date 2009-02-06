@@ -124,7 +124,7 @@ class ZMSMetaobjManager:
           valid_types = self.valid_datatypes+self.valid_zopetypes+meta_types+['*']
           metaObj = self.getMetaobj( id)
           for metaObjAttr in metaObj['attrs']:
-            if metaObjAttr['type'] not in valid_types:
+            if metaObjAttr['type'] not in valid_types+metadictAttrs:
               metadictAttrs.append( metaObjAttr['type'])
         newDtml = item.get('dtml')
         newValue = item.get('value')
@@ -142,6 +142,7 @@ class ZMSMetaobjManager:
         # Set Object.
         self.setMetaobj( newValue)
         # Set Attributes.
+        attr_ids = []
         for attr in newAttrs:
           # Mandatory.
           attr_id = attr.get('id')
@@ -158,12 +159,20 @@ class ZMSMetaobjManager:
           if type(oldAttrs) is list and len(oldAttrs) > 0:
             while len(oldAttrs) > 0 and not (attr_id == oldAttrs[0]['id'] and newType == oldAttrs[0]['type']):
               oldAttr = oldAttrs[0]
-              self.setMetaobjAttr( id, None, oldAttr['id'], oldAttr['name'], oldAttr['mandatory'], oldAttr['multilang'], oldAttr['repetitive'], oldAttr['type'], oldAttr['keys'], oldAttr['custom'], oldAttr['default'], zms_system)
+              # Set Attribute.
+              if oldAttr['id'] not in attr_ids:
+                self.setMetaobjAttr( id, None, oldAttr['id'], oldAttr['name'], oldAttr['mandatory'], oldAttr['multilang'], oldAttr['repetitive'], oldAttr['type'], oldAttr['keys'], oldAttr['custom'], oldAttr['default'], zms_system)
+                attr_ids.append(oldAttr['id'])
+              # Deregister Meta Attribute.
+              if oldAttr['id'] in metadictAttrs:
+                metadictAttrs.remove(oldAttr['id'])
               oldAttrs.remove( oldAttr)
             if len(oldAttrs) > 0:
               oldAttrs.remove( oldAttrs[0])
           # Set Attribute.
-          self.setMetaobjAttr( id, attr_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault, zms_system)
+          if attr_id not in attr_ids:
+            self.setMetaobjAttr( id, attr_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault, zms_system)
+            attr_ids.append(attr_id)
           # Deregister Meta Attribute.
           if attr_id in metadictAttrs:
             metadictAttrs.remove(attr_id)
@@ -177,7 +186,10 @@ class ZMSMetaobjManager:
           newKeys = []
           newCustom = ''
           newDefault = ''
-          self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+          # Set Attribute.
+          if attr_id not in attr_ids:
+            self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+            attr_ids.append(attr_id)
         # Set Template (backwards compatibility).
         if newValue['type'] not in [ 'ZMSLibrary', 'ZMSModule', 'ZMSPackage'] and newDtml is not None:
           tmpltId = self.getTemplateId( id)

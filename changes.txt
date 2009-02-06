@@ -1113,3 +1113,10 @@
 [01153] Added support for ZMySQLDA-3.0.
 [01154] Added support for unique object-ids in portal/clients.
 --------------------------------------------------
+2009-01-27:zms-2.11.1-37
+[01155] Applied fix for Teaser-Elements (whitespace) and SQL-Datasource (error-handling) (contributed by fh).
+--------------------------------------------------
+2009-02-06:zms-2.11.1-38
+{01156] Added support for lang-strings in SQL-Datasource filter-values (contributed by tf).
+[01157] Added support for static html-export: blank lines in includes cause PHP session errors (contributed by cm).
+--------------------------------------------------

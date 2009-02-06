@@ -1019,19 +1019,22 @@ class ZMSGlobals:
         k = []
         if len(v.split(' OR '))>1:
           for s in v.split(' OR '):
-            s = s.replace('*','').strip().lower()
+            s = s.replace('*','').strip()
             if len( s) > 0:
-              k.extend(filter(lambda x: x not in k and str_item(x).lower().find(s)>=0, l))
+              s = _globals.umlaut_quote(s).lower()
+              k.extend(filter(lambda x: x not in k and _globals.umlaut_quote(str_item(x)).lower().find(s)>=0, l))
         elif len(v.split(' AND '))>1:
           k = l
           for s in v.split(' AND '):
-            s = s.replace('*','').strip().lower()
+            s = s.replace('*','').strip()
             if len( s) > 0:
-              k = filter(lambda x: str_item(x).lower().find(s)>=0, k)
+              s = _globals.umlaut_quote(s).lower()
+              k = filter(lambda x: _globals.umlaut_quote(str_item(x)).lower().find(s)>=0, k)
         else:
           v = v.replace('*','').strip().lower()
           if len( v) > 0:
-            k = filter(lambda x: str_item(x).lower().find(v)>=0, l)
+            v = _globals.umlaut_quote(v).lower()
+            k = filter(lambda x: _globals.umlaut_quote(str_item(x)).lower().find(v)>=0, l)
         return k
       # Extract Items.
       if type(i) is str:

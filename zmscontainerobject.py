@@ -615,7 +615,12 @@ class ZMSContainerObject(
         cmdpath = self.id + '/'
       actions = []
       actions.extend( self.filtered_insert_actions())
-      actions.extend( map( lambda x: (x[0], path+x[1]), filter(lambda x: path == '' or x[1].find(path) < 0, self.filtered_edit_actions(path,cmdpath))))
+      for x in filter(lambda x: path == '' or not x[1].startswith(path), self.filtered_edit_actions(path,cmdpath)):
+        label = x[0]
+        value = x[1]
+        if value.find('manage_pasteObjs') < 0:
+          value = path+value
+        actions.append( (label, value))
       actions.extend( self.filtered_workflow_actions())
       
       #-- Build xml.

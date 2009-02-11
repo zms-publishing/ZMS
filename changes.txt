@@ -1120,3 +1120,6 @@
 {01156] Added support for lang-strings in SQL-Datasource filter-values (contributed by tf).
 [01157] Added support for static html-export: blank lines in includes cause PHP session errors (contributed by cm).
 --------------------------------------------------
+2009-02-09:zms-2.11.1-39
+[01158] Applied fix for paste in top drop-down of subordinate container-objects (reported by desy).
+--------------------------------------------------

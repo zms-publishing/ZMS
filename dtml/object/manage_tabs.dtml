@@ -32,6 +32,10 @@
 <div class="zmi_col_left">
 <div id="ZMIManageTabsContainer">
 <ul id="ZMIManageTabs">
+<dtml-let ZMIManageTabs="getObjProperty('manage_tabs.ZMIManageTabs',REQUEST)">
+<dtml-if ZMIManageTabs>
+<dtml-var ZMIManageTabs>
+<dtml-else>
 <dtml-in manage_options mapping>
  <li<dtml-if "_['sequence-index']==a_"> class="on"</dtml-if>
   ><dtml-if "action and not action==''"
@@ -43,6 +47,8 @@
   ></dtml-if
  </li>
 </dtml-in>
+</dtml-if>
+</dtml-let>
 </ul>
 </div>
 </div>

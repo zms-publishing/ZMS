@@ -1,7 +1,3 @@
-<dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
-
-
 /**
  * Set active style-sheet.
  */
@@ -74,4 +70,4 @@ window.onunload = function(e) {
 
 var cookie = readCookie("style");
 var title = cookie ? cookie : getPreferredStyleSheet();
-setActiveStyleSheet(title);
+setActiveStyleSheet(title);

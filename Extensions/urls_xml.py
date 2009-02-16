@@ -209,11 +209,16 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     RESPONSE.write('<?xml version="1.0" encoding="utf-8"?>\n');
     RESPONSE.write('<urls base="%s">\n'%(self.getHome().absolute_url()));
     
-    # see _exportable.py::exportRessources, etc.
+    # @see _exportable.py::exportRessources, etc.
     folder = '/misc_/zms'
     for ob_id in self.misc_.zms._d.keys():
       content_type = guess_content_type( ob_id)
       RESPONSE.write('<url content_type="%s">%s/%s</url>\n'%(content_type,folder,ob_id))
+    
+    # @see headScript
+    for lang in self.getLangIds():
+      RESPONSE.write('<url content_type="text/javascript">/content/zmilib_js?lang=%s</url>\n'%lang)
+    RESPONSE.write('<url content_type="text/javascript">/content/comlib_js</url>\n')
     
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)

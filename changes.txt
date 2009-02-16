@@ -1123,3 +1123,6 @@
 2009-02-09:zms-2.11.1-39
 [01158] Applied fix for paste in top drop-down of subordinate container-objects (reported by desy).
 --------------------------------------------------
+2009-02-13:zms-2.11.1-40
+[01159] Applied fix for Google-Sitemap/Mirror-Manager: added native_js (requested by xm).
+--------------------------------------------------

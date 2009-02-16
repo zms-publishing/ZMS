@@ -1,6 +1,3 @@
-<dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
-
  //-------------------------------------------------------------------
  // isNull(value)
  //   Returns true if value is null

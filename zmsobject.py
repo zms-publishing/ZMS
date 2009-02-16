@@ -135,9 +135,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # JavaScript.
     # -----------
     comlib_js = HTMLFile('dtml/javascript/comlib', globals()) # Common Functions
-    formlib_js = HTMLFile('dtml/javascript/formlib', globals()) # Form-Functions
     zmilib_js = HTMLFile('dtml/javascript/zmilib', globals()) # Manage-Functions
-    styleswitcher_js = HTMLFile('dtml/javascript/styleswitcher', globals()) # Stylesheet Functions
 
 
     ############################################################################

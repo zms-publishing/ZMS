@@ -202,11 +202,14 @@ class ZMSMetaobjManager:
 
     def importMetaobjXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
+      ids = []
       v = self.parseXmlString( xml, mediadbStorable=False)
       if not type(v) is list:
         v = [v]
       for item in v:
         id = self._importMetaobjXml(item,zms_system,createIfNotExists,createIdsFilter)
+        ids.append( id)
+      return ids
 
 
     # --------------------------------------------------------------------------
@@ -1054,9 +1057,10 @@ class ZMSMetaobjManager:
                 extra['section'] = 'import'
                 extra['temp_import_file_id'] = temp_id
                 extra['temp_import_zms_system:int'] = zms_system
+                sync_id = False
               else:
                 createIdsFilter = REQUEST.get('createIdsFilter')
-                self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
+                sync_id = self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
                 message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
           
           # Move to.

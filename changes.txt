@@ -1076,7 +1076,7 @@
 [01139] Added support for hidden tables in SQL-Datasource.
 --------------------------------------------------
 2008-12-19:zms-2.11.1-26
-[01140] Improved performance of portal-clients in master (requested by desy).
+[01140] Improved performance of portal-clients in master for large sites (requested by desy).
 [01141] Applied fix for disabled content-objects in filtered insert-action list (requested by zms-developers).
 --------------------------------------------------
 2009-01-06:zms-2.11.1-27
@@ -1125,4 +1125,7 @@
 --------------------------------------------------
 2009-02-13:zms-2.11.1-40
 [01159] Applied fix for Google-Sitemap/Mirror-Manager: added native_js (requested by xm).
+--------------------------------------------------
+2009-02-19:zms-2.11.1-41
+[01160] Improved performance of meta-object import in master for large sites (requested by desy).
 --------------------------------------------------

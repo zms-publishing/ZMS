@@ -1330,7 +1330,7 @@ class ObjAttrsManager:
     #
     #  Synchronizes object-attributes.
     # --------------------------------------------------------------------------
-    def synchronizeObjAttrs(self, id=None):
+    def synchronizeObjAttrs(self, sync_id=None):
       if _globals.debug( self):
         _globals.writeLog( self, '[synchronizeObjAttrs]')
       
@@ -1363,14 +1363,16 @@ class ObjAttrsManager:
           defaults_obj_attrs[dct['id']] = dct
       
       # Process meta-model.
-      if (id is None):
+      if sync_id is None:
         self.dObjAttrs = {}
         meta_ids = self.dGlobalAttrs.keys()
         for meta_id in self.getMetaobjIds( sort=0):
           if meta_id not in meta_ids:
             meta_ids.append( meta_id)
       else:
-        meta_ids = [id]
+        if not type(sync_id) is list:
+          sync_id = [sync_id]
+        meta_ids = sync_id
       for meta_id in meta_ids:
         if meta_id in self.dGlobalAttrs.keys():
           obj_attrs = {}
@@ -1395,9 +1397,16 @@ class ObjAttrsManager:
       # Process clients.
       for portalClient in self.getPortalClients():
         try:
-          if (id is None) or \
-             (id in portalClient.getMetaobjIds(sort=0) and portalClient.getMetaobj(id).get('acquired',0)==1):
-            portalClient.synchronizeObjAttrs(id)
+          b = False
+          if not b:
+            b = sync_id is None
+          if not b:
+            metaObjIds = portalClient.getMetaobjIds(sort=0)
+            for id in sync_id:
+              if not b:
+                b = id in metaObjIds and portalClient.getMetaobj(id).get('acquired',0)==1
+          if b:
+            portalClient.synchronizeObjAttrs(sync_id)
         except:
           _globals.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
       

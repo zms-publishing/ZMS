@@ -150,7 +150,7 @@
   <dtml-call "REQUEST.set('res',[])">
  </dtml-if>
  <dtml-call "REQUEST.set('grid_options',{})">
- <dtml-call "operator_setitem(grid_options,'export',{'action':url_append_params('manage_exportexcel',{'lang':lang,'action':'insert'}),'target':'_blank','icon':MISC_ZMS+'mime_type.application_x_excel.gif'})">
+ <dtml-call "operator_setitem(grid_options,'export',{'action':url_append_params('manage_exportexcel',{'lang':lang,'action':'insert'}),'manage_target':'_blank','icon':MISC_ZMS+'mime_type.application_x_excel.gif'})">
  <dtml-if primary_key>
   <dtml-call "operator_setitem(grid_options,'insert',{'action':url_append_params(URL,{'lang':lang,'action':'insert'})})">
   <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update'})+'&rowid=%s'})">

@@ -322,7 +322,7 @@ class CacheableObject(ReqBuff):
       
       # Return with message.
       message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-      target = REQUEST.get('target','manage_properties')
+      target = REQUEST.get('manage_target','manage_properties')
       return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
 
 
@@ -345,7 +345,7 @@ class CacheableObject(ReqBuff):
       
       # Return with message.
       message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-      target = REQUEST.get('target','manage_properties')
+      target = REQUEST.get('manage_target','manage_properties')
       return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
       
 ################################################################################

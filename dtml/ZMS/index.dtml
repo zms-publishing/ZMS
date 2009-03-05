@@ -81,6 +81,9 @@
 ></dtml-if
 
 ><dtml-comment>--------- STANDARD_HTML_FOOTER --------------------</dtml-comment
+><dtml-if manage_preview
+><script type="text/javascript">do_manage_preview();</script
+></dtml-if
 ><dtml-var f_standard_html_footer
 
 ><dtml-comment>--------- INACTIVE --------------------------------</dtml-comment

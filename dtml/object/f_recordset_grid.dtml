@@ -45,7 +45,7 @@
     /></a
    ></dtml-if
    ><dtml-if "'export' in grid_options.keys()"
-   ><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('target')"> target="<dtml-var "grid_options['export'].get('target')">"</dtml-if>
+   ><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('manage_target')"> target="<dtml-var "grid_options['export'].get('manage_target')">"</dtml-if>
     ><img src="<dtml-var "grid_options['export']['icon']">" alt="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
     /></a
    ></dtml-if

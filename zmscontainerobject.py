@@ -292,7 +292,7 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_DELETED')%count
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('target','manage_main')
+        target = REQUEST.get('manage_target','manage_main')
         return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
 
 
@@ -329,7 +329,7 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_UNDONE')%c
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('target','manage_main')
+        target = REQUEST.get('manage_target','manage_main')
         return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
 
 
@@ -374,7 +374,7 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_TRASHED')%len(ids)
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('target','manage_main')
+        target = REQUEST.get('manage_target','manage_main')
         return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
 
 

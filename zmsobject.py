@@ -585,7 +585,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       target_ob = self.getParentNode()
       if redirect_self or target_ob is None:
         target_ob = self
-      target = REQUEST.get( 'target', '%s/manage_main'%target_ob.absolute_url())
+      target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
       
       if REQUEST.get('btn','') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         try:

@@ -65,6 +65,32 @@ function fireEvent( el, evtName) {
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Manage Preview
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+  function manage_preview() {
+    var divs = $('div');
+    for ( var i = 0; i < divs.length; i++) {
+      var div = $(divs[i]);
+      var id= div.attr('id');
+      if (id!=undefined) {
+        if (id.indexOf('pageelement')==0 || id.indexOf('pageregion')==0) {
+          var mdiv = document.getElementById(id);
+          var ldiv = document.createElement( "div");
+          ldiv.appendChild( document.createTextNode(id));
+          mdiv.appendChild( ldiv);
+          div.css( { border:"5px solid black" ,background:"red"});
+        }
+      }
+    }
+  }
+
+  function do_manage_preview() { 
+    window.setTimeout("manage_preview()",100);
+  }
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Highlight Text
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */

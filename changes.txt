@@ -1129,3 +1129,9 @@
 2009-02-19:zms-2.11.1-41
 [01160] Improved performance of meta-object import in master for large sites (requested by desy).
 --------------------------------------------------
+2009-02-24:zms-2.11.1-42
+[01161] Added support for logging workflow-transitions: VersionManagerContainer.logWfTransition(desc).
+--------------------------------------------------
+2009-03-03:zms-2.11.1-43
+[01162] Applied fix for target-parameter in ZMI: replaced by manage_target (requested by xm).
+--------------------------------------------------

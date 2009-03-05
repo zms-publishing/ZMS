@@ -277,7 +277,7 @@ class ZMSLinkElement(ZMSContainerObject):
       
       self._checkZMSLock()
       self._checkWebDAVLock()
-      target = REQUEST.get( 'target', '%s/manage_main'%self.getParentNode().absolute_url())
+      target = REQUEST.get( 'manage_target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
       if REQUEST.get('btn','') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         try:
@@ -305,7 +305,7 @@ class ZMSLinkElement(ZMSContainerObject):
         
         ##### Failure Message ####
         except ConstraintViolation:
-          target = REQUEST.get( 'target', '%s/manage_main'%self.absolute_url())
+          target = REQUEST.get( 'manage_target', '%s/manage_main'%self.absolute_url())
           message = "[ConstraintViolation]: " + str( sys.exc_value)
       
       # Return with message.

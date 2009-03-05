@@ -1181,6 +1181,25 @@ class VersionManagerContainer:
       self.autoWfTransition(REQUEST)
 
     # --------------------------------------------------------------------------
+    #  VersionManagerContainer.logWfTransition
+    # --------------------------------------------------------------------------
+    def logWfTransition(self, id, desc):
+      REQUEST = self.REQUEST
+      lang = REQUEST.get('lang')
+      # Set Properties.
+      dt = _globals.getDateTime( time.time())
+      uid = str(REQUEST.get('AUTHENTICATED_USER'))
+      # Log Protocol.
+      log = ''
+      log = log + self.getLangFmtDate(dt,lang,'%Y-%m-%d %H:%M:%S') + '\t'
+      log = log + id + '\t'
+      log = log + self.absolute_url()[len(self.getHome().absolute_url()):] + '\t'
+      log = log + self.display_type(REQUEST) + '\t'
+      log = log + uid + '\t'
+      log = log + desc
+      _workflowmanager.writeProtocol(self, log)
+
+    # --------------------------------------------------------------------------
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
@@ -1267,14 +1286,7 @@ class VersionManagerContainer:
         self.setObjProperty('work_uid',work_uid,lang)
         self.setObjProperty('work_dt',work_dt,lang)
         # Log Protocol.
-        log = ''
-        log = log + self.getLangFmtDate(work_dt,lang,'%Y-%m-%d %H:%M:%S') + '\t'
-        log = log + wfTransition['id'] + '\t'
-        log = log + self.absolute_url()[len(self.getHome().absolute_url()):] + '\t'
-        log = log + self.display_type(REQUEST) + '\t'
-        log = log + work_uid + '\t'
-        log = log + work_desc
-        _workflowmanager.writeProtocol(self, log)
+        self.logWfTransition(work_desc)
       self.autoWfTransition(REQUEST)
       # Return with message.
       if RESPONSE is not None:

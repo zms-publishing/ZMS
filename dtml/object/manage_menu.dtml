@@ -222,7 +222,7 @@ function drop(href, target)
   system_msg.show( "normal");
   // JQuery.AJAX.get
   $(document.body).css( "cursor", "wait");
-  $.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&target="+escape(target), dropProcessResponse);
+  $.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&manage_target="+escape(target), dropProcessResponse);
 }
 
 /**

@@ -1183,8 +1183,8 @@ class VersionManagerContainer:
     # --------------------------------------------------------------------------
     #  VersionManagerContainer.logWfTransition
     # --------------------------------------------------------------------------
-    def logWfTransition(self, id, desc):
-      REQUEST = self.REQUEST
+    def logWfTransition(self, id, desc, REQUEST=None):
+      REQUEST = _globals.nvl( REQUEST, self.REQUEST)
       lang = REQUEST.get('lang')
       # Set Properties.
       dt = _globals.getDateTime( time.time())
@@ -1286,7 +1286,7 @@ class VersionManagerContainer:
         self.setObjProperty('work_uid',work_uid,lang)
         self.setObjProperty('work_dt',work_dt,lang)
         # Log Protocol.
-        self.logWfTransition(work_desc)
+        self.logWfTransition(wfTransition['id'],work_desc,REQUEST)
       self.autoWfTransition(REQUEST)
       # Return with message.
       if RESPONSE is not None:

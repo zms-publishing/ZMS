@@ -118,18 +118,12 @@ function focusSelectProcessResponse(data)
  <col width="100" />
 </colgroup>
 
-<tr>
-<td class="zmiHSep" width="200"><img src="<dtml-var spacer_gif>" title="" border="0" width="200" height="1"></td>
-<td class="zmiHSep" width="100%"><img src="<dtml-var spacer_gif>" title="" border="0" width="100%" height="1"></td>
-<td class="zmiHSep" width="100"><img src="<dtml-var spacer_gif>" title="" border="0" width="100" height="1"></td>
-</tr>
-
-<tr valign="top">
+<tr valign="top" id="tr_<dtml-var id>">
 
 <dtml-comment>
 <!-- ##### object ##### -->
 </dtml-comment>
-<td><div style="padding:1px" class="form-small"
+<td class="zmiContainerColLeft form-small"
 ><dtml-if isTrashcan
 ><img src="<dtml-var "display_icon(REQUEST)">" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
 ><b><dtml-var "display_type(REQUEST)"></b
@@ -150,14 +144,13 @@ function focusSelectProcessResponse(data)
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
 <dtml-var "manage_main_btn(_,_,offs=0,REQUEST=REQUEST)">
-</div>
 </td>
 
 <dtml-comment>
 <!-- ##### renderShort ##### -->
 </dtml-comment>
-<td class="zmiNeutralColorWhite">
- <div style="padding:3px">
+<td class="zmiContainerColCenter zmiNeutralColorWhite">
+ <div class="zmiRenderShort">
   <dtml-let img="getObjProperty('titleimage',REQUEST)">
    <dtml-if img>
     <div class="form-small">
@@ -185,7 +178,7 @@ function focusSelectProcessResponse(data)
 <dtml-comment>
 <!-- ##### change ##### -->
 </dtml-comment>
-<td style="width:100px" class="zmiNeutralColorLight1"><dtml-var "manage_main_change(_,_,ob=oCurrent,REQUEST=REQUEST)"></td>
+<td class="zmiContainerColRight"><dtml-var "manage_main_change(_,_,ob=oCurrent,REQUEST=REQUEST)"></td>
 
 </tr>
 
@@ -204,23 +197,13 @@ function focusSelectProcessResponse(data)
           coverage="getDCCoverage(REQUEST)"
           accessRights="hasAccess(REQUEST)">
 
-<dtml-comment>
-<!-- ##### separator ##### -->
-</dtml-comment>
-<dtml-if sequence-start>
-<tr>
-<td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-<td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
-</tr>
-</dtml-if>
-
 <tr valign="top" id="tr_<dtml-var id>">
 
 <dtml-comment>
 <!-- ##### object ##### -->
 </dtml-comment>
-<td><div style="padding:1px" class="form-small"
-><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>
+<td class="zmiContainerColLeft form-small"
+><span><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>></span
 ><dtml-if accessRights
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"
 ><dtml-var f_display_icon
@@ -243,24 +226,18 @@ function focusSelectProcessResponse(data)
 ><option value=""><dtml-if isTrashcan><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"><dtml-else><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%getParentNode().display_type(REQUEST)"></dtml-if></option
 ></select>
 </dtml-if>
- </div>
 </td>
 
 <dtml-comment>
 <!-- ##### renderShort ##### -->
 </dtml-comment>
-<td <dtml-if "isActive(REQUEST)"><dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if><dtml-else>class=" zmiNeutralColorLight1"</dtml-if>><div style="padding:3px"><dtml-var "renderShort(REQUEST)"></div></td>
+<td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"><dtml-if "isPage()"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorWhite</dtml-if><dtml-else> zmiNeutralColorLight1</dtml-if>"><div class="zmiRenderShort"><dtml-var "renderShort(REQUEST)"></div></td>
 
 <dtml-comment>
 <!-- ##### change ##### -->
 </dtml-comment>
-<td style="width:100px" class="zmiNeutralColorLight1"><dtml-var "manage_main_change(_,_,ob=oCurrent,REQUEST=REQUEST)"></td>
+<td class="zmiContainerColRight"><dtml-var "manage_main_change(_,_,ob=oCurrent,REQUEST=REQUEST)"></td>
 
-</tr>
-
-<tr>
-<td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-<td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
 </tr>
 
 </dtml-let>
@@ -278,16 +255,6 @@ function focusSelectProcessResponse(data)
 
 <dtml-if "pageCount>SESSION.get('pageCountMax')">
 
-<dtml-comment>
-<!-- ##### separator ##### -->
-</dtml-comment>
-<dtml-if "pageElementCount==0">
-<tr>
-<td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-<td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-</tr>
-</dtml-if>
-
 <dtml-in "childNodes[pageElementCount:]">
 <dtml-let oCurrent=sequence-item
           coverage="getDCCoverage(REQUEST)"
@@ -299,7 +266,7 @@ function focusSelectProcessResponse(data)
 <!-- ##### object ##### -->
 </dtml-comment>
 <dtml-if sequence-start>
-<td rowspan="<dtml-var "_.len(childNodes)-pageElementCount">"><div style="padding:1px" class="form-small">
+<td rowspan="<dtml-var "_.len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
 <img src="<dtml-var MISC_ZMS>compactview.gif" title="" border="0" align="absmiddle" />
 <dtml-var "getZMILangStr('ATTR_COMPACTVIEW')">
 <dtml-let actions="getParentNode().filtered_insert_actions()"
@@ -314,40 +281,31 @@ function focusSelectProcessResponse(data)
 ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
 ></select
 ></dtml-let
-></div></td
+></td
 ></dtml-if>
 
 <dtml-comment>
 <!-- ##### renderShort ##### -->
 </dtml-comment>
-<td <dtml-if "isActive(REQUEST)">class="zmiNeutralColorLight0"<dtml-else>class=" zmiNeutralColorLight1"</dtml-if>>
-<div style="padding:3px" id="tr_<dtml-var id>">
-<div class="form-small">
-<input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless> />
+<td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorLight1</dtml-if>">
+<div class="zmiRenderShort form-small" id="tr_<dtml-var id>">
+<span><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless> /></span>
 <input type="hidden" name="sort_id_<dtml-var id>" value="<dtml-var "getSortId()">">
 <a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)"></a>
-</div>
 </div>
 </td>
 
 <dtml-comment>
 <!-- ##### change ##### -->
 </dtml-comment>
-<td width="100" class="zmiNeutralColorLight1">
-<div class="form-small">
+<td class="zmiContainerColRight form-small">
 <dtml-if "getObjProperty('change_dt',REQUEST)"><dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))"></dtml-if>&nbsp;
-</div>
 </td>
 
 </tr>
 
 </dtml-let>
 </dtml-in>
-
-<tr>
-<td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-<td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
-</tr>
 
 </dtml-if>
 
@@ -361,9 +319,9 @@ function focusSelectProcessResponse(data)
 ><dtml-in "getConfProperty('Portal.Clients',[])"
 ><dtml-let clientId=sequence-item
 ><dtml-if sequence-start>
-<tr valign="top">
-<td>&nbsp;</td>
-<td class="zmiNeutralColorLight0">
+<tr valign="top" id="tr_<dtml-var clientId>">
+<td class="zmiContainerColLeft">&nbsp;</td>
+<td class="zmiContainerColCenter zmiNeutralColorLight0">
 <div class="form-small" style="padding:2px">
 </dtml-if>
 <a href="<dtml-var clientId>/content/manage_main?lang=<dtml-var lang>" class="zmi"
@@ -378,11 +336,7 @@ function focusSelectProcessResponse(data)
 <dtml-if sequence-end>
 </div>
 </td>
-<td style="width:100px" class="zmiNeutralColorLight1">&nbsp;</td>
-</tr>
-<tr>
-<td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-<td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
+<td class="zmiContainerColRight">&nbsp;</td>
 </tr>
 </dtml-if
 ></dtml-let
@@ -408,5 +362,28 @@ function focusSelectProcessResponse(data)
 </dtml-let>
 
 </form>
+
+<script type="text/javascript">
+<!--//
+
+  function initPage() {
+    var els;
+    $("input[@name=ids:list][@type=checkbox]").click( function(evt) { switchButtons(evt); } );
+    els = $("tr[@id*=tr_]:first>td:eq(1),tr[@id*=tr_]>td.zmiNeutralColorLight0");
+    els.mouseover( function(evt) { zmiTrFollowMouseHover(this); });
+    els.mouseout( function(evt) { zmiTrFollowMouseHover(this); });
+    els.click( function(evt) { zmiTrFollowClick(this); });
+    els.css( "cursor", "pointer");
+    els = $("td:first",$("tr[@id*=tr_]"));
+    els.mouseover( function(evt) { zmiTrSelectMouseHover(this); });
+    els.mouseout( function(evt) { zmiTrSelectMouseHover(this); });
+    els.click( function(evt) { zmiTrSelectClick(this); });
+    els = $("select[@id*=select_actions_]");
+    els.click( function(evt) { evt.stopPropagation(); });
+  }
+  initPage();
+
+//-->
+</script>
 
 <dtml-var manage_page_footer>

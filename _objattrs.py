@@ -747,6 +747,9 @@ class ObjAttrs:
       v = self.getObjProperty('active',REQUEST)
       if type(v) is bool:
         return v
+      v = self.getObjProperty('isActive',REQUEST)
+      if type(v) is bool:
+        b = b and v
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       for key in ['active','attr_active_start','attr_active_end']:

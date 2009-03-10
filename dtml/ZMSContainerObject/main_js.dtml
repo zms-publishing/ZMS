@@ -1,6 +1,52 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
+//------------------------------------------------------------------------------
+// -- 
+//------------------------------------------------------------------------------
+
+  function zmiTrFollowMouseHover(el)
+  {
+    var tr = $(el).parents("tr")[0];
+    $("a:first",tr).toggleClass( "zmiHighlightAction");
+    $(el).toggleClass("zmiContainerHighlight");
+  }
+
+  function zmiTrFollowClick(el)
+  {
+    var tr = $(el).parents("tr")[0];
+    var a = $("a:first",tr);
+    var href = self.location.href;
+    var href_relative = a.attr("href");
+    var new_location = href.substr(0,href.lastIndexOf("/")+1)+href_relative;
+    self.location = new_location;
+  }
+
+//------------------------------------------------------------------------------
+// -- 
+//------------------------------------------------------------------------------
+
+  function zmiTrSelectMouseHover(el)
+  {
+    var tr = $(el).parents("tr")[0];
+    $("span:first",tr).toggleClass( "zmiHighlightAction");
+    $(el).toggleClass("zmiContainerHighlight");
+  }
+
+  function zmiTrSelectClick(el)
+  {
+    var tr = $(el).parents("tr")[0];
+    var cb = $("input[@name=ids:list][@type=checkbox]:first",tr);
+    if ( cb.length==1) {
+      $(cb).click();
+      switchButtons();
+    }
+  }
+
+//------------------------------------------------------------------------------
+// -- 
+//------------------------------------------------------------------------------
+
   /**
    * Array of button action-codes.
    */
@@ -270,7 +316,7 @@
 /**
  *
  */
-function switchButtons() 
+function switchButtons(evt) 
 {
   for (var i = 0; i < arrButton.length; i++) {
      btnOnMouseOut(arrButton[i]);
@@ -286,6 +332,10 @@ function switchButtons()
     else {
       tr.removeClass( clazz);
     }
+  }
+  // Consume event!
+  if (evt) {
+    evt.stopPropagation();
   }
 }
 

@@ -1495,7 +1495,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       html = ''
       try:
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          html += '<h2>%s</h2>'%self.getTitlealt(REQUEST)
+          html += '<div class="form-label">%s</div>'%self.getTitlealt(REQUEST)
         else:
           html += self._getBodyContent(REQUEST)
         # Process html <form>-tags.

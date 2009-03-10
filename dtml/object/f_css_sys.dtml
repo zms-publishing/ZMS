@@ -152,7 +152,7 @@ body.zmi {
 }
 
 body.zmi div.zmi {
-	width: 800px;
+	min-width: 800px;
 }
 
 h1 {
@@ -184,23 +184,25 @@ a.zmi:hover, a.zmi:active {
 	color: #f90;
 }
 
-.zmiBlank { background-image:url(<dtml-var spacer_gif>); }
 .zmiTableRowOdd { background-color:#fafafa; }
 .zmiTableRowEven { background-color:#efefef; }
 
 .zmiNeutralColorTrans, .zmiNeutralColorWhite, .zmiNeutralColorBlack,
 .zmiNeutralColorStrong0, .zmiNeutralColorMedium0,.zmiNeutralColorLight0,
-.zmiNeutralColorLight1, .zmiTeaserColor {
+.zmiNeutralColorStrong1, .zmiNeutralColorMedium1,.zmiNeutralColorLight1,
+.zmiTeaserColor {
 	font-family: Arial, Helvetica, sans-serif; 
 }
 
-.zmiNeutralColorTrans { background-color:#0f0; } 
-.zmiNeutralColorWhite { background-color:#fff; }
-.zmiNeutralColorBlack { background-color:#000; }
-.zmiNeutralColorStrong0 { background-color:#AAA; }
-.zmiNeutralColorMedium0 { background-color:#CCC; }
-.zmiNeutralColorLight0 { background-color:#F2F3EE; }
-.zmiNeutralColorLight1 { background-color:#E2E3DE; }
+.zmiNeutralColorTrans, tr.zmiNeutralColorTrans td  { background-color:#0f0; } 
+.zmiNeutralColorWhite, tr.zmiNeutralColorWhite td  { background-color:#fff; }
+.zmiNeutralColorBlack, tr.zmiNeutralColorBlack td  { background-color:#000; }
+.zmiNeutralColorStrong0, tr.zmiNeutralColorStrong0 td  { background-color:#AAA; }
+.zmiNeutralColorStrong1, tr.zmiNeutralColorStrong1 td  { background-color:#BBB; }
+.zmiNeutralColorMedium0, tr.zmiNeutralColorMedium0 td { background-color:#CCC; }
+.zmiNeutralColorMedium1, tr.zmiNeutralColorMedium1 td { background-color:#DDD; }
+.zmiNeutralColorLight0, tr.zmiNeutralColorLight0 td { background-color:#F2F3EE; }
+.zmiNeutralColorLight1, tr.zmiNeutralColorLight1 td { background-color:#E2E3DE; }
 .zmiTeaserColor, tr.zmiTeaserColor td { background-color:#FDD; }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -227,7 +229,7 @@ a.zmi:hover, a.zmi:active {
  */
 
 #zmi_logo {
-background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) repeat-y;
+background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 }
 
 .zmi_header, 
@@ -277,6 +279,46 @@ background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) repeat-y;
 
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +- Container
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ */
+
+.zmiContainerColLeft {
+	border-top: 1px solid #E6E4E6;
+	width:200px;
+	border-bottom: 1px solid #B6B4B6;
+}
+
+.zmiContainerColCenter {
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
+}
+
+.zmiContainerColRight {
+	width:100px;
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#eee')">;
+}
+
+.zmiContainerHighlight {
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorBlack','#000')">;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorBlack','#000')">;
+}
+
+.zmiHighlightAction {
+	border: 1px dotted black;
+	background-color: #eee;
+}
+
+
+div.zmiRenderShort {
+	padding: 3px;
+	width: 493px;
+	border-right: 1px dashed #eee;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
  * +- Headline
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
  */
@@ -297,7 +339,6 @@ table.zmiHeadline tr td div, td.zmiHeadline, div.zmiHeadline {
 div.zmiHeadline img {
 	vertical-align:bottom;
 }
-
 
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -373,7 +414,7 @@ a.hbutton:hover img, a.hbutton:active img {
 }
 
 #ZMIManageTabsBar {
-	background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) repeat-y;
+	background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 	height:22px;
 }
 
@@ -542,7 +583,7 @@ a.hbutton:hover img, a.hbutton:active img {
 	background-color: transparent;
 }
 
-yy.form-help {
+.form-help {
 	font-size:11px;
 	padding:4px 6px 0px 6px;
 }

@@ -463,11 +463,11 @@
 <item type="dictionary"><dictionary>
 <item key="id"><![CDATA[align]]></item>
 <item key="keys" type="list"><list>
-<item><![CDATA[NONE]]></item>
 <item><![CDATA[LEFT]]></item>
 <item><![CDATA[LEFT_FLOAT]]></item>
 <item><![CDATA[RIGHT]]></item>
 <item><![CDATA[RIGHT_FLOAT]]></item>
+<item><![CDATA[NONE]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">1</item>
@@ -1198,11 +1198,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item type="dictionary"><dictionary>
 <item key="id"><![CDATA[align]]></item>
 <item key="keys" type="list"><list>
-<item><![CDATA[NONE]]></item>
 <item><![CDATA[LEFT]]></item>
 <item><![CDATA[LEFT_FLOAT]]></item>
 <item><![CDATA[RIGHT]]></item>
 <item><![CDATA[RIGHT_FLOAT]]></item>
+<item><![CDATA[NONE]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">1</item>
@@ -1427,11 +1427,11 @@ function remoteResponseTimedout() {
 <item type="dictionary"><dictionary>
 <item key="id"><![CDATA[align]]></item>
 <item key="keys" type="list"><list>
-<item><![CDATA[NONE]]></item>
 <item><![CDATA[LEFT]]></item>
 <item><![CDATA[LEFT_FLOAT]]></item>
 <item><![CDATA[RIGHT]]></item>
 <item><![CDATA[RIGHT_FLOAT]]></item>
+<item><![CDATA[NONE]]></item>
 </list>
 </item>
 <item key="mandatory" type="int">1</item>

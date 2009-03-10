@@ -1135,3 +1135,7 @@
 2009-03-03:zms-2.11.1-43
 [01162] Applied fix for target-parameter in ZMI: replaced by manage_target (requested by xm).
 --------------------------------------------------
+2009-03-10:zms-2.11.1-44
+[01163] ZMI of container-objects revised.
+[01164] ZMS content-object configuration revised.
+--------------------------------------------------

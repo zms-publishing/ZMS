@@ -670,7 +670,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           message = _globals.writeError(self,"[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
         
-        message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
       self.manage_checkin(REQUEST)
@@ -700,9 +700,11 @@ class ZMSObject(ZMSItem.ZMSItem,
         ids = relative_obj_path.split( '/')
         for id in ids:
           ob = getattr(ob,id,None)
-          if ob is None: 
+          if ob is None:
             if self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-              ob = self.synchronizeRefs( self.getHome().id+'@'+relative_obj_path.split('/')[-1])
+              ob_id = self.getHome().id+'@'+relative_obj_path.split('/')[-1]
+              _globals.writeBlock(self,'[findObjId]: ob_id='+ob_id) 
+              ob = self.synchronizeRefs( ob_id)
             break
       return ob
 

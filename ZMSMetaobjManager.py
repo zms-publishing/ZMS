@@ -928,7 +928,7 @@ class ZMSMetaobjManager:
                   attr_id = attr['id']
                   syncType( self, id, attr)
                   for key in ['keys','custom','default']:
-                    if not attr[key]:
+                    if attr.has_key(key) and not attr[key]:
                       del attr[key]
                   attrs.append( attr)
                 ob['__obj_attrs__'] = attrs
@@ -1088,7 +1088,7 @@ class ZMSMetaobjManager:
         target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
         target = self.url_append_params( target, extra)
         if len( message) > 0:
-          message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
           target = self.url_append_params( target, { 'manage_tabs_message':message})
         if REQUEST.has_key('inp_id_name'):
           target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')

@@ -203,7 +203,7 @@ function focusSelectProcessResponse(data)
 <!-- ##### object ##### -->
 </dtml-comment>
 <td class="zmiContainerColLeft form-small"
-><span><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>></span
+><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>
 ><dtml-if accessRights
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"
 ><dtml-var f_display_icon
@@ -289,7 +289,7 @@ function focusSelectProcessResponse(data)
 </dtml-comment>
 <td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorLight1</dtml-if>">
 <div class="zmiRenderShort form-small" id="tr_<dtml-var id>">
-<span><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless> /></span>
+<input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless> />
 <input type="hidden" name="sort_id_<dtml-var id>" value="<dtml-var "getSortId()">">
 <a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)"></a>
 </div>
@@ -369,17 +369,12 @@ function focusSelectProcessResponse(data)
   function initPage() {
     var els;
     $("input[@name=ids:list][@type=checkbox]").click( function(evt) { switchButtons(evt); } );
-    els = $("tr[@id*=tr_]:first>td:eq(1),tr[@id*=tr_]>td.zmiNeutralColorLight0");
-    els.mouseover( function(evt) { zmiTrFollowMouseHover(this); });
-    els.mouseout( function(evt) { zmiTrFollowMouseHover(this); });
-    els.click( function(evt) { zmiTrFollowClick(this); });
+    els = $("tr[@id*=tr_]>td.zmiContainerColCenter");
+    els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
+    els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });
+    els.dblclick( function(evt) { zmiTrFollowDblClick(this); });
+    els.attr( "title", "Double-click to edit!")
     els.css( "cursor", "pointer");
-    els = $("td:first",$("tr[@id*=tr_]"));
-    els.mouseover( function(evt) { zmiTrSelectMouseHover(this); });
-    els.mouseout( function(evt) { zmiTrSelectMouseHover(this); });
-    els.click( function(evt) { zmiTrSelectClick(this); });
-    els = $("select[@id*=select_actions_]");
-    els.click( function(evt) { evt.stopPropagation(); });
   }
   initPage();
 

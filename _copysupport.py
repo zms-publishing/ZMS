@@ -24,7 +24,8 @@
 # Imports.
 from __future__ import nested_scopes
 import copy
-import string 
+import string
+import time
 import urllib
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError, eNoData, eNotFound, eInvalid
@@ -264,8 +265,8 @@ class CopySupport:
     ############################################################################
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
       """ CopySupport.manage_pasteObjs """
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[manage_pasteObjs]")
+      _globals.writeBlock( self, "[manage_pasteObjs]")
+      t0 = time.time()
       
       # Check if object is locked via WebDAV
       self._checkWebDAVLock()
@@ -297,6 +298,7 @@ class CopySupport:
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')
+        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'],urllib.quote(message)))
 
 ################################################################################

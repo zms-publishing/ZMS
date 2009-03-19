@@ -21,9 +21,8 @@
     </tr>
    </dtml-if>
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0">
-    <td style="border-top:1px solid white;border-bottom:1px solid #999999;" nowrap="nowrap"
+    <td class="zmiContainerColLeft form-small"
      ><dtml-let actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
-      ><div class="form-small"
        ><dtml-if actions
         ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()"
        ></dtml-if
@@ -35,7 +34,6 @@
          ><dtml-var "display_type(REQUEST)"
         ></dtml-if
        ></a
-      ></div
       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
        ><dtml-if actions
         ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
@@ -45,19 +43,21 @@
       ></dtml-if
      ></dtml-let
     ></td>
-    <td valign="top" <dtml-if "isActive(REQUEST)"><dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if><dtml-else>class=" zmiNeutralColorLight1"</dtml-if> style="border-top:1px solid white;border-bottom:1px solid white;">
+    <td>
      <table cellspacing="0" cellpadding="0" border="0" width="100%">
      <tr valign="top">
       <dtml-comment>
       <!-- ##### renderShort ##### -->
       </dtml-comment>
-      <td <dtml-if "isActive(REQUEST)"><dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if><dtml-else>class=" zmiNeutralColorLight1"</dtml-if>>
-       <div style="padding:3px"><dtml-var "renderShort(REQUEST)"></div>
+      <td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"><dtml-if "isPage()"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorWhite</dtml-if><dtml-else> zmiNeutralColorLight1</dtml-if>">
+       <div class="zmiRenderShort">
+        <dtml-var "renderShort(REQUEST)">
+       </div>
       </td>
       <dtml-comment>
       <!-- ##### change ##### -->
       </dtml-comment>
-      <td width="100" class="zmiNeutralColorLight1">
+      <td class="zmiContainerColRight">
        <dtml-var "manage_main_change(_,_,ob=_['sequence-item'],REQUEST=REQUEST)">
       </td>
      </tr>

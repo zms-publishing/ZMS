@@ -1139,3 +1139,6 @@
 [01163] ZMI of container-objects revised.
 [01164] ZMS content-object configuration revised.
 --------------------------------------------------
+2009-03-18:zms-2.11.1-45
+[01165] ZMI of object-attributes revised.
+--------------------------------------------------

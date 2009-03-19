@@ -29,6 +29,25 @@
     <dtml-var obj_input_js>
     <dtml-var obj_input_fields>
     </table>
+
+<script type="text/javascript">
+<!--//
+
+  function initPage() {
+    var els;
+    $("input[@name=ids:list][@type=checkbox]").click( function(evt) { switchButtons(evt); } );
+    els = $("tr[@id*=tr_] td.zmiContainerColCenter");
+    els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
+    els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });
+    els.dblclick( function(evt) { zmiTrFollowDblClick(this); });
+    els.attr( "title", "Double-click to edit!")
+    els.css( "cursor", "pointer");
+  }
+  initPage();
+
+//-->
+</script>
+
     <!-- ### Buttons -->
     <dtml-var f_submitBtn>
     </form>

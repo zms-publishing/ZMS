@@ -129,7 +129,7 @@ def recurse_uploadRessources(self, folder='.', mediadbStorable=True):
   uploadRessources(self,folder,mediadbStorable)
   # Process children.
   for child in self.getChildNodes():
-    message = message + recurse_uploadRessources(child,folder,mediadbStorable)
+    message += recurse_uploadRessources(child,folder,mediadbStorable)
   # Return message.
   return message
 

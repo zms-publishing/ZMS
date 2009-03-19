@@ -5,41 +5,45 @@
 // -- 
 //------------------------------------------------------------------------------
 
-  function zmiTrFollowMouseHover(el)
+  function zmiTrFollowMouseOver(el)
   {
-    var tr = $(el).parents("tr")[0];
-    $("a:first",tr).toggleClass( "zmiHighlightAction");
-    $(el).toggleClass("zmiContainerHighlight");
+    var trs = $(el).parents("tr");
+    for ( var i = 0; i < trs.length; i++) {
+      var tr = trs[i];
+      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
+        $("a:first",tr).addClass( "zmiHighlightAction");
+        $(el).addClass("zmiContainerHighlight");
+        return;
+      }
+    }
   }
 
-  function zmiTrFollowClick(el)
+  function zmiTrFollowMouseOut(el)
   {
-    var tr = $(el).parents("tr")[0];
-    var a = $("a:first",tr);
-    var href = self.location.href;
-    var href_relative = a.attr("href");
-    var new_location = href.substr(0,href.lastIndexOf("/")+1)+href_relative;
-    self.location = new_location;
+    var trs = $(el).parents("tr");
+    for ( var i = 0; i < trs.length; i++) {
+      var tr = trs[i];
+      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
+        $("a:first",tr).removeClass( "zmiHighlightAction");
+        $(el).removeClass("zmiContainerHighlight");
+        return;
+      }
+    }
   }
 
-//------------------------------------------------------------------------------
-// -- 
-//------------------------------------------------------------------------------
-
-  function zmiTrSelectMouseHover(el)
+  function zmiTrFollowDblClick(el)
   {
-    var tr = $(el).parents("tr")[0];
-    $("span:first",tr).toggleClass( "zmiHighlightAction");
-    $(el).toggleClass("zmiContainerHighlight");
-  }
-
-  function zmiTrSelectClick(el)
-  {
-    var tr = $(el).parents("tr")[0];
-    var cb = $("input[@name=ids:list][@type=checkbox]:first",tr);
-    if ( cb.length==1) {
-      $(cb).click();
-      switchButtons();
+    var trs = $(el).parents("tr");
+    for ( var i = 0; i < trs.length; i++) {
+      var tr = trs[i];
+      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
+        var a = $("a:first",tr);
+        var href = self.location.href;
+        var href_relative = a.attr("href");
+        var new_location = href.substr(0,href.lastIndexOf("/")+1)+href_relative;
+        self.location = new_location;
+        return;
+      }
     }
   }
 

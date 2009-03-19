@@ -478,22 +478,32 @@ class ZReferableItem:
   #  @param
   #  @return
   # ----------------------------------------------------------------------------
-  def synchronizeRefs( self, ob_id=None):
-    portalMaster = self.getPortalMaster()
-    if portalMaster is not None:
-      return portalMaster.synchronizeRefs()
+  def synchronizeRefs( self, ob_id=None, clients=False):
+    _globals.writeBlock(self,'[synchronizeRefs]')
     
+    # Initialize.
     message = ''
     t0 = time.time()
-    
     obs = {}
-    map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( self, True))
-    message += 'Load object-tree (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+    
+    # Initialize object-tree.
+    map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( self, clients))
+    homes = obs.keys()
+    homes = map( lambda x: x[:x.find('/content')], homes)
+    homes = map( lambda x: x[x.rfind('/')+1:], homes)
+    homes = dict.fromkeys(homes).keys()
+    message += 'Load object-tree ['+str(len(obs.keys()))+ '] for '+str(homes)+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+    _globals.writeBlock(self,'[synchronizeRefs]: '+message)
+    
     abs_urls = obs.keys()
     abs_urls.sort()
-    for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
-      try: delattr( obs[x], 'ref_by')
-      except: pass
+    
+    # Clear 'referenced by'-attributes.
+    if clients:
+      for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
+        try: delattr( obs[x], 'ref_by')
+        except: pass
+    
     langs = self.getLangIds()
     for abs_url in abs_urls:
       ob = obs[ abs_url]
@@ -525,13 +535,24 @@ class ZReferableItem:
                       id = ref.split('@')[-1].split('/')[-1]
                       if len( id) == 0:
                         id = 'content'
+                      
+                      # Extend object-tree.
+                      if home not in homes:
+                        homes.append( home)
+                        map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( getattr( self, home)))
+                        message += 'Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                        _globals.writeBlock(self,'[synchronizeRefs]: '+message)
+                      
                       f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
                       if len( f) == 0:
                         ref = '__%s__'%ref
                       else:
                         target = obs[f[0]]
                         ref = ob.getRefObjPath( target)[2:-1]
-                        setattr( target, 'ref_by', getattr( target, 'ref_by', []) + [ target.getRefObjPath( ob)])
+                        target_ref = target.getRefObjPath( ob)
+                        target_ref_by = getattr( target, 'ref_by', [])
+                        if target_ref not in target_ref_by:
+                          setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
                       m.append(ref+i[i.find('}'):])
@@ -565,19 +586,32 @@ class ZReferableItem:
                       id = ref.split('@')[-1].split('/')[-1]
                       if len( id) == 0:
                         id = 'content'
+                      
+                      # Extend object-tree.
+                      if home not in homes:
+                        homes.append( home)
+                        map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( getattr( self, home)))
+                        message += 'Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                        _globals.writeBlock(self,'[synchronizeRefs]: '+message)
+                      
                       f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
                       if len( f) == 0:
                         ref = '__%s__'%ref
                       else:
                         target = obs[f[0]]
                         ref = ob.getRefObjPath( target)[2:-1]
-                        setattr( target, 'ref_by', getattr( target, 'ref_by', []) + [ target.getRefObjPath( ob)])
+                        target_ref = target.getRefObjPath( ob)
+                        target_ref_by = getattr( target, 'ref_by', [])
+                        setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,key,ref)
                       m.append(ref+i[i.find('}'):])
                     v = '{$'.join(m)
                     if v != o:
                       _objattrs.setobjattr(ob,obj_vers,obj_attr,v,lang)
+    
+    message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+    _globals.writeBlock(self,'[synchronizeRefs]: '+message)
     
     if ob_id is not None:
       # Return with desired object.
@@ -591,7 +625,6 @@ class ZReferableItem:
     
     else:
       # Return with message.
-      message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       return message
 
 ################################################################################

@@ -899,29 +899,26 @@ class ZMSContainerObject(
       order. If none, this is a empty NodeList. 
       """
       obs = []
-      try:
+      if True:
         types = self.dGlobalAttrs.keys()
         # Get all object-items.
         if REQUEST is None:
           obs = map( lambda x: ( getattr( x, 'sort_id', ''), x), self.objectValues( types))
         # Get selected object-items.
         else:
+          prim_lang = self.getPrimaryLanguage()
           lang = REQUEST.get('lang',None)
           # Get coverages.
-          multilang = lang is not None and len(self.getLangs().keys()) > 1
-          if multilang:
-            key_coverage = 'attr_dc_coverage'
-            prim_lang = self.getPrimaryLanguage()
-            coverages = []
-            coverages.extend(['global.'+lang,'local.'+lang])
-            for parent in self.getParentLanguages( lang):
-              coverages.append('global.'+parent)
+          coverages = [ '', None]
+          if lang is not None:
+            coverages.extend( [ 'global.'+lang, 'local.'+lang])
+            coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))
           for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), self.objectValues( types)):
-            if multilang:
+            coverage = None
+            if lang is not None:
               obj_vers = ob.getObjVersion( REQUEST)
-              coverage = getattr( obj_vers, key_coverage, '')
-              if coverage in [ '', None]: coverage = 'global.' + prim_lang
-            if not multilang or coverage in coverages:
+              coverage = getattr( obj_vers, 'attr_dc_coverage', '')
+            if coverage in coverages:
               proxy = ob.__proxy__()
               if proxy is not None:
                 sort_id = getattr( ob, 'sort_id', '')
@@ -930,6 +927,8 @@ class ZMSContainerObject(
                 obs.append( ( sort_id, proxy))
         # Sort child-nodes.
         obs.sort()
+      try:
+        a=1
       except Exception, exc:
         if self.getConfProperty('ZMS.protected_mode',0):
           _globals.writeError(self,'[getChildNodes.protected]')

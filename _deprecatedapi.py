@@ -128,7 +128,8 @@ class DeprecatedAPI:
               dct['internal'] = 1
               value.append(dct)
           elif ob.meta_id == 'ZMSLinkElement' and ob.getObjProperty('align',REQUEST) in ['','NONE']:
-            value.extend( getLinkList_ZMSLinkElement( ob, REQUEST, allow_none))
+            if not ob.isEmbedded(REQUEST):
+              value.extend( getLinkList_ZMSLinkElement( ob, REQUEST, allow_none))
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff(reqBuffId,value,REQUEST)

@@ -1179,7 +1179,7 @@ class ZMSSqlDb(ZMSObject):
       # Return with message.
       target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
       if len( message) > 0:
-        message = message + ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         target = self.url_append_params( target, { 'manage_tabs_message':message})
       return RESPONSE.redirect( target)
 

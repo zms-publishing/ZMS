@@ -152,7 +152,7 @@ body.zmi {
 }
 
 body.zmi div.zmi {
-	min-width: 800px;
+	width: 800px;
 }
 
 h1 {
@@ -194,13 +194,13 @@ a.zmi:hover, a.zmi:active {
 	font-family: Arial, Helvetica, sans-serif; 
 }
 
-.zmiNeutralColorTrans, tr.zmiNeutralColorTrans td  { background-color:#0f0; } 
-.zmiNeutralColorWhite, tr.zmiNeutralColorWhite td  { background-color:#fff; }
-.zmiNeutralColorBlack, tr.zmiNeutralColorBlack td  { background-color:#000; }
-.zmiNeutralColorStrong0, tr.zmiNeutralColorStrong0 td  { background-color:#AAA; }
-.zmiNeutralColorStrong1, tr.zmiNeutralColorStrong1 td  { background-color:#BBB; }
-.zmiNeutralColorMedium0, tr.zmiNeutralColorMedium0 td { background-color:#CCC; }
-.zmiNeutralColorMedium1, tr.zmiNeutralColorMedium1 td { background-color:#DDD; }
+.zmiNeutralColorTrans, tr.zmiNeutralColorTrans td { background-color:#0f0; } 
+.zmiNeutralColorWhite, tr.zmiNeutralColorWhite td { background-color:#fff; }
+.zmiNeutralColorBlack, tr.zmiNeutralColorBlack td { background-color:#000; }
+.zmiNeutralColorStrong0 { background-color:#AAA; }
+.zmiNeutralColorStrong1 { background-color:#BBB; }
+.zmiNeutralColorMedium0 { background-color:#CCC; }
+.zmiNeutralColorMedium1{ background-color:#DDD; }
 .zmiNeutralColorLight0, tr.zmiNeutralColorLight0 td { background-color:#F2F3EE; }
 .zmiNeutralColorLight1, tr.zmiNeutralColorLight1 td { background-color:#E2E3DE; }
 .zmiTeaserColor, tr.zmiTeaserColor td { background-color:#FDD; }
@@ -290,32 +290,29 @@ background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 }
 
 .zmiContainerColCenter {
-	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
-	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 }
 
 .zmiContainerColRight {
 	width:100px;
-	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
-	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#fff')">;
-	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#eee')">;
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#EEE')">;
 }
 
 .zmiContainerHighlight {
-	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorBlack','#000')">;
-	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorBlack','#000')">;
+	background-color: #F5F6F1;
 }
 
-.zmiHighlightAction {
-	border: 1px dotted black;
-	background-color: #eee;
+.zmiHighlightAction, a.zmiHighlightAction, a.zmiHighlightAction:link, a.zmiHighlightAction:visited {
+	text-decoration: underline;
+	color: #f90;
 }
 
 
 div.zmiRenderShort {
 	padding: 3px;
-	width: 493px;
-	border-right: 1px dashed #eee;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-

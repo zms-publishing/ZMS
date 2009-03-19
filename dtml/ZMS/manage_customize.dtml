@@ -17,7 +17,7 @@
 ###  Manager
 ################################################################################
 </dtml-comment>
-<a name="_Manager"></a>
+<div id="_Manager" style="height:200px">
 <dtml-var "f_headline(_,_,headline='Manager')">
 <form name="ManagerForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="Manager">
@@ -47,14 +47,14 @@
 </dtml-in>
 <input class="form-submit" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 ################################################################################
 ###  Configuration 
 ################################################################################
 </dtml-comment>
-<a name="_Import"></a>
+<div id="_Import" style="height:150px">
 <form name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 <input type="hidden" name="key" value="Import">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -90,21 +90,21 @@
 </tr>
 </table>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 ################################################################################
 ###  Maintenance
 ################################################################################
 </dtml-comment>
-<a name="_Maintenance"></a>
+<div id="_Maintenance" style="height:150px">
 <form name="CatalogForm" action="manage_customize#_Maintenance" method="post">
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <dtml-var "f_headline(_,_,headline='Maintenance')">
 <dtml-if "REQUEST.get('btn')=='Reindex'">
 <div class="system-msg"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn')=='Correct'">
-<div class="system-msg"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<div class="system-msg"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(getPortalMaster() is None)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn')=='Clear'">
 <div class="system-msg"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn')=='Change'">
@@ -136,14 +136,14 @@
 </tr>
 </tbody></table>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 ################################################################################
 ###  History (Version)
 ################################################################################
 </dtml-comment>
-<a name="_History"></a>
+<div id="_History" style="height:100px">
 <form name="HistoryForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="History">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -206,13 +206,14 @@
   </div>
  </div>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 ################################################################################
 ###  System
 ################################################################################
 </dtml-comment>
+<div id="_History" style="height:200px">
 <dtml-var "f_headline(_,_,headline='System')">
 <div class="form-fixed" style="font-size:10px;padding:4px;">
  ZMS: <dtml-var zms_version>&nbsp;(Build #<dtml-var zms_build><dtml-var zms_patch>)<br />
@@ -233,7 +234,7 @@
  </dtml-with>
  </dtml-with>
 </div>
-<br />
+</div>
 
 </td>
 <!------------------------------------------------------------------------>
@@ -244,7 +245,7 @@
 ###  Portal
 ################################################################################
 </dtml-comment>
-<a name="_Clients"></a>
+<div id="_Clients" style="height:200px">
 <form action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="Clients">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -270,7 +271,7 @@
 </tr>
 </table>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 ################################################################################
@@ -307,11 +308,11 @@
    {'key':'ZCatalog.TextIndexNG','title':'Search with TextIndexNG','desc':'Use TextIndexNG for catalog-indexing.','datatype':'boolean'},
    {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
   ]">
-<dtml-if "REQUEST.form.get('option','')=='ZMS.compactview.pagecount.min'">
- <dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))">
- <dtml-call "SESSION.set('pageCountMax',REQUEST.get('pageCountMin'))">
-</dtml-if>
-<a name="Custom"></a>
+<dtml-if "REQUEST.form.get('option','')=='ZMS.compactview.pagecount.min'"
+ ><dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))"
+ ><dtml-call "SESSION.set('pageCountMax',REQUEST.get('pageCountMin'))"
+></dtml-if>
+<div id="Custom" style="height:150px">
 <form name="customForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="Custom">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -380,7 +381,7 @@
 </dtml-if>
 </table>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 <!-- ######################################################################
@@ -390,7 +391,7 @@
      ######################################################################
 -->
 </dtml-comment>
-<a name="_MediaDb"></a>
+<div id="_MediaDb" style="height:150px">
 <form action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="MediaDb">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -424,7 +425,7 @@
   </dtml-if>
 </table>
 </form>
-<br/>
+</div>
 
 <dtml-comment>
 <!-- ######################################################################

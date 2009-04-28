@@ -38,7 +38,7 @@ def br_quote(text, subtag, REQUEST):
     text = str(text)
   rtn = ''
   qcr = ''
-  qtab = '&nbsp;' * 6
+  qtab = '&nbsp;'*6
   if _globals.isManagementInterface(REQUEST):
     if not REQUEST.has_key('format'):
       qcr = '<span class="unicode">&crarr;</span>'
@@ -51,6 +51,8 @@ def br_quote(text, subtag, REQUEST):
         tmp.append('\n')
       tmp.append(s)
     text = ''.join(tmp)
+  
+  # handle nested lists
   ts = text.split('\n')
   ll = []
   c = 0
@@ -76,13 +78,9 @@ def br_quote(text, subtag, REQUEST):
             ll = ll[0:-1]
         rtn += '<li>%s</li>'%line[i+2:]
         line = None
+    
+    # handle leading whitespaces and tabs
     if line is not None:
-      # close nested lists
-      if len(ll) > 0:
-        level = 0
-        for li in range(len(ll)-level):
-          rtn += '</%s>'%ll[-1]
-          ll = ll[0:-1]
       i = 0
       while i < len( line) and line[ i] in [ ' ', '\t']:
         if line[ i] == ' ':
@@ -102,6 +100,14 @@ def br_quote(text, subtag, REQUEST):
         rtn += line+qcr
         rtn += '</%s>'%subtag
       c += 1
+  
+  # close nested lists
+  if len(ll) > 0:
+    level = 0
+    for li in range(len(ll)-level):
+      rtn += '</%s>'%ll[-1]
+      ll = ll[0:-1]
+  
   return rtn
 
 

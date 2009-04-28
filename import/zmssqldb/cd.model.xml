@@ -201,5 +201,35 @@
     </item>
   </dictionary>
 </item>
+<!-- ########################################
+     ### CATEGORIES
+     ######################################## -->
+<item>
+  <dictionary>
+    <item key="id">cdcategories</item>
+    <item key="label">Categories</item>
+    <item key="columns">
+      <list>
+        <item>
+          <dictionary>
+            <item key="id">category_id</item>
+            <item key="hide" type="int">1</item>
+            <item key="label">Id</item>
+            <item key="type">int</item>
+            <item key="pk" type="int">1</item>
+            <item key="auto">insert</item>
+          </dictionary>
+        </item>
+        <item>
+          <dictionary>
+            <item key="id">category_name</item>
+            <item key="label">Name</item>
+            <item key="type">string</item>
+          </dictionary>
+        </item>
+      </list>
+    </item>
+  </dictionary>
+</item>
 <!-- ######################################## -->
 </list>

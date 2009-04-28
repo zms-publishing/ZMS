@@ -5,6 +5,7 @@
 ><dtml-call f_recordset_init
 
 ><dtml-unless "REQUEST.get('f_zmiInputFormJavaScript')"
+><script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.jec.min-0.5.2.js'></script
 ><script language="JavaScript"
 ><!--//
 
@@ -422,6 +423,13 @@
          </dtml-let>
         </dtml-in>
        </select>
+       <dtml-if "fk.get('editable')">
+        <script language="JavaScript">
+        <!--// 
+          $('#<dtml-var elName>').editableCombobox(); 
+        //-->
+        </script>
+       </dtml-if>
       </dtml-if>
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

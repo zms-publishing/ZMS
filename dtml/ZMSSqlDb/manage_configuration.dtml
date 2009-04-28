@@ -284,6 +284,10 @@ function mms_normalize_rows(el_tbody) {
              ><td class="form-small"><input type="text" name="attr_fk_maxlen_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('maxlen','25')">" size="6"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">A.Editable</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=_.int(column['fk'].get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">B.Options</td
              ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "column['fk'].get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr
@@ -362,6 +366,11 @@ function mms_normalize_rows(el_tbody) {
               ></tr
               ></table
              ></td
+            ></tr
+           ><dtml-elif "column.has_key('pk')"
+            ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">Auto</td
+             ><td class="form-small"><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column.get('auto','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
            ></dtml-if
            ></table

@@ -55,7 +55,6 @@ import zmsteaserelement
 import zmsteasercontainer
 import zmstextarea
 import zmsgraphic
-import zmsrubrik
 
 ################################################################################
 # Define the initialize() function. 
@@ -79,11 +78,6 @@ def initialize(context):
             )
         context.registerClass(
             zmsnote.ZMSNote,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsrubrik.ZMSRubrik,
             permission = 'Add ZMSs',
             constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
             )

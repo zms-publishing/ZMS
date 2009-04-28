@@ -204,6 +204,7 @@ class ZMSSqlDb(ZMSObject):
     #  ZMSSqlDb.sql_quote__:
     # --------------------------------------------------------------------------
     def sql_quote__(self, tablename, columnname, v):
+      databaseAdptr = getattr(self,self.connection_id)
       entities = self.getEntities()
       entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
       col = filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])[0]
@@ -211,12 +212,18 @@ class ZMSSqlDb(ZMSObject):
         try:
           return str(int(str(v)))
         except:
-          return "NULL"
+          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+            return "''"
+          else:
+            return "NULL"
       elif col['type'] in ['float']:
         try:
           return str(float(str(v)))
         except:
-          return "NULL"
+          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+            return "''"
+          else:
+            return "NULL"
       elif col['type'] in ['date','datetime','time']:
         try:
           d = self.parseLangFmtDate(v)
@@ -224,7 +231,10 @@ class ZMSSqlDb(ZMSObject):
             raise 'Exception'
           return "'%s'"%self.getLangFmtDate(d,'eng','%s_FMT'%col['type'].upper())
         except:
-          return "NULL"
+          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+            return "''"
+          else:
+            return "NULL"
       else:
         v = unicode(str(v),'utf-8').encode(getattr(self,'charset','utf-8'))
         if v.find("\'") >= 0: v=''.join(v.split("\'"))
@@ -475,7 +485,7 @@ class ZMSSqlDb(ZMSObject):
           for modelTableCol in filter(lambda x: x['id'].upper() not in colNames, modelTable.get('columns',[])):
             col = modelTableCol
             col['id'] = col.get('id','?')
-            col['index'] = col.get('index',len(cols))
+            col['index'] = int(col.get('index',len(cols)))
             col['type'] = col.get('type','?')
             col['key'] = col.get('key',col.get('id'))
             col['label'] = col.get('label',col.get('id'))
@@ -654,6 +664,79 @@ class ZMSSqlDb(ZMSObject):
     ###
     ############################################################################
 
+
+    # --------------------------------------------------------------------------
+    #  ZMSSqlDb.getFk
+    # --------------------------------------------------------------------------
+    def getFk(self, tablename, id, name, value, createIfNotExists=1):
+      """
+      Get reference for foreign-key relation.
+      @param tablename: Name of the SQL-Table.
+      @type tablename: C{string}
+      @return: ID of the row that was inserted.
+      @rtype: int
+      """
+      tabledefs = self.getEntities()
+      tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
+      tablecols = tabledef['columns']
+      primary_key = (map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))+[tablecols[0]['id']])[0]
+      
+      # Find existing row-id.
+      sqlStatement = []
+      sqlStatement.append( 'SELECT %s AS existing_id FROM %s'%(primary_key,tablename))
+      sqlStatement.append( 'WHERE %s=%s'%(primary_key,self.sql_quote__(tablename, primary_key, value)))
+      sqlStatement.append( 'OR %s=%s'%(name,self.sql_quote__(tablename, name, value)))
+      sqlStatement = ' '.join(sqlStatement)
+      try:
+        rs = self.query(sqlStatement)['records']
+        if len(rs) == 1:
+          rowid = rs[0]['existing_id']
+          return rowid
+      except:
+        raise _globals.writeError( self, '[createFk]: can\'t find existing row - sqlStatement=' + sqlStatement)
+      
+      rowid = None
+      if createIfNotExists:
+        # Get columns to insert
+        c = []
+        tablecol = tablecols[0]
+        if tablecol.get('auto'):
+          rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(primary_key,tablename))['records']
+          new_id = 0
+          if len(rs) == 1:
+            new_id = int(rs[0]['max_id'])+1
+          c.append({'id':id,'value':str(new_id)})
+        c.append({'id':name,'value':self.sql_quote__(tablename,name,value)})
+        
+        # Assemble sql-statement
+        sqlStatement = []
+        sqlStatement.append( 'INSERT INTO %s ('%tablename)
+        sqlStatement.append( ', '.join(map(lambda x: x['id'], c)))
+        sqlStatement.append( ') VALUES (')
+        sqlStatement.append( ', '.join(map(lambda x: x['value'], c)))
+        sqlStatement.append( ')')
+        sqlStatement = ' '.join(sqlStatement)
+        try:
+          self.executeQuery( sqlStatement)
+        except:
+          raise _globals.writeError( self, '[createFk]: can\'t insert row - sqlStatement=' + sqlStatement)
+        
+        # Return with row-id.
+        rowid = (filter(lambda x: x['id']==primary_key, c)+[{'value':None}])[0]['value']
+        if rowid is None:
+          sqlStatement = []
+          sqlStatement.append( 'SELECT %s AS value FROM %s WHERE '%(primary_key,tablename))
+          sqlStatement.append( ' AND '.join(map( lambda x: x['id']+'='+x['value'], filter( lambda x: x['value'].upper()!='NULL', c))))
+          sqlStatement = ' '.join(sqlStatement)
+          try:
+            for r in self.query( sqlStatement)['records']:
+              rowid = r['value']
+          except:
+            raise _globals.writeError( self, '[createFk]: can\'t get primary-key - sqlStatement=' + sqlStatement)
+      
+      return rowid
+
+
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Insert
     # --------------------------------------------------------------------------
@@ -676,6 +759,7 @@ class ZMSSqlDb(ZMSObject):
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
       primary_key = (map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))+[tablecols[0]['id']])[0]
+      
       # Get columns to insert
       c = []
       for tablecol in tablecols:
@@ -772,11 +856,13 @@ class ZMSSqlDb(ZMSObject):
       c = []
       for tablecol in tablecols:
         id = tablecol['id']
-        if tablecol.get('auto'):
+        consumed = False
+        if not consumed and tablecol.get('auto'):
           if tablecol.get('auto') in ['update']:
             if tablecol.get('type') in ['date','datetime']:
               c.append({'id':id,'value':self.sql_quote__(tablename,id,self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper()))})
-        elif tablecol.get('blob'):
+          consumed = True
+        if not consumed and tablecol.get('blob'):
           blob = tablecol.get('blob')
           remote = blob.get('remote',self.absolute_url())
           if values.get('delete_blob_%s'%id,None):
@@ -788,9 +874,23 @@ class ZMSSqlDb(ZMSObject):
             xml = file.toXml()
             value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}),method='POST')
             c.append({'id':id,'value':self.sql_quote__(tablename,id,value)})
-        elif (not tablecol.get('details')) and \
-             (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
-             (not tablecol.get('multimultiselect')):
+          consumed = True
+        if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
+          if values.has_key(id):
+            fk_tablename = tablecol.get('fk').get('tablename')
+            fk_fieldname = tablecol.get('fk').get('fieldname')
+            fk_displayfield = tablecol.get('fk').get('displayfield')
+            if values.get(id) == '' and tablecol['nullable']:
+              value = 'NULL'
+            else:
+              value = self.getFk( fk_tablename, fk_fieldname, fk_displayfield, values.get(id))
+            if value != old_values.get(id,old[id]):
+              c.append({'id':id,'value':str(value)})
+          consumed = True
+        if not consumed and \
+           (not tablecol.get('details')) and \
+           (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
+           (not tablecol.get('multimultiselect')):
           if values.has_key(id) and values.get(id) != old_values.get(id,old[id]):
             value = self.sql_quote__(tablename,id,values.get(id))
             if values.get(id) == '' and tablecol['nullable']:
@@ -1044,8 +1144,10 @@ class ZMSSqlDb(ZMSObject):
           col = {}
           col['id'] = REQUEST.get( 'attr_id_%s'%attr_id, attr_id).strip()
           col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '').strip()
-          col['index'] = REQUEST.get( 'attr_index_%s'%attr_id)
+          col['index'] = int(REQUEST.get( 'attr_index_%s'%attr_id))
           col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)==1)
+          if REQUEST.has_key( 'attr_auto_%s'%attr_id):
+            col['auto'] = REQUEST.get( 'attr_auto_%s'%attr_id)
           if REQUEST.has_key( 'attr_type_%s'%attr_id):
             t = REQUEST.get( 'attr_type_%s'%attr_id)
             if t in self.valid_types.keys():

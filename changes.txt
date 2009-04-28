@@ -1147,3 +1147,7 @@
 [01167] Added support for maxlen to SQL-Datasource multiselects.
 [01168] Applied fix for unknown acquired meta-attributes (requested by xm).
 --------------------------------------------------
+2009-03-27:zms-2.11.1-47
+[01169] Applied fix for correct closing of nested lists (reported by fh).
+[01170] Added support for editable-selects to SQL-Datasource.
+--------------------------------------------------

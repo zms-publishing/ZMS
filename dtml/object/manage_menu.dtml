@@ -222,7 +222,7 @@ function drop(href, target)
   system_msg.show( "normal");
   // JQuery.AJAX.get
   $(document.body).css( "cursor", "wait");
-  $.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&manage_target="+escape(target), dropProcessResponse);
+  $.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&target="+escape(target), dropProcessResponse);
 }
 
 /**
@@ -517,7 +517,7 @@ function drag(ereignis) {
 <div class="zmi">
 
 <dtml-with "getHome()">
-<div class="form-small" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;margin:0px;height:20px;width;100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
+<div class="form-small" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;margin:0px;height:20px;width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
  <dtml-if "AUTHENTICATED_USER.has_permission('Manage',this())">
   <a href="<dtml-var absolute_url>/<dtml-var id>/manage_workspace" target="_parent"><img src="<dtml-var icon>" title="<dtml-var meta_type>" border="0" align="absmiddle"/></a>
   <a href="<dtml-var absolute_url>/<dtml-var id>/manage_workspace" target="_parent" style="color:white; font-weight:bold;"><dtml-var id></a>

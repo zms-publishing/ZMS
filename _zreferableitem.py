@@ -613,18 +613,18 @@ class ZReferableItem:
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
     _globals.writeBlock(self,'[synchronizeRefs]: '+message)
     
+    # Return with desired object.
     if ob_id is not None:
-      # Return with desired object.
-      home = ob_id.split('@')[0]
-      id = ob_id.split('@')[1]
-      f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
-      if len( f) == 0:
-        return None
-      else:
-        return obs[f[0]]
+      if type( ob_id) is str:
+        home = ob_id.split('@')[0]
+        id = ob_id.split('@')[1]
+        f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
+        if len( f) > 0:
+          return obs[f[0]]
+      return None
     
+    # Return with message.
     else:
-      # Return with message.
       return message
 
 ################################################################################

@@ -280,6 +280,10 @@ function mms_normalize_rows(el_tbody) {
              ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('displayfield','')">" size="12"></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
+             ><td class="form-small" nowrap="nowrap">A.Maxlen</td
+             ><td class="form-small"><input type="text" name="attr_fk_maxlen_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('maxlen','25')">" size="6"></td
+            ></tr
+            ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">B.Options</td
              ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "column['fk'].get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr

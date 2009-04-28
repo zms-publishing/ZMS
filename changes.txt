@@ -1142,3 +1142,8 @@
 2009-03-18:zms-2.11.1-45
 [01165] ZMI of object-attributes revised.
 --------------------------------------------------
+2009-03-25:zms-2.11.1-46
+[01166] Revised special-object 'ZMSMediaPlayer' 2.11.3 (contributed by tf).
+[01167] Added support for maxlen to SQL-Datasource multiselects.
+[01168] Applied fix for unknown acquired meta-attributes (requested by xm).
+--------------------------------------------------

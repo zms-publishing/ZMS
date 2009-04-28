@@ -117,11 +117,14 @@ class ZMSMetadictManager:
       if ob.get('acquired',0)==1:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          ob = portalMaster.metaobj_manager.getMetadictAttr(key)
-          if ob is None:
-            return None
-          ob = ob.copy()
-          ob['acquired'] = 1
+          portalMasterOb = portalMaster.metaobj_manager.getMetadictAttr(key)
+          if portalMasterOb is not None:
+            ob = portalMasterOb
+            ob = ob.copy()
+            ob['acquired'] = 1
+          else:
+            ob = ob.copy()
+            ob['errors'] = 'Not found in master!'
       ob['mandatory'] = ob.get('mandatory',0)
       ob['multilang'] = ob.get('multilang',1)
       ob['repetitive'] = ob.get('repetitive',0)

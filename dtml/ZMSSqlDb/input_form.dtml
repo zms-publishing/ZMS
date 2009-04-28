@@ -494,7 +494,7 @@
          SQL-ERROR: <dtml-var "''.join(sqlStatement)">
         </dtml-try>
        </dtml-unless>
-       <dtml-let fk="dst['fk']">
+       <dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))">
        <dtml-call "REQUEST.set('sqlStatement',[])">
        <dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')">
        <dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')">
@@ -509,9 +509,9 @@
         <dtml-in "query(''.join(sqlStatement))['records']"
          ><dtml-let row=sequence-item
           ><dtml-try
-           ><dtml-call "optpl.append([_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),25)])"
+           ><dtml-call "optpl.append([_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
           ><dtml-except
-           ><dtml-call "optpl.append([_.str(row['qkey']),string_maxlen(_.str(row['qvalue']),25)])"
+           ><dtml-call "optpl.append([_.str(row['qkey']),string_maxlen(_.str(row['qvalue']),maxlen)])"
           ></dtml-try
          ></dtml-let
         ></dtml-in

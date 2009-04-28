@@ -185,14 +185,16 @@ function hideDstMetaTypes( id)
     <td class="form-small" style="white-space:nowrap;text-align:right;"
      ><nobr><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
      ><img
-     <dtml-if "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif"
-     <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif"
-     <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif"
-     <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">"
+     <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
+     <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif" title=""
+     <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif" title=""
+     <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif" title=""
+     <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">" title=""
      </dtml-if>
-      alt="Icon" title="" style="border:0px;vertical-align;middle;" /><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" style="vertical-align:middle;border:0px;" /></dtml-if
+     alt="Icon" style="border:0px;vertical-align;middle;"
+     ><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" style="vertical-align:middle;border:0px;" /></dtml-if
      ></a
-     ><dtml-if "metadictAttr.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metadictAttr['id']">" target="_blank"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+     ><dtml-if "metadictAttr.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().metaobj_manager.absolute_url()+'/'+URL.split('/')[-1]">" target="_blank"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
      ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align;middle;" /></dtml-if
      ><input type="hidden" name="old_ids:list" value="<dtml-var "metadictAttr['id']">"/></nobr></td>
    <dtml-if "metadictAttr.get('acquired',0) == 1">

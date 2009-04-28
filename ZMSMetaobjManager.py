@@ -805,7 +805,7 @@ class ZMSMetaobjManager:
         message = ''
         extra = {}
         t0 = time.time()
-        id = REQUEST.get('id','')
+        id = REQUEST.get('id','').strip()
         sync_id = None
         target = 'manage_main'
         REQUEST.set( '__get_metaobjs__', True)
@@ -816,6 +816,7 @@ class ZMSMetaobjManager:
           # -------
           # Delete Object.
           if key == 'obj' and btn == self.getZMILangStr('BTN_DELETE'):
+            sync_id = id
             ids = [id]
             metaObj = self.getMetaobj( id)
             if metaObj['type'] == 'ZMSPackage':
@@ -842,7 +843,6 @@ class ZMSMetaobjManager:
             sync_id = id
             savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
             # Change Object.
-            id = REQUEST['id'].strip()
             newValue = {}
             newValue['id'] = id
             newValue['name'] = REQUEST.get('obj_name').strip()
@@ -1003,6 +1003,7 @@ class ZMSMetaobjManager:
               newDefault = REQUEST.get('_default','')
               message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
               message += self.getZMILangStr('MSG_INSERTED')%attr_id
+            sync_id = id
           
           # Acquire.
           # --------

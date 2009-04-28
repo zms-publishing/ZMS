@@ -400,8 +400,9 @@ function changeType( el)
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
  <dtml-call "REQUEST.set('acquisitions',{})"
- ><dtml-let home="getHome()"
- ><dtml-in "getConfProperty('Portal.Clients',[])"
+ ><dtml-let home="getHome()" clientIds="getConfProperty('Portal.Clients',[])"
+ ><dtml-if "_.len(clientIds)<50"
+ ><dtml-in clientIds
   ><dtml-try
    ><dtml-let clientId=sequence-item clientModel="_.getattr(home,clientId).content.metaobj_manager.model"
     ><dtml-in "clientModel.keys()"
@@ -415,6 +416,7 @@ function changeType( el)
    ></dtml-let
   ><dtml-except></dtml-try
  ></dtml-in
+ ></dtml-if
  ></dtml-let
 
   ><dtml-in metaObjIds

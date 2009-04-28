@@ -958,7 +958,7 @@ class ZMSGlobals:
     def tree_parents(self, l, i='id', r='idId', v='', deep=1, reverse=1):
       k = []
       for x in l:
-        if x[i]==v:
+        if x.get(i)==v:
           k.append(x)
           if deep:
             k.extend(self.tree_parents(l,i,r,x[r],deep,0))
@@ -974,7 +974,7 @@ class ZMSGlobals:
     def tree_list(self, l, i='id', r='idId', v='', deep=0):
       k = []
       for x in l:
-        if x[r]==v:
+        if x.get(r)==v:
           k.append(x)
           if deep:
             k.extend(self.tree_list(l,i,r,x[i],deep))

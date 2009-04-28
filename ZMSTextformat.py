@@ -39,10 +39,12 @@ def br_quote(text, subtag, REQUEST):
   rtn = ''
   qcr = ''
   qtab = '&nbsp;'*6
+  
   if _globals.isManagementInterface(REQUEST):
     if not REQUEST.has_key('format'):
       qcr = '<span class="unicode">&crarr;</span>'
       qtab = '<span class="unicode">&rarr;</span>' + '&nbsp;' * 5
+  
   if subtag == 'br':
     tmp = []
     for s in text.split('<%s>'%subtag):
@@ -63,6 +65,7 @@ def br_quote(text, subtag, REQUEST):
         i += 1
       if line[ i] in [ '*', '#']:
         level = i
+        
         # open nested lists
         if level > len(ll):
           if line[ i] == '*':
@@ -71,35 +74,44 @@ def br_quote(text, subtag, REQUEST):
           elif line[ i] == '#':
             rtn += '<ol>'*(level-len(ll))
             ll.extend(['ol']*(level-len(ll)))
+        
         # close nested lists
         elif level < len(ll):
           for li in range(len(ll)-level):
             rtn += '</%s>'%ll[-1]
             ll = ll[0:-1]
+        
         rtn += '<li>%s</li>'%line[i+2:]
-        line = None
+        continue
+    
+    # close nested lists
+    if len(ll) > 0:
+      level = 0
+      for li in range(len(ll)-level):
+        rtn += '</%s>'%ll[-1]
+        ll = ll[0:-1]
     
     # handle leading whitespaces and tabs
-    if line is not None:
-      i = 0
-      while i < len( line) and line[ i] in [ ' ', '\t']:
-        if line[ i] == ' ':
-          rtn += '&nbsp;'
-        elif line[ i] == '\t':
-          rtn += qtab
-        i += 1
-      rtn += '\n'
-      line = line[ i:].strip()
-      if subtag == 'br':
-        rtn += line+qcr
-        if c < len( ts):
-          rtn += '<%s />'%subtag
-      elif len(line) > 0:
-        rtn += '<%s'%subtag
-        rtn += '>'
-        rtn += line+qcr
-        rtn += '</%s>'%subtag
-      c += 1
+    i = 0
+    while i < len( line) and line[ i] in [ ' ', '\t']:
+      if line[ i] == ' ':
+        rtn += '&nbsp;'
+      elif line[ i] == '\t':
+        rtn += qtab
+      i += 1
+    rtn += '\n'
+    line = line[ i:].strip()
+    
+    if subtag == 'br':
+      rtn += line+qcr
+      if c < len( ts):
+        rtn += '<%s />'%subtag
+    elif len(line) > 0:
+      rtn += '<%s'%subtag
+      rtn += '>'
+      rtn += line+qcr
+      rtn += '</%s>'%subtag
+    c += 1
   
   # close nested lists
   if len(ll) > 0:

@@ -156,6 +156,8 @@ class ZMSContainerObject(
     #  ZMSContainerObject.manage_addZMSObject:
     # --------------------------------------------------------------------------
     def manage_addZMSObject(self, meta_type, values, REQUEST):
+      prim_lang = self.getPrimaryLanguage()
+      lang = REQUEST.get('lang',prim_lang)
       
       attrs = []
       for key in values.keys():
@@ -207,6 +209,9 @@ class ZMSContainerObject(
       key = 'active'
       if not (key in attrs and attrs.index(key)%2 == 0):
         attrs.extend([key,1])
+      key = 'attr_dc_coverage'
+      if not (key in attrs and attrs.index(key)%2 == 0):
+        attrs.extend([key,'global.%s'%lang])
       for i in range(len(attrs)/2):
         key = attrs[i*2]
         value = attrs[i*2+1]

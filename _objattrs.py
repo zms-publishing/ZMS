@@ -26,6 +26,7 @@ from __future__ import nested_scopes
 from DateTime.DateTime import DateTime
 from types import StringTypes
 import ZPublisher.HTTPRequest
+import string
 import time
 import urllib
 # Product Imports.
@@ -798,9 +799,8 @@ class ObjAttrs:
       
       #-- VALUE
       if type(v) in StringTypes:
-        v = v.strip()
-        while len(v) > 0 and v[-1] == '\n':
-          v = v[:-1]
+        chars = ''.join(filter(lambda x: x!='\t',string.whitespace))
+        v = v.strip(chars)
       # Retrieve v from options.
       if obj_attr.has_key('options'):
         options = obj_attr['options']
@@ -908,9 +908,6 @@ class ObjAttrs:
       elif datatype in _globals.DT_STRINGS:
         if v is None:
           v = ''
-        else:
-          if type(v) in StringTypes:
-            v = v.strip()
       
       #-- Text-Fields
       if datatype == _globals.DT_TEXT:

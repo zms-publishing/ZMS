@@ -1234,16 +1234,55 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <item key="type"><![CDATA[DTML Method]]></item>
 </dictionary>
 </item>
+<item type="dictionary"><dictionary>
+<item key="custom"><![CDATA[<dtml-comment>--// BO onChangeObjEvt //--</dtml-comment>
+<dtml-let align="getObjProperty('align',REQUEST)">
+  <dtml-if align>
+    <dtml-in "getChildNodes(REQUEST,['ZMSLinkElement'])">
+      <dtml-call "setObjProperty('align',align)">
+    </dtml-in>
+  </dtml-if>
+</dtml-let>
+<dtml-comment>--// EO onChangeObjEvt //--</dtml-comment>]]></item>
+<item key="id"><![CDATA[onChangeObjEvt]]></item>
+<item key="mandatory" type="int">0</item>
+<item key="multilang" type="int">1</item>
+<item key="name"><![CDATA[Event: Change]]></item>
+<item key="repetitive" type="int">0</item>
+<item key="type"><![CDATA[method]]></item>
+</dictionary>
+</item>
 </list>
 </item>
 <item key="access" type="dictionary"><dictionary>
+<item key="delete" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="delete_custom"/>
+<item key="edit" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="edit_custom"/>
+<item key="insert" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+<item key="insert_custom"><![CDATA[{$}]]></item>
 </dictionary>
 </item>
 <item key="enabled" type="int">1</item>
 <item key="id"><![CDATA[ZMSLinkContainer]]></item>
 <item key="name"><![CDATA[ZMSLinkContainer]]></item>
 <item key="package"><![CDATA[com.zms.foundation]]></item>
-<item key="revision"><![CDATA[1.0.0]]></item>
+<item key="revision"><![CDATA[1.0.1]]></item>
 <item key="type"><![CDATA[ZMSObject]]></item>
 </dictionary>
 </item>

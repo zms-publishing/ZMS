@@ -1163,3 +1163,10 @@
 2009-04-01:zms-2.11.1-49
 [01172] Applied fix for missing keys in ZMSGlobals.tree_list() (requested by roc).
 --------------------------------------------------
+2009-04-16:zms-2.11.1-50
+[01173] Added support for Custom versions of JavaScript-library JQuery-1.2.1 and -1.3.2 (requested by fh).
+--------------------------------------------------
+2009-04-17:zms-2.11.1-51
+[01174] Applied fix for correct closing of nested lists (reported by fh).
+[00175] Applied fix for align in Link-Container: onChangeObjEvt copies alignment to sub-ordinate Link-Elements (contributed by tf).
+--------------------------------------------------

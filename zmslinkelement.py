@@ -614,20 +614,20 @@ class ZMSLinkElement(ZMSContainerObject):
     #
     #  Overrides getNavItems of zmscontainerobject.ZMSContainerObject.
     # --------------------------------------------------------------------------
-    def getNavItemsPROXY(self, proxy, current, REQUEST, opt={}):
+    def getNavItemsPROXY(self, proxy, current, REQUEST, opt={}, depth=0):
       rtn = []
       recursive = self.isEmbeddedRecursive( REQUEST)
       if proxy != self and proxy is not None and recursive:
-        rtn = proxy.getNavItems( current, REQUEST, opt)
+        rtn = proxy.getNavItems( current, REQUEST, opt, depth)
       else:
         ref_obj = self.getRefObj()
         if isinstance(ref_obj,ZMSContainerObject):
-          rtn = ZMSContainerObject.getNavItems( self, current, REQUEST, opt)
+          rtn = ZMSContainerObject.getNavItems( self, current, REQUEST, opt, depth)
       return rtn
 
-    def getNavItems(self, current, REQUEST, opt={}):
+    def getNavItems(self, current, REQUEST, opt={}, depth=0):
       proxy = self.getProxy()
-      rtn = self.getNavItemsPROXY( proxy, current, REQUEST, opt)
+      rtn = self.getNavItemsPROXY( proxy, current, REQUEST, opt, depth)
       return rtn
 
 

@@ -47,7 +47,7 @@ function processResponseCheckoutOvertake(data)
   // Hide div.
   $('#checkoutOvertakeDiv').hide('slow');
   // Enable buttons.
-  $('input[@name=btn]').removeAttr('disabled');
+  $('input[name=btn]').removeAttr('disabled');
 }
 
 // ############################################################################

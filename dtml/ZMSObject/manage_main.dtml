@@ -35,8 +35,8 @@
 
   function initPage() {
     var els;
-    $("input[@name=ids:list][@type=checkbox]").click( function(evt) { switchButtons(evt); } );
-    els = $("tr[@id*=tr_] td.zmiContainerColCenter");
+    $("input[name=ids:list][type=checkbox]").click( function(evt) { switchButtons(evt); } );
+    els = $("tr[id*=tr_] td.zmiContainerColCenter");
     els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
     els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });
     els.dblclick( function(evt) { zmiTrFollowDblClick(this); });

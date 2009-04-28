@@ -1,7 +1,7 @@
 <dtml-if "isCheckedOut(REQUEST) and not isCheckedOutByMe(REQUEST)">
 <script language="javascript">
 <!--//
-  $('input[@name=btn]').attr('disabled','disabled');
+  $('input[name=btn]').attr('disabled','disabled');
 //-->
 </script>
 </dtml-if>

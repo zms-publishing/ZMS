@@ -1151,3 +1151,12 @@
 [01169] Applied fix for correct closing of nested lists (reported by fh).
 [01170] Added support for editable-selects to SQL-Datasource.
 --------------------------------------------------
+2009-03-27:zms-2.11.1-48
+[01171] Added support for JavaScript-library JQuery-1.3.2.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++ IMPORTANT NOTE: New JQuery-release, Revise your javascript!
++++ * The '@' in [@attr] has been removed. Deprecated since 1.2 this old syntax no longer works. Simply remove the @ to upgrade.
++++ * see http://docs.jquery.com/Release:jQuery_1.3
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--------------------------------------------------

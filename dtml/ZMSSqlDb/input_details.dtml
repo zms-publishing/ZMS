@@ -5,11 +5,11 @@
 
     function detailsTableShow(id) {
       $('#table_'+id).show('fast');
-      $('#table_'+id+' input[@type=text]').val('');
-      $('#table_'+id+' input[@type=text]').removeClass('zmiTeaserColor');
+      $('#table_'+id+' input[type=text]').val('');
+      $('#table_'+id+' input[type=text]').removeClass('zmiTeaserColor');
       $('#submit_'+id).val('<dtml-var "getZMILangStr('BTN_INSERT')">');
       $('table.neutralColorStrong tr.zmiTeaserColor').removeClass('zmiTeaserColor');
-      $('input[@name=ZMS_DETAILS_ACTION]').val('insert_'+id);
+      $('input[name=ZMS_DETAILS_ACTION]').val('insert_'+id);
       return;
     }
 

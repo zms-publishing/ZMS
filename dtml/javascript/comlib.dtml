@@ -25,6 +25,58 @@ function getCoords( element) {
 }
 
 // #############################################################################
+// ### getRelativeUrl:
+// #############################################################################
+function getRelativeUrl(path, url) {
+  var currntPath = path;
+  if (currntPath.indexOf('<dtml-var SERVER_URL>')==0)
+    currntPath = currntPath.substr(<dtml-var "_.len(SERVER_URL)+1">);
+  else if (currntPath.indexOf('/')==0)
+    currntPath = currntPath.substr(1);
+  var targetPath = url;
+  if (targetPath.indexOf('<dtml-var SERVER_URL>')==0)
+    targetPath = targetPath.substr(<dtml-var "_.len(SERVER_URL)+1">);
+  else if (targetPath.indexOf('/')==0)
+    targetPath = targetPath.substr(1);
+  while ( currntPath.length > 0 && targetPath.length > 0) {
+     var i = currntPath.indexOf( '/');
+     var j = targetPath.indexOf( '/');
+     if ( i < 0)
+       currntElmnt = currntPath;
+     else
+       currntElmnt = currntPath.substring( 0, i);
+     if ( j < 0)
+       targetElmnt = targetPath;
+     else 
+       targetElmnt = targetPath.substring( 0, j);
+     if ( currntElmnt != targetElmnt)
+       break;
+     if ( i < 0)
+       currntPath = '';
+     else
+       currntPath = currntPath.substring( i + 1);
+     if ( j < 0)
+       targetPath = '';
+     else
+       targetPath = targetPath.substring( j + 1);
+  }
+  while ( currntPath.length > 0) {
+     var i = currntPath.indexOf( '/');
+     if ( i < 0) {
+       currntElmnt = currntPath;
+       currntPath = '';
+     }
+     else {
+       currntElmnt = currntPath.substring( 0, i);
+       currntPath = currntPath.substring( i + 1);
+     }
+     targetPath = '../' + targetPath;
+  }
+  url = './' + targetPath;
+  return url;
+}
+
+// #############################################################################
 // ### scrollToElement
 // ### @see http://radio.javaranch.com/pascarello/2005/01/09/1105293729000.html
 // #############################################################################

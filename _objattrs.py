@@ -1363,7 +1363,7 @@ class ObjAttrsManager:
           defaults_obj_attrs[dct['id']] = dct
       
       # Process meta-model.
-      if sync_id is None:
+      if sync_id is None or sync_id == [ None]:
         self.dObjAttrs = {}
         meta_ids = self.dGlobalAttrs.keys()
         for meta_id in self.getMetaobjIds( sort=0):

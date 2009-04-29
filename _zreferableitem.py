@@ -91,6 +91,38 @@ class ZReferableItem:
 
 
   # ----------------------------------------------------------------------------
+  #  ZReferableItem.getRelativeUrl:
+  # ----------------------------------------------------------------------------
+  def getRelativeUrl(self, path, url, sep='/'):
+    ref = '.'
+    SERVER_URL = self.REQUEST['SERVER_URL']
+    currntPath = path
+    if currntPath.startswith(SERVER_URL):
+      currntPath = currntPath[len(SERVER_URL)+1:]
+    elif currntPath.startswith(sep):
+      currntPath = currntPath[1:]
+    targetPath = url;
+    if targetPath.startswith(SERVER_URL):
+      targetPath = targetPath[len(SERVER_URL)+1:]
+    elif targetPath.startswith(sep):
+      targetPath = targetPath[1:]
+    currntElmnts = currntPath.split(sep)
+    targetElmnts = targetPath.split(sep)
+    i = 0
+    while i < len( currntElmnts) and \
+          i < len( targetElmnts) and \
+          currntElmnts[ i] == targetElmnts[ i]:
+      i = i + 1
+    currntElmnts = currntElmnts[ i:]
+    targetElmnts = targetElmnts[ i:]
+    for currntElmnt in currntElmnts:
+      ref = ref + sep + '..'
+    for targetElmnt in targetElmnts:
+      ref = ref + sep + targetElmnt
+    return ref
+
+
+  # ----------------------------------------------------------------------------
   #  ZReferableItem.getRelObjPath:
   # ----------------------------------------------------------------------------
   def getRelObjPath(self, ob):

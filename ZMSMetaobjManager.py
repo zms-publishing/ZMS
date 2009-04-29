@@ -199,6 +199,7 @@ class ZMSMetaobjManager:
           newKeys = []
           newDefault = ''
           self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault, zms_system)
+      return id
 
     def importMetaobjXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
@@ -209,6 +210,8 @@ class ZMSMetaobjManager:
       for item in v:
         id = self._importMetaobjXml(item,zms_system,createIfNotExists,createIdsFilter)
         ids.append( id)
+      if len( ids) == 1:
+        ids = ids[ 0]
       return ids
 
 

@@ -519,7 +519,7 @@ class ZCatalogManager:
 
 
     # --------------------------------------------------------------------------
-    #	ZCatalogManager.getCatalogQueryString:
+    #  ZCatalogManager.getCatalogQueryString:
     # --------------------------------------------------------------------------
     def getCatalogQueryString(self, raw, option='AND'):
       qs = ''
@@ -535,19 +535,27 @@ class ZCatalogManager:
       else:
         q = 0
         c = 0
-        for raw_item in raw.split(' '):
-          if len(raw_item)>0:
-            if q==0 and c>0:
-              qs += option + ' '
-            if raw_item[0]=='*':
-              q=1
-            if q==1:
-              qs += raw_item +' '
+        i = 0
+        for si in raw.split(self.QUOT):
+          si = si.strip()
+          if si:
+            if i % 2 == 0:
+              for raw_item in si.split(' '):
+                if len(raw_item)>0:
+                  if q==0 and c>0:
+                    qs += option + ' '
+                  if raw_item[0]=='*':
+                    q=1
+                  if q==1:
+                    qs += raw_item +' '
+                  else:
+                    qs += raw_item + '* '
+                  if raw_item[-1]=='*':
+                    q=0
+                  c += 1
             else:
-              qs += raw_item + '* '
-            if raw_item[-1]=='*':
-              q=0
-            c=c+1
+              qs += self.QUOT + si + self.QUOT + ' '
+          i += 1
       qs = qs.replace('-','* AND *')
       qs = qs.strip()
       return qs

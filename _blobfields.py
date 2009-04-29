@@ -610,7 +610,14 @@ class MyBlob:
             _globals.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         if not access:
-          raise Unauthorized
+          if getattr(parent,'login_form',None):
+            target = '%s/login_form'%parent.absolute_url()
+            target = parent.url_append_params(target,{'came_from':REQUEST.get('URL')})
+            if REQUEST.get('QUERY_STRING'):
+              target = parent.url_append_params(target,{'QUERY_STRING':REQUEST.get('QUERY_STRING')})
+            return RESPONSE.redirect(target)
+          else:
+            raise Unauthorized
         
         if self._if_modified_since_request_handler(REQUEST, RESPONSE):
             # we were able to handle this by returning a 304 (not modified) 
@@ -629,7 +636,7 @@ class MyBlob:
         RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         RESPONSE.setHeader('Content-Type', self.content_type)
         RESPONSE.setHeader('Content-Length', self.get_size())
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%getLangFilename( parent, self.getFilename(), self.lang))
+        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%self.getFilename())
         accept_ranges = parent.getConfProperty('ZMS.blobfields.accept_ranges','bytes')
         if len( accept_ranges) > 0:
           RESPONSE.setHeader('Accept-Ranges', accept_ranges)

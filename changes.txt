@@ -1170,3 +1170,11 @@
 [01174] Applied fix for correct closing of nested lists (reported by fh).
 [00175] Applied fix for align in Link-Container: onChangeObjEvt copies alignment to sub-ordinate Link-Elements (contributed by tf).
 --------------------------------------------------
+2009-04-27:zms-2.11.1-52
+[01176] Revised special-object 'MultiFileUpload' (contributed by fh).
+--------------------------------------------------
+2009-04-29:zms-2.11.1-53
+[01177] Applied fix for restricted blob-fields and cookie-base authentication (requested by desy).
+[01178] Applied fix for synchronization of content-model after xml-import of content-objects (reported by cm).
+[01179] Revised inline-filename for blob-fields: removed lang-suffix (contributed by T. Kraemer).
+--------------------------------------------------

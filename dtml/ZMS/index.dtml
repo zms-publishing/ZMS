@@ -73,7 +73,20 @@
 ><dtml-var "'<dtml-var f_bodyContent>'"
 ></dtml-if
 ><dtml-if ZMS_HIGHLIGHT
-><script type="text/javascript"><dtml-in "REQUEST.get(ZMS_HIGHLIGHT,'').split(' ')"><dtml-if sequence-item>do_highlight('<dtml-var sequence-item>');</dtml-if></dtml-in></script></dtml-if
+><script type="text/javascript"
+ ><dtml-in "REQUEST.get(ZMS_HIGHLIGHT,'').split(QUOT)"
+ ><dtml-let si="_['sequence-item'].strip()"
+  ><dtml-if si
+   ><dtml-if sequence-even
+    ><dtml-in "si.split(' ')"
+     ><dtml-if sequence-item>do_highlight('<dtml-var sequence-item>');</dtml-if
+    ></dtml-in
+   ><dtml-else
+   >do_highlight('<dtml-var si>');</dtml-if
+  ></dtml-if
+ ></dtml-let
+ ></dtml-in
+></script></dtml-if
 ><dtml-else
 ><dtml-call "RESPONSE.setStatus(503)"
 ><p class="standard"><dtml-var "getLangStr('MSG_INACTIVE',lang)"></p

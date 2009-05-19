@@ -42,6 +42,9 @@ import _globals
 import _fileutil
 
 
+INDENTSTR = '  '
+
+
 """
 ################################################################################
 #
@@ -471,23 +474,24 @@ def toCdata(self, s, xhtml=0):
 # ------------------------------------------------------------------------------
 #  _xmllib.toXml:
 # ------------------------------------------------------------------------------
-def toXml(self, value, xhtml=0, encoding='utf-8'):
+def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
   xml = []
   
   if value is not None:
     
     # Image
     if isinstance(value,_blobfields.MyImage):
-      xml.append( value.toXml( self))
+      xml.append( '\n'+indentlevel*INDENTSTR+value.toXml( self))
     
     # File
     elif isinstance(value,_blobfields.MyFile):
-      xml.append( value.toXml( self))
+      xml.append( '\n'+indentlevel*INDENTSTR+value.toXml( self))
     
     # File (Zope-native)
     elif isinstance(value,File):
       tagname = 'data'
-      xml.append( '\n<%s'%tagname)
+      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append( '<%s'%tagname)
       xml.append( ' content_type="%s"'%value.content_type)
       xml.append( ' filename="%s"'%value.title)
       xml.append( ' type="file"')
@@ -500,23 +504,30 @@ def toXml(self, value, xhtml=0, encoding='utf-8'):
     
     # Dictionaries
     elif type(value) is dict:
+      indentstr = '\n'+(indentlevel+1)*INDENTSTR
       keys = value.keys()
       keys.sort()
-      xml.append('<dictionary>\n')
-      xml.extend(map(lambda key: '<item key="%s"%s>%s</item>\n'%(key,getXmlType(value[key]),toXml(self,value[key],xhtml,encoding)),keys))
-      xml.append('</dictionary>\n')
+      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('<dictionary>')
+      xml.extend(map(lambda key: '%s<item key="%s"%s>%s%s</item>'%(indentstr,key,getXmlType(value[key]),toXml(self,value[key],indentlevel+2,xhtml,encoding),indentstr),keys))
+      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('</dictionary>')
     
     # Lists
     elif type(value) is list:
-      xml.append('<list>\n')
-      xml.extend(map(lambda item: '<item%s>%s</item>\n'%(getXmlType(item),toXml(self,item,xhtml,encoding)),value))
-      xml.append('</list>\n')
+      indentstr = '\n'+(indentlevel+1)*INDENTSTR
+      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('<list>')
+      xml.extend(map(lambda item: '%s<item%s>%s%s</item>'%(indentstr,getXmlType(item),toXml(self,item,indentlevel+2,xhtml,encoding),indentstr),value))
+      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('</list>')
       
     # Tuples (DateTime)
     elif type(value) is tuple or type(value) is time.struct_time:
       try:
         s_value = self.getLangFmtDate(value,'eng','DATETIME_FMT')
         if len(s_value) > 0:
+          xml.append( '\n'+indentlevel*INDENTSTR)
           xml.append(toCdata(self,s_value,-1))
       except:
         pass
@@ -524,12 +535,14 @@ def toXml(self, value, xhtml=0, encoding='utf-8'):
     # Numbers
     elif type(value) is int or type(value) is float:
       s_value = str(value)
+      xml.append( '\n'+indentlevel*INDENTSTR)
       xml.append(toCdata(self,s_value,-1))
   
     # Others
     else:
       s_value = str(value)
       if len(s_value) > 0:
+        xml.append( '\n'+indentlevel*INDENTSTR)
         xml.append(toCdata(self,s_value,xhtml))
   
   # Return xml.

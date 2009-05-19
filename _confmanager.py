@@ -243,7 +243,9 @@ class ConfManager(
     #  Returns mediadb.
     # --------------------------------------------------------------------------
     def getMediaDb(self):
-      return getattr(self,'acl_mediadb',None)
+      for ob in self.getDocumentElement().objectValues(['MediaDb']):
+        return ob
+      return None
 
     # --------------------------------------------------------------------------
     #  ConfManager.getStylesheet:

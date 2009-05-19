@@ -408,8 +408,8 @@ class ZMSSqlDb(ZMSObject):
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
         for tableBrwsr in tableBrwsrs:
-          tableName = getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))().upper()
-          tableType = getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))().upper()
+          tableName = getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))()
+          tableType = getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))()
           if tableType == 'TABLE':
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- COLUMNS
@@ -417,7 +417,7 @@ class ZMSSqlDb(ZMSObject):
             cols = []
             for columnBrwsr in tableBrwsr.tpValues():
               colId = columnBrwsr.tpId()
-              colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
+              colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))()
               colType = 'string'
               colSize = None
               if colDescr.find('INT') >= 0:
@@ -466,14 +466,14 @@ class ZMSSqlDb(ZMSObject):
       model = self.getModel()
       s = []
       for entity in entities:
-        tableName = entity['id'].upper()
+        tableName = entity['id']
         tableInterface = entity.get('interface','')
         cols = []
         colNames = []
         for col in entity['columns']:
           colName = col['id'].upper()
           # Set custom column-properties
-          for modelTable in filter(lambda x: x['id'].upper() == tableName, model):
+          for modelTable in filter(lambda x: x['id'].upper() == tableName.upper(), model):
             for modelTableCol in filter(lambda x: x['id'].upper() == colName, modelTable.get('columns',[])):
               for modelTableColProp in filter(lambda x: x not in ['id'], modelTableCol.keys()):
                 col[modelTableColProp] = modelTableCol[modelTableColProp]
@@ -496,7 +496,7 @@ class ZMSSqlDb(ZMSObject):
         entity['interface'] = tableInterface
         entity['columns'] = cols
         # Set custom table-properties
-        for modelTable in filter(lambda x: x['id'].upper() ==tableName, model):
+        for modelTable in filter(lambda x: x['id'].upper() ==tableName.upper(), model):
           for modelTableProp in filter(lambda x: x not in ['columns'], modelTable.keys()):
             entity[modelTableProp] = modelTable[modelTableProp]
         # Add
@@ -504,8 +504,8 @@ class ZMSSqlDb(ZMSObject):
       
       #-- Custom entities.
       for entity in model:
-        tableName = entity['id'].upper()
-        if tableName not in map( lambda x: x['id'].upper(), entities):
+        tableName = entity['id']
+        if tableName.upper() not in map( lambda x: x['id'].upper(), entities):
           entity['id'] = tableName
           entity['type'] = entity.get('type','table')
           entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())

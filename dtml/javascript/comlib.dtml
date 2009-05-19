@@ -753,7 +753,7 @@ function calendarBtnClick (fmName, elName)
   html += "</div>";
   var msie = (navigator.appName == "Microsoft Internet Explorer");
   var daynames = new Array(<dtml-in "_.range(7)">"<dtml-var "getZMILangStr('WEEKDAY%i'%(_['sequence-item']))[0]" html_quote>"<dtml-unless sequence-end>,</dtml-unless></dtml-in>);
-  for(d in daynames) {
+  for(var d = 0; d < daynames.length; d++) {
     var st = "";
     if ( !msie && (d == 0))
       st = " style=\"clear:left;\"";
@@ -761,7 +761,7 @@ function calendarBtnClick (fmName, elName)
       st = " style=\"float:none;\"";
     html += "<div class=\"zmiCalDayname\""+st+">" + daynames[d] + "</div>";
   }
-  for(d = 0; d < 42; d++) {
+  for(var d = 0; d < 42; d++) {
     var cn = "";
     var st = "";
     if ( !msie && (d % 7 == 0))

@@ -1187,3 +1187,11 @@
 2009-05-13:zms-2.11.1-56
 [01182] Applied fix for disabled auto-correction of internal links.
 --------------------------------------------------
+2009-05-14:zms-2.11.1-58
+[01183] Revised default-uppercase for table- and fieldnames in SQL-Datasource.
+--------------------------------------------------
+2009-05-15:zms-2.11.1-59
+[01184] Applied fix for display of calendar in MSIE.
+[01185] Applied fix for media-db in multi-sites with rewrite-rules.
+[01186] Added support for formatted (indented) xml-export.
+--------------------------------------------------

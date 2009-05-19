@@ -1181,3 +1181,6 @@
 2009-04-30:zms-2.11.1-54
 [01180] Revised special-object 'ZMSMediaPlayer' 2.11.4 (contributed by tf).
 --------------------------------------------------
+2009-05-06:zms-2.11.1-55
+[01181] Added support for restricted insert-nodes for content-objects in multi-sites (reported by fh).
+--------------------------------------------------

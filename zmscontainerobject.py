@@ -578,9 +578,17 @@ class ZMSContainerObject(
               _globals.writeError( self, '[filtered_insert_actions]: can\'t get manage_access from %s'%meta_id)
           can_insert = True
           if objAttr['type']=='*':
-            can_insert = can_insert and (type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( self.intersection_list( ob_access.get( 'insert'), self.getUserRoles(auth_user))) > 0)
-            can_insert = can_insert and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'insert') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'insert'), self.getUserRoles(auth_user))) > 0))
-            can_insert = can_insert and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'insert_custom','{$}') == '{$}') or (len( filter( lambda x: (self.absolute_url()+'/').find(x)==0, map( lambda x: self.getDocumentElement().absolute_url()+'/'+x[2:-1]+'/', self.string_list(metaObj.get( 'access', {}).get( 'insert_custom','{$}'))))) > 0))
+            can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( self.intersection_list( ob_access.get( 'insert'), self.getUserRoles(auth_user))) > 0))
+            mo_access = metaObj.get( 'access')
+            if type(mo_access) is dict:
+              mo_access_insert_roles = mo_access.get('insert')
+              if type(mo_access_insert_roles) is list:
+                can_insert = can_insert and len( self.intersection_list( mo_access_insert_roles, self.getUserRoles(auth_user))) > 0
+              mo_access_insert_nodes = self.string_list(mo_access.get('insert_custom','{$}'))
+              sl = []
+              sl.extend(map( lambda x: (self.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
+              sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))
+              can_insert = can_insert and len( filter( lambda x: (self.absolute_url()+'/').find(x)>=0, sl)) > 0
           if can_insert:
             if meta_id in self.dGlobalAttrs.keys():
               value = 'manage_addProduct/zms/%s'%self.dGlobalAttrs[meta_id]['constructor']

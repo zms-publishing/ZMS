@@ -1178,3 +1178,6 @@
 [01178] Applied fix for synchronization of content-model after xml-import of content-objects (reported by cm).
 [01179] Revised inline-filename for blob-fields: removed lang-suffix (contributed by T. Kraemer).
 --------------------------------------------------
+2009-04-30:zms-2.11.1-54
+[01180] Revised special-object 'ZMSMediaPlayer' 2.11.4 (contributed by tf).
+--------------------------------------------------

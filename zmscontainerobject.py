@@ -541,6 +541,7 @@ class ZMSContainerObject(
       REQUEST = self.REQUEST
       lang = REQUEST['lang']
       auth_user = REQUEST['AUTHENTICATED_USER']
+      absolute_url = '/'.join(list(self.getVirtualRootPhysicalPath(self)))+'/'
       
       if objAttr is None:
         objAttr = self.getMetaobjAttr( self.meta_id, 'e')
@@ -588,7 +589,7 @@ class ZMSContainerObject(
               sl = []
               sl.extend(map( lambda x: (self.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
               sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))
-              can_insert = can_insert and len( filter( lambda x: (self.absolute_url()+'/').find(x)>=0, sl)) > 0
+              can_insert = can_insert and len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
           if can_insert:
             if meta_id in self.dGlobalAttrs.keys():
               value = 'manage_addProduct/zms/%s'%self.dGlobalAttrs[meta_id]['constructor']

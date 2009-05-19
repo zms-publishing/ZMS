@@ -128,6 +128,14 @@
   <dtml-call "REQUEST.set('valid_userids',getValidUserids())">
 
   <dtml-comment>
+  ***** Reset filter for user-ids.
+  </dtml-comment>
+  <dtml-if "REQUEST.get('btn','')==getZMILangStr('BTN_RESET')">
+   <dtml-call "REQUEST.set('search_term','')">
+   <dtml-call "SESSION.set('ZMS_MANAGE_USERS_ID_FILTER','')">
+  </dtml-if>
+   
+  <dtml-comment>
   ***** Apply filter to user-ids.
   </dtml-comment>
   <dtml-call "SESSION.set('ZMS_MANAGE_USERS_ID_FILTER',REQUEST.get('ZMS_MANAGE_USERS_ID_FILTER',SESSION.get('ZMS_MANAGE_USERS_ID_FILTER','')))">
@@ -178,7 +186,10 @@
     <td class="form-small"><dtml-var "getTextInput(fmName='searchForm',elName='search_term',size=12,value=REQUEST.get('search_term',''),type='text',REQUEST=REQUEST,css='form-small')"></td>
    </tr>
    <tr class="zmiNeutralColorLight0" valign="middle">
-    <td class="form-small" colspan="2" align="right"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SEARCH')">"></td>
+    <td class="form-small" colspan="2" align="right">
+     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SEARCH')">">
+     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')">">
+    </td>
    </tr>
    </table>
   
@@ -196,7 +207,7 @@
          <td class="form-label">&nbsp;</td>
         </tr>
        </dtml-if>
-       <dtml-call "REQUEST.set('userId',_[getProperty( '_login_attr' )])">
+       <dtml-call "REQUEST.set('userId',_.unicode(_[getProperty( '_login_attr' )],'latin-1').encode('utf-8'))">
        <tr valign="top" class="<dtml-if sequence-even>zmiNeutralColorLight0<dtml-else>zmiNeutralColorMedium0</dtml-if>">
         <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
         <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var userId>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
@@ -287,22 +298,17 @@
    </tr>
    <dtml-if "REQUEST.form.get('id','')!=''">
     <!-- Columns -->
-    <dtml-in valid_userids mapping>
-    <dtml-if "REQUEST.get('id','')==name"> 
-    <dtml-if "localUserFldr.meta_type=='LDAPUserFldr' and localUserFldr.getProperty( '_login_attr' )=='dn'">
-     <dtml-call "REQUEST.set('userObj',localUserFldr.findUser(search_param=localUserFldr.getProperty( '_login_attr' ),search_term=name))">
-    <dtml-else>
-     <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
-    </dtml-if>
-    <dtml-if userObj>
-     <input type="hidden" name="id" value="<dtml-var name>">
+    <dtml-in "getValidUserids(search_term=REQUEST.get('id',''))" mapping>
+    <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
+    <dtml-call "REQUEST.set('userName',_.unicode(name,'latin-1').encode('utf-8'))">
+     <input type="hidden" name="id" value="<dtml-var userName>">
      <tr valign="top" class="zmiNeutralColorMedium0">
       <!-- Id -->
       <td class="form-text" colspan="4" valign="middle">
        <table cellspacing="0" cellpadding="1" border="0">
        <tr valign="top">
         <td rowspan="2"><img src="p_/User_icon" border="0" title="" align="absmiddle" /></td>
-        <td><div class="form-label"><dtml-var name></div></td>
+        <td><div class="form-label"><dtml-var userName></div></td>
        </tr>
        <tr valign="top">
         <td class="form-small">
@@ -319,7 +325,7 @@
       <td class="form-element" align="right" nowrap="nowrap">
        <dtml-if "localUserFldr!=userFldr">
         &nbsp;
-        <dtml-let profile="getUserAttr(name,'profile',_.None)" ob="getLinkObj(profile,REQUEST)">
+        <dtml-let profile="getUserAttr(userName,'profile',_.None)" ob="getLinkObj(profile,REQUEST)">
          <dtml-if profile>
           <dtml-if ob>
            <dtml-with ob>
@@ -364,7 +370,7 @@
            <dtml-if expr="si not in ['userPassword','userCertificate']">
             <tr valign="top">
              <td class="zmiNeutralColorMedium0" nowrap="nowrap" title="<dtml-var sk>"><div class="form-small"><b><dtml-var si></b></div></td>
-             <td class="neutralColorWhite"><div class="form-small"><dtml-var "cur_val and ';'.join(cur_val) or ''"></div></td>
+             <td class="neutralColorWhite"><div class="form-small"><dtml-var "_.unicode(cur_val and ';'.join(cur_val) or '','latin-1').encode('utf-8')"></div></td>
             </tr>
             <dtml-call "REQUEST.set('count',REQUEST['count']+1)">
            </dtml-if>
@@ -390,7 +396,7 @@
         </tr>
         </dtml-unless>
         <!-- E-Mail -->
-        <dtml-unless "getLDAPUserAttr(name,'email')">
+        <dtml-unless "getLDAPUserAttr(userName,'email')">
          <tr valign="middle">
           <td class="form-optional" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
           <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=15,value=getUserAttr(name,'email',''))"></td>
@@ -403,7 +409,7 @@
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
-       <dtml-let multilang="_.len(getLangIds())>1" nodes="getUserAttr(name,'nodes',{})" nodekeys="nodes.keys()">
+       <dtml-let multilang="_.len(getLangIds())>1" nodes="getUserAttr(userName,'nodes',{})" nodekeys="nodes.keys()">
         <dtml-call "nodekeys.sort()">
         <dtml-call "REQUEST.set('count',0)">
         <dtml-in nodekeys>
@@ -414,7 +420,7 @@
              <table cellspacing="0" cellpadding="0" border="0">
              <tr valign="middle">
               <td class="zmiNeutralColorMedium0"
-               ><a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':REQUEST.get('id'),'key':'attr','nodekey':nodekey})">');" class="button"
+               ><a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName,'key':'attr','nodekey':nodekey})">');" class="button"
                  ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"
                /></a
               ></td>
@@ -537,14 +543,6 @@
        </table>
       </td>
      </tr>
-    <dtml-else>
-     <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-      <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-      <td class="form-small"><img src="<dtml-var MISC_ZMS>radio_disabled0.gif" title="" border="0" align="middle" /></td>
-      <td class="form-small" colspan="3"><dtml-var name></td>
-     </tr>
-    </dtml-if>
-    </dtml-if>
     </dtml-in>
    <dtml-else>
     <!-- Navigation -->

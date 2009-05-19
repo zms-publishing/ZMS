@@ -616,19 +616,19 @@ class ObjAttrs:
       #-- Integer-Fields.
       elif datatype in _globals.DT_INTS and not type(value) is type(obj_default):
         try:
-          set, value = True, int(value)
+          set, value = type( value) is not int, int(value)
         except:
-          set, value = True, obj_default
+          value = obj_default
       
       #-- Float-Fields.
       elif datatype == _globals.DT_FLOAT and not type(value) is type(obj_default):
         try:
-          set, value = True, float(value)
+          set, value = type( value) is not float, float( value)
         except:
-          set, value = True, obj_default
+          value = obj_default
       
       #-- Url-Fields
-      elif datatype == _globals.DT_URL and value.find('{$') == 0:
+      elif datatype == _globals.DT_URL and value.startswith('{$') and not value.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         try:
           old = value
           ref_obj = self.getLinkObj(value)
@@ -961,7 +961,7 @@ class ObjAttrs:
             _globals.writeBlock( self, '[formatObjAttrValue]: invalid href=%s'%href)
       
       #-- Url-Fields
-      if datatype == _globals.DT_URL:
+      if datatype == _globals.DT_URL and v.startswith('{$') and not v.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         ref_obj = self.getLinkObj(v)
         if ref_obj is not None:
           # Repair link.
@@ -1148,7 +1148,7 @@ class ObjAttrs:
           ref_obj.registerRefObj(self,self.REQUEST)
           # Repair link.
           value = self.getRefObjPath(ref_obj)
-        elif value.find('{$') == 0 and value.find('{$__') < 0:
+        elif value.startswith('{$') and not value.startswith('{$__'):
           # Broken link.
           value = '{$__' + value[2:-1] + '__}'
       

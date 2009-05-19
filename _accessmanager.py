@@ -414,18 +414,18 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self):
+    def getValidUserids(self, search_param='cn', search_term=''):
       valid_userids = []
       for userFldr in self.getUserFolders():
         if userFldr.aq_parent.objectValues(['ZMS']):
-          if userFldr.meta_type == 'LDAPUserFolder' and \
-             userFldr.getProperty('_login_attr') == 'dn':
-            for user in userFldr.findUser(search_param='sn',search_term=''):
-              userName = user['dn']
+          if userFldr.meta_type == 'LDAPUserFolder':
+            for user in userFldr.findUser(search_param=search_param,search_term=search_term):
+              userName = user[userFldr.getProperty('_login_attr')]
               valid_userids.append({'localUserFldr':userFldr,'name':userName})
           else:
             for userName in userFldr.getUserNames():
-              valid_userids.append({'localUserFldr':userFldr,'name':userName})
+              if search_term == '' or search_term == userName:
+                valid_userids.append({'localUserFldr':userFldr,'name':userName})
       return valid_userids
 
     # --------------------------------------------------------------------------
@@ -531,7 +531,7 @@ class AccessManager(AccessableContainer):
     def findUser(self, name):
       for userFldr in self.getUserFolders():
         userObj = None
-        if userFldr.meta_type=='LDAPUserFolder' and userFldr.getProperty('_login_attr')=='dn':
+        if userFldr.meta_type=='LDAPUserFolder':
           ldapUsersObjs = userFldr.findUser(search_param=userFldr.getProperty('_login_attr'),search_term=name)
           if len(ldapUsersObjs) == 1:
             userObj = ldapUsersObjs[0]

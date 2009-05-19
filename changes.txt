@@ -1184,3 +1184,6 @@
 2009-05-06:zms-2.11.1-55
 [01181] Added support for restricted insert-nodes for content-objects in multi-sites (reported by fh).
 --------------------------------------------------
+2009-05-13:zms-2.11.1-56
+[01182] Applied fix for disabled auto-correction of internal links.
+--------------------------------------------------

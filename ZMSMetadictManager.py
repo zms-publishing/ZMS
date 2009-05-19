@@ -92,7 +92,7 @@ class ZMSMetadictManager:
       if meta_type is not None:
         attrs = []
         metaObj = self.getMetaobj( meta_type)
-        for attr in metaObj['attrs']:
+        for attr in metaObj.get('attrs',[]):
           if attr['type'] in obs:
             attrs.append(attr['type'])
       else:

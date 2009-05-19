@@ -499,6 +499,7 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault='', zms_system=0):
       ob = self.__get_metaobj__(id)
+      if ob is None: return
       attrs = copy.copy(ob['attrs'])
       
       # Set Attributes.

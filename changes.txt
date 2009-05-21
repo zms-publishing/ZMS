@@ -1195,3 +1195,9 @@
 [01185] Applied fix for media-db in multi-sites with rewrite-rules.
 [01186] Added support for formatted (indented) xml-export.
 --------------------------------------------------
+2009-05-19:zms-2.11.1-60
+[01187] Applied fix for default-uppercase in SQL-Datasource.
+[01188] Applied fix for sql-exception in getEntities() using old Postgres in SQL-Datasource.
+[01189] Applied fix for Javascript in ZMSTable: table_cell_edit() (reported by usb).
+[01190] Applied fix for Javascript in ZMSTextarea: (x)html-validation.
+--------------------------------------------------

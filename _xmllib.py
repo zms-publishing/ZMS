@@ -504,21 +504,40 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
     
     # Dictionaries
     elif type(value) is dict:
-      indentstr = '\n'+(indentlevel+1)*INDENTSTR
       keys = value.keys()
       keys.sort()
       xml.append( '\n'+indentlevel*INDENTSTR)
       xml.append('<dictionary>')
-      xml.extend(map(lambda key: '%s<item key="%s"%s>%s%s</item>'%(indentstr,key,getXmlType(value[key]),toXml(self,value[key],indentlevel+2,xhtml,encoding),indentstr),keys))
+      indentstr = '\n'+(indentlevel+1)*INDENTSTR
+      for x in keys:
+        k = ' key="%s"'%x
+        xv = value[x]
+        tv = getXmlType(xv)
+        sv = toXml(self,xv,indentlevel+2,xhtml,encoding)
+        xml.append(indentstr)
+        xml.append('<item%s%s>'%(k,tv))
+        xml.append(sv)
+        if sv.find('\n') >= 0:
+          xml.append(indentstr)
+        xml.append('</item>')
       xml.append( '\n'+indentlevel*INDENTSTR)
       xml.append('</dictionary>')
     
     # Lists
     elif type(value) is list:
-      indentstr = '\n'+(indentlevel+1)*INDENTSTR
       xml.append( '\n'+indentlevel*INDENTSTR)
       xml.append('<list>')
-      xml.extend(map(lambda item: '%s<item%s>%s%s</item>'%(indentstr,getXmlType(item),toXml(self,item,indentlevel+2,xhtml,encoding),indentstr),value))
+      indentstr = '\n'+(indentlevel+1)*INDENTSTR
+      for xv in value:
+        k = ''
+        tv = getXmlType(xv)
+        sv = toXml(self,xv,indentlevel+2,xhtml,encoding)
+        xml.append(indentstr)
+        xml.append('<item%s%s>'%(k,tv))
+        xml.append(sv)
+        if sv.startswith('\n'):
+          xml.append(indentstr)
+        xml.append('</item>')
       xml.append( '\n'+indentlevel*INDENTSTR)
       xml.append('</list>')
       
@@ -534,15 +553,12 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
     
     # Numbers
     elif type(value) is int or type(value) is float:
-      s_value = str(value)
-      xml.append( '\n'+indentlevel*INDENTSTR)
-      xml.append(toCdata(self,s_value,-1))
+      xml.append(str(value))
   
     # Others
     else:
       s_value = str(value)
       if len(s_value) > 0:
-        xml.append( '\n'+indentlevel*INDENTSTR)
         xml.append(toCdata(self,s_value,xhtml))
   
   # Return xml.

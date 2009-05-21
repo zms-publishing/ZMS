@@ -237,7 +237,8 @@ class ZMSSqlDb(ZMSObject):
             return "NULL"
       else:
         v = unicode(str(v),'utf-8').encode(getattr(self,'charset','utf-8'))
-        if v.find("\'") >= 0: v=''.join(v.split("\'"))
+        if v.find("\'") >= 0: 
+          v=''.join(v.split("\'"))
         return "'%s'"%v
 
 
@@ -415,52 +416,54 @@ class ZMSSqlDb(ZMSObject):
             # +- COLUMNS
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             cols = []
-            for columnBrwsr in tableBrwsr.tpValues():
-              colId = columnBrwsr.tpId()
-              colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))()
-              colType = 'string'
-              colSize = None
-              if colDescr.find('INT') >= 0:
-                colType = 'int'
-              elif colDescr.find('DATE') >= 0 or \
-                   colDescr.find('TIME') >= 0:
-                colType = 'datetime'
-              elif colDescr.find('CHAR') >= 0 or \
-                   colDescr.find('STRING') >= 0:
-                colSize = 50
-                i = colDescr.find('(')
-                if i >= 0:
-                  j = colDescr.find(')')
-                  if j >= 0:
-                    colSize = int(colDescr[i+1:j])
-                if colSize > 50:
-                  colType = 'text'
-                else:
-                  colType = 'string'
-              col = {}
-              col['key'] = colId
-              col['description'] = colDescr.strip()
-              col['id'] = col['key']
-              col['index'] = col.get('index',len(cols))
-              col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
-              col['name'] = col['label']
-              col['mandatory'] = colDescr.find('NOT NULL') > 0 or databaseAdptr.meta_type == 'Z Gadfly Database Connection'
-              col['type'] = colType
-              col['sort'] = 1
-              col['nullable'] = not col['mandatory']
-              # Add Column.
-              cols.append(col)
+            try:
+              for columnBrwsr in tableBrwsr.tpValues():
+                colId = columnBrwsr.tpId()
+                colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))()
+                colType = 'string'
+                colSize = None
+                if colDescr.upper().find('INT') >= 0:
+                  colType = 'int'
+                elif colDescr.upper().find('DATE') >= 0 or \
+                     colDescr.upper().find('TIME') >= 0:
+                  colType = 'datetime'
+                elif colDescr.upper().find('CHAR') >= 0 or \
+                     colDescr.upper().find('STRING') >= 0:
+                  colSize = 50
+                  i = colDescr.find('(')
+                  if i >= 0:
+                    j = colDescr.find(')')
+                    if j >= 0:
+                      colSize = int(colDescr[i+1:j])
+                  if colSize > 50:
+                    colType = 'text'
+                  else:
+                    colType = 'string'
+                col = {}
+                col['key'] = colId
+                col['description'] = colDescr.strip()
+                col['id'] = col['key']
+                col['index'] = col.get('index',len(cols))
+                col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
+                col['name'] = col['label']
+                col['mandatory'] = colDescr.find('NOT NULL') > 0 or databaseAdptr.meta_type == 'Z Gadfly Database Connection'
+                col['type'] = colType
+                col['sort'] = 1
+                col['nullable'] = not col['mandatory']
+                # Add Column.
+                cols.append(col)
+            except:
+              _globals.writeError(self,'[getEntities]')
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- TABLE
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-            if len(cols) > 0:
-              entity = {}
-              entity['id'] = tableName
-              entity['type'] = 'table'
-              entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
-              entity['columns'] = cols
-              # Add Table.
-              entities.append(entity)
+            entity = {}
+            entity['id'] = tableName
+            entity['type'] = 'table'
+            entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
+            entity['columns'] = cols
+            # Add Table.
+            entities.append(entity)
       
       #-- Custom properties
       model = self.getModel()
@@ -1131,7 +1134,7 @@ class ZMSSqlDb(ZMSObject):
           entity = entities[0]
         else:
           entity = {}
-          entity['id'] = id.upper()
+          entity['id'] = id
           entity['type'] = 'table'
           entity['columns'] = []
           model.append( entity)
@@ -1241,7 +1244,7 @@ class ZMSSqlDb(ZMSObject):
           entity = entities[0]
         else:
           entity = {}
-          entity['id'] = id.upper()
+          entity['id'] = id
           entity['type'] = 'table'
           entity['columns'] = []
           model.append( entity)
@@ -1261,7 +1264,7 @@ class ZMSSqlDb(ZMSObject):
           entity = entities[0]
         else:
           entity = {}
-          entity['id'] = id.upper()
+          entity['id'] = id
           entity['type'] = 'table'
           entity['columns'] = map( lambda x: {'id':x['id']}, self.getEntity( id)['columns'])
           model.append( entity)

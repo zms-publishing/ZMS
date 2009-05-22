@@ -1201,3 +1201,6 @@
 [01189] Applied fix for Javascript in ZMSTable: table_cell_edit() (reported by usb).
 [01190] Applied fix for Javascript in ZMSTextarea: (x)html-validation.
 --------------------------------------------------
+2009-05-22:zms-2.11.1-61
+[01191] Added support for foreign-key displayfields inlined in grids of SQL-Datasource.
+--------------------------------------------------

@@ -3,13 +3,18 @@
 ><script language="JavaScript"
 ><!--//
 
-    function detailsTableShow(id) {
-      $('#table_'+id).show('fast');
-      $('#table_'+id+' input[type=text]').val('');
-      $('#table_'+id+' input[type=text]').removeClass('zmiTeaserColor');
-      $('#submit_'+id).val('<dtml-var "getZMILangStr('BTN_INSERT')">');
-      $('table.neutralColorStrong tr.zmiTeaserColor').removeClass('zmiTeaserColor');
-      $('input[name=ZMS_DETAILS_ACTION]').val('insert_'+id);
+    function detailsTableToggle(id) {
+      if ($('#table_'+id).css("display")=='none') {
+        $('#table_'+id).show('fast');
+        $('#table_'+id+' input[type=text]').val('');
+        $('#table_'+id+' input[type=text]').removeClass('zmiTeaserColor');
+        $('#submit_'+id).val('<dtml-var "getZMILangStr('BTN_INSERT')">');
+        $('table.neutralColorStrong tr.zmiTeaserColor').removeClass('zmiTeaserColor');
+        $('input[name=ZMS_DETAILS_ACTION]').val('insert_'+id);
+      }
+      else {
+        $('#table_'+id).hide('fast');
+      }
       return;
     }
 
@@ -157,7 +162,7 @@
  <div class="detailgrid" style="overflow:scroll; overflow-y:hidden">
   <dtml-try>
    <dtml-call "REQUEST.set('grid_options',{})">
-   <dtml-call "operator_setitem(grid_options,'insert',{'action':'javascript:detailsTableShow(\'%s\')'%details['tablename']})">
+   <dtml-call "operator_setitem(grid_options,'insert',{'action':'javascript:detailsTableToggle(\'%s\')'%details['tablename']})">
    <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'ZMS_DETAILS_ACTION':'update_%s'%details['tablename']})+'&details_rowid=%s'})">
    <dtml-call "operator_setitem(grid_options,'delete',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'ZMS_DETAILS_ACTION':'delete_%s'%details['tablename']})+'&details_rowid=%s'})">
    <dtml-if details_ordered>

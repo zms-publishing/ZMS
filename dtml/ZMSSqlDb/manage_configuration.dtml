@@ -221,9 +221,10 @@ function mms_normalize_rows(el_tbody) {
             ><input type="text" name="attr_id_<dtml-var "column['id']">" value="<dtml-var "column['id']">" size="12"
            ></dtml-if
           ></td>
-          <td class="form-small"
-           ><code><dtml-var "column.get('description','')"></code
-          ></td>
+          <td class="form-small">
+           <code><dtml-var "column.get('description','')"></code> 
+           <b>(<dtml-var "column.get('type','')">)</b>
+          </td>
           <td class="form-small"
            ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="12"
           ></td>
@@ -260,7 +261,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-elif "column.has_key('details')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['details'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><dtml-try><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['details'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
@@ -269,7 +270,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-elif "column.has_key('fk')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">A.Tablename</td
-             ><td class="form-small"><select name="attr_fk_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['fk'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><dtml-try><select name="attr_fk_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['fk'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">A.Fieldname</td
@@ -298,7 +299,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><select name="attr_multiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['multiselect'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">MySQL-Set</td
@@ -315,7 +316,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['multimultiselect'].get('tablename','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><dtml-try><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['multimultiselect'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" colspan="2"
@@ -370,7 +371,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-elif "column.has_key('pk')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Auto</td
-             ><td class="form-small"><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column.get('auto','').upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><dtml-try><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column.get('auto','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
            ></dtml-if
            ></table

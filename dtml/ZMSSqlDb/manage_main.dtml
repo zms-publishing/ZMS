@@ -45,7 +45,7 @@
 ><dtml-if resSlctStmnt
 ><dtml-try
 ><dtml-call "REQUEST.set('cntSlctStmnt',resSlctStmnt)"
-><dtml-call "REQUEST.set('cntSlctStmnt',cntSlctStmnt.replace('*','COUNT(*) AS rcount'))"
+><dtml-call "REQUEST.set('cntSlctStmnt',re_sub('SELECT (.*?) FROM','SELECT COUNT(*) AS rcount FROM',cntSlctStmnt))"
 ><dtml-call "REQUEST.set('cntSlctStmnt',cntSlctStmnt[:cntSlctStmnt.find('ORDER BY')])"
 ><dtml-call "REQUEST.set('res',query(cntSlctStmnt)['records'])"
 ><dtml-in res

@@ -156,7 +156,7 @@
   </dtml-in>
 </dtml-unless>
 
-  <dtml-if headline><dtml-var "f_headline(_,_,headline=headline%getZMILangStr('ATTR_RECORD'))"></dtml-if headline>
+  <dtml-if headline><dtml-var "f_headline(_,_,headline='<strong>%s</strong>: '%getEntity(SESSION[sessqentitykey])['label']+headline%getZMILangStr('ATTR_RECORD'))"></dtml-if headline>
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
   <colgroup>
    <col width="20%" />

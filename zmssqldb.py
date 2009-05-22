@@ -201,10 +201,20 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSSqlDb.getDA:
+    #
+    #  Return Database Adapter (DA).
+    # --------------------------------------------------------------------------
+    def getDA(self):
+      da = getattr(self,self.connection_id)
+      return da
+
+
+    # --------------------------------------------------------------------------
     #  ZMSSqlDb.sql_quote__:
     # --------------------------------------------------------------------------
     def sql_quote__(self, tablename, columnname, v):
-      databaseAdptr = getattr(self,self.connection_id)
+      da = self.getDA()
       entities = self.getEntities()
       entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
       col = filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])[0]
@@ -212,7 +222,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           return str(int(str(v)))
         except:
-          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+          if da.meta_type == 'Z Gadfly Database Connection':
             return "''"
           else:
             return "NULL"
@@ -220,7 +230,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           return str(float(str(v)))
         except:
-          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+          if da.meta_type == 'Z Gadfly Database Connection':
             return "''"
           else:
             return "NULL"
@@ -231,14 +241,13 @@ class ZMSSqlDb(ZMSObject):
             raise 'Exception'
           return "'%s'"%self.getLangFmtDate(d,'eng','%s_FMT'%col['type'].upper())
         except:
-          if databaseAdptr.meta_type == 'Z Gadfly Database Connection':
+          if da.meta_type == 'Z Gadfly Database Connection':
             return "''"
           else:
             return "NULL"
       else:
         v = unicode(str(v),'utf-8').encode(getattr(self,'charset','utf-8'))
-        if v.find("\'") >= 0: 
-          v=''.join(v.split("\'"))
+        if v.find("\'") >= 0: v=''.join(v.split("\'"))
         return "'%s'"%v
 
 
@@ -246,8 +255,8 @@ class ZMSSqlDb(ZMSObject):
     # ZMSSqlDb.commit:
     # --------------------------------------------------------------------------
     def commit(self):
-      databaseAdptr = getattr(self,self.connection_id)
-      dbc = databaseAdptr._v_database_connection
+      da = self.getDA()
+      dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.commit()
 
@@ -256,8 +265,8 @@ class ZMSSqlDb(ZMSObject):
     # ZMSSqlDb.rollback:
     # --------------------------------------------------------------------------
     def rollback(self):
-      databaseAdptr = getattr(self,self.connection_id)
-      dbc = databaseAdptr._v_database_connection
+      da = self.getDA()
+      dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.rollback()
 
@@ -272,8 +281,8 @@ class ZMSSqlDb(ZMSObject):
       if max_rows is None:
         max_rows = getattr(self,'max_rows',999)
       _globals.writeBlock( self, '[query]: qs=%s, max_rows=%i'%(qs,max_rows))
-      databaseAdptr = getattr(self,self.connection_id)
-      dbc = databaseAdptr._v_database_connection
+      da = self.getDA()
+      dbc = da._v_database_connection
       res = dbc.query(qs,max_rows)
       if type(res) is str:
         f=StringIO()
@@ -351,8 +360,8 @@ class ZMSSqlDb(ZMSObject):
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
       _globals.writeBlock( self, '[executeQuery]: qs=%s'%qs)
-      databaseAdptr = getattr(self,self.connection_id)
-      dbc = databaseAdptr._v_database_connection
+      da = self.getDA()
+      dbc = da._v_database_connection
       res = dbc.query(qs)
       if type(res) is str:
         f=StringIO()
@@ -394,8 +403,8 @@ class ZMSSqlDb(ZMSObject):
         pass
         
       entities = []
-      databaseAdptr = getattr(self,self.connection_id)
-      tableBrwsrs = databaseAdptr.tpValues()
+      da = self.getDA()
+      tableBrwsrs = da.tpValues()
       
       # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
       # +- ENTITES
@@ -419,16 +428,16 @@ class ZMSSqlDb(ZMSObject):
             try:
               for columnBrwsr in tableBrwsr.tpValues():
                 colId = columnBrwsr.tpId()
-                colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))()
+                colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
                 colType = 'string'
                 colSize = None
-                if colDescr.upper().find('INT') >= 0:
+                if colDescr.find('INT') >= 0:
                   colType = 'int'
-                elif colDescr.upper().find('DATE') >= 0 or \
-                     colDescr.upper().find('TIME') >= 0:
+                elif colDescr.find('DATE') >= 0 or \
+                     colDescr.find('TIME') >= 0:
                   colType = 'datetime'
-                elif colDescr.upper().find('CHAR') >= 0 or \
-                     colDescr.upper().find('STRING') >= 0:
+                elif colDescr.find('CHAR') >= 0 or \
+                     colDescr.find('STRING') >= 0:
                   colSize = 50
                   i = colDescr.find('(')
                   if i >= 0:
@@ -446,7 +455,7 @@ class ZMSSqlDb(ZMSObject):
                 col['index'] = col.get('index',len(cols))
                 col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
                 col['name'] = col['label']
-                col['mandatory'] = colDescr.find('NOT NULL') > 0 or databaseAdptr.meta_type == 'Z Gadfly Database Connection'
+                col['mandatory'] = colDescr.find('NOT NULL') > 0 or da.meta_type == 'Z Gadfly Database Connection'
                 col['type'] = colType
                 col['sort'] = 1
                 col['nullable'] = not col['mandatory']
@@ -508,13 +517,15 @@ class ZMSSqlDb(ZMSObject):
       #-- Custom entities.
       for entity in model:
         tableName = entity['id']
+        if entity.has_key('not_found'):
+          del entity['not_found']
         if tableName.upper() not in map( lambda x: x['id'].upper(), entities):
           entity['id'] = tableName
           entity['type'] = entity.get('type','table')
           entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())
           entity['columns'] = entity.get('columns',[])
-          entity['not_found'] = 1
           # Add Table.
+          entity['not_found'] = 1
           s.append((entity['label'],entity))
       
       #-- Sort entities
@@ -523,7 +534,6 @@ class ZMSSqlDb(ZMSObject):
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, entities, REQUEST)
-      
 
 
     ############################################################################
@@ -561,7 +571,32 @@ class ZMSSqlDb(ZMSObject):
         REQUEST.set('tabledef',tabledef)
         #-- SELECT
         SESSION.set('qentity_%s'%self.id,tablename)
-        sqlStatement.append('SELECT * FROM ' + tablename + ' ')
+        selectClause = []
+        fromClause = [ tablename]
+        whereClause = []
+        da = self.getDA()
+        for tablecol in tablecols:
+          if not tablecol.get('hide'):
+            if tablecol.get('fk'):
+              fk_tablename = tablecol['fk']['tablename']
+              fk_fieldname = tablecol['fk']['fieldname']
+              if fk_fieldname.find(fk_tablename+'.') < 0:
+                fk_fieldname = fk_tablename+'.'+fk_fieldname
+              fk_displayfield = tablecol['fk']['displayfield']
+              if fk_displayfield.find(fk_tablename+'.') < 0:
+                fk_displayfield = fk_tablename+'.'+fk_displayfield
+              selectClause.append( '%s AS %s'%(fk_displayfield,tablecol['id']))
+              if da.meta_type == 'Z Gadfly Database Connection':
+                fromClause.append( fk_tablename)
+                whereClause.append( '%s=%s'%(tablecol['id'],fk_fieldname))
+              else:
+                fromClause.append( 'LEFT JOIN %s ON %s=%s'%(fk_tablename,tablecol['id'],fk_fieldname))
+            elif tablecol.get('type','?') != '?':
+              selectClause.append( '%s.%s'%(tablename,tablecol['id']))
+        sqlStatement.append( 'SELECT '+', '.join(selectClause)+' ')
+        sqlStatement.append( 'FROM '+' '.join(fromClause)+' ')
+        if whereClause:
+          sqlStatement.append( 'WHERE '+', '.join(whereClause)+' ')
         # Columns
         REQUEST.set('grid_cols',tablecols)
         # Primary Key.

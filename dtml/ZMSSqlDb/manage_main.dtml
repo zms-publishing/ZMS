@@ -1,9 +1,5 @@
 <dtml-var manage_page_header>
 </head>
-<dtml-var manage_tabs>
-<dtml-var f_bo_area>
-
-<dtml-let da="getDA()" gadfly="da.meta_type=='Z Gadfly Database Connection'" entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id">
 
 <dtml-comment>***** Init parameters *****</dtml-comment
 ><dtml-call "SESSION.set('qsize_%s'%id,REQUEST.form.get('qsize',SESSION.get('qsize_%s'%id,20)))"
@@ -14,7 +10,22 @@
 ><dtml-call "REQUEST.set('qindex',REQUEST.get('qindex',-1))"
 ><dtml-call "recordSet_Init(REQUEST,all=REQUEST.get('action','') in ['insert','update','delete'])"
 ><dtml-call "recordSet_Filter(REQUEST)"
-><dtml-call "recordSet_Sort(REQUEST)">
+><dtml-call "recordSet_Sort(REQUEST)"
+
+><dtml-let da="getDA()" gadfly="da.meta_type=='Z Gadfly Database Connection'" entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id"
+
+><dtml-in "getEntities()" mapping sort=label
+ ><dtml-let entity=sequence-item
+  ><dtml-if "SESSION[sessqentitykey]==id"
+   ><dtml-call "REQUEST.set('additionalObjectPathElements',[
+    {'href':url_append_params(URL,{'qentity':id}),'title':label},
+    ])"
+  ></dtml-if
+ ></dtml-let
+></dtml-in>
+
+<dtml-var manage_tabs>
+<dtml-var f_bo_area>
 
 <dtml-if traceSql>
  <div class="form-fixed" style="border: 1px solid black; background-color:white;
@@ -116,7 +127,7 @@
     <select class="form-label" name="<dtml-var filterop>"
     ><dtml-in "['LIKE','=','<','<=','>','>=','NULL','NOT NULL']"
      ><dtml-let op=sequence-item
-      ><dtml-if "op!='LIKE' or not da"
+      ><dtml-if "op!='LIKE' or not gadfly"
       ><option value="<dtml-var op>" <dtml-if "SESSION.get(sessionop,'')==op">selected="selected"</dtml-if>><dtml-var op></option
       ></dtml-if
      ></dtml-let
@@ -146,7 +157,8 @@
 
 <dtml-comment>***** GRID *****</dtml-comment>
 <dtml-try>
-<div class="form-fixed" style="border: 1px solid black; background-color:white; color: blue; margin:2px; padding:2px;"><dtml-var resSlctStmnt></div>
+<div class="form-label"><a href="javascript:toggleElement('#manage_main_div_sql');" title="SQL" class="zmi">?</a></div>
+<div id="manage_main_div_sql" class="form-fixed" style="display: none; border: 1px solid black; background-color:white; color: blue; margin:2px; padding:2px;"><dtml-var resSlctStmnt></div>
  <dtml-if "row_count > row_max">
   <div class="form-text"><dtml-var "getZMILangStr('MSG_MAX_ROWS_EXCEEDED')%(row_count,row_max)"></div>
   <dtml-call "REQUEST.set('res',[])">
@@ -171,8 +183,9 @@
 
 </form>
 
-</dtml-let>
 <dtml-var f_eo_area>
+
+</dtml-let>
 
 <dtml-var manage_page_footer>
 

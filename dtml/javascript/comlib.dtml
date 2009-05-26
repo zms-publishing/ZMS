@@ -12,6 +12,19 @@
   String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
 
 // #############################################################################
+// ### toggleElement:
+// #############################################################################
+function toggleElement( selector) {
+  if ($(selector).css("display")=='none') {
+    $(selector).show('fast');
+  }
+  else {
+    $(selector).hide('fast');
+  }
+  return;
+}
+
+// #############################################################################
 // ### getCoords:
 // #############################################################################
 function getCoords( element) {

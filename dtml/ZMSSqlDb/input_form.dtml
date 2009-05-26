@@ -1,3 +1,26 @@
+<!--
+###############################################################################
+###
+###   dtml/ZMSSqlDb/input_form.dtml
+###   
+###   @explicit-param grid_url[string]
+###   @explicit-param ZMS_HIDE_FORM[boolean=False]    +
+###           Hide <form/>-tag.
+###   @explicit-param ZMS_HIDE_HIDDEN_INPUTS[boolean=False]
+###           Hide hidden input-fields.
+###   @explicit-param ZMS_TABLE_PREFIX[string]
+###           Tablename as prefix for input-fields.
+###   @explicit-param ZMS_ENTITY[string]
+###           Tablename (override SESSION[sessqentitykey])
+###   @explicit-param ZMS_CSS_EXTRA[color]
+###           
+###   @explicit-param ZMS_EXCLUDE_IDS[list]
+###           Ids to exclude
+###   @implicit-param REQUEST[HttpRequest]
+###
+###############################################################################
+-->
+
 <dtml-call "REQUEST.set('row',record)"
 ><dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if
 ><dtml-call "REQUEST.set('css','form-element')"><dtml-if ZMS_CSS_EXTRA><dtml-call "REQUEST.set('css',css+' '+ZMS_CSS_EXTRA)"></dtml-if
@@ -63,74 +86,74 @@
     return false;
   }
 
-    function multiMultiSelectRemoveElements( mmsid) {
-      var mms = document.getElementById(mmsid);
-      var i = 0;
-      while (i < mms.options.length) {
-        if ( mms.options[i].selected) {
-          mms.options[i] = null;
-        }
-        else
-          i++;
+  function multiMultiSelectRemoveElements( mmsid) {
+    var mms = document.getElementById(mmsid);
+    var i = 0;
+    while (i < mms.options.length) {
+      if ( mms.options[i].selected) {
+        mms.options[i] = null;
       }
-      return false;
+      else
+        i++;
     }
+    return false;
+  }
 
-    function multiMultiSelectAddElement(mmsid,l) {
-      var mms = document.getElementById(mmsid);
-      var label = '';
-      var value = '';
-      for ( var i = 0; i < l; i++) {
-        var el = document.getElementById(mmsid+i);
-        if ( el.type == 'select-one') {
-          value += el.options[el.selectedIndex].value + ( i < l - 1 ? '/' : '');
-          if ( el.options[el.selectedIndex].value.length > 0)
-            label += el.options[el.selectedIndex].text + ( i < l - 1 ? ' / ' : '');
-        }
-        else {
-          value += document.getElementById('new_'+mmsid+i).value + ( i < l - 1 ? '/' : '');
-          label += document.getElementById('displayfield_'+mmsid+i).value + ( i < l - 1 ? ' / ' : '');
-        }
+  function multiMultiSelectAddElement(mmsid,l) {
+    var mms = document.getElementById(mmsid);
+    var label = '';
+    var value = '';
+    for ( var i = 0; i < l; i++) {
+      var el = document.getElementById(mmsid+i);
+      if ( el.type == 'select-one') {
+        value += el.options[el.selectedIndex].value + ( i < l - 1 ? '/' : '');
+        if ( el.options[el.selectedIndex].value.length > 0)
+          label += el.options[el.selectedIndex].text + ( i < l - 1 ? ' / ' : '');
       }
-      var newoption = new Option(label, value, true, true);
-      var exists = false;
-      for (var i = 0; i < mms.options.length; i++) {
-        exists |= mms.options[i].value == value;
+      else {
+        value += document.getElementById('new_'+mmsid+i).value + ( i < l - 1 ? '/' : '');
+        label += document.getElementById('displayfield_'+mmsid+i).value + ( i < l - 1 ? ' / ' : '');
       }
-      if (!exists) {
-        mms.options[mms.options.length] = newoption;
-      }
-      for (var i = 0; i < mms.options.length; i++) {
-        mms.options[i].selected = true;
-      }
-      return false;
     }
+    var newoption = new Option(label, value, true, true);
+    var exists = false;
+    for (var i = 0; i < mms.options.length; i++) {
+      exists |= mms.options[i].value == value;
+    }
+    if (!exists) {
+      mms.options[mms.options.length] = newoption;
+    }
+    for (var i = 0; i < mms.options.length; i++) {
+      mms.options[i].selected = true;
+    }
+    return false;
+  }
 
-    function lazyMultiSelectAddElement(elIdPrefix, elId, label, value) {
-      var el = document.getElementById(elIdPrefix+'new_'+elId);
-      if (el) { 
-        if ( el.type == 'select-multiple') {
-          var newoption = new Option(label, value, true, true);
-          var exists = false;
-          for (var j = 0; j < el.options.length; j++) {
-            exists |= el.options[j].value == value;
-          }
-          if (!exists) {
-            el.options[el.options.length] = newoption;
-          }
-          for (var j = 0; j < el.options.length; j++) {
-            el.options[j].selected = true;
-          }
+  function lazyMultiSelectAddElement(elIdPrefix, elId, label, value) {
+    var el = document.getElementById(elIdPrefix+'new_'+elId);
+    if (el) { 
+      if ( el.type == 'select-multiple') {
+        var newoption = new Option(label, value, true, true);
+        var exists = false;
+        for (var j = 0; j < el.options.length; j++) {
+          exists |= el.options[j].value == value;
         }
-        else {
-          el.value = value;
-          var el = document.getElementById(elIdPrefix+'displayfield_'+elId);
-          if (el) {
-            el.value = label;
-          }
+        if (!exists) {
+          el.options[el.options.length] = newoption;
+        }
+        for (var j = 0; j < el.options.length; j++) {
+          el.options[j].selected = true;
+        }
+      }
+      else {
+        el.value = value;
+        var el = document.getElementById(elIdPrefix+'displayfield_'+elId);
+        if (el) {
+          el.value = label;
         }
       }
     }
+  }
 
 //-->
 </script>
@@ -156,9 +179,7 @@
   </dtml-in>
 </dtml-unless>
 
-  <dtml-if headline><dtml-var "f_headline(_,_,headline=
-    '<strong>%s</strong>: '%getEntity(SESSION[sessqentitykey])['label']
-    +headline%getZMILangStr('ATTR_RECORD')
+  <dtml-if headline><dtml-var "f_headline(_,_,headline=headline%getZMILangStr('ATTR_RECORD')
     +'<img src=%sbtn_refresh.gif onclick=window.location.reload() onmouseover=\042document.body.style.cursor=wait\042 onmouseout=\042document.body.style.cursor=wait\042 style=\042margin-left:8px;vertical-align:middle;text-align:right;\042/>'%MISC_ZMS)"></dtml-if headline>
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
   <colgroup>

@@ -149,16 +149,17 @@
 
   ><dtml-call "REQUEST.set('sqlStatement',[recordSet_Select(details['tablename'],where='%s.%s='%(details['tablename'],details['fk'])+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))])"
   ><dtml-if details_ordered
-   ><dtml-call "sqlStatement.append( 'ORDER BY sort_id ')"
+   ><dtml-call "sqlStatement.append( 'ORDER BY %s.sort_id '%details['tablename'])"
   ></dtml-if
-  ><!-- input_details.dtml.SQL: <dtml-var sqlStatement> -->
-  <dtml-try
-   ><dtml-call "REQUEST.set('res',query(' '.join(sqlStatement))['records'])">
+  ><dtml-call "REQUEST.set('res',[])"
+  ><dtml-call "REQUEST.set('resSlctStmnt',' '.join(REQUEST.get('sqlStatement',[])))"
+  ><dtml-try
+   ><dtml-call "REQUEST.set('res',query(resSlctStmnt)['records'])">
   <dtml-except
    ><div class="form-fixed" style="border: 1px solid black; background-color:white;color: red; margin:2px; padding:2px;">SQLException - Can't select records: <dtml-var error_type html_quote>: <dtml-var error_value html_quote><br/><dtml-var error_tb newline_to_br html_quote></div
-  ></dtml-try>
+  ></dtml-try
 
-  <dtml-call "REQUEST.set('rindex',-1)"
+  ><dtml-call "REQUEST.set('rindex',-1)"
   ><dtml-if "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']"
    ><dtml-in "REQUEST['res']" mapping
     ><dtml-if "_.str(_[primary_key])==_.str(details_rowid)"
@@ -169,6 +170,8 @@
 
  <div class="detailgrid" style="overflow:scroll; overflow-y:hidden">
   <dtml-try>
+   <div class="form-label"><a href="javascript:toggleElement('#input_details_div_sql_<dtml-var "details['tablename']">');" title="SQL" class="zmi">?</a></div>
+   <div id="input_details_div_sql_<dtml-var "details['tablename']">" class="form-fixed" style="display:none; border: 1px solid black; background-color:white; color: blue; margin:2px; padding:2px;"><dtml-var resSlctStmnt></div>
    <dtml-call "REQUEST.set('grid_options',{})">
    <dtml-call "operator_setitem(grid_options,'insert',{'action':'javascript:detailsTableToggle(\'%s\')'%details['tablename']})">
    <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update','rowid':master_row.get('id',''),'ZMS_DETAILS_ACTION':'update_%s'%details['tablename']})+'&details_rowid=%s'})">
@@ -191,45 +194,64 @@
   </dtml-try>
  </div>
 
+<dtml-comment>
+################################################################################
+###
+### Details input-form
+###
+################################################################################
+</dtml-comment>
+
+<dtml-comment>
+--------------------------------------------------------------------------------
+- Get row for details input-form:
+- Default is empty row (and empty-rowid) for insert.
+- Fetch row (and rowid) for update from database.
+--------------------------------------------------------------------------------
+</dtml-comment>
 <dtml-call "REQUEST.set('details_row',{})"
+><dtml-call "REQUEST.set('details_rowid',REQUEST.get('details_rowid',-1))"
 ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_INSERT'))"
 ><dtml-if "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']"
- ><dtml-in "REQUEST['res']" mapping
-  ><dtml-call "REQUEST.set('row',_['sequence-item'])"
-  ><dtml-call f_recordset_init
-  ><dtml-if "_.str(row.get(primary_key,''))==_.str(details_rowid)"
+ ><dtml-call "REQUEST.set('sqlStatement',[])"
+ ><dtml-call "sqlStatement.append('SELECT * FROM %s '%details['tablename'])"
+ ><dtml-call "sqlStatement.append('WHERE %s.%s='%(details['tablename'],details['fk'])+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
+ ><dtml-call "sqlStatement.append('AND %s.%s='%(details['tablename'],primary_key)+sql_quote__(details['tablename'],primary_key,row.get(primary_key,'')))"
+ ><dtml-try
+  ><dtml-call "REQUEST.set('res',query(' '.join(REQUEST.get('sqlStatement',[])))['records'])"
+  ><dtml-in "REQUEST['res']" mapping
+   ><dtml-call "REQUEST.set('row',_['sequence-item'])"
+   ><dtml-call f_recordset_init
    ><dtml-call "REQUEST.set('details_row',row)"
    ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_SAVE'))"
-  ></dtml-if
- ></dtml-in
+  ></dtml-in
+ ><dtml-except
+  ><div class="form-fixed" style="border: 1px solid black; background-color:white;color: red; margin:2px; padding:2px;">SQLException - Can't select records: <dtml-var error_type html_quote>: <dtml-var error_value html_quote><br/><dtml-var error_tb newline_to_br html_quote></div
+ ></dtml-try
 ></dtml-if
-><dtml-call "REQUEST.set('row',details_row)">
+><dtml-call "REQUEST.set('row',details_row)"
 
- <div class="detailelements" id="table_<dtml-var "details['tablename']">" style="<dtml-unless "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
-  <dtml-comment>
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-  +-+- INPUT-FORM
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-  </dtml-comment>
-  <dtml-var "input_form(_,_,
-    headline='',
-    record=row,
-    grid_cols=grid_cols,
-    ZMS_HIDE_FORM=_.True,
-    ZMS_HIDE_HIDDEN_INPUTS=_.True,
-    ZMS_TABLE_PREFIX=details['tablename'],
-    ZMS_ENTITY=details['tablename'],
-    ZMS_CSS_EXTRA='zmiTeaserColor',
-    ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
-    )">
-  <dtml-comment>
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-  +-+- SUBMIT-BUTTONS
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-  </dtml-comment>
-  <input id="submit_<dtml-var "details['tablename']">" class="form-submit" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
-  <input class="form-submit" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
- </div>
+><dtml-comment>
+--------------------------------------------------------------------------------
+- Show details input-form
+--------------------------------------------------------------------------------
+</dtml-comment>
+<div class="detailelements" id="table_<dtml-var "details['tablename']">" style="<dtml-unless "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
+ <dtml-var "input_form(_,_,
+  headline='',
+  rowid=details_rowid,
+  record=row,
+  grid_cols=grid_cols,
+  ZMS_HIDE_FORM=_.True,
+  ZMS_HIDE_HIDDEN_INPUTS=_.True,
+  ZMS_TABLE_PREFIX=details['tablename'],
+  ZMS_ENTITY=details['tablename'],
+  ZMS_CSS_EXTRA='zmiTeaserColor',
+  ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
+  )">
+ <input id="submit_<dtml-var "details['tablename']">" class="form-submit" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
+ <input class="form-submit" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
+</div>
 
  </dtml-let>
 </div>

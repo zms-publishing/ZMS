@@ -565,18 +565,18 @@ class ZMSSqlDb(ZMSObject):
       else:
         fk_tablename_counter = {}
         for tablecol in tablecols:
-          if tablecol.get('fk'):
+          if tablecol.get('fk') and tablecol['fk'].get('tablename'):
             fk_tablename = tablecol['fk']['tablename']
             fk_tablename_counter[fk_tablename] = fk_tablename_counter.get(fk_tablename,0)+1
             fk_tablename_alias = '%s%i'%(fk_tablename,fk_tablename_counter[fk_tablename])
             fk_fieldname = tablecol['fk']['fieldname']
-            if fk_fieldname.find(fk_tablename+'.') < 0:
+            if fk_fieldname.upper().find(fk_tablename.upper()+'.') < 0:
               fk_fieldname = fk_tablename+'.'+fk_fieldname
-            fk_fieldname = fk_fieldname.replace( fk_tablename+'.', fk_tablename_alias+'.')
+            fk_fieldname = self.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_fieldname, ignorecase=True)
             fk_displayfield = tablecol['fk']['displayfield']
-            if fk_displayfield.find(fk_tablename+'.') < 0:
+            if fk_displayfield.upper().find(fk_tablename.upper()+'.') < 0:
               fk_displayfield = fk_tablename+'.'+fk_displayfield
-            fk_displayfield = fk_displayfield.replace( fk_tablename+'.', fk_tablename_alias+'.')
+            fk_displayfield = self.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
             selectClause.append( '%s AS %s'%(fk_displayfield,tablecol['id']))
             if gadfly:
               fromClause.append( ', %s AS %s'%(fk_tablename,fk_tablename_alias))
@@ -676,7 +676,7 @@ class ZMSSqlDb(ZMSObject):
               SESSION.set(sessionvalue,REQUEST.form.get(filtervalue,''))
           fk_tablename_counter = {}
           for tablecol in tablecols:
-            if tablecol.get('fk'):
+            if tablecol.get('fk') and tablecol['fk'].get('tablename'):
               fk_tablename = tablecol['fk']['tablename']
               fk_tablename_counter[fk_tablename] = fk_tablename_counter.get(fk_tablename,0)+1
               fk_tablename_alias = '%s%i'%(fk_tablename,fk_tablename_counter[fk_tablename])
@@ -728,7 +728,7 @@ class ZMSSqlDb(ZMSObject):
         if qorder == '' or not qorder in map(lambda x: x['id'], tablecols):
           for col in tablecols:
             if col.get('hide',0) != 1:
-              qorder = col['id']
+              qorder = '%s.%s'%(tablename,col['id'])
               if col.get('type','') in ['date','datetime','time']:
                 qorderdir = 'desc'
               break

@@ -17,3 +17,7 @@ insert into cdreviews (cd_id, review_id, review_author, review_timestamp, review
 create table cdcategories (category_id integer, category_name varchar);
 insert into cdcategories (category_id, category_name) values ( 1, 'Klassik');
 insert into cdcategories (category_id, category_name) values ( 2, 'Rock');
+create table cdcompanies (company_id varchar, company_name varchar);
+insert into cdcompanies (company_id, company_name) values ( 'BMG', 'Bertelsmann Music Group');
+insert into cdcompanies (company_id, company_name) values ( 'SOE', 'Sony Entertainment');
+insert into cdcompanies (company_id, company_name) values ( 'ARI', 'Ariola');

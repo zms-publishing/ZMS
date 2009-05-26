@@ -111,6 +111,7 @@ function mms_normalize_rows(el_tbody) {
 //-->
 </script>
 </head>
+
 <dtml-in "getEntities()" mapping sort=label>
  <dtml-let entity=sequence-item>
   <dtml-if "REQUEST.get('id','')==id">
@@ -120,6 +121,7 @@ function mms_normalize_rows(el_tbody) {
   </dtml-if>
  </dtml-let>
 </dtml-in>
+
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
 <div style="padding:8px;">
@@ -223,7 +225,7 @@ function mms_normalize_rows(el_tbody) {
           ></td>
           <td class="form-small">
            <code><dtml-var "column.get('description','')"></code> 
-           <b>(<dtml-var "column.get('type','')">)</b>
+           <dtml-if "column.get('type') is not _.None and column.get('type')!='?'"><b>(<dtml-var "column.get('type')">)</b></dtml-if>
           </td>
           <td class="form-small"
            ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="12"
@@ -419,8 +421,8 @@ function mms_normalize_rows(el_tbody) {
          <div class="form-small"<dtml-if "column.get('not_found')"> style="color:red;"</dtml-if>>
           <img src="<dtml-var MISC_ZMS><dtml-if "column.get('type')!='?'">ico_attr.gif<dtml-else>ico_item.gif</dtml-if>" title="<dtml-var "column.get('type','?').capitalize()">" border="0" style="vertical-align:middle" />
           <dtml-if pk><img src="<dtml-var MISC_ZMS>btn_key.gif" alt="" border="0" align="middle" /></dtml-if>
-          <code><dtml-var id> <dtml-var "column.get('description','')"></code>
-          <dtml-if "column.get('type') is not _.None and column.get('type')!='?'"><dtml-var "column.get('type')"></dtml-if>
+          <code><dtml-var id> <dtml-var "column.get('description','')"></code> 
+          <dtml-if "column.get('type') is not _.None and column.get('type')!='?'"><b>(<dtml-var "column.get('type')">)</b></dtml-if>
           <dtml-if stereotypes><dtml-in stereotypes>&gt;<dtml-var sequence-item></dtml-in></dtml-if>
           (<em><dtml-var label><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></em>)
          </div>

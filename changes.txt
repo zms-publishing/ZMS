@@ -1204,3 +1204,6 @@
 2009-05-22:zms-2.11.1-61
 [01191] Added support for foreign-key displayfields inlined in grids of SQL-Datasource.
 --------------------------------------------------
+2009-05-25:zms-2.11.1-61
+[01192] Revised support for foreign-key displayfields inlined in grids of SQL-Datasource.
+--------------------------------------------------

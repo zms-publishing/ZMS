@@ -132,6 +132,8 @@ class ZMSSqlDb(ZMSObject):
     # ------------
     valid_types = {
       'blob':{},
+      'date':1,
+      'datetime':1,
       'details':{},
       'fk':{},
       'html':1,
@@ -139,8 +141,9 @@ class ZMSSqlDb(ZMSObject):
       'multimultiselect':{},
       'pk':1,
       'checkbox':1,
-      'html':1,
+      'password':1,
       'richtext':1,
+      'time':1,
       'url':1,
     }
 
@@ -215,14 +218,15 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     def sql_quote__(self, tablename, columnname, v):
       da = self.getDA()
+      gadfly = da.meta_type == 'Z Gadfly Database Connection'
       entities = self.getEntities()
       entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
-      col = filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])[0]
+      col = (filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])+[{'type':'string'}])[0]
       if col['type'] in ['int']:
         try:
           return str(int(str(v)))
         except:
-          if da.meta_type == 'Z Gadfly Database Connection':
+          if gadfly:
             return "''"
           else:
             return "NULL"
@@ -247,7 +251,8 @@ class ZMSSqlDb(ZMSObject):
             return "NULL"
       else:
         v = unicode(str(v),'utf-8').encode(getattr(self,'charset','utf-8'))
-        if v.find("\'") >= 0: v=''.join(v.split("\'"))
+        if v.find("\'") >= 0: 
+          v=''.join(v.split("\'"))
         return "'%s'"%v
 
 
@@ -543,9 +548,55 @@ class ZMSSqlDb(ZMSObject):
     ############################################################################
 
     # --------------------------------------------------------------------------
+    #  ZMSSqlDb.recordSet_Select:
+    # --------------------------------------------------------------------------
+    def recordSet_Select(self, tablename, select=None, where=None):
+      da = self.getDA()
+      gadfly = da.meta_type == 'Z Gadfly Database Connection'
+      tabledef = self.getEntity(tablename)
+      tablecols = tabledef['columns']
+      selectClause = []
+      fromClause = [ tablename]
+      whereClause = []
+      if where:
+        whereClause.append( where)
+      if select:
+        selectClause.append( select)
+      else:
+        fk_tablename_counter = {}
+        for tablecol in tablecols:
+          if tablecol.get('fk'):
+            fk_tablename = tablecol['fk']['tablename']
+            fk_tablename_counter[fk_tablename] = fk_tablename_counter.get(fk_tablename,0)+1
+            fk_tablename_alias = '%s%i'%(fk_tablename,fk_tablename_counter[fk_tablename])
+            fk_fieldname = tablecol['fk']['fieldname']
+            if fk_fieldname.find(fk_tablename+'.') < 0:
+              fk_fieldname = fk_tablename+'.'+fk_fieldname
+            fk_fieldname = fk_fieldname.replace( fk_tablename+'.', fk_tablename_alias+'.')
+            fk_displayfield = tablecol['fk']['displayfield']
+            if fk_displayfield.find(fk_tablename+'.') < 0:
+              fk_displayfield = fk_tablename+'.'+fk_displayfield
+            fk_displayfield = fk_displayfield.replace( fk_tablename+'.', fk_tablename_alias+'.')
+            selectClause.append( '%s AS %s'%(fk_displayfield,tablecol['id']))
+            if gadfly:
+              fromClause.append( ', %s AS %s'%(fk_tablename,fk_tablename_alias))
+              whereClause.append( '%s.%s=%s'%(tablename,tablecol['id'],fk_fieldname))
+            else:
+              fromClause.append( 'LEFT JOIN %s AS %s ON %s=%s'%(fk_tablename,fk_tablename_alias,tablecol['id'],fk_fieldname))
+          elif tablecol.get('type','?') != '?':
+            selectClause.append( '%s.%s'%(tablename,tablecol['id']))
+      sqlStatement = []
+      sqlStatement.append( 'SELECT '+' , '.join(selectClause)+' ')
+      sqlStatement.append( 'FROM '+' '.join(fromClause)+' ')
+      if whereClause:
+        sqlStatement.append( 'WHERE '+' AND '.join(whereClause)+' ')
+      return ''.join(sqlStatement)
+
+
+    # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Init:
     # --------------------------------------------------------------------------
-    def recordSet_Init(self, REQUEST):
+    def recordSet_Init(self, REQUEST, all=True):
       """
       Initializes record-set.
       @param REQUEST: the triggering request
@@ -567,41 +618,18 @@ class ZMSSqlDb(ZMSObject):
           tablename = tabledefs[0]['id']
         tablename = REQUEST.form.get('qentity',tablename)
         tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
+        select = None
+        if all: 
+          select = '*'
+        sqlStatement.append( self.recordSet_Select( tablename, select))
         tablecols = tabledef['columns']
-        REQUEST.set('tabledef',tabledef)
-        #-- SELECT
-        SESSION.set('qentity_%s'%self.id,tablename)
-        selectClause = []
-        fromClause = [ tablename]
-        whereClause = []
-        da = self.getDA()
-        for tablecol in tablecols:
-          if not tablecol.get('hide'):
-            if tablecol.get('fk'):
-              fk_tablename = tablecol['fk']['tablename']
-              fk_fieldname = tablecol['fk']['fieldname']
-              if fk_fieldname.find(fk_tablename+'.') < 0:
-                fk_fieldname = fk_tablename+'.'+fk_fieldname
-              fk_displayfield = tablecol['fk']['displayfield']
-              if fk_displayfield.find(fk_tablename+'.') < 0:
-                fk_displayfield = fk_tablename+'.'+fk_displayfield
-              selectClause.append( '%s AS %s'%(fk_displayfield,tablecol['id']))
-              if da.meta_type == 'Z Gadfly Database Connection':
-                fromClause.append( fk_tablename)
-                whereClause.append( '%s=%s'%(tablecol['id'],fk_fieldname))
-              else:
-                fromClause.append( 'LEFT JOIN %s ON %s=%s'%(fk_tablename,tablecol['id'],fk_fieldname))
-            elif tablecol.get('type','?') != '?':
-              selectClause.append( '%s.%s'%(tablename,tablecol['id']))
-        sqlStatement.append( 'SELECT '+', '.join(selectClause)+' ')
-        sqlStatement.append( 'FROM '+' '.join(fromClause)+' ')
-        if whereClause:
-          sqlStatement.append( 'WHERE '+', '.join(whereClause)+' ')
-        # Columns
-        REQUEST.set('grid_cols',tablecols)
         # Primary Key.
         primary_key = map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))
         primary_key.append(None)
+        #-- Set environment.
+        SESSION.set('qentity_%s'%self.id,tablename)
+        REQUEST.set('tabledef',tabledef)
+        REQUEST.set('grid_cols',tablecols)
         REQUEST.set('primary_key',primary_key[0])
       REQUEST.set('sqlStatement',sqlStatement)
 
@@ -627,6 +655,9 @@ class ZMSSqlDb(ZMSObject):
         tablefilter = self.dt_html(tabledef.get('filter',''),REQUEST)
         #-- WHERE
         q = 'WHERE '
+        if ''.join(REQUEST.get('sqlStatement',[])).upper().find(q) > 0:
+          q = 'AND '
+        whereClause = []
         for i in range(SESSION['qfilters_%s'%self.id]):
           filterattr='filterattr%i'%i
           filterop='filterop%i'%i
@@ -643,23 +674,34 @@ class ZMSSqlDb(ZMSObject):
               SESSION.set(sessionattr,REQUEST.form.get(filterattr,''))
               SESSION.set(sessionop,REQUEST.form.get(filterop,''))
               SESSION.set(sessionvalue,REQUEST.form.get(filtervalue,''))
-          for col in tablecols:
-            columnname = col['id']
+          fk_tablename_counter = {}
+          for tablecol in tablecols:
+            if tablecol.get('fk'):
+              fk_tablename = tablecol['fk']['tablename']
+              fk_tablename_counter[fk_tablename] = fk_tablename_counter.get(fk_tablename,0)+1
+              fk_tablename_alias = '%s%i'%(fk_tablename,fk_tablename_counter[fk_tablename])
+              fk_displayfield = tablecol['fk']['displayfield']
+              if fk_displayfield.find(fk_tablename+'.') < 0:
+                fk_displayfield = fk_tablename+'.'+fk_displayfield
+              coltable = fk_tablename
+              colname = fk_displayfield.replace( fk_tablename+'.', fk_tablename_alias+'.')
+            else:
+              coltable = tablename
+              colname = tablecol['id']
             v = SESSION.get(sessionvalue,'')
             op = SESSION.get(sessionop,'=')
-            if SESSION.get(sessionattr,'') == columnname:
+            if SESSION.get(sessionattr,'') == tablecol['id']:
               sqlStatement = REQUEST.get('sqlStatement',[])
               if op in [ 'NULL', 'NOT NULL']:
-                sqlStatement.append(q + columnname + ' IS ' + op + ' ')
+                sqlStatement.append(q + colname + ' IS ' + op + ' ')
               elif v != '':
-                sqlStatement.append(q + columnname + ' ' + op + ' ' + self.sql_quote__(tablename, columnname, v) + ' ')
+                sqlStatement.append(q + colname + ' ' + op + ' ' + self.sql_quote__(coltable, colname, v) + ' ')
               REQUEST.set('sqlStatement',sqlStatement)
               q = 'AND '
         if len(tablefilter) > 0:
           sqlStatement = REQUEST.get('sqlStatement',[])
           sqlStatement.append(q + '(' + tablefilter + ') ')
           REQUEST.set('sqlStatement',sqlStatement)
-          q = 'AND '
 
 
     # --------------------------------------------------------------------------
@@ -731,7 +773,7 @@ class ZMSSqlDb(ZMSObject):
           rowid = rs[0]['existing_id']
           return rowid
       except:
-        raise _globals.writeError( self, '[createFk]: can\'t find existing row - sqlStatement=' + sqlStatement)
+        raise _globals.writeError( self, '[getFk]: can\'t find existing row - sqlStatement=' + sqlStatement)
       
       rowid = None
       if createIfNotExists:
@@ -739,10 +781,13 @@ class ZMSSqlDb(ZMSObject):
         c = []
         tablecol = tablecols[0]
         if tablecol.get('auto'):
-          rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(primary_key,tablename))['records']
           new_id = 0
-          if len(rs) == 1:
-            new_id = int(rs[0]['max_id'])+1
+          try:
+            rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(primary_key,tablename))['records']
+            if len(rs) == 1:
+              new_id = int(rs[0]['max_id'])+1
+          except:
+            _globals.writeError( self, '[getFk]: can\'t get max_id')
           c.append({'id':id,'value':str(new_id)})
         c.append({'id':name,'value':self.sql_quote__(tablename,name,value)})
         
@@ -807,10 +852,13 @@ class ZMSSqlDb(ZMSObject):
             if tablecol.get('type') in ['date','datetime']:
               c.append({'id':id,'value':self.sql_quote__(tablename,id,self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper()))})
             elif tablecol.get('type') in ['int']:
-              rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(id,tablename))['records']
               new_id = 0
-              if len(rs) == 1:
-                new_id = int(rs[0]['max_id'])+1
+              try:
+                rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(id,tablename))['records']
+                if len(rs) == 1:
+                  new_id = int(rs[0]['max_id'])+1
+              except:
+                _globals.writeError( self, '[recordSet_Insert]: can\'t get max_id')
               c.append({'id':id,'value':str(new_id)})
         elif tablecol.get('blob'):
           blob = tablecol.get('blob')

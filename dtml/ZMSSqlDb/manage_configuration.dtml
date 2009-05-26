@@ -248,7 +248,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-if "column.has_key('blob')"
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Type</td
-             ><td class="form-small"><select name="attr_blob_path_<dtml-var "column['id']">"><dtml-in "['file','image']"><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['blob'].get('type')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><select name="attr_blob_type_<dtml-var "column['id']">"><dtml-in "['file','image']"><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['blob'].get('type')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
             ><tr class="zmiNeutralColorLight0"
              ><td class="form-small" nowrap="nowrap">Path</td

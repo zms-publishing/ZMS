@@ -54,7 +54,11 @@
     ></dtml-if
     ><dtml-comment>+-+-+-+- Other +-+-+-+-</dtml-comment
     ><dtml-in grid_cols mapping
-     ><dtml-if "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
+     ><dtml-if blob
+      ><dtml-if "REQUEST.has_key('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+       ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
+      ></dtml-if
+     ><dtml-elif "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
       ><dtml-call "operator_setitem(values,id,REQUEST.get('%s_new_%s'%(details['tablename'],id),''))"
      ></dtml-if
     ></dtml-in
@@ -75,7 +79,13 @@
              REQUEST.get('details_btn')==getZMILangStr('BTN_SAVE')"
    ><dtml-let values="{}" old_values="{}"
     ><dtml-in grid_cols mapping
-     ><dtml-if "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
+     ><dtml-if blob
+      ><dtml-if "REQUEST.get('delete_blob_%s'%id)"
+       ><dtml-call "operator_setitem(values,'delete_blob_%s'%id,REQUEST.get('delete_blob_%s'%id,''))"
+      ><dtml-elif "REQUEST.has_key('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+       ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
+      ></dtml-if
+     ><dtml-elif "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
       ><dtml-call "operator_setitem(values,id,REQUEST.get('%s_new_%s'%(details['tablename'],id),''))"
       ><dtml-call "operator_setitem(old_values,id,REQUEST.get('%s_old_%s'%(details['tablename'],id),''))"
      ></dtml-if
@@ -137,11 +147,9 @@
    ><dtml-call "REQUEST.set('details_normalize',_.False)"
   ></dtml-if
 
-  ><dtml-call "REQUEST.set('sqlStatement',[])"
-  ><dtml-call "sqlStatement.append( 'SELECT * FROM '+details['tablename'])"
-  ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
+  ><dtml-call "REQUEST.set('sqlStatement',[recordSet_Select(details['tablename'],where='%s.%s='%(details['tablename'],details['fk'])+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))])"
   ><dtml-if details_ordered
-   ><dtml-call "sqlStatement.append( 'ORDER BY sort_id')"
+   ><dtml-call "sqlStatement.append( 'ORDER BY sort_id ')"
   ></dtml-if
   ><!-- input_details.dtml.SQL: <dtml-var sqlStatement> -->
   <dtml-try

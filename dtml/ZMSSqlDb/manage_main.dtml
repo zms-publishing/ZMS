@@ -3,7 +3,7 @@
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
 
-<dtml-let entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id">
+<dtml-let da="getDA()" gadfly="da.meta_type=='Z Gadfly Database Connection'" entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id">
 
 <dtml-comment>***** Init parameters *****</dtml-comment
 ><dtml-call "SESSION.set('qsize_%s'%id,REQUEST.form.get('qsize',SESSION.get('qsize_%s'%id,20)))"
@@ -12,7 +12,7 @@
 ><dtml-call "REQUEST.set('qstart',REQUEST.get('qstart',0))"
 ><dtml-call "REQUEST.set('qbatch',REQUEST.get('qbatch',3))"
 ><dtml-call "REQUEST.set('qindex',REQUEST.get('qindex',-1))"
-><dtml-call "recordSet_Init(REQUEST)"
+><dtml-call "recordSet_Init(REQUEST,all=REQUEST.get('action','') in ['insert','update','delete'])"
 ><dtml-call "recordSet_Filter(REQUEST)"
 ><dtml-call "recordSet_Sort(REQUEST)">
 
@@ -113,13 +113,15 @@
     </select>
    </td>
    <td class="form-label">
-    <select class="form-label" name="<dtml-var filterop>">
-    <dtml-in "['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-     <dtml-let op=sequence-item>
-      <option value="<dtml-var op>" <dtml-if "SESSION.get(sessionop,'')==op">selected="selected"</dtml-if>><dtml-var op></option>
-     </dtml-let>
-    </dtml-in>
-    </select>
+    <select class="form-label" name="<dtml-var filterop>"
+    ><dtml-in "['LIKE','=','<','<=','>','>=','NULL','NOT NULL']"
+     ><dtml-let op=sequence-item
+      ><dtml-if "op!='LIKE' or not da"
+      ><option value="<dtml-var op>" <dtml-if "SESSION.get(sessionop,'')==op">selected="selected"</dtml-if>><dtml-var op></option
+      ></dtml-if
+     ></dtml-let
+    ></dtml-in
+    ></select>
    </td>
    <td class="form-element">
     <dtml-var "getTextInput(fmName='form0',elName=filtervalue,size=30,value=SESSION.get(sessionvalue,''))">

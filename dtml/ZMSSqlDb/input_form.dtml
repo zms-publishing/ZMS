@@ -156,7 +156,10 @@
   </dtml-in>
 </dtml-unless>
 
-  <dtml-if headline><dtml-var "f_headline(_,_,headline='<strong>%s</strong>: '%getEntity(SESSION[sessqentitykey])['label']+headline%getZMILangStr('ATTR_RECORD'))"></dtml-if headline>
+  <dtml-if headline><dtml-var "f_headline(_,_,headline=
+    '<strong>%s</strong>: '%getEntity(SESSION[sessqentitykey])['label']
+    +headline%getZMILangStr('ATTR_RECORD')
+    +'<img src=%sbtn_refresh.gif onclick=window.location.reload() onmouseover=\042document.body.style.cursor=wait\042 onmouseout=\042document.body.style.cursor=wait\042 style=\042margin-left:8px;vertical-align:middle;text-align:right;\042/>'%MISC_ZMS)"></dtml-if headline>
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
   <colgroup>
    <col width="20%" />
@@ -633,8 +636,12 @@
      +- DATE
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type in ['date','datetime','time']">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='%s_FMT'%type.upper(), REQUEST=REQUEST, css=css)">
+     <dtml-elif "type=='date' or grid_col.get('date')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css)">
+     <dtml-elif "type=='datetime' or grid_col.get('datetime')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css)">
+     <dtml-elif "type=='time' or grid_col.get('time')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- TEXT

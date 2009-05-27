@@ -684,18 +684,20 @@ class ZMSSqlDb(ZMSObject):
               if fk_displayfield.find(fk_tablename+'.') < 0:
                 fk_displayfield = fk_tablename+'.'+fk_displayfield
               coltable = fk_tablename
-              colname = fk_displayfield.replace( fk_tablename+'.', fk_tablename_alias+'.')
+              colname = self.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
+              qualifiedname = colname
             else:
               coltable = tablename
               colname = tablecol['id']
+              qualifiedname = '%s.%s'%(coltable,colname)
             v = SESSION.get(sessionvalue,'')
             op = SESSION.get(sessionop,'=')
             if SESSION.get(sessionattr,'') == tablecol['id']:
               sqlStatement = REQUEST.get('sqlStatement',[])
               if op in [ 'NULL', 'NOT NULL']:
-                sqlStatement.append(q + colname + ' IS ' + op + ' ')
+                sqlStatement.append(q + qualifiedname + ' IS ' + op + ' ')
               elif v != '':
-                sqlStatement.append(q + colname + ' ' + op + ' ' + self.sql_quote__(coltable, colname, v) + ' ')
+                sqlStatement.append(q + qualifiedname + ' ' + op + ' ' + self.sql_quote__(coltable, colname, v) + ' ')
               REQUEST.set('sqlStatement',sqlStatement)
               q = 'AND '
         if len(tablefilter) > 0:

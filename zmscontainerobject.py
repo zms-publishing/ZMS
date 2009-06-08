@@ -461,6 +461,14 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getFirstPage:
     # --------------------------------------------------------------------------
     def getFirstPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the first page of the tree from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the first page
+      @rtype: C{zmsobject.ZMSObject}
+      """
       root = _globals.nvl(root,self.getDocumentElement())
       return root
     
@@ -509,6 +517,14 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getLastPage:
     # --------------------------------------------------------------------------
     def getLastPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the last page of the tree from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the last page
+      @rtype: C{zmsobject.ZMSObject}
+      """
       ob = None
       root = _globals.nvl(root,self.getDocumentElement())
       children = [root]
@@ -541,7 +557,7 @@ class ZMSContainerObject(
       REQUEST = self.REQUEST
       lang = REQUEST['lang']
       auth_user = REQUEST['AUTHENTICATED_USER']
-      absolute_url = '/'.join(list(self.getVirtualRootPhysicalPath(self)))+'/'
+      absolute_url = '/'.join(list(self.getPhysicalPath())+[''])
       
       if objAttr is None:
         objAttr = self.getMetaobjAttr( self.meta_id, 'e')
@@ -619,6 +635,8 @@ class ZMSContainerObject(
     def ajaxFilteredContainerActions(self, REQUEST):
       """
       Returns AJAX-XML with filtered-child-actions.
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       """
       
       #-- Get actions.
@@ -662,20 +680,27 @@ class ZMSContainerObject(
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.getNavItems:
-    #
-    #  Items of main-navigation in content-area.
-    #
-    #	@param	current	the currently displayed page
-    #	@param	REQUEST	the triggering http-request
-    #	@param	opt	the dictionary of options:
-    #			'id' (string='')		= id of base ul-element
-    #			'add_self' (boolean=False)	= add self to list
-    #			'deep' (boolean=True)		= process child nodes
-    #			'complete' (boolean=False)	= process complete subtree
-    #			'maxdepth' (int=100)	= limits node list to a given depth
-    #			'maxlevel' (int=100)	= limits node list to a given level
     # --------------------------------------------------------------------------
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
+      """
+      Returns html-formatted (unordered) list of navigation-items.
+      Uses the following classes
+        - I{current} item is current-element
+        - I{(in-)active} items is parent of current-element or current-element
+        - I{restricted} item has restricted access
+      @param current: the currently displayed page
+      @type current: C{zmsobject.ZMSObject}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param opt: the dictionary of options
+          - I{id} (C{string=''}) id of base ul-element
+          - I{add_self} (C{boolean=False}) add self to list
+          - I{deep} (C{boolean=True}) process child nodes
+          - I{complete} (C{boolean=False}) process complete subtree
+          - I{maxdepth} (C{int=100}) limits node list to a given depth
+      @return: the Html
+      @rtype: C{string}
+      """
       items = []
       obs = []
       if opt.get('add_self',False):

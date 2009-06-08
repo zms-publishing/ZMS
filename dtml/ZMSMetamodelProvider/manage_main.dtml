@@ -587,6 +587,16 @@ function changeType( el)
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'External Method'"
              ><img src="misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+            ><dtml-elif "oAttr['type'] == 'Page Template'"
+             ><dtml-with "_.getattr(this(),oAttr['id'])"
+              ><dtml-if pt_errors
+               ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var icon>)" title="ERROR: <dtml-var expr="'\n'.join(pt_errors)" html_quote>" border="0" style="vertical-align:middle" 
+              /><dtml-elif pt_warnings
+               ><img src="<dtml-var MISC_ZMS>ico_warning.gif" style="background-image:url(<dtml-var icon>)" title="WARNING: <dtml-var expr="'\n'.join(pt_warnings)" html_quote>" border="0" style="vertical-align:middle" 
+              /><dtml-else
+               ><img src="<dtml-var icon>" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+              /></dtml-if
+             ></dtml-with
             ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
              ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
             /><dtml-elif "oAttr['type'] == 'Script (Python)'"

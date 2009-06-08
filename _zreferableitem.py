@@ -62,7 +62,8 @@ def isInternalLink(url):
 #  _zreferableitem.absolute_home:
 # ------------------------------------------------------------------------------
 def absolute_home(ob):
-  rtn = ''.join( map( lambda x: x+'/', list(ob.getVirtualRootPhysicalPath( ob.getHome()))))[:-1]
+  path = list( ob.getHome().getPhysicalPath())[1:]
+  rtn = '/'.join( path)
   return rtn
 
 

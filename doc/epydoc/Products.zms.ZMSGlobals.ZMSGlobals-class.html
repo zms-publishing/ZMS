@@ -166,6 +166,22 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="encrypt_schemes"></a><span class="summary-sig-name">encrypt_schemes</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>string</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -528,7 +544,8 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#createThumbnail" class="summary-sig-name">createThumbnail</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">maxdim</span>=<span class="summary-sig-default">100</span>)</span><br />
+        <span class="summary-sig-arg">maxdim</span>=<span class="summary-sig-default">100</span>,
+        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
       Creates thumbnail of given image.</td>
           <td align="right" valign="top">
             
@@ -717,6 +734,26 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getPlugin" class="summary-sig-name">getPlugin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">path</span>,
+        <span class="summary-sig-arg">REQUEST</span>,
+        <span class="summary-sig-arg">pars</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      Executes plugin.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="getLangFmtDate"></a><span class="summary-sig-name">getLangFmtDate</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">t</span>,
         <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">None</span>,
@@ -780,7 +817,10 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_resize" class="summary-sig-name">pil_img_resize</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">size</span>)</span><br />
+        <span class="summary-sig-arg">size</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'resize'</span>,
+        <span class="summary-sig-arg">sffx</span>=<span class="summary-sig-default">'none'</span>,
+        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
       Returns a resized copy of an image.</td>
           <td align="right" valign="top">
             
@@ -799,8 +839,29 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_crop" class="summary-sig-name">pil_img_crop</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">box</span>)</span><br />
+        <span class="summary-sig-arg">box</span>,
+        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
       Returns a rectangular region from the current image.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>MyImage</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_rotate" class="summary-sig-name">pil_img_rotate</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">img</span>,
+        <span class="summary-sig-arg">direction</span>,
+        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
+      Returns rotated version of the current image.</td>
           <td align="right" valign="top">
             
             
@@ -1629,7 +1690,7 @@
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>value</code></strong> (<code>string</code>) - DTML-snippet</li>
-        <li><strong class="pname"><code>REQUEST</code></strong> (ZPublisher.HTTPRequest) - the triggering request</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
     </ul></dd>
     <dt>Returns: <code>any</code></dt>
         <dd>Result of the execution or None</dd>
@@ -2480,7 +2541,8 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">createThumbnail</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">img</span>,
-        <span class="sig-arg">maxdim</span>=<span class="sig-default">100</span>)</span>
+        <span class="sig-arg">maxdim</span>=<span class="sig-default">100</span>,
+        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2492,6 +2554,7 @@
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
+        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
     </ul></dd>
     <dt>Returns: <code>MyImage</code></dt>
         <dd>Thumbnail</dd>
@@ -2507,7 +2570,10 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_resize</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">img</span>,
-        <span class="sig-arg">size</span>)</span>
+        <span class="sig-arg">size</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default">'resize'</span>,
+        <span class="sig-arg">sffx</span>=<span class="sig-default">'none'</span>,
+        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2521,6 +2587,8 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
         <li><strong class="pname"><code>size</code></strong> (<code>tuple</code>) - Size 2-tuple: (width, height)</li>
+        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
+        <li><strong class="pname"><code>mode</code></strong> - Mode</li>
     </ul></dd>
     <dt>Returns: <code>MyImage</code></dt>
         <dd>Resized image</dd>
@@ -2536,7 +2604,8 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_crop</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">img</span>,
-        <span class="sig-arg">box</span>)</span>
+        <span class="sig-arg">box</span>,
+        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2550,9 +2619,43 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
         <li><strong class="pname"><code>box</code></strong> (<code>tuple</code>), <strong class="pname"><code>Box</code></strong>, <strong class="pname"><code>4-tuple</code></strong> - (left, upper, right, bottom)</li>
+        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
     </ul></dd>
     <dt>Returns: <code>MyImage</code></dt>
         <dd>Cropped image</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="pil_img_rotate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_rotate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">img</span>,
+        <span class="sig-arg">direction</span>,
+        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns rotated version of the current image. Direction is a simple 
+  string defining either left (=90 degree rotation clockwise), right (-90 
+  degree) or 180.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
+        <li><strong class="pname"><code>direction</code></strong>, <strong class="pname"><code>string</code></strong> - left, right, 180</li>
+        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
+        <li><strong class="pname"><code>box</code></strong> (<code>string</code>)</li>
+    </ul></dd>
+    <dt>Returns: <code>MyImage</code></dt>
+        <dd>Rotated image</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2647,7 +2750,7 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Filepath</li>
         <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Access mode</li>
-        <li><strong class="pname"><code>REQUEST</code></strong> (ZPublisher.HTTPRequest)</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>)</li>
     </ul></dd>
     <dt>Returns: <code>string</code> or <code>filestream_iterator</code></dt>
         <dd>Contents of file</dd>
@@ -2773,6 +2876,36 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="getPlugin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getPlugin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">path</span>,
+        <span class="sig-arg">REQUEST</span>,
+        <span class="sig-arg">pars</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Executes plugin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>path</code></strong> (<code>string</code>) - the plugin path in $ZMS_HOME/plugins/</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+        <li><strong class="pname"><code>pars</code></strong> (<code>dict</code>) - the request parameters</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Result of the execution or error-message</dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -2802,7 +2935,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon May 19 15:16:20 2008
+    Generated by Epydoc 3.0.1 on Thu Jun 04 14:16:23 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

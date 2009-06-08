@@ -25,6 +25,7 @@
 # Imports.
 from __future__ import nested_scopes
 from Products.ExternalMethod import ExternalMethod
+from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 from Products.ZSQLMethods import SQL
 from cStringIO import StringIO
@@ -60,7 +61,7 @@ def syncType( self, meta_id, attr):
     elif attr['type'] in self.valid_zopetypes:
       home = self.getHome()
       ob = getattr( home, attr['id'])
-      if ob.meta_type in [ 'DTML Method', 'DTML Document']:
+      if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.body()
@@ -100,7 +101,7 @@ class ZMSMetaobjManager:
     valid_xtypes = ['constant','delimiter','hint','interface','method','resource']
     valid_datatypes = ['amount','autocomplete','boolean','color','constant','date','datetime','delimiter','dialog','dictionary','file','float','hint','identifier','image','int','interface','list','method','multiselect','password','resource','richtext','select','string','text','time','url','xml']
     valid_objtypes = [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
-    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Script (Python)', 'Z SQL Method']
+    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Page Template', 'Script (Python)', 'Z SQL Method']
 
 
     ############################################################################
@@ -528,6 +529,10 @@ class ZMSMetaobjManager:
           newCustom += '\n'
           newCustom += 'def ' + newId + '():\n'
           newCustom += '  return "This is the external method ' + newId + '"\n'
+        elif newType in [ 'Page Template']:
+          newCustom = ''
+          newCustom += '<span tal:replace="here/title_or_id">content title or id</span>'
+          newCustom += '<span tal:condition="template/title" tal:replace="template/title">optional template title</span>'
         elif newType in [ 'Script (Python)']:
           newCustom = ''
           newCustom += '# --// BO '+ newId + ' //--\n'
@@ -643,6 +648,8 @@ class ZMSMetaobjManager:
             container.manage_addDTMLDocument( newId, newName, newCustom)
           elif newType == 'External Method':
             ExternalMethod.manage_addExternalMethod( container, newId, newName, newId, newId)
+          elif newType == 'Page Template':
+            ZopePageTemplate.manage_addPageTemplate( container, newId, newName, newCustom)
           elif newType == 'Script (Python)':
             PythonScript.manage_addPythonScript( container, newId)
           elif newType == 'Z SQL Method':

@@ -166,6 +166,41 @@ _multilangmanager.MultiLanguageObject --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="record_encode__"></a><span class="summary-sig-name">record_encode__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cols</span>,
+        <span class="summary-sig-arg">record</span>,
+        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">'utf-8'</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getDA"></a><span class="summary-sig-name">getDA</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="sql_quote__"></a><span class="summary-sig-name">sql_quote__</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">tablename</span>,
         <span class="summary-sig-arg">columnname</span>,
@@ -318,12 +353,32 @@ _multilangmanager.MultiLanguageObject --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="recordSet_Select"></a><span class="summary-sig-name">recordSet_Select</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">select</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">where</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>None</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#recordSet_Init" class="summary-sig-name">recordSet_Init</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">REQUEST</span>)</span><br />
+        <span class="summary-sig-arg">REQUEST</span>,
+        <span class="summary-sig-arg">all</span>=<span class="summary-sig-default">True</span>)</span><br />
       Initializes record-set.</td>
           <td align="right" valign="top">
             
@@ -372,6 +427,28 @@ _multilangmanager.MultiLanguageObject --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#getFk" class="summary-sig-name">getFk</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">createIfNotExists</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Get reference for foreign-key relation.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>any</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -398,7 +475,8 @@ _multilangmanager.MultiLanguageObject --+
           <td><span class="summary-sig"><a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#recordSet_Update" class="summary-sig-name">recordSet_Update</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">tablename</span>,
         <span class="summary-sig-arg">rowid</span>,
-        <span class="summary-sig-arg">values</span>=<span class="summary-sig-default">{}</span>)</span><br />
+        <span class="summary-sig-arg">values</span>=<span class="summary-sig-default">{}</span>,
+        <span class="summary-sig-arg">old_values</span>=<span class="summary-sig-default">{}</span>)</span><br />
       Update row in table.</td>
           <td align="right" valign="top">
             
@@ -434,11 +512,122 @@ _multilangmanager.MultiLanguageObject --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="delete_blob"></a><span class="summary-sig-name">delete_blob</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">auth_user</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">rowid</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">RESPONSE</span>=<span class="summary-sig-default">None</span>)</span><br />
+      ZMSSqlDb.delete_blob</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_blob"></a><span class="summary-sig-name">set_blob</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">auth_user</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">rowid</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">xml</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">RESPONSE</span>=<span class="summary-sig-default">None</span>)</span><br />
+      ZMSSqlDb.set_blob</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_blob"></a><span class="summary-sig-name">get_blob</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">rowid</span>,
+        <span class="summary-sig-arg">REQUEST</span>,
+        <span class="summary-sig-arg">RESPONSE</span>)</span><br />
+      ZMSSqlDb.get_blob</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#manage_changeProperties" class="summary-sig-name">manage_changeProperties</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">lang</span>,
         <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">RESPONSE</span>=<span class="summary-sig-default">None</span>)</span><br />
       ZMSSqlDb.manage_changeProperties</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ajaxGetAutocompleteColumns"></a><span class="summary-sig-name">ajaxGetAutocompleteColumns</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">selectTable</span>,
+        <span class="summary-sig-arg">tableName</span>,
+        <span class="summary-sig-arg">REQUEST</span>)</span><br />
+      ZMSSqlDb.ajaxGetAutocompleteColumns</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="manage_changeConfiguration"></a><span class="summary-sig-name">manage_changeConfiguration</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">lang</span>,
+        <span class="summary-sig-arg">btn</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">key</span>=<span class="summary-sig-default">'all'</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">RESPONSE</span>=<span class="summary-sig-default">None</span>)</span><br />
+      ZMSSqlDb.manage_changeConfiguration</td>
           <td align="right" valign="top">
             
             
@@ -536,8 +725,6 @@ _multilangmanager.MultiLanguageObject --+
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#ajaxGetNode">ajaxGetNode</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#aq_absolute_url">aq_absolute_url</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#breadcrumbs_obj_path">breadcrumbs_obj_path</a></code>,
-      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#checkIn">checkIn</a></code>,
-      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#checkOut">checkOut</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#display_icon">display_icon</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#display_type">display_type</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#filtered_command_actions">filtered_command_actions</a></code>,
@@ -572,6 +759,7 @@ _multilangmanager.MultiLanguageObject --+
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#icon">icon</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isAnchestor">isAnchestor</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isCheckedOut">isCheckedOut</a></code>,
+      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isCheckedOutByMe">isCheckedOutByMe</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isMetaType">isMetaType</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isModifiedInParentLanguage">isModifiedInParentLanguage</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isPage">isPage</a></code>,
@@ -580,6 +768,8 @@ _multilangmanager.MultiLanguageObject --+
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isResource">isResource</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isTranslated">isTranslated</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#isVisible">isVisible</a></code>,
+      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_checkin">manage_checkin</a></code>,
+      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_checkout">manage_checkout</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_moveObjDown">manage_moveObjDown</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_moveObjToPos">manage_moveObjToPos</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_moveObjUp">manage_moveObjUp</a></code>,
@@ -606,9 +796,11 @@ _multilangmanager.MultiLanguageObject --+
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#dt_html">dt_html</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#encrypt_ordtype">encrypt_ordtype</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#encrypt_password">encrypt_password</a></code>,
+      <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#encrypt_schemes">encrypt_schemes</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getDataSizeStr">getDataSizeStr</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getLangFmtDate">getLangFmtDate</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getMimeTypeIconSrc">getMimeTypeIconSrc</a></code>,
+      <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getPlugin">getPlugin</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getXmlHeader">getXmlHeader</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getZipArchive">getZipArchive</a></code>,
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#get_diff">get_diff</a></code>,
@@ -644,7 +836,8 @@ _multilangmanager.MultiLanguageObject --+
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html">ZMSGlobals.ZMSGlobals</a></code></b>:
       <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_crop">pil_img_crop</a></code>,
-      <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_resize">pil_img_resize</a></code>
+      <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_resize">pil_img_resize</a></code>,
+      <code><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_rotate">pil_img_rotate</a></code>
       </p>
     </td>
   </tr>
@@ -762,8 +955,9 @@ _multilangmanager.MultiLanguageObject --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#manage_options" class="summary-name">manage_options</a> = <code title="{'label': 'TAB_EDIT', 'action': 'manage_main'}, {'label': 'TAB_IMPORTE\
-XPORT', 'action': 'manage_importexport'}, {'label': 'TAB_CONFIGURATION\
-', 'action': 'manage_properties'},">{'label': 'TAB_EDIT', 'action': 'manage_main'<code class="variable-ellipsis">...</code></code>
+XPORT', 'action': 'manage_importexport'}, {'label': 'TAB_PROPERTIES', \
+'action': 'manage_properties'}, {'label': 'TAB_CONFIGURATION', 'action\
+': 'manage_configuration'},">{'label': 'TAB_EDIT', 'action': 'manage_main'<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -781,7 +975,8 @@ y', 'manage_exportexcel',">'manage', 'manage_main', 'manage_works<code class="va
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#__administratorPermissions__" class="summary-name">__administratorPermissions__</a> = <code title="'manage_properties', 'manage_changeProperties',">'manage_properties', 'manage_ch<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#__administratorPermissions__" class="summary-name">__administratorPermissions__</a> = <code title="'manage_properties', 'manage_changeProperties', 'manage_configuration'\
+, 'manage_changeConfiguration',">'manage_properties', 'manage_ch<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -804,6 +999,13 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="input_form"></a><span class="summary-name">input_form</span> = <code title="HTMLFile('dtml/ZMSSqlDb/input_form', globals())">HTMLFile('dtml/ZMSSqlDb/input_form', globals())</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#input_details" class="summary-name">input_details</a> = <code title="HTMLFile('dtml/ZMSSqlDb/input_details', globals())">HTMLFile('dtml/ZMSSqlDb/input_details', global<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -845,6 +1047,13 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#manage_configuration" class="summary-name">manage_configuration</a> = <code title="HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())">HTMLFile('dtml/ZMSSqlDb/manage_configur<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#manage_exportexcel" class="summary-name">manage_exportexcel</a> = <code title="HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())">HTMLFile('dtml/ZMSSqlDb/manage_exportexce<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
@@ -852,7 +1061,9 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#rendershort_default" class="summary-name">rendershort_default</a> = <code title="HTMLFile('dtml/ZMSSqlDb/rendershort_default', globals())">HTMLFile('dtml/ZMSSqlDb/rendershort_defa<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zmssqldb.ZMSSqlDb-class.html#valid_types" class="summary-name">valid_types</a> = <code title="{'blob': {}, 'date': 1, 'datetime': 1, 'details': {}, 'fk': {}, 'html'\
+: 1, 'multiselect': {}, 'multimultiselect': {}, 'pk': 1, 'checkbox': 1\
+, 'password': 1, 'richtext': 1, 'time': 1, 'url': 1,}">{'blob': {}, 'date': 1, 'datetime': 1, 'details'<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
   <tr>
@@ -867,6 +1078,7 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_api_html">f_api_html</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_api_top_html">f_api_top_html</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_bo_area">f_bo_area</a></code>,
+      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_bo_checkout">f_bo_checkout</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_breadcrumbs">f_breadcrumbs</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_collectionBtn">f_collectionBtn</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_context">f_context</a></code>,
@@ -875,6 +1087,7 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_css_sys">f_css_sys</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_display_icon">f_display_icon</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_eo_area">f_eo_area</a></code>,
+      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_eo_checkout">f_eo_checkout</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_frame">f_frame</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_frame_bottom">f_frame_bottom</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_frame_top">f_frame_top</a></code>,
@@ -889,17 +1102,14 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_submitInputFields">f_submitInputFields</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_xstandard_browseFiles">f_xstandard_browseFiles</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#f_xstandard_browseImages">f_xstandard_browseImages</a></code>,
-      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#formlib_js">formlib_js</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#getParentNode__roles__">getParentNode__roles__</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#get_conf_blob__roles__">get_conf_blob__roles__</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#get_logo__roles__">get_logo__roles__</a></code>,
-      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#manage_checkout">manage_checkout</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#obj_input_fields">obj_input_fields</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#obj_input_js">obj_input_js</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#preview_html">preview_html</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#preview_top_html">preview_top_html</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#spacer_gif">spacer_gif</a></code>,
-      <code><a href="Products.zms.zmsobject.ZMSObject-class.html#styleswitcher_js">styleswitcher_js</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#version_input_fields">version_input_fields</a></code>,
       <code><a href="Products.zms.zmsobject.ZMSObject-class.html#zmilib_js">zmilib_js</a></code>
       </p>
@@ -929,7 +1139,8 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">recordSet_Init</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">REQUEST</span>)</span>
+        <span class="sig-arg">REQUEST</span>,
+        <span class="sig-arg">all</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -996,6 +1207,36 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
   </dl>
 </td></tr></table>
 </div>
+<a name="getFk"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getFk</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">tablename</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">createIfNotExists</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get reference for foreign-key relation.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>tablename</code></strong> (<code>string</code>) - Name of the SQL-Table.</li>
+    </ul></dd>
+    <dt>Returns: int</dt>
+        <dd>ID of the row that was inserted.</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="recordSet_Insert"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1034,7 +1275,8 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
   <h3 class="epydoc"><span class="sig"><span class="sig-name">recordSet_Update</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">tablename</span>,
         <span class="sig-arg">rowid</span>,
-        <span class="sig-arg">values</span>=<span class="sig-default">{}</span>)</span>
+        <span class="sig-arg">values</span>=<span class="sig-default">{}</span>,
+        <span class="sig-arg">old_values</span>=<span class="sig-default">{}</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -1129,8 +1371,9 @@ atorPermissions__),">'ZMS Author', __authorPermissions__, ('ZM<code class="varia
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 {'label': 'TAB_EDIT', 'action': 'manage_main'}, {'label': 'TAB_IMPORTE<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-XPORT', 'action': 'manage_importexport'}, {'label': 'TAB_CONFIGURATION<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-', 'action': 'manage_properties'},
+XPORT', 'action': 'manage_importexport'}, {'label': 'TAB_PROPERTIES', <span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+'action': 'manage_properties'}, {'label': 'TAB_CONFIGURATION', 'action<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+': 'manage_configuration'},
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -1170,7 +1413,8 @@ y', 'manage_exportexcel',
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-'manage_properties', 'manage_changeProperties',
+'manage_properties', 'manage_changeProperties', 'manage_configuration'<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+, 'manage_changeConfiguration',
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -1190,6 +1434,24 @@ y', 'manage_exportexcel',
       <dd><table><tr><td><pre class="variable">
 'ZMS Author', __authorPermissions__, ('ZMS Administrator', __administr<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
 atorPermissions__),
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="input_details"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">input_details</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+HTMLFile('dtml/ZMSSqlDb/input_details', globals())
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -1249,6 +1511,24 @@ HTMLFile('dtml/ZMSSqlDb/manage_properties', globals())
   </dl>
 </td></tr></table>
 </div>
+<a name="manage_configuration"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">manage_configuration</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="manage_exportexcel"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1267,19 +1547,21 @@ HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
   </dl>
 </td></tr></table>
 </div>
-<a name="rendershort_default"></a>
+<a name="valid_types"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">rendershort_default</h3>
+  <h3 class="epydoc">valid_types</h3>
   
   <dl class="fields">
   </dl>
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-HTMLFile('dtml/ZMSSqlDb/rendershort_default', globals())
+{'blob': {}, 'date': 1, 'datetime': 1, 'details': {}, 'fk': {}, 'html'<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+: 1, 'multiselect': {}, 'multimultiselect': {}, 'pk': 1, 'checkbox': 1<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+, 'password': 1, 'richtext': 1, 'time': 1, 'url': 1,}
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -1314,7 +1596,7 @@ HTMLFile('dtml/ZMSSqlDb/rendershort_default', globals())
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon May 19 15:16:21 2008
+    Generated by Epydoc 3.0.1 on Thu Jun 04 14:16:24 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

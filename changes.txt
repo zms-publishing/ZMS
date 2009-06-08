@@ -961,7 +961,7 @@
 2008-09-11::zms-2.11.0-34
 -- MINOR CHANGES
 [01092] ZMSTeaserElement - Added support for linked image and title (contributed by tf).
-[01093] Added support for 'Z SQL Method'-attributes in special-objects.
+[01093] Added support for 'Z SQL Method'-attributes in content-objects.
 --------------------------------------------------
 2008-09-15::zms-2.11.0-35
 -- MINOR CHANGES
@@ -1204,6 +1204,12 @@
 2009-05-22:zms-2.11.1-61
 [01191] Added support for foreign-key displayfields inlined in grids of SQL-Datasource.
 --------------------------------------------------
-2009-05-25:zms-2.11.1-61
+2009-05-25:zms-2.11.1-62
 [01192] Revised support for foreign-key displayfields inlined in grids of SQL-Datasource.
+--------------------------------------------------
+2009-06-03:zms-2.11.1-63
+[01193] Added support for 'Page Template'-attributes in content-objects.
+--------------------------------------------------
+2009-06-08:zms-2.11.1-64
+[01194] Applied fix for Google-Sitemap/Mirror-Manager: missing local-files (requested by xm).
 --------------------------------------------------

@@ -35,62 +35,58 @@ def guess_content_type( filename, default='application/octet-stream'):
 def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
     try:
       if REQUEST.get('DEBUG'):
-        RESPONSE.write('<!-- DEBUG recurseRessources(self, %s, REQUEST, incl_embedded, RESPONSE) -->\n'%(base_path))
+        RESPONSE.write('<!-- DEBUG recurseRessources(%s, %s, REQUEST, incl_embedded, RESPONSE) -->\n'%(base_path,self.id))
     except:
         RESPONSE.write('<!-- ERROR exception -->\n')
     
     root = getattr( self, '__root__', None)
     if root is not None or self.meta_type == 'ZMSTrashcan':
-        return
+      return
     ob = self
     if ob.meta_type != 'ZMS':
-        base_path += self.id + '/'
+      base_path += self.id + '/'
     if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and incl_embedded:
-        ob = ob.getRefObj()
+      ob = ob.getRefObj()
     if ob is None:
-        return
+      return
     
-    if ob.isVisible( REQUEST):
-      
-      # Attributes.
-      keys = ob.getObjAttrs().keys()
-      for key in keys:
-        obj_attr = ob.getObjAttr(key)
-        datatype = obj_attr['datatype_key']
-        if datatype in Products.zms._globals.DT_BLOBS:
-            for lang in ob.getLangIds():
-                try:
-                    if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
-                        req = {'lang':lang,'preview':'preview'}
-                        obj_vers = ob.getObjVersion(req)
-                        blob = ob._getObjAttrValue(obj_attr,obj_vers,lang)
-                        if blob is not None: 
-                            filename = blob.getFilename()
-                            filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
-                            filename = '%s%s'%(base_path,filename)
-                            filename = filename.replace('\\','/')
-                            RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
-                except:
-                  s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-                  RESPONSE.write('<!-- ERROR %s -->\n'%(s))
-        elif datatype == Products.zms._globals.DT_LIST and obj_attr.get('type') in ['image','file']:
-            for lang in ob.getLangIds():
-                try:
-                    if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
-                        req = {'lang':lang,'preview':'preview'}
-                        obj_vers = ob.getObjVersion(req)
-                        blobs = ob._getObjAttrValue(obj_attr,obj_vers,lang)
-                        i = 0
-                        for blob in blobs:
-                            filename = blob.getFilename()
-                            filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
-                            filename = '%s@%i/%s'%(base_path,i,filename)
-                            filename = filename.replace('\\','/')
-                            RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
-                            i += 1
-                except:
-                  s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-                  RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+    for lang in ob.getLangIds():
+      req = {'lang':lang}
+      if ob.isVisible(req):
+        # Attributes.
+        keys = ob.getObjAttrs().keys()
+        for key in keys:
+          obj_attr = ob.getObjAttr(key)
+          datatype = obj_attr['datatype_key']
+          if datatype in Products.zms._globals.DT_BLOBS:
+            try:
+              if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
+                blob = ob.getObjProperty(key,req)
+                if blob is not None: 
+                  filename = blob.getFilename()
+                  filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
+                  filename = '%s%s'%(base_path,filename)
+                  filename = filename.replace('\\','/')
+                  RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
+            except:
+              s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+              RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+          elif datatype == Products.zms._globals.DT_LIST and obj_attr.get('type') in ['image','file']:
+            try:
+              if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
+                obj_vers = ob.getObjVersion(req)
+                blobs = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+                i = 0
+                for blob in blobs:
+                  filename = blob.getFilename()
+                  filename = Products.zms._blobfields.getLangFilename(ob,filename,lang)
+                  filename = '%s@%i/%s'%(base_path,i,filename)
+                  filename = filename.replace('\\','/')
+                  RESPONSE.write('<url content_type="%s">%s</url>\n'%(blob.getContentType(), filename))
+                  i += 1
+            except:
+              s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+              RESPONSE.write('<!-- ERROR %s -->\n'%(s))
     
     # Process children.
     for child in ob.getChildNodes():

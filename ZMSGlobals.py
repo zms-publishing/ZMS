@@ -174,7 +174,7 @@ class ZMSGlobals:
       @param value: DTML-snippet
       @type value: C{string}
       @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @return: Result of the execution or None
       @rtype: C{any}
       """
@@ -1283,7 +1283,7 @@ class ZMSGlobals:
       @param filename: Access mode
       @type filename: C{string}, values are 'b' - binary
       @var REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @return: Contents of file
       @rtype: C{string} or C{filestream_iterator}
       """
@@ -1481,7 +1481,7 @@ class ZMSGlobals:
       @param path: the plugin path in $ZMS_HOME/plugins/
       @type path: C{string}
       @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @param pars: the request parameters
       @type pars: C{dict}
       @return: Result of the execution or error-message

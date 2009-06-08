@@ -22,7 +22,6 @@
 ################################################################################
 
 # Imports.
-from OFS.Application import Application
 from OFS.CopySupport import absattr
 import copy
 # Product Imports.
@@ -110,49 +109,10 @@ class PathHandler:
     #  PathHandler.base_url
     # --------------------------------------------------------------------------
     def base_url(self):
-      rtn = None
-      try:
-        if  self.getConfProperty( 'ZMS.pathcoherence', 1) == 1:
-          rtn = self.REQUEST.get('BASE0') + ''.join( map( lambda x: '/'+x, list( self.getVirtualRootPhysicalPath( self, True))))
-      except:
-        pass
-      if rtn is None:
-        rtn = self.absolute_url()
-      return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  PathHandler.getVirtualRootPhysicalPath
-    # --------------------------------------------------------------------------
-    def getVirtualRootPhysicalPath(self, ob, url_base=False):
-      l = []
-      while ob is not None and not isinstance( ob, Application):
-        ob_id = absattr( ob.id)
-        if ob_id != 'content' and ob_id in l:
-          l = l[ l.index( ob_id):]
-        elif ob_id != 'content' or ob_id not in l or l[0] != ob_id:
-          l.insert( 0, ob_id)
-        if url_base and hasattr( ob, 'url_base') and str( ob).find( 'ZMSProxyObject') > 0:
-          if ob_id in l:
-            l = l[ l.index( ob_id):]
-          ids = ob.url_base[ len(self.REQUEST.get( 'BASE0')) + 1:].split( '/')
-          ids.reverse()
-          c = 0
-          for id in ids:
-            if l[0] == id:
-              del l[ 0]
-              c = c + 1
-            else:
-              break
-          if c > 0:
-            for i in range( c - 1):
-              del ids[ 0]
-          for id in ids:
-            if id not in l:
-              l.insert( 0, id)
-          break
-        ob = getattr( ob, 'aq_parent', None)
-      return tuple( l)
+      if  self.getConfProperty( 'ZMS.pathcoherence', 1) == 1:
+        return self.REQUEST.get('BASE0') + '/'.join( list( self.getPhysicalPath()))
+      else:
+        return self.absolute_url()
 
 
     # --------------------------------------------------------------------------
@@ -176,12 +136,12 @@ class PathHandler:
           
           # Set path_to_handle for VirtualHosts.
           if '/' in TraversalRequest[ 'path_to_handle']:
-            VirtualRootPhysicalPath = self.REQUEST.get( 'VirtualRootPhysicalPath', self.getVirtualRootPhysicalPath( self.getDocumentElement()))
-            if len( VirtualRootPhysicalPath) > 1:
+            path_physical = self.REQUEST.get( 'path_physical', list( self.getDocumentElement().getPhysicalPath())[1:])
+            if len( path_physical) > 1:
               b = TraversalRequest[ 'path_to_handle'].index( '/')
               TraversalRequest[ 'path_to_handle'] = TraversalRequest[ 'path_to_handle'][ b+1:]
-              for i in range( 1, len( VirtualRootPhysicalPath)):
-                TraversalRequest[ 'path_to_handle'].insert( i-1, VirtualRootPhysicalPath[ i])
+              for i in range( 1, len( path_physical)):
+                TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
       lang = self.REQUEST.get( 'lang')

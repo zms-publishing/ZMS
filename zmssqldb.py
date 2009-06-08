@@ -867,12 +867,15 @@ class ZMSSqlDb(ZMSObject):
               c.append({'id':id,'value':str(new_id)})
         elif tablecol.get('blob'):
           blob = tablecol.get('blob')
-          remote = blob.get('remote',self.absolute_url())
+          remote = blob.get('remote',None)
           if values.get('blob_%s'%id,None) is not None and values.get('blob_%s'%id).filename:
             data = values.get('blob_%s'%id,None)
             file = self.FileFromData( data, data.filename)
             xml = file.toXml()
-            value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'xml':xml}),method='POST')
+            if remote is None:
+              value = self._set_blob(tablename=tablename,id=id,xml=xml)
+            else:
+              value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'xml':xml}),method='POST')
             c.append({'id':id,'value':self.sql_quote__(tablename,id,value)})
         elif (not tablecol.get('details')) and \
              (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
@@ -955,15 +958,21 @@ class ZMSSqlDb(ZMSObject):
           consumed = True
         if not consumed and tablecol.get('blob'):
           blob = tablecol.get('blob')
-          remote = blob.get('remote',self.absolute_url())
+          remote = blob.get('remote',None)
           if values.get('delete_blob_%s'%id,None):
-            value = self.http_import(self.url_append_params(remote+'/delete_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid}),method='POST')
+            if remote is None:
+              value = self._delete_blob(tablename=tablename,id=id,rowid=rowid)
+            else:
+              value = self.http_import(self.url_append_params(remote+'/delete_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid}),method='POST')
             c.append({'id':id,'value':value})
           elif values.get('blob_%s'%id,None) is not None and values.get('blob_%s'%id).filename:
             data = values.get('blob_%s'%id,None)
             file = self.FileFromData( data, data.filename)
             xml = file.toXml()
-            value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}),method='POST')
+            if remote is None:
+              value = self._set_blob(tablename=tablename,id=id,rowid=rowid,xml=xml)
+            else:
+              value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}),method='POST')
             c.append({'id':id,'value':self.sql_quote__(tablename,id,value)})
           consumed = True
         if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
@@ -1042,11 +1051,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.delete_blob:
     # --------------------------------------------------------------------------
-    def delete_blob( self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.delete_blob """
-      user = self.findUser( auth_user)
-      if user is None:
-        raise "Invalid user"
+    def _delete_blob( self, tablename, id, rowid):
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -1074,15 +1079,18 @@ class ZMSSqlDb(ZMSObject):
       except:
         raise _globals.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement)
 
+    def delete_blob( self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None):
+      """ ZMSSqlDb.delete_blob """
+      user = self.findUser( auth_user)
+      if user is None:
+        raise "Invalid user"
+      return self._delete_blob( tablename=tablename, id=id, rowid=rowid)
+
 
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.set_blob:
     # --------------------------------------------------------------------------
-    def set_blob( self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None):
-      """ ZMSSqlDb.set_blob """
-      user = self.findUser( auth_user)
-      if user is None:
-        raise "Invalid user"
+    def _set_blob( self, tablename, id, rowid=None, xml=None):
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -1122,6 +1130,13 @@ class ZMSSqlDb(ZMSObject):
       # Write new file to server-fs
       self.localfs_write(path+filename,file.getData())
       return filename
+
+    def set_blob( self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None):
+      """ ZMSSqlDb.set_blob """
+      user = self.findUser( auth_user)
+      if user is None:
+        raise "Invalid user"
+      return self._set_blob( tablename=tablename, id=id, rowid=rowid, xml=xml)
 
 
     # --------------------------------------------------------------------------

@@ -3,12 +3,63 @@
 <dtml-except>
 <dtml-var manage_page_header>
 <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>thickbox-compressed.js'></script>
+<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>
+<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>thickbox.css" />
 <script language="JavaScript">
 <!--//
+
+$().ready(function() {
+  var els = $('input.autocomplete');
+  els.attr( 'size', 12);
+  els.css( {'width':'20em', 'background':'white url(<dtml-var MISC_ZMS>ico_autocomplete.gif) right bottom no-repeat'});
+  for (var i = 0; i < els.length; i++) {
+    var el = $(els[i]);
+    var name = el.attr('name');
+    var prefix = name.substr(0, "attr_".length+name.substr("attr_".length).indexOf("_"));
+    var column_id = name;
+    for (var j=0; j < 3; j++) {
+      column_id = column_id.substr(column_id.indexOf('_')+1);
+    }
+    var select_tablename = prefix + '_tablename_' + column_id;
+    el.autocomplete("ajaxGetAutocompleteColumns", {
+      extraParams: {
+        selectTable: select_tablename,
+        tableName: function(event) {
+          var tableName = '';
+          var els = $('select[name^=attr_][name*=_tablename_]');
+          for ( var i = 0; i < els.length; i++) {
+            var el = $(els[i]);
+            tableName += el.attr('name')+':'+el.val()+'|';
+          }
+          return tableName;
+        }
+      },
+      width: el.css( "width"),
+      selectFirst: false,
+      cacheLength: 1
+    });
+    el.result(function(event, data, formatted) {
+      if (data)
+        $(this).parent().next().find("input").val(data[1]);
+      });
+  }
+});
 
 function onFormSubmit( fm) {
   var b = true;
   return b;
+}
+
+function onAttrTypeChange( el) {
+  var column_id = $(el).attr('name').substr( "attr_type_".length);
+  var column_type = $(el).val();
+  $("tr[id^=tr_][id$=_"+column_id+"]").css({'visibility':'hidden','display':'none'});
+  $("tr[id=tr_"+column_type+"_"+column_id+"]").css({'visibility':'visible','display':''});
 }
 
 function toggleElement( sender, id) {
@@ -234,7 +285,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-var "getCheckbox(fmName='form0',elName='attr_display_%s:int'%column['id'],value=_.int(column.get('hide',0)==0),enabled=_.True,REQUEST=REQUEST)"
           ></td>
           <td class="form-small"
-           ><select class="form-small" name="attr_type_<dtml-var "column['id']">"
+           ><select class="form-small" name="attr_type_<dtml-var "column['id']">" onchange="onAttrTypeChange(this)"
             ><option value=""></option
             ><dtml-in "valid_types.keys()" sort
              ><dtml-let t=sequence-item
@@ -247,80 +298,84 @@ function mms_normalize_rows(el_tbody) {
             <col width="20%"/>
             <col width="80%"/>
            </colgroup
-           ><dtml-if "column.has_key('blob')"
-            ><tr class="zmiNeutralColorLight0"
+           ><dtml-let blob="column.get('blob',{})" style="int(not column.has_key('blob'))*'style=\042display:none;\042'"
+            ><tr id="tr_blob_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Type</td
-             ><td class="form-small"><select name="attr_blob_type_<dtml-var "column['id']">"><dtml-in "['file','image']"><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "column['blob'].get('type')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
+             ><td class="form-small"><select name="attr_blob_type_<dtml-var "column['id']">"><dtml-in "['file','image']"><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "blob.get('type')==t"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_blob_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Path</td
-             ><td class="form-small"><input type="text" name="attr_blob_path_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('path','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_blob_path_<dtml-var "column['id']">" value="<dtml-var "blob.get('path','')">" size="12"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_blob_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Remote [URL]</td
-             ><td class="form-small"><input type="text" name="attr_blob_remote_<dtml-var "column['id']">" value="<dtml-var "column['blob'].get('remote','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_blob_remote_<dtml-var "column['id']">" value="<dtml-var "blob.get('remote','')">" size="12"></td
             ></tr
-           ><dtml-elif "column.has_key('details')"
-            ><tr class="zmiNeutralColorLight0"
+           ></dtml-let
+           ><dtml-let details="column.get('details',{})" style="int(not column.has_key('details'))*'style=\042display:none;\042'"
+            ><tr id="tr_details_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['details'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(details.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_details_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" value="<dtml-var "column['details'].get('fk','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "details.get('fk','')">"></td
             ></tr
-           ><dtml-elif "column.has_key('fk')"
-            ><tr class="zmiNeutralColorLight0"
+           ></dtml-let
+           ><dtml-let fk="column.get('fk',{})" style="int(not column.has_key('fk'))*'style=\042display:none;\042'"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_fk_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['fk'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_fk_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(fk.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Fieldname</td
-             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('fieldname','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "fk.get('fieldname','')">"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Displayfield</td
-             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('displayfield','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "fk.get('displayfield','')">"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Maxlen</td
-             ><td class="form-small"><input type="text" name="attr_fk_maxlen_<dtml-var "column['id']">" value="<dtml-var "column['fk'].get('maxlen','25')">" size="6"></td
+             ><td class="form-small"><input type="text" name="attr_fk_maxlen_<dtml-var "column['id']">" value="<dtml-var "fk.get('maxlen','25')">" size="6"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Editable</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=_.int(column['fk'].get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=_.int(fk.get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">B.Options</td
-             ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "column['fk'].get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
+             ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "fk.get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr
-           ><dtml-elif "column.has_key('multiselect')"
-            ><tr class="zmiNeutralColorLight0"
-             ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multiselect'].get('fk','')">" size="12"></td
-            ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ></dtml-let
+           ><dtml-let multiselect="column.get('multiselect',{})" style="int(not column.has_key('multiselect'))*'style=\042display:none;\042'"
+            ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['multiselect'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(multiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
+             ><td class="form-small" nowrap="nowrap">Foreign Key</td
+             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "multiselect.get('fk','')">"></td
+            ></tr
+            ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">MySQL-Set</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=_.int(column['multiselect'].get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=_.int(multiselect.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Lazy</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=_.int(column['multiselect'].get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=_.int(multiselect.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
-           ><dtml-elif "column.has_key('multimultiselect')"
-            ><tr class="zmiNeutralColorLight0"
+           ></dtml-let
+           ><dtml-let multimultiselect="column.get('multimultiselect',{})" style="int(not column.has_key('multimultiselect'))*'style=\042display:none;\042'"
+            ><tr id="tr_multimultiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_multimultiselect_fk_<dtml-var "column['id']">" value="<dtml-var "column['multimultiselect'].get('fk','')">" size="12"></td
+             ><td class="form-small"><input type="text" name="attr_multimultiselect_fk_<dtml-var "column['id']">" value="<dtml-var "multimultiselect.get('fk','')">" size="12"></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_multimultiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column['multimultiselect'].get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(multimultiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
-            ><tr class="zmiNeutralColorLight0"
+            ><tr id="tr_multimultiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" colspan="2"
               ><div class="form-small">Tables</div
               ><table cellpadding="0" cellspacing="0" border="0" width="100%"
@@ -333,12 +388,12 @@ function mms_normalize_rows(el_tbody) {
                ><td class="form-small">Label</td
                ><td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>table_col.gif" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" border="0" /></td
               ></tr
-              ><dtml-in "column['multimultiselect'].get('tables',[])+[{}]"
+              ><dtml-in "multimultiselect.get('tables',[])+[{}]"
                ><dtml-let sx=sequence-index si=sequence-item
                 ><tr <dtml-unless "si.keys()">style="display:none;"</dtml-unless>
                  ><td align="right" class="zmiNeutralColorStrong0" nowrap="nowrap"
                   ><select name="attr_multimultiselect_tables_index_<dtml-var sx>_<dtml-var "column['id']">" class="form-small collectionBtn" onchange="mms_move_row(this)"
-                   ><dtml-in "column['multimultiselect'].get('tables',[])">><dtml-let ssx=sequence-index><option value="<dtml-var "ssx+1">"<dtml-if "ssx==sx"> selected="selected"</dtml-if>><dtml-var "ssx+1"></option></dtml-let></dtml-in
+                   ><dtml-in "multimultiselect.get('tables',[])">><dtml-let ssx=sequence-index><option value="<dtml-var "ssx+1">"<dtml-if "ssx==sx"> selected="selected"</dtml-if>><dtml-var "ssx+1"></option></dtml-let></dtml-in
                   ></select
                   ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"  onclick="mms_delete_row(this)" class="button"/></a
                  ></td
@@ -353,7 +408,7 @@ function mms_normalize_rows(el_tbody) {
                 ></tr
                ></dtml-let
               ></dtml-in
-              ><tr
+              ><tr id="tr_multimultiselect_<dtml-var "column['id']">" <dtml-var style>
                ><td align="right" class="zmiNeutralColorStrong0"
                 ><select style="display:none;"></select
                 ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a
@@ -370,12 +425,13 @@ function mms_normalize_rows(el_tbody) {
               ></table
              ></td
             ></tr
-           ><dtml-elif "column.has_key('pk')"
-            ><tr class="zmiNeutralColorLight0"
+           ></dtml-let
+           ><dtml-let pk="column.get('pk',{})" style="int(not column.has_key('pk'))*'style=\042display:none;\042'"
+            ><tr id="tr_pk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Auto</td
              ><td class="form-small"><dtml-try><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column.get('auto','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
-           ></dtml-if
+           ></dtml-let
            ></table
           ></td>
          </tr>

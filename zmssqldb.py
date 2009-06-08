@@ -475,6 +475,7 @@ class ZMSSqlDb(ZMSObject):
             entity['id'] = tableName
             entity['type'] = 'table'
             entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
+            entity['sort_id'] = entity['label'].upper()
             entity['columns'] = cols
             # Add Table.
             entities.append(entity)
@@ -516,6 +517,7 @@ class ZMSSqlDb(ZMSObject):
         for modelTable in filter(lambda x: x['id'].upper() ==tableName.upper(), model):
           for modelTableProp in filter(lambda x: x not in ['columns'], modelTable.keys()):
             entity[modelTableProp] = modelTable[modelTableProp]
+            entity['sort_id'] = entity['label'].upper()
         # Add
         s.append((entity['label'],entity))
       
@@ -528,6 +530,7 @@ class ZMSSqlDb(ZMSObject):
           entity['id'] = tableName
           entity['type'] = entity.get('type','table')
           entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())
+          entity['sort_id'] = entity['label'].upper()
           entity['columns'] = entity.get('columns',[])
           # Add Table.
           entity['not_found'] = 1
@@ -582,7 +585,7 @@ class ZMSSqlDb(ZMSObject):
               fromClause.append( ', %s AS %s'%(fk_tablename,fk_tablename_alias))
               whereClause.append( '%s.%s=%s'%(tablename,tablecol['id'],fk_fieldname))
             else:
-              fromClause.append( 'LEFT JOIN %s AS %s ON %s=%s'%(fk_tablename,fk_tablename_alias,tablecol['id'],fk_fieldname))
+              fromClause.append( 'LEFT JOIN %s AS %s ON %s.%s=%s'%(fk_tablename,fk_tablename_alias,tablename,tablecol['id'],fk_fieldname))
           elif tablecol.get('type','?') != '?':
             selectClause.append( '%s.%s'%(tablename,tablecol['id']))
       sqlStatement = []
@@ -1198,6 +1201,30 @@ class ZMSSqlDb(ZMSObject):
     ###
     ############################################################################
 
+    # --------------------------------------------------------------------------
+    #  ZMSSqlDb.ajaxGetAutocompleteColumns:
+    # --------------------------------------------------------------------------
+    def ajaxGetAutocompleteColumns(self, selectTable, tableName, REQUEST):
+      """ ZMSSqlDb.ajaxGetAutocompleteColumns """
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/plain; charset=utf-8'
+      filename = 'ajaxGetAutocompleteColumns.txt'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      tableName = filter(lambda x: x.startswith(selectTable+':'),tableName.split('|'))[0]
+      tableName = tableName[tableName.find(':')+1:]
+      l = map( lambda x: x['id'], filter( lambda x: x['type'] != '?', self.getEntity( tableName)['columns']))
+      q = REQUEST.get( 'q', '').upper()
+      if q:
+        l = filter( lambda x: x.upper().find( q) >= 0, l)
+      if REQUEST.has_key( 'limit'):
+        limit = int(REQUEST.get( 'limit'))
+        l = l[:limit]
+      rtn = '\n'.join(l)
+      return rtn
+
     ############################################################################
     #  ZMSSqlDb.manage_changeConfiguration: 
     #
@@ -1249,13 +1276,26 @@ class ZMSSqlDb(ZMSObject):
                   xv = REQUEST[k]
                   if len( xk) == 1:
                     xk = xk[ 0]
-                    if type( xv) is str:
-                      xv = xv.strip()
-                      if len( xv) > 0:
-                        d[ xk] = xv
-                    elif type( xv) is int:
-                      if xv != 0:
-                        d[ xk] = xv
+                    if xk == 'options':
+                      xv2 = []
+                      for xi in xv.split('\n'):
+                        xi = xi.replace('\r','')
+                        if xi.find('->') > 0:
+                          xi0 = xi[:xi.find('->')]
+                          xi1 = xi[xi.find('->')+len('->'):]
+                          xv2.append( [xi0, xi1])
+                        else:
+                          xv2.append( [xi, xi])
+                      if len( xv2) > 0:
+                        d[ xk] = xv2
+                    else:
+                      if type( xv) is str:
+                        xv = xv.strip()
+                        if len( xv) > 0:
+                          d[ xk] = xv
+                      elif type( xv) is int:
+                        if xv != 0:
+                          d[ xk] = xv
                   else:
                     if not d.has_key( xk[0]):
                       d[ xk[0]] = {}
@@ -1271,6 +1311,7 @@ class ZMSSqlDb(ZMSObject):
                         d[ xk[0]][ xk[-1]][ xk[1]] = xv
               for i in c:
                 l = d[i].values()
+                print d[i]
                 l = map( lambda x: (x['index'],x), l)
                 l.sort()
                 l = map( lambda x: x[1], l)

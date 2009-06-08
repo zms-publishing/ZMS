@@ -239,10 +239,12 @@ background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 	color: #eee;
 	font-size: 10px;
 	height: 20px;
+	margin:0px;
+	padding:0px;
 }
 
 .zmi_header {
-	color: #FF9900;
+	color: #f90;
 }
 
 .zmi_header a:link, .zmi_header a:visited, 
@@ -256,8 +258,7 @@ background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 	color: #fff;
 }
 .zmi_footer {
-	height: 16px;
-	padding-top:3px;
+	line-height:12px;
 }
 
 .zmi_footer a#strong {
@@ -273,8 +274,19 @@ background:url(<dtml-var MISC_ZMS>get_logo_gradient.gif) top right repeat-y;
 	border:0px;
 	padding:0px;
 	margin:0px;
-	margin-top:-2px;
-	height: 14px;
+/* IE-Patch */
+	margin-top:-3px;
+	height: 18px;
+}
+/* only FF: Patch deactivated */
+html>/**/body .zmi_footer select {
+	height: 14px !important;
+	margin-top:0px !important;
+}
+
+.zmi_footer div.zmi_col_left,
+.zmi_footer div.zmi_col_right {
+	margin:3px;
 }
 
 

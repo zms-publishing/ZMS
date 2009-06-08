@@ -1,40 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dictionary>
-<item key="key"><![CDATA[contentEditableLib]]></item>
-<item key="value" type="dictionary"><dictionary>
-<item key="access" type="dictionary"><dictionary>
-<item key="delete" type="list"><list>
-</list>
-</item>
-<item key="delete_custom"/>
-<item key="edit" type="list"><list>
-</list>
-</item>
-<item key="edit_custom"/>
-<item key="insert" type="list"><list>
-</list>
-</item>
-<item key="insert_custom"/>
-</dictionary>
-</item>
-<item key="acquired" type="int">0</item>
-<item key="attrs" type="list"><list>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[<!--// BO contentEditableLib.standard_html_header //-->
+<?xml version="1.0" encoding="utf-8"?>
+
+  <dictionary>
+    <item key="key"><![CDATA[contentEditableLib]]></item>
+    <item key="value" type="dictionary">
+      <dictionary>
+        <item key="__obj_attrs__" type="list">
+          <list>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom"><![CDATA[<!--// BO contentEditableLib.standard_html_header //-->
 
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>content_editable.js" type="text/javascript"></script>
 
-<!--// EO contentEditableLib.standard_html_header //-->]]></item>
-<item key="id"><![CDATA[standard_html_header]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Mastertemplate: before page]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[method]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[<dtml-comment>--// BO renderCustomText //--</dtml-comment
+<!--// EO contentEditableLib.standard_html_header //-->]]>
+                </item>
+                <item key="id"><![CDATA[standard_html_header]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Mastertemplate: before page]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[method]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom"><![CDATA[<dtml-comment>--// BO renderCustomText //--</dtml-comment
 
 ><dtml-with context
  ><dtml-if "isPreviewRequest(REQUEST)
@@ -51,17 +41,19 @@
  ></dtml-if
 ></dtml-with
 
-><dtml-comment>--// EO renderCustomText //--</dtml-comment>]]></item>
-<item key="id"><![CDATA[renderCustomText]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Render custom-text]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[DTML Method]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[<dtml-call "REQUEST.RESPONSE.setHeader('Expires',_.DateTime(_.DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())"
+><dtml-comment>--// EO renderCustomText //--</dtml-comment>]]>
+                </item>
+                <item key="id"><![CDATA[renderCustomText]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Render custom-text]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[DTML Method]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom"><![CDATA[<dtml-call "REQUEST.RESPONSE.setHeader('Expires',_.DateTime(_.DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())"
 ><dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')"
 ><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')"
 >
@@ -127,83 +119,97 @@ function contentEditableButtonFormatClick(lang,obj)
   if ($("#contentEditableButtonOnOff").attr("title")=="Off") {
     self.parent.partner.document.execCommand(obj);
   }
-}]]></item>
-<item key="id"><![CDATA[contentEditable.js]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[JavaScript: Content-Editable]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[DTML Method]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="contentEditable.gif" type="file">47494638396148000e00d5210091a7bdecf0f4edf0f4b3c3d2d3dbe4b3c2d292a7bdecf1f4d2dbe4d2dce4d3dce46e8aa8b4c2d26d8ba8d2dce591a8bdd2dbe56d8aa891a8beb4c3d292a8bdedf1f46e8ba7b4c3d191a7bed3dce5b3c3d1b3c2d1ecf0f392a7beb4c2d16e8ba8ffffff66666600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000021002c0000000048000e000006e7c09070482c1a8fc8a472c96c3a9fd0a8744a8d82ae5761760a2a62b7c3ecb62b1d93a960edd9bb4e3fcd2131363e5793bf44f7b7bb5f3b030142802102811c024202078988018d8b84814407028a8194828101152115925108044210a2080a21a14209040a08091021040e45ae450ab343b74204a209092119a752170c420c132103032105cbcc1b45051a45c7d1c5431ece0305cccbca53141d420000210fe5000642060fe3eae42106e52100124518ea43f0f4e50f14f4f6a42cf8f0c14203211f228468f061c840824308368c3811e1408642223084381061c52a20438a1c49b2a449914100003b</data></item>
-<item key="id"><![CDATA[contentEditable.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: contentEditable]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="deButton_on.gif" type="file">4749463839610e000e00d53c0093d8883e963149ae39275e1f204d19337928357f2a37842b32762742a0343f9731419d3338872c2e6e2444a3353b8d2e409932409a3237852b47ac384ab23a3c912f81d27477cf6a49af3945a636b1e3a986d47a3d94303277272e6d242d6b23265c1e68c95938882c2f7125398a2d2b6722265b1eade2a53c902f47ab3850c13f67c9583b8e2e429f34337a2824561c44a2353d933024551c30732645a53680d27389d57d419c3390d78595d98bb9e6b2ffffff66666600000000000000000021f9040100003c002c000000000e000e0000069f401e2f752b1a6f0c8f90173ae99ed0a766c59b0072d89c2e9b4d2c00b81d2e3c16e336821bc066dbb5df6c8a2086ab596a3a7ccd5e4b28242a3a3b3b171714833a340a33050e1818023a133a19300b1012031f0619343b303b0b3b01150f332620052d3b110a3b31153b0c07332f3208111001313a0f22070605b52f0d011c312c24c02e082333043c08283009300e34d83425d0421d0d030332e2322fdc41003b</data></item>
-<item key="id"><![CDATA[icon_on.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: Turn Editor On]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="deButton_off.gif" type="file">4749463839610e000e00d53f00fdedeea8474ae95251804745f3724ee76d4e9a4a44e69da9b1484ce4a2ae9143429e4c42e9808deb6f7dee818ed8686dedacb6e6909bd65158f05262f072819d44459d4b42fbd1d5f9b9c0fcf3f5f4cbd0ea9da9f9b6bdef5162ecb6bff1d4dbf697a0f35e6df7919bfde9ebf2b3bbf5d8ddd7646a813d3cc54d4fbb4951e5787dac5145e88a987e3e3ccd6569e399a5874e4dea6771e5868de4a2b0d75e63e39fab853f41ee5f6ef57683f9e3e6f1d3d9f1bcc4d44c51e4a7b2f14859ffffff21f9040100003f002c000000000e000e00000697c0dfcfc42b1a8b34e1efb1fbe89ed08fc6344cf4aed86c4f22491c0e9e522653f27c598f6e0492db6d36bb1c241233a16a0c0d89d16690340c3e2e082f0d000e0d6d0d0e000d3e291511370014376d371400373e080a321d1820136d1d20181d3e01272a3e38172221212217383e3e152d31b6381c23231cb5b6153012b6c6c7b6363f0a0205ce0504d1d12b4a0306d70616da0bca3f41003b</data></item>
-<item key="id"><![CDATA[icon_off.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: Turn Editor Off]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="deButton_Save.gif" type="file">4749463839610e000e00a20700b3b2b4b3b2b3cdcbcdcccccc000000444244c3c2c366666621f90401000007002c000000000e000e0000033578badcf6303e658abdd8d022c4f860a11d9504895b100080daa22426c3d57c8db569e13be113b98de807dc090dc420c92469381909003b</data></item>
-<item key="id"><![CDATA[icon_save.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: Save]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="deButton_Bold.gif" type="file">4749463839610e000e00b30e00adadada3a3a3d6d6d6e0e0e0c2c2c2f5f5f58f8f8f707070b8b8b8ebebeb858585999999ccccccffffff66666600000021f9040100000e002c000000000e000e00000432d0c949abbd3897c639c142a338e17231a20334c6291e0383a11c03cc29d2dc163a2a0d99659042052c8b4e2371cc389f8e08003b</data></item>
-<item key="id"><![CDATA[icon_bold.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: Bold]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom">
-<data content_type="image/gif" filename="deButton_Italic.gif" type="file">4749463839610e000e00b30d00e0e0e0b8b8b87a7a7ad6d6d68f8f8febebeb707070858585f5f5f5adadad999999ccccccffffff66666600000000000021f9040100000d002c000000000e000e00000437b0c949abbd38b7c5186a86770189349496c018c4226009b0a018c02cdac11c459005838600a1b818102805e250d1758a8dc04a43d54400003b</data></item>
-<item key="id"><![CDATA[icon_italic.gif]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Icon: Italic]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[resource]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[<dtml-comment>--// BO preview_top_zmi_col_right //--</dtml-comment
+}]]>
+                </item>
+                <item key="id"><![CDATA[contentEditable.js]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[JavaScript: Content-Editable]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[DTML Method]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="contentEditable.gif" type="file">47494638396148000e00d5210091a7bdecf0f4edf0f4b3c3d2d3dbe4b3c2d292a7bdecf1f4d2dbe4d2dce4d3dce46e8aa8b4c2d26d8ba8d2dce591a8bdd2dbe56d8aa891a8beb4c3d292a8bdedf1f46e8ba7b4c3d191a7bed3dce5b3c3d1b3c2d1ecf0f392a7beb4c2d16e8ba8ffffff66666600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000021002c0000000048000e000006e7c09070482c1a8fc8a472c96c3a9fd0a8744a8d82ae5761760a2a62b7c3ecb62b1d93a960edd9bb4e3fcd2131363e5793bf44f7b7bb5f3b030142802102811c024202078988018d8b84814407028a8194828101152115925108044210a2080a21a14209040a08091021040e45ae450ab343b74204a209092119a752170c420c132103032105cbcc1b45051a45c7d1c5431ece0305cccbca53141d420000210fe5000642060fe3eae42106e52100124518ea43f0f4e50f14f4f6a42cf8f0c14203211f228468f061c840824308368c3811e1408642223084381061c52a20438a1c49b2a449914100003b</data>
+                </item>
+                <item key="id"><![CDATA[contentEditable.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: contentEditable]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="deButton_on.gif" type="file">4749463839610e000e00d53c0093d8883e963149ae39275e1f204d19337928357f2a37842b32762742a0343f9731419d3338872c2e6e2444a3353b8d2e409932409a3237852b47ac384ab23a3c912f81d27477cf6a49af3945a636b1e3a986d47a3d94303277272e6d242d6b23265c1e68c95938882c2f7125398a2d2b6722265b1eade2a53c902f47ab3850c13f67c9583b8e2e429f34337a2824561c44a2353d933024551c30732645a53680d27389d57d419c3390d78595d98bb9e6b2ffffff66666600000000000000000021f9040100003c002c000000000e000e0000069f401e2f752b1a6f0c8f90173ae99ed0a766c59b0072d89c2e9b4d2c00b81d2e3c16e336821bc066dbb5df6c8a2086ab596a3a7ccd5e4b28242a3a3b3b171714833a340a33050e1818023a133a19300b1012031f0619343b303b0b3b01150f332620052d3b110a3b31153b0c07332f3208111001313a0f22070605b52f0d011c312c24c02e082333043c08283009300e34d83425d0421d0d030332e2322fdc41003b</data>
+                </item>
+                <item key="id"><![CDATA[icon_on.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: Turn Editor On]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="deButton_off.gif" type="file">4749463839610e000e00d53f00fdedeea8474ae95251804745f3724ee76d4e9a4a44e69da9b1484ce4a2ae9143429e4c42e9808deb6f7dee818ed8686dedacb6e6909bd65158f05262f072819d44459d4b42fbd1d5f9b9c0fcf3f5f4cbd0ea9da9f9b6bdef5162ecb6bff1d4dbf697a0f35e6df7919bfde9ebf2b3bbf5d8ddd7646a813d3cc54d4fbb4951e5787dac5145e88a987e3e3ccd6569e399a5874e4dea6771e5868de4a2b0d75e63e39fab853f41ee5f6ef57683f9e3e6f1d3d9f1bcc4d44c51e4a7b2f14859ffffff21f9040100003f002c000000000e000e00000697c0dfcfc42b1a8b34e1efb1fbe89ed08fc6344cf4aed86c4f22491c0e9e522653f27c598f6e0492db6d36bb1c241233a16a0c0d89d16690340c3e2e082f0d000e0d6d0d0e000d3e291511370014376d371400373e080a321d1820136d1d20181d3e01272a3e38172221212217383e3e152d31b6381c23231cb5b6153012b6c6c7b6363f0a0205ce0504d1d12b4a0306d70616da0bca3f41003b</data>
+                </item>
+                <item key="id"><![CDATA[icon_off.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: Turn Editor Off]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="deButton_Save.gif" type="file">4749463839610e000e00a20700b3b2b4b3b2b3cdcbcdcccccc000000444244c3c2c366666621f90401000007002c000000000e000e0000033578badcf6303e658abdd8d022c4f860a11d9504895b100080daa22426c3d57c8db569e13be113b98de807dc090dc420c92469381909003b</data>
+                </item>
+                <item key="id"><![CDATA[icon_save.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: Save]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="deButton_Bold.gif" type="file">4749463839610e000e00b30e00adadada3a3a3d6d6d6e0e0e0c2c2c2f5f5f58f8f8f707070b8b8b8ebebeb858585999999ccccccffffff66666600000021f9040100000e002c000000000e000e00000432d0c949abbd3897c639c142a338e17231a20334c6291e0383a11c03cc29d2dc163a2a0d99659042052c8b4e2371cc389f8e08003b</data>
+                </item>
+                <item key="id"><![CDATA[icon_bold.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: Bold]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom">
+                  <data content_type="image/gif" filename="deButton_Italic.gif" type="file">4749463839610e000e00b30d00e0e0e0b8b8b87a7a7ad6d6d68f8f8febebeb707070858585f5f5f5adadad999999ccccccffffff66666600000000000021f9040100000d002c000000000e000e00000437b0c949abbd38b7c5186a86770189349496c018c4226009b0a018c02cdac11c459005838600a1b818102805e250d1758a8dc04a43d54400003b</data>
+                </item>
+                <item key="id"><![CDATA[icon_italic.gif]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Icon: Italic]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[resource]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom"><![CDATA[<dtml-comment>--// BO preview_top_zmi_col_right //--</dtml-comment
 ><dtml-if "HTTP_USER_AGENT.find('MSIE') > 0">
 
 <script type="text/javascript" src="contentEditable.js"></script>
@@ -215,7 +221,7 @@ self.parent.partner.location.reload();
 window.setTimeout("$('#manage_tabs_message').hide('slow')",3000);
 //--></script><div id="manage_tabs_message"><dtml-var manage_tabs_message> (<dtml-var "getLangFmtDate(ZopeTime())">)&nbsp;</div></dtml-if>
 
-<div style="border:0px;height:20px;margin:0px 3px;padding:2px;"
+<div style="border:0px;height:20px;margin:0px 3px;margin-top:-1px;padding:2px;"
 ><img 
  src="metaobj_manager/contentEditableLib.contentEditable.gif" alt="" title="" border="0" 
  style="border:0px;vertical-align:top"/>
@@ -239,17 +245,19 @@ window.setTimeout("$('#manage_tabs_message').hide('slow')",3000);
 <dtml-else>
 <dtml-return "_.None">
 </dtml-if
-><dtml-comment>--// EO preview_top_zmi_col_right //--</dtml-comment>]]></item>
-<item key="id"><![CDATA[preview_top_zmi_col_right]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Preview-Top: ZMI-Col-Right]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[DTML Method]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="custom"><![CDATA[# --// BO manage_contentEditable //--
+><dtml-comment>--// EO preview_top_zmi_col_right //--</dtml-comment>]]>
+                </item>
+                <item key="id"><![CDATA[preview_top_zmi_col_right]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Preview-Top: ZMI-Col-Right]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[DTML Method]]></item>
+              </dictionary>
+            </item>
+            <item type="dictionary">
+              <dictionary>
+                <item key="custom"><![CDATA[# --// BO manage_contentEditable //--
 self = context
 REQUEST = container.REQUEST
 RESPONSE =  REQUEST.RESPONSE
@@ -323,22 +331,43 @@ url = self.url_append_params(url,{'lang':lang,'preview':'preview','manage_tabs_m
 return RESPONSE.redirect(url)
 
 # --// EO manage_contentEditable //--
-]]></item>
-<item key="id"><![CDATA[manage_contentEditable]]></item>
-<item key="mandatory" type="int">0</item>
-<item key="multilang" type="int">0</item>
-<item key="name"><![CDATA[Manage: Content-Editable]]></item>
-<item key="repetitive" type="int">0</item>
-<item key="type"><![CDATA[Script (Python)]]></item>
-</dictionary>
-</item>
-</list>
-</item>
-<item key="enabled" type="int">0</item>
-<item key="id"><![CDATA[contentEditableLib]]></item>
-<item key="name"><![CDATA[Content-Editable]]></item>
-<item key="package"/>
-<item key="type"><![CDATA[ZMSLibrary]]></item>
-</dictionary>
-</item>
-</dictionary>
+]]>
+                </item>
+                <item key="id"><![CDATA[manage_contentEditable]]></item>
+                <item key="mandatory" type="int">0</item>
+                <item key="multilang" type="int">0</item>
+                <item key="name"><![CDATA[Manage: Content-Editable]]></item>
+                <item key="repetitive" type="int">0</item>
+                <item key="type"><![CDATA[Script (Python)]]></item>
+              </dictionary>
+            </item>
+          </list>
+        </item>
+        <item key="access" type="dictionary">
+          <dictionary>
+            <item key="delete" type="list">
+              <list>
+              </list>
+            </item>
+            <item key="delete_custom"></item>
+            <item key="edit" type="list">
+              <list>
+              </list>
+            </item>
+            <item key="edit_custom"></item>
+            <item key="insert" type="list">
+              <list>
+              </list>
+            </item>
+            <item key="insert_custom"></item>
+          </dictionary>
+        </item>
+        <item key="enabled" type="int">0</item>
+        <item key="id"><![CDATA[contentEditableLib]]></item>
+        <item key="name"><![CDATA[Content-Editable]]></item>
+        <item key="package"></item>
+        <item key="revision"><![CDATA[0.0.1]]></item>
+        <item key="type"><![CDATA[ZMSLibrary]]></item>
+      </dictionary>
+    </item>
+  </dictionary>

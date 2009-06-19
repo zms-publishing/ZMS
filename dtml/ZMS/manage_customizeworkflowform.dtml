@@ -809,23 +809,14 @@
         <a href="manage_changeWorkflow?lang=<dtml-var lang>&key=export&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>" target="_blank"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('TAB_CONFIGURATION')">" border="1" align="absmiddle"/></a>
        </td>
       </tr>
-    <dtml-let pattern="'workflow'" conf_files="getConfFiles(pattern)">
-     <dtml-if conf_files>
       <tr>
        <td class="form-label" align="right"><dtml-var "getZMILangStr('OR').lower()"></td>
        <td class="form-element">
-        <select class="form-element" name="init">
-	 <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')"> (default)... ---</option>
-         <dtml-in conf_files>
-	  <dtml-let conf_file=sequence-item>
-           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
-	  </dtml-let>
-         </dtml-in>
+        <select class="form-element" id="init" name="init" onfocus="zmiExpandConfFiles(this,'workflow')" onmouseover="zmiExpandConfFiles(this,'workflow')">
+         <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
         </select>
        </td>
       </tr>
-     </dtml-if>
-    </dtml-let>
       <tr valign="middle">
        <td>&nbsp;</td>
        <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>

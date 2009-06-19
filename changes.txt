@@ -1222,3 +1222,7 @@
 [01198] Applied fix for SQL-Datasource: updating character-based foreign-keys (reported by fh).
 [01199] Added support for mhtml (content-ids) to send_mail extension (contributed by tf).
 --------------------------------------------------
+2009-06-18:zms-2.11.1-67
+[01200] Added support for use of HTTP.proxy in ZMSGlobals.http_import.
+[01201] Added support for update sites in $ZMS_HOME/import/configure.zcml.
+--------------------------------------------------

@@ -65,25 +65,16 @@
  <td class="form-label" align="right"><img src="<dtml-var MISC_ZMS>mime_type.application_zip.gif" title="ZIP" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></td>
  <td class="form-small"><input class="form-small" name="file" type="file" size="25" accept="text/xml"></td>
 </tr>
-    <dtml-let pattern="'.conf.zip'" conf_files="getConfFiles(pattern)">
-     <dtml-if conf_files>
-      <tr>
-       <td class="form-label" align="right">
-        <dtml-var "getZMILangStr('OR').lower()">
-       </td>
-       <td colspan="7" class="form-small" nowrap="nowrap">
-        <select class="form-small" name="init">
-         <option value="">--- Init... ---</option>
-         <dtml-in conf_files>
-          <dtml-let conf_file=sequence-item>
-           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
-          </dtml-let>
-         </dtml-in>
-        </select>
-       </td>
-      </tr>
-     </dtml-if>
-    </dtml-let>
+    <tr>
+     <td class="form-label" align="right">
+      <dtml-var "getZMILangStr('OR').lower()">
+     </td>
+     <td colspan="7" class="form-small" nowrap="nowrap">
+      <select class="form-element" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.conf.zip')" onmouseover="zmiExpandConfFiles(this,'.conf.zip')">
+       <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
+      </select>
+     </td>
+    </tr>
 <tr valign="middle">
  <td>&nbsp;</td>
  <td class="form-element"><input class="form-submit" name="btn" type="submit" value="Import"/></td>
@@ -281,6 +272,7 @@
 <dtml-let res="[
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
+   {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
    {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string','default':'jquery-1.3.2.min.js'},
    {'key':'ZMS.blobfields.grant_public_access','title':'Grant public access to blob-fields','desc':'Blob-fields in restricted nodes are not visible. You may grant public access to blob-fields by activating this option.','datatype':'boolean'},
    {'key':'ZMS.blobfields.accept_ranges','title':'Http-Header Accept-Ranges for blob-fields','desc':'Http-Header Accept-Ranges for blob-fields.','datatype':'string','default':'bytes'},

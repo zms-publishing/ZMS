@@ -29,6 +29,41 @@ function delBlobBtnClick(fmName, elName, submitBtn) {
   }
 }
 
+
+// ############################################################################
+// ### getConfFiles:
+// ############################################################################
+
+
+function zmiExpandConfFiles(el, pattern) {
+  if ( el.options.length <=1) {
+    // Set wait-cursor.
+    $(document.body).css( "cursor", "wait");
+    // JQuery.AJAX.get
+    $.get( "getConfFiles?id="+el.id+"&pattern="+escape(pattern), zmiExpandConfFilesProcessResponse);
+  }
+}
+
+function zmiExpandConfFilesProcessResponse(data) {
+  // Reset wait-cursor.
+  $(document.body).css( "cursor", "auto");
+  //
+  var select = document.getElementById('init');
+  var optionElements = data.getElementsByTagName('item');
+  for (var i = 0; i < optionElements.length; i++) 
+  {
+    if ( i > 0) 
+    {
+      var label = optionElements[i].firstChild.data;
+      var value = optionElements[i].getAttribute("key");
+      var option = new Option( label, value);
+      select.options[ select.length] = option;
+    }
+  }
+  select.selectedIndex = 0;
+}
+
+
 // ############################################################################
 // ### checkoutOvertakeBtnClick:
 // ############################################################################

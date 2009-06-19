@@ -225,7 +225,7 @@ class ZMSSqlDb(ZMSObject):
       entities = self.getEntities()
       entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
       col = (filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])+[{'type':'string'}])[0]
-      if col['nullable'] and v in ['',None]:
+      if col.get('nullable') and v in ['',None]:
         if gadfly:
           return "''"
         else:
@@ -986,7 +986,7 @@ class ZMSSqlDb(ZMSObject):
             fk_fieldname = tablecol.get('fk').get('fieldname')
             fk_displayfield = tablecol.get('fk').get('displayfield')
             value = values.get(id)
-            if value == '' and tablecol['nullable']:
+            if value == '' and tablecol.get('nullable'):
               value = None
             else:
               value = self.getFk( fk_tablename, fk_fieldname, fk_displayfield, value)
@@ -999,7 +999,7 @@ class ZMSSqlDb(ZMSObject):
            (not tablecol.get('multimultiselect')):
           if values.has_key(id) and values.get(id) != old_values.get(id,old[id]):
             value = values.get(id)
-            if value == '' and tablecol['nullable']:
+            if value == '' and tablecol('nullable'):
               value = None
             if value != old_values.get(id,old[id]):
               c.append({'id':id,'value':value})
@@ -1078,7 +1078,7 @@ class ZMSSqlDb(ZMSObject):
             self.localfs_remove(path+filename)
           except: pass
           value = ''
-          if column['nullable']:
+          if column('nullable'):
             value = 'NULL'
           else:
             value = self.sql_quote__(tablename,id,value)

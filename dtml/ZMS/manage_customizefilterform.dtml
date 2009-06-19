@@ -934,23 +934,14 @@
      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
      <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
     </tr>
-    <dtml-let pattern="'.filter.'" conf_files="getConfFiles(pattern)">
-     <dtml-if conf_files>
-      <tr>
-       <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
-       <td>
-        <select class="form-element" name="init">
-	 <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
-         <dtml-in conf_files>
-	  <dtml-let conf_file=sequence-item>
-           <option value="<dtml-var conf_file>">$ZMS_HOME/import/<dtml-var conf_file></option>
-	  </dtml-let>
-         </dtml-in>
-        </select>
-       </td>
-      </tr>
-     </dtml-if>
-    </dtml-let>
+    <tr>
+     <td align="right"><div class="form-label"><dtml-var "getZMILangStr('OR').lower()"></div></td>
+     <td>
+      <select class="form-element" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.filter.')" onmouseover="zmiExpandConfFiles(this,'.filter.')">
+       <option value="">--- <dtml-var "getZMILangStr('BTN_INIT')">... ---</option>
+      </select>
+     </td>
+    </tr>
     <tr valign="middle">
      <td>&nbsp;</td>
      <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>

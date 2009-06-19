@@ -92,10 +92,10 @@ def initCSS(self):
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, profile, REQUEST):
-  createIfNotExists = 1
-  filenames = self.getConfFiles()
+  createIfNotExists = True
+  filenames = self.getConfFiles().keys()
   for filename in filenames:
-    if filename.find(profile + '.') == 0:
+    if filename.startswith(profile + '.'):
       if filename.find('.zip') > 0:
         self.importConfPackage(filename,REQUEST,createIfNotExists)
       elif filename.find('.xml') > 0:
@@ -107,9 +107,10 @@ def initConf(self, profile, REQUEST):
 #  _confmanager.updateConf:
 # ------------------------------------------------------------------------------
 def updateConf(self, REQUEST):
-  filenames = self.getConfFiles()
+  createIfNotExists = False
+  filenames = self.getConfFiles().keys()
   for filename in filenames:
-    self.importConf(filename,REQUEST,0)
+    self.importConf(filename,REQUEST,createIfNotExists)
 
 
 ################################################################################
@@ -156,10 +157,12 @@ class ConfManager(
       if type(file) is dict:
         filename = file['filename']
         xmlfile = StringIO( file['data'])
+      elif type(file) is str and file.startswith('http://'):
+        filename = _fileutil.extractFilename(file)
+        xmlfile = StringIO( self.http_import(file))
       else:
-        filename = file
-        filepath = package_home(globals())+'/import/'
-        xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
+        filename = _fileutil.extractFilename(file)
+        xmlfile = open(_fileutil.getOSPath(file),'rb')
       return filename, xmlfile
 
 
@@ -191,17 +194,56 @@ class ConfManager(
     #
     #  Returns configuration-files from $ZMS_HOME/import-Folder
     # --------------------------------------------------------------------------
-    def getConfFiles(self, pattern=None):
-      filenames = []
+    def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
+      """
+      ConfManager.getConfFiles
+      """
+      filenames = {}
       filepath = package_home(globals())+'/import/'
-      for filename in os.listdir(filepath):
-        path = filepath + os.sep + filename
-        mode = os.stat(path)[stat.ST_MODE]
-        if not stat.S_ISDIR(mode):
-          filenames.append(filename)
+      conf = open( filepath+'configure.zcml','r')
+      conf_xml = self.xmlParse( conf)
+      for source in self.xmlNodeSet(conf_xml,'source'):
+        location = source['attrs']['location']
+        if location.startswith('http://'):
+          remote_conf = self.http_import(location+'configure.zcml')
+          remote_conf_xml = self.xmlParse( remote_conf)
+          for remote_file in self.xmlNodeSet(remote_conf_xml,'file'):
+            filename = remote_file['attrs']['id']
+            if filename not in filenames.keys():
+              filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'
+        else:
+          for filename in os.listdir(filepath+location):
+            path = filepath + filename
+            mode = os.stat(path)[stat.ST_MODE]
+            if not stat.S_ISDIR(mode):
+              if filename not in filenames:
+                filenames[path] = filename
+      conf.close()
+      # Filter.
       if pattern is not None:
-        filenames = filter(lambda x: x.find(pattern) >= 0, filenames)
-      return filenames
+        for k in filenames.keys():
+          if k.find(pattern) < 0:
+            del filenames[k]
+          else:
+            v = filenames[k]
+            i = v.find(' ')
+            if i < 0:
+              i = len(v)
+            v = v[:v.find(pattern)]+v[i:]
+            filenames[k] = v
+      # Return.
+      if REQUEST is not None and \
+         RESPONSE is not None:
+        RESPONSE = REQUEST.RESPONSE
+        content_type = 'text/xml; charset=utf-8'
+        filename = 'getConfFiles.xml'
+        RESPONSE.setHeader('Content-Type',content_type)
+        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+        return self.getXmlHeader() + self.toXmlString( filenames)
+      else:
+        return filenames
 
 
     """

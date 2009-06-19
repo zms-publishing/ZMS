@@ -415,12 +415,9 @@ def authtobasic(auth, h):
 # ------------------------------------------------------------------------------
 #  _globals.http_import:
 # ------------------------------------------------------------------------------
-def http_import(self, url, method='GET', auth=None, parse_qs=0):
+def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
 
-  # Remove HTTP-Prefix.
-  http_prefix = 'http://'
-  if url.startswith( http_prefix):
-    url = url[ len( http_prefix):]
+  HTTP_PREFIX = 'http://'
 
   # Get Query-String.
   qs = ''
@@ -429,14 +426,23 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0):
     qs = url[i+1:]
     url = url[:i]
   
-  # Get Host and Port.
-  i = url.find('/')
-  if i > 0:
-    host = url[:i]
-    url = url[i:]
-  else:
-    host = url
-    url = '/'
+  # Get Host.
+  host = self.getConfProperty('HTTP.proxy','')
+  if len( host) == 0:
+  
+    # Remove HTTP-Prefix.
+    if url.startswith( HTTP_PREFIX):
+      url = url[ len( HTTP_PREFIX):]
+      
+    i = url.find('/')
+    if i > 0:
+      host = url[:i]
+      url = url[i:]
+    else:
+      host = url
+      url = '/'
+
+  # Get Port.
   i = host.find(':',max(0,host.find('@')))
   port = 80
   if i > 0:
@@ -444,7 +450,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0):
     host = host[:i]
   
   # Open HTTP connection.
-  writeBlock( self, "[http_import.%s]: %s:%i%s?%s"%(method,host,port,url,qs))
+  writeBlock( self, "[http_import.%s]: %s:%i --> %s?%s"%(method,host,port,url,qs))
   req = HTTP(host,port)
   
   # Set request-headers.
@@ -492,7 +498,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0):
       # return string
       rtn = content
       if port != 80:
-        rtn = rtn.replace( '%s%s/'%(http_prefix,host), '%s%s:%i/'%(http_prefix,host,port))
+        rtn = rtn.replace( '%s%s/'%(HTTP_PREFIX,host), '%s%s:%i/'%(HTTP_PREFIX,host,port))
     return rtn
   else:
     result = '['+str(reply_code)+']: '+str(message)

@@ -93,6 +93,7 @@ class ZMSSqlDb(ZMSObject):
 	{'label': 'TAB_IMPORTEXPORT',	'action': 'manage_importexport'},
 	{'label': 'TAB_PROPERTIES',	'action': 'manage_properties'},
 	{'label': 'TAB_CONFIGURATION',	'action': 'manage_configuration'},
+	{'label': 'SQL',	'action': 'manage_sql'},
 	)
 
     # Management Permissions.
@@ -108,6 +109,7 @@ class ZMSSqlDb(ZMSObject):
     __administratorPermissions__ = (
 		'manage_properties','manage_changeProperties',
 		'manage_configuration', 'manage_changeConfiguration',
+		'manage_sql', 
 		)
     __ac_permissions__=(
 		('ZMS Author', __authorPermissions__),
@@ -124,6 +126,7 @@ class ZMSSqlDb(ZMSObject):
     manage_main = HTMLFile('dtml/ZMSSqlDb/manage_main', globals())
     manage_importexport = HTMLFile('dtml/ZMSSqlDb/manage_importexport', globals())
     manage_properties = HTMLFile('dtml/ZMSSqlDb/manage_properties', globals())
+    manage_sql = HTMLFile('dtml/ZMSSqlDb/manage_sql', globals())
     manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
@@ -222,7 +225,12 @@ class ZMSSqlDb(ZMSObject):
       entities = self.getEntities()
       entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
       col = (filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])+[{'type':'string'}])[0]
-      if col['type'] in ['int']:
+      if col['nullable'] and v in ['',None]:
+        if gadfly:
+          return "''"
+        else:
+          return "NULL"
+      elif col['type'] in ['int']:
         try:
           return str(int(str(v)))
         except:
@@ -855,7 +863,7 @@ class ZMSSqlDb(ZMSObject):
         if tablecol.get('auto'):
           if tablecol.get('auto') in ['insert','update']:
             if tablecol.get('type') in ['date','datetime']:
-              c.append({'id':id,'value':self.sql_quote__(tablename,id,self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper()))})
+              c.append({'id':id,'value':self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper())})
             elif tablecol.get('type') in ['int']:
               new_id = 0
               try:
@@ -864,8 +872,9 @@ class ZMSSqlDb(ZMSObject):
                   new_id = int(rs[0]['max_id'])+1
               except:
                 _globals.writeError( self, '[recordSet_Insert]: can\'t get max_id')
-              c.append({'id':id,'value':str(new_id)})
+              c.append({'id':id,'value':new_id})
         elif tablecol.get('blob'):
+          value = None
           blob = tablecol.get('blob')
           remote = blob.get('remote',None)
           if values.get('blob_%s'%id,None) is not None and values.get('blob_%s'%id).filename:
@@ -876,22 +885,18 @@ class ZMSSqlDb(ZMSObject):
               value = self._set_blob(tablename=tablename,id=id,xml=xml)
             else:
               value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'xml':xml}),method='POST')
-            c.append({'id':id,'value':self.sql_quote__(tablename,id,value)})
+          c.append({'id':id,'value':value})
         elif (not tablecol.get('details')) and \
              (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
              (not tablecol.get('multimultiselect')):
           value = values.get(id,values.get(id.lower(),values.get(id.upper(),'')))
-          if value == '' and tablecol['nullable']:
-            value = 'NULL'
-          else:
-            value = self.sql_quote__(tablename,id,value)
-          c.append({'id':id,'value':str(value)})
+          c.append({'id':id,'value':value})
       # Assemble sql-statement
       sqlStatement = []
       sqlStatement.append( 'INSERT INTO %s ('%tablename)
       sqlStatement.append( ', '.join(map(lambda x: x['id'], c)))
       sqlStatement.append( ') VALUES (')
-      sqlStatement.append( ', '.join(map(lambda x: x['value'], c)))
+      sqlStatement.append( ', '.join(map(lambda x: self.sql_quote__(tablename,x['id'],x['value']), c)))
       sqlStatement.append( ')')
       sqlStatement = ' '.join(sqlStatement)
       try:
@@ -954,7 +959,7 @@ class ZMSSqlDb(ZMSObject):
         if not consumed and tablecol.get('auto'):
           if tablecol.get('auto') in ['update']:
             if tablecol.get('type') in ['date','datetime']:
-              c.append({'id':id,'value':self.sql_quote__(tablename,id,self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper()))})
+              c.append({'id':id,'value':self.getLangFmtDate(time.time(),lang,'%s_FMT'%tablecol['type'].upper())})
           consumed = True
         if not consumed and tablecol.get('blob'):
           blob = tablecol.get('blob')
@@ -973,34 +978,36 @@ class ZMSSqlDb(ZMSObject):
               value = self._set_blob(tablename=tablename,id=id,rowid=rowid,xml=xml)
             else:
               value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}),method='POST')
-            c.append({'id':id,'value':self.sql_quote__(tablename,id,value)})
+            c.append({'id':id,'value':value})
           consumed = True
         if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
           if values.has_key(id):
             fk_tablename = tablecol.get('fk').get('tablename')
             fk_fieldname = tablecol.get('fk').get('fieldname')
             fk_displayfield = tablecol.get('fk').get('displayfield')
-            if values.get(id) == '' and tablecol['nullable']:
-              value = 'NULL'
+            value = values.get(id)
+            if value == '' and tablecol['nullable']:
+              value = None
             else:
-              value = self.getFk( fk_tablename, fk_fieldname, fk_displayfield, values.get(id))
+              value = self.getFk( fk_tablename, fk_fieldname, fk_displayfield, value)
             if value != old_values.get(id,old[id]):
-              c.append({'id':id,'value':str(value)})
+              c.append({'id':id,'value':value})
           consumed = True
         if not consumed and \
            (not tablecol.get('details')) and \
            (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
            (not tablecol.get('multimultiselect')):
           if values.has_key(id) and values.get(id) != old_values.get(id,old[id]):
-            value = self.sql_quote__(tablename,id,values.get(id))
-            if values.get(id) == '' and tablecol['nullable']:
-              value = 'NULL'
-            c.append({'id':id,'value':str(value)})
+            value = values.get(id)
+            if value == '' and tablecol['nullable']:
+              value = None
+            if value != old_values.get(id,old[id]):
+              c.append({'id':id,'value':value})
       # Assemble sql-statement
       if len(c) > 0:
         sqlStatement = []
         sqlStatement.append( 'UPDATE %s SET '%tablename)
-        sqlStatement.append( ', '.join(map(lambda x: x['id']+'='+x['value'], c)))
+        sqlStatement.append( ', '.join(map(lambda x: x['id']+'='+self.sql_quote__(tablename,x['id'],x['value']), c)))
         sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
         sqlStatement = ' '.join(sqlStatement)
         try:
@@ -1181,6 +1188,7 @@ class ZMSSqlDb(ZMSObject):
       """ ZMSSqlDb.manage_changeProperties """
       message = ''
       el_data = REQUEST.get('el_data','')
+      target = 'manage_properties'
       
       if REQUEST.get('btn','') in [ self.getZMILangStr('BTN_EXECUTE')]:
         c = 0
@@ -1196,6 +1204,7 @@ class ZMSSqlDb(ZMSObject):
             message += _globals.writeError( self, '')
             break
         message += '[%i]'%c
+        target = 'manage_sql'
       
       elif REQUEST.get('btn','') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         self.connection_id = REQUEST['connection_id']
@@ -1207,7 +1216,7 @@ class ZMSSqlDb(ZMSObject):
       # Return with message.
       message = urllib.quote(message)
       el_data = urllib.quote(el_data)
-      return RESPONSE.redirect('manage_properties?lang=%s&manage_tabs_message=%s&el_data=%s'%(lang,message,el_data))
+      return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s&el_data=%s'%(target,lang,message,el_data))
 
 
     ############################################################################
@@ -1298,9 +1307,11 @@ class ZMSSqlDb(ZMSObject):
                         if xi.find('->') > 0:
                           xi0 = xi[:xi.find('->')]
                           xi1 = xi[xi.find('->')+len('->'):]
-                          xv2.append( [xi0, xi1])
+                          if len(xi0) > 0 and len( xi1) > 0:
+                            xv2.append( [xi0, xi1])
                         else:
-                          xv2.append( [xi, xi])
+                          if len(xi) > 0:
+                            xv2.append( [xi, xi])
                       if len( xv2) > 0:
                         d[ xk] = xv2
                     else:

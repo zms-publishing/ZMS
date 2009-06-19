@@ -1,0 +1,29 @@
+<dtml-var manage_page_header>
+<script language="JavaScript">
+<!--//
+
+  function onFormSubmit(fm) {
+    var b = true;
+    return b;
+  }
+
+//-->
+</script>
+</head>
+<dtml-var manage_tabs>
+<dtml-var f_bo_area>
+
+<form name="form0" action="manage_changeProperties" method="post">
+<input type="hidden" name="lang" value="<dtml-var lang>">
+<input type="hidden" name="preview" value="preview">
+
+<dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=10,value=REQUEST.get('el_data','<Enter SQL here...>'),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra=' style='+QUOT+'width:100%;color:#0000FF;background-color:#F8F8FF;'+QUOT)"></td>
+<hr size="1"/>
+<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXECUTE')" html_quote>" onclick="self.btnClicked=this.value;">
+<input class="form-submit" name="btn" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value;">
+<br/><br/>
+
+</form>
+
+<dtml-var f_eo_area>
+<dtml-var manage_page_footer>

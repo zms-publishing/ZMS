@@ -23,10 +23,6 @@
  <col width="80%" />
 </colgroup>
 
-<tr>
- <td colspan="2" class="zmiHeadline"><dtml-var "getZMILangStr('TAB_PROPERTIES')"></td>
-</tr>
-
 <!-- ### Connection Id -->
 <tr valign="top">
  <td><div class="form-label">Connection Id<sup style="color:red">*</sup></div></td>
@@ -63,20 +59,6 @@
 </table>
 
 <dtml-var f_submitBtn>
-
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<tr>
- <td class="zmiHeadline">SQL</td>
-</tr>
-<tr>
- <td><dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=10,value=REQUEST.get('el_data','<Enter SQL here...>'),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra=' style='+QUOT+'width:100%;color:#0000FF;background-color:#F8F8FF;'+QUOT)"></td>
-</tr>
-</table>
-<hr size="1"/>
-<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXECUTE')" html_quote>" onclick="self.btnClicked=this.value;">
-<input class="form-submit" name="btn" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value;">
-<br/><br/>
-
 </form>
 
 <dtml-var f_eo_area>

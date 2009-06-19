@@ -1213,3 +1213,12 @@
 2009-06-08:zms-2.11.1-64
 [01194] Applied fix for Google-Sitemap/Mirror-Manager: missing local-files (requested by xm).
 --------------------------------------------------
+2009-06-10:zms-2.11.1-65
+[01195] Applied fix for Google-Sitemap/Mirror-Manager: missing local-files (requested by xm).
+[01196] Applied fix for SQL-Datasource: empty options.
+--------------------------------------------------
+2009-06-18:zms-2.11.1-66
+[01197] Applied fix for Google-Sitemap/Mirror-Manager: missing local-files (requested by xm).
+[01198] Applied fix for SQL-Datasource: updating character-based foreign-keys (reported by fh).
+[01199] Added support for mhtml (content-ids) to send_mail extension (contributed by tf).
+--------------------------------------------------

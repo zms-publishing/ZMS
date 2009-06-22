@@ -1226,3 +1226,6 @@
 [01200] Added support for use of HTTP.proxy in ZMSGlobals.http_import.
 [01201] Added support for update sites in $ZMS_HOME/import/configure.zcml.
 --------------------------------------------------
+2009-06-22:zms-2.11.1-68
+[01202] Applied fix for update sites in $ZMS_HOME/import/configure.zcml.
+--------------------------------------------------

@@ -93,9 +93,10 @@ def initCSS(self):
 # ------------------------------------------------------------------------------
 def initConf(self, profile, REQUEST):
   createIfNotExists = True
-  filenames = self.getConfFiles().keys()
-  for filename in filenames:
-    if filename.startswith(profile + '.'):
+  files = self.getConfFiles()
+  for filename in files.keys():
+    label = files[filename]
+    if label.startswith(profile + '.'):
       if filename.find('.zip') > 0:
         self.importConfPackage(filename,REQUEST,createIfNotExists)
       elif filename.find('.xml') > 0:
@@ -141,9 +142,10 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def importConfPackage(self, file, REQUEST, createIfNotExists=0):
       if type( file) is str:
-        filename = file
-        filepath = package_home(globals())+'/import/'
-        file = open(_fileutil.getOSPath(filepath+filename),'rb')
+        if file.startswith('http://'):
+          file = StringIO( self.http_import(file))
+        else:
+          file = open(_fileutil.getOSPath(file),'rb')
       files = _fileutil.getZipArchive( file)
       for f in files:
         self.importConf(f,REQUEST,createIfNotExists)
@@ -205,12 +207,15 @@ class ConfManager(
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
         if location.startswith('http://'):
-          remote_conf = self.http_import(location+'configure.zcml')
-          remote_conf_xml = self.xmlParse( remote_conf)
-          for remote_file in self.xmlNodeSet(remote_conf_xml,'file'):
-            filename = remote_file['attrs']['id']
-            if filename not in filenames.keys():
-              filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'
+          try:
+            remote_conf = self.http_import(location+'configure.zcml')
+            remote_conf_xml = self.xmlParse( remote_conf)
+            for remote_file in self.xmlNodeSet(remote_conf_xml,'file'):
+              filename = remote_file['attrs']['id']
+              if filename not in filenames.keys():
+                filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'
+          except:
+            _globals.writeError( self, "[getConfFiles]: can't get conf-files from remote URL=%s"%location)
         else:
           for filename in os.listdir(filepath+location):
             path = filepath + filename

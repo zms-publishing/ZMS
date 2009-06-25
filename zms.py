@@ -368,6 +368,14 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
               pass
     except:
       pass
+
+  ##### Build 132a: Rename logo to zmi_logo ####
+  if getattr( docElmnt, 'build', '000') < '132':
+    try:
+      self.zmi_logo = self.logo
+      delattr( self, 'logo')
+    except:
+      pass
   
   # Recursion.
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
@@ -595,8 +603,8 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '131'		# Internal use only, designates object model!
-    zms_patch = 'l'		# Internal use only!
+    zms_build = '132'		# Internal use only, designates object model!
+    zms_patch = 'a'		# Internal use only!
 
     # Properties.
     # -----------
@@ -711,7 +719,7 @@ class ZMS(
       """
       self.id = 'content'
       file = open(_fileutil.getOSPath(package_home(globals())+'/www/spacer.gif'),'rb')
-      self.logo = Image(id='logo', title='', file=file.read())
+      self.zmi_logo = Image(id='logo', title='', file=file.read())
       file.close()
 
     # --------------------------------------------------------------------------

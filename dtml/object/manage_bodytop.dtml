@@ -5,4 +5,4 @@
 <div class="zmi_col_left"><a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>banner.gif" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine" border="0"/></a></div>
 <div class="zmi_col_right">| <dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "string_maxlen(getTitlealt(REQUEST),25)"></dtml-if>&nbsp;</div>
 </div>
-<div id="zmi_logo"><a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_logo" border="0" title="<dtml-var "getTitle(REQUEST)">"></a></div>
+<div id="zmi_logo"><a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_zmi_logo" border="0" title="<dtml-var "getTitle(REQUEST)">"></a></div>

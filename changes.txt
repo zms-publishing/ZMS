@@ -1232,3 +1232,8 @@
 2009-06-23:zms-2.11.1-69
 [01202] Applied fix for filenames containing &amp; in object-browser (requested by xm).
 --------------------------------------------------
+2009-06-24:zms-2.11.1-70 (->#132a)
+[01203] Renamed ZMS.logo to ZMS.zmi_logo to avoid conflicts with local namespaces (requested by xm).
+[01204] Applied fix for attribute-caching in multi-sites with rewrite-rules (reported by IAS).
+[01205] Applied fix for links to unknown content-objects in multi-sites (reported by IAS). 
+--------------------------------------------------

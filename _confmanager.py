@@ -654,9 +654,9 @@ class ConfManager(
       # Upload.
       # -------
       elif btn == self.getZMILangStr('BTN_UPLOAD'):
-        #-- Logo.
-        self.logo = Image(id='logo', title='', file='')
-        self.logo.manage_upload(REQUEST['file'],REQUEST)
+        #-- ZMI Logo.
+        self.zmi_logo = Image(id='logo', title='', file='')
+        self.zmi_logo.manage_upload(REQUEST['file'],REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.

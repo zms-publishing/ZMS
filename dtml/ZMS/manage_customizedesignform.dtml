@@ -183,10 +183,10 @@
 
 <dtml-comment>
 ################################################################################
-### Logo
+### ZMI Logo
 ################################################################################
 </dtml-comment>
-  <a name="_logo"></a>
+  <a name="_zmi_logo"></a>
   <dtml-var "f_headline(_,_,headline=getZMILangStr('CAPTION_LOGO'))">
   <table cellspacing="0" cellpadding="2" border="0" style="clear:left">
   <tr valign="middle">

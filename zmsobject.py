@@ -167,12 +167,12 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.get_logo:
+    #  ZMSObject.get_zmi_logo:
     # --------------------------------------------------------------------------
-    get_logo__roles__ = None
-    def get_logo(self, REQUEST, RESPONSE):
-      """ ZMS.get_logo """
-      v = self.logo
+    get_zmi_logo__roles__ = None
+    def get_zmi_logo(self, REQUEST, RESPONSE):
+      """ ZMS.get_zmi_logo """
+      v = self.zmi_logo
       try:
         v = v.data
       except:

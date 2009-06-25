@@ -255,7 +255,10 @@ class ZMSMetaobjManager:
               if portalMaster is not None:
                 master_obs = portalMaster.metaobj_manager.__get_metaobjs__()
             if master_obs is not None:
-              ob = master_obs[ob_id].copy()
+              if master_obs.has_key(ob_id):
+                ob = master_obs[ob_id].copy()
+              else:
+                ob = {'id':ob_id,'type':'ZMSUnknown'}
               ob['acquired'] = acquired
               ob['subobjects'] = subobjects
               obs[ob_id] =  ob

@@ -1060,7 +1060,11 @@ function changeType( el)
       ><dtml-if "not (metaObjId in thisIds and metaObjMap.get(metaObjId,{}).get('acquired',0) == 1) and 
                  ((metaObjPackage == '') or
                   (metaObjPackage in thisIds and not (metaObjPackage in thisIds and metaObjMap.get(metaObjId,{}).get('acquired',0) == 1 and metaObjMap.get(metaObjId,{}).get('subobjects',1) == 1)))"
-       ><dtml-call "res.append(('%s.%s'%(metaObjPackage,metaObjId),metaObj))"
+       ><dtml-if metaObjPackage
+        ><dtml-call "res.append(('%s.%s'%(metaObjPackage,metaObjId),metaObj))"
+       ><dtml-else
+        ><dtml-call "res.append((metaObjId,metaObj))"
+       ></dtml-if
       ></dtml-if
     ></dtml-let
    ></dtml-in
@@ -1185,7 +1189,7 @@ function changeType( el)
          <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
           <dtml-in res
            ><dtml-let metaObj=sequence-item
-            ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"><dtml-var "metaObj['package']">.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option
+            ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"> &mdash;&quot;&mdash;.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option
            ></dtml-let
           ></dtml-in>
          </select>

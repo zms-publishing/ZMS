@@ -477,7 +477,7 @@ function followHref( href, extra)
     <dtml-in "breadcrumbs_obj_path()" reverse>
      <dtml-in "getChildNodes( REQUEST, ['ZMSCustom'])">
       <dtml-let obj=sequence-item metaobj="getMetaobj(meta_id)">
-       <dtml-if "metaobj['type']=='ZMSReference'">
+       <dtml-if "metaobj.get('type')=='ZMSReference'">
         <dtml-unless "meta_id in meta_ids">
          <dtml-call "meta_ids.append( meta_id)">
          <dtml-call "meta_obs.append( obj)">

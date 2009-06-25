@@ -1229,3 +1229,6 @@
 2009-06-22:zms-2.11.1-68
 [01202] Applied fix for update sites in $ZMS_HOME/import/configure.zcml.
 --------------------------------------------------
+2009-06-23:zms-2.11.1-69
+[01202] Applied fix for filenames containing &amp; in object-browser (requested by xm).
+--------------------------------------------------

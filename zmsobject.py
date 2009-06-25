@@ -1292,8 +1292,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             v = self.getObjAttrValue(obj_attr,REQUEST)
             if v is not None:
               xml += "<%s>"%key
-              xml += "<filename>%s</filename>"%v.getFilename()
-              xml += "<content_type>%s</content_type>"%v.getContentType()
+              xml += "<filename>%s</filename>"%_globals.html_quote(v.getFilename())
+              xml += "<content_type>%s</content_type>"%_globals.html_quote(v.getContentType())
               xml += "</%s>"%key
       xml += "</page>"
       return xml

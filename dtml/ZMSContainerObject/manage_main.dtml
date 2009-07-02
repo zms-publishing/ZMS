@@ -207,11 +207,9 @@ function focusSelectProcessResponse(data)
 ><dtml-if accessRights
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"
 ><dtml-var f_display_icon
-><dtml-if "isPage()"
-><dtml-var "getZMILangStr('ACTION_SELECT')%display_type(REQUEST)"
-><dtml-else
-><dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)"
-></dtml-if
+><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
+><dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)"
+></dtml-let
 ></a
 ><dtml-else
 ><dtml-var f_display_icon

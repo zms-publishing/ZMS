@@ -50,6 +50,12 @@ class IZMSMetamodelProvider(Interface):
     @rtype: C{list}
     """
 
+  def getMetaobjAttrs(self, meta_id, types=[]):
+    """
+    Get all attributes for meta-object specified by meta-id.
+    @rtype: C{list}
+    """
+
   def getMetaobjAttr(self, meta_id, key):
     """
     Get attribute for meta-object specified by attribute-id.

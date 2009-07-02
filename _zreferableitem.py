@@ -227,10 +227,24 @@ class ZReferableItem:
     ref_by = []
     for i in v:
       ob = self.getLinkObj(i)
-      if ob is not None and ob.meta_type[:3] == 'ZMS':
-        ob_path = self.getRefObjPath(ob)
-        if not ob_path in ref_by:
-          ref_by.append(ob_path)
+      if ob is not None and ob.meta_type.startswith('ZMS'):
+        has_ref = False
+        for key in ob.getObjAttrs().keys():
+          obj_attr = ob.getObjAttr( key)
+          if obj_attr['datatype_key'] in _globals.DT_STRINGS:
+            for lang in self.getLangIds():
+              req = {'lang':lang,'preview':'preview'}
+              obj_vers = ob.getObjVersion(req)
+              value = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+              svalue = ob.str_item(value)
+              lvalue = []
+              lvalue.extend( ob.re_search( '"(.*?)/%s"'%self.id, svalue))
+              lvalue.extend( filter( lambda x: x.startswith('%s@'%self.getHome().id) or x.endswith('/') or len(x)==0, ob.re_search( '{(.*?)%s}'%self.id, svalue)))
+              has_ref = has_ref or len(lvalue)>0
+        if has_ref:
+          ob_path = self.getRefObjPath(ob)
+          if not ob_path in ref_by:
+            ref_by.append(ob_path)
         if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( self.REQUEST):
           ob.synchronizePublicAccess()
     if strict or len(ref_by) < len(v):
@@ -458,6 +472,7 @@ class ZReferableItem:
           ob = docElmnt.findObjId(path,REQUEST)
     return ob
 
+
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkUrl:
   #
@@ -478,6 +493,7 @@ class ZReferableItem:
       prefix = 'mailto:'
       return prefix + self.encrypt_ordtype(url[len(prefix):])
     return url
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkHtml:
@@ -504,6 +520,7 @@ class ZReferableItem:
         url = ob.getHref2IndexHtml(REQUEST)
         s = html%url
     return s
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.synchronizeRefs:

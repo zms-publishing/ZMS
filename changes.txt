@@ -1241,3 +1241,7 @@
 [01206] Applied fix for SQL-Datasource: make lazy multiselects mor lazy (reported by ROC).
 [01207] Text editing bug with IE8: Text selection impossible (contributed by fh).
 --------------------------------------------------
+2009-07-02:zms-2.11.1-72
+[01208] Revised synchronisation of referencing objects: check for existance plus check for real reference (requested by xm).
+[01209] Added support for expanding / collapsing complex sub-objects. 
+--------------------------------------------------

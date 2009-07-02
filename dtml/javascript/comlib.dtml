@@ -50,6 +50,18 @@ function toggleImage( selector) {
   return;
 }
 
+// #############################################################################
+// ### toggleCookie:
+// #############################################################################
+function toggleCookie( key) {
+  var value = $.cookies.get(key);
+  if (value==null || value=='0') {
+    $.cookies.set(key,'1');
+  }
+  else {
+    $.cookies.del(key);
+  } 
+}
 
 // #############################################################################
 // ### getCoords:

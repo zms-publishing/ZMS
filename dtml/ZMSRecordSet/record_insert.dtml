@@ -16,7 +16,7 @@
        <dtml-comment>##### FORM-DELIMITER #####</dtml-comment>
        <dtml-if "type=='delimiter'">
         <dtml-unless pk>
-         <tr id="tr_<dtml-var id>" valign="middle" class="zmiNeutralColorStrong0">
+         <tr id="tr_<dtml-var id>" valign="middle" class="zmiNeutralColorStrong0 zmiDelimiter">
           <td colspan="2" class="form-label"><dtml-var name></td>
          </tr>
         </dtml-unless>

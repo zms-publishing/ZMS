@@ -13,19 +13,22 @@
  <td class="form-element"><i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i></td>
 </tr>
 <dtml-else>
+ <dtml-let cookie="'%s.%s.delimiter.collapsed'%(meta_id,objAttr['id'])">
   <!-- Object.EDIT -->
   <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
    <dtml-if sequence-start>
     <tr>
-     <td colspan="2" class="zmiNeutralColorLight1">
-      <div class="form-label<dtml-if disabled>-disabled</dtml-if>">
-       <a href="javascript:toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=<dtml-var "objAttr['id']">_img]');"><img id="<dtml-var "objAttr['id']">_img" src="<dtml-var MISC_ZMS>mi.gif" border="0" title="-" align="absmiddle"></a>
+     <td colspan="2" class="zmiNeutralColorLight1 zmiDelimiter">
+      <div class="form-label<dtml-if disabled>-disabled</dtml-if>"
+       onclick="toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=zmi_delimiter_<dtml-var "objAttr['id']">_toggle]');toggleCookie('<dtml-var cookie>');"
+       ><img id="zmi_delimiter_<dtml-var "objAttr['id']">_toggle" border="0" align="absmiddle" 
+        <dtml-if "REQUEST.cookies.get(cookie)">src="<dtml-var MISC_ZMS>pl.gif" title="+"<dtml-else>src="<dtml-var MISC_ZMS>mi.gif" title="-"</dtml-if>>
        <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
       </div>
      </td>
     </tr>
    </dtml-if>
-   <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0">
+   <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
      ><dtml-let actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
        ><dtml-if actions
@@ -33,11 +36,13 @@
        ></dtml-if
        ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">"
         ><dtml-var f_display_icon
-        ><dtml-if "objAttr.get('repetitive',0)==1"
-         ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
-        ><dtml-else
-         ><dtml-var "display_type(REQUEST)"
-        ></dtml-if
+        ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
+         ><dtml-if "objAttr.get('repetitive',0)==1"
+          ><dtml-var "getZMILangStr(l[_.int(isPage())])%'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
+         ><dtml-else
+          ><dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)"
+         ></dtml-if
+        ></dtml-let
        ></a
       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
        ><dtml-if actions
@@ -92,4 +97,5 @@
     ></dtml-if>
    </tr>
   </dtml-in>
+ </dtml-let>
 </dtml-if>

@@ -13,7 +13,7 @@
 </dtml-comment>
 <dtml-if "objAttr['type']=='delimiter'">
 <tr id="tr_<dtml-var key>">
- <td colspan="2" class="zmiHeadline"><dtml-var elLabel></td>
+ <td colspan="2" class="zmiHeadline zmiDelimiter"><dtml-var elLabel></td>
 </tr>
 
 <dtml-comment>

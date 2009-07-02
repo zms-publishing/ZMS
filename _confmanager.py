@@ -682,6 +682,9 @@ class ConfManager(
     def getMetaobjAttrIds(self, meta_id, types=[]):
       return self.metaobj_manager.getMetaobjAttrIds( meta_id, types)
 
+    def getMetaobjAttrs(self, meta_id,  types=[]):
+      return self.metaobj_manager.getMetaobjAttrs( meta_id)
+
     def getMetaobjAttr(self, meta_id, key):
       return self.metaobj_manager.getMetaobjAttr( meta_id, key)
 

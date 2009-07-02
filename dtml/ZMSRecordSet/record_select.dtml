@@ -5,7 +5,7 @@
        <dtml-comment>##### Update.Delimiter #####</dtml-comment>
        <dtml-if "type=='delimiter'">
         <dtml-unless pk>
-         <tr valign="middle" class="zmiNeutralColorStrong0">
+         <tr valign="middle" class="zmiNeutralColorStrong0 zmiDelimiter">
           <th colspan="2" class="form-label" align="left"><dtml-var name></th>
          </tr>
         </dtml-unless>

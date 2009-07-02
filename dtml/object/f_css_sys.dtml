@@ -296,19 +296,16 @@ html>/**/body .zmi_footer select {
  */
 
 .zmiContainerColLeft {
-	border-top: 1px solid #E6E4E6;
 	width:200px;
-	border-bottom: 1px solid #B6B4B6;
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorLight0','#F2F3EE')">;
 }
 
 .zmiContainerColCenter {
-	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 }
 
 .zmiContainerColRight {
 	width:100px;
-	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#EEE')">;
 }
@@ -321,7 +318,6 @@ html>/**/body .zmi_footer select {
 	text-decoration: underline;
 	color: #f90;
 }
-
 
 div.zmiRenderShort {
 	padding: 3px;
@@ -348,7 +344,9 @@ table.zmiHeadline tr td div, td.zmiHeadline, div.zmiHeadline {
 div.zmiHeadline img {
 	vertical-align:bottom;
 }
-
+.zmiDelimiter {
+	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
  * +- Button

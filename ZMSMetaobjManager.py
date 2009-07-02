@@ -442,7 +442,16 @@ class ZMSMetaobjManager:
     #  Returns list of attribute-ids for meta-object specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIds(self, meta_id, types=[]):
-      ids = []
+      return map(lambda x: x['id'], self.getMetaobjAttrs( meta_id, types))
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.getMetaobjAttrs:
+    #
+    #  Returns list of attribute-ids for meta-object specified by meta-id.
+    # --------------------------------------------------------------------------
+    def getMetaobjAttrs(self, meta_id, types=[]):
+      attrs = []
       ob = self.__get_metaobj__(meta_id)
       if ob is not None:
         attrs = ob.get('attrs',ob.get('__obj_attrs__'))
@@ -450,8 +459,7 @@ class ZMSMetaobjManager:
           raise 'Can\'t getMetaobjAttrIds: %s'%(str(meta_id))
         if len( types) > 0:
           attrs = filter( lambda x: x['type'] in types, attrs)
-        ids = map(lambda x: x['id'], attrs)
-      return ids
+      return attrs
 
 
     # --------------------------------------------------------------------------

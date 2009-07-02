@@ -22,10 +22,12 @@
 -->
 
 <dtml-call "REQUEST.set('row',record)"
+><dtml-call "REQUEST.set('entity_',REQUEST.get('entity'))"
 ><dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if
 ><dtml-call "REQUEST.set('css','form-element')"><dtml-if ZMS_CSS_EXTRA><dtml-call "REQUEST.set('css',css+' '+ZMS_CSS_EXTRA)"></dtml-if
 ><dtml-call "REQUEST.set('qexcludeids',[])"><dtml-if ZMS_EXCLUDE_IDS><dtml-call "REQUEST.set('qexcludeids',ZMS_EXCLUDE_IDS)"></dtml-if
 ><dtml-call f_recordset_init
+><dtml-let row_=row
 
 ><dtml-unless "REQUEST.get('f_zmiInputFormJavaScript')"
 ><script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.jec.min-0.5.2.js'></script
@@ -274,7 +276,7 @@
           ><dtml-call "outerjoins.insert(0,'')"
           ><dtml-call "sqlStatement.append(' LEFT OUTER JOIN '.join(outerjoins))"
          ></dtml-if
-         ><dtml-call "sqlStatement.append(' WHERE '+multimultiselect.get('tablename')+'.'+multimultiselect.get('fk')+'='+sql_quote__(entity,primary_key,row.get('id','')))"
+         ><dtml-call "sqlStatement.append(' WHERE '+multimultiselect.get('tablename')+'.'+multimultiselect.get('fk')+'='+sql_quote__(entity,primary_key,row_.get('id','')))"
          ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
          ><!-- input_form.dtml.SQL: <dtml-var sqlStatement> -->
         </dtml-unless>
@@ -514,7 +516,7 @@
        <dtml-unless ZMS_INSERT>
         <dtml-call "REQUEST.set('sqlStatement',[])">
         <dtml-call "sqlStatement.append('SELECT ' + dst['id'] + ' AS dst_id FROM ' + intersection['id'] + ' ')">
-        <dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,row.get(primary_key)))">
+        <dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,row_.get(primary_key)))">
         <dtml-try>
          <!-- MULTISELECT.SQL.INTERSECTION: <dtml-var "''.join(sqlStatement)"> -->
          <dtml-in "query(''.join(sqlStatement))['records']">
@@ -526,17 +528,29 @@
          SQL-ERROR: <dtml-var "''.join(sqlStatement)">
         </dtml-try>
        </dtml-unless>
-       <dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))">
-       <dtml-call "REQUEST.set('sqlStatement',[])">
-       <dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')">
-       <dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')">
-       <dtml-if "fk.has_key('sort')">
-        <dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))">
-       <dtml-else>
-        <dtml-call "sqlStatement.append( 'ORDER BY 2 ')">
-       </dtml-if>
-       <dtml-call "REQUEST.set('optpl',[])">
-       <dtml-try>
+       <dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))"
+       ><dtml-call "REQUEST.set('sqlStatement',[])"
+       ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
+       ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
+       ><dtml-if "multiselect.has_key('lazy')"
+        ><dtml-let where="[]"
+         ><dtml-in value
+          ><dtml-call "where.append(fk.get('fieldname')+'='+sql_quote__(fk.get('tablename'),fk.get('fieldname'),_['sequence-item']))"
+         ><dtml-else
+          ><dtml-call "where.append('1=0')"
+         ></dtml-in
+         ><dtml-if where
+          ><dtml-call "sqlStatement.append('WHERE ' + ' OR '.join(where) + ' ')"
+         ></dtml-if
+        ></dtml-let
+       ></dtml-if
+       ><dtml-if "fk.has_key('sort')"
+        ><dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))"
+       ><dtml-else
+        ><dtml-call "sqlStatement.append( 'ORDER BY 2 ')"
+       ></dtml-if
+       ><dtml-call "REQUEST.set('optpl',[])"
+       ><dtml-try>
         <!-- MULTISELECT.SQL.FOREIGNTABLE: <dtml-var "''.join(sqlStatement)"> -->
         <dtml-in "query(''.join(sqlStatement))['records']"
          ><dtml-let row=sequence-item
@@ -551,15 +565,13 @@
         SQL-ERROR: <dtml-var "''.join(sqlStatement)">
        </dtml-try>
        <dtml-if "multiselect.has_key('lazy')">
-        <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5">
-        <dtml-in optpl>
-         <dtml-let i=sequence-item k="i[0]" v="i[1]">
-          <dtml-if "_.str(k) in value">
-           <option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option>
-          </dtml-if>
-         </dtml-let>
-        </dtml-in>
-        </select>
+        <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5"
+         ><dtml-in optpl
+          ><dtml-let i=sequence-item k="i[0]" v="i[1]"
+           ><option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option
+          ></dtml-let
+         ></dtml-in
+        ></select>
         <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
         <input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"/>
         <dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
@@ -730,3 +742,6 @@
   </dtml-if>
   </form>
 </dtml-unless>
+
+<dtml-call "REQUEST.set('entity',REQUEST.get('entity_'))">
+</dtml-let>

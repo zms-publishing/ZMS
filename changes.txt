@@ -1237,3 +1237,7 @@
 [01204] Applied fix for attribute-caching in multi-sites with rewrite-rules (reported by IAS).
 [01205] Applied fix for links to unknown content-objects in multi-sites (reported by IAS). 
 --------------------------------------------------
+2009-06-30:zms-2.11.1-71
+[01206] Applied fix for SQL-Datasource: make lazy multiselects mor lazy (reported by ROC).
+[01207] Text editing bug with IE8: Text selection impossible (contributed by fh).
+--------------------------------------------------

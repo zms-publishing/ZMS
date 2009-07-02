@@ -6,8 +6,8 @@
  <dtml-call "REQUEST.set('lang', my_lang)">
 </dtml-unless>
 <dtml-call "REQUEST.set('_mo',[])">
-<dtml-in my_manage_options>
-  <dtml-if "not (_['sequence-item']['action'].find('manage_UndoVersionForm')>=0 and not getHistory())">
+<dtml-in my_manage_options mapping>
+  <dtml-if "not action.endswith('manage_UndoVersionForm') or getHistory() or not getAutocommit()">
     <dtml-call "REQUEST['_mo'].append(_['sequence-item'])">
   </dtml-if>
 </dtml-in>

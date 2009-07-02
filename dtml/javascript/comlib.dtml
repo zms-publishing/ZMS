@@ -15,14 +15,41 @@
 // ### toggleElement:
 // #############################################################################
 function toggleElement( selector) {
-  if ($(selector).css("display")=='none') {
-    $(selector).show('fast');
+  var els = $(selector);
+  if ( selector.indexOf("tr[")==0) {
+    if (els.css("visibility")=='hidden') {
+      els.css({'visibility':'visible','display':''});
+    }
+    else {
+      els.css({'visibility':'hidden','display':'none'});
+    }
   }
   else {
-    $(selector).hide('fast');
+    if (els.css("display")=='none') {
+      els.show('fast');
+    }
+    else {
+      els.hide('fast');
+    }
   }
   return;
 }
+
+// #############################################################################
+// ### toggleImage:
+// #############################################################################
+function toggleImage( selector) {
+  var els = $(selector);
+  if ( els.attr("title") == "-") {
+    els.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
+  }
+  else 
+  if ( els.attr("title") == "+") {
+    els.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
+  }
+  return;
+}
+
 
 // #############################################################################
 // ### getCoords:

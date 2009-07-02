@@ -21,3 +21,4 @@ create table cdcompanies (company_id varchar, company_name varchar);
 insert into cdcompanies (company_id, company_name) values ( 'BMG', 'Bertelsmann Music Group');
 insert into cdcompanies (company_id, company_name) values ( 'SOE', 'Sony Entertainment');
 insert into cdcompanies (company_id, company_name) values ( 'ARI', 'Ariola');
+create table cdhascategory (cd_id integer, category_id integer);

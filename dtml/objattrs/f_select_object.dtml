@@ -17,7 +17,12 @@
   <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
    <dtml-if sequence-start>
     <tr>
-     <td colspan="2" class="zmiNeutralColorLight1"><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+     <td colspan="2" class="zmiNeutralColorLight1">
+      <div class="form-label<dtml-if disabled>-disabled</dtml-if>">
+       <a href="javascript:toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=<dtml-var "objAttr['id']">_img]');"><img id="<dtml-var "objAttr['id']">_img" src="<dtml-var MISC_ZMS>mi.gif" border="0" title="-" align="absmiddle"></a>
+       <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+      </div>
+     </td>
     </tr>
    </dtml-if>
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0">

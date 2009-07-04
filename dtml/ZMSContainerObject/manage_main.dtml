@@ -205,12 +205,12 @@ function focusSelectProcessResponse(data)
 <td class="zmiContainerColLeft form-small"
 ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>
 ><dtml-if accessRights
-><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"
-><dtml-var f_display_icon
 ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
-><dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)"
-></dtml-let
+><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)">"
+><dtml-var f_display_icon
+><dtml-var "display_type(REQUEST)"
 ></a
+></dtml-let
 ><dtml-else
 ><dtml-var f_display_icon
 ><dtml-var "display_type(REQUEST)"

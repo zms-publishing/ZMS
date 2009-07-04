@@ -30,25 +30,27 @@
    </dtml-if>
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
-     ><dtml-let actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
+     ><dtml-let accessRights="hasAccess(REQUEST)" actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
        ><dtml-if actions
         ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()"
        ></dtml-if
-       ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">"
+       ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
+        ><dtml-if accessRights><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)">"></dtml-if
         ><dtml-var f_display_icon
-        ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
          ><dtml-if "objAttr.get('repetitive',0)==1"
-          ><dtml-var "getZMILangStr(l[_.int(isPage())])%'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
+          ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
          ><dtml-else
-          ><dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)"
+          ><dtml-var "display_type(REQUEST)"
          ></dtml-if
-        ></dtml-let
-       ></a
-      ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
-       ><dtml-if actions
-        ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
-         ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
-        ></select
+        ><dtml-if accessRights></a></dtml-if
+       ></dtml-let
+      ><dtml-if accessRights
+       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
+        ><dtml-if actions
+         ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+          ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
+         ></select
+        ></dtml-if
        ></dtml-if
       ></dtml-if
      ></dtml-let

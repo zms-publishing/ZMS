@@ -168,19 +168,19 @@
 2007-03-05:zms-2.10.2-01
 -- MINOR CHANGES
 [00369] Applied fix for ZMS eLC: additional condition for SCORMcontent::postTrack().onCourseCompletedEvt (contributed by xm/vy).
-[00370] Added support for display of users in ZMI sitemap (requested by desy).
+[00370] Added support for display of users in zmi sitemap (requested by desy).
 [00371] Added support for Zope-2.10.2.
 --------------------------------------------------
 2007-03-06:zms-2.10.2-02
 -- MINOR CHANGES
-[00372] Revised support for display of users in ZMI sitemap to access-tab (requested by desy).
+[00372] Revised support for display of users in zmi sitemap to access-tab (requested by desy).
 [00373] Added support for Postgres Database Connection: getEntities() (requested by zeitec).
 --------------------------------------------------
 2007-03-08:zms-2.10.2-03
 -- MINOR CHANGES
 [00374] Applied fix for f_zoom_image (contributed by fox).
 [00375] Added support for multilingual special-object attribute-names (requested by desy).
-[00376] Revised support for display of users in ZMI sitemap to access-tab (requested by desy).
+[00376] Revised support for display of users in zmi sitemap to access-tab (requested by desy).
 --------------------------------------------------
 2007-03-09:zms-2.10.2-04
 -- MINOR CHANGES
@@ -190,7 +190,7 @@
 2007-03-09:zms-2.10.2-05
 -- MINOR CHANGES
 [00379] Applied fix for AttributeError in _versionmanager[1290]: 'str' object has no attribute 'append' (reported by desy).
-[00380] Applied fix for search of users in ZMI access-tab (reported by fh).
+[00380] Applied fix for search of users in zmi access-tab (reported by fh).
 [00381] Added special-object 'ZMSMediaPlayer' (contributed by Christian Meier).
 --------------------------------------------------
 2007-03-13:zms-2.10.2-06
@@ -221,7 +221,7 @@
 --------------------------------------------------
 2007-03-23:zms-2.10.2-12
 -- MINOR CHANGES
-[00389] Applied fix for display of deleted users in ZMI sitemap of access-tab (requested by pasc).
+[00389] Applied fix for display of deleted users in zmi sitemap of access-tab (requested by pasc).
 [00390] Revised special-object 'ZMSFormulator' (contributed by fh).
 --------------------------------------------------
 2007-03-26:zms-2.10.2-13
@@ -1243,5 +1243,10 @@
 --------------------------------------------------
 2009-07-02:zms-2.11.1-72
 [01208] Revised synchronisation of referencing objects: check for existance plus check for real reference (requested by xm).
-[01209] Added support for expanding / collapsing complex sub-objects. 
+[01209] Added support for JavaScript-library JQuery.Cookies-2.1.0 (@see http://code.google.com/p/cookies/)
+[01210] Added support for expanding / collapsing complex sub-objects. 
+--------------------------------------------------
+2009-07-03:zms-2.11.1-73
+[01211] Applied fix for SQL-Datasource: missing lazy-attribute in configuration of fks (reported by tf).
+[01212] Revised zmi for sub-objects: action-list, title, js-error (requested by fh, tf).
 --------------------------------------------------

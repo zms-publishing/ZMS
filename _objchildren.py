@@ -187,25 +187,23 @@ class ObjChildren:
       repetitive = objAttr.get('repetitive',0)==1
       mandatory = objAttr.get('mandatory',0)==1
       if len(path) > 0:
-        if repetitive or not mandatory:
-          if self.getAutocommit() or \
-             self.getPrimaryLanguage() == lang or \
-             self.getDCCoverage(REQUEST).find('local.') == 0:
-            if self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory():
-              if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
-                actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
-              can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
-              if can_delete:
-                ob_access = self.getObjProperty('manage_access',REQUEST)
-                can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0))
-                metaObj = self.getMetaobj( self.meta_id)
-                can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
-              if can_delete:
-                actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
-              actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
-            actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-            actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
-            actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
+        if self.getAutocommit() or self.getPrimaryLanguage() == lang or self.getDCCoverage(REQUEST).startswith('local.'):
+          actions.append((self.getZMILangStr('BTN_EDIT'),path + 'manage_main'))
+          if not mandatory and (self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory()):
+            if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
+              actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
+            can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
+            if can_delete:
+              ob_access = self.getObjProperty('manage_access',REQUEST)
+              can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0))
+              metaObj = self.getMetaobj( self.meta_id)
+              can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
+            if can_delete:
+              actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
+            actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
+          actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
+          if not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
+          if not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
       if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0) and (self.cb_dataValid()):
         if objAttr['type']=='*':
           meta_ids = objAttr['keys']

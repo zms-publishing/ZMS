@@ -344,6 +344,10 @@ function mms_normalize_rows(el_tbody) {
              ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=_.int(fk.get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
+             ><td class="form-small" nowrap="nowrap">A.Lazy</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_lazy_%s:int'%column['id'],value=_.int(fk.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+            ></tr
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">B.Options</td
              ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "fk.get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr

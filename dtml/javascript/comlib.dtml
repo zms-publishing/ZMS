@@ -54,12 +54,16 @@ function toggleImage( selector) {
 // ### toggleCookie:
 // #############################################################################
 function toggleCookie( key) {
-  var value = $.cookies.get(key);
-  if (value==null || value=='0') {
-    $.cookies.set(key,'1');
+  try {
+    var value = $.cookies.get(key);
+    if (value==null || value=='0') {
+      $.cookies.set(key,'1');
+    }
+    else {
+      $.cookies.del(key);
+    }
   }
-  else {
-    $.cookies.del(key);
+  catch(e) {
   } 
 }
 

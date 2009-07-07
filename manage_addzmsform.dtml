@@ -1,4 +1,5 @@
 <dtml-call "REQUEST.set('MISC_ZMS','misc_/zms/')">
+<dtml-call "misc_.zms['initutil'].setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html lang="en">
 <head>
@@ -11,10 +12,12 @@
     var i = el.selectedIndex;
     var v = el.options[i].value;
     if (v.length == 0)
-      img_src = "spacer.gif";
+      img_src = "<dtml-var MISC_ZMS>spacer.gif";
+    else if (v.indexOf('http://')==0) 
+      img_src = v.replace('.zexp','.jpg');
     else
-      img_src = "Screen_" + v + ".jpg";
-    document.img_theme.src = "<dtml-var MISC_ZMS>" + img_src;
+      img_src = "<dtml-var MISC_ZMS>"+v.replace('.zexp','.jpg');
+    document.img_theme.src = img_src;
     document.img_theme.alt = v;
   }
 
@@ -52,6 +55,18 @@
 
 //-->
 </script>
+<style type="text/css">
+<!--
+.form-small * {
+  font-size: 11px;
+}
+.form-small {
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000;
+}
+-->
+</style>
 </head>
 
 <body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
@@ -121,7 +136,7 @@
 <tr valign="top">
  <td></td>
  <td>
-  <div class="form-element">
+  <div class="form-small">
    <i><b>WARNING</b>: The primary language can not be changed after instantiation!</i>
   </div>
  </td>
@@ -137,13 +152,14 @@
  <td><div class="form-text">Theme</div></td>
  <td>
   <select class="form-element" name="theme:required" onchange="themeChange(this);" onkeyup="themeChange(this);">
+
     <dtml-in "_.range(99)" reverse>
      <dtml-let idx=sequence-item>
       <dtml-try>
-       <dtml-call "REQUEST.set('o',misc_.zms['Screen_myZMStheme%i.jpg'%idx])">
-       <option value="myZMStheme<dtml-var idx>">myZMStheme<dtml-var idx></option>
+       <dtml-call "REQUEST.set('o',misc_.zms['myZMStheme%i.jpg'%idx])">
+       <option value="myZMStheme<dtml-var idx>.zexp">myZMStheme<dtml-var idx></option>
        <dtml-unless default_img_theme>
-        <dtml-call "REQUEST.set('default_img_theme','Screen_myZMStheme%i.jpg'%idx)">
+        <dtml-call "REQUEST.set('default_img_theme','myZMStheme%i.jpg'%idx)">
        </dtml-unless>
       <dtml-except>
       </dtml-try>
@@ -152,6 +168,28 @@
     <dtml-unless default_img_theme>
      <dtml-call "REQUEST.set('default_img_theme','spacer.gif')">
     </dtml-unless>
+    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0))">
+
+    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0))">
+    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_search('source location=\042(.*?)\042/>',themes))">
+    <dtml-in themes>
+     <dtml-let theme=sequence-item>
+      <dtml-try>
+      <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].http_import('%s/configure.zcml?ts=%s'%(theme,_.str(ZopeTime().timeTime()))))">
+      <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].re_search('<file (.*?)/>',locations))">
+      <dtml-in locations>
+       <dtml-let location=sequence-item>
+        <dtml-call "REQUEST.set('location_id',location[location.find('id=\042')+_.len('id=\042'):])">
+        <dtml-call "REQUEST.set('location_id',location_id[:location_id.find('\042')])">
+        <dtml-call "REQUEST.set('location_title',location[location.find('title=\042')+_.len('title=\042'):])">
+        <dtml-call "REQUEST.set('location_title',location_title[:location_title.find('\042')])">
+        <option value="<dtml-var theme>/<dtml-var location_id>"><dtml-var location_id> (<dtml-var location_title>)</option>
+       </dtml-let>
+      </dtml-in>
+      <dtml-except><!-- [<dtml-var theme>] <dtml-var error_type>: <dtml-var error_value> <dtml-var error_tb> --></dtml-try>
+     </dtml-let>
+    </dtml-in>
+
   </select>
  </td>
 </tr>
@@ -166,6 +204,22 @@
      <td><img name="img_theme" src="<dtml-var MISC_ZMS><dtml-var default_img_theme>" title="" border="0" width="250" height="160"></td>
     </tr>
     </table>
+   </td>
+  </tr>
+  </table>
+ </td>
+</tr>
+<tr valign="top">
+ <td><div class="form-small"><em>Proxy</em></div></td>
+ <td>
+  <table cellspacing="0" cellpadding="1" border="0">
+  <tr valign="top">
+   <td>
+    <input class="form-small" type="text" id="http_proxy" name="http_proxy" value="<dtml-var "misc_.zms['initutil'].getConfProperty('HTTP.proxy','')">">
+    <div align="right" class="form-small">Host:Port</div>
+   </td>
+   <td>
+    [<a href="#" onclick="javascript:self.location='<dtml-var URL>?http_proxy='+document.getElementById('http_proxy').value;" class="form-small">Apply</a>]
    </td>
   </tr>
   </table>
@@ -199,19 +253,19 @@
 </tr>
 <tr valign="middle">
  <td><div class="form-text"><em>Add ZMS Log</em></div></td>
- <td><input type="checkbox" name="zmslog:int" value="1"></td>
+ <td><input type="checkbox" name="zmslog:int" value="1" checked="checked"/></td>
 </tr>
 <tr valign="middle">
  <td><div class="form-text"><em>Add Example Database</em></div></td>
- <td><input type="checkbox" name="specobj_exampledb:int" value="1"></td>
+ <td><input type="checkbox" name="specobj_exampledb:int" value="1"/></td>
 </tr>
 <tr valign="middle">
  <td><div class="form-text"><em>Add Bulletin Board</em></div></td>
- <td><input type="checkbox" name="specobj_discussions:int" value="1"></td>
+ <td><input type="checkbox" name="specobj_discussions:int" value="1"/></td>
 </tr>
 <tr valign="middle">
  <td><div class="form-text"><em>Add Newsletter</em></div></td>
- <td><input type="checkbox" name="specobj_newsletter:int" value="1"></td>
+ <td><input type="checkbox" name="specobj_newsletter:int" value="1"/></td>
 </tr>
 <tr valign="middle">
  <td><div class="form-text"><em>Add Calendar</em></div></td>

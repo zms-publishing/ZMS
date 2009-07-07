@@ -465,7 +465,7 @@ class ZMSSqlDb(ZMSObject):
                 col['key'] = colId
                 col['description'] = colDescr.strip()
                 col['id'] = col['key']
-                col['index'] = col.get('index',len(cols))
+                col['index'] = int(col.get('index',len(cols)))
                 col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
                 col['name'] = col['label']
                 col['mandatory'] = colDescr.find('NOT NULL') > 0 or da.meta_type == 'Z Gadfly Database Connection'
@@ -484,7 +484,7 @@ class ZMSSqlDb(ZMSObject):
             entity['type'] = 'table'
             entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
             entity['sort_id'] = entity['label'].upper()
-            entity['columns'] = cols
+            entity['columns'] = self.sort_list(cols,'index')
             # Add Table.
             entities.append(entity)
       
@@ -520,7 +520,7 @@ class ZMSSqlDb(ZMSObject):
             cols.insert(col['index'], col)
             colNames.append(col['id'].upper())
         entity['interface'] = tableInterface
-        entity['columns'] = cols
+        entity['columns'] = self.sort_list(cols,'index')
         # Set custom table-properties
         for modelTable in filter(lambda x: x['id'].upper() ==tableName.upper(), model):
           for modelTableProp in filter(lambda x: x not in ['columns'], modelTable.keys()):
@@ -535,11 +535,12 @@ class ZMSSqlDb(ZMSObject):
         if entity.has_key('not_found'):
           del entity['not_found']
         if tableName.upper() not in map( lambda x: x['id'].upper(), entities):
+          cols = entity.get('columns',[])
           entity['id'] = tableName
           entity['type'] = entity.get('type','table')
           entity['label'] = entity.get('label',' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip())
           entity['sort_id'] = entity['label'].upper()
-          entity['columns'] = entity.get('columns',[])
+          entity['columns'] = self.sort_list(cols,'index')
           # Add Table.
           entity['not_found'] = 1
           s.append((entity['label'],entity))

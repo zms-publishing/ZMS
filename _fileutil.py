@@ -39,18 +39,12 @@ import zipfile
 # ------------------------------------------------------------------------------
 #  _fileutil.importZexp:
 #
-# Import file from specified path.
+#  Import file from specified path.
 # ------------------------------------------------------------------------------
-def importZexp(self, path, filename):
-  src_filename = path + filename
-  dst_filename = INSTANCE_HOME + '/import/' + filename
-  if src_filename != dst_filename:
-    try: 
-      os.stat(getOSPath(dst_filename)) 
-    except OSError:
-      shutil.copy(src_filename,dst_filename)
+def importZexp(self, filename):
+  filepath = INSTANCE_HOME + '/import/' + filename
   self.manage_importObject(filename)
-  remove(dst_filename)
+  remove(filepath)
 
 
 # ------------------------------------------------------------------------------

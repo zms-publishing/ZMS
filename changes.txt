@@ -1239,7 +1239,7 @@
 --------------------------------------------------
 2009-06-30:zms-2.11.1-71
 [01206] Applied fix for SQL-Datasource: make lazy multiselects mor lazy (reported by ROC).
-[01207] Text editing bug with IE8: Text selection impossible (contributed by fh).
+[01207] Text editing bug with IE8: Text selection impossible (contributed by G. Hoffleit).
 --------------------------------------------------
 2009-07-02:zms-2.11.1-72
 [01208] Revised synchronisation of referencing objects: check for existance plus check for real reference (requested by xm).
@@ -1249,4 +1249,9 @@
 2009-07-03:zms-2.11.1-73
 [01211] Applied fix for SQL-Datasource: missing lazy-attribute in configuration of fks (reported by tf).
 [01212] Revised zmi for sub-objects: action-list, title, js-error (requested by fh, tf).
+--------------------------------------------------
+2009-07-07:zms-2.11.1-74
+[01213] Added new update site: http://zmslabs.org/download/cmess (contributed by C. Meier).
+[01214] Added support for themes in update-sites in $ZMS_HOME/www/themes.zcml.
+[01215] Applied fix for SQL-Datasource: sort-order of table-columns (reported by fh).
 --------------------------------------------------

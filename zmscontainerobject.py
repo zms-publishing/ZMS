@@ -1043,10 +1043,9 @@ class ZMSContainerObject(
       zexp = attr[ 'custom']
       filename = zexp.title_or_id()
       fileid = filename[:filename.find('.')]
-      path = package_home(globals()) + '/import/'
-      _fileutil.exportObj( zexp, path + filename)
-      _fileutil.importZexp( self, path, filename)
-      _fileutil.remove( path + filename)
+      filepath = INSTANCE_HOME + '/import/' + filename
+      _fileutil.exportObj( zexp, filepath)
+      _fileutil.importZexp( self, filename)
       
       ##### Create ####
       id_prefix = _globals.id_prefix(REQUEST.get('id','e'))

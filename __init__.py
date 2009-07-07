@@ -36,6 +36,7 @@ import OFS.misc_
 import os
 import stat
 # Product Imports.
+import _globals
 import zms
 import zmscustom
 import zmssqldb
@@ -57,7 +58,7 @@ import zmstextarea
 import zmsgraphic
 
 ################################################################################
-# Define the initialize() function. 
+# Define the initialize() function.
 ################################################################################
 
 def initialize(context): 
@@ -154,6 +155,9 @@ def initialize(context):
             )
             
         context.registerBaseClass(zms.ZMS)
+        
+        # automated registration for util
+        OFS.misc_.misc_.zms['initutil']=_globals.initutil()
         
         # automated registration for other resources
         for img_path in ['www/','plugins/www/']:

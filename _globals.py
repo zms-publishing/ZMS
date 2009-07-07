@@ -427,7 +427,10 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
     url = url[:i]
   
   # Get Host.
-  host = self.getConfProperty('HTTP.proxy','')
+  host = ''
+  if not url.startswith(HTTP_PREFIX+'localhost') and \
+     not url.startswith(HTTP_PREFIX+'127.0.0.1'):
+    host = self.getConfProperty('HTTP.proxy',host)
   if len( host) == 0:
   
     # Remove HTTP-Prefix.
@@ -606,14 +609,37 @@ def writeError(self, etc=''):
     pass
   return info
 
+################################################################################
+#
+#( Regular Expressions
+#
+################################################################################
 
-"""
+# --------------------------------------------------------------------------
+#  _globals.re_search:
+# --------------------------------------------------------------------------
+def re_search( self, pattern, subject, ignorecase=False):
+  """
+  Scan through string looking for a location where the regular expression 
+  pattern produces a match, and return a corresponding MatchObject 
+  instance. Return None if no position in the string matches the pattern; 
+  note that this is different from finding a zero-length match at some
+  point in the string.
+  """
+  if ignorecase:
+    s = re.compile( pattern, re.IGNORECASE).split( subject)
+  else:
+    s = re.compile( pattern).split( subject)
+  return map( lambda x: s[x*2+1], range(len(s)/2))
+
+#)
+
+
 ################################################################################
 #
-#  DateTime
+#{ DateTime
 #
 ################################################################################
-"""
 
 # ==============================================================================
 # Index  Field  Values  
@@ -764,13 +790,32 @@ def parseLangFmtDate(s):
         pass
   return value
 
+#)
+
 
 ################################################################################
+# Define the initialize() util.
 ################################################################################
-###
-###   class MyClass:
-###
+class initutil:
+
+  def __init__(self):
+    self.__attr_conf_dict__ = {}
+
+  def setConfProperty(self, key, value):
+    self.__attr_conf_dict__[key] = value
+
+  def getConfProperty(self, key, default=None):
+    return self.__attr_conf_dict__.get(key,default)
+
+  def http_import(self, url, method='GET', auth=None, parse_qs=0):
+    return http_import( self, url, method, auth, parse_qs)
+
+  def re_search( self, pattern, subject, ignorecase=False):
+    return re_search( self, pattern, subject, ignorecase)
+
+
 ################################################################################
+# Define MyClass.
 ################################################################################
 class MyClass:
 
@@ -782,11 +827,7 @@ class MyClass:
 
 
 ################################################################################
-################################################################################
-###
-###   class MySectionizer
-###
-################################################################################
+# Define MySectionizer.
 ################################################################################
 class MySectionizer:
 
@@ -825,9 +866,15 @@ class MySectionizer:
       ob.sections = copy.deepcopy(self.sections)
       return ob
 
+    # --------------------------------------------------------------------------
+    #  MySectionizer.getLevel:
+    # --------------------------------------------------------------------------
     def getLevel(self):
       return len(self.sections)
 
+    # --------------------------------------------------------------------------
+    #  MySectionizer.processLevel:
+    # --------------------------------------------------------------------------
     def processLevel(self, level):
       # Increase section counter on this level.
       if level > 0:
@@ -843,11 +890,7 @@ class MySectionizer:
 
 
 ################################################################################
-################################################################################
-###
-###   class MyStack
-###
-################################################################################
+# Define MyStack.
 ################################################################################
 class MyStack:
 

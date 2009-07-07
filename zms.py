@@ -29,7 +29,8 @@ from App.Common import package_home
 from OFS.Image import Image
 from sys import *
 import copy
-import string
+import os
+import shutil
 import sys
 import time
 import urllib
@@ -419,17 +420,34 @@ def recurse_updateVersionPatch(docElmnt, self, REQUEST):
 # ------------------------------------------------------------------------------
 #  initTheme:
 # ------------------------------------------------------------------------------
-def initTheme(self, theme, folder_id, REQUEST):
+def initTheme(self, theme, new_id, REQUEST):
+  
+  filename = _fileutil.extractFilename(theme)
+  id = filename[:filename.rfind('.')]
+  
+  ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
+  filepath = INSTANCE_HOME + '/import/' + filename
+  if theme.startswith('http://'):
+    initutil = _globals.initutil()
+    initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
+    zexp = _globals.http_import( initutil, theme)
+    _fileutil.exportObj( zexp, filepath)
+  else:
+    packagepath = package_home(globals()) + '/import/' + filename
+    try: 
+      os.stat(_fileutil.getOSPath(filepath))
+    except OSError:
+      shutil.copy( packagepath, filepath)
   
   ### Import theme from ZEXP.
-  theme_zexp = theme + '.zexp'
-  _fileutil.importZexp(self,package_home(globals())+'/import/',theme_zexp)
+  _fileutil.importZexp( self, filename)
   
   ### Assign folder-id.
-  if folder_id != theme: self.manage_renameObject(theme,folder_id)
+  if id != new_id:
+    self.manage_renameObject( id=id, new_id=new_id)
   
   ### Return new ZMS home instance.
-  return getattr(self,folder_id)
+  return getattr( self, new_id)
 
 
 # ------------------------------------------------------------------------------
@@ -459,6 +477,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
     obj._setObject(zmslog.id, zmslog)
   
   ### Init Configuration.
+  obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
   obj.setConfProperty('ZMS.autocommit',1)
   obj.setConfProperty('ZMS.Version.autopack',2)
   

@@ -38,10 +38,11 @@
   {
     var b = true;
     <dtml-in grid_cols mapping
+    ><dtml-let grid_col=sequence-item
     ><dtml-unless "id.lower() in _.map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
     ><dtml-call "REQUEST.set('elName','new_%s'%id)"
     ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"
-    ><dtml-if password>
+    ><dtml-if "grid_col.get('password')">
       if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" ||
           self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
         if (fm.elements['<dtml-var elName>'] && fm.elements['<dtml-var "'new_%s_confirm'%id">']) {
@@ -65,6 +66,7 @@
      </dtml-let
     ></dtml-if
     ></dtml-unless
+    ></dtml-let
     ></dtml-in>
     
     // lazy multiselects (all elements starting with 'new_' or containing '_new_' with prefix)
@@ -220,7 +222,7 @@
     ############################################################################
     </dtml-comment>
     <td class="form-element">
-     <dtml-if password>
+     <dtml-if "grid_col.get('password')">
      <dtml-unless ZMS_INSERT>
       <dtml-call "operator_setitem(row,id,'******')">
      </dtml-unless>
@@ -228,7 +230,7 @@
      <input type="hidden" name="<dtml-var elNameOld>" value="<dtml-var "row.get(id,'')" html_quote>"/>
      <dtml-if auto>
       <dtml-if "row.get(id,'')">
-       <dtml-if "type in ['date','datetime','time']">
+       <dtml-if "grid_col.get('type') in ['date','datetime','time']">
         <dtml-var "getLangFmtDate(row.get(id,''),lang,'%s_FMT'%type.upper())">
        <dtml-else>
         <dtml-var "row.get(id,'')">
@@ -242,7 +244,7 @@
      +- MULTIMULTISELECT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      </dtml-comment>
-     <dtml-if multimultiselect>
+     <dtml-if "grid_col.get('multimultiselect')">
      <dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))">
       <table cellspacing="0" cellpadding="1" border="0">
       <tr>
@@ -384,7 +386,7 @@
      +- SELECT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif fk>
+     <dtml-elif "grid_col.get('fk')">
       <dtml-call "REQUEST.set('options',[])">
       <dtml-if "fk.has_key('options')">
        <dtml-call "REQUEST.set('options',fk.get('options',[]))">
@@ -462,14 +464,14 @@
      +- PASSWORD
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type=='password' or grid_col.get('password')">
+     <dtml-elif "grid_col.get('type')=='password' or grid_col.get('password')">
       <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), type='password',css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- CHECKBOX
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type=='checkbox' or grid_col.get('checkbox')">
+     <dtml-elif "grid_col.get('type')=='checkbox' or grid_col.get('checkbox')">
       <dtml-try>
        <dtml-var "getCheckbox(fmName='form0',elName=elName,value=row.get(id,''),enabled=_.True,REQUEST=REQUEST,css=css)">
       <dtml-except>
@@ -480,7 +482,7 @@
      +- MULTISELECT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif multiselect
+     <dtml-elif "grid_col.get('multiselect')"
       ><dtml-if "multiselect.get('custom') or multiselect.get('mysqlset')"
        ><dtml-let optpl="[]"
         ><dtml-call "REQUEST.set('value',row.get(id,''))"
@@ -586,7 +588,7 @@
      +- BLOB
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif blob>
+     <dtml-elif "grid_col.get('blob')">
       <dtml-if "row.get(id,'')">
        <dtml-try>
         <dtml-if "blob['type']=='image'">
@@ -666,39 +668,39 @@
      +- NUMBERS
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type in ['int','smallint','float']">
+     <dtml-elif "grid_col.get('type') in ['int','smallint','float']">
       <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), size=8, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- DATE
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type=='date' or grid_col.get('date')">
+     <dtml-elif "grid_col.get('type')=='date' or grid_col.get('date')">
       <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css)">
-     <dtml-elif "type=='datetime' or grid_col.get('datetime')">
+     <dtml-elif "grid_col.get('type')=='datetime' or grid_col.get('datetime')">
       <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css)">
-     <dtml-elif "type=='time' or grid_col.get('time')">
+     <dtml-elif "grid_col.get('type')=='time' or grid_col.get('time')">
       <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- TEXT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type in ['text']">
+     <dtml-elif "grid_col.get('type')=='text' or grid_col.get('text')">
       <dtml-var "getTextArea(fmName='form0', elName=elName, cols=35, rows=4, value=row.get(id,''), enabled=1, REQUEST=REQUEST, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- RICHTEXT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type=='richtext' or grid_col.get('richtext')">
+     <dtml-elif "grid_col.get('type')=='richtext' or grid_col.get('richtext')">
       <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=_.None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- URL
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "type=='url' or grid_col.get('url')">
+     <dtml-elif "grid_col.get('type')=='url' or grid_col.get('url')">
       <dtml-var "getUrlInput(fmName='form0',elName=elName,elTextName='',size=15,value=row.get(id,''),enabled=1,REQUEST=REQUEST,css='form-element')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -721,7 +723,7 @@
    +- PASSWORD (CONFIRM)
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    </dtml-comment>
-   <dtml-if password>
+   <dtml-if "grid_col.get('password')">
    <tr id="tr_<dtml-var id>_confirm">
     <td class="form-label"><dtml-var "getLangStr(label,lang)"> (<dtml-var "getZMILangStr('ATTR_CONFIRM')">)<dtml-unless nullable><sup style="color:red">*</sup></dtml-unless></td>
     <td class="form-element"><dtml-var "getTextInput(fmName='form0', elName='new_%s_confirm'%id, value=row.get(id,''), type='password', css=css)"></td>

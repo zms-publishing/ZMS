@@ -1255,3 +1255,6 @@
 [01214] Added support for themes in update-sites in $ZMS_HOME/www/themes.zcml.
 [01215] Applied fix for SQL-Datasource: sort-order of table-columns (reported by fh).
 --------------------------------------------------
+2009-07-08:zms-2.11.1-75
+[01216] Applied minor fixes for SQL-Datasource: namespace (password), type 'text', nullable error.
+--------------------------------------------------

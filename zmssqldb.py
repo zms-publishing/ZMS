@@ -146,6 +146,7 @@ class ZMSSqlDb(ZMSObject):
       'checkbox':1,
       'password':1,
       'richtext':1,
+      'text':1,
       'time':1,
       'url':1,
     }
@@ -1000,7 +1001,7 @@ class ZMSSqlDb(ZMSObject):
            (not tablecol.get('multimultiselect')):
           if values.has_key(id) and values.get(id) != old_values.get(id,old[id]):
             value = values.get(id)
-            if value == '' and tablecol('nullable'):
+            if value == '' and tablecol.get('nullable'):
               value = None
             if value != old_values.get(id,old[id]):
               c.append({'id':id,'value':value})
@@ -1079,7 +1080,7 @@ class ZMSSqlDb(ZMSObject):
             self.localfs_remove(path+filename)
           except: pass
           value = ''
-          if column('nullable'):
+          if column.get('nullable'):
             value = 'NULL'
           else:
             value = self.sql_quote__(tablename,id,value)

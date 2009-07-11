@@ -345,6 +345,11 @@ div.zmiHeadline img {
 	vertical-align:bottom;
 }
 .zmiDelimiter {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	padding-left: 3px;
+	height: 22px;
+	line-height: 22px;
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 }
 

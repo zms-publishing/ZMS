@@ -1,0 +1,48 @@
+<dtml-var manage_page_header>
+</head>
+
+<dtml-var manage_tabs>
+<dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
+
+<dtml-var f_bo_area>
+
+<dtml-let basepath="getConfProperty('SVN.path','')">
+
+  <form action="manage_customizeSystem" method="post">
+  <input type="hidden" name="execute:int" value="1">
+  <input type="hidden" name="key" value="SVN">
+  <input type="hidden" name="lang" value="<dtml-var lang>">
+  <input type="hidden" name="conf_key" value="SVN.path"/>
+  <input type="hidden" name="conf_value" value="<dtml-var basepath>" size="40"/>
+
+<dtml-in "svnUpdate(getHome(),getConfProperty(conf_key,conf_value)+'/'+getHome().id)" mapping>
+ <dtml-if sequence-start>
+  <table>
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline='Update from Location: %s'%basepath)"></td>
+  </tr>
+ </dtml-if>
+ <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if>">
+  <td class="form-element"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var filepath>" checked="checked"/></td>
+  <td class="form-small"><img src="<dtml-var MISC_ZMS>btn_<dtml-var action>.gif" alt="<dtml-var action>" border="0" align="absmiddle"/> <dtml-var "filepath[_.len(basepath):]"> (<dtml-var meta_type>)</td>
+  <td class="form-small"><dtml-if mtime><dtml-var "getLangFmtDate(_.DateTime(mtime),lang,'DATETIME_FMT')"></dtml-if></td>
+  <td class="form-small"><dtml-if filemtime><dtml-var "getLangFmtDate(_.DateTime(filemtime),lang,'DATETIME_FMT')"></dtml-if></td>
+ <dtml-if sequence-end>
+  </table>
+  <hr size="1"/>
+  <input class="form-submit" type="submit" name="btn" value="Update from Location">
+  &nbsp;&nbsp;
+ </dtml-if>
+<dtml-else>
+  <p>None</p>
+  <hr size="1"/>
+</dtml-in>
+</dtml-let>
+
+  <input class="form-submit" type="submit" name="btn" value="Back">
+  </form>
+  <br/>
+
+<dtml-var f_eo_area>
+
+<dtml-var manage_page_footer>

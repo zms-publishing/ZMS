@@ -1258,3 +1258,6 @@
 2009-07-08:zms-2.11.1-75
 [01216] Applied minor fixes for SQL-Datasource: namespace (password), type 'text', nullable error.
 --------------------------------------------------
+2009-08-05:zms-2.11.1-76
+[01217] Added support for replaction of templates and resources of home-folder to local-filesystem as required by version manager (requested by xm).
+--------------------------------------------------

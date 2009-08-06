@@ -213,8 +213,9 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     # @see _exportable.py::exportRessources, etc.
     folder = '/misc_/zms'
     for ob_id in self.misc_.zms._d.keys():
-      content_type = guess_content_type( ob_id)
-      RESPONSE.write('<url content_type="%s"><![CDATA[%s/%s]]></url>\n'%(content_type,folder,ob_id))
+      if ob_id != 'initutil':
+        content_type = guess_content_type( ob_id)
+        RESPONSE.write('<url content_type="%s"><![CDATA[%s/%s]]></url>\n'%(content_type,folder,ob_id))
     
     # @see headScript
     for lang in self.getLangIds():

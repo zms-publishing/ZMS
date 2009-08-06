@@ -189,7 +189,7 @@ class ObjChildren:
       if len(path) > 0:
         if self.getAutocommit() or self.getPrimaryLanguage() == lang or self.getDCCoverage(REQUEST).startswith('local.'):
           actions.append((self.getZMILangStr('BTN_EDIT'),path + 'manage_main'))
-          if not mandatory and (self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory()):
+          if repetitive or not mandatory and (self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory()):
             if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
               actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
             can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
@@ -202,8 +202,8 @@ class ObjChildren:
               actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
             actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
           actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-          if not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
-          if not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
+          if repetitive or not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
+          if repetitive or not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
       if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0) and (self.cb_dataValid()):
         if objAttr['type']=='*':
           meta_ids = objAttr['keys']

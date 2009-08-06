@@ -103,9 +103,9 @@
    <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">
     bgcolor="navy"
    <dtml-elif sequence-odd>
-    class="neutralColorLight"
+    class="zmiTableRowOdd"
    <dtml-else>
-    class="neutralColorWhite"
+    class="zmiTableRowEven"
    </dtml-if>>
   <td class="neutralColorMedium">
    <dtml-if "'delete' in grid_options or 'export' in grid_options">

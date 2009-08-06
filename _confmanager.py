@@ -26,6 +26,7 @@ from __future__ import nested_scopes
 from zope.interface import implements
 from cStringIO import StringIO
 from App.Common import package_home
+from DateTime.DateTime import DateTime
 from Globals import HTMLFile
 from OFS.CopySupport import absattr
 from OFS.Image import Image
@@ -134,6 +135,7 @@ class ConfManager(
     # Management Interface.
     # ---------------------
     manage_customize = HTMLFile('dtml/ZMS/manage_customize', globals()) 
+    manage_customizeSvnForm = HTMLFile('dtml/ZMS/manage_customizesvnform', globals()) 
     manage_customizeDesignForm = HTMLFile('dtml/ZMS/manage_customizedesignform', globals()) 
 
 
@@ -249,6 +251,98 @@ class ConfManager(
         return self.getXmlHeader() + self.toXmlString( filenames)
       else:
         return filenames
+
+
+    """
+    ############################################################################
+    ###
+    ###   SVN
+    ###
+    ############################################################################
+    """
+
+    # --------------------------------------------------------------------------
+    #  ConfManager.svnCopy:
+    # --------------------------------------------------------------------------
+    def svnCopy(self, node, path):
+      l = []
+      if node.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
+        filepath = path
+        if node.meta_type in ['DTML Method','DTML Document']:
+          filepath += '.dtml'
+        _fileutil.exportObj(node,filepath)
+        atime = node.bobobase_modification_time()
+        mtime = node.bobobase_modification_time()
+        times = (atime,mtime)
+        os.utime(filepath,times)
+        l.append({'filepath':filepath,'mtime':mtime,'meta_type':node.meta_type})
+      elif node.meta_type in ['Folder','ZMS','ZMSMetamodelProvider']:
+        for ob in node.objectValues():
+          id = absattr(ob.id)
+          filepath = path+os.sep+id
+          l.extend( self.svnCopy(ob,filepath))
+      return l
+
+
+    # --------------------------------------------------------------------------
+    #  ConfManager.svnUpdate:
+    # --------------------------------------------------------------------------
+    def svnUpdate(self, node, path, ids=[]):
+      l = []
+      for filename in os.listdir(path):
+        action = None
+        id = filename
+        filepath = path+os.sep+id
+        filestat = os.stat(filepath)
+        mode = filestat[stat.ST_MODE]
+        filemtime = long(filestat[stat.ST_MTIME])
+        if id.endswith('.dtml'):
+          id = id[:id.rfind('.')]
+        ob = getattr( node, id, None)
+        if stat.S_ISDIR(mode):
+          if ob is None:
+            if filepath in ids:
+              node.manage_addFolder( id, 'New Folder')
+            ob = getattr( node, id, None)
+            meta_type = 'Folder'
+            mtime = 0
+            action = 'insert'
+          if action:
+            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+          l.extend( self.svnUpdate(ob,filepath,ids))
+        else:
+          if ob is None:
+            if filename.endswith('.dtml'):
+              meta_type = 'DTML Method'
+              if filepath in ids:
+                node.manage_addDTMLMethod( id=id, title='New DTML Method')
+            elif filename.lower().endswith('.gif') or \
+                 filename.lower().endswith('.jpg') or \
+                 filename.lower().endswith('.png'):
+              meta_type = 'Image'
+              if filepath in ids:
+                node.manage_addImage( id=id, file='', title='')
+            else:
+              meta_type = 'File'
+              if filepath in ids:
+                node.manage_addFile( id=id, file='', title='')
+            ob = getattr( node, id, None)
+            mtime = 0
+            action = 'insert'
+          else:
+            meta_type = ob.meta_type
+            # modification-time
+            mtime = long(ob.bobobase_modification_time().timeTime())
+            if mtime < filemtime:
+              action = 'refresh'
+          if action:
+            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+            if filepath in ids:
+              file = open(filepath)
+              data = file.read()
+              ob.manage_upload(data)
+              file.close()
+      return l
 
 
     """
@@ -493,6 +587,25 @@ class ConfManager(
           message = _mediadb.manage_packMediaDb(self)
         elif btn == 'Remove':
           message = _mediadb.manage_delMediaDb(self)
+      
+      ##### SVN ####
+      elif key == 'SVN':
+        k = REQUEST.get( 'conf_key')
+        v = REQUEST.get( 'conf_value', '')
+        self.setConfProperty( k, v)
+        if btn == 'Change':
+          message = self.getZMILangStr('MSG_CHANGED')
+        elif btn == 'Copy to Location':
+          l = self.svnCopy(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id)
+          message = self.getZMILangStr('MSG_EXPORTED')%str(len(l))
+        elif btn == 'Update from Location':
+          execute = REQUEST.get('execute')
+          if execute:
+            ids = REQUEST.get('ids',[])
+            l = self.svnUpdate(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id,ids)
+            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
+          else:
+            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v}))
       
       ##### Custom ####
       elif key == 'Custom':

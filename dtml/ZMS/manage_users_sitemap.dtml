@@ -214,51 +214,39 @@ function processResponseGetChildNodes(data)
       td.setAttribute( "className", "form-small");
       if (td.style.display)
         td.style.display="table-cell";
-      var page_users = page.getElementsByTagName("users");
-      if ( page_users.length > 0) {
-        for ( var j = 0; j < page_users[0].firstChild.childNodes.length; j++) {
-          var user = page_users[0].firstChild.childNodes[j];
-          if ( user.nodeName == 'item' ) {
-            var userId = user.getAttribute("key");
-            var userRoles = "";
-            var userLangs = "";
-            for ( var k = 0; k < user.firstChild.childNodes.length; k++) {
-              var userAttr = user.firstChild.childNodes[k];
-              if ( userAttr.nodeName == 'item' ) {
-                if ( userAttr.getAttribute("key") == "roles") {
-                  var items = userAttr.getElementsByTagName("item");
-                  for ( var l = 0; l < items.length; l++) {
-                    if ( userRoles.length > 0) 
-                      userRoles += ",";
-                    var userRole = items[l].firstChild.data;
-                    <dtml-in "['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']">
-                      if ( userRole == "<dtml-var sequence-item>") {
-                        userRoles += "<dtml-var "getZMILangStr('ROLE_%s'%_['sequence-item'].replace(' ','').upper())">";
-                      } else
-                    </dtml-in>
-                    {
-                      userRoles += userRole;
-                    }
-                  }
-                }
-                else if ( userAttr.getAttribute("key") == "langs") {
-                  var items = userAttr.getElementsByTagName("item");
-                  for ( var l = 0; l < items.length; l++) {
-                    if ( userLangs.length > 0) 
-                      userLangs += ",";
-                    userLangs += items[l].firstChild.data.toUpperCase();
-                  }
-                }
-              }
-            }
-            var span = document.createElement( "span");
-            span.setAttribute( "title", userRoles + "; " + userLangs);
-            span.appendChild( document.createTextNode( userId));
-            if ( td.childNodes.length > 0)
-              td.appendChild( document.createTextNode( ", "));
-            td.appendChild( span);
+      var users = $("users > dictionary > item", page);
+      for ( var j = 0; j < users.length; j++) {
+        var user = $(users[j]);
+        var userId = user.attr("key");
+        var userRoles = "";
+        var userLangs = "";
+        var userRolesItems = $("dictionary > item[key=roles] > list > item",user);
+        for ( var k = 0; k < userRolesItems.length; k++) {
+          if ( userRoles.length > 0) 
+            userRoles += ",";
+          var userRole = $(userRolesItems[k]).text();
+          <dtml-in "['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']">
+          if ( userRole == "<dtml-var sequence-item>") {
+            userRoles += "<dtml-var "getZMILangStr('ROLE_%s'%_['sequence-item'].replace(' ','').upper())">";
+          } else
+          </dtml-in>
+          {
+            userRoles += userRole;
           }
         }
+        var userLangsItems = $("dictionary > item[key=langs] > list > item",user);
+        for ( var k = 0; k < userLangsItems.length; k++) {
+          if ( userLangs.length > 0) 
+            userLangs += ",";
+          var userLang = $(userLangsItems[k]).text();
+          userLangs += userLang;
+        }
+        var span = document.createElement( "span");
+        span.setAttribute( "title", userRoles + "; " + userLangs);
+        span.appendChild( document.createTextNode( userId));
+        if ( td.childNodes.length > 0)
+          td.appendChild( document.createTextNode( ", "));
+        td.appendChild( span);
       }
       tr.appendChild( td);
       

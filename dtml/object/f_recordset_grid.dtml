@@ -99,8 +99,7 @@
   <dtml-call "REQUEST.set('row',_['sequence-item'])">
   <dtml-call f_recordset_init>
 
-  <tr valign="top"
-   class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if
+  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if
     ><dtml-if "(REQUEST.get('rindex') is not _.None and REQUEST.get('rindex',-1)==_['res-index']) or 
                (REQUEST.get('rindex') is _.None and REQUEST.get('qindex',-1)==_['res-index'])"
      > zmiTeaserColor</dtml-if>"
@@ -158,11 +157,23 @@
       <dtml-try>
       <dtml-let v="row.get(key,_.None)">
 
-       <dtml-comment>##### Grid.DateTime #####</dtml-comment>
-       <dtml-if "type in ['date','datetime','time']">
-        <dtml-var "getLangFmtDate(v,manage_lang,'%s_FMT'%type.upper())">&nbsp;
-       <dtml-comment>##### Grid.Url #####</dtml-comment>
-       <dtml-elif "type=='url'">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- DATE
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+       <dtml-if "grid_col.get('type')=='date' or grid_col.get('date')">
+        <dtml-var "getLangFmtDate(v,manage_lang,'DATE_FMT')">&nbsp;
+       <dtml-elif "grid_col.get('type')=='datetime' or grid_col.get('datetime')">
+        <dtml-var "getLangFmtDate(v,manage_lang,'DATETIME_FMT')">&nbsp;
+       <dtml-elif "grid_col.get('type')=='time' or grid_col.get('time')">
+        <dtml-var "getLangFmtDate(v,manage_lang,'TIME_FMT')">&nbsp;
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- URL
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+        <dtml-elif "grid_col.get('type')=='url' or grid_col.get('url')">
         <dtml-let ob="getLinkObj(v,REQUEST)">
          <dtml-if ob>
           <a href="<dtml-var "ob.absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>internal_link.gif" alt="<dtml-var "ob.getTitle(REQUEST)">" border="0" align="middle" /><dtml-var "string_maxlen(ob.getTitlealt(REQUEST),20)"></a>
@@ -170,8 +181,12 @@
           <a href="<dtml-var v>" target="_blank"><img src="<dtml-var MISC_ZMS>external_link.gif" title="<dtml-var v>" border="0" align="middle" /></a>
          </dtml-if>
         </dtml-let>&nbsp;
-       <dtml-comment>##### Grid.Object #####</dtml-comment>
-       <dtml-elif "type=='object'">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- OBJECT
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+        <dtml-elif "type=='object'">
         <dtml-if "row.has_key('lang')">
          <dtml-call "REQUEST.set('f_recordset_grid_lang',lang)">
          <dtml-call "REQUEST.set('lang',row.get('lang'))">
@@ -181,18 +196,30 @@
         <dtml-if "row.has_key('lang')">
          <dtml-call "REQUEST.set('lang',f_recordset_grid_lang)">
         </dtml-if>
-       <dtml-comment>##### Grid.Html #####</dtml-comment>
-       <dtml-elif "type=='html'">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- HTML
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+        <dtml-elif "type=='html'">
         <dtml-var v>
-       <dtml-comment>##### Grid.List #####</dtml-comment>
-       <dtml-elif "type=='list'">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- LIST
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+        <dtml-elif "type=='list'">
         <dtml-in v>
          <dtml-let u=sequence-item>
           <dtml-var u>&nbsp;
           <dtml-unless sequence-end><dtml-var "grid_col.get('listseparator',',')"></dtml-unless>
          </dtml-let>
         </dtml-in>
-       <dtml-comment>##### Grid.Default #####</dtml-comment>
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- OTHER
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
        <dtml-else>
         <dtml-try>
          <dtml-let u="string_maxlen(_.str(v),_.max(_.int(200.0/_.len(grid_cols)),grid_col.get('minsize',20)))"

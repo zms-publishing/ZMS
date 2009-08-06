@@ -131,10 +131,10 @@
 
 <dtml-comment>
 ################################################################################
-###  History (Version)
+###  History
 ################################################################################
 </dtml-comment>
-<div id="_History" style="height:100px">
+<div id="_History" style="height:120px">
 <form name="HistoryForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="History">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -204,7 +204,7 @@
 ###  System
 ################################################################################
 </dtml-comment>
-<div id="_History" style="height:200px">
+<div id="_System">
 <dtml-var "f_headline(_,_,headline='System')">
 <div class="form-fixed" style="font-size:10px;padding:4px;">
  ZMS: <dtml-var zms_version>&nbsp;(Build #<dtml-var zms_build><dtml-var zms_patch>)<br />
@@ -377,12 +377,9 @@
 </div>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   M e d i a D B
-     ###
-     ######################################################################
--->
+################################################################################
+###  Media-Folder
+################################################################################
 </dtml-comment>
 <div id="_MediaDb" style="height:150px">
 <form action="manage_customizeSystem" method="post">
@@ -421,12 +418,41 @@
 </div>
 
 <dtml-comment>
-<!-- ######################################################################
-     ###
-     ###   I n s t a l l e d   P r o d u c t s
-     ###
-     ######################################################################
--->
+################################################################################
+###  SVN
+################################################################################
+</dtml-comment>
+<div id="_SVN" style="height:120px">
+<form action="manage_customizeSystem" method="post">
+<input type="hidden" name="key" value="SVN">
+<input type="hidden" name="lang" value="<dtml-var lang>">
+<dtml-var "f_headline(_,_,headline='Subversion')">
+<div class="form-small">Use the subversion-folder to sync home-folder from ZODB with the file-system of your server.</div>
+<table cellspacing="0" cellpadding="1" border="0">
+<tr valign="middle">
+ <td class="form-small"><b>Location</b></td>
+ <td class="form-small">
+  <input type="hidden" name="conf_key" value="SVN.path"/>
+  <input class="form-small" type="text" name="conf_value" value="<dtml-var "getConfProperty('SVN.path','')">" size="40"/>
+ </td>
+</tr>
+<tr valign="middle">
+ <td></td>
+ <td class="form-small">
+  <input class="form-submit" type="submit" name="btn" value="Change">
+  &nbsp;&nbsp;
+  <input class="form-submit" type="submit" name="btn" value="Copy to Location">
+  <input class="form-submit" type="submit" name="btn" value="Update from Location">
+ </td>
+</tr>
+</table>
+</form>
+</div>
+
+<dtml-comment>
+################################################################################
+###  Installed Products
+################################################################################
 </dtml-comment>
 <a name="_InstalledProducts"></a>
 <form name="InstalledProductsForm" action="manage_customizeSystem" method="post">

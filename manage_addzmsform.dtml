@@ -168,9 +168,7 @@
     <dtml-unless default_img_theme>
      <dtml-call "REQUEST.set('default_img_theme','spacer.gif')">
     </dtml-unless>
-    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0))">
-
-    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0))">
+    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))">
     <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_search('source location=\042(.*?)\042/>',themes))">
     <dtml-in themes>
      <dtml-let theme=sequence-item>

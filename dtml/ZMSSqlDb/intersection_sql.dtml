@@ -45,19 +45,21 @@
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
  <dtml-elif multiselect>
   <dtml-unless "multiselect.get('custom') or multiselect.get('mysqlset')">
-   <dtml-let intersection="getEntity(multiselect.get('tablename'))">
+   <dtml-let intersection="getEntity(multiselect.get('tablename'))"
+    ><dtml-call "REQUEST.set('src',_.None)"
+    ><dtml-call "REQUEST.set('dst',_.None)"
+    ><dtml-in "intersection['columns']" mapping
+     ><dtml-let col=sequence-item
+      ><dtml-if fk
+       ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
+        ><dtml-call "REQUEST.set('src',col)"
+       ><dtml-else
+        ><dtml-call "REQUEST.set('dst',col)"
+       ></dtml-if
+      ></dtml-if
+     ></dtml-let
+    ></dtml-in>
     <!-- ### DELETE -->
-    <dtml-in "intersection['columns']" mapping>
-     <dtml-let col=sequence-item>
-      <dtml-if fk>
-       <dtml-if "fk.get('tablename',_.None) == entity">
-        <dtml-call "REQUEST.set('src',col)">
-       <dtml-else>
-        <dtml-call "REQUEST.set('dst',col)">
-       </dtml-if>
-      </dtml-if>
-     </dtml-let>
-    </dtml-in>
     <dtml-call "REQUEST.set('sqlStatement',[])"
     ><dtml-call "sqlStatement.append('DELETE FROM ' + intersection['id'] + ' ')"
     ><dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,rowid))"
@@ -90,15 +92,19 @@
       ></dtml-in
       ><dtml-call "sqlStatement.append(' ) VALUES ( ')"
       ><dtml-call "REQUEST.set('c',0)"
+      ><dtml-call "REQUEST.set('src',_.None)"
+      ><dtml-call "REQUEST.set('dst',_.None)"
       ><dtml-in "intersection['columns']" mapping
        ><dtml-let col=sequence-item
         ><dtml-if fk
          ><dtml-if c
           ><dtml-call "sqlStatement.append(', ')"
          ></dtml-if
-         ><dtml-if "fk.get('tablename',_.None) == entity"
+         ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
+          ><dtml-call "REQUEST.set('src',col)"
           ><dtml-call "sqlStatement.append(sql_quote__(entity,primary_key,rowid))"
          ><dtml-else
+          ><dtml-call "REQUEST.set('dst',col)"
           ><dtml-call "sqlStatement.append(sql_quote__(intersection['id'],col['id'],value))"
          ></dtml-if
          ><dtml-call "REQUEST.set('c',c+1)"

@@ -503,10 +503,12 @@
        ></dtml-let
       ><dtml-else
       ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
+      ><dtml-call "REQUEST.set('src',_.None)"
+      ><dtml-call "REQUEST.set('dst',_.None)"
        ><dtml-in "intersection['columns']" mapping
         ><dtml-let col=sequence-item
          ><dtml-if fk
-          ><dtml-if "fk.get('tablename',_.None) == entity"
+          ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
            ><dtml-call "REQUEST.set('src',col)"
           ><dtml-else
            ><dtml-call "REQUEST.set('dst',col)"
@@ -683,13 +685,6 @@
       <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     +- TEXT
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     </dtml-comment>
-     <dtml-elif "grid_col.get('type')=='text' or grid_col.get('text')">
-      <dtml-var "getTextArea(fmName='form0', elName=elName, cols=35, rows=4, value=row.get(id,''), enabled=1, REQUEST=REQUEST, css=css)">
-     <dtml-comment>
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- RICHTEXT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
@@ -702,6 +697,13 @@
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='url' or grid_col.get('url')">
       <dtml-var "getUrlInput(fmName='form0',elName=elName,elTextName='',size=15,value=row.get(id,''),enabled=1,REQUEST=REQUEST,css='form-element')">
+     <dtml-comment>
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     +- TEXT
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     </dtml-comment>
+     <dtml-elif "grid_col.get('type')=='text' or grid_col.get('text')">
+      <dtml-var "getTextArea(fmName='form0', elName=elName, cols=35, rows=4, value=row.get(id,''), enabled=1, REQUEST=REQUEST, css=css)">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- OTHER

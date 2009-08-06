@@ -302,7 +302,7 @@ def exportObj(obj, filename, filetype='b'):
   filename = getOSPath(filename)
   filepath = getFilePath(filename)
   mkDir(filepath)
-        
+  
   #-- Get object data.
   data = None
   try: # ImageFile

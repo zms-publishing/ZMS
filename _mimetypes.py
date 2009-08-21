@@ -66,6 +66,7 @@ dctMimeType = {
 	,'application/x-excel':application_x_excel
 	,'application/x-gtar':application_zip
 	,'application/x-gzip':application_zip
+	,'application/x-pdf':application_pdf
 	,'application/x-sh':application_sh
 	,'application/x-shockwave-flash':application_shockwave_flash
 	,'application/x-tar':application_zip

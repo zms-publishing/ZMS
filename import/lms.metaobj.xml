@@ -1220,7 +1220,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <div class="navigationScorm">
 <table cellspacing="0" cellpadding="2" border="0">
 <dtml-call "REQUEST.set('nextScoId',getObjProperty('getNextScoId',REQUEST))">
-<dtml-call "REQUEST.set('break',_.False)">
+<dtml-call "REQUEST.set('break',False)">
 
 <dtml-comment>
   <!-- Pre-parsing manifest to identify active SCO -->
@@ -1251,7 +1251,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 </dtml-in>
 
 <dtml-in "getObjProperty('_imsmanifest',REQUEST)" mapping>
-  <dtml-call "REQUEST.set('display',_.True)">
+  <dtml-call "REQUEST.set('display',True)">
   <dtml-call "REQUEST.set('attrData',{})">
   
   <dtml-if userObjTrack>
@@ -1259,7 +1259,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
   <dtml-else>   
     <dtml-in sequencing_rules mapping>
       <dtml-if "rule_condition_op == 'not' and rule_condition == 'satisfied'">
-        <dtml-call "REQUEST.set('display',_.False)">
+        <dtml-call "REQUEST.set('display',False)">
       </dtml-if>
     </dtml-in>
   </dtml-if>
@@ -1314,7 +1314,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
     <tr <dtml-if "id == activeScoId">class="activeSCO"</dtml-if> >
       <td class="navMicro" style="vertical-align:top;white-space:nowrap" >
 
-    <dtml-call "REQUEST.set('reset',_.False)">
+    <dtml-call "REQUEST.set('reset',False)">
     <dtml-if userObjTrack>
      <dtml-let attrData="userObjTrack.get('data',{})" 
                 cmiDict="attrData.get(id,{})" 
@@ -1324,10 +1324,10 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
        <dtml-if "completion_status in ['completed']">
         <dtml-if "success_status in ['failed']">
          <span style="color:red">f</span>
-         <dtml-call "REQUEST.set('reset',REQUEST['reset'] or getObjProperty('resetexam',REQUEST) in [1,_.True])">
+         <dtml-call "REQUEST.set('reset',REQUEST['reset'] or getObjProperty('resetexam',REQUEST) in [1,True])">
         <dtml-elif "success_status in ['passed']">
          <span style="color:green">+</span>
-         <dtml-call "REQUEST.set('reset',REQUEST['reset'] or getObjProperty('resetexam',REQUEST) in [1,_.True])">
+         <dtml-call "REQUEST.set('reset',REQUEST['reset'] or getObjProperty('resetexam',REQUEST) in [1,True])">
         <dtml-else>+</dtml-if>
        <dtml-elif "completion_status in ['incomplete']">
         <span style="color:yellow">-</span>
@@ -1440,12 +1440,12 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
   <dtml-call "REQUEST.set('scoId','')">
   
   <dtml-if userObjTrack>
-  <dtml-call "REQUEST.set('break',_.False)">
+  <dtml-call "REQUEST.set('break',False)">
    <dtml-let attrData="userObjTrack.get('data',{})">
     <dtml-in "getObjProperty('_imsmanifest',REQUEST)" mapping>
      <dtml-if href>
       <dtml-var sequence-item><br/>
-      <dtml-call "REQUEST.set('display',_.True)">
+      <dtml-call "REQUEST.set('display',True)">
       <dtml-in sequencing_rules mapping>
        <dtml-let cmiDict="attrData.get(rule_condition_ref,{})" 
                  success_status="cmiDict.get( 'cmi.success_status' ,'unknown')"
@@ -1467,7 +1467,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
       </dtml-in>
       <dtml-if "REQUEST['display']">
        <dtml-unless "REQUEST['break']">
-        <dtml-call "REQUEST.set('break_rc',_.True)">
+        <dtml-call "REQUEST.set('break_rc',True)">
         <dtml-in sequencing_rules mapping>
          <dtml-let cmiDict="attrData.get( rule_condition_ref, {})" 
                    success_status="cmiDict.get( 'cmi.success_status' ,'unknown')"
@@ -1554,7 +1554,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
   </dtml-comment>
   <dtml-if "cmiDict.get( 'cmi.success_status' ,'unknown').lower() == 'failed' and 
             cmiDict.get( 'cmi.completion_status' ,'unknown').lower() == 'completed' and 
-            getObjProperty('mandatoryexam',REQUEST) in [1,_.True]">
+            getObjProperty('mandatoryexam',REQUEST) in [1,True]">
    <dtml-call "operator_setitem(attrData,cmiScoId,{})">   
   <dtml-comment>
   *** Apply LMS-values. ***
@@ -1700,21 +1700,21 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
-<item key="delete_custom"><![CDATA[<dtml-return "_.True">]]></item>
+<item key="delete_custom"><![CDATA[<dtml-return "True">]]></item>
 <item key="edit" type="list"><list>
 <item><![CDATA[ZMSAdministrator]]></item>
 <item><![CDATA[ZMSAuthor]]></item>
 <item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
-<item key="edit_custom"><![CDATA[<dtml-return "_.True">]]></item>
+<item key="edit_custom"><![CDATA[<dtml-return "True">]]></item>
 <item key="insert" type="list"><list>
 <item><![CDATA[ZMSAdministrator]]></item>
 <item><![CDATA[ZMSAuthor]]></item>
 <item><![CDATA[ZMSEditor]]></item>
 </list>
 </item>
-<item key="insert_custom"><![CDATA[<dtml-return "_.True">]]></item>
+<item key="insert_custom"><![CDATA[<dtml-return "True">]]></item>
 </dictionary>
 </item>
 <item key="acquired" type="int">0</item>
@@ -2247,7 +2247,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <item type="dictionary"><dictionary>
 <item key="custom"><![CDATA[<!--// BO initObjChildren //-->
 
-<dtml-call "REQUEST.set('b',_.False)">
+<dtml-call "REQUEST.set('b',False)">
 <dtml-call "REQUEST.set('ids',getObjProperty('memberIds',REQUEST))">
 <dtml-call "REQUEST.set('memberIds',[])">
 <dtml-call "REQUEST.set('userObjs',REQUEST.get('userObjs',getPersonalProfiles(_,_)))">
@@ -2256,7 +2256,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
   <dtml-if "_.len(filter_list(userObjs,'id',memberId,'=='))==1">
    <dtml-call "memberIds.append(memberId)">
   <dtml-else>
-   <dtml-call "REQUEST.set('b',_.True)">
+   <dtml-call "REQUEST.set('b',True)">
   </dtml-if>
  </dtml-let>
 </dtml-in>
@@ -2269,7 +2269,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
     <dtml-let member="track.getParentNode()" memberId="member.id">
      <dtml-unless "memberId in memberIds">
       <dtml-call "memberIds.append(memberId)">
-      <dtml-call "REQUEST.set('b',_.True)">
+      <dtml-call "REQUEST.set('b',True)">
      </dtml-unless>
     </dtml-let>
    </dtml-if>

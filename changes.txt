@@ -1238,7 +1238,7 @@
 [01205] Applied fix for links to unknown content-objects in multi-sites (reported by IAS). 
 --------------------------------------------------
 2009-06-30:zms-2.11.1-71
-[01206] Applied fix for SQL-Datasource: make lazy multiselects mor lazy (reported by ROC).
+[01206] Applied fix for SQL-Datasource: make lazy multiselects more lazy (reported by ROC).
 [01207] Text editing bug with IE8: Text selection impossible (contributed by G. Hoffleit).
 --------------------------------------------------
 2009-07-02:zms-2.11.1-72
@@ -1259,5 +1259,19 @@
 [01216] Applied minor fixes for SQL-Datasource: namespace (password), type 'text', nullable error.
 --------------------------------------------------
 2009-08-05:zms-2.11.1-76
-[01217] Added support for replaction of templates and resources of home-folder to local-filesystem as required by version manager (requested by xm).
+[01217] Added support for replication of templates and resources of home-folder to local-filesystem as required by version manager (requested by xm).
+--------------------------------------------------
+2009-08-10:zms-2.11.1-77
+[01218] Applied minor fixes for SQL-Datasource: multimultiselects (order of input-fields & lazy config-param), nullable blobs.
+[01219] Applied fix for relative inline-links (requested by xm).
+--------------------------------------------------
+2009-08-20:zms-2.11.1-78
+[01220] Revised support for replication to local-fs: ignore .svn-folders (requested by xm).
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++ IMPORTANT NOTE: Revised indexing of ZCatalog: reindex your catalog!
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--------------------------------------------------
+2009-08-20:zms-2.11.1-79
+[01221] Applied fix for unified object-ids (reported by ubk).
 --------------------------------------------------

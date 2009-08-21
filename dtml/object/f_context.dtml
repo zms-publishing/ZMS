@@ -1,7 +1,7 @@
 <dtml-unless objectPathElements
  ><dtml-call "REQUEST.set('objectPathElements',breadcrumbs_obj_path())"
 ></dtml-unless
-><dtml-call "REQUEST.set('ZMS_CONTENT_EDITABLE',_.True)"
+><dtml-call "REQUEST.set('ZMS_CONTENT_EDITABLE',True)"
 ><dtml-in objectPathElements
  ><dtml-unless "getAutocommit()"
   ><dtml-in "getWfStates(REQUEST)"

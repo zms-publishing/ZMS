@@ -616,7 +616,7 @@ function drag(ereignis) {
  ></dtml-in
 
  ><dtml-call "REQUEST.set( 'seq_index', 0)"
- ><dtml-call "REQUEST.set( 'seq_end', _.False)"
+ ><dtml-call "REQUEST.set( 'seq_end', False)"
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob
@@ -642,7 +642,6 @@ function drag(ereignis) {
       <dtml-if "AUTHENTICATED_USER.has_permission('ZMS UserAdministrator',ob)"><a href="javascript:followHref('<dtml-var absolute_url>/manage_users')"><img src="<dtml-var MISC_ZMS>icon_users.gif" title="<dtml-var "getZMILangStr('TAB_ACCESS')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
      </dtml-if>
      <dtml-try><dtml-if "wl_isLocked()==1"><img src="/p_/davlocked"></dtml-if><dtml-except></dtml-try>
-     <dtml-var "getObjProperty('manage_menu',REQUEST)">
     </div
     ><div id="<dtml-var ob_id>_children" style="margin: 1px 1px 1px 8px"
     ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"

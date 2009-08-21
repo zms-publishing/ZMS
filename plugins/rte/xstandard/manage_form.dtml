@@ -128,7 +128,7 @@
 
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',_.True)">
+<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
 </dtml-unless>
 
 <object id="editor_<dtml-var "REQUEST.get('elName')">"

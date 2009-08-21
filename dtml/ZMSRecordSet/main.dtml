@@ -121,7 +121,7 @@
     <dtml-var "f_headline(_,_,headline='%s <input class=form-small type=text name=qsize:int value=%i size=2>  %s <input class=form-small type=text name=qfilters:int value=%i size=2>'%(getZMILangStr('ATTR_ROWS'),qsize,getZMILangStr('ATTR_FILTER'),SESSION['qfilters']))">
    </td>
   </tr>
-  <dtml-call "REQUEST.set('found_fk_key',_.False)">
+  <dtml-call "REQUEST.set('found_fk_key',False)">
    <dtml-in "metaObj['attrs']" mapping>
     <dtml-if "id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
      <tr valign="middle">
@@ -135,7 +135,7 @@
        </div>
       </td>
      </tr>
-     <dtml-call "REQUEST.set('found_fk_key',_.True)">
+     <dtml-call "REQUEST.set('found_fk_key',True)">
     </dtml-if>
    </dtml-in>
   <dtml-unless found_fk_key>

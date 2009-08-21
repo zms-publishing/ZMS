@@ -300,16 +300,17 @@ class ConfManager(
           id = id[:id.rfind('.')]
         ob = getattr( node, id, None)
         if stat.S_ISDIR(mode):
-          if ob is None:
-            if filepath in ids:
-              node.manage_addFolder( id, 'New Folder')
-            ob = getattr( node, id, None)
-            meta_type = 'Folder'
-            mtime = 0
-            action = 'insert'
-          if action:
-            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-          l.extend( self.svnUpdate(ob,filepath,ids))
+          if filename != '.svn':
+            if ob is None:
+              if filepath in ids:
+                node.manage_addFolder( id, 'New Folder')
+              ob = getattr( node, id, None)
+              meta_type = 'Folder'
+              mtime = 0
+              action = 'insert'
+            if action:
+              l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+            l.extend( self.svnUpdate(ob,filepath,ids))
         else:
           if ob is None:
             if filename.endswith('.dtml'):

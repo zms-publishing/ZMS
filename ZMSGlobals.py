@@ -387,6 +387,11 @@ class ZMSGlobals:
     #  ZMSGlobals.url_append_params:
     # --------------------------------------------------------------------------
     def url_append_params(self, url, dict):
+      anchor = ''
+      i = url.rfind('#')
+      if i > 0:
+        anchor = url[i:]
+        url = url[:i]
       if url.find( 'http://') < 0 and url.find( '../') < 0:
         try:
           if self.REQUEST.get('ZMS_REDIRECT_PARENT'):
@@ -409,12 +414,17 @@ class ZMSGlobals:
           url += sep + qi
         sep = '&amp;'
       url += targetdef
-      return url
+      return url+anchor
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.url_inherit_params:
     # --------------------------------------------------------------------------
     def url_inherit_params(self, url, REQUEST, exclude=[]):
+      anchor = ''
+      i = url.rfind('#')
+      if i > 0:
+        anchor = url[i:]
+        url = url[:i]
       if REQUEST.form:
         for key in REQUEST.form.keys():
           if not key in exclude:
@@ -437,7 +447,7 @@ class ZMSGlobals:
                   c = c + 1
               else:
                 url += key + '=' + urllib.quote(str(v))
-      return url
+      return url+anchor
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.id_quote:

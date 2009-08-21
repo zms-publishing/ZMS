@@ -4,7 +4,7 @@
  <dtml-call "REQUEST.set('id','')">
 </dtml-if>
 
-<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" meta_types="_.filter( lambda x: x not in ['ZMS'], metaObjIds)" valid_types="valid_datatypes+valid_zopetypes+meta_types+['*']"
+<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" meta_types="filter( lambda x: x not in ['ZMS'], metaObjIds)" valid_types="valid_datatypes+valid_zopetypes+meta_types+['*']"
 ><dtml-in metaObjIds
 ><dtml-let x=sequence-item
 ><dtml-call "operator_setitem(metaObjMap,x,getMetaobj(x))"
@@ -449,7 +449,7 @@ function changeType( el)
       <td><div class="form-element"><dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())"></div></td>
       <td align="center"
        ><dtml-if "metaObj['type']=='ZMSPackage'"
-        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=_.int(metaObj.get('subobjects',1)==1),enabled=_.True,REQUEST=REQUEST)"
+        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=_.int(metaObj.get('subobjects',1)==1),enabled=True,REQUEST=REQUEST)"
         ><div class="form-small"><dtml-var "getZMILangStr('ATTR_SUBOBJECTS')"></div
        ><dtml-else>&nbsp;</dtml-if
       ></td>
@@ -727,7 +727,7 @@ function changeType( el)
             ><dtml-if "oAttr['type'] not in ['constant']"
              ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=_.int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
             ><dtml-else
-             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s_:int'%oAttr['id'],value=_.False,enabled=_.False,REQUEST=REQUEST)"
+             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s_:int'%oAttr['id'],value=False,enabled=False,REQUEST=REQUEST)"
             ></dtml-if
            ></td>
           <dtml-elif "oAttr['type'] in metaObjIds+['*']">
@@ -739,7 +739,7 @@ function changeType( el)
           </dtml-if>
           <dtml-unless "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">" align="center"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=_.int(oAttr.get('repetitive',1)==1),enabled=_.False,REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=_.int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
            ></td>
           </dtml-unless>
           <td class="form-small" nowrap="nowrap" width="158"
@@ -909,7 +909,7 @@ function changeType( el)
          <tr valign="middle" class="zmiTableRowEven">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>
           <dtml-if "action=='insert'">
-           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=_.int(metaObj['enabled']==1),enabled=_.True,REQUEST=REQUEST)"></td>
+           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=_.int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
            <td class="form-small">
             <textarea class="form-small" name="access_<dtml-var action>_custom" cols="80" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaObj.get('access',{}).get('%s_custom'%action,'{$}')" html_quote></textarea>
             <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=access_<dtml-var action>_custom&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
@@ -1219,7 +1219,7 @@ function changeType( el)
      ><tr valign="top"
      ><td colspan="2"
      ><dtml-try
-     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(_.str(f.data),mediadbStorable=_.False)" packages="[]" metaObjs="[]"
+     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(_.str(f.data),mediadbStorable=False)" packages="[]" metaObjs="[]"
       ><dtml-in xml mapping
        ><dtml-let metaObj="{'id':key,'name':value['name'],'type':value['type'],'package':value.get('package',None),'revision':value.get('revision','0.0.0'),'zms_system':temp_import_zms_system}"
         ><dtml-if "metaObj['type'] == 'ZMSPackage'"

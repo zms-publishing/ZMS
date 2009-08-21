@@ -34,7 +34,7 @@
  <tr class="neutralColorMedium">
   <th class="form-small">
    <dtml-if "'delete' in grid_options or 'export' in grid_options"
-    ><a href="javascript:var btn=document.getElementById('slctBtn');var slct=btn.src.indexOf('btn_slctall.gif')>0;if(slct){btn.src='<dtml-var MISC_ZMS>btn_slctnone.gif'} else {btn.src='<dtml-var MISC_ZMS>btn_slctall.gif'};selectCheckboxes(document.forms['gridform'],slct);" class="button"
+    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
      ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
     ></a
    </dtml-if>

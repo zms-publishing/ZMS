@@ -1115,7 +1115,7 @@ class ObjAttrs:
               href = href[ :href.rfind( '/')]
             else:
               href = ''
-          ref_obj = self
+          ref_obj = self.getSelf( self.PAGES)
           for el in href.split( '/'):
             if ref_obj is not None:
               if el == '..':

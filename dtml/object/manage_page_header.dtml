@@ -10,7 +10,7 @@
 ><dtml-call "REQUEST.set( 'ZMS_THIS',getSelf())"
 ><dtml-call "REQUEST.set( 'ZMS_ROOT',getDocumentElement().absolute_url())"
 ><dtml-call "REQUEST.set( 'ZMS_COMMON','%s/common'%getHome().absolute_url())"
-><dtml-if "(REQUEST.get('ZMS_PATHCROPPING',_.False) or getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','')==''"
+><dtml-if "(REQUEST.get('ZMS_PATHCROPPING',False) or getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','')==''"
  ><dtml-let base="REQUEST.get('BASE0','')"
   ><dtml-if "ZMS_ROOT.find(base)==0"
    ><dtml-call "REQUEST.set('ZMS_ROOT',ZMS_ROOT[len(base):])"

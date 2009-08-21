@@ -6,7 +6,12 @@
 
 <dtml-var f_bo_area>
 
-<dtml-let basepath="getConfProperty('SVN.path','')">
+<dtml-let basepath="getConfProperty('SVN.path','')" dicon="{
+          'DTML Method':'/misc_/OFSP/dtmlmethod.gif',
+          'File':'/misc_/OFSP/File_icon.gif',
+          'Folder':'/misc_/OFSP/Folder_icon.gif',
+          'Image':'/misc_/OFSP/Image_icon.gif',
+        }">
 
   <form action="manage_customizeSystem" method="post">
   <input type="hidden" name="execute:int" value="1">
@@ -24,7 +29,11 @@
  </dtml-if>
  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if>">
   <td class="form-element"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var filepath>" checked="checked"/></td>
-  <td class="form-small"><img src="<dtml-var MISC_ZMS>btn_<dtml-var action>.gif" alt="<dtml-var action>" border="0" align="absmiddle"/> <dtml-var "filepath[_.len(basepath):]"> (<dtml-var meta_type>)</td>
+  <td class="form-small">
+   <img src="<dtml-var MISC_ZMS>btn_<dtml-var action>.gif" alt="<dtml-var action>" border="0" align="absmiddle"/>
+   <img src="<dtml-var "dicon.get(meta_type,'/misc_/OFSP/%s_icon.gif'%meta_type)">" alt="<dtml-var action>" alt="" title="<dtml-var meta_type>" border="0" align="absmiddle"/>
+   <dtml-var "filepath[_.len(basepath):]"> (<dtml-var meta_type>)
+  </td>
   <td class="form-small"><dtml-if mtime><dtml-var "getLangFmtDate(_.DateTime(mtime),lang,'DATETIME_FMT')"></dtml-if></td>
   <td class="form-small"><dtml-if filemtime><dtml-var "getLangFmtDate(_.DateTime(filemtime),lang,'DATETIME_FMT')"></dtml-if></td>
  <dtml-if sequence-end>

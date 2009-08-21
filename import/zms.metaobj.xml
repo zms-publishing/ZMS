@@ -2065,7 +2065,7 @@ function remoteResponseTimedout() {
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[<dtml-var f_submitBtn>
 </form>
-<dtml-call "REQUEST.set('omit_submitBtn',_.True)">
+<dtml-call "REQUEST.set('omit_submitBtn',True)">
 
 <dtml-unless ZMS_INSERT>
 
@@ -2099,7 +2099,7 @@ function remoteResponseTimedout() {
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr class="list-header">
   <td width="5%" valign="middle"
-    ><a href="javascript:var btn=document.getElementById('slctBtn');var slct=btn.src.indexOf('btn_slctall.gif')>0;if(slct){btn.src='<dtml-var MISC_ZMS>btn_slctnone.gif'} else {btn.src='<dtml-var MISC_ZMS>btn_slctall.gif'};selectCheckboxes(document.forms['form1'],slct);" class="button"
+    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
      ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
     ></a
   ></td>
@@ -2590,13 +2590,13 @@ $()
 
 <dtml-let custom="[]"
  ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_FORMAT')+'</td>')"
- ><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=_.True,css='form-element',REQUEST=REQUEST)+'</td>')"
+ ><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=REQUEST)+'</td>')"
  ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
  ><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
 ><div id="zmiImgZoomDiv" style="visibility:hidden;display:none;"></div
 ><div id="zmiImgZoomImgDiv" style="visibility:hidden;display:none;"
 ><div class="zmiNeutralColorMedium0">
- <dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=_.True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')">
+ <dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')">
  <hr size="1"/>
  <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"/>
  <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"/>
@@ -2910,7 +2910,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 
 <tr>
  <td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
- <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=_.True,REQUEST=REQUEST)"></td>
+ <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=True,REQUEST=REQUEST)"></td>
  <dtml-in "_.range(table_cols)">
   <dtml-let col_index=sequence-index>
    <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>"><dtml-if "getObjProperty('colgroup',REQUEST)"><dtml-var "table_widths[col_index]">%<dtml-else>&nbsp;</dtml-if></td>
@@ -2947,7 +2947,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
        <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">">
         <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
-        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=_.True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
        </<dtml-var tag>>
        </tr>
        </table>

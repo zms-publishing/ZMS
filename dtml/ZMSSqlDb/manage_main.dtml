@@ -12,7 +12,7 @@
 ><dtml-call "recordSet_Filter(REQUEST)"
 ><dtml-call "recordSet_Sort(REQUEST)"
 
-><dtml-let da="getDA()" gadfly="da.meta_type=='Z Gadfly Database Connection'" entities="_.filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id"
+><dtml-let da="getDA()" gadfly="da.meta_type=='Z Gadfly Database Connection'" entities="filter( lambda x: x.get('custom') != 1, getEntities())" sessqentitykey="'qentity_%s'%id" sessqfilterskey="'qfilters_%s'%id"
 
 ><dtml-in "getEntities()" mapping sort=label
  ><dtml-let entity=sequence-item

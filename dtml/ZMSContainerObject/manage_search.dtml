@@ -1,6 +1,6 @@
 <dtml-var manage_page_header>
 </head>
-<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('TAB_SEARCH'),'action':''}],p_languages=_.True)">
+<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('TAB_SEARCH'),'action':''}],p_languages=True)">
 <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',this())">
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_SEARCH','action':'manage_search'},{'label':'ATTR_ATTRS','action':'manage_search_attrs'}])">
 </dtml-if>

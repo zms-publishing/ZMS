@@ -1081,7 +1081,7 @@ class ZMSSqlDb(ZMSObject):
           except: pass
           value = ''
           if column.get('nullable'):
-            value = 'NULL'
+            value = None
           else:
             value = self.sql_quote__(tablename,id,value)
           return value

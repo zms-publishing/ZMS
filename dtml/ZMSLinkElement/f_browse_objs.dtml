@@ -563,7 +563,7 @@ function followHref( href, extra)
  ></dtml-in
 
  ><dtml-call "REQUEST.set( 'seq_index', 0)"
- ><dtml-call "REQUEST.set( 'seq_end', _.False)"
+ ><dtml-call "REQUEST.set( 'seq_end', False)"
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob

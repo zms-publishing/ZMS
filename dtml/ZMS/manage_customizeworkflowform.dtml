@@ -191,7 +191,7 @@
 +- Acquire
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
- <dtml-call "REQUEST.set('b',_.False)">
+ <dtml-call "REQUEST.set('b',False)">
  <dtml-let portalMaster="getPortalMaster()">
   <dtml-if portalMaster>
    <dtml-if "_.len(portalMaster.getWfActivitiesIds()) > 0 and _.len(portalMaster.getWfTransitionsIds()) > 0">
@@ -199,7 +199,7 @@
      <td><div class="form-label"><dtml-var "getZMILangStr('BTN_ACQUIRE')"></div></td>
      <td><input class="form-checkbox" type="checkbox" name="acquire:int" value="1" <dtml-if acquire>checked="checked"</dtml-if>></td>
     </tr>
-    <dtml-call "REQUEST.set('b',_.True)">
+    <dtml-call "REQUEST.set('b',True)">
    </dtml-if>
   </dtml-if>
  </dtml-let>

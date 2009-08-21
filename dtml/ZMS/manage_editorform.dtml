@@ -185,7 +185,7 @@
   <dtml-if displayPreview>
    <frameset rows="0,*">
     <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">
-    <frame name="previewForm" scrolling="auto" src="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{'css_editorform':_.True})">">
+    <frame name="previewForm" scrolling="auto" src="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{'css_editorform':True})">">
    </frameset>
   <dtml-else>
    <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">

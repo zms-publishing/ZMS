@@ -34,13 +34,17 @@ function delBlobBtnClick(fmName, elName, submitBtn) {
 // ### getConfFiles:
 // ############################################################################
 
+var zmiExpandConfFilesProgress = false;
 
 function zmiExpandConfFiles(el, pattern) {
-  if ( el.options.length <=1) {
-    // Set wait-cursor.
-    $(document.body).css( "cursor", "wait");
-    // JQuery.AJAX.get
-    $.get( "getConfFiles?id="+el.id+"&pattern="+escape(pattern), zmiExpandConfFilesProcessResponse);
+  if (!zmiExpandConfFilesProgress) {
+    if ( el.options.length <=1) {
+      zmiExpandConfFilesProgress = true;
+      // Set wait-cursor.
+      $(document.body).css( "cursor", "wait");
+      // JQuery.AJAX.get
+      $.get( "getConfFiles?id="+el.id+"&pattern="+escape(pattern), zmiExpandConfFilesProcessResponse);
+    }
   }
 }
 
@@ -49,18 +53,17 @@ function zmiExpandConfFilesProcessResponse(data) {
   $(document.body).css( "cursor", "auto");
   //
   var select = document.getElementById('init');
-  var optionElements = data.getElementsByTagName('item');
-  for (var i = 0; i < optionElements.length; i++) 
+  var items = $("item",data);
+  for (var i = 0; i < items.length; i++) 
   {
-    if ( i > 0) 
-    {
-      var label = optionElements[i].firstChild.data;
-      var value = optionElements[i].getAttribute("key");
-      var option = new Option( label, value);
-      select.options[ select.length] = option;
-    }
+    var item = $(items[i]);
+    var value = item.attr("key");
+    var label = item.text();
+    var option = new Option( label, value);
+    select.options[ select.length] = option;
   }
   select.selectedIndex = 0;
+  zmiExpandConfFilesProgress = false;
 }
 
 

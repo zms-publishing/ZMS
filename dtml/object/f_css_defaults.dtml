@@ -231,7 +231,7 @@ div.ZMSTeaserElement div.text
 
 <dtml-in "getMetaobjIds(sort=0)"
 ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
-><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='f_css_defaults', metaObj['attrs'])" mapping
+><dtml-in "filter(lambda x: x['type']=='method' and x['id']=='f_css_defaults', metaObj['attrs'])" mapping
 ><dtml-try
 ><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
 ><dtml-except

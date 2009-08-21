@@ -110,7 +110,8 @@ class PathHandler:
     # --------------------------------------------------------------------------
     def base_url(self):
       if  self.getConfProperty( 'ZMS.pathcoherence', 1) == 1:
-        return self.REQUEST.get('BASE0') + '/'.join( list( self.getPhysicalPath()))
+        # return self.REQUEST.get('BASE0') + '/'.join( list( self.getPhysicalPath()))
+        return '/'.join( list( self.getPhysicalPath()))
       else:
         return self.absolute_url()
 

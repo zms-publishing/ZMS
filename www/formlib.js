@@ -452,12 +452,7 @@ function inputValue(v) {
 //-------------------------------------------------------------------
 function selectCheckboxes(fm, v)
 	{
-	    for (var i=0;i<fm.elements.length;i++) {
-	      var e = fm.elements[i];
-		  if (e.name.indexOf('active') < 0 &&
-		      e.type == 'checkbox')
-            e.checked = v;
-	    }
+	  $(':checkbox:not([name~=active])',fm).attr('checked',v)
 	}
 
 //-------------------------------------------------------------------

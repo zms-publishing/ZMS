@@ -133,7 +133,7 @@
    </td>
    <td><div class="form-text"><dtml-var "string_maxlen(metaCmd['name'],20)"></div></td>
    <td><div class="form-text"><i>(<dtml-var "_.getattr(this(),metaCmd['id']).meta_type">)</i></div></td>
-   <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=_.False,REQUEST=REQUEST)"></td>
+   <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=False,REQUEST=REQUEST)"></td>
    <td valign="top" nowrap="nowrap">
     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this);">
     <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
@@ -337,7 +337,7 @@
     <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
    </td>
    <td align="center" class="form-element">
-    <dtml-var "getCheckbox(fmName='form0',elName='_exec:int',value=1,enabled=_.True,REQUEST=REQUEST)">
+    <dtml-var "getCheckbox(fmName='form0',elName='_exec:int',value=1,enabled=True,REQUEST=REQUEST)">
     <div class="form-small">Exec</div>
    </td>
    <td class="form-element" colspan="2">

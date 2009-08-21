@@ -151,7 +151,7 @@ function OnCommand()
 
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',_.True)">
+<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
 </dtml-unless>
 
 <script language="javascript" for=editor_<dtml-var "REQUEST.get('elName')"> event="ControlInitialized">

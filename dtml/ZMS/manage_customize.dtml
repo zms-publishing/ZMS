@@ -6,8 +6,26 @@
 
 <dtml-var f_bo_area>
 
+<dtml-comment>
+################################################################################
+###  Maintenance: Actions
+################################################################################
+</dtml-comment>
+<dtml-if "REQUEST.get('key')=='Maintenance'">
+<dtml-if "REQUEST.get('btn')=='Reindex'">
+<div class="system-msg"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<dtml-elif "REQUEST.get('btn')=='Correct'">
+<div class="system-msg"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(clients=getPortalMaster() is None)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<dtml-elif "REQUEST.get('btn')=='Clear'">
+<div class="system-msg"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<dtml-elif "REQUEST.get('btn')=='Change'">
+ <dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
+ <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('linkcorrection_active')==1)">
+ <dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
+</dtml-if>
+</dtml-if>
+
 <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong1" width="100%">
-<!------------------------------------------------------------------------>
 <tr valign="top" class="zmiNeutralColorLight0">
 <td width="50%">
 
@@ -85,24 +103,14 @@
 
 <dtml-comment>
 ################################################################################
-###  Maintenance
+###  Maintenance: Form
 ################################################################################
 </dtml-comment>
 <div id="_Maintenance" style="height:150px">
 <form name="CatalogForm" action="manage_customize#_Maintenance" method="post">
+<input type="hidden" name="key" value="Maintenance">
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <dtml-var "f_headline(_,_,headline='Maintenance')">
-<dtml-if "REQUEST.get('btn')=='Reindex'">
-<div class="system-msg"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn')=='Correct'">
-<div class="system-msg"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(getPortalMaster() is None)"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn')=='Clear'">
-<div class="system-msg"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn')=='Change'">
- <dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
- <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('linkcorrection_active')==1)">
- <dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
-</dtml-if>
 <table cellspacing="0" cellpadding="2" border="0" >
 <tbody>
 <tr valign="middle" >
@@ -228,7 +236,9 @@
 </div>
 
 </td>
-<!------------------------------------------------------------------------>
+<dtml-comment>
+--------------------------------------------------------------------------------
+</dtml-comment>
 <td width="50%">
 
 <dtml-comment>
@@ -330,7 +340,7 @@
     <td class="form-small"><b>Value</b></td>
     <td class="form-small">
      <dtml-if "datatype=='boolean'">
-      <dtml-var "getCheckbox(fmName='customForm',elName='value:int',value=getConfProperty(key,item.get('default',0)),hidden=_.False,REQUEST=REQUEST)">
+      <dtml-var "getCheckbox(fmName='customForm',elName='value:int',value=getConfProperty(key,item.get('default',0)),hidden=False,REQUEST=REQUEST)">
      <dtml-elif "item.has_key('options')">
       <select name="value">
        <dtml-in "item.get('options')">
@@ -501,7 +511,6 @@
 
 </td>
 </tr>
-<!------------------------------------------------------------------------>
 </table>
 
 <br/><br/>

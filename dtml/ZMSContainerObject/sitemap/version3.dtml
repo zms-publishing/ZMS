@@ -169,7 +169,7 @@ function processResponse()
 
  ><dtml-call "REQUEST.set( 'offs_level', 0)"
  ><dtml-call "REQUEST.set( 'seq_index', 0)"
- ><dtml-call "REQUEST.set( 'seq_end', _.False)"
+ ><dtml-call "REQUEST.set( 'seq_end', False)"
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items
   ><dtml-let ob=sequence-item index=sequence-index access="hasAccess(REQUEST)" highlight="_.int(ob in breadcrumbs)"
@@ -204,7 +204,7 @@ function processResponse()
    ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"
    ><dtml-call "REQUEST.set( 'last_level', ob_level)"
    ><dtml-else
-   ><dtml-call "REQUEST.set( 'seq_end', _.True)"
+   ><dtml-call "REQUEST.set( 'seq_end', True)"
    ></dtml-if
   ></dtml-let
  ></dtml-in

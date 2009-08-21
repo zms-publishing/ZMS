@@ -234,10 +234,10 @@ function hideDstMetaTypes( id)
      <dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('mandatory',0)==1),enabled=metadictAttr['type'] in metaobj_manager.valid_datatypes,REQUEST=REQUEST)">
     </td>
     <td class="form-small" align="center">
-     <dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('multilang',0)==1),enabled=_.False,REQUEST=REQUEST)">
+     <dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('multilang',0)==1),enabled=False,REQUEST=REQUEST)">
     </td>
     <td class="form-small" align="center">
-     <dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('repetitive',0)==1),enabled=_.False,REQUEST=REQUEST)">
+     <dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('repetitive',0)==1),enabled=False,REQUEST=REQUEST)">
     </td>
     <td class="form-small" nowrap="nowrap">
      <dtml-if "metadictAttr['type'] in ['*','autocomplete','multiselect','recordset','select']"

@@ -248,6 +248,43 @@
      <dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))">
       <table cellspacing="0" cellpadding="1" border="0">
       <tr>
+       <dtml-in "multimultiselect.get('tables',[])" mapping
+       ><dtml-let i=sequence-index item=sequence-item
+       ><td style="vertical-align:bottom"
+        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><sup style="color:red">*</sup></dtml-unless></div
+        ><dtml-if "item.has_key('lazy')"
+         ><dtml-let fk=item
+          ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
+          /><input type="hidden" id="new_<dtml-var mmsid><dtml-var sequence-index>" value="" onchange="document.getElementById('<dtml-var mmsid><dtml-var sequence-index>').value=this.value;"
+          /><input type="text" class="<dtml-var css>" style="vertical-align:bottom;background-color:#ddd;" id="displayfield_<dtml-var mmsid><dtml-var sequence-index>" value="" disabled="disabled"
+          /><img 
+              class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+              src="<dtml-var MISC_ZMS>pencil_go.png"
+              title="<dtml-var "getZMILangStr('BTN_OPEN')">" 
+              onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var mmsid><dtml-var sequence-index>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
+          /></dtml-let
+        ><dtml-else
+         ><select class="<dtml-var css>" id="<dtml-var mmsid><dtml-var sequence-index>"
+          ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
+          ><dtml-in "query( 'SELECT ' + fieldname + ' AS qkey, ' + displayfield + ' AS qvalue FROM ' + tablename + ' ORDER BY ' + displayfield)['records']"
+           ><dtml-let row=sequence-item
+            ><option value="<dtml-var "_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
+           ></dtml-let
+          ></dtml-in
+         ></select
+        ></dtml-if
+       ></td
+       ></dtml-let
+       ></dtml-in
+       ><td style="vertical-align:bottom"
+       ><img 
+          class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+          src="<dtml-var MISC_ZMS>pencil_add.png"
+          title="<dtml-var "getZMILangStr('BTN_INSERT')">" 
+          onclick="return multiMultiSelectAddElement('<dtml-var mmsid>',<dtml-var "_.len(multimultiselect.get('tables',[]))">)"
+       /></td>
+      </tr>
+      <tr>
        <td colspan="<dtml-var "_.len(multimultiselect.get('tables',[]))">">
         <div class="form-small"><dtml-in "multimultiselect.get('tables',[])" mapping><dtml-var "getLangStr(label,lang)"><dtml-unless sequence-end>/</dtml-unless></dtml-in></div>
         <dtml-let values="[]" leftjoins="[]" outerjoins="[]">
@@ -340,43 +377,6 @@
             src="<dtml-var MISC_ZMS>pencil_go.png"
             title="Linked Dataset" 
             onclick="javascript:var v=$('#<dtml-var mmsid>').val()[0]; v=v.substr(0,v.indexOf('/')); window.open('manage_main?lang=ger&qentity=<dtml-var "multimultiselect.get('tables',[])[0]['tablename']">&rowid='+v+'&action=update','<dtml-var "getZMILangStr('BTN_OPEN')">')"
-       /></td
-      ></tr
-      ><tr
-       ><dtml-in "multimultiselect.get('tables',[])" mapping
-       ><dtml-let i=sequence-index item=sequence-item
-       ><td style="vertical-align:bottom"
-        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><sup style="color:red">*</sup></dtml-unless></div
-        ><dtml-if "item.has_key('lazy')"
-         ><dtml-let fk=item
-          ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
-          /><input type="hidden" id="new_<dtml-var mmsid><dtml-var sequence-index>" value="" onchange="document.getElementById('<dtml-var mmsid><dtml-var sequence-index>').value=this.value;"
-          /><input type="text" class="<dtml-var css>" style="vertical-align:bottom;background-color:#ddd;" id="displayfield_<dtml-var mmsid><dtml-var sequence-index>" value="" disabled="disabled"
-          /><img 
-              class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
-              src="<dtml-var MISC_ZMS>pencil_go.png"
-              title="<dtml-var "getZMILangStr('BTN_OPEN')">" 
-              onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var mmsid><dtml-var sequence-index>','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
-          /></dtml-let
-        ><dtml-else
-         ><select class="<dtml-var css>" id="<dtml-var mmsid><dtml-var sequence-index>"
-          ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
-          ><dtml-in "query( 'SELECT ' + fieldname + ' AS qkey, ' + displayfield + ' AS qvalue FROM ' + tablename + ' ORDER BY ' + displayfield)['records']"
-           ><dtml-let row=sequence-item
-            ><option value="<dtml-var "_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
-           ></dtml-let
-          ></dtml-in
-         ></select
-        ></dtml-if
-       ></td
-       ></dtml-let
-       ></dtml-in
-       ><td style="vertical-align:bottom"
-       ><img 
-          class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
-          src="<dtml-var MISC_ZMS>pencil_add.png"
-          title="<dtml-var "getZMILangStr('BTN_INSERT')">" 
-          onclick="return multiMultiSelectAddElement('<dtml-var mmsid>',<dtml-var "_.len(multimultiselect.get('tables',[]))">)"
        /></td>
       </tr>
       </table>

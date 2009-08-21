@@ -2,7 +2,7 @@
 ><dtml-let objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
            key="objAttr['id']"
            required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
-           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in [ 'constant', 'method', 'resource', 'DTML Method', 'DTML Document', 'Script (Python)', 'Z SQL Method']"
+           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'resource']"
            fmName="'form0'"
            elName="getObjAttrName(objAttr,lang)"
            elLabel="getObjAttrLabel(objAttr)"
@@ -86,7 +86,11 @@
 </dtml-comment>
 <dtml-elif "objAttr['type'] in getMetaobjIds()+['*']"
  ><dtml-unless "isPageContainer() and key=='e'"
+  ><dtml-if ZMS_LAST_OBJECT_WAS_PRIMITIVE
+   ><dtml-unless omit_submitBtn><dtml-unless "REQUEST.get('submitBtnCount') is not None"><tr><td colspan="2"><dtml-var f_submitBtn></td></tr></dtml-unless></dtml-unless
+  ></dtml-if
   ><dtml-var "f_selectObject(_,_,elLabel=elLabel,objAttr=objAttr)"
+  ><dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',False)"
  ></dtml-unless>
 
 <dtml-comment>
@@ -96,6 +100,7 @@
 <tr id="tr_<dtml-var key>" valign="top">
  <td colspan="2" class="zmiNeutralColorMedium0"><dtml-var "getObjInput(key,REQUEST)"></td>
 </tr>
+<dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
 
 <dtml-comment>
 ##### Cacheable #####
@@ -127,6 +132,7 @@
   </table>
  </td>
 </tr>
+<dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
 </dtml-if>
 
 <dtml-comment>
@@ -138,9 +144,13 @@
  <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
  <td><dtml-var "getObjInput(key,REQUEST)"></td>
 </tr>
+<dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
+
 </dtml-if>
 
 </dtml-if
 ></dtml-if
 ></dtml-let
 ></dtml-in>
+
+<dtml-call "REQUEST.set('omit_submitBtn',REQUEST.get('ZMS_LAST_OBJECT_WAS_PRIMITIVE')==False and REQUEST.get('submitBtnCount') is not None)">

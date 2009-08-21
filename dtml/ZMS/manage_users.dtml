@@ -1,7 +1,7 @@
 <dtml-var manage_page_header>
 </head>
 
-<dtml-var "manage_tabs(_,_,p_languages=_.True)">
+<dtml-var "manage_tabs(_,_,p_languages=True)">
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_EDIT','action':'manage_users'},{'label':'TAB_SITEMAP','action':'manage_users_sitemap'}])">
 <dtml-var f_bo_area>
 

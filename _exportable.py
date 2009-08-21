@@ -283,7 +283,11 @@ class Exportable:
       
       # Export Filter.
       elif export_format in self.getFilterIds():
-        filename, export, content_type = _filtermanager.exportFilter(self, export_format, REQUEST)
+        if REQUEST.get('debug'):
+          url = self.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
+          return RESPONSE.redirect( url)
+        else:
+          filename, export, content_type = _filtermanager.exportFilter(self, export_format, REQUEST)
       
       # return export for download to browser
       if get_data:

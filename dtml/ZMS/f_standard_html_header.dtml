@@ -12,7 +12,7 @@
 ><dtml-else
 ><dtml-in "getMetaobjIds(sort=0)"
 ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
-><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='before_standard_html_header', metaObj['attrs'])" mapping
+><dtml-in "filter(lambda x: x['type']=='method' and x['id']=='before_standard_html_header', metaObj['attrs'])" mapping
 ><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
 ></dtml-in
 ></dtml-let
@@ -20,7 +20,7 @@
 ><dtml-var standard_html_header
 ><dtml-in "getMetaobjIds(sort=0)"
 ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
-><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='standard_html_header', metaObj['attrs'])" mapping
+><dtml-in "filter(lambda x: x['type']=='method' and x['id']=='standard_html_header', metaObj['attrs'])" mapping
 ><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
 ></dtml-in
 ></dtml-let

@@ -18,7 +18,7 @@
    <dtml-with "ob_version[1]">- v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"></dtml-with>
   </div>
  
-  <dtml-call "REQUEST.set('found_differences',_.False)">
+  <dtml-call "REQUEST.set('found_differences',False)">
   <dtml-in "getObjAttrs().keys()">
    <dtml-let key=sequence-item objAttr="getObjAttr(key)">
     <dtml-if "objAttr['id'] not in ['change_dt','change_uid','work_dt','work_uid','attr_dc_coverage','master_version','major_version','minor_version']">
@@ -31,7 +31,7 @@
         <td class="zmiNeutralColorMedium0"><div class="form-small"><dtml-var "objAttr['id']">:</div></td>
         <td class="form-element" style="background-color:#FFFFE0"><dtml-var diff newline_to_br></td>
        </tr>
-       <dtml-call "REQUEST.set('found_differences',_.True)">
+       <dtml-call "REQUEST.set('found_differences',True)">
       </dtml-if>
      </dtml-let>
     </dtml-if>

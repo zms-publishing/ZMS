@@ -43,6 +43,17 @@ zcat_meta_types = ['ZMS','ZMSCustom']
 
 
 # ------------------------------------------------------------------------------
+#  _zcatalogmanager.intValue:
+# ------------------------------------------------------------------------------
+def intValue(v):
+  try:
+    i = int(v)
+  except:
+    i = 0
+  return i
+
+
+# ------------------------------------------------------------------------------
 #  _zcatalogmanager.search_string:
 #
 #  Search string of given value.
@@ -177,18 +188,18 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
 
 
     # --------------------------------------------------------------------------
-    #	ZCatalogItem.search_quote:
+    #  ZCatalogItem.search_quote:
     #
-    #	Remove HTML-Tags.
+    #  Remove HTML-Tags.
     # --------------------------------------------------------------------------
     def search_quote(self, s, maxlen=255, tag='&middot;'):
       return search_quote(s,maxlen,tag)
 
 
     # --------------------------------------------------------------------------
-    #	ZCatalogItem.search_encode:
+    #  ZCatalogItem.search_encode:
     #
-    #	Encodes given string.
+    #  Encodes given string.
     # --------------------------------------------------------------------------
     def search_encode(self, s):
       try:
@@ -263,7 +274,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
               elif obj_attr['id'].find('attr_dc_') == 0:
                 value = value * 3
               v += value
-      for ob in self.getChildNodes():
+      for ob in self.filteredChildNodes(REQUEST):
         if not ob.isCatalogItem():
           v += ob.catalogText(REQUEST)
       return v
@@ -286,6 +297,12 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       return source
 
 
+    ############################################################################
+    ###
+    ###  Metadate: Indices / Columns
+    ###
+    ############################################################################
+
     # --------------------------------------------------------------------------
     #  ZCatalogItem.zcat_data:
     # --------------------------------------------------------------------------
@@ -293,13 +310,59 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       zcat = self.catalogData( {'lang':lang})
       return zcat
 
-
     # --------------------------------------------------------------------------
     #  ZCatalogItem.zcat_text:
     # --------------------------------------------------------------------------
-    def zcat_text( self, lang): 
-      zcat = self.catalogText( {'lang':lang})
+    def zcat_text( self, lang):
+      req = {'lang':lang}
+      zcat = self.catalogText( req)
       zcat = self.search_encode( zcat)
+      return zcat
+
+    # --------------------------------------------------------------------------
+    #  ZCatalogItem.zcat_date:
+    # --------------------------------------------------------------------------
+    def zcat_date( self, lang): 
+      req = {'lang':lang}
+      zcat = self.getObjProperty('attr_dc_date',req)
+      if zcat is None or zcat == '':
+        zcat = self.getObjProperty('change_dt',req)
+      return zcat
+
+    # --------------------------------------------------------------------------
+    #  ZCatalogItem.zcat_title:
+    # --------------------------------------------------------------------------
+    def zcat_title( self, lang):
+      req = {'lang':lang}
+      zcat = self.getTitle( req)
+      zcat = self.search_encode( zcat)
+      zcat = self.search_quote( zcat)
+      return zcat
+
+    # --------------------------------------------------------------------------
+    #  ZCatalogItem.zcat_summary:
+    # --------------------------------------------------------------------------
+    def zcat_summary( self, lang):
+      req = {'lang':lang}
+      zcat = self.getObjProperty( 'attr_dc_description', req)
+      zcat = self.search_encode( zcat)
+      zcat = self.search_quote( zcat)
+      return zcat
+
+    # --------------------------------------------------------------------------
+    #  ZCatalogItem.zcat_url:
+    # --------------------------------------------------------------------------
+    def zcat_url( self, lang):
+      req = {'lang':lang}
+      txng_key = self.txng_get_key()
+      txng_value = None
+      if txng_key is not None:
+        txng_value = self.getObjProperty( txng_key, req)
+      if txng_value is not None:
+        zcat = txng_value.getHref( req)
+        zcat = '/'.join(zcat.split('/')[-2:])
+      else:
+        zcat = 'index_%s.html'%lang
       return zcat
 
 
@@ -325,6 +388,14 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
             # Recreate object-methods for indices.
             index_name = 'zcat_text_%s'%lang
             setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_text.func_code, {}, index_name, (lang,)))
+            index_name = 'zcat_date_%s'%lang
+            setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_date.func_code, {}, index_name, (lang,)))
+            index_name = 'zcat_title_%s'%lang
+            setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_title.func_code, {}, index_name, (lang,)))
+            index_name = 'zcat_summary_%s'%lang
+            setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_summary.func_code, {}, index_name, (lang,)))
+            index_name = 'zcat_url_%s'%lang
+            setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_url.func_code, {}, index_name, (lang,)))
             if self.getConfProperty('ZCatalog.TextIndexNG',0)==1:
               index_name = 'zcat_data_%s'%lang
               setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_data.func_code, {}, index_name, (lang,)))
@@ -368,7 +439,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
         for lang in self.getLangIds():
           REQUEST.set('lang',lang)
           self.synchronizeSearch(REQUEST=REQUEST,forced=1)
-      for ob in self.getChildNodes():
+      for ob in self.filteredChildNodes(REQUEST):
         ob.reindexCatalogItem(REQUEST)
       # Return with message.
       return message
@@ -433,7 +504,7 @@ class ZCatalogManager:
       l.extend( zcatalog.indexes())
       for index_name in l:
         if index_name not in index_names and \
-           index_name.find( 'zcat_') == 0:
+           (index_name.find( 'zcat_') == 0 or index_name == 'meta_id'):
           try:
             zcatalog.manage_delColumn( [ index_name])
           except:
@@ -450,6 +521,9 @@ class ZCatalogManager:
         index_types.append(index['name'])
       for lang in self.getLangIds():
         message += "Index ["
+        index_name = 'meta_id'
+        zcatalog.manage_addColumn(index_name)
+        message += index_name
         index_name = 'zcat_text_%s'%lang
         setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_text.func_code, {}, index_name, (lang,)))
         index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
@@ -461,7 +535,23 @@ class ZCatalogManager:
           index_extras.lexicon_id = 'Lexicon'
         zcatalog.manage_addColumn(index_name)
         zcatalog.manage_addIndex(index_name,index_type,index_extras)
-        message += index_name
+        message += ", "+index_name
+        index_name = 'zcat_date_%s'%lang
+        setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_date.func_code, {}, index_name, (lang,)))
+        zcatalog.manage_addColumn(index_name)
+        message += ", "+index_name
+        index_name = 'zcat_title_%s'%lang
+        setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_title.func_code, {}, index_name, (lang,)))
+        zcatalog.manage_addColumn(index_name)
+        message += ", "+index_name
+        index_name = 'zcat_summary_%s'%lang
+        setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_summary.func_code, {}, index_name, (lang,)))
+        zcatalog.manage_addColumn(index_name)
+        message += ", "+index_name
+        index_name = 'zcat_url_%s'%lang
+        setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_url.func_code, {}, index_name, (lang,)))
+        zcatalog.manage_addColumn(index_name)
+        message += ", "+index_name
         index_type = None
         for k in [ 'ZCTextIndex', 'TextIndexNG2', 'TextIndexNG3']:
           if k in index_types: index_type = k
@@ -522,43 +612,26 @@ class ZCatalogManager:
     #  ZCatalogManager.getCatalogQueryString:
     # --------------------------------------------------------------------------
     def getCatalogQueryString(self, raw, option='AND'):
-      qs = ''
-      raw = raw.replace(' and ',' AND ')
-      raw = raw.replace(' or ',' OR ')
-      if raw.find(' AND ')>=0 and raw.find(' OR ')>=0:
-        for raw_item in raw.split(' '):
-          if len(raw_item)>0:
-            if raw_item in ['AND','OR'] or raw_item[-1]=='*':
-              qs += raw_item + ' '
-            else:
-              qs += raw_item + '* '
-      else:
-        q = 0
-        c = 0
-        i = 0
-        for si in raw.split(self.QUOT):
-          si = si.strip()
-          if si:
-            if i % 2 == 0:
-              for raw_item in si.split(' '):
-                if len(raw_item)>0:
-                  if q==0 and c>0:
-                    qs += option + ' '
-                  if raw_item[0]=='*':
-                    q=1
-                  if q==1:
-                    qs += raw_item +' '
-                  else:
-                    qs += raw_item + '* '
-                  if raw_item[-1]=='*':
-                    q=0
-                  c += 1
-            else:
-              qs += self.QUOT + si + self.QUOT + ' '
-          i += 1
-      qs = qs.replace('-','* AND *')
-      qs = qs.strip()
-      return qs
+      qs = []
+      i = 0
+      for si in raw.split('"'):
+        si = si.strip()
+        if si:
+          if i % 2 == 0:
+            for raw_item in si.split(' '):
+              raw_item = raw_item.strip()
+              if len(raw_item) > 1:
+                raw_item = raw_item.replace('-','* AND *')
+                if not raw_item.endswith('*'):
+                  raw_item += '*'
+                if raw_item not in qs:
+                  qs.append( raw_item)
+          else:
+            raw_item = '"%s"'%si
+            if raw_item not in qs:
+              qs.append( raw_item)
+        i += 1
+      return (' %s '%option).join(filter( lambda x: len(x.strip())>0, qs))
 
 
     # --------------------------------------------------------------------------
@@ -589,23 +662,14 @@ class ZCatalogManager:
     def submitCatalogQuery(self, search_query, search_order_by, search_meta_types, search_clients, REQUEST):
       
       #-- Initialize local variables.
-      message = ''
       rtn = []
+      if search_query == '':
+        return rtn
       
       #-- Process clients.
       if self.getConfProperty('ZCatalog.portalClients',1) == 1 and search_clients == 1:
         for portalClient in self.getPortalClients():
           rtn.extend(portalClient.submitCatalogQuery( search_query, search_order_by, search_meta_types, search_clients, REQUEST))
-      
-      #-- Numbers are not cataloged.
-      lnum = []
-      qs = ''
-      lq = search_query.split(' ')
-      for i in range(len(lq)):
-        try: 
-          lnum.append(int(lq[i].strip()))
-        except:
-          qs += lq[i] + ' '
       
       #-- Search catalog.
       lang = REQUEST['lang']
@@ -616,14 +680,14 @@ class ZCatalogManager:
           d = {}
           d['meta_type'] = zcat_meta_types
           if zcindex.find('zcat_data')==0:
-            d[zcindex] = qs
+            d[zcindex] = search_query
           else:
-            d[zcindex] = self.search_encode( qs)
+            d[zcindex] = self.search_encode( search_query)
           if _globals.debug( self):
-            _globals.writeLog( self, "[submitCatalogQuery]: %s=%s"%(zcindex,d[zcindex]))
+            _globals.writeLog( self, "[searchCatalog]: %s=%s"%(zcindex,d[zcindex]))
           qr = zcatalog(d)
           if _globals.debug( self):
-            _globals.writeLog( self, "[submitCatalogQuery]: qr=%i"%len( qr))
+            _globals.writeLog( self, "[searchCatalog]: qr=%i"%len( qr))
           items.extend( qr)
       
       #-- Sort order.
@@ -633,67 +697,32 @@ class ZCatalogManager:
         order_by = 'time'
       
       #-- Process results.
-      abs_url = self.absolute_url()
-      aq_abs_url = self.aq_absolute_url()
       results = []
       for item in items:
-        # Get object by path.
         data_record_id = item.data_record_id_
         path = zcatalog.getpath(data_record_id)
-        ob = self.getCatalogPathObject( path)
-        # Uncatalog object.
-        uncatalog = ob is None
-        append = ob is not None
-        if not uncatalog:
-          for path_ob in ob.breadcrumbs_obj_path():
-            if not uncatalog:
-              uncatalog = uncatalog or path_ob == self.getTrashcan()
-              append = append and path_ob.isVisible(REQUEST)
-        if uncatalog:
-          try:
-            zcatalog.uncatalog_object(path)
-          except:
-            pass
-          ob = None
-        # Check for valid result.
-        append = append and ob not in map(lambda x: x[1]['ob'], results)
-        if append:
-          # Handle Pages.
-          append = ob.isCatalogItem()
-          # Handle Meta-Types.
-          if len(search_meta_types) > 0:
-            append = append and ob.meta_id in search_meta_types
-          # Handle Numbers.
-          zctext = getattr(ob,'zcat_text_%s'%lang,'')
-          for num in lnum:
-            append = append and zctext.find(str(num))>=0
         # Append to valid results.
-        if append:
-          sum_time = ob.getObjProperty('attr_dc_date',REQUEST)
-          if sum_time is None or len(str(sum_time))==0:
-            sum_time = ob.getObjProperty('change_dt',REQUEST)
-          try:
-            sum_score = int(item.data_record_score_)
-          except:
-            sum_score = 0
-          txng_key = ob.txng_get_key()
-          txng_value = None
-          if txng_key is not None:
-            txng_value = ob.getObjProperty( txng_key, REQUEST)
-          if txng_value is not None:
-            id = ob.id+'/'
-            sum_url = txng_value.getHref(REQUEST)
-            sum_url = sum_url[sum_url.find(id)+len(id):]
-          else:
-            sum_url = 'index_%s.html'%lang
-            if REQUEST.get('preview','')=='preview':
-              sum_url = self.url_append_params(sum_url,{'preview':'preview'})
+        if (len(search_meta_types) == 0 or item.meta_id in search_meta_types) and \
+           (len(filter(lambda x: x[1]['path']==path, results)) == 0):
           result = {}
-          result['ob'] = ob
-          result['score'] = sum_score
-          result['time'] = sum_time
-          result['url'] = ob.getDeclUrl(REQUEST).replace(abs_url,aq_abs_url) + '/' + sum_url
-          results.append((result[order_by],result))
+          result['score'] = intValue(item.data_record_score_)
+          result['time'] = getattr(item,'zcat_date_%s'%lang,None)
+          result['path'] = path
+          if REQUEST.get('search_ob',True):
+            ob = self.getCatalogPathObject( path)
+            append = ob is not None
+            if append:
+              for o in ob.breadcrumbs_obj_path():
+                append = append and o.isActive(REQUEST)
+            if append:
+              result['ob'] = ob
+              result['url'] = ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)
+              results.append((result[order_by],result))
+          else:
+            result['title'] = getattr(item,'zcat_title_%s'%lang,'')
+            result['summary'] = getattr(item,'zcat_summary_%s'%lang,'')
+            result['url'] = path + '/' + getattr(item,'zcat_url_%s'%lang,'')
+            results.append((result[order_by],result))
       
       #-- Sort objects.
       results.sort()

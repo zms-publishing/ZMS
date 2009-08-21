@@ -106,17 +106,18 @@
 
 <dtml-if "REQUEST.has_key('raw')">
 
+ <dtml-call "REQUEST.set('qt',_.DateTime().timeTime())">
  <dtml-call "REQUEST.set('_s',raw)">
  <dtml-call "REQUEST.set('_s',getCatalogQueryString(raw,option))">
  <dtml-call "REQUEST.set('res',[])">
  <dtml-if "REQUEST['raw']"
   ><dtml-in "submitCatalogQuery(REQUEST.get('_s',''),REQUEST.get('search_order_by',1),REQUEST.get('search_meta_types',[]),REQUEST.get('search_clients',1),REQUEST)" mapping
    ><dtml-let row=sequence-item
-    ><dtml-call "REQUEST.set('append',_.True)"
+    ><dtml-call "REQUEST.set('append',True)"
     ><dtml-if "REQUEST.get('search_range','')==getRefObjPath(ZMS_THIS)"
      ><dtml-call "REQUEST.set('append',append and isAnchestor(ob))"
     ><dtml-elif "_.len(REQUEST.get('search_range',[]))>0"
-     ><dtml-call "REQUEST.set('append',_.False)"
+     ><dtml-call "REQUEST.set('append',False)"
      ><dtml-in "REQUEST.get('search_range',[])"
       ><dtml-let ref=sequence-item
        ><dtml-call "REQUEST.set('append',append or getLinkObj(ref).isAnchestor(ob))"
@@ -131,7 +132,7 @@
  ></dtml-if>
 
  <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
- <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b></p>
+ <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b> (<b><dtml-var "_.int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
 
  <dtml-if "_.len(res)==0">
  

@@ -10,7 +10,7 @@
    <dtml-unless "id.find('_')==0">
    <dtml-let obj_attr="getObjAttr(id)">
     <dtml-unless sequence-start>
-     <dtml-unless "type in ['DTML Method','DTML Document','constant','method','resource']">
+     <dtml-unless "type in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'resource']">
       <dtml-try>
       <dtml-let value="formatObjAttrValue(obj_attr,row.get(id,''),lang)">
        <dtml-comment>##### FORM-DELIMITER #####</dtml-comment>

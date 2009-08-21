@@ -495,7 +495,7 @@
 </tr>
 <tr>
  <td><div class="form-label">Master-Version</div></td>
- <td><dtml-var "getTextInput(fmName='form0', elName='version_nr', size=10, value='%i.*.*'%(getObjProperty('master_version',REQUEST)+1), type='text', enabled=_.False)"></td>
+ <td><dtml-var "getTextInput(fmName='form0', elName='version_nr', size=10, value='%i.*.*'%(getObjProperty('master_version',REQUEST)+1), type='text', enabled=False)"></td>
 </tr>
 </table>
 <hr size="1">

@@ -31,9 +31,9 @@
         and HTTP_USER_AGENT.find('MSIE') > 0
         and URL.find('/manage') < 0
         and AUTHENTICATED_USER.has_permission('ZMS Author',context)"
-  ><dtml-unless "REQUEST.get('renderCustomTextShow',_.False)"
+  ><dtml-unless "REQUEST.get('renderCustomTextShow',False)"
    ><script type="text/javascript" src="contentEditable.js"></script
-   ><dtml-call "REQUEST.set('renderCustomTextShow',_.True)"
+   ><dtml-call "REQUEST.set('renderCustomTextShow',True)"
   ></dtml-unless
   ><div class="contentEditableDiv<dtml-if "getObjAttrValue(getObjAttr(key),REQUEST).find('<dtml-')>=0">Disabled</dtml-if>" id="<dtml-var id>_<dtml-var key>"><dtml-var text></div
  ><dtml-else

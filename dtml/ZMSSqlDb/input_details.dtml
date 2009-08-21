@@ -20,14 +20,14 @@
 
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiInputDetailsJavaScript',_.True)">
+<dtml-call "REQUEST.set('f_zmiInputDetailsJavaScript',True)">
 </dtml-unless>
 
 <div style="border: 1px solid #999;  margin: 4px 0px; padding: 4px;background-color:#c9c9c9;">
  <dtml-let master_key=primary_key
    grid_cols="getEntity(details['tablename'])['columns']"
-   details_ordered="_.len(_.filter( lambda x: x['id'].lower()=='sort_id', grid_cols))==1"
-   primary_key="_.filter( lambda x: x.get('pk',0)==1,grid_cols)[0]['id']"
+   details_ordered="_.len(filter( lambda x: x['id'].lower()=='sort_id', grid_cols))==1"
+   primary_key="filter( lambda x: x.get('pk',0)==1,grid_cols)[0]['id']"
 
   ><dtml-comment>
     ############################################################################
@@ -144,7 +144,7 @@
     ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details['tablename'],primary_key,_[primary_key]))"
     ><dtml-call "executeQuery(' '.join(sqlStatement))"
    ></dtml-in
-   ><dtml-call "REQUEST.set('details_normalize',_.False)"
+   ><dtml-call "REQUEST.set('details_normalize',False)"
   ></dtml-if
 
   ><dtml-call "REQUEST.set('sqlStatement',[recordSet_Select(details['tablename'],where='%s.%s='%(details['tablename'],details['fk'])+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))])"
@@ -185,6 +185,8 @@
    </dtml-if>
    <dtml-var "f_recordset_grid(_,_
      ,res=REQUEST['res']
+     ,qsize=len(res)
+     ,qstart=0
      ,grid_url=URL
      ,grid_cols=grid_cols
      ,grid_options=grid_options
@@ -244,8 +246,8 @@
   rowid=details_rowid,
   record=row,
   grid_cols=grid_cols,
-  ZMS_HIDE_FORM=_.True,
-  ZMS_HIDE_HIDDEN_INPUTS=_.True,
+  ZMS_HIDE_FORM=True,
+  ZMS_HIDE_HIDDEN_INPUTS=True,
   ZMS_TABLE_PREFIX=details['tablename'],
   ZMS_ENTITY=details['tablename'],
   ZMS_CSS_EXTRA='zmiTeaserColor',

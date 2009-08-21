@@ -21,7 +21,7 @@
 <input type="hidden" name="id" value="<dtml-var "REQUEST.get('id','e')">">
 <input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 <input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-<dtml-let f_submitInputFieldsTable="_.True"><dtml-var f_submitInputFields></dtml-let>
+<dtml-let f_submitInputFieldsTable="True"><dtml-var f_submitInputFields></dtml-let>
 
 <!-- ### Connection Id -->
 <tr>

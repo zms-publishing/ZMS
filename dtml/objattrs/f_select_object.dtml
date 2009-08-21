@@ -45,7 +45,7 @@
         ><dtml-if accessRights></a></dtml-if
        ></dtml-let
       ><dtml-if accessRights
-       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
+       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',True)"
         ><dtml-if actions
          ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
           ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
@@ -78,26 +78,27 @@
    </tr>
   <dtml-else>
    <tr id="tr_<dtml-var "objAttr['id']">">
-    <td>
-     <div class="form-label<dtml-if disabled>-disabled</dtml-if>">
-      <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
-     </div>
-    </td>
-    <dtml-comment>
-    <!-- ##### actions ##### -->
-    </dtml-comment>
-    <dtml-if "objAttr.get('repetitive',0)==1 or _.len(getObjChildren(objAttr['id'],REQUEST))==0"
-     ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
-      ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',_.True)"
-       ><td>
-        <select class="form-small" onchange="submitSelect(this,'<dtml-var "objAttr['id']">','9900')">
-         <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
-        </select>
-       </td
-      ></dtml-if
-     ></dtml-let
-    ></dtml-if>
-   </tr>
+     <td colspan="2" class="zmiNeutralColorLight1 zmiDelimiter">
+      <div class="form-label zmi_col_left">
+       <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif" title=""/>
+       <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+      </div>
+      <dtml-comment>
+      <!-- ##### actions ##### -->
+      </dtml-comment>
+      <div class="form-element zmi_col_right">
+       <dtml-if "objAttr.get('repetitive',0)==1 or _.len(getObjChildren(objAttr['id'],REQUEST))==0"
+        ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
+         ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',True)"
+          ><select class="form-small" onchange="submitSelect(this,'<dtml-var "objAttr['id']">','9900')">
+           <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
+          </select
+         ></dtml-if
+        ></dtml-let
+       ></dtml-if>
+      </div>
+     </td>
+    </tr>
   </dtml-in>
  </dtml-let>
 </dtml-if>

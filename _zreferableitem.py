@@ -128,10 +128,8 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def getRelObjPath(self, ob):
     ref = '.'
-    currntPath = self.getSelf( self.PAGES).absolute_url()
-    targetPath = ob.absolute_url()
-    currntElmnts = currntPath.split( '/')
-    targetElmnts = targetPath.split( '/')
+    currntElmnts = self.getSelf( self.PAGES).getPhysicalPath()
+    targetElmnts = ob.getSelf( self.PAGES).getPhysicalPath()
     i = 0
     while i < len( currntElmnts) and \
           i < len( targetElmnts) and \
@@ -548,6 +546,28 @@ class ZReferableItem:
     abs_urls = obs.keys()
     abs_urls.sort()
     
+    if clients:
+      did = {}
+      map( lambda x: operator.setitem( did, x.id, did.get(x.id,0)+1), obs.values())
+      for id in filter( lambda x: did.get(x) > 1 and x[-1] in ['0','1','2','3','4','5','6','7','8','9'], did.keys()):
+        prefix = None
+        keys = map( lambda x: (x.find('/content'),x), filter( lambda x: x.endswith('/'+id), obs.keys()))
+        keys.sort()
+        keys = map( lambda x: x[1], keys)
+        for key in keys:
+          ob = obs[key]
+          if prefix is None:
+            prefix = _globals.id_prefix( id)
+            message += '[INFO] %s: Keep unique object-id \'%s\'<br/>'%(key,id)
+          else:
+            new_id = self.getNewId(prefix)
+            try:
+              ob.getParentNode().manage_renameObject( id=id, new_id=new_id)
+              obs[ ob.base_url()] = ob
+              message += '[INFO] %s: Rename to unique object-id \'%s\'<br/>'%(key,new_id)
+            except:
+              message += _globals.writeError( ob, '%s: Can\'t rename to unique object-id \'%s\'<br/>'%(key,new_id))
+    
     # Clear 'referenced by'-attributes.
     if clients:
       for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
@@ -593,16 +613,23 @@ class ZReferableItem:
                         message += 'Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
                         _globals.writeBlock(self,'[synchronizeRefs]: '+message)
                       
-                      f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
+                      f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
                       if len( f) == 0:
                         ref = '__%s__'%ref
                       else:
-                        target = obs[f[0]]
-                        ref = ob.getRefObjPath( target)[2:-1]
-                        target_ref = target.getRefObjPath( ob)
-                        target_ref_by = getattr( target, 'ref_by', [])
-                        if target_ref not in target_ref_by:
-                          setattr( target, 'ref_by', target_ref_by + [ target_ref])
+                        if len( f) > 1:
+                          g = filter( lambda x: x=='/%s/content/%s'%(home,ref), obs.keys())
+                          if len( g) == 1:
+                            f = g
+                          else:
+                            message += '[WARNING] %s: Ambigous reference ref=%s in f=%s'%(ob.absolute_url(),ref,str(f))
+                        else:
+                          target = obs[f[0]]
+                          ref = ob.getRefObjPath( target)[2:-1]
+                          target_ref = target.getRefObjPath( ob)
+                          target_ref_by = getattr( target, 'ref_by', [])
+                          if target_ref not in target_ref_by:
+                            setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
                       m.append(ref+i[i.find('}'):])
@@ -640,19 +667,30 @@ class ZReferableItem:
                       # Extend object-tree.
                       if home not in homes:
                         homes.append( home)
-                        map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( getattr( self, home)))
-                        message += 'Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                        home_ob = getattr( self, home, None)
+                        if home_ob is not None:
+                          map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
+                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                        else:
+                          message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
                         _globals.writeBlock(self,'[synchronizeRefs]: '+message)
                       
-                      f = filter( lambda x: x.find('/%s/content'%home) > 0 and x.endswith('/%s'%id), abs_urls)
+                      f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
                       if len( f) == 0:
                         ref = '__%s__'%ref
                       else:
-                        target = obs[f[0]]
-                        ref = ob.getRefObjPath( target)[2:-1]
-                        target_ref = target.getRefObjPath( ob)
-                        target_ref_by = getattr( target, 'ref_by', [])
-                        setattr( target, 'ref_by', target_ref_by + [ target_ref])
+                        if len( f) > 1:
+                          g = filter( lambda x: x=='/%s/content/%s'%(home,ref), obs.keys())
+                          if len( g) == 1:
+                            f = g
+                          else:
+                            message += '[WARNING] %s: Ambigous reference ref=%s in f=%s'%(ob.absolute_url(),ref,str(f))
+                        else:
+                          target = obs[f[0]]
+                          ref = ob.getRefObjPath( target)[2:-1]
+                          target_ref = target.getRefObjPath( ob)
+                          target_ref_by = getattr( target, 'ref_by', [])
+                          setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,key,ref)
                       m.append(ref+i[i.find('}'):])

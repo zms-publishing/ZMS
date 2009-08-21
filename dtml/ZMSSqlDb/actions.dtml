@@ -41,8 +41,13 @@
     </dtml-if>
    </dtml-let>
   </dtml-if>
+  <dtml-call "REQUEST.set('target',url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_message':message}))">
+  <!-- ### Keep context? -->
+  <dtml-if "filter(lambda x: x.get('details'), grid_cols)">
+   <dtml-call "REQUEST.set('target',url_append_params(target,{'action':'update','rowid':rowid}))">
+  </dtml-if>
   <!-- ### Return -->
-  <dtml-call "RESPONSE.redirect(url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_message':message}))">
+  <dtml-call "RESPONSE.redirect(target)">
  </dtml-if>
 
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- 

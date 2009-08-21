@@ -780,7 +780,7 @@ class MyBlob:
       filename = self.filename
       while filename.startswith( '_'):
         filename = filename[1:]
-      for ch in [ '+', '%', ' ', '!', '?', '#', '"']:
+      for ch in [ '+', '%', ' ', '!', '?', '#', '"', '-', '(', ')']:
         filename = filename.replace(ch,'')
       if filename != self.filename and len( self.data) > 0: 
         self.filename = filename

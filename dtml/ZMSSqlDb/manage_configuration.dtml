@@ -390,6 +390,7 @@ function mms_normalize_rows(el_tbody) {
                ><td class="form-small">Fieldname</td
                ><td class="form-small">Displayfield</td
                ><td class="form-small">Label</td
+               ><td class="form-small">Lazy</td
                ><td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>table_col.gif" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" border="0" /></td
               ></tr
               ><dtml-in "multimultiselect.get('tables',[])+[{}]"
@@ -406,6 +407,7 @@ function mms_normalize_rows(el_tbody) {
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_fieldname_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('fieldname','')">" size="5"></td
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_displayfield_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('displayfield','')">" size="5"></td
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_label_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('label','')">" size="5"></td
+                 ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multimultiselect_tables_lazy_%i_%s:int'%(sx,column['id']),value=_.int(si.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
                  ><td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)"
                   ><input class="form-checkbox" type="checkbox" name="attr_multimultiselect_tables_display_<dtml-var sx>_<dtml-var "column['id']">:int" value="1" <dtml-unless "si.get('hide')">checked="checked"</dtml-unless>
                  ></td

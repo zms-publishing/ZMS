@@ -22,7 +22,7 @@ function uploadCompleted() {
 
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiRadUpload',_.True)">
+<dtml-call "REQUEST.set('f_zmiRadUpload',True)">
 </dtml-unless>
 
 <object

@@ -21,8 +21,8 @@
  <colgroup>
   <dtml-if grid_options>
    <col width="<dtml-var "_.max(
-     _.len(_.filter(lambda x: x in ['insert','export'],grid_options.keys())),
-     _.len(_.filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
+     _.len(filter(lambda x: x in ['insert','export'],grid_options.keys())),
+     _.len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>

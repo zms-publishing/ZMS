@@ -15,7 +15,7 @@
 *******************************************************************************
 </dtml-comment>
 
-<dtml-unless "REQUEST.get('f_selectAutocompleteShow',_.False)">
+<dtml-unless "REQUEST.get('f_selectAutocompleteShow',False)">
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
@@ -23,7 +23,7 @@
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>
 <link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>jquery.autocomplete.css" />
 <link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>thickbox.css" />
-<dtml-call "REQUEST.set('f_selectAutocompleteShow',_.True)">
+<dtml-call "REQUEST.set('f_selectAutocompleteShow',True)">
 </dtml-unless>
 
 <script type="text/javascript">

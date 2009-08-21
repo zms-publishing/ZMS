@@ -12,7 +12,7 @@
 </script>
 </head>
 
-<dtml-var "manage_tabs(_,_,p_languages=_.True)">
+<dtml-var "manage_tabs(_,_,p_languages=True)">
 <dtml-var f_bo_area>
 <div style="padding:4px">
  <form name="form0" method="get" onsubmit="return onFormSubmit(this)">

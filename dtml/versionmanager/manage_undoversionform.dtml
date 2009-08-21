@@ -94,7 +94,7 @@ function previewImgBtnProcessResponse(data)
 </script>
 </head>
 
-<dtml-var "manage_tabs(_,_,p_languages=_.True)">
+<dtml-var "manage_tabs(_,_,p_languages=True)">
 
 <dtml-var f_bo_area>
 
@@ -119,7 +119,7 @@ function previewImgBtnProcessResponse(data)
   <dtml-call "REQUEST.set('major_version_nr',version_nrs[1])">
   <dtml-call "REQUEST.set('minor_version_nr',version_nrs[0])">
  </dtml-if>
- <dtml-call "REQUEST.set('ob_version',[getObjHistory(major_version_nr,REQUEST,_.False),getObjHistory(minor_version_nr,REQUEST,_.False)])">
+ <dtml-call "REQUEST.set('ob_version',[getObjHistory(major_version_nr,REQUEST,False),getObjHistory(minor_version_nr,REQUEST,False)])">
 
   <div class="form-label"><dtml-var "getZMILangStr('BTN_COMPARE')">:</div> 
   
@@ -134,7 +134,7 @@ function previewImgBtnProcessResponse(data)
    </dtml-if>
   </div>
   
-  <dtml-call "REQUEST.set('found_differences',_.False)">
+  <dtml-call "REQUEST.set('found_differences',False)">
   <dtml-in "getObjAttrs().keys()">
    <dtml-let key=sequence-item objAttr="getObjAttr(key)">
     <dtml-if "objAttr['id'] not in ['change_dt','change_uid','work_dt','work_uid','attr_dc_coverage','master_version','major_version','minor_version']">
@@ -147,7 +147,7 @@ function previewImgBtnProcessResponse(data)
         <td class="zmiNeutralColorMedium0"><div class="form-small"><dtml-var "objAttr['id']">:</div></td>
         <td class="form-element" style="background-color:#FFFFE0"><dtml-var diff newline_to_br></td>
        </tr>
-       <dtml-call "REQUEST.set('found_differences',_.True)">
+       <dtml-call "REQUEST.set('found_differences',True)">
       </dtml-if>
      </dtml-let>
     </dtml-if>
@@ -160,12 +160,12 @@ function previewImgBtnProcessResponse(data)
    <dtml-let obj_history="[getObjHistory(major_version_nr,REQUEST),getObjHistory(minor_version_nr,REQUEST)]">
     <dtml-in "obj_history[0]">
      <dtml-let ob_child_version0=sequence-item>
-      <dtml-call "REQUEST.set('found',_.False)">
+      <dtml-call "REQUEST.set('found',False)">
       <dtml-in "obj_history[1]">
        <dtml-let ob_child_version1=sequence-item>
         <dtml-if "ob_child_version0.aq_parent.id==ob_child_version1.aq_parent.id">
         
-         <dtml-call "REQUEST.set('found_differences',_.False)">
+         <dtml-call "REQUEST.set('found_differences',False)">
          <dtml-unless "ob_child_version0.id == ob_child_version1.id">
           <dtml-with "ob_child_version0.aq_parent">
            <dtml-in "getObjAttrs().keys()">
@@ -185,7 +185,7 @@ function previewImgBtnProcessResponse(data)
                  <td class="zmiNeutralColorMedium0"><div class="form-small"><dtml-var "objAttr['id']">:</div></td>
                  <td class="form-element" style="background-color:#FFFFE0"><dtml-var diff newline_to_br></td>
                 </tr>
-                <dtml-call "REQUEST.set('found_differences',_.True)">
+                <dtml-call "REQUEST.set('found_differences',True)">
                </dtml-if>
               </dtml-let>
              </dtml-if>
@@ -197,7 +197,7 @@ function previewImgBtnProcessResponse(data)
            </table>
           </div>
          </dtml-if>
-         <dtml-call "REQUEST.set('found',_.True)">
+         <dtml-call "REQUEST.set('found',True)">
         </dtml-if>
        </dtml-let>
       </dtml-in>
@@ -211,11 +211,11 @@ function previewImgBtnProcessResponse(data)
     </dtml-in>
     <dtml-in "obj_history[1]">
      <dtml-let ob_child_version1=sequence-item>
-      <dtml-call "REQUEST.set('found',_.False)">
+      <dtml-call "REQUEST.set('found',False)">
       <dtml-in "obj_history[0]">
        <dtml-let ob_child_version0=sequence-item>
         <dtml-if "ob_child_version0.aq_parent.id==ob_child_version1.aq_parent.id">
-         <dtml-call "REQUEST.set('found',_.True)">
+         <dtml-call "REQUEST.set('found',True)">
         </dtml-if>
        </dtml-let>
       </dtml-in>

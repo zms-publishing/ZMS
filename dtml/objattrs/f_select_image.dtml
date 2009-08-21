@@ -8,7 +8,7 @@
 	@param REQUEST
 -->
 
-<dtml-if metaObj><dtml-if "REQUEST.get('b_f_selectDisplaytype',_.True)"><dtml-if "_.len(filter_list(metaObj['attrs'],'id','displaytype','=='))>0">
+<dtml-if metaObj><dtml-if "REQUEST.get('b_f_selectDisplaytype',True)"><dtml-if "_.len(filter_list(metaObj['attrs'],'id','displaytype','=='))>0">
 <div class="zmiNeutralColorMedium0">
 <table cellspacing="0" cellpadding="0" border="0">
 <tr valign="middle">
@@ -16,7 +16,7 @@
 </tr>
 </table>
 </div>
-<dtml-call "REQUEST.set('b_f_selectDisplaytype',_.False)">
+<dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
 </dtml-if></dtml-if></dtml-if>
 
 <input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">">

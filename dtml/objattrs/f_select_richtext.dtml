@@ -100,7 +100,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format)
   }
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiRichtextEditorShow',_.True)">
+<dtml-call "REQUEST.set('f_zmiRichtextEditorShow',True)">
 </dtml-unless>
 <dtml-comment> ***** RichText-Editor (de-activate) ***** </dtml-comment>
 <dtml-if "REQUEST.get('htmledit_fmt')"

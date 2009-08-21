@@ -1147,8 +1147,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def getLevel(self):
       docElmnt = self.getDocumentElement()
-      url = self.absolute_url()[ len( docElmnt.absolute_url()):]
-      return len( url.split('/')) - 1
+      docPath = docElmnt.getPhysicalPath()
+      path = self.getPhysicalPath()
+      return len(path)-len(docPath)
 
 
     # --------------------------------------------------------------------------
@@ -1157,10 +1158,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  True if self is anchestor of given object.
     # --------------------------------------------------------------------------
     def isAnchestor(self, ob):
-      rtn = False
       if ob is not None:
-        rtn = string.find(ob.absolute_url() + '/', self.absolute_url() + '/' ) == 0
-      return rtn
+        path = '/'.join(self.getPhysicalPath())
+        obPath = '/'.join(ob.getPhysicalPath())
+        return obPath.startswith(path)
+      return False
 
 
     # --------------------------------------------------------------------------

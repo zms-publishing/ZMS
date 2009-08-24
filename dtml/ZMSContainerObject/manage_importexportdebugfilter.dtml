@@ -8,17 +8,41 @@
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>
 
+<dtml-let filter="getFilter(filterId)" filterProcesses="getFilterProcesses(filter['id'])">
+
 <dtml-call "REQUEST.set('step',REQUEST.get('step',0))">
+<dtml-if "step==0">
+ <dtml-call "REQUEST.set('tpl',initExportFilter(filterId,REQUEST))">
+ <dtml-call "REQUEST.set('tempfolder',tpl[0])">
+ <dtml-call "REQUEST.set('outfilename',tpl[1])">
+<dtml-else>
+ <dtml-call "REQUEST.set('outfilename',execProcessFilter(filterProcesses[step-1],tempfolder,outfilename,REQUEST))">
+</dtml-if>
+
+<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_EXPORT')+' #%i/%i [%s]'%(step,len(filterProcesses),outfilename))">
+
+<table cellspacing="4" cellpadding="4" border="0" width="100%">
+<colgroup>
+ <col width="50%"/>
+ <col width="50%"/>
+</colgroup>
+<tr valign="top">
+
+<td>
 
 <form name="form0" action="manage_importexportDebugFilter">
 <input type="hidden" name="lang" value="<dtml-var lang>"/>
 <input type="hidden" name="filterId" value="<dtml-var filterId>"/>
 <input type="hidden" name="debug:int" value="<dtml-var debug>"/>
 <input type="hidden" name="step:int" value="<dtml-var "step+1">"/>
+<input type="hidden" name="tempfolder" value="<dtml-var tempfolder>"/>
+<input type="hidden" name="outfilename" value="<dtml-var outfilename>"/>
+
+<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_NEXT')">"/>
+<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')">"/>
+<hr size="1"/>
 
 <dtml-call "REQUEST.set('contentTypes',enumManager.getValues('content_type'))">
-<dtml-let filter="getFilter(filterId)" filterProcesses="getFilterProcesses(filter['id'])">
-    <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_EXPORT')+' #%i/%i'%(step,len(filterProcesses)))">
         <dtml-call "REQUEST.set('src',filter.get('content_type',''))">
         <dtml-if "src.find(';')>0">
          <dtml-call "REQUEST.set('src',src[:src.find(';')])">
@@ -28,9 +52,6 @@
         <dtml-else>
          <dtml-call "REQUEST.set('src',spacer_gif)">
         </dtml-if>
-        <table cellspacing="4" cellpadding="4" border="0">
-        <tr>
-        <td class="neutralColorWhite">
         <div class="form-label">
          <dtml-if "filter.get('zms_system',0) == 1">
           <img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/>
@@ -41,7 +62,7 @@
           <dtml-var "filter.get('name','')" html_quote>
          </dtml-if>
         </div>
-        <table cellspacing="0" cellpadding="0" border="0">
+        <table cellspacing="0" cellpadding="0" border="0" class="neutralColorWhite">
         <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" /></td></tr>
         <dtml-if "filter['format']=='import'">
          <tr><td align="center" class="form-small" style="white-space: nowrap; border: 1px dotted blue; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
@@ -116,15 +137,23 @@
         </dtml-if>
         <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" /></td></tr>
         </table>
-        </td>
-        </tr>
-        </table>
-</dtml-let>
 
 <hr size="1"/>
 <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_NEXT')">"/>
 <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')">"/>
+
 </form>
+
+</td>
+
+<td>
+ <iframe src="<dtml-var "zms_log.absolute_url()">/manage_remote?path=<dtml-var tempfolder>" width="100%" height="600"></iframe>
+</td>
+
+</tr>
+</table>
+
+</dtml-let>
 
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>

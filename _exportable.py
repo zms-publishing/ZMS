@@ -230,7 +230,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
 ###
 ################################################################################
 ################################################################################
-class Exportable:
+class Exportable(_filtermanager.FilterItem):
 
     ############################################################################
     #  Exportable.manage_export:
@@ -335,7 +335,7 @@ class Exportable:
       for context in self.filteredChildNodes(REQUEST):
         xml.append( context.getObjToXml())
       return ''.join(xml)
-          
+
 
     # --------------------------------------------------------------------------
     #  Exportable.toXhtml:
@@ -398,8 +398,6 @@ class Exportable:
       
       if from_content:
         base_path = tempfolder+'/'
-        if not self.meta_id == 'ZMS' and not REQUEST.get( 'ZMS_FILTER', False):
-          base_path += self.id+'/'
         ressources.extend( _blobfields.recurse_downloadRessources( self, base_path, REQUEST, incl_embedded))
       
       return ressources

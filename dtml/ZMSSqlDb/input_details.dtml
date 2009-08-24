@@ -1,5 +1,8 @@
-<dtml-unless "REQUEST.get('f_zmiInputDetailsJavaScript')"
-><dtml-call "REQUEST.set('master_row',row)"
+<dtml-unless master_row
+ ><dtml-call "REQUEST.set('master_row',row)"
+ ><dtml-call "REQUEST.set('master_grid_cols',grid_cols)"
+></dtml-unless
+><dtml-unless "REQUEST.get('f_zmiInputDetailsJavaScript')"
 ><script language="JavaScript"
 ><!--//
 
@@ -259,3 +262,6 @@
 
  </dtml-let>
 </div>
+
+<dtml-call "REQUEST.set('row',master_row)">
+<dtml-call "REQUEST.set('grid_cols',master_grid_cols)">

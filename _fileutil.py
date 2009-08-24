@@ -552,6 +552,8 @@ def getZipArchive(f):
 #  Unpack ZIP-Archive.
 # ------------------------------------------------------------------------------
 def extractZipArchive(file):
+  l = []
+  
   zf = zipfile.ZipFile( file, 'r')
   for name in zf.namelist():
     dir = getOSPath( name)
@@ -561,10 +563,14 @@ def extractZipArchive(file):
       mkDir( dir)
     localname = getOSPath( getFilePath(file) + os.sep + name)
     if localname[-1] != os.sep:
+      l.append( localname)
       f = open( localname, 'wb')
       f.write( zf.read( name))
       f.close()
   zf.close()
+  
+  # Return list of files.
+  return l
 
 
 # ------------------------------------------------------------------------------

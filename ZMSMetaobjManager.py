@@ -538,7 +538,7 @@ class ZMSMetaobjManager:
           newCustom = ''
           newCustom += '# Example code:\n'
           newCustom += '\n'
-          newCustom += 'def ' + newId + '():\n'
+          newCustom += 'def ' + newId + '( self):\n'
           newCustom += '  return "This is the external method ' + newId + '"\n'
         elif newType in [ 'Page Template']:
           newCustom = ''

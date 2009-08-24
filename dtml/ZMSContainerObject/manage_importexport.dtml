@@ -173,9 +173,11 @@
     <div id="div_charset" class="form-small" style="display:none;float:left;">
      <dtml-var "getEnumInput(fmName='exportForm',elName='ZMS_CHARSET',size=7,value='utf-8',enum='charset')">
     </div>
+    <dtml-if zms_log>
     <div id="div_debug" class="form-small" style="display:none;float:left;">
      <input class="form-checkbox" type="checkbox" name="debug:int" value="1" <dtml-if "REQUEST.form.get('debug')==1">checked="checked"</dtml-if>/> Debug
     </div>
+    </dtml-if>
    </td>
   </tr>
   <tr>

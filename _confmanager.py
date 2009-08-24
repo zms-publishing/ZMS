@@ -289,6 +289,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def svnUpdate(self, node, path, ids=[]):
       l = []
+      path_ids = []
       for filename in os.listdir(path):
         action = None
         id = filename
@@ -298,6 +299,7 @@ class ConfManager(
         filemtime = long(filestat[stat.ST_MTIME])
         if id.endswith('.dtml'):
           id = id[:id.rfind('.')]
+        path_ids.append( id)
         ob = getattr( node, id, None)
         if stat.S_ISDIR(mode):
           if filename != '.svn':
@@ -343,6 +345,17 @@ class ConfManager(
               data = file.read()
               ob.manage_upload(data)
               file.close()
+      if node is not None:
+        for id in filter( lambda x: x not in path_ids, node.objectIds(['DTML Method','File','Folder','Image'])):
+          ob = getattr( node, id)
+          action = 'delete'
+          filepath = path+os.sep+id
+          mtime = long(ob.bobobase_modification_time().timeTime())
+          filemtime = 0
+          meta_type = ob.meta_type
+          l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+          if filepath in ids:
+            node.manage_delObjects( ids=[id])
       return l
 
 

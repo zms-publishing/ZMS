@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[ZMSPyUnitTestSuite]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="pyunit.gif" type="file">47494638396110001000f70000dc2e3c049a4cf4a6acec9aa484d6b454c28ce46a74fcdedcd4f2e404a66464c69cec868cdc424cd4eee4fcf2f4e4727c1cae6c64caa4e44a5404a65cf4c6ccdc4654fceaececfaf4049e4cfcb6bcec9ea454c294e46e74fce2e4e4f6ec0ca66464ca9cfc8a94ec767c2cb2746ccaa4e44654fceeecfcfefc0090c4005ec300441200000000cd1800ab0000ba0000dc00680088010010140066000000500c82eec300231200000000789000015e00144400000000383c0003c300001200000000004501003700143700007e00d40020bfd0c412fd12007f00173cb79cc3b73612927e007c1494d5c437b7123792007e7c18f868eec2de9112147c0000906108b637009237b57c7e00ff82e0ff0040ff0088ff007c866690b606e192a5147c0000988800b210009266007c00000014000000001400000000000901600300de100014000000eb00000600009200147c00000000f50000020000010000000810680000deb50014000000e000004000008800147c000000922c0006c4008012000000600000c400001200000000004d00009d00003600147e00007000380200c43c00127e00000238ab7fc33700129200007c3485c7c2853712ef9200777c233b0804850600ef1400770031201006300066f3b51777006000009d0000360a007e000000400000dc00005400000000012d74006ec400ef12007700004efd006efe00ef8000777c005a050039ff003780007e7c00a00c000400003cb5007e007088820210fe3c66807e007c0282007f000000000000000000af1000d4003636b57e7e00f0df09013903143700007e0040660000060000a5000000003000440000c4000012000000744f38c200f9120012000000fc54388406f9364b127e0100a4c4a885c39a3612837e007cfe00080500ffa1008000007c0100ff0000ff0000ff0000ff0700050000ff00008000007c8c54e2b706e7144b410001009cc414c2c3001212b5000000ee662fcc06fc36a5807e007c90b4825ec3fe44128000007c88bd58b7dad6143636007e7e9000545e000644004b00000100820000000000000000000021f90401000027002c0000000010001000070885004f081c48b0a0c183042f409890608243051e105ed810600302021340203cb1018382130a2690d8082280820618236c54108004431221447018d0c180880702596a14980140090a1616301020b0404b8212709e386040e0c48a17062615c8f4c485111f127c1811f54409a535379e30c0c0c1890122c47690504282010b62e3ca9d3b3020003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[################################################################################
+# Python Unit-Test
+#
+# Test: Export HTML
+#
+# Check exported resources.
+################################################################################
+import os
+import time
+
+def test_export_html( self):
+  
+  # Initialize.
+  message = []
+  REQUEST = self.REQUEST
+  RESPONSE = REQUEST.RESPONSE
+  
+  # Get export.
+  t0 = time.time()
+  export_format = 1 # HTML
+  lang = self.getPrimaryLanguage()
+  REQUEST.set( 'lang', lang)
+  export = self.manage_export( export_format, lang, REQUEST, RESPONSE)
+  message.append( "[INFO] Get export (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Create temp-folder.
+  t0 = time.time()
+  tempfolder = self.localfs_tempfile()
+  message.append( "[INFO] Create temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Write export to temp-folder.
+  t0 = time.time()
+  exportfile = tempfolder+os.sep+'export.zip'
+  self.localfs_write( exportfile, export)
+  message.append( "[INFO] Write export to temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Unzip export.
+  t0 = time.time()
+  l = self.extractZipArchive( exportfile)
+  message.append( "[INFO] Unzip export [%i]"%len(l)+" (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Read html.
+  for xmlfile in filter( lambda x: x.rfind(os.sep+'index') > 0 and x.endswith('.html'), l):
+    message.append( '[INFO] Analyze: "%s"'%xmlfile)
+    xml = self.localfs_read( xmlfile)
+    xmlfilepath = xmlfile[:xmlfile.rfind(os.sep)]
+    for s in xml.split('src="')[1:]:
+      filename = s[:s.find('"')]
+      filepath = xmlfilepath+os.sep+filename
+      try:
+        f = self.localfs_read( filepath)
+        if f:
+          message.append( '[INFO] File: "%s"'%filename)
+        else:
+          message.append( '[ERROR] File not found: "%s"'%filename)
+      except:
+        message.append( '[ERROR] IOException - File not found: "%s"'%filename)
+  
+  # Remove temp-folder.
+  t0 = time.time()
+  self.localfs_remove( tempfolder, deep=1)
+  message.append( "[INFO] Remove temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  RESPONSE.setHeader('Content-Type','text/plain')
+  return '\n'.join( message)
+]]>
+                    </item>
+                    <item key="id"><![CDATA[test_export_html]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Test: Export HTML]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[External Method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[################################################################################
+# Python Unit-Test
+#
+# Test: Export XML
+#
+# Check exported resources.
+################################################################################
+import os
+import time
+
+def test_export_xml( self):
+  
+  # Initialize.
+  message = []
+  REQUEST = self.REQUEST
+  RESPONSE = REQUEST.RESPONSE
+  
+  # Get export.
+  t0 = time.time()
+  export_format = 2 # XML
+  lang = self.getPrimaryLanguage()
+  REQUEST.set( 'lang', lang)
+  export = self.manage_export( export_format, lang, REQUEST, RESPONSE)
+  message.append( "[INFO] Get export (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Create temp-folder.
+  t0 = time.time()
+  tempfolder = self.localfs_tempfile()
+  message.append( "[INFO] Create temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Write export to temp-folder.
+  t0 = time.time()
+  exportfile = tempfolder+os.sep+'export.zip'
+  self.localfs_write( exportfile, export)
+  message.append( "[INFO] Write export to temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Unzip export.
+  t0 = time.time()
+  l = self.extractZipArchive( exportfile)
+  message.append( "[INFO] Unzip export [%i]"%len(l)+" (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  # Read xml.
+  for xmlfile in filter( lambda x: x.endswith('.xml'), l):
+    message.append( '[INFO] Analyze: "%s"'%xmlfile)
+    xml = self.localfs_read( xmlfile)
+    xmlfilepath = xmlfile[:xmlfile.rfind(os.sep)]
+    for s in xml.split('filename="')[1:]:
+      filename = s[:s.find('"')]
+      filepath = xmlfilepath+os.sep+filename
+      try:
+        f = self.localfs_read( filepath)
+        if f:
+          message.append( '[INFO] File: "%s"'%filename)
+        else:
+          message.append( '[ERROR] File not found: "%s"'%filename)
+      except:
+        message.append( '[ERROR] IOException - File not found: "%s"'%filename)
+  
+  # Remove temp-folder.
+  t0 = time.time()
+  self.localfs_remove( tempfolder, deep=1)
+  message.append( "[INFO] Remove temp-folder (in "+str(int((time.time()-t0)*100.0)/100.0)+"secs.)")
+  
+  RESPONSE.setHeader('Content-Type','text/plain')
+  return '\n'.join( message)
+]]>
+                    </item>
+                    <item key="id"><![CDATA[test_export_xml]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Test: Export XML]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[External Method]]></item>
+                  </dictionary>
+                </item>
+              </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="insert_custom"/>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
+            <item key="id"><![CDATA[ZMSPyUnitTestSuite]]></item>
+            <item key="name"><![CDATA[Test-Suite]]></item>
+            <item key="package"><![CDATA[com.zms.test]]></item>
+            <item key="revision"><![CDATA[0.0.0]]></item>
+            <item key="type"><![CDATA[ZMSLibrary]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[com.zms.test]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+              </list>
+            </item>
+            <item key="enabled" type="int">0</item>
+            <item key="id"><![CDATA[com.zms.test]]></item>
+            <item key="name"><![CDATA[com.zms.test]]></item>
+            <item key="package"/>
+            <item key="revision"><![CDATA[0.0.0]]></item>
+            <item key="type"><![CDATA[ZMSPackage]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+  </list>

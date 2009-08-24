@@ -1,7 +1,8 @@
 <dtml-var manage_page_header>
 </head>
-<dtml-var manage_tabs>
-<dtml-var f_bo_area>
+<body class="zmi">
+<a name="_top"></a>
+<div class="zmi">
 
 <script language="JavaScript">
 <!--//
@@ -13,24 +14,6 @@
 	  fm.method = "post";
 	}
 
-	function deleteBtnClick() {
-	  if (confirm("Delete selected file(s)?")) {
-	    fm = document.forms[0];
-	    fm.action = "manage_submit";
-	    fm.enctype = "multipart/form-data";
-	    fm.method = "post";
-	  }
-	}
-
-	function unzipBtnClick() {
-	  if (confirm("Unzip selected file(s)?")) {
-	    fm = document.forms[0];
-	    fm.action = "manage_submit";
-	    fm.enctype = "multipart/form-data";
-	    fm.method = "post";
-	  }
-	}
-
 //-->
 </script>
 
@@ -40,93 +23,76 @@
 <dtml-let path="getPath(REQUEST)">
 
 <table cellspacing="0" cellpadding="1" border="0">
-<tr>
-  <th align="left" valign="middle">Path</th>
-  <td align="left" valign="middle"><input class="form-element" type="text" name="path" value="<dtml-var path>" size="50"></td>
-  <td align="left" valign="middle"><input class="form-element" type="submit" name="btn" value="ChDir"></td>
-</tr>
-<tr>
-  <td>&nbsp;</td>
+<tr valign="middle">
+  <td class="form-label">Path</td>
+  <td class="form-element"><input class="form-element" type="text" name="path" value="<dtml-var path>" size="50"></td>
+  <td class="form-element"><input class="form-element" type="submit" name="btn" value="ChDir"></td>
 </tr>
 </table>
 
 <dtml-let res="readDir(path)">
-
  <table cellspacing="0" cellpadding="1" border="0">
  <tr class="list-header">
-   <td colspan="7"><div class="list-item"><dtml-var path></a></td>
+   <td colspan="6"><div class="list-item"><dtml-var path></a></td>
  </tr>
  <tr class="row-normal">
-   <td colspan="7"><div class="list-item"><b><a href="?path=<dtml-var "url_quote(getParentDir(path))">">\ .. Parent Directory</a></b></div></td>
+   <td colspan="6"><div class="list-item"><b><a href="?path=<dtml-var "url_quote(getParentDir(path))">" class="zmi">\ .. Parent Directory</a></b></div></td>
  </tr>
-     <dtml-in res>
-      <tr
-        <dtml-if sequence-odd>
-          class="row-normal"
-        <dtml-else>
-          class="row-hilite"
-        </dtml-if>
-      >
-      <dtml-let ob="_['sequence-item']">
-       <td><input type="checkbox" name="ids:list" value="<dtml-var "ob['path']+ob['file']">" /></td>
-       <dtml-if "ob['type']=='d'">
-         <td><img src="misc_/OFSP/Folder_icon.gif" title="" border="0"></td>
-         <td><div class="list-item"><a href="?path=<dtml-var "url_quote(ob['path']+ob['file'])">"><dtml-var "ob['file']"></a></div></td>
-         <td>&nbsp;</td>
-         <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>
-         <td>&nbsp;</td>
-         <td><div class="list-item">&nbsp;</div></td>
-       <dtml-else>
-         <td><img src="misc_/OFSP/File_icon.gif" title="" border="0"></td>
-         <td><div class="list-item"><a href="manage_index_html?path=<dtml-var "url_quote(ob['path']+ob['file'])">"><dtml-var "ob['file']"></a></div></td>
-         <td>&nbsp;</td>
-         <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>
-         <td>&nbsp;</td>
-         <td><div class="list-item"><dtml-var "getDataSizeStr(ob['size'])"></div></td>
-       </dtml-if>
-      </dtml-let>
-      </tr>
-     </dtml-in>
-     <tr>
-       <td>&nbsp;</td>
-       <td colspan="6">
-         <input class="form-element" type="submit" name="btn" value="Delete" onclick="deleteBtnClick()">
-         <input class="form-element" type="submit" name="btn" value="Unzip" onclick="unzipBtnClick()">
-       </td>
-     </tr>
-     <tr>
-       <td>&nbsp;</td>
-     </tr>
-     </table>
-    </dtml-let>
-    </dtml-let>
+ <dtml-in res>
+  <tr
+    <dtml-if sequence-odd>
+      class="row-normal"
+    <dtml-else>
+      class="row-hilite"
+    </dtml-if>
+  >
+  <dtml-let ob="_['sequence-item']">
+   <dtml-if "ob['type']=='d'">
+     <td><img src="misc_/OFSP/Folder_icon.gif" title="" border="0"></td>
+     <td><div class="list-item"><a href="?path=<dtml-var "url_quote(ob['path']+ob['file'])">" class="zmi"><dtml-var "ob['file']"></a></div></td>
+     <td>&nbsp;</td>
+     <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>
+     <td>&nbsp;</td>
+     <td><div class="list-item">&nbsp;</div></td>
+   <dtml-else>
+     <td><img src="misc_/OFSP/File_icon.gif" title="" border="0"></td>
+     <td><div class="list-item"><a href="manage_index_html?path=<dtml-var "url_quote(ob['path']+ob['file'])">" class="zmi" target="_blank"><dtml-var "ob['file']"></a></div></td>
+     <td>&nbsp;</td>
+     <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>
+     <td>&nbsp;</td>
+     <td><div class="list-item"><dtml-var "getDataSizeStr(ob['size'])"></div></td>
+   </dtml-if>
+  </dtml-let>
+  </tr>
+ </dtml-in>
+ </table>
+</dtml-let>
+
+</dtml-let>
 
     <hr size="1">
     <table cellspacing="0" cellpadding="1" border="0">
-    <tr>
-      <th align="left" valign="top"><em>Command</em></th>
-      <td align="left" valign="top">
+    <tr valign="top">
+      <td class="form-label">Command</td>
+      <td class="form-element">
         <input class="form-element" type="text" name="command">
         <input class="form-element" type="submit" name="btn" value="Execute" onclick="uploadBtnClick()">
       </td>
     </tr>
-    <tr>
-      <td>&nbsp;</td>
+    <tr valign="top">
+      <td class="form-label">Upload File</td>
+      <td class="form-element"><input class="form-element" type="file" name="file"></td>
     </tr>
-    <tr>
-      <th align="left" valign="top"><em>Upload File</em></th>
-      <td align="left" valign="top"><input class="form-element" type="file" name="file"></td>
-    </tr>
-    <tr>
-      <td align="left" valign="top"> &nbsp; </td>
-      <td align="left" valign="top">
+    <tr valign="top">
+      <td class="form-label">&nbsp;</td>
+      <td class="form-element">
         <input class="form-element" type="radio" name="type" value="" checked="checked">&nbsp;ASCII
         <input class="form-element" type="radio" name="type" value="b">&nbsp;Binary
       </td>
     </tr>
-    <tr>
-      <th align="left" valign="top">&nbsp;</th>
-      <td align="left" valign="top"><input class="form-element" type="submit" name="btn" value="Upload" onclick="uploadBtnClick()"></td>
+    <tr valign="top">
+      <td class="form-label">&nbsp;</td>
+      <td class="form-element"><input class="form-element" type="submit" name="btn" value="Upload" onclick="uploadBtnClick()"></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -135,5 +101,6 @@
 
   </form>
 
-<dtml-var f_eo_area>
-<dtml-var manage_page_footer>
+</div>
+</body>
+</html>

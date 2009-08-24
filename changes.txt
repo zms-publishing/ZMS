@@ -1275,3 +1275,8 @@
 2009-08-20:zms-2.11.1-79
 [01221] Applied fix for unified object-ids (reported by ubk).
 --------------------------------------------------
+2009-08-24:zms-2.11.1-80
+[01222] Applied fix for unified object-ids: ambigousity (reported by ubk).
+[01223] Applied fix for resource-paths in export (html & xml), added unit-tests and started implementation of filter-debugging (reported by jk).
+[01224] Applied fix for SQL-Datasource: mixture of details and other columns (reported by tf).
+--------------------------------------------------

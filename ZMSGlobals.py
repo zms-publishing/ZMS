@@ -1248,6 +1248,12 @@ class ZMSGlobals:
       """
       return _fileutil.getZipArchive(f)
 
+    # ------------------------------------------------------------------------------
+    #  ZMSGlobals.extractZipArchive:
+    # ------------------------------------------------------------------------------
+    def extractZipArchive(self, f):
+      return _fileutil.extractZipArchive(f)
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.buildZipArchive:
     # --------------------------------------------------------------------------
@@ -1305,7 +1311,7 @@ class ZMSGlobals:
       # Check permissions.
       access = False
       for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
-        access = access or ( len( perm) > 0 and filename.startswith( perm))
+        access = access or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
       # Raise unauthorized error.
       if not access:
         raise Unauthorized

@@ -8,9 +8,9 @@
 
 <dtml-let basepath="getConfProperty('SVN.path','')" dicon="{
           'DTML Method':'/misc_/OFSP/dtmlmethod.gif',
-          'File':'/misc_/OFSP/File_icon.gif',
-          'Folder':'/misc_/OFSP/Folder_icon.gif',
-          'Image':'/misc_/OFSP/Image_icon.gif',
+        }"
+      daction="{
+          'delete':'delete1',
         }">
 
   <form action="manage_customizeSystem" method="post">
@@ -30,7 +30,7 @@
  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if>">
   <td class="form-element"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var filepath>" checked="checked"/></td>
   <td class="form-small">
-   <img src="<dtml-var MISC_ZMS>btn_<dtml-var action>.gif" alt="<dtml-var action>" border="0" align="absmiddle"/>
+   <img src="<dtml-var MISC_ZMS>btn_<dtml-var "daction.get(action,action)">.gif" alt="<dtml-var action>" border="0" align="absmiddle"/>
    <img src="<dtml-var "dicon.get(meta_type,'/misc_/OFSP/%s_icon.gif'%meta_type)">" alt="<dtml-var action>" alt="" title="<dtml-var meta_type>" border="0" align="absmiddle"/>
    <dtml-var "filepath[_.len(basepath):]"> (<dtml-var meta_type>)
   </td>

@@ -643,8 +643,6 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   if root is not None:
     return ''
   ob = self
-  if ob.meta_type != 'ZMS':
-    base_path += self.id + '/'
   if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and incl_embedded:
     ob = ob.getRefObj()
   xml = []
@@ -671,7 +669,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
         xml.append('\n<%s>%s</%s>'%(key,ob_prop,key))
   # Process children.
   if deep:
-    xml.extend(map(lambda x: getObjToXml( x, REQUEST, incl_embedded, deep, base_path, data2hex), ob.getChildNodes()))
+    xml.extend(map(lambda x: getObjToXml( x, REQUEST, incl_embedded, deep, base_path+x.id+'/', data2hex), ob.getChildNodes()))
   # End tag.
   xml.append('</%s>\n'%ob.xmlGetTagName())
   # Return xml.

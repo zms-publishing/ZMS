@@ -75,6 +75,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     manage_main = HTMLFile( 'dtml/ZMSLog/manage_main', globals())
     manage_remote = HTMLFile( 'dtml/ZMSLog/manage_remote', globals())
 
+
     ############################################################################
     #  ZMSLog.__init__: 
     #
@@ -181,32 +182,18 @@ class ZMSLog(ZMSItem.ZMSItem):
       path = self.getPath(REQUEST)
       message = ""
       
-      if REQUEST.has_key("btn"):
+      if REQUEST.get("btn") == "Execute":
+        command = REQUEST['command']
+        _fileutil.executeCommand(path,command)
+        message = "Command executed."
+        
+      elif REQUEST.get("btn") == "Upload":
+        obj = REQUEST['file']
+        type = REQUEST['type']
+        filename = "%s%s%s"%(path,os.sep,_fileutil.extractFilename(obj.filename))
+        _fileutil.exportObj( obj, filename, type)
+        message = "Upload complete."
       
-        if REQUEST["btn"] == "Delete":
-          ids = REQUEST['ids']
-          for id in ids:
-            _fileutil.remove( id, deep=1)
-          message = "%i File(s) deleted."%len(ids)
-        
-        elif REQUEST["btn"] == "Unzip":
-          ids = REQUEST['ids']
-          for id in ids:
-            _fileutil.unzip(id)
-          message = "%i File(s) deleted."%len(ids)
-        
-        elif REQUEST["btn"] == "Execute":
-          command = REQUEST['command']
-          _fileutil.executeCommand(path,command)
-          message = "Command executed."
-          
-        elif REQUEST["btn"] == "Upload":
-          obj = REQUEST['file']
-          type = REQUEST['type']
-          filename = "%s%s%s"%(path,os.sep,_fileutil.extractFilename(obj.filename))
-          _fileutil.exportObj( obj, filename, type)
-          message = "Upload complete."
-          
       return REQUEST.RESPONSE.redirect( self.url_append_params( REQUEST[ 'HTTP_REFERER'], { 'manage_tabs_message' :message }))
 
 ################################################################################

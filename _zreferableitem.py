@@ -618,7 +618,9 @@ class ZReferableItem:
                         ref = '__%s__'%ref
                       else:
                         if len( f) > 1:
-                          g = filter( lambda x: x=='/%s/content/%s'%(home,ref), obs.keys())
+                          if ref.find('@') > 0:
+                            ref = ref[ ref.find('@')+1:]
+                          g = filter( lambda x: x.endswith('/%s/content/%s'%(home,ref)), obs.keys())
                           if len( g) == 1:
                             f = g
                           else:
@@ -680,7 +682,9 @@ class ZReferableItem:
                         ref = '__%s__'%ref
                       else:
                         if len( f) > 1:
-                          g = filter( lambda x: x=='/%s/content/%s'%(home,ref), obs.keys())
+                          if ref.find('@') > 0:
+                            ref = ref[ ref.find('@')+1:]
+                          g = filter( lambda x: x.endswith('/%s/content/%s'%(home,ref)), obs.keys())
                           if len( g) == 1:
                             f = g
                           else:

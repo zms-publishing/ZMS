@@ -472,22 +472,12 @@ def processFile(self, processId, filename, trans=None):
 
 # ------------------------------------------------------------------------------
 #  _filtermanager.processFilter:
+#
+#  Process filter.
 # ------------------------------------------------------------------------------
 def processFilter(self, ob_filter, folder, filename, REQUEST):
-  for process in ob_filter.get('processes',[]):
-    processId = process.get( 'id')
-    processOb = self.getProcess(processId)
-    if processOb is not None:
-      processType = processOb.get( 'type', 'process')
-      trans = process.get( 'file', None)
-      # Save transformation to file.
-      if trans is not None and trans != '':
-        transfilename = '%s/%s'%( folder, trans.getFilename())
-        _fileutil.exportObj( trans.getData(), transfilename)
-      if processType == 'DTML Method':
-        filename = processMethod(self, processId, filename, trans, REQUEST)
-      else:
-        filename = processFile(self, processId, filename, trans)
+  for ob_process in ob_filter.get('processes',[]):
+    filename = self.execProcessFilter( ob_process, folder, filename, REQUEST)
   # Return filename.
   return filename
 
@@ -508,41 +498,9 @@ def importFilter(self, filename, id, REQUEST):
 #  _filtermanager.exportFilter:
 # ------------------------------------------------------------------------------
 def exportFilter(self, id, REQUEST):
-  # Set environment variables.
-  instance_home = INSTANCE_HOME
-  software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
-  software_home = os.path.normpath(software_home)  
-  REQUEST.set( 'ZMS_FILTER', True)
-  REQUEST.set( 'ZMS_FILTER_SOFTWARE_HOME', software_home)
-  REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
-  REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', _fileutil.getOSPath(package_home(globals())))
   # Set local variables.
   ob_filter = self.getFilter(id)
-  ob_filter_format = ob_filter.get('format','')
-  incl_embedded = ob_filter_format == 'XML_incl_embedded'
-  # Create temporary folder.
-  tempfolder = tempfile.mktemp()
-  ressources = self.exportRessources( tempfolder, REQUEST, from_content=True, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML', incl_embedded=incl_embedded)
-  # Export data to file.
-  if ob_filter_format == 'export':
-    outfilename = _fileutil.getOSPath('%s/INDEX0'%tempfolder)
-  elif ob_filter_format in ['XML','XML_incl_embedded']:
-    # Set XML.
-    data = self.toXml( REQUEST, incl_embedded)
-    outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
-    _fileutil.exportObj( data, outfilename)
-  elif ob_filter_format == 'XHTML':
-    # Set XHTML.
-    data = self.toXhtml( REQUEST)
-    outfilename = _fileutil.getOSPath('%s/export.html'%tempfolder)
-    _fileutil.exportObj( data, outfilename)
-  elif ob_filter_format == 'myXML':
-    # Set myXML.
-    data = self.getXmlHeader() + getattr( self, 'getObjToXml_DocElmnt')(context=self)
-    outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
-    _fileutil.exportObj( data, outfilename)
-  else:
-    raise "Unknown format '%s'"%ob_filter.get('format','')
+  tempfolder, outfilename = self.initExportFilter( id, REQUEST)
   # Process filter.
   outfilename = processFilter(self, ob_filter, tempfolder, outfilename, REQUEST)
   # Return values.
@@ -568,11 +526,83 @@ def exportFilter(self, id, REQUEST):
 ################################################################################
 ################################################################################
 ###
+###   class FilterItem
+###
+################################################################################
+################################################################################
+class FilterItem:
+
+    # --------------------------------------------------------------------------
+    #  FilterManager.initExportFilter:
+    # --------------------------------------------------------------------------
+    def initExportFilter(self, id, REQUEST):
+      # Set environment variables.
+      instance_home = INSTANCE_HOME
+      software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
+      software_home = os.path.normpath(software_home)  
+      REQUEST.set( 'ZMS_FILTER', True)
+      REQUEST.set( 'ZMS_FILTER_SOFTWARE_HOME', software_home)
+      REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
+      REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', _fileutil.getOSPath(package_home(globals())))
+      # Set local variables.
+      ob_filter = self.getFilter(id)
+      ob_filter_format = ob_filter.get('format','')
+      incl_embedded = ob_filter_format == 'XML_incl_embedded'
+      # Create temporary folder.
+      tempfolder = tempfile.mktemp()
+      ressources = self.exportRessources( tempfolder, REQUEST, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML', incl_embedded=incl_embedded)
+      # Export data to file.
+      if ob_filter_format == 'export':
+        outfilename = _fileutil.getOSPath('%s/INDEX0'%tempfolder)
+      elif ob_filter_format in ['XML','XML_incl_embedded']:
+        # Set XML.
+        data = self.toXml( REQUEST, incl_embedded)
+        outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
+        _fileutil.exportObj( data, outfilename)
+      elif ob_filter_format == 'XHTML':
+        # Set XHTML.
+        data = self.toXhtml( REQUEST)
+        outfilename = _fileutil.getOSPath('%s/export.html'%tempfolder)
+        _fileutil.exportObj( data, outfilename)
+      elif ob_filter_format == 'myXML':
+        # Set myXML.
+        data = self.getXmlHeader() + getattr( self, 'getObjToXml_DocElmnt')(context=self)
+        outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
+        _fileutil.exportObj( data, outfilename)
+      else:
+        raise "Unknown format '%s'"%ob_filter.get('format','')
+      return tempfolder, outfilename
+
+
+    # --------------------------------------------------------------------------
+    #  _filtermanager.execProcessFilter:
+    # --------------------------------------------------------------------------
+    def execProcessFilter(self, ob_process, folder, filename, REQUEST):
+      processId = ob_process.get( 'id')
+      processOb = self.getProcess( processId)
+      if processOb is not None:
+        processType = processOb.get( 'type', 'process')
+        trans = ob_process.get( 'file', None)
+        # Save transformation to file.
+        if trans is not None and trans != '':
+          transfilename = '%s/%s'%( folder, trans.getFilename())
+          _fileutil.exportObj( trans.getData(), transfilename)
+        if processType == 'DTML Method':
+          filename = processMethod(self, processId, filename, trans, REQUEST)
+        else:
+          filename = processFile(self, processId, filename, trans)
+      # Return filename.
+      return filename
+
+
+################################################################################
+################################################################################
+###
 ###   class FilterManager
 ###
 ################################################################################
 ################################################################################
-class FilterManager: 
+class FilterManager:
 
     # Management Interface.
     # ---------------------
@@ -679,7 +709,7 @@ class FilterManager:
       message = ''
       id = REQUEST.get('id','')
       pid = REQUEST.get('pid',-1)
-
+      
       # Acquire.
       # --------
       if btn == self.getZMILangStr('BTN_ACQUIRE'):
@@ -687,25 +717,25 @@ class FilterManager:
         newAcquired = 1
         id = setFilter(self, newId, newAcquired)
         message = self.getZMILangStr('MSG_INSERTED')%id
-
+      
       # Change.
       # -------
       elif btn == self.getZMILangStr('BTN_SAVE'):
-	cp = self.getFilter(id)
-	# Filter.
+        cp = self.getFilter(id)
+        # Filter.
         newId = REQUEST.get('inpId').strip()
         newAcquired = 0
         newName = REQUEST.get('inpName').strip()
         newFormat = REQUEST.get('inpFormat').strip()
         newContentType = REQUEST.get('inpContentType').strip()
-	newDescription = REQUEST.get('inpDescription').strip()
-	newRoles = REQUEST.get('inpRoles',[])
-	newMetaTypes = REQUEST.get('inpMetaTypes',[])
+        newDescription = REQUEST.get('inpDescription').strip()
+        newRoles = REQUEST.get('inpRoles',[])
+        newMetaTypes = REQUEST.get('inpMetaTypes',[])
         id = delFilter(self, id)
         id = setFilter(self, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
-	# Filter Processes.
-	c = 0
-	for filterProcess in cp.get('processes',[]):
+        # Filter Processes.
+        c = 0
+        for filterProcess in cp.get('processes',[]):
           newProcessId = REQUEST.get('newFilterProcessId_%i'%c)
           newProcessFile = REQUEST.get('newFilterProcessFile_%i'%c)
           if isinstance(newProcessFile,ZPublisher.HTTPRequest.FileUpload):
@@ -716,7 +746,7 @@ class FilterManager:
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
         message = self.getZMILangStr('MSG_CHANGED')
-
+      
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE') and key == 'obj':
@@ -725,12 +755,12 @@ class FilterManager:
       elif btn == 'delete' and key == 'attr':
         pid = delFilterProcess(self, id, pid)
         message = self.getZMILangStr('MSG_DELETED')%int(1)
-
+      
       # Export.
       # -------
       elif btn == self.getZMILangStr('BTN_EXPORT'):
         return exportXml(self, REQUEST, RESPONSE)
-
+      
       # Import.
       # -------
       elif btn == self.getZMILangStr('BTN_IMPORT'):
@@ -743,7 +773,7 @@ class FilterManager:
           createIfNotExists = 1
           self.importConf(filename, REQUEST, createIfNotExists)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
-
+      
       # Insert.
       # -------
       elif btn == self.getZMILangStr('BTN_INSERT'):
@@ -765,14 +795,14 @@ class FilterManager:
               newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
           pid = setFilterProcess(self, id, newProcessId, newProcessFile)
           message = self.getZMILangStr('MSG_INSERTED')%newProcessId
-
+      
       # Move to.
       # --------
       elif btn == 'move_to':
         pos = REQUEST['pos']
         pid = moveFilterProcess(self, id, pid, pos)
         message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%pid),(pos+1))
-
+      
       # Return with message.
       message = urllib.quote(message)
       return RESPONSE.redirect('manage_customizeFilterForm?id=%s&pid:int=%i&lang=%s&manage_tabs_message=%s'%(id,pid,lang,message))

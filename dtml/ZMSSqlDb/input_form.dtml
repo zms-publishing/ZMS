@@ -70,7 +70,7 @@
     ></dtml-in>
     
     // lazy multiselects (all elements starting with 'new_' or containing '_new_' with prefix)
-    $('select[type=select-multiple][name^=new_] option, select[type=select-multiple][name*=_new_] option').attr("selected","selected");
+    $('select[multiple][name^=new_] option, select[multiple][name*=_new_] option').attr("selected","selected");
     
     return b;
   }

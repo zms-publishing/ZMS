@@ -516,14 +516,14 @@ class ZCatalogManager:
           index_names.append( index_name)
       
       #-- (Re-)create indexes on catalog
+      message += "Create Index: "
+      index_name = 'meta_id'
+      zcatalog.manage_addColumn(index_name)
+      message += index_name
       index_types = []
       for index in zcatalog.Indexes.filtered_meta_types():
         index_types.append(index['name'])
       for lang in self.getLangIds():
-        message += "Index ["
-        index_name = 'meta_id'
-        zcatalog.manage_addColumn(index_name)
-        message += index_name
         index_name = 'zcat_text_%s'%lang
         setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_text.func_code, {}, index_name, (lang,)))
         index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
@@ -583,7 +583,7 @@ class ZCatalogManager:
               setattr(index_extras,'use_stopwords',False)
           zcatalog.manage_addIndex(index_name,index_type,index_extras)
           message += ", "+index_name+"("+index_type+")"
-        message += "] created for language <i>"+self.getLanguageLabel(lang)+'</i><br/>'
+      message += "<br/>"
       
       #-- Return message.
       return message

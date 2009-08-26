@@ -264,23 +264,34 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.svnCopy:
     # --------------------------------------------------------------------------
-    def svnCopy(self, node, path):
+    def svnCopy(self, node, path, ids=[]):
       l = []
-      if node.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
-        filepath = path
-        if node.meta_type in ['DTML Method','DTML Document']:
-          filepath += '.dtml'
-        _fileutil.exportObj(node,filepath)
-        atime = node.bobobase_modification_time()
-        mtime = node.bobobase_modification_time()
-        times = (atime,mtime)
-        os.utime(filepath,times)
-        l.append({'filepath':filepath,'mtime':mtime,'meta_type':node.meta_type})
-      elif node.meta_type in ['Folder','ZMS','ZMSMetamodelProvider']:
-        for ob in node.objectValues():
-          id = absattr(ob.id)
-          filepath = path+os.sep+id
-          l.extend( self.svnCopy(ob,filepath))
+      for ob in node.objectValues():
+        action = None
+        id = absattr(ob.id)
+        filepath = path+os.sep+id
+        filemtime = None
+        mtime = long(ob.bobobase_modification_time().timeTime())
+        meta_type = ob.meta_type
+        if ob.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
+          if node.meta_type in ['DTML Method','DTML Document']:
+            filepath += '.dtml'
+          if os.path.exists( filepath):
+            filestat = os.stat(filepath)
+            filemtime = long(filestat[stat.ST_MTIME])
+            if mtime > filemtime:
+              action = 'update'
+          else: 
+            action = 'insert'
+          if action:
+            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+            if filepath in ids:
+              _fileutil.exportObj(node,filepath)
+              atime = mtime
+              times = (atime,mtime)
+              os.utime(filepath,times)
+        elif ob.meta_type in ['Folder','ZMS','ZMSMetamodelProvider']:
+          l.extend( self.svnCopy(ob,filepath,ids))
       return l
 
 
@@ -610,8 +621,13 @@ class ConfManager(
         if btn == 'Change':
           message = self.getZMILangStr('MSG_CHANGED')
         elif btn == 'Copy to Location':
-          l = self.svnCopy(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id)
-          message = self.getZMILangStr('MSG_EXPORTED')%str(len(l))
+          execute = REQUEST.get('execute')
+          if execute:
+            ids = REQUEST.get('ids',[])
+            l = self.svnCopy(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id,ids)
+            message = self.getZMILangStr('MSG_EXPORTED')%str(len(ids))
+          else:
+            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v, 'action': 'outgoing'}))
         elif btn == 'Update from Location':
           execute = REQUEST.get('execute')
           if execute:
@@ -619,7 +635,7 @@ class ConfManager(
             l = self.svnUpdate(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id,ids)
             message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
           else:
-            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v}))
+            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v, 'action': 'incoming'}))
       
       ##### Custom ####
       elif key == 'Custom':

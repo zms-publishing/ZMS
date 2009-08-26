@@ -1280,3 +1280,6 @@
 [01223] Applied fix for resource-paths in export (html & xml), added unit-tests and started implementation of filter-debugging (reported by jk).
 [01224] Applied fix for SQL-Datasource: mixture of details and other columns (reported by tf).
 --------------------------------------------------
+2009-08-25:zms-2.11.1-81
+[01225] Revised support for replication to local-fs: select-dialog for copy to location (requested by xm).
+--------------------------------------------------

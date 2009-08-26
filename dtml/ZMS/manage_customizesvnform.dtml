@@ -20,11 +20,19 @@
   <input type="hidden" name="conf_key" value="SVN.path"/>
   <input type="hidden" name="conf_value" value="<dtml-var basepath>" size="40"/>
 
-<dtml-in "svnUpdate(getHome(),getConfProperty(conf_key,conf_value)+'/'+getHome().id)" mapping>
+<dtml-if "action=='outgoing'">
+ <dtml-call "REQUEST.set('l',svnCopy(getHome(),getConfProperty(conf_key,conf_value)+'/'+getHome().id))">
+ <dtml-call "REQUEST.set('headline','Copy to Location')">
+<dtml-else>
+ <dtml-call "REQUEST.set('l',svnUpdate(getHome(),getConfProperty(conf_key,conf_value)+'/'+getHome().id))">
+ <dtml-call "REQUEST.set('headline','Update from Location')">
+</dtml-if>
+
+<dtml-in l mapping>
  <dtml-if sequence-start>
   <table>
   <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline='Update from Location: %s'%basepath)"></td>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline='%s: %s'%(headline,basepath))"></td>
   </tr>
  </dtml-if>
  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if>">
@@ -39,7 +47,7 @@
  <dtml-if sequence-end>
   </table>
   <hr size="1"/>
-  <input class="form-submit" type="submit" name="btn" value="Update from Location">
+  <input class="form-submit" type="submit" name="btn" value="<dtml-var headline>">
   &nbsp;&nbsp;
  </dtml-if>
 <dtml-else>

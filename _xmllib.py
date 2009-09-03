@@ -23,10 +23,7 @@
 
 # Imports.
 from __future__ import nested_scopes
-try: # Zope >= 2.9
-  import pyexpat
-except: # Zope < 2.9
-  from Shared.DC.xml import pyexpat
+import pyexpat
 from App.Common import package_home
 from OFS.Image import File
 import Globals
@@ -216,10 +213,6 @@ def xmlOnUnknownEndTag(self, sTagName):
     
     attrs = _globals.unencode( tag['attrs'])
     cdata = _globals.unencode( tag['cdata'])
-    
-    #-- Zope < 2.9
-    if type( attrs) is list:
-      attrs = self.dict_list( attrs)
     
     #-- ITEM (DICTIONARY|LIST) --
     #----------------------------
@@ -821,10 +814,6 @@ class XmlAttrBuilder:
       # Hack for nested CDATA
       cdata = re.compile( '\<\!\{CDATA\{(.*?)\}\}\>').sub( '<![CDATA[\\1]]>', cdata)
       
-      #-- Zope < 2.9
-      if type( attrs) is list:
-        attrs = self.dict_list( attrs)
-      
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ")")
       
@@ -1084,10 +1073,6 @@ class XmlBuilder:
       lCdata = _globals.unencode( lTag['cdata'])
       lTags = _globals.unencode( lTag['tags'])
 
-      #-- Zope < 2.9
-      if type( attrs) is list:
-        attrs = self.dict_list( attrs)
-      
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")
       

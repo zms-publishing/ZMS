@@ -56,11 +56,11 @@
 <input class="form-small" type="submit" id="addMetaTypeBtn" name="btn" value="Add" />
 </div>
 </div>
-<br/>
+<div class="clearfloating" style="clear:both"></div>
 <dtml-in "objectValues(['Sequence','ZCatalog','ZMSLog'])">
  <div class="form-small"
-  ><input class="form-checkbox" type="checkbox" name="meta_types:list" value="<dtml-var meta_type>"
-  ><a href="<dtml-var id>/manage_main" class="zmi"><img src="<dtml-var icon>" alt="" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var "getZMILangStr(meta_type)"></a
+  ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>"
+  ><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)</a
  > (<dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">)</div>
 </dtml-in>
 <input class="form-submit" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />

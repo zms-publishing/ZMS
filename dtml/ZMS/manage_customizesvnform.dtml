@@ -8,6 +8,7 @@
 
 <dtml-let basepath="getConfProperty('SVN.path','')" dicon="{
           'DTML Method':'/misc_/OFSP/dtmlmethod.gif',
+          'Script (Python)':'/misc_/PythonScripts/pyscript.gif'
         }"
       daction="{
           'delete':'delete1',

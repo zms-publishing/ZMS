@@ -1283,3 +1283,13 @@
 2009-08-25:zms-2.11.1-81
 [01225] Revised support for replication to local-fs: select-dialog for copy to location (requested by xm).
 --------------------------------------------------
+2009-08-27:zms-2.11.1-82
+[01226] Introduce seperate catalog for each language.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++ IMPORTANT NOTE: Revised indexing of ZCatalog: reindex your catalog!
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--------------------------------------------------
+2009-08-28:zms-2.11.1-83
+[01227] Added support for import of unknown content-object types (requested by xm).
+--------------------------------------------------

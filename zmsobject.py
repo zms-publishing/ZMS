@@ -499,7 +499,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           return '%sico_sqldb.gif'%self.MISC_ZMS
         elif metaObj[ 'type'] == 'ZMSReference':
           return '%sico_linkcontainer.gif'%self.MISC_ZMS
-      return '%sico_document.gif'%self.MISC_ZMS
+      return '/p_/broken'
 
 
     # --------------------------------------------------------------------------

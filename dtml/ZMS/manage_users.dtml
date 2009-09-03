@@ -203,7 +203,8 @@
          <td class="form-element" colspan="2" align="right"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
          <td class="form-label">SN</td>
          <td class="form-label">CN</td>
-         <td class="form-label">Distinguished Name</td>
+         <td class="form-label">DN</td>
+         <td class="form-label">OU</td>
          <td class="form-label">&nbsp;</td>
         </tr>
        </dtml-if>
@@ -214,6 +215,7 @@
         <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><b></dtml-if><dtml-var "_.unicode(sn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='sn'"></b></dtml-if></td>
         <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><b></dtml-if><dtml-var "_.unicode(cn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='cn'"></b></dtml-if></td>
         <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><b></dtml-if><dtml-var "_.unicode(dn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='dn'"></b></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><b></dtml-if><dtml-var "_.unicode(ou,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='ou'"></b></dtml-if></td>
         <td class="form-small">
          &nbsp;
          <!-- E-Mail -->

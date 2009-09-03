@@ -42,21 +42,23 @@ import _zmsattributecontainer
 #  Hook for trigger of custom event (if there is one)
 # ------------------------------------------------------------------------------
 def triggerEvent(self, name, REQUEST):
-  metaObjAttr = self.getMetaobjAttr(self.meta_id,name)
-  if metaObjAttr is not None:
-    try: REQUEST.set('preview','preview')
-    except: REQUEST['preview'] = 'preview'
-    v = self.getObjProperty(name,REQUEST)
-  ob = self
-  ob_ids = []
-  while ob is not None:
-    for ob_id in ob.getHome().objectIds():
-      if ob_id not in ob_ids and ob_id.find( name) == 0:
-        try: REQUEST.set('preview','preview')
-        except: REQUEST['preview'] = 'preview'
-        v = getattr(self,ob_id)(context=self,REQUEST=REQUEST)
-        ob_ids.append(ob_id)
-    ob = ob.getPortalMaster()
+  metaObj = self.getMetaobj( self.meta_id)
+  if metaObj:
+    metaObjAttr = self.getMetaobjAttr( self.meta_id, name)
+    if metaObjAttr is not None:
+      try: REQUEST.set('preview','preview')
+      except: REQUEST['preview'] = 'preview'
+      v = self.getObjProperty(name,REQUEST)
+    ob = self
+    ob_ids = []
+    while ob is not None:
+      for ob_id in ob.getHome().objectIds():
+        if ob_id not in ob_ids and ob_id.find( name) == 0:
+          try: REQUEST.set('preview','preview')
+          except: REQUEST['preview'] = 'preview'
+          v = getattr(self,ob_id)(context=self,REQUEST=REQUEST)
+          ob_ids.append(ob_id)
+      ob = ob.getPortalMaster()
 
 
 # ------------------------------------------------------------------------------

@@ -30,6 +30,8 @@ from DateTime.DateTime import DateTime
 from Globals import HTMLFile
 from OFS.CopySupport import absattr
 from OFS.Image import Image
+from Products.PageTemplates import ZopePageTemplate
+from Products.PythonScripts import PythonScript
 import os
 import stat
 import urllib
@@ -274,8 +276,10 @@ class ConfManager(
         mtime = long(ob.bobobase_modification_time().timeTime())
         meta_type = ob.meta_type
         if ob.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
-          if node.meta_type in ['DTML Method','DTML Document']:
+          if ob.meta_type in ['DTML Method','DTML Document']:
             filepath += '.dtml'
+          if ob.meta_type in ['Script (Python)']:
+            filepath += '.py'
           if os.path.exists( filepath):
             filestat = os.stat(filepath)
             filemtime = long(filestat[stat.ST_MTIME])
@@ -286,7 +290,7 @@ class ConfManager(
           if action:
             l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
             if filepath in ids:
-              _fileutil.exportObj(node,filepath)
+              _fileutil.exportObj(ob,filepath)
               atime = mtime
               times = (atime,mtime)
               os.utime(filepath,times)
@@ -310,6 +314,8 @@ class ConfManager(
         filemtime = long(filestat[stat.ST_MTIME])
         if id.endswith('.dtml'):
           id = id[:id.rfind('.')]
+        if id.endswith('.py'):
+          id = id[:id.rfind('.')]
         path_ids.append( id)
         ob = getattr( node, id, None)
         if stat.S_ISDIR(mode):
@@ -330,6 +336,10 @@ class ConfManager(
               meta_type = 'DTML Method'
               if filepath in ids:
                 node.manage_addDTMLMethod( id=id, title='New DTML Method')
+            elif filename.endswith('.py'):
+              meta_type = 'Script (Python)'
+              if filepath in ids:
+                PythonScript.manage_addPythonScript( node, id)
             elif filename.lower().endswith('.gif') or \
                  filename.lower().endswith('.jpg') or \
                  filename.lower().endswith('.png'):
@@ -680,10 +690,10 @@ class ConfManager(
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
         elif btn == 'Remove':
-          meta_types = REQUEST.get('meta_types',[])
-          if len( meta_types) > 0:
-            self.manage_delObjects(ids=self.objectIds(meta_types))
-            message = 'Removed '+', '.join(meta_types)
+          ids = REQUEST.get('ids',[])
+          if ids:
+            message = 'Removed '+', '.join(ids)
+            self.manage_delObjects(ids=ids)
       
       # Return with message.
       d = {

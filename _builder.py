@@ -24,10 +24,7 @@
 ################################################################################
 
 # Imports
-try: # Zope >= 2.9
-  import pyexpat
-except: # Zope < 2.9
-  from Shared.DC.xml import pyexpat
+import pyexpat
 import time
 import Globals
 # Product Imports.
@@ -189,10 +186,6 @@ class Builder:
         name = _globals.unencode( name)
         attrs = _globals.unencode( attrs)
         
-        #-- Zope < 2.9
-        if type( attrs) is list:
-          attrs = self.dict_list( attrs)
-        
         # handle alias
         if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.has_key(name):
           attrs['meta_id'] = name
@@ -211,12 +204,12 @@ class Builder:
             
             if self.dGlobalAttrs.has_key(name) and \
                self.dGlobalAttrs[name]['obj_class'] is not None:
-                # class defined for tag!
                 
+                # class defined for tag!
                 if self.oCurrNode==None and self.oRoot!=None and self.oRoot.id==self.getDocumentElement().id:
                   self.oCurrNode = self.oRoot
                     
-                # create node instance  
+                # create node instance
                 _globals.writeBlock( self, "[Builder.OnStartElement]: create new object <" + str(name) + "> in " + str(self.oCurrNode))
                 newNode = None
                 if 'id_fix' in attrs.keys():
@@ -239,12 +232,13 @@ class Builder:
                   self.oCurrNode._setObject(newNode.id, newNode)
                   newNode = getattr(self.oCurrNode,newNode.id)
                 
-                ##### Meta Objects ####
+                ##### Identify Content-Object ####
                 if newNode.meta_type == 'ZMSCustom':
                   meta_id = attrs.get( 'meta_id')
                   if meta_id not in self.getMetaobjIds( sort=0):
-                    raise ParseError("Unknown meta_id (" + meta_id + "): no special object available!")  # no special object available!
+                    _globals.writeError(newNode,'[_builder.OnStartElement]: no object-definition available ('+meta_id+')!')
                   newNode.meta_id = meta_id
+                
                 ##### Object State ####
                 newNode.initializeWorkVersion()
                 obj_attrs = newNode.getObjAttrs()

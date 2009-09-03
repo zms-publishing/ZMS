@@ -140,12 +140,6 @@
   
  <dtml-else>
 
-  <!-- max score -->
-  <dtml-call "REQUEST.set('_score_factor',1.0)">
-  <dtml-if "qres[0].get('score',0)>5">
-   <dtml-call "REQUEST.set('_score_factor',_.float(5.0/_.float(qres[0].get('score',0))))">
-  </dtml-if>
-
   <!-- qs: query-start -->
   <dtml-call "REQUEST.set('qs',REQUEST.get('qs',1))">
 

@@ -506,7 +506,7 @@ function getSelectedCheckboxes(fm, elNamePrefix, newElNamePrefix) {
 //-------------------------------------------------------------------
 function processMultiselectsOnFormSubmit() {
   // lazy multiselects (all elements starting with 'src')
-  var mss = $('select[type=select-multiple]');
+  var mss = $('select[multiple]');
   for (var i=0; i < mss.length; i++) {
     var ms = $(mss[i]);
     if (ms.attr('name').indexOf('zms_mms_src_')!=0) {

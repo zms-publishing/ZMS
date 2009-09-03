@@ -171,7 +171,7 @@
   <dtml-in "getConfProperty('ZMS.workflow.nodes',['{$}'])">
    <dtml-let node=sequence-item ob="getLinkObj(node,REQUEST)">
     <div class="form-small">    
-     <dtml-if "ob is not _.None">
+     <dtml-if "ob is not None">
       <dtml-var "f_breadcrumbs(_,_,objectPathElements=ob.breadcrumbs_obj_path(),no_icon=1,REQUEST=REQUEST)">
      <dtml-else>
       <img src="<dtml-var MISC_ZMS>internal_link_broken.gif" title="" alt="" border="0" align="absmiddle"/> <dtml-var node>
@@ -228,8 +228,8 @@
   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
   <td>
    <div class="form-text">
-    <dtml-var "getLangFmtDate(getConfProperty('ZMS.workflow.change_dt',_.None))">
-    <dtml-var "getZMILangStr('BY')"> <dtml-var "getConfProperty('ZMS.workflow.change_uid',_.None)">
+    <dtml-var "getLangFmtDate(getConfProperty('ZMS.workflow.change_dt',None))">
+    <dtml-var "getZMILangStr('BY')"> <dtml-var "getConfProperty('ZMS.workflow.change_uid',None)">
    </div>
   </td>
  </tr>
@@ -307,7 +307,7 @@
               ></dtml-if
               ><td align="center" style="white-space: nowrap; border: 1px solid maroon; background-color: <dtml-if "itm.get('editable',1)">#FFFFE0<dtml-else>yellow</dtml-if>; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;"
                ><div class="form-small"
-               ><dtml-if "itm.get('icon',_.None)"
+               ><dtml-if "itm.get('icon',None)"
                 ><img src="get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="" border="0" align="absmiddle"
                ></dtml-if
                ><dtml-var "string_maxlen(itm['name'],18)"
@@ -409,7 +409,7 @@
        <tr>
         <td>
          <div class="form-small">
-          <dtml-if "itm.get('icon',_.None)">
+          <dtml-if "itm.get('icon',None)">
            <img src="get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="" border="0" align="absmiddle" style="background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"/>
            <i>(<dtml-var "getDataSizeStr(_.len(itm['icon'].data))">)</i>
           </dtml-if>

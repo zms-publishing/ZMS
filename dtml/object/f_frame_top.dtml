@@ -1,11 +1,7 @@
 <dtml-var manage_page_header>
-<body class="zmi" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-<div class="zmiNeutralColorMedium0">
- <table cellspacing="0" cellpadding="4" border="0" height="100%" width="100%">
- <tr>
-  <td valign="top" class="form-label"><dtml-var p_title></td>
- </tr>
- </table>
-</div>
+<body class="zmi zmiNeutralColorMedium0">
+ <div style="padding:4px">
+  <div class="form-label"><dtml-var p_title></div>
+ </div>
 </body>
 </html>

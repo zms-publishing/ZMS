@@ -100,8 +100,8 @@
   <dtml-call f_recordset_init>
 
   <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if
-    ><dtml-if "(REQUEST.get('rindex') is not _.None and REQUEST.get('rindex',-1)==_['res-index']) or 
-               (REQUEST.get('rindex') is _.None and REQUEST.get('qindex',-1)==_['res-index'])"
+    ><dtml-if "(REQUEST.get('rindex') is not None and REQUEST.get('rindex',-1)==_['res-index']) or 
+               (REQUEST.get('rindex') is None and REQUEST.get('qindex',-1)==_['res-index'])"
      > zmiTeaserColor</dtml-if>"
 >
   <dtml-if grid_options>
@@ -155,7 +155,7 @@
     <dtml-unless "grid_col.get('hide')">
      <td class="form-small">
       <dtml-try>
-      <dtml-let v="row.get(key,_.None)">
+      <dtml-let v="row.get(key,None)">
 
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

@@ -344,7 +344,7 @@
       <dtml-call "REQUEST.set('qsize',REQUEST.get('qsize',10))">
       <dtml-call "recordSet_Init(REQUEST)">
       <dtml-call "REQUEST.set('res',copy_list(res))">
-      <dtml-call "REQUEST.set('res',filter_list(res,_.None,SESSION.get('qfilter','')))">
+      <dtml-call "REQUEST.set('res',filter_list(res,None,SESSION.get('qfilter','')))">
       <dtml-call "recordSet_Sort(REQUEST)">
       <!--// EO Init parameters //-->
 

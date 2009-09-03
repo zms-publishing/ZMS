@@ -117,7 +117,7 @@
  <!----------// EO Register: create a new personalProfile //---------->
 
  <!----------// BO Apply for a course: create a new personalTrack //---------->
- <dtml-if "SESSION.get('sessionRefObjPath',_.None) is not _.None">
+ <dtml-if "SESSION.get('sessionRefObjPath',None) is not None">
   <dtml-let courseFldr="getLinkObj(SESSION['sessionRefObjPath'],REQUEST)">
   <dtml-call "personalProfile.manage_addZMSCustom(meta_id='personalTrack',
    values={'id_prefix':'personalTracks'
@@ -127,7 +127,7 @@
           ,'attrData':{}
           ,'attrCreationDt':ZopeTime()
    },REQUEST=REQUEST)">
-  <dtml-call "SESSION.set('sessionRefObjPath',_.None)">
+  <dtml-call "SESSION.set('sessionRefObjPath',None)">
   <dtml-call "REQUEST.set('message',REQUEST.get('message','')+getLangStr('LMS_REG_COURSE',lang)+'!<br/>')">
   </dtml-let>
  </dtml-if>
@@ -176,7 +176,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <form name="form0" action="<dtml-var URL>" method="post" encoding="multipart/form-data">
 <input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
 <table cellspacing="0" cellpadding="2" border="1">
-<dtml-if "SESSION.get('sessionRefObjPath',_.None) is not _.None">
+<dtml-if "SESSION.get('sessionRefObjPath',None) is not None">
 <dtml-with "getLinkObj(SESSION['sessionRefObjPath'],REQUEST)">
 <tr>
  <td><div class="form-label"><dtml-var "getLangStr('REGISTER_COURSE',lang)"></div></td>
@@ -1225,16 +1225,16 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <dtml-comment>
   <!-- Pre-parsing manifest to identify active SCO -->
 </dtml-comment>
-<dtml-call "REQUEST.set('activeScoId',_.None)">
+<dtml-call "REQUEST.set('activeScoId',None)">
 <dtml-call "REQUEST.set('activeScoIdPathList',[])">
-<dtml-call "REQUEST.set('activeScoParentId',_.None)">
+<dtml-call "REQUEST.set('activeScoParentId',None)">
 <dtml-in "getObjProperty('_imsmanifest',REQUEST)" mapping>
   <dtml-if "REQUEST.form.get('scoId','')==id or 
            (REQUEST.form.get('scoId','')=='' and nextScoId==id) ">
     <dtml-call "REQUEST.set('activeScoId',id)">
     <dtml-call "REQUEST.set('activeScoLevel',level)">
     <dtml-call "REQUEST.set('activeScoIdPathList',[])">
-    <dtml-if "href is not _.None">
+    <dtml-if "href is not None">
       <dtml-call "REQUEST.set('activeScoIdPathList',href.split('/')[:-1])">
     </dtml-if>
     <dtml-try><dtml-call "REQUEST.set('activeScoParentId',href.split('/')[-3])">
@@ -1414,12 +1414,12 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 
  <dtml-let userObj="getPersonalProfileByEmail(_,_,userObjEmail=AUTHENTICATED_USER.getId())">
   <dtml-if userObj>
-   <dtml-let userObjTrack="userObj.get('userObjTracks',{}).get(getParentNode().id,_.None)">
+   <dtml-let userObjTrack="userObj.get('userObjTracks',{}).get(getParentNode().id,None)">
     <dtml-return userObjTrack>
    </dtml-let>
   </dtml-if>
  </dtml-let>
- <dtml-return "_.None">
+ <dtml-return "None">
 
 <!--// EO getPersonalTrack //-->]]></item>
 <item key="default"/>
@@ -1605,7 +1605,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
  <dtml-in "getLangIds()">
   <dtml-call "REQUEST.set('lang',_['sequence-item'])">
  <dtml-call "REQUEST.set('obj',getLinkObj(REQUEST['url'],REQUEST))">
- <dtml-if "REQUEST['obj'] is not _.None">
+ <dtml-if "REQUEST['obj'] is not None">
   <dtml-with "REQUEST['obj']">
    <dtml-if "'imsmanifest.xml' in objectIds(['File'])">
     <dtml-call "REQUEST.set('imsmanifest',_.str(_['imsmanifest.xml']))">
@@ -1765,7 +1765,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
    </dtml-let>
   </dtml-if>
  </dtml-in>
- <dtml-return "_.None">
+ <dtml-return "None">
 
 <!--// EO getPersonalProfileById //-->]]></item>
 <item key="default"/>
@@ -1811,7 +1811,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
    </dtml-let>
   </dtml-if>
  </dtml-in>
- <dtml-return "_.None">
+ <dtml-return "None">
 
 <!--// EO getPersonalProfileByEmail //-->]]></item>
 <item key="default"/>
@@ -2135,7 +2135,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 
 <!--// BO Display registered members //-->
 <p><strong><dtml-var "_.len(memberIds)"> <dtml-var "getLangStr('LMS_REG_MEMBERS',lang)"></strong></p>
-<dtml-if "userObj is not _.None and userObj['id'] in memberIds">
+<dtml-if "userObj is not None and userObj['id'] in memberIds">
 <ol>
 <dtml-in memberIds>
  <dtml-let memberId=sequence-item>
@@ -2160,7 +2160,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <!--// BO Display registration options //-->
 <div class="teaserColor" style="padding:2px">
 <div class="primColorLight0" style="padding:2px">
-<dtml-if "userObj is not _.None and userObj['id'] in memberIds">
+<dtml-if "userObj is not None and userObj['id'] in memberIds">
  &raquo; <a style="text-decoration:none;font-weight:bold" 
   href="<dtml-var absolute_url>?lang=<dtml-var lang>&<dtml-var actionId>=Unregister"><dtml-var "getLangStr('LMS_COURSE_UNREG',lang)"></a><br />
 <dtml-elif member>

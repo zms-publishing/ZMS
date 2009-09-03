@@ -1,6 +1,7 @@
 <dtml-var manage_page_header>
 </head>
-<body class="zmiNeutralColorLight0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="4" topmargin="4" marginheight="4" marginwidth="4">
+<body class="zmi zmiNeutralColorLight0">
+<div style="padding:4px">
 
 <dtml-if "_.len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
  <div class="system-msg">
@@ -109,5 +110,6 @@
  </form>
 </dtml-let>
 
+</div>
 </body>
 </html>

@@ -260,7 +260,7 @@
              </dtml-in>
             </td>
             <td class="form-small" nowrap="nowrap">
-             <dtml-if "process.get('command','').find('{trans}')>=0 and filterProcess.get('file',_.None)">
+             <dtml-if "process.get('command','').find('{trans}')>=0 and filterProcess.get('file',None)">
               <dtml-let f="filterProcess['file']">
                <img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle">
                <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var "filterProcess['id']">/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a> 
@@ -401,8 +401,8 @@
                <td class="form-small" nowrap="nowrap"><b>{trans}</b></td>
                <td class="form-small" nowrap="nowrap"><input class="form-small" type="file" name="newFilterProcessFile_<dtml-var pid>" size="15"></td>
                <td class="form-small" nowrap="nowrap" align="right">
-                <dtml-let f="filterProcess.get('file',_.None)">
-                 <dtml-if "f is not _.None and f != ''">
+                <dtml-let f="filterProcess.get('file',None)">
+                 <dtml-if "f is not None and f != ''">
                   <img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle">
                   <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var pid>:int/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a> 
                  </dtml-if>
@@ -557,7 +557,7 @@
          <dtml-let pid=sequence-index filterProcess=sequence-item process="getProcess(filterProcess['id'])">
           <dtml-if "process.get('command','')==''">
           <tr>
-           <dtml-if "filterProcess.get('file',_.None)">
+           <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td align="center" class="form-small" style="white-space: nowrap; background-color: white; border: 1px solid navy; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
               <dtml-if "_.len(process.keys())==1"><img src="<dtml-var MISC_ZMS>ico_error.gif" title="ERROR: Processing-step type '<dtml-var "process['id']">' not found!" border="0" align="absmiddle"/>&nbsp;<span style="border: 2px solid red;"></dtml-if>
@@ -571,7 +571,7 @@
           <dtml-else>
           <tr>
            <td align="center" class="form-small" style="white-space: nowrap; background-color: #FFFFE0; border: 1px solid maroon; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"><dtml-var "process['name']" html_quote></td>
-           <dtml-if "filterProcess.get('file',_.None)">
+           <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td class="form-small" style="white-space: nowrap; color: navy;"
               ><img src="<dtml-var MISC_ZMS>arr_lft.gif" title="" border="0" align="absmiddle"
@@ -665,7 +665,7 @@
   </dtml-if>
 
  <!-- Acquire Filter-Item -->
- <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not _.None">  
+ <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not None">  
   <dtml-call "REQUEST.set('count',0)">
   <dtml-let thisIds="getFilterIds()" portalMaster="getPortalMaster()">
     <dtml-in "portalMaster.getFilterIds()">

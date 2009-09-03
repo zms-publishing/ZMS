@@ -94,7 +94,7 @@
     <dtml-call "REQUEST.set('has_acquisition',[])">
     <dtml-in "getPortalClients()">
      <dtml-let portalClient=sequence-item portalClientMetaCmd="portalClient.getMetaCmd(metaCmdId)">
-      <dtml-if "portalClientMetaCmd is not _.None and portalClientMetaCmd.get('acquired',0)==1">
+      <dtml-if "portalClientMetaCmd is not None and portalClientMetaCmd.get('acquired',0)==1">
        <dtml-call "has_acquisition.append(portalClient.getHome().id)">
       </dtml-if>
      </dtml-let>
@@ -347,7 +347,7 @@
   </dtml-if>
 
  <!-- Acquire Action -->
- <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not _.None">
+ <dtml-if "REQUEST.get('id','')=='' and getPortalMaster() is not None">
   <dtml-call "REQUEST.set('count',0)">
   <dtml-let thisIds="getMetaCmdIds()" portalMaster="getPortalMaster()">
     <dtml-in "portalMaster.getMetaCmdIds()">

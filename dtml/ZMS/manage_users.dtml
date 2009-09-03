@@ -225,7 +225,7 @@
           </dtml-if>
          </dtml-let>
          <!-- Profile -->
-         <dtml-let profile="getUserAttr(userId,'profile',_.None)" ob="getLinkObj(profile,REQUEST)">
+         <dtml-let profile="getUserAttr(userId,'profile',None)" ob="getLinkObj(profile,REQUEST)">
           <dtml-if profile>
            <dtml-if ob>
             <dtml-with ob>
@@ -327,7 +327,7 @@
       <td class="form-element" align="right" nowrap="nowrap">
        <dtml-if "localUserFldr!=userFldr">
         &nbsp;
-        <dtml-let profile="getUserAttr(userName,'profile',_.None)" ob="getLinkObj(profile,REQUEST)">
+        <dtml-let profile="getUserAttr(userName,'profile',None)" ob="getLinkObj(profile,REQUEST)">
          <dtml-if profile>
           <dtml-if ob>
            <dtml-with ob>
@@ -599,7 +599,7 @@
            </dtml-if>
           </dtml-let>
           <!-- Profile -->
-          <dtml-let profile="getUserAttr(name,'profile',_.None)" ob="getLinkObj(profile,REQUEST)">
+          <dtml-let profile="getUserAttr(name,'profile',None)" ob="getLinkObj(profile,REQUEST)">
            <dtml-if profile>
             <dtml-if ob>
              <dtml-with ob>

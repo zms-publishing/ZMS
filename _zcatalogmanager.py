@@ -475,7 +475,7 @@ class ZCatalogManager:
     #
     #  Reindex catalog.
     # --------------------------------------------------------------------------
-    def reindexCatalog(self, REQUEST):
+    def reindexCatalog(self, REQUEST, clients=False):
       message = ''
       
       for lang in self.getLangIds():
@@ -487,8 +487,14 @@ class ZCatalogManager:
         #-- Find items to catalog.
         message += self.reindexCatalogItem(REQUEST)+'<br/>'
       
+      message += 'Catalog %s indexed successfully.'%self.getHome().id
+      
+      #-- Process clients.
+      if clients:
+        for portalClient in self.getPortalClients():
+          message += portalClient.reindexCatalog( REQUEST, clients)
+      
       # Return with message.
-      message += 'Catalog indexed successfully.'
       return message
 
 

@@ -61,7 +61,7 @@
   <dtml-with ob>
    <container>
     <objectName><dtml-var id></objectName> 
-    <path><dtml-if "getParentNode() is not _.None"><dtml-var "getParentNode().absolute_url()[_.len(getHome().absolute_url())+1:]"></dtml-if></path> 
+    <path><dtml-if "getParentNode() is not None"><dtml-var "getParentNode().absolute_url()[_.len(getHome().absolute_url())+1:]"></dtml-if></path> 
     <label>/<dtml-var "getHome().id">/<dtml-var id>: <dtml-var "getTitlealt(REQUEST).replace('&',' ')"></label> 
     <baseURL><dtml-var absolute_url>/</baseURL>
     <empty>false</empty> 

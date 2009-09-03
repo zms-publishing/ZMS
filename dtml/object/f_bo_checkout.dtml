@@ -14,7 +14,7 @@
      <dtml-let tsec="_.int(ZopeTime().timeTime()-_.getattr(this(),'co_dat_%s'%lang))" th="_.int(tsec/60/60)" tm="_.int((tsec-th*60*60)/60)" ts="_.int(tsec-tm*60-th*60*60)">
       <dtml-var "('%2i:%2i:%2ih'%(th,tm,ts)).replace(' ','0')">
      </dtml-let>
-     <dtml-var "getZMILangStr('BY')"> <dtml-var "_.getattr(this(),'co_uid_%s'%lang,_.None)">
+     <dtml-var "getZMILangStr('BY')"> <dtml-var "_.getattr(this(),'co_uid_%s'%lang,None)">
      </div></td>
      <td><div class="form-element"><input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_OVERTAKE')" html_quote>" onclick="return checkoutOvertakeBtnClick('<dtml-var absolute_url>','<dtml-var lang>');"/></div></td>
     </tr>

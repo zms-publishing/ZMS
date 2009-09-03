@@ -1,6 +1,6 @@
 <dtml-try>
 <dtml-call "REQUEST.set('data',REQUEST.get('data',value))"
-><dtml-if "REQUEST.get('data') is _.None"
+><dtml-if "REQUEST.get('data') is None"
 ><dtml-call "REQUEST.set('data','')"
 ></dtml-if
 ><dtml-call "REQUEST.set('fmName',fmName)"
@@ -16,8 +16,8 @@
 - Analyze text-formats
 --------------------------------------------------------------------------------
 </dtml-comment>
-<dtml-call "REQUEST.set('richedit_fmt',_.None)"
-><dtml-call "REQUEST.set('htmledit_fmt',_.None)"
+<dtml-call "REQUEST.set('richedit_fmt',None)"
+><dtml-call "REQUEST.set('htmledit_fmt',None)"
 ><dtml-if "REQUEST.get('data').find('<dtml-')<0"
 ><dtml-in "getTextFormats(REQUEST)"
  ><dtml-let fmt=sequence-item
@@ -40,7 +40,7 @@
 ### Standard Editor
 ################################################################################
 </dtml-comment>
-<div id="zmiStandardEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [_.None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
+<div id="zmiStandardEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
 <table cellspacing="0" cellpadding="0" border="0">
 <tr valign="middle">
  <dtml-comment> ***** Label ***** </dtml-comment>
@@ -78,7 +78,7 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "REQUEST.get('richedit_fmt')">
-<div id="zmiRichtextEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [_.None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
+<div id="zmiRichtextEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
 <dtml-unless "REQUEST.get('f_zmiRichtextEditorShow')">
 <script type="text/javascript">
 <!--//

@@ -66,10 +66,9 @@ function chooseObj(i) {
 //-->
 </script>
 </head>
-<body class="zmiNeutralColorLight0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-<table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">
-<tr>
-<td align="left" valign="top" height="100%">
+<body class="zmi zmiNeutralColorLight0">
+<div style="padding:4px">
+
  <form name="form0">
  <input type="hidden" name="lang" value="<dtml-var lang>"/>
  <input type="hidden" name="fmName" value="<dtml-var fmName>"/>
@@ -108,9 +107,8 @@ function chooseObj(i) {
    ,grid_cols=grid_cols
    ,grid_options=grid_options
    )">
-</td>
-</tr>
-</table>
+
+</div>
 </body>
 </html>
 

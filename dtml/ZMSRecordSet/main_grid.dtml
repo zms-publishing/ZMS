@@ -170,7 +170,7 @@
     <dtml-if custom>
     <dtml-unless sequence-start>
     <dtml-unless "type in ['DTML Method','DTML Document','constant','method','resource'] or id == SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
-     <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,_.None),lang)">
+     <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
       <td class="form-small" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if><dtml-if "type in ['amount', 'float', 'int']">align="right"</dtml-if>>
 
        <dtml-comment>##### Grid.DateTime #####</dtml-comment>

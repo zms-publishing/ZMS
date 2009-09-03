@@ -24,7 +24,7 @@
         ></dtml-if
        ><dtml-else
         ><dtml-if blob
-         ><dtml-if "REQUEST.get('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+         ><dtml-if "REQUEST.get('blob_%s'%id) is not None and REQUEST.get('blob_%s'%id).filename"
           ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
          ></dtml-if
         ><dtml-else
@@ -87,7 +87,7 @@
         ><dtml-if blob
          ><dtml-if "REQUEST.get('delete_blob_%s'%id)"
           ><dtml-call "operator_setitem(values,'delete_blob_%s'%id,REQUEST.get('delete_blob_%s'%id,''))"
-         ><dtml-elif "REQUEST.get('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+         ><dtml-elif "REQUEST.get('blob_%s'%id) is not None and REQUEST.get('blob_%s'%id).filename"
           ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
          ></dtml-if
         ><dtml-else

@@ -29,11 +29,8 @@
 //-->
 </script>
 </head>
-<body class="zmiNeutralColorLight0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" onload="bodyOnLoad('form0')">
-<div align="center"><center>
-<table cellpadding="4" cellspacing="0" border="0">
-<tr>
- <td valign="top" class="zmiNeutralColorLight0">
+<body class="zmi zmiNeutralColorLight0" onload="bodyOnLoad('form0')">
+<div align="center" style="padding:4px"><center>
   <form name="form0">
    <table cellspacing="1" cellpadding="2" border="0">
    <!-- ### Caption -->
@@ -64,9 +61,6 @@
    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="changeBtnClick('form0')">
    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="cancelBtnClick('form0')">
    </form>
-  </td>
-</tr>
-</table>
 </center></div>
 </body>
 </html>

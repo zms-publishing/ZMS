@@ -63,7 +63,7 @@
     <dtml-unless hide>
      <dtml-let grid_col=sequence-item>
       <dtml-try>
-       <dtml-let v="row.get(key,_.None)">
+       <dtml-let v="row.get(key,None)">
         <dtml-comment>##### Grid.DateTime #####</dtml-comment>
         <dtml-if "v and type in ['date','datetime','time']">
          <Cell ss:StyleID="DateTime"><Data ss:Type="DateTime"><dtml-var "getLangFmtDate(v,'eng','%s_FMT'%type.upper()).replace(' ','T').replace('/','-')"></Data></Cell>

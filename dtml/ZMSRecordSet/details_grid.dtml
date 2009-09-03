@@ -62,7 +62,7 @@
     <dtml-if custom>
     <dtml-unless sequence-start>
     <dtml-unless "id==fk">
-     <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,_.None),lang)">
+     <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
       <td class="form-small">
 
        <dtml-comment>##### Grid.DateTime #####</dtml-comment>

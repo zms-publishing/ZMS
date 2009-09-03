@@ -1,9 +1,9 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')"
 ><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/css')"
 >
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI]
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 /* BO manage_page_style.css */
@@ -187,27 +187,20 @@ a.zmi:hover, a.zmi:active {
 .zmiTableRowOdd { background-color:#fafafa; }
 .zmiTableRowEven { background-color:#efefef; }
 
-.zmiNeutralColorTrans, .zmiNeutralColorWhite, .zmiNeutralColorBlack,
-.zmiNeutralColorStrong0, .zmiNeutralColorMedium0,.zmiNeutralColorLight0,
-.zmiNeutralColorStrong1, .zmiNeutralColorMedium1,.zmiNeutralColorLight1,
-.zmiTeaserColor {
-	font-family: Arial, Helvetica, sans-serif; 
-}
+.zmiNeutralColorTrans { background-color:#0f0; } 
+.zmiNeutralColorWhite { background-color:#fff; }
+.zmiNeutralColorBlack { background-color:#000; }
+.zmiNeutralColorStrong0, body.zmiNeutralColorStrong0 { background-color:#AAA; }
+.zmiNeutralColorStrong1, body.zmiNeutralColorStrong1 { background-color:#BBB; }
+.zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#CCC; }
+.zmiNeutralColorMedium1, body.zmiNeutralColorMedium1 { background-color:#DDD; }
+.zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#F2F3EE; }
+.zmiNeutralColorLight1, body.zmiNeutralColorLight1 { background-color:#E2E3DE; }
+.zmiTeaserColor { background-color:#FDD; }
 
-.zmiNeutralColorTrans, tr.zmiNeutralColorTrans td { background-color:#0f0; } 
-.zmiNeutralColorWhite, tr.zmiNeutralColorWhite td { background-color:#fff; }
-.zmiNeutralColorBlack, tr.zmiNeutralColorBlack td { background-color:#000; }
-.zmiNeutralColorStrong0 { background-color:#AAA; }
-.zmiNeutralColorStrong1 { background-color:#BBB; }
-.zmiNeutralColorMedium0 { background-color:#CCC; }
-.zmiNeutralColorMedium1{ background-color:#DDD; }
-.zmiNeutralColorLight0, tr.zmiNeutralColorLight0 td { background-color:#F2F3EE; }
-.zmiNeutralColorLight1, tr.zmiNeutralColorLight1 td { background-color:#E2E3DE; }
-.zmiTeaserColor, tr.zmiTeaserColor td { background-color:#FDD; }
-
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Columns
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 .zmi_col_left {
@@ -223,9 +216,9 @@ a.zmi:hover, a.zmi:active {
 }
 
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Header / Footer
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 #zmi_logo {
@@ -290,9 +283,9 @@ html>/**/body .zmi_footer select {
 }
 
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Container
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 .zmiContainerColLeft {
@@ -323,9 +316,9 @@ div.zmiRenderShort {
 	padding: 3px;
 }
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Headline
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 table.zmiHeadline tr td, td.zmiHeadline, div.zmiHeadline {
@@ -598,17 +591,6 @@ a.hbutton:hover img, a.hbutton:active img {
 .form-help {
 	font-size:11px;
 	padding:4px 6px 0px 6px;
-}
-
-
-div.note {
-	font-size: 11px;
-	background-color: #ffffd0;
-	color: black;
-	border: 1px solid #000;
-	margin: 6px 0px;
-	padding: 4px;
-	width: 100%;
 }
 
 p.teaser, span.teaser {

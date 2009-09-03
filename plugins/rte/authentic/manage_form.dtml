@@ -106,7 +106,7 @@ function OnCommand()
  <dtml-call "REQUEST.set('count',0)"
  ><dtml-in "getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id)).keys()"
   ><dtml-let key=sequence-item obj_attr="getObjAttr(key,REQUEST.get('ZMS_INSERT',meta_id))"
-   ><dtml-if "obj_attr.get('type',_.None)=='richtext'"
+   ><dtml-if "obj_attr.get('type',None)=='richtext'"
     >zmiRichtextElNames[<dtml-var count>]='<dtml-var "getObjAttrName(obj_attr,lang)">';<dtml-call "REQUEST.set('count',count+1)"
     ></dtml-if>
    </dtml-let
@@ -157,13 +157,13 @@ function OnCommand()
 <script language="javascript" for=editor_<dtml-var "REQUEST.get('elName')"> event="ControlInitialized">
 var xmlData = '<dtml-var "REQUEST.get('data').replace('\n','')">';
 if (xmlData == '' || xmlData.indexOf('<?xml') < 0) {
-  editor_<dtml-var "REQUEST.get('elName')">.XMLDataLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.default.xml',_.None) is not _.None">authentic.default.xml<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.default.xml</dtml-if>";;
+  editor_<dtml-var "REQUEST.get('elName')">.XMLDataLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.default.xml',None) is not None">authentic.default.xml<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.default.xml</dtml-if>";;
 }
 else {
   editor_<dtml-var "REQUEST.get('elName')">.XMLDataLoadObject.String = xmlData;
 }
-editor_<dtml-var "REQUEST.get('elName')">.SchemaLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.xsd',_.None) is not _.None">authentic.xsd<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.xsd</dtml-if>";
-editor_<dtml-var "REQUEST.get('elName')">.DesignDataLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.sps',_.None) is not _.None">authentic.sps<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.sps</dtml-if>";
+editor_<dtml-var "REQUEST.get('elName')">.SchemaLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.xsd',None) is not None">authentic.xsd<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.xsd</dtml-if>";
+editor_<dtml-var "REQUEST.get('elName')">.DesignDataLoadObject.URL = "<dtml-if "_.getattr(REQUEST['ZMS_THIS'],'authentic.sps',None) is not None">authentic.sps<dtml-else><dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/plugins/rte/authentic/OrgChart.sps</dtml-if>";
 editor_<dtml-var "REQUEST.get('elName')">.StartEditing()
 editor_<dtml-var "REQUEST.get('elName')">.attachCallBack("OnDocEditCommand", OnCommand);
 </SCRIPT>

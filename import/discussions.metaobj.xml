@@ -693,7 +693,7 @@ Todo:
         <td><strong><dtml-var "getLangStr('bbAuthor',lang)"></strong></td>
         <td><strong><dtml-var "getLangStr('bbCreated',lang)"></strong></td>
     </tr>
-    <dtml-call "REQUEST.set('res',filter_list(resMsg,_.None,REQUEST.form.get('searchterm'),'%'))">
+    <dtml-call "REQUEST.set('res',filter_list(resMsg,None,REQUEST.form.get('searchterm'),'%'))">
     <dtml-in res size=15 start=qs mapping>
         <tr align="left" valign="top" class="<dtml-if sequence-even>neutralColorWhite<dtml-else>neutralColorWhite</dtml-if>">
             <td>
@@ -896,7 +896,7 @@ Todo:
             'bbmEmail': REQUEST.get('newBbmEmail').strip(),
             'bbmDateTime':parseLangFmtDate(getLangFmtDate(ZopeTime(),lang),lang),
             'bbmBody': REQUEST.get('newBbmBody').strip(),
-            'bbmFile': formatObjAttrValue(getObjAttr('bbmFile'),REQUEST.form.get('newBbmFile',_.None),lang),	
+            'bbmFile': formatObjAttrValue(getObjAttr('bbmFile'),REQUEST.form.get('newBbmFile',None),lang),	
             'bbmBbmId': REQUEST.get('newBbmBbmId'),
             })">
         <dtml-call "resMsg.append(newRow)">
@@ -1562,7 +1562,7 @@ To unsubscribe from notification for coming replies:
             'bbmEmail': REQUEST.get('newBbmEmail').strip(),
             'bbmDateTime':parseLangFmtDate(getLangFmtDate(ZopeTime(),lang),lang),
             'bbmBody': REQUEST.get('newBbmBody').strip(),
-            'bbmFile': formatObjAttrValue(getObjAttr('bbmFile'),REQUEST.form.get('newBbmFile',_.None),lang),	
+            'bbmFile': formatObjAttrValue(getObjAttr('bbmFile'),REQUEST.form.get('newBbmFile',None),lang),	
             'bbmBbmId': REQUEST.get('newBbmBbmId'),
             })">
         <dtml-call "resMsg.append(newRow)">

@@ -4,7 +4,7 @@
 <dtml-var f_bo_area>
 
 <div style="padding:4px">
-<dtml-call "synchronizeRefByObjs(strict=0)">
+<dtml-call "synchronizeRefByObjs()">
 <dtml-let ref_by="getRefByObjs(REQUEST)">
  <dtml-if ref_by>
   <div class="form-element"><dtml-var "getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%getTitlealt(REQUEST))">:</div>

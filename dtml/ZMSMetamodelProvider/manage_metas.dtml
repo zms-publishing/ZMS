@@ -307,7 +307,7 @@ function hideDstMetaTypes( id)
 ### Acquire
 ################################################################################
 </dtml-comment>
- <dtml-if "REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not _.None">
+ <dtml-if "REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not None">
   <dtml-let thisIds="getMetadictAttrs()" portalMaster="getPortalMaster()" res="[]">
    <dtml-in "portalMaster.metaobj_manager.getMetadictAttrs()">
     <dtml-let metadictAttrId=sequence-item metadictAttr="portalMaster.metaobj_manager.getMetadictAttr(metadictAttrId)">

@@ -106,7 +106,10 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
         self.version_work_id = newAttrCntnr.id
       #-- Set minor-version.
       if ((lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory()) or not has_version_work:
-        minor_version = self.getObjProperty( 'minor_version', REQUEST) + 1
+        try:
+          minor_version = self.getObjProperty( 'minor_version', REQUEST) + 1
+        except:
+          minor_version = 1
         self.setObjProperty( 'minor_version' ,minor_version, lang)
         if _globals.debug( self):
           _globals.writeLog( self, "[setChangedBy]: Set minor-version: %i"%minor_version)

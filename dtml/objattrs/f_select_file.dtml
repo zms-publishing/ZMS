@@ -8,8 +8,8 @@
 	@param REQUEST
 -->
 
-<input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">">
-<dtml-if "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">
+<input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">">
+<dtml-if "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">
  <input type="hidden" name="del_<dtml-var elName>" value="0">
  <table cellspacing="0" cellpadding="0" border="0" width="100%">
  <!-- Border.Top -->
@@ -22,7 +22,7 @@
     <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr class="zmiNeutralColorMedium0">
      <td valign="middle" nowrap="nowrap" class="form-text">
-      <dtml-if "value.getMediadbfile() is not _.None"><font class="form-label">MediaDb:</font></dtml-if>
+      <dtml-if "value.getMediadbfile() is not None"><font class="form-label">MediaDb:</font></dtml-if>
       <dtml-try>
        <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "value.getMimeTypeIconSrc()">" title="<dtml-var "value.getDataSizeStr()"> (<dtml-var "value.getContentType()">)" border="0" align="absmiddle"></a>
        <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank" class="zmi"><strong><dtml-var "value.filename"></strong></a>

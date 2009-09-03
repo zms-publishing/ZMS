@@ -86,7 +86,7 @@
          <dtml-call "REQUEST.set('value',_.len(res_abs)+1)">
         <dtml-elif "type in ['date','datetime'] and default == '{now}'">
          <dtml-call "REQUEST.set('value',_.DateTime())">
-        <dtml-elif "default is not _.None and _.len( _.str(default)) > 0">
+        <dtml-elif "default is not None and _.len( _.str(default)) > 0">
          <dtml-call "REQUEST.set('value',dt_html(default,REQUEST))">
         </dtml-if>
         <tr id="tr_<dtml-var id>" valign="middle">
@@ -108,4 +108,4 @@
   
   </table>
   <dtml-var f_submitBtn>
-  <dtml-call "REQUEST.set('ZMS_INSERT',_.None)">
+  <dtml-call "REQUEST.set('ZMS_INSERT',None)">

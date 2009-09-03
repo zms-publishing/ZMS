@@ -19,8 +19,8 @@
 <dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
 </dtml-if></dtml-if></dtml-if>
 
-<input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">">
-<dtml-if "REQUEST.get('ZMS_INSERT',_.None) is _.None and value not in [_.None,'']">
+<input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">">
+<dtml-if "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">
  <input type="hidden" name="del_<dtml-var elName>" value="0">
  <table cellspacing="0" cellpadding="0" border="0" width="100%">
  <!-- Border.Top -->
@@ -34,7 +34,7 @@
    <table cellspacing="0" cellpadding="0" border="0" width="100%">
    <tr class="zmiNeutralColorMedium0">
      <td valign="middle" nowrap="nowrap" class="form-text">
-      <dtml-if "value.getMediadbfile() is not _.None"><font class="form-label">MediaDb:</font></dtml-if>
+      <dtml-if "value.getMediadbfile() is not None"><font class="form-label">MediaDb:</font></dtml-if>
        <dtml-try>
         <img src="<dtml-var "value.getMimeTypeIconSrc()">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle">
         <strong><dtml-var "value.filename"></strong>
@@ -64,7 +64,7 @@
      <td class="form-text"><dtml-var " getZMILangStr('ATTR_FILE')"></td>
      <td class="form-element"><dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})"></td>
      <dtml-if "hasObjProperty(key,REQUEST) and (key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
-      <td class="form-element"><input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is _.None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
+      <td class="form-element"><input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
      </dtml-if>
     </tr>
     </table>
@@ -120,7 +120,7 @@
   <div class="form-element">
    <dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
    <dtml-if "(key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
-    &nbsp;&nbsp;<input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is _.None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
+    &nbsp;&nbsp;<input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
    </dtml-if>
   </div>
  </dtml-if>

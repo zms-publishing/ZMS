@@ -2,7 +2,7 @@
 
 <dtml-let breadcrumbs="breadcrumbs_obj_path()"
 
- ><dtml-call "REQUEST.set('docElmnt',_.None)"
+ ><dtml-call "REQUEST.set('docElmnt',None)"
  ><dtml-in breadcrumbs
   ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
    ><dtml-if "meta_type=='ZMS'"

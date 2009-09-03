@@ -12,7 +12,7 @@
   <dtml-in obs>
    <dtml-call "REQUEST.set('l',[])">
    <dtml-call "l.extend(['ob',_['sequence-item']])">
-   <dtml-call "REQUEST.set('size',_.None)">
+   <dtml-call "REQUEST.set('size',None)">
    <dtml-if "isPageElement()">
     <dtml-call "REQUEST.set('size',get_size(REQUEST))">
    </dtml-if>

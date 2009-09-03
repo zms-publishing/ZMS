@@ -87,7 +87,7 @@
          <dtml-let pid=sequence-index filterProcess=sequence-item process="getProcess(filterProcess['id'])">
           <dtml-if "process.get('command','')==''">
           <tr>
-           <dtml-if "filterProcess.get('file',_.None)">
+           <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td align="center" class="form-small" style="<dtml-if "step==pid+1">border: 2px solid red;<dtml-else>border: 1px solid navy;</dtml-if> white-space: nowrap; background-color: white; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
               <dtml-if "_.len(process.keys())==1"><img src="<dtml-var MISC_ZMS>ico_error.gif" title="ERROR: Processing-step type '<dtml-var "process['id']">' not found!" border="0" align="absmiddle"/>&nbsp;<span style="border: 2px solid red;"></dtml-if>
@@ -101,7 +101,7 @@
           <dtml-else>
           <tr>
            <td align="center" class="form-small" style="<dtml-if "step==pid+1">border: 2px solid red;<dtml-else>border: 1px solid maroon;</dtml-if> white-space: nowrap; background-color: #FFFFE0; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"><dtml-var "process['name']" html_quote></td>
-           <dtml-if "filterProcess.get('file',_.None)">
+           <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td class="form-small" style="white-space: nowrap; color: navy;"
               ><img src="<dtml-var MISC_ZMS>arr_lft.gif" title="" border="0" align="absmiddle"

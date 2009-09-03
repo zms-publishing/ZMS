@@ -5,7 +5,7 @@
 
 <dtml-call "REQUEST.set('thisObj',this())">
 <dtml-call "REQUEST.set('l_thisObj',getLinkObj(REQUEST.get('elUrlValue','')))">
-<dtml-if "l_thisObj is _.None">
+<dtml-if "l_thisObj is None">
  <dtml-call "REQUEST.set('l_thisObj',getSelf([PAGES,PAGEELEMENTS]))">
 </dtml-if>
 <dtml-call "REQUEST.set('l_thisPage',l_thisObj.getSelf(PAGES))">
@@ -273,7 +273,7 @@ function processResponse(data)
     var page_access = $(page).attr("access")=="True" || $(page).attr("access")=="1";
     var page_meta_id = $(page).attr("meta_id");
     var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
-    var page_titlealt = page.getAttribute("titlealt");
+    var page_titlealt = $(page).attr("titlealt");
     var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
     var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
     var div = document.createElement( "div");
@@ -294,10 +294,7 @@ function processResponse(data)
     }
     var page_anchor = "";
     var page_index = "";
-    if ( page_meta_id == 'ZMSFile') {
-      page_anchor = "/" + page.getElementsByTagName('file')[0].getElementsByTagName('filename')[0].firstChild.data;
-    }
-    else if ( page_is_pageelement) {
+    if ( page_is_pageelement) {
       page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
     }
     var input = document.createElement( "input");
@@ -361,13 +358,10 @@ function followHref( href, extra)
 //-->
 </script>
 </head>
-<body class="zmiNeutralColorStrong0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+<body class="zmi zmiNeutralColorLight0">
+<div style="padding:4px">
 
 <dtml-with l_thisPage>
-
-<table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">
-<tr>
-<td align="left" valign="top" height="100%">
 
  <form name="form0" method="get">
  
@@ -630,12 +624,10 @@ function followHref( href, extra)
  </dtml-if>
 
 </form>
-</td>
-</tr>
-</table>
 
 </dtml-with>
 
+</div>
 </body>
 </html>
 </dtml-if>

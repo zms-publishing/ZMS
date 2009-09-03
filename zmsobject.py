@@ -489,16 +489,18 @@ class ZMSObject(ZMSItem.ZMSItem,
           if value is not None and type(value) is not str:
             return value.absolute_url()
         metaObj = self.getMetaobj( obj_type)
-        if metaObj[ 'type'] == 'ZMSResource':
-          return '%sico_class.gif'%self.MISC_ZMS
-        elif metaObj[ 'type'] == 'ZMSLibrary':
-          return '%sico_library.gif'%self.MISC_ZMS
-        elif metaObj[ 'type'] == 'ZMSPackage':
-          return '%sico_package.gif'%self.MISC_ZMS
-        elif metaObj[ 'type'] == 'ZMSRecordSet':
-          return '%sico_sqldb.gif'%self.MISC_ZMS
-        elif metaObj[ 'type'] == 'ZMSReference':
-          return '%sico_linkcontainer.gif'%self.MISC_ZMS
+        if metaObj:
+          if metaObj[ 'type'] == 'ZMSResource':
+            return '%sico_class.gif'%self.MISC_ZMS
+          elif metaObj[ 'type'] == 'ZMSLibrary':
+            return '%sico_library.gif'%self.MISC_ZMS
+          elif metaObj[ 'type'] == 'ZMSPackage':
+            return '%sico_package.gif'%self.MISC_ZMS
+          elif metaObj[ 'type'] == 'ZMSRecordSet':
+            return '%sico_sqldb.gif'%self.MISC_ZMS
+          elif metaObj[ 'type'] == 'ZMSReference':
+            return '%sico_linkcontainer.gif'%self.MISC_ZMS
+          return '%sico_document.gif'%self.MISC_ZMS
       return '/p_/broken'
 
 

@@ -504,12 +504,12 @@
        ></dtml-let
       ><dtml-else
       ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
-      ><dtml-call "REQUEST.set('src',_.None)"
-      ><dtml-call "REQUEST.set('dst',_.None)"
+      ><dtml-call "REQUEST.set('src',None)"
+      ><dtml-call "REQUEST.set('dst',None)"
        ><dtml-in "intersection['columns']" mapping
         ><dtml-let col=sequence-item
          ><dtml-if fk
-          ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
+          ><dtml-if "fk.get('tablename',None)==entity and src is None"
            ><dtml-call "REQUEST.set('src',col)"
           ><dtml-else
            ><dtml-call "REQUEST.set('dst',col)"
@@ -690,7 +690,7 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='richtext' or grid_col.get('richtext')">
-      <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=_.None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
+      <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- URL

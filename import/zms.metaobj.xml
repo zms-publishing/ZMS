@@ -1308,7 +1308,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 ##### Link-Elements: EDIT
 ################################################################################
 </dtml-comment>
-<dtml-call "REQUEST.set( 'ZMS_INSERT', _.None)">
+<dtml-call "REQUEST.set( 'ZMS_INSERT', None)">
 <dtml-let childNodes="getObjChildren('e',REQUEST)">
 <dtml-in childNodes>
 <dtml-let seqindex=sequence-index ob=sequence-item>
@@ -1842,12 +1842,25 @@ function remoteResponseTimedout() {
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsnote.gif" type="file">47494638396114001000b300000000006363ce848484c6c6c6ced6f7ff00ffffffceffffffffffffffffffffffffffffffffffffffffffffffffffffff21f90401000005002c0000000014001000000453b0c849abad22eb0dae14462886434701263a8ae54910e80bac463b01448003baca9a125e8f375bd96e1d617174b4f88c400b482428362953d10c55f56443d6ae74351b64a2d841ada4417982a8b8fb4dbf4400003b</data>
+                      <data content_type="image/gif" filename="zmsnote.gif" type="file">47494638396110001000b30000a78842fcda0cc4a868fcf274c8a228fcec41c4b982fcf499b89638fcde249cba64dcb21cfcf28cfcee5cfcf6acfcea2d21f9040100000a002c000000001000100003045950c949abbdd4e8cdbb324e288ea2f11da883ae2a6a1a0713cb34439bc2c00c7adfef82cfa0312c128f035c63c96c360a89a0a0f0a416ac8d05010050081ee07038414074bd8f04589d7e04cc13817c4e172030f8bc7e2f8900003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Icon]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">4749463839610d000d00b30000fcce64fcf6bcfcda8cfcd274fffffffcce6cfcfecc000077788268ed00211200e80000009002fe0000ff0000ff0000ff21f90400000000002c000000000d000d0003042cb09049eb04c26a1086ae8011641f118ade778aa4b5a29b21cba33bcf1d78e3ed7bd7a6dd2f5300188f486304003b</data>
+                    </item>
+                    <item key="id"><![CDATA[zmsnote_bg.gif]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Resource: Background]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[resource]]></item>
                   </dictionary>
@@ -1886,14 +1899,35 @@ function remoteResponseTimedout() {
                 </item>
                 <item type="dictionary">
                   <dictionary>
+                    <item key="custom"><![CDATA[div.note {
+	border-left: 1px solid #FCCD64;
+	border-bottom: 1px solid #FCCD64;
+	margin: 8px;
+	padding: 4px;
+	background: #FCFECC url(<dtml-var "getMetaobjAttr('ZMSNote','zmsnote_bg.gif')['custom'].absolute_url()">) top right no-repeat;
+}
+]]>
+                    </item>
+                    <item key="id"><![CDATA[f_css_defaults]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[CSS: Default]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSNote //--</dtml-comment>
 
 <dtml-let
   text="getText(REQUEST)"
   format="getObjProperty('format',REQUEST)"
-  renderedtext="renderText(format,'text',text,REQUEST,id)"
- ><dtml-return "'<div class='+QUOT+'note'+QUOT+'>'+renderedtext+'</div>'"
-></dtml-let>
+  renderedtext="renderText(format,'text',text,REQUEST,id)">
+ <div class="note">
+  <div id="div_<dtml-var id>" contentEditable="true" onkeyup=""><dtml-var renderedtext></div>
+ </div>
+</dtml-let>
 
 <dtml-comment>--// EO bodyContentZMSCustom_ZMSNote //--</dtml-comment>]]>
                     </item>
@@ -1907,11 +1941,39 @@ function remoteResponseTimedout() {
                 </item>
               </list>
             </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
             <item key="enabled" type="int">1</item>
             <item key="id"><![CDATA[ZMSNote]]></item>
             <item key="name"><![CDATA[ZMSNote]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.0.1]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -3434,8 +3496,8 @@ return teaserElmnts
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_Teaser //--</dtml-comment
-><dtml-call "REQUEST.set('last_borderstyle',_.None)"
-><dtml-call "REQUEST.set('last_bgcolor_border',_.None)"
+><dtml-call "REQUEST.set('last_borderstyle',None)"
+><dtml-call "REQUEST.set('last_bgcolor_border',None)"
 ><dtml-let teaserElmnts=getTeaserElements
  ><dtml-if teaserElmnts
   ><div id="teaser"><dtml-in teaserElmnts
@@ -3447,7 +3509,7 @@ return teaserElmnts
     ><dtml-if "last_borderstyle != borderstyle or
                last_bgcolor_border != bgcolor_border or
                borderstyle==2"
-     ><dtml-if "last_borderstyle is not _.None and last_bgcolor_border is not _.None "
+     ><dtml-if "last_borderstyle is not None and last_bgcolor_border is not None "
       ><dtml-if "last_borderstyle != 3"
        ></div
       ></dtml-if
@@ -3467,7 +3529,7 @@ return teaserElmnts
     ><dtml-call "REQUEST.set('last_bgcolor_border',bgcolor_border)"
    ></dtml-let
   ></dtml-in
-  ><dtml-if "last_borderstyle is not _.None  and last_bgcolor_border is not _.None "
+  ><dtml-if "last_borderstyle is not None  and last_bgcolor_border is not None "
    ><dtml-if "last_borderstyle != 3"
     ></div
    ></dtml-if

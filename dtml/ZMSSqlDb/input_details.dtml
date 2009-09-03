@@ -58,7 +58,7 @@
     ><dtml-comment>+-+-+-+- Other +-+-+-+-</dtml-comment
     ><dtml-in grid_cols mapping
      ><dtml-if blob
-      ><dtml-if "REQUEST.has_key('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+      ><dtml-if "REQUEST.has_key('blob_%s'%id) is not None and REQUEST.get('blob_%s'%id).filename"
        ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
       ></dtml-if
      ><dtml-elif "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"
@@ -85,7 +85,7 @@
      ><dtml-if blob
       ><dtml-if "REQUEST.get('delete_blob_%s'%id)"
        ><dtml-call "operator_setitem(values,'delete_blob_%s'%id,REQUEST.get('delete_blob_%s'%id,''))"
-      ><dtml-elif "REQUEST.has_key('blob_%s'%id) is not _.None and REQUEST.get('blob_%s'%id).filename"
+      ><dtml-elif "REQUEST.has_key('blob_%s'%id) is not None and REQUEST.get('blob_%s'%id).filename"
        ><dtml-call "operator_setitem(values,'blob_%s'%id,REQUEST.get('blob_%s'%id,''))"
       ></dtml-if
      ><dtml-elif "REQUEST.has_key('%s_new_%s'%(details['tablename'],id))"

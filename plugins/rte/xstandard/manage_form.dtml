@@ -13,7 +13,7 @@
  <dtml-call "REQUEST.set('count',0)"
  ><dtml-in "getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id)).keys()"
   ><dtml-let key=sequence-item obj_attr="getObjAttr(key,REQUEST.get('ZMS_INSERT',meta_id))"
-   ><dtml-if "obj_attr.get('type',_.None)=='richtext'"
+   ><dtml-if "obj_attr.get('type',None)=='richtext'"
     >zmiRichtextElNames[<dtml-var count>]='<dtml-var "getObjAttrName(obj_attr,lang)">';<dtml-call "REQUEST.set('count',count+1)"
     ></dtml-if>
    </dtml-let
@@ -61,7 +61,7 @@
         }
       }
       if ( zmiStandardEditorShow) {
-        zmiRichtextEditorShow('zmiStandardEditor'+elName,'zmiRichtextEditor'+elName<dtml-if "REQUEST.get('htmledit_fmt')"><dtml-if "REQUEST.get('format') in [_.None,REQUEST.get('richedit_fmt').getId()]">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if></dtml-if>);
+        zmiRichtextEditorShow('zmiStandardEditor'+elName,'zmiRichtextEditor'+elName<dtml-if "REQUEST.get('htmledit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if></dtml-if>);
       }
     }
   }

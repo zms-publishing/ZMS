@@ -241,8 +241,8 @@ function previewImgBtnProcessResponse(data)
 <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zmiNeutralColorMedium0">
 
  <dtml-in change_history mapping reverse>
-  <dtml-call "REQUEST.set('ZMS_VERSION_%s'%id,_.None)">
-  <dtml-call "REQUEST.set('last_version_dt',_.None)">
+  <dtml-call "REQUEST.set('ZMS_VERSION_%s'%id,None)">
+  <dtml-call "REQUEST.set('last_version_dt',None)">
   <dtml-unless sequence-end>
    <dtml-call "REQUEST.set('last_version_dt',change_history[-(_['sequence-index']+2)]['version_dt'])">
   </dtml-unless>
@@ -383,7 +383,7 @@ function previewImgBtnProcessResponse(data)
              <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
              <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
              v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
-             <dtml-if "change_dt is not _.None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
+             <dtml-if "change_dt is not None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
              <br/>
             </dtml-if>
            </dtml-with>
@@ -453,7 +453,7 @@ function previewImgBtnProcessResponse(data)
                <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
                <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
                v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"> 
-               <dtml-if "change_dt is not _.None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
+               <dtml-if "change_dt is not None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
                <br/>
               </dtml-if>
              </dtml-with>

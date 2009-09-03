@@ -14,7 +14,7 @@
        <dtml-call "REQUEST.set( 'qorder','')">
        <dtml-call "REQUEST.set( 'qorderdir','asc')">
        <dtml-call "recordSet_Init(REQUEST)">
-       <dtml-call "REQUEST.set('res',filter_list(res,fk,_.str(row.get(pk,_.None)),'='))">
+       <dtml-call "REQUEST.set('res',filter_list(res,fk,_.str(row.get(pk,None)),'='))">
        <dtml-call "recordSet_Sort(REQUEST)">
        <!----------// EO Init parameters //---------->
 
@@ -24,7 +24,7 @@
          <td colspan="2" class="form-label"><dtml-var "getZMILangStr('ATTR_DETAILS')"></td>
         </tr>
 	</dtml-if>
-	<dtml-let grid_url="url_append_params('%s/manage_main'%absolute_url(),{'fk_key':fk,'fk_val':_.str(row.get(pk,_.None))})">
+	<dtml-let grid_url="url_append_params('%s/manage_main'%absolute_url(),{'fk_key':fk,'fk_val':_.str(row.get(pk,None))})">
         <tr valign="middle">
          <td><div class="form-label"><a name="_<dtml-var pk>"></a><dtml-var "metaObjDetail['name']"></div></td>
          <td class="form-element">

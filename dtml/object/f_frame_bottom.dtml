@@ -1,18 +1,7 @@
 <dtml-var manage_page_header>
-<body class="zmi" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-<div class="zmiNeutralColorMedium0">
-<form>
- <table cellspacing="0" cellpadding="4" border="0" height="100%" width="100%">
- <tr valign="bottom">
-  <td align="left" class="form-element">
-   <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="self.parent.close();">
-  </td>
-  <td align="right">
-   <img name="img_progress_bar" src="<dtml-var spacer_gif>" title="" border="0" width="78" height="22">
-  </td>
- </tr>
- </table>
-</form>
-</div>
+<body class="zmi zmiNeutralColorMedium0">
+ <form style="padding:4px">
+  <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="self.parent.close();">
+ </form>
 </body>
 </html>

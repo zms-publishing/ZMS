@@ -5,7 +5,7 @@
 <link rel="schema.DC" href="http://purl.org/DC/elements/1.1/" title="http://purl.org/DC/elements/1.1/" />
 <dtml-in "getObjAttrs().keys()"
 ><dtml-let key=sequence-item obj_attr="getMetaobjAttr(meta_id,key)"
-><dtml-if "obj_attr is not _.None and obj_attr['meta_type'] and obj_attr['type'] not in ['image','file']"
+><dtml-if "obj_attr is not None and obj_attr['meta_type'] and obj_attr['type'] not in ['image','file']"
 ><dtml-let value="getObjProperty(key,REQUEST)"
 ><dtml-if value
 ><dtml-if "_.len(obj_attr['keys'])>0 and obj_attr['keys'][0].find('{$')==0"

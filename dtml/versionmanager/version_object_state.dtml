@@ -45,7 +45,7 @@
 ><dtml-if "getObjProperty('work_dt',REQUEST)"
 ><dtml-in wfStates
 ><dtml-let wfState=sequence-item itm="getWfActivity(wfState)"
-><dtml-if "itm.get('icon',_.None)"
+><dtml-if "itm.get('icon',None)"
 ><img src="<dtml-var "getDocumentElement().absolute_url()">/get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('work_uid',REQUEST)"> (<dtml-var "getLangFmtDate(getObjProperty('work_dt',REQUEST))">)" border="0" align="absmiddle" />
 </dtml-if
 ></dtml-let

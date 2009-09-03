@@ -158,7 +158,7 @@ function processResponse()
    ></dtml-if
   ></dtml-let
  ></dtml-in
- ><dtml-call "catalog_items.append(_.None)"
+ ><dtml-call "catalog_items.append(None)"
  ><dtml-in "getPortalClients()"
   ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
    ><dtml-if ob_display

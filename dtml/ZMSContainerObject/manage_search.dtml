@@ -71,7 +71,7 @@
     <select class="form-element" name="search_meta_types:list" multiple="multiple" size="5">
      <dtml-in "getMetaobjIds(excl_ids=['ZMS'])">
       <dtml-let meta_type=sequence-item>
-       <option value="<dtml-var meta_type>"  <dtml-if "REQUEST.get('search_meta_types',_.None) is _.None or meta_type in REQUEST.get('search_meta_types',[])">selected="selected"</dtml-if>><dtml-var "display_type(REQUEST,meta_type)"></option>
+       <option value="<dtml-var meta_type>"  <dtml-if "REQUEST.get('search_meta_types',None) is None or meta_type in REQUEST.get('search_meta_types',[])">selected="selected"</dtml-if>><dtml-var "display_type(REQUEST,meta_type)"></option>
       </dtml-let>
      </dtml-in>
     </select>

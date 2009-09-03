@@ -236,7 +236,7 @@ class Builder:
                 if newNode.meta_type == 'ZMSCustom':
                   meta_id = attrs.get( 'meta_id')
                   if meta_id not in self.getMetaobjIds( sort=0):
-                    _globals.writeError(newNode,'[_builder.OnStartElement]: no object-definition available ('+meta_id+')!')
+                    _globals.writeError(newNode,'[_builder.OnStartElement]: no object-definition available ('+str(meta_id)+')!')
                   newNode.meta_id = meta_id
                 
                 ##### Object State ####

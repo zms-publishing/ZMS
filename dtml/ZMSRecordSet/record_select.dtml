@@ -27,7 +27,7 @@
        <dtml-else>
          
    <dtml-comment>-----------------------------------------</dtml-comment>
-   <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,_.None),lang)">
+   <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
     <dtml-if v>      
     <dtml-unless "type=='password'">
      <tr valign="top">

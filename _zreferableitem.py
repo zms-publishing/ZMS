@@ -236,17 +236,16 @@ class ZReferableItem:
               value = ob._getObjAttrValue(obj_attr,obj_vers,lang)
               svalue = ob.str_item(value)
               lvalue = []
-              lvalue.extend( ob.re_search( '"(.*?)/%s"'%self.id, svalue))
-              lvalue.extend( filter( lambda x: x.startswith('%s@'%self.getHome().id) or x.endswith('/') or len(x)==0, ob.re_search( '{(.*?)%s}'%self.id, svalue)))
+              for exp in ['"(.*?)/%s"','{\$%s}','{\$(.*?)/%s}']:
+                lvalue.extend( ob.re_search( exp%self.id, svalue))
               has_ref = has_ref or len(lvalue)>0
         if has_ref:
           ob_path = self.getRefObjPath(ob)
           if not ob_path in ref_by:
             ref_by.append(ob_path)
-        if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( self.REQUEST):
-          ob.synchronizePublicAccess()
-    if strict or len(ref_by) < len(v):
-      setattr(self,'ref_by',ref_by)
+    ref_by.sort()
+    if ref_by != v:
+      setattr(self,key,ref_by)
 
 
   # ----------------------------------------------------------------------------
@@ -526,7 +525,7 @@ class ZReferableItem:
   #  @param
   #  @return
   # ----------------------------------------------------------------------------
-  def synchronizeRefs( self, ob_id=None, clients=False):
+  def synchronizeRefs( self, ob_id=None, clients=False, unify_ids=False):
     _globals.writeBlock(self,'[synchronizeRefs]')
     
     # Initialize.
@@ -546,7 +545,8 @@ class ZReferableItem:
     abs_urls = obs.keys()
     abs_urls.sort()
     
-    if clients:
+    # Unify object-ids.
+    if unify_ids:
       did = {}
       map( lambda x: operator.setitem( did, x.id, did.get(x.id,0)+1), obs.values())
       for id in filter( lambda x: did.get(x) > 1 and x[-1] in ['0','1','2','3','4','5','6','7','8','9'], did.keys()):
@@ -568,7 +568,7 @@ class ZReferableItem:
             except:
               message += _globals.writeError( ob, '%s: Can\'t rename to unique object-id \'%s\'<br/>'%(key,new_id))
     
-    # Clear 'referenced by'-attributes.
+    # Clear 'ref_by' (reference-by) attributes.
     if clients:
       for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
         try: delattr( obs[x], 'ref_by')

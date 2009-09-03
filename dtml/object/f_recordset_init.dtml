@@ -19,14 +19,14 @@
    ><dtml-try
     ><dtml-call "l.extend(['id',row[primary_key]])"
    ><dtml-except
-    ><dtml-call "l.extend(['id',_.None])"
+    ><dtml-call "l.extend(['id',None])"
    ></dtml-try
   ></dtml-if
  ><dtml-in grid_cols mapping
   ><dtml-let grid_col=sequence-item
    ><dtml-if "'id' in grid_col.keys()"
     ><dtml-try
-     ><dtml-if "row[id] is _.None"
+     ><dtml-if "row[id] is None"
       ><dtml-call "l.extend([id,''])"
      ><dtml-else
       ><dtml-try
@@ -36,7 +36,7 @@
       ></dtml-try
      ></dtml-if
     ><dtml-except
-     ><dtml-call "l.extend([id,_.None])"
+     ><dtml-call "l.extend([id,None])"
     ></dtml-try
    ></dtml-if
   ></dtml-let

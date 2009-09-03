@@ -1,9 +1,8 @@
 <dtml-var manage_page_header>
 </head>
-<body class="zmiNeutralColorStrong0" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-<table cellspacing="0" cellpadding="8" border="0" width="100%" height="100%" class="zmiNeutralColorLight0">
-<tr>
-<td align="left" valign="top" height="100%">
+<body class="zmi zmiNeutralColorStrong0">
+<div style="padding:4px">
+
 <dtml-call "REQUEST.set('change_dt',getObjProperty('change_dt',REQUEST))">
 <dtml-call "REQUEST.set('lang',getParentLanguage(lang))">
 
@@ -43,8 +42,6 @@
   
 </dtml-let>
 
-</td>
-</tr>
-</table>
+</div>
 </body>
 </html>

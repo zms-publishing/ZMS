@@ -677,7 +677,7 @@ function changeType( el)
           <td class="form-small" nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
            <input class="form-small" type="file" name="attr_custom_<dtml-var "oAttr['id']">" size="15">
-           <dtml-if "oAttr.get('custom',_.None)">
+           <dtml-if "oAttr.get('custom',None)">
             <dtml-let f="oAttr['custom']">
              <a href="<dtml-var "f.absolute_url()">" target="_blank" class="zmi"><dtml-var "string_maxlen(f.title,20)"></a> 
              <strong>(<dtml-var "getDataSizeStr(f.get_size())">)</strong>
@@ -901,7 +901,7 @@ function changeType( el)
          </dtml-let>
         </dtml-in>
        </tr>
-       <dtml-if "metaObj.get('access') is _.None">
+       <dtml-if "metaObj.get('access') is None">
         <dtml-call "operator_setitem(metaObj,'access',{})">
        </dtml-if>
        <dtml-in "['insert','edit','delete']">
@@ -921,7 +921,7 @@ function changeType( el)
           <dtml-in roleOptpl>
            <dtml-let roleId="_['sequence-item'][0]" roleName="_['sequence-item'][1]">
             <dtml-try>
-            <td align="center"><input type="checkbox" class="form-checkbox" name="access_<dtml-var action>:list" value="<dtml-var roleId>" <dtml-if "(metaObj.get('access',{}).get(action) is _.None) or (roleId in metaObj.get('access',{}).get(action,[]))">checked="checked"</dtml-if>></td>
+            <td align="center"><input type="checkbox" class="form-checkbox" name="access_<dtml-var action>:list" value="<dtml-var roleId>" <dtml-if "(metaObj.get('access',{}).get(action) is None) or (roleId in metaObj.get('access',{}).get(action,[]))">checked="checked"</dtml-if>></td>
             <dtml-except>
              <td align="center">
               <dtml-var error_type>: <dtml-var error_value><hr/>
@@ -1053,7 +1053,7 @@ function changeType( el)
 ### Acquire
 ################################################################################
 </dtml-comment>
- <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not _.None"
+ <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','acquire')=='acquire' and getPortalMaster() is not None"
   ><dtml-let thisIds="metaObjIds" portalMaster="getPortalMaster()" res="[]"
    ><dtml-in "portalMaster.getMetaobjIds()"
      ><dtml-let metaObjId=sequence-item metaObj="portalMaster.getMetaobj(metaObjId)" metaObjPackage="metaObj['package']"

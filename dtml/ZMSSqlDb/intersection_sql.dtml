@@ -47,12 +47,12 @@
  <dtml-elif multiselect>
   <dtml-unless "multiselect.get('custom') or multiselect.get('mysqlset')">
    <dtml-let intersection="getEntity(multiselect.get('tablename'))"
-    ><dtml-call "REQUEST.set('src',_.None)"
-    ><dtml-call "REQUEST.set('dst',_.None)"
+    ><dtml-call "REQUEST.set('src',None)"
+    ><dtml-call "REQUEST.set('dst',None)"
     ><dtml-in "intersection['columns']" mapping
      ><dtml-let col=sequence-item
       ><dtml-if fk
-       ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
+       ><dtml-if "fk.get('tablename',None)==entity and src is None"
         ><dtml-call "REQUEST.set('src',col)"
        ><dtml-else
         ><dtml-call "REQUEST.set('dst',col)"
@@ -93,15 +93,15 @@
       ></dtml-in
       ><dtml-call "sqlStatement.append(' ) VALUES ( ')"
       ><dtml-call "REQUEST.set('c',0)"
-      ><dtml-call "REQUEST.set('src',_.None)"
-      ><dtml-call "REQUEST.set('dst',_.None)"
+      ><dtml-call "REQUEST.set('src',None)"
+      ><dtml-call "REQUEST.set('dst',None)"
       ><dtml-in "intersection['columns']" mapping
        ><dtml-let col=sequence-item
         ><dtml-if fk
          ><dtml-if c
           ><dtml-call "sqlStatement.append(', ')"
          ></dtml-if
-         ><dtml-if "fk.get('tablename',_.None)==entity and src is _.None"
+         ><dtml-if "fk.get('tablename',None)==entity and src is None"
           ><dtml-call "REQUEST.set('src',col)"
           ><dtml-call "sqlStatement.append(sql_quote__(entity,primary_key,rowid))"
          ><dtml-else

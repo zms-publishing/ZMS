@@ -1293,3 +1293,15 @@
 2009-08-28:zms-2.11.1-83
 [01227] Added support for import of unknown content-object types (requested by xm).
 --------------------------------------------------
+2009-09-02:zms-2.11.1-84
+[01228] Applied fix for synchronization of link-sources (reported by xm).
+Risk: Bi-directional links get lost
+Measures: Correct internal links.
+[01229] Added support for recursive reindexing of catalogs.
+[01230] Replaced '.None' by 'None' in all DTML-Templates. 
+[01231] Revised stylesheet-definitions for ZMI-Colors.
+--------------------------------------------------
+2009-09-03:zms-2.11.1-85
+[01232] Updated JavaScript-library 'jquery.autocomplete' from <4485> 2008-01-20 to <5747> 2008-06-25 to fix focus bug (reported by gez).
+[01233] Revised stylesheet-definitions for ZMI-Colors.
+--------------------------------------------------

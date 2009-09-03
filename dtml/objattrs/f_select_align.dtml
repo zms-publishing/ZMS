@@ -25,7 +25,7 @@
 //-->
 </script>
 
- <dtml-let textalign="nvl(getObjProperty('textalign',REQUEST),'LEFT',['',_.None])">
+ <dtml-let textalign="nvl(getObjProperty('textalign',REQUEST),'LEFT',['',None])">
   <input type="hidden" name="textalign" <dtml-if textalign>value="<dtml-var textalign>"</dtml-if>>
   <td>&nbsp;</td>
   <dtml-if "not isDisabledAttr(getObjAttr('textalign'),REQUEST)">

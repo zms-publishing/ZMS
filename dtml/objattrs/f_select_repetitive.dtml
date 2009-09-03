@@ -9,7 +9,7 @@
 ********************************************************************************
 </dtml-comment>
 
-<dtml-if "REQUEST.get('ZMS_INSERT') is not _.None">
+<dtml-if "REQUEST.get('ZMS_INSERT') is not None">
  <i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,REQUEST.get('ZMS_INSERT'))"></i>
 <dtml-else>
  <dtml-if value>

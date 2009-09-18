@@ -188,7 +188,7 @@ class ZReferableItem:
     ref_by = []
     if _objattrs.hasobjattr(self,'ref_by'):
       ref_by = getattr(self,'ref_by',[])
-      ref_by = copy.deepcopy(ref_by)
+      ref_by = list(set(ref_by))
     if _globals.debug( self): 
       _globals.writeLog( self, "[getRefByObjs]: ref_by=%s"%str(ref_by))
     return ref_by
@@ -243,6 +243,7 @@ class ZReferableItem:
           ob_path = self.getRefObjPath(ob)
           if not ob_path in ref_by:
             ref_by.append(ob_path)
+    ref_by = list(set(ref_by))
     ref_by.sort()
     if ref_by != v:
       setattr(self,key,ref_by)
@@ -599,9 +600,11 @@ class ZReferableItem:
                       if ref.startswith('__') and ref.endswith('__'):
                         ref = ref[2:-2]
                       if len( ref.split('@')) == 1:
-                        home = ob.getHome().id
+                        home_path = [ob.getHome().id]
+                        home = home_path[-1]
                       else:
-                        home = ref.split('@')[0].split('/')[-1]
+                        home_path = ref.split('@')[0].split('/')
+                        home = home_path[-1]
                       id = ref.split('@')[-1].split('/')[-1]
                       if len( id) == 0:
                         id = 'content'
@@ -609,8 +612,16 @@ class ZReferableItem:
                       # Extend object-tree.
                       if home not in homes:
                         homes.append( home)
-                        map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( getattr( self, home)))
-                        message += 'Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                        home_ob = self
+                        for home_id in home_path:
+                          if home_ob is not None:
+                            home_ob = getattr( home_ob, home_id, None)
+                        if home_ob is not None:
+                          t1 = time.time()
+                          map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
+                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t1)*100.0)/100.0)+' secs.)<br/>'
+                        else:
+                          message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
                         _globals.writeBlock(self,'[synchronizeRefs]: '+message)
                       
                       f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
@@ -659,9 +670,11 @@ class ZReferableItem:
                       if ref.startswith('__') and ref.endswith('__'):
                         ref = ref[2:-2]
                       if len( ref.split('@')) == 1:
-                        home = ob.getHome().id
+                        home_path = [ob.getHome().id]
+                        home = home_path[-1]
                       else:
-                        home = ref.split('@')[0].split('/')[-1]
+                        home_path = ref.split('@')[0].split('/')
+                        home = home_path[-1]
                       id = ref.split('@')[-1].split('/')[-1]
                       if len( id) == 0:
                         id = 'content'
@@ -669,10 +682,14 @@ class ZReferableItem:
                       # Extend object-tree.
                       if home not in homes:
                         homes.append( home)
-                        home_ob = getattr( self, home, None)
+                        home_ob = self
+                        for home_id in home_path:
+                          if home_ob is not None:
+                            home_ob = getattr( home_ob, home_id, None)
                         if home_ob is not None:
+                          t1 = time.time()
                           map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
-                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)<br/>'
+                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t1)*100.0)/100.0)+' secs.)<br/>'
                         else:
                           message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
                         _globals.writeBlock(self,'[synchronizeRefs]: '+message)

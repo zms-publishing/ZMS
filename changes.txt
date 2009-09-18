@@ -1305,3 +1305,7 @@ Measures: Correct internal links.
 [01232] Updated JavaScript-library 'jquery.autocomplete' from <4485> 2008-01-20 to <5747> 2008-06-25 to fix focus bug (reported by gez).
 [01233] Revised stylesheet-definitions for ZMI-Colors.
 --------------------------------------------------
+2009-09-09:zms-2.11.1-86
+[01234] Applied fix for bi-directional links (reported by xm).
+Risk: References are not unique.
+--------------------------------------------------

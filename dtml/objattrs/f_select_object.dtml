@@ -13,17 +13,20 @@
  <td class="form-element"><i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i></td>
 </tr>
 <dtml-else>
- <dtml-let cookie="'%s.%s.delimiter.collapsed'%(meta_id,objAttr['id'])">
+ <dtml-let cookie="'%s.%s.delimiter.collapsed'%(meta_id,objAttr['id'])" res="getObjChildren(objAttr['id'],REQUEST)">
   <!-- Object.EDIT -->
-  <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
+  <dtml-in res>
    <dtml-if sequence-start>
     <tr>
-     <td colspan="2" class="zmiNeutralColorLight1 zmiDelimiter">
-      <div class="form-label<dtml-if disabled>-disabled</dtml-if>"
+     <td colspan="2" class="zmiNeutralColorMedium0 zmiDelimiter">
+      <div class="form-label<dtml-if disabled>-disabled</dtml-if> zmi_col_left"
        onclick="toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=zmi_delimiter_<dtml-var "objAttr['id']">_toggle]');toggleCookie('<dtml-var cookie>');"
        ><img id="zmi_delimiter_<dtml-var "objAttr['id']">_toggle" border="0" align="absmiddle" 
         <dtml-if "REQUEST.cookies.get(cookie)">src="<dtml-var MISC_ZMS>pl.gif" title="+"<dtml-else>src="<dtml-var MISC_ZMS>mi.gif" title="-"</dtml-if>>
        <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+      </div>
+      <div class="form-small zmi_col_right">
+       <dtml-var "'%i %s\n'%(_.len(res),getZMILangStr('ATTR_OBJECTS'))">
       </div>
      </td>
     </tr>
@@ -78,7 +81,7 @@
    </tr>
   <dtml-else>
    <tr id="tr_<dtml-var "objAttr['id']">">
-     <td colspan="2" class="zmiNeutralColorLight1 zmiDelimiter">
+     <td colspan="2" class="zmiNeutralColorMedium0 zmiDelimiter">
       <div class="form-label zmi_col_left">
        <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif" title=""/>
        <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>

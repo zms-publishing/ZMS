@@ -322,7 +322,7 @@ div.zmiRenderShort {
  */
 
 table.zmiHeadline tr td, td.zmiHeadline, div.zmiHeadline {
-	background-color: #c9c9c9;	
+	background-color: #C9C9C9;
 	padding-left: 3px;
 	height: 22px;
 	line-height: 22px;

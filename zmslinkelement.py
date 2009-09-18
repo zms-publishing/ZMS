@@ -821,22 +821,22 @@ class ZMSLinkElement(ZMSContainerObject):
     #
     #  Overrides original method of zmscontainerobject.ZMSContainerObject. 
     # --------------------------------------------------------------------------
-    def getChildNodesPROXY(self, proxy, REQUEST={}, meta_types=None):
+    def getChildNodesPROXY(self, proxy, REQUEST={}, meta_types=None, reid=None):
       rtn = []
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( REQUEST):
         recursive = True
-        rtn = map( lambda x: self.initProxy( proxy, proxy.absolute_url()+'/'+x.id, x, recursive), proxy.getChildNodes( REQUEST, meta_types))
+        rtn = map( lambda x: self.initProxy( proxy, proxy.absolute_url()+'/'+x.id, x, recursive), proxy.getChildNodes( REQUEST, meta_types, reid))
       elif proxy == self and proxy is not None and self.isEmbedded( REQUEST):
         ref_obj = self.getRefObj()
         if ref_obj is not None:
-          for ob in ref_obj.getChildNodes( REQUEST, meta_types):
+          for ob in ref_obj.getChildNodes( REQUEST, meta_types, reid):
             if not ob.isPage():
               rtn.append( ob)
       return rtn
 
-    def getChildNodes(self, REQUEST={}, meta_types=None):
+    def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
       proxy = self.getProxy()
-      rtn = self.getChildNodesPROXY( proxy, REQUEST, meta_types)
+      rtn = self.getChildNodesPROXY( proxy, REQUEST, meta_types, reid)
       return rtn
 
 

@@ -37,7 +37,7 @@
 <dtml-comment>
 ##### ZMSResource #####
 </dtml-comment>
-<dtml-elif "objAttr['type'] in getMetaobjIds() and getMetaobj(objAttr['type'])['type']=='ZMSResource'">
+<dtml-elif "objAttr['type'] in metaobjIds and getMetaobj(objAttr['type'])['type']=='ZMSResource'">
  <dtml-unless ZMS_INSERT>
   <dtml-in "getObjChildren(objAttr['id'],REQUEST)">
    <dtml-unless required>
@@ -84,7 +84,7 @@
 <dtml-comment>
 ##### Object #####
 </dtml-comment>
-<dtml-elif "objAttr['type'] in getMetaobjIds()+['*']"
+<dtml-elif "objAttr['type'] in metaobjIds+['*']"
  ><dtml-unless "isPageContainer() and key=='e'"
   ><dtml-if ZMS_LAST_OBJECT_WAS_PRIMITIVE
    ><dtml-unless omit_submitBtn><dtml-unless "REQUEST.get('submitBtnCount') is not None"><tr><td colspan="2"><dtml-var f_submitBtn></td></tr></dtml-unless></dtml-unless

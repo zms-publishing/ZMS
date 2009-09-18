@@ -27,6 +27,7 @@ from App.Common import package_home
 from Globals import HTMLFile
 import AccessControl.Role
 import copy
+import re
 import string
 import sys
 import urllib
@@ -932,17 +933,22 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getChildNodes:
     #
     # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST=None, meta_types=None):
+    def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
       Returns a NodeList that contains all children of this node in correct 
       order. If none, this is a empty NodeList. 
       """
-      obs = []
-      if True:
+      childNodes = []
+      try:
         types = self.dGlobalAttrs.keys()
+        obs = self.objectValues( types)
+        # Filter ids.
+        if reid:
+          pattern = re.compile( reid)
+          obs = filter( lambda x: pattern.match( x.id), obs)
         # Get all object-items.
         if REQUEST is None:
-          obs = map( lambda x: ( getattr( x, 'sort_id', ''), x), self.objectValues( types))
+          childNodes = map( lambda x: ( getattr( x, 'sort_id', ''), x), obs)
         # Get selected object-items.
         else:
           prim_lang = self.getPrimaryLanguage()
@@ -952,7 +958,7 @@ class ZMSContainerObject(
           if lang is not None:
             coverages.extend( [ 'global.'+lang, 'local.'+lang])
             coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))
-          for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), self.objectValues( types)):
+          for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), obs):
             coverage = None
             if lang is not None:
               obj_vers = ob.getObjVersion( REQUEST)
@@ -963,18 +969,16 @@ class ZMSContainerObject(
                 sort_id = getattr( ob, 'sort_id', '')
                 if ob.isPage():
                   sort_id = 's' + sort_id
-                obs.append( ( sort_id, proxy))
-        # Sort child-nodes.
-        obs.sort()
-      try:
-        a=1
+                childNodes.append( ( sort_id, proxy))
       except Exception, exc:
         if self.getConfProperty('ZMS.protected_mode',0):
           _globals.writeError(self,'[getChildNodes.protected]')
         else:
           raise exc
+      # Sort child-nodes.
+      childNodes.sort()
       # Return child-nodes in correct sort-order.
-      return map(lambda ob: ob[1],obs)
+      return map(lambda x: x[1],childNodes)
 
 
     ############################################################################

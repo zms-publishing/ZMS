@@ -181,7 +181,7 @@
 
 <dtml-else>
  <frameset name="editorFrameset" cols="30%,70%">
-  <frame name="editorFrame" scrolling="auto" src="<dtml-var "url_append_params(URL,{'lang':lang,'came_from':came_from,'displayPreview':_.str(REQUEST.get('displayPreview','')),'fmName':fmName,'elName':elName,'headline':headline,'manage_editorFrame':'True'})">">
+  <frame name="editorFrame" scrolling="auto" src="<dtml-var "url_append_params(URL,{'lang':lang,'came_from':came_from,'displayPreview':str(REQUEST.get('displayPreview','')),'fmName':fmName,'elName':elName,'headline':headline,'manage_editorFrame':'True'})">">
   <dtml-if displayPreview>
    <frameset rows="0,*">
     <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">

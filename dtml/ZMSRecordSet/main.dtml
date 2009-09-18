@@ -71,7 +71,7 @@
  	,'qsize:int':qsize
  	,'qorder':qorder
  	,'qorderdir':qorderdir
- 	,'qstart':qsize*_.int(qindex/qsize)+1
+ 	,'qstart':qsize*int(qindex/qsize)+1
  	,'qindex:int':qindex}))">
   <dtml-if manage_tabs_message><dtml-call "REQUEST.set('target_url',url_append_params(target_url,{'manage_tabs_message':manage_tabs_message}))"></dtml-if>
   <dtml-if manage_tabs_error_message><dtml-call "REQUEST.set('target_url',url_append_params(target_url,{'manage_tabs_error_message':manage_tabs_error_message}))"></dtml-if>

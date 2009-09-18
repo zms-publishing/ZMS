@@ -93,10 +93,10 @@
     </tr>
     </table>
     <!-- Textarea -->
-    <dtml-let size="_.int(55)">
+    <dtml-let size="int(55)">
      <textarea class="form-fixed" name="stylesheet:text" wrap="off"
        cols="<dtml-var size>"
-       style="width:<dtml-var "_.int(size)*11">px"
+       style="width:<dtml-var "int(size)*11">px"
        rows="25"
      ><dtml-with "getStylesheet(cssId)"><dtml-var raw html_quote></dtml-with></textarea>
      <a href="manage_editorForm?displayPreview=True&came_from=<dtml-var URL>&lang=<dtml-var lang>&fmName=form0&elName=stylesheet:text&headline=<dtml-var "getZMILangStr('ATTR_STYLESHEET')+': '+cssId" url_quote>" onclick="javascript:return confirmChanges(this);" class="button"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" alt="<dtml-var "getZMILangStr('BTN_EDIT')">" title="<dtml-var "getZMILangStr('BTN_EDIT')">" border="0"/></a>

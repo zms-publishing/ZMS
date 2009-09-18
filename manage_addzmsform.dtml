@@ -173,7 +173,7 @@
     <dtml-in themes>
      <dtml-let theme=sequence-item>
       <dtml-try>
-      <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].http_import('%s/configure.zcml?ts=%s'%(theme,_.str(ZopeTime().timeTime()))))">
+      <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].http_import('%s/configure.zcml?ts=%s'%(theme,str(ZopeTime().timeTime()))))">
       <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].re_search('<file (.*?)/>',locations))">
       <dtml-in locations>
        <dtml-let location=sequence-item>

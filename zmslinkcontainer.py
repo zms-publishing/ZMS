@@ -234,9 +234,9 @@ class ZMSLinkContainer(ZMSContainerObject):
     #  Returns a NodeList that contains all children of this node in correct 
     #  sort-order. If none, this is a empty NodeList. 
     # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST={}, meta_types=None):
+    def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
       lang = REQUEST.get('lang',None)
-      nodelist = ZMSContainerObject.getChildNodes(self,REQUEST,meta_types)
+      nodelist = ZMSContainerObject.getChildNodes(self,REQUEST,meta_types,reid)
       if lang is None:
         return nodelist
       else:

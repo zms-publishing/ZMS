@@ -21,7 +21,7 @@
     <!-- # Init subcounter: -->
     <dtml-call "REQUEST.set('subcount',0)">
     <dtml-if "_.len(REQUEST.get('s_old','')) > 0">
-     <dtml-in "_.string.split(_.str(s_src),REQUEST.get('s_old',''))">
+     <dtml-in "_.string.split(str(s_src),REQUEST.get('s_old',''))">
       <dtml-call "REQUEST.set('s_dst',s_dst+_['sequence-item'])">
       <dtml-unless sequence-end>
        <dtml-call "REQUEST.set('s_dst',s_dst+REQUEST.get('s_new',''))">

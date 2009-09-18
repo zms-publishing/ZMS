@@ -1120,7 +1120,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>
 
 <dtml-let
-  displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
+  displaytype="dctDisplaytype.get(str(getObjProperty('displaytype',REQUEST)),'left')"
   align="getObjProperty('align',REQUEST)"
   imgattr="'img'"
   imghiresattr="'imghires'"
@@ -1715,7 +1715,7 @@ function remoteResponseTimedout() {
   title="getObjProperty('title',REQUEST)"
   ref="getObjProperty('attr_ref',REQUEST)"
 > <dtml-if "title.lower()=='medline'">
-  <dtml-return "'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%_.int(ref)">
+  <dtml-return "'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%int(ref)">
  <dtml-else>
   <dtml-return ref>
  </dtml-if>
@@ -2246,7 +2246,7 @@ function remoteResponseTimedout() {
   <dtml-elif "ob_size > 1048576">
   <dtml-var "ob_size / 1048576.0" fmt="%0.02f"> Mb
   <dtml-else>
-  <dtml-var "_.int(ob_size / 1024)"> Kb
+  <dtml-var "int(ob_size / 1024)"> Kb
   </dtml-if>
   </dtml-let>
   <dtml-else>
@@ -3108,7 +3108,7 @@ table_cell_init();
    </dtml-in>
   </dtml-let>
  </dtml-in>
- <dtml-return "_.map(lambda x: _.int((x*100.0)/sum(table_weights)), table_weights)">
+ <dtml-return "_.map(lambda x: int((x*100.0)/sum(table_weights)), table_weights)">
 </dtml-let>
 
 <dtml-comment>--// EO widths //--</dtml-comment>]]>
@@ -3126,7 +3126,7 @@ table_cell_init();
                     <item key="custom"><![CDATA[<dtml-comment>--// BO format(@key) //--</dtml-comment>
 
 <dtml-if key>
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(key[key.find('_')+1:key.rfind('_')])" row="_.int(key[key.rfind('_')+1:])">
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="int(key[key.find('_')+1:key.rfind('_')])" row="int(key[key.rfind('_')+1:])">
   <dtml-return "table_table[row][col]['format']">
  </dtml-let>
 <dtml-else>
@@ -3148,7 +3148,7 @@ table_cell_init();
                     <item key="custom"><![CDATA[<dtml-comment>--// BO setObjProperty(@pKey,@pValue)  //--</dtml-comment>
 
 <dtml-if "pKey.find('table_')==0">
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="_.int(pKey[pKey.rfind('_')+1:])">
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="int(pKey[pKey.rfind('_')+1:])">
   <dtml-call "operator_setitem(table_table[row][col],'content',pValue)">
   <dtml-call "setObjProperty('table',table_table,lang)">
  </dtml-let>
@@ -3809,7 +3809,7 @@ CHANGES:
  ><dtml-comment>*** Title and Image </dtml-comment
  ><dtml-if "title_txt or img_filename"
   ><dtml-let
-    displaytype="dctDisplaytype.get(_.str(getObjProperty('displaytype',REQUEST)),'left')"
+    displaytype="dctDisplaytype.get(str(getObjProperty('displaytype',REQUEST)),'left')"
     img="'<img class='+QUOT+'title'+QUOT+' src='+QUOT+img_src_attr+QUOT+' alt='+QUOT+title_txt+QUOT+' border='+QUOT+'0'+QUOT+'/>'"
   ><dtml-if "displaytype=='top'"
    ><dtml-if img_filename><div class="graphic"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if

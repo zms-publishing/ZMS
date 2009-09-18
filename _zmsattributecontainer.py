@@ -121,7 +121,7 @@ class ZMSAttributeContainer(
   # ----------------------------------------------------------------------------
   #  ZMSAttributeContainer.getChildNodes:
   # ----------------------------------------------------------------------------
-  def getChildNodes(self, REQUEST={}, meta_types=None):
+  def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
     return []
 
 

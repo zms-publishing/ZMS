@@ -514,9 +514,9 @@
  <dtml-try>
   <dtml-return "RESPONSE.redirect(url_append_params('manage_main',{'lang':lang, 'custom': custom, 'manage_tabs_message':'Created %i master versions.'%tagObjVersions(getObjProperty('master_version',REQUEST)+1,REQUEST)}))">
  <dtml-except>
-  <dtml-call "REQUEST.set('manage_tabs_error_message',_.str(error_type))">
+  <dtml-call "REQUEST.set('manage_tabs_error_message',str(error_type))">
   <dtml-if error_value>
-   <dtml-call "REQUEST.set('manage_tabs_error_message',manage_tabs_error_message+': '+_.str(error_value))">
+   <dtml-call "REQUEST.set('manage_tabs_error_message',manage_tabs_error_message+': '+str(error_value))">
   </dtml-if>
   <dtml-return "RESPONSE.redirect(url_append_params('manage_main',{'lang':lang, 'custom': custom, 'manage_tabs_error_message':manage_tabs_error_message}))">
  </dtml-try>

@@ -2,6 +2,6 @@
 <dtml-in "metaObj['attrs']" mapping>
  <dtml-if "_['sequence-index']>1 and custom and type=='string' and row.get(id,'')">
   <dtml-if "REQUEST['summary']"><dtml-call "REQUEST.set('summary',REQUEST['summary']+', ')"></dtml-if>
-  <dtml-call "REQUEST.set('summary',REQUEST['summary']+_.str(row.get(id,'')))">
+  <dtml-call "REQUEST.set('summary',REQUEST['summary']+str(row.get(id,'')))">
  </dtml-if>
 </dtml-in>

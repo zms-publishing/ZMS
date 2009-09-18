@@ -282,7 +282,7 @@ function mms_normalize_rows(el_tbody) {
            ><input type="text" name="attr_label_<dtml-var "column['id']">" value="<dtml-var "column['label']">" size="12"
           ></td>
           <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')">" align="center"
-           ><dtml-var "getCheckbox(fmName='form0',elName='attr_display_%s:int'%column['id'],value=_.int(column.get('hide',0)==0),enabled=_.True,REQUEST=REQUEST)"
+           ><dtml-var "getCheckbox(fmName='form0',elName='attr_display_%s:int'%column['id'],value=int(column.get('hide',0)==0),enabled=_.True,REQUEST=REQUEST)"
           ></td>
           <td class="form-small"
            ><select class="form-small" name="attr_type_<dtml-var "column['id']">" onchange="onAttrTypeChange(this)"
@@ -315,7 +315,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-let details="column.get('details',{})" style="int(not column.has_key('details'))*'style=\042display:none;\042'"
             ><tr id="tr_details_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(details.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_details_tablename_<dtml-var "column['id']">"><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(details.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr id="tr_details_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
@@ -325,7 +325,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-let fk="column.get('fk',{})" style="int(not column.has_key('fk'))*'style=\042display:none;\042'"
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_fk_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(fk.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_fk_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(fk.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Fieldname</td
@@ -341,21 +341,21 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Editable</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=_.int(fk.get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_editable_%s:int'%column['id'],value=int(fk.get('editable',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Lazy</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_lazy_%s:int'%column['id'],value=_.int(fk.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_lazy_%s:int'%column['id'],value=int(fk.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">B.Options</td
-             ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "fk.get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(_.str(x[0]),_.str(x[1]))"></dtml-let></dtml-in></textarea></td
+             ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "fk.get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(str(x[0]),str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr
             ></dtml-let
            ><dtml-let multiselect="column.get('multiselect',{})" style="int(not column.has_key('multiselect'))*'style=\042display:none;\042'"
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(multiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(multiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
@@ -363,11 +363,11 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">MySQL-Set</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=_.int(multiselect.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=int(multiselect.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Lazy</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=_.int(multiselect.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=int(multiselect.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
            ></dtml-let
            ><dtml-let multimultiselect="column.get('multimultiselect',{})" style="int(not column.has_key('multimultiselect'))*'style=\042display:none;\042'"
@@ -377,7 +377,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_multimultiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Tablename</td
-             ><td class="form-small"><dtml-try><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(multimultiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_multimultiselect_tablename_<dtml-var "column['id']">" size="12"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(multimultiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr id="tr_multimultiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" colspan="2"
@@ -407,7 +407,7 @@ function mms_normalize_rows(el_tbody) {
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_fieldname_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('fieldname','')">" size="5"></td
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_displayfield_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('displayfield','')">" size="5"></td
                  ><td class="form-small"><input class="form-small" type="text" name="attr_multimultiselect_tables_label_<dtml-var sx>_<dtml-var "column['id']">" value="<dtml-var "si.get('label','')">" size="5"></td
-                 ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multimultiselect_tables_lazy_%i_%s:int'%(sx,column['id']),value=_.int(si.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+                 ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multimultiselect_tables_lazy_%i_%s:int'%(sx,column['id']),value=int(si.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
                  ><td align="center" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)"
                   ><input class="form-checkbox" type="checkbox" name="attr_multimultiselect_tables_display_<dtml-var sx>_<dtml-var "column['id']">:int" value="1" <dtml-unless "si.get('hide')">checked="checked"</dtml-unless>
                  ></td
@@ -435,7 +435,7 @@ function mms_normalize_rows(el_tbody) {
            ><dtml-let pk="column.get('pk',{})" style="int(not column.has_key('pk'))*'style=\042display:none;\042'"
             ><tr id="tr_pk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Auto</td
-             ><td class="form-small"><dtml-try><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "_.str(column.get('auto','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
+             ><td class="form-small"><dtml-try><select name="attr_auto_<dtml-var "column['id']">"><option value=""></option><dtml-in "['insert','update']" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(column.get('auto','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
            ></dtml-let
            ></table

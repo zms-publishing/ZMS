@@ -31,7 +31,7 @@
     <td valign="middle"
      ><a href="javascript:displaytypeBtnClick('<dtml-var fmName>','<dtml-var key>',<dtml-var value>)" class="button"
       ><img name="displaytypeBtn_<dtml-var fmName>_<dtml-var value>" title="" border="0" align="absmiddle"
-       <dtml-if "dctDisplaytype.get(_.str(displaytype),'top')==key">
+       <dtml-if "dctDisplaytype.get(str(displaytype),'top')==key">
         src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"
        <dtml-else>
         src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_off.gif"
@@ -43,7 +43,7 @@
   <dtml-else>
    <dtml-in "_.range(len(displaytypes)/2)">
     <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
-     <dtml-if "dctDisplaytype.get(_.str(displaytype),'left')==key">
+     <dtml-if "dctDisplaytype.get(str(displaytype),'left')==key">
       <td valign="middle"><img title="" border="0" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"></td>
      </dtml-if>
     </dtml-let>

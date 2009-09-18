@@ -35,7 +35,7 @@
          </tr>
         </dtml-unless>
        <dtml-comment>##### Foreign-Key #####</dtml-comment>
-       <dtml-elif "type in getMetaobjIds()">
+       <dtml-elif "type in metaobjIds">
         <tr id="tr_<dtml-var id>" valign="middle">
          <td><div class="form-label"><dtml-var name><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></div></td>
          <td class="form-element">
@@ -86,7 +86,7 @@
          <dtml-call "REQUEST.set('value',_.len(res_abs)+1)">
         <dtml-elif "type in ['date','datetime'] and default == '{now}'">
          <dtml-call "REQUEST.set('value',_.DateTime())">
-        <dtml-elif "default is not None and _.len( _.str(default)) > 0">
+        <dtml-elif "default is not None and _.len( str(default)) > 0">
          <dtml-call "REQUEST.set('value',dt_html(default,REQUEST))">
         </dtml-if>
         <tr id="tr_<dtml-var id>" valign="middle">

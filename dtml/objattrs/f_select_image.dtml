@@ -84,8 +84,8 @@
        <tr>
        <td style="background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"
         ><img src="<dtml-var "value.getHref(REQUEST)">" title="" border="0"
-          <dtml-if "_.max([_.int(value.width),_.int(value.height)])>80">
-           <dtml-if "_.int(value.width)>_.int(value.height)">
+          <dtml-if "_.max([int(value.width),int(value.height)])>80">
+           <dtml-if "int(value.width)>int(value.height)">
             width="80"
            <dtml-else>
             height="80"
@@ -97,7 +97,7 @@
         ></td>
         </tr>
         </table>
-        <dtml-if "_.max([_.int(value.width),_.int(value.height)])>80">
+        <dtml-if "_.max([int(value.width),int(value.height)])>80">
          <a href="javascript:zmiImgZoom('<dtml-var "value.getHref(REQUEST)">',<dtml-var "value.width">,<dtml-var "value.height">)"
           ><img src="<dtml-var MISC_ZMS>zoom.gif" title="<dtml-var " getZMILangStr('BTN_ZOOM')">" border="0"></a>
         </dtml-if>

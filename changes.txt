@@ -1309,3 +1309,12 @@ Measures: Correct internal links.
 [01234] Applied fix for bi-directional links (reported by xm).
 Risk: References are not unique.
 --------------------------------------------------
+2009-09-10:zms-2.11.1-87
+[01235] Revised opacity-style-definitions according to CSS3.
+[01236] Applied fix for image-zoom in ZMI edit-form.
+[01237] Applied size for all mime-type icons to 16x16.
+[01238] Applied fix for display-performance of recordset-grids.
+[01239] Added support for creation of complex Folder-structures in content-object configurations (using '/' in the ID-attribute of Zope-native types).
+[01240] Applied fix for duplicate & invalid link-sources after moving objects (reported by xm).
+[01241] Applied fix for get_conf_blob-href in debug-filter-form.]
+--------------------------------------------------

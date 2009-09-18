@@ -59,8 +59,11 @@ def syncType( self, meta_id, attr):
       if ob is not None:
         attr['name'] = ob.raw
     elif attr['type'] in self.valid_zopetypes:
-      home = self.getHome()
-      ob = getattr( home, attr['id'])
+      container = self.getHome()
+      for ob_id in attr['id'].split('/')[:-1]:
+        container = getattr( container, ob_id)
+      ob_id = attr['id'].split('/')[-1]
+      ob = getattr( container, ob_id)
       if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Script (Python)']:
@@ -633,55 +636,68 @@ class ZMSMetaobjManager:
             attrs.append( attr)
       ob['attrs'] = attrs
       
-      # Handle Zope-Objects.
+      # Handle native Zope-Objects.
       if newType in self.valid_zopetypes:
-        # Remove Zope-Object (deprecated use in document-element).
-        container = self.getDocumentElement()
-        if oldId in container.objectIds():
-          container.manage_delObjects( ids=[ oldId])
-          oldId = None
+        # Get container.
+        container = self.getHome()
+        for ob_id in newId.split('/')[:-1]:
+          if ob_id not in container.objectIds():
+            container.manage_addFolder(id=ob_id,title='Folder: %s'%id)
+          container = getattr( container, ob_id, None)
+        newObId = newId.split('/')[-1]
+        # Get container (old).
+        if oldId is not None:
+          oldContainer = self.getHome()
+          for ob_id in oldId.split('/')[:-1]:
+            oldContainer = getattr(oldContainer,ob_id,None)
+          oldObId = oldId.split('/')[-1]
         # External Method.
         if newType == 'External Method':
           try:
-            _fileutil.remove( INSTANCE_HOME+'/Extensions/'+oldId+'.py')
+            _fileutil.remove( INSTANCE_HOME+'/Extensions/'+oldObId+'.py')
           except:
             pass
-          newExternalMethod = INSTANCE_HOME+'/Extensions/'+newId+'.py'
+          newExternalMethod = INSTANCE_HOME+'/Extensions/'+newObId+'.py'
           _fileutil.exportObj( newCustom, newExternalMethod)
         # Insert Zope-Object.
-        container = self.getHome()
         if oldId is None or oldId == newId:
-          if newId in container.objectIds():
-            container.manage_delObjects( ids=[ newId])
+          # Delete existing Zope-Object.
+          if newObId in container.objectIds():
+            container.manage_delObjects( ids=[ newObId])
+          # Add new Zope-Object.
           if newType == 'DTML Method':
-            container.manage_addDTMLMethod( newId, newName, newCustom)
+            container.manage_addDTMLMethod( newObId, newName, newCustom)
           elif newType == 'DTML Document':
-            container.manage_addDTMLDocument( newId, newName, newCustom)
+            container.manage_addDTMLDocument( newObId, newName, newCustom)
           elif newType == 'External Method':
-            ExternalMethod.manage_addExternalMethod( container, newId, newName, newId, newId)
+            ExternalMethod.manage_addExternalMethod( container, newObId, newName, newId, newId)
           elif newType == 'Page Template':
-            ZopePageTemplate.manage_addPageTemplate( container, newId, newName, newCustom)
+            ZopePageTemplate.manage_addPageTemplate( container, newObId, newName, newCustom)
           elif newType == 'Script (Python)':
-            PythonScript.manage_addPythonScript( container, newId)
+            PythonScript.manage_addPythonScript( container, newObId)
           elif newType == 'Z SQL Method':
             connection_id = self.SQLConnectionIDs()[0][0]
             arguments = ''
             template = ''
-            SQL.manage_addZSQLMethod( container, newId, newName, connection_id, arguments, template)
+            SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
         # Rename Zope-Object.
         elif oldId != newId:
-          container.manage_renameObject( id=oldId, new_id=newId)
+          if oldContainer != container:
+            cb_copy_data = oldContainer.manage_cutObjects( ids=[oldObId])
+            container.manage_pasteObjects( cb_copy_data)
+          if oldObId != newObId:
+            container.manage_renameObject( id=oldObId, new_id=newObId)
         # Change Zope-Object.
-        obElmnt = getattr( container, newId)
+        newOb = getattr( container, newObId)
         if newType in [ 'DTML Method', 'DTML Document' ]:
-          obElmnt.manage_edit( title=newName, data=newCustom)
+          newOb.manage_edit( title=newName, data=newCustom)
           roles=[ 'Manager']
-          obElmnt._proxy_roles=tuple(roles)
+          newOb._proxy_roles=tuple(roles)
           if newId.find( 'manage_') == 0:
-            obElmnt.manage_role(role_to_manage='Authenticated',permissions=['View'])
-            obElmnt.manage_acquiredPermissions([])
+            newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
+            newOb.manage_acquiredPermissions([])
         elif newType == 'Script (Python)':
-          params = obElmnt._params
+          params = newOb._params
           body = ''
           count = 0
           for s in newCustom.split( '\n'):
@@ -693,13 +709,13 @@ class ZMSMetaobjManager:
               s = s[:-1]
             body += s + '\n'
             count += 1
-          obElmnt.ZPythonScript_setTitle( newName)
-          obElmnt.ZPythonScript_edit( params=params, body=body)
+          newOb.ZPythonScript_setTitle( newName)
+          newOb.ZPythonScript_edit( params=params, body=body)
           roles=[ 'Manager']
-          obElmnt._proxy_roles=tuple(roles)
+          newOb._proxy_roles=tuple(roles)
           if newId.find( 'manage_') == 0:
-            obElmnt.manage_role(role_to_manage='Authenticated',permissions=['View'])
-            obElmnt.manage_acquiredPermissions([])
+            newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
+            newOb.manage_acquiredPermissions([])
         elif newType == 'Z SQL Method':
           valid_connection_ids = map( lambda x: x[0], self.SQLConnectionIDs())
           connection = newCustom
@@ -714,7 +730,7 @@ class ZMSMetaobjManager:
           template = template[template.find('</params>'):]
           template = template[template.find('>')+1:]
           template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
-          obElmnt.manage_edit(title=newName,connection_id=connection,arguments=arguments,template=template)
+          newOb.manage_edit(title=newName,connection_id=connection,arguments=arguments,template=template)
       
       # Assign Attributes to Meta-Object.
       ob['zms_system'] = int( ob['zms_system'] and (oldId is None or zms_system))
@@ -743,12 +759,16 @@ class ZMSMetaobjManager:
           if id+'.'+attr['id'] in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+attr['id']])
           if attr['type'] in self.valid_zopetypes:
-            home = self.getHome()
-            if attr['id'] in home.objectIds([attr['type']]):
-              home.manage_delObjects(ids=[attr['id']])
+            # Get container.
+            container = self.getHome()
+            for ob_id in attr['id'].split('/')[:-1]:
+              container = getattr( container, ob_id)
+            ob_id = attr['id'].split('/')[-1]
+            if ob_id in container.objectIds([attr['type']]):
+              container.manage_delObjects(ids=[ob_id])
             if attr['type'] == 'External Method':
               try:
-                _fileutil.remove( INSTANCE_HOME+'/Extensions/'+attr['id']+'.py')
+                _fileutil.remove( INSTANCE_HOME+'/Extensions/'+ob_id+'.py')
               except:
                 pass
         else:
@@ -904,7 +924,7 @@ class ZMSMetaobjManager:
               if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
                 if len(getattr(newCustom,'filename','')) > 0:
                     newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom, mediadbStorable=False)
-              message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault )
+              message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')
           elif key == 'obj' and btn == self.getZMILangStr('BTN_SAVE'):

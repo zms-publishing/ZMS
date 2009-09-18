@@ -1,6 +1,6 @@
 <dtml-var manage_page_header>
 
-<dtml-let acquire="_.int(getConfProperty('ZMS.workflow.acquire',0) == 1)"
+<dtml-let acquire="int(getConfProperty('ZMS.workflow.acquire',0) == 1)"
           init="_.len(getConfProperty('ZMS.workflow.init','')) > 0"
           readonly="acquire or init">
 
@@ -298,7 +298,7 @@
           <tr valign="middle">
            <dtml-in "getWfActivities()" mapping>
            <dtml-let sidx=sequence-index>
-            <td align="center" class="form-small" width="<dtml-var "_.int(100/_.len(getWfActivities()))">%" nowrap="nowrap"
+            <td align="center" class="form-small" width="<dtml-var "int(100/_.len(getWfActivities()))">%" nowrap="nowrap"
              ><dtml-if "id==itm['id']"
               ><table cellspacing="0" cellpadding="0" border="0" width="100%"
               ><tr

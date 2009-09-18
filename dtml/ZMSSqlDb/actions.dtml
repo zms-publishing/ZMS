@@ -79,7 +79,7 @@
       ><dtml-unless multimultiselect
        ><dtml-if multiselect
         ><dtml-if "multiselect.get('custom') or multiselect.get('mysqlset')"
-         ><dtml-call "writeBlock('[%s.actions:%s]: %s -> %s'%(meta_type,action,_.str(','.join(REQUEST.get('new_%s'%id,[]))),_.str(REQUEST.get('old_%s'%id,''))))"
+         ><dtml-call "writeBlock('[%s.actions:%s]: %s -> %s'%(meta_type,action,str(','.join(REQUEST.get('new_%s'%id,[]))),str(REQUEST.get('old_%s'%id,''))))"
          ><dtml-call "operator_setitem(values,id,','.join(REQUEST.get('new_%s'%id,[])))"
          ><dtml-call "operator_setitem(old_values,id,REQUEST.get('old_%s'%id,''))"
         ></dtml-if
@@ -121,7 +121,7 @@
    <dtml-call "recordSet_Delete(SESSION[sessqentitykey],rowid)">
    <dtml-call "REQUEST.set('message',getZMILangStr('MSG_DELETED')%1)"> 
   <dtml-except>
-   <dtml-call "REQUEST.set('message','SQL-ERROR: '+_.str(error_type)+': '+_.str(error_value))"> 
+   <dtml-call "REQUEST.set('message','SQL-ERROR: '+str(error_type)+': '+str(error_value))"> 
   </dtml-try>
   <!-- ### Return -->
   <dtml-call "RESPONSE.redirect(url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_message':message}))">
@@ -130,5 +130,5 @@
 </dtml-if>
 
 <dtml-except>
- <dtml-call "RESPONSE.redirect(url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_error_message':'<b>'+_.str(error_type)+'</b>: '+_.str(error_value)+'<hr/>'+_.str(error_tb)}))">
+ <dtml-call "RESPONSE.redirect(url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_error_message':'<b>'+str(error_type)+'</b>: '+str(error_value)+'<hr/>'+str(error_tb)}))">
 </dtml-try>

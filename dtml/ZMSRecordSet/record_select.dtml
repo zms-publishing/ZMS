@@ -52,7 +52,7 @@
        <dtml-elif "type=='file'">
         <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "getMimeTypeIconSrc(v.getContentType())">" title="<dtml-var "v.getFilename()"> (<dtml-var "v.getDataSizeStr()">)" border="1"></a>
        <dtml-comment>##### Grid.Foreign-Key #####</dtml-comment>
-       <dtml-elif "type in getMetaobjIds()">
+       <dtml-elif "type in metaobjIds">
        
         <dtml-in "getParentNode().getChildNodes(REQUEST,type)">
          <dtml-let metaObj="getMetaobj(meta_id)"
@@ -63,9 +63,9 @@
           <dtml-in res_abs>
            <dtml-let row=sequence-item>
             <dtml-try>
-             <dtml-if "_.str(row.get(id_id,'undefined'))==_.str(v)">
+             <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var metaobj_record_summary>
-              <dtml-var "string_maxlen(REQUEST['summary'],_.max(_.int(200.0/_.len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/_.len(metaObj['attrs'])),20))">
              </dtml-if>
             <dtml-except></dtml-try>
            </dtml-let>
@@ -100,7 +100,7 @@
   </dtml-in>
   
 <dtml-comment>-----------------------------------------</dtml-comment>
-<dtml-in "getMetaobjIds()">
+<dtml-in metaobjIds>
  <dtml-let metaObjDetail="getMetaobj(_['sequence-item'])">
   <dtml-if "metaObjDetail['type']=='ZMSRecordSet'">
    <dtml-in "metaObjDetail['attrs']" mapping>
@@ -110,7 +110,7 @@
 
        <!----------// BO Init parameters //---------->
        <dtml-call "recordSet_Init(REQUEST)">
-       <dtml-call "REQUEST.set('res',filter_list(res,fk,_.str(row[pk])))">
+       <dtml-call "REQUEST.set('res',filter_list(res,fk,str(row[pk])))">
        <dtml-call "recordSet_Sort(REQUEST)">
        <!----------// EO Init parameters //---------->
 

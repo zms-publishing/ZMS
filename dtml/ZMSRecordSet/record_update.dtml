@@ -35,7 +35,7 @@
          </tr>
         </dtml-unless>
        <dtml-comment>##### Foreign-Key #####</dtml-comment>
-       <dtml-elif "type in getMetaobjIds()">
+       <dtml-elif "type in metaobjIds">
         <tr id="tr_<dtml-var id>" valign="middle">
          <td><div class="form-label"><dtml-var name><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></div></td>
          <td class="form-element">
@@ -72,7 +72,7 @@
             <dtml-unless mandatory><option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%name"> ---</option></dtml-unless>
             <dtml-in options>
              <dtml-try>
-              <option value="<dtml-var sequence-item>" <dtml-if "_.str(_['sequence-item'])==_.str(value)">selected="selected"</dtml-if>><dtml-var sequence-key></option>
+              <option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==str(value)">selected="selected"</dtml-if>><dtml-var sequence-key></option>
              <dtml-except></dtml-try>
             </dtml-in>
            </select>

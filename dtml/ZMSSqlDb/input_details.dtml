@@ -165,7 +165,7 @@
   ><dtml-call "REQUEST.set('rindex',-1)"
   ><dtml-if "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']"
    ><dtml-in "REQUEST['res']" mapping
-    ><dtml-if "_.str(_[primary_key])==_.str(details_rowid)"
+    ><dtml-if "str(_[primary_key])==str(details_rowid)"
      ><dtml-call "REQUEST.set('rindex',_['sequence-index'])"
     ></dtml-if
    ></dtml-in

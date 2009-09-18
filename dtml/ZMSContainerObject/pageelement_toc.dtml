@@ -13,7 +13,7 @@
                   _.max(format.find('8'),format.find('9')))))))))"
            isHeadline="format.find('h') >= 0 and index > 0">
   <dtml-if isHeadline>
-   <dtml-let level="_.int(format[index:])">
+   <dtml-let level="int(format[index:])">
     <dtml-call "headlines.append({'level':level,'textarea':textarea})">
     <dtml-if "level==1">
      <dtml-call "REQUEST.set('headlineCounter',headlineCounter+1)">

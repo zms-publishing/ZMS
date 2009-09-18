@@ -12,7 +12,7 @@
    <!-- ### DELETE -->
    <dtml-call "REQUEST.set('sqlStatement',[])">
    <dtml-call "sqlStatement.append('DELETE FROM ' + multimultiselect['tablename'] + ' ')">
-   <dtml-call "sqlStatement.append('WHERE ' + multimultiselect['fk'] + '=' + _.str(sql_quote__(entity,primary_key,rowid)))">
+   <dtml-call "sqlStatement.append('WHERE ' + multimultiselect['fk'] + '=' + str(sql_quote__(entity,primary_key,rowid)))">
    <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
    <dtml-try>
     <dtml-call "executeQuery(sqlStatement)">

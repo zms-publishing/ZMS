@@ -75,7 +75,7 @@
    ><a href="manage_search?lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> accesskey="F"><img src="<dtml-var MISC_ZMS>op_search.gif" title="<dtml-var "getZMILangStr('TAB_SEARCH')">: ALT+Shift+F" border="0" width="14" height="14"></a
   ></li>
   <li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>
-   ><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14"></a
+   ><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14"></a
   ></li
   ></ul
   ></div>

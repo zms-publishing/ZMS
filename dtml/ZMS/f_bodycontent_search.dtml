@@ -18,7 +18,7 @@
 --- Headline
 --------------------------------------------------------------------------------
 </dtml-comment>
-<dtml-if "REQUEST.has_key('raw') and _.int(searchform)==1">
+<dtml-if "REQUEST.has_key('raw') and int(searchform)==1">
  <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADERAGAIN',lang)"></h1>
 <dtml-else>
  <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADER',lang)"></h1>
@@ -29,7 +29,7 @@
 ### Form
 ################################################################################
 </dtml-comment>
-<dtml-if "_.int(searchform)==1">
+<dtml-if "int(searchform)==1">
  <form action="<dtml-var URL>" method="get">
  <input type="hidden" name="searchform" value="<dtml-var searchform>">
   <table border="0">
@@ -63,7 +63,7 @@
     <select class="form-element" name="search_order_by:int">
      <dtml-in "_.range(1,2+1)">
       <option value="<dtml-var sequence-item>"
-       <dtml-if "_.int(REQUEST['search_order_by'])==_['sequence-item']">
+       <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
         selected="selected"
        </dtml-if>
       ><dtml-var "getLangStr('SEARCH_ORDERBY%i'%_['sequence-item'],lang)"></option>
@@ -150,7 +150,7 @@
  ></dtml-if>
 
  <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
- <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b> (<b><dtml-var "_.int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
+ <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b> (<b><dtml-var "int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
 
  <dtml-if "_.len(res)==0">
  
@@ -172,7 +172,7 @@
   ></dtml-in>
 
   <p><dtml-var "getLangStr('SEARCH_RETURNEDRESULTS',lang)">:</p>
-  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(_.int(REQUEST.get('qs')),_.int(REQUEST.get('qe')),_.len(res))"></b></p>
+  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(int(REQUEST.get('qs')),int(REQUEST.get('qe')),_.len(res))"></b></p>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 

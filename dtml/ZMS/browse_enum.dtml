@@ -36,7 +36,7 @@
   <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_OBJECT')"> -----</option>
   <dtml-in "_.range(_.len(values)/2)">
    <dtml-let i=sequence-item v="values[i*2]" l="values[i*2+1]">
-    <option value="<dtml-var v>"<dtml-if "_.str(v)==_.str(elValue)"> selected="selected"</dtml-if>><dtml-var l></option>
+    <option value="<dtml-var v>"<dtml-if "str(v)==str(elValue)"> selected="selected"</dtml-if>><dtml-var l></option>
    </dtml-let>
   </dtml-in>
  </select>

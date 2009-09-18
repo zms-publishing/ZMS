@@ -11,7 +11,7 @@
      <td><img src="<dtml-var MISC_ZMS>state_locked.gif" border="0" title="<dtml-var "getZMILangStr('STATE_LOCKED')">" align="middle"/></td>
      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_CHECKED_OUT')"></div></td>
      <td><div class="form-text">
-     <dtml-let tsec="_.int(ZopeTime().timeTime()-_.getattr(this(),'co_dat_%s'%lang))" th="_.int(tsec/60/60)" tm="_.int((tsec-th*60*60)/60)" ts="_.int(tsec-tm*60-th*60*60)">
+     <dtml-let tsec="int(ZopeTime().timeTime()-_.getattr(this(),'co_dat_%s'%lang))" th="int(tsec/60/60)" tm="int((tsec-th*60*60)/60)" ts="int(tsec-tm*60-th*60*60)">
       <dtml-var "('%2i:%2i:%2ih'%(th,tm,ts)).replace(' ','0')">
      </dtml-let>
      <dtml-var "getZMILangStr('BY')"> <dtml-var "_.getattr(this(),'co_uid_%s'%lang,None)">

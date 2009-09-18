@@ -5,11 +5,6 @@
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_EDIT','action':'manage_users'},{'label':'TAB_SITEMAP','action':'manage_users_sitemap'}])">
 <dtml-var f_bo_area>
 
-<dtml-comment>
-######################################################################
-######################################################################
-######################################################################
-</dtml-comment>
  <dtml-let userFldr="getUserFolder()">
   <dtml-if userFldr>
   
@@ -82,11 +77,11 @@
   //-->
   </script>
 
-  <dtml-comment>
-  ######################################################################
-  # Init
-  ######################################################################
-  </dtml-comment>
+<dtml-comment>
+################################################################################
+# Init
+################################################################################
+</dtml-comment>
 
   <dtml-call "REQUEST.set('langs_optpl',[])">
   <dtml-in "getLanguages(REQUEST)">
@@ -101,13 +96,11 @@
   <table cellspacing="2" cellpadding="1" border="0" width="100%">
   <tr valign="top">
 
-  <dtml-comment>
-  ######################################################################
-  ###
-  ###   U s e r
-  ###
-  ######################################################################
-  </dtml-comment>
+<dtml-comment>
+################################################################################
+# Users
+################################################################################
+</dtml-comment>
   <dtml-if "REQUEST.get('hide_users','')=='' and (REQUEST.get('id','')=='' or REQUEST.get('id','') not in local_roles)">
   <dtml-call "REQUEST.set('roles_optpl',[])">
   <dtml-if "AUTHENTICATED_USER.has_role('ZMSAdministrator') or AUTHENTICATED_USER.has_role('Manager')">
@@ -670,13 +663,13 @@
   
   </td>
   </dtml-if>
-  <dtml-comment>
-  ######################################################################
-  ###
-  ###   R o l e s
-  ###
-  ######################################################################
-  </dtml-comment>
+
+<dtml-comment>
+################################################################################
+# Roles
+################################################################################
+</dtml-comment>
+
   <dtml-if "REQUEST.get('hide_roles','')=='' and (REQUEST.get('id','')=='' or REQUEST.get('id','') in local_roles)">
   <dtml-call "REQUEST.set('perms_optpl',[])">
   <dtml-if "AUTHENTICATED_USER.has_role('ZMSAdministrator') or AUTHENTICATED_USER.has_role('Manager')">
@@ -822,20 +815,16 @@
   
   </td>
   </dtml-if>
-  <dtml-comment>
-  ######################################################################
-  </dtml-comment>
+
+<dtml-comment>
+################################################################################
+</dtml-comment>
   
   </tr>
   </table>
   
   </dtml-if>
  </dtml-let>
-<dtml-comment>
-######################################################################
-######################################################################
-######################################################################
-</dtml-comment>
 
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>

@@ -257,16 +257,16 @@ class ZMSProxyObject(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSProxyObject.getChildNodes:
     # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST={}, meta_types=None):
+    def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
       rtn = []
       recursive = self.recursive
       if recursive:
         proxy = self.proxy
         req = self.__request__( REQUEST)
         if hasattr( proxy, 'getChildNodesPROXY'):
-          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodesPROXY( proxy, req, meta_types))
+          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodesPROXY( proxy, req, meta_types, reid))
         else:
-          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodes( req, meta_types))
+          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodes( req, meta_types, reid))
       return rtn
 
 

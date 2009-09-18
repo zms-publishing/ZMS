@@ -3240,7 +3240,7 @@
    }
 
    var numQuestions = <dtml-var "_.len(calcRawScore)">;
-   var currQuestion = <dtml-if "REQUEST.get('cmiCurrInteractionNo')"><dtml-var "_.int(REQUEST.get('cmiCurrInteractionNo'))"><dtml-else>0</dtml-if>;
+   var currQuestion = <dtml-if "REQUEST.get('cmiCurrInteractionNo')"><dtml-var "int(REQUEST.get('cmiCurrInteractionNo'))"><dtml-else>0</dtml-if>;
    var rawScore = 0;
    var actualScore = 0;
 

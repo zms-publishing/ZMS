@@ -158,7 +158,7 @@ function toggleSelect() {
   <dtml-elif "ob_size > 1048576">
   <dtml-var "ob_size / 1048576.0" fmt="%0.02f"> Mb
   <dtml-else>
-  <dtml-var "_.int(ob_size / 1024)"> Kb
+  <dtml-var "int(ob_size / 1024)"> Kb
   </dtml-if>
   </dtml-let>
   <dtml-else>

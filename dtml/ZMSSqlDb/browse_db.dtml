@@ -11,16 +11,16 @@
 <dtml-call "REQUEST.set('sqlStatement',[])">
 <dtml-call "sqlStatement.append( 'SELECT ' + REQUEST.get('fieldname') + ' AS qkey, ' + REQUEST.get('displayfield') + ' AS qvalue ')">
 <dtml-call "sqlStatement.append( 'FROM ' + REQUEST.get('tablename') + ' ')">
-<dtml-call "sqlStatement.append( 'WHERE ' + REQUEST.get('displayfield') + ' LIKE \'' + _.unicode(_.str(qfilter),'utf-8').encode(_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')) + '%\'')">
+<dtml-call "sqlStatement.append( 'WHERE ' + REQUEST.get('displayfield') + ' LIKE \'' + _.unicode(str(qfilter),'utf-8').encode(_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')) + '%\'')">
 <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
 <dtml-call "REQUEST.set('res',[])">
 <dtml-try>
 <!-- SQL: <dtml-var sqlStatement> -->
 <dtml-in "query(sqlStatement)['records']" mapping>
  <dtml-call "res.append({
- 	'qkey':_.unicode(_.str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
- 	'qvalue':_.unicode(_.str(qvalue),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
- 	'qmore':'<a href='+QUOT+'manage_main?lang='+REQUEST.get('lang')+'&qentity='+REQUEST.get('tablename')+'&rowid='+_.unicode(_.str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8')+'&action=update'+QUOT+' target='+QUOT+'_blank'+QUOT+' class='+QUOT+'zmi'+QUOT+'>...</a>',
+ 	'qkey':_.unicode(str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
+ 	'qvalue':_.unicode(str(qvalue),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
+ 	'qmore':'<a href='+QUOT+'manage_main?lang='+REQUEST.get('lang')+'&qentity='+REQUEST.get('tablename')+'&rowid='+_.unicode(str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8')+'&action=update'+QUOT+' target='+QUOT+'_blank'+QUOT+' class='+QUOT+'zmi'+QUOT+'>...</a>',
  	})">
 </dtml-in>
 <dtml-except
@@ -39,9 +39,9 @@
 ><dtml-in "query(sqlStatement)['records']" mapping
  ><dtml-let row=sequence-item qkey="row[REQUEST.get('fieldname')]" qvalue="row[REQUEST.get('displayfield')]"
   ><dtml-call "res.append({
-  	'qkey':_.unicode(_.str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
-  	'qvalue':_.unicode(_.str(qvalue),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
-  	'qmore':'<a href='+QUOT+'manage_main?lang='+REQUEST.get('lang')+'&qentity='+REQUEST.get('tablename')+'&rowid='+_.unicode(_.str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8')+'&action=update'+QUOT+' target='+QUOT+'_blank'+QUOT+' class='+QUOT+'zmi'+QUOT+'>...</a>',
+  	'qkey':_.unicode(str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
+  	'qvalue':_.unicode(str(qvalue),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8'),
+  	'qmore':'<a href='+QUOT+'manage_main?lang='+REQUEST.get('lang')+'&qentity='+REQUEST.get('tablename')+'&rowid='+_.unicode(str(qkey),_.getattr(REQUEST['ZMS_THIS'],'charset','utf-8')).encode('utf-8')+'&action=update'+QUOT+' target='+QUOT+'_blank'+QUOT+' class='+QUOT+'zmi'+QUOT+'>...</a>',
   	})"
  ></dtml-let
 ></dtml-in

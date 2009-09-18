@@ -922,7 +922,7 @@ Todo:
     <dtml-comment>
     <!-- ##### Insert notification if checkbox is checked ##### -->
     </dtml-comment>  
-    <dtml-if "REQUEST.has_key('newBbnEmailNtf') and _.int(REQUEST.get('newBbnEmailNtf'))==1">
+    <dtml-if "REQUEST.has_key('newBbnEmailNtf') and int(REQUEST.get('newBbnEmailNtf'))==1">
         <div style="color:maroon; background-color: white; border: solid 1px black; padding: 4px;">
             <dtml-var "getObjProperty('insertNotification',REQUEST)">
         </div>
@@ -985,7 +985,7 @@ Todo:
         <dtml-call "REQUEST.set('calcSum',0)">
         <dtml-call "REQUEST.set('calcLen',0)">
         <dtml-in "sort_list(filter_list(resRtg,'bbrMsg',REQUEST.get('bbmId'),'=='),'bbrDateTime','asc')" mapping>
-            <dtml-call "REQUEST.set('calcSum',calcSum+_.int(bbrRate))">
+            <dtml-call "REQUEST.set('calcSum',calcSum+int(bbrRate))">
             <dtml-call "REQUEST.set('calcLen',_['sequence-length'])">
         </dtml-in>
     

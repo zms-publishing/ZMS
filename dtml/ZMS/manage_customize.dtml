@@ -180,7 +180,7 @@
    {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
   ]">
 <dtml-if "REQUEST.form.get('option','')=='ZMS.compactview.pagecount.min'"
- ><dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))"
+ ><dtml-call "REQUEST.set('pageCountMin',int(getConfProperty('ZMS.compactview.pagecount.min','99999')))"
  ><dtml-call "SESSION.set('pageCountMax',REQUEST.get('pageCountMin'))"
 ></dtml-if>
 <td id="Custom">

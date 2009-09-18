@@ -1,12 +1,12 @@
 <h1 class="title"><dtml-var "getLangStr('Sitemap',lang)"></h1>
 <dtml-let layout="_.getattr(ZMS_THIS,'attr_layoutsitemap',0)">
- <dtml-if "_.int(layout)==0">
+ <dtml-if "int(layout)==0">
   <dtml-var sitemap_layout0>
- <dtml-elif "_.int(layout)==1">
+ <dtml-elif "int(layout)==1">
   <dtml-var sitemap_layout1>
- <dtml-elif "_.int(layout)==2">
+ <dtml-elif "int(layout)==2">
   <dtml-var sitemap_layout2>
- <dtml-elif "_.int(layout)==3">
+ <dtml-elif "int(layout)==3">
   <dtml-var sitemap_layout3>
  </dtml-if>
 </dtml-let>

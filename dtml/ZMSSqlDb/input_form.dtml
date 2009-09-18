@@ -269,7 +269,7 @@
           ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
           ><dtml-in "query( 'SELECT ' + fieldname + ' AS qkey, ' + displayfield + ' AS qvalue FROM ' + tablename + ' ORDER BY ' + displayfield)['records']"
            ><dtml-let row=sequence-item
-            ><option value="<dtml-var "_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
+            ><option value="<dtml-var "_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
            ></dtml-let
           ></dtml-in
          ></select
@@ -328,11 +328,11 @@
            ><dtml-in "multimultiselect.get('tables',[])" mapping
             ><dtml-let i=sequence-index
              ><dtml-if "row['fk%i'%i]"
-              ><dtml-call "v.append(_.str(row['fk%i'%i]))"
+              ><dtml-call "v.append(str(row['fk%i'%i]))"
               ><dtml-try
-               ><dtml-call "l.append(_.unicode(_.str(row['displayfield%i'%i]),REQUEST.get('qcharset','utf-8')).encode('utf-8'))"
+               ><dtml-call "l.append(_.unicode(str(row['displayfield%i'%i]),REQUEST.get('qcharset','utf-8')).encode('utf-8'))"
               ><dtml-except
-               ><dtml-call "l.append(_.str(row['displayfield%i'%i]))"
+               ><dtml-call "l.append(str(row['displayfield%i'%i]))"
               ></dtml-try
              ><dtml-else
               ><dtml-call "v.append('')"
@@ -356,7 +356,7 @@
          ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
          ><dtml-try
           ><dtml-in "query(sqlStatement)['records']"
-           ><dtml-let row=sequence-item v="_.map(lambda x: _.str(_['sequence-item'][x['fk']]),multimultiselect.get('tables',[]))" l=v
+           ><dtml-let row=sequence-item v="_.map(lambda x: str(_['sequence-item'][x['fk']]),multimultiselect.get('tables',[]))" l=v
             ><option value="<dtml-var "'/'.join(v)">" selected="selected"><dtml-var "'/'.join(l)"></option
            ></dtml-let
           ></dtml-in
@@ -396,7 +396,7 @@
        <dtml-call "sqlStatement.append( 'SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue FROM ' + fk.get('tablename') + ' ')">
        <dtml-if "fk.has_key('lazy')">
         <dtml-if "row.get(id,'')">
-         <dtml-call "sqlStatement.append( 'WHERE ' + fk.get('fieldname') + '=' + _.str(row.get(id,'')) + ' ')">
+         <dtml-call "sqlStatement.append( 'WHERE ' + fk.get('fieldname') + '=' + str(row.get(id,'')) + ' ')">
         <dtml-else>
          <dtml-call "sqlStatement.append( 'WHERE 1=0 ')">
         </dtml-if>
@@ -411,9 +411,9 @@
         ><dtml-let row=sequence-item
          ><dtml-unless "row['qvalue']==None" 
          ><dtml-try
-          ><dtml-call "options.append([_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
+          ><dtml-call "options.append([_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
          ><dtml-except
-          ><dtml-call "options.append([_.str(row['qkey']),_.str(row['qvalue'])])"
+          ><dtml-call "options.append([str(row['qkey']),str(row['qvalue'])])"
          ></dtml-try
          ></dtml-unless
         ></dtml-let
@@ -448,7 +448,7 @@
         </dtml-if>
         <dtml-in options>
          <dtml-let item=sequence-item key="item[0]" value="item[1]">
-          <option value="<dtml-var key>" <dtml-if "_.str(row.get(id,''))==_.str(key)">selected="selected"</dtml-if>><dtml-var value></option>
+          <option value="<dtml-var key>" <dtml-if "str(row.get(id,''))==str(key)">selected="selected"</dtml-if>><dtml-var value></option>
          </dtml-let>
         </dtml-in>
        </select>
@@ -526,14 +526,14 @@
          <!-- MULTISELECT.SQL.INTERSECTION: <dtml-var "''.join(sqlStatement)"> -->
          <dtml-in "query(''.join(sqlStatement))['records']">
           <dtml-let row=sequence-item>
-           <dtml-call "value.append(_.str(row['dst_id']))">
+           <dtml-call "value.append(str(row['dst_id']))">
           </dtml-let>
          </dtml-in>
         <dtml-except>
          SQL-ERROR: <dtml-var "''.join(sqlStatement)">
         </dtml-try>
        </dtml-unless>
-       <dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))"
+       <dtml-let fk="dst['fk']" maxlen="int(fk.get('maxlen',25))"
        ><dtml-call "REQUEST.set('sqlStatement',[])"
        ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
        ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
@@ -560,9 +560,9 @@
         <dtml-in "query(''.join(sqlStatement))['records']"
          ><dtml-let row=sequence-item
           ><dtml-try
-           ><dtml-call "optpl.append([_.unicode(_.str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(_.unicode(_.str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
+           ><dtml-call "optpl.append([_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
           ><dtml-except
-           ><dtml-call "optpl.append([_.str(row['qkey']),string_maxlen(_.str(row['qvalue']),maxlen)])"
+           ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
           ></dtml-try
          ></dtml-let
         ></dtml-in

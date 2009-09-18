@@ -669,7 +669,7 @@ body#zmiSitemap div.form-small {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-#zmiImgZoomDiv {background-color:black;filter:Alpha(opacity=50);-moz-opacity:0.50;}
+#zmiImgZoomDiv {background-color:black;filter:Alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;}
 #zmiImgZoomImgDiv {background-color:white;border: 1px solid black;	font-size: 11px;font-family: Arial, Helvetica, sans-serif;color: #000;}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -677,7 +677,7 @@ body#zmiSitemap div.form-small {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-#zmiCalDiv {filter:Alpha(opacity=80);-moz-opacity:0.80;background-color:#ffffff;padding:2px;border:1px solid #646464;}
+#zmiCalDiv {filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80;background-color:#ffffff;padding:2px;border:1px solid #646464;}
 #zmiCalLastMon,#zmiCalMon,#zmiCalNextMon,#zmiCalClose {float:left;font-size:11px;font-family:helvetica,arial;overflow:hidden;}
 a.zmiCalNorm:link, a.zmiCalNorm:visited, a.zmiCalNorm:hover, a.zmiCalNorm:active {font-size:11px;font-family:helvetica,arial;color:#000000;text-decoration:none;}
 a.zmiCalBold:link, a.zmiCalBold:visited, a.zmiCalBold:hover, a.zmiCalBold:active {font-size:11px;font-family:helvetica,arial;color:#000000;text-decoration:none;font-weight:bold;}

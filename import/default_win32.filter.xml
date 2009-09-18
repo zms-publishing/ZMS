@@ -4347,7 +4347,7 @@ show-body-only: yes
 <item key="acquired" type="int">0</item>
 <item key="command"><![CDATA[<!-- BO htmlEntities -->
 
-<dtml-let htmlEntities="[]" htmlIn="_.str(localfs_read(ZMS_FILTER_IN))">
+<dtml-let htmlEntities="[]" htmlIn="str(localfs_read(ZMS_FILTER_IN))">
  <dtml-call "htmlEntities.append('<!DOCTYPE html ')">
  <dtml-call "htmlEntities.append('     PUBLIC '+QUOT+'-//W3C//DTD XHTML 1.0 Transitional//EN'+QUOT)">
  <dtml-call "htmlEntities.append('     '+QUOT+'xhtml1-transitional.dtd'+QUOT+'>')">

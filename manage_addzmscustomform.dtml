@@ -1,4 +1,4 @@
-<dtml-let meta_id="getMetaobjId(custom)" metaObj="getMetaobj(meta_id)">
+<dtml-let meta_id="getMetaobjId(custom)" metaObj="getMetaobj(meta_id)" metaobjIds="getMetaobjIds()">
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
 </head>

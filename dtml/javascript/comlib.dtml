@@ -626,12 +626,8 @@ function zmiImgZoom(img_src, img_width, img_height)
     a.setAttribute( "title", "<dtml-var "getZMILangStr('BTN_CLOSE')">")
     a.setAttribute( "className", "zmi");
     a.onclick = Function("zmiImgZoomClose()");
-    strong = document.createElement( "strong");
-    strong.appendChild( document.createTextNode( String.fromCharCode(215)));
-    a.appendChild( strong);
-    zmiImgZoomImgDiv.appendChild( document.createTextNode( "<dtml-var "getZMILangStr('BTN_CLOSE')"> ["));
+    a.appendChild( document.createTextNode( "<dtml-var "getZMILangStr('BTN_CLOSE')"> ["+String.fromCharCode(215)+"]"));
     zmiImgZoomImgDiv.appendChild( a);
-    zmiImgZoomImgDiv.appendChild( document.createTextNode( "] "));
     zmiImgZoomImgDiv.appendChild( document.createElement( "br"));
     zmiImgZoomImg = document.createElement( "img");
     zmiImgZoomImg.setAttribute( "id", "zmiImgZoomImg");
@@ -645,20 +641,22 @@ function zmiImgZoom(img_src, img_width, img_height)
     body.appendChild( zmiImgZoomDiv);
     body.appendChild( zmiImgZoomImgDiv);
   }
-  zmiImgZoomImg.setAttribute( "src", img_src);
-  zmiImgZoomDiv.style.visibility = 'visible';
-  zmiImgZoomDiv.style.display = 'block';
-  zmiImgZoomDiv.style.position = 'absolute';
-  zmiImgZoomDiv.style.top = 0;
-  zmiImgZoomDiv.style.left = 0;
-  zmiImgZoomDiv.style.width = '100%';
-  zmiImgZoomDiv.style.height = '100%';
-  zmiImgZoomImgDiv.style.visibility = 'visible';
-  zmiImgZoomImgDiv.style.display = 'block';
-  zmiImgZoomImgDiv.style.position = 'absolute';
+  $(zmiImgZoomImg).attr( 'src', img_src);
+  $(zmiImgZoomDiv).css( {
+      'visibility':'visible', 
+      'display':'block', 
+      'position':'absolute', 
+      'top':0, 
+      'left':0, 
+      'width':'100%', 
+      'height':'100%'});
   var dims = getInnerDimensions();
-  zmiImgZoomImgDiv.style.top = (dims.height - zmiImgZoomImg.offsetHeight) / 2;
-  zmiImgZoomImgDiv.style.left = (dims.width - zmiImgZoomImg.offsetWidth) / 2;
+  $(zmiImgZoomImgDiv).css( {
+      'visibility':'visible', 
+      'display':'block', 
+      'position':'absolute', 
+      'top':(dims.height - img_height) / 2, 
+      'left':(dims.width - img_width) / 2});
 }
 
 

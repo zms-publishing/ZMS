@@ -14,12 +14,26 @@
 ###############################################################################
 </dtml-comment>
 
+<dtml-let zt0="DateTime().timeTime()" metaobjIds="getMetaobjIds()" obj_attrs="[]">
+
+ <dtml-in "metaObj['attrs']" mapping
+  ><dtml-let obj_attr="getObjAttr(id)"
+   ><dtml-if custom
+    ><dtml-unless sequence-start
+     ><dtml-unless "type in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes or id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')"
+      ><dtml-call "obj_attrs.append(obj_attr)"
+     ></dtml-unless
+    ></dtml-unless
+   ></dtml-if
+  ></dtml-let
+ ></dtml-in>
+
  <!----// BO Batch-Navigation //---->
  <dtml-if "'export' in grid_options">
   <a href="#"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1" onclick="gridform.submit()"></a>
  </dtml-if>
  <dtml-var "f_recordset_nav(_,_,grid_url=URL)">
- <!----// EO Batch-Navigation //---->
+ <!----// EO Batch-Navigation (<dtml-var "_.float(int((ZopeTime().timeTime()-zt0)*100.0)/100.0)"> secs.) //---->
 
  <!----// BO Current Batch //---->
  <dtml-if "'export' in grid_options">
@@ -30,73 +44,69 @@
   <input type="hidden" name="qorderdir" value="<dtml-var qorderdir>">
   <input type="hidden" name="qstart" value="<dtml-var qstart>">
  </dtml-if>
- <table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong">
- <tr class="neutralColorMedium">
-  <th class="form-small">
-   <dtml-if "'delete' in grid_options or 'export' in grid_options"
-    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
-     ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
-    ></a
-   </dtml-if>
-  </th>
-  <th align="left" valign="top"
-   ><dtml-if "'delete' in grid_options"
-    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=delete&'+getSelectedCheckboxes(document.forms['gridform'],'qindex','qindices'));" class="button"
-     ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
-    ></a
-   ></dtml-if
-   ><dtml-if "'insert' in grid_options"
-   ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=insert" style="color:black" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
-   ></a
-   ></dtml-if
-  ></th>
-  <th class="form-small">#</th>
-  <dtml-in "metaObj['attrs']" mapping>
-  <dtml-if custom>
-  <dtml-unless sequence-start>
-  <dtml-unless "type in ['DTML Method','DTML Document','method','resource'] or id == SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
-  <th class="form-small" nowrap="nowrap">
 
-   <dtml-if "id==qorder">
-    <dtml-if "qorderdir=='asc'">
-     <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=desc" style="color:black"
-        onmouseover="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc1.gif';"
-        onmouseout="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc0.gif';"
-      ><img name="<dtml-var id>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_asc0.gif" border="0" align="absmiddle"
-        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
-     ></a>
-     <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=desc" style="color:black"
-        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
-      ><span style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var name></i></span
-     ></a>
+<table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong">
+<tr class="neutralColorMedium">
+ <th class="form-small">
+  <dtml-if "'delete' in grid_options or 'export' in grid_options"
+   ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
+    ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
+   ></a
+  </dtml-if>
+ </th>
+ <th align="left" valign="top"
+  ><dtml-if "'delete' in grid_options"
+   ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=delete&'+getSelectedCheckboxes(document.forms['gridform'],'qindex','qindices'));" class="button"
+    ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+   ></a
+  ></dtml-if
+  ><dtml-if "'insert' in grid_options"
+  ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=insert" style="color:black" class="button"
+   ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+  ></a
+  ></dtml-if
+ ></th>
+ <th class="form-small">#</th>
+ <dtml-in obj_attrs mapping>
+  <dtml-let obj_attr=sequence-item>
+   <th class="form-small" nowrap="nowrap">
+    <dtml-if "id==qorder">
+     <dtml-if "qorderdir=='asc'">
+      <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=desc" style="color:black"
+         onmouseover="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc1.gif';"
+         onmouseout="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc0.gif';"
+       ><img name="<dtml-var id>SortBtn" src="<dtml-var MISC_ZMS>btn_sort_asc0.gif" border="0" align="absmiddle"
+         title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
+      ></a>
+      <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=desc" style="color:black"
+         title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_DESC')">)"
+       ><span style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var name></i></span
+      ></a>
+     <dtml-else>
+      <a name="<dtml-var id>SortBtn" href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=asc"
+         onmouseover="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc1.gif';"
+         onmouseout="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc0.gif';"
+       ><img src="<dtml-var MISC_ZMS>btn_sort_desc0.gif" border="0" align="absmiddle"
+         title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
+      ></a>
+      <a name="<dtml-var id>SortBtn" href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=asc"
+         title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
+       ><span style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var name></i></span
+      ></a>
+     </dtml-if>
+    <dtml-elif "qorder=='sort_id'">
+     <span style="font-weight:bold;color:black;text-decoration:none;"><dtml-var name></span>
     <dtml-else>
-     <a name="<dtml-var id>SortBtn" href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=asc"
-        onmouseover="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_asc1.gif';"
-        onmouseout="<dtml-var id>SortBtn.src='<dtml-var MISC_ZMS>btn_sort_desc0.gif';"
-      ><img src="<dtml-var MISC_ZMS>btn_sort_desc0.gif" border="0" align="absmiddle"
-        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
-     ></a>
-     <a name="<dtml-var id>SortBtn" href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>&qorderdir=asc"
-        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name> (<dtml-var "getZMILangStr('ATTR_ASC')">)"
-      ><span style="font-weight:bold;color:black;text-decoration:none;"><i><dtml-var name></i></span
+     <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>" style="color:black"
+        title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name>"
+      ><span style="font-weight:bold;color:black;text-decoration:none;"><dtml-var name></span
      ></a>
     </dtml-if>
-   <dtml-elif "qorder=='sort_id'">
-    <span style="font-weight:bold;color:black;text-decoration:none;"><dtml-var name></span>
-   <dtml-else>
-    <a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var id>" style="color:black"
-       title="<dtml-var "getZMILangStr('ATTR_ORDERBY')"> <dtml-var name>"
-     ><span style="font-weight:bold;color:black;text-decoration:none;"><dtml-var name></span
-    ></a>
-   </dtml-if>
-
-  </th>
-  </dtml-unless>
-  </dtml-unless>
-  </dtml-if>
-  </dtml-in>
+   </th>
+  </dtml-let>
+ </dtml-in>
  </tr>
+ 
  <dtml-in res size=qsize start=qstart>
   <dtml-let res-index=sequence-index>
   <tr valign="top"
@@ -165,12 +175,8 @@
   ></td>
   <td class="form-small" align="right" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if>><dtml-var "_['sequence-index']+1">.</td>
   <dtml-let row=sequence-item>
-   <dtml-in "metaObj['attrs']" mapping>
-    <dtml-let obj_attr="getObjAttr(id)">
-    <dtml-if custom>
-    <dtml-unless sequence-start>
-    <dtml-unless "type in ['DTML Method','DTML Document','constant','method','resource'] or id == SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
-     <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
+   <dtml-in obj_attrs mapping>
+    <dtml-let obj_attr=sequence-item v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
       <td class="form-small" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if><dtml-if "type in ['amount', 'float', 'int']">align="right"</dtml-if>>
 
        <dtml-comment>##### Grid.DateTime #####</dtml-comment>
@@ -194,7 +200,7 @@
         <dtml-if v>
          <center>
           <dtml-try>
-           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "_.min(_.int(v.getWidth()),20)">" height="<dtml-var "_.min(_.int(v.getHeight()),20)">" border="1" align="absmiddle"></a>
+           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "_.min(int(v.getWidth()),20)">" height="<dtml-var "_.min(int(v.getHeight()),20)">" border="1" align="absmiddle"></a>
           <dtml-except>
            <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getMimeTypeIconSrc()">" title="<dtml-var "v.getFilename()">" border="1" align="absmiddle"></a>
           </dtml-try>
@@ -208,7 +214,7 @@
          </center>
         </dtml-if>
        <dtml-comment>##### Grid.Foreign-Key #####</dtml-comment>
-       <dtml-elif "type in getMetaobjIds()">
+       <dtml-elif "type in metaobjIds">
        
         <dtml-in "getParentNode().getChildNodes(REQUEST,type)">
          <dtml-let metaObj="getMetaobj(meta_id)"
@@ -219,9 +225,9 @@
           <dtml-in res_abs>
            <dtml-let row=sequence-item>
             <dtml-try>
-             <dtml-if "_.str(row.get(id_id,'undefined'))==_.str(v)">
+             <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var metaobj_record_summary>
-              <dtml-var "string_maxlen(REQUEST['summary'],_.max(_.int(200.0/_.len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/_.len(metaObj['attrs'])),20))">
               <dtml-call "REQUEST.set('break',1)">
              </dtml-if>
             <dtml-except></dtml-try>
@@ -245,15 +251,11 @@
        
       <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-else>
-        <dtml-var "string_maxlen(_.str(v),_.max(_.int(200.0/_.len(metaObj['attrs'])),20))">
+        <dtml-var "string_maxlen(str(v),_.max(int(200.0/_.len(metaObj['attrs'])),20))">
        </dtml-if>&nbsp;
        <dtml-comment>#####</dtml-comment>
 
       </td>
-     </dtml-let>
-    </dtml-unless>
-    </dtml-unless>
-    </dtml-if>
     </dtml-let>
    </dtml-in>
   </dtml-let>
@@ -268,8 +270,10 @@
  <dtml-unless res>
   <div class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)">!</div>
  </dtml-unless>
- <!----// EO Current Batch //---->
- 
+ <!----// EO Current Batch (<dtml-var "_.float(int((ZopeTime().timeTime()-zt0)*100.0)/100.0)"> secs.) //---->
+
  <!----// BO Batch-Navigation //---->
  <dtml-var "f_recordset_nav(_,_,grid_url=URL)">
- <!----// EO Batch-Navigation //---->
+ <!----// EO Batch-Navigation (<dtml-var "_.float(int((ZopeTime().timeTime()-zt0)*100.0)/100.0)"> secs.) //---->
+
+</dtml-let>

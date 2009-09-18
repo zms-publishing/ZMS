@@ -49,9 +49,9 @@
     <dtml-let optval="_['sequence-item'][0].strip()"
               optdisp="_['sequence-item'][1].strip()">
      <option value="<dtml-var optval html_quote>"
-      <dtml-if "_.str(optval)==_.str(value)">
+      <dtml-if "str(optval)==str(value)">
        selected="selected"
-      <dtml-elif "_.str(value).find('[')==0 and optval in value">
+      <dtml-elif "str(value).find('[')==0 and optval in value">
        selected="selected"
       </dtml-if>
      ><dtml-var optdisp html_quote></option>
@@ -77,7 +77,7 @@
         <option value="<dtml-var optval>"><dtml-var optdisp html_quote></option>
        </dtml-unless>
       <dtml-except>
-       <dtml-unless "_.str(optval)==_.str(value)">
+       <dtml-unless "str(optval)==str(value)">
         <option value="<dtml-var optval>"><dtml-var optdisp html_quote></option>
        </dtml-unless>
       </dtml-try>

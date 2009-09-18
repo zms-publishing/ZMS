@@ -111,7 +111,7 @@
 
  <!----------// BO Register: create a new personalProfile //---------->
   <dtml-call "REQUEST.set('profileRole','Participant')">
-  <dtml-call "REQUEST.set('profilePasswd',_.str(rand_int(999999)))">
+  <dtml-call "REQUEST.set('profilePasswd',str(rand_int(999999)))">
   <dtml-call insertPersonalProfile>
   <dtml-call "REQUEST.set('message',REQUEST.get('message','')+getLangStr('LMS_REG_REG_OK',lang)+'!<br />')">
  <!----------// EO Register: create a new personalProfile //---------->
@@ -1608,7 +1608,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
  <dtml-if "REQUEST['obj'] is not None">
   <dtml-with "REQUEST['obj']">
    <dtml-if "'imsmanifest.xml' in objectIds(['File'])">
-    <dtml-call "REQUEST.set('imsmanifest',_.str(_['imsmanifest.xml']))">
+    <dtml-call "REQUEST.set('imsmanifest',str(_['imsmanifest.xml']))">
    <dtml-else>
     <dtml-call "REQUEST.set('imsmanifest',getIMSManifest(REQUEST))">
    </dtml-if>

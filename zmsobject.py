@@ -1359,7 +1359,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns a NodeList that contains all children of this node, 
     #  if none, this is a empty NodeList. 
     # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST={}, meta_types=None): 
+    def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
       return []
 
 

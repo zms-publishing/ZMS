@@ -33,12 +33,12 @@
    </dtml-if>
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
-     ><dtml-let accessRights="hasAccess(REQUEST)" actions="filtered_container_actions_objChildren(objAttr,_.str(id)+'/',REQUEST)"
+     ><dtml-let accessRights="hasAccess(REQUEST)" actions="filtered_container_actions_objChildren(objAttr,str(id)+'/',REQUEST)"
        ><dtml-if actions
         ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()"
        ></dtml-if
        ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
-        ><dtml-if accessRights><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)">"></dtml-if
+        ><dtml-if accessRights><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"></dtml-if
         ><dtml-var f_display_icon
          ><dtml-if "objAttr.get('repetitive',0)==1"
           ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"

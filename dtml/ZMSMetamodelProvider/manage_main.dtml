@@ -449,7 +449,7 @@ function changeType( el)
       <td><div class="form-element"><dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())"></div></td>
       <td align="center"
        ><dtml-if "metaObj['type']=='ZMSPackage'"
-        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=_.int(metaObj.get('subobjects',1)==1),enabled=True,REQUEST=REQUEST)"
+        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=int(metaObj.get('subobjects',1)==1),enabled=True,REQUEST=REQUEST)"
         ><div class="form-small"><dtml-var "getZMILangStr('ATTR_SUBOBJECTS')"></div
        ><dtml-else>&nbsp;</dtml-if
       ></td>
@@ -575,15 +575,15 @@ function changeType( el)
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'DTML Method'"
              ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(misc_/OFSP/dtmlmethod.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle" 
+              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(/misc_/OFSP/dtmlmethod.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle"
              /><dtml-else
-              ><img src="misc_/OFSP/dtmlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" align="absmiddle"
+              ><img src="/misc_/OFSP/dtmlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
              ></dtml-if
             ><dtml-elif "oAttr['type'] == 'DTML Document'"
              ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(misc_/OFSP/dtmldocument.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
+              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(/misc_/OFSP/dtmldocument.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
              /><dtml-else
-              ><img src="misc_/OFSP/dtmldocument.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+              ><img src="/misc_/OFSP/dtmldocument.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'External Method'"
              ><img src="misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
@@ -594,11 +594,11 @@ function changeType( el)
               /><dtml-elif pt_warnings
                ><img src="<dtml-var MISC_ZMS>ico_warning.gif" style="background-image:url(<dtml-var icon>)" title="WARNING: <dtml-var expr="'\n'.join(pt_warnings)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-else
-               ><img src="<dtml-var icon>" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+               ><img src="<dtml-var icon>" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
               /></dtml-if
              ></dtml-with
             ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
-             ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+             ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
             /><dtml-elif "oAttr['type'] == 'Script (Python)'"
              ><dtml-with "_.getattr(this(),oAttr['id'])"
               ><dtml-if errors
@@ -606,7 +606,7 @@ function changeType( el)
               /><dtml-elif warnings
                ><img src="<dtml-var MISC_ZMS>ico_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-else
-               ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle" 
+               ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
               /></dtml-if
              ></dtml-with
             ><dtml-elif "oAttr['type'] in metaObjIds"
@@ -695,8 +695,8 @@ function changeType( el)
            ><select class="form-small" name="attr_type_<dtml-var "oAttr['id']">" style="width:150px;"
              <dtml-unless "oAttr['meta_type']">
               onchange="changeType(this)"
-              onfocus="populateType(this,<dtml-var "_.str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "_.str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "_.str(metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "_.str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "_.str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">)" 
-              onmouseover="populateType(this,<dtml-var "_.str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "_.str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "_.str(metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "_.str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "_.str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">)"
+              onfocus="populateType(this,<dtml-var "str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "str(metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">)" 
+              onmouseover="populateType(this,<dtml-var "str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "str(oAttr['type'] in valid_datatypes+meta_attrs).lower()">,<dtml-var "str(metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">,<dtml-var "str(not oAttr['type'] in valid_datatypes and not metaObj['type']=='ZMSRecordSet').lower()">)"
              </dtml-unless>
             ><dtml-if "oAttr['type'] in valid_datatypes"
              ><option value="<dtml-var "oAttr['type']">" selected="selected"><dtml-var "oAttr['type']"></option
@@ -717,15 +717,15 @@ function changeType( el)
           </td>
           <td title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center"
            ><dtml-if "oAttr['type'] in metaObjIds+['*']"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=_.int(oAttr.get('mandatory',0)==1),enabled=metaObj['type']=='ZMSRecordSet' and not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=int(oAttr.get('mandatory',0)==1),enabled=metaObj['type']=='ZMSRecordSet' and not oAttr['meta_type'],REQUEST=REQUEST)"
            ><dtml-else
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=_.int(oAttr.get('mandatory',0)==1),enabled=not oAttr['type'] in ['constant'] and not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=int(oAttr.get('mandatory',0)==1),enabled=not oAttr['type'] in ['constant'] and not oAttr['meta_type'],REQUEST=REQUEST)"
            ></dtml-if
           ></td>
           <dtml-if "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" align="center"
             ><dtml-if "oAttr['type'] not in ['constant']"
-             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=_.int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
+             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
             ><dtml-else
              ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s_:int'%oAttr['id'],value=False,enabled=False,REQUEST=REQUEST)"
             ></dtml-if
@@ -734,12 +734,12 @@ function changeType( el)
            <td>&nbsp;</td>
           <dtml-else>
            <td title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" align="center"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%oAttr['id'],value=_.int(oAttr.get('multilang',1)==1 and not oAttr['type'] in ['constant']),enabled=not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%oAttr['id'],value=int(oAttr.get('multilang',1)==1 and not oAttr['type'] in ['constant']),enabled=not oAttr['meta_type'],REQUEST=REQUEST)"
            ></td>
           </dtml-if>
           <dtml-unless "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">" align="center"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=_.int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
            ></td>
           </dtml-unless>
           <td class="form-small" nowrap="nowrap" width="158"
@@ -762,7 +762,7 @@ function changeType( el)
            ><dtml-elif "oAttr['type'] in ['*','autocomplete','multiselect','recordset','select']"
             ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
-            ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%_.str(_['sequence-item'])"></dtml-in></textarea
+            ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
             ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_keys_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" title="" align="bottom" /></a
            ><dtml-elif "oAttr['type'] in ['constant']"
             ><img src="<dtml-var spacer_gif>" alt="" border="0" width="18" height="16"
@@ -776,7 +776,7 @@ function changeType( el)
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"
             /><select title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">"
              ><dtml-in "_.range(2)"
-              ><option value="<dtml-var sequence-item>" <dtml-if "_.str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "_.bool(_['sequence-item'])"></option>
+              ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "_.bool(_['sequence-item'])"></option>
              ></dtml-in
             ></select
            ></dtml-if
@@ -827,7 +827,7 @@ function changeType( el)
 
        <!-- BO Edit -->
        <div id="dtmlHint" style="visibility:hidden;display:none;align:center;" onclick="dtmlHintBtnClose();">
-       <div style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;border:1px dashed black;">
+       <div style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;">
         <div align="right"><a href="#" onclick="dtmlHintBtnClose();" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" style="vertical-align:middle" /></a></div>
         <div id="dtmlHintText" class="form-small" style="padding:4px;"></div>
        </div>
@@ -909,7 +909,7 @@ function changeType( el)
          <tr valign="middle" class="zmiTableRowEven">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>
           <dtml-if "action=='insert'">
-           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=_.int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
+           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
            <td class="form-small">
             <textarea class="form-small" name="access_<dtml-var action>_custom" cols="80" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaObj.get('access',{}).get('%s_custom'%action,'{$}')" html_quote></textarea>
             <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=access_<dtml-var action>_custom&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
@@ -1219,7 +1219,7 @@ function changeType( el)
      ><tr valign="top"
      ><td colspan="2"
      ><dtml-try
-     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(_.str(f.data),mediadbStorable=False)" packages="[]" metaObjs="[]"
+     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(str(f.data),mediadbStorable=False)" packages="[]" metaObjs="[]"
       ><dtml-in xml mapping
        ><dtml-let metaObj="{'id':key,'name':value['name'],'type':value['type'],'package':value.get('package',None),'revision':value.get('revision','0.0.0'),'zms_system':temp_import_zms_system}"
         ><dtml-if "metaObj['type'] == 'ZMSPackage'"

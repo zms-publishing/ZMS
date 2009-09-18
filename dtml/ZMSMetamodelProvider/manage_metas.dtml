@@ -140,7 +140,7 @@ function hideDstMetaTypes( id)
   <dtml-in "getMetadictAttrs()"
    ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
     ><dtml-if metadictAttr
-    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;border:1px dashed black;padding:2px;position:absolute;visibility:hidden;display:none;"
+    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;padding:2px;position:absolute;visibility:hidden;display:none;"
      ><dtml-in "getMetaobjIds()"
       ><dtml-let meta_id=sequence-item
        ><dtml-if "metadictAttrId in getMetadictAttrs(meta_id)"
@@ -231,13 +231,13 @@ function hideDstMetaTypes( id)
      ></td>
     <dtml-else>
     <td class="form-small" align="center">
-     <dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('mandatory',0)==1),enabled=metadictAttr['type'] in metaobj_manager.valid_datatypes,REQUEST=REQUEST)">
+     <dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%metadictAttr['id'],value=int(metadictAttr.get('mandatory',0)==1),enabled=metadictAttr['type'] in metaobj_manager.valid_datatypes,REQUEST=REQUEST)">
     </td>
     <td class="form-small" align="center">
-     <dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('multilang',0)==1),enabled=False,REQUEST=REQUEST)">
+     <dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%metadictAttr['id'],value=int(metadictAttr.get('multilang',0)==1),enabled=False,REQUEST=REQUEST)">
     </td>
     <td class="form-small" align="center">
-     <dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%metadictAttr['id'],value=_.int(metadictAttr.get('repetitive',0)==1),enabled=False,REQUEST=REQUEST)">
+     <dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%metadictAttr['id'],value=int(metadictAttr.get('repetitive',0)==1),enabled=False,REQUEST=REQUEST)">
     </td>
     <td class="form-small" nowrap="nowrap">
      <dtml-if "metadictAttr['type'] in ['*','autocomplete','multiselect','recordset','select']"

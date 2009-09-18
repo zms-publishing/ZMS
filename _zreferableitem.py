@@ -284,16 +284,7 @@ class ZReferableItem:
     if _globals.debug( self): 
       _globals.writeLog( self, "[unregisterRefObj]: %s(%s)"%(ob.id,ob.meta_type))
     ref_by = self.getRefByObjs(REQUEST)
-    ref = self.getRefObjPath( ob)
-    id = ref[2:-1].split( '/')[-1]
-    for url in ref_by:
-      if id in url[2:-1].split( '/'):
-        if ref == url:
-          del ref_by[ref_by.index(url)]
-        else:
-          ref_obj = self.getLinkObj( url)
-          if ref == self.getRefObjPath( ref_obj):
-            del ref_by[ref_by.index(url)]
+    ref_by = filter( lambda x: x[2:-1].split('/')[-1]!=ob.id,ref_by)
     ##### Set Attribute ####
     setattr(self,'ref_by',ref_by)
 

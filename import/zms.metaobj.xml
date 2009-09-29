@@ -1867,23 +1867,12 @@ function remoteResponseTimedout() {
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
-                    <item key="id"><![CDATA[format]]></item>
-                    <item key="mandatory" type="int">1</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Format]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[string]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
                     <item key="id"><![CDATA[text]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">1</item>
                     <item key="name"><![CDATA[Text]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[richtext]]></item>
+                    <item key="type"><![CDATA[text]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -1905,8 +1894,7 @@ function remoteResponseTimedout() {
 	margin: 8px;
 	padding: 4px;
 	background: #FCFECC url(<dtml-var "getMetaobjAttr('ZMSNote','zmsnote_bg.gif')['custom'].absolute_url()">) top right no-repeat;
-}
-]]>
+}]]>
                     </item>
                     <item key="id"><![CDATA[f_css_defaults]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1920,14 +1908,48 @@ function remoteResponseTimedout() {
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSNote //--</dtml-comment>
 
-<dtml-let
-  text="getText(REQUEST)"
-  format="getObjProperty('format',REQUEST)"
-  renderedtext="renderText(format,'text',text,REQUEST,id)">
- <div class="note">
-  <div id="div_<dtml-var id>" contentEditable="true" onkeyup=""><dtml-var renderedtext></div>
- </div>
-</dtml-let>
+<dtml-unless "REQUEST.get('ZMSNOTE_JS')">
+ <script language="JavaScript">
+ <!--//
+
+  var firedZMSNoteDiv = false;
+  var repeatZMSNoteDiv = false;
+
+  function onKeyUpZMSNoteDiv(el) {
+    if (!firedZMSNoteDiv) {
+      firedZMSNoteDiv = true;
+      setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
+    }
+    else  {
+      repeatZMSNoteDiv = true;
+    }
+  }
+
+  function onChangeZMSNoteDiv(id) {
+    if (repeatZMSNoteDiv) {
+      repeatZMSNoteDiv = false;
+      setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
+    }
+    else {
+      firedZMSNoteDiv = false;
+      repeatZMSNoteDiv = false;
+      var el = $('div#'+id);
+      var v = el.text();
+      el.addClass('zmiTeaserColor');
+      $.post(id+'/manage_changeProperties',{'lang':'<dtml-var lang>','text_<dtml-var lang>':v},function(data){
+        el.removeClass('zmiTeaserColor');
+      },'html');
+    }
+  }
+
+ //-->
+ </script>
+ <dtml-call "REQUEST.set('ZMSNOTE_JS',True)">
+</dtml-unless>
+
+<div class="note">
+ <div id="<dtml-var id>" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)"><dtml-var "getText(REQUEST)"></div>
+</div>
 
 <dtml-comment>--// EO bodyContentZMSCustom_ZMSNote //--</dtml-comment>]]>
                     </item>
@@ -1993,7 +2015,7 @@ function remoteResponseTimedout() {
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Icon]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[resource]]></item>
@@ -2004,10 +2026,11 @@ function remoteResponseTimedout() {
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSSqlDb //--</dtml-comment>
 
 <dtml-if "REQUEST.get('URL','').find('/manage')>0">
-<h2><dtml-var "display_type(REQUEST)"></h2>
 <dtml-try>
 <dtml-in "getEntities()" mapping>
- <div class="form-small"><dtml-var id></div>
+ <dtml-if "type=='table'">
+  <div class="form-small"><a href="<dtml-var absolute_url>/manage_main?qentity=<dtml-var id>" class="zmi"><dtml-var label></div>
+ </dtml-if>
 </dtml-in>
 <dtml-except>
 <pre>DATABASE CONNECTION ERROR <a href="&dtml-id;/manage_properties">...</a></pre>
@@ -2026,11 +2049,39 @@ function remoteResponseTimedout() {
                 </item>
               </list>
             </item>
-            <item key="enabled"><![CDATA[0]]></item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
             <item key="id"><![CDATA[ZMSSqlDb]]></item>
             <item key="name"><![CDATA[ZMSSqlDb]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.1]]></item>
+            <item key="revision"><![CDATA[1.0.2]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

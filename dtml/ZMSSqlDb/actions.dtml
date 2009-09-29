@@ -35,6 +35,7 @@
      ></dtml-unless
     ></dtml-in
     ><dtml-call "REQUEST.set('rowid',recordSet_Insert(SESSION[sessqentitykey],values))"
+    ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_INSERTED')%getZMILangStr('ATTR_RECORD')+'<br/>')"
     ><dtml-if rowid>
      <!-- ### INTERSECTIONS -->
      <dtml-var "intersection_sql(_,_,rowid=rowid)">
@@ -54,7 +55,7 @@
      +- UPDATE
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <dtml-elif "REQUEST.get('action','')=='update'">
- <dtml-call "REQUEST.set('message','')"> 
+ <dtml-call "REQUEST.set('message','')">
  <dtml-call "REQUEST.set('sqlStatement','')"> 
  <dtml-if "REQUEST.get('btn','')==''">
   <!-- ### FORM -->
@@ -70,7 +71,7 @@
    <div>WARNING: Query returned no rows!</div>
   </dtml-if>
  <dtml-else>
-  <dtml-call "REQUEST.set('message','')"> 
+  <dtml-call "REQUEST.set('message','')">
   <!-- ### EXEC -->
   <dtml-if "REQUEST.get('btn','') in [getZMILangStr('BTN_SAVE'),getZMILangStr('BTN_DELETE')]"
    ><dtml-let values="{}" old_values="{}"
@@ -99,6 +100,7 @@
      ></dtml-unless
     ></dtml-in
     ><dtml-call "REQUEST.set('rowid',recordSet_Update(SESSION[sessqentitykey],rowid,values,old_values))"
+    ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_CHANGED')+'<br/>')"
     ><dtml-if rowid>
      <!-- ### INTERSECTIONS -->
      <dtml-var "intersection_sql(_,_,rowid=rowid)">
@@ -121,7 +123,7 @@
    <dtml-call "recordSet_Delete(SESSION[sessqentitykey],rowid)">
    <dtml-call "REQUEST.set('message',getZMILangStr('MSG_DELETED')%1)"> 
   <dtml-except>
-   <dtml-call "REQUEST.set('message','SQL-ERROR: '+str(error_type)+': '+str(error_value))"> 
+   <dtml-call "REQUEST.set('message','SQL-ERROR: '+str(error_type)+': '+str(error_value))">
   </dtml-try>
   <!-- ### Return -->
   <dtml-call "RESPONSE.redirect(url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_message':message}))">

@@ -159,10 +159,11 @@ class ObjChildren:
     def getObjChildren(self, id, REQUEST, meta_types=None):
       objAttr = self.getObjChildrenAttr(id)
       reid = None
-      if objAttr.get('repetitive'):
-        reid = id+'$'+'|'+id+'\\d+'
-      else:
-        reid = id
+      if id:
+        if objAttr.get('repetitive'):
+          reid = id+'$'+'|'+id+'\\d+'
+        else:
+          reid = id
       return self.getChildNodes(REQUEST,meta_types,reid)
 
 

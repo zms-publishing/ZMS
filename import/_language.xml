@@ -8,7 +8,7 @@
   <LastAuthor>Christian Meier</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
   <LastSaved>2008-11-26T15:34:08Z</LastSaved>
-  <Version>10.6845</Version>
+  <Version>10.6847</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <DownloadComponents/>
@@ -134,7 +134,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="473" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="474" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75"/>
@@ -3017,6 +3017,20 @@
     <Cell><Data ss:Type="String">Không thực hiện</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">BTN_UPDATE</Data></Cell>
+    <Cell><Data ss:Type="String">Aktualisieren</Data></Cell>
+    <Cell><Data ss:Type="String">Update</Data></Cell>
+    <Cell><Data ss:Type="String">Travailler</Data></Cell>
+    <Cell><Data ss:Type="String">Modificare</Data></Cell>
+    <Cell><Data ss:Type="String">Editar</Data></Cell>
+    <Cell><Data ss:Type="String">编辑</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">ويرايش</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">обработать</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">संपादन</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">تحرير</Data></Cell>
+    <Cell><Data ss:Type="String">Chỉnh sửa</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">BTN_UPLOAD</Data></Cell>
     <Cell><Data ss:Type="String">Hochladen</Data></Cell>
     <Cell><Data ss:Type="String">Upload</Data></Cell>
@@ -3527,7 +3541,7 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CHANGED</Data></Cell>
-    <Cell><Data ss:Type="String">Änderungen gesichert.</Data></Cell>
+    <Cell><Data ss:Type="String">Änderungen gespeichert.</Data></Cell>
     <Cell><Data ss:Type="String">Saved changes.</Data></Cell>
     <Cell><Data ss:Type="String">Changements sauvés.</Data></Cell>
     <Cell><Data ss:Type="String">Cambiamenti salvati.</Data></Cell>
@@ -6114,13 +6128,7 @@
    </Print>
    <Zoom>75</Zoom>
    <Selected/>
-   <TopRowVisible>189</TopRowVisible>
-   <Panes>
-    <Pane>
-     <Number>3</Number>
-     <ActiveRow>244</ActiveRow>
-    </Pane>
-   </Panes>
+   <TopRowVisible>57</TopRowVisible>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

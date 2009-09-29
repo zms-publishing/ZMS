@@ -39,7 +39,7 @@ import _blobfields
 import _cachemanager
 import _copysupport
 import _deprecatedapi
-import _exportable 
+import _exportable
 import _globals
 import _metacmdmanager
 import _multilangmanager
@@ -718,17 +718,20 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def getDeclId(self, REQUEST={}):
       declId = ''
-      if self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-        obj_attrs_keys = self.getObjAttrs().keys()
-        for key in [ 'attr_dc_identifier_doi', 'attr_dc_identifier_url_node']:
-          if key in obj_attrs_keys:
-            declId = self.getObjProperty( key, REQUEST)
-            if len( declId) > 0:
-              break
-        if len(declId) == 0:
-          declId = self.getTitlealt( REQUEST)
-        mapping = self.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping',' _-_/_'))
-        declId = _globals.id_quote( declId, mapping)
+      try:
+        if self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+          obj_attrs_keys = self.getObjAttrs().keys()
+          for key in [ 'attr_dc_identifier_doi', 'attr_dc_identifier_url_node']:
+            if key in obj_attrs_keys:
+              declId = self.getObjProperty( key, REQUEST)
+              if len( declId) > 0:
+                break
+          if len(declId) == 0:
+            declId = self.getTitlealt( REQUEST)
+          mapping = self.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping',' _-_/_'))
+          declId = _globals.id_quote( declId, mapping)
+      except:
+        _globals.writeError(self,'[getDeclId]: can\'t get declarative id')
       if len( declId) == 0:
         declId = self.id
       return declId

@@ -231,12 +231,73 @@ function mms_normalize_rows(el_tbody) {
          <col width="*"/>
         </colgroup
         ><tr class="zmiNeutralColorLight0"
-         ><td class="form-small" nowrap="nowrap">&nbsp;Interface&nbsp;</td
+         ><td class="form-small">Interface</td
          ><td class="form-small"><textarea class="form-fixed" name="interface" cols="80" rows="1" title="Interface" wrap="virtual" style="width:98%;height:20px;background-color:#FFF;"><dtml-var "entity.get('interface','')" html_quote></textarea></td
         ></tr
         ><tr class="zmiNeutralColorLight0"
-         ><td class="form-small" nowrap="nowrap">&nbsp;Filter&nbsp;</td
+         ><td class="form-small">Filter</td
          ><td class="form-small"><textarea class="form-fixed" name="filter" cols="80" rows="1" title="Filter" wrap="virtual" style="width:98%;height:20px;background-color:#FFF;"><dtml-var "entity.get('filter','')" html_quote></textarea></td
+        ></tr
+        ><tr class="zmiNeutralColorLight0"
+         ><td class="form-small">Access</td
+         ><td class="form-small">
+
+
+
+
+       <!-- BO Access -->
+       <dtml-call "REQUEST.set('roleOptpl',[])"
+       ><dtml-with "getDocumentElement()"
+       ><dtml-in userdefined_roles
+        ><dtml-let role=sequence-item role_str="'ROLE_%s'%role.upper()" role_lang_str="getZMILangStr(role_str)"
+         ><dtml-unless "role in ['ZMSSubscriber','ZMSUserAdministrator']"
+          ><dtml-if "role_str==role_lang_str"
+           ><dtml-call "roleOptpl.append([role,role])"
+          ><dtml-else
+           ><dtml-call "roleOptpl.append([role,role_lang_str])"
+          ></dtml-if
+         ></dtml-unless
+        ></dtml-let
+       ></dtml-in
+       ></dtml-with>
+       <table cellspacing="1" cellpadding="2" border="0" width="100%">
+       <tr class="zmiNeutralColorStrong0">
+        <td><div class="form-small"><b><dtml-var "getZMILangStr('TAB_ACCESS')"></b></div></td>
+        <dtml-in roleOptpl>
+         <dtml-let roleId="_['sequence-item'][0]" roleName="_['sequence-item'][1]">
+          <td align="center" class="form-small"><img src="<dtml-var MISC_ZMS>icon_roles.gif" title="<dtml-var "getZMILangStr('ATTR_ROLE')">" border="0" style="vertical-align:middle"/><dtml-var roleName></td>
+         </dtml-let>
+        </dtml-in>
+       </tr>
+       <dtml-if "entity.get('access') is None">
+        <dtml-call "operator_setitem(entity,'access',{})">
+       </dtml-if>
+       <dtml-in "['insert','update','delete']">
+        <dtml-let action=sequence-item>
+         <tr valign="middle" class="zmiTableRowEven">
+          <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>
+          <dtml-in roleOptpl>
+           <dtml-let roleId="_['sequence-item'][0]" roleName="_['sequence-item'][1]">
+            <dtml-try>
+            <td align="center"><input type="checkbox" class="form-checkbox" name="access_<dtml-var action>:list" value="<dtml-var roleId>" <dtml-if "(entity.get('access',{}).get(action) is None) or (roleId in entity.get('access',{}).get(action,[]))">checked="checked"</dtml-if>></td>
+            <dtml-except>
+             <td align="center">
+              <dtml-var error_type>: <dtml-var error_value><hr/>
+              <dtml-var entity>
+             </td>
+            </dtml-try>
+           </dtml-let>
+          </dtml-in>
+         </tr>
+        </dtml-let>
+       </dtml-in>
+       </table>
+      <!-- EO Access -->
+
+
+
+
+         </td
         ></tr
         ></table>
         <!-- Headline -->

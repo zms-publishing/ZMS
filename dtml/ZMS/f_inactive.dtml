@@ -3,9 +3,8 @@
 <head>
  <title>Under construction</title>
 </head>
-<body style="background-color:#ffffff">
- <h2 style="font-family:verdana,arial,helvetica,sans-serif;color:#001c66">
- <img src="<dtml-var MISC_ZMS>under_construction.gif">
+<body>
+ <h2>
   This web site is under construction!
  </h2>
 </body>

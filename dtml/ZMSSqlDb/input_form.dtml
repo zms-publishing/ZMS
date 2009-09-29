@@ -672,18 +672,18 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type') in ['int','smallint','float']">
-      <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), size=8, css=css)">
+      <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), size=8, css=css+' '+grid_col.get('type'))">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- DATE
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='date' or grid_col.get('date')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css)">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css+' date')">
      <dtml-elif "grid_col.get('type')=='datetime' or grid_col.get('datetime')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css)">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css+' datetime')">
      <dtml-elif "grid_col.get('type')=='time' or grid_col.get('time')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css)">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css+' time')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- RICHTEXT
@@ -697,7 +697,7 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='url' or grid_col.get('url')">
-      <dtml-var "getUrlInput(fmName='form0',elName=elName,elTextName='',size=15,value=row.get(id,''),enabled=1,REQUEST=REQUEST,css='form-element')">
+      <dtml-var "getUrlInput(fmName='form0',elName=elName,elTextName='',size=15,value=row.get(id,''),enabled=1,REQUEST=REQUEST,css=css+' url')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- TEXT

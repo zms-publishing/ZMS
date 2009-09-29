@@ -1318,3 +1318,9 @@ Risk: References are not unique.
 [01240] Applied fix for duplicate & invalid link-sources after moving objects (reported by xm).
 [01241] Applied fix for get_conf_blob-href in debug-filter-form.]
 --------------------------------------------------
+2009-09-18:zms-2.11.1-88
+[01242] Added support for role-based restriction of insert, delete and update for tables in SQL-Datasource.
+[01243] Applied fix for declarative-ids: always use object-id as fallback for exceptions (reported by xm).
+[01244] Revised ZMSNote for direct-editing with ajax-auto-save.
+[01245] Added support for css-type to input-fields of SQL-Datasource.
+--------------------------------------------------

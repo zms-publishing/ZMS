@@ -166,9 +166,17 @@
  <dtml-call "REQUEST.set('grid_options',{})">
  <dtml-call "operator_setitem(grid_options,'export',{'action':url_append_params('manage_exportexcel',{'lang':lang,'action':'insert'}),'manage_target':'_blank','icon':MISC_ZMS+'mime_type.application_x_excel.gif'})">
  <dtml-if primary_key>
-  <dtml-call "operator_setitem(grid_options,'insert',{'action':url_append_params(URL,{'lang':lang,'action':'insert'})})">
-  <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update'})+'&rowid=%s'})">
-  <dtml-call "operator_setitem(grid_options,'delete',{'action':url_append_params(URL,{'lang':lang,'action':'delete'})+'&rowid=%s'})">
+  <dtml-let roles="getUserRoles(AUTHENTICATED_USER)" access="tabledef.get('access',{})">
+   <dtml-if "access.get('insert') is None or len(intersection_list(access.get('insert'),roles))>0">
+    <dtml-call "operator_setitem(grid_options,'insert',{'action':url_append_params(URL,{'lang':lang,'action':'insert'})})">
+   </dtml-if>
+   <dtml-if "access.get('update') is None or len(intersection_list(access.get('update'),roles))>0">
+    <dtml-call "operator_setitem(grid_options,'update',{'action':url_append_params(URL,{'lang':lang,'action':'update'})+'&rowid=%s'})">
+   </dtml-if>
+   <dtml-if "access.get('delete') is None or len(intersection_list(access.get('delete'),roles))>0">
+    <dtml-call "operator_setitem(grid_options,'delete',{'action':url_append_params(URL,{'lang':lang,'action':'delete'})+'&rowid=%s'})">
+   </dtml-if>
+  </dtml-let>
  </dtml-if>
  <dtml-var "f_recordset_grid(_,_
    ,grid_url=URL

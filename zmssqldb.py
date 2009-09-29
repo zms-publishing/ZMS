@@ -1287,6 +1287,11 @@ class ZMSSqlDb(ZMSObject):
         entity['type'] = REQUEST.get('type').strip()
         entity['interface'] = REQUEST.get('interface').strip()
         entity['filter'] = REQUEST.get('filter').strip()
+        entity['access'] = {
+         'insert': REQUEST.get( 'access_insert', []),
+         'update': REQUEST.get( 'access_update', []),
+         'delete': REQUEST.get( 'access_delete', []),
+        }
         cols = []
         for attr_id in REQUEST.get('attr_ids',[]):
           col = {}

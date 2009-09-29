@@ -75,7 +75,7 @@ h1, h2, h3 {
 }
 
 .system-msg {
-	font-family: Courier, Arial, Helvetica, sans-serif; 
+	font-family: Courier New, Courier, monospace;
 	font-size: 11px;
 	background: #fff url(<dtml-var MISC_ZMS>msg_info_bg.gif) top left repeat-x;
 	border:	1px solid #000;
@@ -139,6 +139,16 @@ h1, h2, h3 {
 }
 
 .form-highlight {
+}
+
+div.note {
+	font-size: 11px;
+	background-color: #ffffd0;
+	color: black;
+	border: 1px solid #000;
+	margin: 6px 0px;
+	padding: 4px;
+	width: 100%;
 }
 
 /* EO manage_page_style.css */

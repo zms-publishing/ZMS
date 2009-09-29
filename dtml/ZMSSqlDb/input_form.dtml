@@ -704,14 +704,14 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='text' or grid_col.get('text')">
-      <dtml-var "getTextArea(fmName='form0', elName=elName, cols=35, rows=4, value=row.get(id,''), enabled=1, REQUEST=REQUEST, css=css)">
+      <dtml-var "getTextArea(fmName='form0', elName=elName, cols=35, rows=4, value=row.get(id,''), enabled=1, REQUEST=REQUEST, css=css+' text')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- OTHER
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-else>
-      <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), size=30, css=css)">
+      <dtml-var "getTextInput(fmName='form0', elName=elName, value=row.get(id,''), size=30, css=css+' '+grid_col.get('type'))">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>

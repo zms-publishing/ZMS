@@ -20,7 +20,8 @@
 <div class="system-msg"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn')=='Change'">
  <dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
- <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('linkcorrection_active')==1)">
+ <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('ZMS_InternalLinks_autocorrection')==1)">
+ <dtml-call "setConfProperty('ZMS.InternalLinks.keepsynchron',REQUEST.get('ZMS_InternalLinks_keepsynchron')==1)">
  <dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
 </dtml-if>
 </dtml-if>
@@ -288,7 +289,10 @@
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small"><b>Internal links</b></td>
- <td class="form-small"><input type="checkbox" value="1" name="linkcorrection_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.autocorrection',0)==1">checked="checked"</dtml-if>/>Auto-Correct</td>
+ <td class="form-small">
+  <div class="form-small"><input type="checkbox" value="1" name="ZMS_InternalLinks_autocorrection:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.autocorrection',0)==1">checked="checked"</dtml-if>/>&nbsp;Auto-Correct</div>
+  <div class="form-small"><input type="checkbox" value="1" name="ZMS_InternalLinks_keepsynchron:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1">checked="checked"</dtml-if>/>&nbsp;Keep-Synchron</div>
+ </td>
  <td class="form-small">
   <dtml-if "getPortalClients()"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="options:list" value="internal_links_portal_clients"<dtml-if "'internal_links_portal_clients' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;Clients&nbsp;&nbsp;</div></dtml-if>
   <dtml-if "getPortalMaster() is None"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="options:list" value="internal_links_unify_ids"<dtml-if "'internal_links_unify_ids' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;Unify Ids&nbsp;&nbsp;</div></dtml-if>

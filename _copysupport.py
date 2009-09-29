@@ -292,6 +292,13 @@ class CopySupport:
       else:
         self._normalize_ids_after_copy(ids=ids,forced=0,REQUEST=REQUEST)
       
+      # Keep links (ref_by) synchron.
+      if self.getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1:
+        obs  = _globals.objectTree( self)
+        for ob in obs:
+          self.synchronizeRefToObjs()
+          self.synchronizeRefByObjs()
+      
       # Sort order (II).
       self.normalizeSortIds()
       

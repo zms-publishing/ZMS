@@ -347,7 +347,7 @@ function followHref( href, extra)
   href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
   href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
   href += '&elUrlName=<dtml-var "REQUEST.get( 'elUrlName', '')" url_quote>';
-  href += '&elTitleName=<dtml-var "REQUEST.get( 'elTitleName', '')"> url_quote';
+  href += '&elTitleName=<dtml-var "REQUEST.get( 'elTitleName', '')" url_quote>';
   href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
   if ( extra) {
     href += extra;

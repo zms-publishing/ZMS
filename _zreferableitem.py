@@ -239,6 +239,10 @@ class ZReferableItem:
               for exp in ['"(.*?)/%s"','{\$%s}','{\$(.*?)/%s}']:
                 lvalue.extend( ob.re_search( exp%self.id, svalue))
               has_ref = has_ref or len(lvalue)>0
+              if has_ref and obj_attr['datatype_key'] == _globals.DT_URL:
+                new_value = ob.getRefObjPath(self)
+                if value != new_value:
+                  _objattrs.setobjattr(self, obj_vers, obj_attr, new_value, lang)
         if has_ref:
           ob_path = self.getRefObjPath(ob)
           if not ob_path in ref_by:
@@ -267,7 +271,7 @@ class ZReferableItem:
   def registerRefObj(self, ob, REQUEST):
     ref = self.getRefObjPath(ob)
     if _globals.debug( self): 
-      _globals.writeLog( self, "[registerRefObj]: %s(%s): %s"%(ob.id,ob.meta_type,ref))
+      _globals.writeLog( self, "[registerRefObj]: %s(%s) - add %s"%(ob.id,ob.meta_type,ref))
     ref_by = self.getRefByObjs(REQUEST)
     if not ref in ref_by:
       ref_by.append(ref)
@@ -333,13 +337,13 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def synchronizeRefToObjs(self):
     if _globals.debug( self): 
-      _globals.writeLog( self, "[synchronizeRefToObjs]")
+      _globals.writeLog( self, '[synchronizeRefToObjs]')
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype == _globals.DT_URL:
-        for s_lang in self.getLangIds():
-          req = {'lang':s_lang,'preview':'preview'}
+        for lang in self.getLangIds():
+          req = { 'lang':lang, 'preview':'preview'}
           ref = self.getObjProperty(key,req)
           ref_obj = self.getLinkObj(ref)
           if ref_obj is not None:
@@ -353,7 +357,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def refreshRefToObj(self, dest_obj, REQUEST):
     if _globals.debug( self): 
-      _globals.writeLog( self, "[refreshRefToObj]: %s -> dest_obj=%s(%s)"%(self.id,dest_obj.absolute_url(),dest_obj.meta_type))
+      _globals.writeLog( self, '[refreshRefToObj]: %s -> dest_obj=%s(%s)'%(self.id,dest_obj.absolute_url(),dest_obj.meta_type))
     ref_to =  []
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)

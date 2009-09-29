@@ -1324,3 +1324,14 @@ Risk: References are not unique.
 [01244] Revised ZMSNote for direct-editing with ajax-auto-save.
 [01245] Added support for css-type to input-fields of SQL-Datasource.
 --------------------------------------------------
+2009-09-25:zms-2.11.1-89
+[01246] Applied fix for trashcan.
+Risk: Objects are not displayed.
+[01247] Applied fix for link-element.
+Risk: Add-form cannot be displayed.
+[01248] Revised form-name in input-fileds of SQL-Datasource.
+--------------------------------------------------
+2009-09-28:zms-2.11.1-90
+[01249] Applied fix for details_grid.dtml.
+[01250] Added support for keeping internal links synchron during move (requested by xm).
+--------------------------------------------------

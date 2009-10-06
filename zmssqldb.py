@@ -964,7 +964,7 @@ class ZMSSqlDb(ZMSObject):
       c = []
       for tablecol in tablecols:
         id = tablecol['id']
-        consumed = False
+        consumed = id in REQUEST.get('qexcludeids',[])
         if not consumed and tablecol.get('auto'):
           if tablecol.get('auto') in ['update']:
             if tablecol.get('type') in ['date','datetime']:

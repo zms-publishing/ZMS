@@ -50,7 +50,7 @@
      <td align="right" valign="top">
       <dtml-if "hasObjProperty(key,REQUEST) or getObjAttr(key)['multilang']==0">
        <a href="javascript:delBlobBtnClick('<dtml-var fmName>','del_<dtml-var elName>','submitBtn<dtml-var "REQUEST.get('submitBtnCount',-1)+1">');" class="button"
-        ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var " getZMILangStr('BTN_DELETE')">" class="zmiNeutralColorMedium0"
+        ><img src="<dtml-var MISC_ZMS>pencil_delete.png" title="<dtml-var " getZMILangStr('BTN_DELETE')">"
        ></a>
       </dtml-if>
      </td>

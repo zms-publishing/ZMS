@@ -1316,7 +1316,7 @@ Risk: References are not unique.
 [01238] Applied fix for display-performance of recordset-grids.
 [01239] Added support for creation of complex Folder-structures in content-object configurations (using '/' in the ID-attribute of Zope-native types).
 [01240] Applied fix for duplicate & invalid link-sources after moving objects (reported by xm).
-[01241] Applied fix for get_conf_blob-href in debug-filter-form.]
+[01241] Applied fix for get_conf_blob-href in debug-filter-form.
 --------------------------------------------------
 2009-09-18:zms-2.11.1-88
 [01242] Added support for role-based restriction of insert, delete and update for tables in SQL-Datasource.
@@ -1334,4 +1334,20 @@ Risk: Add-form cannot be displayed.
 2009-09-28:zms-2.11.1-90
 [01249] Applied fix for details_grid.dtml.
 [01250] Added support for keeping internal links synchron during move (requested by xm).
+--------------------------------------------------
+2009-09-30:zms-2.11.1-91
+[01251] Restored printHtml()-functionality according to ZMS-2.10.
+Measures: Check your filters based on Xhtml-Export!
+--------------------------------------------------
+2009-10-02:zms-2.11.1-92
+[01252] Applied size for miscellaneous icons to 16x16 and altered buttons for add, edit and delete to pencils from famfam icon library.
+[01253] Removed reset-button from forms.
+[01254] Added support for hints in select-options limited by string_maxlen().
+[01255] Allow '-' in filenames of blob-fields.
+Risk: PDF-Export-Filter does not work!
+[01256] Applied fix for default-workflow: Change-UID instead of AUTHENTICATED_USER.getId().
+[01257] Applied fix for SQL-Datasource: length of input_details-grid (contributed by tf).
+[01258] Applied fix for SQL-Datasource: browse_db js_quoting displayfield (contributed by tf).
+[01259] Applied fix for SQL-Datasource: intersections contained in exclude-ids get deleted.
+Risk: Data loss!
 --------------------------------------------------

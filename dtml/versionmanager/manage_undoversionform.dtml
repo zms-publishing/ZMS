@@ -205,7 +205,7 @@ function previewImgBtnProcessResponse(data)
        <dtml-var f_display_icon>
        <dtml-var "getTitlealt(REQUEST)">
        <dtml-with "ob_child_version0">v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"><dtml-if "id==version_live_id"> - <dtml-var "getZMILangStr('TAB_LIVE')"><dtml-elif "id==version_work_id"> - <dtml-var "getZMILangStr('TAB_PREVIEW')"></dtml-if></dtml-with>
-       <img src="<dtml-var MISC_ZMS>btn_insert.gif" alt="" border="0" align="absmiddle"/>
+       <img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('BTN_INSERT')">" style="border:none; vertical-align:middle;"/>
       </dtml-unless>
      </dtml-let>
     </dtml-in>

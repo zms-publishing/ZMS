@@ -18,7 +18,7 @@
   <th align="left" valign="top"
    ><dtml-if "'insert' in grid_options"
    ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':qindex,'ZMS_ACTION':'insert'})">" style="color:black" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
    ></a
    ></dtml-if
   ></th>
@@ -46,12 +46,12 @@
   <td class="neutralColorMedium" align="left" valign="top" nowrap="nowrap"
    ><dtml-if "'delete' in grid_options"
    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_url,{'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'delete'})">');" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>pencil_delete.png" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
    ></a
    ></dtml-if
    ><dtml-if "'update' in grid_options"
    ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'update'})">" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_edit1.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>pencil_go.png" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
    ></a
    ></dtml-if
   ></td>

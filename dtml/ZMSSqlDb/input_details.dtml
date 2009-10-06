@@ -188,7 +188,7 @@
    </dtml-if>
    <dtml-var "f_recordset_grid(_,_
      ,res=REQUEST['res']
-     ,qsize=len(res)
+     ,qsize=len(REQUEST['res'])
      ,qstart=0
      ,grid_url=URL
      ,grid_cols=grid_cols

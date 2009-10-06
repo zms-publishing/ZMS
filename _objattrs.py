@@ -308,8 +308,6 @@ class ObjAttrs:
           display = str(opt[1])
           if lang_attr != lang_str:
             display = lang_str
-          else:
-            display = self.string_maxlen(display,30)
           optpl.append([value,display])
       return optpl
 

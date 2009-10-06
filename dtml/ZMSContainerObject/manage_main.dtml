@@ -265,10 +265,8 @@ function focusSelectProcessResponse(data)
 </dtml-comment>
 <dtml-if sequence-start>
 <td rowspan="<dtml-var "_.len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
-<img src="<dtml-var MISC_ZMS>compactview.gif" title="" border="0" align="absmiddle" />
-<dtml-var "getZMILangStr('ATTR_COMPACTVIEW')">
 <dtml-let actions="getParentNode().filtered_insert_actions()"
-><br/><select class="form-small" onchange="submitSelectCompactview(this,'e','<dtml-var "getSortId()">')"
+><select class="form-small" onchange="submitSelectCompactview(this,'e','<dtml-var "getSortId()">')"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=999999#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_EXPAND')"></option
 ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"> -----</option

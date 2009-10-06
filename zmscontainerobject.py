@@ -793,51 +793,6 @@ class ZMSContainerObject(
       return indexNavElmnts
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.printHtml:
-    # --------------------------------------------------------------------------
-    def printHtml(self, level, sectionizer, REQUEST, deep=True):
-      """
-      Renders print presentation of a container-object.
-      """
-      html = ''
-      
-      # Title.
-      sectionizer.processLevel( level)
-      title = self.getTitle( REQUEST)
-      title = '%s %s'%(str(sectionizer),title)
-      REQUEST.set( 'ZMS_SECTIONIZED_TITLE', '<h%i>%s</h%i>'%( level, title, level))
-      
-      # pageregionBefore
-      attr = REQUEST.get( 'ZMS_PAGEREGION_BEFORE', 'pageregionBefore')
-      if hasattr( self, attr):
-        html += getattr( self, attr)( self, REQUEST)
-      elif hasattr( self, 'bodyContent_PagePre'):
-        html += getattr( self, 'bodyContent_PagePre')( self,REQUEST)
-      
-      # bodyContent
-      subsectionizer = {}
-      for ob in self.filteredChildNodes( REQUEST, self.PAGEELEMENTS):
-        if not subsectionizer.has_key( ob.meta_type):
-          subsectionizer[ob.meta_type] = sectionizer.clone()
-        subsectionizer[ob.meta_type].processLevel(level+1)
-        html += ob.printHtml( level+1, subsectionizer[ob.meta_type], REQUEST)
-      
-      # pageregionAfter
-      attr = REQUEST.get( 'ZMS_PAGEREGION_AFTER', 'pageregionAfter')
-      if hasattr( self, attr):
-        html += getattr( self, attr)( self, REQUEST)
-      elif hasattr( self ,'bodyContent_PagePost'):
-        html += getattr( self ,'bodyContent_PagePost')( self,REQUEST)
-      
-      # Container-Objects.
-      if deep:
-        for ob in self.filteredChildNodes(REQUEST,self.PAGES):
-          html += ob.printHtml( level+1, sectionizer, REQUEST, deep)
-      
-      return html
-
-
     ############################################################################
     ###
     ###   DOM-Methods

@@ -422,7 +422,7 @@
            <table cellspacing="0" cellpadding="0" border="0">
            <tr>
             <td><img src="<dtml-var MISC_ZMS>spacer.gif" width="20" height="20" title="" border="0"/></td>
-            <td class="zmiNeutralColorMedium0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"/></td>
+            <td class="zmiNeutralColorMedium0"><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"/></td>
            </tr>
            </table>
           </td>

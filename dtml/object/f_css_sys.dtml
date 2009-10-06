@@ -356,31 +356,25 @@ div.zmiHeadline img {
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
 }
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Button
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-img.vbutton, a.vbutton img  {
+img.vbutton, a.vbutton img {
 	width: 10px;
 	height: 20px;
 }
-img.hbutton, a.hbutton img  {
+img.hbutton, a.hbutton img {
 	width: 20px;
 	height: 8px;
 }
-/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-img.button, a.button:link img, a.button:visited img,
-img.vbutton, a.vbutton:link img, a.vbutton:visited img,
-img.hbutton, a.hbutton:link img, a.hbutton:visited img {
+
+a.button img {
+	padding:2px;
+	border: none;
 }
-a.button:hover img, a.button:active img, 
-a.vbutton:hover img, a.vbutton:active img,
-a.hbutton:hover img, a.hbutton:active img {
-	background-image:url(<dtml-var MISC_ZMS>zmi_bg_button.png);
-}
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
- */
+
 img.button, a.button:link img, a.button:visited img,
 img.vbutton, a.vbutton:link img, a.vbutton:visited img,
 img.hbutton, a.hbutton:link img, a.hbutton:visited img {
@@ -524,9 +518,9 @@ a.hbutton:hover img, a.hbutton:active img {
 }
 
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Miscellaneous
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 .zmiDisplayIcon {
@@ -648,18 +642,18 @@ select {
 	vertical-align: top;
 }
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] SQL DB
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 input.lazy {
   width:26em;
 }
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Sitemap
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
 body#zmiSitemap {

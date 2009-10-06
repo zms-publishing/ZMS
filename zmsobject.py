@@ -1525,10 +1525,27 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.printHtml:
     #
-    #  Renders print presentation of an Object.
+    #  Renders print presentation.
     # --------------------------------------------------------------------------
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
-      return self._getBodyContent(REQUEST)
+      html = ''
+      
+      # Title.
+      sectionizer.processLevel( level)
+      title = self.getTitle( REQUEST)
+      title = '%s %s'%(str(sectionizer),title)
+      REQUEST.set( 'ZMS_SECTIONIZED_TITLE', '<h%i>%s</h%i>'%( level, title, level))
+      
+      # bodyContent
+      html += self._getBodyContent(REQUEST)
+      
+      # Container-Objects.
+      if deep:
+        for ob in self.filteredChildNodes(REQUEST,self.PAGES):
+          html += ob.printHtml( level+1, sectionizer, REQUEST, deep)
+      
+      # Return <html>.
+      return html
 
 
     ############################################################################

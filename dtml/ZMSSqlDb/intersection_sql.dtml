@@ -1,10 +1,14 @@
 <dtml-call "REQUEST.set('entity_',REQUEST.get('entity'))">
-<dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if
+<dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if>
 
-><dtml-in grid_cols mapping>
-  <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-       +- MULTIMULTISELECT
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
+<dtml-in grid_cols mapping>
+<dtml-unless "id in REQUEST.get('qexcludeids',[])">
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- MULTIMULTISELECT
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
  <dtml-if multimultiselect>
    <dtml-call "REQUEST.set('mmsid','%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk')))">
    <dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('mmsid',ZMS_TABLE_PREFIX+'_'+mmsid)"></dtml-if>
@@ -41,9 +45,12 @@
      </dtml-try>
     </dtml-let>
    </dtml-in>
-  <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-       +- MULTISELECT
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++- MULTISELECT
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
  <dtml-elif multiselect>
   <dtml-unless "multiselect.get('custom') or multiselect.get('mysqlset')">
    <dtml-let intersection="getEntity(multiselect.get('tablename'))"
@@ -124,7 +131,12 @@
     ></dtml-in
    ></dtml-let
   ></dtml-unless
- ></dtml-if
-></dtml-in>
+ ></dtml-if>
+
+<dtml-comment>
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+</dtml-comment>
+</dtml-unless>
+</dtml-in>
 
 <dtml-call "REQUEST.set('entity',REQUEST.get('entity_'))">

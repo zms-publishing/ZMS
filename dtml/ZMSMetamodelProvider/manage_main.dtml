@@ -486,7 +486,7 @@ function changeType( el)
         <dtml-in metaObjIds
          ><dtml-let x=sequence-item metaObjPackage="metaObjMap[x]"
           ><dtml-if "metaObjPackage['type'] in ['ZMSPackage']"
-           ><option value="<dtml-var "metaObjPackage['id']">" <dtml-if "metaObj['package']==metaObjPackage['id']">selected="selected"</dtml-if>><dtml-var "string_maxlen(metaObjPackage['name'],20)"></option
+           ><option value="<dtml-var "metaObjPackage['id']">" title="<dtml-var "metaObjPackage['name']">" <dtml-if "metaObj['package']==metaObjPackage['id']">selected="selected"</dtml-if>><dtml-var "string_maxlen(metaObjPackage['name'],20)"></option
           ></dtml-if
          ></dtml-let
         ></dtml-in
@@ -703,11 +703,11 @@ function changeType( el)
             ><dtml-elif "oAttr['type'] in meta_attrs"
              ><dtml-let metadictAttr="getMetadictAttr(oAttr['type'])"
               ><dtml-if metadictAttr
-               ><option value="<dtml-var "oAttr['type']">" selected="selected"><dtml-var "string_maxlen(metadictAttr['name'],20)"></option
+               ><option value="<dtml-var "oAttr['type']">" title="<dtml-var "metadictAttr['name']">" selected="selected"><dtml-var "string_maxlen(metadictAttr['name'],20)"></option
               ></dtml-if
              ></dtml-let
             ><dtml-elif "oAttr['type'] in meta_types"
-             ><option value="<dtml-var "oAttr['type']">" selected="selected"><dtml-var "string_maxlen(display_type(REQUEST,oAttr['type']),20)"></option
+             ><option value="<dtml-var "oAttr['type']">" title="<dtml-var "display_type(REQUEST,oAttr['type'])">" selected="selected"><dtml-var "string_maxlen(display_type(REQUEST,oAttr['type']),20)"></option
             ><dtml-elif "oAttr['type']=='*'"
              ><option value="<dtml-var "oAttr['type']">" selected="selected"><dtml-var "getZMILangStr('ATTR_CUSTOM')"> (*)</option
             ><dtml-else
@@ -793,10 +793,8 @@ function changeType( el)
 
        <!-- Insert Attribute -->
        <tr valign="middle">
-        <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
-        <td class="zmiNeutralColorStrong0">
-         <img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" />
-        </td>
+        <td align="right"><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"/></td>
+        <td><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" /></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10" style="width:80px;"></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_name" value="" size="15" style="width:120px;"></td>
         <td class="form-small">
@@ -1249,7 +1247,7 @@ function changeType( el)
           ></a
           ><input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
           ><dtml-if "not metaObjMap.get(package)"
-           ><img src="<dtml-var MISC_ZMS>btn_insert.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" style="vertical-align:middle"
+           ><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('BTN_INSERT')">" style="border:none; vertical-align:middle;"
           ></dtml-if
           ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
           ><code style="color:navy"><b><dtml-var package missing="<default>" html_quote></b></code>
@@ -1261,7 +1259,7 @@ function changeType( el)
               ><dtml-if "metaObjMap.get(metaObj['id'])"
                ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle"
               ><dtml-else
-               ><img src="<dtml-var MISC_ZMS>btn_insert.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" style="vertical-align:middle"
+               ><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('BTN_INSERT')">" style="border:none; vertical-align:middle;"
               ></dtml-if
               ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
               ><b><dtml-var "metaObj['name']"></b>

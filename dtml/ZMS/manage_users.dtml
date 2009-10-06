@@ -478,7 +478,7 @@
        <!-- Insert Node -->
        <tr valign="middle" class="zmiNeutralColorLight0">
         <td class="form-label">
-         <img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
+         <img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
          <dtml-var "getZMILangStr('ATTR_NODE')"> <sup style="color:red">*</sup></td>
         <td class="form-small"><dtml-var "getUrlInput(fmName='form1',elName='node',elTextName='',size=25,value='{$}',enabled=1,REQUEST=REQUEST,css='form-small',extra=' onclick='+QUOT+'return manage_browseObjsBtnClick(\'form1\',\'node\',\'\',\''+lang+'\')'+QUOT)"></td>
        </tr>
@@ -753,7 +753,7 @@
        <!-- Insert Node -->
        <tr valign="middle" class="zmiNeutralColorLight0">
         <td class="form-label">
-         <img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
+         <img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
          <dtml-var "getZMILangStr('ATTR_NODE')"> <sup style="color:red">*</sup>
         </td>
         <td class="form-small"><dtml-var "getUrlInput(fmName='form2',elName='node',elTextName='',size=15,value='{$}',enabled=1,REQUEST=REQUEST,css='form-small')"></td>

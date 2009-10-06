@@ -239,51 +239,6 @@ class ZMSCustom(ZMSContainerObject):
       return RESPONSE
 
 
-    """
-    ############################################################################
-    ###
-    ###   HTML-Presentation
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.printHtml:
-    #
-    #  Renders print presentation of Special Document.
-    # --------------------------------------------------------------------------
-    def printHtml(self, level, sectionizer, REQUEST, deep=True):
-      html = ''
-      
-      # Title.
-      sectionizer.processLevel( level)
-      title = self.getTitle( REQUEST)
-      title = '%s %s'%(str(sectionizer),title)
-      REQUEST.set( 'ZMS_SECTIONIZED_TITLE', '<h%i>%s</h%i>'%( level, title, level))
-      
-      # pageregionBefore
-      if self.getType()=='ZMSDocument':
-        attr = REQUEST.get( 'ZMS_PAGEREGION_BEFORE', 'pageregionBefore')
-        if hasattr( self, attr):
-          html += getattr( self, attr)( self, REQUEST)
-        elif hasattr( self, 'bodyContent_PagePre'):
-          html += getattr( self, 'bodyContent_PagePre')(self,REQUEST)
-      
-      # bodyContent
-      html += self._getBodyContent(REQUEST)
-      
-      # pageregionAfter
-      if self.getType()=='ZMSDocument':
-        attr = REQUEST.get( 'ZMS_PAGEREGION_AFTER', 'pageregionAfter')
-        if hasattr( self, attr):
-          html += getattr( self, attr)( self, REQUEST)
-        elif hasattr( self ,'bodyContent_PagePost'):
-          html += getattr( self ,'bodyContent_PagePost')(self,REQUEST)
-      
-      # Return <html>.
-      return html
-
-
     ############################################################################
     ###
     ###   ZMSRecordSet

@@ -223,7 +223,7 @@
   <dtml-call "s_mbody.extend(s_mstate)">
   <dtml-call "s_mbody.append('] ')">
   <dtml-call "s_mbody.append('%s '%(getLangFmtDate(getObjProperty('change_dt',REQUEST))))">
-  <dtml-call "s_mbody.append('%s %s '%(getZMILangStr('BY'),AUTHENTICATED_USER.getId()))">
+  <dtml-call "s_mbody.append('%s %s '%(getZMILangStr('BY'),getObjProperty('change_uid',REQUEST)))">
   <dtml-call "l_mbody.append(''.join(s_mbody)+'\n')">
  </dtml-if>
 </dtml-in>

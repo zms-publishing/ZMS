@@ -97,7 +97,7 @@ function focusSelectProcessResponse(data)
   <dtml-call "REQUEST.set('pageCount',pageCount+1)">
  </dtml-if>
 </dtml-in>
-<dtml-call "REQUEST.set('pageElementCount',_.len(childNodes)-pageCount)">
+<dtml-call "REQUEST.set('pageElementCount',len(childNodes)-pageCount)">
 
 <dtml-comment>
 <!-- ###################################################################### -->
@@ -192,7 +192,7 @@ function focusSelectProcessResponse(data)
 <!-- ###################################################################### -->
 </dtml-comment>
 
-<dtml-in "childNodes[:_.max(_.len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
+<dtml-in "childNodes[:_.max(len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
 <dtml-let oCurrent=sequence-item
           coverage="getDCCoverage(REQUEST)"
           accessRights="hasAccess(REQUEST)">
@@ -264,7 +264,7 @@ function focusSelectProcessResponse(data)
 <!-- ##### object ##### -->
 </dtml-comment>
 <dtml-if sequence-start>
-<td rowspan="<dtml-var "_.len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
+<td rowspan="<dtml-var "len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
 <dtml-let actions="getParentNode().filtered_insert_actions()"
 ><select class="form-small" onchange="submitSelectCompactview(this,'e','<dtml-var "getSortId()">')"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option

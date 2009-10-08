@@ -61,3 +61,15 @@ class IZMSMetamodelProvider(Interface):
     Get attribute for meta-object specified by attribute-id.
     @rtype: C{dict}
     """
+
+  def getMetaobjAttrIdentifierId(self, meta_id):
+    """
+    Get attribute-id of identifier for datatable specified by meta-id.
+    @rtype: C{dict}
+    """
+
+  def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+    """
+    Notify attribute for meta-object specified by attribute-id about value.
+    @rtype: C{dict}
+    """

@@ -73,9 +73,9 @@
      <dtml-call "REQUEST.set('_count',0)">
      <dtml-in "getFilterIds()">
       <dtml-let filterId=sequence-item filter="getFilter(filterId)">
-       <dtml-if "(_.len(intersection_list([filter['format']],['import']))>0) and
+       <dtml-if "(len(intersection_list([filter['format']],['import']))>0) and
                  ((AUTHENTICATED_USER.has_role('Manager')) or
-                  (_.len(intersection_list(getUserRoles(AUTHENTICATED_USER),filter.get('roles',[])))>0)) and
+                  (len(intersection_list(getUserRoles(AUTHENTICATED_USER),filter.get('roles',[])))>0)) and
                  meta_id in filter['meta_types']">
         <dtml-if "REQUEST['_count']==0">
          <tr valign="middle">
@@ -151,9 +151,9 @@
      <dtml-call "REQUEST.set('_count',0)">
      <dtml-in "getFilterIds()">
       <dtml-let filterId=sequence-item filter="getFilter(filterId)">
-       <dtml-if "(_.len(intersection_list([filter['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0) and
+       <dtml-if "(len(intersection_list([filter['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0) and
                  ((AUTHENTICATED_USER.has_role('Manager')) or
-                  (_.len(intersection_list(getUserRoles(AUTHENTICATED_USER),filter.get('roles',[])))>0)) and
+                  (len(intersection_list(getUserRoles(AUTHENTICATED_USER),filter.get('roles',[])))>0)) and
                  meta_id in filter['meta_types']">
         <dtml-if "REQUEST['_count']==0">
          <option value="">----- <dtml-var "getZMILangStr('TAB_FILTER')"></option>

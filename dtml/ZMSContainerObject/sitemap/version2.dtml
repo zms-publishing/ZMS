@@ -15,7 +15,7 @@
     ><dtml-else
      ><dtml-unless "ob in catalog_items"
       ><dtml-call "catalog_items.append(ob)"
-      ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+      ><dtml-call "REQUEST.set('pos',len(catalog_items))"
      ></dtml-unless
     ></dtml-if
     ><dtml-in "filteredChildNodes(REQUEST,PAGES)"
@@ -54,7 +54,7 @@
    ><div id="div_<dtml-var ob_id>" class="sitemapChildLevel<dtml-var ob_level>" style="margin: 4px 1px 1px 1px;"
    ><dtml-unless "ob_level==0"
     ><dtml-unless "ob_level==1"
-     ><dtml-if "_.len(filteredChildNodes(REQUEST,PAGES))>0"
+     ><dtml-if "len(filteredChildNodes(REQUEST,PAGES))>0"
       ><dtml-if "ob in breadcrumbs"
        ><a href="<dtml-var "catalog_items[index-1].absolute_url()">/sitemap_<dtml-var lang>.html"><img 
         id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" width="16" height="16" border="0" title="-" align="absmiddle"></a

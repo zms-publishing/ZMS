@@ -57,7 +57,7 @@
 <item key="dtml" type="string"><![CDATA[<!-- ##### Notification #### -->
 <!-- Recipients -->
 <dtml-call "REQUEST.set('l_roles',['ZMSEditor'])">
-<dtml-if "_.len(intersection_list(l_roles, getUserRoles(AUTHENTICATED_USER))) > 0">
+<dtml-if "len(intersection_list(l_roles, getUserRoles(AUTHENTICATED_USER))) > 0">
  <dtml-call "REQUEST.set('l_roles',['ZMSAdministrator'])">
 </dtml-if>
 <dtml-call "REQUEST.set('s_mto',getRecipientsByRole(l_roles,REQUEST))">

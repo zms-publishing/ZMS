@@ -28,7 +28,7 @@
 <dtml-call "recordSet_Filter(REQUEST)">
 <dtml-call "recordSet_Sort(REQUEST)">
 <dtml-if "REQUEST.get('qindex',-1)>=0">
- <dtml-if "REQUEST.get('qindex')>=_.len(res)">
+ <dtml-if "REQUEST.get('qindex')>=len(res)">
   <dtml-call "REQUEST.set('qindex',-1)">
  <dtml-else>
   <dtml-call "REQUEST.set('qindex_abs',res_abs.index(res[qindex]))">

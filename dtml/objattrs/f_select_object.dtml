@@ -26,7 +26,7 @@
        <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
       </div>
       <div class="form-small zmi_col_right">
-       <dtml-var "'%i %s\n'%(_.len(res),getZMILangStr('ATTR_OBJECTS'))">
+       <dtml-var "'%i %s\n'%(len(res),getZMILangStr('ATTR_OBJECTS'))">
       </div>
      </td>
     </tr>
@@ -90,7 +90,7 @@
       <!-- ##### actions ##### -->
       </dtml-comment>
       <div class="form-element zmi_col_right">
-       <dtml-if "objAttr.get('repetitive',0)==1 or _.len(getObjChildren(objAttr['id'],REQUEST))==0"
+       <dtml-if "objAttr.get('repetitive',0)==1 or len(getObjChildren(objAttr['id'],REQUEST))==0"
         ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
          ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',True)"
           ><select class="form-small" onchange="submitSelect(this,'<dtml-var "objAttr['id']">','9900')">

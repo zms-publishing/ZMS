@@ -36,7 +36,7 @@ var absolute_urls = new Array();
     ><dtml-in "ob.breadcrumbs_obj_path()"
      ><dtml-let item=sequence-item
       ><dtml-unless "item.absolute_url() in absolute_urls"
-       >absolute_urls[<dtml-var "_.len(absolute_urls)">]="<dtml-var "item.absolute_url()">";
+       >absolute_urls[<dtml-var "len(absolute_urls)">]="<dtml-var "item.absolute_url()">";
        <dtml-call "absolute_urls.append(item.absolute_url())"
       ></dtml-unless
      ></dtml-let

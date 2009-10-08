@@ -281,8 +281,7 @@ function dropProcessResponse(data)
  */
 function hideSystemMessage()
 {
-  var system_msg = $("#system_msg");
-  system_msg.hide("normal");
+  $("#system_msg").hide("normal");
 }
 
 
@@ -364,7 +363,7 @@ function drophide() {
   if (droptarget != null) {
     droptarget.style.backgroundColor = "transparent";
     if (dropimage != null) {
-      document.getElementsByTagName('body')[0].removeChild( dropimage);
+      dropimage.remove();
       dropimage = null;
     }
   }
@@ -405,32 +404,28 @@ function dragmove(element) {
   if ( droptarget == null) {
     if( dragobject != null) {
       if ( dropimage == null) {
-        dropimage = document.createElement( "img");
-        dropimage.setAttribute( "src", "<dtml-var MISC_ZMS>drop.gif");
-        dropimage.setAttribute( "title", "");
-        dropimage.setAttribute( "border", 0);
-        dropimage.style.position = "absolute";
-        document.getElementsByTagName('body')[0].appendChild( dropimage);
+        dropimage = $(document.createElement( "img"));
+        dropimage.attr({'src':'<dtml-var MISC_ZMS>drop.gif','title':'','border':0});
+        dropimage.css({'position':'absolute'});
+        $("body").append(dropimage);
       }
       var pxinto = 2;
       if ($($("img",element)[0]).attr("src").toLowerCase().indexOf('<dtml-var MISC_ZMS>mi.gif')>=0) {
         pxinto = 0;
       }
+      var dropimage_offsetHeight = dropimage.attr('offsetHeight');
       var zmstrashcan = $($("img",element)[1]).attr("src").toLowerCase().indexOf('zmstrashcan')>=0;
       if (!zmstrashcan && posy < element.offsetTop + element.offsetHeight / 2 - pxinto) {
         element.style.backgroundColor = "#eee";
-        dropimage.style.left = element.offsetLeft;
-        dropimage.style.top = element.offsetTop - dropimage.offsetHeight / 2;
+        dropimage.css({'left':element.offsetLeft,'top':element.offsetTop - dropimage_offsetHeight / 2});
       }
       else if (!zmstrashcan && posy > element.offsetTop + element.offsetHeight / 2 + pxinto) {
         element.style.backgroundColor = "#eee";
-        dropimage.style.left = element.offsetLeft;
-        dropimage.style.top = element.offsetTop + element.offsetHeight - dropimage.offsetHeight / 2;
+        dropimage.css({'left':element.offsetLeft,'top':element.offsetTop + element.offsetHeight - dropimage_offsetHeight / 2});
       }
       else {
         element.style.backgroundColor = "#ccc";
-        dropimage.style.left = element.offsetLeft;
-        dropimage.style.top = element.offsetTop + element.offsetHeight / 2 - dropimage.offsetHeight / 2;
+        dropimage.css({'left':element.offsetLeft,'top':element.offsetTop + element.offsetHeight / 2 - dropimage_offsetHeight / 2});
       }
     }
   }
@@ -448,7 +443,7 @@ function divmouseout(element) {
   if (droptarget == null) {
     element.style.backgroundColor = "transparent";
     if ( dropimage != null) {
-      document.getElementsByTagName('body')[0].removeChild( dropimage);
+      dropimage.remove();
       dropimage = null;
     }
   }
@@ -581,7 +576,7 @@ function drag(ereignis) {
     ><dtml-else
      ><dtml-call "catalog_items.append(ob)"
      ><dtml-call "catalog_items2.append({'ob':ob,'ob_level':ob_level})"
-     ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+     ><dtml-call "REQUEST.set('pos',len(catalog_items))"
     ></dtml-if
     ><dtml-if "getHome().id==home_id"
     ><dtml-in "getChildNodes(REQUEST,PAGES)"
@@ -599,15 +594,6 @@ function drag(ereignis) {
       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
       ><dtml-call "REQUEST.set('pos',pos+1)"
      ></dtml-let
-><dtml-comment
-     ><dtml-in "getPortalClients()"
-      ><dtml-let ob=sequence-item
-       ><dtml-call "catalog_items.insert(pos,ob)"
-       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
-       ><dtml-call "REQUEST.set('pos',pos+1)"
-      ></dtml-let
-     ></dtml-in
-></dtml-comment
     ></dtml-if
     ></dtml-if
    ></dtml-unless

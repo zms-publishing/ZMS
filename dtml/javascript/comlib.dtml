@@ -86,12 +86,12 @@ function getCoords( element) {
 function getRelativeUrl(path, url) {
   var currntPath = path;
   if (currntPath.indexOf('<dtml-var SERVER_URL>')==0)
-    currntPath = currntPath.substr(<dtml-var "_.len(SERVER_URL)+1">);
+    currntPath = currntPath.substr(<dtml-var "len(SERVER_URL)+1">);
   else if (currntPath.indexOf('/')==0)
     currntPath = currntPath.substr(1);
   var targetPath = url;
   if (targetPath.indexOf('<dtml-var SERVER_URL>')==0)
-    targetPath = targetPath.substr(<dtml-var "_.len(SERVER_URL)+1">);
+    targetPath = targetPath.substr(<dtml-var "len(SERVER_URL)+1">);
   else if (targetPath.indexOf('/')==0)
     targetPath = targetPath.substr(1);
   while ( currntPath.length > 0 && targetPath.length > 0) {

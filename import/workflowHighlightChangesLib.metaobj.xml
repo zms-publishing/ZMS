@@ -22,7 +22,7 @@
   <dtml-elif "inObjStates( [ 'STATE_MODIFIED'], REQUEST)">
    <dtml-call "REQUEST.set('subclass',subclass+' modified')">
   </dtml-if>
-  <dtml-if "_.len(subclass)>0">
+  <dtml-if "len(subclass)>0">
    <dtml-return "'<div class='+QUOT+'ZMSObject'+subclass+QUOT+'>'+html+'</div>'">
   </dtml-if>
  </dtml-if>

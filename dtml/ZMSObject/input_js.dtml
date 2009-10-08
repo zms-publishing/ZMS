@@ -42,7 +42,7 @@
     if (el.selectedIndex>0) {
      <dtml-in "getMetaCmdIds()">
       <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
-       <dtml-if "_.len(metaCmd['description'])>0">
+       <dtml-if "len(metaCmd['description'])>0">
         if (label == '<dtml-var "metaCmd['name']">') {
           b = confirm("<dtml-var "metaCmd['description']">");
         }

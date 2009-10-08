@@ -48,11 +48,11 @@
  <dtml-comment> ***** Custom ***** </dtml-comment>
  <dtml-if custom_str><dtml-var custom_str></dtml-if>
  <dtml-comment> ***** Paragraph-Format ***** </dtml-comment>
- <dtml-if metaObj><dtml-if "_.len(filter_list(metaObj['attrs'],'id','format','=='))>0"><td class="form-small" nowrap="nowrap"><dtml-var f_selectTextformat></td></dtml-if></dtml-if>
+ <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id','format','=='))>0"><td class="form-small" nowrap="nowrap"><dtml-var f_selectTextformat></td></dtml-if></dtml-if>
  <dtml-comment> ***** Character-Format (Bold, Italic, Underline, etc.) ***** </dtml-comment>
  <td><dtml-var "f_selectCharformat(_,_,fmName=fmName,elName=elName)"></td>
  <dtml-comment> ***** Align ***** </dtml-comment>
- <dtml-if metaObj><dtml-if "_.len(filter_list(metaObj['attrs'],'id',key+'align','=='))>0"><dtml-var f_selectAlign></dtml-if></dtml-if>
+ <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id',key+'align','=='))>0"><dtml-var f_selectAlign></dtml-if></dtml-if>
  <dtml-comment> ***** Displaytype ***** </dtml-comment>
  <dtml-if b_f_selectDisplaytype><dtml-var f_selectDisplaytype></dtml-if>
  <dtml-comment> ***** RichText-Editor (activate) ***** </dtml-comment>

@@ -14,7 +14,7 @@
      ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
     ><dtml-else
      ><dtml-call "catalog_items.append(ob)"
-     ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+     ><dtml-call "REQUEST.set('pos',len(catalog_items))"
     ></dtml-if
     ><dtml-in "filteredChildNodes(REQUEST,PAGES)"
      ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
@@ -39,7 +39,7 @@
    ><dtml-in "_.range( ob_level, last_level + 1)"></div></div></dtml-in
    ><div id="div_<dtml-var ob_id>" class="sitemapChildLevel<dtml-var ob_level>" style="margin: 4px 1px 1px 1px"
     ><dtml-unless "ob_level==0"
-     ><dtml-if "_.len(filteredChildNodes(REQUEST,PAGES))>0"
+     ><dtml-if "len(filteredChildNodes(REQUEST,PAGES))>0"
       ><dtml-if "ob in breadcrumbs"
        ><a href="<dtml-var "catalog_items[index-1].getDeclUrl(REQUEST)">/sitemap_<dtml-var lang>.html"><img 
         id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" border="0" title="-" align="absmiddle"></a

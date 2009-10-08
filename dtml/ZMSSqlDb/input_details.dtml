@@ -29,7 +29,7 @@
 <div style="border: 1px solid #999;  margin: 4px 0px; padding: 4px;background-color:#c9c9c9;">
  <dtml-let master_key=primary_key
    grid_cols="getEntity(details['tablename'])['columns']"
-   details_ordered="_.len(filter( lambda x: x['id'].lower()=='sort_id', grid_cols))==1"
+   details_ordered="len(filter( lambda x: x['id'].lower()=='sort_id', grid_cols))==1"
    primary_key="filter( lambda x: x.get('pk',0)==1,grid_cols)[0]['id']"
 
   ><dtml-comment>

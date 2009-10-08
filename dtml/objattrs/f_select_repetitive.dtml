@@ -13,9 +13,9 @@
  <i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,REQUEST.get('ZMS_INSERT'))"></i>
 <dtml-else>
  <dtml-if value>
- <dtml-if "_.len(value)>0">
+ <dtml-if "len(value)>0">
   <ol>
-   <dtml-in "_.range(_.len(value))">
+   <dtml-in "_.range(len(value))">
     <dtml-let index=sequence-index v="formatObjAttrValue(obj_attr,value[index],REQUEST['lang'])">
      <li class="form-small">
       <dtml-try>

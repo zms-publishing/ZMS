@@ -100,9 +100,9 @@ class ZMSMetaobjManager:
 
     # Globals.
     # --------
-    valid_types = ['amount','autocomplete','boolean','color','date','datetime','dialog','dictionary','file','float','identifier','image','int','list','multiselect','password','richtext','select','string','text','time','url','xml']
+    valid_types = ['amount','autocomplete','boolean','color','date','datetime','dialog','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
     valid_xtypes = ['constant','delimiter','hint','interface','method','resource']
-    valid_datatypes = ['amount','autocomplete','boolean','color','constant','date','datetime','delimiter','dialog','dictionary','file','float','hint','identifier','image','int','interface','list','method','multiselect','password','resource','richtext','select','string','text','time','url','xml']
+    valid_datatypes = ['amount','autocomplete','boolean','color','constant','date','datetime','delimiter','dialog','dictionary','file','float','hint','identifier','image','int','interface','list','method','multiautocomplete','multiselect','password','resource','richtext','select','string','text','time','url','xml']
     valid_objtypes = [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
     valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Page Template', 'Script (Python)', 'Z SQL Method']
 
@@ -429,9 +429,37 @@ class ZMSMetaobjManager:
     ############################################################################
 
     # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.notifyMetaobjAttrAboutValue:
+    #
+    #  Notify attribute for meta-object specified by attribute-id about value.
+    # --------------------------------------------------------------------------
+    def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+      sync_id = False
+      
+      attr = self.getMetaobjAttr( meta_id, key)
+      if attr is not None:
+        # Self-learning auto-complete attributes.
+        if attr.get('type') in ['autocomplete','multiautocomplete']:
+          keys = attr['keys']
+          if ''.join(keys).find('<dtml') < 0:
+            if type(value) is not list:
+              value = list(value)
+            for v in value:
+              if v not in keys:
+                keys.append(v)
+                sync_id = meta_id
+            if sync_id:
+              self.setMetaobjAttr( meta_id, key, key, attr['name'], attr['mandatory'], attr['multilang'], attr['repetitive'], attr['type'], keys, attr['custom'], attr['default'])
+      
+      ##### SYNCHRONIZE ####
+      if sync_id:
+        self.synchronizeObjAttrs( sync_id)
+
+
+    # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjAttrIdentifierId:
     #
-    #  Returns attribute-id of datatable-identifier for meta-object specified by id.
+    #  Get attribute-id of identifier for datatable specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIdentifierId(self, meta_id):
       for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int']):
@@ -522,7 +550,7 @@ class ZMSMetaobjManager:
         newCustom = ''
       if newType in ['resource'] and (type(newCustom) is str or type(newCustom) is int):
         newCustom = None
-      if newType not in ['*','autocomplete','dialog','multiselect','recordset','select']:
+      if newType not in ['*','autocomplete','dialog','multiautocomplete','multiselect','recordset','select']:
         newKeys = []
       if newType in self.getMetaobjIds(sort=0)+['*']:
         newMultilang = 0
@@ -617,7 +645,7 @@ class ZMSMetaobjManager:
             self.manage_addDTMLMethod( id+'.'+newId, newType, newName)
       
       # Replace
-      ids = self.getMetaobjAttrIds(id)
+      ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)
       if oldId in ids:
         i = ids.index(oldId)
         attrs[i] = attr
@@ -1026,7 +1054,7 @@ class ZMSMetaobjManager:
                 tmpltCustom.append('\n')
                 if newValue['type'] == 'ZMSRecordSet':
                   tmpltCustom.append('  <h2><dtml-var "getTitlealt(REQUEST)"></h2>\n')
-                  tmpltCustom.append('  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)[\'attrs\'][0][\'id\'],REQUEST))"> <dtml-var "getLangStr(\'ATTR_RECORDS\',lang)"></p>\n')
+                  tmpltCustom.append('  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)[\'attrs\'][0][\'id\'],REQUEST))"> <dtml-var "getLangStr(\'ATTR_RECORDS\',lang)"></p>\n')
                 tmpltCustom.append('\n')
                 tmpltCustom.append('<dtml-comment>--// EO %s //--</dtml-comment>\n'%tmpltId)
                 tmpltCustom = ''.join(tmpltCustom)

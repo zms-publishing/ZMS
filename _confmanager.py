@@ -844,6 +844,8 @@ class ConfManager(
     def getMetaobjAttrIdentifierId(self, meta_id):
       return self.metaobj_manager.getMetaobjAttrIdentifierId( meta_id)
 
+    def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
+      return self.metaobj_manager.notifyMetaobjAttrAboutValue( meta_id, key, value)
 
     ############################################################################
     ###

@@ -1,4 +1,4 @@
-<dtml-if "_.len(getLangIds())>1">
+<dtml-if "len(getLangIds())>1">
   <table cellspacing="0" cellpadding="2" border="0">
   <tr valign="middle">
   <form name="langSelectForm" method="get" 
@@ -11,7 +11,7 @@
    <td class="form-small">
     <select class="form-small" name="lang" onchange="document.forms['langSelectForm'].submit();">
      <dtml-if "getDCCoverage(REQUEST).find('global.')==0">
-      <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[_.len('global.'):],REQUEST)">
+      <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[len('global.'):],REQUEST)">
        <dtml-let seq_lang=sequence-item>
         <option value="<dtml-var seq_lang html_quote>" 
           <dtml-if "lang==seq_lang">selected="selected"</dtml-if>
@@ -19,7 +19,7 @@
        </dtml-let>
       </dtml-in>
      <dtml-else>
-      <dtml-let seq_lang="getDCCoverage(REQUEST)[_.len('local.'):]">
+      <dtml-let seq_lang="getDCCoverage(REQUEST)[len('local.'):]">
        <option value="<dtml-var seq_lang html_quote>"
          <dtml-if "lang==seq_lang">selected="selected"</dtml-if>
         ><dtml-var "getLanguageLabel(seq_lang)"><dtml-if "seq_lang==getPrimaryLanguage()"> [*]</dtml-if></option>

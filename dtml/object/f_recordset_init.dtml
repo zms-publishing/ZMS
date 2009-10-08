@@ -41,7 +41,7 @@
    ></dtml-if
   ></dtml-let
  ></dtml-in
- ><dtml-if "_.len(l)>0"
+ ><dtml-if "len(l)>0"
   ><dtml-call "REQUEST.set('row',dict_list(l))"
  ></dtml-if
 ></dtml-try>

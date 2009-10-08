@@ -1,7 +1,7 @@
 <dtml-var manage_page_header>
 
 <dtml-let acquire="int(getConfProperty('ZMS.workflow.acquire',0) == 1)"
-          init="_.len(getConfProperty('ZMS.workflow.init','')) > 0"
+          init="len(getConfProperty('ZMS.workflow.init','')) > 0"
           readonly="acquire or init">
 
 <dtml-if "not REQUEST.has_key('id') or not REQUEST['id']">
@@ -182,7 +182,7 @@
   </div>
  </div>
 
-<dtml-if "readonly or (_.len(getWfActivitiesIds()) == 0 and _.len(getWfTransitionsIds()) == 0)">
+<dtml-if "readonly or (len(getWfActivitiesIds()) == 0 and len(getWfTransitionsIds()) == 0)">
 <table cellspacing="0" cellpadding="1" border="0">
 <dtml-comment>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -192,7 +192,7 @@
  <dtml-call "REQUEST.set('b',False)">
  <dtml-let portalMaster="getPortalMaster()">
   <dtml-if portalMaster>
-   <dtml-if "_.len(portalMaster.getWfActivitiesIds()) > 0 and _.len(portalMaster.getWfTransitionsIds()) > 0">
+   <dtml-if "len(portalMaster.getWfActivitiesIds()) > 0 and len(portalMaster.getWfTransitionsIds()) > 0">
     <tr valign="middle" height="22">
      <td><div class="form-label"><dtml-var "getZMILangStr('BTN_ACQUIRE')"></div></td>
      <td><input class="form-checkbox" type="checkbox" name="acquire:int" value="1" <dtml-if acquire>checked="checked"</dtml-if>></td>
@@ -298,11 +298,11 @@
           <tr valign="middle">
            <dtml-in "getWfActivities()" mapping>
            <dtml-let sidx=sequence-index>
-            <td align="center" class="form-small" width="<dtml-var "int(100/_.len(getWfActivities()))">%" nowrap="nowrap"
+            <td align="center" class="form-small" width="<dtml-var "int(100/len(getWfActivities()))">%" nowrap="nowrap"
              ><dtml-if "id==itm['id']"
               ><table cellspacing="0" cellpadding="0" border="0" width="100%"
               ><tr
-              ><dtml-if "_.len(froms)>0 and idx-1 in _.range(_.min(idx,froms[0]),idx)"
+              ><dtml-if "len(froms)>0 and idx-1 in _.range(_.min(idx,froms[0]),idx)"
                ><td width="4"><img src="<dtml-var MISC_ZMS>arr_rgt.gif" title="" border="0"/></td
               ></dtml-if
               ><td align="center" style="white-space: nowrap; border: 1px solid maroon; background-color: <dtml-if "itm.get('editable',1)">#FFFFE0<dtml-else>yellow</dtml-if>; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;"
@@ -313,7 +313,7 @@
                ><dtml-var "string_maxlen(itm['name'],18)"
                ></div
               ></td
-              ><dtml-if "_.len(froms)>0 and idx+1 in _.range(idx,_.max(idx,froms[-1])+1)"
+              ><dtml-if "len(froms)>0 and idx+1 in _.range(idx,_.max(idx,froms[-1])+1)"
                ><td width="4"><img src="<dtml-var MISC_ZMS>arr_lft.gif" title="" border="0"/></td
               ></dtml-if
               ></tr
@@ -321,7 +321,7 @@
              ><dtml-else
               ><dtml-call "REQUEST.set('jtm_details',getWfActivityDetails(_['sequence-item']['id']))"
               ><dtml-call "REQUEST.set('tos',jtm_details['tos'])"
-              ><dtml-call "REQUEST.set('flag',sidx not in froms and _.len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1])))"
+              ><dtml-call "REQUEST.set('flag',sidx not in froms and len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1])))"
               ><nobr
               ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
               ><dtml-unless flag
@@ -333,23 +333,23 @@
                 <dtml-else>
                  height="11"
                 </dtml-if>
-                <dtml-if "_.len(tos)>0 and 
+                <dtml-if "len(tos)>0 and 
                           ((sidx<idx and idx>=_.min(sidx,tos[0]) and idx<=tos[-1]) or
                            (sidx>idx and idx>_.min(sidx,tos[0]) and idx<=tos[-1]))">
                  style="background-color:navy;"
                 </dtml-if>
               ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
               ><br
-              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "_.len(froms)>0 and sidx>_.min(idx,froms[0]) and sidx<=_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "len(froms)>0 and sidx>_.min(idx,froms[0]) and sidx<=_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
               ><dtml-if "sidx in froms"
                ><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2" align="absmiddle" style="border: 1px solid navy; background-color:#D0FFD0;"
-              ><dtml-elif "_.len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1]))"
+              ><dtml-elif "len(froms)>0 and sidx in _.range(_.min(idx,froms[0]),_.max(idx,froms[-1]))"
                ><img src="<dtml-var spacer_gif>" title="" border="0" width="4" height="1" align="absmiddle" style="background-color:navy;"
-              ><dtml-elif "_.len(tos)>0 and idx in _.range(_.min(sidx,tos[0]),_.max(sidx,tos[-1]))"
+              ><dtml-elif "len(tos)>0 and idx in _.range(_.min(sidx,tos[0]),_.max(sidx,tos[-1]))"
                ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" align="absmiddle"
                ><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" align="absmiddle" style="background-color:navy;"
               ></dtml-if
-              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "_.len(froms)>0 and sidx>=_.min(idx,froms[0]) and sidx<_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
+              ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle" <dtml-if "len(froms)>0 and sidx>=_.min(idx,froms[0]) and sidx<_.max(idx,froms[-1])">style="background-color:navy;"</dtml-if>
               ><br
               ><img src="<dtml-var spacer_gif>" title="" border="0" width="50%" height="1" align="absmiddle"
               ><dtml-unless flag
@@ -361,7 +361,7 @@
                 <dtml-else>
                  height="11"
                 </dtml-if>
-                <dtml-if "_.len(tos)>0 and 
+                <dtml-if "len(tos)>0 and 
                           ((sidx<idx and idx>=_.min(sidx,tos[0]) and idx<tos[-1]) or 
                            (sidx>idx and idx>=_.min(sidx,tos[0]) and idx<=tos[-1]))">
                  style="background-color:navy;"
@@ -411,7 +411,7 @@
          <div class="form-small">
           <dtml-if "itm.get('icon',None)">
            <img src="get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="" border="0" align="absmiddle" style="background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"/>
-           <i>(<dtml-var "getDataSizeStr(_.len(itm['icon'].data))">)</i>
+           <i>(<dtml-var "getDataSizeStr(len(itm['icon'].data))">)</i>
           </dtml-if>
          </div>
 	</td>
@@ -475,7 +475,7 @@
 -->
 </dtml-comment>
 
-<dtml-if "_.len(getWfActivitiesIds()) + _.len(getWfTransitionsIds()) > 0 and (REQUEST.get('id','') == '' or REQUEST.get('id','') in getWfTransitionsIds())"> 
+<dtml-if "len(getWfActivitiesIds()) + len(getWfTransitionsIds()) > 0 and (REQUEST.get('id','') == '' or REQUEST.get('id','') in getWfTransitionsIds())"> 
 
  <dtml-call "REQUEST.set('wfItemOptpl',[])">
  <dtml-in "getWfActivities()">
@@ -580,7 +580,7 @@
               </dtml-if>
              </td>
              <td class="form-small">
-              <dtml-if "_.len(itm['to'])>0">
+              <dtml-if "len(itm['to'])>0">
                <div style="white-space: nowrap; border: 1px solid maroon; background-color: #FFFFE0; padding-left:2px; padding-right:2px; padding-top:0px; padding-bottom:0px;">
                 <dtml-in "getWfActivities()" mapping><dtml-in "itm['to']"><dtml-if "id==_['sequence-item']"><dtml-var name><br/></dtml-if><dtml-else>o</dtml-in></dtml-in>
                </div>
@@ -665,7 +665,7 @@
        <tr class="zmiNeutralColorStrong0">
         <td class="form-small">
          <img src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle" />
-         <b>Template:</b> (<i><dtml-var "getDataSizeStr(_.len(itm.get('dtml','')))"></i>)
+         <b>Template:</b> (<i><dtml-var "getDataSizeStr(len(itm.get('dtml','')))"></i>)
         </td>
        </tr>
        <tr>
@@ -734,7 +734,7 @@
 -->
 </dtml-comment>
 
-<dtml-if "_.len(getWfActivitiesIds()) > 0 and _.len(getWfTransitionsIds()) > 0 and REQUEST.get('id','') == ''"> 
+<dtml-if "len(getWfActivitiesIds()) > 0 and len(getWfTransitionsIds()) > 0 and REQUEST.get('id','') == ''"> 
 
 <tr>
  <td>

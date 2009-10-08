@@ -20,7 +20,7 @@
    <dtml-let ob=sequence-item>
    <dtml-if "inObjStates([task_type],REQUEST) and
              ( inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],REQUEST) or
-              (_.len(getWfStates(REQUEST))>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)))">
+              (len(getWfStates(REQUEST))>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)))">
     <dtml-call "REQUEST.set('l',[])">
     <dtml-call "l.extend(['ob',ob])">
     <dtml-call "l.extend(['lang',lang])">

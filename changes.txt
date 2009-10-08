@@ -1,4 +1,4 @@
---------------------------------------------------
+
 2006-11-29::zms-2.10.1-01
 -- MAJOR CHANGES
 [00307] Added support for Zope-2.10.1.
@@ -1350,4 +1350,12 @@ Risk: PDF-Export-Filter does not work!
 [01258] Applied fix for SQL-Datasource: browse_db js_quoting displayfield (contributed by tf).
 [01259] Applied fix for SQL-Datasource: intersections contained in exclude-ids get deleted.
 Risk: Data loss!
+--------------------------------------------------
+2009-10-07:zms-2.11.1-93
+[01260] Added empty ZMSRubrik-implementation for backwards-compatibility.
+Risk: ZEXP can't be imported!
+[01261] Replaced _.len() by len() in all dtml-templates.
+[01262] Applied fix for drag&drop-javascript in sitemap.
+[01263] Added support for multiple-autocomplete attribute-types.
+[01264] Added support for self-learning autocomplete attribute-types.
 --------------------------------------------------

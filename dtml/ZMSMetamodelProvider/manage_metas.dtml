@@ -240,7 +240,7 @@ function hideDstMetaTypes( id)
      <dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%metadictAttr['id'],value=int(metadictAttr.get('repetitive',0)==1),enabled=False,REQUEST=REQUEST)">
     </td>
     <td class="form-small" nowrap="nowrap">
-     <dtml-if "metadictAttr['type'] in ['*','autocomplete','multiselect','recordset','select']"
+     <dtml-if "metadictAttr['type'] in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']"
       ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')"> alt="" border="0"
       ><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "metadictAttr['id']">" cols="25" rows="1" wrap="virtual" style="width:158px; height:20px;"><dtml-var "'\n'.join(metadictAttr['keys'])"></textarea
      ></dtml-if>
@@ -325,7 +325,7 @@ function hideDstMetaTypes( id)
       <table cellspacing="0" cellpadding="0" border="0">
       <tr valign="top">
        <td class="form-element">
-        <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
+        <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,len(res))">">
          <dtml-in res>
           <dtml-let metadictAttr=sequence-item>
            <option value="<dtml-var "metadictAttr['id']">"><dtml-var "metadictAttr['id']"> (<dtml-var "search_quote(metadictAttr['name'],30)">)</option>

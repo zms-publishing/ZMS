@@ -41,7 +41,7 @@
   <td class="form-small">
    <img src="<dtml-var MISC_ZMS>btn_<dtml-var "daction.get(action,action)">.gif" alt="<dtml-var action>" border="0" align="absmiddle"/>
    <img src="<dtml-var "dicon.get(meta_type,'/misc_/OFSP/%s_icon.gif'%meta_type)">" alt="<dtml-var action>" alt="" title="<dtml-var meta_type>" border="0" align="absmiddle"/>
-   <dtml-var "filepath[_.len(basepath):]"> (<dtml-var meta_type>)
+   <dtml-var "filepath[len(basepath):]"> (<dtml-var meta_type>)
   </td>
   <td class="form-small"><dtml-if mtime><dtml-var "getLangFmtDate(_.DateTime(mtime),lang,'DATETIME_FMT')"></dtml-if></td>
   <td class="form-small"><dtml-if filemtime><dtml-var "getLangFmtDate(_.DateTime(filemtime),lang,'DATETIME_FMT')"></dtml-if></td>

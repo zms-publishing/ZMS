@@ -202,7 +202,8 @@ class ObjAttrs:
       RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
-      l = map( lambda x: x[1], self.getObjOptions( self.getObjAttr( key, meta_id), REQUEST))
+      obj_attr = self.getObjAttr( key, meta_id)
+      l = map( lambda x: x[1], self.getObjOptions( obj_attr, REQUEST))
       q = REQUEST.get( 'q', '').upper()
       if q:
         l = filter( lambda x: x.upper().find( q) >= 0, l)
@@ -468,10 +469,10 @@ class ObjAttrs:
         return self.getCheckbox(fmName=fmName,elName=elName,value=value,enabled=enabled,hidden=False,REQUEST=REQUEST)
       
       #-- Autocomplete-Fields.
-      elif inputtype == 'autocomplete':
+      elif inputtype in ['autocomplete','multiautocomplete']:
         css = 'form-element'
         if disabled: css += '-disabled'
-        return self.f_selectAutocomplete(self,fmName=fmName,elName=elName,value=value,key=obj_attr['id'],lang_str=lang_str,enabled=enabled,css=css,REQUEST=REQUEST)
+        return self.f_selectAutocomplete(self,fmName=fmName,elName=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled,css=css,REQUEST=REQUEST)
       
       #-- Select-Fields.
       elif inputtype in ['multiselect','select']:
@@ -1150,6 +1151,9 @@ class ObjAttrs:
           # Broken link.
           value = '{$__' + value[2:-1] + '__}'
       
+      #-- Notify metaobj_manager.
+      self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
+      
       #-- SET!
       if _globals.debug( self):
         _globals.writeLog( self, "[setObjProperty]: %s(%s)=%s"%(key,str(datatype),str(value)))
@@ -1291,7 +1295,7 @@ class ObjAttrsManager:
           elif attr['type'] in ['richtext']:
             dct['type'] = attr['type']
             dct['datatype'] = 'text'
-          elif attr['type'] in ['multiselect']:
+          elif attr['type'] in ['multiautocomplete','multiselect']:
             dct['type'] = attr['type']
             dct['datatype'] = 'list'
           elif attr['type'] in ['dialog']:

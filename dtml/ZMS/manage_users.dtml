@@ -132,7 +132,7 @@
   ***** Apply filter to user-ids.
   </dtml-comment>
   <dtml-call "SESSION.set('ZMS_MANAGE_USERS_ID_FILTER',REQUEST.get('ZMS_MANAGE_USERS_ID_FILTER',SESSION.get('ZMS_MANAGE_USERS_ID_FILTER','')))">
-  <dtml-if "_.len(SESSION.get('ZMS_MANAGE_USERS_ID_FILTER'))>0">
+  <dtml-if "len(SESSION.get('ZMS_MANAGE_USERS_ID_FILTER'))>0">
    <dtml-call "REQUEST.set('filtered_userids',[])">
    <dtml-in valid_userids mapping>
     <dtml-let valid_userid=sequence-item>
@@ -404,7 +404,7 @@
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
-       <dtml-let multilang="_.len(getLangIds())>1" nodes="getUserAttr(userName,'nodes',{})" nodekeys="nodes.keys()">
+       <dtml-let multilang="len(getLangIds())>1" nodes="getUserAttr(userName,'nodes',{})" nodekeys="nodes.keys()">
         <dtml-call "nodekeys.sort()">
         <dtml-call "REQUEST.set('count',0)">
         <dtml-in nodekeys>
@@ -541,7 +541,7 @@
     </dtml-in>
    <dtml-else>
     <!-- Navigation -->
-    <dtml-if "_.len(valid_userids)>qsize or _.len(SESSION.get('ZMS_MANAGE_USERS_ID_FILTER'))>0">
+    <dtml-if "len(valid_userids)>qsize or len(SESSION.get('ZMS_MANAGE_USERS_ID_FILTER'))>0">
     <tr class="zmiNeutralColorStrong0">
      <td colspan="5" class="form-small">
       <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -619,7 +619,7 @@
       </dtml-let>
     </dtml-in>
     <!-- Navigation -->
-    <dtml-if "_.len(valid_userids)>qsize">
+    <dtml-if "len(valid_userids)>qsize">
     <tr class="zmiNeutralColorStrong0">
      <td colspan="5" class="form-small">
       <dtml-var "f_recordset_nav(_,_,res=valid_userids,qorder='',qorderdir='',qbatch=3,grid_url=URL)">

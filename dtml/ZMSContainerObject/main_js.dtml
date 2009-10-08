@@ -118,7 +118,7 @@
       msg1 = msg1.replace("%i",""+i);
       <dtml-let langs="getDescendantLanguages(lang)">
        var msg2 = "";
-       <dtml-if "_.len(langs)>1">
+       <dtml-if "len(langs)>1">
         msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
         var s = "";
         <dtml-in langs>
@@ -143,7 +143,7 @@
       msg1 = msg1.replace("%i",""+i);
       <dtml-let langs="getDescendantLanguages(lang)">
        var msg2 = "";
-       <dtml-if "_.len(langs)>1">
+       <dtml-if "len(langs)>1">
         msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
         var s = "";
         <dtml-in langs>
@@ -161,7 +161,7 @@
     else if (target.indexOf("manage_executeMetacmd") >=0 ) {
      <dtml-in "getMetaCmdIds()">
       <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
-       <dtml-if "_.len(metaCmd['description'])>0">
+       <dtml-if "len(metaCmd['description'])>0">
         if (label == '<dtml-var "metaCmd['name']">') {
           b = confirm("<dtml-var "metaCmd['description']">");
         }

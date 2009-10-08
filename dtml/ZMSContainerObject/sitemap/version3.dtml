@@ -145,7 +145,7 @@ function processResponse()
     ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
    ><dtml-else
     ><dtml-call "catalog_items.append(ob)"
-    ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+    ><dtml-call "REQUEST.set('pos',len(catalog_items))"
    ></dtml-if
    ><dtml-in "filteredChildNodes(REQUEST,PAGES)"
     ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
@@ -184,7 +184,7 @@ function processResponse()
    ></dtml-if
    ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
    ><div id="div_<dtml-var ob_id>" style="margin: 4px 1px 1px 1px"
-    ><dtml-if "_.len(filteredChildNodes(REQUEST,PAGES))>0"
+    ><dtml-if "len(filteredChildNodes(REQUEST,PAGES))>0"
      ><dtml-if "ob in breadcrumbs"
       ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
        id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>mi.gif" width="16" height="16" border="0" title="-" align="absmiddle"></a

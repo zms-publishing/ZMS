@@ -138,7 +138,7 @@
 <dtml-comment>
 #####  Primitive #####
 </dtml-comment>
-<dtml-elif "not ((objAttr['meta_type']=='?') or (objAttr['id'] in ['displaytype','format']) or (objAttr['id'].find('align')>0 and _.len(filter_list(metaObj['attrs'],'id',objAttr['id'][:objAttr['id'].find('align')],'=='))>0))">
+<dtml-elif "not ((objAttr['meta_type']=='?') or (objAttr['id'] in ['displaytype','format']) or (objAttr['id'].find('align')>0 and len(filter_list(metaObj['attrs'],'id',objAttr['id'][:objAttr['id'].find('align')],'=='))>0))">
 <dtml-if "metaObj['id']!='ZMSGraphic' or key!='imgsuperres' or getConfProperty('ZMSGraphic.superres',0)==1">
 <tr id="tr_<dtml-var key>" valign="top">
  <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>

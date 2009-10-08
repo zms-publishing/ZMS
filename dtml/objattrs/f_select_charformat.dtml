@@ -13,9 +13,9 @@
 ]"
  ><dtml-call "REQUEST.set('fmName',fmName)"
  ><dtml-call "REQUEST.set('elName',elName)"
- ><dtml-in "_.range(_.len(tags)/2)"
+ ><dtml-in "_.range(len(tags)/2)"
   ><dtml-let i=sequence-index name="tags[i*2]" tag="tags[i*2+1]"
-   ><dtml-if "_.len(name)==0">
+   ><dtml-if "len(name)==0">
     <img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">
    <dtml-else
     ><a href="javascript:setTextFormatInput('<dtml-var "tag.replace(QUOT,'\'+unescape(\'\%'+'22\')+\'')">','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');" class="button"><img src="<dtml-var MISC_ZMS>icon_<dtml-var name>.gif" title="<dtml-var "getZMILangStr('OPT_S_%s'%name.upper())">" border="0" align="absmiddle"/></a
@@ -36,7 +36,7 @@
    ></dtml-if
    ><dtml-if "fmt.get('btn')"
     ><dtml-if "fmt_js!='' or fmt['tag']!=''"
-     ><a href="javascript:<dtml-if fmt_js><dtml-var "fmt_js[fmt_js.lower().find('function')+_.len('function'):fmt_js.lower().find('{')].strip()"><dtml-else>setTextFormatInput('<dtml-var "fmt['tag']"><dtml-if fmt_attrs> <dtml-var "fmt_attrs.replace(QUOT,'\'+unescape(\'%'+'22\')+\'')"></dtml-if>','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');</dtml-if>" class="button"><img src="<dtml-var "getDocumentElement().absolute_url()">/format_manager/<dtml-var "fmt['btn']">" title="<dtml-var "fmt['display']">" border="0" align="absmiddle"/></a
+     ><a href="javascript:<dtml-if fmt_js><dtml-var "fmt_js[fmt_js.lower().find('function')+len('function'):fmt_js.lower().find('{')].strip()"><dtml-else>setTextFormatInput('<dtml-var "fmt['tag']"><dtml-if fmt_attrs> <dtml-var "fmt_attrs.replace(QUOT,'\'+unescape(\'%'+'22\')+\'')"></dtml-if>','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');</dtml-if>" class="button"><img src="<dtml-var "getDocumentElement().absolute_url()">/format_manager/<dtml-var "fmt['btn']">" title="<dtml-var "fmt['display']">" border="0" align="absmiddle"/></a
     ></dtml-if
    ><dtml-else>
     <img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">

@@ -80,7 +80,7 @@
 <dtml-comment> ***** Delete row ***** </dtml-comment>
  <dtml-elif "REQUEST.get('action','')=='delete'">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
-  <dtml-if "_.len(REQUEST.get('qindices',[]))>0">
+  <dtml-if "len(REQUEST.get('qindices',[]))>0">
    <dtml-let iqindices="[]">
    <dtml-in "REQUEST.get('qindices',[])">
     <dtml-let seqitem=sequence-item>
@@ -100,7 +100,7 @@
    <dtml-call "res_abs.remove(res_abs[qindex_abs])">
   </dtml-if>
   <dtml-unless pk>
-   <dtml-call "REQUEST.set('qindex',_.min(qindex,_.len(res)-1))">
+   <dtml-call "REQUEST.set('qindex',_.min(qindex,len(res)-1))">
   </dtml-unless>
   <dtml-call "setObjStateModified(REQUEST)">
   <dtml-call "setObjProperty(res_id,res_abs,lang)">

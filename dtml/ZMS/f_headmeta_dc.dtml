@@ -8,7 +8,7 @@
 ><dtml-if "obj_attr is not None and obj_attr['meta_type'] and obj_attr['type'] not in ['image','file']"
 ><dtml-let value="getObjProperty(key,REQUEST)"
 ><dtml-if value
-><dtml-if "_.len(obj_attr['keys'])>0 and obj_attr['keys'][0].find('{$')==0"
+><dtml-if "len(obj_attr['keys'])>0 and obj_attr['keys'][0].find('{$')==0"
 ><dtml-let ob="getLinkObj(obj_attr['keys'][0],REQUEST)"
 ><dtml-call "REQUEST.set('dict',[])"
 ><dtml-in "ob.getObjProperty('records',REQUEST)"

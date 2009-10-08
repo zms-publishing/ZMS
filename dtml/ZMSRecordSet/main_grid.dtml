@@ -57,7 +57,7 @@
  <th align="left" valign="top"
   ><dtml-if "'delete' in grid_options"
    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&ZMS_ACTION=delete&'+getSelectedCheckboxes(document.forms['gridform'],'qindex','qindices'));" class="button"
-    ><img src="<dtml-var MISC_ZMS>pencil_delete.png" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
    ></a
   ></dtml-if
   ><dtml-if "'insert' in grid_options"
@@ -127,7 +127,7 @@
    ><tr
    ><dtml-if "'delete' in grid_options"
     ><td><a href="javascript:confirmDeleteBtnOnClick('<dtml-var URL>?qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=delete');" class="button"
-     ><img src="<dtml-var MISC_ZMS>pencil_delete.png" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+     ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
     ></a></td
    ></dtml-if
    ><dtml-if "'update' in grid_options"
@@ -227,7 +227,7 @@
             <dtml-try>
              <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var metaobj_record_summary>
-              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/_.len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/len(metaObj['attrs'])),20))">
               <dtml-call "REQUEST.set('break',1)">
              </dtml-if>
             <dtml-except></dtml-try>
@@ -251,7 +251,7 @@
        
       <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-else>
-        <dtml-var "string_maxlen(str(v),_.max(int(200.0/_.len(metaObj['attrs'])),20))">
+        <dtml-var "string_maxlen(str(v),_.max(int(200.0/len(metaObj['attrs'])),20))">
        </dtml-if>&nbsp;
        <dtml-comment>#####</dtml-comment>
 

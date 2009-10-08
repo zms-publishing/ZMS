@@ -9,7 +9,7 @@
 ###   @implicit-param qorder[string]
 ###   @implicit-param qorderdir[string]		desc|asc
 ###   @implicit-param qstart[int]
-###   @implicit-param res[list] <dtml-var "_.len(res)">
+###   @implicit-param res[list] <dtml-var "len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
 ###
 ###############################################################################
@@ -21,8 +21,8 @@
  <colgroup>
   <dtml-if grid_options>
    <col width="<dtml-var "_.max(
-     _.len(filter(lambda x: x in ['insert','export'],grid_options.keys())),
-     _.len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
+     len(filter(lambda x: x in ['insert','export'],grid_options.keys())),
+     len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
@@ -109,7 +109,7 @@
    ><dtml-if "'delete' in grid_options.keys()"
    ><div style="float:left;width:20px;"
    ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_options['delete']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">');" class="button"
-    ><img src="<dtml-var MISC_ZMS>pencil_delete.png" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
    /></a
    ></div
    ></dtml-if
@@ -222,7 +222,7 @@
      </dtml-comment>
        <dtml-else>
         <dtml-try>
-         <dtml-let u="string_maxlen(str(v),_.max(int(200.0/_.len(grid_cols)),grid_col.get('minsize',20)))"
+         <dtml-let u="string_maxlen(str(v),_.max(int(200.0/len(grid_cols)),grid_col.get('minsize',20)))"
           ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
            ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>" class="zmi"
           ></dtml-if

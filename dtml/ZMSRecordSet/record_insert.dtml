@@ -83,10 +83,10 @@
        <dtml-else>
         <dtml-call "REQUEST.set('value','')">
         <dtml-if "id=='sort_id'">
-         <dtml-call "REQUEST.set('value',_.len(res_abs)+1)">
+         <dtml-call "REQUEST.set('value',len(res_abs)+1)">
         <dtml-elif "type in ['date','datetime'] and default == '{now}'">
          <dtml-call "REQUEST.set('value',_.DateTime())">
-        <dtml-elif "default is not None and _.len( str(default)) > 0">
+        <dtml-elif "default is not None and len( str(default)) > 0">
          <dtml-call "REQUEST.set('value',dt_html(default,REQUEST))">
         </dtml-if>
         <tr id="tr_<dtml-var id>" valign="middle">

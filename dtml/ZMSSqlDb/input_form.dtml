@@ -282,11 +282,11 @@
           class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>pencil_add.png"
           title="<dtml-var "getZMILangStr('BTN_INSERT')">" 
-          onclick="return multiMultiSelectAddElement('<dtml-var mmsid>',<dtml-var "_.len(multimultiselect.get('tables',[]))">)"
+          onclick="return multiMultiSelectAddElement('<dtml-var mmsid>',<dtml-var "len(multimultiselect.get('tables',[]))">)"
        /></td>
       </tr>
       <tr>
-       <td colspan="<dtml-var "_.len(multimultiselect.get('tables',[]))">">
+       <td colspan="<dtml-var "len(multimultiselect.get('tables',[]))">">
         <div class="form-small"><dtml-in "multimultiselect.get('tables',[])" mapping><dtml-var "getLangStr(label,lang)"><dtml-unless sequence-end>/</dtml-unless></dtml-in></div>
         <dtml-let values="[]" leftjoins="[]" outerjoins="[]">
         <dtml-unless ZMS_INSERT>
@@ -370,7 +370,7 @@
        ></td
        ><td style="vertical-align:middle"
         ><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
-            src="<dtml-var MISC_ZMS>pencil_delete.png"
+            src="<dtml-var MISC_ZMS>btn_delete.gif"
             title="<dtml-var "getZMILangStr('BTN_DELETE')">" 
             onclick="return multiMultiSelectRemoveElements('<dtml-var mmsid>')"
        /><br
@@ -438,7 +438,7 @@
             title="Linked Dataset" 
             onclick="window.open('manage_main?lang=<dtml-var "REQUEST.get('lang')">&amp;qentity=<dtml-var "js_quote(fk.get('tablename'))">&amp;rowid=<dtml-var "row.get(id,'')" html_quote>&amp;action=update'); return false;"/>
        <dtml-if nullable><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
-            src="<dtml-var MISC_ZMS>pencil_delete.png"
+            src="<dtml-var MISC_ZMS>btn_delete.gif"
             title="<dtml-var "getZMILangStr('BTN_DELETE')">" 
             onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
       <dtml-else>

@@ -56,6 +56,8 @@ import zmsteaserelement
 import zmsteasercontainer
 import zmstextarea
 import zmsgraphic
+import zmsrubrik
+
 
 ################################################################################
 # Define the initialize() function.

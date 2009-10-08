@@ -4,7 +4,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_BulletinBoardRatings -->
 
   <h2><dtml-var "getTitlealt(REQUEST)"></h2>
-  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_BulletinBoardRatings -->]]></item>
 <item key="enabled" type="int">0</item>
@@ -593,7 +593,7 @@ Todo:
     <table cellspacing="0" cellpadding="0" border="0">
     <tr valign="top">
         <td align="left">
-            <dtml-in "_.range(_.len(tabs)/2)">
+            <dtml-in "_.range(len(tabs)/2)">
                 <dtml-let i=sequence-item action="tabs[i*2]" title="tabs[i*2+1]">
                     <div style="float:left; padding-left:4px; padding-top:2px; padding-right:4px; padding-bottom:2px; border-top:1px solid #C8DBE2; border-left:1px solid #C8DBE2; border-right:1px solid silver; margin-left:2px; margin-right:2px; background-color:<dtml-if "action==tabSheet">#C8DBE2<dtml-else>white</dtml-if>;">
                         <a href="<dtml-var "url_append_params(URL,{'newTabSheet':action,'boardId':'%s_%s'%(id,aq_parent.id)})">" style="text-decoration:none;"><dtml-var title></a>
@@ -643,7 +643,7 @@ Todo:
             <tr align="left" valign="top" class="<dtml-if sequence-even>neutralColorWhite<dtml-else>neutralColorWhite</dtml-if>">
                 <td><a href="<dtml-var "url_append_params(URL,{'newTabSheet':'displayOverview','boardId':'%s_%s'%(id,aq_parent.id),'bbmId':bbmId})">"><dtml-var bbmSubject></a></td>
                 <td><dtml-var bbmAuthor></td>
-                <td align="center"><dtml-if children><dtml-var "_.len(children)"><dtml-else>0</dtml-if></td>
+                <td align="center"><dtml-if children><dtml-var "len(children)"><dtml-else>0</dtml-if></td>
                 <td align="center"><dtml-var "getLangFmtDate(bbmDateTime,lang,'DATE_FMT')"></td>
                 <td align="center"><dtml-if children><dtml-var "getLangFmtDate(children[0]['bbmDateTime'],lang,'DATE_FMT')"><dtml-else>&nbsp;</dtml-if></td>
             </tr>
@@ -718,7 +718,7 @@ Todo:
                         <dtml-if sequence-start><dtml-var "_['sequence-index']+1"></dtml-if>
                         <dtml-if sequence-end>- <dtml-var "_['sequence-index']+1"></dtml-if>
                     </dtml-in>
-                    <dtml-var "getLangStr('bbOf',lang)"> <dtml-var "_.len(res)">
+                    <dtml-var "getLangStr('bbOf',lang)"> <dtml-var "len(res)">
                     </strong>
                 </td>
                 <td colspan="2" align="right">&nbsp;                    
@@ -790,7 +790,7 @@ Todo:
                     <dtml-if sequence-start><dtml-var "_['sequence-index']+1"></dtml-if>
                     <dtml-if sequence-end>- <dtml-var "_['sequence-index']+1"></dtml-if>
                 </dtml-in>
-                <dtml-var "getLangStr('bbOf',lang)"> <dtml-var "_.len(res)">
+                <dtml-var "getLangStr('bbOf',lang)"> <dtml-var "len(res)">
                 </strong>
             </td>
             <td colspan="2" align="right">&nbsp;
@@ -1341,7 +1341,7 @@ Todo:
     <dtml-in "tree_parents(resMsg,'bbmId','bbmBbmId',bbmBbmId,1)" mapping>
         <dtml-in "filter_list(resNtf,'bbnMsg',bbmId,'==')" mapping>
             <dtml-unless "bbnEmail in isSent">
-                <dtml-unless "_.len(isSent)==0">
+                <dtml-unless "len(isSent)==0">
                     <dtml-call "REQUEST.set('bcc',bcc+',')">
                 </dtml-unless>
                 <dtml-call "REQUEST.set('bcc',bcc+bbnEmail)">
@@ -1396,7 +1396,7 @@ To unsubscribe from notification for coming replies:
 
 </dtml-sendmail>
 
-<dtml-call "REQUEST.set('message',getLangStr('bbMsgNotificationSendOk',lang)%(_.len(isSent)))">
+<dtml-call "REQUEST.set('message',getLangStr('bbMsgNotificationSendOk',lang)%(len(isSent)))">
 
 <dtml-except>
     <dtml-call "REQUEST.set('message',getLangStr('bbMsgNotificationSendNot',lang))">
@@ -1508,7 +1508,7 @@ To unsubscribe from notification for coming replies:
 
 <!-- ##### remove subscriber from given thread ##### -->
 <dtml-with bbNotifications>
-    <dtml-if "_.len(exist)>0">
+    <dtml-if "len(exist)>0">
         <dtml-in exist mapping>
             <dtml-call "setObjStateModified(REQUEST)">
             <dtml-call "setObjProperty('records',filter_list(getObjProperty('records',REQUEST),'bbnId',bbnId,'!='),lang)">
@@ -1755,7 +1755,7 @@ To unsubscribe from notification for coming replies:
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_BulletinBoardMessages -->
 
   <h2><dtml-var "getTitlealt(REQUEST)"></h2>
-  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_BulletinBoardMessages -->]]></item>
 <item key="enabled" type="int">0</item>
@@ -1932,7 +1932,7 @@ To unsubscribe from notification for coming replies:
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_BulletinBoardNotifications -->
 
   <h2><dtml-var "getTitlealt(REQUEST)"></h2>
-  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_BulletinBoardNotifications -->]]></item>
 <item key="enabled" type="int">0</item>

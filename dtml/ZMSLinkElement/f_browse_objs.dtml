@@ -135,8 +135,8 @@
    */
   function getRelativeUrl(url, anchor) 
   {
-     var currntPath = '<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())[_.len(SERVER_URL)+1:]">';
-     var targetPath = url.substr(<dtml-var "_.len(SERVER_URL)+1">);
+     var currntPath = '<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())[len(SERVER_URL)+1:]">';
+     var targetPath = url.substr(<dtml-var "len(SERVER_URL)+1">);
      while ( currntPath.length > 0 && targetPath.length > 0) {
         var i = currntPath.indexOf( '/');
         var j = targetPath.indexOf( '/');
@@ -188,14 +188,14 @@
    */
   function selectObject(url, anchor, title) 
   {
-  <dtml-if "_.len(REQUEST.get('fmName',''))>0">
+  <dtml-if "len(REQUEST.get('fmName',''))>0">
      var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
      if ( fm) {
        var path = getInternalUrl(url);
        var elUrl = fm.elements['<dtml-var elUrlName>'];
        var elTitle = fm.elements['<dtml-var elTitleName>'];
        elUrl.value = path;
-       <dtml-if "_.len(REQUEST.get('elTitleName',''))>0">
+       <dtml-if "len(REQUEST.get('elTitleName',''))>0">
        if (title.length > 0) {
          b = true;
          if (elTitle.value.length > 0 && elTitle.value != title) {
@@ -370,7 +370,7 @@ function followHref( href, extra)
  ###  Choose type
  ###############################################################################
  </dtml-comment>
- <dtml-if "_.len(REQUEST.get('came_from',''))==0 and URL.split('/')[-1].find('manage')<0">
+ <dtml-if "len(REQUEST.get('came_from',''))==0 and URL.split('/')[-1].find('manage')<0">
  <table cellspacing="0" cellpadding="1" border="0">
  <tr id="tr_type" valign="middle">
   <td class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
@@ -433,7 +433,7 @@ function followHref( href, extra)
            path = path.substr( 0, i) + '/' + path.substr( i + 1);
          }
        }
-      <dtml-if "_.len(REQUEST.get('fmName',''))>0">
+      <dtml-if "len(REQUEST.get('fmName',''))>0">
        var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
        if ( fm) {
          var elUrl = fm.elements['<dtml-var elUrlName>'];
@@ -456,7 +456,7 @@ function followHref( href, extra)
     <option value="dtml">DTML</option>
     <option value="file://"><dtml-var "getZMILangStr('ATTR_FILE')"></option>
     <option value="mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"></option>
-    <dtml-if "_.len(REQUEST.get('fmName','')) == 0">
+    <dtml-if "len(REQUEST.get('fmName','')) == 0">
      <option value="antispam|mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"> (Anti-Spam)</option>
     </dtml-if>
     <option value="http://">http:</option>
@@ -540,7 +540,7 @@ function followHref( href, extra)
    ><dtml-else
     ><dtml-call "catalog_items.append(ob)"
     ><dtml-call "catalog_items2.append({'ob':ob,'ob_level':ob_level})"
-    ><dtml-call "REQUEST.set('pos',_.len(catalog_items))"
+    ><dtml-call "REQUEST.set('pos',len(catalog_items))"
    ></dtml-if
    ><dtml-if sequence-end
     ><dtml-if ob_access
@@ -561,7 +561,7 @@ function followHref( href, extra)
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob
-   ><dtml-let index=sequence-index ob_access="hasAccess(REQUEST)" has_children="_.len(getChildNodes(REQUEST))>0"
+   ><dtml-let index=sequence-index ob_access="hasAccess(REQUEST)" has_children="len(getChildNodes(REQUEST))>0"
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
     ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
     ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"

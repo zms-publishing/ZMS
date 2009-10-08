@@ -3239,7 +3239,7 @@
       return true;
    }
 
-   var numQuestions = <dtml-var "_.len(calcRawScore)">;
+   var numQuestions = <dtml-var "len(calcRawScore)">;
    var currQuestion = <dtml-if "REQUEST.get('cmiCurrInteractionNo')"><dtml-var "int(REQUEST.get('cmiCurrInteractionNo'))"><dtml-else>0</dtml-if>;
    var rawScore = 0;
    var actualScore = 0;
@@ -3611,7 +3611,7 @@
 <script language="JavaScript">
 <!--//
 
-   var numQuestions = <dtml-var "_.len(getObjChildren('exQuestions',REQUEST))">;
+   var numQuestions = <dtml-var "len(getObjChildren('exQuestions',REQUEST))">;
    var currQuestion = <dtml-var "REQUEST.get('cmiCurrInteractionNo',0)">;
    var rawScore = window.parent.rawScore;
    var actualScore = 0;

@@ -78,7 +78,7 @@
    </td>
   </tr>
   <dtml-let portalClients="getPortalClients()">
-   <dtml-if "_.len(portalClients)>0">
+   <dtml-if "len(portalClients)>0">
     <tr valign="middle">
      <td></td>
      <td class="form-element" colspan="2">
@@ -134,7 +134,7 @@
  <div class="form-text"><dtml-var "getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%REQUEST['_s'])"> <dtml-var "getZMILangStr('SEARCH_RETURNEDRESULTS')">:</div>
  <br/><br/>
 
- <dtml-if "_.len(qres)==0">
+ <dtml-if "len(qres)==0">
  
   <div class="form-text"><dtml-var "getZMILangStr('SEARCH_NORESULTS')"></div>
   
@@ -144,16 +144,16 @@
   <dtml-call "REQUEST.set('qs',REQUEST.get('qs',1))">
 
   <!-- qe: query-end -->
-  <dtml-call "REQUEST.set('qe',_.len(qres))">
+  <dtml-call "REQUEST.set('qe',len(qres))">
   <dtml-in qres next size=10 start=qs>
    <dtml-in next-batches mapping>
-    <dtml-if "qe==_.len(qres)">
+    <dtml-if "qe==len(qres)">
      <dtml-call "REQUEST.set('qe',_['batch-start-number']-1)">
     </dtml-if>
    </dtml-in>
   </dtml-in>
 
-  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(int(qs),int(qe),_.len(qres))"></b></div>
+  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(int(qs),int(qe),len(qres))"></b></div>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 

@@ -257,7 +257,7 @@
        </td>
        <td class="form-small">
         <div class="form-small"><b><dtml-var "getZMILangStr('ATTR_ROLES')"></b></div>
-        <select class="form-small" name="el_roles:list" multiple="multiple" size="<dtml-var "_.min(10,_.len(userdefined_roles()))">">
+        <select class="form-small" name="el_roles:list" multiple="multiple" size="<dtml-var "_.min(10,len(userdefined_roles()))">">
          <dtml-in userdefined_roles>
           <dtml-let role=sequence-item 
                     role_str="'ROLE_%s'%role.upper()"

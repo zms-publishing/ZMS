@@ -65,7 +65,7 @@
   <dtml-call "REQUEST.set('resSlctStmnt',''.join(sqlStatement))">
    <!-- actions.dtml.SQL: <dtml-var resSlctStmnt> -->
   <dtml-call "REQUEST.set('res',query(resSlctStmnt)['records'])">
-  <dtml-if "_.len(res)>0">
+  <dtml-if "len(res)>0">
    <dtml-var "input_form(_,_,headline=getZMILangStr('CAPTION_EDIT'),rowid=rowid,record=res[0])">
   <dtml-else>
    <div>WARNING: Query returned no rows!</div>

@@ -225,7 +225,7 @@
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
 
-  <dtml-if "_.len(getLangDict()) > 0">
+  <dtml-if "len(getLangDict()) > 0">
 
   <!-- Header -->
   <tr>
@@ -242,7 +242,7 @@
   <dtml-let dict=sequence-item>
   <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
     <td class="form-element">
-     <dtml-if "_.len(dict.get('acquired',[]))>0">
+     <dtml-if "len(dict.get('acquired',[]))>0">
       <img src="<dtml-var MISC_ZMS>checkbox_disabled0.gif" title="" border="0" align="absmiddle"/>
      <dtml-else>
       <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "dict['key']">"/>
@@ -258,7 +258,7 @@
       <dtml-let langId=sequence-item>
       <td class="form-small">
        <dtml-var "getTextInput( fmName='form1', elName='%s_value_%s'%(dict['key'],langId), size=8, value=dict.get(langId,''), enabled=langId not in dict.get('acquired',[]), css='form-small')">
-       <dtml-if "_.len(getLangIds())>1">
+       <dtml-if "len(getLangIds())>1">
         <div class="form-small" align="right"><dtml-var "getLanguageLabel(langId)"></div>
        </dtml-if>
       </td>

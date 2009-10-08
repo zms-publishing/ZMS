@@ -84,7 +84,7 @@
   </tr>
   </dtml-if>
   <dtml-let portalClients="getPortalClients()">
-   <dtml-if "getConfProperty('ZCatalog.portalClients',1) == 1 and _.len(portalClients)>0">
+   <dtml-if "getConfProperty('ZCatalog.portalClients',1) == 1 and len(portalClients)>0">
     <tr valign="middle">
      <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
      <td class="searchElement" colspan="2">
@@ -134,7 +134,7 @@
     </dtml-comment
     ><dtml-if "REQUEST.get('search_range','')==getRefObjPath(ZMS_THIS)"
      ><dtml-call "REQUEST.set('append',append and path.find('/'+search_range[2:-1])>0)"
-    ><dtml-elif "_.len(REQUEST.get('search_range',[]))>0"
+    ><dtml-elif "len(REQUEST.get('search_range',[]))>0"
      ><dtml-call "REQUEST.set('append',False)"
      ><dtml-in "REQUEST.get('search_range',[])"
       ><dtml-let ref=sequence-item
@@ -152,7 +152,7 @@
  <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
  <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b> (<b><dtml-var "int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
 
- <dtml-if "_.len(res)==0">
+ <dtml-if "len(res)==0">
  
   <p><dtml-var "getLangStr('SEARCH_NORESULTS',lang)"></p>
   
@@ -162,17 +162,17 @@
   ><dtml-call "REQUEST.set('qs',REQUEST.get('qs',1))"
 
   ><dtml-comment>***** QE: QUERY-END *****</dtml-comment
-  ><dtml-call "REQUEST.set('qe',_.len(res))"
+  ><dtml-call "REQUEST.set('qe',len(res))"
   ><dtml-in res next size=10 start=qs
    ><dtml-in next-batches mapping
-    ><dtml-if "qe==_.len(res)"
+    ><dtml-if "qe==len(res)"
      ><dtml-call "REQUEST.set('qe',_['batch-start-number']-1)"
     ></dtml-if
    ></dtml-in
   ></dtml-in>
 
   <p><dtml-var "getLangStr('SEARCH_RETURNEDRESULTS',lang)">:</p>
-  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(int(REQUEST.get('qs')),int(REQUEST.get('qe')),_.len(res))"></b></p>
+  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(int(REQUEST.get('qs')),int(REQUEST.get('qe')),len(res))"></b></p>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 

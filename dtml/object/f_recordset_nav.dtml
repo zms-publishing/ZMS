@@ -8,7 +8,7 @@
 ###   @implicit-param qorder[string]
 ###   @implicit-param qorderdir[string]		desc|asc
 ###   @implicit-param qstart[int]
-###   @implicit-param res[list]: <dtml-var "_.len(res)">
+###   @implicit-param res[list]: <dtml-var "len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
 ###
 ###############################################################################
@@ -18,12 +18,12 @@
 
  <dtml-call "REQUEST.set('qpage',0)">
 
- <dtml-if "_.len(res)>qsize">
+ <dtml-if "len(res)>qsize">
  <div class="form-small">
  
   <dtml-in res size=qsize start=qstart>
    <dtml-if sequence-start><dtml-var "_['sequence-index']+1"></dtml-if>
-   <dtml-if sequence-end>- <dtml-var "_['sequence-index']+1"> <dtml-var "getZMILangStr('OF')"> <dtml-var "_.len(res)"></dtml-if>
+   <dtml-if sequence-end>- <dtml-var "_['sequence-index']+1"> <dtml-var "getZMILangStr('OF')"> <dtml-var "len(res)"></dtml-if>
   </dtml-in>
   
   <dtml-in res previous size=qsize start=qstart>
@@ -37,7 +37,7 @@
   </dtml-in>
   
    <dtml-in res previous size=qsize start=qstart>
-    <dtml-let res-previous-batches="_.len(_['previous-batches'])-1">
+    <dtml-let res-previous-batches="len(_['previous-batches'])-1">
     <dtml-in previous-batches mapping>
      <dtml-if "_['res-previous-batches']-_['sequence-index']<=qbatch or _['sequence-index']==0">
      | <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':_['batch-start-number']})">" style="color:black"
@@ -54,7 +54,7 @@
     | <b><dtml-var qpage></b>
    
    <dtml-in res next size=qsize start=qstart>
-    <dtml-let res-next-batches="_.len(_['next-batches'])-1">
+    <dtml-let res-next-batches="len(_['next-batches'])-1">
     <dtml-in next-batches mapping>
      <dtml-if "_['sequence-index']<=qbatch or _['sequence-index']==_['res-next-batches']">
      | <a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':_['batch-start-number']})">" style="color:black"

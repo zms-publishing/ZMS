@@ -38,7 +38,7 @@
     <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">"/>
    </td>
    <td class="form-small">
-    <dtml-if "_.len(getDescendantLanguages(lang, REQUEST)) > 1">
+    <dtml-if "len(getDescendantLanguages(lang, REQUEST)) > 1">
      <input class="form-checkbox" type="checkbox" name="descendant_langs" <dtml-if "REQUEST.form.has_key('descendant_langs')">checked="checked"</dtml-if> value="1"/>
      <dtml-in "getDescendantLanguages(lang, REQUEST)"><dtml-var sequence-item><dtml-unless sequence-end>,</dtml-unless></dtml-in>
     </dtml-if>

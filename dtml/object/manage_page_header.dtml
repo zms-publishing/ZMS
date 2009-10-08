@@ -1,8 +1,8 @@
 <dtml-call "RESPONSE.setHeader('Expires',_.DateTime(_.DateTime().timeTime() - 10000).toZone('GMT+1').rfc822())"
 ><dtml-call "RESPONSE.setHeader('Cache-Control', 'no-cache')"
 ><dtml-call "RESPONSE.setHeader('Pragma', 'no-cache')"
-><dtml-if "_.len(absolute_url())>_.len(getDocumentElement().absolute_url())"
- ><dtml-unless "REQUEST['URL'].find(absolute_url()[_.len(getDocumentElement().absolute_url()):])>0"
+><dtml-if "len(absolute_url())>len(getDocumentElement().absolute_url())"
+ ><dtml-unless "REQUEST['URL'].find(absolute_url()[len(getDocumentElement().absolute_url()):])>0"
   ><dtml-call "RESPONSE.redirect(absolute_url()+'/'+REQUEST['URL'].split('/')[-1]+'?'+REQUEST.get('QUERY_STRING',''))">
  ></dtml-unless
 ></dtml-if

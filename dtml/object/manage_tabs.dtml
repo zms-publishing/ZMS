@@ -15,7 +15,7 @@
 <dtml-with "_(manage_options=REQUEST['_mo'])">
 <dtml-if manage_options>
 
-<dtml-call "REQUEST.set('n_', _.len(manage_options)-1)">
+<dtml-call "REQUEST.set('n_', len(manage_options)-1)">
 <dtml-call "REQUEST.set('a_', 0)">
 
 <dtml-in manage_options mapping
@@ -91,19 +91,19 @@
 <table cellspacing="0" cellpadding="2" border="0" width="100%" class="zmiNeutralColorMedium0 zmiInfo">
 <tr valign="top">
 <td>
-<dtml-if "_.len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
+<dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
 <div class="system-msg">
 <img src="<dtml-var MISC_ZMS>msg_info.gif" title="Info" border="0" align="absmiddle"/>
 <dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>
-<dtml-elif "_.len(REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message','')))>0">
+<dtml-elif "len(REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message','')))>0">
 <div class="system-msg">
 <img src="<dtml-var MISC_ZMS>msg_warning.gif" title="Warning" border="0" align="absmiddle"/>
 <dtml-var "REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>
-<dtml-elif "_.len(REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message','')))>0">
+<dtml-elif "len(REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message','')))>0">
 <div class="system-msg">
 <img src="<dtml-var MISC_ZMS>msg_error.gif" title="Error" border="0" align="absmiddle"/>
 <dtml-var "REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message',''))">

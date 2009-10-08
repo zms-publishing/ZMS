@@ -27,7 +27,7 @@
  <dtml-call "info.append(getLangFmtDate(getObjProperty('change_dt',REQUEST),manage_lang,'SHORTDATETIME_FMT')+'\n')">
 </dtml-if>
 <dtml-if "isPage()">
- <dtml-call "info.append('%i %s\n'%(_.len(getChildNodes(REQUEST)),getZMILangStr('ATTR_OBJECTS')))">
+ <dtml-call "info.append('%i %s\n'%(len(getChildNodes(REQUEST)),getZMILangStr('ATTR_OBJECTS')))">
 <dtml-else>
  <dtml-call "info.append(getDataSizeStr(get_size(REQUEST))+'\n')">
 </dtml-if>

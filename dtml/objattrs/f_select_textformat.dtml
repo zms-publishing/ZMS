@@ -5,7 +5,7 @@
               textFrmt.getId()==REQUEST['format']) or
              (not REQUEST.has_key('format') and
               ((textFrmt.getId()==getObjProperty('format',REQUEST)) or
-               (textFrmt.getId()==getTextFormatDefault() and _.len(getObjProperty('format',REQUEST))==0)))">
+               (textFrmt.getId()==getTextFormatDefault() and len(getObjProperty('format',REQUEST))==0)))">
     <dtml-var "textFrmt.getDisplay()">
    </dtml-if>
   </dtml-let>
@@ -21,7 +21,7 @@
                   textFrmt.getId()==REQUEST['format']) or
                  (not REQUEST.has_key('format') and
                   ((textFrmt.getId()==getObjProperty('format',REQUEST)) or
-                   (textFrmt.getId()==getTextFormatDefault() and _.len(getObjProperty('format',REQUEST))==0)))">
+                   (textFrmt.getId()==getTextFormatDefault() and len(getObjProperty('format',REQUEST))==0)))">
          selected="selected"
        </dtml-if>
      ><dtml-var "textFrmt.getDisplay()"></option>

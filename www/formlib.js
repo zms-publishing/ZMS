@@ -516,14 +516,54 @@ function processMultiselectsOnFormSubmit() {
 }
 
 //-------------------------------------------------------------------
+// removeFromMultiselect
+//-------------------------------------------------------------------
+function removeFromMultiselect(src) {
+    var selected = new Array();
+    var index = 0;
+    while (index < src.options.length) {
+      if (src.options[index].selected) {
+        selected[index] = src.options[index].selected;
+      }
+      index++;
+    }
+    index = 0;
+    var count = 0;
+    while (index < selected.length) {
+      if (selected[index])
+        src.options[count] = null;
+      else
+        count++;
+      index++;
+    }
+    sortOptions(src);
+  }
+
+//-------------------------------------------------------------------
+// appendToMultiselect
+//-------------------------------------------------------------------
+function appendToMultiselect(src,data) {
+		for ( var i = 0; i < src.options.length; i++) {
+			if ( src.options[i].value == data) {
+				return;
+			}
+		}
+		var label = data;
+		var value = data;
+		var defaultSelected = false;
+		var option = new Option( label, value, defaultSelected);
+		src.options[ src.length] = option;
+	}
+
+//-------------------------------------------------------------------
 // selectFromMultiselect
 //-------------------------------------------------------------------
 function selectFromMultiselect(fmName, srcElName, dstElName) {
     var fm = document.forms[fmName];
     var src = fm.elements[srcElName];
     var dst = fm.elements[dstElName];
-    selected = new Array();
-    index = 0;
+    var selected = new Array();
+    var index = 0;
     while (index < src.options.length) {
       if (src.options[index].selected) {
         var newoption = new Option(src.options[index].text, src.options[index].value, true, true);
@@ -533,7 +573,7 @@ function selectFromMultiselect(fmName, srcElName, dstElName) {
       index++;
     }
     index = 0;
-    count = 0;
+    var count = 0;
     while (index < selected.length) {
       if (selected[index])
         src.options[count] = null;
@@ -553,7 +593,7 @@ function selectAllFromMultiselect(fmName, srcElName, dstElName) {
     var fm = document.forms[fmName];
     var src = fm.elements[srcElName];
     var dst = fm.elements[dstElName];
-    index = 0;
+    var index = 0;
     while (index < src.options.length) {
       src.options[index].selected = true;
       index++;

@@ -4,7 +4,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_dept -->
 
   <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
-  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_dept -->]]></item>
 <item key="enabled" type="int">0</item>
@@ -112,7 +112,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_emp -->
 
   <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
-  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_emp -->]]></item>
 <item key="enabled" type="int">0</item>
@@ -295,7 +295,7 @@
   <td width="1" style="border-bottom:1px solid gray; background-color:#CCCCCC"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
   <td width="1" style="border-bottom:1px solid gray; background-color:#EEEEEE"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
   <td nowrap="nowrap" width="356" align="right" style="border-bottom:1px solid gray;">
-   <dtml-in "_.range(0,_.len(nav)/2)">
+   <dtml-in "_.range(0,len(nav)/2)">
     <dtml-let j="_['sequence-item']" key="nav[j*2]" value="nav[j*2+1]">
      <dtml-if "i!=j*2">
       |&nbsp;<a href="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{nav_key:key})">" class="navMicro"><dtml-var value></a>&nbsp;

@@ -3,7 +3,7 @@
 <body class="zmi zmiNeutralColorLight0">
 <div style="padding:4px">
 
-<dtml-if "_.len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
+<dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
  <div class="system-msg">
   <dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
   (<dtml-var "getLangFmtDate(ZopeTime())">)

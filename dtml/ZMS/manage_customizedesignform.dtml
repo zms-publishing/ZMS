@@ -79,7 +79,7 @@
       <select class="form-small" name="cssId" onchange="location.href='<dtml-var URL>?cssId='+this.options[this.selectedIndex].value+'&lang=<dtml-var lang>';">
        <dtml-in "getStylesheets()">
         <dtml-let ob_id=id>
-         <option value="<dtml-var id>"<dtml-if "cssId==ob_id"> selected="selected"</dtml-if>><dtml-var "absolute_url()[_.len(BASE0):]"></option>
+         <option value="<dtml-var id>"<dtml-if "cssId==ob_id"> selected="selected"</dtml-if>><dtml-var "absolute_url()[len(BASE0):]"></option>
         </dtml-let>
        </dtml-in>
       </select>
@@ -87,7 +87,7 @@
      </td>
      <td align="right" class="form-small" valign="bottom">
       <dtml-var "getZMILangStr('ACTION_INSERT')%display_type(REQUEST)">:
-      <input class="form-small" name="newCssId" value="styles-<dtml-var "_.len(ids)+1">.css" size="20"/>
+      <input class="form-small" name="newCssId" value="styles-<dtml-var "len(ids)+1">.css" size="20"/>
       <input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="self.btnClicked=this.value;" />
      </td>
     </tr>

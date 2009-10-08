@@ -177,9 +177,9 @@
       <dtml-call "REQUEST.set('locations',misc_.zms['initutil'].re_search('<file (.*?)/>',locations))">
       <dtml-in locations>
        <dtml-let location=sequence-item>
-        <dtml-call "REQUEST.set('location_id',location[location.find('id=\042')+_.len('id=\042'):])">
+        <dtml-call "REQUEST.set('location_id',location[location.find('id=\042')+len('id=\042'):])">
         <dtml-call "REQUEST.set('location_id',location_id[:location_id.find('\042')])">
-        <dtml-call "REQUEST.set('location_title',location[location.find('title=\042')+_.len('title=\042'):])">
+        <dtml-call "REQUEST.set('location_title',location[location.find('title=\042')+len('title=\042'):])">
         <dtml-call "REQUEST.set('location_title',location_title[:location_title.find('\042')])">
         <option value="<dtml-var theme>/<dtml-var location_id>"><dtml-var location_id> (<dtml-var location_title>)</option>
        </dtml-let>

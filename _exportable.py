@@ -472,9 +472,7 @@ class Exportable(_filtermanager.FilterItem):
       if obj.meta_id.find('ZMSSys') == 0:
         exportFolder( obj, obj.getParentNode(), path[:path.rfind('/')], obj.id, REQUEST)
       else:
-        dctOp['index'] = ''
-        dctOp['index_print'] = 'print'
-        dctOp['sitemap'] = 'sitemap'
+        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'','index_print':'print','sitemap':'sitemap'})
       
       for key in dctOp.keys():
         

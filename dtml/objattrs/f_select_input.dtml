@@ -12,9 +12,9 @@
 *	@param css
 *	@param REQUEST
 *******************************************************************************
-</dtml-comment
+</dtml-comment>
 
-><dtml-if optpl
+<dtml-if optpl
  ><dtml-call "REQUEST.set('optpl',optpl)"
 ><dtml-else
  ><dtml-call "REQUEST.set('optpl',[])"
@@ -23,22 +23,34 @@
    ><dtml-call "REQUEST['optpl'].append([_['sequence-item'],_['sequence-item']])"
   ></dtml-in
  ></dtml-if
-></dtml-if
+></dtml-if>
 
-><dtml-comment> ### Input ### </dtml-comment
-><dtml-if "type=='string'"
- ><dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST,css=css)"
+<dtml-comment>
+################################################################################
+### Single-Line Input
+################################################################################
+</dtml-comment>
+<dtml-if "type=='string'">
+ <dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST,css=css)">
 
-><dtml-comment> ### Textarea ### </dtml-comment
-><dtml-elif "type=='text'"
- ><dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST,css=css)"
+<dtml-comment>
+################################################################################
+### Multi-Line Input (Textarea)
+################################################################################
+</dtml-comment>
+<dtml-elif "type=='text'">
+ <dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST,css=css)">
 
-><dtml-comment> ### Select  ### </dtml-comment
-><dtml-elif "type in ['select', 'multiline']"
- ><div class="<dtml-var css>">
+<dtml-comment>
+################################################################################
+### Select
+################################################################################
+</dtml-comment>
+<dtml-elif "type in ['select', 'multiline']">
+ <div class="<dtml-var css>">
   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
    <dtml-if "type=='multiline'">
-    multiple="multiple" size="<dtml-var "_.min(5,_.len(optpl))">"
+    multiple="multiple" size="<dtml-var "_.min(5,len(optpl))">"
    </dtml-if>>
    <dtml-unless "type=='multiline'">
     <dtml-unless required>
@@ -61,7 +73,11 @@
   </select>
  </div>
 
-<dtml-comment> ### Multiselect  ### </dtml-comment>
+<dtml-comment>
+################################################################################
+### Multi-Select
+################################################################################
+</dtml-comment>
 <dtml-elif "type=='multiselect'">
  <dtml-let elSrcName="'zms_mms_src_%s'%elName">
  <table cellspacing="2" cellpadding="0" border="0">
@@ -123,6 +139,9 @@
  </table>
  </dtml-let>
 
+<dtml-comment>
+################################################################################
+</dtml-comment>
 </dtml-if>
 
 <dtml-call "REQUEST.set('optpl',[])">

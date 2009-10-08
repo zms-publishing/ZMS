@@ -1316,7 +1316,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
  <td align="center" class="zmiNeutralColorMedium0"
   ><nobr
    ><select class="form-small" onchange="location.href='<dtml-var id>/manage_moveObjToPos?lang=<dtml-var lang>&pos:int='+(this.selectedIndex+1)"
-    ><dtml-in "_.range(_.len(childNodes))"
+    ><dtml-in "_.range(len(childNodes))"
      ><option <dtml-if "_['sequence-index']==seqindex">selected="selected"</dtml-if>><dtml-var "_['sequence-index']+1"></option
     ></dtml-in
    ></select
@@ -2717,7 +2717,7 @@ $()
 </div>
 </dtml-let>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_cols="_.len(table_table[-1])" table_rows="_.len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
 
 <script language="JavaScript">
 <!--//
@@ -3149,11 +3149,11 @@ table_cell_init();
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO widths //--</dtml-comment>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="_.len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
  <dtml-in table_table>
   <dtml-let table_row=sequence-item>
    <dtml-in table_row mapping>
-    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="_.len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
+    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
      <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
     </dtml-let>
    </dtml-in>
@@ -3852,7 +3852,7 @@ CHANGES:
  ><dtml-comment>*** Use title only for href-more </dtml-comment
  ><dtml-call "REQUEST.set('title_url',getObjProperty('title',REQUEST))"
  ><dtml-call "REQUEST.set('title_txt',title_url)"
- ><dtml-if "_.len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')"
+ ><dtml-if "len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')"
   ><dtml-call "REQUEST.set('title_url',title_url[2:-2])"
   ><dtml-call "REQUEST.set('title_txt','')"
  ></dtml-if
@@ -3881,10 +3881,10 @@ CHANGES:
  ></dtml-if
 
  ><dtml-comment>*** Abstract </dtml-comment
-  ><dtml-if "_.len(abstract)+_.len(url)>0"
+  ><dtml-if "len(abstract)+len(url)>0"
    ><div class="text"<dtml-if bgcolor_text> style="background-color:<dtml-var "get_colormap().get(bgcolor_text,'transparent')">"</dtml-if>
     ><dtml-var abstract
-    ><dtml-if "_.len(abstract)>0 and _.len(url)>0"
+    ><dtml-if "len(abstract)>0 and len(url)>0"
      > <dtml-var "getLangStr('HREF_MORE',REQUEST['lang'])%(' href='+QUOT+url+QUOT+' title='+QUOT+title_url+QUOT)"
     ></dtml-if
    ></div

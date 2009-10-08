@@ -401,7 +401,7 @@ function changeType( el)
 </dtml-comment>
  <dtml-call "REQUEST.set('acquisitions',{})"
  ><dtml-let home="getHome()" clientIds="getConfProperty('Portal.Clients',[])"
- ><dtml-if "_.len(clientIds)<50"
+ ><dtml-if "len(clientIds)<50"
  ><dtml-in clientIds
   ><dtml-try
    ><dtml-let clientId=sequence-item clientModel="_.getattr(home,clientId).content.metaobj_manager.model"
@@ -759,7 +759,7 @@ function changeType( el)
 	      ></dtml-let
 	     ></dtml-in
 	    ></select
-           ><dtml-elif "oAttr['type'] in ['*','autocomplete','multiselect','recordset','select']"
+           ><dtml-elif "oAttr['type'] in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']"
             ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
             ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
@@ -966,7 +966,7 @@ function changeType( el)
            ><tr>
             <td class="form-small" witdh="100%"
              ><div class="form-small"
-             ><dtml-if "_.len(metaObjs) > 1"
+             ><dtml-if "len(metaObjs) > 1"
               ><dtml-unless sequence-start
                ><img src="<dtml-var spacer_gif>" alt="" width="20" height="1" border="0"
               ></dtml-unless
@@ -1184,7 +1184,7 @@ function changeType( el)
       ><dtml-else>
        <tr valign="top">
         <td>
-         <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,_.len(res))">">
+         <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,len(res))">">
           <dtml-in res
            ><dtml-let metaObj=sequence-item
             ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"> &mdash;&quot;&mdash;.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option

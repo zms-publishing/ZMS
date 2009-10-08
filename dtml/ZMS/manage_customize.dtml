@@ -50,7 +50,7 @@
 <option value="">Select type to add...</option>
 <dtml-in "['Sequence','ZCatalog','ZMSLog']">
 <dtml-let meta_type=sequence-item>
-<dtml-if "_.len(objectValues(meta_type))==0">
+<dtml-if "len(objectValues(meta_type))==0">
 <option value="<dtml-var meta_type>"><dtml-var "getZMILangStr(meta_type)"></option>
 </dtml-if>
 </dtml-let>
@@ -190,7 +190,7 @@
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <dtml-var "f_headline(_,_,headline='Miscellaneous')">
 <table cellspacing="0" cellpadding="1" border="0">
-<dtml-if "_.len( REQUEST.form.get( 'conf_key', '')) == 0">
+<dtml-if "len( REQUEST.form.get( 'conf_key', '')) == 0">
  <tr valign="middle">
   <td class="form-small"><b>Option</b></td>
   <td class="form-small">
@@ -233,7 +233,7 @@
  </dtml-in>
 </dtml-if>
 </dtml-let>
-<dtml-if "_.len( REQUEST.form.get( 'option', '')) == 0">
+<dtml-if "len( REQUEST.form.get( 'option', '')) == 0">
  <tr valign="middle">
   <td class="form-small"><b>Key</b></td>
   <td class="form-small">
@@ -241,7 +241,7 @@
    <input class="form-small" type="submit" name="btn" value="..." onclick="this.form.action=''">
   </td>
  </tr>
- <dtml-if "_.len(REQUEST.get('conf_key',''))>0">
+ <dtml-if "len(REQUEST.get('conf_key',''))>0">
  <tr valign="middle">
   <td class="form-small"><b>Value</b></td>
   <td class="form-small">

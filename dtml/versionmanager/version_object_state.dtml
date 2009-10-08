@@ -3,12 +3,12 @@
 +- Language
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
-<dtml-if "_.len(getLangIds())>1">
+<dtml-if "len(getLangIds())>1">
 <dtml-if "getObjProperty('change_uid',REQUEST)">
 <dtml-let coverage="getDCCoverage(REQUEST)"
           seq_lang="coverage[coverage.find('.')+1:]"
           seq_desc_langs="getDescendantLanguages(seq_lang)">
-  <dtml-if "_.len(seq_desc_langs)>1">
+  <dtml-if "len(seq_desc_langs)>1">
    <dtml-if "coverage.find('global')>=0">
     <dtml-if "seq_lang!=lang">
      <dtml-if "isModifiedInParentLanguage(lang,REQUEST)">
@@ -58,7 +58,7 @@
 ></dtml-if
 ><dtml-if "'STATE_MODIFIED' in filtered_obj_states"
 ><img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
-><dtml-elif "_.len(wfStates)>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)"
+><dtml-elif "len(wfStates)>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)"
 ><img src="<dtml-var MISC_ZMS>state_modified_objs.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
 ></dtml-if
 ><dtml-if "'STATE_DELETED' in filtered_obj_states"

@@ -1,0 +1,153 @@
+<dtml-var manage_page_header>
+<title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
+<script language="JavaScript">
+<!--//
+
+function toggleElement( sender, id) {
+  var speed = "normal";
+  var img = $('#'+sender);
+  var el = $('#'+id);
+  if ( el.css("display").toLowerCase()=="none") {
+    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
+    el.css({'visibility':'visible','display':''});
+  }
+  else {
+    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
+    el.css({'visibility':'hidden','display':'none'});
+  }
+}
+
+//-->
+</script>
+</head>
+<body bgcolor="#ffffff" alink="#990000" vlink="#cc0000" link="#336699" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+
+<dtml-let 
+  res="getDocumentElement().getTreeNodes(REQUEST,REQUEST['id'])" 
+  metaObjIds="getMetaobjIds()" 
+  meta_types="filter( lambda x: x not in ['ZMS'], metaObjIds)" 
+  metaObjAttrIds="getMetaobjAttrIds(REQUEST['id'])" 
+  attrIds="[]" 
+  subObjectIds="[]" 
+  stat1="{}" 
+  stat0="{}" 
+
+><dtml-comment>
+--------------------------------------------------------------------------------
+--- Get attribute ids.
+--------------------------------------------------------------------------------
+</dtml-comment
+><dtml-in "getObjAttrs().keys()"
+><dtml-let x=sequence-item
+><dtml-if "x in metaObjAttrIds"
+><dtml-call "attrIds.append(x)"
+><dtml-call "operator_setitem(stat1,x,[])"
+><dtml-call "operator_setitem(stat0,x,[])"
+></dtml-if
+></dtml-let
+></dtml-in
+
+><dtml-comment>
+--------------------------------------------------------------------------------
+--- Get sub-object ids.
+--------------------------------------------------------------------------------
+</dtml-comment
+><dtml-in "getMetaobjAttrs(REQUEST['id'])"
+><dtml-let x=sequence-item
+><dtml-if "x['type'] in meta_types+['*']"
+><dtml-call "subObjectIds.append(x['id'])"
+><dtml-call "operator_setitem(stat1,x['id'],[])"
+><dtml-call "operator_setitem(stat0,x['id'],[])"
+></dtml-if
+></dtml-let
+></dtml-in
+
+><dtml-comment>
+################################################################################
+### Process object-tree
+################################################################################
+</dtml-comment
+><dtml-in res
+><dtml-let ob=sequence-item statrec="[{'abs_url':absolute_url(),'titlealt':getTitlealt(REQUEST)}]"
+
+><dtml-in attrIds
+><dtml-let key=sequence-item value="getObjProperty(key,REQUEST)"
+><dtml-if value
+><dtml-call "operator_setitem(stat1,key,stat1[key]+statrec)"
+><dtml-else
+><dtml-call "operator_setitem(stat0,key,stat0[key]+statrec)"
+></dtml-if
+></dtml-let
+></dtml-in
+
+><dtml-in subObjectIds
+><dtml-let key=sequence-item value="getObjChildren(key,REQUEST)"
+><dtml-if value
+><dtml-call "operator_setitem(stat1,key,stat1[key]+statrec)"
+><dtml-else
+><dtml-call "operator_setitem(stat0,key,stat0[key]+statrec)"
+></dtml-if
+></dtml-let
+></dtml-in
+
+></dtml-let
+></dtml-in
+><br
+
+><dtml-comment>
+################################################################################
+### Display result
+################################################################################
+</dtml-comment
+
+><dtml-var "f_headline(_,_,headline=REQUEST['id'])"
+><dtml-if res
+><table
+><tr
+ ><td class="form-text"></td
+ ><td class="form-text"><strong>Usage</strong>[%/Abs.]</td
+ ><td class="form-text"><strong>Empty</strong>[%/Abs.]</td
+></tr
+><dtml-in "attrIds+subObjectIds"
+ ><dtml-let id=sequence-item oAttr="getMetaobjAttr(REQUEST['id'],_['sequence-item'])"
+  ><tr
+   ><td class="form-text"
+    ><dtml-var "oAttr['name']"
+   ></td
+   ><td class="form-text"
+    ><a href="javascript:toggleElement('img_<dtml-var id>1','tr_<dtml-var id>1')"><img id="img_<dtml-var id>1" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a
+    ><dtml-var "100*len(stat1[oAttr['id']])/len(res)">% (<dtml-var "len(stat1[oAttr['id']])">)</td
+   ><td class="form-text"
+    ><a href="javascript:toggleElement('img_<dtml-var id>0','tr_<dtml-var id>0')"><img id="img_<dtml-var id>0" src="<dtml-var MISC_ZMS>pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a
+    ><dtml-var "100*len(stat0[oAttr['id']])/len(res)">% (<dtml-var "len(stat0[oAttr['id']])">)</td
+  ></tr
+  ><tr id="tr_<dtml-var id>1" style="visibility:hidden;display:none;"
+   ><td colspan="3" class="form-small"
+    ><ol
+    ><dtml-in "stat1[oAttr['id']]" mapping
+     ><li><a href="<dtml-var abs_url>/manage_main" class="zmi" target="_blank"><dtml-var "abs_url[len(getDocumentElement().absolute_url()):]"></a> (<em><dtml-var titlealt></em>)</li
+    ></dtml-in
+    ></ol
+   ></td
+  ></tr
+  ><tr id="tr_<dtml-var id>0" style="visibility:hidden;display:none;"
+   ><td colspan="3" class="form-small"
+    ><ol
+    ><dtml-in "stat0[oAttr['id']]" mapping
+     ><li><a href="<dtml-var abs_url>/manage_main" class="zmi" target="_blank"><dtml-var "abs_url[len(getDocumentElement().absolute_url()):]"></a> (<em><dtml-var titlealt></em>)</li
+    ></dtml-in
+    ></ol
+   ></td
+  ></tr
+ ></dtml-let
+></dtml-in
+><tr
+ ><td class="form-text"><strong>Total:</strong></td
+ ><td class="form-text" colspan="2"><strong><dtml-var "len(res)"></strong></td
+></tr
+></table
+></dtml-if
+
+></dtml-let>
+</body>
+</html>

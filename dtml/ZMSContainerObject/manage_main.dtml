@@ -168,7 +168,7 @@ function focusSelectProcessResponse(data)
     <h1><dtml-var "getTitle(REQUEST)"></h1>
    </dtml-if>
   </dtml-let>
-   <p class="description"><dtml-var "getDCDescription(REQUEST)"></p>
+   <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
   <dtml-unless childNodes>
    <p class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)"></em>!</p>
   </dtml-unless>

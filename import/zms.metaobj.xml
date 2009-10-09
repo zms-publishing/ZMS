@@ -1293,7 +1293,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 </dtml-comment>
 <dtml-call "REQUEST.set( 'ZMS_INSERT', 'ZMSLinkElement')">
 <tr valign="top" class="zmiNeutralColorMedium0">
- <td align="right"><img src="<dtml-var MISC_ZMS>pencil_add.png" title="" border="0" class="button"/></td>
+ <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="" border="0" class="button"/></td>
  <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
  <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
  <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
@@ -3003,7 +3003,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
   <td
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr
-    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>pencil_add.png" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td></dtml-if
     ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_left.gif" title="<dtml-var "getZMILangStr('ACTION_MOVELEFT')">" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td
     ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_right.gif" title="<dtml-var "getZMILangStr('ACTION_MOVERIGHT')">" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td
     ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_COL')">" onclick="actionBtnClick(this,'delete_col')" class="button"/></a></td></dtml-if
@@ -3014,7 +3014,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
  <td
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr valign="middle"
-    ><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>pencil_add.png" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td
+    ><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td
     ><td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0" title=""></td
    ></tr
    ></table
@@ -3038,7 +3038,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
   <td class="zmiNeutralColorStrong0">
    <table cellspacing="0" cellpadding="0" border="0"
    ><tr valign="middle"
-    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>pencil_add.png" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td></dtml-if
     ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td
     ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_ROW')">" onclick="actionBtnClick(this,'delete_row')" class="button"/></a></td></dtml-if
    ></tr
@@ -3078,7 +3078,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
  <td class="zmiNeutralColorStrong0">
    <table cellspacing="0" cellpadding="0" border="0">
    <tr valign="middle">
-    <td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>pencil_add.png" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td>
+    <td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td>
    </tr>
    </table>
  </td>

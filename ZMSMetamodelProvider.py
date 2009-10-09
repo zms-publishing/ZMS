@@ -65,6 +65,7 @@ class ZMSMetamodelProvider(
     # ---------------------
     manage = manage_main = HTMLFile('dtml/ZMSMetamodelProvider/manage_main', globals())
     manage_bigpicture = HTMLFile('dtml/ZMSMetamodelProvider/manage_bigpicture', globals())
+    manage_analyze = HTMLFile('dtml/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = HTMLFile('dtml/ZMSMetamodelProvider/manage_metas', globals())
 
     # Management Permissions.

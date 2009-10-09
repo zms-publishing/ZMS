@@ -1359,3 +1359,7 @@ Risk: ZEXP can't be imported!
 [01263] Added support for multiple-autocomplete attribute-types.
 [01264] Added support for self-learning autocomplete attribute-types.
 --------------------------------------------------
+2009-10-08:zms-2.11.1-94
+[01265] Restricted synchronization of link-sources to live-versions only (requested by xm).
+[01266] Added support for attribute-usage statistics of content-objects.
+--------------------------------------------------

@@ -1121,17 +1121,13 @@ class ObjAttrs:
                 ref_obj = ref_obj.aq_parent
               elif len( el) > 0:
                 ref_obj = getattr( ref_obj, el, None)
-          if ref_obj is None:
-            ref_url = '{$' + href.split( '/')[ -1] + '}'
-            ref_obj = self.getLinkObj( ref_url)
           if ref_obj is not None:
             rel_url = self.getRelObjPath( ref_obj)
-            if './' + href != rel_url:
-              if ref_obj.isPage():
-                rel_url = rel_url + '/index_%s.html'%lang
-              else:
-                rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
-	      value = value[: i + 6] + rel_url + value[ j :]
+            if ref_obj.isPage():
+              rel_url = rel_url + '/index_%s.html'%lang
+            else:
+              rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
+          value = value[: i + 6] + rel_url + value[ j :]
       
       #-- Url-Fields
       if datatype == _globals.DT_URL:

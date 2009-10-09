@@ -41,7 +41,7 @@
   <th class="form-small" align="left"
    ><dtml-if "'insert' in grid_options.keys()"
    ><a href="<dtml-var "grid_options['insert']['action']">" class="button"
-    ><img src="<dtml-var MISC_ZMS>pencil_add.png" alt="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>btn_add.gif" alt="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
     /></a
    ></dtml-if
    ><dtml-if "'export' in grid_options.keys()"
@@ -135,7 +135,7 @@
    ><dtml-if "'update' in grid_options.keys()"
    ><div style="float:left;width:20px;"
    ><a href="<dtml-var "url_append_params(grid_options['update']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="button"
-    ><img src="<dtml-var MISC_ZMS>pencil_go.png" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
+    ><img src="<dtml-var MISC_ZMS>btn_edit.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
    /></a
    ></div
    ></dtml-if

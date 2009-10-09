@@ -478,7 +478,7 @@ function mms_normalize_rows(el_tbody) {
               ><tr id="tr_multimultiselect_<dtml-var "column['id']">" <dtml-var style>
                ><td align="right" class="zmiNeutralColorStrong0"
                 ><select style="display:none;"></select
-                ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a
+                ><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"  onclick="mms_add_row(this)" class="button" /></a
                ></td
                ><td class="form-small"><input class="form-small" type="text" name="mms_new_fk" value="" size="5"></td
                ><td class="form-small"><input class="form-small" type="text" name="mms_new_tablename" value="" size="5"></td
@@ -507,7 +507,7 @@ function mms_normalize_rows(el_tbody) {
 
        <!-- Insert Attribute -->
        <tr valign="middle">
-        <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
+        <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
         <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" /></td>
         <td class="form-small" style="vertical-align:middle" ><input class="form-small" type="text" name="attr_id" value="" size="12" /></td>
         <td class="form-small">&nbsp;</td>

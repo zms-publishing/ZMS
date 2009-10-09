@@ -129,18 +129,15 @@ class ZReferableItem:
   def getRelObjPath(self, ob):
     ref = '.'
     currntElmnts = self.getSelf( self.PAGES).getPhysicalPath()
-    targetElmnts = ob.getSelf( self.PAGES).getPhysicalPath()
+    targetElmnts = ob.getSelf( ).getPhysicalPath()
     i = 0
-    while i < len( currntElmnts) and \
-          i < len( targetElmnts) and \
+    while i < min(len( currntElmnts),len( targetElmnts)) and \
           currntElmnts[ i] == targetElmnts[ i]:
       i = i + 1
     currntElmnts = currntElmnts[ i:]
     targetElmnts = targetElmnts[ i:]
-    for currntElmnt in currntElmnts:
-      ref = ref + '/..'
-    for targetElmnt in targetElmnts:
-      ref = ref + '/' + targetElmnt
+    ref += ''.join(map(lambda x: '/..',currntElmnts))
+    ref += ''.join(map(lambda x: '/'+x,targetElmnts))
     return ref
 
 
@@ -528,6 +525,7 @@ class ZReferableItem:
     message = ''
     t0 = time.time()
     obs = {}
+    clients = clients or (not self.getPortalMaster() and not self.getPortalClients())
     
     # Initialize object-tree.
     map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( self, clients))
@@ -565,9 +563,16 @@ class ZReferableItem:
               message += _globals.writeError( ob, '%s: Can\'t rename to unique object-id \'%s\'<br/>'%(key,new_id))
     
     # Clear 'ref_by' (reference-by) attributes.
-    if clients:
-      for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
-        try: delattr( obs[x], 'ref_by')
+    for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
+      if clients:
+        try:
+          delattr( obs[x], 'ref_by')
+        except: pass
+      else:
+        try:
+          ref_by = getattr( obs[x], 'ref_by')
+          ref_by = filter( lambda x: x.find('@')<0, ref_by)
+          setattr( obs[x], 'ref_by', ref_by)
         except: pass
     
     langs = self.getLangIds()
@@ -634,10 +639,11 @@ class ZReferableItem:
                         else:
                           target = obs[f[0]]
                           ref = ob.getRefObjPath( target)[2:-1]
-                          target_ref = target.getRefObjPath( ob)
-                          target_ref_by = getattr( target, 'ref_by', [])
-                          if target_ref not in target_ref_by:
-                            setattr( target, 'ref_by', target_ref_by + [ target_ref])
+                          if ob.version_live_id == obj_vers.id:
+                            target_ref = target.getRefObjPath( ob)
+                            target_ref_by = getattr( target, 'ref_by', [])
+                            if target_ref not in target_ref_by:
+                              setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
                       m.append(ref+i[i.find('}'):])
@@ -704,9 +710,11 @@ class ZReferableItem:
                         else:
                           target = obs[f[0]]
                           ref = ob.getRefObjPath( target)[2:-1]
-                          target_ref = target.getRefObjPath( ob)
-                          target_ref_by = getattr( target, 'ref_by', [])
-                          setattr( target, 'ref_by', target_ref_by + [ target_ref])
+                          if ob.version_live_id == obj_vers.id:
+                            target_ref = target.getRefObjPath( ob)
+                            target_ref_by = getattr( target, 'ref_by', [])
+                            if target_ref not in target_ref_by:
+                              setattr( target, 'ref_by', target_ref_by + [ target_ref])
                       if ref.startswith('__') and ref.endswith('__'):
                         message += '<a href="%s/manage_main" target="_blank">%s(%s).%s=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,key,ref)
                       m.append(ref+i[i.find('}'):])

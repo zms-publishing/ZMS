@@ -55,7 +55,7 @@ $().ready(function() {
   <a href="javascript:if ($('#_<dtml-var elName>').val().length>0) {var v=$('#_<dtml-var elName>').val();$('#_<dtml-var elName>').val('');appendToMultiselect(document.getElementById('<dtml-var elName>'),v);}"
    ><img 
       class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
-      src="<dtml-var MISC_ZMS>pencil_add.png" title="<dtml-var "getZMILangStr('BTN_INSERT')">"
+      src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">"
   /></a>
   <table cellspacing="0" cellpadding="1" border="0">
   <tr>

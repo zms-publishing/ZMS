@@ -44,8 +44,9 @@ def manage_addZMSLinkContainer(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSLinkContainer """
   
   ##### Create ####
-  id_prefix = _globals.id_prefix(REQUEST.get('id','e'))
-  obj = ZMSLinkContainer(self.getNewId(id_prefix),_sort_id+1)
+  id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+  new_id = self.getNewId(id_prefix)
+  obj = ZMSLinkContainer(new_id,_sort_id+1)
   self._setObject(obj.id, obj)
   
   obj = getattr(self,obj.id)

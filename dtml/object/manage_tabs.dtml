@@ -111,8 +111,8 @@
 </div>
 </dtml-if>
 <dtml-unless omit_breadcrumbs>
-<div class="zmi_col_left"><dtml-var f_context><dtml-var f_breadcrumbs></div>
-<div class="zmi_col_right"><dtml-if p_languages><dtml-var f_languages><dtml-else><img src="<dtml-var spacer_gif>" width="1" height="24" title="" border="0" /></dtml-if></div>
+<div class="zmi_col_left"><dtml-var f_breadcrumbs></div>
+<div class="zmi_col_right"><dtml-if p_languages><dtml-var f_languages><dtml-else><img src="<dtml-var spacer_gif>" width="1" height="24" border="0" /></dtml-if></div>
 </dtml-unless>
 </td>
 </tr>

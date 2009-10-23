@@ -73,13 +73,13 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="749" bgcolor="#000000">
 <tr valign="middle" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;">
- <td align="left"><a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>banner.gif" title="ZOPE based contentmanagement system for science, technology and medicine" border="0"></a></td>
+ <td align="left"><a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>zms_banner.gif" title="ZOPE based contentmanagement system for science, technology and medicine" border="0"></a></td>
 </tr>
 </table>
 
 <table cellspacing="0" cellpadding="4" border="0" width="749">
 <tr>
-<td width="20" class="location-bar"><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" width="20" height="1"></td>
+<td width="20" class="location-bar"><img src="<dtml-var MISC_ZMS>spacer.gif" width="20" height="1"></td>
 <td width="709" valign="top">
 
 <form action="manage_addZMS" method="post" onsubmit="return formOnSubmit(this)">
@@ -199,7 +199,7 @@
    <td>
     <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
     <tr>
-     <td><img name="img_theme" src="<dtml-var MISC_ZMS><dtml-var default_img_theme>" title="" border="0" width="250" height="160"></td>
+     <td><img name="img_theme" src="<dtml-var MISC_ZMS><dtml-var default_img_theme>" border="0" width="250" height="160"></td>
     </tr>
     </table>
    </td>
@@ -285,7 +285,7 @@
 </form>
 
 </td>
-<td width="20" class="location-bar"><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" width="20" height="1"></td>
+<td width="20" class="location-bar"><img src="<dtml-var MISC_ZMS>spacer.gif" width="20" height="1"></td>
 </tr>
 </table>
 

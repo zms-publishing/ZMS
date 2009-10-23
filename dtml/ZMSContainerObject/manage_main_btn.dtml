@@ -1,33 +1,48 @@
-<div class="zmiNeutralColorMedium0" style="padding:2px">
+<div style="padding:2px">
 
-<img src="<dtml-var spacer_gif>" class="zmiVSep" title="" border="0" align="absmiddle"/>
-<a href="javascript:slctBtnClick(false)" class="button"
-><img name="slctNoneBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">" border="0" align="absmiddle"
+<dtml-comment>
+################################################################################
+# Toggle: Id-Checkboxes
+################################################################################
+</dtml-comment>
+<img src="<dtml-var spacer_gif>" class="zmiVSep"/>
+<a href="javascript:zmiSelectionButtonClick($('#slctnoneBtn<dtml-var offs>'),false);" class="button"
+><img id="slctnoneBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">"
 ></a
-><a href="javascript:slctBtnClick(true)" class="button"
-><img name="slctAllBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle"
+><a href="javascript:zmiSelectionButtonClick($('#slctallBtn<dtml-var offs>'),true);" class="button"
+><img id="slctallBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">"
 ></a>
 
+<dtml-comment>
+################################################################################
+# Trashcan
+################################################################################
+</dtml-comment>
 <dtml-unless "getHistory() and not getAutocommit()">
-<img src="<dtml-var spacer_gif>" class="zmiVSep" title="" border="0" align="absmiddle"/>
-<a href="javascript:clipboardBtnClick('trashcan','<dtml-if "getParentByLevel(1).meta_type=='ZMSTrashcan'">manage_eraseObjs<dtml-else>manage_deleteObjs</dtml-if>','<dtml-var "offs*9900">');" class="button"
-><img name="trashcanBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_trashcan0.gif" border="0" title="<dtml-var "getZMILangStr('BTN_DELETE')">" align="absmiddle"
+<img src="<dtml-var spacer_gif>" class="zmiVSep"/>
+<a href="javascript:zmiActionButtonClick($('#trashcanBtn<dtml-var offs>'),0,'<dtml-if "getParentByLevel(1).meta_type=='ZMSTrashcan'">manage_eraseObjs<dtml-else>manage_deleteObjs</dtml-if>','<dtml-var "offs*9900">');" class="button"
+><img id="trashcanBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_trashcan0.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">"
 ></a>
 </dtml-unless>
 
+<dtml-comment>
+################################################################################
+# Clipboard: Cut, Copy, Paste
+################################################################################
+</dtml-comment>
 <dtml-unless dontAllowCopyAndPaste>
 <dtml-unless "getHistory() and not getAutocommit()">
-<img src="<dtml-var spacer_gif>" class="zmiVSep" title="" border="0" align="absmiddle"/>
-<a href="javascript:clipboardBtnClick('cut','manage_cutObjects','<dtml-var "offs*9900">')" class="button"
-><img name="cutBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_cut0.gif" border="0" title="<dtml-var "getZMILangStr('BTN_CUT')">" align="absmiddle"
+<img src="<dtml-var spacer_gif>" class="zmiVSep"/>
+<a href="javascript:zmiActionButtonClick($('#cutBtn<dtml-var offs>'),1,'manage_cutObjects','<dtml-var "offs*9900">')" class="button"
+><img id="cutBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_cut0.gif" title="<dtml-var "getZMILangStr('BTN_CUT')">"
 ></a
 ></dtml-unless
-><a href="javascript:clipboardBtnClick('copy','manage_copyObjects','<dtml-var "offs*9900">')" class="button"
-><img name="copyBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_copy0.gif" border="0" title="<dtml-var "getZMILangStr('BTN_COPY')">" align="absmiddle"
+><a href="javascript:zmiActionButtonClick($('#copyBtn<dtml-var offs>'),2,'manage_copyObjects','<dtml-var "offs*9900">')" class="button"
+><img id="copyBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_copy0.gif" title="<dtml-var "getZMILangStr('BTN_COPY')">"
 ></a
 ><dtml-if cb_dataValid
-><a href="javascript:clipboardBtnClick('paste','manage_pasteObjs','<dtml-var "offs*9900">')" class="button"
-><img name="pasteBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_paste1.gif" border="0" title="<dtml-var "getZMILangStr('BTN_PASTE')">" align="absmiddle"
+><a href="javascript:zmiActionButtonClick($('#pasteBtn<dtml-var offs>'),3,'manage_pasteObjs','<dtml-var "offs*9900">')" class="button"
+><img id="pasteBtn<dtml-var offs>" src="<dtml-var MISC_ZMS>btn_paste1.gif" title="<dtml-var "getZMILangStr('BTN_PASTE')">"
 ></a>
 </dtml-if>
 </dtml-unless>

@@ -299,27 +299,31 @@ html>/**/body .zmi_footer select {
  */
 
 .zmiContainerColLeft {
-	width:200px;
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorLight0','#F2F3EE')">;
+	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorMedium0','#CCC')">;
+	width:200px;
 }
 
 .zmiContainerColCenter {
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
+	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
 }
 
 .zmiContainerColRight {
-	width:100px;
 	border-bottom: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorWhite','#FFF')">;
-	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#EEE')">;
+	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#E2E3DE')">;
+	width:100px;
 }
 
 .zmiContainerHighlight {
-	background-color: #F5F6F1;
+	background: filter:Alpha(opacity=100);-moz-opacity:1.00;opacity:1.00;
 }
 
 .zmiHighlightAction, a.zmiHighlightAction, a.zmiHighlightAction:link, a.zmiHighlightAction:visited {
 	text-decoration: underline;
-	color: #f90;
+	color: #F90;
 }
 
 div.zmiRenderShort {
@@ -525,6 +529,8 @@ a.hbutton:hover img, a.hbutton:active img {
 
 .zmiDisplayIcon {
 	margin: 2px;
+	border: none;
+	vertical-align: middle;
 }
 
 .form-submit {

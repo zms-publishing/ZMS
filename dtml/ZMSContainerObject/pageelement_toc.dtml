@@ -3,14 +3,14 @@
 <dtml-in "getSelf(['ZMSFolder','ZMSDocument']).getChildNodes(REQUEST,['ZMSTextarea'])">
  <dtml-let textarea=sequence-item
            format="getObjProperty('format',REQUEST)" 
-           index="_.max(format.find('1'),
-                  _.max(format.find('2'),
-                  _.max(format.find('3'),
-                  _.max(format.find('4'),
-                  _.max(format.find('5'),
-                  _.max(format.find('6'),
-                  _.max(format.find('7'),
-                  _.max(format.find('8'),format.find('9')))))))))"
+           index="max(format.find('1'),
+                  max(format.find('2'),
+                  max(format.find('3'),
+                  max(format.find('4'),
+                  max(format.find('5'),
+                  max(format.find('6'),
+                  max(format.find('7'),
+                  max(format.find('8'),format.find('9')))))))))"
            isHeadline="format.find('h') >= 0 and index > 0">
   <dtml-if isHeadline>
    <dtml-let level="int(format[index:])">

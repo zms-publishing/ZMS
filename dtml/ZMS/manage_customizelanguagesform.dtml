@@ -167,7 +167,7 @@
    <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td rowspan="2"><img src="<dtml-var spacer_gif>" title="" border="0" width="20" height="20"/></td>
+   <td rowspan="2"><img src="<dtml-var spacer_gif>" border="0" width="20" height="20"/></td>
    <td class="form-element">
     <dtml-var "getTextInput('form0','language_id',7,'')">
     <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
@@ -243,7 +243,7 @@
   <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
     <td class="form-element">
      <dtml-if "len(dict.get('acquired',[]))>0">
-      <img src="<dtml-var MISC_ZMS>checkbox_disabled0.gif" title="" border="0" align="absmiddle"/>
+      <input class="form-checkbox" type="checkbox" disabled="disabled" />
      <dtml-else>
       <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "dict['key']">"/>
      </dtml-if>
@@ -291,7 +291,7 @@
    <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr valign="top" class="zmiNeutralColorLight0">
-   <td rowspan="2"><img src="<dtml-var spacer_gif>" title="" border="0" width="20" height="20"/></td>
+   <td rowspan="2"><img src="<dtml-var spacer_gif>" border="0" width="20" height="20"/></td>
    <td class="form-element">
     <table cellspacing="0" cellpadding="0" border="0">
     <tr><td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_key', size=8, value='', css='form-small')"></td></tr>

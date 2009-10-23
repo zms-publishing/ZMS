@@ -45,12 +45,12 @@
      <td colspan="2">
       <table cellspacing="0" cellpadding="1" border="0" width="100%" class="zmiHeadline">
       <tr valign="middle">
-       <td><div class="form-label"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+       <td><div class="form-label"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
        <td align="right">
         <dtml-if required>
          &nbsp;
         <dtml-else>
-         <select class="form-small" onchange="submitSelectResource(this)">
+         <select class="form-small" onchange="zmiChooseActionResource(this)">
           <dtml-if "objAttr.get('repetitive',0)==1">
            <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
            <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&manage_target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
@@ -70,9 +70,9 @@
    </dtml-let>
   <dtml-else>
    <tr id="tr_<dtml-var key>">
-    <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+    <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
     <td>
-     <select class="form-small" onchange="submitSelectResource(this)">
+     <select class="form-small" onchange="zmiChooseActionResource(this)">
       <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST,metaObj['id'])"></option>
       <option value="manage_initObjChild?id=<dtml-var "objAttr['id']">&type=<dtml-var "objAttr['type']">&lang=<dtml-var lang>&manage_target=<dtml-var URL>"><dtml-var "display_type(REQUEST,objAttr['type'])"></option>
      </select>
@@ -108,7 +108,7 @@
 <dtml-elif "objAttr['id']=='attr_cacheable' and getConfProperty('ZMS.cache.active')==1">
 <dtml-if "REQUEST['AUTHENTICATED_USER'].has_permission('ZMS Administrator',this())">
 <tr id="tr_<dtml-var key>" valign="top">
- <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+ <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
  <td>
   <table cellspacing="0" cellpadding="0" border="0">
   <tr valign="middle">
@@ -141,7 +141,7 @@
 <dtml-elif "not ((objAttr['meta_type']=='?') or (objAttr['id'] in ['displaytype','format']) or (objAttr['id'].find('align')>0 and len(filter_list(metaObj['attrs'],'id',objAttr['id'][:objAttr['id'].find('align')],'=='))>0))">
 <dtml-if "metaObj['id']!='ZMSGraphic' or key!='imgsuperres' or getConfProperty('ZMSGraphic.superres',0)==1">
 <tr id="tr_<dtml-var key>" valign="top">
- <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></div></td>
+ <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
  <td><dtml-var "getObjInput(key,REQUEST)"></td>
 </tr>
 <dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">

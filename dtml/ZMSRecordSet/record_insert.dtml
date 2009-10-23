@@ -37,7 +37,7 @@
        <dtml-comment>##### Foreign-Key #####</dtml-comment>
        <dtml-elif "type in metaobjIds">
         <tr id="tr_<dtml-var id>" valign="middle">
-         <td><div class="form-label"><dtml-var name><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></div></td>
+         <td><div class="form-label"><dtml-var name><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
          <td class="form-element">
 	        <dtml-if "id==SESSION.get('fk_key_%s'%ZMS_THIS.id)">
            <input type="hidden" name="<dtml-var "SESSION.get('fk_key_%s'%ZMS_THIS.id)">" value="<dtml-var "SESSION.get('fk_val_%s'%ZMS_THIS.id)">">
@@ -90,7 +90,7 @@
          <dtml-call "REQUEST.set('value',dt_html(default,REQUEST))">
         </dtml-if>
         <tr id="tr_<dtml-var id>" valign="middle">
-         <td><div class="form-label"><dtml-var name><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></div></td>
+         <td><div class="form-label"><dtml-var name><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
          <td class="form-element"><dtml-var "getObjAttrInput(fmName='form0',obj_attr=getObjAttr(id),value=value,REQUEST=REQUEST)"></td>
         </tr>
        </dtml-if>

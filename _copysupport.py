@@ -143,19 +143,18 @@ class CopySupport:
         _globals.writeLog( self, "[_normalize_ids_after_copy]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
-      _id = REQUEST.get( '_id')
-      REQUEST.set( '_id', None)
+      id_prefix = REQUEST.get( 'id_prefix')
+      REQUEST.set( 'id_prefix', None)
       ob_ids = copy.copy(self.objectIds( self.dGlobalAttrs.keys()))
       for ob in self.objectValues( self.dGlobalAttrs.keys()):
         id = absattr(ob.id)
         if forced or id in ids:
           _globals.writeBlock( self, '[_normalize_ids_after_copy]: %s(%s)'%(id,ob.meta_id))
           
-          if _id is not None:
-            new_id = _globals.id_prefix(_id)
-            if new_id != _globals.id_prefix(id): 
-              if new_id == 'e':
-                new_id = self.getNewId(new_id)
+          if id_prefix:
+            id_prefix = _globals.id_prefix(id_prefix)
+            if id_prefix != _globals.id_prefix(id): 
+              new_id = self.getNewId(id_prefix)
               _globals.writeBlock( self, '[_normalize_ids_after_copy]: Rename %s(%s) to %s'%(id,ob.meta_id,new_id))
               self.manage_renameObject(id=id,new_id=new_id)
               self.initObjChildren(REQUEST)
@@ -196,19 +195,18 @@ class CopySupport:
         _globals.writeLog( self, "[_normalize_ids_after_move]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
-      _id = REQUEST.get( '_id')
-      REQUEST.set( '_id', None)
+      id_prefix = REQUEST.get( 'id_prefix')
+      REQUEST.set( 'id_prefix', None)
       ob_ids = copy.copy(self.objectIds( self.dGlobalAttrs.keys()))
       for ob in self.objectValues( self.dGlobalAttrs.keys()):
         id = absattr(ob.id)
         if forced or (id in ids and not copy_of_prefix + id in ob_ids) or (copy_of_prefix + id in ids):
           _globals.writeBlock( self, '[_normalize_ids_after_move]: %s(%s)'%(id,ob.meta_id))
           
-          if _id is not None:
-            new_id = _globals.id_prefix(_id)
-            if new_id != _globals.id_prefix(id): 
-              if new_id == 'e':
-                new_id = self.getNewId(new_id)
+          if id_prefix:
+            id_prefix = _globals.id_prefix(id_prefix)
+            if id_prefix != _globals.id_prefix(id): 
+              new_id = self.getNewId(id_prefix)
               _globals.writeBlock( self, '[_normalize_ids_after_move]: Rename %s(%s) to %s'%(id,ob.meta_id,new_id))
               self.manage_renameObject(id=id,new_id=new_id)
               self.initObjChildren(REQUEST)

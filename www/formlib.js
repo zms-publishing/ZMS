@@ -450,34 +450,21 @@ function inputValue(v) {
 // selectCheckboxes(fm, v)
 //  Un-/select checkboxes.
 //-------------------------------------------------------------------
-function selectCheckboxes(fm, v)
-	{
-	  $(':checkbox:not([name~=active])',fm).attr('checked',v)
-	}
+function selectCheckboxes(fm, v) {
+    $(':checkbox:not([name~=active])',fm).attr('checked',v)
+  }
 
 //-------------------------------------------------------------------
 // countSelectedCheckboxes(fm)
 //  Count selected checkboxes.
 //-------------------------------------------------------------------
 function countSelectedCheckboxes(fm, elNamePrefix) {
-	    var counter = 0;
-	    for (var i=0;i<fm.elements.length;i++) {
-	      var e = fm.elements[i];
-	      if (e.type == 'checkbox' && e.checked)
-	        if (elNamePrefix) {
-	          if (e.name.indexOf(elNamePrefix)==0)
-	            counter++;
-	        }
-	        else {
-	          counter++;
-	        }
-	    }
-	    return counter;
+    return $("input[name^="+elNamePrefix+"]:checked").length;
   }
 
 //-------------------------------------------------------------------
 // getSelectedCheckboxes(fm)
-//  Get selected checkboxes als url-param.
+//  Get selected checkboxes as url-param.
 //-------------------------------------------------------------------
 function getSelectedCheckboxes(fm, elNamePrefix, newElNamePrefix) {
 	    var param = '';

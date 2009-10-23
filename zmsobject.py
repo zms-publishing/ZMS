@@ -96,6 +96,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # -----------
     QUOT = chr(34)
     MISC_ZMS = '/misc_/zms/'
+    FORM_LABEL_MANDATORY = '<sup style="color:red">*</sup>'
     spacer_gif = '/misc_/zms/spacer.gif'
 
     # Templates.
@@ -106,13 +107,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
     f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
-    f_context = HTMLFile('dtml/object/f_context', globals()) # ZMI Context (Editable, Active, Access, etc.)
     f_css_sys = HTMLFile('dtml/object/f_css_sys', globals()) # CSS: Fixed System StyleSheet
     f_css_defaults = HTMLFile('dtml/object/f_css_defaults', globals()) # CSS: Default StyleSheet (WAI)
     f_css_printhtml = HTMLFile('dtml/object/f_css_printhtml', globals()) # CSS: Fixed PrintHTML StyleSheet
     f_submitInputFields = HTMLFile('dtml/object/f_submitinputfields', globals())
     f_submitBtn = HTMLFile('dtml/object/f_submitbtn', globals())
-    f_submitHrefForm = HTMLFile('dtml/object/f_submithrefform', globals())
     f_collectionBtn = HTMLFile('dtml/object/f_collectionbtn', globals())
     f_languages = HTMLFile('dtml/object/f_languages', globals())
     f_frame = HTMLFile('dtml/object/f_frame', globals()) 

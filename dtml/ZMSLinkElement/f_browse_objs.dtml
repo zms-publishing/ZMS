@@ -295,7 +295,13 @@ function processResponse(data)
     var page_anchor = "";
     var page_index = "";
     if ( page_is_pageelement) {
-      page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
+      var page_file_filename = $("file>filename",page);
+      if (page_file_filename) {
+        page_anchor = "/" + page_file_filename.text();
+      }
+      else {
+        page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
+      }
     }
     var input = document.createElement( "input");
     $(input).attr( "type", "radio");
@@ -575,9 +581,9 @@ function followHref( href, extra)
     ><dtml-let value="getObjProperty('img',REQUEST)"
      ><dtml-if value
        ><span id="div_img_<dtml-var id>" class="form-small" style="display:none;background-color:#FFFFE0;border:1px solid gray;padding:3px;"
-        ><img src="<dtml-var "value.getHref(REQUEST)">" title="" border="1" style="margin:1px;background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);" 
+        ><img src="<dtml-var "value.getHref(REQUEST)">" border="1" style="margin:1px;background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);" 
          <dtml-try>
-          <dtml-if "_.max([int(value.width),int(value.height)])>80">
+          <dtml-if "max([int(value.width),int(value.height)])>80">
            <dtml-if "int(value.width)>int(value.height)">
             width="80"
            <dtml-else>

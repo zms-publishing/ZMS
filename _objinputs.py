@@ -179,7 +179,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextInput(self, fmName, elName, size=15, value='', type='text', enabled=True, REQUEST=None, css='form-element', extra=''):
+  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-element', extra=''):
     html = []
     html.append('<span class="%s">'%css)
     html.append('<input ')
@@ -187,12 +187,16 @@ class ObjInputs:
     html.append(' type="%s"'%type)
     html.append(' id="%s"'%elName)
     html.append(' name="%s"'%elName)
-    html.append(' size="%i"'%size)
+    if size:
+      html.append(' size="%i"'%size)
     if value is not None:
       html.append(' value="%s"'%_globals.html_quote(value))
     if extra.find('style=') < 0:
       styles = []
-      styles.append( 'width:%iem;'%size)
+      if size:
+        styles.append( 'width:%iem;'%size)
+      else:
+        styles.append( 'width:80%;')
       if elName.endswith(':int'):
         styles.append( 'text-align:right')
       html.append(' style="%s"'%(';'.join(styles)))
@@ -278,12 +282,17 @@ class ObjInputs:
     html.append(' class="%s"'%css)
     html.append(' id="%s"'%elName)
     html.append(' name="%s"'%elName)
-    html.append(' cols="%i"'%cols)
-    html.append(' rows="%i"'%rows)
+    if cols:
+      html.append(' cols="%i"'%cols)
+    if rows:
+      html.append(' rows="%i"'%rows)
     html.append(' wrap="%s"'%wrap)
     if extra.find('style=') < 0:
       styles = []
-      styles.append( 'width:%iem;'%cols)
+      if cols:
+        styles.append( 'width:%iem;'%cols)
+      else:
+        styles.append( 'width:80%;')
       html.append(' style="%s"'%(';'.join(styles)))
     if not enabled:
       html.append(' disabled="disabled"')
@@ -353,9 +362,9 @@ class ObjInputs:
           ref_url = inline_links[c]
           ref_obj = self.getLinkObj(ref_url,REQUEST)
           if ref_obj is not None:
-            html.append('<img src="%sinternal_link.gif" title="" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=REQUEST['lang'],REQUEST=REQUEST)))
+            html.append('<img src="%sinternal_link.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=REQUEST['lang'],REQUEST=REQUEST)))
           else:
-            html.append('<img src="%sinternal_link_broken.gif" title="" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_url))
+            html.append('<img src="%sinternal_link_broken.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_url))
           html.append('</div>')
           html.append('</div>')
         html.append('</td>')

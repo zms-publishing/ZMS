@@ -130,7 +130,7 @@ function hideDstMetaTypes( id)
    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
-   <td align="center"><div class="form-label" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center">(<sup style="color:red">*</sup>)</div></td>
+   <td align="center"><div class="form-label" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center">(<dtml-var FORM_LABEL_MANDATORY>)</div></td>
    <td align="center"><div class="form-label"><img src="<dtml-var MISC_ZMS>btn_multilang1.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" border="0"></div></td>
    <td align="center"><div class="form-label" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">">0..n</div></td>
    <td>&nbsp;</td>
@@ -186,10 +186,10 @@ function hideDstMetaTypes( id)
      ><nobr><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
      ><img
      <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
-     <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif" title=""
-     <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif" title=""
-     <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif" title=""
-     <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">" title=""
+     <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif"
+     <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif"
+     <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif"
+     <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">"
      </dtml-if>
      alt="Icon" style="border:0px;vertical-align;middle;"
      ><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" style="vertical-align:middle;border:0px;" /></dtml-if

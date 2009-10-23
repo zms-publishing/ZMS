@@ -18,14 +18,14 @@
 <dtml-var f_bo_area>
 
 <form name="form0" action="manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
-<input type="hidden" name="id" value="<dtml-var "REQUEST.get('id','e')">">
+<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 <input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 <input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
 <dtml-let f_submitInputFieldsTable="True"><dtml-var f_submitInputFields></dtml-let>
 
 <!-- ### Connection Id -->
 <tr>
- <td><div class="form-label">Connection Id<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Connection Id<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td>
   <select class="form-element" name="connection_id">
    <option value="">--- Select Connection Id ---</option>
@@ -42,17 +42,17 @@
 </tr>
 <!-- ### Max. Rows -->
 <tr valign="top">
- <td><div class="form-label">Max. Rows<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
 </tr>
 <!-- ### Charset -->
 <tr valign="top">
- <td><div class="form-label">Charset<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value='latin-1',enum='charset')"></td>
 </tr>
 <!-- ### Model -->
 <tr valign="top">
- <td><div class="form-label">Model<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
 </tr>
 

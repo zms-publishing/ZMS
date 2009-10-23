@@ -205,9 +205,9 @@
     </dtml-comment>
     <td class="form-label">
      <dtml-if pk>
-      <img src="<dtml-var MISC_ZMS>btn_key.gif" title="" border="0" align="middle"/>
+      <img src="<dtml-var MISC_ZMS>btn_key.gif" border="0" align="middle"/>
      </dtml-if>
-     <dtml-var "getLangStr(label,lang)"><dtml-if mandatory><sup style="color:red">*</sup></dtml-if>
+     <dtml-var "getLangStr(label,lang)"><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if>
     </td>
     <dtml-if "grid_col.get('details')">
     <dtml-comment>
@@ -252,7 +252,7 @@
        <dtml-in "multimultiselect.get('tables',[])" mapping
        ><dtml-let i=sequence-index item=sequence-item
        ><td style="vertical-align:bottom"
-        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><sup style="color:red">*</sup></dtml-unless></div
+        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><dtml-var FORM_LABEL_MANDATORY></dtml-unless></div
         ><dtml-if "item.has_key('lazy')"
          ><dtml-let fk=item
           ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
@@ -619,7 +619,7 @@
              <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('delete_blob_<dtml-var id>').value='1';"/>
             </div>
            </td>
-           <td width="10"><img src="<dtml-var spacer_gif>" title="" border="0" width="10" height="1"></td>
+           <td width="10"><img src="<dtml-var spacer_gif>" border="0" width="10" height="1"></td>
            <!-- Preview -->
            <td align="right">
             <table cellspacing="1" cellpadding="0" border="0" class="neutralColorBlack">
@@ -728,7 +728,7 @@
    </dtml-comment>
    <dtml-if "grid_col.get('password')">
    <tr id="tr_<dtml-var id>_confirm">
-    <td class="form-label"><dtml-var "getLangStr(label,lang)"> (<dtml-var "getZMILangStr('ATTR_CONFIRM')">)<dtml-unless nullable><sup style="color:red">*</sup></dtml-unless></td>
+    <td class="form-label"><dtml-var "getLangStr(label,lang)"> (<dtml-var "getZMILangStr('ATTR_CONFIRM')">)<dtml-unless nullable><dtml-var FORM_LABEL_MANDATORY></dtml-unless></td>
     <td class="form-element"><dtml-var "getTextInput(fmName='form0', elName='new_%s_confirm'%id, value=row.get(id,''), type='password', css=css)"></td>
    </tr>
    </dtml-if>

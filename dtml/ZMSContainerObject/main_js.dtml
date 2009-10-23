@@ -2,7 +2,7 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
 //------------------------------------------------------------------------------
-// -- 
+// -- Row-Highlighter
 //------------------------------------------------------------------------------
 
   function zmiTrFollowMouseOver(el)
@@ -12,7 +12,7 @@
       var tr = trs[i];
       if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
         $("a:first",tr).addClass( "zmiHighlightAction");
-        $(el).addClass("zmiContainerHighlight");
+        $("td.zmiContainerColLeft,td.zmiContainerColCenter,td.zmiContainerColRight",tr).addClass("zmiContainerHighlight");
         return;
       }
     }
@@ -25,7 +25,7 @@
       var tr = trs[i];
       if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
         $("a:first",tr).removeClass( "zmiHighlightAction");
-        $(el).removeClass("zmiContainerHighlight");
+        $("td.zmiContainerColLeft,td.zmiContainerColCenter,td.zmiContainerColRight",tr).removeClass("zmiContainerHighlight");
         return;
       }
     }
@@ -48,284 +48,238 @@
   }
 
 //------------------------------------------------------------------------------
-// -- 
+// -- Action-selects 
 //------------------------------------------------------------------------------
 
-  /**
-   * Array of button action-codes.
-   */
-  arrButton = new Array();
-  arrButton[0] = "trashcan";
-  arrButton[1] = "cut";
-  arrButton[2] = "copy";
-  arrButton[3] = "paste";
+/**
+ * Expand action-select for container-object.
+ *
+ * @param el
+ * @param id
+ */
+function zmiExpandActionSelectContainer(el, abs_url) 
+{
+  zmiExpandActionSelect( el, abs_url+"/ajaxFilteredContainerActions");
+}
 
-  /**
-   * Array of button types.
-   */
-  arrButtonType = new Array();
-  arrButtonType[0] = 0;
-  arrButtonType[1] = 0;
-  arrButtonType[2] = 0;
-  arrButtonType[3] = 1;
+/**
+ * Expand action-select for child-object.
+ *
+ * @param el
+ * @param id
+ */
+function zmiExpandActionSelectChild(el, abs_url) 
+{
+  var id = $(el).attr('id').substr('select_actions_'.length);
+  zmiExpandActionSelect( el, abs_url+"/"+id+"/ajaxFilteredChildActions");
+}
 
-  /**
-   *
-   * @param id
-   * @param sort_id
-   */
-  function paramExec(id, sort_id) 
+/**
+ * Expand action-select.
+ *
+ * @param el
+ * @param id
+ */
+function zmiExpandActionSelect(select, target) 
+{
+  if ( select.options[select.options.length-1].text.indexOf('---') != 0)
+    return;
+  
+  // Set wait-cursor.
+  $(document.body).css( "cursor", "wait");
+  
+  // JQuery.AJAX.get
+  $.get( target+"?lang=<dtml-var lang>", zmiExpandActionSelectHandler);
+}
+
+/**
+ * Focus select: Process Response..
+ */
+function zmiExpandActionSelectHandler(data)
+{
+  // Reset wait-cursor.
+  $(document.body).css( "cursor", "auto");
+  // Get object-id.
+  var id = $("select",data).attr("id").replace(/\./,"_").replace(/\-/,"_");
+  var select = document.getElementById( 'select_actions_'+id);
+  if ( select.options[select.options.length-1].text.indexOf('---') != 0)
+    return;
+  var options = $("select",data).children("option");
+  for (var i in options) 
   {
-    var fm = document.forms['form0'];
-    if (id && id != null) 
+    if ( i > 0) 
     {
-      for (var i = 0; i < fm.elements.length; i++) 
-      {
-        el = fm.elements[i];
-        if ( (el.name == 'ids:list')
-            && (el.value == id) )
-          el.checked = true;
+      var label = $(options[i]).attr('label');
+      var value = $(options[i]).attr('value');
+      var option = new Option( label, value);
+      select.options[ select.length] = option;
+    }
+  }
+  select.selectedIndex = 0;
+}
+
+/**
+ * Confirm execution of action from select.
+ *
+ * @param fm
+ * @param target
+ * @param label
+ */
+function zmiConfirmAction(fm, target, label)
+{
+  var b = true;
+  var i = countSelectedCheckboxes(fm,'ids');
+  if (target.indexOf("../") == 0) {
+    i = 1;
+  }
+  if (target.indexOf("manage_rollbackObjChanges") >= 0) {
+    b = confirm("<dtml-var "js_quote(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'))">");
+  }
+  else if (target.indexOf("manage_cutObjects") >= 0) {
+    var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_CUTOBJS'))">";
+    msg1 = msg1.replace("%i",""+i);
+    <dtml-let langs="getDescendantLanguages(lang)">
+     var msg2 = "";
+     <dtml-if "len(langs)>1">
+      msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
+      var s = "";
+      <dtml-in langs>
+      s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";
+      <dtml-unless sequence-end>
+      s += ",";
+      </dtml-unless>
+      </dtml-in>
+      msg2 = msg2.replace("%s",""+s);
+     </dtml-if>
+    </dtml-let>
+    var msg = msg1 + ' ' + msg2;
+    b = i > 0 && confirm(msg);
+  }
+  else if (target.indexOf("manage_eraseObjs") >= 0) {
+    var msg = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DELOBJS'))">";
+    msg = msg.replace("%i",""+i);
+    b = i > 0 && confirm(msg);
+  }
+  else if (target.indexOf("manage_deleteObjs") >= 0) {
+    var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_TRASHOBJS'))">";
+    msg1 = msg1.replace("%i",""+i);
+    <dtml-let langs="getDescendantLanguages(lang)">
+     var msg2 = "";
+     <dtml-if "len(langs)>1">
+      msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
+      var s = "";
+      <dtml-in langs>
+      s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";
+      <dtml-unless sequence-end>
+      s += ",";
+      </dtml-unless>
+      </dtml-in>
+      msg2 = msg2.replace("%s",""+s);
+     </dtml-if>
+    </dtml-let>
+    var msg = msg1 + ' ' + msg2;
+    b = i > 0 && confirm(msg);
+  }
+  else if (target.indexOf("manage_executeMetacmd") >=0 ) {
+   <dtml-in "getMetaCmdIds()">
+    <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
+     <dtml-if "len(metaCmd['description'])>0">
+      if (label == '<dtml-var "metaCmd['name']">') {
+        b = confirm("<dtml-var "metaCmd['description']">");
       }
-    }
-    if (sort_id && sort_id != null) 
-    {
-      el = fm.elements['_sort_id:int'];
-      if (el) 
-      {
-        el.value = sort_id;
-      }
-    }
+     </dtml-if>
+    </dtml-let>
+   </dtml-in>
   }
+  else if (target == "") {
+    b = false;
+  }
+  return b;
+}
 
-  /**
-   *
-   * @param target
-   * @param label
-   */
-  function confirmExec(target, label)
-  {
-    var fm = document.forms['form0'];
-    var b = true;
-    var i = countSelectedCheckboxes(fm,'ids');
-    if (target.indexOf("../") == 0) {
-      i = 1;
-    }
-    if (target.indexOf("manage_rollbackObjChanges") >= 0) {
-      b = confirm("<dtml-var "js_quote(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'))">");
-    }
-    else if (target.indexOf("manage_cutObjects") >= 0) {
-      var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_CUTOBJS'))">";
-      msg1 = msg1.replace("%i",""+i);
-      <dtml-let langs="getDescendantLanguages(lang)">
-       var msg2 = "";
-       <dtml-if "len(langs)>1">
-        msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
-        var s = "";
-        <dtml-in langs>
-        s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";
-        <dtml-unless sequence-end>
-        s += ",";
-        </dtml-unless>
-        </dtml-in>
-        msg2 = msg2.replace("%s",""+s);
-       </dtml-if>
-      </dtml-let>
-      var msg = msg1 + ' ' + msg2;
-      b = i > 0 && confirm(msg);
-    }
-    else if (target.indexOf("manage_eraseObjs") >= 0) {
-      var msg = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DELOBJS'))">";
-      msg = msg.replace("%i",""+i);
-      b = i > 0 && confirm(msg);
-    }
-    else if (target.indexOf("manage_deleteObjs") >= 0) {
-      var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_TRASHOBJS'))">";
-      msg1 = msg1.replace("%i",""+i);
-      <dtml-let langs="getDescendantLanguages(lang)">
-       var msg2 = "";
-       <dtml-if "len(langs)>1">
-        msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
-        var s = "";
-        <dtml-in langs>
-        s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";
-        <dtml-unless sequence-end>
-        s += ",";
-        </dtml-unless>
-        </dtml-in>
-        msg2 = msg2.replace("%s",""+s);
-       </dtml-if>
-      </dtml-let>
-      var msg = msg1 + ' ' + msg2;
-      b = i > 0 && confirm(msg);
-    }
-    else if (target.indexOf("manage_executeMetacmd") >=0 ) {
-     <dtml-in "getMetaCmdIds()">
-      <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
-       <dtml-if "len(metaCmd['description'])>0">
-        if (label == '<dtml-var "metaCmd['name']">') {
-          b = confirm("<dtml-var "metaCmd['description']">");
-        }
-       </dtml-if>
-      </dtml-let>
-     </dtml-in>
-    }
-    else if (target == "") {
-      b = false;
-    }
-    return b;
-  }
+/**
+ * Execute action from select.
+ *
+ * @param fm
+ * @param target
+ * @param id
+ * @param sort_id
+ * @param custom
+ */
+function zmiExecuteAction(fm, target, id, sort_id, custom) 
+{
+  var fm = $(fm);
+  $('input[id=id_prefix]',fm).val( id);
+  $('input[id=_sort_id]',fm).val( sort_id);
+  $('input[id=custom]',fm).val( custom);
+  fm.attr('action',target);
+  fm.submit();
+}
 
-  /**
-   *
-   * @param target
-   */
-  function submitExec(target, id, sort_id) 
-  {
-    var fm = $('form[name=form0]');
-    if (target.indexOf("../") == 0) {
-      fm.append('<input type="hidden" name="ids:list" value="'+$('#id').val()+'"/>');
-    }
-    $('form[name=form0]>input[id=_id]').val( id);
-    $('form[name=form0]>input[id=_sort_id]').val( sort_id);
-    fm.attr('action',target);
-    fm.submit();
+/**
+ * Choose action from select.
+ *
+ * @param e
+ * @param id
+ * @param sort_id
+ */
+function zmiChooseAction(e, id, sort_id) 
+{
+  var fm = $(e.form);
+  var i = e.selectedIndex;
+  var label = e.options[i].text;
+  var action = e.options[i].value;
+  if (action.indexOf("%s/") == 0) {
+    action = id + action.substring(2, action.length);
   }
+  if (action.indexOf('?') > 0) {
+    location.href = action;
+  }
+  else {
+    // Set checkbox.
+    $("input[name=ids:list][type=checkbox][value="+id+"]",fm).attr( 'checked', true);
+    // Confirm and execute.
+    if (zmiConfirmAction(fm,action,label)) {
+      zmiExecuteAction(fm,action,id,sort_id,label);
+    }
+  }
+  // Reset checkbox and select.
+  $("input[name=ids:list][type=checkbox][value="+id+"]",fm).attr( 'checked', false);
+  e.selectedIndex = 0;
+}
 
-  /**
-   *
-   * @param target
-   * @param label
-   * @param id
-   * @param sort_id
-   */
-  function submitHref(target, label, id, sort_id)
-  {
-    paramExec(id,sort_id);
-    var b = confirmExec(target,label);
-    if (b) 
-    {
-      if ((target.indexOf("manage_pasteObjs")>=0) ||
-          (target.indexOf("manage_pasteObjects")>=0) ||
-          (target.indexOf("manage_copyObjects")>=0) ||
-          (target.indexOf("manage_cutObjects")>=0) ||
-          (target.indexOf("manage_undoObjs")>=0) ||
-          (target.indexOf("manage_deleteObjs")>=0) ||
-          (target.indexOf("manage_eraseObjs")>=0)) 
-      {
-        submitExec(target,id,sort_id);
-      }
-      else 
-      {
-        var fm = document.forms['submitHrefForm'];
-        fm.action = target;
-        fm.elements['id'].value = id;
-        fm.elements['_sort_id:int'].value = sort_id;
-        fm.elements['custom'].value = label;
-        fm.submit();
-      }
-    }
-    return b;
-  }
+//------------------------------------------------------------------------------
+// -- Action-Buttons
+//------------------------------------------------------------------------------
 
-  /**
-   * Submit select.
-   *
-   * @param e
-   * @param id
-   * @param sort_id
-   */
-  function submitSelect(e, id, sort_id) 
-  {
-    var i = e.selectedIndex;
-    var label = e.options[i].text;
-    var action = e.options[i].value;
-    if (action.indexOf("%s/") == 0)
-    {
-      action = id + action.substring(2, action.length);
-    }
-    if (action.indexOf('?') > 0)
-    {
-      location.href = action;
-    }
-    else
-    {
-      if (!submitHref(action, label, id, sort_id))
-      {
-        e.selectedIndex = 0;
-      }
-    }
-  }
-
-  /**
-   *
-   * @param e
-   * @param id
-   * @param sort_id
-   */
-  function submitSelectCompactview(e, id, sort_id) 
-  {
-    var fm = e.form;
-    for (i = 0; i < fm.elements.length; i++) 
-    {
-      var el = fm.elements[i];
-      if ( (el.type == 'checkbox')
-           && (el.name == 'ids:list') 
-           && (el.checked) )
-      {
-        var elSortId = fm.elements['sort_id_'+el.value];
-        if (elSortId)
-        {
-          id = el.value;
-          sort_id = elSortId.value;
-        }
-      }
-    }
-    submitSelect(e, id, sort_id);
-  }
-
-  /**
-   *
-   * @param ac		Action-Code (0=trashcan, 1=cut, 2=copy, 3=paste)
-   * @param offs	Offset (0=pageBottom, 1=pageTop)
-   */
-  function getDocumentImage(ac, offs) 
-  {
-    id = ac + "Btn" + offs;
-    return document.images[id];
-  }
-
-  /**
-   *
-   * @param ac		Action-Code (0=trashcan, 1=cut, 2=copy, 3=paste)
-   */
-  function btnActive(ac) 
-  {
-    var fm = document.forms['form0'];
-    for (var i = 0; i < arrButton.length; i++) 
-    {
-      if (arrButton[i] == ac) 
-      {
-        if (arrButtonType[i] == 0)
-        {
-          return (countSelectedCheckboxes(fm,'ids') > 0)
-        }
-        else
-        {
-          return true;
-        }
-      }
-    }
-  }
+var zmiActionButtons = [
+      {'id':'trashcan','standalone':false},
+      {'id':'cut','standalone':false},
+      {'id':'copy','standalone':false},
+      {'id':'paste','standalone':true}
+    ];
 
 /**
  *
+ * @param sender
+ * @param evt
  */
-function switchButtons(evt) 
+function zmiActionButtonsRefresh(sender,evt) 
 {
-  for (var i = 0; i < arrButton.length; i++) {
-     btnOnMouseOut(arrButton[i]);
+  var fm = $(sender).parents('form');
+  var ids = countSelectedCheckboxes(fm,'ids') > 0;
+  // Switch buttons.
+  for (var ac in zmiActionButtons) {
+     var id = zmiActionButtons[ac]['id'];
+     var img = $("img[id^="+id+"Btn]");
+     var standalone = zmiActionButtons[ac]['standalone'];
+     var active = 0;
+     if (ids || standalone) {
+       active = 1;
+     }
+     img.attr('src','<dtml-var MISC_ZMS>btn_'+id+active+'.gif');
   }
-  // Toggle highlighting of selected rows.
+  // Switch selected rows.
   var clazz = "zmiTeaserColor";
   var els = $("input[name=ids:list][type=checkbox]");
   for (var i = 0; i < els.length; i++) {
@@ -343,83 +297,35 @@ function switchButtons(evt)
   }
 }
 
-  /**
-   * Hover button on mouse-over event.
-   *
-   * @param ac		Action-Code (0=trashcan, 1=cut, 2=copy, 3=paste)
-   */
-  function btnOnMouseOver(ac) 
-  {
-    for (var offs = 0; offs <= 1; offs++) 
-    {
-      var img = getDocumentImage(ac,offs);
-      if (img != null) 
-      {
-        if (btnActive(ac))
-        {
-          img.src = '<dtml-var MISC_ZMS>btn_' + ac + '1.gif';
-        }
-        else
-        {
-          img.src = '<dtml-var MISC_ZMS>btn_' + ac + '0.gif';
-        }
-      }
+/**
+ *
+ * @param sender
+ * @param ac		Action-Code
+ * @param target
+ * @param sort_id
+ */
+function zmiActionButtonClick(sender, ac, target, sort_id) {
+  var fm = $(sender).parents('form');
+  // Switch button.
+  var ids = countSelectedCheckboxes(fm,'ids') > 0;
+  var standalone = zmiActionButtons[ac]['standalone'];
+  if (ids || standalone) {
+    // Confirm and execute.
+    if (zmiConfirmAction(fm,target)) {
+      zmiExecuteAction(fm, target,'e',sort_id);
     }
   }
+}
 
-  /**
-   * Lower button on mouse-out event.
-   *
-   * @param ac		Action-Code (0=trashcan, 1=cut, 2=copy, 3=paste)
-   */
-  function btnOnMouseOut(ac) 
-  {
-    for (var offs = 0; offs <= 1; offs++) 
-    {
-      var img = getDocumentImage(ac,offs);
-      if (img != null) 
-      {
-        if (btnActive(ac))
-        {
-          img.src = '<dtml-var MISC_ZMS>btn_' + ac + '1.gif';
-        }
-        else
-        {
-          img.src = '<dtml-var MISC_ZMS>btn_' + ac + '0.gif';
-        }
-      }
-    }
-  }
-
-  /**
-   *
-   * @param ac		Action-Code (0=trashcan, 1=cut, 2=copy, 3=paste)
-   * @param target
-   * @param sort_id
-   */
-  function clipboardBtnClick(ac, target, sort_id) 
-  {
-    var fm = document.forms['form0'];
-    if (btnActive(ac)) 
-    {
-      paramExec(null,sort_id);
-      var i = countSelectedCheckboxes(fm,'ids');
-      var b = confirmExec(target);
-      if (b) 
-      {
-        submitExec(target,'e',sort_id);
-      }
-    }
-  }
-
-  /**
-   * This method (un-)checks all on page and refreshs buttons.
-   *
-   * @param v		Boolean value for new (un-)checked state.
-   */
-  function slctBtnClick(v) 
-  {
-    var fm = document.forms['form0'];
-    selectCheckboxes(fm,v);
-    switchButtons();
-  }
+/**
+ * This method (un-)checks all id-checkboxes on page and refreshs the buttons.
+ *
+ * @param sender
+ * @param v		Boolean value for new (un-)checked state.
+ */
+function zmiSelectionButtonClick(sender,v) 
+{
+  var fm = $(sender).parents('form');
+  selectCheckboxes(fm,v);
+  zmiActionButtonsRefresh();
+}

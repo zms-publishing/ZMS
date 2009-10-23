@@ -635,7 +635,7 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def ajaxFilteredContainerActions(self, REQUEST):
       """
-      Returns AJAX-XML with filtered-child-actions.
+      Returns AJAX-XML with filtered-container-actions.
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       """
@@ -1007,20 +1007,20 @@ class ZMSContainerObject(
       _fileutil.importZexp( self, filename)
       
       ##### Create ####
-      id_prefix = _globals.id_prefix(REQUEST.get('id','e'))
-      newid = self.getNewId(id_prefix)
+      id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+      new_id = self.getNewId(id_prefix)
       
       ##### Rename ####
-      self.manage_renameObject(fileid,newid)
+      self.manage_renameObject(fileid,new_id)
       
       ##### Normalize Sort-IDs ####
-      obj = getattr( self, newid)
+      obj = getattr( self, new_id)
       obj.sort_id = _sort_id
       self.normalizeSortIds( id_prefix)
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%custom
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),newid,lang,urllib.quote(message)))
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),new_id,lang,urllib.quote(message)))
 
 ################################################################################
 

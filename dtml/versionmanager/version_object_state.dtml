@@ -45,25 +45,25 @@
 ><dtml-if "getObjProperty('work_dt',REQUEST)"
 ><dtml-in wfStates
 ><dtml-let wfState=sequence-item itm="getWfActivity(wfState)"
-><dtml-if "itm.get('icon',None)"
-><img src="<dtml-var "getDocumentElement().absolute_url()">/get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('work_uid',REQUEST)"> (<dtml-var "getLangFmtDate(getObjProperty('work_dt',REQUEST))">)" border="0" align="absmiddle" />
+><dtml-if "itm.get('icon',None)">
+<img src="<dtml-var "getDocumentElement().absolute_url()">/get_conf_blob?path=ZMS.workflow.activities/<dtml-var "itm['id']">/icon" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('work_uid',REQUEST)"> (<dtml-var "getLangFmtDate(getObjProperty('work_dt',REQUEST))">)" border="0" align="absmiddle" />
 </dtml-if
 ></dtml-let
 ></dtml-in
 ></dtml-if
-></dtml-if>
-<dtml-let filtered_obj_states="filteredObjStates(REQUEST)"
-><dtml-if "'STATE_NEW' in filtered_obj_states"
-><img src="<dtml-var MISC_ZMS>state_new.gif" title="<dtml-var "getZMILangStr('STATE_NEW')">" border="0" align="absmiddle"
 ></dtml-if
-><dtml-if "'STATE_MODIFIED' in filtered_obj_states"
-><img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
-><dtml-elif "len(wfStates)>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)"
-><img src="<dtml-var MISC_ZMS>state_modified_objs.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
-></dtml-if
-><dtml-if "'STATE_DELETED' in filtered_obj_states"
-><img src="<dtml-var MISC_ZMS>state_deleted.gif" title="<dtml-var "getZMILangStr('STATE_DELETED')">" border="0" align="absmiddle"
-></dtml-if
+><dtml-let filtered_obj_states="filteredObjStates(REQUEST)"
+><dtml-if "'STATE_NEW' in filtered_obj_states">
+<img src="<dtml-var MISC_ZMS>state_new.gif" title="<dtml-var "getZMILangStr('STATE_NEW')">" border="0" align="absmiddle"/>
+</dtml-if>
+<dtml-if "'STATE_MODIFIED' in filtered_obj_states">
+<img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"/>
+<dtml-elif "len(wfStates)>0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)">
+<img src="<dtml-var MISC_ZMS>state_modified_objs.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"/>
+</dtml-if>
+<dtml-if "'STATE_DELETED' in filtered_obj_states">
+<img src="<dtml-var MISC_ZMS>state_deleted.gif" title="<dtml-var "getZMILangStr('STATE_DELETED')">" border="0" align="absmiddle"/>
+</dtml-if
 ></dtml-let
 ></dtml-let
 ></dtml-unless

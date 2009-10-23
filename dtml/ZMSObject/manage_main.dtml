@@ -9,7 +9,6 @@
   <dtml-var "manage_tabs(_,_,p_languages=True)">
   <dtml-var f_bo_area>
   <dtml-var f_bo_checkout>
-  <dtml-var f_submitHrefForm>
   <dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
   <dtml-if metaObjZMI>
    <!-- ### Meta-Object: Custom Management Interface -->
@@ -18,13 +17,14 @@
    <!-- ### Meta-Object: RecordSet -->
    <dtml-var metaobj_recordset_main>
   <dtml-else>
-   <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-   <form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
-   <input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
-   <input type="hidden" id="_id" name="_id">
-   <input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
-   <input type="hidden" name="custom" value="">
-   <dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+   <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
+   ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')"
+   ><input type="hidden" name="preview" value="preview"
+   ><input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"
+   ><input type="hidden" id="id_prefix" name="id_prefix"
+   ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
+   ><input type="hidden" id="custom" name="custom" value=""
+   ><dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
     <!-- ### Attributes -->
     <dtml-var obj_input_js>
     <dtml-var obj_input_fields>
@@ -35,7 +35,7 @@
 
   function initPage() {
     var els;
-    $("input[name=ids:list][type=checkbox]").click( function(evt) { switchButtons(evt); } );
+    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
     els = $("tr[id*=tr_] td.zmiContainerColCenter");
     els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
     els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });

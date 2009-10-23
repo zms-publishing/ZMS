@@ -8,7 +8,7 @@
 <!-- ### Meta-Object: Default -->
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 <form name="<dtml-var fmName>" action="manage_addZMSLinkElement" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
-<input type="hidden" name="id" value="<dtml-var "REQUEST.get('id','e')">">
+<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 <input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 <input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
 <dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>

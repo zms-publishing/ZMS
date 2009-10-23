@@ -22,7 +22,7 @@
  <dtml-if sequence-end>
   <dtml-call "REQUEST.set('reqMaxLen',len(getTitlealt(REQUEST)))">
  <dtml-else>
-  <dtml-call "REQUEST.set('reqMaxLen',_.max(3,24-2*len(objectPathElements)))">
+  <dtml-call "REQUEST.set('reqMaxLen',max(3,24-2*len(objectPathElements)))">
  </dtml-if>
  <dtml-call "REQUEST.set('objTitle',string_maxlen(getTitlealt(REQUEST),REQUEST['reqMaxLen']))">
  <dtml-if "hasAccess(REQUEST)">

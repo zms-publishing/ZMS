@@ -564,7 +564,7 @@ class ZReferableItem:
     
     # Clear 'ref_by' (reference-by) attributes.
     for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
-      if clients:
+      if clients or True:
         try:
           delattr( obs[x], 'ref_by')
         except: pass

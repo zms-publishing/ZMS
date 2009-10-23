@@ -1,4 +1,4 @@
-
+--------------------------------------------------
 2006-11-29::zms-2.10.1-01
 -- MAJOR CHANGES
 [00307] Added support for Zope-2.10.1.
@@ -1362,4 +1362,11 @@ Risk: ZEXP can't be imported!
 2009-10-08:zms-2.11.1-94
 [01265] Restricted synchronization of link-sources to live-versions only (requested by xm).
 [01266] Added support for attribute-usage statistics of content-objects.
+--------------------------------------------------
+2009-10-19:zms-2.11.4-01
+[01267] Added support for Zope-2.11.4.
+[01268] Applied fix for display of workflow with missing activity-ids.
+[01269] Revised javascript for actions in container-objects.
+[01270] Enabled synchronization of link-sources for single clients (requested by xm).
+[01271] Increased col-size threshold for string -> text in SQL-Datasource from 50 to 128 (requested by fh).
 --------------------------------------------------

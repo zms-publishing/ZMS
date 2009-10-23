@@ -1,93 +1,26 @@
 <dtml-var manage_page_header>
-
-<script type="text/javascript">
-<!--//
-
-/**
- * Focus select container.
- *
- * @param el
- * @param id
- */
-function focusSelectContainer(el, id) 
-{
-  focusSelect( el, id, "ajaxFilteredContainerActions");
-}
-
-/**
- * Focus select child.
- *
- * @param el
- * @param id
- */
-function focusSelectChild(el, id) 
-{
-  focusSelect( el, id, id+"/ajaxFilteredChildActions");
-}
-
-/**
- * Focus select.
- *
- * @param el
- * @param id
- */
-function focusSelect(el, id, target) 
-{
-  if ( el.options[el.options.length-1].text.indexOf('---') == 0) 
-  {
-    // JQuery.AJAX.get
-    $(document.body).css( "cursor", "wait");
-    $.get( "<dtml-var absolute_url>/"+target+"?lang=<dtml-var lang>", focusSelectProcessResponse);
-  }
-}
-
-/**
- * Focus select: Process Response..
- */
-function focusSelectProcessResponse(data)
-{
-  $(document.body).css( "cursor", "auto");
-  var id = data.getElementsByTagName('select')[0].getAttribute('id');
-  var select = document.getElementById( 'select_actions_'+id);
-  var optionElements = data.getElementsByTagName('option');
-  for (var i = 0; i < optionElements.length; i++) 
-  {
-    if ( i > 0) 
-    {
-      var label = optionElements[i].getAttribute('label');
-      var value = optionElements[i].getAttribute('value');
-      var option = new Option( label, value);
-      select.options[ select.length] = option;
-    }
-  }
-  select.selectedIndex = 0;
-}
-
-//-->
-</script>
 </head>
 
 <dtml-var "manage_tabs(_,_,p_languages=1)">
 
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
 
-<dtml-var f_submitHrefForm
-><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px"
-><input type="hidden" name="lang" value="<dtml-var lang>"
-><input type="hidden" name="preview" value="preview"
-><input type="hidden" id="id" name="id" value="<dtml-var id>"
-><input type="hidden" id="_id" name="_id"
-><input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
+><dtml-let isTrashcan="meta_id=='ZMSTrashcan'"
 
-<dtml-let isTrashcan="meta_id=='ZMSTrashcan'">
-
-<dtml-if isTrashcan
+><dtml-if isTrashcan
  ><dtml-call "REQUEST.set('id_prefix','')"
 ><dtml-else
  ><dtml-call "REQUEST.set('id_prefix','e')"
-></dtml-if>
+></dtml-if
 
-<dtml-let childNodes="getObjChildren(id_prefix,REQUEST)">
+><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px"
+><input type="hidden" name="lang" value="<dtml-var lang>"
+><input type="hidden" name="preview" value="preview"
+><input type="hidden" id="id_prefix" name="id_prefix"
+><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
+><input type="hidden" id="custom" name="custom" value=""
+
+><dtml-let childNodes="getObjChildren(id_prefix,REQUEST)">
 
 <dtml-call "REQUEST.set('pageCountMin',int(getConfProperty('ZMS.compactview.pagecount.min','99999')))">
 <dtml-call "SESSION.set('pageCountMax',REQUEST.form.get('sess_pageCountMax',SESSION.get('pageCountMax',REQUEST.get('pageCountMin'))))">
@@ -125,15 +58,19 @@ function focusSelectProcessResponse(data)
 </dtml-comment>
 <td class="zmiContainerColLeft form-small"
 ><dtml-if isTrashcan
-><img src="<dtml-var "display_icon(REQUEST)">" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
+><img src="<dtml-var "display_icon(REQUEST)">" class="zmiDisplayIcon"
 ><b><dtml-var "display_type(REQUEST)"></b
 ><dtml-else
-><a href="manage_properties?lang=<dtml-var lang>" class="zmi"
-><img src="<dtml-var "display_icon(REQUEST)">" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
-><b><dtml-var "getZMILangStr('CAPTION_PROPERTIES')%display_type(REQUEST)"></b
+><a href="manage_properties?lang=<dtml-var lang>" class="zmi" title="<dtml-var "getZMILangStr('TAB_PROPERTIES')">"
+><img src="<dtml-var "display_icon(REQUEST)">" class="zmiDisplayIcon"
+><b><dtml-var "display_type(REQUEST)"></b
 ></a
 ></dtml-if
-><br/><dtml-unless isTrashcan><select id="select_actions_<dtml-var id>" class="form-small" onfocus="focusSelectContainer(this,'<dtml-var id>')" onmouseover="focusSelectContainer(this,'<dtml-var id>')" onchange="submitSelect(this,'e','0')">
+><br/><dtml-unless isTrashcan
+  ><select id="select_actions_<dtml-var id>" class="form-small" 
+            onfocus="zmiExpandActionSelectContainer(this,'<dtml-var absolute_url>')" 
+            onmouseover="zmiExpandActionSelectContainer(this,'<dtml-var absolute_url>')" 
+            onchange="zmiChooseAction(this,'e','0')">
 <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST)"></option>
 </select>
 </dtml-unless>
@@ -155,7 +92,7 @@ function focusSelectProcessResponse(data)
    <dtml-if img>
     <div class="form-small">
      <dtml-var "getTitle(REQUEST)"><br />
-     <img src="<dtml-var "img.getHref(REQUEST)">" title="" border="0"
+     <img src="<dtml-var "img.getHref(REQUEST)">" border="0"
       <dtml-try>
        <dtml-if "int(img.width)>360">
         width="360" height="<dtml-var "int(360*int(img.height)/int(img.width))">"
@@ -192,7 +129,7 @@ function focusSelectProcessResponse(data)
 <!-- ###################################################################### -->
 </dtml-comment>
 
-<dtml-in "childNodes[:_.max(len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
+<dtml-in "childNodes[:max(len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
 <dtml-let oCurrent=sequence-item
           coverage="getDCCoverage(REQUEST)"
           accessRights="hasAccess(REQUEST)">
@@ -216,7 +153,7 @@ function focusSelectProcessResponse(data)
 ><dtml-var "display_type(REQUEST)"
 ></dtml-if
 ><dtml-if accessRights
-><br/><select id="select_actions_<dtml-var id>" class="form-small" onfocus="focusSelectChild(this,'<dtml-var id>')" onmouseover="focusSelectChild(this,'<dtml-var id>')" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+><br/><select id="select_actions_<dtml-var id>" class="form-small" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
 ><dtml-if "_['sequence-index']==pageElementCount and pageCount>pageCountMin"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=<dtml-var pageCountMin>#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_COLLAPSE')"></option
@@ -266,7 +203,7 @@ function focusSelectProcessResponse(data)
 <dtml-if sequence-start>
 <td rowspan="<dtml-var "len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
 <dtml-let actions="getParentNode().filtered_insert_actions()"
-><select class="form-small" onchange="submitSelectCompactview(this,'e','<dtml-var "getSortId()">')"
+><select class="form-small" onchange="zmiChooseAction(this,'e','<dtml-var "getSortId()">')"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=999999#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_EXPAND')"></option
 ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"> -----</option
@@ -322,9 +259,9 @@ function focusSelectProcessResponse(data)
 </dtml-if>
 <a href="<dtml-var clientId>/content/manage_main?lang=<dtml-var lang>" class="zmi"
 ><dtml-if "clientId in clientIds"
- ><img src="<dtml-var thisIcon>" title="" border="0" align="absmiddle" class="zmiDisplayIcon"
+ ><img src="<dtml-var thisIcon>" class="zmiDisplayIcon"
 ><dtml-else
- ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var thisIcon>)" title="ERROR" border="0" align="absmiddle" class="zmiDisplayIcon"
+ ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var thisIcon>)" title="ERROR" class="zmiDisplayIcon"
 ></dtml-if
 >./<dtml-var clientId>:</a>
 <b><dtml-if "clientId in clientIds"><dtml-var "_.getattr(home,clientId).title_or_id()"><dtml-else>None</dtml-if></b>
@@ -364,13 +301,17 @@ function focusSelectProcessResponse(data)
 
   function initPage() {
     var els;
-    $("input[name=ids:list][type=checkbox]").click( function(evt) { switchButtons(evt); } );
+    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
     els = $("tr[id*=tr_]>td.zmiContainerColCenter");
     els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
     els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });
     els.dblclick( function(evt) { zmiTrFollowDblClick(this); });
     els.attr( "title", "Double-click to edit!")
     els.css( "cursor", "pointer");
+    // Expand (populate) action-selects.
+    els = $("select[id*=select_actions_]:gt(0)");
+    els.focus( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
+    els.mouseover( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
   }
   initPage();
 

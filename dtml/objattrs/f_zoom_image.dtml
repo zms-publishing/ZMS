@@ -6,7 +6,7 @@
  </head>
  <body bgcolor="#ffffff" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
   <center><div align="center">
-   <a href="javascript:self.close()" title="<dtml-var "getLangStr('BTN_CLOSE',lang)">"><img src="<dtml-var src>" title="" border="0"/></a>
+   <a href="javascript:self.close()" title="<dtml-var "getLangStr('BTN_CLOSE',lang)">"><img src="<dtml-var src>" border="0"/></a>
   </div></center>
  </body>
 </html>

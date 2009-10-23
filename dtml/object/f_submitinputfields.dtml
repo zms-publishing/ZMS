@@ -100,11 +100,11 @@
            <input class="form-checkbox" type="checkbox" <dtml-if "coverage.find('global.')==0">checked="checked"</dtml-if> onclick="if (this.checked) { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang1.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='global.<dtml-var lang>'; } else { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang0.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='local.<dtml-var lang>'; }"
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
           <dtml-else>
-           <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "int(coverage.find('global.')==0)">.gif" border="0" align="absmiddle"
+           <input type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
           </dtml-if>
          <dtml-else>
-          <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "int(coverage.find('global.')==0)">.gif" border="0" align="absmiddle"
+           <input type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
          </dtml-if>
        <dtml-else>
@@ -113,7 +113,7 @@
       </dtml-let>
       </dtml-let>
      </dtml-if>
-     <img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="12" />
+     <img src="<dtml-var spacer_gif>" border="0" width="2" height="12" />
      </div>
     </td>
     </tr>
@@ -151,7 +151,7 @@
     <div class="form-element">
     <dtml-let actions="filtered_workflow_actions()">
      <dtml-if actions>
-      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')">
+      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')">
        <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
       </select>
      </dtml-if>

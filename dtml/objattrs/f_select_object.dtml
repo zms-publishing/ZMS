@@ -9,7 +9,7 @@
 
 <dtml-if ZMS_INSERT>
 <tr valign="top">
- <td class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if></td>
+ <td class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></td>
  <td class="form-element"><i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i></td>
 </tr>
 <dtml-else>
@@ -23,7 +23,7 @@
        onclick="toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=zmi_delimiter_<dtml-var "objAttr['id']">_toggle]');toggleCookie('<dtml-var cookie>');"
        ><img id="zmi_delimiter_<dtml-var "objAttr['id']">_toggle" border="0" align="absmiddle" 
         <dtml-if "REQUEST.cookies.get(cookie)">src="<dtml-var MISC_ZMS>pl.gif" title="+"<dtml-else>src="<dtml-var MISC_ZMS>mi.gif" title="-"</dtml-if>>
-       <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+       <dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if>
       </div>
       <div class="form-small zmi_col_right">
        <dtml-var "'%i %s\n'%(len(res),getZMILangStr('ATTR_OBJECTS'))">
@@ -34,9 +34,7 @@
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
      ><dtml-let accessRights="hasAccess(REQUEST)" actions="filtered_container_actions_objChildren(objAttr,str(id)+'/',REQUEST)"
-       ><dtml-if actions
-        ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="switchButtons()"
-       ></dtml-if
+       ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
        ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
         ><dtml-if accessRights><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"></dtml-if
         ><dtml-var f_display_icon
@@ -48,12 +46,10 @@
         ><dtml-if accessRights></a></dtml-if
        ></dtml-let
       ><dtml-if accessRights
-       ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',True)"
-        ><dtml-if actions
-         ><select class="form-small" onchange="submitSelect(this,'<dtml-var id>','<dtml-var "getSortId()">')"
-          ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
-         ></select
-        ></dtml-if
+       ><dtml-if actions
+        ><select id="select_actions_<dtml-var id>" class="form-small" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+         ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
+        ></select
        ></dtml-if
       ></dtml-if
      ></dtml-let
@@ -83,8 +79,8 @@
    <tr id="tr_<dtml-var "objAttr['id']">">
      <td colspan="2" class="zmiNeutralColorMedium0 zmiDelimiter">
       <div class="form-label zmi_col_left">
-       <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif" title=""/>
-       <dtml-var elLabel><dtml-if required><sup style="color:red">*</sup></dtml-if>
+       <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif"/>
+       <dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if>
       </div>
       <dtml-comment>
       <!-- ##### actions ##### -->
@@ -92,11 +88,9 @@
       <div class="form-element zmi_col_right">
        <dtml-if "objAttr.get('repetitive',0)==1 or len(getObjChildren(objAttr['id'],REQUEST))==0"
         ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
-         ><dtml-if "REQUEST.get('ZMS_CONTENT_EDITABLE',True)"
-          ><select class="form-small" onchange="submitSelect(this,'<dtml-var "objAttr['id']">','9900')">
-           <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
-          </select
-         ></dtml-if
+         ><select class="form-small" onchange="zmiChooseAction(this,'<dtml-var "objAttr['id']">','9900')">
+          <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
+         </select
         ></dtml-let
        ></dtml-if>
       </div>

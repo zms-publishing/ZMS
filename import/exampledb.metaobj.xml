@@ -291,9 +291,9 @@
   <td nowrap="nowrap" width="120" align="center" style="border-left:1px solid gray; border-top:1px solid gray; border-right:1px solid black;" class="primColorLight0">
    <a href="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST),{nav_key:key})">" class="navMicro"><b>&nbsp;<dtml-var value>&nbsp;</b></a>
   </td>
-  <td width="1" style="border-bottom:1px solid gray; background-color:#AAAAAA"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
-  <td width="1" style="border-bottom:1px solid gray; background-color:#CCCCCC"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
-  <td width="1" style="border-bottom:1px solid gray; background-color:#EEEEEE"><img src="<dtml-var spacer_gif>" title="" border="0" width="1"></td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#AAAAAA"><img src="<dtml-var spacer_gif>" border="0" width="1"></td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#CCCCCC"><img src="<dtml-var spacer_gif>" border="0" width="1"></td>
+  <td width="1" style="border-bottom:1px solid gray; background-color:#EEEEEE"><img src="<dtml-var spacer_gif>" border="0" width="1"></td>
   <td nowrap="nowrap" width="356" align="right" style="border-bottom:1px solid gray;">
    <dtml-in "_.range(0,len(nav)/2)">
     <dtml-let j="_['sequence-item']" key="nav[j*2]" value="nav[j*2+1]">

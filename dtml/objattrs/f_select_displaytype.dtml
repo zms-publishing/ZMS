@@ -30,7 +30,7 @@
     <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
     <td valign="middle"
      ><a href="javascript:displaytypeBtnClick('<dtml-var fmName>','<dtml-var key>',<dtml-var value>)" class="button"
-      ><img name="displaytypeBtn_<dtml-var fmName>_<dtml-var value>" title="" border="0" align="absmiddle"
+      ><img name="displaytypeBtn_<dtml-var fmName>_<dtml-var value>" border="0" align="absmiddle"
        <dtml-if "dctDisplaytype.get(str(displaytype),'top')==key">
         src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"
        <dtml-else>
@@ -44,12 +44,12 @@
    <dtml-in "_.range(len(displaytypes)/2)">
     <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
      <dtml-if "dctDisplaytype.get(str(displaytype),'left')==key">
-      <td valign="middle"><img title="" border="0" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"></td>
+      <td valign="middle"><img border="0" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"></td>
      </dtml-if>
     </dtml-let>
    </dtml-in>
   </dtml-if>
   <td> &nbsp; </td>
-  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" title="" border="0" align="absmiddle"></td>
+  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" border="0" align="absmiddle"></td>
  
 </dtml-let>

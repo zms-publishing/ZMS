@@ -508,7 +508,7 @@ function mms_normalize_rows(el_tbody) {
        <!-- Insert Attribute -->
        <tr valign="middle">
         <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
-        <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" /></td>
+        <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="16" height="16" style="vertical-align:middle" /></td>
         <td class="form-small" style="vertical-align:middle" ><input class="form-small" type="text" name="attr_id" value="" size="12" /></td>
         <td class="form-small">&nbsp;</td>
         <td class="form-small" style="vertical-align:middle"><input class="form-small" type="text" name="attr_label" value="" size="12" /></td>
@@ -547,7 +547,7 @@ function mms_normalize_rows(el_tbody) {
           <code><dtml-var id> <dtml-var "column.get('description','')"></code> 
           <dtml-if "column.get('type') is not None and column.get('type')!='?'"><b>(<dtml-var "column.get('type')">)</b></dtml-if>
           <dtml-if stereotypes><dtml-in stereotypes>&gt;<dtml-var sequence-item></dtml-in></dtml-if>
-          (<em><dtml-var label><dtml-if mandatory><sup style="color:red">*</sup></dtml-if></em>)
+          (<em><dtml-var label><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if></em>)
          </div>
          </dtml-let>
         </dtml-in>

@@ -442,7 +442,7 @@ class ObjAttrs:
           wrap = 'off'
         if disabled: 
           css += '-disabled'
-        cols = 35
+        cols = None
         rows = 5
         extra = ' onselect="storeCaret(this)"'
         inp = []
@@ -500,7 +500,7 @@ class ObjAttrs:
           elTextName = ''
           return self.getUrlInput( fmName, elName, elTextName, size, value, enabled, REQUEST, css )
         else:
-          size = 20
+          size = None
           extra = ''
           if obj_attr.has_key('size'):
             size = obj_attr['size']
@@ -1126,7 +1126,11 @@ class ObjAttrs:
             if ref_obj.isPage():
               rel_url = rel_url + '/index_%s.html'%lang
             else:
-              rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
+              ref_obj_file = ref_obj.getObjProperty('file',self.REQUEST)
+              if isinstance(ref_obj_file,_blobfields.MyFile):
+                rel_url = rel_url[ : rel_url.rfind( '/')] + '/' + rel_url[ rel_url.rfind( '/') + 1: ] + '/' + ref_obj_file.getFilename()
+              else:
+                rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
           value = value[: i + 6] + rel_url + value[ j :]
       
       #-- Url-Fields

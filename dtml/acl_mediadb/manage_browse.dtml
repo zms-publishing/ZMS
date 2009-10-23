@@ -37,14 +37,14 @@
   >
   <dtml-let ob=sequence-item>
    <dtml-if "ob['type']=='d'">
-     <td><img src="misc_/OFSP/Folder_icon.gif" title="" border="0"></td>
+     <td><img src="misc_/OFSP/Folder_icon.gif" border="0"></td>
      <td><div class="list-item"><a href="?path=<dtml-var "urlQuote(ob['path']+ob['file'])">"><dtml-var "ob['file']"></a></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item"><dtml-var "getDateStr(ob['mtime'])"></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item">&nbsp;</div></td>
    <dtml-else>
-     <td><img src="misc_/OFSP/File_icon.gif" title="" border="0"></td>
+     <td><img src="misc_/OFSP/File_icon.gif" border="0"></td>
      <td><div class="list-item"><a href="manage_index_html?path=<dtml-var "urlQuote(ob['path']+ob['file'])">"><dtml-var "ob['file']"></a></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item"><dtml-var "getDateStr(ob['mtime'])"></div></td>

@@ -13,10 +13,10 @@
  <input type="hidden" name="del_<dtml-var elName>" value="0">
  <table cellspacing="0" cellpadding="0" border="0" width="100%">
  <!-- Border.Top -->
- <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td></tr>
+ <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td></tr>
  <tr>
   <!-- Border.Left -->
-  <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td>
+  <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
   <td valign="top" width="100%">
     <!-- Title -->
     <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -53,10 +53,10 @@
     </dtml-if>
    </td>
    <!-- Border.Right -->
-   <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td>
+   <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
  </tr>
  <!-- Border.Bottom -->
- <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1"></td></tr>
+ <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td></tr>
  </table>
 <dtml-else>
   <dtml-if "lang in  getLanguages(REQUEST)">

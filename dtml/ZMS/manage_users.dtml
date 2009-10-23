@@ -302,7 +302,7 @@
       <td class="form-text" colspan="4" valign="middle">
        <table cellspacing="0" cellpadding="1" border="0">
        <tr valign="top">
-        <td rowspan="2"><img src="p_/User_icon" border="0" title="" align="absmiddle" /></td>
+        <td rowspan="2"><img src="p_/User_icon" border="0" align="absmiddle" /></td>
         <td><div class="form-label"><dtml-var userName></div></td>
        </tr>
        <tr valign="top">
@@ -353,7 +353,7 @@
          <dtml-in "userFldr.getLDAPSchema()">
           <dtml-if sequence-start>
            <tr valign="top">
-            <td class="form-label" nowrap="nowrap"><img src="<dtml-var "userFldr.icon">" title="" border="0" align="absmiddle" /> <dtml-var "userFldr.meta_type"></td>
+            <td class="form-label" nowrap="nowrap"><img src="<dtml-var "userFldr.icon">" border="0" align="absmiddle" /> <dtml-var "userFldr.meta_type"></td>
             <td class="form-element">
              <table cellspacing="1" cellpadding="1" border="0" width="100%" class="zmiNeutralColorStrong0">
              <colgroup>
@@ -381,12 +381,12 @@
         <dtml-unless "localUserFldr.meta_type=='LDAPUserFolder'">
         <!-- Password -->
         <tr valign="middle">
-         <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><sup style="color:red">*</sup></td>
+         <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><dtml-var FORM_LABEL_MANDATORY></td>
          <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='password',value='******')"></td>
         </tr>
         <!-- Password (Confirm) -->
         <tr valign="middle">
-         <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><sup style="color:red">*</sup></td>
+         <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><dtml-var FORM_LABEL_MANDATORY></td>
          <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='confirm',value='******')"></td>
         </tr>
         </dtml-unless>
@@ -479,7 +479,7 @@
        <tr valign="middle" class="zmiNeutralColorLight0">
         <td class="form-label">
          <img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
-         <dtml-var "getZMILangStr('ATTR_NODE')"> <sup style="color:red">*</sup></td>
+         <dtml-var "getZMILangStr('ATTR_NODE')"> <dtml-var FORM_LABEL_MANDATORY></td>
         <td class="form-small"><dtml-var "getUrlInput(fmName='form1',elName='node',elTextName='',size=25,value='{$}',enabled=1,REQUEST=REQUEST,css='form-small',extra=' onclick='+QUOT+'return manage_browseObjsBtnClick(\'form1\',\'node\',\'\',\''+lang+'\')'+QUOT)"></td>
        </tr>
        <tr valign="middle" class="zmiNeutralColorLight0">
@@ -494,7 +494,7 @@
            <dtml-if multilang>
             <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_LANGS')"></b></td>
             <td rowspan="2" class="form-small">&nbsp;</td>
-            <td rowspan="2" class="zmiNeutralColorMedium0"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="1" /></td>
+            <td rowspan="2" class="zmiNeutralColorMedium0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1" /></td>
             <td rowspan="2" class="form-small">&nbsp;</td>
            </dtml-if>
            <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ROLES')"></b></td>
@@ -612,7 +612,7 @@
        <dtml-else>
         <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
          <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-         <td class="form-small"><img src="<dtml-var MISC_ZMS>radio_disabled0.gif" title="" border="0" align="middle" /></td>
+         <td class="form-small"><input type="radio" disabled="disabled" checked="checked"/></td>
          <td class="form-small" colspan="3"><dtml-var name></td>
         </tr>
        </dtml-if>
@@ -638,11 +638,11 @@
     <td class="form-element">
      <dtml-let context="this()">
       <dtml-var "getTextInput(fmName='form1',elName='newId',size=15,value='')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_ID')"><sup style="color:red">*</sup></div>
+      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_ID')"><dtml-var FORM_LABEL_MANDATORY></div>
       <dtml-var "getPasswordInput(fmName='form1',elName='newPassword')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><sup style="color:red">*</sup></div>
+      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><dtml-var FORM_LABEL_MANDATORY></div>
       <dtml-var "getPasswordInput(fmName='form1',elName='newConfirm')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><sup style="color:red">*</sup></div>
+      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><dtml-var FORM_LABEL_MANDATORY></div>
       <dtml-var "getTextInput(fmName='form1',elName='newEmail',size=15,value='')">
       <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_EMAIL')"></div>
      </dtml-let>
@@ -754,7 +754,7 @@
        <tr valign="middle" class="zmiNeutralColorLight0">
         <td class="form-label">
          <img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_NODE')">" border="0" align="middle" class="zmiNeutralColorMedium0" />
-         <dtml-var "getZMILangStr('ATTR_NODE')"> <sup style="color:red">*</sup>
+         <dtml-var "getZMILangStr('ATTR_NODE')"> <dtml-var FORM_LABEL_MANDATORY>
         </td>
         <td class="form-small"><dtml-var "getUrlInput(fmName='form2',elName='node',elTextName='',size=15,value='{$}',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
        </tr>

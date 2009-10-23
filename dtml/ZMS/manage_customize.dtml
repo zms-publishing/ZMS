@@ -422,7 +422,7 @@
      <dtml-if "ob is not None">
       <dtml-var "f_breadcrumbs(_,_,objectPathElements=ob.breadcrumbs_obj_path(),no_icon=1,REQUEST=REQUEST)">
      <dtml-else>
-      <img src="<dtml-var MISC_ZMS>internal_link_broken.gif" title="" alt="" border="0" align="absmiddle"/> <dtml-var node>
+      <img src="<dtml-var MISC_ZMS>internal_link_broken.gif" alt="" border="0" align="absmiddle"/> <dtml-var node>
      </dtml-if>
     </div>
    </dtml-let>

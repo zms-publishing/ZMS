@@ -51,8 +51,9 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSSqlDb """
   
   ##### Create ####
-  id_prefix = _globals.id_prefix(REQUEST.get('id','e'))
-  obj = ZMSSqlDb(self.getNewId(id_prefix),_sort_id+1)
+  id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+  new_id = self.getNewId(id_prefix)
+  obj = ZMSSqlDb(new_id,_sort_id+1)
   self._setObject(obj.id, obj)
   
   obj = getattr(self,obj.id)
@@ -459,13 +460,13 @@ class ZMSSqlDb(ZMSObject):
                   colType = 'datetime'
                 elif colDescr.find('CHAR') >= 0 or \
                      colDescr.find('STRING') >= 0:
-                  colSize = 50
+                  colSize = 128
                   i = colDescr.find('(')
                   if i >= 0:
                     j = colDescr.find(')')
                     if j >= 0:
                       colSize = int(colDescr[i+1:j])
-                  if colSize > 50:
+                  if colSize > 128:
                     colType = 'text'
                   else:
                     colType = 'string'

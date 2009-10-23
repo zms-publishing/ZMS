@@ -48,14 +48,14 @@
   >
   <dtml-let ob="_['sequence-item']">
    <dtml-if "ob['type']=='d'">
-     <td><img src="misc_/OFSP/Folder_icon.gif" title="" border="0"></td>
+     <td><img src="misc_/OFSP/Folder_icon.gif" border="0"></td>
      <td><div class="list-item"><a href="?path=<dtml-var "url_quote(ob['path']+ob['file'])">" class="zmi"><dtml-var "ob['file']"></a></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item">&nbsp;</div></td>
    <dtml-else>
-     <td><img src="misc_/OFSP/File_icon.gif" title="" border="0"></td>
+     <td><img src="misc_/OFSP/File_icon.gif" border="0"></td>
      <td><div class="list-item"><a href="manage_index_html?path=<dtml-var "url_quote(ob['path']+ob['file'])">" class="zmi" target="_blank"><dtml-var "ob['file']"></a></div></td>
      <td>&nbsp;</td>
      <td><div class="list-item"><dtml-var "getLangFmtDate(ob['mtime'])"></div></td>

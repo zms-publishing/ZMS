@@ -511,7 +511,7 @@ function changeType( el)
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></td>
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_DISPLAY')"></b></td>
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_TYPE')"></b></td>
-        <td class="form-small" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center"><strong>(<sup style="color:red">*</sup>)</strong></td>
+        <td class="form-small" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center"><strong>(<dtml-var FORM_LABEL_MANDATORY>)</strong></td>
         <dtml-if "metaObj['type']=='ZMSRecordSet'">
          <td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>table_col.gif" title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" border="0" /></td>
         <dtml-else>
@@ -610,13 +610,13 @@ function changeType( el)
               /></dtml-if
              ></dtml-with
             ><dtml-elif "oAttr['type'] in metaObjIds"
-             ><img src="<dtml-var "display_icon(REQUEST,oAttr['type'])">" title="" border="0" style="vertical-align:middle" 
+             ><img src="<dtml-var "display_icon(REQUEST,oAttr['type'])">" border="0" style="vertical-align:middle" 
             /><dtml-elif "oAttr['type'] == 'resource'"
              ><dtml-let f="oAttr['custom']"
               ><dtml-if f
                ><img src="<dtml-var "getMimeTypeIconSrc(f.content_type)">" title="<dtml-var "f.content_type">" border="0" style="vertical-align:middle" 
               /><dtml-else
-               ><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" 
+               ><img src="<dtml-var spacer_gif>" border="0" width="16" height="16" style="vertical-align:middle" 
               /></dtml-if
              ></dtml-let
             ><dtml-elif "oAttr['type']=='method'"
@@ -763,15 +763,15 @@ function changeType( el)
             ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
             ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_keys_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" title="" align="bottom" /></a
+            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_keys_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a
            ><dtml-elif "oAttr['type'] in ['constant']"
             ><img src="<dtml-var spacer_gif>" alt="" border="0" width="18" height="16"
             /><textarea title="Default" class="form-small" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"><dtml-var "oAttr.get('custom','')" html_quote></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" title="" align="bottom" /></a
+            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a
            ><dtml-elif "oAttr['type'] in ['amount','color','date','datetime','float','int','string','text','time','url']"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle" 
             /><textarea title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px; color:blue;"><dtml-var "oAttr.get('default','')" html_quote></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" title="" align="bottom" /></a
+            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a
            ><dtml-elif "oAttr['type'] in ['boolean']"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"
             /><select title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">"
@@ -794,7 +794,7 @@ function changeType( el)
        <!-- Insert Attribute -->
        <tr valign="middle">
         <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"/></td>
-        <td><img src="<dtml-var spacer_gif>" title="" border="0" width="16" height="16" style="vertical-align:middle" /></td>
+        <td><img src="<dtml-var spacer_gif>" border="0" width="16" height="16" style="vertical-align:middle" /></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10" style="width:80px;"></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_name" value="" size="15" style="width:120px;"></td>
         <td class="form-small">
@@ -1209,7 +1209,7 @@ function changeType( el)
 </dtml-comment>
  <dtml-if "REQUEST.get('id','')=='' and REQUEST.get('section','import')=='import'">
   <tr>
-   <td colspan="7"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_IMPORT'))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
    <td colspan="7">
@@ -1240,11 +1240,11 @@ function changeType( el)
       ><dtml-in packages
        ><dtml-let package=sequence-item package_id="id_quote(package)"
          ><div class="form-small">
-          <a href="javascript:slctBtnClick(false)" class="button"
-           ><img name="slctNoneBtn" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">" border="0" align="absmiddle"
+          <a href="javascript:selectCheckboxes($('#slctnoneBtn').parents('form'),false)" class="button"
+           ><img id="slctnoneBtn" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">" border="0" align="absmiddle"
           ></a
-          ><a href="javascript:slctBtnClick(true)" class="button"
-          ><img name="slctAllBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle"
+          ><a href="javascript:selectCheckboxes($('#slctallBtn').parents('form'),true)" class="button"
+           ><img id="slctallBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle"
           ></a
           ><input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
           ><dtml-if "not metaObjMap.get(package)"

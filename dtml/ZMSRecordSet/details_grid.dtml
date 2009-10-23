@@ -111,7 +111,7 @@
            <dtml-let row=sequence-item>
             <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var "metaobj_record_summary(_,_,metaObj=metaObjDetail)">
-              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],max(int(200.0/len(metaObj['attrs'])),20))">
               <dtml-call "REQUEST.set('break',1)">
             </dtml-if>
            </dtml-let>
@@ -134,7 +134,7 @@
 
        <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-elif "type not in ['constant']">
-        <dtml-var "string_maxlen(str(v),_.max(int(200.0/len(metaObjDetail['attrs'])),20))">
+        <dtml-var "string_maxlen(str(v),max(int(200.0/len(metaObjDetail['attrs'])),20))">
        </dtml-if>&nbsp;
 
        <dtml-comment>#####</dtml-comment>

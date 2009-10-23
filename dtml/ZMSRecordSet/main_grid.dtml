@@ -14,7 +14,7 @@
 ###############################################################################
 </dtml-comment>
 
-<dtml-let zt0="DateTime().timeTime()" metaobjIds="getMetaobjIds()" obj_attrs="[]">
+<dtml-let zt0="DateTime().timeTime()" metaobjIds="getMetaobjIds()" obj_attrs="[]" vs="{}">
 
  <dtml-in "metaObj['attrs']" mapping
   ><dtml-let obj_attr="getObjAttr(id)"
@@ -29,9 +29,6 @@
  ></dtml-in>
 
  <!----// BO Batch-Navigation //---->
- <dtml-if "'export' in grid_options">
-  <a href="#"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1" onclick="gridform.submit()"></a>
- </dtml-if>
  <dtml-var "f_recordset_nav(_,_,grid_url=URL)">
  <!----// EO Batch-Navigation (<dtml-var "_.float(int((ZopeTime().timeTime()-zt0)*100.0)/100.0)"> secs.) //---->
 
@@ -46,11 +43,24 @@
  </dtml-if>
 
 <table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong">
+
+<dtml-if "'export' in grid_options">
+ <tr>
+  <td colspan="<dtml-var "3+len(obj_attrs)">">
+   <a href="#"
+    ><img 
+      class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+      src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" onclick="gridform.submit()"
+  ></a>
+  </td>
+</tr>
+</dtml-if>
+
 <tr class="neutralColorMedium">
  <th class="form-small">
   <dtml-if "'delete' in grid_options or 'export' in grid_options"
-   ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
-    ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
+   ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0?'checked':'';if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parents('form'),slct);" class="button"
+    ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" border="0"
    ></a
   </dtml-if>
  </th>
@@ -137,7 +147,7 @@
       ><tr
        ><td
         ><dtml-if "_['res-index']==0"
-         ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
+         ><img src="<dtml-var MISC_ZMS>spacer.gif" border="0" class="hbutton"
         ><dtml-else
          ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=move_up" class="hbutton"
           ><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0"
@@ -148,7 +158,7 @@
       ><tr
        ><td
         ><dtml-if "_['res-index']==len(res)-1"
-         ><img src="<dtml-var MISC_ZMS>spacer.gif" title="" border="0" class="hbutton"
+         ><img src="<dtml-var MISC_ZMS>spacer.gif" border="0" class="hbutton"
         ><dtml-else
          ><a href="<dtml-var URL>?lang=<dtml-var lang>&qsize:int=<dtml-var qsize>&qorder=<dtml-var qorder>&qorderdir=<dtml-var qorderdir>&qstart=<dtml-var qstart>&qindex:int=<dtml-var sequence-index>&ZMS_ACTION=move_down" class="hbutton"
           ><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0"
@@ -173,15 +183,20 @@
    ></tr
    ></table
   ></td>
+
+  <dtml-comment>##### Grid.Row #####</dtml-comment>
   <td class="form-small" align="right" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if>><dtml-var "_['sequence-index']+1">.</td>
+
   <dtml-let row=sequence-item>
    <dtml-in obj_attrs mapping>
     <dtml-let obj_attr=sequence-item v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
+
       <td class="form-small" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if><dtml-if "type in ['amount', 'float', 'int']">align="right"</dtml-if>>
 
        <dtml-comment>##### Grid.DateTime #####</dtml-comment>
        <dtml-if "type in ['date','datetime','time']">
         <dtml-var "getLangFmtDate(v,manage_lang,'%s_FMT'%type.upper())">
+
        <dtml-comment>##### Grid.Url #####</dtml-comment>
        <dtml-elif "type=='url'">
         <dtml-let ob="getLinkObj(v,REQUEST)">
@@ -195,6 +210,7 @@
           </dtml-if>
          </dtml-if>
         </dtml-let>
+
        <dtml-comment>##### Grid.Image #####</dtml-comment>
        <dtml-elif "type=='image'">
         <dtml-if v>
@@ -206,6 +222,7 @@
           </dtml-try>
          </center>
         </dtml-if>
+
        <dtml-comment>##### Grid.File #####</dtml-comment>
        <dtml-elif "type=='file'">
         <dtml-if v>
@@ -213,9 +230,9 @@
           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getMimeTypeIconSrc()">" title="<dtml-var "v.getFilename()">" border="0"></a>
          </center>
         </dtml-if>
+
        <dtml-comment>##### Grid.Foreign-Key #####</dtml-comment>
        <dtml-elif "type in metaobjIds">
-       
         <dtml-in "getParentNode().getChildNodes(REQUEST,type)">
          <dtml-let metaObj="getMetaobj(meta_id)"
                    res_id="metaObj['attrs'][0]['id']"
@@ -227,7 +244,7 @@
             <dtml-try>
              <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var metaobj_record_summary>
-              <dtml-var "string_maxlen(REQUEST['summary'],_.max(int(200.0/len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],max(int(200.0/len(metaObj['attrs'])),20))">
               <dtml-call "REQUEST.set('break',1)">
              </dtml-if>
             <dtml-except></dtml-try>
@@ -240,7 +257,7 @@
           </dtml-if>
          </dtml-let>
         </dtml-in>
-        
+
       <dtml-comment>##### Grid.Amount #####</dtml-comment>
        <dtml-elif "type=='amount'">
         <dtml-try>
@@ -248,14 +265,18 @@
         <dtml-except>
          <dtml-var "getConfProperty('ZMS.locale.amount.unit','EUR')">&nbsp;<dtml-var v>
         </dtml-try>
-       
+
       <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-else>
-        <dtml-var "string_maxlen(str(v),_.max(int(200.0/len(metaObj['attrs'])),20))">
+        <dtml-var "string_maxlen(str(v),max(int(200.0/len(metaObj['attrs'])),20))">
        </dtml-if>&nbsp;
-       <dtml-comment>#####</dtml-comment>
 
       </td>
+
+    <dtml-if "type in ['int','float']"
+     ><dtml-call "operator_setitem(vs,id,vs.get(id,[])+[v])"
+    ></dtml-if>
+
     </dtml-let>
    </dtml-in>
   </dtml-let>
@@ -263,13 +284,38 @@
  </dtml-let>
  </dtml-in>
  <dtml-call "REQUEST.set('qpage',qpage+1)">
+
+<dtml-if "'statistics' in grid_options">
+<dtml-if vs>
+ <tr>
+  <td colspan="3"><img src="<dtml-var spacer_gif>" alt="" border="0"></td>
+ <dtml-in obj_attrs mapping>
+  <dtml-let obj_attr=sequence-item l="vs.get(id,[])">
+   <td class="form-small">
+    <dtml-try>
+     <dtml-if l>
+      <dtml-let meanstdv="zmsmathutil.meanstdv(l)">
+       <span style="font-family: serif; font-style: italic; text-decoration: overline;" title="AVG">x</span>=<dtml-var "meanstdv[0]">&plusmn;<dtml-var "meanstdv[1]">
+      </dtml-let>
+     </dtml-if>
+    <dtml-except></dtml-try>
+   </td>
+  </dtml-let>
+ </dtml-in>
+ </tr>
+</dtml-if>
+</dtml-if>
+
  </table>
+
  <dtml-if "'export' in grid_options">
   </form>
  </dtml-if>
+ 
  <dtml-unless res>
   <div class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)">!</div>
  </dtml-unless>
+ 
  <!----// EO Current Batch (<dtml-var "_.float(int((ZopeTime().timeTime()-zt0)*100.0)/100.0)"> secs.) //---->
 
  <!----// BO Batch-Navigation //---->

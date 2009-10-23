@@ -191,7 +191,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
  <dtml-let metaObjAttr="getMetaobjAttr(meta_id,_['sequence-item'])">
   <dtml-if "metaObjAttr['id'] in valid_ids">
    <tr>
-    <td><div class="form-label"><dtml-var "getLangStr(metaObjAttr['id'],lang)"><dtml-if "metaObjAttr.get('mandatory',0)==1"><sup style="color:red">*</sup></dtml-if></div></td>
+    <td><div class="form-label"><dtml-var "getLangStr(metaObjAttr['id'],lang)"><dtml-if "metaObjAttr.get('mandatory',0)==1"><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
     <td><dtml-var "getObjInput(metaObjAttr['id'],REQUEST)">
    </tr>
   </dtml-if>
@@ -200,7 +200,7 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 </table>
 <hr size="1" />
 <p><dtml-var "getLangStr('LMS_REG_HINT',lang)">: 
-[<sup style="color:red">*</sup>] <dtml-var "getLangStr('LMS_REG_MANDATORY',lang)">. <br />
+[<dtml-var FORM_LABEL_MANDATORY>] <dtml-var "getLangStr('LMS_REG_MANDATORY',lang)">. <br />
 <dtml-var "getLangStr('LMS_REG_CONFIRM_ANNOUNCE',lang)">.<br />
 <hr size="1" />
 <p class="form-element">
@@ -1343,15 +1343,15 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
     <dtml-if break>
       <span class="navMicro" style="color:gray"
        ><img src="<dtml-if "learningresourcetype in ['Exam','Self Assessment']"><dtml-var "getObjProperty('icon_exam',REQUEST).getHref(REQUEST)"><dtml-elif "learningresourcetype=='lecture.document'"><dtml-var MISC_ZMS>zmsdocument_disabled.gif<dtml-else><dtml-var MISC_ZMS>zmsfolder_disabled.gif</dtml-if>" 
-             title="" border="0" align="absmiddle"/> <dtml-if "learningresourcetype in ['Exam','Self Assessment'] and getObjProperty('mandatoryexam',REQUEST)"><span style="color:red;font-weight:bold">!</span> </dtml-if><dtml-var title></span>
+             border="0" align="absmiddle"/> <dtml-if "learningresourcetype in ['Exam','Self Assessment'] and getObjProperty('mandatoryexam',REQUEST)"><span style="color:red;font-weight:bold">!</span> </dtml-if><dtml-var title></span>
      <dtml-else>
       <a href="<dtml-var "url_append_params(REQUEST['targetUrl'],{'scoId':id})">" class="navMicro"
        ><img src="<dtml-if "learningresourcetype in ['Exam','Self Assessment']"><dtml-var "getObjProperty('icon_exam',REQUEST).getHref(REQUEST)"><dtml-elif "learningresourcetype=='lecture.document'"><dtml-var MISC_ZMS>ico_document.gif<dtml-else><dtml-var MISC_ZMS>ico_folder.gif</dtml-if>" 
-             title="" border="0" align="absmiddle" /><dtml-if "learningresourcetype in ['Exam','Self Assessment'] and getObjProperty('mandatoryexam',REQUEST)"><span style="color:red;font-weight:bold">!</span> </dtml-if>
+             border="0" align="absmiddle" /><dtml-if "learningresourcetype in ['Exam','Self Assessment'] and getObjProperty('mandatoryexam',REQUEST)"><span style="color:red;font-weight:bold">!</span> </dtml-if>
         <dtml-var title></a>
       <dtml-if "id == activeScoId">
        <img src="<dtml-var "getObjProperty('icon_this',REQUEST).getHref(REQUEST)">" 
-            title="" border="0" align="absmiddle" />
+            border="0" align="absmiddle" />
       </dtml-if>
       <dtml-if reset>
        <dtml-if actionId>

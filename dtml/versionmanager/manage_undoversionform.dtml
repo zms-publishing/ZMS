@@ -252,8 +252,8 @@ function previewImgBtnProcessResponse(data)
       <dtml-if "len(getWfStates(REQUEST)) > 0 and isVersionContainer() and hasObjModifiedChildren(REQUEST)">
        <dtml-let version_nr="'%i.%i.%i'%(getObjProperty('master_version',REQUEST),getObjProperty('major_version',REQUEST),1)">
        <tr valign="top">
-        <td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-        <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
+        <td class="zmiHSep"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+        <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" border="0" width="2" height="2"></td>
        </tr>
        <tr valign="top" id="tr_<dtml-var "id_quote(version_nr)">">
         <dtml-comment>
@@ -281,20 +281,20 @@ function previewImgBtnProcessResponse(data)
             <dtml-with objChild>
              <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
              <dtml-if "isActive(REQUEST)">
-              <img src="<dtml-var spacer_gif>" title="" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
+              <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
               <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
               <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
               v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
               <dtml-if "getObjProperty('change_dt',REQUEST) > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))"></dtml-if>
-              <dtml-if "inObjStates(['STATE_NEW'],REQUEST)"
-              ><img src="<dtml-var MISC_ZMS>state_new.gif" title="<dtml-var "getZMILangStr('STATE_NEW')">" border="0" align="absmiddle"
-              ></dtml-if
-              ><dtml-if "inObjStates(['STATE_MODIFIED'],REQUEST)"
-              ><img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"
-              ></dtml-if
-              ><dtml-if "inObjStates(['STATE_DELETED'],REQUEST)"
-              ><img src="<dtml-var MISC_ZMS>state_deleted.gif" title="<dtml-var "getZMILangStr('STATE_DELETED')">" border="0" align="absmiddle"
-              ></dtml-if>
+              <dtml-if "inObjStates(['STATE_NEW'],REQUEST)">
+               <img src="<dtml-var MISC_ZMS>state_new.gif" title="<dtml-var "getZMILangStr('STATE_NEW')">" border="0" align="absmiddle"/>
+              </dtml-if>
+              <dtml-if "inObjStates(['STATE_MODIFIED'],REQUEST)">
+               <img src="<dtml-var MISC_ZMS>state_modified.gif" title="<dtml-var "getZMILangStr('STATE_MODIFIED')">" border="0" align="absmiddle"/>
+              </dtml-if>
+              <dtml-if "inObjStates(['STATE_DELETED'],REQUEST)">
+               <img src="<dtml-var MISC_ZMS>state_deleted.gif" title="<dtml-var "getZMILangStr('STATE_DELETED')">" border="0" align="absmiddle"/>
+              </dtml-if>
               <br/>
              </dtml-if>
             </dtml-with>
@@ -317,8 +317,8 @@ function previewImgBtnProcessResponse(data)
        </dtml-comment>
        <dtml-if "isPage()">
        <tr valign="top">
-        <td align="right"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"/></div></td>
+        <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
        </dtml-if>
        </dtml-let>
@@ -350,8 +350,8 @@ function previewImgBtnProcessResponse(data)
       <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
       <dtml-let oCurrentVersionNr="'%i.%i.%i'%(getObjProperty('master_version',REQUEST),getObjProperty('major_version',REQUEST),getObjProperty('minor_version',REQUEST))">
       <tr valign="top">
-       <td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-       <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
+       <td class="zmiHSep"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+       <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" border="0" width="2" height="2"></td>
       </tr>
       <tr valign="top" id="tr_<dtml-var "id_quote(version_nr)">">
        <dtml-comment>
@@ -379,7 +379,7 @@ function previewImgBtnProcessResponse(data)
            <dtml-with objChild>
             <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
             <dtml-if "isActive(REQUEST)">
-             <img src="<dtml-var spacer_gif>" title="" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
+             <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
              <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
              <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
              v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
@@ -411,8 +411,8 @@ function previewImgBtnProcessResponse(data)
       </dtml-comment>
       <dtml-if "isPage()">
        <tr valign="top">
-        <td align="right"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"/></div></td>
+        <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
       </dtml-if>
       </dtml-let>
@@ -420,8 +420,8 @@ function previewImgBtnProcessResponse(data)
     <dtml-else>
      <dtml-let version_nr="'%i.%i.%i'%(change_history_item.get('master_version',0),change_history_item.get('major_version',0),0)">
       <tr valign="top">
-       <td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-       <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
+       <td class="zmiHSep"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+       <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" border="0" width="2" height="2"></td>
       </tr>
       <tr valign="top" id="tr_<dtml-var "id_quote(version_nr)">">
        <dtml-comment>
@@ -449,7 +449,7 @@ function previewImgBtnProcessResponse(data)
              <dtml-with objChild>
               <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
               <dtml-if "isActive(REQUEST)">
-               <img src="<dtml-var spacer_gif>" title="" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
+               <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
                <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
                <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
                v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"> 
@@ -479,8 +479,8 @@ function previewImgBtnProcessResponse(data)
       </dtml-comment>
       <dtml-if "isPage()">
         <tr valign="top">
-         <td align="right"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-         <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"/></div></td>
+         <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+         <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
         </tr>
       </dtml-if>
      </dtml-let>
@@ -494,8 +494,8 @@ function previewImgBtnProcessResponse(data)
      <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
      <dtml-let version_nr="'%i.%i.%i'%(getObjProperty('master_version',REQUEST),getObjProperty('major_version',REQUEST),getObjProperty('minor_version',REQUEST))">
      <tr valign="top">
-      <td class="zmiHSep"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-      <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="2"></td>
+      <td class="zmiHSep"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+      <td colspan="2" class="zmiNeutralColorWhite"><img src="<dtml-var spacer_gif>" border="0" width="2" height="2"></td>
      </tr>
      <tr valign="top" id="tr_<dtml-var "id_quote(version_nr)">">
       <dtml-comment>
@@ -523,7 +523,7 @@ function previewImgBtnProcessResponse(data)
             <dtml-with objChild>
              <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
              <dtml-if "isActive(REQUEST)">
-              <img src="<dtml-var spacer_gif>" title="" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
+              <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
               <dtml-var f_display_icon>
               <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
               v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
@@ -552,8 +552,8 @@ function previewImgBtnProcessResponse(data)
      </dtml-comment>
      <dtml-if "isPage()">
        <tr valign="top">
-        <td align="right"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" title="" border="0" width="2" height="1"/></div></td>
+        <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
      </dtml-if>
      </dtml-let>

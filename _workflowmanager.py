@@ -67,8 +67,7 @@ CONF_CHANGE_UID		= "ZMS.workflow.change_uid"
 #  _workflowmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, filename, REQUEST):
-  filepath = package_home(globals())+'/import/'
-  xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
+  xmlfile = open(_fileutil.getOSPath(filename),'rb')
   importXml(self, xmlfile, REQUEST)
   # Return filename.
   return filename
@@ -164,7 +163,7 @@ def setWfTransition(self, id, newId, newName, newFrom, newTo, newPerformer=[], n
 # ------------------------------------------------------------------------------
 #  _workflowmanager.setWfActivity
 # ------------------------------------------------------------------------------
-def setWfActivity(self, id, newId, newName, newIcon=None, newEditable=1):
+def setWfActivity(self, id, newId, newName, newIcon=None):
   obs = self.getConfProperty(CONF_ACTIVITIES,[])
   # Remove exisiting entry.
   if id in obs:
@@ -177,7 +176,6 @@ def setWfActivity(self, id, newId, newName, newIcon=None, newEditable=1):
   newValues = {}
   newValues['name'] = newName
   newValues['icon'] = newIcon
-  newValues['editable'] = newEditable
   # Update attribute.
   obs.insert(i,newValues)
   obs.insert(i,newId)
@@ -427,14 +425,16 @@ class WorkflowManager:
       for wfTransition in self.getWfTransitions():
         if wfTransition['to'] is not None and len(wfTransition['to']) > 0 and id in wfTransition['to']:
           for ac_id in wfTransition['from']:
-            idx = ids.index(ac_id)
-            if idx not in froms:
-              froms.append(idx)
+            if ac_id in ids:
+              idx = ids.index(ac_id)
+              if idx not in froms:
+                froms.append(idx)
         if wfTransition['from'] is not None and len(wfTransition['from']) > 0 and id in wfTransition['from']:
           for ac_id in wfTransition['to']:
-            idx = ids.index(ac_id)
-            if idx not in tos:
-              tos.append(idx)
+            if ac_id in ids:
+              idx = ids.index(ac_id)
+              if idx not in tos:
+                tos.append(idx)
       froms.sort()
       tos.sort()
       idxs = self.concat_list(froms,tos)
@@ -536,8 +536,7 @@ class WorkflowManager:
             newIcon = item.get('icon',None)
           else:
             newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-        newEditable = REQUEST.get('inpEditable',0)
-        id = setWfActivity(self, item.get('id',None), newId, newName, newIcon, newEditable)
+        id = setWfActivity(self, item.get('id',None), newId, newName, newIcon)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.
@@ -558,8 +557,7 @@ class WorkflowManager:
             newIcon = item.get('icon',None)
           else:
             newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-        newEditable = REQUEST.get('newEditable',0)
-        id = setWfActivity(self, item.get('id',None), newId, newName, newIcon, newEditable)
+        id = setWfActivity(self, item.get('id',None), newId, newName, newIcon)
         message = self.getZMILangStr('MSG_INSERTED')%id
       
       # Move to.
@@ -613,8 +611,8 @@ class WorkflowManager:
         item = {}
         newId = REQUEST.get('newId').strip()
         newName = REQUEST.get('newName').strip()
-        newFrom = REQUEST.get('newFrom')
-        newTo = REQUEST.get('newTo')
+        newFrom = REQUEST.get('newFrom',[])
+        newTo = REQUEST.get('newTo',[])
         newPerformer = REQUEST.get('newPerformer',[])
         newDtml = REQUEST.get('newDtml','').strip()
         message += setWfTransition(self, item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)

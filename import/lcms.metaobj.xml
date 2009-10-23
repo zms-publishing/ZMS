@@ -1636,7 +1636,7 @@
    </dtml-in>
   </map>
   <dtml-let xqImage="getObjProperty('xqImage',REQUEST)">
-   <br/><img src="<dtml-var "xqImage.getHref(REQUEST)">" usemap="#map_<dtml-var id>" title="" border="0"><br/>
+   <br/><img src="<dtml-var "xqImage.getHref(REQUEST)">" usemap="#map_<dtml-var id>" border="0"><br/>
   </dtml-let>
  </div>
  <dtml-call "REQUEST.set('cmiInteractionNo',REQUEST.get('cmiInteractionNo',0)+1)">
@@ -1869,7 +1869,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_examQTrueFalseItem -->
 
 <div class="form-text">
- <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "getObjProperty('xqiValue',REQUEST)">.gif" title="" border="0" align="absmiddle">
+ <input class="form-checkbox" type="checkbox" disabled="disabled" <dtml-if "getObjProperty('xqiValue',REQUEST)">checked="checked"</dtml-if>/>
  <dtml-var "getObjProperty('xqiText',REQUEST)">
 </div>
 
@@ -2765,7 +2765,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_examQMultipleChoiceItem -->
 
 <div class="form-text">
- <img src="<dtml-var MISC_ZMS>checkbox_disabled<dtml-var "getObjProperty('xqiValue',REQUEST)">.gif" title="" border="0" align="absmiddle">
+ <input class="form-checkbox" type="checkbox" disabled="disabled" <dtml-if "getObjProperty('xqiValue',REQUEST)">checked="checked"</dtml-if>/>
  <dtml-var "getObjProperty('xqiText',REQUEST)">
 </div>
 

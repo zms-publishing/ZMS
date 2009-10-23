@@ -138,7 +138,7 @@
     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this);">
     <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
    </td>
-   <td rowspan="2"><img src="<dtml-var MISC_ZMS>checkbox_disabled0.gif" title="" border="0" align="absmiddle" /></td>
+   <td rowspan="2"><input type="checkbox" disabled="disabled"/></td>
   </tr>
   <!-- Acquired Action-Properties -->
   <tr class="zmiNeutralColorMedium0">

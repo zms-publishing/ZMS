@@ -25,7 +25,7 @@
 
 <!-- ### Connection Id -->
 <tr valign="top">
- <td><div class="form-label">Connection Id<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Connection Id<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td>
   <select class="form-element" name="connection_id">
    <option value="">--- Select Connection Id ---</option>
@@ -42,17 +42,17 @@
 </tr>
 <!-- ### Max. Rows -->
 <tr valign="top">
- <td><div class="form-label">Max. Rows<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=_.getattr(this(),'max_rows',999))"></td>
 </tr>
 <!-- ### Charset -->
 <tr valign="top">
- <td><div class="form-label">Charset<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value=_.getattr(this(),'charset',''),enum='charset')"></td>
 </tr>
 <!-- ### Model -->
 <tr valign="top">
- <td><div class="form-label">Model<sup style="color:red">*</sup></div></td>
+ <td><div class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=45, rows=25, value=getModelContainer().raw, enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off',extra=' style='+QUOT+'width:100%;'+QUOT)"></td>
 </tr>
 

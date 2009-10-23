@@ -43,8 +43,8 @@
     ></td>
    </dtml-in>
   <dtml-else>
-   <td valign="middle"><img title="" border="0" src="<dtml-var MISC_ZMS>icon_align_<dtml-var "textalign.lower()">_on.gif"></td>
+   <td valign="middle"><img border="0" src="<dtml-var MISC_ZMS>icon_align_<dtml-var "textalign.lower()">_on.gif"></td>
   </dtml-if>
   <td> &nbsp; </td>
-  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" title="" border="0" align="absmiddle"></td>
+  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" border="0" align="absmiddle"></td>
  </dtml-let>

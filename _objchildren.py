@@ -176,9 +176,9 @@ class ObjChildren:
     """
 
     # --------------------------------------------------------------------------
-    #	ObjChildren.filtered_container_actions_objChildren:
+    #  ObjChildren.filtered_container_actions_objChildren:
     #
-    #	Object-actions of management interface.
+    #  Object-actions of management interface.
     # --------------------------------------------------------------------------
     def filtered_container_actions_objChildren(self, objAttr, path, REQUEST):
       actions = []

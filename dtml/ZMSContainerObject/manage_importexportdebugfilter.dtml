@@ -63,7 +63,7 @@
          </dtml-if>
         </div>
         <table cellspacing="0" cellpadding="0" border="0" class="neutralColorWhite">
-        <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" /></td></tr>
+        <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="4" /></td></tr>
         <dtml-if "filter['format']=='import'">
          <tr><td align="center" class="form-small" style="white-space: nowrap; border: 1px dotted blue; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><dtml-if "filter.get('content_type','') in contentTypes"
@@ -82,7 +82,7 @@
          <tr><td align="center" class="form-small" style="<dtml-if "step==0">border: 2px solid red; </dtml-if>white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
         </dtml-if>
-        <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="8" style="border-left: 1px solid navy;"></td></tr>
+        <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="8" style="border-left: 1px solid navy;"></td></tr>
         <dtml-in filterProcesses>
          <dtml-let pid=sequence-index filterProcess=sequence-item process="getProcess(filterProcess['id'])">
           <dtml-if "process.get('command','')==''">
@@ -104,10 +104,10 @@
            <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td class="form-small" style="white-space: nowrap; color: navy;"
-              ><img src="<dtml-var MISC_ZMS>arr_lft.gif" title="" border="0" align="absmiddle"
-              ><img src="<dtml-var spacer_gif>" title="" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
+              ><img src="<dtml-var MISC_ZMS>arr_lft.gif" border="0" align="absmiddle"
+              ><img src="<dtml-var spacer_gif>" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
               ><b>{trans}</b
-              ><img src="<dtml-var spacer_gif>" title="" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
+              ><img src="<dtml-var spacer_gif>" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
              ></td>
              <td align="center" class="form-small" style="white-space: nowrap; background-color: white; border: 1px solid navy; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
               <img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle">
@@ -117,9 +117,9 @@
            </dtml-if>
           </tr>
           </dtml-if>
-          <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="8" style="background-color: navy;"></td></tr>
+          <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="8" style="background-color: navy;"></td></tr>
           <dtml-if sequence-end>
-           <tr><td align="center"><img src="<dtml-var MISC_ZMS>arr_dn.gif" title="" border="0" /></td></tr>
+           <tr><td align="center"><img src="<dtml-var MISC_ZMS>arr_dn.gif" border="0" /></td></tr>
           </dtml-if>
          </dtml-let>
         </dtml-in>
@@ -135,7 +135,7 @@
           ></dtml-if
          ></td><td class="form-small" style="color:blue"><b>&nbsp;{OUT}</b></td></tr>
         </dtml-if>
-        <tr><td align="center"><img src="<dtml-var spacer_gif>" title="" border="0" width="1" height="4" /></td></tr>
+        <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="4" /></td></tr>
         </table>
 
 <hr size="1"/>

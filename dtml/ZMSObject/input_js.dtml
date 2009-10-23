@@ -58,7 +58,7 @@
       el.selectedIndex=0;
   }
 
-  function submitSelectResource(el)
+  function zmiChooseActionResource(el)
   {
     var v = $(el).val();
     if ( v.indexOf( 'manage_deleteObjs') == 0) {

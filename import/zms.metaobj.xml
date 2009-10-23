@@ -252,7 +252,7 @@
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsdocument.gif" type="file">47494638396110001000b30000fc02fc8787aeb7c7e4d6ebfcb5d8faa0a6c4c6e1fbf7fbfcb8dffc547ab484baec8f98b9afb9d17496d4acd0fc7573a521f90401000000002c00000000100010000304691008c158592bbc02ba6747281e8db0781d3886cda024a8bab606f378c53a904d7f77391d6128f80116bac36060301891a2e5d2c03406a24aa981605566a74daee7faa51a100871e7aa1da0d36a40403a4513100ee343d97c0f1d791e0f744c6f697a0f898a8b891d11003b</data>
+                      <data content_type="image/gif" filename="zmsdocument_16x16.gif" type="file">47494638396110001000b30000fc02fc8787aeb7c7e4d6ebfcb5d8faa0a6c4c6e1fbf7fbfcb8dffc547ab484baec8f98b9afb9d17496d4acd0fc7573a521f90401000000002c00000000100010000304691008c158592bbc02ba6747281e8db0781d3886cda024a8bab606f378c53a904d7f77391d6128f80116bac36060301891a2e5d2c03406a24aa981605566a74daee7faa51a100871e7aa1da0d36a40403a4513100ee343d97c0f1d791e0f744c6f697a0f898a8b891d11003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -265,7 +265,7 @@
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsdocument_disabled.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c6c4e4e6e4a4a6a4d4d2d47476749c9a9cbcbabcfcfafc949294acaeacdcdadccccacc7c7a7cd4d6d421f90401000000002c000000001000100003046e1008b110512a3802ba47492826817078dd220ea2322c060a8ea1fb207147d02c86399e1daf4014003b0a5e623060308e80c388c964347380c06a496514a05a16b5e92c60b5dc66f3f1f87ac2d501bb6d7e8fd7ed4703ea583a1f0c740d461e0e7781736e1d0e0e068c8e8d8f4711003b</data>
+                      <data content_type="image/gif" filename="zmsdocument_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c6c4e4e6e4a4a6a4d4d2d47476749c9a9cbcbabcfcfafc949294acaeacdcdadccccacc7c7a7cd4d6d421f90401000000002c000000001000100003046e1008b110512a3802ba47492826817078dd220ea2322c060a8ea1fb207147d02c86399e1daf4014003b0a5e623060308e80c388c964347380c06a496514a05a16b5e92c60b5dc66f3f1f87ac2d501bb6d7e8fd7ed4703ea583a1f0c740d461e0e7781736e1d0e0e068c8e8d8f4711003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -473,7 +473,7 @@
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsfile.gif" type="file">47494638396112001000f700000000805e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb07880ab7480b27a83b07d89b67f8ebc55a7edff00ff8195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2b0b0ffb0d7ffbddeffc2c8ffd0dae9c2e1ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffdae7f3dde9f4e4edf5eaedf0e8eff7eaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000014002c00000000120010000008bd0029500091a1a041830f042a14f8e1c78f1d3a6ed8a811a3c4030d0b057ae8d1c3e10f1f3970b07830e142c60e3c780058c972e483840b39f8f8016087cd192b4384689071c3cc9a3b70c0200120840a061931fcdc3103460b15455124c868012480a64f471435812063051c34003855314244511107324a900103c00ab222cc861061206304186d59b29c5b202304182f5ae81cac5304818c0e5cb86891e244d9b87107645cb06245e3c7904508c8a8a0b3e7cf9d03641c4d5a614000003b</data>
+                      <data content_type="image/gif" filename="zmsfile_16x16.gif" type="file">47494638396110001000b300000402847784b4b5d5fc86a8dad2e8fa626897f9fcfc54a6ec727aa6fc02fcb4b2fc8498c8c8e0f88cb0e094bdefe7eff521f90401000009002c000000001000100003046f30b9d186bd23a4bd9df9e0f330c8c049606a30c1b170cd07cc341920b09cce8aa26d03dd87200028489ca0016010110846e4662173321851dcb4097810ae4585409b0888008caf203ce6981fb4b8b8e076f6ee3d017d836078af0c6b827b097d8081826b84088c8d8e8c8427929311003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -486,7 +486,7 @@
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsfile_disabled.gif" type="file">47494638396112001000b300006666666b6b6b7373737b7b7bff00ff8181818c8c8c999999a4a4a4b7b7b7cececed7d7d7dddddde2e2e2ebebebfafafa21f90401000004002c0000000012001000000474909084aab5456a999eff8eb314c8c67de8c314c76122de55ad45b6c10ffe385592d81a9ccea140241a03d321b673341a464672b3cc859e8be854b3e4391b8b62422130194208065821269bd132a37b53f8faee3e45c0547836180c616c6c7b1b03808082830a0026038f90918f8d269596121100003b</data>
+                      <data content_type="image/gif" filename="zmsfile_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc848284cccecceceaec646664a4a6a4dcdedc7472749c9a9cfcfafcb4b6b48c8e8cd4d6d47c7a7c6c6a6ce4e2e421f90401000000002c000000001000100003047210a8420baa2580bd55fae0303041c149609a180d8270c5875d4660c37248298ab6c509444850503c1a1c6122267a3c8aaca4acf930148fd24161e0641015820367212a181ede2f43bc216b31bb3027c07df0ee3c8163eeaca20580807b1b0d068606698102041c0d8e8f908e832794950011003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -719,6 +719,30 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
             </item>
             <item key="access" type="dictionary">
               <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
               </dictionary>
             </item>
             <item key="enabled" type="int">1</item>
@@ -973,7 +997,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsgraphic.gif" type="file">47494638396112001000f700003d6dbd2470d54747ac5e6190604494606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb06cf93658f0500c8bf1039bf90199ff0994f20fa7e27880ab7480b27a83b07d89b67f8ebc55a7ed53abf6ef350ff93405ff3401c67b7bff00ffdcc924e5d409facd02e7c627e7c628e9c829f0cc2aeed7648195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2bdbfc2bdbfc3b0b0ffbfc38186c6fe87cff98aceff9cc6f599cbfcaed6ffb0d7ffb3d8fdb8dbffb9dcfebddeffd3c7d4d6ccd9cedef4d0dae9dde3c6c2e1ffc3e6ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffd3e9ffdae7f3dde9f4d9ecffdeefffdfefffe4edf5eaedf0e8eff7e2f1ffe4f2ffeaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000023002c00000000120010000008d000478cb801a3a0418319042a1468830d1b3467c88c11c3454986180b05d650a3c6219b3566ca4cc9d0c145461a69d2380459064c920c3033ce58c326844d114db27849a203424619346d820050a1828f2a511e647c1134048100452b1479c220630b90213e08805a94079305195994097304c9040b178a0211a22023872e5bbe68e9212102050f438424c8b861cb162d5856982841e207112108326ad87205cb12152750a4d81144c8818c18ac58a102c5891121a0411bc8e8408a94ce9f43832e90b181ebd7b05d0fc848bbb6c28000003b</data>
+                      <data content_type="image/gif" filename="zmsgraphic.gif" type="file">47494638396110001000b30000fa3605eacc1f7987b7bcc284d7d2d1edf5fa3ca7ecfc02fcb6d8fa574f9cc47a7ca4e45c6cfa346876a80598fb8baddf21f90401000007002c0000000010001000030464f0a0476b1527e757baef84f068d2f7218d316ea6870842a37105602b4837616c6d270e072227ebfd8241e2acf36b201f288d00f44026a399a98bc1701886c583b6b3089887587181b0369b07604da390aba38709399d7e47871b80818280792486871911003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -986,7 +1010,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsgraphic_disabled.gif" type="file">47494638396112001000b300005353536565656a6a6a7575757b7b7bff00ff838383989898a5a5a5b9b9b9c2c2c2cececed3d3d3dcdcdce8e8e8fbfbfb21f90401000005002c0000000012001000000477b09484aab5466a999eff8ed318c8c67de8331e8789a4df6864dbfb08f8d1844d426b369c203018284404d3c18303108b8c4672b3bc099cc54142aaf42c16454251015686428a446270f80e4c86b383a1482b18e54d9c57af27be0270670d0d785f802604848486870b0189049293940490269899121100003b</data>
+                      <data content_type="image/gif" filename="zmsgraphic_disabled.gif" type="file">47494638396110001000b30000fc02fc848284c4c2c4545254eceaec6c6a6ca4a6a4d4d2d47476749c9a9cbcbabc646664fcfafcccceccdcdedc7c7a7c21f90401000000002c00000000100010000304791028436b0d2067c5ba278413189ae49d8cf3248966a09e1860d9cb147872808e4203b64561b1402004a18726d1c10d8ac6836ad9113e8d08c5419961321a0de3c328082f79048142814880119a000874502b040773461e7208fe6a6005710e3c0e7960821a0f0e8d8779900d0b8b0f9596970f93259b9c1911003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1039,7 +1063,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="default"><![CDATA[alt="" title=""]]></item>
+                    <item key="default"><![CDATA[alt=""]]></item>
                     <item key="id"><![CDATA[img_attrs_spec]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
@@ -1158,6 +1182,34 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 </item>
               </list>
             </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
             <item key="enabled" type="int">1</item>
             <item key="id"><![CDATA[ZMSGraphic]]></item>
             <item key="name"><![CDATA[ZMSGraphic]]></item>
@@ -1221,7 +1273,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmslinkcontainer.gif" type="file">47494638396112001000b300000402058a8d8fc5c9c7e2ebec0402849ca2f4344448abaeb5f8fdfa677397fc02fc575e66292a30c5d5ebaebed87494b221f9040100000a002c0000000012001000030475504975820d67ea29d86aa00030c22675cbf01c0ce0028d790c60f33cefb80543df3809862117d01c1003e463715bbc1646044270c88d16092847ea10bd08b9e8a000104c1180b348e36894adb9b5e4e046076001dc1d0d9854bd706f7212656769665e681b3938568313856687537d260a61610a11003b</data>
+                      <data content_type="image/gif" filename="zmslinkcontainer_16x16.gif" type="file">47494638396110001000b300000402048c8e8cc4cac404028434464cacbedce4eaecacaeb4647294fc02fc2c2a34545e64c4d6ec7496b4fcfefc0000ff21f90401000009002c000000001000100003046e30c974820d67ea24d462a00028c2d62d467328400b30da61804cd3b8e314183c53200a022e2039380cc7c6c2b6702d8a0e87e0801b2d104f4e1437c061a10081d401188bb2897015279a94018157e016270324ea754bd44e8bc5657f2d646e2e37557d787f6466771b38692e1211003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1234,7 +1286,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmslinkcontainer_disabled.gif" type="file">47494638396112001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c000000001200100003047a104820861d62eaf95078a05220cf263d4c43240252bc4cb925c4f11cd6fb2233e11f0a0323a02b243482856fd5700c882f8346415828044546ca219d281656918e519cfab08745baa05617340742e150acd3278207bb30980f0c050e7b6f12687545747713736d6c69747b1b458276841a8c6b6d8a2665650011003b</data>
+                      <data content_type="image/gif" filename="zmslinkcontainer_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c0000000010001000030474104820861d626af05078a05220cff6300d910848e132e59410c77358ae8bc8447f28064620574848048b9eaae1180c5d068982b05008880c94230a502c1658e2560a3e2ccc85f3b9c005140ec4387c922e0cde0343c1512f48de714470736e66686a707574397c727e748660888f1a446e391211003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1274,11 +1326,11 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 <tr valign="top" class="zmiNeutralColorStrong0">
  <td> &nbsp; </td>
  <td>
-  <span class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"><sup style="color:red">*</sup></span>
+  <span class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"><dtml-var FORM_LABEL_MANDATORY></span>
   <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> PMID)</span>
  </td>
  <td>
-  <span class="form-label"><dtml-var "getZMILangStr('ATTR_TITLE')"><sup style="color:red">*</sup></span>
+  <span class="form-label"><dtml-var "getZMILangStr('ATTR_TITLE')"><dtml-var FORM_LABEL_MANDATORY></span>
   <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> &quot;Medline&quot;)</span>
  </td>
  <td colspan="2">
@@ -1293,7 +1345,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
 </dtml-comment>
 <dtml-call "REQUEST.set( 'ZMS_INSERT', 'ZMSLinkElement')">
 <tr valign="top" class="zmiNeutralColorMedium0">
- <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="" border="0" class="button"/></td>
+ <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" class="button"/></td>
  <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
  <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
  <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
@@ -1399,7 +1451,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                     </item>
                     <item key="id"><![CDATA[onChangeObjEvt]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Event: Change]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[method]]></item>
@@ -1455,7 +1507,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmslinkcontainer.gif" type="file">47494638396112001000f70000000000090b0e0e0f0d11111112161e1c202e1b2230212121283938303130313131384c53395357555555505f7e585f7f4b67415f6161666666000084586597727484686fb9677cab68939e748fac7294b7ff00ff8484848a8a8a9a9a9a86a3b997a1aba8a9a9aaaaaaa2a2b8aaaab9abb2aeb3b3a7bbbbbb8e91fa8c9eff9192fd93b6c99ba1f19bbdeaa89bfebdbdceb0aeeeadcbbfb8d7e0bdd0e6c6dcb6c0c0c0c6c6c6cfcfcfc3c5d6c3c3e2c2c3fbc6c6fccedfe4d3c7f5d1d0fadadbf4d5e0decce4e9dae6e9d8ebe2e9e5dee3e8e7e8ebebebeff2e9f1f2eaf5f1ecf4f3eef6f5f6eef6f1f7f7f2fcf6f5fdf7f5fcfbf6fdfbfffffbffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100001b002c00000000120010000008bb003708dc20a283c10e22062a1c7843410319104f00507063a1c01b07220801b10201808f032a2e0c6104088f1919307cfc9860a187224a86c86841c1008395003c2814d1644992201f1c5cd0b060a5048527a044a95162650002051e54383af0849327524c08c06901858e0e48911c6142840684952954ec00ab10c78f1e3962e09c8053e1081f2e5800b031852f80be7d01282401632fcec336040f7cf1170007006b37386ebcd0f0e195892dee05fc976f668b925786fe383020003b</data>
+                      <data content_type="image/gif" filename="zmslinkelement_16x16.gif" type="file">47494638396110001000b30000050305878d93c4c9c5e5eaeb0402849299fa344448acaeb3f7fcf9686e8cfc02fc565f62b2bfdf292a30c6d5eb6876b421f9040100000a002c0000000010001000030477504975820d676a25da72e00134ced62d43c018400b08da310ce013b8e314cc3493342c574072400c8c87c5e310042c2402044220c235128927458aa8ba1e05c690739c0916ae4278ac603818021c013739380aaf2902a08fd75f38817e127c0037620a86851380812e838451517c92001b892e982d1211003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1468,7 +1520,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmslinkcontainer_disabled.gif" type="file">47494638396112001000b300005b5b5b676767787878ff00ff898989939393999999a3a3a3adadadb9b9b9c2c2c2ccccccd3d3d3d9d9d9e8e8e8f4f4f421f90401000003002c000000001200100000047b70c8a190456aead90469e00208cd263541e1248a00bc41b9290ec858ef2b6c89e3370b4380900324348a876f553820882f8366f1782c14c540ea209d50ab8a40f190b84d97b5424e51466c1835862827ce211b0a2ce3b107f0f90048220c458584537e000800370681891b8c854587917b7d7f952645039c121100003b</data>
+                      <data content_type="image/gif" filename="zmslinkelement_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c000000001000100003047a104820861d626af05038cfa314c8b33d4c43240252bc8c3909447858ef8b4c495d2b064620574848040b422dd1700c862f8344915408888c94430aa02e160206d191b84d95ca472327280f260782629413e7668feb61b12ff0f905330507448584137e050383030681898884853987917f7e7b951a44009c0011003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -1576,7 +1628,7 @@ function remoteResponseTimedout() {
 ################################################################################
 </dtml-comment>
 <tr valign="middle">
- <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <sup style="color:red">*</sup></div></td>
+ <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <dtml-var FORM_LABEL_MANDATORY></div></td>
  <td>
   <div style="float:left"><dtml-var "getObjInput('attr_ref',REQUEST)"></div>
   <div style="float:left">&nbsp;</div>
@@ -1772,7 +1824,7 @@ function remoteResponseTimedout() {
  ></dtml-if
  ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
   <div class="title">
-  <img src="<dtml-var "getObjProperty('attr_img_src',REQUEST)">" title="" border="0" alt="" align="absmiddle"/>
+  <img src="<dtml-var "getObjProperty('attr_img_src',REQUEST)">" border="0" alt="" align="absmiddle"/>
   <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "getObjProperty('attr_type',REQUEST)=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
   </div>
   <dtml-if title><div class="text"><dtml-var title></div></dtml-if>
@@ -2212,8 +2264,8 @@ function remoteResponseTimedout() {
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr class="list-header">
   <td width="5%" valign="middle"
-    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parent('form'),slct);" class="button"
-     ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="" border="0" width="20" height="20"
+    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes(btn.parents('form'),slct);" class="button"
+     ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" border="0"
     ></a
   ></td>
   <td width="5%" align="right"><div
@@ -2447,7 +2499,7 @@ function remoteResponseTimedout() {
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstable.gif" type="file">47494638396112001000f700000000845e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae7880ab7a83b07d89b67f8ebcff00ff8080808195c3849bca87a1d287a9dc8aa8d98caedf92bcef94bff2b0d7ffc2e1ffc6e3ffcee6ffd1e8ffe4edf5e8eff7f3f9fffeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000011002c00000000120010000008920023081c48b020410d16122a5cb89081c00c00224a9c38d161040c14334ab47881040909233c4a00415282070f122c56101952c4c8921f502610484182cd9b387122103841a4881020467af820a1030709070442100934e850941c36483020f041ceab370b0874f0f3254a0f46256c904a406003a042891a953a56c200810bb06215205081ddbb78f30630c8b7af5fbe0101003b</data>
+                      <data content_type="image/gif" filename="zmstable_16x16.gif" type="file">47494638396110001000b30000040284848284b4d6fc6268978498c86c75a7e6eef48caedc747ba6fc02fc7c82b085aadc94bef0cbe5fcfbfdfc7c8cb821f90401000009002c000000001000100003045b30c9496b622bebbd150360288ac8319e21b2384ec0b6461c344da0b2ae6304f14edb84807048241608b81eefd710040a8fa48c5613380b8aa2763850e878861acd690d7465617133501e20b6db41015198d7e976fbc0c2effb2511003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -2460,7 +2512,7 @@ function remoteResponseTimedout() {
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstable_disabled.gif" type="file">47494638396112001000f700005c5c5c6565656767676a6a6a6d6d6d7070707373737676767979797b7b7b7c7c7c7e7e7eff00ff8080808282828585858a8a8a8e8e8e9494949999999e9e9ea4a4a4a9a9a9b5b5b5b7b7b7cfcfcfdbdbdbdddddde1e1e1e3e3e3ebebebedededf7f7f7fefefeffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100000c002c00000000120010000008920019081c48b020410c15122a5cb87081c00b00224a9c38d121030b14334ab45841848806213c36f040b201070e0d2c52101912c4c8921d502a1038a181cd9b38712210284124880f1e4672e8d060838606070446100934e850941a323430201042ceab370b087cf0f3254a0e461b64904a40a003a042891a953ab6c100810bb06215203081ddbb78f30630c8b7af5fbe0101003b</data>
+                      <data content_type="image/gif" filename="zmstable_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc848284cccecc9c9e9c5c5e5cecebec7473749898988c8c8cb4b6b4e1e0e1fbfdfb6c6c6ca5a6a57c7b7c64666421f90401000000002c000000001000100003046510c8492b48ad8dbc47d78d931064699a4e73ae65ba2cc1bb38451d284ae00c6ffcd235074e7708188f8ea331e938f46a854061887318104f1b4e211404ae4965587764c40ac09c429013081c66db54bd76b8038cb07ec90f3c1c808182830f168687881211003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -2568,7 +2620,7 @@ $()
  <col width="80%" />
 </colgroup>
 <tr valign="top">
- <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_COLS')"> &times; <dtml-var "getZMILangStr('ATTR_ROWS')"><sup style="color:red">*</sup></div></td>
+ <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_COLS')"> &times; <dtml-var "getZMILangStr('ATTR_ROWS')"><dtml-var FORM_LABEL_MANDATORY></div></td>
  <td><div class="form-label"><dtml-var "getTextInput(fmName=fmName,elName='cols',value='3',size=2)"> &times; <dtml-var "getTextInput(fmName=fmName,elName='rows',value='3',size=2)"></div></td>
 </tr>
 <tr valign="top">
@@ -2581,7 +2633,7 @@ $()
   </tr>
   <tr>
    <td></td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" title="" border="0" /></td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
   </tr>
   <tr>
    <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="table_type:int" value="1" checked="checked"></td>
@@ -2594,7 +2646,7 @@ $()
     </table>
     </div>
    </td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="4" title="" border="0"></td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="4" border="0"></td>
    <td valign="middle" class="form-small">3 <dtml-var "getZMILangStr('ATTR_ROWS')"></td>
   </tr>
   </table>
@@ -2608,7 +2660,7 @@ $()
    <td>
     <div class="ZMSTable">
     <table>
-    <tr><th colspan="3" style="border: solid 1px #999999;"><img src="<dtml-var spacer_gif>" width="30" height="4" title="" border="0"></th></tr>
+    <tr><th colspan="3" style="border: solid 1px #999999;"><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></th></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
     </table>
@@ -2644,7 +2696,7 @@ $()
    <td>
     <div class="ZMSTable">
     <table>
-    <tr><td><img src="<dtml-var spacer_gif>" width="30" height="4" title="" border="0"></td><dtml-var table_th><dtml-var table_th></tr>
+    <tr><td><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></td><dtml-var table_th><dtml-var table_th></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
     </table>
@@ -2663,7 +2715,7 @@ $()
   </tr>
   <tr>
    <td></td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" title="" border="0" /></td>
+   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
   </tr>
   <tr>
    <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="5"></td>
@@ -2998,7 +3050,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 <table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
 <tr valign="middle" class="zmiNeutralColorStrong0">
  <td>&nbsp;</td>
- <td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0" title=""></td>
+ <td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0"></td>
  <dtml-in "_.range(table_cols)">
   <td
    ><table cellspacing="0" cellpadding="0" border="0"
@@ -3015,7 +3067,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr valign="middle"
     ><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td
-    ><td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0" title=""></td
+    ><td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0"></td
    ></tr
    ></table
  ></td>
@@ -3307,7 +3359,7 @@ table_cell_init();
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsteaser.gif" type="file">47494638396112001000b30000040284c48e0cfcfd99fcd25ffcfed5fcf072fcfaacfce16ffcfeeefc02fc4c4e4c8482846c6e6cfcfe84fcee84fcfebd21f90401000009002c000000001200100003047330a540ab0d324fc4bb4798161024099424253e2cf0b82e1b8059600838a0e3f8182c9280a3a103208a8d46e0116004934924342068061d850240cbcd0694cec9617cd092cb5fabf83018b7dd8740413db9040603ca98be7edf9b7b6135764d140a401a090b0c8c8c850c888992758293927411003b</data>
+                      <data content_type="image/gif" filename="zmsteasercontainer_16x16.gif" type="file">47494638396110001000b30000040284c48e0c848284fcee84fcfebcfc02fcfcd25cfcfe9c4c4e4c6c6e6cfcf274fcfeecfce26cfcfe84fcfed4fcfaac21f90401000005002c0000000010001000030470b084496b2858aecdfbba58e08c23408e5348ac00d102cf1a7cd273dc407edf62200483460eb018361a01422011381e8dcec061091c2800d701c0aa685219608636cce8229960433aac062e259680c13001bf256b867c694f64e2134c010802190502098989540985868f217790907711003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3320,7 +3372,7 @@ table_cell_init();
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsteaser_disabled.gif" type="file">47494638396112001000b300004c4e4c848284cccecce4e6e4f4f2f4dcdadcfc02fceceeecfcfafc6c6e6c8c8e8cd4d6d4e4e2e4eceaecf4f6f4dcdedc21f90401000006002c0000000012001000030470d01845ab55324fc4bb4798a67cc947890442246beb8060a6100eb126ac4a8c4a20cd075c4968e3257e8d06a1214c2e678ae324394830af49a854f128141885c4d7cbd0febee034b9a068446517c562416194a59280772f8f82df22715114003e1a06014238830986878f138090909211003b</data>
+                      <data content_type="image/gif" filename="zmsteasercontainer_disabled_16x16.gif" type="file">47494638396110001000b300004c4e4c848284d4d6d4eceaece4e2e4f4f6f4fc02fcdcdedcf4f2f46c6e6c8c8e8cdcdadcfcfafceceeece4e6e40000ff21f90401000006002c000000001000100003046bd0a849ab3258b2cd3bbb98e225de14220c92a86cf17d1252206ab2a688a8040ad2d824204d97500c068801f098ec298a474742493d3a8b87c582b0486cb584ab62cb2d8317c6a7c4a210082684700213d0dadb4fae3ac47e4e000119060140367e0981828a7c738b8e7b11003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3706,7 +3758,7 @@ return teaserElmnts
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsteaser.gif" type="file">47494638396112001000f700004c4c4c6d6d6d000080ff00ffc58e08ffca56ffd760ffdc6cffe169ffe96fffe375fff277838383ffed80fff488fffc80ffff81fff88effff9ffffbabffffbdfffcc5ffffd5fffedaffffeefffff2ffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000003002c000000001200100000088a0007081c48b0a0410208132a2470300386871023322448e082858b160460bc488001c50a1428081049322481001427485829a0e5ca9527294680d05280869a1020c41c48c0c1839f357ffedc29904083050b04245d8a94e800020aa2461520554102a7040e20d8cab5abd3a70b091830801080c7820c02a8554ba0c0c9b3060f7e8d4b1125ddbb040302003b</data>
+                      <data content_type="image/gif" filename="zmsteaserelement_16x16.gif" type="file">47494638396110001000b30000040284c48e0cfcf88cfcfed5fcca54fcf173fcfaacfcfeedfce270fc02fcfcfe84fcee84fcfebdfcd664fcfe9cfcfefc21f90401000009002c000000001000100003045330c949eb0c38eb40c3f960787052309c27809e64123030c0c832dc0686a303bca23b378182073810158a2072d85bde168502404a8dde10588434abbd36b05f44b8d1726d020d72d95222acd9a537dc35af2722003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3719,7 +3771,7 @@ return teaserElmnts
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmsteaser_disabled.gif" type="file">47494638396112001000b300004c4c4c6d6d6dff00ff8383838f8f8fcdcdcdd5d5d5dadadadddddde2e2e2e6e6e6e8e8e8eeeeeef1f1f1f5f5f5fbfbfb21f90401000002002c000000001200100000045b50c849ab25386b729fffe0c351445882c4403a2ce1b86e1b900dfb62f63b4f04d364224ce3b79310168c6426a92c0a088ac5e248954e9d0484569bdd2608d8c376bc0557361883010350550681789c5000bb2d17337eafdffb2711003b</data>
+                      <data content_type="image/gif" filename="zmsteaserelement_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8e8ccccecce4e6e4f4f2f4dcdadceceeecfcfafce4e2e4d4d6d4eceaecf4f6f4dcdedc0000ff0000ff0000ff21f90401000000002c000000001000100003045110c849eb0c38eb40c3f960787092179a200904c44178f0d2aa6cfb62eeb2d0c60d6384d745a130183284e2713850049c5084f3522820aa81ab1541b37ab5576e6713282430164b40a04a8fdde9363c1d01003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3983,11 +4035,11 @@ CHANGES:
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstextarea.gif" type="file">47494638396112001000f700000000805e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae737eb07880ab7480b27a83b07d89b67f8ebc55a7edff00ff8195c3849bca8ca0c987a1d287a9dc8fa7d08aa8d98caedf8fb3e591b8ea92bcef94bff2bdbfc2bdbfc3b0b0ffb0d7ffbddeffc2c8ffd0dae9c2e1ffc5e3ffc6e3ffc8e4ffcee6ffd3e2f2d2e1f5d1e8ffdae7f3dde9f4e4edf5eaedf0e8eff7e8f4ffeaf5ffeff3f8f1f1f2f5f5f5f7f7f7f3f9fff6fafffafafafcfcfcfdfdfdfefefefeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000014002c00000000120010000008af0029500091a1a041830f042a14f84188101f3d74e4c031e3c4030d0b057a0002c4a190203c76b87830e142c60e3f7e8458c9f2c28397193904710872870d192f4c8c689071c34c0040830278c18241460c3343d69081f3c50a1509325a002934680a14083256d871e366d315294a90389051020d195581922061206304a65fc3ae2551202304193158ea5d4b20a30318309cca9d4b6240c6052d5a80154b9884808c0a224b9e1c3940c6cb98150604003b</data>
+                      <data content_type="image/gif" filename="zmstextarea_16x16.gif" type="file">47494638396110001000b300000402847784b4b5d5fc87a8d9d3e8fb62689754a6ecf8fcfc727aa6fc02fc91b9e9bcbec48498c8c6e0f9a4b8f8e7eff521f90401000009002c000000001000100003046a30b9416b45296777ba7f4f130c5aa278e8d12006a39dc722cf031204da901e602338988cee00281a0104024e887a109c84c64ac3e81c8dd260a2fa383c93529f3600ba16058231081a460b0a1a32614647c33308b6d46dd720a4513e7c6f7e088687880877258c8d0911003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Icon]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[resource]]></item>
@@ -3996,11 +4048,11 @@ CHANGES:
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstextarea_disabled.gif" type="file">47494638396112001000b300006666666b6b6b7373737b7b7bff00ff8181818c8c8c9d9d9da5a5a5bbbbbbcececed7d7d7dddddde3e3e3ebebebfafafa21f90401000004002c000000001200100000046c909084aab5456a999eff8eb314c8c67de8c314c761225e22cf4761bfe913364a926db0476bd86a3406a6032ae4303218c88d52486c3da31a838ee9642c14029321546d29c0626ee3f93d873785e66c7e0e980ac6b5f7ccb76f064f6c7c7c0026038788898785268d8e121100003b</data>
+                      <data content_type="image/gif" filename="zmstextarea_disabled_16x16.gif" type="file">47494638396110001000f700006666666b6b6b7373737b7b7bff00ff8181818c8c8c9d9d9da5a5a5bbbbbbcececed7d7d7dddddde3e3e3ebebebfafafa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000004002c00000000100010000708900009244040b060c1020412264cf0a0a143070e161440a050a0c38b0f181438704021828609428a3c50a0a4478c0f203650900061c28f0f38cae4d8a0c10085072e4274509301839b0973c69cc9d12750020652eeecc9608102010a0d4024ca51c1d3a84b1bf8746a156ac2023c458ab51a4061819a5a9b5a5d5b36e1009f5bd7ae05a07080ddbb78edd2adc8b76fc280003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Icon (Disabled)]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[resource]]></item>
@@ -4031,7 +4083,7 @@ CHANGES:
                   <dictionary>
                     <item key="id"><![CDATA[interface0]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[<script language="JavaScript">
 <!--//
 
@@ -4099,6 +4151,34 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                   </dictionary>
                 </item>
               </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
             </item>
             <item key="enabled" type="int">1</item>
             <item key="id"><![CDATA[ZMSTextarea]]></item>

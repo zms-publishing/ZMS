@@ -223,7 +223,7 @@ window.setTimeout("$('#manage_tabs_message').hide('slow')",3000);
 
 <div style="border:0px;height:20px;margin:0px 3px;margin-top:-1px;padding:2px;"
 ><img 
- src="metaobj_manager/contentEditableLib.contentEditable.gif" alt="" title="" border="0" 
+ src="metaobj_manager/contentEditableLib.contentEditable.gif" alt="" border="0" 
  style="border:0px;vertical-align:top"/>
 <a href="#" onclick="contentEditableButtonSaveClick('<dtml-var lang>')"><img 
  id="contentEditableButtonSave" src="metaobj_manager/contentEditableLib.icon_save.gif" 

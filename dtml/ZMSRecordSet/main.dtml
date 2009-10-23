@@ -125,7 +125,7 @@
    <dtml-in "metaObj['attrs']" mapping>
     <dtml-if "id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
      <tr valign="middle">
-      <td><div class="form-label"><img src="<dtml-var MISC_ZMS>btn_key.gif" title="" border="0" align="absmiddle"/>&nbsp;<dtml-var "string_maxlen(name,25)"></div></td>
+      <td><div class="form-label"><img src="<dtml-var MISC_ZMS>btn_key.gif" border="0" align="absmiddle"/>&nbsp;<dtml-var "string_maxlen(name,25)"></div></td>
       <td class="form-element">
        <div style="padding:2px; border: solid 1px black; background-color: #FFFFE0;">
         <dtml-var "metaobj_record_summary(_,_,metaObj=masterMetaObj,row=masterRow)">
@@ -216,7 +216,7 @@
 ###############################################################################
 </dtml-comment>
  <dtml-unless "REQUEST.get('action','') in ['insert','update']">
-  <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export'])">
+  <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export','statistics'])">
   <hr size="1"/>
   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">  
  </dtml-unless>

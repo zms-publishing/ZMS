@@ -92,8 +92,9 @@ def addZMSLinkElement(self, title, url, description, REQUEST):
     type = 'replace'
   
   ##### Create ####
-  id_prefix = _globals.id_prefix(REQUEST.get('id','e'))
-  obj = ZMSLinkElement(self.getNewId(id_prefix))
+  id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+  new_id = self.getNewId(id_prefix)
+  obj = ZMSLinkElement(new_id)
   self._setObject(obj.id, obj)
   
   obj = getattr(self,obj.id)
@@ -147,8 +148,9 @@ def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
   if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
     
     ##### Create ####
-    id_prefix = _globals.id_prefix(REQUEST.get('id','e'))
-    obj = ZMSLinkElement(self.getNewId(id_prefix),_sort_id+1)
+    id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+    new_id = self.getNewId(id_prefix)
+    obj = ZMSLinkElement(new_id,_sort_id+1)
     self._setObject(obj.id, obj)
     
     redirect_self = bool( REQUEST.get('redirect_self',0)) or REQUEST.get('btn','') == ''

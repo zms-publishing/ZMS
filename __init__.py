@@ -30,8 +30,8 @@ __doc__ = """initialization module."""
 __version__ = '0.1'
 
 # Imports.
-from Globals import ImageFile
 from App.Common import package_home
+from App.ImageFile import ImageFile
 import OFS.misc_
 import os
 import stat
@@ -156,7 +156,6 @@ def initialize(context):
             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
             )
             
-        context.registerBaseClass(zms.ZMS)
         
         # automated registration for util
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()

@@ -5,16 +5,6 @@
 </dtml-if>
 </dtml-unless>
 
-<dtml-comment>#####  WebDav-Lock  ###############################</dtml-comment>
-<dtml-unless "REQUEST.form.has_key('ZMS_VERSION_%s'%id)">
-<dtml-try>
- <dtml-if "wl_isLocked()==1">
-  <img src="/p_/davlocked">
- </dtml-if>
-<dtml-except>
-</dtml-try>
-</dtml-unless>
-
 <dtml-comment>#####  Object State  ##############################</dtml-comment>
 <span class="form-small"><dtml-var version_object_state></span>
 

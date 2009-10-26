@@ -24,7 +24,7 @@
 # Imports.
 from __future__ import nested_scopes
 from App.Common import package_home
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import AccessControl.Role
 import copy
 import re
@@ -286,7 +286,6 @@ class ZMSContainerObject(
       @type RESPONSE: ZPublisher.HTTPResponse
       """ 
       
-      self._checkWebDAVLock()
       message = ''
       t0 = time.time()
       
@@ -319,7 +318,6 @@ class ZMSContainerObject(
       @type RESPONSE: ZPublisher.HTTPResponse
       """ 
       
-      self._checkWebDAVLock()
       message = ''
       t0 = time.time()
       
@@ -356,7 +354,6 @@ class ZMSContainerObject(
       @type RESPONSE: ZPublisher.HTTPResponse
       """
       
-      self._checkWebDAVLock()
       message = ''
       t0 = time.time()
       

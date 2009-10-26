@@ -23,7 +23,7 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTML, HTMLFile
+from App.special_dtml import HTMLFile
 from Products.ZSQLMethods.SQL import SQLConnectionIDs
 import copy
 import os
@@ -222,6 +222,18 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     def getDA(self):
       da = getattr(self,self.connection_id)
+      # Try to re-connect if not connected.
+      try: 
+        dbc = da._v_database_connection 
+      except AttributeError: 
+        da.connect(da.connection_string) 
+        dbc = da._v_database_connection
+      # Try to set character-set to utf-8 (should at least work on MySql).
+      try:
+        dbc.query('SET NAMES utf8') 
+        dbc.query('SET CHARACTER SET utf8')
+      except:
+        pass
       return da
 
 

@@ -23,7 +23,7 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTML, HTMLFile
+from App.special_dtml import HTMLFile
 import copy
 import string
 import time

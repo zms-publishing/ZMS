@@ -38,8 +38,7 @@
 <input type="hidden" name="tempfolder" value="<dtml-var tempfolder>"/>
 <input type="hidden" name="outfilename" value="<dtml-var outfilename>"/>
 
-<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_NEXT')">"/>
-<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')">"/>
+<input class="form-submit" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
 <hr size="1"/>
 
 <dtml-call "REQUEST.set('contentTypes',enumManager.getValues('content_type'))">
@@ -73,13 +72,13 @@
           ></dtml-if
          ></td><td class="form-small" style="color:blue"><b>&nbsp;{IN}</b></td></tr>
         <dtml-elif "filter['format']=='export'">
-         <tr><td align="center" class="form-small" style="<dtml-if "step==0">border: 2px solid red; </dtml-if>white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><dtml-var "filter['format'].capitalize()"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
         <dtml-elif "filter['format']=='XHTML'">
-         <tr><td align="center" class="form-small" style="<dtml-if "step==0">border: 2px solid red; </dtml-if>white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><img src="<dtml-var MISC_ZMS>mime_type.text_html.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
         <dtml-elif "filter['format'] in ['XML','XML_incl_embedded']">
-         <tr><td align="center" class="form-small" style="<dtml-if "step==0">border: 2px solid red; </dtml-if>white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
         </dtml-if>
         <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="8" style="border-left: 1px solid navy;"></td></tr>
@@ -89,7 +88,7 @@
           <tr>
            <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
-             <td align="center" class="form-small" style="<dtml-if "step==pid+1">border: 2px solid red;<dtml-else>border: 1px solid navy;</dtml-if> white-space: nowrap; background-color: white; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
+             <td align="center" class="form-small" style="<dtml-if "step==pid">border: 2px solid red;<dtml-else>border: 1px solid navy;</dtml-if> white-space: nowrap; background-color: white; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
               <dtml-if "len(process.keys())==1"><img src="<dtml-var MISC_ZMS>ico_error.gif" title="ERROR: Processing-step type '<dtml-var "process['id']">' not found!" border="0" align="absmiddle"/>&nbsp;<span style="border: 2px solid red;"></dtml-if>
               <img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle"/>
               <a href="content/get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var pid>:int/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a>
@@ -100,7 +99,7 @@
           </tr>
           <dtml-else>
           <tr>
-           <td align="center" class="form-small" style="<dtml-if "step==pid+1">border: 2px solid red;<dtml-else>border: 1px solid maroon;</dtml-if> white-space: nowrap; background-color: #FFFFE0; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"><dtml-var "process['name']" html_quote></td>
+           <td align="center" class="form-small" style="<dtml-if "step==pid">border: 2px solid red;<dtml-else>border: 1px solid maroon;</dtml-if> white-space: nowrap; background-color: #FFFFE0; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"><dtml-var "process['name']" html_quote></td>
            <dtml-if "filterProcess.get('file',None)">
             <dtml-let f="filterProcess['file']">
              <td class="form-small" style="white-space: nowrap; color: navy;"
@@ -139,9 +138,7 @@
         </table>
 
 <hr size="1"/>
-<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_NEXT')">"/>
-<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')">"/>
-
+<input class="form-submit" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
 </form>
 
 </td>

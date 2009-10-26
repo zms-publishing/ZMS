@@ -303,7 +303,6 @@ class CacheableObject(ReqBuff):
     def manage_getCachedPages(self, lang, REQUEST, RESPONSE): 
       """ CacheableObject.manage_getCachedPages """
       
-      self._checkWebDAVLock()
       message = ''
       t0 = time.time()
       max_depth = REQUEST.get('attr_cacheable_levels',999)
@@ -331,7 +330,6 @@ class CacheableObject(ReqBuff):
     def manage_clearCachePages(self, lang, REQUEST, RESPONSE): 
       """ CacheableObject.manage_clearCachePages """
       
-      self._checkWebDAVLock()
       message = ''
       t0 = time.time()
       max_depth = REQUEST.get('attr_cacheable_levels',999)

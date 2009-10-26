@@ -22,7 +22,7 @@
 ################################################################################
 
 # Imports.
-from Globals import HTML, HTMLFile
+from App.special_dtml import HTMLFile
 import copy
 import operator
 import time

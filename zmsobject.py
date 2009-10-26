@@ -23,9 +23,8 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 from types import StringTypes
-from webdav.Lockable import ResourceLockedError
 import ZPublisher.HTTPRequest
 import urllib
 import string
@@ -571,7 +570,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_changeProperties """
       
       self._checkZMSLock()
-      self._checkWebDAVLock()
       message = ''
       messagekey = 'manage_tabs_message'
       t0 = time.time()
@@ -881,7 +879,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def _checkZMSLock(self):
       req = self.REQUEST
       if self.isCheckedOut(req) and not self.isCheckedOutByMe(req):
-        raise ResourceLockedError, 'This Object is locked by another user'
+        raise 'ResourceLockedError', 'This Object is locked by another user'
 
     # --------------------------------------------------------------------------
     #  Lockable.isCheckedOut:
@@ -1401,7 +1399,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
     def manage_moveObjUp(self, lang, REQUEST, RESPONSE):
       """ ZMSObject.manage_moveObjUp """
-      self._checkWebDAVLock()
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id - 15)
@@ -1418,7 +1415,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
     def manage_moveObjDown(self, lang, REQUEST, RESPONSE):
       """ ZMSObject.manage_moveObjDown """
-      self._checkWebDAVLock()
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id + 15)
@@ -1435,7 +1431,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
     def manage_moveObjToPos(self, lang, pos, REQUEST, RESPONSE):
       """ ZMSObject.manage_moveObjToPos """
-      self._checkWebDAVLock()
       parent = self.getParentNode()
       if pos == 1:
         self.setSortId(0)

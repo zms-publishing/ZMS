@@ -23,7 +23,7 @@
 
 # Imports.
 from App.Common import package_home
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import ZPublisher.HTTPRequest
 import os
 import sys

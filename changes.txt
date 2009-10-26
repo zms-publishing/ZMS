@@ -1370,3 +1370,10 @@ Risk: ZEXP can't be imported!
 [01270] Enabled synchronization of link-sources for single clients (requested by xm).
 [01271] Increased col-size threshold for string -> text in SQL-Datasource from 50 to 128 (requested by fh).
 --------------------------------------------------
+2009-10-19:zms-2.11.4-02
+[01271] Revised imports from Globals with respect for deprecation warnings in Zope2-2.12.0.
+[01272] Removed webdav-support for compatibility with Zope2-2.12.0.
+[01273] Added support to SQL-Datasource for auto re-connect and setting character-set to utf-8 on MySql (contributed by C. Meier).
+[01274] Added support for logging to event.log (requested by xm).
+[01275] Added support for overwriting configuration of $ZMS_HOME/import/configure.zcml by $INSTANCE_HOME/etc/zms/import/configure.zcml(requested by xm).
+--------------------------------------------------

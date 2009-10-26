@@ -23,9 +23,9 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTMLFile
 from AccessControl.User import UserFolder
 from App.Common import package_home
+from App.special_dtml import HTMLFile
 from OFS.Image import Image
 from sys import *
 import copy
@@ -907,12 +907,16 @@ class ZMS(
       patch = getattr( self, 'patch', '000')
       if build != self.zms_build:
         REQUEST.set('recurse_updateVersionBuild',True)
+        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from build #%s%s to #%s%s...'%(build,patch,self.zms_build,self.zms_patch))
         message += recurse_updateVersionBuild( self, self, REQUEST)
+        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from build #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
         setattr( self, 'build', self.zms_build)
         message += 'Synchronized object-model from build #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
       if build != self.zms_build or patch != self.zms_patch:
         REQUEST.set('recurse_updateVersionPatch',True)
+        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from patch #%s%s to #%s%s...'%(build,patch,self.zms_build,self.zms_patch))
         message += recurse_updateVersionPatch( self, self, REQUEST)
+        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from patch #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
         setattr( self, 'patch', self.zms_patch)
         message += 'Synchronized object-model from patch #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
       if maintenance:

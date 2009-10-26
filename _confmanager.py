@@ -26,8 +26,8 @@ from __future__ import nested_scopes
 from zope.interface import implements
 from cStringIO import StringIO
 from App.Common import package_home
+from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
-from Globals import HTMLFile
 from OFS.CopySupport import absattr
 from OFS.Image import Image
 from Products.PageTemplates import ZopePageTemplate
@@ -205,11 +205,18 @@ class ConfManager(
       ConfManager.getConfFiles
       """
       filenames = {}
-      filepath = package_home(globals())+'/import/'
-      conf = open( filepath+'configure.zcml','r')
+      filepaths = [
+        self.Control_Panel.getINSTANCE_HOME()+'/etc/zms/import/',
+        package_home(globals())+'/import/',]
+      try:
+        conf = open( filepaths[0]+'configure.zcml','r')
+      except:
+        conf = open( filepaths[1]+'configure.zcml','r')
       conf_xml = self.xmlParse( conf)
+      print "conf_xml=",conf_xml
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
+        print "location=",location
         if location.startswith('http://'):
           try:
             remote_conf = self.http_import(location+'configure.zcml')
@@ -221,12 +228,13 @@ class ConfManager(
           except:
             _globals.writeError( self, "[getConfFiles]: can't get conf-files from remote URL=%s"%location)
         else:
-          for filename in os.listdir(filepath+location):
-            path = filepath + filename
-            mode = os.stat(path)[stat.ST_MODE]
-            if not stat.S_ISDIR(mode):
-              if filename not in filenames:
-                filenames[path] = filename
+          for filepath in filepaths:
+            for filename in os.listdir(filepath+location):
+              path = filepath + filename
+              mode = os.stat(path)[stat.ST_MODE]
+              if not stat.S_ISDIR(mode):
+                if filename not in filenames:
+                  filenames[path] = filename
       conf.close()
       # Filter.
       if pattern is not None:

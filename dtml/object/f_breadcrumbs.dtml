@@ -42,13 +42,4 @@
   <a href="<dtml-var "url_append_params(href,{'lang':lang})">" class="zmi"><dtml-var title></a>
  </dtml-in>
 </dtml-if>
-<dtml-comment>
-<!-- ### WebDav-Lock  -->
-</dtml-comment>
-<dtml-try>
- <dtml-if "wl_isLocked()==1">
-  <img src="/p_/davlocked">
- </dtml-if>
-<dtml-except>
-</dtml-try>
 </span>

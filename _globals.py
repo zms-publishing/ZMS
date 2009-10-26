@@ -539,10 +539,12 @@ def get_size(v):
 """
 ################################################################################
 #
-#  Traces
+#  Logging
 #
 ################################################################################
 """
+
+LOG = logging.getLogger("ZMS")
 
 # ------------------------------------------------------------------------------
 #  _globals.debug:
@@ -564,6 +566,7 @@ def debug(self):
 # ------------------------------------------------------------------------------
 def writeLog(self, info):
   try:
+    LOG.debug(info)
     zms_log = getattr( self, 'zms_log', None)
     if 'DEBUG' in zms_log.logged_entries:
       severity = logging.DEBUG
@@ -577,6 +580,7 @@ def writeLog(self, info):
 # ------------------------------------------------------------------------------
 def writeBlock(self, info):
   try:
+    LOG.info(info)
     zms_log = getattr( self, 'zms_log', None)
     if 'INFO' in zms_log.logged_entries:
       severity = logging.INFO
@@ -591,6 +595,7 @@ def writeBlock(self, info):
 def writeError(self, etc=''):
   info = '?'
   try:
+    LOG.error(info)
     t,v,tb = sys.exc_info()
     v = str(v)
     # Strip HTML tags from the error value

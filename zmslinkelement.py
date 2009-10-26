@@ -22,7 +22,7 @@
 ################################################################################
 
 # Imports.
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import sys
 import urllib
 # Product Imports.
@@ -278,7 +278,6 @@ class ZMSLinkElement(ZMSContainerObject):
       """ ZMSLinkElement.manage_changeProperties """
       
       self._checkZMSLock()
-      self._checkWebDAVLock()
       target = REQUEST.get( 'manage_target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
       if REQUEST.get('btn','') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:

@@ -23,7 +23,7 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import time
 import urllib
 # Product Imports.
@@ -126,7 +126,6 @@ class ZMSLinkContainer(ZMSContainerObject):
       """ ZMSLinkContainer.manage_changeProperties """
         
       self._checkZMSLock()
-      self._checkWebDAVLock()
       message = ''
       
       # Change.

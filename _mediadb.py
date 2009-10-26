@@ -22,7 +22,8 @@
 ################################################################################
 
 # Imports.
-from Globals import HTMLFile, Persistent
+from App.special_dtml import HTMLFile
+from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
 import OFS.SimpleItem
 import Acquisition

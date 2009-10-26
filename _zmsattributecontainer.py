@@ -27,11 +27,8 @@ __doc__ = """ZMS product module."""
 __version__ = '0.1' 
 
 # Imports.
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 from OFS.Folder import Folder
-from webdav.Resource import Resource
-from webdav.Lockable import ResourceLockedError
-from webdav.WriteLockInterface import WriteLockInterface
 import urllib
 import time
 import string
@@ -154,34 +151,5 @@ class ZMSAttributeContainer(
         self.setReqProperty(key,REQUEST,1)
     # Return with message.
     return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(urllib.quote(message)))
-
-
-  """
-  ##############################################################################
-  #
-  #   WebDAV
-  #
-  ##############################################################################
-  """
-
-  # WebDAV Interface.
-  # -----------------
-  __implements__ = (WriteLockInterface,)
-
-  # ----------------------------------------------------------------------------
-  #  ZMSObject._checkWebDAVLock
-  # ----------------------------------------------------------------------------
-  def _checkWebDAVLock(self):
-    if self.wl_isLocked():
-      raise ResourceLockedError, 'This %s Object is locked via WebDAV' % self.meta_type
-
-  # ----------------------------------------------------------------------------
-  #  ZMSObject.document_src
-  # ----------------------------------------------------------------------------
-  def document_src(self, REQUEST={}):
-    """ document_src returns ZMSAttributes as XML """
-    return self.toXml(REQUEST, incl_embedded=False, deep=False)
-
-  manage_DAVget = manage_FTPget = document_src
 
 ################################################################################

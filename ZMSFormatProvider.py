@@ -25,7 +25,7 @@
 # Imports.
 from __future__ import nested_scopes
 from zope.interface import implements
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import copy
 # Product Imports.
 import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager

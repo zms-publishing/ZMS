@@ -2403,7 +2403,7 @@ several semantically related columns together.
   
   <xsl:attribute-set name="th">
     <xsl:attribute name="font-size">9pt</xsl:attribute>
-    <xsl:attribute name="font-weight">bolder</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
     <xsl:attribute name="text-align">center</xsl:attribute>
     <xsl:attribute name="background-color">silver</xsl:attribute>
     <xsl:attribute name="font-size">9pt</xsl:attribute>
@@ -2430,14 +2430,14 @@ several semantically related columns together.
   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
   
   <xsl:attribute-set name="b">
-    <xsl:attribute name="font-weight">bolder</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="strong">
-    <xsl:attribute name="font-weight">bolder</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
   </xsl:attribute-set>
   
   <xsl:attribute-set name="strong-em">
-    <xsl:attribute name="font-weight">bolder</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
     <xsl:attribute name="font-style">italic</xsl:attribute>
   </xsl:attribute-set>
   
@@ -4347,7 +4347,7 @@ show-body-only: yes
 <item key="acquired" type="int">0</item>
 <item key="command"><![CDATA[<!-- BO htmlEntities -->
 
-<dtml-let htmlEntities="[]" htmlIn="str(localfs_read(ZMS_FILTER_IN))">
+<dtml-let htmlEntities="[]" htmlIn="str(localfs_read(ZMS_FILTER_IN,{'mode':'b','theshold':2**16}))">
  <dtml-call "htmlEntities.append('<!DOCTYPE html ')">
  <dtml-call "htmlEntities.append('     PUBLIC '+QUOT+'-//W3C//DTD XHTML 1.0 Transitional//EN'+QUOT)">
  <dtml-call "htmlEntities.append('     '+QUOT+'xhtml1-transitional.dtd'+QUOT+'>')">

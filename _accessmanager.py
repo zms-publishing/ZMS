@@ -23,7 +23,7 @@
 
 # Imports.
 from __future__ import nested_scopes
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 from AccessControl.User import UserFolder
 from types import StringTypes
 import copy

@@ -266,9 +266,6 @@ class CopySupport:
       _globals.writeBlock( self, "[manage_pasteObjs]")
       t0 = time.time()
       
-      # Check if object is locked via WebDAV
-      self._checkWebDAVLock()
-      
       # Analyze request
       cp=self._get_cb_copy_data(cb_copy_data=None,REQUEST=REQUEST)
       op=cp[0]

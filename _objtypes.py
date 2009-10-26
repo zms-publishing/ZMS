@@ -22,7 +22,7 @@
 ################################################################################
 
 # Imports.
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 # Product Imports.
 import _fileutil
 import _globals

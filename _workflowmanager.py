@@ -24,7 +24,7 @@
 # Imports.
 from __future__ import nested_scopes
 from App.Common import package_home
-from Globals import HTMLFile
+from App.special_dtml import HTMLFile
 import ZPublisher.HTTPRequest
 import copy
 import time

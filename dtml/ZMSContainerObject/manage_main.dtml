@@ -11,6 +11,7 @@
  ><dtml-call "REQUEST.set('id_prefix','')"
 ><dtml-else
  ><dtml-call "REQUEST.set('id_prefix','e')"
+ ><dtml-call "initObjChildren(REQUEST)"
 ></dtml-if
 
 ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px"

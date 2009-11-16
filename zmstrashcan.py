@@ -205,10 +205,6 @@ class ZMSTrashcan(ZMSContainerObject):
     #  ZMSTrashcan.getTitle
     # --------------------------------------------------------------------------
     def getTitle(self, REQUEST):
-      try:
-        x = self.display_type(REQUEST) + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS',REQUEST['lang']) + ")"
-      except:
-        print self.display_type(REQUEST)
       return self.display_type(REQUEST) + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS',REQUEST['lang']) + ")"
 
 ################################################################################

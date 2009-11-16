@@ -310,7 +310,7 @@ class ConfManager(
               action = 'add'
             if action:
               l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 _fileutil.exportObj(ob,filepath)
                 atime = mtime
                 times = (atime,mtime)
@@ -321,7 +321,7 @@ class ConfManager(
             if not os.path.exists( filepath):
               action = 'add'
               l.append({'action':action,'filepath':filepath,'meta_type':meta_type})
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 _fileutil.mkDir(filepath)
             l.extend( self.svnCopy(ob,filepath,ids))
       return l
@@ -352,7 +352,7 @@ class ConfManager(
               l.extend( ob.metaobj_manager.svnUpdate( node, filepath, ids))
           elif filename != '.svn':
             if ob is None:
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 node.manage_addFolder( id, 'New Folder')
               ob = getattr( node, id, None)
               meta_type = 'Folder'
@@ -365,21 +365,21 @@ class ConfManager(
           if ob is None:
             if filename.endswith('.dtml'):
               meta_type = 'DTML Method'
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 node.manage_addDTMLMethod( id=id, title='New DTML Method')
             elif filename.endswith('.py'):
               meta_type = 'Script (Python)'
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 PythonScript.manage_addPythonScript( node, id)
             elif filename.lower().endswith('.gif') or \
                  filename.lower().endswith('.jpg') or \
                  filename.lower().endswith('.png'):
               meta_type = 'Image'
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 node.manage_addImage( id=id, file='', title='')
             else:
               meta_type = 'File'
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 node.manage_addFile( id=id, file='', title='')
             ob = getattr( node, id, None)
             mtime = 0
@@ -392,7 +392,7 @@ class ConfManager(
               action = 'refresh'
           if action:
             l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-            if filepath in ids:
+            if filepath in ids or '*' in ids:
               file = open(filepath)
               data = file.read()
               ob.manage_upload(data)
@@ -413,7 +413,7 @@ class ConfManager(
           filemtime = 0
           meta_type = ob.meta_type
           l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-          if filepath in ids:
+          if filepath in ids or '*' in ids:
             node.manage_delObjects( ids=[id])
       return l
 

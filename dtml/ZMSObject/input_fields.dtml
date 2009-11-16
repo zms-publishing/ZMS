@@ -1,5 +1,8 @@
-<dtml-in "getMetaobjAttrIds(metaObj['id'])"
-><dtml-let objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
+<dtml-let metaobjAttrIds="getMetaobjAttrIds(metaObj['id'])"
+><dtml-in metaobjAttrIds
+><dtml-let sx=sequence-index
+           si=sequence-item
+           objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
            key="objAttr['id']"
            required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
            visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'resource']"
@@ -78,8 +81,9 @@
      </select>
     </td>
    </tr>
-  </dtml-in>
- </dtml-unless>
+  </dtml-in
+  ><dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',False)"
+ ></dtml-unless>
 
 <dtml-comment>
 ##### Object #####
@@ -87,7 +91,16 @@
 <dtml-elif "objAttr['type'] in metaobjIds+['*']"
  ><dtml-unless "isPageContainer() and key=='e'"
   ><dtml-if ZMS_LAST_OBJECT_WAS_PRIMITIVE
-   ><dtml-unless omit_submitBtn><dtml-unless "REQUEST.get('submitBtnCount') is not None"><tr><td colspan="2"><dtml-var f_submitBtn></td></tr></dtml-unless></dtml-unless
+   ><dtml-unless omit_submitBtn
+    ><dtml-unless "REQUEST.get('submitBtnCount') is not None"
+     ><dtml-let primitiveMetaobjAttrIds="getMetaobjAttrIds(metaObj['id'],metaobj_manager.valid_types)"
+      ><dtml-unless "primitiveMetaobjAttrIds[-1] in metaobjAttrIds[sx:]"
+       ><tr><td colspan="2"><dtml-var f_submitBtn></td></tr
+       ><dtml-call "REQUEST.set('omit_submitBtn',True)"
+      ></dtml-unless
+     ></dtml-let
+    ></dtml-unless
+  ></dtml-unless
   ></dtml-if
   ><dtml-var "f_selectObject(_,_,elLabel=elLabel,objAttr=objAttr)"
   ><dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',False)"
@@ -151,6 +164,5 @@
 </dtml-if
 ></dtml-if
 ></dtml-let
-></dtml-in>
-
-<dtml-call "REQUEST.set('omit_submitBtn',REQUEST.get('ZMS_LAST_OBJECT_WAS_PRIMITIVE')==False and REQUEST.get('submitBtnCount') is not None)">
+></dtml-in
+></dtml-let>

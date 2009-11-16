@@ -18,6 +18,7 @@
    <dtml-var metaobj_recordset_main>
   <dtml-else>
    <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
+   ><dtml-call "initObjChildren(REQUEST)"
    ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')"
    ><input type="hidden" name="preview" value="preview"
    ><input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"

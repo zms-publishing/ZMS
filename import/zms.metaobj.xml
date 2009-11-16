@@ -2569,7 +2569,7 @@ function remoteResponseTimedout() {
 function onZMSTableFormSubmit()
 {
   var xml = '';
-  var type = parseInt($('input[name=table_type:int]:checked').val());
+  var type = parseInt($('input[name=type:int]:checked').val());
   xml += '<list>\n';
   for ( var y = 0; y < parseInt($('#rows').val()); y++) {
     xml += "<item type=\"list\"><list>\n";
@@ -2583,16 +2583,22 @@ function onZMSTableFormSubmit()
     }
     else {
       for ( var x = 0; x < parseInt($('#cols').val()); x++) {
-        var tag = "td";
-        if ( (type == 1 && y == 0) ||
-             (type == 3 && x == 0) ||
-             (type == 4 && (x == 0 || y == 0)))
-          tag = "th";
         xml += '<item type=\"dictionary\"><dictionary>\n';
-        xml += '<item key="colspan" type="int">1</item>\n';
-        xml += '<item key="content"></item>\n';
-        xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
-        xml += '<item key="tag">'+tag+'</item>\n';
+        if ( y==0 && x == 0 && type == 4) {
+          xml += '<item key="colspan" type="int">1</item>\n';
+        }
+        else {
+          var tag = "td";
+          if ( (type == 1 && y == 0) ||
+               (type == 3 && x == 0) ||
+               (type == 4 && (x == 0 || y == 0))) {
+            tag = "th";
+          }
+          xml += '<item key="colspan" type="int">1</item>\n';
+          xml += '<item key="content"></item>\n';
+          xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
+          xml += '<item key="tag">'+tag+'</item>\n';
+        }
         xml += '</dictionary></item>\n';
       }
     }
@@ -2636,7 +2642,7 @@ $()
    <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
   </tr>
   <tr>
-   <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="table_type:int" value="1" checked="checked"></td>
+   <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="type:int" value="1" checked="checked"></td>
    <td>
     <div class="ZMSTable">
     <table>
@@ -2656,7 +2662,7 @@ $()
  <td>
   <table cellspacing="2" cellpadding="0" border="0">
   <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="2"></td>
+   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="2"></td>
    <td>
     <div class="ZMSTable">
     <table>
@@ -2674,7 +2680,7 @@ $()
  <td>
   <table cellspacing="2" cellpadding="0" border="0">
   <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="3"></td>
+   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="3"></td>
    <td>
     <div class="ZMSTable">
     <table>
@@ -2692,7 +2698,7 @@ $()
  <td>
   <table cellspacing="2" cellpadding="0" border="0">
   <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="4"></td>
+   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="4"></td>
    <td>
     <div class="ZMSTable">
     <table>
@@ -2718,7 +2724,7 @@ $()
    <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
   </tr>
   <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="table_type:int" value="5"></td>
+   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="5"></td>
    <td>
     <div class="ZMSTable">
     <table>
@@ -2799,6 +2805,7 @@ function onZMSTableFormSubmit()
     for ( var j=0; j < el_tds.length; j++) {
       xml += "<item type=\"dictionary\"><dictionary>\n";
       var colspan = $(el_tds[j]).attr("colspan");
+      
       if ( colspan) {
         xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
         var el_inputs = $("textarea,input",el_tds[j]);
@@ -2809,9 +2816,6 @@ function onZMSTableFormSubmit()
       }
       else {
         xml += '<item key="colspan" type="int">1</item>\n';
-        xml += '<item key="content"></item>\n';
-        xml += '<item key="format"></item>\n';
-        xml += '<item key="tag">td</item>\n';
       }
       xml += '</dictionary></item>\n';
     }
@@ -3208,7 +3212,7 @@ table_cell_init();
  <dtml-in table_table>
   <dtml-let table_row=sequence-item>
    <dtml-in table_row mapping>
-    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
+    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(table_cell.get('content',''),REQUEST)))">
      <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
     </dtml-let>
    </dtml-in>
@@ -3289,11 +3293,15 @@ table_cell_init();
   ><dtml-let row_index=sequence-index table_row=sequence-item
    ><tr class="<dtml-if sequence-odd>odd<dtml-else>even</dtml-if>"
    ><dtml-in table_row mapping
-    ><dtml-let col_index=sequence-index col_text="dt_html(renderText(format,'table_%i_%i'%(col_index,row_index),content,REQUEST),REQUEST)"
-     ><<dtml-var tag><dtml-if "colspan>1"> colspan="<dtml-var colspan>"</dtml-if>
-     ><dtml-if col_text><dtml-var col_text><dtml-else>&nbsp;</dtml-if
-     ></<dtml-var tag>
-    ></dtml-let
+    ><dtml-if tag
+     ><dtml-let col_index=sequence-index col_text="dt_html(renderText(format,'table_%i_%i'%(col_index,row_index),content,REQUEST),REQUEST)"
+      ><<dtml-var tag><dtml-if "colspan>1"> colspan="<dtml-var colspan>"</dtml-if>
+      ><dtml-if col_text><dtml-var col_text><dtml-else>&nbsp;</dtml-if
+      ></<dtml-var tag>
+     ></dtml-let
+    ><dtml-else
+     ><td style="background:transparent;"></td
+    ></dtml-if
    ></dtml-in
    ></tr
   ></dtml-let
@@ -3346,7 +3354,7 @@ table_cell_init();
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.1.0]]></item>
+            <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

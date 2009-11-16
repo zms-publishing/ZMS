@@ -104,10 +104,11 @@ class ZMSMetaobjManager:
 
     # Globals.
     # --------
-    valid_types = ['amount','autocomplete','boolean','color','date','datetime','dialog','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
-    valid_xtypes = ['constant','delimiter','hint','interface','method','resource']
-    valid_datatypes = ['amount','autocomplete','boolean','color','constant','date','datetime','delimiter','dialog','dictionary','file','float','hint','identifier','image','int','interface','list','method','multiautocomplete','multiselect','password','resource','richtext','select','string','text','time','url','xml']
-    valid_objtypes = [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
+    valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dialog','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
+    valid_xtypes =    ['constant','delimiter','hint','interface','method','resource']
+    valid_datatypes = valid_types+valid_xtypes
+    valid_datatypes.sort()
+    valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
     valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Page Template', 'Script (Python)', 'Z SQL Method']
 
 
@@ -298,7 +299,7 @@ class ZMSMetaobjManager:
               action = 'add'
             if action:
               l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
-              if filepath in ids:
+              if filepath in ids or '*' in ids:
                 xml = self.exportMetaobjXml([id])
                 _fileutil.exportObj(xml,filepath)
       return l
@@ -316,7 +317,7 @@ class ZMSMetaobjManager:
         filepath = path+'/'+filename
         file = open(filepath)
         # Execute action.
-        if filepath in ids:
+        if filepath in ids or '*' in ids:
           ob.metaobj_manager.importMetaobjXml( file)
         elif filepath.endswith(suffix):
           filexml = self.parseXmlString( file, mediadbStorable=False)
@@ -344,7 +345,7 @@ class ZMSMetaobjManager:
             filename = id+suffix
             filepath = path+'/'+filename
             # Execute action.
-            if filepath in ids:
+            if filepath in ids or '*' in ids:
               self.delMetaobj(id)
             elif not os.path.exists( filepath):
               action = 'delete'

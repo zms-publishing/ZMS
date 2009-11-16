@@ -3,53 +3,41 @@
 <script language="javascript">
 <!--//
 
-  function switchDisplaytypeBtns( fmName, key) {
-   <dtml-in "_.range(len(displaytypes)/2)">
-    <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
-      if (key=='<dtml-var key>')
-        eval ("document.displaytypeBtn_"+fmName+"_<dtml-var value>.src = '<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif'");
-      else
-        eval ("document.displaytypeBtn_"+fmName+"_<dtml-var value>.src = '<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_off.gif'");
-    </dtml-let>
-   </dtml-in>
+  function switchDisplaytypeBtns( key) {
+    var btn;
+    btn = $('img[id^=btn_displaytype_]');
+    btn.removeClass('button1');
+    btn.addClass('button0');
+    btn = $('img[id=btn_displaytype_'+key+']');
+    btn.removeClass('button0');
+    btn.addClass('button1');
   }
 
-  function displaytypeBtnClick( fmName, key, value) {
-      var fm = document.forms[ fmName];
-      fm['displaytype:int'].value = value;
-      switchDisplaytypeBtns( fmName, key);
+  function displaytypeBtnClick( key, value) {
+      $('input[name=displaytype:int]').val(value);
+      switchDisplaytypeBtns( key);
   }
 
 //-->
 </script>
 
   <input type="hidden" name="displaytype:int" value="<dtml-if displaytype><dtml-var displaytype><dtml-else>2</dtml-if>">
-  <td>&nbsp;</td>
   <dtml-if "not isDisabledAttr(getObjAttr('displaytype'),REQUEST)">
-   <dtml-in "_.range(len(displaytypes)/2)">
-    <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
-    <td valign="middle"
-     ><a href="javascript:displaytypeBtnClick('<dtml-var fmName>','<dtml-var key>',<dtml-var value>)" class="button"
-      ><img name="displaytypeBtn_<dtml-var fmName>_<dtml-var value>" border="0" align="absmiddle"
-       <dtml-if "dctDisplaytype.get(str(displaytype),'top')==key">
-        src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"
-       <dtml-else>
-        src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_off.gif"
-       </dtml-if>
+   <dtml-in "_.range(len(displaytypes)/2)"
+    ><dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]"
+     ><a href="javascript:displaytypeBtnClick('<dtml-var key>',<dtml-var value>)" class="button"
+      ><img id="btn_displaytype_<dtml-var key>" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>.gif" class="button<dtml-var "int(dctDisplaytype.get(str(displaytype),'top')==key)">"
      ></a
-    ></td>
-    </dtml-let>
-   </dtml-in>
+    ></dtml-let
+   ></dtml-in>
   <dtml-else>
    <dtml-in "_.range(len(displaytypes)/2)">
     <dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]">
      <dtml-if "dctDisplaytype.get(str(displaytype),'left')==key">
-      <td valign="middle"><img border="0" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>_on.gif"></td>
+      <img src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>.gif" class="button1">
      </dtml-if>
     </dtml-let>
    </dtml-in>
   </dtml-if>
-  <td> &nbsp; </td>
-  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" border="0" align="absmiddle"></td>
  
 </dtml-let>

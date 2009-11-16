@@ -1,31 +1,34 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
-
 // ############################################################################
 // ### radioOnClick:
 // ############################################################################
 function radioOnClick(el, url) {
-  location.href = url + '?lang=<dtml-var lang>&' + el.name + '=' + escape(el.value);
+  location.href = url + '?lang=<dtml-var lang>&amp;' + el.name + '=' + escape(el.value);
 }
 
 
 // ############################################################################
-// ### accessBlobBtnClick:
+// ### zmiDelBlobBtnClick:
 // ############################################################################
-function accessBlobBtnClick(fmName, elName, v) {
-  document.forms[ fmName].elements[ elName].value=v;
-}
-
-
-// ############################################################################
-// ### delBlobBtnClick:
-// ############################################################################
-function delBlobBtnClick(fmName, elName, submitBtn) {
-  var b = confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
-  if (b) {
-    document.forms[fmName].elements[elName].value="1";
-    document.forms[fmName].elements[submitBtn].click();
+function zmiDelBlobBtnClick(elName) {
+  if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
+    $('input[name=del_'+elName+']').val(1);
+    $('table#table_'+elName).hide('normal');
+    $('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
+    var img = $('img#img_'+elName);
+    if (img.length > 0) {
+      img.css({border:'1px solid red'});
+      var div = $('div#div_opaque_'+elName);
+      var pos = img.position();
+      div.css({
+        position:'absolute',
+        left:pos.left,
+        top:pos.top,
+        width:img.outerWidth(),
+        height:img.outerHeight()});
+    }
   }
 }
 
@@ -43,27 +46,27 @@ function zmiExpandConfFiles(el, pattern) {
       // Set wait-cursor.
       $(document.body).css( "cursor", "wait");
       // JQuery.AJAX.get
-      $.get( "getConfFiles?id="+el.id+"&pattern="+escape(pattern), zmiExpandConfFilesProcessResponse);
+      $.get( 'getConfFiles',
+          {id:el.id,pattern:pattern},
+          function(data) {
+            // Reset wait-cursor.
+            $(document.body).css( "cursor", "auto");
+            //
+            var select = document.getElementById('init');
+            var items = $("item",data);
+            for (var i = 0; i < items.length; i++) 
+            {
+              var item = $(items[i]);
+              var value = item.attr("key");
+              var label = item.text();
+              var option = new Option( label, value);
+              select.options[ select.length] = option;
+            }
+            select.selectedIndex = 0;
+            zmiExpandConfFilesProgress = false;
+          });
     }
   }
-}
-
-function zmiExpandConfFilesProcessResponse(data) {
-  // Reset wait-cursor.
-  $(document.body).css( "cursor", "auto");
-  //
-  var select = document.getElementById('init');
-  var items = $("item",data);
-  for (var i = 0; i < items.length; i++) 
-  {
-    var item = $(items[i]);
-    var value = item.attr("key");
-    var label = item.text();
-    var option = new Option( label, value);
-    select.options[ select.length] = option;
-  }
-  select.selectedIndex = 0;
-  zmiExpandConfFilesProgress = false;
 }
 
 
@@ -74,19 +77,19 @@ function checkoutOvertakeBtnClick(href, lang) {
   // Set wait-cursor.
   $(document.body).css( "cursor", "wait");
   // JQuery.AJAX.get
-  $.get( href+"/manage_checkout?lang="+escape(lang), processResponseCheckoutOvertake);
+  $.get( href+'/manage_checkout',
+      {lang:lang},
+      function(data) {
+        // Reset wait-cursor.
+        $(document.body).css( "cursor", "auto");
+        // Hide div.
+        $('#checkoutOvertakeDiv').hide('slow');
+        // Enable buttons.
+        $('input[name=btn]').removeAttr('disabled');
+      });
   return false;
 }
 
-function processResponseCheckoutOvertake(data) 
-{
-  // Reset wait-cursor.
-  $(document.body).css( "cursor", "auto");
-  // Hide div.
-  $('#checkoutOvertakeDiv').hide('slow');
-  // Enable buttons.
-  $('input[name=btn]').removeAttr('disabled');
-}
 
 // ############################################################################
 // ### browseEnumBtnClick:
@@ -101,10 +104,10 @@ function browseEnumBtnClick(fmName, elName, enumName)
     elValue = document.forms[fmName].elements[elName].value;
   }
   params = '?lang=<dtml-var lang>';
-  params += '&fmName=' + escape(fmName);
-  params += '&elName=' + escape(elName);
-  params += '&elValue=' + escape(elValue);
-  params += '&enum=' + escape(enumName);
+  params += '&amp;fmName=' + escape(fmName);
+  params += '&amp;elName=' + escape(elName);
+  params += '&amp;elValue=' + escape(elValue);
+  params += '&amp;enum=' + escape(enumName);
   open_function(url+params,400,50,",resizable=yes,scrollbars=yes");
   return false;
 }
@@ -135,7 +138,7 @@ function collectionPositionPopulate(el, len) {
  */
 function collectionDeleteBtnOnClick(href)
 {
-  confirmDeleteBtnOnClick(href + '&btn=delete');
+  confirmDeleteBtnOnClick(href + '&amp;btn=delete');
 }
 
 /**
@@ -147,7 +150,7 @@ function confirmDeleteBtnOnClick(href)
 {
   if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
     if (href.indexOf('lang=<dtml-var lang>') < 0) {
-      href += '&lang=<dtml-var lang>';
+      href += '&amp;lang=<dtml-var lang>';
     }
     location.href = href;
   }

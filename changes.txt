@@ -1396,4 +1396,9 @@ Risk: Adding link-element zombies without prefix ('e')!
 2009-11-04:zms2-2.12.1-01
 [01281] Added support for Zope2-2.12.1.
 [01282] Revised support for replication to local-fs: encapsulate content-objects in xml.
+--------------------------------------------------
+2009-11-05:zms2-2.12.1-02
+[01283] Revised deletion of blob-fields (images/files): do not submit form instantly, deletion has to be executed by Save-Button.
+[01284] Removed getCoords() from main_js.
+Measure: Use position() from jquery.position instead! Re-Import ZMSTable from zms-defaults.
 ----------------------------------------------------------------------------------------------------

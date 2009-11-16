@@ -8,17 +8,6 @@
 	@param REQUEST
 -->
 
-<dtml-if metaObj><dtml-if "REQUEST.get('b_f_selectDisplaytype',True)"><dtml-if "len(filter_list(metaObj['attrs'],'id','displaytype','=='))>0">
-<div class="zmiNeutralColorMedium0">
-<table cellspacing="0" cellpadding="0" border="0">
-<tr valign="middle">
-<dtml-var f_selectDisplaytype>
-</tr>
-</table>
-</div>
-<dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
-</dtml-if></dtml-if></dtml-if>
-
 <input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">">
 <dtml-if "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">
  <input type="hidden" name="del_<dtml-var elName>" value="0">
@@ -31,9 +20,10 @@
   <td valign="top" width="100%">
 
    <!-- Title -->
-   <table cellspacing="0" cellpadding="0" border="0" width="100%">
+   <table id="table_<dtml-var elName>" cellspacing="0" cellpadding="0" border="0" width="100%">
    <tr class="zmiNeutralColorMedium0">
-     <td valign="middle" nowrap="nowrap" class="form-text">
+     <!-- Filename -->
+     <td class="form-small" nowrap="nowrap">
       <dtml-if "value.getMediadbfile() is not None"><font class="form-label">MediaDb:</font></dtml-if>
        <dtml-try>
         <img src="<dtml-var "value.getMimeTypeIconSrc()">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle">
@@ -47,9 +37,15 @@
         </dtml-if>
        <dtml-except></dtml-try>
      </td>
-     <td align="right" valign="top">
+     <td class="form-small" nowrap="nowrap" align="right">
+      <!-- Displaytype -->
+      <dtml-if metaObj><dtml-if "REQUEST.get('b_f_selectDisplaytype',True)"><dtml-if "len(filter_list(metaObj['attrs'],'id','displaytype','=='))>0">
+       <dtml-var f_selectDisplaytype>
+       <dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
+      </dtml-if></dtml-if></dtml-if>
+      <!-- Delete -->
       <dtml-if "hasObjProperty(key,REQUEST) or getObjAttr(key)['multilang']==0">
-       <a href="javascript:delBlobBtnClick('<dtml-var fmName>','del_<dtml-var elName>','submitBtn<dtml-var "REQUEST.get('submitBtnCount',-1)+1">');" class="button"
+       <a href="javascript:zmiDelBlobBtnClick('<dtml-var elName>');" class="button"
         ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var " getZMILangStr('BTN_DELETE')">"
        ></a>
       </dtml-if>
@@ -80,10 +76,9 @@
       <td align="right" valign="top">
        <dtml-try>
        <dtml-if "key.find('superres')<0 and value.getContentType().find('image')==0">
-       <table cellspacing="1" cellpadding="0" border="0" class="neutralColorBlack">
-       <tr>
-       <td style="background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"
-        ><img src="<dtml-var "value.getHref(REQUEST)">" border="0"
+       <div
+        ><img id="img_<dtml-var elName>" src="<dtml-var "value.getHref(REQUEST)">"
+          style="border:1px solid black; background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"
           <dtml-if "max([int(value.width),int(value.height)])>80">
            <dtml-if "int(value.width)>int(value.height)">
             width="80"
@@ -94,9 +89,7 @@
            width="<dtml-var "value.width">"
            height="<dtml-var "value.height">"
           </dtml-if>
-        ></td>
-        </tr>
-        </table>
+        ></div>
         <dtml-if "max([int(value.width),int(value.height)])>80">
          <a href="javascript:zmiImgZoom('<dtml-var "value.getHref(REQUEST)">',<dtml-var "value.width">,<dtml-var "value.height">)"
           ><img src="<dtml-var MISC_ZMS>zoom.gif" title="<dtml-var " getZMILangStr('BTN_ZOOM')">" border="0"></a>

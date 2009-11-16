@@ -18,7 +18,7 @@
 
 <dtml-unless "REQUEST.get('f_selectAutocompleteShow',False)">
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
-<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>
+<!--<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>-->
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>thickbox-compressed.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>

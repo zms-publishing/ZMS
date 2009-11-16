@@ -278,32 +278,32 @@ function changeType( el)
       s += ' <'+'dtml-var '+obj_prop_quoted+'>\n';
       s += '</'+'dtml-if>\n';
     }
-    var dtmlHintBtn = document.getElementById( 'dtmlHintBtn'+v);
-    var element = dtmlHintBtn;
-    var coords = getCoords(dtmlHintBtn);
-    var dtmlHintDiv = document.getElementById( 'dtmlHint');
-    dtmlHintDiv.style.visibility = 'visible';
-    dtmlHintDiv.style.display = 'block';
-    dtmlHintDiv.style.position = 'absolute';
-    dtmlHintDiv.style.top = (coords['y']+dtmlHintBtn.height)+"px";
-    dtmlHintDiv.style.left = (0)+"px";
-    var dtmlHintTextDiv = document.getElementById( 'dtmlHintText');
+    // Show hint.
+    var dtmlHintTextDiv = $('#dtmlHintText');
     var html = s;
     var i;
     while ( ( i = html.indexOf( '<')) >= 0) {
       html = html.substr( 0, i) + '&lt;' + html.substr( i + 1);
     }
     html = html.substr( 0, html.length - 1);
-    dtmlHintTextDiv.innerHTML = '<pre>'+html+'</pre>';
+    dtmlHintTextDiv.html('<pre>'+html+'</pre>');
+    var dtmlHintBtn = $('#dtmlHintBtn'+v);
+    var pos = dtmlHintBtn.position();
+    var dtmlHintDiv = $('#dtmlHint');
+    dtmlHintDiv.css({
+      position:'absolute',
+      top:pos.top+dtmlHintBtn.outerHeight(),
+      left:0
+    });
+    dtmlHintDiv.show('normal');
   }
 
   /**
    *
    */
   function dtmlHintBtnClose() {
-    var dtmlHintDiv = document.getElementById( 'dtmlHint');
-    dtmlHintDiv.style.visibility = 'hidden';
-    dtmlHintDiv.style.display = 'none';
+    var dtmlHintDiv = $('#dtmlHint');
+    dtmlHintDiv.hide('normal');
   }
   </dtml-let>
   </dtml-if>
@@ -824,7 +824,7 @@ function changeType( el)
        </table>
 
        <!-- BO Edit -->
-       <div id="dtmlHint" style="visibility:hidden;display:none;align:center;" onclick="dtmlHintBtnClose();">
+       <div id="dtmlHint" style="display:none;align:center;" onclick="dtmlHintBtnClose();">
        <div style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;">
         <div align="right"><a href="#" onclick="dtmlHintBtnClose();" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" style="vertical-align:middle" /></a></div>
         <div id="dtmlHintText" class="form-small" style="padding:4px;"></div>

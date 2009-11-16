@@ -83,6 +83,7 @@
 </dtml-comment>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS><dtml-var "getConfProperty('jquery.version','jquery-1.3.2.min.js')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS><dtml-var "getConfProperty('jquery.cookies.version','jquery.cookies.2.1.0.min.js')">"></script>
+<script type='text/javascript' charset="UTF-8" src="<dtml-var MISC_ZMS><dtml-var "getConfProperty('jquery.dimensions.version','jquery.dimensions.1.2.0.min.js')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>main_js?lang=<dtml-var lang>"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>zmilib_js?lang=<dtml-var lang>"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>comlib_js"></script>

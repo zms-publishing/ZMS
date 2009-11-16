@@ -4,7 +4,7 @@
 <dtml-var manage_page_header>
 <title><dtml-var "getZMILangStr('TAB_CONFIGURATION')"> <dtml-var "display_type(REQUEST)"></title>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
-<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>
+<!--<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>-->
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>thickbox-compressed.js'></script>
 <script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>

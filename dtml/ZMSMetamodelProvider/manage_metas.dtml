@@ -67,17 +67,16 @@ function btnClick(el)
 
 function showDstMetaTypes( id) 
 {
-  var img = $("img:last","#a_"+id)[0];
-  var coords = getCoords(img);
+  var img = $("img:last","#a_"+id);
+  var pos = img.position();
   var div = $("#dst_meta_types_"+id);
-  div.css( {top: coords.y+img.offsetHeight, left: coords.x+img.offsetWidth, visibility: 'visible', display: 'block', position: 'absolute'});
+  div.css( {top: pos.top+img.outerHeight(), left: pos.left+img.outerWidth(), position: 'absolute'});
   div.show("normal");
 }
 
 function hideDstMetaTypes( id) 
 {
   var div = $("#dst_meta_types_"+id);
-  div.css( {visibility: 'hidden', display: 'none'});
   div.hide("normal");
 }
 //-->
@@ -140,7 +139,7 @@ function hideDstMetaTypes( id)
   <dtml-in "getMetadictAttrs()"
    ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
     ><dtml-if metadictAttr
-    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;padding:2px;position:absolute;visibility:hidden;display:none;"
+    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;padding:2px;position:absolute;display:none;"
      ><dtml-in "getMetaobjIds()"
       ><dtml-let meta_id=sequence-item
        ><dtml-if "metadictAttrId in getMetadictAttrs(meta_id)"

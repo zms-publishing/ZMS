@@ -2776,7 +2776,7 @@ $()
 
 var table_cell_uid = <dtml-var "table_cols*table_rows">;
 var table_cell_id = '';
-var table_cell_bgcolor = '';
+var table_cell_bgcolor = null;
 var table_cell_offs = 2;
 
 function selectValue(el, v)
@@ -2825,10 +2825,12 @@ function onZMSTableFormSubmit()
 function table_cell_edit(el)
 {
   var dims = getInnerDimensions(true);
-  var coords = getCoords(el);
+  var pos = $(el).position();
   table_cell_id = el.name.substr(el.name.indexOf('_')+1);
   var el_td = $('#content_'+ table_cell_id).parent();
-  table_cell_bgcolor = el_td.css( "backgroundColor");
+  if (table_cell_bgcolor==null) {
+    table_cell_bgcolor = el_td.css( "backgroundColor");
+  }
   el_td.css( "backgroundColor", "red");
   var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
   zmiImgZoomDiv.style.visibility = 'visible';
@@ -2843,7 +2845,7 @@ function table_cell_edit(el)
   zmiImgZoomImgDiv.style.display = 'block';
   zmiImgZoomImgDiv.style.position = 'absolute';
   zmiImgZoomImgDiv.style.width = '90%';
-  zmiImgZoomImgDiv.style.top = Math.min( coords.y + el.offsetHeight, dims.height - zmiImgZoomImgDiv.offsetHeight); //(dims.height - zmiImgZoomImgDiv.offsetHeight) / 2;
+  zmiImgZoomImgDiv.style.top = Math.min( pos.top + el.offsetHeight, dims.height - zmiImgZoomImgDiv.offsetHeight); //(dims.height - zmiImgZoomImgDiv.offsetHeight) / 2;
   zmiImgZoomImgDiv.style.left = Math.max( ($('body').attr('offsetWidth') - zmiImgZoomImgDiv.offsetWidth) / 2, 0); //(dims.width - zmiImgZoomImgDiv.offsetWidth) / 2;
   // Apply values.
   $('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
@@ -2879,6 +2881,7 @@ function table_cell_cancel()
 {
   var el_td = $('#content_'+ table_cell_id).parent();
   el_td.css( "backgroundColor", table_cell_bgcolor);
+  table_cell_bgcolor = null;
   var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
   zmiImgZoomDiv.style.visibility = 'hidden';
   zmiImgZoomDiv.style.display = 'none';
@@ -3343,7 +3346,7 @@ table_cell_init();
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -4203,7 +4206,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
             <item key="id"><![CDATA[com.zms.foundation]]></item>
             <item key="name"><![CDATA[com.zms.foundation]]></item>
             <item key="package"/>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSPackage]]></item>
           </dictionary>
         </item>

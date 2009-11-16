@@ -543,7 +543,7 @@ function changeType( el)
              ><dtml-if "oAttr['meta_type']"
               ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle" 
              /><dtml-elif "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_item.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle" 
+              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_item.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle" 
              /><dtml-else
               ><img src="<dtml-var MISC_ZMS>ico_item.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
              /></dtml-if
@@ -569,19 +569,19 @@ function changeType( el)
            ><td align="center" class="zmiNeutralColorStrong0"
             ><dtml-if "oAttr['meta_type']"
              ><dtml-if "oAttr['meta_type']=='?'"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle" 
+              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle" 
              /><dtml-else
               ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle" 
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'DTML Method'"
              ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(/misc_/OFSP/dtmlmethod.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle"
+              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(/misc_/OFSP/dtmlmethod.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle"
              /><dtml-else
               ><img src="/misc_/OFSP/dtmlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
              ></dtml-if
             ><dtml-elif "oAttr['type'] == 'DTML Document'"
              ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(/misc_/OFSP/dtmldocument.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
+              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(/misc_/OFSP/dtmldocument.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
              /><dtml-else
               ><img src="/misc_/OFSP/dtmldocument.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
              /></dtml-if
@@ -590,9 +590,9 @@ function changeType( el)
             ><dtml-elif "oAttr['type'] == 'Page Template'"
              ><dtml-with "_.getattr(this(),oAttr['id'])"
               ><dtml-if pt_errors
-               ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var icon>)" title="ERROR: <dtml-var expr="'\n'.join(pt_errors)" html_quote>" border="0" style="vertical-align:middle" 
+               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var icon>)" title="ERROR: <dtml-var expr="'\n'.join(pt_errors)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-elif pt_warnings
-               ><img src="<dtml-var MISC_ZMS>ico_warning.gif" style="background-image:url(<dtml-var icon>)" title="WARNING: <dtml-var expr="'\n'.join(pt_warnings)" html_quote>" border="0" style="vertical-align:middle" 
+               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var icon>)" title="WARNING: <dtml-var expr="'\n'.join(pt_warnings)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-else
                ><img src="<dtml-var icon>" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
               /></dtml-if
@@ -602,9 +602,9 @@ function changeType( el)
             /><dtml-elif "oAttr['type'] == 'Script (Python)'"
              ><dtml-with "_.getattr(this(),oAttr['id'])"
               ><dtml-if errors
-               ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(errors)" html_quote>" border="0" style="vertical-align:middle" 
+               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(errors)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-elif warnings
-               ><img src="<dtml-var MISC_ZMS>ico_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
+               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-else
                ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
               /></dtml-if
@@ -621,7 +621,7 @@ function changeType( el)
              ></dtml-let
             ><dtml-elif "oAttr['type']=='method'"
              ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
+              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
              /><dtml-else
               ><img src="<dtml-var MISC_ZMS>ico_method.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
              /></dtml-if
@@ -973,9 +973,8 @@ function changeType( el)
              ></dtml-if
              ><dtml-unless "metaObj['type'] == 'ZMSPackage'"><input type="checkbox" name="enabled_<dtml-var "metaObj['id']">" title="<dtml-var "getZMILangStr('ATTR_ACTIVE')">" value="1"<dtml-if "metaObj['enabled']==1"> checked="checked"</dtml-if><dtml-if "metaObj.get('acquired',0) == 1"> disabled="disabled"</dtml-if> onclick="enabledCheckboxClick(this)" onchange="enabledCheckboxClick(this)"/></dtml-unless
              ><dtml-if "metaObj['type'] == 'ZMSPackage'"><a href="manage_bigpicture?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank" class="zmi" style="text-decoration:none;" title="BigPicture::Logical View"></dtml-if
-             ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle" 
-             /><dtml-if "metaObj['type'] == 'ZMSPackage'"></a></dtml-if
-             ><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
+             ><a href="manage_analyze?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank"><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']"> - Click for Content Analysis..." alt="Icon" border="0" style="vertical-align:middle" 
+             /></a><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
              ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
              ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
              ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
@@ -984,11 +983,8 @@ function changeType( el)
                ><dtml-else><dtml-var "metaObj['name']"
                ></dtml-if
               ></a>
-             v<dtml-var "metaObj.get('revision','0.0.0')">
-             <dtml-unless "metaObj['type'] == 'ZMSPackage'"
-              ><i>(<dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">)</i
-              > <a href="manage_analyze?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank" class="zmi" style="text-decoration:none;" title="Analyze">[i]</a
-             ></dtml-unless>
+             <dtml-var "metaObj.get('revision','0.0.0')">
+             <dtml-unless "metaObj['type'] == 'ZMSPackage'"><i>(<dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">)</i></dtml-unless>
              </div
             ></td>
             <dtml-if sequence-start>
@@ -1119,7 +1115,7 @@ function changeType( el)
                   ><dtml-in "filter_list(metaObj2['attrs'],'id',attr_id,'==')" mapping
                    ><dtml-if "type not in valid_types"
                     ><dtml-if "type not in getMetadictAttrs()"
-                     ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                     ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
                     ><dtml-else
                      ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
                     ></dtml-if
@@ -1134,7 +1130,7 @@ function changeType( el)
                   ><dtml-in "filter_list(metaObj['attrs'],'id',attr_id,'==')" mapping
                    ><dtml-if "type not in valid_types"
                     ><dtml-if "type not in getMetadictAttrs()"
-                     ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                     ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
                     ><dtml-else
                      ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
                     ></dtml-if
@@ -1152,7 +1148,7 @@ function changeType( el)
                      ><div class="form-small" <dtml-if "toXmlString(x)!=toXmlString(x2)">style="color:blue;font-weight:bold;"</dtml-if>
                       ><dtml-if "type not in valid_types"
                        ><dtml-if "type not in getMetadictAttrs()"
-                        ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
+                        ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_meta.gif)" title="ERROR: Not found!" border="0" style="vertical-align:middle"
                        ><dtml-else
                         ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle"
                        ></dtml-if

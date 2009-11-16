@@ -1388,4 +1388,12 @@ Risk: ZEXP can't be imported!
 [01277] Applied fix for SQL-Datasource: ignore-case checking of table-type (contributed by C. Meier).
 [01278] Applied fix for adding link-elements to link-containers (reported by fh).
 Risk: Adding link-element zombies without prefix ('e')!
+--------------------------------------------------
+2009-10-30:zms2-2.12.0-03
+[01279] Added support for simultaneous remote- (via ftp) and web-editing (via zmi) of filter-processes.
+[01280] Applied fix for ZMI of content-object configuration (contributed by fh).
+--------------------------------------------------
+2009-11-04:zms2-2.12.1-01
+[01281] Added support for Zope2-2.12.1.
+[01282] Revised support for replication to local-fs: encapsulate content-objects in xml.
 ----------------------------------------------------------------------------------------------------

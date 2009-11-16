@@ -24,6 +24,7 @@
 
 # Imports.
 from __future__ import nested_scopes
+from zope.interface import implements
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -31,12 +32,14 @@ from Products.ZSQLMethods import SQL
 from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import copy
+import os
 import sys
 import time
 # Product Imports.
 import _blobfields
 import _fileutil
 import _globals
+import IZMSSvnInterface
 
 
 # ------------------------------------------------------------------------------
@@ -73,7 +76,7 @@ def syncType( self, meta_id, attr):
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   except:
-    value = _globals.writeError(self,'[getMetaobjAttr]')
+    value = _globals.writeError(self,'[syncType]')
 
 
 # ------------------------------------------------------------------------------
@@ -97,6 +100,7 @@ def findMetaobj(self, ids):
 ################################################################################
 ################################################################################
 class ZMSMetaobjManager:
+    implements(IZMSSvnInterface.IZMSSvnInterface)
 
     # Globals.
     # --------
@@ -218,6 +222,144 @@ class ZMSMetaobjManager:
         ids = ids[ 0]
       return ids
 
+    def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
+      value = []
+      for id in ids:
+        metaObj = self.getMetaobj( id)
+        if metaObj['type'] == 'ZMSPackage':
+          for pkgMetaObjId in self.getMetaobjIds():
+              pkgMetaObj = self.getMetaobj( pkgMetaObjId)
+              if pkgMetaObj[ 'package'] == metaObj[ 'id']:
+                ids.append( pkgMetaObjId)
+      keys = self.model.keys()
+      keys.sort()
+      for id in keys:
+        if id in ids or len(ids) == 0:
+          ob = copy.deepcopy(self.__get_metaobj__(id))
+          attrs = []
+          for attr in ob['attrs']:
+            attr_id = attr['id']
+            syncType( self, id, attr)
+            for key in ['keys','custom','default']:
+              if attr.has_key(key) and not attr[key]:
+                del attr[key]
+            attrs.append( attr)
+          ob['__obj_attrs__'] = attrs
+          for key in ['attrs','zms_system','acquired']:
+            if ob.has_key(key):
+              del ob[key]
+          # Value.
+          value.append({'key':id,'value':ob})
+      # XML.
+      if len(value)==1:
+        value = value[0]
+        filename = '%s.metaobj.xml'%ids[0]
+      else:
+        filename = 'export.metaobj.xml'
+      content_type = 'text/xml; charset=utf-8'
+      export = self.getXmlHeader() + self.toXmlString(value,1)
+      
+      if RESPONSE:
+        RESPONSE.setHeader('Content-Type',content_type)
+        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      return export
+
+
+    ############################################################################
+    #
+    #  IZMSSvnInterface
+    #
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.svnCopy
+    # --------------------------------------------------------------------------
+    def svnCopy(self, node, path, ids=[], excl_ids=[]):
+      l = []
+      for id in self.getMetaobjIds():
+        metaObj = self.getMetaobj(id)
+        if not metaObj.get('acquired'):
+          if metaObj.get('package') == '' or metaObj.get('type') == 'ZMSPackage':
+            action = None
+            path_id = id+'.metaobj.xml'
+            filepath = path+'/'+self.id+'/'+path_id
+            filemrevision = None
+            mrevision = metaObj.get('revision','0.0.0')
+            if os.path.exists( filepath):
+              filexml = self.parseXmlString( open(filepath), mediadbStorable=False)
+              if type(filexml) is list:
+                filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
+              filemrevision = filexml['value'].get('revision','0.0.0')
+              if mrevision > filemrevision:
+                action = 'refresh'
+              elif mrevision < filemrevision:
+                action = 'conflict'
+            else: 
+              action = 'add'
+            if action:
+              l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
+              if filepath in ids:
+                xml = self.exportMetaobjXml([id])
+                _fileutil.exportObj(xml,filepath)
+      return l
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.svnUpdate
+    # --------------------------------------------------------------------------
+    def svnUpdate(self, node, path, ids=[], excl_ids=[]):
+      l = []
+      suffix = '.metaobj.xml'
+      # Changed resources.
+      for filename in os.listdir(path):
+        action = None
+        filepath = path+'/'+filename
+        file = open(filepath)
+        # Execute action.
+        if filepath in ids:
+          ob.metaobj_manager.importMetaobjXml( file)
+        elif filepath.endswith(suffix):
+          filexml = self.parseXmlString( file, mediadbStorable=False)
+          if type(filexml) is list:
+            filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
+          mrevision = None
+          filemrevision = filexml['value'].get('revision','0.0.0')
+          metaObjId = filename[:-len(suffix)]
+          if metaObjId in self.getMetaobjIds():
+            metaObj = self.getMetaobj(metaObjId)
+            mrevision = metaObj.get('revision','0.0.0')
+            if mrevision < filemrevision:
+              action = 'refresh'
+            elif mrevision > filemrevision:
+              action = 'conflict'
+          else:
+            action = 'add'
+          if action:
+            l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
+      # Deleted resources.
+      for id in self.getMetaobjIds():
+        metaObj = self.getMetaobj(id)
+        if not metaObj.get('acquired'):
+          if metaObj.get('package') == '' or metaObj.get('type') == 'ZMSPackage':
+            filename = id+suffix
+            filepath = path+'/'+filename
+            # Execute action.
+            if filepath in ids:
+              self.delMetaobj(id)
+            elif not os.path.exists( filepath):
+              action = 'delete'
+              mrevision = metaObj['revision']
+              filemrevision = None
+              l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
+      
+      return l
+
+
+    ############################################################################
+    #
+    #   OBJECTS
+    #
+    ############################################################################
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getTemplateId
@@ -968,10 +1110,7 @@ class ZMSMetaobjManager:
           elif btn == self.getZMILangStr('BTN_COPY'):
             metaOb = self.getMetaobj(id)
             if metaOb.get('acquired',0) == 1:
-              masterRoot = getattr(self,self.getConfProperty('Portal.Master'))
-              masterDocElmnt = masterRoot.content
-              REQUEST.set('ids',[id])
-              xml =  masterDocElmnt.metaobj_manager.manage_changeProperties(lang, self.getZMILangStr('BTN_EXPORT'), key, REQUEST, RESPONSE)
+              xml = self.getPortalMaster().metaobj_manager.exportMetaobjXml([id])
               self.importMetaobjXml(xml=xml)
               message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%id)
           
@@ -979,46 +1118,8 @@ class ZMSMetaobjManager:
           # -------
           elif btn == self.getZMILangStr('BTN_EXPORT'):
             sync_id = False
-            value = []
             ids = REQUEST.get('ids',[])
-            for id in ids:
-              metaObj = self.getMetaobj( id)
-              if metaObj['type'] == 'ZMSPackage':
-                for pkgMetaObjId in self.getMetaobjIds():
-                    pkgMetaObj = self.getMetaobj( pkgMetaObjId)
-                    if pkgMetaObj[ 'package'] == metaObj[ 'id']:
-                      ids.append( pkgMetaObjId)
-            keys = self.model.keys()
-            keys.sort()
-            for id in keys:
-              if id in ids or len(ids) == 0:
-                ob = copy.deepcopy(self.__get_metaobj__(id))
-                attrs = []
-                for attr in ob['attrs']:
-                  attr_id = attr['id']
-                  syncType( self, id, attr)
-                  for key in ['keys','custom','default']:
-                    if attr.has_key(key) and not attr[key]:
-                      del attr[key]
-                  attrs.append( attr)
-                ob['__obj_attrs__'] = attrs
-                for key in ['attrs','zms_system','acquired']:
-                  if ob.has_key(key):
-                    del ob[key]
-                # Value.
-                value.append({'key':id,'value':ob})
-            # XML.
-            if len(value)==1:
-              value = value[0]
-              filename = '%s.metaobj.xml'%ids[0]
-            else:
-              filename = 'export.metaobj.xml'
-            content_type = 'text/xml; charset=utf-8'
-            export = self.getXmlHeader() + self.toXmlString(value,1)
-            
-            RESPONSE.setHeader('Content-Type',content_type)
-            RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
-            return export
+            return self.exportMetaobjXml(ids,REQUEST,RESPONSE)
           
           # Insert.
           # -------

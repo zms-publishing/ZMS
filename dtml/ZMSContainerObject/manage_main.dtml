@@ -261,7 +261,7 @@
 ><dtml-if "clientId in clientIds"
  ><img src="<dtml-var thisIcon>" class="zmiDisplayIcon"
 ><dtml-else
- ><img src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var thisIcon>)" title="ERROR" class="zmiDisplayIcon"
+ ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var thisIcon>)" title="ERROR" class="zmiDisplayIcon"
 ></dtml-if
 >./<dtml-var clientId>:</a>
 <b><dtml-if "clientId in clientIds"><dtml-var "_.getattr(home,clientId).title_or_id()"><dtml-else>None</dtml-if></b>

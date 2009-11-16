@@ -36,7 +36,7 @@ import os
 import stat
 import urllib
 # Product imports.
-import IZMSMetamodelProvider, IZMSFormatProvider
+import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
 import _globals
 import _fileutil
 import _filtermanager
@@ -132,7 +132,8 @@ class ConfManager(
 	):
     implements(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
-      IZMSFormatProvider.IZMSFormatProvider)
+      IZMSFormatProvider.IZMSFormatProvider,
+      IZMSSvnInterface.IZMSSvnInterface)
 
     # Management Interface.
     # ---------------------
@@ -273,49 +274,69 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.svnCopy:
     # --------------------------------------------------------------------------
-    def svnCopy(self, node, path, ids=[]):
+    def svnCopy(self, node, path, ids=[], excl_ids=[]):
       l = []
-      for ob in node.objectValues():
-        action = None
-        id = absattr(ob.id)
-        filepath = path+os.sep+id
-        filemtime = None
-        mtime = long(ob.bobobase_modification_time().timeTime())
-        meta_type = ob.meta_type
-        if ob.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
-          if ob.meta_type in ['DTML Method','DTML Document']:
-            filepath += '.dtml'
-          if ob.meta_type in ['Script (Python)']:
-            filepath += '.py'
-          if os.path.exists( filepath):
-            filestat = os.stat(filepath)
-            filemtime = long(filestat[stat.ST_MTIME])
-            if mtime > filemtime:
-              action = 'update'
-          else: 
-            action = 'insert'
-          if action:
-            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-            if filepath in ids:
-              _fileutil.exportObj(ob,filepath)
-              atime = mtime
-              times = (atime,mtime)
-              os.utime(filepath,times)
-        elif ob.meta_type in ['Folder','ZMS','ZMSMetamodelProvider']:
-          l.extend( self.svnCopy(ob,filepath,ids))
+      for ob in node.objectValues(['ZMS']):
+        # Add content-object artefacts to exclude-ids.
+        for metaObjId in ob.getMetaobjIds():
+          for metaObjAttrId in ob.getMetaobjAttrIds( metaObjId):
+            metaObjAttr = ob.getMetaobjAttr(metaObjId,metaObjAttrId)
+            if metaObjAttr['type'] in ob.metaobj_manager.valid_zopetypes:
+              excl_ids.append( metaObjAttrId)
+      obs = map( lambda x: (absattr(x.id), x), node.objectValues())
+      obs.sort()
+      for x in obs:
+        id = x[0]
+        ob = x[1]
+        if id not in excl_ids and not id.startswith('A_'):
+          action = None
+          filepath = path+'/'+id
+          filemtime = None
+          mtime = long(ob.bobobase_modification_time().timeTime())
+          meta_type = ob.meta_type
+          if node.meta_type == 'Folder' and ob.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
+            if ob.meta_type in ['DTML Method','DTML Document']:
+              filepath += '.dtml'
+            if ob.meta_type in ['Script (Python)']:
+              filepath += '.py'
+            if os.path.exists( filepath):
+              filestat = os.stat(filepath)
+              filemtime = long(filestat[stat.ST_MTIME])
+              if mtime > filemtime:
+                action = 'refresh'
+              elif mtime < filemtime:
+                action = 'conflict'
+            else: 
+              action = 'add'
+            if action:
+              l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
+              if filepath in ids:
+                _fileutil.exportObj(ob,filepath)
+                atime = mtime
+                times = (atime,mtime)
+                os.utime(filepath,times)
+          elif ob.meta_type == 'ZMS':
+            l.extend( ob.metaobj_manager.svnCopy( node, path, ids))
+          elif ob.meta_type == 'Folder':
+            if not os.path.exists( filepath):
+              action = 'add'
+              l.append({'action':action,'filepath':filepath,'meta_type':meta_type})
+              if filepath in ids:
+                _fileutil.mkDir(filepath)
+            l.extend( self.svnCopy(ob,filepath,ids))
       return l
 
 
     # --------------------------------------------------------------------------
     #  ConfManager.svnUpdate:
     # --------------------------------------------------------------------------
-    def svnUpdate(self, node, path, ids=[]):
+    def svnUpdate(self, node, path, ids=[], excl_ids=[]):
       l = []
       path_ids = []
       for filename in os.listdir(path):
         action = None
         id = filename
-        filepath = path+os.sep+id
+        filepath = path+'/'+id
         filestat = os.stat(filepath)
         mode = filestat[stat.ST_MODE]
         filemtime = long(filestat[stat.ST_MTIME])
@@ -326,14 +347,17 @@ class ConfManager(
         path_ids.append( id)
         ob = getattr( node, id, None)
         if stat.S_ISDIR(mode):
-          if filename != '.svn':
+          if filename == 'metaobj_manager':
+            for ob in node.objectValues(['ZMS']):
+              l.extend( ob.metaobj_manager.svnUpdate( node, filepath, ids))
+          elif filename != '.svn':
             if ob is None:
               if filepath in ids:
                 node.manage_addFolder( id, 'New Folder')
               ob = getattr( node, id, None)
               meta_type = 'Folder'
               mtime = 0
-              action = 'insert'
+              action = 'add'
             if action:
               l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
             l.extend( self.svnUpdate(ob,filepath,ids))
@@ -359,7 +383,7 @@ class ConfManager(
                 node.manage_addFile( id=id, file='', title='')
             ob = getattr( node, id, None)
             mtime = 0
-            action = 'insert'
+            action = 'add'
           else:
             meta_type = ob.meta_type
             # modification-time
@@ -373,11 +397,18 @@ class ConfManager(
               data = file.read()
               ob.manage_upload(data)
               file.close()
-      if node is not None:
-        for id in filter( lambda x: x not in path_ids, node.objectIds(['DTML Method','File','Folder','Image'])):
+      if node is not None and node.meta_type != 'ZMS':
+        for ob in node.objectValues(['ZMS']):
+          # Add content-object artefacts to exclude-ids.
+          for metaObjId in ob.getMetaobjIds():
+            for metaObjAttrId in ob.getMetaobjAttrIds( metaObjId):
+              metaObjAttr = ob.getMetaobjAttr(metaObjId,metaObjAttrId)
+              if metaObjAttr['type'] in ob.metaobj_manager.valid_zopetypes:
+                excl_ids.append( metaObjAttrId)
+        for id in filter( lambda x: x not in path_ids and x not in excl_ids and not x.startswith('A_'), node.objectIds(['DTML Method','File','Folder','Image'])):
           ob = getattr( node, id)
           action = 'delete'
-          filepath = path+os.sep+id
+          filepath = path+'/'+id
           mtime = long(ob.bobobase_modification_time().timeTime())
           filemtime = 0
           meta_type = ob.meta_type
@@ -757,16 +788,20 @@ class ConfManager(
         home = self.getHome()
         home_id = home.id
         temp_folder = self.temp_folder
+        # Init exclude-ids.
         excl_ids = []
+        # Add clients-folders to exclude-ids.
         for folder in home.objectValues( ['Folder']):
           if len( folder.objectValues( ['ZMS'])) > 0:
             excl_ids.append( absattr( folder.id))
+        # Add content-object artefacts to exclude-ids.
         for metaObjId in self.getMetaobjIds():
           for metaObjAttrId in self.getMetaobjAttrIds( metaObjId):
             metaObjAttr = self.getMetaobjAttr(metaObjId,metaObjAttrId)
             if metaObjAttr['type'] in self.metaobj_manager.valid_zopetypes:
               excl_ids.append( metaObjAttrId)
-        ids = filter( lambda x: x not in excl_ids, home.objectIds(['DTML Document','DTML Method','Folder','Script (Python)']))
+        # Filter ids.
+        ids = filter( lambda x: x not in excl_ids, home.objectIds(self.metaobj_manager.valid_zopetypes))
         if btn == self.getZMILangStr('BTN_EXPORT'):
           if home_id in temp_folder.objectIds():
             temp_folder.manage_delObjects(ids=[home_id])

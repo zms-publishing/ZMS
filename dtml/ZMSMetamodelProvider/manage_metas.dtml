@@ -185,7 +185,7 @@ function hideDstMetaTypes( id)
     <td class="form-small" style="white-space:nowrap;text-align:right;"
      ><nobr><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
      ><img
-     <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>ico_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
+     <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
      <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif"
      <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif"
      <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif"

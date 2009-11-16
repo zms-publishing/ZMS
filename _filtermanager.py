@@ -37,13 +37,11 @@ import _fileutil
 import _globals
 
 
-"""
 ################################################################################
 #
-#   X M L   I M / E X P O R T
+#  XML IM/EXPORT
 #
 ################################################################################
-"""
 
 # ------------------------------------------------------------------------------
 #  importXml
@@ -633,19 +631,27 @@ class FilterManager:
     #  Returns process specified by Id.
     # --------------------------------------------------------------------------
     def getProcess(self, id):
-      obs = getRawProcesses(self)
-      ob = {}
-      if obs.has_key( id):
-        ob = obs.get( id).copy()
+      processes = getRawProcesses(self)
+      process = {}
+      if processes.has_key( id):
+        process = processes.get( id).copy()
       else:
         # Acquire from parent.
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           if id in portalMaster.getProcessIds():
-            ob = portalMaster.getProcess(id)
-            ob['acquired'] = 1
-      ob['id'] = id
-      return ob
+            process = portalMaster.getProcess(id)
+            process['acquired'] = 1
+      process['id'] = id
+      # Synchronize type.
+      try:
+        if process.get('type') == 'DTML Method':
+          container = self.getHome()
+          ob = getattr( container, process['id'])
+          process['command'] = ob.raw
+      except:
+        pass
+      return process
 
 
     # --------------------------------------------------------------------------

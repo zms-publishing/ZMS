@@ -1412,3 +1412,6 @@ Measure: Call initObjChildren() on container-objects.
 Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01288] Applied fix for inlined submit-buttons after last primitive-attribute before first complex-attribute.
 --------------------------------------------------
+2009-11-13:zms2-2.12.1-05
+[01289] Restricted support to SQL-Datasource for auto re-connect and setting character-set to utf-8 on to Z MySQL Database Connection.
+--------------------------------------------------

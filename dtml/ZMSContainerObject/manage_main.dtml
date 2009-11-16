@@ -16,7 +16,7 @@
 ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px"
 ><input type="hidden" name="lang" value="<dtml-var lang>"
 ><input type="hidden" name="preview" value="preview"
-><input type="hidden" id="id_prefix" name="id_prefix"
+><input type="hidden" id="id_prefix" name="id_prefix" value="e"
 ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
 ><input type="hidden" id="custom" name="custom" value=""
 

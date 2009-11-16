@@ -1384,3 +1384,8 @@ Risk: ZEXP can't be imported!
 +++ IMPORTANT NOTE: ZMS will remain compliant with Zope-2.10.x / Python-2.4 until further notice!
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 --------------------------------------------------
+2009-10-29:zms2-2.12.0-02
+[01277] Applied fix for SQL-Datasource: ignore-case checking of table-type (contributed by C. Meier).
+[01278] Applied fix for adding link-elements to link-containers (reported by fh).
+Risk: Adding link-element zombies without prefix ('e')!
+----------------------------------------------------------------------------------------------------

@@ -21,7 +21,7 @@
    ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')"
    ><input type="hidden" name="preview" value="preview"
    ><input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"
-   ><input type="hidden" id="id_prefix" name="id_prefix"
+   ><input type="hidden" id="id_prefix" name="id_prefix" value="e"
    ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
    ><input type="hidden" id="custom" name="custom" value=""
    ><dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>

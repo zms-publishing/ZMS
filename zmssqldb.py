@@ -454,7 +454,7 @@ class ZMSSqlDb(ZMSObject):
         for tableBrwsr in tableBrwsrs:
           tableName = getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))()
           tableType = getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))()
-          if tableType == 'TABLE':
+          if tableType.upper() == 'TABLE':
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- COLUMNS
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-

@@ -89,25 +89,6 @@ def search_quote(s, maxlen=255, tag='&middot;'):
   return s
 
 # ------------------------------------------------------------------------------
-#  _zcatalogmanager.addVocabulary:
-# ------------------------------------------------------------------------------
-def addVocabulary( self, cat):
-  from Products.ZCatalog import Vocabulary
-  
-  #-- Remove Default-Vocabulary
-  ids = cat.objectIds( ['Vocabulary'])
-  if len( ids) > 0:
-    cat.manage_delObjects( ids)
-  
-  #-- Add ISO 8859-1 Vocabulary
-  # see ZCatalogs with Umlauts
-  # http://www.zope.org/Members/strobl/HowTos/Iszcatalog
-  globbing = 1
-  splitter = "ISO_8859_1_Splitter"
-  voc = Vocabulary.Vocabulary( "Vocabulary", "Default vocabulary", globbing, splitter)
-  cat._setObject( voc.id, voc)
-
-# ------------------------------------------------------------------------------
 #  _zcatalogmanager.addLexicon:
 # ------------------------------------------------------------------------------
 def addLexicon( self, cat):
@@ -522,9 +503,6 @@ class ZCatalogManager:
         zcatalog = getCatalog(self,lang)
       else:
         zcatalog = obs[ 0]
-      
-      #-- Add vocabulary
-      addVocabulary( self, zcatalog)
       
       #-- Add lexicon
       addLexicon( self, zcatalog)

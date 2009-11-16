@@ -33,7 +33,6 @@ from zExceptions import Unauthorized
 from binascii import b2a_base64, a2b_base64
 import base64
 import copy
-import md5
 import operator
 import os
 import re
@@ -51,20 +50,36 @@ import zmsmathutil
 
 __all__= ['ZMSGlobals']
 
-
 # ------------------------------------------------------------------------------
 #  MD5:
 # ------------------------------------------------------------------------------
-class MD5DigestScheme:
+try: # Python >= 2.5
+  import hashlib
+
+  class MD5DigestScheme:
 
     def encrypt(self, pw):
-        enc = md5.new(pw)
-        enc = enc.hexdigest()
-        return enc
+      enc = hashlib.md5(pw)
+      enc = enc.hexdigest()
+      return enc
 
     def validate(self, reference, attempt):
-        compare = self.encrypt(attempt)[:-1]
-        return (compare == reference)
+      compare = self.encrypt(attempt)[:-1]
+      return (compare == reference)
+
+except: # Python < 2.5
+  import md5
+
+  class MD5DigestScheme:
+
+    def encrypt(self, pw):
+      enc = md5.new(pw)
+      enc = enc.hexdigest()
+      return enc
+
+    def validate(self, reference, attempt):
+      compare = self.encrypt(attempt)[:-1]
+      return (compare == reference)
 
 AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 

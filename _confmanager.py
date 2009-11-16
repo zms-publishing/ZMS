@@ -213,10 +213,8 @@ class ConfManager(
       except:
         conf = open( filepaths[1]+'configure.zcml','r')
       conf_xml = self.xmlParse( conf)
-      print "conf_xml=",conf_xml
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
-        print "location=",location
         if location.startswith('http://'):
           try:
             remote_conf = self.http_import(location+'configure.zcml')
@@ -229,12 +227,13 @@ class ConfManager(
             _globals.writeError( self, "[getConfFiles]: can't get conf-files from remote URL=%s"%location)
         else:
           for filepath in filepaths:
-            for filename in os.listdir(filepath+location):
-              path = filepath + filename
-              mode = os.stat(path)[stat.ST_MODE]
-              if not stat.S_ISDIR(mode):
-                if filename not in filenames:
-                  filenames[path] = filename
+            if os.path.exists( filepath):
+              for filename in os.listdir(filepath+location):
+                path = filepath + filename
+                mode = os.stat(path)[stat.ST_MODE]
+                if not stat.S_ISDIR(mode):
+                  if filename not in filenames:
+                    filenames[path] = filename
       conf.close()
       # Filter.
       if pattern is not None:

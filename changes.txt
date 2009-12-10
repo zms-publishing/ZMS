@@ -1415,3 +1415,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2009-11-13:zms2-2.12.1-05
 [01289] Restricted support to SQL-Datasource for auto re-connect and setting character-set to utf-8 on to Z MySQL Database Connection.
 --------------------------------------------------
+2009-12-10:zms2-2.12.1-06
+[01290] Added type(ZMSReference) to ZMS.e-Objects
+--------------------------------------------------

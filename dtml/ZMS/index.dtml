@@ -21,6 +21,9 @@
 
 ><dtml-comment><!------- STATIC CACHE ---------------------------></dtml-comment
 ><dtml-if "isCachedPage(REQUEST)"
+><dtml-try
+><dtml-var standard_cache_header
+><dtml-except></dtml-try
 ><dtml-var "getCachedPage(REQUEST)"
 
 ><dtml-comment><!------- DISPLAY ONLY ACTIVE --------------------></dtml-comment

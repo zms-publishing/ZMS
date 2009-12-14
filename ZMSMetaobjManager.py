@@ -586,7 +586,7 @@ class ZMSMetaobjManager:
           keys = attr['keys']
           if ''.join(keys).find('<dtml') < 0:
             if type(value) is not list:
-              value = list(value)
+              value = [value]
             for v in value:
               if v not in keys:
                 keys.append(v)

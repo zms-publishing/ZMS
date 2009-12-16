@@ -326,7 +326,7 @@ def exportObj(obj, filename, filetype='b'):
   #-- Save to file.
   if data is not None:
     objfile = open(filename,'w%s'%filetype)
-    if type(data) is type(''):
+    if type(data) is str or type(data) is unicode:
       objfile.write(data)
     else:
       while data is not None:

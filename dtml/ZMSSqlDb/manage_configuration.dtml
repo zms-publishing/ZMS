@@ -409,26 +409,30 @@ function mms_normalize_rows(el_tbody) {
              ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_lazy_%s:int'%column['id'],value=int(fk.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
-             ><td class="form-small" nowrap="nowrap">B.Options</td
+             ><td class="form-small" nowrap="nowrap">B.MySQL-Set</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_fk_mysqlset_%s:int'%column['id'],value=int(fk.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+            ></tr
+            ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
+             ><td class="form-small" nowrap="nowrap">C.Options</td
              ><td class="form-small"><textarea class="form-fixed" name="attr_fk_options_<dtml-var "column['id']">" cols="80" rows="1" title="Options" wrap="virtual" style="width:90%;height:20px;background-color:#FFF;"><dtml-in "fk.get('options',[])"><dtml-let x=sequence-item><dtml-var "'%s->%s\n'%(str(x[0]),str(x[1]))"></dtml-let></dtml-in></textarea></td
             ></tr
             ></dtml-let
            ><dtml-let multiselect="column.get('multiselect',{})" style="int(not column.has_key('multiselect'))*'style=\042display:none;\042'"
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
-             ><td class="form-small" nowrap="nowrap">Tablename</td
+             ><td class="form-small" nowrap="nowrap">A.Tablename</td
              ><td class="form-small"><dtml-try><select name="attr_multiselect_tablename_<dtml-var "column['id']">"><option value=""></option><dtml-in "map( lambda x: x['id'], getEntities())" sort><dtml-let t=sequence-item><option value="<dtml-var t>"<dtml-if "str(multiselect.get('tablename','')).upper()==t.upper()"> selected="selected"</dtml-if>><dtml-var t></option></dtml-let></dtml-in></select><dtml-except><dtml-var error_type>: <dtml-var error_value></dtml-try></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
-             ><td class="form-small" nowrap="nowrap">Foreign Key</td
+             ><td class="form-small" nowrap="nowrap">A.Foreign Key</td
              ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "multiselect.get('fk','')">"></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
-             ><td class="form-small" nowrap="nowrap">MySQL-Set</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=int(multiselect.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small" nowrap="nowrap">A.Lazy</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=int(multiselect.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
-             ><td class="form-small" nowrap="nowrap">Lazy</td
-             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_lazy_%s:int'%column['id'],value=int(multiselect.get('lazy',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
+             ><td class="form-small" nowrap="nowrap">B.MySQL-Set</td
+             ><td class="form-small"><dtml-var "getCheckbox(fmName='form0',elName='attr_multiselect_mysqlset_%s:int'%column['id'],value=int(multiselect.get('mysqlset',0)==1),enabled=_.True,REQUEST=REQUEST)"></td
             ></tr
            ></dtml-let
            ><dtml-let multimultiselect="column.get('multimultiselect',{})" style="int(not column.has_key('multimultiselect'))*'style=\042display:none;\042'"

@@ -387,9 +387,25 @@
      +- SELECT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
-     <dtml-elif "grid_col.get('fk')">
-      <dtml-call "REQUEST.set('options',[])">
-      <dtml-if "fk.has_key('options')">
+     <dtml-elif "grid_col.get('fk')"
+      ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
+      ><dtml-call "REQUEST.set('options',[])"
+      ><dtml-if "fk.get('mysqlset')"
+       ><dtml-let optpl="[]"
+        ><dtml-if value
+         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
+        ></dtml-if
+        ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
+         ><dtml-let r=sequence-item rtype="r['type']"
+          ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
+           ><dtml-let i=sequence-item
+            ><dtml-call "options.append([i,i])"
+           ></dtml-let
+          ></dtml-in
+         ></dtml-let
+        ></dtml-in
+       ></dtml-let
+      ><dtml-elif "fk.has_key('options')">
        <dtml-call "REQUEST.set('options',fk.get('options',[]))">
       <dtml-elif "fk.has_key('tablename')">
        <dtml-call "REQUEST.set('sqlStatement',[])">
@@ -447,8 +463,8 @@
          <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option>
         </dtml-if>
         <dtml-in options>
-         <dtml-let item=sequence-item key="item[0]" value="item[1]">
-          <option value="<dtml-var key>" <dtml-if "str(row.get(id,''))==str(key)">selected="selected"</dtml-if>><dtml-var value></option>
+         <dtml-let item=sequence-item key="item[0]" label="item[1]">
+          <option value="<dtml-var key>" <dtml-if "value==str(key)">selected="selected"</dtml-if>><dtml-var label></option>
          </dtml-let>
         </dtml-in>
        </select>
@@ -491,10 +507,10 @@
          ><dtml-call "optpl.extend(dt_html(multiselect.get('custom'),REQUEST))"
         ><dtml-else
          ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
-          ><dtml-let record=sequence-item
-           ><dtml-in "record['type'][4:-1].replace('\'','').split(',')"
+          ><dtml-let r=sequence-item rtype="r['type']"
+           ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
             ><dtml-let i=sequence-item
-             ><dtml-call "optpl.append([i,i])"
+             ><dtml-call "options.append([i,i])"
             ></dtml-let
            ></dtml-in
           ></dtml-let

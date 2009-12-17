@@ -1428,4 +1428,5 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 --------------------------------------------------
 2009-12-17:zms2-2.12.1-09
 [01295] Applied fix for ZMS eLC: initialization of LCMS client fails.
+[01296] Applied fix for SQL-Datasource: MySQL-enums in selects. 
 --------------------------------------------------

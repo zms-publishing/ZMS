@@ -548,7 +548,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### E-Learning components ####
     if REQUEST.get('initialization',0)==2:
       # Create Home.
-      lcmsHomeElmnt = initTheme(homeElmnt,'lcms','lcms',REQUEST)
+      lcmsHomeElmnt = initTheme(homeElmnt,'lcms.zexp','lcms',REQUEST)
       # Create LCMS.
       titlealt = 'LCMS'
       title = 'Learning Content Management System'

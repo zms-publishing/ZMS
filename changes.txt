@@ -1423,3 +1423,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01292] Applied fix for self-learning auto-complete attributes (reported by uni-cgn).
 [01293] Added support for standard_cache_header for cached-pages (reported by uni-cgn).
 --------------------------------------------------
+--------------------------------------------------
+2009-12-17:zms2-2.12.1-08
+[01294] Applied fix for static export of unicode data files.

@@ -61,7 +61,7 @@ function chooseObj(i) {
     displayfield[<dtml-var sequence-index>] = '<dtml-var "js_quote(qvalue)">';
   </dtml-in>
   self.parent.opener.lazyMultiSelectAddElement('<dtml-var elIdPrefix>','<dtml-var elId>',displayfield[i],field[i]);
-  <dtml-unless "REQUEST.get('elType') in ['multimultiselect','multiselect']">
+  <dtml-unless "REQUEST.get('elType') in ['multiselect']">
     self.parent.close();
   </dtml-unless>
 }

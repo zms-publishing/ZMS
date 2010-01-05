@@ -61,7 +61,9 @@ function chooseObj(i) {
     displayfield[<dtml-var sequence-index>] = '<dtml-var "js_quote(qvalue)">';
   </dtml-in>
   self.parent.opener.lazyMultiSelectAddElement('<dtml-var elIdPrefix>','<dtml-var elId>',displayfield[i],field[i]);
-  self.parent.close();
+  <dtml-unless "REQUEST.get('elType') in ['multimultiselect','multiselect']">
+    self.parent.close();
+  </dtml-unless>
 }
 //-->
 </script>
@@ -74,6 +76,7 @@ function chooseObj(i) {
  <input type="hidden" name="fmName" value="<dtml-var fmName>"/>
  <input type="hidden" name="elIdPrefix" value="<dtml-var elIdPrefix>"/>
  <input type="hidden" name="elId" value="<dtml-var elId>"/>
+ <input type="hidden" name="elType" value="<dtml-var elType missing="None">"/>
  <input type="hidden" name="fieldname" value="<dtml-var fieldname>"/>
  <input type="hidden" name="displayfield" value="<dtml-var displayfield>"/>
  <input type="hidden" name="tablename" value="<dtml-var tablename>"/>

@@ -1430,3 +1430,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01295] Applied fix for ZMS eLC: initialization of LCMS client fails.
 [01296] Applied fix for SQL-Datasource: MySQL-enums in selects. 
 --------------------------------------------------
+2010-01-05:zms2-2.12.1-10
+[01297] Revised SQL-Datasource: no close of browse-db popup for multimultiselects and multiselects (requested by tf). 
+--------------------------------------------------

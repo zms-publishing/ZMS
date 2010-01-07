@@ -392,20 +392,18 @@
       ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
       ><dtml-call "REQUEST.set('options',[])"
       ><dtml-if "fk.get('mysqlset')"
-       ><dtml-let optpl="[]"
-        ><dtml-if value
-         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
-        ></dtml-if
-        ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
-         ><dtml-let r=sequence-item rtype="r['type']"
-          ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
-           ><dtml-let i=sequence-item
-            ><dtml-call "options.append([i,i])"
-           ></dtml-let
-          ></dtml-in
-         ></dtml-let
-        ></dtml-in
-       ></dtml-let
+       ><dtml-if value
+        ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
+       ></dtml-if
+       ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
+        ><dtml-let r=sequence-item rtype="r['type']"
+         ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
+          ><dtml-let i=sequence-item
+           ><dtml-call "options.append([i,i])"
+          ></dtml-let
+         ></dtml-in
+        ></dtml-let
+       ></dtml-in
       ><dtml-elif "fk.has_key('options')">
        <dtml-call "REQUEST.set('options',fk.get('options',[]))">
       <dtml-elif "fk.has_key('tablename')">
@@ -502,23 +500,25 @@
      </dtml-comment>
      <dtml-elif "grid_col.get('multiselect')"
       ><dtml-if "multiselect.get('custom') or multiselect.get('mysqlset')"
-       ><dtml-let optpl="[]"
-        ><dtml-call "REQUEST.set('value',row.get(id,''))"
-        ><dtml-if "multiselect.get('custom')"
-         ><dtml-call "optpl.extend(dt_html(multiselect.get('custom'),REQUEST))"
-        ><dtml-else
-         ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
-          ><dtml-let r=sequence-item rtype="r['type']"
-           ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
-            ><dtml-let i=sequence-item
-             ><dtml-call "options.append([i,i])"
-            ></dtml-let
-           ></dtml-in
-          ></dtml-let
-         ></dtml-in
+       ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
+       ><dtml-call "REQUEST.set('options',[])"
+       ><dtml-if "multiselect.get('custom')"
+        ><dtml-call "options.extend(dt_html(multiselect.get('custom'),REQUEST))"
+       ><dtml-elif "multiselect.get('mysqlset')"
+        ><dtml-if value
+         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
         ></dtml-if
-        ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
-       ></dtml-let
+         ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
+         ><dtml-let r=sequence-item rtype="r['type']"
+          ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"
+           ><dtml-let i=sequence-item
+            ><dtml-call "options.append([i,i])"
+           ></dtml-let
+          ></dtml-in
+         ></dtml-let
+        ></dtml-in
+       ></dtml-if
+       ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=options, enabled=1, REQUEST=REQUEST)"
       ><dtml-else
       ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
       ><dtml-call "REQUEST.set('src',None)"

@@ -1433,3 +1433,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-01-05:zms2-2.12.1-10
 [01297] Revised SQL-Datasource: no close of browse-db popup for multimultiselects and multiselects (requested by tf). 
 --------------------------------------------------
+2010-01-07:zms2-2.12.1-11
+[01298] Applied fix for SQL-Datasource: MySQL-enums in mulitselects. 
+--------------------------------------------------

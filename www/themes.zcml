@@ -1,3 +1,4 @@
 <configure xmlns="http://namespaces.zope.org/zope" xmlns:zms="http://namespaces.zope.org/zms">
   <source location="http://www.zms-publishing.com/import/themes"/>
+  <source location="http://zmslabs.org/download/CMESS/themes"/>
 </configure>

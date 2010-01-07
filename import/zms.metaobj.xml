@@ -3578,7 +3578,7 @@ teaserElmnts = []
 obs = context.breadcrumbs_obj_path(portalMaster=False)
 obs.reverse()
 for ob in obs:
-  abort_penetrance = ob.meta_type == 'ZMSLinkElement' or ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) mot in ['',0]
+  abort_penetrance = ob.meta_type == 'ZMSLinkElement' or ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
   if abort_penetrance:
     break
   temp = []

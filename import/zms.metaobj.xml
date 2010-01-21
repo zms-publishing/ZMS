@@ -2606,7 +2606,7 @@ function onZMSTableFormSubmit()
     xml += "</list></item>\n";
   }
   xml += '</list>\n';
-  $("#table").val( xml);
+  $("#table_table").val( xml);
   return onFormSubmit('<dtml-var fmName>');
 }
 
@@ -2776,7 +2776,9 @@ $()
 </div>
 </dtml-let>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
+
+table_colgroup_cols=<dtml-var table_colgroup_cols>
 
 <script language="JavaScript">
 <!--//
@@ -2796,7 +2798,8 @@ function selectValue(el, v)
 
 function onZMSTableFormSubmit()
 {
-  var xml = '';
+  var xml;
+  xml = '';
   xml += '<list>\n';
   var el_tbody = $($("#table_cell_editor").children()[0]);
   var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
@@ -2823,7 +2826,18 @@ function onZMSTableFormSubmit()
     xml += '</list></item>\n';
   }
   xml += '</list>\n';
-  $("#table").val( xml);
+  $("#table_table").val( xml);
+  xml = '';
+  xml += '<list>\n';
+  var el_trs = el_tbody.children().filter(":eq(1)");
+  for ( var i=0; i < el_trs.length; i++) {
+    var el_inputs = $("input:text",el_trs[i]);
+    for ( var j = 0; j < el_inputs.length; j++) {
+      xml += '<item type="string">'+$(el_inputs[j]).val()+'</item>\n';
+    }
+  }
+  xml += '</list>\n';
+  $("#table_colgroup_cols").val( xml);
   return onFormSubmit('<dtml-var fmName>');
 }
 
@@ -2861,11 +2875,9 @@ function table_cell_edit(el)
   <dtml-let elName="'content_editor'">
   <dtml-if "REQUEST.get('richedit_fmt')">
   if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
+    zmiStandardOnSubmitEventHandler();
     $('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
     $('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-    // zmiRichtextOnSubmitEventHandler();
-    <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
-    <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
   }
   </dtml-if>
   </dtml-let>
@@ -3086,7 +3098,14 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
  <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=True,REQUEST=REQUEST)"></td>
  <dtml-in "_.range(table_cols)">
   <dtml-let col_index=sequence-index>
-   <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>"><dtml-if "getObjProperty('colgroup',REQUEST)"><dtml-var "table_widths[col_index]">%<dtml-else>&nbsp;</dtml-if></td>
+   <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>">
+    <dtml-if "getObjProperty('colgroup',REQUEST)">
+     <input class="form-small" type="text" name="col<dtml-var col_index>" size="3" value="<dtml-if "col_index<len(table_colgroup_cols)"><dtml-var "table_colgroup_cols[col_index]"></dtml-if>" style="text-align:right;"/>
+     (&Oslash;=<dtml-var "table_widths[col_index]">)%
+    <dtml-else>
+     &nbsp;
+    </dtml-if>
+   </td>
   </dtml-let>
 </dtml-in>
  <td>&nbsp;</td>
@@ -3166,8 +3185,9 @@ table_cell_init();
 
 </dtml-if>
 
-<input type="hidden" id="table" name="table_<dtml-var lang>" value="<list></list>"/>
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup'])">]]>
+<input type="hidden" id="table_table" name="table_<dtml-var lang>" value="<list></list>"/>
+<input type="hidden" id="table_colgroup_cols" name="cols_<dtml-var lang>" value="<list></list>"/>
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols'])">]]>
                     </item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[interface]]></item>
@@ -3203,6 +3223,16 @@ table_cell_init();
                     <item key="name"><![CDATA[Colgroup]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[boolean]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[cols]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">1</item>
+                    <item key="name"><![CDATA[Cols]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[list]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -3279,13 +3309,15 @@ table_cell_init();
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTable //--</dtml-comment>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_summary="getObjProperty('attr_dc_description',REQUEST)"
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_summary="getObjProperty('attr_dc_description',REQUEST)"
  ><table id="<dtml-var id>" class="<dtml-var meta_id>"<dtml-if table_summary> summary="<dtml-var table_summary>"</dtml-if>
  ><caption align="<dtml-var "getObjProperty('align',REQUEST).lower()">"><dtml-var "getObjProperty('caption',REQUEST)"></caption
  ><dtml-if "getObjProperty('colgroup',REQUEST)"
   ><colgroup
    ><dtml-in "getObjProperty('widths',REQUEST)"
-    ><col width="<dtml-var sequence-item>%"
+    ><dtml-let col_index=sequence-index
+     ><col width="<dtml-if "col_index<len(table_colgroup_cols) and table_colgroup_cols[col_index]"><dtml-var "table_colgroup_cols[col_index]"><dtml-else><dtml-var sequence-item></dtml-if>%"
+    ></dtml-let
    /></dtml-in
   ></colgroup
  ></dtml-if
@@ -3355,7 +3387,7 @@ table_cell_init();
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.2.0]]></item>
+            <item key="revision"><![CDATA[1.3.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

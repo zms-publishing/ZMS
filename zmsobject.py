@@ -581,10 +581,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         attr_type = attr['type']
         redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
       redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn','') in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')])
-      target_ob = self.getParentNode()
-      if redirect_self or target_ob is None:
-        target_ob = self
-      target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
       
       if REQUEST.get('btn','') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         try:
@@ -673,6 +669,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       
       # Return with message.
       self.manage_checkin(REQUEST)
+      target_ob = self.getParentNode()
+      if redirect_self or target_ob is None:
+        target_ob = self
+      target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
       target = self.url_append_params( target, { 'lang': lang, 'preview': 'preview',  messagekey: message})
       target = '%s#_%s'%( target, self.id)
       if RESPONSE is not None:

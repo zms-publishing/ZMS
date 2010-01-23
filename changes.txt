@@ -1436,3 +1436,9 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-01-07:zms2-2.12.1-11
 [01298] Applied fix for SQL-Datasource: MySQL-enums in mulitselects. 
 --------------------------------------------------
+2010-01-23:zms2-2.12.1-12
+[01299] added support for custom col-widths to ZMSTable [1.3.0]
+[01300] Applied fix for redirect to self after upload of inline-resources.
+[01301] Applied fix for SQL-Datasource: no close of browse-db popup for multimultiselects and multiselects. 
+[01302] Added support for Office 2007 MIME types and icons docx, pptx, and xlsx. 
+--------------------------------------------------

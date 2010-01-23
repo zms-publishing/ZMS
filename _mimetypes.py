@@ -37,6 +37,9 @@ application_x_excel = "mime_type.application_x_excel.gif"
 application_x_x509_ca_cert = "mime_type.application_x_x509_ca_cert.gif"
 application_visio = "mime_type.application_visio.gif"
 application_zip = "mime_type.application_zip.gif"
+application_docx = "mime_type.application_docx.gif"
+application_pptx = "mime_type.application_pptx.gif"
+application_xlsx = "mime_type.application_xlsx.gif"
 audio_basic = "mime_type.audio_basic.gif"
 audio_midi = "mime_type.audio_midi.gif"
 content_unknown = "mime_type.application_octet_stream.gif"
@@ -57,6 +60,9 @@ dctMimeType = {
 	,'application/vnd.ms-access':application_msaccess
 	,'application/vnd.ms-excel':application_x_excel
 	,'application/vnd.ms-powerpoint':application_mspowerpoint
+  ,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
+  ,'application/vnd.openxmlformats-officedocument.presentationml.presentation':application_pptx
+  ,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':application_xlsx
 	,'application/msword':application_msword
 	,'application/octet-stream':application_octet_stream
 	,'application/pdf':application_pdf

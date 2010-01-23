@@ -87,10 +87,10 @@ function chooseObj(i) {
   <td class="form-element" style="white-space:nowrap;">
     <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">" />
     <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">" />
-    <img 
+    <img
           class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>btn_add.gif"
-          title="<dtml-var "getZMILangStr('BTN_ADD')">" 
+          title="<dtml-var "getZMILangStr('BTN_ADD')">"
           onclick="javascript:window.open('manage_main?lang=ger&action=insert&qentity=<dtml-var "REQUEST.get('tablename')">','<dtml-var "getZMILangStr('BTN_ADD')">')"
     />
   </td>
@@ -106,7 +106,7 @@ function chooseObj(i) {
      'choose':{'action':'javascript:chooseObj(%s)'},
    })">
  <dtml-var "f_recordset_grid(_,_
-   ,grid_url=url_append_params(URL,{'lang':lang,'fmName':fmName,'elIdPrefix':elIdPrefix,'elId':elId,'fieldname':fieldname,'displayfield':displayfield,'tablename':tablename})
+   ,grid_url=url_append_params(URL,{'lang':lang,'fmName':fmName,'elIdPrefix':elIdPrefix,'elId':elId,'elType':elType,'fieldname':fieldname,'displayfield':displayfield,'tablename':tablename})
    ,grid_cols=grid_cols
    ,grid_options=grid_options
    )">

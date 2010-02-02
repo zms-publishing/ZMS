@@ -481,7 +481,10 @@ class ZMSContainerObject(
         if ob is None:
           parent = self.getParentNode()
           if parent is not None:
-            ob = parent.getPrevPage(REQUEST,incResource,root)
+            if self.getHref2IndexHtml(REQUEST) == parent.getHref2IndexHtml(REQUEST):
+              ob = parent.getPrevPage(REQUEST,incResource,parent)
+            else:
+              ob = parent
         else:
           ob = ob.getLastPage(REQUEST,incResource,ob)
         if not ob is None and not ob.isMetaType(self.PAGES,REQUEST):

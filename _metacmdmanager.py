@@ -293,6 +293,8 @@ class MetacmdManager:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           ob = portalMaster.getMetaCmd(id)
+          if ob is None:
+            return ob
           ob['acquired'] = 1
       ob['meta_type'] = getattr(self,id).meta_type
       return ob
@@ -306,9 +308,11 @@ class MetacmdManager:
     def getMetaCmdIds(self, sort=1):
       obs = getRawMetacmds(self)
       if sort:
-        obs = map(lambda x: (self.getMetaCmd(x['id'])['name'],x), obs)
+        obs = map(lambda x: self.getMetaCmd(x['id']), obs)
+        obs = filter( lambda x: x is not None, obs)
+        obs = map(lambda x: (x['name'],x), obs)
         obs.sort()
-        obs = map(lambda x: x[1],obs)
+        obs = map(lambda x: x[1], obs)
       ids = map(lambda x: x['id'], obs)
       return ids
 

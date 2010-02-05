@@ -1131,7 +1131,7 @@ class ObjAttrs:
                 rel_url = rel_url[ : rel_url.rfind( '/')] + '/' + rel_url[ rel_url.rfind( '/') + 1: ] + '/' + ref_obj_file.getFilename()
               else:
                 rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
-          value = value[: i + 6] + rel_url + value[ j :]
+            value = value[: i + 6] + rel_url + value[ j :]
       
       #-- Url-Fields
       if datatype == _globals.DT_URL:

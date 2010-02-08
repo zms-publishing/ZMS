@@ -1013,13 +1013,13 @@ class ObjAttrs:
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
       
-        # Delete
-        if REQUEST.has_key('del_%s'%attr) and int(REQUEST['del_%s'%attr]) == 1:
-          set, value = True, None
-        
         # Upload
-        elif isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
+        if isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
           set, value = True, value
+        
+        # Delete
+        elif REQUEST.has_key('del_%s'%attr) and int(REQUEST['del_%s'%attr]) == 1:
+          set, value = True, None
         
         # Insert
         elif REQUEST.get('ZMS_INSERT',None) is not None:

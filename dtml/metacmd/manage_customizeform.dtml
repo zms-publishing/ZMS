@@ -235,7 +235,7 @@
         </dtml-if>
         <tr>
          <td align="left" valign="top" colspan="2">
-          <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=20,value=ob.body(),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
+          <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=20,value=ob.read(),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
          </td>
         </tr>
         </table>

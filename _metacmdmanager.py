@@ -210,7 +210,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
       if ob.meta_type in ['DTML Method','DTML Document']:
         ob.manage_edit(title=ob.title,data=newData)
       elif ob.meta_type == 'Script (Python)':
-        ob.ZPythonScript_edit(params='',body=newData)
+        ob.write(newData)
 
   # Return with new id.
   return newId

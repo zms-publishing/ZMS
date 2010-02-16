@@ -70,7 +70,7 @@ def syncType( self, meta_id, attr):
       if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Script (Python)']:
-        attr['custom'] = ob.body()
+        attr['custom'] = ob.read()
       elif ob.meta_type in [ 'Z SQL Method']:
         connection = ob.connection_id
         params = ob.arguments_src
@@ -868,20 +868,8 @@ class ZMSMetaobjManager:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Script (Python)':
-          params = newOb._params
-          body = ''
-          count = 0
-          for s in newCustom.split( '\n'):
-            if count == 0 and \
-               s.find( '# --// BO %s('%newId) == 0 and \
-               s.find( ') //--') > 0:
-              params = s[s.find('(')+1:s.rfind(')')]
-            while len(s) > 0 and ord(s[-1]) == 13:
-              s = s[:-1]
-            body += s + '\n'
-            count += 1
           newOb.ZPythonScript_setTitle( newName)
-          newOb.ZPythonScript_edit( params=params, body=body)
+          newOb.write(newCustom)
           roles=[ 'Manager']
           newOb._proxy_roles=tuple(roles)
           if newId.find( 'manage_') == 0:

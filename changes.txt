@@ -1436,9 +1436,21 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-01-07:zms2-2.12.1-11
 [01298] Applied fix for SQL-Datasource: MySQL-enums in mulitselects. 
 --------------------------------------------------
+<<<<<<< .mine
+2010-01-24:zms2-2.12.1-12
+[01299] N.N. 
+--------------------------------------------------
+2010-02-16:zms2-2.12.1-13
+[01300] Added support for Python-Script read/write for meta-commands.
+[01301] Added support for Python-Script read/write for meta-objects. 
+--------------------------------------------------
 2010-01-23:zms2-2.12.1-12
 [01299] added support for custom col-widths to ZMSTable [1.3.0]
 [01300] Applied fix for redirect to self after upload of inline-resources.
 [01301] Applied fix for SQL-Datasource: no close of browse-db popup for multimultiselects and multiselects. 
 [01302] Added support for Office 2007 MIME types and icons docx, pptx, and xlsx. 
 --------------------------------------------------
+2010-02-16:zms2-2.12.1-13
+[01302] Added support for Python-Script read/write for meta-commands.
+[01303] Added support for Python-Script read/write for meta-objects. 
+----------------------------------------------------------------------------------------------------

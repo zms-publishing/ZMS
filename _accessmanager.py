@@ -414,18 +414,27 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_param='cn', search_term=''):
+    def getValidUserids(self, search_term=''):
       valid_userids = []
       for userFldr in self.getUserFolders():
         if userFldr.aq_parent.objectValues(['ZMS']):
           if userFldr.meta_type == 'LDAPUserFolder':
+            search_param = userFldr.getProperty('_login_attr')
             for user in userFldr.findUser(search_param=search_param,search_term=search_term):
-              userName = user[userFldr.getProperty('_login_attr')]
-              valid_userids.append({'localUserFldr':userFldr,'name':userName})
+              d = {}
+              d['localUserFldr'] = userFldr
+              d['name'] = user[search_param]
+              for extra in ['givenName','sn']:
+                try: d[extra] = user[extra]
+                except: pass
+              valid_userids.append(d)
           else:
             for userName in userFldr.getUserNames():
               if search_term == '' or search_term == userName:
-                valid_userids.append({'localUserFldr':userFldr,'name':userName})
+                d = {}
+                d['localUserFldr'] = userFldr
+                d['name'] = userName
+                valid_userids.append(d)
       return valid_userids
 
     # --------------------------------------------------------------------------

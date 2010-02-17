@@ -205,10 +205,10 @@
        <tr valign="top" class="<dtml-if sequence-even>zmiNeutralColorLight0<dtml-else>zmiNeutralColorMedium0</dtml-if>">
         <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
         <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var userId>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><b></dtml-if><dtml-var "_.unicode(sn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='sn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><b></dtml-if><dtml-var "_.unicode(cn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='cn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><b></dtml-if><dtml-var "_.unicode(dn,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='dn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><b></dtml-if><dtml-var "_.unicode(ou,'latin-1').encode('utf-8')"><dtml-if "getProperty( '_login_attr' )=='ou'"></b></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><b></dtml-if><dtml-if sn><dtml-var "_.unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></b></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><b></dtml-if><dtml-if cn><dtml-var "_.unicode(cn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></b></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><b></dtml-if><dtml-if dn><dtml-var "_.unicode(dn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></b></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><b></dtml-if><dtml-if ou><dtml-var "_.unicode(ou,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></b></dtml-if></td>
         <td class="form-small">
          &nbsp;
          <!-- E-Mail -->
@@ -257,7 +257,7 @@
      <td>
       <div class="form-small">
        <dtml-var sequence-item>
-       <dtml-in expr="findUser(search_param=getProperty( '_login_attr' ),search_term=_['sequence-item'])" mapping sort="sn">(<i>
+       <dtml-in "filter(lambda x: x['name']==_['sequence-item'],valid_userids)" mapping sort="sn">(<i>
         <dtml-if givenName><dtml-var "_.unicode(givenName,'latin-1').encode('utf-8')"></dtml-if>
         <dtml-if sn><dtml-var "_.unicode(sn,'latin-1').encode('utf-8')"></dtml-if>
        </i>)</dtml-in>

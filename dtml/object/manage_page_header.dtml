@@ -71,9 +71,9 @@
 ### CSS
 ################################################################################
 </dtml-comment>
-<link rel="stylesheet" type="text/css" href="<dtml-var BASEPATH1>/manage_page_style.css">
-<link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_sys">
-<link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_defaults">
+<link rel="stylesheet" type="text/css" href="<dtml-var BASEPATH1>/manage_page_style.css" />
+<link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_sys" />
+<link rel="stylesheet" type="text/css" href="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>f_css_defaults" />
 <dtml-var headCSS>
 
 <dtml-comment>

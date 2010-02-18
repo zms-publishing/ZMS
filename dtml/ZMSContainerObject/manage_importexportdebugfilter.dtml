@@ -1,9 +1,7 @@
 <dtml-var manage_page_header>
 
-<script language="JavaScript">
-<!--//
-//-->
-</script>
+<script language="JavaScript"><!--// //--></script>
+</head>
 
 <dtml-var manage_tabs>
 <dtml-var f_bo_area>

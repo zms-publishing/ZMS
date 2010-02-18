@@ -158,7 +158,10 @@ class ZMSTrashcan(ZMSContainerObject):
             req = {'lang':lang,'preview':'preview'}
             change_dt = ob.getObjProperty('change_dt',req)
             if change_dt is not None:
-              delete = delete and _globals.daysBetween(change_dt,now)>days
+              try: 
+                delete = delete and _globals.daysBetween(change_dt,now)>days
+              except:
+                delete = True
           if delete:
             ids.append(ob.id)
         #-- Delete objects.

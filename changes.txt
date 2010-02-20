@@ -1447,4 +1447,7 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01303] Added support for Python-Script read/write for meta-objects.
 [01304] Applied fixes for ZMI HTML validity (Safari Browser)
 [01305] Applied fix trashcan garbage collection of broken object classes
+--------------------------------------------------
+2010-02-16:zms2-2.12.1-14
+[01306] Added support for invalid content-object xmls in SVN-update (requested by roc).
 ----------------------------------------------------------------------------------------------------

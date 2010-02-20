@@ -8,6 +8,7 @@
 
 <dtml-let homeId="getHome().id" basepath="getConfProperty('SVN.path','')" dicon="{
           'conflict':'%sico_warning.gif'%MISC_ZMS,
+          'error':'%sico_error.gif'%MISC_ZMS,
           'DTML Method':'/misc_/OFSP/dtmlmethod.gif',
           'Script (Python)':'/misc_/PythonScripts/pyscript.gif',
           'ZMSMetamodelProvider':'%sZMSMetamodelProvider.gif'%MISC_ZMS,
@@ -49,11 +50,14 @@
   </dtml-if>
  </dtml-if>
  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if>">
-  <td class="form-element"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var filepath>" <dtml-unless "action=='conflict'">checked="checked"</dtml-unless>/></td>
+  <td class="form-element"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var filepath>" 
+  	<dtml-if "action=='error'">disabled="disabled"</dtml-if>
+  	<dtml-unless "action=='conflict'">checked="checked"</dtml-unless>/></td>
   <td class="form-small">
-   <img src="<dtml-var "dicon.get(action,'%s/btn_%s.gif'%(MISC_ZMS,action))">" alt="<dtml-var action>" border="0" align="absmiddle"/>
-   <img src="<dtml-var "dicon.get(meta_type,'/misc_/OFSP/%s_icon.gif'%meta_type)">" alt="<dtml-var action>" alt="" title="<dtml-var meta_type>" border="0" align="absmiddle"/>
-   <dtml-var "filepath[len(basepath+'/'+homeId+'/'):]">
+   <img src="<dtml-var "dicon.get(action,'%s/btn_%s.gif'%(MISC_ZMS,action))">" alt="<dtml-var action>" title="<dtml-var action>" border="0" align="absmiddle"/>
+   <img src="<dtml-var "dicon.get(meta_type,'/misc_/OFSP/%s_icon.gif'%meta_type)">" alt="<dtml-var action>" title="<dtml-var meta_type>" border="0" align="absmiddle"/>
+   <a href="localfs_read?filename=<dtml-var filepath>" target="_blank" class="zmi"><dtml-var "filepath[len(basepath+'/'+homeId+'/'):]"></a>
+   <dtml-if error_message><div class="form-small"><dtml-var error_message newline_to_br></div></dtml-if>
   </td>
   <td class="form-small"><dtml-if mrevision><dtml-var mrevision><dtml-elif mtime><dtml-var "getLangFmtDate(_.DateTime(mtime),lang,'DATETIME_FMT')"></dtml-if></td>
   <td class="form-small"><dtml-if filemrevision><dtml-var filemrevision><dtml-elif filemtime><dtml-var "getLangFmtDate(_.DateTime(filemtime),lang,'DATETIME_FMT')"></dtml-if></td>

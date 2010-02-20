@@ -314,29 +314,37 @@ class ZMSMetaobjManager:
       # Changed resources.
       for filename in os.listdir(path):
         action = None
+        error_message = None
         filepath = path+'/'+filename
         file = open(filepath)
         # Execute action.
         if filepath in ids or '*' in ids:
           ob.metaobj_manager.importMetaobjXml( file)
         elif filepath.endswith(suffix):
-          filexml = self.parseXmlString( file, mediadbStorable=False)
-          if type(filexml) is list:
-            filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
-          mrevision = None
-          filemrevision = filexml['value'].get('revision','0.0.0')
-          metaObjId = filename[:-len(suffix)]
-          if metaObjId in self.getMetaobjIds():
-            metaObj = self.getMetaobj(metaObjId)
-            mrevision = metaObj.get('revision','0.0.0')
-            if mrevision < filemrevision:
-              action = 'refresh'
-            elif mrevision > filemrevision:
-              action = 'conflict'
+          try:
+            filexml = self.parseXmlString( file, mediadbStorable=False)
+          except:
+            filexml = None
+            error_message = _globals.writeError(self,'')
+          if filexml is None:
+            action = 'error'
           else:
-            action = 'add'
+            if type(filexml) is list:
+              filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
+            mrevision = None
+            filemrevision = filexml['value'].get('revision','0.0.0')
+            metaObjId = filename[:-len(suffix)]
+            if metaObjId in self.getMetaobjIds():
+              metaObj = self.getMetaobj(metaObjId)
+              mrevision = metaObj.get('revision','0.0.0')
+              if mrevision < filemrevision:
+                action = 'refresh'
+              elif mrevision > filemrevision:
+                action = 'conflict'
+            else:
+              action = 'add'
           if action:
-            l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
+            l.append({'action':action,'error_message':error_message,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
       # Deleted resources.
       for id in self.getMetaobjIds():
         metaObj = self.getMetaobj(id)

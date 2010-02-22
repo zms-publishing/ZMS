@@ -1448,6 +1448,9 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01304] Applied fixes for ZMI HTML validity (Safari Browser)
 [01305] Applied fix trashcan garbage collection of broken object classes
 --------------------------------------------------
-2010-02-16:zms2-2.12.1-14
+2010-02-21:zms2-2.12.1-14
 [01306] Added support for invalid content-object xmls in SVN-update (requested by roc).
+--------------------------------------------------
+2010-02-22:zms2-2.12.1-15
+[01307] Applied fix for generation of image-thumbnails: use work-version instead of live-version (contributed by gez).
 ----------------------------------------------------------------------------------------------------

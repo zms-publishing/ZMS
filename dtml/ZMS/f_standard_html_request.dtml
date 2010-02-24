@@ -29,5 +29,4 @@
 ><dtml-call "REQUEST.set('action',ZMS_ACTION)"
 ><dtml-elif "not REQUEST.get('ZMS_ACTION') and REQUEST.get('action')"
 ><dtml-call "REQUEST.set('ZMS_ACTION',action)"
-></dtml-if
->
+></dtml-if>

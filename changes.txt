@@ -1454,4 +1454,5 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-02-22:zms2-2.12.1-15
 [01307] Applied fix for generation of image-thumbnails: use work-version instead of live-version (contributed by gez).
 [01308] Removed whitespace in f_standard_html_request (requested by xm)
+[01309] Revised ZMI access-tab: improved performance for LDAPUserFolders.
 ----------------------------------------------------------------------------------------------------

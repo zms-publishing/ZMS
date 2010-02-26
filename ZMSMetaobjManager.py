@@ -312,7 +312,7 @@ class ZMSMetaobjManager:
       l = []
       suffix = '.metaobj.xml'
       # Changed resources.
-      for filename in os.listdir(path):
+      for filename in filter( lambda x: x!='.svn', os.listdir(path)):
         action = None
         error_message = None
         filepath = path+'/'+filename

@@ -706,6 +706,7 @@ class ZCatalogManager:
            (len(filter(lambda x: x[1]['path']==path, results)) == 0):
           result = {}
           result['score'] = intValue(item.data_record_score_)
+          result['normscore'] = intValue(item.data_record_normalized_score_)
           result['time'] = getattr(item,'zcat_date',None)
           result['path'] = path
           if REQUEST.get('search_ob',True):

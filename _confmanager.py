@@ -211,8 +211,10 @@ class ConfManager(
         package_home(globals())+'/import/',]
       try:
         conf = open( filepaths[0]+'configure.zcml','r')
+        _globals.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
       except:
         conf = open( filepaths[1]+'configure.zcml','r')
+        _globals.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
       conf_xml = self.xmlParse( conf)
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']

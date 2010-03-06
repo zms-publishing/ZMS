@@ -2500,7 +2500,7 @@ function remoteResponseTimedout() {
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstable_16x16.gif" type="file">47494638396110001000b30000040284848284b4d6fc6268978498c86c75a7e6eef48caedc747ba6fc02fc7c82b085aadc94bef0cbe5fcfbfdfc7c8cb821f90401000009002c000000001000100003045b30c9496b622bebbd150360288ac8319e21b2384ec0b6461c344da0b2ae6304f14edb84807048241608b81eefd710040a8fa48c5613380b8aa2763850e878861acd690d7465617133501e20b6db41015198d7e976fbc0c2effb2511003b</data>
+                      <data content_type="image/gif" filename="zmstable.gif" type="file">47494638396112001000f700000000845e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae7880ab7a83b07d89b67f8ebcff00ff8080808195c3849bca87a1d287a9dc8aa8d98caedf92bcef94bff2b0d7ffc2e1ffc6e3ffcee6ffd1e8ffe4edf5e8eff7f3f9fffeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000011002c00000000120010000008920023081c48b020410d16122a5cb89081c00c00224a9c38d161040c14334ab47881040909233c4a00415282070f122c56101952c4c8921f502610484182cd9b387122103841a4881020467af820a1030709070442100934e850941c36483020f041ceab370b0874f0f3254a0f46256c904a406003a042891a953a56c200810bb06215205081ddbb78f30630c8b7af5fbe0101003b</data>
                     </item>
                     <item key="id"><![CDATA[icon]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -2513,7 +2513,7 @@ function remoteResponseTimedout() {
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom">
-                      <data content_type="image/gif" filename="zmstable_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc848284cccecc9c9e9c5c5e5cecebec7473749898988c8c8cb4b6b4e1e0e1fbfdfb6c6c6ca5a6a57c7b7c64666421f90401000000002c000000001000100003046510c8492b48ad8dbc47d78d931064699a4e73ae65ba2cc1bb38451d284ae00c6ffcd235074e7708188f8ea331e938f46a854061887318104f1b4e211404ae4965587764c40ac09c429013081c66db54bd76b8038cb07ec90f3c1c808182830f168687881211003b</data>
+                      <data content_type="image/gif" filename="zmstable_disabled.gif" type="file">47494638396112001000f700005c5c5c6565656767676a6a6a6d6d6d7070707373737676767979797b7b7b7c7c7c7e7e7eff00ff8080808282828585858a8a8a8e8e8e9494949999999e9e9ea4a4a4a9a9a9b5b5b5b7b7b7cfcfcfdbdbdbdddddde1e1e1e3e3e3ebebebedededf7f7f7fefefeffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100000c002c00000000120010000008920019081c48b020410c15122a5cb87081c00b00224a9c38d121030b14334ab45841848806213c36f040b201070e0d2c52101912c4c8921d502a1038a181cd9b38712210284124880f1e4672e8d060838606070446100934e850941a323430201042ceab370b087cf0f3254a0e461b64904a40a003a042891a953ab6c100810bb06215203081ddbb78f30630c8b7af5fbe0101003b</data>
                     </item>
                     <item key="id"><![CDATA[icon_disabled]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -2875,9 +2875,11 @@ function table_cell_edit(el)
   <dtml-let elName="'content_editor'">
   <dtml-if "REQUEST.get('richedit_fmt')">
   if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
-    zmiStandardOnSubmitEventHandler();
     $('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
     $('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+    // zmiRichtextOnSubmitEventHandler();
+    <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
+    <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
   }
   </dtml-if>
   </dtml-let>
@@ -3237,19 +3239,49 @@ table_cell_init();
                 </item>
                 <item type="dictionary">
                   <dictionary>
+                    <item key="id"><![CDATA[isActive]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[isActive]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[isActive]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[attr_targetgroups]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Zielgruppe(n)]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[attr_targetgroups]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[manage_main_change]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[manage_main_change]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[manage_main_change]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO widths //--</dtml-comment>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="_.len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
  <dtml-in table_table>
   <dtml-let table_row=sequence-item>
    <dtml-in table_row mapping>
-    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(table_cell.get('content',''),REQUEST)))">
+    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="_.len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
      <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
     </dtml-let>
    </dtml-in>
   </dtml-let>
  </dtml-in>
- <dtml-return "_.map(lambda x: int((x*100.0)/sum(table_weights)), table_weights)">
+ <dtml-return "_.map(lambda x: _.int((x*100.0)/sum(table_weights)), table_weights)">
 </dtml-let>
 
 <dtml-comment>--// EO widths //--</dtml-comment>]]>
@@ -3267,7 +3299,7 @@ table_cell_init();
                     <item key="custom"><![CDATA[<dtml-comment>--// BO format(@key) //--</dtml-comment>
 
 <dtml-if key>
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="int(key[key.find('_')+1:key.rfind('_')])" row="int(key[key.rfind('_')+1:])">
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(key[key.find('_')+1:key.rfind('_')])" row="_.int(key[key.rfind('_')+1:])">
   <dtml-return "table_table[row][col]['format']">
  </dtml-let>
 <dtml-else>
@@ -3289,7 +3321,7 @@ table_cell_init();
                     <item key="custom"><![CDATA[<dtml-comment>--// BO setObjProperty(@pKey,@pValue)  //--</dtml-comment>
 
 <dtml-if "pKey.find('table_')==0">
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="int(pKey[pKey.rfind('_')+1:])">
+ <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="_.int(pKey[pKey.rfind('_')+1:])">
   <dtml-call "operator_setitem(table_table[row][col],'content',pValue)">
   <dtml-call "setObjProperty('table',table_table,lang)">
  </dtml-let>
@@ -3603,7 +3635,16 @@ table_cell_init();
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[# --// BO getTeaserElements //--
+                    <item key="custom"><![CDATA[## Script (Python) "getTeaserElements"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Function: Teaser-Elements
+##
+# --// BO getTeaserElements //--
 
 request = container.REQUEST
 teaserElmnts = []

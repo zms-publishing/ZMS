@@ -1,76 +1,134 @@
 <script type="text/javascript">
 <!--//
 
-  function onFormSubmit(fmName) {
-    if (self.btnClicked == "break") {
-      return false;
+var checkLock = true;
+
+function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
+  if ($('#zmiOverlay').length>0) {
+    return;
+  }
+  var html = '';
+  html += '<div class="form-text">';
+  html += '<div style="font-weight:bold;color:white;background-color:red;"><dtml-var "getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')"></div>';
+  html += '<table>';
+  html += '<tr>';
+  html += '<td class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></td>';
+  html += '<td class="form-element">'+change_dt+' <dtml-var "getZMILangStr('BY')"> '+change_uid+'</td>';
+  html += '</tr>';
+  html += '</table>';
+  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="onFormSubmitHideLock()"/>';
+  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_OVERWRITE')">" onclick="onFormSubmitSubmit(\''+fmName+'\');"/>';
+  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">" onclick="window.open(self.location.href);"/>';
+  html += '</div>';
+  $('<div id="zmiOverlay"><div id="zmiPopup" class="error">'+html+'</div></div>').appendTo('body');
+  if (document.height) {
+    $('#zmiOverlay').css({'height':document.height});
+    $('#zmiPopup').css({'left':window.pageXOffset,'top':window.pageYOffset});
+  }
+  else {
+    $('#zmiOverlay').css('height',document.body.scrollHeight);
+    $('#zmiPopup').css({'top':document.body.scrollTop,'left':document.body.scrollLeft});
+  }
+}
+
+function onFormSubmitHideLock() {
+  $('#zmiOverlay').remove();
+}
+
+function onFormSubmitSubmit(fmName) {
+  checkLock = false;
+  $('<input type="hidden" name="btn" value="'+self.btnClicked+'"/>').appendTo('form[name='+fmName+']');
+  $('form[name='+fmName+']').submit();
+}
+
+function onFormSubmitCheckLock(fmName) {
+  $.get('ajaxGetNode',{lang:'<dtml-var lang>'},function (result) {
+    var change_dt = $('change_dt',result).text();
+    var change_uid = $('change_uid',result).text();
+    var form_dt = new Date(parseFloat($('input[name=form_id]').val())*1000);
+    checkLock = new Date(change_dt).getTime() > form_dt.getTime();
+    if ( checkLock) {
+      onFormSubmitShowLock(fmName,change_uid,change_dt,form_dt);
     }
-    if (self.btnClicked != "<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" &&
-        self.btnClicked != "<dtml-var "getZMILangStr('BTN_BACK')" html_quote>") {
+    else {
+      onFormSubmitSubmit(fmName);
+    }
+  });
+}
+
+function onFormSubmit(fmName) {
+  if (self.btnClicked == "break") {
+    return false;
+  }
+  if (self.btnClicked != "<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" &&
+      self.btnClicked != "<dtml-var "getZMILangStr('BTN_BACK')" html_quote>") {
 <dtml-in "getMetaobjAttrIds(metaObj['id'])"
 ><dtml-let objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
-          key="objAttr['id']"
-          required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
-          visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+metaobjIds+['*','boolean','constant','method','resource']"
-          fmName="'form0'"
-          elName="getObjAttrName(objAttr,lang)"
-          elLabel="getObjAttrLabel(objAttr)"
+        key="objAttr['id']"
+        required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
+        visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+metaobjIds+['*','boolean','constant','method','resource']"
+        fmName="'form0'"
+        elName="getObjAttrName(objAttr,lang)"
+        elLabel="getObjAttrLabel(objAttr)"
 ><dtml-if visible
 ><dtml-if required>
-        obj = document.forms[fmName].elements['<dtml-var elName>'];
-        msg = "<dtml-var "getZMILangStr('MSG_REQUIRED')%elLabel">";
-        dofocus = true;
-        if (
-        <dtml-if "objAttr['type'] in [ 'image', 'file' ]">
-           document.forms[fmName].elements['exists_<dtml-var elName>'].value==0 &&
-        </dtml-if>
-           disallowBlank(obj,msg,dofocus)) return false;
+      obj = document.forms[fmName].elements['<dtml-var elName>'];
+      msg = "<dtml-var "getZMILangStr('MSG_REQUIRED')%elLabel">";
+      dofocus = true;
+      if (
+      <dtml-if "objAttr['type'] in [ 'image', 'file' ]">
+         document.forms[fmName].elements['exists_<dtml-var elName>'].value==0 &&
+      </dtml-if>
+         disallowBlank(obj,msg,dofocus)) return false;
 </dtml-if
 ></dtml-if
 ></dtml-let
 ></dtml-in>
+    if ( checkLock) {
+      onFormSubmitCheckLock(fmName);
+      return false;
     }
-    return true;
+    checkLock = true;
   }
+  return true;
+}
 
-  function onActionChange(el)
-  {
-    var b = false;
-    var i = el.selectedIndex;
-    var action = el.options[i].value;
-    var label = el.options[i].text;
-    if (el.selectedIndex>0) {
-     <dtml-in "getMetaCmdIds()">
-      <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
-       <dtml-if "len(metaCmd['description'])>0">
-        if (label == '<dtml-var "metaCmd['name']">') {
-          b = confirm("<dtml-var "metaCmd['description']">");
-        }
-       <dtml-else>
-        b = true;
-       </dtml-if>
-      </dtml-let>
-     </dtml-in>
-    }
-    if (b)
-      location.href='<dtml-var "REQUEST['URL1']">/'+action+'?custom='+escape(label)+'&lang=<dtml-var lang>';
-    else
-      el.selectedIndex=0;
+function onActionChange(el) {
+  var b = false;
+  var i = el.selectedIndex;
+  var action = el.options[i].value;
+  var label = el.options[i].text;
+  if (el.selectedIndex>0) {
+   <dtml-in "getMetaCmdIds()">
+    <dtml-let metaCmd="getMetaCmd(_['sequence-item'])">
+     <dtml-if "len(metaCmd['description'])>0">
+      if (label == '<dtml-var "metaCmd['name']">') {
+        b = confirm("<dtml-var "metaCmd['description']">");
+      }
+     <dtml-else>
+      b = true;
+     </dtml-if>
+    </dtml-let>
+   </dtml-in>
   }
+  if (b)
+    location.href='<dtml-var "REQUEST['URL1']">/'+action+'?custom='+escape(label)+'&lang=<dtml-var lang>';
+  else
+    el.selectedIndex=0;
+}
 
-  function zmiChooseActionResource(el)
-  {
-    var v = $(el).val();
-    if ( v.indexOf( 'manage_deleteObjs') == 0) {
-      confirmDeleteBtnOnClick(v);
-    }
-    else if ( v.length > 0) {
-      location.href = v;
-    }
-    else {
-      $(el).attr( 'selectedIndex', 0);
-    }
+function zmiChooseActionResource(el) {
+  var v = $(el).val();
+  if ( v.indexOf( 'manage_deleteObjs') == 0) {
+    confirmDeleteBtnOnClick(v);
   }
+  else if ( v.length > 0) {
+    location.href = v;
+  }
+  else {
+    $(el).attr( 'selectedIndex', 0);
+  }
+}
 
 //-->
 </script>

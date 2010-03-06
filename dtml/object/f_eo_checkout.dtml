@@ -1,3 +1,5 @@
+<dtml-comment>
+TODO: to be deleted!
 <dtml-if "isCheckedOut(REQUEST) and not isCheckedOutByMe(REQUEST)">
 <script language="javascript">
 <!--//
@@ -5,3 +7,4 @@
 //-->
 </script>
 </dtml-if>
+</dtml-comment>

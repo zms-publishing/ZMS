@@ -1,3 +1,5 @@
+<dtml-comment>
+TODO: to be deleted!
 <dtml-if "isCheckedOut(REQUEST) and not isCheckedOutByMe(REQUEST)">
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
@@ -26,3 +28,4 @@
 <dtml-else>
  <dtml-call "manage_checkout(REQUEST)">
 </dtml-if>
+</dtml-comment>

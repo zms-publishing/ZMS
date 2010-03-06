@@ -1463,4 +1463,5 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-03-06:zms2-2.12.1-16
 [01314] Applied fix for correct url-encoding of blob-fields (xmachina 0023501).
 [01315] Added support for logging of the path to the used configure.zcml (xmachina 0023505).
+[01316] Revised locking of objects (to be done: remove old implementation!).
 ----------------------------------------------------------------------------------------------------

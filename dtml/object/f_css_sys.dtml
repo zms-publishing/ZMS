@@ -715,3 +715,29 @@ a.zmiCalHead:link, a.zmiCalHead:visited, a.zmiCalHead:hover, a.zmiCalHead:active
 div.zmiCalWeekday {float:left;width:14px;height:14px;font-family:helvetica,arial;font-size:11px;padding:0;clip:rect(0 14 14 0);border-right:1px solid #CCCCCC;overflow:hidden;text-align:right;padding-right:2px;}
 div.zmiCalDayname {float:left;width:14px;height:14px;font-family:helvetica,arial;font-size:11px;padding:0;clip:rect(0 14 14 0);border-right:1px solid #CCCCCC;overflow:hidden;text-align:right;padding-right:2px;color:#646464;font-weight:bold;}
 
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Popup
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+#zmiOverlay {
+  filter:Alpha(opacity=80);
+  -moz-opacity:0.80;
+  opacity:0.80;
+  background-color:black;
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+}
+#zmiPopup {
+  position:absolute;
+  margin:100px;
+  padding:4px;
+}
+#zmiPopup.error {
+  border:4px solid red;
+  background-color:#FDD;
+}

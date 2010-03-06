@@ -45,6 +45,7 @@ import _fileutil
 import _filtermanager
 import _globals
 import _mimetypes
+import _pilutil
 import _xmllib
 import zmsmathutil
 
@@ -1170,17 +1171,17 @@ class ZMSGlobals:
       k = []
       for li in copy.deepcopy(l):
         del li[i]
-	if li not in k:
+        if li not in k:
           k.append(li)
       m = []
       for ki in k:
         mi = copy.deepcopy(ki)
-	mi[i] = []
+        mi[i] = []
         ks = ki.keys()
         for li in l:
           if len(ks) == len(filter(lambda x: x==i or ki[x]==li[x],ks)):
             mi[i].append(li[i])
-	m.append(mi)
+        m.append(mi)
       return m
 
     #)
@@ -1193,18 +1194,19 @@ class ZMSGlobals:
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSGlobals.pil_img_thumbnail:
+    #  ZMSGlobals.createThumbnail:
     # --------------------------------------------------------------------------
     def createThumbnail( self, img, maxdim=100, qual=75):
       """
       Creates thumbnail of given image.
       @param img: Image
-      @param qual: JPEG quality (default: 75)
       @type img: C{MyImage}
+      @param qual: JPEG quality (default: 75)
+      @type qual: C{int}
       @return: Thumbnail
       @rtype: C{MyImage}
       """
-      return _fileutil.createThumbnail( img, maxdim, qual)
+      return _pilutil.pil_img_conv( self, img, maxdim, qual)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.pil_img_resize:
@@ -1216,13 +1218,15 @@ class ZMSGlobals:
       @param img: Image
       @type img: C{MyImage}
       @param size: Size 2-tuple: (width, height)
-      @param qual: JPEG quality (default: 75)
       @type size: C{tuple}
       @param mode: Mode
+      @type mode: C{string}
+      @param qual: JPEG quality (default: 75)
+      @type qual: C{int}
       @return: Resized image
       @rtype: C{MyImage}
       """
-      return _fileutil.pil_img_resize( img, size, mode, sffx, qual)
+      return _pilutil.pil_img_resize( self, img, size, mode, sffx, qual)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.pil_img_crop:
@@ -1239,7 +1243,7 @@ class ZMSGlobals:
       @return: Cropped image
       @rtype: C{MyImage}
       """
-      return _fileutil.pil_img_crop( img, box, qual)
+      return _pilutil.pil_img_crop( self, img, box, qual)
 
     def pil_img_rotate( self, img, direction, qual=75):
       """
@@ -1248,12 +1252,12 @@ class ZMSGlobals:
       @param img: Image
       @type img: C{MyImage}
       @param direction string: left, right, 180
-      @param qual: JPEG quality (default: 75)      
+      @param qual: JPEG quality (default: 75)
       @type box: C{string}
       @return: Rotated image
       @rtype: C{MyImage}
-      """        
-      return _fileutil.pil_img_rotate( img, direction, qual)
+      """
+      return _pilutil.pil_img_rotate( self, img, direction, qual)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getZipArchive:
@@ -1556,7 +1560,7 @@ class ZMSGlobals:
     # ==========================================================================
 
     # --------------------------------------------------------------------------
-    #	ZMSGlobals.getLangFmtDate:
+    #  ZMSGlobals.getLangFmtDate:
     # --------------------------------------------------------------------------
     def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
       try:
@@ -1607,13 +1611,13 @@ class ZMSGlobals:
         return str(t)
 
     # --------------------------------------------------------------------------
-    #	ZMSGlobals.parseLangFmtDate:
+    #  ZMSGlobals.parseLangFmtDate:
     # --------------------------------------------------------------------------
     def parseLangFmtDate(self, s, lang=None, fmt_str=None, recflag=None):
       return _globals.parseLangFmtDate(s)
 
     # --------------------------------------------------------------------------
-    #	ZMSGlobals.compareDate:
+    #  ZMSGlobals.compareDate:
     # --------------------------------------------------------------------------
     def compareDate(self, t0, t1, accuracy_time=1):
       return _globals.compareDate(t0, t1, accuracy_time)

@@ -125,11 +125,11 @@ def updateConf(self, REQUEST):
 ################################################################################
 ################################################################################
 class ConfManager(
-	_multilangmanager.MultiLanguageManager,		# Languages
-	_metacmdmanager.MetacmdManager,			# Actions
-	_workflowmanager.WorkflowManager,		# Workflow
-	_filtermanager.FilterManager,			# Filters (XML Im-/Export)
-	):
+    _multilangmanager.MultiLanguageManager,        # Languages
+    _metacmdmanager.MetacmdManager,            # Actions
+    _workflowmanager.WorkflowManager,        # Workflow
+    _filtermanager.FilterManager,            # Filters (XML Im-/Export)
+    ):
     implements(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
       IZMSFormatProvider.IZMSFormatProvider,
@@ -545,7 +545,7 @@ class ConfManager(
     #
     #  Removes property from configuration.
     #
-    #  @param key	The key.
+    #  @param key    The key.
     # --------------------------------------------------------------------------
     def delConfProperty(self, key):
       try:
@@ -558,8 +558,8 @@ class ConfManager(
     #
     #  Returns property from configuration.
     #
-    #  @param key	The key.
-    #  @param default	The default-value.
+    #  @param key    The key.
+    #  @param default    The default-value.
     #  @return any
     # --------------------------------------------------------------------------
     def getConfProperty(self, key, default=None):
@@ -570,8 +570,8 @@ class ConfManager(
     #
     #  Sets property into configuration.
     #
-    #  @param key	The key.
-    #  @param value	The value.
+    #  @param key    The key.
+    #  @param value    The value.
     #  @return void
     # --------------------------------------------------------------------------
     def setConfProperty(self, key, value):
@@ -715,6 +715,7 @@ class ConfManager(
       elif key == 'InstalledProducts':
         if btn == 'Change':
           self.setConfProperty('InstalledProducts.pil',REQUEST.get('pil',None))
+          self.setConfProperty('InstalledProducts.pil.pythonpath',REQUEST.get('pil_pythonpath','python'))
           self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',0))
           message = self.getZMILangStr('MSG_CHANGED')
@@ -735,8 +736,8 @@ class ConfManager(
       
       # Return with message.
       d = {
-      	'lang': lang,
-      	'manage_tabs_message': message,
+          'lang': lang,
+          'manage_tabs_message': message,
       }
       for param in params:
         d[param] = REQUEST.get( param, '')

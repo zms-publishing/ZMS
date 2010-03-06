@@ -525,14 +525,16 @@
       <dtml-if "getConfProperty('InstalledProducts.pil')">
       <table cellspacing="0" cellpadding="0" border="0">
       <tr valign="middle">
+       <td class="form-small">Python-Path</td>
+       <td class="form-small"><input class="form-small" type="text" name="pil_pythonpath" value="<dtml-var "getConfProperty('InstalledProducts.pil.pythonpath','python')">"></td>
+      </tr>
+      <tr valign="middle">
        <td class="form-small">HighRes with Auto-Thumbnail max.</td>
-       <td class="form-small"><input class="form-small" type="text" name="pil_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">" size="4"></td>
-       <td class="form-small">&nbsp;px.</td>
+       <td class="form-small"><input class="form-small" type="text" name="pil_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">" size="4" style="text-align:right">px</td>
       </tr>
       <tr valign="middle">
        <td class="form-small">SuperRes with Auto-HighRes max.</td>
-       <td class="form-small"><input class="form-small" type="text" name="pil_hires_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)">" size="4"></td>
-       <td class="form-small">&nbsp;px.</td>
+       <td class="form-small"><input class="form-small" type="text" name="pil_hires_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)">" size="4" style="text-align:right">px</td>
       </tr>
       </table>
       </dtml-if>

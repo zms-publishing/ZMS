@@ -1457,4 +1457,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01309] Revised ZMI access-tab: improved performance for LDAPUserFolders.
 [01310] Applied fix for .svn-folders in SVN-update (reported by xm).
 [01311] Added Result-Variable 'normscore' in _zcatalogmanager.py (requested by KPOH)
+[01312] Applied fix for wysiwyg-editor in ZMSTables.
+[01313] Added support for custom python-path to PIL-functions.
 ----------------------------------------------------------------------------------------------------

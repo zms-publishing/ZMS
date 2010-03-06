@@ -37,6 +37,7 @@ import copy
 import _fileutil
 import _globals
 import _mimetypes
+import _pilutil
 
 __all__= ['MyBlob','MyImage','MyFile']
 
@@ -181,10 +182,10 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
 #
 #  Create blob-field of desired object-type and initialize it with given file.
 #
-#  IN:	objtype		[DT_IMAGE|DT_FILE]
-#	file		[ZPublisher.HTTPRequest.FileUpload|dictionary]
-#       mediadbStorable	[True|False]
-#  OUT:	blob		[MyImage|MyFile]
+#  IN:    objtype        [DT_IMAGE|DT_FILE]
+#    file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
+#       mediadbStorable    [True|False]
+#  OUT:    blob        [MyImage|MyFile]
 # ------------------------------------------------------------------------------
 def createBlobField(self, objtype, file='', mediadbStorable=True):
   if type( file) in StringTypes:
@@ -287,7 +288,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
         if _globals.debug( self): 
           _globals.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
-        loresImg = _fileutil.createThumbnail(hiresImg,maxdim)
+        loresImg = _pilutil.pil_img_conv(self,hiresImg,maxdim)
         self.setObjProperty(loresKey,loresImg,lang)
   except:
     _globals.writeError( self, '[thumbnailImage]')
@@ -569,7 +570,7 @@ class MyBlob:
 
 
     # --------------------------------------------------------------------------
-    # 	MyBlob._createCopy:
+    #     MyBlob._createCopy:
     # --------------------------------------------------------------------------
     def _createCopy(self, aq_parent, key):
       value = self._getCopy()
@@ -868,7 +869,7 @@ class MyImage(MyBlob,Image):
 
 
     # --------------------------------------------------------------------------
-    # 	MyImage._getCopy:
+    #     MyImage._getCopy:
     # --------------------------------------------------------------------------
     def _getCopy(self):
       self.getFilename() # Normalize filename
@@ -940,7 +941,7 @@ class MyFile(MyBlob,File):
     __class_name__ = '{{MyFile}}'
 
     # --------------------------------------------------------------------------
-    # 	MyFile._getCopy:
+    #     MyFile._getCopy:
     # --------------------------------------------------------------------------
     def _getCopy(self):
       self.getFilename() # Normalize filename

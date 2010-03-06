@@ -33,6 +33,7 @@ from cStringIO import StringIO
 from mimetools import choose_boundary
 from types import StringTypes
 import copy
+import urllib
 # Product Imports.
 import _fileutil
 import _globals
@@ -42,17 +43,17 @@ import _pilutil
 __all__= ['MyBlob','MyImage','MyFile']
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.StringType:
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.StringType:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 StringType=type('')
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.recurse_downloadRessources:
-#
-#  Download from ZODB to file-system during Export.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.recurse_downloadRessources:
+
+Download from ZODB to file-system during Export.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
   ressources = []
   # Check Constraints.
@@ -119,11 +120,11 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
   return ressources
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.recurse_uploadRessources:
-#
-#  Upload from file-system to ZODB during Import.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.recurse_uploadRessources:
+
+Upload from file-system to ZODB during Import.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def recurse_uploadRessources(self, folder='.', mediadbStorable=True):
   message = ''
   # Upload blob-fields.
@@ -135,11 +136,11 @@ def recurse_uploadRessources(self, folder='.', mediadbStorable=True):
   return message
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.uploadRessources:
-#
-#  Upload blob-fields from file-system to ZODB during import.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.uploadRessources:
+
+Upload blob-fields from file-system to ZODB during import.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadRessources(self, folder='.', mediadbStorable=True):
   langs = self.getLangIds()
   prim_lang = self.getPrimaryLanguage()
@@ -177,16 +178,16 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
           _globals.writeError(self,"[uploadRessources]")
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.createBlobField:
-#
-#  Create blob-field of desired object-type and initialize it with given file.
-#
-#  IN:    objtype        [DT_IMAGE|DT_FILE]
-#    file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
-#       mediadbStorable    [True|False]
-#  OUT:    blob        [MyImage|MyFile]
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.createBlobField:
+
+Create blob-field of desired object-type and initialize it with given file.
+
+IN:    objtype        [DT_IMAGE|DT_FILE]
+  file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
+     mediadbStorable    [True|False]
+OUT:    blob        [MyImage|MyFile]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file='', mediadbStorable=True):
   if type( file) in StringTypes:
     blob = uploadBlobField( self, objtype, file)
@@ -201,9 +202,9 @@ def createBlobField(self, objtype, file='', mediadbStorable=True):
   return blob
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.uploadBlobField
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.uploadBlobField
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   if objtype == _globals.DT_IMAGE:
     clazz = MyImage
@@ -231,11 +232,11 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   return blob
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.getLangFilename:
-#  
-#  Returns filename concatenated with language suffix.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.getLangFilename:
+  
+Returns filename concatenated with language suffix.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getLangFilename(self, filename, lang):
   i = filename.rfind('.')
   name = filename[:i]
@@ -255,11 +256,11 @@ def getLangFilename(self, filename, lang):
 ###
 ################################################################################
 
-# ------------------------------------------------------------------------------
-#  _blobfields.thumbnailImageFields:
-#
-#  Process image-fields and shrink superres to hires and hires to lores. 
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.thumbnailImageFields:
+
+Process image-fields and shrink superres to hires and hires to lores. 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImageFields(self, lang, REQUEST):
   message = ''
   if self.getConfProperty('InstalledProducts.pil') == 1:
@@ -273,12 +274,12 @@ def thumbnailImageFields(self, lang, REQUEST):
   return message
 
 
-# ------------------------------------------------------------------------------
-#  _blobfields.thumbnailImage:
-#
-#  Process image-field and shrink attribute given by hiresKey to attribute given 
-#  by loresKey. 
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.thumbnailImage:
+
+Process image-field and shrink attribute given by hiresKey to attribute given 
+by loresKey. 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
   message = ''
   try:
@@ -550,9 +551,9 @@ class MyBlob:
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.equals
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.equals
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def equals(self, ob):
       """
       Indicates whether some other MyBlob-object is "equal to" this one.
@@ -569,9 +570,9 @@ class MyBlob:
       return b
 
 
-    # --------------------------------------------------------------------------
-    #     MyBlob._createCopy:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob._createCopy:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _createCopy(self, aq_parent, key):
       value = self._getCopy()
       value.is_blob = True
@@ -582,9 +583,9 @@ class MyBlob:
       return value
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.__call__: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.__call__: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __bobo_traverse__(self, TraversalRequest, name):
       return self
 
@@ -687,17 +688,17 @@ class MyBlob:
     index_html=None
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getObjAttrs:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getObjAttrs:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getObjAttrs__roles__ = None
     def getObjAttrs(self, meta_type=None):
       return {}
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getData:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getData:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getData__roles__ = None
     def getData(self, parent=None):
       """
@@ -719,9 +720,9 @@ class MyBlob:
       return data
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getHref:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getHref:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHref__roles__ = None
     def getHref(self, REQUEST):
       """
@@ -736,6 +737,7 @@ class MyBlob:
       if i > 0:
         rownum = '/@%s'%key[ i+1:]
       filename = getLangFilename( parent, self.getFilename(), self.lang)
+      filename = _globals.url_encode( filename)
       qs = ''
       zms_version_key = 'ZMS_VERSION_%s'%parent.id
       if REQUEST.get( zms_version_key, None) is not None:
@@ -758,9 +760,9 @@ class MyBlob:
       return href
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getMediadbfile: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getMediadbfile: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getMediadbfile__roles__ = None
     def getMediadbfile(self):
       """
@@ -770,9 +772,9 @@ class MyBlob:
       return getattr(self,'mediadbfile',None)
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getFilename: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getFilename: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getFilename__roles__ = None
     def getFilename(self):
       """
@@ -788,10 +790,10 @@ class MyBlob:
         self.filename = filename
       return filename
 
-    
-    # --------------------------------------------------------------------------
-    #  MyBlob.get_real_size: 
-    # --------------------------------------------------------------------------
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.get_real_size: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     get_real_size__roles__ = None
     def get_real_size(self):
       """
@@ -804,9 +806,9 @@ class MyBlob:
         return len(self.mediadbfile)
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getDataSizeStr: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getDataSizeStr: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getDataSizeStr__roles__ = None
     def getDataSizeStr(self):
       """
@@ -817,9 +819,9 @@ class MyBlob:
       return _fileutil.getDataSizeStr(self.get_size())
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getContentType:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getContentType:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getContentType__roles__ = None
     def getContentType(self):
       """
@@ -829,9 +831,9 @@ class MyBlob:
       return self.content_type
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.getMimeTypeIconSrc:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getMimeTypeIconSrc:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getMimeTypeIconSrc__roles__ = None
     def getMimeTypeIconSrc(self):
       """
@@ -842,9 +844,9 @@ class MyBlob:
       return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 
-    # --------------------------------------------------------------------------
-    #  MyBlob.xmlGetTagName: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.xmlGetTagName: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def xmlGetTagName(self):
       """
       Returns <XML> Tag-Name.
@@ -868,9 +870,9 @@ class MyImage(MyBlob,Image):
     __xml_attrs__  = ['content_type','width','height']
 
 
-    # --------------------------------------------------------------------------
-    #     MyImage._getCopy:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyImage._getCopy:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
@@ -882,9 +884,9 @@ class MyImage(MyBlob,Image):
       return clone
 
 
-    # --------------------------------------------------------------------------
-    #  MyImage.toXml:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyImage.toXml:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def toXml(self, sender=None, base_path='', data2hex=True):
       data = ''
       objtype = ''
@@ -909,17 +911,17 @@ class MyImage(MyBlob,Image):
       return xml
 
 
-    # --------------------------------------------------------------------------
-    #  MyImage.getWidth:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyImage.getWidth:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getWidth__roles__ = None
     def getWidth(self):
       return self.width
 
 
-    # --------------------------------------------------------------------------
-    #  MyImage.getHeight:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyImage.getHeight:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHeight__roles__ = None
     def getHeight(self):
       return self.height
@@ -940,9 +942,9 @@ class MyFile(MyBlob,File):
     __xml_attrs__  = ['content_type']
     __class_name__ = '{{MyFile}}'
 
-    # --------------------------------------------------------------------------
-    #     MyFile._getCopy:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyFile._getCopy:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
@@ -954,9 +956,9 @@ class MyFile(MyBlob,File):
       return clone
 
 
-    # --------------------------------------------------------------------------
-    #  MyFile.toXml:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyFile.toXml:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def toXml(self, sender=None, base_path='', data2hex=True):
       data = ''
       objtype = ''
@@ -989,31 +991,31 @@ class MyBlobWrapper:
     # Version string. 
     __version__ = '0.1' 
 
-    # --------------------------------------------------------------------------
-    #  MyBlobWrapper.__init__:
-    #
-    #  Constructor
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.__init__:
+    
+    Constructor
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, f):
       self.f = f
 
-    # --------------------------------------------------------------------------
-    #  MyBlobWrapper.getHref:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.getHref:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHref__roles__ = None
     def getHref(self, REQUEST):
       return self.f.absolute_url()
 
-    # --------------------------------------------------------------------------
-    #  MyBlobWrapper.getFilename: 
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.getFilename: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getFilename__roles__ = None
     def getFilename(self):
       return absattr( self.f.id)
 
-    # --------------------------------------------------------------------------
-    #  MyBlobWrapper.getData:
-    # --------------------------------------------------------------------------
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.getData:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getData__roles__ = None
     def getData(self, parent=None):
       return self.f.data

@@ -87,7 +87,8 @@ def handleBlobAttrs(self, name, REQUEST):
         langfilename = href.split( '/')[ -1]
         if langfilename.find( '?') > 0:
           langfilename = langfilename[ :langfilename.find( '?')]
-        if langfilename == name:
+        if langfilename == name or \
+           langfilename == _globals.url_encode(name):
           return value
   return None
 

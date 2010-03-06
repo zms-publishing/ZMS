@@ -1459,4 +1459,7 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [01311] Added Result-Variable 'normscore' in _zcatalogmanager.py (requested by KPOH)
 [01312] Applied fix for wysiwyg-editor in ZMSTables.
 [01313] Added support for custom python-path to PIL-functions.
+--------------------------------------------------
+2010-03-06:zms2-2.12.1-16
+[01314] Applied fix for correct url-encoding of blob-fields (xmachina-stage4 0023501).
 ----------------------------------------------------------------------------------------------------

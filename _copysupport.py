@@ -161,11 +161,11 @@ class CopySupport:
               id = new_id
           
           # Assign new id.
-          id_prefix = _globals.id_prefix(id)
-          if id_prefix.find(copy_of_prefix)==0:
-            id_prefix = id_prefix[len(copy_of_prefix):]
-          if id_prefix != id:
-            new_id = self.getNewId(id_prefix)
+          prefix = _globals.id_prefix(id)
+          if prefix.find(copy_of_prefix)==0:
+            prefix = prefix[len(copy_of_prefix):]
+          if prefix != id:
+            new_id = self.getNewId(prefix)
             self.manage_renameObject(id=id,new_id=new_id)
             self.initObjChildren(REQUEST)
           

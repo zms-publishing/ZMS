@@ -112,7 +112,7 @@
   <dtml-in local_roles>
    <dtml-call "roles_optpl.append([_['sequence-item'],_['sequence-item']])">
   </dtml-in>
-  <td align="center">
+  <td>
 
 <dtml-comment>
 --------------------------------------------------------------------------------
@@ -244,21 +244,21 @@
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'),extra='<img src=%sicon_users.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"><br />
   <dtml-call "REQUEST.set('qsize',20)">
-  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+  <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
    <!-- Header -->
    <tr>
     <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
    </tr>
    <dtml-if "REQUEST.form.get('id','')!=''">
     <!-- Columns -->
-    <input type="hidden" name="id" value="<dtml-var id>">
+    <input type="hidden" name="id" value="<dtml-var "REQUEST.get('id')">">
     <tr valign="top" class="zmiNeutralColorMedium0">
      <!-- Id -->
      <td class="form-text" colspan="4" valign="middle">
       <table cellspacing="0" cellpadding="1" border="0">
       <tr valign="top">
        <td rowspan="2"><img src="p_/User_icon" border="0" align="absmiddle" /></td>
-       <td><div class="form-label"><dtml-var id></div></td>
+       <td><div class="form-label"><dtml-var "REQUEST.get('id')"></div></td>
       </tr>
       <dtml-in "getValidUserids(search_term=REQUEST.get('id'))" mapping>
        <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
@@ -523,7 +523,7 @@
     <!-- Columns -->
     <tr class="zmiNeutralColorStrong0">
      <td class="form-label">#<dtml-var "len(valid_userids)"></td>
-     <td class="form-label" align="right"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+     <td class="form-label"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
      <td class="form-label" colspan="2"><dtml-var "getZMILangStr('ATTR_ID')"></td>
      <td class="form-label">&nbsp;</td>
     </tr>
@@ -642,13 +642,13 @@
   <dtml-call "perms_optpl.append(['ZMS Author',getZMILangStr('ROLE_ZMSAUTHOR')])">
   <dtml-call "perms_optpl.append(['ZMS UserAdministrator',getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')])">
   <dtml-call "perms_optpl.append(['ZMS Subscriber',getZMILangStr('ROLE_ZMSSUBSCRIBER')])">
-  <td align="center">
+  <td>
   
   <form name="form2" action="manage_roleProperties" method="post" onsubmit="return form2Submit(this);">
   <input type="hidden" name="key" value="">
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_ROLES'),extra='<img src=%sicon_roles.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"><br />
-  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+  <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
   
   <dtml-if userdefined_roles>
    <dtml-in "difference_list(userdefined_roles,['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])">

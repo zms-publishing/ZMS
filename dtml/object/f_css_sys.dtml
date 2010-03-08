@@ -551,13 +551,18 @@ a.button:hover img.button1, a.button:active img.button1 {
 	vertical-align: middle;
 }
 
-.form-submit {
+div.form-submit {
+	border-top: 1px solid <dtml-var "get_colormap().get('zmiNeutralColorMedium0','#CCC')">;
+	padding: 2px;
+	margin: 2px 2px 0px 2px;
+}
+input.form-submit {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	color: #323232;
 	font-weight: bold;
 	margin: 2px;
-	background-image:url(/misc_/zms/zmisubmit.gif);
+	background-image:url(<dtml-var MISC_ZMS>zmisubmit.gif);
 	border: solid 1px #919191;
 	overflow:visible;
   padding: 1px 3px;
@@ -733,8 +738,6 @@ div.zmiCalDayname {float:left;width:14px;height:14px;font-family:helvetica,arial
   height:100%;
 }
 #zmiPopup {
-  position:absolute;
-  margin:100px;
   padding:4px;
 }
 #zmiPopup.error {

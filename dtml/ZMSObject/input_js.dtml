@@ -2,12 +2,14 @@
 <!--//
 
 var checkLock = true;
+var divFormSubmitHtml = null;
 
 function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
-  if ($('#zmiOverlay').length>0) {
+  if ($('#zmiPopup').length>0) {
     return;
   }
   var html = '';
+  html += '<div id="zmiPopup" class="error">';
   html += '<div class="form-text">';
   html += '<div style="font-weight:bold;color:white;background-color:red;"><dtml-var "getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')"></div>';
   html += '<table>';
@@ -20,7 +22,13 @@ function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
   html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_OVERWRITE')">" onclick="onFormSubmitSubmit(\''+fmName+'\');"/>';
   html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">" onclick="window.open(self.location.href);"/>';
   html += '</div>';
-  $('<div id="zmiOverlay"><div id="zmiPopup" class="error">'+html+'</div></div>').appendTo('body');
+  html += '</div>';
+  /**/
+  var div = $($('div.form-submit')[0]);
+  divFormSubmitHtml = div.html();
+  div.html(html);
+  /*
+  $('<div id="zmiOverlay">'+html+'</div>').appendTo('body');
   if (document.height) {
     $('#zmiOverlay').css({'height':document.height});
     $('#zmiPopup').css({'left':window.pageXOffset,'top':window.pageYOffset});
@@ -29,9 +37,14 @@ function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
     $('#zmiOverlay').css('height',document.body.scrollHeight);
     $('#zmiPopup').css({'top':document.body.scrollTop,'left':document.body.scrollLeft});
   }
+  */
 }
 
 function onFormSubmitHideLock() {
+  var div = $($('div.form-submit')[0]);
+  div.html(divFormSubmitHtml);
+  divFormSubmitHtml = null;
+  $('#zmiPopup').remove();
   $('#zmiOverlay').remove();
 }
 

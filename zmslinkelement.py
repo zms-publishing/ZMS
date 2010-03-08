@@ -206,7 +206,7 @@ class ZMSLinkElement(ZMSContainerObject):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage','manage_main','manage_workspace','manage_checkout',
+		'manage','manage_main','manage_workspace',
 		'manage_changeProperties',
 		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
 		'manage_cutObjects','manage_copyObjects','manage_pasteObjs',

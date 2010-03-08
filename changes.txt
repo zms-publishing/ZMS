@@ -1468,7 +1468,7 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-03-08:zms2-2.12.1-17
 [01317] Applied fix for copying complex content-objects (reported by gez).
 [01318] Applied fix for ZMI access-tab.
-[01319] Revised locking of objects: remove
+[01319] Revised locking of objects: remove old implementation!
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++ IMPORTANT NOTE: Remove f_bo_checkout and f_eo_checkout from your templates!

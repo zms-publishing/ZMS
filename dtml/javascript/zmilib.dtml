@@ -71,27 +71,6 @@ function zmiExpandConfFiles(el, pattern) {
 
 
 // ############################################################################
-// ### checkoutOvertakeBtnClick:
-// ############################################################################
-function checkoutOvertakeBtnClick(href, lang) {
-  // Set wait-cursor.
-  $(document.body).css( "cursor", "wait");
-  // JQuery.AJAX.get
-  $.get( href+'/manage_checkout',
-      {lang:lang},
-      function(data) {
-        // Reset wait-cursor.
-        $(document.body).css( "cursor", "auto");
-        // Hide div.
-        $('#checkoutOvertakeDiv').hide('slow');
-        // Enable buttons.
-        $('input[name=btn]').removeAttr('disabled');
-      });
-  return false;
-}
-
-
-// ############################################################################
 // ### browseEnumBtnClick:
 // ############################################################################
 function browseEnumBtnClick(fmName, elName, enumName)

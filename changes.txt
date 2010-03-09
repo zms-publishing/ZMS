@@ -1474,3 +1474,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 +++ IMPORTANT NOTE: Remove f_bo_checkout and f_eo_checkout from your templates!
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 --------------------------------------------------
+2010-03-09:zms2-2.12.1-18
+[01320] Added support for overwriting configuration of $ZMS_HOME/www/themes.zcml by $INSTANCE_HOME/etc/zms/www/themes.zcml(requested by xm).
+--------------------------------------------------

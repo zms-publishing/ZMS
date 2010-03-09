@@ -153,7 +153,7 @@
  <td>
   <select class="form-element" name="theme:required" onchange="themeChange(this);" onkeyup="themeChange(this);">
 
-    <dtml-in "_.range(99)" reverse>
+    <dtml-in "range(99)" reverse>
      <dtml-let idx=sequence-item>
       <dtml-try>
        <dtml-call "REQUEST.set('o',misc_.zms['myZMStheme%i.jpg'%idx])">
@@ -168,7 +168,9 @@
     <dtml-unless default_img_theme>
      <dtml-call "REQUEST.set('default_img_theme','spacer.gif')">
     </dtml-unless>
-    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))">
+    <dtml-call "REQUEST.set('themes',None)">
+    <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].import_instance_home(this(),'www/themes.zcml'))"></dtml-if>
+    <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))"></dtml-if>
     <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_search('source location=\042(.*?)\042/>',themes))">
     <dtml-in themes>
      <dtml-let theme=sequence-item>

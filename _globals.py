@@ -826,6 +826,20 @@ class initutil:
   def getConfProperty(self, key, default=None):
     return self.__attr_conf_dict__.get(key,default)
 
+  def import_instance_home(self, this, url):
+    path = this.Control_Panel.getINSTANCE_HOME()+'/etc/zms/'+url
+    mode = 'b'
+    if os.path.exists(path):
+      f = None
+      try:
+        f = open( path, 'r'+mode)
+        data = f.read()
+      finally:
+        if f is not None:
+          f.close()
+      return data
+    return None
+
   def http_import(self, url, method='GET', auth=None, parse_qs=0):
     return http_import( self, url, method, auth, parse_qs)
 

@@ -633,6 +633,21 @@ def writeError(self, etc=''):
 """
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_globals.re_sub:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def re_sub( self, pattern, replacement, subject, ignorecase=False):
+  """
+  Performs a search-and-replace across subject, replacing all matches of 
+  regex in subject with replacement. The result is returned by the sub() 
+  function. The subject string you pass is not modified.
+  @rtype: C{string}
+  """
+  if ignorecase:
+    return re.compile( pattern, re.IGNORECASE).sub( replacement, subject)
+  else:
+    return re.compile( pattern).sub( replacement, subject)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.re_search:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def re_search( self, pattern, subject, ignorecase=False):
@@ -842,6 +857,9 @@ class initutil:
 
   def http_import(self, url, method='GET', auth=None, parse_qs=0):
     return http_import( self, url, method, auth, parse_qs)
+
+  def re_sub( self, pattern, replacement, subject, ignorecase=False):
+    return re_sub( self, pattern, replacement, subject, ignorecase=False)
 
   def re_search( self, pattern, subject, ignorecase=False):
     return re_search( self, pattern, subject, ignorecase)

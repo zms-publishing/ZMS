@@ -309,7 +309,6 @@ class ZMSLinkElement(ZMSContainerObject):
           message = "[ConstraintViolation]: " + str( sys.exc_value)
       
       # Return with message.
-      self.manage_checkin(REQUEST)
       target = self.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})
       target = '%s#_%s'%( target, self.id)
       return RESPONSE.redirect( target)

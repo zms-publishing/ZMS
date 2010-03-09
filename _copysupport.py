@@ -179,8 +179,7 @@ class CopySupport:
                 ob.onChangeObj(REQUEST)
             # Process referential integrity.
             ob.onCopyRefObj(REQUEST)
-            # Unlock.
-            ob.manage_checkin(REQUEST)
+          
           REQUEST.set('lang',bk_lang)
           
           # Process tree.
@@ -231,8 +230,7 @@ class CopySupport:
                 ob.onChangeObj(REQUEST)
             # Process referential integrity.
             ob.onMoveRefObj(REQUEST)
-            # Unlock.
-            ob.manage_checkin(REQUEST)
+          
           REQUEST.set('lang',bk_lang)
           
           # Process tree.

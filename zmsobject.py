@@ -667,7 +667,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
-      self.manage_checkin(REQUEST)
       target_ob = self.getParentNode()
       if redirect_self or target_ob is None:
         target_ob = self

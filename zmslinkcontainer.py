@@ -166,7 +166,6 @@ class ZMSLinkContainer(ZMSContainerObject):
       
       else:
         # Return to parent.
-        self.manage_checkin(REQUEST)
         return RESPONSE.redirect('%s/manage_main?lang=%s#_%s'%(self.getParentNode().absolute_url(),lang,self.id))
 
 

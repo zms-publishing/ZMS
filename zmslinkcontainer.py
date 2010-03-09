@@ -125,7 +125,6 @@ class ZMSLinkContainer(ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """ ZMSLinkContainer.manage_changeProperties """
         
-      self._checkZMSLock()
       message = ''
       
       # Change.

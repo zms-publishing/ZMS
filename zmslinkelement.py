@@ -277,7 +277,6 @@ class ZMSLinkElement(ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST, RESPONSE): 
       """ ZMSLinkElement.manage_changeProperties """
       
-      self._checkZMSLock()
       target = REQUEST.get( 'manage_target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
       if REQUEST.get('btn','') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:

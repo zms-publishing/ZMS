@@ -569,7 +569,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     def manage_changeProperties(self, lang, REQUEST, RESPONSE=None):
       """ ZMSObject.manage_changeProperties """
       
-      self._checkZMSLock()
       message = ''
       messagekey = 'manage_tabs_message'
       t0 = time.time()

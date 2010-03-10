@@ -151,6 +151,12 @@
 <tr valign="top">
  <td><div class="form-text">Theme</div></td>
  <td>
+
+  <dtml-call "REQUEST.set('themes',None)">
+  <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].import_instance_home(this(),'www/themes.zcml'))"></dtml-if>
+  <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))"></dtml-if>
+  <dtml-if "REQUEST.get('themes') is not None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_sub('<!--(.|\s)*?-->','',themes))"></dtml-if>
+  <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_search('source location=\042(.*?)\042/>',themes))">
   <select class="form-element" name="theme:required" onchange="themeChange(this);" onkeyup="themeChange(this);">
 
     <dtml-in "range(99)" reverse>
@@ -168,11 +174,6 @@
     <dtml-unless default_img_theme>
      <dtml-call "REQUEST.set('default_img_theme','spacer.gif')">
     </dtml-unless>
-    <dtml-call "REQUEST.set('themes',None)">
-    <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].import_instance_home(this(),'www/themes.zcml'))"></dtml-if>
-    <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))"></dtml-if>
-    <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_sub('<!--(.*?)-->','',themes))"></dtml-if>
-    <dtml-call "REQUEST.set('themes',misc_.zms['initutil'].re_search('source location=\042([.\\s]*?)\042/>',themes))">
     <dtml-in themes>
      <dtml-let theme=sequence-item>
       <dtml-try>

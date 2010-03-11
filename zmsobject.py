@@ -972,12 +972,12 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.ajaxFilteredChildActions:
+    #  ZMSObject.manage_ajaxFilteredChildActions:
     #
     #  Returns ajax-xml with filtered-child-actions.
     # --------------------------------------------------------------------------
-    def ajaxFilteredChildActions(self, REQUEST):
-      """ ZMSObject.ajaxFilteredChildActions """
+    def manage_ajaxFilteredChildActions(self, REQUEST):
+      """ ZMSObject.manage_ajaxFilteredChildActions """
       
       #-- Get actions.
       path = self.id + '/'
@@ -989,7 +989,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      filename = 'ajaxFilteredChildActions.xml'
+      filename = 'manage_ajaxFilteredChildActions.xml'
       RESPONSE.setHeader('Content-Type',content_type)
       RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')

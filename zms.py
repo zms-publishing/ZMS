@@ -646,25 +646,26 @@ class ZMS(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_importexportFtp',
-		'manage_customize', 'manage_customizeSystem',
-		'manage_changeLanguages', 'manage_customizeLanguagesForm',
-		'manage_changeMetacmds', 'manage_customizeMetacmdForm',
-		'manage_changeWorkflow', 'manage_changeWfTransitions', 'manage_changeWfActivities', 'manage_customizeWorkflowForm',
-		'manage_customizeDesign', 'manage_customizeDesignForm',
-		)
+        'manage_importexportFtp',
+        'manage_customize', 'manage_customizeSystem',
+        'manage_changeLanguages', 'manage_customizeLanguagesForm',
+        'manage_changeMetacmds', 'manage_customizeMetacmdForm',
+        'manage_changeWorkflow', 'manage_changeWfTransitions', 'manage_changeWfActivities', 'manage_customizeWorkflowForm',
+        'manage_customizeDesign', 'manage_customizeDesignForm',
+        )
     __authorPermissions__ = (
-		'manage','manage_main','manage_workspace',
-		'manage_addZMSModule',
-		'manage_deleteObjs','manage_undoObjs',
-		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-		'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-		'manage_properties','manage_changeProperties',
-		'manage_search','manage_search_attrs','manage_tasks',
-		'manage_wfTransition', 'manage_wfTransitionFinalize',
-		'manage_userForm', 'manage_user',
-		'manage_importexport', 'manage_import', 'manage_export',
-		)
+        'manage','manage_main','manage_workspace',
+        'manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_addZMSModule',
+        'manage_deleteObjs','manage_undoObjs',
+        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
+        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
+        'manage_properties','manage_changeProperties',
+        'manage_search','manage_search_attrs','manage_tasks',
+        'manage_wfTransition', 'manage_wfTransitionFinalize',
+        'manage_userForm', 'manage_user',
+        'manage_importexport', 'manage_import', 'manage_export',
+        )
     __userAdministratorPermissions__ = (
 		'manage_users', 'manage_userProperties', 'manage_roleProperties',
 		)

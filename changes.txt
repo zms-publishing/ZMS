@@ -1477,3 +1477,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-03-09:zms2-2.12.1-18
 [01320] Added support for overwriting configuration of $ZMS_HOME/www/themes.zcml by $INSTANCE_HOME/etc/zms/www/themes.zcml(requested by xm).
 --------------------------------------------------
+2010-03-11:zms2-2.12.1-19
+[1321] Applied fix for ZMI action-lists in Safari (xmachina 0023506). 
+--------------------------------------------------

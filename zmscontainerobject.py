@@ -631,9 +631,9 @@ class ZMSContainerObject(
 
 
     # --------------------------------------------------------------------------
-    #  ZMSContainerObject.ajaxFilteredContainerActions:
+    #  ZMSContainerObject.manage_ajaxFilteredContainerActions:
     # --------------------------------------------------------------------------
-    def ajaxFilteredContainerActions(self, REQUEST):
+    def manage_ajaxFilteredContainerActions(self, REQUEST):
       """
       Returns AJAX-XML with filtered-container-actions.
       @param REQUEST: the triggering request
@@ -659,7 +659,7 @@ class ZMSContainerObject(
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      filename = 'ajaxFilteredContainerActions.xml'
+      filename = 'manage_ajaxFilteredContainerActions.xml'
       RESPONSE.setHeader('Content-Type',content_type)
       RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')

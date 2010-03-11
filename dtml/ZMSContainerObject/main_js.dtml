@@ -59,7 +59,7 @@
  */
 function zmiExpandActionSelectContainer(el, abs_url) 
 {
-  zmiExpandActionSelect( el, abs_url+"/ajaxFilteredContainerActions");
+  zmiExpandActionSelect( el, abs_url+"/manage_ajaxFilteredContainerActions");
 }
 
 /**
@@ -71,7 +71,7 @@ function zmiExpandActionSelectContainer(el, abs_url)
 function zmiExpandActionSelectChild(el, abs_url) 
 {
   var id = $(el).attr('id').substr('select_actions_'.length);
-  zmiExpandActionSelect( el, abs_url+"/"+id+"/ajaxFilteredChildActions");
+  zmiExpandActionSelect( el, abs_url+"/"+id+"/manage_ajaxFilteredChildActions");
 }
 
 /**

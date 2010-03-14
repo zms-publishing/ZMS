@@ -655,7 +655,6 @@ class ZMS(
         )
     __authorPermissions__ = (
         'manage','manage_main','manage_workspace',
-        'manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
         'manage_addZMSModule',
         'manage_deleteObjs','manage_undoObjs',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',

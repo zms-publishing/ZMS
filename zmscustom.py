@@ -136,16 +136,17 @@ class ZMSCustom(ZMSContainerObject):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage','manage_main','manage_container','manage_workspace',
-		'manage_addZMSModule',
-		'manage_properties','manage_changeProperties',
-		'manage_deleteObjs','manage_undoObjs','manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-		'manage_cutObjects','manage_copyObjects','manage_pasteObjs','manage_ajaxDragDrop',
-		'manage_search','manage_search_attrs','manage_tasks',
-		'manage_wfTransition', 'manage_wfTransitionFinalize',
-		'manage_userForm', 'manage_user',
-		'manage_importexport', 'manage_import', 'manage_export',
-		)
+        'manage','manage_main','manage_container','manage_workspace',
+        'manage_addZMSModule',
+        'manage_properties','manage_changeProperties',
+        'manage_deleteObjs','manage_undoObjs','manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
+        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
+        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_search','manage_search_attrs','manage_tasks',
+        'manage_wfTransition', 'manage_wfTransitionFinalize',
+        'manage_userForm', 'manage_user',
+        'manage_importexport', 'manage_import', 'manage_export',
+        )
     __ac_permissions__=(
 		('ZMS Author', __authorPermissions__),
 		)

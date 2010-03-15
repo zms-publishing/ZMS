@@ -37,7 +37,7 @@
    <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_SEARCHTERM',lang)">:</td>
    <td class="searchElement">
     <input class="form-element" type="text" name="raw" size="18"
-    <dtml-if "REQUEST.has_key('raw')">value="<dtml-var "REQUEST['raw']" html_quote>"</dtml-if>>
+    <dtml-if "REQUEST.has_key('raw')">value="<dtml-var "REQUEST.get('raw').replace('<','')" html_quote>"</dtml-if>>
    </td>
    <td class="searchText" align="right" valign="top" rowspan="3">
     <small><dtml-var "getLangStr('SEARCH_HINT',lang)"></small>

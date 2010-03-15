@@ -145,6 +145,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.__init__ """
       self.id = id
       self.sort_id = _globals.format_sort_id(sort_id)
+      self.ref_by = []
 
 
     # --------------------------------------------------------------------------

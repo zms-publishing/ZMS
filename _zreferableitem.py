@@ -566,7 +566,7 @@ class ZReferableItem:
     for x in filter( lambda x: hasattr( obs[x], 'ref_by'), abs_urls):
       if clients or True:
         try:
-          delattr( obs[x], 'ref_by')
+          setattr( obs[x], 'ref_by', [])
         except: pass
       else:
         try:

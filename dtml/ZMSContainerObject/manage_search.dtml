@@ -171,13 +171,13 @@
        <dtml-if "ob.meta_id=='ZMSFile'">
         <dtml-let f="ob.getObjProperty('file',REQUEST)">
          <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
-         <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">"
+         <a href="<dtml-var "url[:url.rfind('/')]">/manage_main?lang=<dtml-var lang>&preview=preview" class="zmi"
           ><b><dtml-var "search_quote(title)"></b></a>
          <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
         </dtml-let>
        <dtml-else>
         <img src="<dtml-var "ob.display_icon(REQUEST)">" title="<dtml-var "ob.display_type(REQUEST)">" border="0" align="absmiddle"/>
-        <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">"
+        <a href="<dtml-var "url[:url.rfind('/')]">/manage_main?lang=<dtml-var lang>&preview=preview" class="zmi"
          ><b><dtml-var "search_quote(title)"></b></a>
        </dtml-if>
       </div>
@@ -196,7 +196,7 @@
     <tr class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
      <td>
       <div class="form-small"
-      <a href="<dtml-var "url.replace('index_%s.html?preview=preview'%(lang),'manage_main?lang=%s&preview=preview'%lang)">" class="zmi"
+      <a href="<dtml-var "url[:url.rfind('/')]">/manage_main?lang=<dtml-var lang>&preview=preview" class="zmi"
        ><dtml-in "ob.breadcrumbs_obj_path()"
         >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end>&nbsp;</dtml-unless
       > </dtml-in

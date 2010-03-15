@@ -94,7 +94,7 @@
    ><dtml-unless omit_submitBtn
     ><dtml-unless "REQUEST.get('submitBtnCount') is not None"
      ><dtml-let primitiveMetaobjAttrIds="getMetaobjAttrIds(metaObj['id'],metaobj_manager.valid_types)"
-      ><dtml-unless "primitiveMetaobjAttrIds[-1] in metaobjAttrIds[sx:]"
+      ><dtml-unless "len(primitiveMetaobjAttrIds) > 0 and primitiveMetaobjAttrIds[-1] in metaobjAttrIds[sx:]"
        ><tr><td colspan="2"><dtml-var f_submitBtn></td></tr
        ><dtml-call "REQUEST.set('omit_submitBtn',True)"
       ></dtml-unless

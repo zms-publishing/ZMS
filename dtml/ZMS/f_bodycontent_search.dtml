@@ -150,7 +150,7 @@
  ></dtml-if>
 
  <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
- <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><b><dtml-var "REQUEST['_s']" html_quote></b> (<b><dtml-var "int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
+ <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><strong><dtml-var "REQUEST.get('_s').replace('<','')" html_quote></strong> (<b><dtml-var "int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
 
  <dtml-if "len(res)==0">
  

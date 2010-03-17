@@ -143,7 +143,7 @@
   <param name="CSS" value="<dtml-var "getStylesheet().absolute_url().replace('https://','http://')">" />
   <param name="Lang" value="<dtml-if "lang=='ger'">de<dtml-else>en</dtml-if>" />
   <param name="CMSImageLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseImages" />
-  <param name="CMSAttachmentLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseFiles" />
+  <param name="CMSAttachmentLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseFiles<dtml-if lang>?lang=<dtml-var lang></dtml-if>" />
   <param name="Options" value="1" />
   <param id="editor_<dtml-var "REQUEST.get('elName')">_value" name="Value" value="" />
   <dtml-if "REQUEST.get('URL','').find('https://')==0">

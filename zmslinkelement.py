@@ -198,23 +198,24 @@ class ZMSLinkElement(ZMSContainerObject):
     # Management Options.
     # -------------------
     manage_options = ( 
-	{'label': 'TAB_EDIT',    'action': 'manage_main'},
-	{'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
-	{'label': 'TAB_PREVIEW', 'action': 'preview_html'}, # empty string defaults to index_html
-	)
+    {'label': 'TAB_EDIT',    'action': 'manage_main'},
+    {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
+    {'label': 'TAB_PREVIEW', 'action': 'preview_html'}, # empty string defaults to index_html
+    )
 
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage','manage_main','manage_workspace',
-		'manage_changeProperties',
-		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-		'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-		'manage_userForm','manage_user',
-		)
+        'manage','manage_main','manage_workspace',
+        'manage_changeProperties',
+        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
+        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
+        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_userForm','manage_user',
+        )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		)
+        ('ZMS Author', __authorPermissions__),
+        )
 
     # Management Interface.
     # ---------------------

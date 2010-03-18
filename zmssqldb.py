@@ -90,32 +90,33 @@ class ZMSSqlDb(ZMSObject):
     # Management Options.
     # -------------------
     manage_options = ( 
-	{'label': 'TAB_EDIT',		'action': 'manage_main'},
-	{'label': 'TAB_IMPORTEXPORT',	'action': 'manage_importexport'},
-	{'label': 'TAB_PROPERTIES',	'action': 'manage_properties'},
-	{'label': 'TAB_CONFIGURATION',	'action': 'manage_configuration'},
-	{'label': 'SQL',	'action': 'manage_sql'},
-	)
+    {'label': 'TAB_EDIT',        'action': 'manage_main'},
+    {'label': 'TAB_IMPORTEXPORT',    'action': 'manage_importexport'},
+    {'label': 'TAB_PROPERTIES',    'action': 'manage_properties'},
+    {'label': 'TAB_CONFIGURATION',    'action': 'manage_configuration'},
+    {'label': 'SQL',    'action': 'manage_sql'},
+    )
 
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage','manage_main','manage_workspace',
-		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-		'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-		'manage_userForm', 'manage_user',
-		'manage_importexport', 'manage_import', 'manage_export',
-		'manage_ajaxQuery', 'manage_exportexcel',
-		)
+        'manage','manage_main','manage_workspace',
+        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
+        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
+        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_userForm', 'manage_user',
+        'manage_importexport', 'manage_import', 'manage_export',
+        'manage_ajaxQuery', 'manage_exportexcel',
+        )
     __administratorPermissions__ = (
-		'manage_properties','manage_changeProperties',
-		'manage_configuration', 'manage_changeConfiguration',
-		'manage_sql', 
-		)
+        'manage_properties','manage_changeProperties',
+        'manage_configuration', 'manage_changeConfiguration',
+        'manage_sql', 
+        )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		('ZMS Administrator', __administratorPermissions__),
-		)
+        ('ZMS Author', __authorPermissions__),
+        ('ZMS Administrator', __administratorPermissions__),
+        )
 
     # Management Interface.
     # ---------------------

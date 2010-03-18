@@ -622,8 +622,8 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '132'		# Internal use only, designates object model!
-    zms_patch = 'e'		# Internal use only!
+    zms_build = '132'        # Internal use only, designates object model!
+    zms_patch = 'e'        # Internal use only!
 
     # Properties.
     # -----------
@@ -632,16 +632,16 @@ class ZMS(
     # Management Options.
     # -------------------
     manage_options = (
-	{'label': 'TAB_EDIT',         'action': 'manage_main'},
-	{'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
-	{'label': 'TAB_ACCESS',       'action': 'manage_users'},
-	{'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'},
-	{'label': 'TAB_TASKS',        'action': 'manage_tasks'},
-	{'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'},
-	{'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'},
-	{'label': 'TAB_CONFIGURATION','action': 'manage_customize'},
-	{'label': 'TAB_PREVIEW',      'action': 'preview_html'}, # empty string defaults to index_html
-	)
+    {'label': 'TAB_EDIT',         'action': 'manage_main'},
+    {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
+    {'label': 'TAB_ACCESS',       'action': 'manage_users'},
+    {'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'},
+    {'label': 'TAB_TASKS',        'action': 'manage_tasks'},
+    {'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'},
+    {'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'},
+    {'label': 'TAB_CONFIGURATION','action': 'manage_customize'},
+    {'label': 'TAB_PREVIEW',      'action': 'preview_html'}, # empty string defaults to index_html
+    )
 
     # Management Permissions.
     # -----------------------
@@ -659,6 +659,7 @@ class ZMS(
         'manage_deleteObjs','manage_undoObjs',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
+        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
         'manage_properties','manage_changeProperties',
         'manage_search','manage_search_attrs','manage_tasks',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
@@ -666,31 +667,31 @@ class ZMS(
         'manage_importexport', 'manage_import', 'manage_export',
         )
     __userAdministratorPermissions__ = (
-		'manage_users', 'manage_userProperties', 'manage_roleProperties',
-		)
+        'manage_users', 'manage_userProperties', 'manage_roleProperties',
+        )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		('ZMS Author', __authorPermissions__),
-		('ZMS UserAdministrator', __userAdministratorPermissions__),
-		)
+        ('ZMS Administrator', __administratorPermissions__),
+        ('ZMS Author', __authorPermissions__),
+        ('ZMS UserAdministrator', __userAdministratorPermissions__),
+        )
 
     # Globals.
     # --------
     dGlobalAttrs = {
-	'ZMS':{
-				'obj_class':None},
-	'ZMSCustom':{
-				'obj_class':ZMSCustom},
-	'ZMSLinkContainer':{
-				'obj_class':ZMSLinkContainer,
-				'constructor':'manage_addZMSLinkContainer'},
-	'ZMSLinkElement':{
-				'obj_class':ZMSLinkElement,
-				'constructor':'manage_addzmslinkelementform'},
-	'ZMSSqlDb':{
-				'obj_class':ZMSSqlDb,
-				'constructor':'manage_addzmssqldbform'},
-	}
+    'ZMS':{
+                'obj_class':None},
+    'ZMSCustom':{
+                'obj_class':ZMSCustom},
+    'ZMSLinkContainer':{
+                'obj_class':ZMSLinkContainer,
+                'constructor':'manage_addZMSLinkContainer'},
+    'ZMSLinkElement':{
+                'obj_class':ZMSLinkElement,
+                'constructor':'manage_addzmslinkelementform'},
+    'ZMSSqlDb':{
+                'obj_class':ZMSSqlDb,
+                'constructor':'manage_addzmssqldbform'},
+    }
 
     # Interface.
     # ----------

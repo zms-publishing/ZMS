@@ -51,20 +51,21 @@ class ZMSTrashcan(ZMSContainerObject):
     # Management Options.
     # -------------------
     manage_options = ( 
-	{'label': 'TYPE_ZMSTRASHCAN', 'action': 'manage_main'},
-	{'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
-	) 
+    {'label': 'TYPE_ZMSTRASHCAN', 'action': 'manage_main'},
+    {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
+    ) 
 
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage','manage_main','manage_workspace',
-		'manage_eraseObjs','manage_moveObjUp','manage_moveObjDown','manage_cutObjects',
-		'manage_userForm','manage_user',
-		)
+        'manage','manage_main','manage_workspace',
+        'manage_eraseObjs','manage_moveObjUp','manage_moveObjDown','manage_cutObjects',
+        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_userForm','manage_user',
+        )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		)
+        ('ZMS Author', __authorPermissions__),
+        )
 
     # Management Interface.
     # ---------------------

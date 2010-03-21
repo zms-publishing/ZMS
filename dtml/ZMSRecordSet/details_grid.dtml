@@ -134,7 +134,7 @@
 
        <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-elif "type not in ['constant']">
-        <dtml-var "string_maxlen(str(v),max(int(200.0/len(metaObjDetail['attrs'])),20))">
+        <dtml-var "string_maxlen(str(v),max(int(200.0/len(metaObj['attrs'])),20)).replace('<','&lt;')">
        </dtml-if>&nbsp;
 
        <dtml-comment>#####</dtml-comment>

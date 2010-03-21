@@ -139,7 +139,11 @@
   <param name="CMSCode" value="9CF6B9BD-B73D-4206-8A77-8E05477E9726" />
   <param name="ToolbarWysiwyg" value="ordered-list, unordered-list, , draw-layout-table, draw-data-table, image, separator, hyperlink, attachment,  undo, wysiwyg, source, help" />
   <param name="EnablePasteMarkup" value="yes" />
-  <param name="Styles" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_styles" />
+  <param name="Styles" value="<dtml-if "REQUEST.get('ZMS_INSERT')"
+     ><dtml-var "absolute_url().replace('https://','http://')">/f_xstandard_styles?elId=<dtml-var "REQUEST.get('id_prefix')">&amp;elName=<dtml-var "REQUEST.get('elName')"
+    ><dtml-else
+     ><dtml-var "getParentNode().absolute_url().replace('https://','http://')">/f_xstandard_styles?elId=<dtml-var id>&amp;elName=<dtml-var "REQUEST.get('elName')"
+    ></dtml-if>" />
   <param name="CSS" value="<dtml-var "getStylesheet().absolute_url().replace('https://','http://')">" />
   <param name="Lang" value="<dtml-if "lang=='ger'">de<dtml-else>en</dtml-if>" />
   <param name="CMSImageLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseImages" />

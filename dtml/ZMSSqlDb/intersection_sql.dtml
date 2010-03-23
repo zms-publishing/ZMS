@@ -50,85 +50,84 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- MULTISELECT
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</dtml-comment>
- <dtml-elif multiselect>
-  <dtml-unless "multiselect.get('custom') or multiselect.get('mysqlset')">
-   <dtml-let intersection="getEntity(multiselect.get('tablename'))"
-    ><dtml-call "REQUEST.set('src',None)"
-    ><dtml-call "REQUEST.set('dst',None)"
-    ><dtml-in "intersection['columns']" mapping
-     ><dtml-let col=sequence-item
-      ><dtml-if fk
-       ><dtml-if "fk.get('tablename',None)==entity and src is None"
-        ><dtml-call "REQUEST.set('src',col)"
-       ><dtml-else
-        ><dtml-call "REQUEST.set('dst',col)"
-       ></dtml-if
-      ></dtml-if
-     ></dtml-let
-    ></dtml-in>
-    <!-- ### DELETE -->
-    <dtml-call "REQUEST.set('sqlStatement',[])"
-    ><dtml-call "sqlStatement.append('DELETE FROM ' + intersection['id'] + ' ')"
-    ><dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,rowid))"
-    ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
-    ><dtml-try
-     ><dtml-call "writeBlock('[%s.intersection_sql]: executeQuery(%s)'%(meta_type,sqlStatement))"
-     ><dtml-call "executeQuery(sqlStatement)"
-     ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_CHANGED')+' (MS: '+intersection['id']+')'+'<br/>')" 
-    ><dtml-except
-     ><dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"
-    ></dtml-try>
-    <!-- ### INSERT -->
-    <dtml-call "REQUEST.set('mmsid','new_%s'%id)">
-    <dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('mmsid',ZMS_TABLE_PREFIX+'_'+mmsid)"></dtml-if>
-    <dtml-in "REQUEST.get(mmsid,[])"
-     ><dtml-let value=sequence-item
-      ><dtml-call "REQUEST.set('sqlStatement',[])"
-      ><dtml-call "sqlStatement.append('INSERT INTO ' + intersection['id'] + '( ')"
-      ><dtml-call "REQUEST.set('c',0)"
-      ><dtml-in "intersection['columns']" mapping
-       ><dtml-let col=sequence-item
-        ><dtml-if fk
-         ><dtml-if c
-          ><dtml-call "sqlStatement.append(', ')"
+</dtml-comment
+ ><dtml-elif multiselect
+  ><dtml-unless "multiselect.get('custom') or multiselect.get('mysqlset')"
+   ><dtml-call "REQUEST.set('mmsid','new_%s'%id)"
+   ><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('mmsid',ZMS_TABLE_PREFIX+'_'+mmsid)"></dtml-if
+   ><dtml-let old_values="REQUEST.get('old_%s'%mmsid,[])" new_values="REQUEST.get(mmsid,[])" intersection="getEntity(multiselect.get('tablename'))"
+   
+    ><dtml-comment
+    >##### DELETE #####</dtml-comment
+    ><dtml-in old_values
+     ><dtml-let value=sequence-item w="[]"
+      ><dtml-unless "value in new_values"
+       ><dtml-call "REQUEST.set('src',None)"
+       ><dtml-call "REQUEST.set('dst',None)"
+       ><dtml-in "intersection['columns']" mapping
+        ><dtml-let col=sequence-item
+         ><dtml-if fk
+          ><dtml-if "fk.get('tablename',None)==entity and src is None"
+           ><dtml-call "REQUEST.set('src',col)"
+           ><dtml-call "w.append(col['id']+'='+sql_quote__(entity,primary_key,rowid))"
+          ><dtml-else
+           ><dtml-call "REQUEST.set('dst',col)"
+           ><dtml-call "w.append(col['id']+'='+sql_quote__(intersection['id'],col['id'],value))"
           ></dtml-if
-         ><dtml-call "sqlStatement.append(col['id'])"
-         ><dtml-call "REQUEST.set('c',c+1)"
-        ></dtml-if
-       ></dtml-let
-      ></dtml-in
-      ><dtml-call "sqlStatement.append(' ) VALUES ( ')"
-      ><dtml-call "REQUEST.set('c',0)"
-      ><dtml-call "REQUEST.set('src',None)"
-      ><dtml-call "REQUEST.set('dst',None)"
-      ><dtml-in "intersection['columns']" mapping
-       ><dtml-let col=sequence-item
-        ><dtml-if fk
-         ><dtml-if c
-          ><dtml-call "sqlStatement.append(', ')"
          ></dtml-if
-         ><dtml-if "fk.get('tablename',None)==entity and src is None"
-          ><dtml-call "REQUEST.set('src',col)"
-          ><dtml-call "sqlStatement.append(sql_quote__(entity,primary_key,rowid))"
-         ><dtml-else
-          ><dtml-call "REQUEST.set('dst',col)"
-          ><dtml-call "sqlStatement.append(sql_quote__(intersection['id'],col['id'],value))"
-         ></dtml-if
-         ><dtml-call "REQUEST.set('c',c+1)"
-        ></dtml-if
-       ></dtml-let
-      ></dtml-in
-      ><dtml-call "sqlStatement.append(' )')"
-      ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
-      ><dtml-try
-       ><dtml-call "writeBlock('[%s.intersection_sql]: executeQuery(%s)'%(meta_type,sqlStatement))"
-       ><dtml-call "executeQuery(sqlStatement)"
-      ><dtml-except
-       ><dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"
-      ></dtml-try
+        ></dtml-let
+       ></dtml-in
+       ><dtml-call "REQUEST.set('sqlStatement',[])"
+       ><dtml-call "sqlStatement.append('DELETE FROM ' + intersection['id'] + ' ')"
+       ><dtml-call "sqlStatement.append('WHERE ' + ' AND '.join(w))"
+       ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
+       ><dtml-try
+        ><dtml-call "writeBlock('[%s.intersection_sql]: executeQuery(%s)'%(meta_type,sqlStatement))"
+        ><dtml-call "executeQuery(sqlStatement)"
+       ><dtml-except
+        ><dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"
+       ></dtml-try
+      ></dtml-unless
      ></dtml-let
     ></dtml-in
+    
+    ><dtml-comment
+    >##### INSERT #####</dtml-comment
+    ><dtml-in new_values
+     ><dtml-let value=sequence-item c="[]" v="[]"
+      ><dtml-unless "value in old_values"
+       ><dtml-call "REQUEST.set('src',None)"
+       ><dtml-call "REQUEST.set('dst',None)"
+       ><dtml-in "intersection['columns']" mapping
+        ><dtml-let col=sequence-item
+         ><dtml-if fk
+          ><dtml-if "fk.get('tablename',None)==entity and src is None"
+           ><dtml-call "REQUEST.set('src',col)"
+           ><dtml-call "c.append(col['id'])"
+           ><dtml-call "v.append(sql_quote__(entity,primary_key,rowid))"
+          ><dtml-else
+           ><dtml-call "REQUEST.set('dst',col)"
+           ><dtml-call "c.append(col['id'])"
+           ><dtml-call "v.append(sql_quote__(intersection['id'],col['id'],value))"
+          ></dtml-if
+         ></dtml-if
+        ></dtml-let
+       ></dtml-in
+       ><dtml-call "REQUEST.set('sqlStatement',[])"
+       ><dtml-call "sqlStatement.append('INSERT INTO ' + intersection['id'] + ' ')"
+       ><dtml-call "sqlStatement.append(' ( ' + ' , '.join(c) + ' ) VALUES ( ' + ' , '.join(v) + ' ) ')"
+       ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
+       ><dtml-try
+        ><dtml-call "writeBlock('[%s.intersection_sql]: executeQuery(%s)'%(meta_type,sqlStatement))"
+        ><dtml-call "executeQuery(sqlStatement)"
+       ><dtml-except
+        ><dtml-call "REQUEST.set('message',message+'SQL-ERROR: '+sqlStatement+'<br/>')"
+       ></dtml-try
+      ></dtml-unless
+     ></dtml-let
+    ></dtml-in
+    
+    ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_CHANGED')+' (MS: '+intersection['id']+')'+'<br/>')" 
    ></dtml-let
   ></dtml-unless
  ></dtml-if>

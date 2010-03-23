@@ -40,7 +40,7 @@
     var b = true;
     <dtml-in grid_cols mapping
     ><dtml-let grid_col=sequence-item
-    ><dtml-unless "id.lower() in _.map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
+    ><dtml-unless "id.lower() in map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
     ><dtml-call "REQUEST.set('elName','new_%s'%id)"
     ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"
     ><dtml-if "grid_col.get('password')">
@@ -163,7 +163,7 @@
 
 //-->
 </script>
-<dtml-call "REQUEST.set('f_zmiInputFormJavaScript',_.True)">
+<dtml-call "REQUEST.set('f_zmiInputFormJavaScript',True)">
 </dtml-unless>
 
 <dtml-unless ZMS_HIDE_FORM>
@@ -194,7 +194,7 @@
   </colgroup>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
-  <dtml-unless "grid_col.get('disabled') or id.lower() in _.map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
+  <dtml-unless "grid_col.get('disabled') or id.lower() in map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
   ><dtml-call "REQUEST.set('elName','new_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elName',ZMS_TABLE_PREFIX+'_'+elName)"></dtml-if
   ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+elNameOld)"></dtml-if
   ><dtml-try>
@@ -253,7 +253,7 @@
        <dtml-in "multimultiselect.get('tables',[])" mapping
        ><dtml-let i=sequence-index item=sequence-item
        ><td style="vertical-align:bottom"
-        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,_.True]"><dtml-var FORM_LABEL_MANDATORY></dtml-unless></div
+        ><div class="form-small"><dtml-var "getLangStr(label,lang)"><dtml-unless "item.get('nullable') in [1,True]"><dtml-var FORM_LABEL_MANDATORY></dtml-unless></div
         ><dtml-if "item.has_key('lazy')"
          ><dtml-let fk=item
           ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
@@ -267,10 +267,10 @@
           /></dtml-let
         ><dtml-else
          ><select class="<dtml-var css>" id="<dtml-var mmsid><dtml-var sequence-index>"
-          ><dtml-if "item.get('nullable') in [1,_.True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
+          ><dtml-if "item.get('nullable') in [1,True]"><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)"> -----</option></dtml-if
           ><dtml-in "query( 'SELECT ' + fieldname + ' AS qkey, ' + displayfield + ' AS qvalue FROM ' + tablename + ' ORDER BY ' + displayfield)['records']"
            ><dtml-let row=sequence-item
-            ><option value="<dtml-var "_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
+            ><option value="<dtml-var "unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8')">"><dtml-var "unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')"></option
            ></dtml-let
           ></dtml-in
          ></select
@@ -299,7 +299,7 @@
            ><dtml-else
             ><dtml-call "values.append(tablename+'.'+displayfield+' AS displayfield%i'%i)"
            ></dtml-if
-           ><dtml-if "item.get('nullable') in [1,_.True]"
+           ><dtml-if "item.get('nullable') in [1,True]"
             ><dtml-call "outerjoins.append(tablename+' ON '+multimultiselect.get('tablename')+'.'+fk+'='+tablename+'.'+fieldname)"
            ><dtml-else
             ><dtml-call "leftjoins.append(tablename+' ON '+multimultiselect.get('tablename')+'.'+fk+'='+tablename+'.'+fieldname)"
@@ -317,7 +317,7 @@
           ><dtml-call "outerjoins.insert(0,'')"
           ><dtml-call "sqlStatement.append(' LEFT OUTER JOIN '.join(outerjoins))"
          ></dtml-if
-         ><dtml-call "sqlStatement.append(' WHERE '+multimultiselect.get('tablename')+'.'+multimultiselect.get('fk')+'='+sql_quote__(entity,primary_key,row_.get('id','')))"
+         ><dtml-call "sqlStatement.append(' WHERE '+multimultiselect.get('tablename')+'.'+multimultiselect.get('fk')+'='+sql_quote__(entity,primary_key,row.get('id','')))"
          ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
          ><!-- input_form.dtml.SQL: <dtml-var sqlStatement> -->
         </dtml-unless>
@@ -331,7 +331,7 @@
              ><dtml-if "row['fk%i'%i]"
               ><dtml-call "v.append(str(row['fk%i'%i]))"
               ><dtml-try
-               ><dtml-call "l.append(_.unicode(str(row['displayfield%i'%i]),REQUEST.get('qcharset','utf-8')).encode('utf-8'))"
+               ><dtml-call "l.append(unicode(str(row['displayfield%i'%i]),REQUEST.get('qcharset','utf-8')).encode('utf-8'))"
               ><dtml-except
                ><dtml-call "l.append(str(row['displayfield%i'%i]))"
               ></dtml-try
@@ -352,12 +352,12 @@
          ***********************************************************************
          ></dtml-comment
          ><dtml-call "REQUEST.set('sqlStatement',[])"
-         ><dtml-call "sqlStatement.append('SELECT '+', '.join(_.map(lambda x: x['fk'],multimultiselect.get('tables',[]))))"
+         ><dtml-call "sqlStatement.append('SELECT '+', '.join(map(lambda x: x['fk'],multimultiselect.get('tables',[]))))"
          ><dtml-call "sqlStatement.append(' FROM '+multimultiselect.get('tablename'))"
          ><dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))"
          ><dtml-try
           ><dtml-in "query(sqlStatement)['records']"
-           ><dtml-let row=sequence-item v="_.map(lambda x: str(_['sequence-item'][x['fk']]),multimultiselect.get('tables',[]))" l=v
+           ><dtml-let row=sequence-item v="map(lambda x: str(_['sequence-item'][x['fk']]),multimultiselect.get('tables',[]))" l=v
             ><option value="<dtml-var "'/'.join(v)">" selected="selected"><dtml-var "'/'.join(l)"></option
            ></dtml-let
           ></dtml-in
@@ -426,7 +426,7 @@
         ><dtml-let row=sequence-item
          ><dtml-unless "row['qvalue']==None" 
          ><dtml-try
-          ><dtml-call "options.append([_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
+          ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
          ><dtml-except
           ><dtml-call "options.append([str(row['qkey']),str(row['qvalue'])])"
          ></dtml-try
@@ -489,7 +489,7 @@
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='checkbox' or grid_col.get('checkbox')">
       <dtml-try>
-       <dtml-var "getCheckbox(fmName='form0',elName=elName,value=row.get(id,''),enabled=_.True,REQUEST=REQUEST,css=css)">
+       <dtml-var "getCheckbox(fmName='form0',elName=elName,value=row.get(id,''),enabled=True,REQUEST=REQUEST,css=css)">
       <dtml-except>
        <dtml-var "getCheckbox(fmName='form0',elName=elName,value=row.get(id,''),enabled=1,hidden=1,REQUEST=REQUEST,css=css)">
       </dtml-try>
@@ -497,8 +497,8 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- MULTISELECT
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     </dtml-comment>
-     <dtml-elif "grid_col.get('multiselect')"
+     </dtml-comment
+     ><dtml-elif "grid_col.get('multiselect')"
       ><dtml-if "multiselect.get('custom') or multiselect.get('mysqlset')"
        ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
        ><dtml-call "REQUEST.set('options',[])"
@@ -520,90 +520,91 @@
        ></dtml-if
        ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=options, enabled=1, REQUEST=REQUEST)"
       ><dtml-else
-      ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
-      ><dtml-call "REQUEST.set('src',None)"
-      ><dtml-call "REQUEST.set('dst',None)"
-       ><dtml-in "intersection['columns']" mapping
-        ><dtml-let col=sequence-item
-         ><dtml-if fk
-          ><dtml-if "fk.get('tablename',None)==entity and src is None"
-           ><dtml-call "REQUEST.set('src',col)"
-          ><dtml-else
-           ><dtml-call "REQUEST.set('dst',col)"
+       ><dtml-let intersection="getEntity(multiselect.get('tablename'))"
+       ><dtml-call "REQUEST.set('src',None)"
+       ><dtml-call "REQUEST.set('dst',None)"
+        ><dtml-in "intersection['columns']" mapping
+         ><dtml-let col=sequence-item
+          ><dtml-if fk
+           ><dtml-if "fk.get('tablename',None)==entity and src is None"
+            ><dtml-call "REQUEST.set('src',col)"
+           ><dtml-else
+            ><dtml-call "REQUEST.set('dst',col)"
+           ></dtml-if
           ></dtml-if
-         ></dtml-if
-        ></dtml-let
-       ></dtml-in
-       ><dtml-call "REQUEST.set('value',[])">
-       <dtml-unless ZMS_INSERT>
-        <dtml-call "REQUEST.set('sqlStatement',[])">
-        <dtml-call "sqlStatement.append('SELECT ' + dst['id'] + ' AS dst_id FROM ' + intersection['id'] + ' ')">
-        <dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,row_.get(primary_key)))">
-        <dtml-try>
-         <!-- MULTISELECT.SQL.INTERSECTION: <dtml-var "''.join(sqlStatement)"> -->
-         <dtml-in "query(''.join(sqlStatement))['records']">
-          <dtml-let row=sequence-item>
-           <dtml-call "value.append(str(row['dst_id']))">
-          </dtml-let>
-         </dtml-in>
-        <dtml-except>
-         SQL-ERROR: <dtml-var "''.join(sqlStatement)">
-        </dtml-try>
-       </dtml-unless>
-       <dtml-let fk="dst['fk']" maxlen="int(fk.get('maxlen',25))"
-       ><dtml-call "REQUEST.set('sqlStatement',[])"
-       ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
-       ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
-       ><dtml-if "multiselect.has_key('lazy')"
-        ><dtml-let where="[]"
-         ><dtml-in value
-          ><dtml-call "where.append(fk.get('fieldname')+'='+sql_quote__(fk.get('tablename'),fk.get('fieldname'),_['sequence-item']))"
-         ><dtml-else
-          ><dtml-call "where.append('1=0')"
-         ></dtml-in
-         ><dtml-if where
-          ><dtml-call "sqlStatement.append('WHERE ' + ' OR '.join(where) + ' ')"
-         ></dtml-if
-        ></dtml-let
-       ></dtml-if
-       ><dtml-if "fk.has_key('sort')"
-        ><dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))"
-       ><dtml-else
-        ><dtml-call "sqlStatement.append( 'ORDER BY 2 ')"
-       ></dtml-if
-       ><dtml-call "REQUEST.set('optpl',[])"
-       ><dtml-try>
-        <!-- MULTISELECT.SQL.FOREIGNTABLE: <dtml-var "''.join(sqlStatement)"> -->
-        <dtml-in "query(''.join(sqlStatement))['records']"
-         ><dtml-let row=sequence-item
-          ><dtml-try
-           ><dtml-call "optpl.append([_.unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(_.unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
-          ><dtml-except
-           ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
-          ></dtml-try
          ></dtml-let
         ></dtml-in
-       ><dtml-except>
-        SQL-ERROR: <dtml-var "''.join(sqlStatement)">
-       </dtml-try>
-       <dtml-if "multiselect.has_key('lazy')">
-        <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5"
-         ><dtml-in optpl
-          ><dtml-let i=sequence-item k="i[0]" v="i[1]"
-           ><option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option
+        ><dtml-call "REQUEST.set('value',[])"
+        ><dtml-unless ZMS_INSERT
+         ><dtml-call "REQUEST.set('sqlStatement',[])"
+         ><dtml-call "sqlStatement.append('SELECT ' + dst['id'] + ' AS dst_id FROM ' + intersection['id'] + ' ')"
+         ><dtml-call "sqlStatement.append('WHERE ' + src['id'] + '=' + sql_quote__(entity,primary_key,row.get(primary_key)))"
+         ><dtml-try
+          ><!-- MULTISELECT.SQL.INTERSECTION: <dtml-var "''.join(sqlStatement)"> -->
+          <dtml-in "query(''.join(sqlStatement))['records']"
+           ><dtml-let row=sequence-item
+            ><dtml-call "value.append(str(row['dst_id']))"
+            ><input type="hidden" name="old_<dtml-var elName>:list" value="<dtml-var "row['dst_id']">"
+           ></dtml-let
+          ></dtml-in
+         ><dtml-except>
+          SQL-ERROR: <dtml-var "''.join(sqlStatement)"
+         ></dtml-try
+        ></dtml-unless
+        ><dtml-let fk="dst['fk']" maxlen="int(fk.get('maxlen',25))"
+        ><dtml-call "REQUEST.set('sqlStatement',[])"
+        ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
+        ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
+        ><dtml-if "multiselect.has_key('lazy')"
+         ><dtml-let where="[]"
+          ><dtml-in value
+           ><dtml-call "where.append(fk.get('fieldname')+'='+sql_quote__(fk.get('tablename'),fk.get('fieldname'),_['sequence-item']))"
+          ><dtml-else
+           ><dtml-call "where.append('1=0')"
+          ></dtml-in
+          ><dtml-if where
+           ><dtml-call "sqlStatement.append('WHERE ' + ' OR '.join(where) + ' ')"
+          ></dtml-if
+         ></dtml-let
+        ></dtml-if
+        ><dtml-if "fk.has_key('sort')"
+         ><dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))"
+        ><dtml-else
+         ><dtml-call "sqlStatement.append( 'ORDER BY 2 ')"
+        ></dtml-if
+        ><dtml-call "REQUEST.set('optpl',[])"
+        ><dtml-try>
+         <!-- MULTISELECT.SQL.FOREIGNTABLE: <dtml-var "''.join(sqlStatement)"> -->
+         <dtml-in "query(''.join(sqlStatement))['records']"
+          ><dtml-let row=sequence-item
+           ><dtml-try
+            ><dtml-call "optpl.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
+           ><dtml-except
+            ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
+           ></dtml-try
           ></dtml-let
          ></dtml-in
-        ></select>
-        <input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
-        <input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"/>
-        <dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
-       <dtml-else>
-        <dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)">
-       </dtml-if>
-       </dtml-let>
-      </dtml-let>
-      </dtml-if>
-     <dtml-comment>
+        ><dtml-except>
+         SQL-ERROR: <dtml-var "''.join(sqlStatement)"
+        ></dtml-try
+        ><dtml-if "multiselect.has_key('lazy')"
+         ><select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5"
+          ><dtml-in optpl
+           ><dtml-let i=sequence-item k="i[0]" v="i[1]"
+            ><option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option
+           ></dtml-let
+          ></dtml-in
+         ></select
+         ><input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
+         ><input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
+         ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if
+        ><dtml-else
+         ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
+        ></dtml-if
+       ></dtml-let
+      ></dtml-let
+     ></dtml-if
+     ><dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- BLOB
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

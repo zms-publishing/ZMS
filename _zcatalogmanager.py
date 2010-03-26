@@ -324,6 +324,10 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       zcat = self.getObjProperty('attr_dc_date',req)
       if zcat is None or zcat == '':
         zcat = self.getObjProperty('change_dt',req)
+        for ob in self.filteredChildNodes( req, self.PAGEELEMENTS):
+          ob_change_dt = ob.getObjProperty('change_dt',req)
+          if ob_change_dt > zcat:
+            zcat = ob_change_dt
       return zcat
 
     # --------------------------------------------------------------------------

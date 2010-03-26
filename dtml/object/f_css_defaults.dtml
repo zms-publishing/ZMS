@@ -20,6 +20,13 @@ margin-bottom:20px;
 .searchresult span.title {
 display:block;
 font-weight:bold;
+color:#2200D5;
+}
+.searchresult span.title a {
+color:#2200D5;
+}
+.searchresult span.title a:visited {
+color:#91198B;
 }
 .searchresult span.description {
 display:block;
@@ -29,6 +36,9 @@ display:block;
 font-size:smaller;
 line-height:1.3em;
 } 
+.searchresult span.linkpath a {
+color:#008000;
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [WAI] ZMSLinkContainer

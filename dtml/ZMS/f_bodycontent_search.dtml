@@ -203,16 +203,16 @@
        ><dtml-var "search_quote(title)"></a>
      </dtml-if>
     </span>
-   <dtml-if description>
-    <span class="description"><dtml-var "search_quote(description)"></span>
-   </dtml-if>
+    <span class="description">
+     <dtml-var "getLangFmtDate(time,lang,'%d')"> <dtml-var "getLangFmtDate(time,lang,'Month')[:3]">. <dtml-var "getLangFmtDate(time,lang,'%Y')"> <b>...</b>
+     <dtml-var "search_quote(description)">
+    </span>
     <span class="linkpath">
     <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
       ><dtml-in "ob.breadcrumbs_obj_path()"
        >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end> </dtml-unless
       ></dtml-in
      ></a>
-     - <dtml-var "getLangFmtDate(time,lang,'%d')"> <dtml-var "getLangFmtDate(time,lang,'Month')[:3]"> <dtml-var "getLangFmtDate(time,lang,'%Y')">
     </span>
    </p>
  </dtml-let>

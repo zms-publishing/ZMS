@@ -1481,3 +1481,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [1321] Applied fix for ZMI action-lists in Safari (xmachina 0023506). 
 [1322] Applied fix for langunage conformant linking with XStandard editor (requested by DESY)
 --------------------------------------------------
+2010-03-11:zms2-2.12.1-20
+[1323] Applied fix for url replication (reported by kpoh). 
+--------------------------------------------------

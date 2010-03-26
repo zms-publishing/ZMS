@@ -5,7 +5,7 @@
 </dtml-comment
 ><dtml-let refByObjs="getRefByObjs()"
 ><dtml-if refByObjs
-><a href<img src="<dtml-var MISC_ZMS>link_go.png" title="<dtml-var "getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),getZMILangStr('ATTR_OBJECTS'))">" align="absmiddle"
+><a href="<dtml-var absolute_url>/manage_RefForm?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>link_go.png" title="<dtml-var "getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),getZMILangStr('ATTR_OBJECTS'))">" align="absmiddle"></a
 ></dtml-if
 ></dtml-let
 

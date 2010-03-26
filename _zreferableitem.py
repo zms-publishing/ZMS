@@ -235,8 +235,8 @@ class ZReferableItem:
               lvalue = []
               for exp in ['"(.*?)/%s"','{\$%s}','{\$(.*?)/%s}']:
                 lvalue.extend( ob.re_search( exp%self.id, svalue))
-              has_ref = has_ref or len(lvalue)>0
-              if has_ref and obj_attr['datatype_key'] == _globals.DT_URL:
+              if len(lvalue) > 0 and obj_attr['datatype_key'] == _globals.DT_URL:
+                has_ref = True
                 new_value = ob.getRefObjPath(self)
                 if value != new_value:
                   _objattrs.setobjattr(self, obj_vers, obj_attr, new_value, lang)

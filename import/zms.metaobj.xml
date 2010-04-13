@@ -2760,25 +2760,44 @@ $()
 </dtml-comment>
 <dtml-else>
 
+<dtml-comment>
+--------------------------------------------------------------------------------
+--- Table-Cell Editor (Fancybox)
+--------------------------------------------------------------------------------
+</dtml-comment>
 <dtml-let custom="[]"
- ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_FORMAT')+'</td>')"
- ><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=REQUEST)+'</td>')"
- ><dtml-call "custom.append('<td class='+QUOT+'form-text'+QUOT+'>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
- ><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
-><div id="zmiImgZoomDiv" style="visibility:hidden;display:none;"></div
-><div id="zmiImgZoomImgDiv" style="visibility:hidden;display:none;"
-><div class="zmiNeutralColorMedium0">
- <dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')">
- <hr size="1"/>
- <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"/>
- <input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"/>
-</div>
-</div>
-</dtml-let>
+><dtml-call "custom.append('<td class=\042form-text\042>'+getZMILangStr('ATTR_FORMAT')+'</td>')"
+><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=REQUEST)+'</td>')"
+><dtml-call "custom.append('<td class=\042form-text\042>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
+><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
+><a href="#div_table_cell_editor" id="a_table_cell_editor"></a
+><div style="visibility:hidden;display:none;"
+><div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;"
+><dtml-call "REQUEST.set('richeditshow_callback',',function(){$.fancybox.resize();}')"
+><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
+><hr
+><input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
+><input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"
+></div
+></div
+></dtml-let>
+<script>
+$(function(){
+	$.plugin('fancybox').get('a#a_table_cell_editor',function() {
+		$("a#a_table_cell_editor").fancybox({
+			modal:true,
+			scrolling:'no'
+		});
+	});
+});
+</script>
 
+<dtml-comment>
+--------------------------------------------------------------------------------
+--- Table-Cell Grid
+--------------------------------------------------------------------------------
+</dtml-comment>
 <dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
-
-table_colgroup_cols=<dtml-var table_colgroup_cols>
 
 <script language="JavaScript">
 <!--//
@@ -2843,46 +2862,33 @@ function onZMSTableFormSubmit()
 
 function table_cell_edit(el)
 {
-  var dims = getInnerDimensions(true);
-  var pos = $(el).position();
-  table_cell_id = el.name.substr(el.name.indexOf('_')+1);
-  var el_td = $('#content_'+ table_cell_id).parent();
-  if (table_cell_bgcolor==null) {
-    table_cell_bgcolor = el_td.css( "backgroundColor");
-  }
-  el_td.css( "backgroundColor", "red");
-  var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
-  zmiImgZoomDiv.style.visibility = 'visible';
-  zmiImgZoomDiv.style.display = 'block';
-  zmiImgZoomDiv.style.position = 'absolute';
-  zmiImgZoomDiv.style.top = 0;
-  zmiImgZoomDiv.style.left = 0;
-  zmiImgZoomDiv.style.width = dims.width;
-  zmiImgZoomDiv.style.height = dims.height;
-  var zmiImgZoomImgDiv = document.getElementById('zmiImgZoomImgDiv');
-  zmiImgZoomImgDiv.style.visibility = 'visible';
-  zmiImgZoomImgDiv.style.display = 'block';
-  zmiImgZoomImgDiv.style.position = 'absolute';
-  zmiImgZoomImgDiv.style.width = '90%';
-  zmiImgZoomImgDiv.style.top = Math.min( pos.top + el.offsetHeight, dims.height - zmiImgZoomImgDiv.offsetHeight); //(dims.height - zmiImgZoomImgDiv.offsetHeight) / 2;
-  zmiImgZoomImgDiv.style.left = Math.max( ($('body').attr('offsetWidth') - zmiImgZoomImgDiv.offsetWidth) / 2, 0); //(dims.width - zmiImgZoomImgDiv.offsetWidth) / 2;
-  // Apply values.
-  $('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-  $('#zmiStandardEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
-  $('#content_editor').val($('#content_'+ table_cell_id).val());
-  selectValue(document.getElementById('tag'),$('#tag_'+ table_cell_id).val());
-  selectValue(document.getElementById('format'),$('#format_'+ table_cell_id).val());
-  <dtml-let elName="'content_editor'">
-  <dtml-if "REQUEST.get('richedit_fmt')">
-  if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
-    $('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
-    $('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-    // zmiRichtextOnSubmitEventHandler();
-    <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
-    <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
-  }
-  </dtml-if>
-  </dtml-let>
+	table_cell_id = el.name.substr(el.name.indexOf('_')+1);
+	// Set cell background.
+	var el_td = $('#content_'+ table_cell_id).parent();
+	if (table_cell_bgcolor==null) {
+		table_cell_bgcolor = el_td.css( "backgroundColor");
+	}
+	el_td.css( "backgroundColor", "red");
+	// Apply values.
+	$('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+	$('#zmiStandardEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
+	$('#content_editor').val($('#content_'+ table_cell_id).val());
+	selectValue(document.getElementById('tag'),$('#tag_'+ table_cell_id).val());
+	selectValue(document.getElementById('format'),$('#format_'+ table_cell_id).val());
+	<dtml-let elName="'content_editor'">
+	<dtml-if "REQUEST.get('richedit_fmt')">
+	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
+		$('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
+		$('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+		// zmiRichtextOnSubmitEventHandler();
+		<dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
+		<dtml-var "REQUEST.get('afterSubmitBtnClick','')">
+	}
+	</dtml-if>
+	</dtml-let>
+	// Open cell editor.
+	$("a#a_table_cell_editor").click();
+	$.fancybox.resize();
 }
 
 function table_cell_change()
@@ -2898,16 +2904,13 @@ function table_cell_change()
 
 function table_cell_cancel()
 {
-  var el_td = $('#content_'+ table_cell_id).parent();
-  el_td.css( "backgroundColor", table_cell_bgcolor);
-  table_cell_bgcolor = null;
-  var zmiImgZoomDiv = document.getElementById('zmiImgZoomDiv');
-  zmiImgZoomDiv.style.visibility = 'hidden';
-  zmiImgZoomDiv.style.display = 'none';
-  var zmiImgZoomImgDiv = document.getElementById('zmiImgZoomImgDiv');
-  zmiImgZoomImgDiv.style.visibility = 'hidden';
-  zmiImgZoomImgDiv.style.display = 'none';
-  return false;
+	// Reset cell background.
+	var el_td = $('#content_'+ table_cell_id).parent();
+	el_td.css( "backgroundColor", table_cell_bgcolor);
+	table_cell_bgcolor = null;
+	// Close cell editor.
+	$.fancybox.close();
+	return false;
 }
 
 function table_cell_init()
@@ -3063,7 +3066,11 @@ function actionBtnClick(el, fct)
   }
 }
 
-$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+
+$(function(){
+	$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+	table_cell_init();
+});
 
 //-->
 </script>
@@ -3174,14 +3181,6 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 
 <input type="hidden" id="cols" value="<dtml-var table_cols>"/>
 <input type="hidden" id="rows" value="<dtml-var table_rows>"/>
-
-<script language="JavaScript">
-<!--//
-
-table_cell_init();
-
-//-->
-</script>
 
 </dtml-let>
 
@@ -3419,7 +3418,7 @@ table_cell_init();
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.3.0]]></item>
+            <item key="revision"><![CDATA[1.4.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

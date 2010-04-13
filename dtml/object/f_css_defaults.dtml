@@ -109,6 +109,11 @@ div.ZMSFile div.description, div.ZMSLinkElement div.description
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
+a.fancybox img {
+	padding:1px 1px 21px 1px;
+	background:#fff url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
+}
+
 div.ZMSGraphic {
 	background-color: #F8F8F8;
 	margin: 4px;
@@ -128,10 +133,12 @@ div.ZMSGraphic.center {
 
 div.ZMSGraphic.floatleft {
 	float:left;
+	margin-right:10px;
 }
 
 div.ZMSGraphic.floatright {
 	float:right;
+	margin-left:10px;
 }
 
 div.ZMSGraphic.center {

@@ -586,66 +586,6 @@ function getInnerDimensions( offset)
   }
 }
 
-function zmiImgZoomClose()
-{
-  var zmiImgZoomDiv = document.getElementById("zmiImgZoomDiv");
-  var zmiImgZoomImgDiv = document.getElementById( "zmiImgZoomImgDiv");
-  zmiImgZoomDiv.style.visibility = 'hidden';
-  zmiImgZoomDiv.style.display = 'none';
-  zmiImgZoomImgDiv.style.visibility = 'hidden';
-  zmiImgZoomImgDiv.style.display = 'none';
-}
-
-function zmiImgZoom(img_src, img_width, img_height)
-{
-  var zmiImgZoomDiv = document.getElementById("zmiImgZoomDiv");
-  var zmiImgZoomImg = document.getElementById( "zmiImgZoomImg");
-  var zmiImgZoomImgDiv = document.getElementById( "zmiImgZoomImgDiv");
-  if ( !zmiImgZoomDiv) {
-    zmiImgZoomDiv = document.createElement( "div");
-    zmiImgZoomDiv.setAttribute( "id", "zmiImgZoomDiv");
-    zmiImgZoomImgDiv = document.createElement( "div");
-    zmiImgZoomImgDiv.setAttribute( "id", "zmiImgZoomImgDiv");
-    zmiImgZoomImgDiv.setAttribute( "className", "form-small");
-    zmiImgZoomImgDiv.style.textAlign = "right";
-    a = document.createElement( "a");
-    a.setAttribute( "href", "#");
-    a.setAttribute( "title", "<dtml-var "getZMILangStr('BTN_CLOSE')">")
-    a.setAttribute( "className", "zmi");
-    a.onclick = Function("zmiImgZoomClose()");
-    a.appendChild( document.createTextNode( "<dtml-var "getZMILangStr('BTN_CLOSE')"> ["+String.fromCharCode(215)+"]"));
-    zmiImgZoomImgDiv.appendChild( a);
-    zmiImgZoomImgDiv.appendChild( document.createElement( "br"));
-    zmiImgZoomImg = document.createElement( "img");
-    zmiImgZoomImg.setAttribute( "id", "zmiImgZoomImg");
-    zmiImgZoomImg.setAttribute( "border", "0");
-    a = document.createElement( "a");
-    a.setAttribute( "href", "#");
-    a.onclick = Function("zmiImgZoomClose()");
-    a.appendChild( zmiImgZoomImg);
-    zmiImgZoomImgDiv.appendChild( a);
-    var body = document.getElementsByTagName('body')[0];
-    body.appendChild( zmiImgZoomDiv);
-    body.appendChild( zmiImgZoomImgDiv);
-  }
-  $(zmiImgZoomImg).attr( 'src', img_src);
-  $(zmiImgZoomDiv).css( {
-      'visibility':'visible', 
-      'display':'block', 
-      'position':'absolute', 
-      'top':0, 
-      'left':0, 
-      'width':'100%', 
-      'height':'100%'});
-  var dims = getInnerDimensions();
-  $(zmiImgZoomImgDiv).css( {
-      'visibility':'visible', 
-      'display':'block', 
-      'position':'absolute', 
-      'top':(dims.height - img_height) / 2, 
-      'left':(dims.width - img_width) / 2});
-}
-
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Calendar

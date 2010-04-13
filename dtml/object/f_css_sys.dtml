@@ -328,6 +328,8 @@ html>/**/body .zmi_footer select {
 
 div.zmiRenderShort {
 	padding: 3px;
+	overflow: hidden;
+	width:500px;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -703,8 +705,6 @@ body#zmiSitemap div.form-small {
  */
 
 .zmiDivOpaque {background-color:<dtml-var "get_colormap().get('zmiNeutralColorLight0','#F2F3EE')">;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;}
-#zmiImgZoomDiv {background-color:black;filter:Alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;}
-#zmiImgZoomImgDiv {background-color:white;border: 1px solid black;font-size: 11px;font-family: Arial, Helvetica, sans-serif;color: #000;}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Calendar

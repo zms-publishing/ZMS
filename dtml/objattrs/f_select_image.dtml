@@ -76,9 +76,8 @@
       <td align="right" valign="top">
        <dtml-try>
        <dtml-if "key.find('superres')<0 and value.getContentType().find('image')==0">
-       <div
+       <a href="<dtml-var "value.getHref(REQUEST)">" class="fancybox"
         ><img id="img_<dtml-var elName>" src="<dtml-var "value.getHref(REQUEST)">"
-          style="border:1px solid black; background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);"
           <dtml-if "max([int(value.width),int(value.height)])>80">
            <dtml-if "int(value.width)>int(value.height)">
             width="80"
@@ -89,11 +88,8 @@
            width="<dtml-var "value.width">"
            height="<dtml-var "value.height">"
           </dtml-if>
-        ></div>
-        <dtml-if "max([int(value.width),int(value.height)])>80">
-         <a href="javascript:zmiImgZoom('<dtml-var "value.getHref(REQUEST)">',<dtml-var "value.width">,<dtml-var "value.height">)"
-          ><img src="<dtml-var MISC_ZMS>zoom.gif" title="<dtml-var " getZMILangStr('BTN_ZOOM')">" border="0"></a>
-        </dtml-if>
+          title="<dtml-var " getZMILangStr('BTN_ZOOM')">"
+        ></a>
        <dtml-else>
         <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"
          ><img src="<dtml-var MISC_ZMS>download.gif" title="<dtml-var " getZMILangStr('BTN_DOWNLOAD')">" border="0"></a>

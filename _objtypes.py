@@ -147,7 +147,8 @@ class ObjTypes:
         except:
           displaytype = 'export_format'
       
-      #-- IMAGE-OBJECT  
+      # Image.
+      # ------
       img = self.getObjProperty(imgattr,REQUEST)
       imghires = None
       if imghiresattr is not None:
@@ -166,8 +167,8 @@ class ObjTypes:
         width = ''
         height = ''
         
-        # Image (HighRes).
-        # ----------------
+        # Image (HiRes).
+        # --------------
         if imghires is not None and imghires.get_size() != 0:
           s_url = getHref2Zoom(self,imghires,REQUEST)
           imgtag = ''
@@ -185,51 +186,30 @@ class ObjTypes:
         width = ''
         height = ''
         try:
-          max_width = self.getConfProperty('ZMSGraphic.zmi_max_width',360)
-          i_width = int(img.width)
+          max_width = self.getConfProperty('ZMSGraphic.zmi_max_width',480)
           i_height = int(img.height)
+          i_width = int(img.width)
           if imgthumb and i_width > max_width:
-            width = max_width
-            height = int(max_width*i_height/i_width)
+            i_height = int(max_width*i_height/i_width)
+            i_width = max_width
             imgzoomobj = img
             imgzoomattr = imgattr
-          width = str(i_width)+'px'
           height = str(i_height)+'px'
-          px2em = float(self.getConfProperty('ZMSGraphic.px2em',''))
-          width = str(i_width/px2em)+'em'
-          height = str(i_height/px2em)+'em'
+          width = str(i_width)+'px'
+          try:
+            px2em = float(self.getConfProperty('ZMSGraphic.px2em',''))
+            height = str(i_height/px2em)+'em'
+            width = str(i_width/px2em)+'em'
+          except:
+            pass
         except:
           pass
         
-        # Image (HighRes).
-        # ----------------
+        # Image (HiRes).
+        # --------------
         if not (imghires is None or imghires.get_size() == 0):
           imgzoomobj = imghires
           imgzoomattr = imghiresattr 
-        
-        # Zoom (Lupe).
-        # ------------
-        if len(imgzoomattr) > 0:
-          s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
-          s_content_type = getattr(imgzoomobj,'content_type','')
-          try:
-            if int(imgzoomobj.width) or int(imgzoomobj.height): pass
-            imgzoomclazz = 'zoom'
-          except:
-            imgzoomclazz = 'download'
-          imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),imgzoomobj.getDataSizeStr())
-          imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" alt="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt, imgzoomalt)
-          
-          # Zoom (SuperRes).
-          # ----------------
-          key = 'imgsuperres'
-          if key in self.getObjAttrs().keys() and self.getConfProperty('ZMSGraphic.superres',0)==1:
-            imgzoomobj = self.getObjProperty(key,REQUEST)
-            if imgzoomobj is not None:
-              s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
-              imgzoomclazz = 'superzoom'
-              imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'),imgzoomobj.getDataSizeStr())
-              imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" alt="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt, imgzoomalt)
         
         # Assemble img-tag.
         imgsrc = img.getHref(REQUEST)
@@ -249,16 +229,37 @@ class ObjTypes:
           imgtag += ' %s'%imgspecial
         imgtag += ' />'
         
-        # Image-URL.
+        # Image-Url.
         if imgurl is not None and len(imgurl) > 0:
           target = ''
           if imgurl is not None and not imgurl.find( REQUEST[ 'BASE0']) == 0:
             target = ' target="_blank"'
-          imgtag = '<a href="%s"%s>%s</a>'%(imgurl,target,imgtag)
+          text += self.getLangStr('HREF_MORE',REQUEST['lang'])%(' href="%s"'%imgurl+target)
         
-        # Image-Zoom.
-        if imgzoom is not None and len(imgzoom) > 0:
-          imgtag += imgzoom
+        # Zoom (HiRes).
+        # -------------
+        if len(imgzoomattr) > 0:
+          s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
+          imgzoomclazz = 'zoom'
+          imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),imgzoomobj.getDataSizeStr())
+          
+          # Zoom (SuperRes).
+          # ----------------
+          key = 'imgsuperres'
+          if key in self.getObjAttrs().keys() and self.getConfProperty('ZMSGraphic.superres',0)==1:
+            imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
+            imgzoomobj = self.getObjProperty(key,REQUEST)
+            if imgzoomobj is not None:
+              s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
+              imgzoomclazz = 'superzoom'
+              imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'),imgzoomobj.getDataSizeStr())
+              imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
+          
+          # Image-Zoom.
+          if imgzoom is not None and len(imgzoom) > 0:
+            imgtag += imgzoom
+          else:
+            imgtag = '<a href="%s" class="fancybox">%s</a>'%(imgzoomobj.getHref(REQUEST),imgtag)
       
       # Build <html>-presentation.
       dtml = HTMLFile('dtml/objattrs/displaytype/displaytype_%s'%displaytype, globals())

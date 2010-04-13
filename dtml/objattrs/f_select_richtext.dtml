@@ -59,7 +59,7 @@
  <dtml-if "REQUEST.get('richedit_fmt')">
   <td
    ><a href="#"
-      onclick="zmiStandardOnSubmitEventHandler(); zmiRichtextEditorShow('zmiRichtextEditor<dtml-var elName>','zmiStandardEditor<dtml-var elName>','<dtml-var "REQUEST.get('richedit_fmt').getId()">');"
+      onclick="zmiStandardOnSubmitEventHandler(); zmiRichtextEditorShow('zmiRichtextEditor<dtml-var elName>','zmiStandardEditor<dtml-var elName>','<dtml-var "REQUEST.get('richedit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
       onmouseover="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_hover.gif';"
       onmouseout="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_off.gif';"
       class="button"
@@ -83,7 +83,7 @@
 <script type="text/javascript">
 <!--//
 <dtml-comment> ***** RichText-Editor (switch) ***** </dtml-comment>
-function zmiRichtextEditorShow( show_id, hide_id, format)
+function zmiRichtextEditorShow( show_id, hide_id, format, callback)
   {
     $('#'+show_id).css( { display: "block", visibility: "visible"});
     $('#'+hide_id).css( { display: "none", visibility: "hidden"});
@@ -96,6 +96,9 @@ function zmiRichtextEditorShow( show_id, hide_id, format)
           }
         }
       }
+    }
+    if ( callback) {
+      callback.apply();
     }
   }
 //-->
@@ -110,7 +113,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format)
  ><dtml-if lang_str><td><div class="form-label">&nbsp;<strong><dtml-var lang_str></strong>&nbsp;</div></td></dtml-if
  ><td align="right"
   ><a href="#"
-      onclick="zmiRichtextOnSubmitEventHandler(); zmiRichtextEditorShow('zmiStandardEditor<dtml-var elName>','zmiRichtextEditor<dtml-var elName>','<dtml-var "REQUEST.get('htmledit_fmt').getId()">');"
+      onclick="zmiRichtextOnSubmitEventHandler(); zmiRichtextEditorShow('zmiStandardEditor<dtml-var elName>','zmiRichtextEditor<dtml-var elName>','<dtml-var "REQUEST.get('htmledit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
       onmouseover="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_off.gif';"
       onmouseout="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_hover.gif';"
       class="button"

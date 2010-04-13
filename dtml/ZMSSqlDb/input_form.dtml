@@ -31,7 +31,6 @@
 ><dtml-let row_=row
 
 ><dtml-unless "REQUEST.get('f_zmiInputFormJavaScript')"
-><script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.jec.min-0.5.2.js'></script
 ><script language="JavaScript"
 ><!--//
 
@@ -468,11 +467,13 @@
         </dtml-in>
        </select>
        <dtml-if "fk.get('editable')">
-        <script language="JavaScript">
-        <!--// 
-          $('#<dtml-var elName>').editableCombobox(); 
-        //-->
-        </script>
+		<script type="text/javascript">
+		$(function(){
+			pluginJEC('#<dtml-var elName>',function() {
+				$('#<dtml-var elName>').editableCombobox();
+			});
+		});
+		</script>
        </dtml-if>
       </dtml-if>
      <dtml-comment>

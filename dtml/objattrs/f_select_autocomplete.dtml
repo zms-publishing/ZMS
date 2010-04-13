@@ -16,17 +16,6 @@
 *******************************************************************************
 </dtml-comment>
 
-<dtml-unless "REQUEST.get('f_selectAutocompleteShow',False)">
-<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.bgiframe.min.js'></script>
-<!--<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.dimensions.js'></script>-->
-<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.ajaxQueue.js'></script>
-<script type='text/javascript' src='<dtml-var MISC_ZMS>thickbox-compressed.js'></script>
-<script type='text/javascript' src='<dtml-var MISC_ZMS>jquery.autocomplete.min.js'></script>
-<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>jquery.autocomplete.css" />
-<link rel="stylesheet" type="text/css" href="<dtml-var MISC_ZMS>thickbox.css" />
-<dtml-call "REQUEST.set('f_selectAutocompleteShow',True)">
-</dtml-unless>
-
 <dtml-comment>
 ################################################################################
 ### Multi-Autocomplete
@@ -35,23 +24,24 @@
 <dtml-if "type=='multiautocomplete'">
 
 <script type="text/javascript">
-$().ready(function() {
-
-	$("#_<dtml-var elName>").autocomplete("ajaxGetObjOptions", {
-		extraParams: {'key':'<dtml-var key>','meta_id':'<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">'},
-		width: $("#_<dtml-var elName>").css( "width"),
-		selectFirst: false
+$(function(){
+	pluginAutocomplete('#_<dtml-var elName>',function() {
+		$("#_<dtml-var elName>").autocomplete("ajaxGetObjOptions", {
+			extraParams: {'key':'<dtml-var key>','meta_id':'<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">'},
+			width: function() { return this.css( "width");},
+			selectFirst: false
+		});
+		$("#_<dtml-var elName>").result(function(event, data, formatted) {
+			if (data) {
+				$(this).val('');
+				appendToMultiselect(document.getElementById('<dtml-var elName>'),data);
+			}
+		});
 	});
-	$("#_<dtml-var elName>").result(function(event, data, formatted) {
-		if (data)
-			$(this).val('');
-			appendToMultiselect(document.getElementById('<dtml-var elName>'),data);
-	});
-
 });
 </script>
 
-  <dtml-var "getTextInput(fmName=fmName,elName='_%s'%elName,size=20,value='',enabled=enabled,REQUEST=REQUEST,css=css,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
+  <dtml-var "getTextInput(fmName=fmName,elName='_%s'%elName,size=20,value='',enabled=enabled,REQUEST=REQUEST,css=css+' '+type,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
   <a href="javascript:if ($('#_<dtml-var elName>').val().length>0) {var v=$('#_<dtml-var elName>').val();$('#_<dtml-var elName>').val('');appendToMultiselect(document.getElementById('<dtml-var elName>'),v);}"
    ><img 
       class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
@@ -90,20 +80,20 @@ $().ready(function() {
 
 <script type="text/javascript">
 $().ready(function() {
-
-	$("#<dtml-var elName>").autocomplete("ajaxGetObjOptions?key=<dtml-var key>&meta_id=<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">", {
-		width: $("#<dtml-var elName>").css( "width"),
-		selectFirst: false
+	pluginAutocomplete('#<dtml-var elName>',function() {
+		$("#<dtml-var elName>").autocomplete("ajaxGetObjOptions?key=<dtml-var key>&meta_id=<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">", {
+			width: $("#<dtml-var elName>").css( "width"),
+			selectFirst: false
+		});
+		$("#<dtml-var elName>").result(function(event, data, formatted) {
+			if (data)
+				$(this).parent().next().find("input").val(data[1]);
+		});
 	});
-	$("#<dtml-var elName>").result(function(event, data, formatted) {
-		if (data)
-			$(this).parent().next().find("input").val(data[1]);
-	});
-
 });
 </script>
 
-  <dtml-var "getTextInput(fmName=fmName,elName=elName,size=20,value=value,enabled=enabled,REQUEST=REQUEST,css=css,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
+  <dtml-var "getTextInput(fmName=fmName,elName=elName,size=20,value=value,enabled=enabled,REQUEST=REQUEST,css=css+' '+type,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
 
 <dtml-comment>
 ################################################################################

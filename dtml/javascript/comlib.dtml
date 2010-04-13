@@ -548,6 +548,9 @@ function zmiRicheditInsertTab( fmName, elName)
 function setTextFormatInput( fTag, fmName, elName, lang) 
 {
   self.el = document.forms[ fmName].elements[ elName];
+  if (typeof self.el == 'undefined') {
+    self.el = document.getElementsByName(elName)[0];
+  }
   setTextFormat( fTag, '<', '>', lang);
 }
 

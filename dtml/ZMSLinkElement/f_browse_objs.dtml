@@ -188,25 +188,12 @@
    */
   function selectObject(url, anchor, title) 
   {
-  <dtml-if "len(REQUEST.get('fmName',''))>0">
+   <dtml-if fmName>
      var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
      if ( fm) {
        var path = getInternalUrl(url);
        var elUrl = fm.elements['<dtml-var elUrlName>'];
-       var elTitle = fm.elements['<dtml-var elTitleName>'];
        elUrl.value = path;
-       <dtml-if "len(REQUEST.get('elTitleName',''))>0">
-       if (title.length > 0) {
-         b = true;
-         if (elTitle.value.length > 0 && elTitle.value != title) {
-           msg = '<dtml-var "getZMILangStr('MSG_REPLACE')">';
-           msg = msg.substring(0,msg.indexOf('%s')) + elTitle.value + msg.substring(msg.indexOf('%s')+2);
-           msg = msg.substring(0,msg.indexOf('%s')) + title + msg.substring(msg.indexOf('%s')+2);
-           b = confirm(msg);
-         }
-         if (b) elTitle.value = title;
-       }
-       </dtml-if>
      }
      else {
        self.parent.opener.selectObject(url,title);
@@ -214,10 +201,12 @@
    <dtml-else>
      var el_type = document.getElementById('type');
      var v_type = el_type.options[ el_type.selectedIndex].value;
-     if (v_type.indexOf('dtml')==0)
+     if (v_type.indexOf('dtml')==0) {
        url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
-     else
+     }
+     else {
        url = getRelativeUrl(url,anchor);
+     }
      self.parent.opener.selectObject(url,title);
    </dtml-if>
     self.parent.close();
@@ -296,7 +285,7 @@ function processResponse(data)
     var page_index = "";
     if ( page_is_pageelement) {
       var page_file_filename = $("file>filename",page);
-      if (page_file_filename) {
+      if (page_file_filename.length) {
         page_anchor = "/" + page_file_filename.text();
       }
       else {
@@ -353,7 +342,6 @@ function followHref( href, extra)
   href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
   href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
   href += '&elUrlName=<dtml-var "REQUEST.get( 'elUrlName', '')" url_quote>';
-  href += '&elTitleName=<dtml-var "REQUEST.get( 'elTitleName', '')" url_quote>';
   href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
   if ( extra) {
     href += extra;
@@ -439,7 +427,7 @@ function followHref( href, extra)
            path = path.substr( 0, i) + '/' + path.substr( i + 1);
          }
        }
-      <dtml-if "len(REQUEST.get('fmName',''))>0">
+      <dtml-if fmName>
        var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
        if ( fm) {
          var elUrl = fm.elements['<dtml-var elUrlName>'];
@@ -456,15 +444,14 @@ function followHref( href, extra)
 
    //-->
    </script>
-   <dtml-var "REQUEST.get('elTitleName','')">
    <select class="form-small" id="type" name="type" onchange="typeChange(this)">
     <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> ---</option>
     <option value="dtml">DTML</option>
     <option value="file://"><dtml-var "getZMILangStr('ATTR_FILE')"></option>
     <option value="mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"></option>
-    <dtml-if "len(REQUEST.get('fmName','')) == 0">
+    <dtml-unless fmName>
      <option value="antispam|mailto:"><dtml-var "getZMILangStr('ATTR_EMAIL')"> (Anti-Spam)</option>
-    </dtml-if>
+    </dtml-unless>
     <option value="http://">http:</option>
     <option value="https://">https:</option>
     <option value="ftp://">ftp:</option>
@@ -569,7 +556,7 @@ function followHref( href, extra)
   ><dtml-with ob
    ><dtml-let index=sequence-index ob_access="hasAccess(REQUEST)" has_children="len(getChildNodes(REQUEST))>0"
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
-    ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
+    ><dtml-in "range( ob_level, last_level + 1)"></div></dtml-in
     ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"
     ><dtml-if "ob_access and has_children"
      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
@@ -620,7 +607,7 @@ function followHref( href, extra)
    ></dtml-let
   ></dtml-with
  ></dtml-in
- ><dtml-in "_.range( last_level + 1)"></div></dtml-in
+ ><dtml-in "range( last_level + 1)"></div></dtml-in
 ></dtml-let>
 </form>
  

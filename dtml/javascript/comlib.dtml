@@ -232,8 +232,9 @@ function fireEvent( el, evtName) {
 
 var selectedText = "";
 
-/**
+/*
  * manage_browseObjsBtnClick:
+ * @param elTitleName (@deprecated)
  */
 function manage_browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
 {
@@ -248,7 +249,6 @@ function manage_browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
   params += '&fmName=' + escape( fmName);
   params += '&elUrlName=' + escape( elUrlName);
   params += '&elUrlValue=' + escape( elUrlValue);
-  params += '&elTitleName=' + escape( elTitleName);
   if ( selectedText) {
     params += '&selectedText=' + escape( selectedText);
   }
@@ -256,8 +256,9 @@ function manage_browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
   return false;
 }
 
-/**
+/*
  * browseObjsBtnClick:
+ * @param elTitleName (@deprecated)
  */
 function browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
 {
@@ -272,7 +273,6 @@ function browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
   params += '&fmName=' + escape( fmName);
   params += '&elUrlName=' + escape( elUrlName);
   params += '&elUrlValue=' + escape( elUrlValue);
-  params += '&elTitleName=' + escape( elTitleName);
   if ( selectedText) {
     params += '&selectedText=' + escape( selectedText);
   }
@@ -487,7 +487,7 @@ function setTextFormat( fTag, ld, rd, lang)
     return;
   if ( !untagSelectedText( fTag, fAttrs, ld, rd, lang)) {
     if (fTag == 'a' && selectedText.indexOf('http://') < 0 && selectedText.indexOf('@') < 0) {
-      if ( input.form)
+      if ( self.fm)
         browseObjsBtnClick('','','',lang);
       else
         browseObjsBtnClick('None','','',lang);
@@ -547,7 +547,8 @@ function zmiRicheditInsertTab( fmName, elName)
  */
 function setTextFormatInput( fTag, fmName, elName, lang) 
 {
-  self.el = document.forms[ fmName].elements[ elName];
+  self.fm = document.forms[ fmName];
+  self.el = self.fm.elements[ elName];
   if (typeof self.el == 'undefined') {
     self.el = document.getElementsByName(elName)[0];
   }

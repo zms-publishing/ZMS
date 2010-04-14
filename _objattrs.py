@@ -1286,8 +1286,8 @@ class ObjAttrsManager:
           dct['name'] = attr.get('name','?')
           dct['type'] = attr['type']
           dct['key'] = attr['id']
-          dct['xml'] = attr['id'] not in ['created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','change_history','master_version','major_version','minor_version']
-          dct['lang_inherit'] = attr['id'] not in ['change_uid','change_dt','work_uid','work_dt']
+          dct['xml'] = attr['id'] not in ['created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
+          dct['lang_inherit'] = attr['id'] not in ['change_uid','change_dt','work_uid','work_dt','internal_dict']
           dct['datatype'] = attr['type']
           if attr['type'] in ['autocomplete','password','select']:
             dct['type'] = attr['type']
@@ -1358,6 +1358,8 @@ class ObjAttrsManager:
         # Workflow
         { 'id':'work_uid','type':'string', 'multilang':1},
         { 'id':'work_dt','type':'datetime', 'multilang':1},
+        # Internal dictionary
+        { 'id':'internal_dict', 'type':'dictionary', 'default':{}},
       ]
       for attr in defaults:
         dct = self.synchronizeObjAttr( attr)

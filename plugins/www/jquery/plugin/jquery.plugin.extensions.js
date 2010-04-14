@@ -44,7 +44,7 @@ function pluginFancybox(s, c) {
 function pluginAutocomplete(s, c) {
 	$.plugin('autocomplete',{
 		files: ['/++resource++zms_/jquery/autocomplete/jquery.bgiframe.min.js',
-				'/++resource++zms_/jquery.dimensions.1.2.0.min.js',
+				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js',
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.min.js',
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.css']
 	});

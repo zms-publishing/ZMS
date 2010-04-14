@@ -1484,8 +1484,8 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-03-11:zms2-2.12.1-20
 [1323] Applied fix for url replication (reported by kpoh). 
 --------------------------------------------------
-2010-04-13:zms2-2.12.1-21
-[1324] Added support for lazy loaded jQuery Plugins.
+2010-04-13:zms2-2.12.1-970
+[968-970] Added support for lazy loaded jQuery Plugins.
  
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++ IMPORTANT NOTE: @see http://www.zms-publishing.com/news/04_10_jquery_plugins for details!

@@ -614,7 +614,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.operator_delitem:
     # --------------------------------------------------------------------------
-    def operator_delitem(self, a):
+    def operator_delitem(self, a, b):
       """
       Delete key from python-dictionary.
       @param a: Dictionary
@@ -622,7 +622,7 @@ class ZMSGlobals:
       @param b: Key
       @type b: C{any}
       """
-      del a
+      operator.delitem(a, b)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.operator_setattr:

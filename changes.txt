@@ -1491,3 +1491,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 +++ IMPORTANT NOTE: @see http://www.zms-publishing.com/news/04_10_jquery_plugins for details!
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 --------------------------------------------------
+2010-04-13:zms2-2.12.1-971
+[971] Applied fix for ZMSGlobals.operator_delitem(): use 'operator.delitem(a,b)' instead of 'del a'.
+--------------------------------------------------

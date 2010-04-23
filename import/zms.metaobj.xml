@@ -1828,7 +1828,7 @@ function remoteResponseTimedout() {
   <img src="<dtml-var "getObjProperty('attr_img_src',REQUEST)">" border="0" alt="" align="absmiddle"/>
   <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "getObjProperty('attr_type',REQUEST)=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
   </div>
-  <dtml-if title><div class="text"><dtml-var title></div></dtml-if>
+  <dtml-if "title and title!=titlealt"><div class="text"><dtml-var title></div></dtml-if>  
   <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
  </div>
 

@@ -1493,4 +1493,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 --------------------------------------------------
 2010-04-13:zms2-2.12.1-971
 [971] Applied fix for ZMSGlobals.operator_delitem(): use 'operator.delitem(a,b)' instead of 'del a'.
+2010-04-23:zms2-2.12.1-972
+[972] Applied fix for ZMSLinkElement: using attr_url() to generate PUBMED-Links (reported by onkodin).
 --------------------------------------------------

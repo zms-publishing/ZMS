@@ -1808,7 +1808,7 @@ function remoteResponseTimedout() {
 <dtml-let
   title="getObjProperty('title',REQUEST)"
   titlealt="getObjProperty('titlealt',REQUEST)"
-  ref="getObjProperty('attr_ref',REQUEST)"
+  ref="getObjProperty('attr_url',REQUEST)"
   align="getObjProperty('align',REQUEST)"
   displaytype="getObjProperty('displaytype',REQUEST)"
   abstract="getObjProperty('attr_abstract',REQUEST)"
@@ -1879,7 +1879,7 @@ function remoteResponseTimedout() {
             <item key="id"><![CDATA[ZMSLinkElement]]></item>
             <item key="name"><![CDATA[ZMSLinkElement]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.0.1]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

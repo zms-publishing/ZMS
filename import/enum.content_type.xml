@@ -4,6 +4,7 @@
 <item key="text/html">HTML</item>
 <item key="text/html; charset=utf-8">HTML (UTF-8)</item>
 <item key="image/jpeg">JPEG</item>
+<item key="application/epub+zip">Epub</item>
 <item key="application/x-excel">MS Excel</item>
 <item key="application/x-ms-reader">MS Reader</item>
 <item key="application/msword">MS Word</item>

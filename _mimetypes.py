@@ -24,6 +24,7 @@
 
 """ Globals. """
 
+application_epub = "mime_type.application_epub+zip.gif"
 application_msaccess = "mime_type.application_msaccess.gif"
 application_mspowerpoint = "mime_type.application_mspowerpoint.gif"
 application_msword = "mime_type.application_msword.gif"
@@ -56,13 +57,14 @@ text_xsl = "mime_type.text_xsl.gif"
 video_basic = "mime_type.video_basic.gif"
 
 dctMimeType = {
-	 'application/mspowerpoint':application_mspowerpoint
+	 'application/epub+zip':application_epub
+	,'application/mspowerpoint':application_mspowerpoint
 	,'application/vnd.ms-access':application_msaccess
 	,'application/vnd.ms-excel':application_x_excel
 	,'application/vnd.ms-powerpoint':application_mspowerpoint
-  ,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
-  ,'application/vnd.openxmlformats-officedocument.presentationml.presentation':application_pptx
-  ,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':application_xlsx
+	,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
+	,'application/vnd.openxmlformats-officedocument.presentationml.presentation':application_pptx
+	,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':application_xlsx
 	,'application/msword':application_msword
 	,'application/octet-stream':application_octet_stream
 	,'application/pdf':application_pdf

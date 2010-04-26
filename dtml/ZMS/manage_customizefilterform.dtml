@@ -395,7 +395,7 @@
             <td class="form-small" nowrap="nowrap">
              <table cellspacing="1" cellpadding="0" border="0">
              <dtml-let process="getProcess(filterProcess['id'])">
-             <dtml-if "process.get('type','process') == 'DTML Method' or 
+             <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or 
                        process.get('command','').find('{trans}')>=0">
               <tr>
                <td class="form-small" nowrap="nowrap"><b>{trans}</b></td>
@@ -791,8 +791,8 @@
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td width="20" rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var "process['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
       <td>
-       <dtml-if "process.get('type','process') == 'DTML Method'">
-        <img src="/misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle"/>
+       <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)']">
+        <img src="<dtml-var "getattr(this(),process['id']).icon">" title="<dtml-var "process['type']">" border="0" align="absmiddle"/>
        <dtml-else>
         <img src="<dtml-var MISC_ZMS>process.gif" title="process" border="0" align="absmiddle"/>
        </dtml-if>
@@ -834,8 +834,8 @@
       <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
        <td class="form-small"><input class="form-element" type="radio" name="id" value="<dtml-var "process['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
        <td class="form-small" nowrap="nowrap">
-        <dtml-if "process.get('type','process') == 'DTML Method'">
-         <img src="/misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle"/>
+        <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)']">
+         <img src="<dtml-var "getattr(this(),process['id']).icon">" title="<dtml-var "process['type']">" border="0" align="absmiddle"/>
         <dtml-else>
          <img src="<dtml-var MISC_ZMS>process.gif" title="process" border="0" align="absmiddle"/>
         </dtml-if>
@@ -889,6 +889,7 @@
       <option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_TYPE')"> ----- </option>
       <option value="process"><dtml-var "getZMILangStr('ATTR_COMMANDLINE')"></option>
       <option value="DTML Method">DTML Method</option>
+      <option value="Script (Python)">Script (Python)</option>
      </select>
     <tr><td align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td></tr>
     </table>

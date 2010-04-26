@@ -25,6 +25,10 @@
 from __future__ import nested_scopes
 from App.Common import package_home
 from App.special_dtml import HTMLFile
+from Products.ExternalMethod import ExternalMethod
+from Products.PageTemplates import ZopePageTemplate
+from Products.PythonScripts import PythonScript
+from Products.ZSQLMethods import SQL
 import ZPublisher.HTTPRequest
 import copy
 import os
@@ -145,21 +149,45 @@ def getRawProcesses(self):
 # ------------------------------------------------------------------------------
 def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCommand=None, zms_system=0):
   if newCommand is None:
-    if newType == 'DTML Method':
-      newCommand = []
-      newCommand.append( '<!-- BO %s -->\n\n'%newId)
-      newCommand.append( '<!-- EO %s -->\n'%newId)
-      newCommand = ''.join( newCommand)
-    else:
-      newCommand = ''
+    newCommand = ''
+    if newType in [ 'DTML Method']:
+      newCommand += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
+      newCommand += '\n'
+      newCommand += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
+    elif newType in [ 'Script (Python)']:
+      newCommand += '# --// BO '+ newId + ' //--\n'
+      newCommand += '# Example code:\n'
+      newCommand += '\n'
+      newCommand += '# Import a standard function, and get the HTML request and response objects.\n'
+      newCommand += 'from Products.PythonScripts.standard import html_quote\n'
+      newCommand += 'request = container.REQUEST\n'
+      newCommand += 'RESPONSE =  request.RESPONSE\n'
+      newCommand += '\n'
+      newCommand += '# Return a string identifying this script.\n'
+      newCommand += 'print "This is the", script.meta_type, \'"%s"\' % script.getId(),\n'
+      newCommand += 'if script.title:\n'
+      newCommand += '    print "(%s)" % html_quote(script.title),\n'
+      newCommand += 'print "in", container.absolute_url()\n'
+      newCommand += 'return printed\n'
+      newCommand += '\n'
+      newCommand += '# --// EO '+ newId + ' //--\n'
   # Set method.
-  if newType == 'DTML Method':
-    container = self.getHome()
-    if newId in container.objectIds([newType]):
-      dtml_method = getattr( container, newId)
-      dtml_method.manage_edit( newName, newCommand)
-    else:
+  container = self.getHome()
+  if newType in [ 'DTML Method']:
+    if newId not in container.objectIds([newType]):
       container.manage_addDTMLMethod( newId, newName, newCommand)
+    newOb = getattr( container, newId)
+    newOb.manage_edit( newName, newCommand)
+    roles=[ 'Manager']
+    newOb._proxy_roles=tuple(roles)
+  elif newType in [ 'Script (Python)']:
+    if newId not in container.objectIds([newType]):
+      PythonScript.manage_addPythonScript( container, newId)
+    newOb = getattr( container, newId)
+    newOb.ZPythonScript_setTitle( newName)
+    newOb.write(newCommand)
+    roles=[ 'Manager']
+    newOb._proxy_roles=tuple(roles)
   # Set.
   obs = getRawProcesses(self)
   ob = {}
@@ -187,11 +215,11 @@ def delProcess(self, id):
   for key in cp.keys():
     if key == id:
       # Delete method.
-      if cp[key].get('type','') == 'DTML Method':
+      if cp[key].get('type','') in [ 'DTML Method', 'External Method', 'Script (Python)']:
         container = self.getHome()
         dtml_method = getattr( container, id, None)
         if dtml_method is not None:
-          container.manage_delObjects( ids = [ id])
+          container.manage_delObjects( ids=[id])
     else:
       obs[key] = cp[key]
   # Set attribute.
@@ -585,7 +613,7 @@ class FilterItem:
         if trans is not None and trans != '':
           transfilename = '%s/%s'%( folder, trans.getFilename())
           _fileutil.exportObj( trans.getData(), transfilename)
-        if processType == 'DTML Method':
+        if processType in [ 'DTML Method', 'External Method', 'Script (Python)']:
           filename = processMethod(self, processId, filename, trans, REQUEST)
         else:
           filename = processFile(self, processId, filename, trans)
@@ -645,10 +673,13 @@ class FilterManager:
       process['id'] = id
       # Synchronize type.
       try:
-        if process.get('type') == 'DTML Method':
-          container = self.getHome()
+        container = self.getHome()
+        if process.get('type') in [ 'DTML Method']:
           ob = getattr( container, process['id'])
           process['command'] = ob.raw
+        elif process.get('type') in [ 'Script (Python)']:
+          ob = getattr( container, process['id'])
+          process['command'] = ob.read()
       except:
         pass
       return process

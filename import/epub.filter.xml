@@ -20,7 +20,12 @@
               <list>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="file"/>
+                    <item key="file" type="file">
+                      
+<data content_type="text/css" filename="style.css" type="file"><![CDATA[body {
+	font-family: Arial, Helvetica, sans-serif;
+}]]></data>
+                    </item>
                     <item key="id"><![CDATA[epub_process]]></item>
                   </dictionary>
                 </item>
@@ -72,6 +77,7 @@ for ob in [context]+context.filteredChildNodes( REQUEST, context.PAGES):
   xml.append(ob.getXmlHeader())
   xml.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
   xml.append('<head>')
+  xml.append('<link rel="stylesheet" type="text/css" href="css/style.css" />')
   xml.append('</head>')
   xml.append('<body>')
   xml.append(ob.getBodyContent( REQUEST).replace(base_url,''))
@@ -138,6 +144,12 @@ xml.append('</container>')
 filepath = '%s/META-INF/container.xml'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
 context.localfs_write( filepath, '\n'.join(xml))
+
+# Convert transition to css.
+css = REQUEST['ZMS_FILTER_TRANS'].getData()
+filepath = '%s/css/style.css'%(tempfolder)
+context.writeStdout( '[epub_process]: %s'%filepath)
+context.localfs_write( filepath, css)
 
 # Build zip-archive
 zip = context.buildZipArchive( tempfolder+'/*')

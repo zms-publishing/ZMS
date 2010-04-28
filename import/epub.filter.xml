@@ -68,9 +68,10 @@ print tempfolder
 base_url = context.absolute_url()[len(REQUEST['BASE0']):]+'/'
 c = 0
 items = []
-for ob in [context]+context.filteredChildNodes( REQUEST, context.PAGES):
+imgs = []
+for ob in [context]+context.filteredTreeNodes( REQUEST, context.PAGES):
   id = 'main%i'%len(items)
-  href = id+'.xml'
+  href = id+'.xhtml'
   filepath = '%s/%s'%(tempfolder,href)
   print ob.absolute_url(), filepath
   xml = []
@@ -80,14 +81,21 @@ for ob in [context]+context.filteredChildNodes( REQUEST, context.PAGES):
   xml.append('<link rel="stylesheet" type="text/css" href="css/style.css" />')
   xml.append('</head>')
   xml.append('<body>')
-  xml.append(ob.getBodyContent( REQUEST).replace(base_url,''))
+  bodyContent = ob.getBodyContent( REQUEST).replace(base_url,'')
+  for img in bodyContent.split('<img'):
+    src = img[img.find(' src="'):]
+    src = src[src.find('"')+1:]
+    src = src[:src.find('"')]
+    if src and src not in imgs:
+      imgs.append(src)
+  xml.append(bodyContent)
   xml.append('</body>')
   xml.append('</html>')
   context.writeStdout('[epub_process]: %s'%filepath)
   context.localfs_write( filepath, '\n'.join(xml))
-  items.append({'id':id,'href':href,'titlealt':ob.getTitlealt(REQUEST),})
+  items.append({'id':id,'href':href,'titlealt':ob.getTitlealt(REQUEST),'level':ob.getLevel(),})
 
-# Generate content.ncx (Table of Contents)
+# Generate toc.ncx (Table of Contents)
 xml = []
 xml.append(context.getXmlHeader())
 xml.append('<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">')
@@ -100,15 +108,21 @@ xml.append('<docTitle>')
 xml.append('<text>%s</text>'%(context.getTitle(REQUEST)))
 xml.append('</docTitle>')
 xml.append('<navMap>')
-xml.append('\n'.join(map(lambda x: '<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id'])
-  +'<navLabel>\n'
-  +'<text>%s</text>\n'%(items[x]['titlealt'])
-  +'<content src="%s"/>\n'%(items[x]['href'])
-  +'</navLabel>\n'
-  +'</navPoint>', range(len(items)))))
+start_level = context.getLevel()
+last_level = start_level - 1
+for x in range(len(items)):
+  level = items[x]['level']
+  xml.extend(map(lambda x: '</navPoint>', range(last_level-level+1)))
+  xml.append('<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id']))
+  xml.append('<navLabel>')
+  xml.append('<text>%s</text>\n'%(items[x]['titlealt']))
+  xml.append('<content src="%s"/>\n'%(items[x]['href']))
+  xml.append('</navLabel>')
+  last_level = level
+xml.extend(map(lambda x: '</navPoint>', range(last_level-start_level+1)))
 xml.append('</navMap>')
 xml.append('</ncx>')
-filepath = '%s/content.ncx'%(tempfolder)
+filepath = '%s/toc.ncx'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
 context.localfs_write( filepath, '\n'.join(xml))
 
@@ -123,7 +137,17 @@ xml.append('<manifest>')
 xml.append('<!-- Content Documents -->')
 xml.append('\n'.join(map(lambda x: '<item id="%s" href="%s" media-type="application/xhtml+xml"/>'%(x['id'],x['href']), items)))
 xml.append('<!-- Table of Contents -->')
-xml.append('<item id="ncx" href="content.ncx" media-type="application/x-dtbncx+xml"/>')
+xml.append('<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>')
+xml.append('<!-- CSS Style Sheets -->')
+xml.append('<item id="style-css" href="css/style.css" media-type="text/css"/>')
+xml.append('<!-- Images (TODO!) -->')
+for src in imgs:
+  id = src
+  id = id[:id.rfind('/')]
+  id = id[id.rfind('/')+1:]
+  ext = src[src.rfind('.')+1:]
+  media_type = {'gif':'image/gif','jpg':'image/jpeg','png':'image/png',}[ext]
+  xml.append('<item id="%s-%s" href="%s" media-type="%s"/>'%(id,ext,src,media_type))
 xml.append('</manifest>')
 xml.append('<spine toc="ncx">')
 xml.append('\n'.join(map(lambda x: '<itemref idref="%s" linear="yes"/>'%(x['id']), items)))

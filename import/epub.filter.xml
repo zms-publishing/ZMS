@@ -112,13 +112,14 @@ start_level = context.getLevel()
 last_level = start_level - 1
 for x in range(len(items)):
   level = items[x]['level']
-  xml.extend(map(lambda x: '</navPoint>', range(last_level-level+1)))
-  xml.append('<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id']))
-  xml.append('<navLabel>')
-  xml.append('<text>%s</text>\n'%(items[x]['titlealt']))
-  xml.append('<content src="%s"/>\n'%(items[x]['href']))
-  xml.append('</navLabel>')
-  last_level = level
+  if level <= 2:
+    xml.extend(map(lambda x: '</navPoint>', range(last_level-level+1)))
+    xml.append('<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id']))
+    xml.append('<navLabel>')
+    xml.append('<text>%s</text>\n'%(items[x]['titlealt']))
+    xml.append('<content src="%s"/>\n'%(items[x]['href']))
+    xml.append('</navLabel>')
+    last_level = level
 xml.extend(map(lambda x: '</navPoint>', range(last_level-start_level+1)))
 xml.append('</navMap>')
 xml.append('</ncx>')
@@ -132,6 +133,19 @@ xml.append(context.getXmlHeader())
 xml.append('<package version="2.0" unique-identifier="PrimaryID" xmlns="http://www.idpf.org/2007/opf">')
 xml.append('<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">')
 xml.append('<dc:title>%s</dc:title>'%(context.getTitle(REQUEST)))
+xml.append('<dc:identifier id="dcidid" opf:scheme="URI">%s</dc:identifier>'%(context.absolute_url()))
+for key in context.getObjAttrs().keys():
+  dc_key = None
+  if key.startswith('attr_dc_'):
+    dc_key = 'dc:'+key[len('attr_dc_'):]
+  if key.startswith('dc_'):
+    dc_key = 'dc:'+key[len('dc_'):]
+  if dc_key:
+    value = context.getObjProperty(key,REQUEST)
+    if value:
+      context.writeStdout( '[epub_process]: %s'%dc_key)
+      obj_attr = context.getObjAttr( key)
+      xml.append('<%s>%s</%s>'%(dc_key,str(value),dc_key))
 xml.append('</metadata>')
 xml.append('<manifest>')
 xml.append('<!-- Content Documents -->')
@@ -140,7 +154,7 @@ xml.append('<!-- Table of Contents -->')
 xml.append('<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>')
 xml.append('<!-- CSS Style Sheets -->')
 xml.append('<item id="style-css" href="css/style.css" media-type="text/css"/>')
-xml.append('<!-- Images (TODO!) -->')
+xml.append('<!-- Images -->')
 for src in imgs:
   id = src
   id = id[:id.rfind('/')]

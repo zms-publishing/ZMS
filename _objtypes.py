@@ -247,9 +247,10 @@ class ObjTypes:
           # ----------------
           key = 'imgsuperres'
           if key in self.getObjAttrs().keys() and self.getConfProperty('ZMSGraphic.superres',0)==1:
-            imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
-            imgzoomobj = self.getObjProperty(key,REQUEST)
-            if imgzoomobj is not None:
+            imgsuperzoomobj = self.getObjProperty(key,REQUEST)
+            if imgsuperzoomobj is not None:
+              imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
+              imgzoomobj = imgsuperzoomobj
               s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
               imgzoomclazz = 'superzoom'
               imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'),imgzoomobj.getDataSizeStr())

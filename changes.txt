@@ -1479,7 +1479,7 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 --------------------------------------------------
 2010-03-11:zms2-2.12.1-19
 [1321] Applied fix for ZMI action-lists in Safari (xmachina 0023506). 
-[1322] Applied fix for langunage conformant linking with XStandard editor (requested by DESY)
+[1322] Applied fix for language conformant linking with XStandard editor (requested by DESY)
 --------------------------------------------------
 2010-03-11:zms2-2.12.1-20
 [1323] Applied fix for url replication (reported by kpoh). 
@@ -1503,4 +1503,7 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 --------------------------------------------------
 2010-04-26:zms2-2.12.1-975
 [975] Added prototype for epub export-filter (@see epub-reader for Firefox http://www.epubread.com/de/).
+--------------------------------------------------
+2010-05-02:zms2-2.12.1-995
+[995] Applied fix for zoom-conditions.
 --------------------------------------------------

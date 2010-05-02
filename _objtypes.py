@@ -163,13 +163,13 @@ class ObjTypes:
       imgzoom = ''
       
       #-- IMAGE-PROPERTIES 
-      if img is None or img.get_size() == 0:
+      if img is None or img.get_real_size() == 0:
         width = ''
         height = ''
         
         # Image (HiRes).
         # --------------
-        if imghires is not None and imghires.get_size() != 0:
+        if imghires is not None and imghires.get_real_size() != 0:
           s_url = getHref2Zoom(self,imghires,REQUEST)
           imgtag = ''
           imgtag += '<div class="caption">'
@@ -207,7 +207,7 @@ class ObjTypes:
         
         # Image (HiRes).
         # --------------
-        if not (imghires is None or imghires.get_size() == 0):
+        if not (imghires is None or imghires.get_real_size() == 0):
           imgzoomobj = imghires
           imgzoomattr = imghiresattr 
         

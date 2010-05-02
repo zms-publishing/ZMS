@@ -17,10 +17,11 @@
 <dtml-let zt0="DateTime().timeTime()" metaobjIds="getMetaobjIds()" obj_attrs="[]" vs="{}">
 
  <dtml-in "metaObj['attrs']" mapping
-  ><dtml-let obj_attr="getObjAttr(id)"
+  ><dtml-let obj_attr="getObjAttr(id).copy()"
    ><dtml-if custom
     ><dtml-unless sequence-start
      ><dtml-unless "type in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes or id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')"
+      ><dtml-call "operator_setitem(obj_attr,'type',type)"
       ><dtml-call "obj_attrs.append(obj_attr)"
      ></dtml-unless
     ></dtml-unless

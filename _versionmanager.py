@@ -100,8 +100,7 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
       if ((lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory()) or not has_version_work:
         request = {'lang':'*'}
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
-        if _globals.debug( self):
-          _globals.writeLog( self, "[setChangedBy]: Create new work-version: %s"%newAttrCntnr.id)
+        _globals.writeLog( self, "[setChangedBy]: Create new work-version: %s"%newAttrCntnr.id)
         self.cloneObjAttrs(oldAttrCntnr,newAttrCntnr,request)
         self.version_work_id = newAttrCntnr.id
       #-- Set minor-version.
@@ -111,8 +110,7 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
         except:
           minor_version = 1
         self.setObjProperty( 'minor_version' ,minor_version, lang)
-        if _globals.debug( self):
-          _globals.writeLog( self, "[setChangedBy]: Set minor-version: %i"%minor_version)
+        _globals.writeLog( self, "[setChangedBy]: Set minor-version: %i"%minor_version)
     #-- Set properties.
     self.setObjProperty( 'change_uid' ,str(auth_user) ,lang)
     self.setObjProperty( 'change_dt' ,_globals.getDateTime( time.time()) ,lang)
@@ -127,8 +125,7 @@ def setCreatedBy(self, REQUEST):
   auth_user = REQUEST.get('AUTHENTICATED_USER',None)
   if auth_user is not None:
     #-- Set properties.
-    if _globals.debug( self):
-      _globals.writeLog( self, "[setCreatedBy]: Set created by: %s"%str(auth_user))
+    _globals.writeLog( self, "[setCreatedBy]: Set created by: %s"%str(auth_user))
     self.setObjProperty( 'created_uid' ,str(auth_user))
     self.setObjProperty( 'created_dt' ,_globals.getDateTime( time.time()))
 
@@ -194,8 +191,7 @@ class VersionItem:
     #  Tag object-versions.
     # --------------------------------------------------------------------------
     def tagObjVersions(self, master_version, REQUEST, checkPending=None):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[tagObjVersions]")
+      _globals.writeLog( self, "[tagObjVersions]")
       count = 1
       if checkPending is None:
         self.tagObjVersions( master_version, REQUEST, checkPending=True)
@@ -271,15 +267,16 @@ class VersionItem:
     #  Returns all version-items.
     # --------------------------------------------------------------------------
     def getVersionItems(self, REQUEST, recursive=False):
-      pc = self.isPageContainer()
       children = []
-      types = self.getMetaobjIds(sort=0)+['*']
-      for metaobjAttrId in self.getMetaobjAttrIds( self.meta_id, types=types):
-        for child in self.getObjChildren( metaobjAttrId , REQUEST):
-          if recursive or not pc or not child.isPage():
-            children.append( child)
-            if not pc:
-              children.extend( child.getVersionItems( REQUEST, recursive=True))
+      if not self.getAutocommit():
+        pc = self.isPageContainer()
+        types = self.getMetaobjIds(sort=0)+['*']
+        for metaobjAttrId in self.getMetaobjAttrIds( self.meta_id, types=types):
+          for child in self.getObjChildren( metaobjAttrId , REQUEST):
+            if recursive or not pc or not child.isPage():
+              children.append( child)
+              if not pc:
+                children.extend( child.getVersionItems( REQUEST, recursive=True))
       return children
 
 
@@ -343,8 +340,7 @@ class VersionItem:
       # Create new work-version.
       if len(self.objectValues(['ZMSAttributeContainer']))==0:
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
-        if _globals.debug( self):
-          _globals.writeLog( self, "[initializeWorkVersion]: Create new work-version: %s"%newAttrCntnr.id)
+        _globals.writeLog( self, "[initializeWorkVersion]: Create new work-version: %s"%newAttrCntnr.id)
         self.version_work_id = newAttrCntnr.id
         self.version_live_id = None
 
@@ -525,15 +521,19 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger thumbnail generation of image fields ####
+      _globals.writeLog( self, "[onChangeObj.1]")
       _blobfields.thumbnailImageFields( self, lang, REQUEST)
       
       ##### Trigger custom onChangeObj-Event (if there is one) ####
+      _globals.writeLog( self, "[onChangeObj.2]")
       triggerEvent( self, 'onChangeObjEvt', REQUEST)
       
       ##### Commit or initiate workflow transition ####
       if self.getAutocommit() or forced:
+        _globals.writeLog( self, "[onChangeObj.3a]")
         self.commitObj(REQUEST,forced,do_history)
       else:
+        _globals.writeLog( self, "[onChangeObj.3b]")
         self.autoWfTransition(REQUEST)
       _globals.writeLog( self, "[onChangeObj]: Finished!")
 
@@ -564,8 +564,7 @@ class VersionItem:
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      if _globals.debug( self):
-        _globals.writeLog( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      _globals.writeLog( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
@@ -671,6 +670,7 @@ class VersionItem:
       return delete
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
+      _globals.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
       ##### Synchronize catalog. ####
       obs = REQUEST.get('ZMS_SYNCHRONIZE_CATALOG',[])
@@ -1325,8 +1325,7 @@ class VersionManagerContainer:
     #  Commit container.
     # --------------------------------------------------------------------------
     def commitObj(self, REQUEST={}, forced=False, do_history=True):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
+      _globals.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       

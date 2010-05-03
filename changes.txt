@@ -1507,3 +1507,6 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 2010-05-02:zms2-2.12.1-995
 [995] Applied fix for zoom-conditions.
 --------------------------------------------------
+2010-05-03:zms2-2.12.1-996
+[996] Applied fix for performance of changing nested content-objects with auto-commit on.
+--------------------------------------------------

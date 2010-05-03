@@ -881,6 +881,7 @@ class ZMSSqlDb(ZMSObject):
       primary_key = (map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))+[tablecols[0]['id']])[0]
       
       # Get columns to insert
+      blobs = {}
       c = []
       for tablecol in tablecols:
         id = tablecol['id']
@@ -900,16 +901,9 @@ class ZMSSqlDb(ZMSObject):
         elif tablecol.get('blob'):
           value = None
           blob = tablecol.get('blob')
-          remote = blob.get('remote',None)
           if values.get('blob_%s'%id,None) is not None and values.get('blob_%s'%id).filename:
-            data = values.get('blob_%s'%id,None)
-            file = self.FileFromData( data, data.filename)
-            xml = file.toXml()
-            if remote is None:
-              value = self._set_blob(tablename=tablename,id=id,xml=xml)
-            else:
-              value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'xml':xml}),method='POST')
-          c.append({'id':id,'value':value})
+            # Process blobs later...
+            blobs['blob_%s'%id] = values['blob_%s'%id]
         elif (not tablecol.get('details')) and \
              (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
              (not tablecol.get('multimultiselect')):
@@ -939,6 +933,9 @@ class ZMSSqlDb(ZMSObject):
             rowid = r['value']
         except:
           raise _globals.writeError( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement)
+      # Process blobs now.
+      if blobs:
+        self.recordSet_Update(tablename, rowid, blobs, old_values={})
       return rowid
 
 

@@ -152,20 +152,16 @@ def readPath(path, data=True, recursive=True):
   if stat.S_ISDIR(mode):
     for filename in os.listdir(path):
       local_filename = path + os.sep + filename
-      filename = extractFilename(local_filename)
+      mode = os.stat(local_filename)[stat.ST_MODE]
       if filter is None or fnmatch.fnmatch(filename, filter):
         d = {}
         d['local_filename']=unicode(local_filename,'latin-1').encode('utf-8')
-        d['filename']=unicode(filename,'latin-1').encode('utf-8')
-        mode = os.stat(local_filename)[stat.ST_MODE]
+        d['filename']=unicode(extractFilename(local_filename),'latin-1').encode('utf-8')
         if stat.S_ISDIR(mode):
-          if recursive:
-            l.extend(readPath(local_filename))
-          else:
-            mtime = os.path.getmtime( local_filename)
-            d['mtime']=mtime
-            d['isdir']=True
-            l.append(d)
+          mtime = os.path.getmtime( local_filename)
+          d['mtime']=mtime
+          d['isdir']=True
+          l.append(d)
         else:
           fdata = None
           if data:
@@ -186,6 +182,10 @@ def readPath(path, data=True, recursive=True):
           d['mtime']=mtime
           d['isdir']=False
           l.append(d)
+      if stat.S_ISDIR(mode) and recursive:
+        if filter is not None:
+          local_filename = local_filename + '/' + filter
+        l.extend(readPath(local_filename, data, recursive))
   return l
 
 

@@ -230,15 +230,16 @@ class ObjTypes:
         imgtag += ' />'
         
         # Image-Url.
+        # ----------
         if imgurl is not None and len(imgurl) > 0:
-          target = ''
-          if imgurl is not None and not imgurl.find( REQUEST[ 'BASE0']) == 0:
-            target = ' target="_blank"'
-          text += self.getLangStr('HREF_MORE',REQUEST['lang'])%(' href="%s"'%imgurl+target)
+          imgtarget = ''
+          if not (imgurl.startswith('/') or imgurl.startswith('.') or imgurl.startswith( REQUEST[ 'BASE0'])):
+            imgtarget = ' target="_blank"'
+          imgtag = '<a href="%s"%s>%s</a>'%( imgurl, imgtarget, imgtag)
         
         # Zoom (HiRes).
         # -------------
-        if len(imgzoomattr) > 0:
+        elif len(imgzoomattr) > 0:
           s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
           imgzoomclazz = 'zoom'
           imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),imgzoomobj.getDataSizeStr())

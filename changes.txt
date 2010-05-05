@@ -1511,3 +1511,5 @@ Measure: Re-import content-object configuration for ZMSTable [1.2.0]
 [996] Applied fix for performance of changing nested content-objects with auto-commit on.
 [999] Applied fix for SQL-Datasource: rowid as suffix for blob-fields after insert. 
 --------------------------------------------------
+2010-05-03:zms2-2.12.1-1001
+[1001] Applied fix for MyBlob.getFilename(): remove '&' from filename (xml incompatibility)

@@ -926,7 +926,7 @@ class ZMSSqlDb(ZMSObject):
       if rowid is None:
         sqlStatement = []
         sqlStatement.append( 'SELECT %s AS value FROM %s WHERE '%(primary_key,tablename))
-        sqlStatement.append( ' AND '.join(map( lambda x: x['id']+'='+x['value'], filter( lambda x: x['value'].upper()!='NULL', c))))
+        sqlStatement.append( ' AND '.join(map( lambda x: x['id']+'='+self.sql_quote__(tablename,x['id'],x['value']), filter( lambda x: self.sql_quote__(tablename,x['id'],x['value']).upper()!='NULL', c))))
         sqlStatement = ' '.join(sqlStatement)
         try:
           for r in self.query( sqlStatement)['records']:

@@ -222,8 +222,8 @@ class ObjInputs:
   #	@param css		CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-element'):
-    return self.f_selectInput(self,fmName=fmName,elName=elName,value=value,type=inputtype,lang_str=lang_str,required=required,optpl=optpl,enabled=enabled,css=css,REQUEST=REQUEST)
+  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-element', maxlen=30):
+    return self.f_selectInput(self,fmName=fmName,elName=elName,value=value,type=inputtype,lang_str=lang_str,required=required,optpl=optpl,maxlen=maxlen,enabled=enabled,css=css,REQUEST=REQUEST)
 
 
   # ----------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 *	@param lang_str
 *	@param required
 *	@param options|optpl
+*	@param maxlen
 *	@param enabled
 *	@param css
 *	@param REQUEST
@@ -23,8 +24,13 @@
    ><dtml-call "REQUEST['optpl'].append([_['sequence-item'],_['sequence-item']])"
   ></dtml-in
  ></dtml-if
-></dtml-if>
-
+></dtml-if
+><dtml-if maxlen
+ ><dtml-call "REQUEST.set('optdispmaxlen',maxlen)"
+><dtml-else
+ ><dtml-call "REQUEST.set('optdispmaxlen',30)"
+></dtml-if
+>
 <dtml-comment>
 ################################################################################
 ### Single-Line Input
@@ -50,7 +56,7 @@
  <div class="<dtml-var css>">
   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
    <dtml-if "type=='multiline'">
-    multiple="multiple" size="<dtml-var "_.min(5,len(optpl))">"
+    multiple="multiple" size="<dtml-var "min(5,len(REQUEST['optpl']))">"
    </dtml-if>>
    <dtml-unless "type=='multiline'">
     <dtml-unless required>
@@ -60,7 +66,7 @@
    <dtml-in "REQUEST['optpl']">
     <dtml-let optval="_['sequence-item'][0].strip()"
               opttitle="_['sequence-item'][1].strip()"
-              optdisp="string_maxlen(opttitle,30)">
+              optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
      <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>"
       <dtml-if "str(optval)==str(value)">
        selected="selected"
@@ -89,7 +95,7 @@
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()"
-               optdisp="string_maxlen(opttitle,30)">
+               optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
       <dtml-try>
        <dtml-unless "optval in value">
         <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp html_quote></option>
@@ -120,7 +126,7 @@
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()"
-               optdisp="string_maxlen(opttitle,30)">
+               optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
       <dtml-if "optval == value">
        <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>" selected="selected"><dtml-var optdisp html_quote></option>
       <dtml-else>

@@ -1,6 +1,6 @@
 <dtml-comment> 
 ********************************************************************************
-*	f_selectInput
+*	f_selectRepetitive
 *	@param fmName
 *	@param elName
 *	@param value
@@ -15,7 +15,7 @@
  <dtml-if value>
  <dtml-if "len(value)>0">
   <ol>
-   <dtml-in "_.range(len(value))">
+   <dtml-in "range(len(value))">
     <dtml-let index=sequence-index v="formatObjAttrValue(obj_attr,value[index],REQUEST['lang'])">
      <li class="form-small">
       <dtml-try>

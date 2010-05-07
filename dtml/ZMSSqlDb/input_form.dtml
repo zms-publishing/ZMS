@@ -553,58 +553,58 @@
          ></dtml-try
         ></dtml-unless
         ><dtml-let fk="dst['fk']" maxlen="int(fk.get('maxlen',25))"
-        ><dtml-call "REQUEST.set('sqlStatement',[])"
-        ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
-        ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
-        ><dtml-if "multiselect.has_key('lazy')"
-         ><dtml-let where="[]"
-          ><dtml-in value
-           ><dtml-call "where.append(fk.get('fieldname')+'='+sql_quote__(fk.get('tablename'),fk.get('fieldname'),_['sequence-item']))"
-          ><dtml-else
-           ><dtml-call "where.append('1=0')"
-          ></dtml-in
-          ><dtml-if where
-           ><dtml-call "sqlStatement.append('WHERE ' + ' OR '.join(where) + ' ')"
-          ></dtml-if
-         ></dtml-let
-        ></dtml-if
-        ><dtml-if "fk.has_key('sort')"
-         ><dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))"
-        ><dtml-else
-         ><dtml-call "sqlStatement.append( 'ORDER BY 2 ')"
-        ></dtml-if
-        ><dtml-call "REQUEST.set('optpl',[])"
-        ><dtml-try>
-         <!-- MULTISELECT.SQL.FOREIGNTABLE: <dtml-var "''.join(sqlStatement)"> -->
-         <dtml-in "query(''.join(sqlStatement))['records']"
-          ><dtml-let row=sequence-item
-           ><dtml-try
-            ><dtml-call "optpl.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
-           ><dtml-except
-            ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
-           ></dtml-try
+         ><dtml-call "REQUEST.set('sqlStatement',[])"
+         ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
+         ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
+         ><dtml-if "multiselect.has_key('lazy')"
+          ><dtml-let where="[]"
+           ><dtml-in value
+            ><dtml-call "where.append(fk.get('fieldname')+'='+sql_quote__(fk.get('tablename'),fk.get('fieldname'),_['sequence-item']))"
+           ><dtml-else
+            ><dtml-call "where.append('1=0')"
+           ></dtml-in
+           ><dtml-if where
+            ><dtml-call "sqlStatement.append('WHERE ' + ' OR '.join(where) + ' ')"
+           ></dtml-if
           ></dtml-let
-         ></dtml-in
-        ><dtml-except>
-         SQL-ERROR: <dtml-var "''.join(sqlStatement)"
-        ></dtml-try
-        ><dtml-if "multiselect.has_key('lazy')"
-         ><select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5"
-          ><dtml-in optpl
-           ><dtml-let i=sequence-item k="i[0]" v="i[1]"
-            ><option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option
+         ></dtml-if
+         ><dtml-if "fk.has_key('sort')"
+          ><dtml-call "sqlStatement.append( 'ORDER BY ' + fk.get('sort'))"
+         ><dtml-else
+          ><dtml-call "sqlStatement.append( 'ORDER BY 2 ')"
+         ></dtml-if
+         ><dtml-call "REQUEST.set('optpl',[])"
+         ><dtml-try>
+          <!-- MULTISELECT.SQL.FOREIGNTABLE: <dtml-var "''.join(sqlStatement)"> -->
+          <dtml-in "query(''.join(sqlStatement))['records']"
+           ><dtml-let row=sequence-item
+            ><dtml-try
+             ><dtml-call "optpl.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
+            ><dtml-except
+             ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
+            ></dtml-try
            ></dtml-let
           ></dtml-in
-         ></select
-         ><input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
-         ><input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
-         ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if
-        ><dtml-else
-         ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
-        ></dtml-if
+         ><dtml-except>
+          SQL-ERROR: <dtml-var "''.join(sqlStatement)"
+         ></dtml-try
+         ><dtml-if "multiselect.has_key('lazy')"
+          ><select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var "'%s:list'%elName">" multiple="multiple" size="5"
+           ><dtml-in optpl
+            ><dtml-let i=sequence-item k="i[0]" v="i[1]"
+             ><option value="<dtml-var k>"><dtml-if v><dtml-var v><dtml-else>None</dtml-if></option
+            ></dtml-let
+           ></dtml-in
+          ></select
+          ><input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
+          ><input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
+          ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if
+         ><dtml-else
+          ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, maxlen=maxlen, enabled=1, REQUEST=REQUEST)"
+         ></dtml-if
+        ></dtml-let
        ></dtml-let
-      ></dtml-let
-     ></dtml-if
+      ></dtml-if
      ><dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- BLOB

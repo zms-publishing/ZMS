@@ -222,15 +222,19 @@
      </dtml-comment>
        <dtml-else>
         <dtml-try>
-         <dtml-let u="string_maxlen(str(v),max(int(200.0/len(grid_cols)),grid_col.get('minsize',20)))"
-          ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
-           ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>" class="zmi"
+         <dtml-let sv="str(v)" u="string_maxlen(sv,max(int(200.0/len(grid_cols)),grid_col.get('minsize',20)))"
+          ><dtml-if "sv.startswith('Set([') and sv.endswith('])')"
+           ><dtml-var "', '.join(map(lambda x: str(x), list(v)))"
+          ><dtml-else
+           ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
+            ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>" class="zmi"
+           ></dtml-if
+           ><dtml-if "u.find('<?xml')==0"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="XML" border="0"/><dtml-else><dtml-var u></dtml-if
+           ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
+            ></a
+           ></dtml-if
           ></dtml-if
-          ><dtml-if "u.find('<?xml')==0"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="XML" border="0"/><dtml-else><dtml-var u></dtml-if
-          ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
-           ></a
-          ></dtml-if
-         >&nbsp;</dtml-let>
+          >&nbsp;</dtml-let>
         <dtml-except>
          <dtml-var v>
         </dtml-try>

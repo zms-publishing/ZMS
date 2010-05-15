@@ -729,10 +729,20 @@ the limitation that no date prior to 1970-01-01 can be used!
 def getDateTime(t):
   if t is not None:
     try:
+      if isinstance( t, DateTime):
+        f = '%Y/%m/%d %H:%M:%S'
+        st = str(t)
+        if st.rfind(' ')>0:
+          st = st[:st.rfind(' ')]
+        else:
+          f = f[:f.rfind(' ')]
+        if st.rfind('.')>0:
+          st = st[:st.rfind('.')]
+        t = time.strptime( st, f)
       if type(t) is tuple:
         t = time.mktime( t)
       if type(t) is not time.struct_time:
-        t = time.gmtime( t)
+        t = time.localtime( t)
     except:
       pass
   return t

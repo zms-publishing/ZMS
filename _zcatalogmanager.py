@@ -250,12 +250,21 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def catalogText(self, REQUEST):
       v = ''
-      # Custom hook.
+      
+      # Custom hook (overwrite).
       if 'catalogText' in self.getMetaobjAttrIds(self.meta_id):
         value = self.getObjProperty('catalogText',REQUEST)
         value = search_string(value)
         v += value
+      
       else:
+        
+        ##### Trigger custom catalogText-Contributors (if there is one) ####
+        l = _globals.triggerEvent( self, 'catalogTextContrib', REQUEST)
+        if l:
+          v += ' '.join(l)
+        
+        # Attributes.
         for key in filter( lambda x: x.find('_') != 0, self.getObjAttrs().keys()):
           obj_attr = self.getObjAttr(key)
           if obj_attr['xml']:

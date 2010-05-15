@@ -37,31 +37,6 @@ import _zmsattributecontainer
 
 
 # ------------------------------------------------------------------------------
-#  _versionmanager.triggerEvent:
-#
-#  Hook for trigger of custom event (if there is one)
-# ------------------------------------------------------------------------------
-def triggerEvent(self, name, REQUEST):
-  metaObj = self.getMetaobj( self.meta_id)
-  if metaObj:
-    metaObjAttr = self.getMetaobjAttr( self.meta_id, name)
-    if metaObjAttr is not None:
-      try: REQUEST.set('preview','preview')
-      except: REQUEST['preview'] = 'preview'
-      v = self.getObjProperty(name,REQUEST)
-    ob = self
-    ob_ids = []
-    while ob is not None:
-      for ob_id in ob.getHome().objectIds():
-        if ob_id not in ob_ids and ob_id.find( name) == 0:
-          try: REQUEST.set('preview','preview')
-          except: REQUEST['preview'] = 'preview'
-          v = getattr(self,ob_id)(context=self,REQUEST=REQUEST)
-          ob_ids.append(ob_id)
-      ob = ob.getPortalMaster()
-
-
-# ------------------------------------------------------------------------------
 #  _versionmanager.getObjStates:
 #
 #  Returns a list of object-states (including language suffixes).
@@ -526,7 +501,7 @@ class VersionItem:
       
       ##### Trigger custom onChangeObj-Event (if there is one) ####
       _globals.writeLog( self, "[onChangeObj.2]")
-      triggerEvent( self, 'onChangeObjEvt', REQUEST)
+      _globals.triggerEvent( self, 'onChangeObjEvt', preview=True, REQUEST=REQUEST)
       
       ##### Commit or initiate workflow transition ####
       if self.getAutocommit() or forced:
@@ -570,18 +545,18 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeCommitObjChanges-Event (if there is one) ####
-      triggerEvent( self, 'beforeCommitObjChangesEvt', REQUEST)
-
+      _globals.triggerEvent( self, 'beforeCommitObjChangesEvt', preview=True, REQUEST=REQUEST)
+      
       ##### Commit delete. ####
       if self.inObjStates(['STATE_DELETED'],REQUEST):
         if do_delete:
           parent.moveObjsToTrashcan([self.id], REQUEST)
         delete = True
-
+      
       ##### Commit modifications. ####
       modified = self.getObjStateNames(REQUEST) or forced
       if modified:
-
+        
         if (lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and (self.getHistory() and do_history):
           version_hist_id = None
           if self.getObjStateNames(REQUEST) and \
@@ -662,10 +637,10 @@ class VersionItem:
       ##### Synchronize listeners. ####
       if modified:
         self.onSynchronizeObj(REQUEST)
-        
+      
       ##### Trigger custom afterCommitObjChanges-Event (if there is one) ####
-      triggerEvent( self, 'afterCommitObjChangesEvt', REQUEST)
-
+      _globals.triggerEvent( self, 'afterCommitObjChangesEvt', preview=True, REQUEST=REQUEST)
+      
       # Return flag for deleted objects.
       return delete
 
@@ -699,8 +674,8 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeRollbackObjChanges-Event (if there is one) ####
-      triggerEvent( self, 'beforeRollbackObjChangesEvt', REQUEST)
-
+      _globals.triggerEvent( self, 'beforeRollbackObjChangesEvt', preview=True, REQUEST=REQUEST)
+      
       ##### Rollback insert. ####
       # Self.
       if self.inObjStates(['STATE_NEW'],REQUEST):
@@ -711,7 +686,7 @@ class VersionItem:
       ##### Rollback modifications. ####
       modified = self.getObjStateNames(REQUEST) or forced
       if modified and not delete:
-
+        
         if (lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory():
           # Reset work-version.
           self.version_work_id = None
@@ -778,7 +753,7 @@ class VersionItem:
         self.onSynchronizeObj(REQUEST)
       
       ##### Trigger custom afterRollbackObjChanges-Event (if there is one) ####
-      triggerEvent( self, 'afterRollbackObjChangesEvt', REQUEST)
+      _globals.triggerEvent( self, 'afterRollbackObjChangesEvt', preview=True, REQUEST=REQUEST)
       
       # Return flag for deleted objects.
       return delete

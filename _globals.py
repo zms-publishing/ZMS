@@ -344,6 +344,34 @@ def nvl(a1, a2, n=None):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_globals.triggerEvent:
+
+Hook for trigger of custom event (if there is one)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def triggerEvent(self, name, preview=False, REQUEST=None):
+  l = []
+  if preview:
+    try: REQUEST.set('preview','preview')
+    except: REQUEST['preview'] = 'preview'
+  metaObj = self.getMetaobj( self.meta_id)
+  if metaObj:
+    metaObjAttr = self.getMetaobjAttr( self.meta_id, name)
+    if metaObjAttr is not None:
+      v = self.getObjProperty(name,REQUEST)
+      l.append( v)
+    ob = self
+    ob_ids = []
+    while ob is not None:
+      for ob_id in ob.getHome().objectIds():
+        if ob_id not in ob_ids and ob_id.find( name) == 0:
+          v = getattr(self,ob_id)(context=self,REQUEST=REQUEST)
+          l.append( v)
+          ob_ids.append(ob_id)
+      ob = ob.getPortalMaster()
+  return l
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.isManagementInterface
 
 Returns true if current context is management-interface, false else.

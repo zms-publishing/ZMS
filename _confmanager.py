@@ -535,11 +535,11 @@ class ConfManager(
     """
 
     # --------------------------------------------------------------------------
-    #  ConfManager.__get_attr_conf_dict__:
+    #  ConfManager.getConfProperties:
     #
     #  Returns property from configuration.
     # --------------------------------------------------------------------------
-    def __get_attr_conf_dict__(self):
+    def getConfProperties(self):
       return getattr( self, '__attr_conf_dict__', {})
 
     # --------------------------------------------------------------------------
@@ -550,10 +550,7 @@ class ConfManager(
     #  @param key    The key.
     # --------------------------------------------------------------------------
     def delConfProperty(self, key):
-      try:
-        del self.__get_attr_conf_dict__()[key]
-      except:
-        pass
+      self.setConfProperty(key,None)
 
     # --------------------------------------------------------------------------
     #  ConfManager.getConfProperty:
@@ -565,7 +562,7 @@ class ConfManager(
     #  @return any
     # --------------------------------------------------------------------------
     def getConfProperty(self, key, default=None):
-      return self.__get_attr_conf_dict__().get( key, default)
+      return self.getConfProperties().get( key, default)
 
     # --------------------------------------------------------------------------
     #  ConfManager.setConfProperty:
@@ -577,13 +574,13 @@ class ConfManager(
     #  @return void
     # --------------------------------------------------------------------------
     def setConfProperty(self, key, value):
-      attr_conf_dict = self.__get_attr_conf_dict__()
+      d = self.getConfProperties()
       if value is None:
-        if attr_conf_dict.has_key(key):
-          del attr_conf_dict[key]
+        if d.has_key(key):
+          del d[key]
       else:
-        attr_conf_dict[key] = value
-      self.__attr_conf_dict__ = attr_conf_dict
+        d[key] = value
+      self.__attr_conf_dict__ = d
       self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
 
 
@@ -689,29 +686,21 @@ class ConfManager(
       
       ##### Custom ####
       elif key == 'Custom':
+        k = REQUEST.get( 'conf_key', '')
         if btn == 'Change':
-          if len(REQUEST.get('conf_key','')) > 0:
-            k = REQUEST.get( 'conf_key')
-            v = REQUEST.get( 'conf_value', '')
-            try:
-              v = self.parseXmlString(self.getXmlHeader() + v)
-              self.setConfProperty( k, v)
-              if REQUEST.get('portal_clients'):
-                for portalClient in self.getPortalClients():
-                  portalClient.setConfProperty( k, v)
-            except:
-              _globals.writeError( self, "[manage_customizeSystem]: can't set conf-property %s=%s"%(str(k),str(v)))
-            message = self.getZMILangStr('MSG_CHANGED')
-            params.append( 'conf_key')
-          else:
-            k = REQUEST.get( 'option')
-            v = REQUEST.get( 'value', '')
-            self.setConfProperty( k, v)
-            if REQUEST.get('portal_clients'):
-              for portalClient in self.getPortalClients():
-                portalClient.setConfProperty( k, v)
-            message = self.getZMILangStr('MSG_CHANGED')
-            params.append( 'option')
+          v = REQUEST.get( 'conf_value', '')
+          self.setConfProperty( k, v)
+          if REQUEST.get('portal_clients'):
+            for portalClient in self.getPortalClients():
+              portalClient.setConfProperty( k, v)
+          params.append('conf_key')
+          message = self.getZMILangStr('MSG_CHANGED')
+        elif btn == 'Delete':
+          self.delConfProperty( k)
+          if REQUEST.get('portal_clients'):
+            for portalClient in self.getPortalClients():
+              portalClient.delConfProperty( k)
+          message = self.getZMILangStr('MSG_DELETED')%int(1)
       
       ##### InstalledProducts ####
       elif key == 'InstalledProducts':

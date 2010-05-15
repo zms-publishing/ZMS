@@ -5,11 +5,19 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
+// #############################################################################
+// ### Protoypes:
+// #############################################################################
+
   String.prototype.removeWhiteSpaces = function() {return(this.replace(/\s+/g,""));};
   String.prototype.leftTrim = function() {return(this.replace(/^\s+/,""));};
   String.prototype.rightTrim = function() {return(this.replace(/\s+$/,""));};
   String.prototype.basicTrim = function() {return(this.replace(/\s+$/,"").replace(/^\s+/,""));};
   String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
+
+  Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=i;break;}}return idx;};
+  Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
+  Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
 
 // #############################################################################
 // ### toggleElement:

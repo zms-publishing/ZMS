@@ -185,7 +185,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     get_conf_blob__roles__ = None
     def get_conf_blob(self, path, REQUEST, RESPONSE):
       """ ZMS.get_conf_blob """
-      v = self.__get_attr_conf_dict__()
+      v = self.getConfProperties()
       try:
         for id in path.split('/'):
           if type(v) is dict:

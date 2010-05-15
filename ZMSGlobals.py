@@ -138,7 +138,9 @@ class ZMSGlobals:
       @return: New instance of file.
       @rtype: L{MyFile}
       """
-      return _blobfields.createBlobField( self, _globals.DT_FILE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f = _blobfields.createBlobField( self, _globals.DT_FILE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f.aq_parent = self
+      return f
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.ImageFromData:
@@ -153,7 +155,9 @@ class ZMSGlobals:
       @return: New instance of image.
       @rtype: L{MyImage}
       """
-      return _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f.aq_parent = self
+      return f
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.nvl:

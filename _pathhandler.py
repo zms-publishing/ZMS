@@ -138,7 +138,7 @@ class PathHandler:
           
           # Set path_to_handle for VirtualHosts.
           if '/' in TraversalRequest[ 'path_to_handle']:
-            path_physical = self.REQUEST.get( 'path_physical', list( self.getDocumentElement().getPhysicalPath())[1:])
+            path_physical = req.get( 'path_physical', list( self.getDocumentElement().getPhysicalPath())[1:])
             if len( path_physical) > 1:
               b = TraversalRequest[ 'path_to_handle'].index( '/')
               TraversalRequest[ 'path_to_handle'] = TraversalRequest[ 'path_to_handle'][ b+1:]
@@ -146,11 +146,11 @@ class PathHandler:
                 TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = self.REQUEST.get( 'lang')
+      lang = req.get( 'lang')
       if lang is None:
         lang = self.getLanguageFromName( TraversalRequest['path_to_handle'][-1])
       if lang is not None:
-        self.REQUEST.set( 'lang', lang)
+        req.set( 'lang', lang)
      
       # If the name is in the list of attributes, call it.
       ob = getattr( self, name, None)
@@ -158,7 +158,7 @@ class PathHandler:
         ob = filterId( self, name, req)
       if ob is not None:
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
-          lang = self.REQUEST.get( 'lang')
+          lang = req.get( 'lang')
           if lang is None:
             lang = self.getHttpAcceptLanguage( self.REQUEST)
           if lang is not None:
@@ -168,8 +168,7 @@ class PathHandler:
       
       # otherwise do some 'magic'
       else:
-        if _globals.debug( self):
-          _globals.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
+        _globals.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
         
         # Package-Home.
         if name == '$ZMS_HOME':
@@ -177,10 +176,16 @@ class PathHandler:
           filename = TraversalRequest['path_to_handle'][-1]
           fdata = self.localfs_read( filepath, REQUEST=req)
           f = self.FileFromData( fdata, filename)
-          f.aq_parent = self
-          f.key = 'None'
-          f.lang = req.get('lang', self.getPrimaryLanguage())
           return f
+        
+        # Pathhandler-Method.
+        if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method']):
+          if name == TraversalRequest['path_to_handle'][-1]:
+            req.set( 'path_', '/'.join(req.get('path_',[])+[name]))
+            return self.getObjProperty('pathhandler',req)
+          else:
+            req.set( 'path_', req.get('path_',[])+[name])
+            return self
         
         if not zmi or req.get( 'ZMS_PATH_HANDLER', False):
           

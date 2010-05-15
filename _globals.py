@@ -732,7 +732,7 @@ def getDateTime(t):
       if type(t) is tuple:
         t = time.mktime( t)
       if type(t) is not time.struct_time:
-        t = time.localtime( t)
+        t = time.gmtime( t)
     except:
       pass
   return t

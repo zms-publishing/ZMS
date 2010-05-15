@@ -1608,7 +1608,6 @@ class ZMSGlobals:
              t[5]== 0:
             fmt = fmt[:-len(time_fmt)]
         fmt = fmt.strip()
-        t = time.localtime(time.mktime(t))
         return time.strftime(fmt,t)
       except:
         #-- _globals.writeError(self,"[getLangFmtDate]: t=%s"%str(t))

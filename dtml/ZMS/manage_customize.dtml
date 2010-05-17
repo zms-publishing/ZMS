@@ -342,7 +342,7 @@ function confKeyChange(b)
  </tr>
  <tr valign="top" id="tr_conf_values">
   <td colspan="2">
-   <div style="height:150px;overflow:scroll;">
+   <div style="height:130px;width:370px;overflow:scroll;">
    <table cellspacing="0" cellpadding="1" border="0">
    <tr class="neutralColorMedium">
     <th class="form-small">Key</th>

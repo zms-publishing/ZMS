@@ -260,7 +260,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       else:
         
         ##### Trigger custom catalogText-Contributors (if there is one) ####
-        l = _globals.triggerEvent( self, 'catalogTextContrib', REQUEST)
+        l = _globals.triggerEvent( self, 'catalogTextContrib', REQUEST=REQUEST)
         if l:
           v += ' '.join(l)
         

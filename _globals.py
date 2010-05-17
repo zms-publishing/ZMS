@@ -351,8 +351,9 @@ Hook for trigger of custom event (if there is one)
 def triggerEvent(self, name, preview=False, REQUEST=None):
   l = []
   if preview:
-    try: REQUEST.set('preview','preview')
-    except: REQUEST['preview'] = 'preview'
+    if REQUEST is not None:
+      try: REQUEST.set('preview','preview')
+      except: REQUEST['preview'] = 'preview'
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
     metaObjAttr = self.getMetaobjAttr( self.meta_id, name)

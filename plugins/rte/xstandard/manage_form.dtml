@@ -70,7 +70,7 @@
     for (e in zmiRichtextElNames) {
       var elName = zmiRichtextElNames[e];
       var el = document.getElementById('zmiStandardEditor'+elName);
-      if ( el.style.display != 'none' && el.style.visibility != 'hidden') {
+      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
         try {
           $('#editor_'+elName).val( $('#'+elName).val());
           $('#editor_'+elName+'_value').val( $('#'+elName).val());
@@ -86,7 +86,7 @@
     for (e in zmiRichtextElNames) {
       var elName = zmiRichtextElNames[e];
       var el = document.getElementById('zmiRichtextEditor'+elName);
-      if ( el.style.display != 'none' && el.style.visibility != 'hidden') {
+      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
         try {
           if(typeof(document.getElementById('editor_'+elName).EscapeUnicode) == 'undefined') {
             throw "Error"

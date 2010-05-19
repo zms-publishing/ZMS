@@ -909,7 +909,7 @@ class ZMSContainerObject(
           prim_lang = self.getPrimaryLanguage()
           lang = REQUEST.get('lang',None)
           # Get coverages.
-          coverages = [ '', None]
+          coverages = [ '', 'obligation', None]
           if lang is not None:
             coverages.extend( [ 'global.'+lang, 'local.'+lang])
             coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))

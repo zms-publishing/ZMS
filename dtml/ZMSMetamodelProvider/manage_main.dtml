@@ -404,7 +404,7 @@ function changeType( el)
  ><dtml-if "len(clientIds)<50"
  ><dtml-in clientIds
   ><dtml-try
-   ><dtml-let clientId=sequence-item clientModel="_.getattr(home,clientId).content.metaobj_manager.model"
+   ><dtml-let clientId=sequence-item clientModel="getattr(home,clientId).content.metaobj_manager.model"
     ><dtml-in "clientModel.keys()"
      ><dtml-let metaObjId=sequence-item portalClientIds="acquisitions.get(metaObjId,[])"
       ><dtml-if "metaObjId in metaObjIds and clientModel[metaObjId].get('acquired',0)==1"
@@ -588,7 +588,7 @@ function changeType( el)
             ><dtml-elif "oAttr['type'] == 'External Method'"
              ><img src="misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
             ><dtml-elif "oAttr['type'] == 'Page Template'"
-             ><dtml-with "_.getattr(this(),oAttr['id'])"
+             ><dtml-with "getattr(this(),oAttr['id'])"
               ><dtml-if pt_errors
                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var icon>)" title="ERROR: <dtml-var expr="'\n'.join(pt_errors)" html_quote>" border="0" style="vertical-align:middle" 
               /><dtml-elif pt_warnings
@@ -600,15 +600,23 @@ function changeType( el)
             ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
              ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
             /><dtml-elif "oAttr['type'] == 'Script (Python)'"
-             ><dtml-with "_.getattr(this(),oAttr['id'])"
-              ><dtml-if errors
-               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(errors)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-elif warnings
-               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-else
-               ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
-              /></dtml-if
-             ></dtml-with
+             ><dtml-try
+              ><dtml-call "REQUEST.set('ob',this())"
+              ><dtml-in "oAttr['id'].split('/')"
+               ><dtml-call "REQUEST.set('ob',getattr(ob,_['sequence-item']))"
+              ></dtml-in
+              ><dtml-with ob
+               ><dtml-if errors
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(errors)" html_quote>" border="0" style="vertical-align:middle" 
+               /><dtml-elif warnings
+                ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
+               /><dtml-else
+                ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
+               /></dtml-if
+              ></dtml-with
+             ><dtml-except
+              ><dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br
+             ></dtml-try
             ><dtml-elif "oAttr['type'] in metaObjIds"
              ><img src="<dtml-var "display_icon(REQUEST,oAttr['type'])">" border="0" style="vertical-align:middle" 
             /><dtml-elif "oAttr['type'] == 'resource'"
@@ -775,8 +783,8 @@ function changeType( el)
            ><dtml-elif "oAttr['type'] in ['boolean']"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"
             /><select title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">"
-             ><dtml-in "_.range(2)"
-              ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "_.bool(_['sequence-item'])"></option>
+             ><dtml-in "range(2)"
+              ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "bool(_['sequence-item'])"></option>
              ></dtml-in
             ></select
            ></dtml-if
@@ -1077,7 +1085,7 @@ function changeType( el)
         ><input type="hidden" name="immediately:int" value="1"
         ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
          ><dtml-in "temp_ids.split(',')"
-          ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)" metaObj2="getPortalMaster().getMetaobj(metaObjId)" attr_ids="[]" metaObjAttrIds="_.map(lambda x: x['id'], metaObj['attrs'])" metaObjAttrIds2="_.map(lambda x: x['id'], metaObj2['attrs'])"
+          ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)" metaObj2="getPortalMaster().getMetaobj(metaObjId)" attr_ids="[]" metaObjAttrIds="map(lambda x: x['id'], metaObj['attrs'])" metaObjAttrIds2="map(lambda x: x['id'], metaObj2['attrs'])"
            ><dtml-call "REQUEST.set('attr_idx',0)"
            ><dtml-call "attr_ids.extend(metaObjAttrIds)"
            ><dtml-in metaObjAttrIds2
@@ -1181,7 +1189,7 @@ function changeType( el)
       ><dtml-else>
        <tr valign="top">
         <td>
-         <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "_.min(5,len(res))">">
+         <select class="form-element" name="aq_ids:list" multiple="multiple" size="<dtml-var "min(5,len(res))">">
           <dtml-in res
            ><dtml-let metaObj=sequence-item
             ><option value="<dtml-var "metaObj['id']">"><dtml-if "metaObj['package']"> &mdash;&quot;&mdash;.</dtml-if><dtml-var "metaObj['id']"> (<dtml-var "metaObj['name']">)</option
@@ -1214,7 +1222,7 @@ function changeType( el)
      ><tr valign="top"
      ><td colspan="2"
      ><dtml-try
-     ><dtml-let f="_.getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(str(f.data),mediadbStorable=False)" packages="[]" metaObjs="[]"
+     ><dtml-let f="getattr(temp_folder,temp_import_file_id)" xml="parseXmlString(str(f.data),mediadbStorable=False)" packages="[]" metaObjs="[]"
       ><dtml-in xml mapping
        ><dtml-let metaObj="{'id':key,'name':value['name'],'type':value['type'],'package':value.get('package',None),'revision':value.get('revision','0.0.0'),'zms_system':temp_import_zms_system}"
         ><dtml-if "metaObj['type'] == 'ZMSPackage'"

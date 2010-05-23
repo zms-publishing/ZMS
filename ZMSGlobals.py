@@ -1020,13 +1020,16 @@ class ZMSGlobals:
       if type(i) is list:
         return ''.join(map(lambda x: self.str_item(x)+'\n',i))
       elif type(i) is dict:
-        return ''.join(map(lambda x: self.str_item(i[x]),i.keys()))
+        return ''.join(map(lambda x: self.str_item(i[x])+'\n',i.keys()))
       elif type(i) is tuple or type(i) is time.struct_time:
         try:
           i = self.getLangFmtDate(i)
         except:
           pass
-      return str(i)
+      elif i is not None:
+        return str(i)
+      else:
+        return ''
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.filter_list:

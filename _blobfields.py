@@ -196,7 +196,8 @@ def createBlobField(self, objtype, file='', mediadbStorable=True):
     if type( data) is StringType:
       data = StringIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename',''), mediadbStorable)
-    if file.has_key('content_type'): blob.content_type = file.get('content_type')
+    if file.get('content_type'):
+      blob.content_type = file.get('content_type')
   else:
     blob = uploadBlobField( self, objtype, file, file.filename, mediadbStorable)
   return blob

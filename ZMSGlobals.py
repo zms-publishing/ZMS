@@ -128,7 +128,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.FileFromData:
     # --------------------------------------------------------------------------
-    def FileFromData( self, data, filename=''):
+    def FileFromData( self, data, filename='', content_type=None):
       """
       Creates a new instance of a file from given data.
       @param data: File-data (binary)
@@ -138,14 +138,14 @@ class ZMSGlobals:
       @return: New instance of file.
       @rtype: L{MyFile}
       """
-      f = _blobfields.createBlobField( self, _globals.DT_FILE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f = _blobfields.createBlobField( self, _globals.DT_FILE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=False)
       f.aq_parent = self
       return f
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.ImageFromData:
     # --------------------------------------------------------------------------
-    def ImageFromData( self, data, filename=''):
+    def ImageFromData( self, data, filename='', content_type=None):
       """
       Creates a new instance of an image from given data.
       @param data: Image-data (binary)
@@ -155,7 +155,7 @@ class ZMSGlobals:
       @return: New instance of image.
       @rtype: L{MyImage}
       """
-      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename}, mediadbStorable=False)
+      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=False)
       f.aq_parent = self
       return f
 
@@ -1012,6 +1012,25 @@ class ZMSGlobals:
           if deep:
             k.extend(self.tree_list(l,i,r,x[i],deep))
       return k
+
+    # --------------------------------------------------------------------------
+    #  ZMSGlobals.str_json:
+    # --------------------------------------------------------------------------
+    def str_json(self, i):
+      if type(i) is list or type(i) is tuple:
+        return '['+','.join(map(lambda x: self.str_json(x),i))+']'
+      elif type(i) is dict:
+        return '{'+','.join(map(lambda x: '\'%s\':%s'%(x,self.str_json(i[x])),i.keys()))+'}'
+      elif type(i) is time.struct_time:
+        try:
+          return '\'%s\''%self.getLangFmtDate(i)
+        except:
+          pass
+      elif type(i) is str:
+        return '\'%s\''%(str(i).replace('\'','\\\''))
+      elif i is not None:
+        return str(i)
+      return '\'\''
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.str_item:

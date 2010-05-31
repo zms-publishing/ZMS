@@ -1026,26 +1026,26 @@ class ZMSGlobals:
           return '\'%s\''%self.getLangFmtDate(i)
         except:
           pass
-      elif type(i) is str:
-        return '\'%s\''%(str(i).replace('\'','\\\''))
-      elif i is not None:
+      elif type(i) is int or type(i) is float:
         return str(i)
+      else:
+        return '\'%s\''%(str(i).replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
       return '\'\''
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.str_item:
     # --------------------------------------------------------------------------
     def str_item(self, i):
-      if type(i) is list:
-        return ''.join(map(lambda x: self.str_item(x)+'\n',i))
+      if type(i) is list or type(i) is tuple:
+        return '\n'.join(map(lambda x: self.str_item(x),i))
       elif type(i) is dict:
-        return ''.join(map(lambda x: self.str_item(i[x])+'\n',i.keys()))
-      elif type(i) is tuple or type(i) is time.struct_time:
+        return '\n'.join(map(lambda x: self.str_item(i[x]),i.keys()))
+      elif type(i) is time.struct_time:
         try:
-          i = self.getLangFmtDate(i)
+          return self.getLangFmtDate(i)
         except:
           pass
-      elif i is not None:
+      if i is not None:
         return str(i)
       else:
         return ''
@@ -1355,7 +1355,8 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      _globals.writeBlock( self, '[localfs_read]: filename=%s'%filename)
+      if _globals.debug( self):
+        _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
       # Check permissions.
       access = False
       for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
@@ -1385,7 +1386,8 @@ class ZMSGlobals:
       """
       Writes file to local file-system.
       """
-      _globals.writeBlock( self, '[localfs_write]: filename=%s'%filename)
+      if _globals.debug( self):
+        _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
       _fileutil.exportObj( v, filename, mode)
 
 
@@ -1396,7 +1398,8 @@ class ZMSGlobals:
       """
       Removes file from local file-system.
       """
-      _globals.writeBlock( self, '[localfs_remove]: path=%s'%path)
+      if _globals.debug( self):
+        _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
       _fileutil.remove( path, deep)
 
 
@@ -1412,7 +1415,8 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      _globals.writeBlock( self, '[localfs_readPath]: filename=%s'%filename)
+      if _globals.debug( self):
+        _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
       return _fileutil.readPath(filename, data, recursive)
 
     # --------------------------------------------------------------------------

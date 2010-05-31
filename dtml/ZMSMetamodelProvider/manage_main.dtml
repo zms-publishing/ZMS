@@ -605,15 +605,13 @@ function changeType( el)
               ><dtml-in "oAttr['id'].split('/')"
                ><dtml-call "REQUEST.set('ob',getattr(ob,_['sequence-item']))"
               ></dtml-in
-              ><dtml-with ob
-               ><dtml-if errors
-                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(errors)" html_quote>" border="0" style="vertical-align:middle" 
-               /><dtml-elif warnings
-                ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(warnings)" html_quote>" border="0" style="vertical-align:middle" 
-               /><dtml-else
-                ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
-               /></dtml-if
-              ></dtml-with
+              ><dtml-if "ob.errors"
+               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(ob.errors)" html_quote>" border="0" style="vertical-align:middle" 
+              /><dtml-elif "ob.warnings"
+               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(ob.warnings)" html_quote>" border="0" style="vertical-align:middle" 
+              /><dtml-else
+               ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
+              /></dtml-if
              ><dtml-except
               ><dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br
              ></dtml-try

@@ -150,7 +150,7 @@
 				
 		// Call postLoad callback (queueing etc)
 		// Timeout needed to make sure that queue of files (this.queue) has correct value
-			setTimeout(function(){that.afterGet(url);},0);
+			setTimeout(function(){that.afterGet(url);},1);
 			
 	// If no caching or file is not cached
 		} else {
@@ -231,9 +231,10 @@
 		for (var i=0;i<this.tmp_callback.length;i++) {
 			(function(){
 				var callback = that.tmp_callback[i];
-				setTimeout(function(){callback.apply(that);},0);
+				setTimeout(function(){callback.apply(that);},1);
 			})();
 		}
+		this.tmp_callback = [];
 	}
 	
 	Plugin.prototype.get = function(){
@@ -258,6 +259,7 @@
 		
 	// Load each file specified for this plugin
 		var getFile = function(file){that.getFile(file);};
+		var that = this;
 		for(var i=0;i<files.length;i++){
 			(function(){
 				var file = files[i];

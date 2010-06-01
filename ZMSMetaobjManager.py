@@ -872,7 +872,7 @@ class ZMSMetaobjManager:
           newOb.manage_edit( title=newName, data=newCustom)
           roles=[ 'Manager']
           newOb._proxy_roles=tuple(roles)
-          if newId.find( 'manage_') == 0:
+          if newId.find( 'manage_') >= 0:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Script (Python)':
@@ -880,7 +880,7 @@ class ZMSMetaobjManager:
           newOb.write(newCustom)
           roles=[ 'Manager']
           newOb._proxy_roles=tuple(roles)
-          if newId.find( 'manage_') == 0:
+          if newId.find( 'manage_') >= 0:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Z SQL Method':

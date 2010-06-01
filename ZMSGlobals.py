@@ -1028,7 +1028,7 @@ class ZMSGlobals:
           pass
       elif type(i) is int or type(i) is float:
         return str(i)
-      else:
+      elif i is not None:
         return '\'%s\''%(str(i).replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
       return '\'\''
 
@@ -1047,8 +1047,7 @@ class ZMSGlobals:
           pass
       if i is not None:
         return str(i)
-      else:
-        return ''
+      return ''
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.filter_list:

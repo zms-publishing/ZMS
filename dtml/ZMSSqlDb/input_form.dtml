@@ -241,9 +241,9 @@
       </dtml-if>
      <dtml-else>
      <dtml-comment>
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- MULTIMULTISELECT
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-if "grid_col.get('multimultiselect')">
      <dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))">
@@ -392,7 +392,9 @@
       ><dtml-call "REQUEST.set('options',[])"
       ><dtml-if "fk.get('mysqlset')"
        ><dtml-if value
-        ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
+        ><dtml-if "value.find('\'')<value.rfind('\'')"
+         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
+        ></dtml-if
        ></dtml-if
        ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
         ><dtml-let r=sequence-item rtype="r['type']"
@@ -462,7 +464,7 @@
         </dtml-if>
         <dtml-in options>
          <dtml-let item=sequence-item key="item[0]" label="item[1]">
-          <option value="<dtml-var key>" <dtml-if "value==str(key)">selected="selected"</dtml-if>><dtml-var label></option>
+          <option value="<dtml-var key>" <dtml-if "str(value)==str(key)">selected="selected"</dtml-if>><dtml-var label></option>
          </dtml-let>
         </dtml-in>
        </select>

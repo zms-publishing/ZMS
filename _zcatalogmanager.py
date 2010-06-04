@@ -599,8 +599,9 @@ class ZCatalogManager:
         else:
           index_extras.default_encoding = 'utf-8'
           index_extras.indexed_fields = index_name
+          index_extras.fields = ['%s_%s'%(index_name,lang)]
           index_extras.near_distance = 5
-          index_extras. splitter_casefolding = 1
+          index_extras.splitter_casefolding = 1
           index_extras.splitter_max_len = 64
           index_extras.splitter_separators = '.+-_@'
           index_extras.splitter_single_chars = 0

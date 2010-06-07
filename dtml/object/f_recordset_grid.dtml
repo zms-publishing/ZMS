@@ -38,15 +38,15 @@
  <dtml-try>
  <tr class="neutralColorMedium">
   <dtml-if grid_options>
-  <th class="form-small" align="left"
+  <th class="form-small" align="left" style="white-space:nowrap"
    ><dtml-if "'insert' in grid_options.keys()"
    ><a href="<dtml-var "grid_options['insert']['action']">" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_add.gif" alt="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
+    ><img src="<dtml-var MISC_ZMS>btn_add.gif" alt="add" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
     /></a
    ></dtml-if
    ><dtml-if "'export' in grid_options.keys()"
    ><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('manage_target')"> target="<dtml-var "grid_options['export'].get('manage_target')">"</dtml-if>
-    ><img src="<dtml-var "grid_options['export']['icon']">" alt="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
+    ><img src="<dtml-var "grid_options['export']['icon']">" alt="export" title="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
     /></a
    ></dtml-if
   ></th>

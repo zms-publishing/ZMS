@@ -153,7 +153,8 @@ class ConfManager(
           file = open(_fileutil.getOSPath(file),'rb')
       files = _fileutil.getZipArchive( file)
       for f in files:
-        self.importConf(f,REQUEST,createIfNotExists)
+        if not f.get('isdir'):
+          self.importConf(f,REQUEST,createIfNotExists)
       self.synchronizeObjAttrs()
 
 
@@ -177,6 +178,7 @@ class ConfManager(
     #  ConfManager.importConf:
     # --------------------------------------------------------------------------
     def importConf(self, file, REQUEST, createIfNotExists=0):
+      message = ''
       filename, xmlfile = self.getConfXmlFile( file)
       zms_system = 1
       if filename.find('.charfmt.') > 0:
@@ -194,6 +196,7 @@ class ConfManager(
       elif filename.find('.textfmt.') > 0:
         self.format_manager.importTextformatXml(xmlfile, REQUEST, zms_system, createIfNotExists)
       xmlfile.close()
+      return message
 
 
     # --------------------------------------------------------------------------

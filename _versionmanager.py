@@ -79,9 +79,10 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
         self.cloneObjAttrs(oldAttrCntnr,newAttrCntnr,request)
         self.version_work_id = newAttrCntnr.id
       #-- Set minor-version.
-      if ((lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory()) or not has_version_work:
+      if ((lang == prim_lang or self.getDCCoverage(REQUEST).endswith('.%s'%lang)) and self.getHistory()) or not has_version_work:
         try:
-          minor_version = self.getObjProperty( 'minor_version', REQUEST) + 1
+          req = {'lang':lang,'preview':'preview','fetchReqBuff':False}
+          minor_version = self.getObjProperty( 'minor_version', req) + 1
         except:
           minor_version = 1
         self.setObjProperty( 'minor_version' ,minor_version, lang)

@@ -86,7 +86,7 @@ def pil_img_conv(self, img, maxdim=100, qual=75):
 # ------------------------------------------------------------------------------
 #  pil_img_resize:
 # ------------------------------------------------------------------------------
-def pil_img_resize( self, img, size, mode='resize', sffx='none', qual=75):
+def pil_img_resize( self, img, size, mode='resize', sffx='_thumbnail', qual=75):
   
   # Save image in temp-folder.
   tempfolder = tempfile.mktemp()
@@ -108,7 +108,7 @@ def pil_img_resize( self, img, size, mode='resize', sffx='none', qual=75):
   else:
     # Read thumbnail from file-system.
     lang_sffx = '_' + img.lang
-    thumb_sffx = '_thumbnail'
+    thumb_sffx = str(sffx)
     newfilename = filename[:-(len(_fileutil.extractFileExt(filename))+1)]
     f = open(filename,'rb')
     thumb_data = f.read()

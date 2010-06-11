@@ -1236,7 +1236,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.pil_img_resize:
     # --------------------------------------------------------------------------
-    def pil_img_resize( self, img, size, mode='resize', sffx='none', qual=75):
+    def pil_img_resize( self, img, size, mode='resize', sffx='_thumbnail', qual=75):
       """
       Returns a resized copy of an image. The size argument gives the requested
       size in pixels, as a 2-tuple: (width, height).

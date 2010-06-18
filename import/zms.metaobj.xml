@@ -3270,17 +3270,17 @@ $(function(){
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO widths //--</dtml-comment>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="_.len(table_table[-1])" table_weights="_.map(lambda x: 1, _.range( table_cols))">
+<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="len(table_table[-1])" table_weights="map(lambda x: 1, range( table_cols))">
  <dtml-in table_table>
   <dtml-let table_row=sequence-item>
    <dtml-in table_row mapping>
-    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="_.len(re_sub('<(.*?)>', '', dt_html(content,REQUEST)))">
+    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(table_cell.get('content',''),REQUEST)))">
      <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
     </dtml-let>
    </dtml-in>
   </dtml-let>
  </dtml-in>
- <dtml-return "_.map(lambda x: _.int((x*100.0)/sum(table_weights)), table_weights)">
+ <dtml-return "map(lambda x: int((x*100.0)/sum(table_weights)), table_weights)">
 </dtml-let>
 
 <dtml-comment>--// EO widths //--</dtml-comment>]]>
@@ -3418,7 +3418,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.0]]></item>
+            <item key="revision"><![CDATA[1.4.1]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

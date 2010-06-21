@@ -4257,7 +4257,7 @@ show-body-only: yes
 <item key="acquired" type="int">0</item>
 <item key="command"><![CDATA[<!-- BO breakpoint -->
 
-<dtml-raise>*** Breakpoint ***</dtml-raise>
+<dtml-raise type="breakpoint">*** Breakpoint ***</dtml-raise>
 
 <!-- EO breakpoint -->]]></item>
 <item key="id"><![CDATA[breakpoint]]></item>

@@ -177,7 +177,7 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
     if newId not in container.objectIds([newType]):
       container.manage_addDTMLMethod( newId, newName, newCommand)
     newOb = getattr( container, newId)
-    newOb.manage_edit( newName, newCommand)
+    newOb.manage_edit( title=newName, data=newCommand)
     roles=[ 'Manager']
     newOb._proxy_roles=tuple(roles)
   elif newType in [ 'Script (Python)']:

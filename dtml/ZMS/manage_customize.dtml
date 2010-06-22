@@ -156,7 +156,7 @@
 
 <dtml-let
   conf="getConfProperties()" 
-  conf_keys="filter(lambda x: not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('ZMS.workflow') and not x.startswith('zms.misc.') and not x.startswith('ZMS.filter.') and not x.startswith('ZMS.custom.') and not x.startswith('Portal.'),conf.keys())" 
+  conf_keys="filter(lambda x: not x.startswith('ZMS.version') and not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('ZMS.workflow') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
   res="[
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -284,7 +284,7 @@ function confKeyChange(b)
   <dtml-in res mapping sort=title>conf_dict['<dtml-var key>'] = eval("(<dtml-var sequence-item>)");
   </dtml-in>
   var conf = new Array();
-  <dtml-in conf_keys>conf['<dtml-var sequence-item>'] = '<dtml-var "conf[_['sequence-item']]">';
+  <dtml-in conf_keys>conf['<dtml-var sequence-item>'] = <dtml-var "str_json(conf[_['sequence-item']])">;
   </dtml-in>
   var keys = new Array();
   for ( n in conf) {

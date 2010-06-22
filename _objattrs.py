@@ -381,9 +381,14 @@ class ObjAttrs:
         form_fixed = False
         css = 'form-element'
         wrap = 'virtual'
-        if len(filter( lambda x: x['id']=='format', metaObj['attrs'])) > 0:
+        filteredMetaObjAttrs = filter( lambda x: x['id']=='format', metaObj['attrs'])
+        if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
-            fmt = self.getTextFormatDefault()
+            default = _globals.dt_html( self, str( filteredMetaObjAttrs[0].get('default','')), REQUEST)
+            if default:
+              fmt = default
+            else:
+              fmt = self.getTextFormatDefault()
             data = ''
           else:
             fmt = self.getObjProperty('format',REQUEST)

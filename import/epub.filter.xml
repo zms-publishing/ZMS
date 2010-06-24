@@ -112,13 +112,15 @@ start_level = context.getLevel()
 last_level = start_level - 1
 for x in range(len(items)):
   level = items[x]['level']
-  if level <= 2:
+# Customize your deepest content Level
+  if level <= 12:
     xml.extend(map(lambda x: '</navPoint>', range(last_level-level+1)))
     xml.append('<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id']))
     xml.append('<navLabel>')
     xml.append('<text>%s</text>\n'%(items[x]['titlealt']))
-    xml.append('<content src="%s"/>\n'%(items[x]['href']))
     xml.append('</navLabel>')
+    xml.append('<content src="%s"/>\n'%(items[x]['href']))
+
     last_level = level
 xml.extend(map(lambda x: '</navPoint>', range(last_level-start_level+1)))
 xml.append('</navMap>')

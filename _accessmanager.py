@@ -108,27 +108,28 @@ def insertUser(self, newId, newPassword, newEmail, REQUEST):
 #  _accessmanager.deleteUser:
 # ------------------------------------------------------------------------------
 def deleteUser(self, id, REQUEST):
-  lang = REQUEST['lang']
   userFldr = self.getUserFolder()
   
-  userObj = userFldr.getUser(id)
-  if userObj is not None:
-    
-    # Delete local roles in node.
-    # ---------------------------
-    nodes = self.getUserAttr(userObj,'nodes',{})
-    for node in nodes.keys():
-      ob = self.getLinkObj(node,REQUEST)
-      if ob is not None:
-        ob.manage_delLocalRoles(userids=[getUserId(userObj)])
-    
-    # Delete user.
-    # ------------
-    self.delUserAttr(userObj)
-    if userFldr.meta_type != 'LDAPUserFolder':
-      userFldr.userFolderDelUsers([id])
-    id = ''
+  # Delete local roles in node.
+  # ---------------------------
+  nodes = self.getUserAttr(id,'nodes',{})
+  for node in nodes.keys():
+    ob = self.getLinkObj(node,REQUEST)
+    if ob is not None:
+      ob.manage_delLocalRoles(userids=[id])
   
+  # Delete user from ZMS dictionary.
+  # --------------------------------
+  self.delUserAttr(id)
+  
+  # Delete user from User-Folder.
+  # -----------------------------
+  if userFldr.meta_type != 'LDAPUserFolder':
+    userObj = userFldr.getUser(id)
+    if userObj is not None:
+      userFldr.userFolderDelUsers([id])
+  
+  id = ''
   return id
 
 
@@ -251,14 +252,6 @@ class AccessableObject:
     ###  Public Access (Subscribers)
     ###
     ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  AccessableObject.viewPermission:
-    #
-    #  Raises exception.
-    # --------------------------------------------------------------------------
-    viewPermission__roles__ = ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber']
-    def viewPermission(self): pass
 
     # --------------------------------------------------------------------------
     #  AccessableObject.hasRestrictedAccess:

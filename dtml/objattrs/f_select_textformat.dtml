@@ -1,4 +1,4 @@
-<dtml-if "isDisabledAttr(getObjAttr('format'),REQUEST)">
+<dtml-if "'format' in getObjAttrs().keys() and isDisabledAttr(getObjAttr('format'),REQUEST)">
  <dtml-in "getTextFormats(REQUEST)">
   <dtml-let textFrmt=sequence-item>
    <dtml-if "(REQUEST.has_key('format') and

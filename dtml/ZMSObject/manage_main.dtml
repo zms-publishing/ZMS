@@ -1,7 +1,7 @@
 <dtml-let lurl="URL.replace('?','/').split('/')" metaObj="getMetaobj(meta_id)" metaObjManage="getMetaobjAttr(meta_id,'manage')" metaobjIds="getMetaobjIds()">
  <dtml-if metaObjManage>
   <dtml-var "dt_html(metaObjManage['custom'],REQUEST)">
- <dtml-elif "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
+ <dtml-elif "isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
   <dtml-var manage_container>
  <dtml-else>
   <dtml-var manage_page_header>

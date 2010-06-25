@@ -9,21 +9,17 @@
 -->
 
 <input type="hidden" name="exists_<dtml-var elName>" value="<dtml-var "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">">
-<dtml-if "REQUEST.get('ZMS_INSERT',None) is None and value not in [None,'']">
- <input type="hidden" name="del_<dtml-var elName>" value="0">
- <table cellspacing="0" cellpadding="0" border="0" width="100%">
- <!-- Border.Top -->
- <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td></tr>
- <tr>
-  <!-- Border.Left -->
+<input type="hidden" name="del_<dtml-var elName>" value="0">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td></tr>
+<tr>
   <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
   <td valign="top" width="100%">
-
-   <!-- Title -->
-   <table id="table_<dtml-var elName>" cellspacing="0" cellpadding="0" border="0" width="100%">
+   <table cellspacing="0" cellpadding="0" border="0" width="100%">
    <tr class="zmiNeutralColorMedium0">
-     <!-- Filename -->
-     <td class="form-small" nowrap="nowrap">
+    <td class="form-small" nowrap="nowrap">
+     <dtml-if value>
+      <div id="table_<dtml-var elName>">
       <dtml-if "value.getMediadbfile() is not None"><font class="form-label">MediaDb:</font></dtml-if>
        <dtml-try>
         <img src="<dtml-var "value.getMimeTypeIconSrc()">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle">
@@ -36,6 +32,8 @@
          <i>(<dtml-var " getZMILangStr('ATTR_DEFAULT')"> / <dtml-var " getLanguageLabel( getPrimaryLanguage())">)</i>
         </dtml-if>
        <dtml-except></dtml-try>
+       </div>
+      </dtml-if>
      </td>
      <td class="form-small" nowrap="nowrap" align="right">
       <!-- Displaytype -->
@@ -44,10 +42,12 @@
        <dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
       </dtml-if></dtml-if></dtml-if>
       <!-- Delete -->
+      <dtml-if value>
       <dtml-if "hasObjProperty(key,REQUEST) or getObjAttr(key)['multilang']==0">
        <a href="javascript:zmiDelBlobBtnClick('<dtml-var elName>');" class="button"
         ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var " getZMILangStr('BTN_DELETE')">"
        ></a>
+      </dtml-if>
       </dtml-if>
      </td>
    </tr>
@@ -59,22 +59,24 @@
     <tr valign="middle">
      <td class="form-text"><dtml-var " getZMILangStr('ATTR_FILE')"></td>
      <td class="form-element"><dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})"></td>
+     <dtml-if value>
      <dtml-if "hasObjProperty(key,REQUEST) and (key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
       <td class="form-element"><input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
+     </dtml-if>
      </dtml-if>
     </tr>
     </table>
    </dtml-if>
 
-      </td>
+  </td>
 
-      <!-- ### [3..5] SPACER -->
-      <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
-      <td width="10"><img src="<dtml-var spacer_gif>" border="0" width="10" height="1"></td>
+  <td width="1" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
+  <td width="10"><img src="<dtml-var spacer_gif>" border="0" width="10" height="1"></td>
 
-      <!-- Preview -->
-      <td align="right" valign="top">
-       <dtml-try>
+  <!-- Preview -->
+  <td align="right" valign="top">
+   <dtml-if value>
+    <dtml-try>
        <dtml-if "key.find('superres')<0 and value.getContentType().find('image')==0">
        <a href="<dtml-var "value.getHref(REQUEST)">" class="fancybox"
         ><img id="img_<dtml-var elName>" src="<dtml-var "value.getHref(REQUEST)">"
@@ -94,25 +96,17 @@
         <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"
          ><img src="<dtml-var MISC_ZMS>download.gif" title="<dtml-var " getZMILangStr('BTN_DOWNLOAD')">" border="0"></a>
        </dtml-if>
-       <dtml-except>
-        <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"
-         ><img src="<dtml-var MISC_ZMS>download.gif" title="<dtml-var " getZMILangStr('BTN_DOWNLOAD')">" border="0"></a>
-       </dtml-try>
-      </td>
-      </tr>
- <!-- Border.Bottom -->
- <tr><td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td></tr>
- </table>
-<dtml-else>
- <dtml-if "lang in getLanguages(REQUEST)">
-  <!-- Upload -->
-  <div class="form-element">
-   <dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
-   <dtml-if "(key.find('hires')>=0 or key.find('superres')>=0) and getConfProperty('InstalledProducts.pil')">
-    &nbsp;&nbsp;<input class="form-checkbox" type="checkbox" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is None">checked="checked"</dtml-if>><dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')">
+    <dtml-except>
+     <a href="<dtml-var "value.getHref(REQUEST)">" target="_blank"
+      ><img src="<dtml-var MISC_ZMS>download.gif" title="<dtml-var " getZMILangStr('BTN_DOWNLOAD')">" border="0"></a>
+    </dtml-try>
    </dtml-if>
-  </div>
- </dtml-if>
-</dtml-if>
+  </td>
+ </tr>
+ 
+<tr>
+ <td height="1" colspan="3" class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" border="0" width="1" height="1"></td>
+</tr>
+</table>
 
 <!-- EO f_selectImage -->

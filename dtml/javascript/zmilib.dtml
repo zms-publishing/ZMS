@@ -15,7 +15,7 @@ function radioOnClick(el, url) {
 function zmiDelBlobBtnClick(elName) {
   if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
     $('input[name=del_'+elName+']').val(1);
-    $('table#table_'+elName).hide('normal');
+    $('div#table_'+elName).hide('normal');
     $('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
     var img = $('img#img_'+elName);
     if (img.length > 0) {

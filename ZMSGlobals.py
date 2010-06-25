@@ -29,7 +29,6 @@ from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
 from cStringIO import StringIO
 from types import StringTypes
-from zExceptions import Unauthorized
 from binascii import b2a_base64, a2b_base64
 import base64
 import copy
@@ -1356,13 +1355,16 @@ class ZMSGlobals:
         pass
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
+      
       # Check permissions.
-      access = False
-      for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
-        access = access or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
-      # Raise unauthorized error.
-      if not access:
-        raise Unauthorized
+      if REQUEST is not None:
+        authorized = False
+        for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
+          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
+        if not authorized:
+          RESPONSE = REQUEST.RESPONSE
+          raise REPONSE.unauthorized()
+      
       # Read file.
       if type( mode) is dict:
         fdata, mt, enc, fsize = _fileutil.readFile( filename, mode.get('mode','b'), mode.get('threshold',-1))

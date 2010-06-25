@@ -114,7 +114,7 @@
   <dtml-call "REQUEST.set('new_row',[])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
-    <dtml-if "type in metaobj_manager.valid_types">
+    <dtml-if "type in metaobj_manager.valid_types or type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes">
      <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.get(obj_attrName),lang))">
      <dtml-try><dtml-call "operator_delattr(value,'aq_parent')"><dtml-except></dtml-try>
      <dtml-call "new_row.append(id)">
@@ -144,7 +144,7 @@
   <dtml-call "REQUEST.set('new_row',[])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
-    <dtml-if "type in metaobj_manager.valid_types">
+    <dtml-if "type in metaobj_manager.valid_types or type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes">
      <dtml-call "REQUEST.set('value',formatObjAttrValue(obj_attr,REQUEST.get(obj_attrName),lang))">
      <dtml-var "writeBlock('[actions.update]: %s=%s(%s)'%(str(id),str(value),str(REQUEST.get(obj_attrName))))">
      <dtml-if "value is None and type in ['image','file'] and not REQUEST.get('del_%s'%obj_attrName,'0')=='1'">

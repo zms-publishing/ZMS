@@ -244,7 +244,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def getObjAttr(self, key, meta_id=None):
       obj_attrs = self.getObjAttrs( meta_id)
-      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'lang_inherit':False,'name':'UNKOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
+      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'lang_inherit':False,'name':'UNKNOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
 
 
     # --------------------------------------------------------------------------
@@ -799,7 +799,7 @@ class ObjAttrs:
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
-      datatype = obj_attr['datatype_key']
+      datatype = obj_attr.get('datatype_key',_globals.DT_UNKNOWN)
       
       #-- VALUE
       if type(v) in StringTypes:

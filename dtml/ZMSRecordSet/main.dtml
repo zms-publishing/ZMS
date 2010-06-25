@@ -216,7 +216,7 @@
 ###############################################################################
 </dtml-comment>
  <dtml-unless "REQUEST.get('action','') in ['insert','update']">
-  <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export','statistics'])">
+  <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export'])">
   <hr size="1"/>
   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">  
  </dtml-unless>

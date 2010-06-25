@@ -17,13 +17,14 @@
 <dtml-let zt0="DateTime().timeTime()" metaobjIds="getMetaobjIds()" obj_attrs="[]" vs="{}">
 
  <dtml-in "metaObj['attrs']" mapping
-  ><dtml-let obj_attr="getObjAttr(id).copy()"
+  ><dtml-let si=sequence-item obj_attr="getObjAttr(id).copy()"
    ><dtml-if custom
     ><dtml-unless sequence-start
-     ><dtml-unless "type in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes or id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')"
-      ><dtml-call "operator_setitem(obj_attr,'type',type)"
+     ><dtml-if "type in metaobj_manager.valid_types or id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')"
       ><dtml-call "obj_attrs.append(obj_attr)"
-     ></dtml-unless
+     ><dtml-elif "type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes"
+      ><dtml-call "obj_attrs.append(si)"
+     ></dtml-if
     ></dtml-unless
    ></dtml-if
   ></dtml-let
@@ -285,27 +286,6 @@
  </dtml-let>
  </dtml-in>
  <dtml-call "REQUEST.set('qpage',qpage+1)">
-
-<dtml-if "'statistics' in grid_options">
-<dtml-if vs>
- <tr>
-  <td colspan="3"><img src="<dtml-var spacer_gif>" alt="" border="0"></td>
- <dtml-in obj_attrs mapping>
-  <dtml-let obj_attr=sequence-item l="vs.get(id,[])">
-   <td class="form-small">
-    <dtml-try>
-     <dtml-if l>
-      <dtml-let meanstdv="zmsmathutil.meanstdv(l)">
-       <span style="font-family: serif; font-style: italic; text-decoration: overline;" title="AVG">x</span>=<dtml-var "meanstdv[0]">&plusmn;<dtml-var "meanstdv[1]">
-      </dtml-let>
-     </dtml-if>
-    <dtml-except></dtml-try>
-   </td>
-  </dtml-let>
- </dtml-in>
- </tr>
-</dtml-if>
-</dtml-if>
 
  </table>
 

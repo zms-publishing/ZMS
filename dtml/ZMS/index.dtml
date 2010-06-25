@@ -15,7 +15,7 @@
 ><dtml-elif "URL.find('/index_')>URL.find('.html')"
 ><dtml-return "RESPONSE.redirect('%s/index_%s.html'%(URL1,lang))"
 ><dtml-else
-><dtml-call "viewPermission()"
+><dtml-call "RESPONSE.unauthorized()"
 ></dtml-if
 ></dtml-unless
 

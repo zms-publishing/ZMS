@@ -424,12 +424,12 @@
        </dtml-if>
        <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
        <dtml-in "query(sqlStatement)['records']"
-        ><dtml-let row=sequence-item
+        ><dtml-let row=sequence-item maxlen="int(fk.get('maxlen',25))"
          ><dtml-unless "row['qvalue']==None" 
          ><dtml-try
-          ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
+          ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
          ><dtml-except
-          ><dtml-call "options.append([str(row['qkey']),str(row['qvalue'])])"
+          ><dtml-call "options.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
          ></dtml-try
          ></dtml-unless
         ></dtml-let

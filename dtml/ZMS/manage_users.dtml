@@ -112,7 +112,7 @@
   <dtml-in local_roles>
    <dtml-call "roles_optpl.append([_['sequence-item'],_['sequence-item']])">
   </dtml-in>
-  <td>
+  <td width="50%">
 
 <dtml-comment>
 --------------------------------------------------------------------------------
@@ -162,7 +162,8 @@
        <dtml-if sequence-start>
         <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
         <tr valign="middle">
-         <td class="form-element" colspan="2" align="right"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+         <td class="form-label">&nbsp;</td>
+         <td class="form-label">Id</td>
          <td class="form-label">SN</td>
          <td class="form-label">CN</td>
          <td class="form-label">DN</td>
@@ -172,18 +173,18 @@
        </dtml-if>
        <dtml-call "REQUEST.set('userId',unicode(_[getProperty( '_login_attr' )],'latin-1').encode('utf-8'))">
        <tr valign="top" class="<dtml-if sequence-even>zmiNeutralColorLight0<dtml-else>zmiNeutralColorMedium0</dtml-if>">
-        <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-        <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var userId>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><b></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><b></dtml-if><dtml-if cn><dtml-var "unicode(cn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><b></dtml-if><dtml-if dn><dtml-var "unicode(dn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></b></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><b></dtml-if><dtml-if ou><dtml-var "unicode(ou,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></b></dtml-if></td>
+        <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
+        <td class="form-small"><a href="?lang=<dtml-var lang>&id=<dtml-var userId>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var userId></b></a></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><i></dtml-if><dtml-if cn><dtml-var "unicode(cn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></i></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><i></dtml-if><dtml-if dn><dtml-var "unicode(dn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></i></dtml-if></td>
+        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><i></dtml-if><dtml-if ou><dtml-var "unicode(ou,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></i></dtml-if></td>
         <td class="form-small">
          &nbsp;
          <!-- E-Mail -->
          <dtml-let email="getUserAttr(userId,'email','')">
           <dtml-if email>
-           <a href="mailto:<dtml-var email>"><img src="<dtml-var MISC_ZMS>mail_link.gif" title="<dtml-var email>" border="0" align="middle" /></a>
+           <a href="mailto:<dtml-var email>"><dtml-var email></a>
           </dtml-if>
          </dtml-let>
         </td>
@@ -199,18 +200,13 @@
    <dtml-in "getConfProperty('ZMS.security.users',{}).keys()">
     <dtml-let name=sequence-item user="getUser(name)">
     <dtml-if sequence-start>
-     <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
-     <tr valign="middle">
-      <td colspan="2" align="right"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
-     </tr>
+     <table cellspacing="1" cellpadding="1" border="0" width="80%" class="zmiNeutralColorStrong0">
     </dtml-if>
     <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-     <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-     <td><input class="form-small" type="radio" name="id" value="<dtml-var sequence-item>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+     <td align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
      <td>
       <div class="form-small">
-       <dtml-var name>
+       <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
         <dtml-if user>
          <dtml-in "[getUserDetails(encoded_dn=user.dn,format='dictionary')]" mapping>
           (<i>
@@ -534,7 +530,7 @@
          <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
          <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var name>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
          <td class="form-small" colspan="2">
-          <dtml-var name>
+          <a href="?lang=<dtml-var lang>&id=<dtml-var name>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
           <dtml-if "localUserFldr!=userFldr">@<a href="<dtml-var "localUserFldr.aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "localUserFldr.aq_parent.id"></a></dtml-if>
           <dtml-in "difference_list(userObj.getRoles(),['Authenticated'])">
            <dtml-if sequence-start><i>(</dtml-if>
@@ -547,7 +543,7 @@
           <!-- E-Mail -->
           <dtml-let email="getUserAttr(name,'email','')">
            <dtml-if email>
-            <a href="mailto:<dtml-var email>"><img src="<dtml-var MISC_ZMS>mail_link.gif" title="<dtml-var email>" border="0" align="middle" /></a>
+            <a href="mailto:<dtml-var email>"><dtml-var email></a>
            </dtml-if>
           </dtml-let>
           <!-- Profile -->
@@ -642,7 +638,7 @@
   <dtml-call "perms_optpl.append(['ZMS Author',getZMILangStr('ROLE_ZMSAUTHOR')])">
   <dtml-call "perms_optpl.append(['ZMS UserAdministrator',getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')])">
   <dtml-call "perms_optpl.append(['ZMS Subscriber',getZMILangStr('ROLE_ZMSSUBSCRIBER')])">
-  <td>
+  <td width="50%">
   
   <form name="form2" action="manage_roleProperties" method="post" onsubmit="return form2Submit(this);">
   <input type="hidden" name="key" value="">
@@ -657,18 +653,13 @@
      <tr>
       <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
      </tr>
-     <tr class="zmiNeutralColorStrong0">
-      <td colspan="2" align="right"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
-      <td>&nbsp;</td>
-     </tr>
     </dtml-if>
     <dtml-if "REQUEST.get('id','')==_['sequence-item']"> 
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td class="zmiNeutralColorStrong0" rowspan="2" align="right"><div class="form-label"><dtml-var "_['sequence-index']+1">.</div></td>
       <td class="form-element" rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var sequence-item>" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
       <!-- Id -->
-      <td class="form-text" valign="middle"><dtml-var sequence-item></td>
+      <td class="form-text" valign="middle"><a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var sequence-item></b></a></td>
       <td class="form-element" align="right" nowrap="nowrap">
        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
       </td>
@@ -747,9 +738,8 @@
     <dtml-else>
      <dtml-if "REQUEST.get('id','')==''">
       <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-       <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-       <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var sequence-item>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-       <td class="form-small" colspan="2"><dtml-var sequence-item></td>
+       <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
+       <td class="form-small" colspan="3"><a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var sequence-item></b></a></td>
       </tr>
      </dtml-if>
     </dtml-if>

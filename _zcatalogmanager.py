@@ -127,13 +127,10 @@ def getCatalog(self, lang):
   context = self.getDocumentElement()
   cat_id = 'catalog_%s'%lang
   obs = filter( lambda x: x.id==cat_id, context.objectValues( [ 'ZCatalog']))
-  if len(obs) == 0:
-    catalog = getattr( self, cat_id, None)
-    if catalog is not None and catalog.meta_type == 'ZCatalog':
-      obs = [catalog]
-  if len(obs) == 0:
-    return self.recreateCatalog(lang)
-  return obs[0]
+  if obs:
+    return obs[0]
+  else:
+    return getattr( self, cat_id, None)
 
 
 ################################################################################
@@ -502,20 +499,14 @@ class ZCatalogManager:
       context = self.getDocumentElement()
       
       #-- Get catalog
-      cat_id = 'catalog_%s'%lang
-      obs = filter( lambda x: x.id==cat_id, context.objectValues( [ 'ZCatalog']))
-      if len(obs) == 0:
-        catalog = getattr( self, cat_id, None)
-        if catalog is not None and catalog.meta_type == 'ZCatalog':
-          obs = [catalog]
-      if len( obs) == 0:
+      zcatalog = getCatalog( self, lang)
+      if zcatalog is None:
+        cat_id = 'catalog_%s'%lang
         cat_title = 'Default catalog'
         vocab_id = 'create_default_catalog_'
         zcatalog = ZCatalog.ZCatalog(cat_id, cat_title, vocab_id, context)
         context._setObject(zcatalog.id, zcatalog)
-        zcatalog = getCatalog(self,lang)
-      else:
-        zcatalog = obs[ 0]
+        zcatalog = getCatalog( self, lang)
       
       #-- Add lexicon
       addLexicon( self, zcatalog)
@@ -688,6 +679,8 @@ class ZCatalogManager:
       #-- Search catalog.
       lang = REQUEST['lang']
       zcatalog = getCatalog(self,lang)
+      if zcatalog is None:
+        return rtn
       items = []
       for zcindex in zcatalog.indexes():
         if zcindex.find('zcat_')==0:

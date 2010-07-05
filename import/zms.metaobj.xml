@@ -2807,14 +2807,6 @@ var table_cell_id = '';
 var table_cell_bgcolor = null;
 var table_cell_offs = 2;
 
-function selectValue(el, v)
-{
-  for (i=0; i < el.options.length; i++) {
-    if (el.options[i].value == v)
-      el.selectedIndex = i;
-  }
-}
-
 function onZMSTableFormSubmit()
 {
   var xml;
@@ -2860,11 +2852,12 @@ function onZMSTableFormSubmit()
   return onFormSubmit('<dtml-var fmName>');
 }
 
-function table_cell_edit(el)
+function table_cell_edit(el_td)
 {
-	table_cell_id = el.name.substr(el.name.indexOf('_')+1);
+	var el = $('textarea',el_td);
+	var el_name = el.attr('name');
+	table_cell_id = el_name.substr(el_name.indexOf('_')+1);
 	// Set cell background.
-	var el_td = $('#content_'+ table_cell_id).parent();
 	if (table_cell_bgcolor==null) {
 		table_cell_bgcolor = el_td.css( "backgroundColor");
 	}
@@ -2873,16 +2866,14 @@ function table_cell_edit(el)
 	$('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
 	$('#zmiStandardEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
-	selectValue(document.getElementById('tag'),$('#tag_'+ table_cell_id).val());
-	selectValue(document.getElementById('format'),$('#format_'+ table_cell_id).val());
+	$('#tag').val($('#tag_'+ table_cell_id).val());
+	$('#format').val($('#format_'+ table_cell_id).val());
 	<dtml-let elName="'content_editor'">
 	<dtml-if "REQUEST.get('richedit_fmt')">
 	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
 		$('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
 		$('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-		// zmiRichtextOnSubmitEventHandler();
-		<dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
-		<dtml-var "REQUEST.get('afterSubmitBtnClick','')">
+		zmiStandardOnSubmitEventHandler();
 	}
 	</dtml-if>
 	</dtml-let>
@@ -2893,19 +2884,28 @@ function table_cell_edit(el)
 
 function table_cell_change()
 {
-  // zmiRichtextOnSubmitEventHandler();
-  <dtml-var "REQUEST.get('beforeSubmitBtnClick','')">
-  <dtml-var "REQUEST.get('afterSubmitBtnClick','')">
+	<dtml-if "REQUEST.get('richedit_fmt')">
+	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
+		zmiRichtextOnSubmitEventHandler();
+		$('#input_'+ table_cell_id).hide();
+		$('#preview_'+ table_cell_id).show();
+	}
+	else {
+		$('#input_'+ table_cell_id).show();
+		$('#preview_'+ table_cell_id).hide();
+	}
+	</dtml-if>
   $('#format_'+ table_cell_id).val($('#format').val());
   $('#tag_'+ table_cell_id).val($('#tag').val());
   $('#content_'+ table_cell_id).val($('#content_editor').val());
+  $('#preview_'+ table_cell_id).html($('#content_editor').val());
   return table_cell_cancel();
 }
 
 function table_cell_cancel()
 {
 	// Reset cell background.
-	var el_td = $('#content_'+ table_cell_id).parent();
+	var el_td = $('#content_'+ table_cell_id).parents(".contentEditable");
 	el_td.css( "backgroundColor", table_cell_bgcolor);
 	table_cell_bgcolor = null;
 	// Close cell editor.
@@ -2915,8 +2915,8 @@ function table_cell_cancel()
 
 function table_cell_init()
 {
-  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).css( 'backgroundColor', '#FFFFE8');});
-  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").dblclick( function () { table_cell_edit(this);});
+  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".contentEditable").css( 'backgroundColor', '#FFFFE8');});
+  $("form[name=<dtml-var fmName>] .contentEditable").dblclick( function () { table_cell_edit($(this));});
 }
 
 function actionBtnClick(el, fct)
@@ -3141,14 +3141,19 @@ $(function(){
     ><dtml-if "table_type==4 and row_index==0 and col_index==0"
      ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
     ><dtml-else
-     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;borde=r-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
+     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;border-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
       <div class="ZMSTable">
-       <table cellspacing="0" cellpadding="2" border="0" style="width:100%">
+       <table style="width:100%" class="ZMSTable">
        <tr>
-       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">">
-        <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
-        <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
-        <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="contentEditable">
+        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+         <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
+         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
+         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+        </div>
+        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+         <dtml-var content>
+        </div>
        </<dtml-var tag>>
        </tr>
        </table>
@@ -3418,7 +3423,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.1]]></item>
+            <item key="revision"><![CDATA[1.4.2]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

@@ -88,14 +88,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback)
     $('#'+show_id).css( { display: "block", visibility: "visible"});
     $('#'+hide_id).css( { display: "none", visibility: "hidden"});
     if ( format) {
-      var el = document.forms['<dtml-var fmName>'].elements['format'];
-      if ( el) {
-        for ( var i = 0; i < el.options.length; i++) {
-          if ( el.options[i].value == format) {
-            el.selectedIndex = i;
-          }
-        }
-      }
+      $('#format').val(format);
     }
     if ( callback) {
       callback.apply();

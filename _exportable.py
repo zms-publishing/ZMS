@@ -195,30 +195,49 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
      html = re.sub('(\?|&)preview=preview','',html)
    
    # Process declarative URLs
-   if self.getConfProperty('ZMS.pathhandler',0) != 0 and \
-      self.getConfProperty('ZMS.export.pathhandler',0) == 1:
-     newTmp = '..\\'
-     oldTmp = '../'
-     # Save links to root.
-     html = html.replace( oldTmp, newTmp)
-     # Replace 'index' in declarative URLs
-     pageexts = ['.html']
-     if 'attr_pageext' in self.getObjAttrs().keys():
-       obj_attr = self.getObjAttr('attr_pageext')
-       if obj_attr.has_key('keys') and len(obj_attr.get('keys')) > 0:
-         pageexts = obj_attr.get('keys')
-     for pageext in pageexts:
-       s_new = pageext
-       s_old = '/index_%s%s'%(REQUEST['lang'],pageext)
-       html = html.replace( s_old, s_new)
-       # Replace 'index_print' & 'sitemap' in declarative URLs
-       if obj.getLevel() > 0:
-         for key in [ 'index_print', 'sitemap']:
-           s_old = '"%s_%s%s'%(key,REQUEST['lang'],pageext)
-           s_new = '"%s/%s_%s%s'%(obj.getDeclId(REQUEST),key,REQUEST['lang'],pageext)
-           html = html.replace( s_old, s_new)
-     # Restore links to root.
-     html = html.replace( newTmp, oldTmp)
+   if self.getConfProperty('ZMS.pathhandler',0):
+     for x in html.split('href="./'):
+       href = x[:x.find('"')]
+       if href.endswith('.html'):
+         href = href.split('/')
+         new_href = []
+         ob = self
+         for ob_id in href[:-1]:
+           if ob is not None:
+             if ob_id == '..':
+               ob = ob.getParentNode()
+               if ob is not None:
+                 new_href.append(ob_id)
+             else:
+               ob = getattr(ob,ob_id,None)
+               if ob is not None:
+                 new_href.append(ob.getDeclId(REQUEST))
+         if ob is not None:
+           new_href.append(href[-1])
+           html = html.replace('"./%s"'%('/'.join(href)),'"./%s"'%('/'.join(new_href)))
+     if self.getConfProperty('ZMS.export.pathhandler',0):
+       newTmp = '..\\'
+       oldTmp = '../'
+       # Save links to root.
+       html = html.replace( oldTmp, newTmp)
+       # Replace 'index' in declarative URLs
+       pageexts = ['.html']
+       if 'attr_pageext' in self.getObjAttrs().keys():
+         obj_attr = self.getObjAttr('attr_pageext')
+         if obj_attr.has_key('keys') and len(obj_attr.get('keys')) > 0:
+           pageexts = obj_attr.get('keys')
+       for pageext in pageexts:
+         s_new = pageext
+         s_old = '/index_%s%s'%(REQUEST['lang'],pageext)
+         html = html.replace( s_old, s_new)
+         # Replace 'index_print' & 'sitemap' in declarative URLs
+         if obj.getLevel() > 0:
+           for key in [ 'index_print', 'sitemap']:
+             s_old = '"%s_%s%s'%(key,REQUEST['lang'],pageext)
+             s_new = '"%s/%s_%s%s'%(obj.getDeclId(REQUEST),key,REQUEST['lang'],pageext)
+             html = html.replace( s_old, s_new)
+       # Restore links to root.
+       html = html.replace( newTmp, oldTmp)
    
    return html
 

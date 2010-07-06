@@ -17,7 +17,7 @@
      ></dtml-let
     ></dtml-in
    ><dtml-else
-    ><dtml-call "operator_delitem(users[key])"
+    ><dtml-call "operator_delitem(users,key)"
    ></dtml-if
   ></dtml-let
  ></dtml-in>

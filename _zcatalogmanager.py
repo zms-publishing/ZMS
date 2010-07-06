@@ -80,7 +80,7 @@ def search_string(v):
 # ------------------------------------------------------------------------------
 def search_quote(s, maxlen=255, tag='&middot;'):
   # remove all tags.
-  s = re.sub( '<(.*?)>', '', s)
+  s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
   # limit characters.
   if len(s) > maxlen:
     blank = s.find(' ',maxlen)

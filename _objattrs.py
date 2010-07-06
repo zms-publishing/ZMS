@@ -684,6 +684,8 @@ class ObjAttrs:
     #  ObjAttrs.getObjProperty:
     #
     #  Retrieves value for specified property.
+    #
+    #  @deprecated: use attr(key) instead! 
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
       
@@ -733,6 +735,22 @@ class ObjAttrs:
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff( reqBuffId, value, REQUEST)
+
+
+    # --------------------------------------------------------------------------
+    #  ObjAttrs.attr:
+    #
+    #  Get one or set one or more attributes.
+    # --------------------------------------------------------------------------
+    def attr(self, *args, **kwargs):
+      request = self.REQUEST
+      if len(args) == 1 and type(args[0]) is str:
+        return self.getObjProperty( args[0], request, kwargs)
+      elif len(args) == 2:
+        self.setObjProperty( args[0], args[1], request.get('lang'))
+      elif len(args) == 1 and type(args[0]) is dict:
+        for key in args[0].keys():
+          self.setObjProperty( key, args[0][key], request.get('lang'))
 
 
     """
@@ -1075,6 +1093,8 @@ class ObjAttrs:
     #  ObjAttrs.setObjProperty:
     #
     #  Assigns value to specified property.
+    #
+    #  @deprecated: use attr(key,value) instead! 
     # --------------------------------------------------------------------------
     def setObjProperty(self, key, value, lang=None, forced=0):
       

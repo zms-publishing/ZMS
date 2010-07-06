@@ -33,6 +33,7 @@ import os
 import shutil
 import sys
 import time
+import transaction
 import urllib
 # Product imports.
 import _accessmanager
@@ -216,7 +217,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
               try:
                 self.metaobj_manager.setMetaobjAttr(dst_meta_type,None,metaDictId,'',0,0,0,metaDictId,zms_system=int(metaObj.get('zms_system',0) and metaDictAttr.get('zms_system',0)))
               except:
-                print "[recurse_updateVersionBuild]: can't setMetaobjAttr",self.getHome().id,dst_meta_type,None,metaDictId
+                print self.getLangFmtDate(time.time()),"[recurse_updateVersionBuild]: can't setMetaobjAttr",self.getHome().id,dst_meta_type,None,metaDictId
         try:
           del metaDictAttr['dst_meta_types']
         except:
@@ -268,11 +269,11 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
             self.metaobj_manager.acquireMetaobj( 'com.zms.foundation')
           else:
             self.metaobj_manager.acquireMetaobj( 'com.zms.foundation',subobjects=0)
-            print "[recurse_updateVersionBuild]: can't acquire standard-objects for",self.getHome().id
+            print self.getLangFmtDate(time.time()),"[recurse_updateVersionBuild]: can't acquire standard-objects for",self.getHome().id
             c = 0
             for attr in attrs:
               if attrs[c] != attrsMaster[c]:
-                print "[recurse_updateVersionBuild]: diff",attrs[c]['id'],self.difference_list(attrs[c]['attrs'],attrsMaster[c]['attrs']),self.difference_list(attrsMaster[c]['attrs'],attrs[c]['attrs'])
+                print self.getLangFmtDate(time.time()),"[recurse_updateVersionBuild]: diff",attrs[c]['id'],self.difference_list(attrs[c]['attrs'],attrsMaster[c]['attrs']),self.difference_list(attrsMaster[c]['attrs'],attrs[c]['attrs'])
               else:
                 self.metaobj_manager.acquireMetaobj( attrs[c]['id'])
               c = c + 1
@@ -302,7 +303,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       try:
         self.manage_renameObject( id=old_id, new_id=new_id)
       except:
-        print "[recurse_updateVersionBuild]: can't rename original-object", old_id, new_id
+        print self.getLangFmtDate(time.time()),"[recurse_updateVersionBuild]: can't rename original-object", old_id, new_id
         recurse_cleanArtefacts( self)
         self.manage_renameObject( id=old_id, new_id=new_id)
     # Copy ZMSObjects into ZMSCustoms.
@@ -330,7 +331,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
             cb_copy_data = ob.manage_cutObjects( ids=[id])
             new_ob.manage_pasteObjects( cb_copy_data)
           except:
-            print "[recurse_updateVersionBuild]: ", new_ob.meta_id, new_ob.absolute_url(), "Can't paste", id
+            print self.getLangFmtDate(time.time()),"[recurse_updateVersionBuild]: ", new_ob.meta_id, new_ob.absolute_url(), "Can't paste", id
       # Roles.
       role_permissions = {}
       for ob_role in ob_roles:
@@ -912,6 +913,7 @@ class ZMS(
         message += recurse_updateVersionBuild( self, self, REQUEST)
         _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from build #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
         setattr( self, 'build', self.zms_build)
+        transaction.commit()
         message += 'Synchronized object-model from build #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
       if build != self.zms_build or patch != self.zms_patch:
         REQUEST.set('recurse_updateVersionPatch',True)
@@ -919,6 +921,7 @@ class ZMS(
         message += recurse_updateVersionPatch( self, self, REQUEST)
         _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from patch #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
         setattr( self, 'patch', self.zms_patch)
+        transaction.commit()
         message += 'Synchronized object-model from patch #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
       if maintenance:
         try:

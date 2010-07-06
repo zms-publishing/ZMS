@@ -32,6 +32,7 @@ import urllib
 # Product Imports.
 import _blobfields
 import _globals
+import ZMSMetaobjManager
 
 
 # ------------------------------------------------------------------------------
@@ -1285,7 +1286,7 @@ class ObjAttrsManager:
     # --------------------------------------------------------------------------
     def synchronizeObjAttr(self, attr):
       try:
-        if attr['type'] in self.metaobj_manager.valid_types:
+        if attr['type'] in ZMSMetaobjManager.ZMSMetaobjManager.valid_types:
           dct = {}
           dct['id'] = attr['id']
           dct['name'] = attr.get('name','?')

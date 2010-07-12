@@ -20,7 +20,9 @@ $(function(){
 $(function(){
 	pluginFancybox('a.fancybox',function() {
 			$('a.fancybox').fancybox({
+				'autoScale'		: false,
 				'titleShow'		: false,
+				'hideOnContentClick': true,
 				'transitionIn'	: 'elastic',
 				'transitionOut'	: 'elastic'
 			});

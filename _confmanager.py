@@ -600,7 +600,7 @@ class ConfManager(
     #
     #  Customize system properties.
     ############################################################################
-    def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE): 
+    def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
       """ ConfManager.manage_customizeSystem """
       
       message = ''
@@ -729,13 +729,13 @@ class ConfManager(
             self.manage_delObjects(ids=ids)
       
       # Return with message.
-      d = {
-          'lang': lang,
-          'manage_tabs_message': message,
-      }
-      for param in params:
-        d[param] = REQUEST.get( param, '')
-      return RESPONSE.redirect( self.url_append_params( 'manage_customize', d) + '#_%s'%key)
+      if RESPONSE:
+        d = {'lang': lang,'manage_tabs_message': message}
+        for param in params:
+          d[param] = REQUEST.get( param, '')
+        return RESPONSE.redirect( self.url_append_params( 'manage_customize', d) + '#_%s'%key)
+      
+      return message
 
 
     """

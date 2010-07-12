@@ -244,8 +244,12 @@ class ZMSLinkElement(ZMSContainerObject):
     #  ZMSLinkElement.getEmbedType: 
     # --------------------------------------------------------------------------
     def getEmbedType(self):
-      rtn = self.getObjAttrValue( self.getObjAttr( 'attr_type'), self.REQUEST)
-      return rtn
+      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), self.REQUEST)
+      if embed_type in [ 'embed', 'recursive', 'remote']:
+        ref_obj = self.getRefObj()
+        if ref_obj is not None and ref_obj.isAnchestor( self):
+          embed_type = 'cyclic' # Error!
+      return embed_type
 
 
     # --------------------------------------------------------------------------
@@ -285,12 +289,6 @@ class ZMSLinkElement(ZMSContainerObject):
           
           ##### Object State ####
           self.setObjStateModified(REQUEST)
-          
-          ##### Constraints ####
-          ref_obj = self.getLinkObj( REQUEST.get( 'attr_ref', ''), REQUEST)
-          if ref_obj is not None and \
-             ref_obj.isAnchestor( self):
-            raise ConstraintViolation( 'Invalid url "%s" - cyclic recursion!'%REQUEST.get( 'attr_ref', ''))
           
           ##### Properties ####
           for key in self.getObjAttrs().keys():

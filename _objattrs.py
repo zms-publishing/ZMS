@@ -973,13 +973,17 @@ class ObjAttrs:
               href = href[ :href.rfind( '/')]
             else:
               href = ''
-          ob = self
+          ob = self.getSelf(self.PAGES)
           for el in href.split( '/'):
             if ob is not None:
               if el == '..':
                 ob = ob.aq_parent
               elif len( el) > 0:
-                ob = getattr( ob, el, None)
+                obs = filter(lambda x: x.id==el or x.getDeclId(self.REQUEST)==el, ob.objectValues(self.dGlobalAttrs.keys()))
+                if len(obs) == 0:
+                  ob = None
+                  break
+                ob = obs[0]
           if ob is None:
             _globals.writeBlock( self, '[formatObjAttrValue]: invalid href=%s'%href)
       

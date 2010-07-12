@@ -53,7 +53,7 @@
 <div id="ZMIManageTabsContainer">
 <ul id="ZMIManageTabsButtons">
 <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)"
-><dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] in manage_options[0]['action']"
+><dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] not in ['manage','manage_workspace','manage_system']"
 ><dtml-call "RESPONSE.redirect('%s/manage_system?lang=%s'%(absolute_url(),lang))"
 ></dtml-if
 ><li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>

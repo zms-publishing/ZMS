@@ -39,7 +39,7 @@ import _globals
 #
 #  User Folder Meta-Types.
 # ------------------------------------------------------------------------------
-user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder']
+user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder','Group User Folder']
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.role_defs:

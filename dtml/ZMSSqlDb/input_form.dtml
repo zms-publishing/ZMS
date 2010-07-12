@@ -26,6 +26,7 @@
 ><dtml-call "REQUEST.set('entity',SESSION[sessqentitykey])"><dtml-if ZMS_ENTITY><dtml-call "REQUEST.set('entity',ZMS_ENTITY)"></dtml-if
 ><dtml-call "REQUEST.set('css_','form-element')"
 ><dtml-call "REQUEST.set('css','form-element')"><dtml-if ZMS_CSS_EXTRA><dtml-call "REQUEST.set('css',css+' '+ZMS_CSS_EXTRA)"></dtml-if
+><dtml-call "REQUEST.set('qexcludeids_',REQUEST.get('qexcludeids',[]))"
 ><dtml-call "REQUEST.set('qexcludeids',[])"><dtml-if ZMS_EXCLUDE_IDS><dtml-call "REQUEST.set('qexcludeids',ZMS_EXCLUDE_IDS)"></dtml-if
 ><dtml-call f_recordset_init
 ><dtml-let row_=row
@@ -770,5 +771,6 @@
 </dtml-unless>
 
 <dtml-call "REQUEST.set('css',REQUEST.get('css_'))">
+<dtml-call "REQUEST.set('qexcludeids',REQUEST.get('qexcludeids_'))">
 <dtml-call "REQUEST.set('entity',REQUEST.get('entity_'))">
 </dtml-let>

@@ -8,7 +8,7 @@
   <LastAuthor>Christian Meier</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
   <LastSaved>2008-11-26T15:34:08Z</LastSaved>
-  <Version>10.6847</Version>
+  <Version>10.6858</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <DownloadComponents/>
@@ -134,7 +134,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="474" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="475" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75"/>
@@ -4910,7 +4910,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">التاريخ</Data></Cell>
     <Cell><Data ss:Type="String">Ngày tháng</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">SEARCH_RETURNEDRESULTS</Data></Cell>
     <Cell><Data ss:Type="String">erzielte folgende Ergebnisse</Data></Cell>
     <Cell><Data ss:Type="String">returned the following results</Data></Cell>
@@ -4922,17 +4922,26 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">عادت بالنتائج التالية</Data></Cell>
     <Cell><Data ss:Type="String">trả về các kết quả sau</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">SEARCH_RETURNEDSTATS</Data></Cell>
-    <Cell><Data ss:Type="String">Dokument %i - %i von %i Treffern</Data></Cell>
-    <Cell><Data ss:Type="String">Documents %i - %i of %i matches</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Documento %i - %i da %i</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">列出 %i 到 %i 共 %i 濡件</Data></Cell>
+    <Cell><Data ss:Type="String">Ergebnisse %s - %s von %s für %s</Data></Cell>
+    <Cell><Data ss:Type="String">Results %s - %s of %s for %s</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Risultati %s - %s da %s di %s</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">列出 %s 到 %is共 %s 件 %s</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="String">سند %i از يافته ها</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">документ %i - %i имеет %i попаданий</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">कागज़ात %i - %i का %i समान</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">результаты %s - %s имеет %s попаданий %s</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">कागज़ात %s - %s का %s समान %s</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">المستندات  %i - i % من %i تتطابق</Data></Cell>
-    <Cell><Data ss:Type="String">Các tài liệu %i - %i của %i phù hợp</Data></Cell>
+    <Cell><Data ss:Type="String">Các tài liệu %s - %s của %s phù hợp %s</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell><Data ss:Type="String">SECONDS</Data></Cell>
+    <Cell><Data ss:Type="String">Sekunden</Data></Cell>
+    <Cell><Data ss:Type="String">seconds</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s26"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
@@ -4946,7 +4955,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">بحثك عن '%s'</Data></Cell>
     <Cell><Data ss:Type="String">Tìm kiếm của bạn cho:'%s'</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">SHORTDATETIME_FMT</Data></Cell>
     <Cell><Data ss:Type="String">%d.%m.%y %H:%M:%S</Data></Cell>
     <Cell><Data ss:Type="String">%y/%m/%d %H:%M:%S</Data></Cell>
@@ -6128,7 +6137,15 @@
    </Print>
    <Zoom>75</Zoom>
    <Selected/>
-   <TopRowVisible>57</TopRowVisible>
+   <TopRowVisible>351</TopRowVisible>
+   <LeftColumnVisible>7</LeftColumnVisible>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>379</ActiveRow>
+     <ActiveCol>9</ActiveCol>
+    </Pane>
+   </Panes>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

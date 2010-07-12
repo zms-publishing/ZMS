@@ -30,23 +30,42 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "int(searchform)==1">
- <form action="<dtml-var URL>" method="get">
+
+<script type="text/javascript">
+$(function(){
+	pluginAutocomplete('#raw',function() {
+		$("#raw").autocomplete("getSearchTermFromLexicon", {
+			width: $("#raw").css( "width"),
+			selectFirst: false
+		});
+		$("#raw").result(function(event, data, formatted) {
+			if (data) {
+				$(this).parent().next().find("input").val(data[1]);
+				$(this).parent().next().find("input").attr("form").submit();
+			}
+		});
+	});
+});
+</script>
+
+ <form class="searchForm" action="<dtml-var URL>" method="get">
  <input type="hidden" name="searchform" value="<dtml-var searchform>">
-  <table border="0">
+  <table>
+  <colgroup>
+   <col width="20%"/>
+   <col width="80%"/>
+  </colgroup>
   <tr valign="middle">
-   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_SEARCHTERM',lang)">:</td>
+   <td class="searchLabel"><dtml-var "getLangStr('ATTR_SEARCHTERM',lang)">:</td>
    <td class="searchElement">
-    <input class="form-element" type="text" name="raw" size="18"
-    <dtml-if "REQUEST.has_key('raw')">value="<dtml-var "REQUEST.get('raw').replace('<','')" html_quote>"</dtml-if>>
-   </td>
-   <td class="searchText" align="right" valign="top" rowspan="3">
-    <small><dtml-var "getLangStr('SEARCH_HINT',lang)"></small>
+    <input class="searchInput" type="text" id="raw" name="raw" <dtml-if "REQUEST.has_key('raw')">value="<dtml-var "REQUEST.get('raw').replace('<','')" html_quote>"</dtml-if>>
+    <input class="searchSubmit" type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEARCH',lang)" html_quote>">
    </td>
   </tr>
   <tr valign="middle">
-   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_OPTION',lang)">:</td>
+   <td class="searchLabel"><dtml-var "getLangStr('ATTR_OPTION',lang)">:</td>
    <td class="searchElement">
-    <select class="form-element" name="option">
+    <select name="option">
      <dtml-in "['AND','OR']">
       <option value="<dtml-var "_['sequence-item']">"
        <dtml-if "REQUEST['option']==_['sequence-item']">
@@ -58,9 +77,9 @@
    </td>
   </tr>
   <tr valign="middle">
-   <td class="searchLabel" nowrap="nowrap"><dtml-var "getLangStr('ATTR_ORDERBY',lang)">:</td>
+   <td class="searchLabel"><dtml-var "getLangStr('ATTR_ORDERBY',lang)">:</td>
    <td class="searchElement">
-    <select class="form-element" name="search_order_by:int">
+    <select name="search_order_by:int">
      <dtml-in "_.range(1,2+1)">
       <option value="<dtml-var sequence-item>"
        <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
@@ -73,7 +92,7 @@
   </tr>
   <dtml-if "getLevel()>0">
   <tr valign="middle">
-   <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
+   <td class="searchLabel">&nbsp;</td>
    <td class="searchElement" colspan="2">
     <small>
      <dtml-var "getLangStr('ATTR_DC_COVERAGE',lang)">:
@@ -86,7 +105,7 @@
   <dtml-let portalClients="getPortalClients()">
    <dtml-if "getConfProperty('ZCatalog.portalClients',1) == 1 and len(portalClients)>0">
     <tr valign="middle">
-     <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
+     <td class="searchLabel">&nbsp;</td>
      <td class="searchElement" colspan="2">
       <input type="hidden" name="search_clients:int" value="<dtml-var "REQUEST.get('search_clients',1)">">
       <input class="searchCheckbox" type="checkbox" <dtml-if "REQUEST.get('search_clients',1)==1">checked="checked"</dtml-if> onclick="this.form.elements['search_clients:int'].value=this.checked?'1':'0';">
@@ -95,12 +114,6 @@
     </tr>
    </dtml-if>
   </dtml-let>
-  <tr valign="middle">
-   <td class="searchLabel" nowrap="nowrap">&nbsp;</td>
-   <td class="searchElement" colspan="2">
-    <input class="searchSubmit" type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEARCH',lang)" html_quote>">
-   </td>
-  </tr>
   </table>
  </form>
 </dtml-if>
@@ -149,12 +162,12 @@
   ></dtml-in
  ></dtml-if>
 
- <h2><dtml-var "getLangStr('SEARCH_HEADERRESULT',lang)"></h2>
- <p><dtml-var "getLangStr('SEARCH_YOURQUERY',lang)%''"><strong><dtml-var "REQUEST.get('_s').replace('<','')" html_quote></strong> (<b><dtml-var "int((_.DateTime().timeTime()-qt)*100.0)/100.0"></b> sec.)</p>
-
  <dtml-if "len(res)==0">
  
-  <p><dtml-var "getLangStr('SEARCH_NORESULTS',lang)"></p>
+  <p class="searchHeader">
+   <dtml-var "getLangStr('SEARCH_NORESULTS',lang)">
+   (<dtml-var "int((DateTime().timeTime()-qt)*100.0)/100.0"> <dtml-var "getLangStr('SECONDS',lang)">)
+  </p>
   
  <dtml-else
 
@@ -171,16 +184,20 @@
    ></dtml-in
   ></dtml-in>
 
-  <p><dtml-var "getLangStr('SEARCH_RETURNEDRESULTS',lang)">:</p>
-  <p><b><dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%(int(REQUEST.get('qs')),int(REQUEST.get('qe')),len(res))"></b></p>
+  <p class="searchHeader">
+   <dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%('<strong>%i</strong>'%int(REQUEST.get('qs')),'<strong>%i</strong>'%int(REQUEST.get('qe')),'<strong>%i</strong>'%len(res),'<strong>%s</strong>'%REQUEST.get('_s').replace('<',''))">
+   (<dtml-var "int((DateTime().timeTime()-qt)*100.0)/100.0"> <dtml-var "getLangStr('SECONDS',lang)">)
+  </p>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
+  <dtml-call "REQUEST.set('_res',res)">
 
 <dtml-comment>
 --------------------------------------------------------------------------------
 --- Navigation (Before)
 --------------------------------------------------------------------------------
 </dtml-comment>
+<dtml-call "REQUEST.set('res',REQUEST['_res'])">
 <dtml-var search_nav_html>
 
 <dtml-comment>
@@ -189,8 +206,12 @@
 --------------------------------------------------------------------------------
 </dtml-comment>
 <dtml-in res size=10 start=qs mapping>
- <dtml-let ob="getCatalogPathObject( path)" title="ob.getTitle(REQUEST)" description="ob.getDCDescription(REQUEST)">
-   <p class="searchresult">
+ <dtml-let ob="getCatalogPathObject( path)" title="ob.getTitle(REQUEST)"
+  ><dtml-call "REQUEST.set('description',ob.getDCDescription(REQUEST))"
+  ><dtml-if "len(description)<=1"
+   ><dtml-call "REQUEST.set('description',ob.getBodyContent(REQUEST))"
+  ></dtml-if>
+   <p class="searchResult">
     <span class="title"><dtml-if "ob.meta_id=='ZMSFile'">
       <dtml-let f="ob.getObjProperty('file',REQUEST)">
        <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
@@ -223,6 +244,7 @@
 --- Navigation (After)
 --------------------------------------------------------------------------------
 </dtml-comment>
+<dtml-call "REQUEST.set('res',REQUEST['_res'])">
 <dtml-var search_nav_html>
 
  </dtml-if>

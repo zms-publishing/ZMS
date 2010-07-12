@@ -5,39 +5,56 @@
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
  
-body.print 
-	{ 
+body.print {
 	background-color:#fff; 
-	}
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Search Form
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
-.searchresult {
-margin-bottom:20px;
+.searchForm table {
+	width:100%;
 }
-.searchresult span.title {
-display:block;
-font-weight:bold;
-color:#2200D5;
+.searchForm input {
+	border-top: 1px solid #CCC;
+	border-left: 1px solid #CCC;
+	border-right: 1px solid #AAA;
+	border-bottom: 1px solid #AAA;
 }
-.searchresult span.title a {
-color:#2200D5;
+.searchForm input.searchInput {
+	width:80%;
 }
-.searchresult span.title a:visited {
-color:#91198B;
+.searchHeader {
+	text-align:right;
+	border-top: 1px solid #CCC;
+	background-color: #EEE;
+	font-size:70%;
 }
-.searchresult span.description {
-display:block;
+.searchResult {
+	margin-bottom:20px;
 }
-.searchresult span.linkpath {
-display:block;
-font-size:smaller;
-line-height:1.3em;
+.searchResult span.title {
+	display:block;
+	font-weight:bold;
+	color:#2200D5;
+}
+.searchResult span.title a {
+	color:#2200D5;
+}
+.searchResult span.title a:visited {
+	color:#91198B;
+}
+.searchResult span.description {
+	display:block;
+}
+.searchResult span.linkpath {
+	display:block;
+	font-size:smaller;
+	line-height:1.3em;
 } 
-.searchresult span.linkpath a {
-color:#008000;
+.searchResult span.linkpath a {
+	color:#008000;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

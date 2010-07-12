@@ -241,7 +241,10 @@ class ZMSTextformatManager:
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+      if RESPONSE:
+        message = urllib.quote(message)
+        return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+      
+      return message
 
 ################################################################################

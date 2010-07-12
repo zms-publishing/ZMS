@@ -1254,16 +1254,19 @@ class ZMSMetaobjManager:
           target = self.url_append_params( target, { 'manage_tabs_error_message':error})
         
         # Return with message.
-        target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
-        target = self.url_append_params( target, extra)
-        if len( message) > 0:
-          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-          target = self.url_append_params( target, { 'manage_tabs_message':message})
-        if REQUEST.has_key('inp_id_name'):
-          target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')
-          target += '&inp_name_name=%s'%REQUEST.get('inp_name_name')
-          target += '&inp_value_name=%s'%REQUEST.get('inp_value_name')
-          target += '#Edit'
-        return RESPONSE.redirect( target)
+        if RESPONSE:
+          target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
+          target = self.url_append_params( target, extra)
+          if len( message) > 0:
+            message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+            target = self.url_append_params( target, { 'manage_tabs_message':message})
+          if REQUEST.has_key('inp_id_name'):
+            target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')
+            target += '&inp_name_name=%s'%REQUEST.get('inp_name_name')
+            target += '&inp_value_name=%s'%REQUEST.get('inp_value_name')
+            target += '#Edit'
+          return RESPONSE.redirect( target)
+        
+        return message
 
 ################################################################################

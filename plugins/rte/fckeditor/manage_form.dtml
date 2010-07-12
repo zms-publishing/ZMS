@@ -2,6 +2,10 @@
 ################################################################################
 ###  CKEditor
 ###  please refer to http://ckeditor.com/
+###
+###  Conf-Properties:
+###  plugin.rte.ckeditor.Height=400
+###  plugin.rte.ckeditor.Config
 ################################################################################
 </dtml-comment>
 
@@ -77,6 +81,8 @@ function FCKeditor_OnComplete( editorInstance )
 $(function() {
   var div = document.getElementById("editor_<dtml-var "REQUEST.get('elName')">");
   var fck = new FCKeditor("editor_<dtml-var "REQUEST.get('elName')">");
+  fck.Height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+	<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">fck.Config["CustomConfigurationsPath"] = "<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">";</dtml-if>
   div.innerHTML = fck.CreateHtml();
 });
 

@@ -2,6 +2,9 @@
 ################################################################################
 ### XStandard XHTML WYSIWYG Editor
 ###  please refer to http://xstandard.com
+###
+###  Conf-Properties:
+###  xstandard.a.href.relativate=0
 ################################################################################
 </dtml-comment>
 
@@ -99,13 +102,15 @@
             // Relativate urls.
             try {
               var splitTag = "<a href=\"";
-              var vSplit = v.split(splitTag+"/");
+              var vSplit = v.split(splitTag);
               var v = vSplit[0];
               for ( var i = 1; i < vSplit.length; i++) {
                 var j = vSplit[i].indexOf("\"");
                 var url = vSplit[i].substring(0,j);
-                var relative_url = getRelativeUrl('<dtml-var "getSelf(PAGES).getHref2IndexHtml({'lang':lang})">',url);
-                v += splitTag + relative_url + vSplit[i].substring(j);
+                if (url.indexOf('./')<0) {
+                  url = getRelativeUrl('<dtml-var "getSelf(PAGES).getHref2IndexHtml({'lang':lang})">',url);
+                }
+                v += splitTag + url + vSplit[i].substring(j);
               }
             }
             catch(er) {

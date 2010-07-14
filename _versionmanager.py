@@ -1116,18 +1116,24 @@ class VersionManagerContainer:
     #  VersionManagerContainer.getRecipientWf
     # --------------------------------------------------------------------------
     def getRecipientWf(self, REQUEST=None):
+      raw = self.getConfProperty('zms._versionmanager.getRecipientWf.raw',0)!=0
       recipient = ''
       name = self.getObjProperty('work_uid',REQUEST)
-      mto = self.getUserAttr(name,'email','')
-      if len(mto) > 0:
-        recipient = name + ' <' + mto + '>'
+      if raw:
+        userObj = self.findUser(name)
+        recipient = userObj
+      else:
+        mto = self.getUserAttr(name,'email','')
+        if len(mto) > 0:
+          recipient = name + ' <' + mto + '>'
       return recipient
     
     # --------------------------------------------------------------------------
     #  VersionManagerContainer.getRecipientsByRole
     # --------------------------------------------------------------------------
     def getRecipientsByRole(self, roles=['ZMSEditor'], REQUEST=None):
-      recipients = ''
+      raw = self.getConfProperty('zms._versionmanager.getRecipientsByRole.raw',0)!=0
+      recipients = []
       langs = [REQUEST['lang']]
       ob = self
       while ob is not None and len(recipients) == 0:
@@ -1135,15 +1141,17 @@ class VersionManagerContainer:
           name = local_role[0]
           userObj = self.findUser(name)
           mto = self.getUserAttr(name,'email','')
-          if userObj is not None and \
-	     len(mto) > 0 and \
+          if userObj is not None and len(mto) > 0 and \
              len(self.intersection_list(roles, ob.getUserRoles(userObj, aq_parent=0))) > 0 and \
              len(self.intersection_list(langs, ob.getUserLangs(userObj, aq_parent=0))) > 0:
-            if len(recipients) > 0:
-              recipients += ', '
-            recipients += name + ' <' + mto + '>'
+            if raw:
+              recipients.append( userObj)
+            else:
+              recipients.append( name + ' <' + mto + '>')
         ob = ob.getParentNode()
-      return recipients
+      if raw:
+        return recipients
+      return ', '.join( recipients)
 
     """
     ############################################################################

@@ -61,7 +61,7 @@ def filterId(self, id, REQUEST):
   if len( filtered_obs) > 0:
     return filtered_obs[0]
   elif self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-    filtered_obs = filter( lambda x: validateId( x, id, REQUEST), obs)
+    filtered_obs = filter( lambda x: x.isVisible( REQUEST) and x.isPage() and validateId( x, id, REQUEST), obs)
     if len( filtered_obs) > 0:
       return filtered_obs[0]
   return None

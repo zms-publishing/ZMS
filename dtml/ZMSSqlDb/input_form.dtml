@@ -60,10 +60,7 @@
     ><dtml-if multimultiselect
      ><dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))"
       >// multimultiselect
-      var el = document.getElementById("<dtml-var mmsid>");
-      for (var k=0; k < el.options.length; k++) {
-        el.options[k].selected = true;
-      }
+      $('#<dtml-var mmsid> option').attr("selected",true);
      </dtml-let
     ></dtml-if
     ></dtml-unless
@@ -71,7 +68,7 @@
     ></dtml-in>
     
     // lazy multiselects (all elements starting with 'new_' or containing '_new_' with prefix)
-    $('select[multiple][name^=new_] option, select[multiple][name*=_new_] option').attr("selected","selected");
+    $('select[multiple][name^=new_] option, select[multiple][name*=_new_] option').attr("selected",true);
     
     return b;
   }
@@ -93,15 +90,7 @@
   }
 
   function multiMultiSelectRemoveElements( mmsid) {
-    var mms = document.getElementById(mmsid);
-    var i = 0;
-    while (i < mms.options.length) {
-      if ( mms.options[i].selected) {
-        mms.options[i] = null;
-      }
-      else
-        i++;
-    }
+    $('#'+mmsid+' option:selected').remove();
     return false;
   }
 
@@ -153,10 +142,7 @@
       }
       else {
         el.value = value;
-        var el = document.getElementById(elIdPrefix+'displayfield_'+elId);
-        if (el) {
-          el.value = label;
-        }
+        $('#'+elIdPrefix+'displayfield_'+elId).val(label);
       }
     }
   }
@@ -257,7 +243,7 @@
         ><dtml-if "item.has_key('lazy')"
          ><dtml-let fk=item
           ><input type="hidden" id="<dtml-var mmsid><dtml-var sequence-index>" value=""
-          /><input type="hidden" id="new_<dtml-var mmsid><dtml-var sequence-index>" value="" onchange="document.getElementById('<dtml-var mmsid><dtml-var sequence-index>').value=this.value;"
+          /><input type="hidden" id="new_<dtml-var mmsid><dtml-var sequence-index>" value="" onchange="$('#<dtml-var mmsid><dtml-var sequence-index>').val(this.value);"
           /><input type="text" class="<dtml-var css>" style="vertical-align:bottom;background-color:#ddd;" id="displayfield_<dtml-var mmsid><dtml-var sequence-index>" value="" disabled="disabled"
           /><img 
               class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
@@ -457,7 +443,7 @@
        <dtml-if nullable><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>btn_delete.gif"
             title="<dtml-var "getZMILangStr('BTN_DELETE')">" 
-            onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if>
+            onclick="$('<dtml-var elName>').val('null'); ('$<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if>
       <dtml-else>
        <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>">
         <dtml-if nullable>
@@ -601,7 +587,7 @@
           ></select
           ><input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
           ><input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
-          ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('<dtml-var elName>').value='null'; document.getElementById('<dtml-var "'displayfield_%s'%id">').value='[null]'; return false;"/></dtml-if
+          ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#<dtml-var elName>').val('null'); $('#<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if
          ><dtml-else
           ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, maxlen=maxlen, enabled=1, REQUEST=REQUEST)"
          ></dtml-if
@@ -638,7 +624,7 @@
              <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
              <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
              <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-             <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('delete_blob_<dtml-var id>').value='1';"/>
+             <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
             </div>
            </td>
            <td width="10"><img src="<dtml-var spacer_gif>" border="0" width="10" height="1"></td>
@@ -673,7 +659,7 @@
            <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
            <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
            <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-           <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('delete_blob_<dtml-var id>').value='1';"/>
+           <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
           </div>
         </dtml-if>
        <dtml-except>
@@ -681,7 +667,7 @@
          <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
          <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
          <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-         <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="document.getElementById('delete_blob_<dtml-var id>').value='1';"/>
+         <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1)';"/>
         </div>
         <dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb html_quote newline_to_br><br/>
        </dtml-try>

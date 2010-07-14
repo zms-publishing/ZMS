@@ -19,7 +19,7 @@
   var directEditAutoClose = false;
   function directEditExpandIt( div_id, poser_id, autoClose)
   {
-    AutoClose = autoClose;
+    directEditAutoClose = autoClose;
     var coords = {x: 0, y: 0};
     var el = document.images[ poser_id];
     coords.x += el.width;
@@ -29,9 +29,12 @@
       coords.y += el.offsetTop;
       el = el.offsetParent;
     }
-    var div = $(div_id);
-    div.css( { left: coords['x'] + "px", top: coords['y'] + "px", position: "absolute"});
-    div.show( "fast");
+    var el = document.getElementById( div_id);
+    el.style.left = coords['x'] + "px";
+    el.style.top = coords['y'] + "px";
+    el.style.position = "absolute";
+    el.style.display = "block";
+    el.style.visibility = "visible";
   }
 
   /**
@@ -199,9 +202,7 @@
        self.parent.opener.selectObject(url,title);
      }
    <dtml-else>
-     var el_type = document.getElementById('type');
-     var v_type = el_type.options[ el_type.selectedIndex].value;
-     if (v_type.indexOf('dtml')==0) {
+     if ($('#type').val().indexOf('dtml')==0) {
        url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
      }
      else {
@@ -584,7 +585,7 @@ function followHref( href, extra)
         ><br/><dtml-var "value.getDataSizeStr()"
        ></span
        ><img id="img_<dtml-var id>" src="<dtml-var "display_icon(REQUEST)">" border="0" title="Preview"
-           onmouseover="ExpandIt( 'div_img_<dtml-var id>', 'img_<dtml-var id>', false);" 
+           onmouseover="directEditExpandIt( 'div_img_<dtml-var id>', 'img_<dtml-var id>', false);" 
            onmouseout="document.getElementById( 'div_img_<dtml-var id>').style.display='none';document.getElementById( 'div_img_<dtml-var id>').style.visibility='hidden';"
            align="absmiddle"
      ><dtml-else

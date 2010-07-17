@@ -28,7 +28,6 @@ from zope.interface import implements
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
-from Products.ZSQLMethods import SQL
 from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import copy
@@ -855,10 +854,14 @@ class ZMSMetaobjManager:
           elif newType == 'Script (Python)':
             PythonScript.manage_addPythonScript( container, newObId)
           elif newType == 'Z SQL Method':
-            connection_id = self.SQLConnectionIDs()[0][0]
-            arguments = ''
-            template = ''
-            SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
+            try:
+              from Products.ZSQLMethods import SQL
+              connection_id = self.SQLConnectionIDs()[0][0]
+              arguments = ''
+              template = ''
+              SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
+            except:
+              pass
         # Rename Zope-Object.
         elif oldId != newId:
           if oldContainer != container:

@@ -24,7 +24,6 @@
 # Imports.
 from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
-from Products.ZSQLMethods.SQL import SQLConnectionIDs
 import copy
 import os
 import sys

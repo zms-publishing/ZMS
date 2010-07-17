@@ -28,7 +28,6 @@ from App.special_dtml import HTMLFile
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
-from Products.ZSQLMethods import SQL
 import ZPublisher.HTTPRequest
 import copy
 import os

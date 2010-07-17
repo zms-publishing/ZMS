@@ -27,7 +27,6 @@ from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
 import OFS.SimpleItem
 import Acquisition
-import AccessControl.Role
 import os
 import urllib
 import time
@@ -207,7 +206,6 @@ class MediaDb(
     OFS.SimpleItem.Item,
     Persistent,
     Acquisition.Implicit,
-    AccessControl.Role.RoleManager
     ): 
 
     # Properties.

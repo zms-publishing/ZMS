@@ -80,6 +80,8 @@ def search_string(v):
 # ------------------------------------------------------------------------------
 def search_quote(s, maxlen=255, tag='&middot;'):
   # remove all tags.
+  s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
+  s = re.sub( '<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
   s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
   # limit characters.
   if len(s) > maxlen:
@@ -616,7 +618,7 @@ class ZCatalogManager:
     # --------------------------------------------------------------------------
     #  ZCatalogManager.getCatalogQueryString:
     # --------------------------------------------------------------------------
-    def getCatalogQueryString(self, raw, option='AND'):
+    def getCatalogQueryString(self, raw, option='AND', only_words=False):
       qs = []
       i = 0
       for si in raw.split('"'):
@@ -627,7 +629,7 @@ class ZCatalogManager:
               raw_item = raw_item.strip()
               if len(raw_item) > 1:
                 raw_item = raw_item.replace('-','* AND *')
-                if not raw_item.endswith('*'):
+                if not only_words and not raw_item.endswith('*'):
                   raw_item += '*'
                 if raw_item not in qs:
                   qs.append( raw_item)

@@ -46,7 +46,8 @@ import IZMSSvnInterface
 # ------------------------------------------------------------------------------
 def syncType( self, meta_id, attr):
   try:
-    if attr['type'] == 'resource':
+    if (attr['type'] in ['resource']) or \
+       (attr.get('mandatory',0)==1 and attr['type'] in self.getMetaobjIds()):
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
         attr['custom'] = ob
@@ -750,7 +751,8 @@ class ZMSMetaobjManager:
           newCustom += 'SELECT * FROM tablename\n'
       
       # Handle resources.
-      if newType == 'resource':
+      if (newType in ['resource']) or \
+         (newMandatory and newType in self.getMetaobjIds()):
         if isinstance( newCustom, _blobfields.MyFile):
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])

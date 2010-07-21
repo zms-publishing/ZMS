@@ -28,6 +28,7 @@ import time
 import urllib
 # Product Imports.
 import _blobfields
+import _fileutil
 import _globals
 
 
@@ -104,9 +105,13 @@ class ObjChildren:
       mandatory = obj_attr.get('mandatory',0)==1
       if mandatory:
         if len(ids) == 0:
-          if obj_attr['type'] == '*' and type( obj_attr['keys']) is list and len( obj_attr['keys']) > 0:
-            obj_attr['type'] = obj_attr['keys'][0]
-          self.initObjChild(obj_attr['id'],0,obj_attr['type'],REQUEST)
+          default  = obj_attr.get('custom')
+          if default:
+            _fileutil.import_zexp(self,default,obj_attr['id'],obj_attr['id'])
+          else:
+            if obj_attr['type'] == '*' and type( obj_attr['keys']) is list and len( obj_attr['keys']) > 0:
+              obj_attr['type'] = obj_attr['keys'][0]
+            self.initObjChild(obj_attr['id'],0,obj_attr['type'],REQUEST)
       repetitive = obj_attr.get('repetitive',0)==1
       if repetitive:
         if id in ids:

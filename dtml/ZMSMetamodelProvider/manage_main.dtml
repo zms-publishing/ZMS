@@ -785,7 +785,19 @@ function changeType( el)
               ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "bool(_['sequence-item'])"></option>
              ></dtml-in
             ></select
-           ></dtml-if
+           ><dtml-elif "oAttr['type'] in meta_types"
+            ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"/>
+            <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
+            <input class="form-small" type="file" name="attr_custom_<dtml-var "oAttr['id']">" size="15" onchange="changeCustom(this);"/>
+            <dtml-if "oAttr.get('custom',None)">
+             <dtml-try>
+             <dtml-let f="oAttr['custom']">
+              <a href="<dtml-var "f.absolute_url()">" target="_blank" class="zmi"><dtml-var "string_maxlen(f.title,20)"></a> 
+              <strong>(<dtml-var "getDataSizeStr(f.get_size())">)</strong>
+             </dtml-let>
+             <dtml-except><dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br></dtml-try>
+            </dtml-if>
+           </dtml-if
            ></nobr
           ></td>
           <td align="center"

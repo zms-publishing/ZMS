@@ -159,6 +159,17 @@ class ZMSGlobals:
       return f
 
     # --------------------------------------------------------------------------
+    #  ZMSGlobals.import_zexp:
+    # --------------------------------------------------------------------------
+    def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
+      """
+      Import zexp.
+      @param zexp
+      @type L{MyFile}
+      """
+      return _fileutil.import_zexp(self, zexp, new_id, id_prefix, _sort_id)
+
+    # --------------------------------------------------------------------------
     #  ZMSGlobals.nvl:
     # --------------------------------------------------------------------------
     def nvl(self, a1, a2, n=None):

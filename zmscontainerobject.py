@@ -619,10 +619,13 @@ class ZMSContainerObject(
             if action not in actions:
               actions.append( action)
       
+      #-- Insert Commands.
+      actions.extend(self.filtered_command_actions(path,REQUEST,insert_actions=True))
+      
       #-- Sort.
       actions.sort()
       
-      #-- Headline,
+      #-- Headline.
       if len(actions) > 0:
         actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_INSERT')%self.display_type(REQUEST),''))
       
@@ -1000,23 +1003,9 @@ class ZMSContainerObject(
       key = self.getMetaobjAttrIds( meta_id)[0]
       attr = self.getMetaobjAttr( meta_id, key)
       zexp = attr[ 'custom']
-      filename = zexp.title_or_id()
-      fileid = filename[:filename.find('.')]
-      filepath = INSTANCE_HOME + '/import/' + filename
-      _fileutil.exportObj( zexp, filepath)
-      _fileutil.importZexp( self, filename)
-      
-      ##### Create ####
       id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
       new_id = self.getNewId(id_prefix)
-      
-      ##### Rename ####
-      self.manage_renameObject(fileid,new_id)
-      
-      ##### Normalize Sort-IDs ####
-      obj = getattr( self, new_id)
-      obj.sort_id = _sort_id
-      self.normalizeSortIds( id_prefix)
+      _fileutil.import_zexp(self,zexp,new_id,id_prefix,_sort_id)
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%custom

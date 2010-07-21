@@ -35,6 +35,28 @@ import tempfile
 import zipfile
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.import_zexp:
+
+Import zexp.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
+  # Import
+  filename = zexp.title_or_id()
+  fileid = filename[:filename.find('.')]
+  filepath = INSTANCE_HOME + '/import/' + filename
+  exportObj( zexp, filepath)
+  importZexp( self, filename)
+  
+  # Rename
+  self.manage_renameObject(fileid,new_id)
+  
+  ## Normalize Sort-IDs
+  obj = getattr( self, new_id)
+  obj.sort_id = _sort_id
+  self.normalizeSortIds( id_prefix)
+
+
 # ------------------------------------------------------------------------------
 #  _fileutil.importZexp:
 #

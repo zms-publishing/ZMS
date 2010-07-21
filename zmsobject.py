@@ -956,19 +956,21 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.filtered_command_actions:
     # --------------------------------------------------------------------------
-    def filtered_command_actions(self, path, REQUEST):
+    def filtered_command_actions(self, path, REQUEST, insert_actions=False):
       actions = []
       auth_user = REQUEST['AUTHENTICATED_USER']
       
       #-- Commands.
       for metaCmdId in self.getMetaCmdIds():
         metaCmd = self.getMetaCmd(metaCmdId)
-        hasMetaType = self.meta_id in metaCmd['meta_types']
-        hasRole = False
-        hasRole = hasRole or len(self.intersection_list(self.getUserRoles(auth_user),metaCmd['roles'])) > 0
-        hasRole = hasRole or auth_user.has_role('Manager')
-        if hasMetaType and hasRole:
-          actions.append((metaCmd['name'],path+'manage_executeMetacmd'))
+        if (insert_actions and metaCmd['id'].startswith('manage_add')) or \
+           (not insert_actions and not metaCmd['id'].startswith('manage_add')):
+          hasMetaType = self.meta_id in metaCmd['meta_types']
+          hasRole = False
+          hasRole = hasRole or len(self.intersection_list(self.getUserRoles(auth_user),metaCmd['roles'])) > 0
+          hasRole = hasRole or auth_user.has_role('Manager')
+          if hasMetaType and hasRole:
+            actions.append((metaCmd['name'],path+'manage_executeMetacmd'))
       
       # Return action list.
       return actions

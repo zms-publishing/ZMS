@@ -18,11 +18,7 @@
 --- Headline
 --------------------------------------------------------------------------------
 </dtml-comment>
-<dtml-if "REQUEST.has_key('raw') and int(searchform)==1">
- <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADERAGAIN',lang)"></h1>
-<dtml-else>
- <h1 class="title"><dtml-var "getLangStr('SEARCH_HEADER',lang)"></h1>
-</dtml-if>
+<h1 class="title"><dtml-var "getLangStr('SEARCH_HEADER',lang)"></h1>
 
 <dtml-comment>
 ################################################################################
@@ -80,7 +76,7 @@ $(function(){
    <td class="searchLabel"><dtml-var "getLangStr('ATTR_ORDERBY',lang)">:</td>
    <td class="searchElement">
     <select name="search_order_by:int">
-     <dtml-in "_.range(1,2+1)">
+     <dtml-in "range(1,2+1)">
       <option value="<dtml-var sequence-item>"
        <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
         selected="selected"
@@ -103,7 +99,7 @@ $(function(){
   </tr>
   </dtml-if>
   <dtml-let portalClients="getPortalClients()">
-   <dtml-if "getConfProperty('ZCatalog.portalClients',1) == 1 and len(portalClients)>0">
+   <dtml-if "getConfProperty('ZCatalog.portalClients',1)==1 and len(portalClients)>0">
     <tr valign="middle">
      <td class="searchLabel">&nbsp;</td>
      <td class="searchElement" colspan="2">
@@ -126,7 +122,7 @@ $(function(){
 
 <dtml-if "REQUEST.has_key('raw')">
 
- <dtml-call "REQUEST.set('qt',_.DateTime().timeTime())">
+ <dtml-call "REQUEST.set('qt',DateTime().timeTime())">
  <dtml-call "REQUEST.set('_s',raw)">
  <dtml-call "REQUEST.set('_s',getCatalogQueryString(raw,option))">
  <dtml-call "REQUEST.set('res',[])">
@@ -250,4 +246,3 @@ $(function(){
  </dtml-if>
 
 </dtml-if>
-

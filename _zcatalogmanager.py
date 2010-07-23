@@ -313,7 +313,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_data( self, lang=None):
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       zcat = self.catalogData( {'lang':lang})
       return zcat
 
@@ -322,7 +322,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_text( self, lang=None):
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       zcat = self.catalogText( req)
       zcat = self.search_encode( zcat)
@@ -333,7 +333,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_date( self, lang=None): 
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       zcat = self.getObjProperty('attr_dc_date',req)
       if zcat is None or zcat == '':
@@ -349,7 +349,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_title( self, lang=None):
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       zcat = self.getTitle( req)
       zcat = self.search_encode( zcat)
@@ -361,7 +361,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_summary( self, lang=None):
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       zcat = self.getObjProperty( 'attr_dc_description', req)
       zcat = self.search_encode( zcat)
@@ -373,7 +373,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def zcat_url( self, lang=None):
       if lang is None:
-        lang = self.default_catalog[self.default_catalog.find('_')+1:]
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       txng_key = self.txng_get_key()
       txng_value = None
@@ -723,14 +723,13 @@ class ZCatalogManager:
                 append = append and o.isActive(REQUEST)
             if append:
               result['ob'] = ob
-              result['url'] = ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)
+              result['url'] = (ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)).replace('//','/')
               results.append((result[order_by],result))
           else:
             result['title'] = getattr(item,'zcat_title','')
             result['summary'] = getattr(item,'zcat_summary','')
-            result['path'] = path
             result['zcat_url'] = getattr(item,'zcat_url','')
-            result['url'] = path + '/' + getattr(item,'zcat_url','')
+            result['url'] = (path + '/' + getattr(item,'zcat_url','')).replace('//','/')
             results.append((result[order_by],result))
       
       #-- Sort objects.

@@ -959,6 +959,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def filtered_command_actions(self, path, REQUEST, insert_actions=False):
       actions = []
       auth_user = REQUEST['AUTHENTICATED_USER']
+      absolute_url = '/'.join(list(self.getPhysicalPath())+[''])
       
       #-- Commands.
       for metaCmdId in self.getMetaCmdIds():
@@ -969,7 +970,12 @@ class ZMSObject(ZMSItem.ZMSItem,
           hasRole = False
           hasRole = hasRole or len(self.intersection_list(self.getUserRoles(auth_user),metaCmd['roles'])) > 0
           hasRole = hasRole or auth_user.has_role('Manager')
-          if hasMetaType and hasRole:
+          nodes = self.string_list(metaCmd.get('nodes','{$}'))
+          sl = []
+          sl.extend(map( lambda x: (self.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
+          sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
+          hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+          if hasMetaType and hasRole and hasNode:
             actions.append((metaCmd['name'],path+'manage_executeMetacmd'))
       
       # Return action list.

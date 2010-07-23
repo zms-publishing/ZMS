@@ -36,13 +36,28 @@ import _objattrs
 # Example code.
 # -------------
 
-dtmlMethodExampleCode = \
+dtmlMethodWithExecExampleCode = \
   '<dtml-comment>\n' + \
   '# Example code:\n' + \
   '</dtml-comment>\n' + \
   '\n' + \
   '<dtml-call expr="REQUEST.set(\'message\',\'This is %s\'%meta_type)">\n' + \
   '<dtml-return message>\n' + \
+  ''
+
+dtmlMethodWithoutExecExampleCode = \
+  '<dtml-comment>\n' + \
+  '# Example code:\n' + \
+  '</dtml-comment>\n' + \
+  '\n' + \
+  '<dtml-var manage_page_header>\n' + \
+  '<head>\n' + \
+  ' <title>$$NAME$$</title>\n' + \
+  '</head>\n' + \
+  '<dtml-var "manage_tabs(_,_,my_manage_options=[{\'label\':\'$$NAME$$\',\'action\':\'\'}])">\n' + \
+  '<dtml-var f_bo_area>\n' + \
+  '<dtml-var f_bo_area>\n' + \
+  '<dtml-var manage_page_header>\n' + \
   ''
 
 pyScriptExampleCode = \
@@ -106,11 +121,13 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     newDescription = item['description']
     newMetaTypes = item['meta_types']
     newRoles = item['roles']
+    newNodes = item.get('nodes','{$}')
     newData = item['data']
 
     # Return with new id.
-    return setMetacmd(self, None, newId, newAcquired, newName, newMethod, newData, newExec, newDescription, \
-               newMetaTypes, newRoles, zms_system)
+    return setMetacmd(self, None, newId, newAcquired, newName, newMethod, \
+      newData, newExec, newDescription, newMetaTypes, newRoles, newNodes, \
+      zms_system)
 
 
 def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
@@ -158,7 +175,7 @@ def delMetacmd(self, id):
 # ------------------------------------------------------------------------------
 def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
       newData=None, newExec=0, newDescription='', newMetaTypes=[], \
-      newRoles=['ZMSAdministrator'], zms_system=0):
+      newRoles=['ZMSAdministrator'], newNodes='{$}', zms_system=0):
   obs = copy.deepcopy(getRawMetacmds(self))
 
   # Catalog.
@@ -174,6 +191,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
   new['description'] = newDescription
   new['meta_types'] = newMetaTypes
   new['roles'] = newRoles
+  new['nodes'] = newNodes
   new['exec'] = newExec
   new['zms_system'] = zms_system
   obs.append(new)
@@ -189,7 +207,12 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
       self.manage_delObjects(ids=[newId])
     if newMethod == 'DTML Method':
       self.manage_addDTMLMethod(newId,'*** DO NOT DELETE OR MODIFY ***')
-      if newData is None: newData = dtmlMethodExampleCode
+      if newData is None:
+        if newExec:
+          newData = dtmlMethodWithExecExampleCode
+        else:
+          newData = dtmlMethodWithoutExecExampleCode
+        newData = newData.replace('$$NAME$$',newName)
     elif newMethod == 'DTML Document':
       self.manage_addDTMLDocument(newId,'*** DO NOT DELETE OR MODIFY ***')
       if newData is None: newData = dtmlMethodExampleCode
@@ -348,8 +371,9 @@ class MetacmdManager:
           newDescription = REQUEST.get('el_description','').strip()
           newMetaTypes = REQUEST.get('el_meta_types',[])
           newRoles = REQUEST.get('el_roles',[])
+          newNodes = REQUEST.get('el_nodes','')
           id = setMetacmd(self, id, newId, newAcquired, newName, newMethod, newData, newExec, newDescription, \
-            newMetaTypes, newRoles)
+            newMetaTypes, newRoles, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
         
         # Copy.

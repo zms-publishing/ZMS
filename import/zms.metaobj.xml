@@ -3146,12 +3146,12 @@ $(function(){
        <table style="width:100%" class="ZMSTable">
        <tr>
        <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="contentEditable">
-        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
-        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is None or format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
          <dtml-var content>
         </div>
        </<dtml-var tag>>
@@ -3239,36 +3239,6 @@ $(function(){
                     <item key="name"><![CDATA[Cols]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[list]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
-                    <item key="id"><![CDATA[isActive]]></item>
-                    <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[isActive]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[isActive]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
-                    <item key="id"><![CDATA[attr_targetgroups]]></item>
-                    <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Zielgruppe(n)]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[attr_targetgroups]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
-                    <item key="id"><![CDATA[manage_main_change]]></item>
-                    <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[manage_main_change]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[manage_main_change]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -3423,7 +3393,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.2]]></item>
+            <item key="revision"><![CDATA[1.4.3]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

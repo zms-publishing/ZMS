@@ -3626,7 +3626,7 @@ obs = context.breadcrumbs_obj_path(portalMaster=False)
 obs.reverse()
 this = context.getSelf()
 for ob in obs:
-  abort_penetrance = (ob != this and ob.meta_type == 'ZMSLinkElement') or ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
+  abort_penetrance = ob != this and ob.meta_type == 'ZMSLinkElement'
   if abort_penetrance:
     break
   temp = []
@@ -3642,6 +3642,9 @@ for ob in obs:
        ( penetrance in [1,'sub_nav'] and context.meta_id in ['ZMS','ZMSFolder']) or \
        ( penetrance in [2,'sub_all']):
       teaserElmnts.insert( 0, teaserElmnt)
+  abort_penetrance = ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
+  if abort_penetrance:
+    break
 teaserElmnts.reverse()
 return teaserElmnts
 

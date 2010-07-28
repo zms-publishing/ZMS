@@ -65,11 +65,11 @@ def search_string(v):
       s += v + ' '
     elif type(v) is list:
       for i in v:
-        s += search_string(i)
+        s += search_string(i) + ' '
     elif type(v) is dict:
       for k in v.keys():
         i = v[k]
-        s += search_string(i)
+        s += search_string(i) + ' '
   return s
 
 
@@ -120,7 +120,6 @@ def addLexicon( self, cat):
       cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elem)
     except:
       pass
-
 
 # --------------------------------------------------------------------------
 #  _zcatalogmanager.getCatalog:
@@ -198,39 +197,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  Encodes given string.
     # --------------------------------------------------------------------------
     def search_encode(self, s):
-      try:
-        s = unicode( s, 'utf-8').encode( 'latin-1')
-        # German Umlauts in capital letters.
-        mapping = {
-          '\xc4':'\xe4', # Ae
-          '\xd6':'\xf6', # Oe
-          '\xdc':'\xfc', # Ue
-        }
-        for capital in mapping.keys():
-          letter = mapping[ capital]
-          while s.find( capital) >= 0:
-            s = s.replace( capital, letter)
-      except ( UnicodeDecodeError, UnicodeEncodeError):
-        _globals.writeError(self,"[search_encode]")
-        try:
-          v = str(sys.exc_value)
-          STR_POSITION = ' position '
-          i = v.find(STR_POSITION)
-          if i > 0:
-            v = v[i+len(STR_POSITION):]
-            if v.find('-') > 0:
-              l = int( v[:v.find('-')])
-              h = int( v[v.find('-')+1:v.find(':')])
-            else:
-              l = int( v[:v.find(':')])
-              h = l
-            ln = max( l - 20, 0)
-            hn = min( h + 20, len(s))
-            print ">>>>>",s[ln:hn]
-            print ">>>>>"," "*(l-ln)+"^"*(h-l+1)
-        except:
-          _globals.writeError(self,"[search_encode]: ignore exception")
-      return s
+      return _globals.umlaut_quote(s)
 
 
     # --------------------------------------------------------------------------

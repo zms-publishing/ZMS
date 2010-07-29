@@ -690,7 +690,7 @@ class ZCatalogManager:
                 append = append and o.isActive(REQUEST)
             if append:
               result['ob'] = ob
-              result['url'] = (ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)).replace('//','/')
+              result['url'] = ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)
               results.append((result[order_by],result))
           else:
             result['title'] = getattr(item,'zcat_title','')

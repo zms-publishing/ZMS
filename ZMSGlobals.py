@@ -1374,7 +1374,7 @@ class ZMSGlobals:
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
         if not authorized:
           RESPONSE = REQUEST.RESPONSE
-          raise REPONSE.unauthorized()
+          raise RESPONSE.unauthorized()
       
       # Read file.
       if type( mode) is dict:

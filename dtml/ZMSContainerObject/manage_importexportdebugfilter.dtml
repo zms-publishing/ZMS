@@ -15,6 +15,7 @@
  <dtml-call "REQUEST.set('outfilename',tpl[1])">
 <dtml-else>
  <dtml-call "REQUEST.set('outfilename',execProcessFilter(filterProcesses[step-1],tempfolder,outfilename,REQUEST))">
+ <dtml-call "RESPONSE.setHeader('Content-Type', 'text/html; charset=%s'%REQUEST.get('ZMS_CHARSET','text/html;charset=utf-8'))">
 </dtml-if>
 
 <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_EXPORT')+' #%i/%i [%s]'%(step,len(filterProcesses),outfilename))">

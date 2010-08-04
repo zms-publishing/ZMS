@@ -496,7 +496,11 @@
         ><dtml-call "options.extend(dt_html(multiselect.get('custom'),REQUEST))"
        ><dtml-elif "multiselect.get('mysqlset')"
         ><dtml-if value
-         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
+         ><dtml-if "value.find('\'')<value.rfind('\'')"
+          ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')].split('\',\''))"
+         ><dtml-else
+          ><dtml-call "REQUEST.set('value',value.split(','))"
+         ></dtml-if
         ></dtml-if
          ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
          ><dtml-let r=sequence-item rtype="r['type']"

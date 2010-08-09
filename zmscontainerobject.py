@@ -815,7 +815,7 @@ class ZMSContainerObject(
       
       #-- Process tree.
       if not self.meta_type == 'ZMSLinkElement':
-        obs = self.getChildNodes(REQUEST)
+        obs = self.getChildNodes(REQUEST,reid=None)
         for ob in obs:
           append = True
           append = append and ob.isMetaType(meta_types)

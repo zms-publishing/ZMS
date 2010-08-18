@@ -879,7 +879,7 @@ class ZMSContainerObject(
     #  ZMSContainerObject.filteredChildNodes:
     #
     # --------------------------------------------------------------------------
-    def filteredChildNodes(self, REQUEST={}, meta_types=None, reid='e\\d+'):
+    def filteredChildNodes(self, REQUEST={}, meta_types=None, reid=None):
       """
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 

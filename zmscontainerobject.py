@@ -891,7 +891,7 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getChildNodes:
     #
     # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST=None, meta_types=None, reid='e\\d+'):
+    def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
       Returns a NodeList that contains all children of this node in correct 
       order. If none, this is a empty NodeList. 

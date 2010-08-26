@@ -102,22 +102,22 @@ def getNextSibling(self, REQUEST, incResource=False):
 ################################################################################
 ################################################################################
 class ZMSContainerObject(
-	ZMSObject,
-	AccessControl.Role.RoleManager,		# Security manager.
-	_accessmanager.AccessableContainer,	# Access manager.
-	_importable.Importable,
-	_scormlib.SCORMLib,
-	_versionmanager.VersionManagerContainer
-	):
+    ZMSObject,
+    AccessControl.Role.RoleManager,        # Security manager.
+    _accessmanager.AccessableContainer,    # Access manager.
+    _importable.Importable,
+    _scormlib.SCORMLib,
+    _versionmanager.VersionManagerContainer
+    ):
 
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_system',
-		)
+        'manage_system',
+        )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		)
+        ('ZMS Administrator', __administratorPermissions__),
+        )
 
     # Interface.
     # ----------
@@ -815,7 +815,7 @@ class ZMSContainerObject(
       
       #-- Process tree.
       if not self.meta_type == 'ZMSLinkElement':
-        obs = self.getChildNodes(REQUEST,reid=None)
+        obs = self.getChildNodes(REQUEST)
         for ob in obs:
           append = True
           append = append and ob.isMetaType(meta_types)
@@ -879,12 +879,12 @@ class ZMSContainerObject(
     #  ZMSContainerObject.filteredChildNodes:
     #
     # --------------------------------------------------------------------------
-    def filteredChildNodes(self, REQUEST={}, meta_types=None, reid=None):
+    def filteredChildNodes(self, REQUEST={}, meta_types=None):
       """
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 
       """
-      return filter(lambda ob: ob.isVisible(REQUEST),self.getChildNodes(REQUEST,meta_types,reid))
+      return filter(lambda ob: ob.isVisible(REQUEST),self.getChildNodes(REQUEST,meta_types))
 
 
     # --------------------------------------------------------------------------
@@ -1012,5 +1012,3 @@ class ZMSContainerObject(
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),new_id,lang,urllib.quote(message)))
 
 ################################################################################
-
-

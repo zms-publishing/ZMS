@@ -49,7 +49,8 @@ def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
   importZexp( self, filename)
   
   # Rename
-  self.manage_renameObject(fileid,new_id)
+  if new_id != fileid:
+    self.manage_renameObject(fileid,new_id)
   
   ## Normalize Sort-IDs
   obj = getattr( self, new_id)

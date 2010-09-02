@@ -631,20 +631,18 @@ def writeBlock(self, info):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.writeError:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def writeError(self, etc=''):
-  info = '?'
+def writeError(self, info):
   try:
     LOG.error(info)
     t,v,tb = sys.exc_info()
     v = str(v)
     # Strip HTML tags from the error value
-    import re
-    remove = [r"<[^<>]*>", r"&[A-Za-z]+;"]
-    for pat in remove:
-      v = re.sub(pat,' ', v)
-    if etc: etc += '\n'
+    for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
+      v = re_sub(self, pattern,' ', v)
+    if info: 
+      info += '\n'
     severity = logging.ERROR
-    info = etc+''.join(format_exception(t, v, tb))
+    info += ''.join(format_exception(t, v, tb))
     info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
     zms_log = getattr( self, 'zms_log', None)
     if 'ERROR' in zms_log.logged_entries:

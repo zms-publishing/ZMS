@@ -58,23 +58,23 @@ def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
   self.normalizeSortIds( id_prefix)
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.importZexp:
-#
-#  Import file from specified path.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.importZexp:
+
+Import file from specified path.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
   filepath = INSTANCE_HOME + '/import/' + filename
   self.manage_importObject(filename)
   remove(filepath)
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.extractFilename:
-#
-#  Extract filename from path.
-#  IN:  path
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.extractFilename:
+
+Extract filename from path.
+IN:  path
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractFilename(path, sep=None):
   if sep is None:
     path = getOSPath(path) 
@@ -83,24 +83,24 @@ def extractFilename(path, sep=None):
   return lastitem
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.extractFileExt:
-# 
-#  Extract fileextension from path.
-#  IN:  path
-#  OUT: extension
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.extractFileExt:
+
+Extract fileextension from path.
+IN:  path
+OUT: extension
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractFileExt(path):
   items = path.split('.')
   lastitem = items[len(items)-1]
   return lastitem
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.getOSPath:
-# 
-#  Return path with OS separators.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.getOSPath:
+
+Return path with OS separators.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getOSPath(path, sep=None, chs=range(32)+[34,60,62,63,127]):
   if sep is None: sep = os.sep
   path = path.replace('\\',sep)
@@ -114,13 +114,13 @@ def getOSPath(path, sep=None, chs=range(32)+[34,60,62,63,127]):
   return path
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.getFilePath:
-#
-#  Extract filepath from path (cut-off filename).
-#  IN:  path
-#  OUT: filepath
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.getFilePath:
+
+Extract filepath from path (cut-off filename).
+IN:  path
+OUT: filepath
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getFilePath(path):
   items = getOSPath(path).split(os.sep)
   filepath = ''
@@ -132,15 +132,15 @@ def getFilePath(path):
   return filepath
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.findExtension:
-#
-#  Searches path and all subdirectories for file with extension and returns 
-#  complete filepath. Returns None if no file with specified extension exists.
-#  IN:  extension
-#       path
-#  OUT: filepath
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ _fileutil.findExtension:
+
+Searches path and all subdirectories for file with extension and returns 
+complete filepath. Returns None if no file with specified extension exists.
+IN:  extension
+     path
+OUT: filepath
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def findExtension(extension, path, deep=1):
   rtn = None
   path = getOSPath(path)
@@ -157,11 +157,11 @@ def findExtension(extension, path, deep=1):
   return rtn
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.readPath:
-#
-#  Reads path.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.readPath:
+
+Reads path.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readPath(path, data=True, recursive=True):
   l = []
   path = path.replace('\\',os.sep)
@@ -212,11 +212,11 @@ def readPath(path, data=True, recursive=True):
   return l
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.readFile:
-#
-#  Reads file (threshold for filesteam_iterator is 128 kb).
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.readFile:
+
+Reads file (threshold for filesteam_iterator is 128 kb).
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readFile(filename, mode='b', threshold=2 << 16):
   size = os.path.getsize( filename)
   if size < threshold or -1 == threshold:
@@ -236,11 +236,11 @@ def readFile(filename, mode='b', threshold=2 << 16):
   return data, mt, enc, size
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.importPath:
-#
-#  Imports path.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.importPath:
+
+Imports path.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importPath(self, path):
   path = getOSPath(path)
   mode = os.stat(path)[stat.ST_MODE]
@@ -258,11 +258,11 @@ def importPath(self, path):
         f.close()
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.remove:
-#
-#  Removes path (and all its subdirectories if deep==1).
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.remove:
+
+Removes path (and all its subdirectories if deep==1).
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def remove(path, deep=0):
   path = getOSPath(path)
   mode = os.stat(path)[stat.ST_MODE]
@@ -280,11 +280,11 @@ def remove(path, deep=0):
     os.remove(path)
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.getDataSizeStr: 
-#
-#  Display string for file-size.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.getDataSizeStr: 
+
+Display string for file-size.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getDataSizeStr(len):
   s = ''
   try:
@@ -307,19 +307,19 @@ def getDataSizeStr(len):
   return s
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.executeCommand:
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.executeCommand:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def executeCommand(path, command):
   os.chdir(path)
   os.system(command)
 
-    
-# ------------------------------------------------------------------------------
-#  _fileutil.exportObj:
-# ------------------------------------------------------------------------------
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.exportObj:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def exportObj(obj, filename, filetype='b'):
-    
+  
   #-- Try to create directory-tree.
   filename = getOSPath(filename)
   filepath = getFilePath(filename)
@@ -357,11 +357,11 @@ def exportObj(obj, filename, filetype='b'):
     objfile.close()
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.mkDir:
-#
-#  Make directory.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.mkDir:
+
+Make directory.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def mkDir(path):
   try:
     os.makedirs( path)
@@ -369,9 +369,9 @@ def mkDir(path):
     pass
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.readDir
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.readDir
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readDir(path):
   obs = []
   path = getOSPath(path)
@@ -398,11 +398,11 @@ def readDir(path):
 ###
 ################################################################################
 
-# ------------------------------------------------------------------------------
-#  _fileutil.getZipArchive:
-#
-#  Extract files from zip-archive and return list of extracted files.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.getZipArchive:
+
+Extract files from zip-archive and return list of extracted files.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getZipArchive(f):
   l = []
   
@@ -427,11 +427,11 @@ def getZipArchive(f):
   return l
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.extractZipArchive:
-#
-#  Unpack ZIP-Archive.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.extractZipArchive:
+
+Unpack ZIP-Archive.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractZipArchive(file):
   l = []
   
@@ -454,11 +454,9 @@ def extractZipArchive(file):
   return l
 
 
-# ------------------------------------------------------------------------------
-#  _fileutil.buildZipArchive:
-#
-#  Pack ZIP-Archive and return data.
-# ------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.writeZipFile:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeZipFile( zf, basepath, path, filter):
   for file in os.listdir( path):
     filepath = path+os.sep+file
@@ -473,6 +471,11 @@ def writeZipFile( zf, basepath, path, filter):
       if match:
         zf.write( filepath, arcname)
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.buildZipArchive:
+
+Pack ZIP-Archive and return data.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def buildZipArchive( files, get_data=True):
   
   # Create temporary zip-file.

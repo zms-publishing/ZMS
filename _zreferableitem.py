@@ -580,7 +580,7 @@ class ZReferableItem:
       ob = obs[ abs_url]
       
       # Process recordset.
-      if ob.getType()=='ZMSRecordSet':
+      if ob.meta_id!='ZMSLinkElement' and ob.getType()=='ZMSRecordSet':
         key = ob.getMetaobjAttrIds(ob.meta_id)[0]
         obj_attr = ob.getObjAttr(key)
         for lang in langs:

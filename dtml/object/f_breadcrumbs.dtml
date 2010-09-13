@@ -35,6 +35,12 @@
  &raquo;
  <img src="<dtml-var "display_icon(REQUEST,ZMS_INSERT)">" title="<dtml-var "display_type(REQUEST,ZMS_INSERT)">" border="0" align="absmiddle">
  <i><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i>
+<dtml-elif "AUTHENTICATED_USER.has_permission('ZMS Administrator',ZMS_THIS) and ('manage_main' in URL.split('/') or 'manage_properties' in URL.split('/'))">
+ <dtml-with metaobj_manager>
+  <dtml-unless "id in URL.split('/')">
+   [ <a href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':ZMS_THIS.meta_id})">" target="_blank" class="zmi"><img src="<dtml-var icon>" title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">)" border="0" align="absmiddle"/></a> ]
+  </dtml-unless>
+ </dtml-with>
 </dtml-if>
 <dtml-if additionalObjectPathElements>
  <dtml-in additionalObjectPathElements mapping>

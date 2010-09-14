@@ -38,7 +38,7 @@
 <dtml-elif "AUTHENTICATED_USER.has_permission('ZMS Administrator',ZMS_THIS) and ('manage_main' in URL.split('/') or 'manage_properties' in URL.split('/'))">
  <dtml-with metaobj_manager>
   <dtml-unless "id in URL.split('/')">
-   [ <a href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':ZMS_THIS.meta_id})">" target="_blank" class="zmi"><img src="<dtml-var icon>" title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">)" border="0" align="absmiddle"/></a> ]
+   &nbsp;<a style="text-decoration:none" href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':ZMS_THIS.meta_id})">" target="_blank" class="zmi"><span title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">">&middot;</span></a>
   </dtml-unless>
  </dtml-with>
 </dtml-if>

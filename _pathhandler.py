@@ -173,9 +173,12 @@ class PathHandler:
         # Package-Home.
         if name == '$ZMS_HOME':
           filepath = self.localfs_package_home()+'/'+'/'.join(TraversalRequest['path_to_handle'][1:])
+          data, mt, enc, size = _fileutil.readFile(filepath)
           filename = TraversalRequest['path_to_handle'][-1]
-          fdata = self.localfs_read( filepath, REQUEST=req)
-          f = self.FileFromData( fdata, filename)
+          f = self.FileFromData( data, filename, mt)
+          f.aq_parent = self
+          f.key = 'None'
+          f.lang = req.get('lang', self.getPrimaryLanguage())
           return f
         
         # Pathhandler-Method.

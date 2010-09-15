@@ -26,6 +26,7 @@ from OFS.CopySupport import absattr
 import copy
 # Product Imports.
 import _blobfields
+import _fileutil
 import _globals
 
 

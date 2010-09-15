@@ -35,10 +35,10 @@
  &raquo;
  <img src="<dtml-var "display_icon(REQUEST,ZMS_INSERT)">" title="<dtml-var "display_type(REQUEST,ZMS_INSERT)">" border="0" align="absmiddle">
  <i><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i>
-<dtml-elif "AUTHENTICATED_USER.has_permission('ZMS Administrator',ZMS_THIS) and ('manage_main' in URL.split('/') or 'manage_properties' in URL.split('/'))">
- <dtml-with metaobj_manager>
-  <dtml-unless "id in URL.split('/')">
-   &nbsp;<a style="text-decoration:none" href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':ZMS_THIS.meta_id})">" target="_blank" class="zmi"><span title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">">&middot;</span></a>
+<dtml-elif "REQUEST.get('AUTHENTICATED_USER').has_permission('ZMS Administrator',REQUEST.get('ZMS_THIS')) and ('manage_main' in REQUEST['URL'].split('/') or 'manage_properties' in REQUEST['URL'].split('/'))">
+ <dtml-with "REQUEST['ZMS_THIS'].metaobj_manager">
+  <dtml-unless "id in REQUEST['URL'].split('/')">
+   &nbsp;<a style="text-decoration:none" href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':REQUEST['ZMS_THIS'].meta_id})">" target="_blank" class="zmi"><span title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">">&middot;</span></a>
   </dtml-unless>
  </dtml-with>
 </dtml-if>

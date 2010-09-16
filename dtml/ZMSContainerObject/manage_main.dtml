@@ -299,23 +299,13 @@
 
 <script type="text/javascript">
 <!--//
-
-  function initPage() {
-    var els;
+  $(function() {
     $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
-    els = $("tr[id*=tr_]>td.zmiContainerColCenter");
-    els.mouseover( function(evt) { zmiTrFollowMouseOver(this); });
-    els.mouseout( function(evt) { zmiTrFollowMouseOut(this); });
-    els.dblclick( function(evt) { zmiTrFollowDblClick(this); });
-    els.attr( "title", "Double-click to edit!")
-    els.css( "cursor", "pointer");
     // Expand (populate) action-selects.
-    els = $("select[id*=select_actions_]:gt(0)");
-    els.focus( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
-    els.mouseover( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
-  }
-  initPage();
-
+    $("select[id*=select_actions_]:gt(0)")
+      .focus( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); })
+      .mouseover( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
+  });
 //-->
 </script>
 

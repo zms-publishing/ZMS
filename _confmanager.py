@@ -37,6 +37,7 @@ import stat
 import urllib
 # Product imports.
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
+import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 import _globals
 import _fileutil
 import _filtermanager
@@ -44,7 +45,6 @@ import _mediadb
 import _metacmdmanager
 import _multilangmanager
 import _sequence
-import _workflowmanager
 import zmslog
 
 
@@ -127,7 +127,6 @@ def updateConf(self, REQUEST):
 class ConfManager(
     _multilangmanager.MultiLanguageManager,        # Languages
     _metacmdmanager.MetacmdManager,            # Actions
-    _workflowmanager.WorkflowManager,        # Workflow
     _filtermanager.FilterManager,            # Filters (XML Im-/Export)
     ):
     implements(
@@ -519,11 +518,10 @@ class ConfManager(
       l = []
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
-      for ob in self.objectValues(['ZMSMetamodelProvider','ZMSFormatProvider']):
+      for ob in self.objectValues(['ZMSMetamodelProvider','ZMSFormatProvider','ZMSWorkflowProvider']):
         for d in ob.manage_sub_options:
           l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
       l.append({'label':'TAB_METACMD','action':'manage_customizeMetacmdForm'})
-      l.append({'label':'TAB_WORKFLOW','action':'manage_customizeWorkflowForm'})
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
       return l
@@ -722,6 +720,14 @@ class ConfManager(
             obj = zmslog.ZMSLog()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
+          elif meta_type == 'ZMSWorkflowProvider':
+            obj = ZMSWorkflowProvider.ZMSWorkflowProvider()
+            self._setObject(obj.id, obj)
+            message = 'Added '+meta_type
+          elif meta_type == 'ZMSWorkflowProviderAcquired':
+            obj = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired()
+            self._setObject(obj.id, obj)
+            message = 'Added '+meta_type
         elif btn == 'Remove':
           ids = REQUEST.get('ids',[])
           if ids:
@@ -852,6 +858,37 @@ class ConfManager(
       # Return with message.
       message = urllib.quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s&cssId=%s'%(lang,message,cssId))
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSWorkflowProvider: delegate to workflow_manager
+    ###
+    ############################################################################
+
+    def getWfActivities(self):
+      workflow_manager = getattr(self,'workflow_manager',None)
+      if workflow_manager is None:
+        return []
+      return workflow_manager.getActivities()
+
+    def getWfActivitiesIds(self):
+      workflow_manager = getattr(self,'workflow_manager',None)
+      if workflow_manager is None:
+        return []
+      return workflow_manager.getActivitiesIds()
+
+    def getWfActivity(self, id):
+      workflow_manager = getattr(self,'workflow_manager',None)
+      if workflow_manager is None:
+        return None
+      return workflow_manager.getActivity(id)
+
+    def getWfTransitions(self):
+      workflow_manager = getattr(self,'workflow_manager',None)
+      if workflow_manager is None:
+        return []
+      return workflow_manager.getTransitions()
 
 
     ############################################################################

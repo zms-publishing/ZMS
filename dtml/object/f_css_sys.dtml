@@ -317,15 +317,6 @@ html>/**/body .zmi_footer select {
 	width:100px;
 }
 
-.zmiContainerHighlight {
-	background: filter:Alpha(opacity=100);-moz-opacity:1.00;opacity:1.00;
-}
-
-.zmiHighlightAction, a.zmiHighlightAction, a.zmiHighlightAction:link, a.zmiHighlightAction:visited {
-	text-decoration: underline;
-	color: #F90;
-}
-
 div.zmiRenderShort {
 	padding: 3px;
 	overflow: hidden;

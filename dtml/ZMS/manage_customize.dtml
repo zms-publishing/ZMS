@@ -48,7 +48,7 @@
 <div class="zmi_col_right">
 <select class="form-small" name="meta_type" onchange="if (this.options[this.selectedIndex].value!='') document.getElementById('addMetaTypeBtn').click();">
 <option value="">Select type to add...</option>
-<dtml-in "['Sequence','ZCatalog','ZMSLog']">
+<dtml-in "['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']">
 <dtml-let meta_type=sequence-item>
 <dtml-if "len(objectValues(meta_type))==0">
 <option value="<dtml-var meta_type>"><dtml-var "getZMILangStr(meta_type)"></option>
@@ -60,7 +60,7 @@
 </div>
 </div>
 <div class="clearfloating" style="clear:both"></div>
-<dtml-in "objectValues(['Sequence','ZCatalog','ZMSLog'])">
+<dtml-in "objectValues(['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
  <div class="form-small"
   ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>"
   ><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)</a
@@ -156,7 +156,7 @@
 
 <dtml-let
   conf="getConfProperties()" 
-  conf_keys="filter(lambda x: not x.startswith('ZMS.version') and not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('ZMS.workflow') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
+  conf_keys="filter(lambda x: not x.startswith('ZMS.version') and not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
   res="[
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},

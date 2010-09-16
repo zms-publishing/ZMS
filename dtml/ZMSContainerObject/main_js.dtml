@@ -2,52 +2,6 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
 //------------------------------------------------------------------------------
-// -- Row-Highlighter
-//------------------------------------------------------------------------------
-
-  function zmiTrFollowMouseOver(el)
-  {
-    var trs = $(el).parents("tr");
-    for ( var i = 0; i < trs.length; i++) {
-      var tr = trs[i];
-      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
-        $("a:first",tr).addClass( "zmiHighlightAction");
-        $("td.zmiContainerColLeft,td.zmiContainerColCenter,td.zmiContainerColRight",tr).addClass("zmiContainerHighlight");
-        return;
-      }
-    }
-  }
-
-  function zmiTrFollowMouseOut(el)
-  {
-    var trs = $(el).parents("tr");
-    for ( var i = 0; i < trs.length; i++) {
-      var tr = trs[i];
-      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
-        $("a:first",tr).removeClass( "zmiHighlightAction");
-        $("td.zmiContainerColLeft,td.zmiContainerColCenter,td.zmiContainerColRight",tr).removeClass("zmiContainerHighlight");
-        return;
-      }
-    }
-  }
-
-  function zmiTrFollowDblClick(el)
-  {
-    var trs = $(el).parents("tr");
-    for ( var i = 0; i < trs.length; i++) {
-      var tr = trs[i];
-      if (tr.id!='undefined' && tr.id.indexOf('tr_')==0) {
-        var a = $("a:first",tr);
-        var href = self.location.href;
-        var href_relative = a.attr("href");
-        var new_location = href.substr(0,href.lastIndexOf("/")+1)+href_relative;
-        self.location = new_location;
-        return;
-      }
-    }
-  }
-
-//------------------------------------------------------------------------------
 // -- Action-selects 
 //------------------------------------------------------------------------------
 

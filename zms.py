@@ -51,7 +51,7 @@ import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
 import zmscontainerobject
-import ZMSMetamodelProvider, ZMSFormatProvider
+import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from _versionmanager import getObjStates
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
@@ -370,7 +370,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
               pass
     except:
       pass
-
+  
   ##### Build 132a: Rename logo to zmi_logo ####
   if getattr( docElmnt, 'build', '000') < '132':
     try:
@@ -378,6 +378,28 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       delattr( self, 'logo')
     except:
       pass
+  
+  ##### Build 132a: Rename logo to zmi_logo ####
+  if getattr( docElmnt, 'build', '000') < '133':
+    if self.meta_type == 'ZMS':
+      autocommit = self.getConfProperty('ZMS.autocommit',1)
+      nodes = self.getConfProperty('ZMS.workflow.nodes',['{$}'])
+      acquired = self.getConfProperty('ZMS.workflow.acquire',0)
+      activities = self.getConfProperty('ZMS.workflow.activities',[])
+      transitions = self.getConfProperty('ZMS.workflow.transitions',[])
+      if acquired or len(activities+transitions)>0:
+        if acquired:
+          manager = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired()
+        else:
+          manager = ZMSWorkflowProvider.ZMSWorkflowProvider(autocommit,nodes,activities,transitions)
+        if manager.id in self.objectIds():
+          self.manage_delObjects(manager.id)
+        self._setObject( manager.id, manager)
+      self.delConfProperty('ZMS.autocommit')
+      self.delConfProperty('ZMS.workflow.nodes')
+      self.delConfProperty('ZMS.workflow.acquire')
+      self.delConfProperty('ZMS.workflow.activities')
+      self.delConfProperty('ZMS.workflow.transitions')
   
   # Recursion.
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
@@ -623,8 +645,8 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '132'        # Internal use only, designates object model!
-    zms_patch = 'f'          # Internal use only!
+    zms_build = '133'        # Internal use only, designates object model!
+    zms_patch = 'a'          # Internal use only!
 
     # Properties.
     # -----------
@@ -651,7 +673,6 @@ class ZMS(
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
         'manage_changeMetacmds', 'manage_customizeMetacmdForm',
-        'manage_changeWorkflow', 'manage_changeWfTransitions', 'manage_changeWfActivities', 'manage_customizeWorkflowForm',
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (

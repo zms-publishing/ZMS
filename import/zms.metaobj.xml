@@ -680,7 +680,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
   align="getObjProperty('align',REQUEST)"
   displaytype="getObjProperty('displaytype',REQUEST)"
   abstract="getObjProperty('attr_abstract',REQUEST)"
-  subclass="[meta_id]"
+  subclass="['ZMSObject',meta_id]"
  ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
  ><dtml-if "align in ['','NONE']"
   ><dtml-call "subclass.append(' none')"
@@ -1160,7 +1160,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
   textalign="getObjProperty( 'textalign',REQUEST)"
   textclass="'text'"
   bodyContent="renderDisplaytype(displaytype,imgattr,imghiresattr,imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,REQUEST)"
-  subclass="[meta_id]"
+  subclass="['ZMSObject',meta_id]"
  ><dtml-if "align in [ 'LEFT', 'CENTER', 'RIGHT']"
   ><dtml-call "subclass.append(' '+align.lower())"
  ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
@@ -3316,7 +3316,7 @@ $(function(){
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTable //--</dtml-comment>
 
 <dtml-let table_table="getObjProperty('table',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_summary="getObjProperty('attr_dc_description',REQUEST)"
- ><table id="<dtml-var id>" class="<dtml-var meta_id>"<dtml-if table_summary> summary="<dtml-var table_summary>"</dtml-if>
+ ><table id="<dtml-var id>" class="ZMSObject <dtml-var meta_id>"<dtml-if table_summary> summary="<dtml-var table_summary>"</dtml-if>
  ><caption align="<dtml-var "getObjProperty('align',REQUEST).lower()">"><dtml-var "getObjProperty('caption',REQUEST)"></caption
  ><dtml-if "getObjProperty('colgroup',REQUEST)"
   ><colgroup
@@ -4199,7 +4199,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 <dtml-let
   text="getText(REQUEST)"
   format="getObjProperty('format',REQUEST)"
-  renderedtext="renderText(format,'text',text,REQUEST,id)"
+  renderedtext="renderText(format,'text',text,REQUEST,id,'ZMSObject')"
  ><dtml-return renderedtext
 ></dtml-let>
 

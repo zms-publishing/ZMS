@@ -23,7 +23,6 @@
 
 # Imports.
 from __future__ import nested_scopes
-from App.Common import package_home
 # Product Imports.
 import _globals
 import _objattrs
@@ -88,12 +87,12 @@ class TextFormatObject:
   # ----------------------------------------------------------------------------
   #  TextFormatObject.renderText:
   # ----------------------------------------------------------------------------
-  def renderText( self, format, key, text, REQUEST, id=None):
+  def renderText( self, format, key, text, REQUEST, id=None, clazz=None):
     # Process format.
     if format is not None:
       textformat = self.getTextFormat( format, REQUEST)
       if textformat is not None and len( text) > 0:
-        text = textformat.renderText( text, REQUEST, id)
+        text = textformat.renderText( text, REQUEST, id, clazz)
     # Custom hook.
     try:
       name = 'renderCustomText'

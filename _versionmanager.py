@@ -32,7 +32,6 @@ import urllib
 # Product Imports.
 import _globals 
 import _blobfields 
-import _workflowmanager
 import _zmsattributecontainer
 
 
@@ -1186,7 +1185,7 @@ class VersionManagerContainer:
       log = log + self.display_type(REQUEST) + '\t'
       log = log + uid + '\t'
       log = log + desc
-      _workflowmanager.writeProtocol(self, log)
+      self.workflow_manager.writeProtocol(log)
 
     # --------------------------------------------------------------------------
     #  VersionManagerContainer.autoWfTransition

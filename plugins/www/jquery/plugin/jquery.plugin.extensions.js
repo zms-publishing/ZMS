@@ -10,7 +10,29 @@ $(function(){
 		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js',
 				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
-	$.plugin('zms').get('body',function(){});
+	$.plugin('zms').get('body',function(){
+	  if (self.location.href.indexOf('preview=preview')>0) {
+	    $('.ZMSObject')
+          .mouseover( function(evt) {
+            $(this).addClass('preview').addClass('highlight'); 
+          })
+          .mouseout( function(evt) {
+            $(this).removeClass('preview').removeClass('highlight'); 
+          })
+          .dblclick( function(evt) {
+            var id = $(this).attr('id');
+            var href = self.location.href;
+            if (href.indexOf('?')>0) {
+              href = href.substr(0,href.indexOf('?'));
+            }
+            if (href.lastIndexOf('/')>0) {
+              href = href.substr(0,href.lastIndexOf('/'));
+            }
+            self.location.href = href+'/'+id+'/manage_main'; 
+          })
+          .attr( "title", "Double-click to edit!");
+	  }
+	});
 });
 
 

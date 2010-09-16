@@ -280,15 +280,20 @@ div.ZMSTeaserElement div.text
  */
 
 div.ZMSObject.new, div.ZMSObject.modified {
-  border: 2px dashed blue;
-  background-color: #F0F0FF;
+	border: 2px dashed blue;
+	background-color: #F0F0FF;
 } 
 div.ZMSObject.deleted {
-  border: 2px dashed red;
-  background-color: #FFF0F0;
-  color: red;
-  text-decoration: line-through;
-} 
+	border: 2px dashed red;
+	background-color: #FFF0F0;
+	color: #CCC;
+	text-decoration: line-through;
+}
+.ZMSObject.preview.highlight {
+	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#E2E3DE')">;
+	cursor:pointer;
+}
 
 span.unicode { 
   font-family:"Lucida Sans Unicode", "Arial Unicode MS", Arial, Helvetica, sans-serif;

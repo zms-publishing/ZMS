@@ -179,13 +179,15 @@ class ZMSTextformat:
   #  Assemble <Start-Tag>.
   # ----------------------------------------------------------------------------
   getStartTag__roles__ = None
-  def getStartTag(self, id=None): 
+  def getStartTag(self, id=None, clazz=None): 
     html = ''
     tag = self.getTag()
     if len(tag) > 0:
       html += '<%s'%tag
       if id is not None:
         html += ' id="%s"'%id
+      if clazz is not None:
+        html += ' class="%s"'%clazz
       attrs = self.getAttrs()
       if len(attrs) > 0:
         html += ' ' + attrs
@@ -262,10 +264,10 @@ class ZMSTextformat:
   #  Render text.
   # ----------------------------------------------------------------------------
   renderText__roles__ = None
-  def renderText(self, text, REQUEST, id=None):
+  def renderText(self, text, REQUEST, id=None, clazz=None):
     html = ''
     # Open tag.
-    html += self.getStartTag( id)
+    html += self.getStartTag( id, clazz)
     # Sub tag.
     text = br_quote( text, self.getSubTag(), REQUEST)
     # Value.

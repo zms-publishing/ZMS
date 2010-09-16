@@ -33,6 +33,7 @@ import time
 import zmscontainerobject
 import ZMSItem
 import ZMSGlobals
+import ZMSWorkflowItem
 import _accessmanager
 import _blobfields
 import _cachemanager
@@ -48,7 +49,6 @@ import _objinputs
 import _objtypes
 import _pathhandler
 import _versionmanager
-import _workflowmanager
 import _xmllib
 import _textformatmanager
 import _zcatalogmanager
@@ -68,7 +68,7 @@ __all__= ['ZMSObject']
 class ZMSObject(ZMSItem.ZMSItem,
 	_accessmanager.AccessableObject,	# Access manager.
 	_versionmanager.VersionItem,		# Version Item.
-	_workflowmanager.WorkflowItem,		# Workflow Item.
+	ZMSWorkflowItem.ZMSWorkflowItem,
 	_copysupport.CopySupport,		# Copy Support (Paste Objects).
 	_cachemanager.CacheableObject,		# Cacheable object.
 	_deprecatedapi.DeprecatedAPI,		# Deprecated API.

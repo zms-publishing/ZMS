@@ -20,18 +20,10 @@
   function directEditExpandIt( div_id, poser_id, autoClose)
   {
     directEditAutoClose = autoClose;
-    var coords = {x: 0, y: 0};
-    var el = document.images[ poser_id];
-    coords.x += el.width;
-    coords.y += el.height;
-    while (el) {
-      coords.x += el.offsetLeft;
-      coords.y += el.offsetTop;
-      el = el.offsetParent;
-    }
+    var coords = getCoords(document.images[ poser_id]);
     var el = document.getElementById( div_id);
-    el.style.left = coords['x'] + "px";
-    el.style.top = coords['y'] + "px";
+    el.style.left = coords.x + "px";
+    el.style.top = coords.y + "px";
     el.style.position = "absolute";
     el.style.display = "block";
     el.style.visibility = "visible";

@@ -96,7 +96,7 @@ class ZMSWorkflowTransitionsManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.getTransitionIds
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def getTransitionsIds(self):
+  def getTransitionIds(self):
     obs = self.getTransitions()
     return map(lambda x: x['id'], obs) 
 
@@ -105,8 +105,10 @@ class ZMSWorkflowTransitionsManager:
   ZMSWorkflowTransitionsManager.getTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransition(self, id):
-    ob = filter(lambda x: x['id']==id, self.getTransitions())[0]
-    return ob
+    transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
+    transition = copy.deepcopy(transition)
+    transition['dtml'] = getattr(self,transition['id']).raw
+    return transition
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

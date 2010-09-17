@@ -502,18 +502,12 @@ function confKeyChange(b)
    function versionNodesDivDisplay(el) {
      var versionNodesDiv = document.getElementById( 'versionNodesDiv');
      if (el) {
-       var coords = {x: 0, y: 0};
-       var element = el;
-       while (element) {
-         coords.x += element.offsetLeft;
-         coords.y += element.offsetTop;
-         element = element.offsetParent;
-       }    
+       var coords = getCoords(el);
        versionNodesDiv.style.visibility = 'visible';
        versionNodesDiv.style.display = 'block';
        versionNodesDiv.style.position = 'absolute';
-       versionNodesDiv.style.top = (coords['y']+el.height)+"px";
-       versionNodesDiv.style.left = (coords['x']+el.width)+"px";    
+       versionNodesDiv.style.left = (coords.x+el.offsetWidth)+"px";    
+       versionNodesDiv.style.top = (coords.y+el.offsetHeight)+"px";
      }
      else {
        versionNodesDiv.style.visibility = 'hidden';

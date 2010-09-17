@@ -14,6 +14,20 @@
 <script language="JavaScript">
 <!--//
 
+$(function() {
+	$('.zmiDblclickable')
+		.mouseover( function(evt) {
+			$(this).addClass('zmiTeaserColor'); 
+		})
+		.mouseout( function(evt) {
+			$(this).removeClass('zmiTeaserColor'); 
+		})
+		.dblclick( function(evt) {
+			self.location.href = $('a[target=]',this).attr('href'); 
+		})
+		.attr( "title", "Double-click to edit!");
+});
+
 function toggleElement( sender, id) {
   var speed = "normal";
   var img = $('#'+sender);
@@ -982,7 +996,7 @@ function changeType( el)
          ><dtml-in metaObjs
           ><dtml-let metaObj=sequence-item
            ><tr>
-            <td class="form-small" witdh="100%"
+            <td class="zmiDblclickable form-small" witdh="100%"
              ><div class="form-small"
              ><dtml-if "len(metaObjs) > 1"
               ><dtml-unless sequence-start

@@ -876,7 +876,7 @@ class ConfManager(
       workflow_manager = getattr(self,'workflow_manager',None)
       if workflow_manager is None:
         return []
-      return workflow_manager.getActivitiesIds()
+      return workflow_manager.getActivityIds()
 
     def getWfActivity(self, id):
       workflow_manager = getattr(self,'workflow_manager',None)

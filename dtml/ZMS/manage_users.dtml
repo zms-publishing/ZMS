@@ -7,9 +7,23 @@
 
 <dtml-let userFldr="getUserFolder()">
   
-  <script language="JavaScript">
-  <!--//
-  
+<script language="JavaScript">
+<!--//
+
+$(function() {
+	$('.zmiDblclickable')
+		.mouseover( function(evt) {
+			$(this).addClass('zmiTeaserColor'); 
+		})
+		.mouseout( function(evt) {
+			$(this).removeClass('zmiTeaserColor'); 
+		})
+		.dblclick( function(evt) {
+			self.location.href = $('a[target=]',this).attr('href'); 
+		})
+		.attr( "title", "Double-click to edit!");
+});
+
     function btnClick(el, key) {
       var fm = el.form;
       fm.elements['key'].value = key;
@@ -172,7 +186,7 @@
         </tr>
        </dtml-if>
        <dtml-call "REQUEST.set('userId',unicode(_[getProperty( '_login_attr' )],'latin-1').encode('utf-8'))">
-       <tr valign="top" class="<dtml-if sequence-even>zmiNeutralColorLight0<dtml-else>zmiNeutralColorMedium0</dtml-if>">
+       <tr valign="top" class="">
         <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
         <td class="form-small"><a href="?lang=<dtml-var lang>&id=<dtml-var userId>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var userId></b></a></td>
         <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
@@ -202,7 +216,7 @@
     <dtml-if sequence-start>
      <table cellspacing="1" cellpadding="1" border="0" width="80%" class="zmiNeutralColorStrong0">
     </dtml-if>
-    <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+    <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
      <td align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
      <td>
       <div class="form-small">
@@ -238,19 +252,18 @@
   <form name="form1" action="manage_userProperties" method="post" onsubmit="return form1Submit(this);">
   <input type="hidden" name="key" value="">
   <input type="hidden" name="lang" value="<dtml-var lang>">
-  <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'),extra='<img src=%sicon_users.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"><br />
   <dtml-call "REQUEST.set('qsize',20)">
   <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
    <!-- Header -->
    <tr>
-    <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+    <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'),extra='<img src=%sicon_users.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"></td>
    </tr>
    <dtml-if "REQUEST.form.get('id','')!=''">
     <!-- Columns -->
     <input type="hidden" name="id" value="<dtml-var "REQUEST.get('id')">">
-    <tr valign="top" class="zmiNeutralColorMedium0">
+    <tr valign="top" class="zmiNeutralColorMedium1">
      <!-- Id -->
-     <td class="form-text" colspan="4" valign="middle">
+     <td class="form-text" colspan="3">
       <table cellspacing="0" cellpadding="1" border="0">
       <tr valign="top">
        <td rowspan="2"><img src="p_/User_icon" border="0" align="absmiddle" /></td>
@@ -279,8 +292,8 @@
        </dtml-if>
       </td>
      </tr>
-     <tr valign="top" class="zmiNeutralColorMedium0">
-      <td colspan="5">
+     <tr valign="top" class="zmiNeutralColorMedium1">
+      <td colspan="4">
        <table cellspacing="1" cellpadding="1" border="0">
        <dtml-if "localUserFldr==userFldr">
         <!-- LDAP-Profile -->
@@ -302,7 +315,7 @@
            <dtml-if expr="si not in ['userPassword','userCertificate']">
             <tr valign="top">
              <td class="zmiNeutralColorMedium0" nowrap="nowrap" title="<dtml-var sk>"><div class="form-small"><b><dtml-var si></b></div></td>
-             <td class="neutralColorWhite"><div class="form-small"><dtml-var "unicode(cur_val and ';'.join(cur_val) or '','latin-1').encode('utf-8')"></div></td>
+             <td class="zmiNeutralColorWhite"><div class="form-small"><dtml-var "unicode(cur_val and ';'.join(cur_val) or '','latin-1').encode('utf-8')"></div></td>
             </tr>
             <dtml-call "REQUEST.set('count',REQUEST['count']+1)">
            </dtml-if>
@@ -503,7 +516,7 @@
     <!-- Navigation -->
     <dtml-if "len(valid_userids)>qsize or len(SESSION.get('ZMS_MANAGE_USERS_ID_FILTER'))>0">
     <tr class="zmiNeutralColorStrong0">
-     <td colspan="5" class="form-small">
+     <td colspan="4" class="form-small">
       <table cellspacing="0" cellpadding="0" border="0" width="100%">
       <tr valign="middle">
        <td align="left" class="form-small"><dtml-var "f_recordset_nav(_,_,res=filtered_userids,qorder='',qorderdir='',qbatch=3,grid_url=URL)"></td>
@@ -519,17 +532,16 @@
     <!-- Columns -->
     <tr class="zmiNeutralColorStrong0">
      <td class="form-label">#<dtml-var "len(valid_userids)"></td>
-     <td class="form-label"><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
      <td class="form-label" colspan="2"><dtml-var "getZMILangStr('ATTR_ID')"></td>
      <td class="form-label">&nbsp;</td>
     </tr>
     <dtml-in filtered_userids size=qsize start=qstart mapping>
       <dtml-let userObj="localUserFldr.getUser(name)">
        <dtml-if userObj>
-        <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-         <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
-         <td class="form-small"><input class="form-small" type="radio" name="id" value="<dtml-var name>" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+        <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
+         <td class="form-small" align="right"><dtml-var "_['sequence-index']+1">.</td>
          <td class="form-small" colspan="2">
+          <img src="p_/User_icon" border="0" align="absmiddle" />
           <a href="?lang=<dtml-var lang>&id=<dtml-var name>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
           <dtml-if "localUserFldr!=userFldr">@<a href="<dtml-var "localUserFldr.aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "localUserFldr.aq_parent.id"></a></dtml-if>
           <dtml-in "difference_list(userObj.getRoles(),['Authenticated'])">
@@ -538,12 +550,11 @@
            <dtml-if sequence-end>)</i><dtml-else>,</dtml-if>
           </dtml-in>
          </td>
-         <td class="form-small" align="right">
-          &nbsp;
+         <td class="form-small">
           <!-- E-Mail -->
           <dtml-let email="getUserAttr(name,'email','')">
            <dtml-if email>
-            <a href="mailto:<dtml-var email>"><dtml-var email></a>
+            <a href="mailto:<dtml-var email>" class="zmi"><dtml-var email></a>
            </dtml-if>
           </dtml-let>
           <!-- Profile -->
@@ -551,21 +562,22 @@
            <dtml-if profile>
             <dtml-if ob>
              <dtml-with ob>
-              <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>" target="_blank"
+              <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>" target="_blank" class="zmi"
                ><img src="<dtml-var "display_icon(REQUEST)">" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" border="0" align="middle"
               /></a>
              </dtml-with>
             <dtml-else>
-             <a href="<dtml-var profile>" target="_blank"
+             <a href="<dtml-var profile>" target="_blank" class="zmi"
               ><img src="<dtml-var MISC_ZMS>external_link.gif" title="<dtml-var profile>" border="0" align="middle"
              /></a>
             </dtml-if>
            </dtml-if>
           </dtml-let>
+          &nbsp;
          </td>
         </tr>
        <dtml-else>
-        <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+        <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
          <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
          <td class="form-small"><input type="radio" disabled="disabled" checked="checked"/></td>
          <td class="form-small" colspan="3"><dtml-var name></td>
@@ -573,14 +585,14 @@
        </dtml-if>
       </dtml-let>
     <dtml-else>
-     <tr class="zmiTableRowEven">
-      <td colspan="5"><div class="form-small">None</div></td>
+     <tr class="zmiNeutralColorLight0">
+      <td colspan="4"><div class="form-small">None</div></td>
      </tr>
     </dtml-in>
     <!-- Navigation -->
     <dtml-if "len(filtered_userids)>qsize">
     <tr class="zmiNeutralColorStrong0">
-     <td colspan="5" class="form-small">
+     <td colspan="4" class="form-small">
       <dtml-var "f_recordset_nav(_,_,res=filtered_userids,qorder='',qorderdir='',qbatch=3,grid_url=URL)">
      </td>
     </tr>
@@ -590,21 +602,35 @@
   <!-- Insert User -->
   <dtml-if "REQUEST.get('id','')==''">
    <tr>
-    <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+    <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
    </tr>
-   <tr valign="top" class="zmiNeutralColorLight0">
-    <td class="form-label" colspan="2">&nbsp;</td>
-    <td class="form-element">
-     <dtml-let context="this()">
-      <dtml-var "getTextInput(fmName='form1',elName='newId',size=15,value='')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_ID')"><dtml-var FORM_LABEL_MANDATORY></div>
-      <dtml-var "getPasswordInput(fmName='form1',elName='newPassword')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><dtml-var FORM_LABEL_MANDATORY></div>
-      <dtml-var "getPasswordInput(fmName='form1',elName='newConfirm')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><dtml-var FORM_LABEL_MANDATORY></div>
-      <dtml-var "getTextInput(fmName='form1',elName='newEmail',size=15,value='')">
-      <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_EMAIL')"></div>
-     </dtml-let>
+   <tr valign="top" class="zmiNeutralColorLight0"
+    <td>&nbsp;</td>
+    <td>
+    <dtml-let context="this()">
+    <table cellpadding="0" cellspacing="1" border="0">
+    <colgroup>
+     <col width="20%">
+     <col width="80%">
+    </colgroup>
+    <tr>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"><dtml-var FORM_LABEL_MANDATORY></td>
+     <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='newId',size=15,value='')"></td>
+    </tr>
+    <tr>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_PASSWORD')"><dtml-var FORM_LABEL_MANDATORY></td>
+     <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='newPassword')"></td>
+    </tr>
+    <tr>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_CONFIRM')"><dtml-var FORM_LABEL_MANDATORY></td>
+     <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='newConfirm')"></td>
+    </tr>
+    <tr>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+     <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='newEmail',size=15,value='')"></td>
+    </tr>
+    </table>
+    </dtml-let>
     </td>
     <td class="form-element" colspan="2">
      <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
@@ -615,9 +641,6 @@
   </table>
   </form>
 
-  <dtml-comment>
-  ----------------------------------------------------------------------
-  </dtml-comment>
   </dtml-if>
   
   </td>
@@ -643,17 +666,20 @@
   <form name="form2" action="manage_roleProperties" method="post" onsubmit="return form2Submit(this);">
   <input type="hidden" name="key" value="">
   <input type="hidden" name="lang" value="<dtml-var lang>">
-  <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_ROLES'),extra='<img src=%sicon_roles.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"><br />
+  <dtml-let valid_roles="difference_list(userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])">
   <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
+  <!-- Header -->
+  <tr>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_ROLES'),extra='<img src=%sicon_roles.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"></td>
+  </tr>
+  <!-- Columns -->
+  <tr class="zmiNeutralColorStrong0">
+   <td class="form-label">#<dtml-var "len(valid_roles)"></td>
+   <td class="form-label" colspan="2"><dtml-var "getZMILangStr('ATTR_ID')"></td>
+   <td class="form-label">&nbsp;</td>
+  </tr>
   
-  <dtml-if userdefined_roles>
-   <dtml-in "difference_list(userdefined_roles,['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])">
-    <dtml-if sequence-start>
-     <!-- Header -->
-     <tr>
-      <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
-     </tr>
-    </dtml-if>
+   <dtml-in valid_roles>
     <dtml-if "REQUEST.get('id','')==_['sequence-item']"> 
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td class="zmiNeutralColorStrong0" rowspan="2" align="right"><div class="form-label"><dtml-var "_['sequence-index']+1">.</div></td>
@@ -737,14 +763,17 @@
      </tr>
     <dtml-else>
      <dtml-if "REQUEST.get('id','')==''">
-      <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+      <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
        <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
        <td class="form-small" colspan="3"><a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var sequence-item></b></a></td>
       </tr>
      </dtml-if>
     </dtml-if>
+   <dtml-else>
+    <tr class="zmiNeutralColorLight0">
+     <td colspan="4"><div class="form-small">None</div></td>
+    </tr>
    </dtml-in>
-  </dtml-if>
 
   <!-- Insert Role -->
   <dtml-if "REQUEST.get('id','')==''">
@@ -752,10 +781,18 @@
     <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
    </tr>
    <tr valign="top" class="zmiNeutralColorLight0">
-    <td class="form-label" colspan="2">&nbsp;</td>
-    <td class="form-element">
-     <dtml-var "getTextInput(fmName='form2',elName='newId',size=15,value='')">
-     <div class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_ID')"></div>
+    <td colspan="2">&nbsp;</td>
+    <td>
+    <table cellpadding="0" cellspacing="1" border="0">
+    <colgroup>
+     <col width="20%">
+     <col width="80%">
+    </colgroup>
+    <tr>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"><dtml-var FORM_LABEL_MANDATORY></td>
+     <td class="form-element"><dtml-var "getTextInput(fmName='form2',elName='newId',size=15,value='')"></td>
+    </tr>
+    </table>
     </td>
     <td class="form-element">
      <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
@@ -764,6 +801,7 @@
   </dtml-if>
 
   </table>
+  </dtml-let>
   </form>
   
   </td>
@@ -778,5 +816,6 @@
   
 </dtml-let>
 
+<br/>
 <dtml-var f_eo_area>
 <dtml-var manage_page_footer>

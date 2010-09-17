@@ -21,7 +21,7 @@
         if (!b)
           el.checked = true;
       }
-     }
+     }B
     </dtml-unless>
     return b;
   }
@@ -29,16 +29,13 @@
   /**
    * @param fm
    */
-  function onAcFormSubmit(fm) 
-  {
+  function onAcFormSubmit(fm) {
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") 
-    {
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
       b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
     }
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
       b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['newName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
     }
@@ -48,16 +45,13 @@
   /**
    * @param fm
    */
-  function onTrFormSubmit(fm) 
-  {
+  function onTrFormSubmit(fm) {
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") 
-    {
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
       b = b && !disallowBlank(fm.elements['inpId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['inpName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
     }
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
       b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
       b = b && !disallowBlank(fm.elements['newName'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
     }
@@ -67,29 +61,14 @@
   /**
    * @param fm
    */
-  function onImportFormSubmit(fm) 
-  {
+  function onImportFormSubmit(fm) {
     var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") 
-    {
-        var elFile = fm.elements['file'];
-        var elInit = fm.elements['init'];
-    	if (isBlank(elFile.value) && isBlank(elInit.value))
-	{
-            b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
-	}
-    }
-    return b;
-  }
-
-  /**
-   * @param fm
-   */
-  function onInitFormSubmit(fm) 
-  {
-    var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INIT')">") {
-      b = b && confirm("<dtml-var "getZMILangStr('BTN_INIT')">?");
+    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") {
+      var elFile = fm.elements['file'];
+      var elInit = fm.elements['init'];
+      if (isBlank(elFile.value) && isBlank(elInit.value)) {
+        b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+      }
     }
     return b;
   }
@@ -118,7 +97,7 @@
 <dtml-comment>
 <!-- ######################################################################
      ###
-     ###   W O R K F L O W   ( A U T O C O M M I T )
+     ###   WORKFLOW
      ###
      ######################################################################
 -->
@@ -136,6 +115,7 @@
    <td><input class="form-checkbox" type="checkbox" name="workflow:int" value="1" <dtml-unless "getAutocommit()">checked="checked"</dtml-unless>/></td>
    <td><textarea class="form-element" title="Nodes" cols="20" rows="1" name="nodes" wrap="virtual" style="height:18px"><dtml-var "'\n'.join(getNodes())"></textarea></td>
    <td><input class="form-element" type="submit" value="?" onclick="return workflowNodesDivDisplay(this);"/></td>
+   <td align="right"><dtml-try><dtml-with "_['protocol.txt']"><a href="<dtml-var id>" target="_blank" class="zmi"><img src="<dtml-var icon>" title="<dtml-var meta_type>" border="0" align="absmiddle"/> <dtml-var id></a></dtml-with><dtml-except></dtml-try></td>
   </tr>
   </table>
  </div>
@@ -144,18 +124,12 @@
    function workflowNodesDivDisplay(el) {
      var workflowNodesDiv = document.getElementById( 'workflowNodesDiv');
      if (el) {
-       var coords = {x: 0, y: 0};
-       var element = el;
-       while (element) {
-         coords.x += element.offsetLeft;
-         coords.y += element.offsetTop;
-         element = element.offsetParent;
-       }
+       var coords = getCoords(el);
        workflowNodesDiv.style.visibility = 'visible';
        workflowNodesDiv.style.display = 'block';
        workflowNodesDiv.style.position = 'absolute';
-       workflowNodesDiv.style.top = (coords['y']+el.height)+"px";
-       workflowNodesDiv.style.left = (coords['x']+el.width)+"px";
+       workflowNodesDiv.style.left = (coords.x+el.offsetWidth)+"px";
+       workflowNodesDiv.style.top = (coords.y+el.offsetHeight)+"px";
      }
      else {
        workflowNodesDiv.style.visibility = 'hidden';
@@ -191,13 +165,13 @@
 <dtml-comment>
 <!-- ######################################################################
      ###
-     ###   A C T I V I T I E S
+     ###   ACTIVITIES
      ###
      ######################################################################
 -->
 </dtml-comment>
 
-<dtml-if "REQUEST.get('id','') == '' or REQUEST.get('id','') in getActivitiesIds()"> 
+<dtml-if "REQUEST.get('id','') == '' or REQUEST.get('id','') in getActivityIds()"> 
 
  <form name="acForm" action="manage_changeWfActivities" method="post" onsubmit="return onAcFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
  <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -207,7 +181,7 @@
    <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
    
    <dtml-if "REQUEST.get('id','')==''">
-    <dtml-in "getActivitiesIds()">
+    <dtml-in "getActivityIds()">
      <dtml-let activityId=sequence-item itm="getActivity(activityId)">
       <dtml-if sequence-start>
         <tr>
@@ -395,13 +369,13 @@
 <dtml-comment>
 <!-- ######################################################################
      ###
-     ###   T R A N S I T I O N S
+     ###   TRANSITIONS
      ###
      ######################################################################
 -->
 </dtml-comment>
 
-<dtml-if "len(getActivitiesIds()) + len(getTransitionsIds()) > 0 and (REQUEST.get('id','') == '' or REQUEST.get('id','') in getTransitionsIds())"> 
+<dtml-if "len(getActivityIds()) + len(getTransitionIds()) > 0 and (REQUEST.get('id','') == '' or REQUEST.get('id','') in getTransitionIds())"> 
 
  <dtml-call "REQUEST.set('wfItemOptpl',[])">
  <dtml-in "getActivities()">
@@ -649,7 +623,7 @@
 -->
 </dtml-comment>
 
-<dtml-if "len(getActivitiesIds()) > 0 and len(getTransitionsIds()) > 0 and REQUEST.get('id','') == ''"> 
+<dtml-if "len(getActivityIds()) > 0 and len(getTransitionIds()) > 0 and REQUEST.get('id','') == ''"> 
 
 <tr>
  <td>

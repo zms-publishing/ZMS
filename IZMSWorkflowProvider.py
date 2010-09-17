@@ -31,7 +31,7 @@ class IZMSWorkflowProvider(Interface):
     @rtype: C{list}
     """
 
-  def getActivitiesIds(self):
+  def getActivityIds(self):
     """
     @rtype: C{list}
     """

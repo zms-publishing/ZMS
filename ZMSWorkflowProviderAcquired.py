@@ -86,8 +86,8 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActitiesIds()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def getActivitiesIds(self):
-      return self.getPortalMaster().workflow_manager.getActivitiesIds()
+    def getActivityIds(self):
+      return self.getPortalMaster().workflow_manager.getActivityIds()
   
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActivity()

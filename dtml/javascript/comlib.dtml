@@ -128,6 +128,19 @@ function getRelativeUrl(path, url) {
 }
 
 // #############################################################################
+// ### getCoords
+// #############################################################################
+function getCoords(theElement) {
+  var coords = {x: 0, y: 0};
+  var element = theElement;
+  while (element) {
+    coords.x += element.offsetLeft;
+    coords.y += element.offsetTop;
+    element = element.offsetParent;
+  }
+  return coords;
+
+// #############################################################################
 // ### scrollToElement
 // ### @see http://radio.javaranch.com/pascarello/2005/01/09/1105293729000.html
 // #############################################################################
@@ -728,15 +741,9 @@ function calendarBtnClick (fmName, elName)
   zmiCalDiv.style.display = 'block';
   zmiCalDiv.style.position = 'absolute';
   var el = document.getElementById(elName);
-  var coords = {x: 0, y: 0};
-  var element = el;
-  while (element) {
-    coords.x += element.offsetLeft;
-    coords.y += element.offsetTop;
-    element = element.offsetParent;
-  }
-  zmiCalDiv.style.top = (coords['y']+el.offsetHeight)+"px";
-  zmiCalDiv.style.left = (coords['x']+el.offsetWidth)+"px";
+  var coords = getCoords(el);
+  zmiCalDiv.style.left = (coords.x+el.offsetWidth)+"px";
+  zmiCalDiv.style.top = (coords.y+el.offsetHeight)+"px";
   var html = '';
   html += '<div id=\"zmiCalLastMon\"><a href=\"#\" onclick=\"zmiCalLastMon(); return false;\" class=\"zmiCalHead\">&laquo;</a>&nbsp;</div>';
   html += "<div id=\"zmiCalMon\" style=\"text-align:center;width:70px;\"></div>";

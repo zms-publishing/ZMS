@@ -84,9 +84,9 @@ class ZMSWorkflowActivitiesManager:
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  ZMSWorkflowActivitiesManager.getActivitiesIds
+  ZMSWorkflowActivitiesManager.getActivityIds
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def getActivitiesIds(self):
+  def getActivityIds(self):
     obs = self.getActivities()
     return map(lambda x: x['id'], obs) 
 
@@ -106,7 +106,7 @@ class ZMSWorkflowActivitiesManager:
   ZMSWorkflowActivitiesManager.getActivityDetails
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getActivityDetails(self, id):
-    ids = self.getActivitiesIds()
+    ids = self.getActivityIds()
     froms = []
     tos = []
     for transition in self.getTransitions():

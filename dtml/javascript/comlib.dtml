@@ -139,6 +139,7 @@ function getCoords(theElement) {
     element = element.offsetParent;
   }
   return coords;
+}
 
 // #############################################################################
 // ### scrollToElement

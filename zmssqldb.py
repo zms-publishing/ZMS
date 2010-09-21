@@ -102,7 +102,7 @@ class ZMSSqlDb(ZMSObject):
         'manage','manage_main','manage_workspace',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_ajaxFilteredChildActions',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_ajaxQuery', 'manage_exportexcel',

@@ -237,7 +237,7 @@ class ZMSWorkflowProvider(
       if len(filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File'])))==0:
         self.manage_addFile(id='protocol.txt',file='',title='')
       file = filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File']))[0]
-      file.manage_edit(title=file.title,data=file.data+'\n'+entry)
+      file.manage_edit(file.title,file.data+'\n'+entry)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.manage_changeWorkflow:

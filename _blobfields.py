@@ -34,6 +34,7 @@ from mimetools import choose_boundary
 from types import StringTypes
 import copy
 import urllib
+import warnings
 # Product Imports.
 import _fileutil
 import _globals
@@ -808,7 +809,7 @@ class MyBlob:
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getDataSizeStr: 
+    MyBlob.getDataSizeStr:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getDataSizeStr__roles__ = None
     def getDataSizeStr(self):
@@ -817,6 +818,10 @@ class MyBlob:
       @rtype: C{string}
       @deprecated: Use ZMSGlobals.getDataSizeStr(len) instead!
       """
+      warnings.warn('Using MyBlob.getDataSizeStr() is deprecated.'
+                   ' Use ZMSGlobals.getDataSizeStr(len) instead.',
+                     DeprecationWarning, 
+                     stacklevel=2)
       return _fileutil.getDataSizeStr(self.get_size())
 
 
@@ -842,6 +847,10 @@ class MyBlob:
       @rtype: C{string}
       @deprecated: Use ZMSGlobals.getMimeTypeIconSrc(mt) instead!
       """
+      warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'
+                   ' Use ZMSGlobals.getMimeTypeIconSrc(mt) instead.',
+                     DeprecationWarning, 
+                     stacklevel=2)
       return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 

@@ -23,6 +23,7 @@
 
 # Imports.
 from App.special_dtml import HTMLFile
+import warnings
 # Product Imports.
 import _globals
 import _zreferableitem
@@ -63,21 +64,30 @@ class DeprecatedAPI:
   #  DeprecatedAPI.getTitleimage
   # ----------------------------------------------------------------------------
   def getTitleimage( self, REQUEST): 
-    print "[%s.getTitleimage at %s]: @deprecated: returns \"getObjProperty('titleimage',REQUEST)\" for compatibility reasons!"%(self.meta_id,self.absolute_url())
+    warnings.warn('Using <%s @ %s>.getTitleimage(REQUEST) is deprecated.'
+                 ' Use getObjProperty(\'titleimage\',REQUEST) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
     return self.getObjProperty('titleimage',REQUEST) 
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.getImage
   # ----------------------------------------------------------------------------
   def getImage(self,REQUEST):
-    print "[%s.getImage at %s]: @deprecated: returns \"getObjProperty('img',REQUEST)\" for compatibility reasons!"%(self.meta_id,self.absolute_url())
+    warnings.warn('Using <%s @ %s>.getImage(REQUEST) is deprecated.'
+                 ' Use getObjProperty(\'img\',REQUEST) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
     return self.getObjProperty('img',REQUEST)
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.getFile
   # ----------------------------------------------------------------------------
   def getFile(self,REQUEST):
-    print "[getFile]: @deprecated: returns \"getObjProperty('file',REQUEST)\" for compatibility reasons!"
+    warnings.warn('Using <%s @ %s>.getFile(REQUEST) is deprecated.'
+                 ' Use getObjProperty(\'file\',REQUEST) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
     return self.getObjProperty('file',REQUEST)
 
   # ----------------------------------------------------------------------------

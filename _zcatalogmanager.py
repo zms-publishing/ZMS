@@ -22,10 +22,10 @@
 ################################################################################
 
 # Imports.
-import new
+from Products.ZCatalog import ZCatalog, CatalogAwareness
+from zope.interface import implements
 import re
 import sys
-from Products.ZCatalog import ZCatalog, CatalogAwareness
 # Product Imports.
 import _globals
 
@@ -96,28 +96,28 @@ def search_quote(s, maxlen=255, tag='&middot;'):
 def addLexicon( self, cat):
   
   #-- Remove Lexicon
-  ids = cat.objectIds( ['ZCTextIndex Lexicon'])
+  ids = cat.objectIds( ['ZCTextIndex Lexicon','ZCTextIndex Unicode Lexicon'])
   if len( ids) > 0:
     cat.manage_delObjects( ids)
   
   #-- Add Lexicon
   index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
   if index_type == 'ZCTextIndex':
-    elem = []
+    elements = []
     wordSplitter = Empty()
     wordSplitter.group = 'Word Splitter'
     wordSplitter.name = 'HTML aware splitter'
+    elements.append(wordSplitter)
     caseNormalizer = Empty()
     caseNormalizer.group = 'Case Normalizer'
     caseNormalizer.name = 'Case Normalizer'
+    elements.append(caseNormalizer)
     stopWords = Empty()
     stopWords.group = 'Stop Words'
     stopWords.name = 'Remove listed and single char words'
-    elem.append(wordSplitter)
-    elem.append(caseNormalizer)
-    elem.append(stopWords)
+    elements.append(stopWords)
     try:
-      cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elem)
+      cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
     except:
       pass
 
@@ -141,46 +141,48 @@ def getCatalog(self, lang):
 ###
 ################################################################################
 ################################################################################
-class ZCatalogItem(CatalogAwareness.CatalogAware): 
+class ZCatalogItem(CatalogAwareness.CatalogAware):
 
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.txng_get_key:
-    # --------------------------------------------------------------------------
-    def txng_get_key(self):
-      keys = []
-      for key in self.getObjAttrs().keys():
-        obj_attr = self.getObjAttr(key)
-        datatype = obj_attr['datatype_key']
-        if datatype == _globals.DT_FILE:
-          keys.append( key)
-        if len( keys) == 1:
-          return keys[ 0]
-      return None
+    """
+    TextIndexNG3
+    """
+    try:
       
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.txng_get:
-    #
-    #  This code provides a hook called txng_get(), when you add a TextIndexNG 
-    #  index on SearchableText the indexer 'senses' that you provided your 
-    #  content with the hook and automagically uses it.
-    # --------------------------------------------------------------------------
-    def txng_get(self, attr=('SearchableText',)):
-      """Special searchable text source for text indexng2"""
-      key = self.txng_get_key()
-      if key is not None:
-        lang = attr
-        if type( lang) is tuple or type( lang) is list:
-          lang = lang[0]
-        lang = lang[lang.rfind('_')+1:]
-        req = {'lang' : lang}
-        file = self.getObjProperty( key, req)
-        if file is not None:
-          source = file.getData()
-          mimetype = file.getContentType()
-          encoding = 'utf-8'
-          return (source, mimetype, encoding)
-
+      from textindexng.interfaces import IIndexableContent
+      implements(IIndexableContent)
+      
+      def indexableContent(self, fields):
+        from textindexng.content import IndexContentCollector as ICC
+        icc = ICC()
+        default_language = self.REQUEST.get('lang',self.getPrimaryLanguage())
+        default_encoding = 'utf-8'
+        
+        for f in fields:
+          v = getattr(self, f, None)
+          if not v: continue
+          
+          if f in ['zcat_data']:
+            
+            # unpack result triple
+            source, mimetype, encoding = v()
+            icc.addBinary(f, source, mimetype, encoding, default_language)
+            
+          elif f in ['zcat_text']:
+            v = v()
+            
+            # accept only a string/unicode string
+            if not isinstance(v, basestring):
+                raise TypeError('Value returned for field "%s" must be string or unicode (got: %s, %s)' % (f, repr(v), type(v)))
+            
+            if isinstance(v, str):
+                v = unicode(v, default_encoding, 'ignore')
+            
+            icc.addContent(f, v, default_language)
+        
+        return icc
+      
+    except:
+      pass
 
     # --------------------------------------------------------------------------
     #  ZCatalogItem.search_quote:
@@ -259,14 +261,14 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def catalogData(self, REQUEST):
       source = ''
-      key = self.txng_get_key()
+      key = self.zcat_data_key()
       if key is not None:
         file = self.getObjProperty( key, REQUEST)
         if file is not None:
           source = file.getData()
           mimetype = file.getContentType()
           encoding = 'utf-8'
-      return source
+      return source, mimetype, encoding
 
 
     ############################################################################
@@ -276,13 +278,22 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     ############################################################################
 
     # --------------------------------------------------------------------------
+    #  ZCatalogItem.zcat_data_key:
+    # --------------------------------------------------------------------------
+    def zcat_data_key(self):
+      ids = self.getMetaobjAttrIds(self.meta_id,types=[_globals.DT_FILE])
+      if len(ids) == 1:
+        return ids[ 0]
+      return None
+
+    # --------------------------------------------------------------------------
     #  ZCatalogItem.zcat_data:
     # --------------------------------------------------------------------------
     def zcat_data( self, lang=None):
       if lang is None:
         lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      zcat = self.catalogData( {'lang':lang})
-      return zcat
+      source, mimetype, encoding = self.catalogData( {'lang':lang})
+      return source, mimetype, encoding
 
     # --------------------------------------------------------------------------
     #  ZCatalogItem.zcat_text:
@@ -342,7 +353,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       if lang is None:
         lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
-      txng_key = self.txng_get_key()
+      txng_key = self.zcat_data_key()
       txng_value = None
       if txng_key is not None:
         txng_value = self.getObjProperty( txng_key, req)
@@ -385,7 +396,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     def isCatalogItem(self):
       b = False
       b = b or (self.isPage() or self.meta_id == 'ZMSFile')
-      b = b or (self.getConfProperty('ZCatalog.TextIndexNG',0)==1 and self.txng_get_key() is not None)
+      b = b or (self.getConfProperty('ZCatalog.TextIndexNG',0)==1 and self.zcat_data_key() is not None)
       return b
 
 
@@ -510,69 +521,91 @@ class ZCatalogManager:
       message += index_name
       # Text (Index & Column)
       index_name = 'zcat_text'
-      setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_text.func_code, {}, index_name, (lang,)))
-      index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-      index_extras = None
-      if index_type == 'ZCTextIndex':
-        index_extras = Empty()
-        index_extras.doc_attr = index_name
-        index_extras.index_type = 'Okapi BM25 Rank'
-        index_extras.lexicon_id = 'Lexicon'
       zcatalog.manage_addColumn(index_name)
-      zcatalog.manage_addIndex(index_name,index_type,index_extras)
-      message += ", "+index_name
+      index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
+      extra = None
+      if index_type == 'ZCTextIndex':
+        extra = Empty()
+        extra.doc_attr = index_name
+        extra.index_type = 'Okapi BM25 Rank'
+        extra.lexicon_id = 'Lexicon'
+      else:
+        extra = {}
+        extra['default_encoding'] = 'utf-8'
+        extra['indexed_fields'] = index_name
+        extra['fields'] = [index_name]
+        extra['near_distance'] = 5
+        extra['splitter_casefolding'] = 1
+        extra['splitter_max_len'] = 64
+        extra['splitter_separators'] = '.+-_@'
+        extra['splitter_single_chars'] = 0
+        if index_type == 'TextIndexNG2':
+          extra['use_converters'] = 1
+          extra['use_normalizer'] = ''
+          # setattr(index_extra,'use_stemmer','')
+          extra['use_stopwords'] = ''
+        elif index_type == 'TextIndexNG3':
+          extra['languages'] = (lang,)
+          extra['query_parser'] = 'txng.parsers.en'
+          extra['index_unknown_languages'] = True
+          extra['dedicated_storage'] = True
+          extra['use_stopwords'] = False
+          extra['use_normalizer'] = False
+          extra['use_converters'] = True
+          extra['use_stemmer'] = False
+      zcatalog.manage_addIndex(index_name,index_type,extra)
+      message += ", "+index_name+"("+index_type+")"
       # Date (Column)
       index_name = 'zcat_date'
-      setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_date.func_code, {}, index_name, (lang,)))
       zcatalog.manage_addColumn(index_name)
       message += ", "+index_name
       # Title (Column)
       index_name = 'zcat_title'
-      setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_title.func_code, {}, index_name, (lang,)))
       zcatalog.manage_addColumn(index_name)
       message += ", "+index_name
       # Summary (Column)
       index_name = 'zcat_summary'
-      setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_summary.func_code, {}, index_name, (lang,)))
       zcatalog.manage_addColumn(index_name)
       message += ", "+index_name
       # Url (Column)
       index_name = 'zcat_url'
-      setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_url.func_code, {}, index_name, (lang,)))
       zcatalog.manage_addColumn(index_name)
       message += ", "+index_name
       # Data (Index)
       index_type = None
       for k in [ 'ZCTextIndex', 'TextIndexNG2', 'TextIndexNG3']:
-        if k in index_types: index_type = k
+        if k in index_types:
+          index_type = k
       if self.getConfProperty('ZCatalog.TextIndexNG',0)==1:
         index_name = 'zcat_data'
-        setattr( ZCatalogItem, index_name, new.function(ZCatalogItem.zcat_data.func_code, {}, index_name, (lang,)))
-        index_extras = Empty()
+        extra = {}
         if index_type == 'ZCTextIndex':
-          index_extras.doc_attr = index_name
-          index_extras.index_type = 'Okapi BM25 Rank'
-          index_extras.lexicon_id = 'Lexicon'
+          extra['doc_attr'] = index_name
+          extra['index_type'] = 'Okapi BM25 Rank'
+          extra['lexicon_id'] = 'Lexicon'
         else:
-          index_extras.default_encoding = 'utf-8'
-          index_extras.indexed_fields = index_name
-          index_extras.fields = ['%s_%s'%(index_name,lang)]
-          index_extras.near_distance = 5
-          index_extras.splitter_casefolding = 1
-          index_extras.splitter_max_len = 64
-          index_extras.splitter_separators = '.+-_@'
-          index_extras.splitter_single_chars = 0
+          extra['default_encoding'] = 'utf-8'
+          extra['indexed_fields'] = index_name
+          extra['fields'] = [index_name]
+          extra['near_distance'] = 5
+          extra['splitter_casefolding'] = 1
+          extra['splitter_max_len'] = 64
+          extra['splitter_separators'] = '.+-_@'
+          extra['splitter_single_chars'] = 0
           if index_type == 'TextIndexNG2':
-            setattr(index_extras,'use_converters',1)
-            setattr(index_extras,'use_normalizer','')
-            # setattr(index_extras,'use_stemmer','')
-            setattr(index_extras,'use_stopwords','')
+            extra['use_converters'] = 1
+            extra['use_normalizer'] = ''
+            extra['use_stopwords'] = ''
           elif index_type == 'TextIndexNG3':
-            setattr(index_extras,'use_converters',True)
-            setattr(index_extras,'use_normalizer',False)
-            setattr(index_extras,'use_stemmer',False)
-            setattr(index_extras,'use_stopwords',False)
-        zcatalog.manage_addIndex(index_name,index_type,index_extras)
+            extra['languages'] = (lang,)
+            extra['query_parser'] = 'txng.parsers.en'
+            extra['index_unknown_languages'] = True
+            extra['dedicated_storage'] = True
+            extra['use_stopwords'] = False
+            extra['use_normalizer'] = False
+            extra['use_converters'] = True
+            extra['use_stemmer'] = False
+        zcatalog.manage_addIndex(index_name,index_type,extra)
         message += ", "+index_name+"("+index_type+")"
       
       #-- Return message.
@@ -591,7 +624,7 @@ class ZCatalogManager:
           if i % 2 == 0:
             for raw_item in si.split(' '):
               raw_item = raw_item.strip()
-              if len(raw_item) > 1:
+              if len(raw_item) > 1 and not raw_item.upper() in ['AND','OR']:
                 raw_item = raw_item.replace('-','* AND *')
                 if not only_words and not raw_item.endswith('*'):
                   raw_item += '*'

@@ -1,6 +1,34 @@
 <script type="text/javascript">
 <!--//
 
+////////////////////////////////////////////////////////////////////////////////
+///// Resize textareas
+////////////////////////////////////////////////////////////////////////////////
+
+var taMinHeight = null;
+
+$(function() {
+  onResize();
+  $(window).resize(function() {
+    onResize();
+  });
+});
+
+function onResize() {
+  var ta = $('textarea:not([name^=alternate_])');
+  if (ta.length==1) {
+    if (taMinHeight==null) {
+      taMinHeight = $(ta).attr('offsetHeight') / 2;
+    }
+    var innerDims = getInnerDimensions();
+    $(ta).css('height',Math.max($(ta).attr('offsetHeight')+(innerDims.height-document.body.offsetHeight)-10,taMinHeight));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+///// Check locks
+////////////////////////////////////////////////////////////////////////////////
+
 var checkLock = true;
 var divFormSubmitHtml = null;
 
@@ -68,6 +96,8 @@ function onFormSubmitCheckLock(fmName) {
     }
   });
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 function onFormSubmit(fmName) {
   if (self.btnClicked == "break") {

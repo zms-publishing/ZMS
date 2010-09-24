@@ -610,11 +610,12 @@ class ZMSContainerObject(
           if can_insert:
             if meta_id in self.dGlobalAttrs.keys():
               value = 'manage_addProduct/zms/%s'%self.dGlobalAttrs[meta_id]['constructor']
+            elif metaObj['type']=='ZMSModule':
+              value = 'manage_addZMSModule'
+            elif objAttr['type'] in meta_ids and repetitive and objAttr.get('custom'):
+              value = 'manage_addZMSCustomDefault'
             else:
-              if metaObj['type']=='ZMSModule':
-                value = 'manage_addZMSModule'
-              else:
-                value = 'manage_addProduct/zms/manage_addzmscustomform'
+              value = 'manage_addProduct/zms/manage_addzmscustomform'
             action = (self.display_type(REQUEST,meta_id),value)
             if action not in actions:
               actions.append( action)
@@ -990,6 +991,22 @@ class ZMSContainerObject(
     #   Module
     #
     ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSContainerObject.manage_addZMSCustomDefault:
+    # --------------------------------------------------------------------------
+    def manage_addZMSCustomDefault(self, lang, id_prefix, _sort_id, REQUEST, RESPONSE):
+      """
+      Add default.
+      """
+      attr = self.getMetaobjAttr( self.meta_id, id_prefix)
+      zexp = attr[ 'custom']
+      new_id = self.getNewId(id_prefix)
+      _fileutil.import_zexp(self,zexp,new_id,id_prefix,_sort_id)
+      
+      # Return with message.
+      message = self.getZMILangStr('MSG_INSERTED')%attr['name']
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),new_id,lang,urllib.quote(message)))
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.manage_addZMSModule:

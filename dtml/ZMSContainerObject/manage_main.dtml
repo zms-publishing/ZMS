@@ -167,7 +167,7 @@
 <dtml-comment>
 <!-- ##### renderShort ##### -->
 </dtml-comment>
-<td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"><dtml-if "isPage()"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorWhite</dtml-if><dtml-else> zmiNeutralColorLight1</dtml-if>"><div class="zmiRenderShort"><dtml-var "renderShort(REQUEST)"></div></td>
+<td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"><dtml-if "isPage()"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorWhite</dtml-if><dtml-else> zmiNeutralColorLight1</dtml-if>"><dtml-var "renderShort(REQUEST)"></td>
 
 <dtml-comment>
 <!-- ##### change ##### -->

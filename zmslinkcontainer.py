@@ -87,25 +87,25 @@ class ZMSLinkContainer(ZMSContainerObject):
     # Management Options.
     # -------------------
     manage_options = ( 
-    {'label': 'TAB_EDIT',       'action': 'manage_main'},
-    {'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'},
-    {'label': 'TAB_PREVIEW',    'action': 'preview_html'}, # empty string defaults to index_html
-    )
+	{'label': 'TAB_EDIT',       'action': 'manage_main'},
+	{'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'},
+	{'label': 'TAB_PREVIEW',    'action': 'preview_html'}, # empty string defaults to index_html
+	)
 
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-        'manage','manage_main','manage_workspace',
-        'manage_deleteObjs','manage_undoObjs',
-        'manage_properties','manage_changeProperties',
-        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-        'manage_wfTransition', 'manage_wfTransitionFinalize',
-        'manage_ajaxFilteredChildActions',
-        'manage_userForm','manage_user',
-        )
+		'manage','manage_main','manage_workspace',
+		'manage_deleteObjs','manage_undoObjs',
+		'manage_properties','manage_changeProperties',
+		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
+		'manage_wfTransition', 'manage_wfTransitionFinalize',
+		'manage_ajaxFilteredChildActions',
+		'manage_userForm','manage_user',
+		)
     __ac_permissions__=(
-        ('ZMS Author', __authorPermissions__),
-        )
+		('ZMS Author', __authorPermissions__),
+		)
 
     # Management Interface.
     # ---------------------
@@ -185,22 +185,19 @@ class ZMSLinkContainer(ZMSContainerObject):
 
     # --------------------------------------------------------------------------
     #  ZMSLinkContainer._getBodyContent:
-    #
-    #  HTML presentation of File.
     # --------------------------------------------------------------------------
     def _getBodyContent(self, REQUEST):
-      # Return body-content.
       align = self.getObjProperty('align',REQUEST)
-      subclass = ''
+      css = []
       if align in [ 'LEFT', 'RIGHT']:
-        subclass = ' ' + align.lower()
+        css.append(align.lower())
       elif align in [ 'LEFT_FLOAT']:
-        subclass = ' floatleft'
+        css.append('floatleft')
       elif align in [ 'RIGHT_FLOAT']:
-        subclass = ' floatright'
-      if len(subclass) > 0:
+        css.append('floatright')
+      if css:
         bodyContent = self.renderShort(REQUEST)
-        return '<div class="%s%s" id="%s">%s</div>'%( self.meta_type, subclass, self.id, bodyContent)
+        return '<div class="%s" id="%s">%s</div>'%(' '.join(css), self.id, bodyContent)
       return ''
 
 
@@ -211,14 +208,22 @@ class ZMSLinkContainer(ZMSContainerObject):
       """
       Renders short presentation of link-container.
       """
-      l = []
-      l.append('<div class="%s">\n'%self.meta_type)
-      obs = self.getChildNodes(REQUEST,['ZMSLinkElement'])
-      obs = filter(lambda x: x.isVisible(REQUEST), obs)
-      for ob in obs:
-        l.append(ob.renderShort(REQUEST))
-      l.append('</div>\n')
-      return ''.join(l)
+      html = ''
+      try:
+        ids = ['zmiRenderShort',self.id]
+        css = ['zmiRenderShort']
+        html = ''.join(
+          map(lambda x: x.renderShort(REQUEST), 
+            filter(lambda x: x.isVisible(REQUEST), 
+              self.getChildNodes(REQUEST,['ZMSLinkElement']))))
+        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
+        # Process html <form>-tags.
+        html = _globals.form_quote(html,REQUEST)
+      except:
+        html = _globals.writeError(self,"[renderShort]")
+        html = '<br/>'.join(html.split('\n'))
+      # Return <html>.
+      return html
 
 
     ############################################################################

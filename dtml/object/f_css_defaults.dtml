@@ -289,7 +289,7 @@ div.ZMSObject.deleted {
 	color: #CCC;
 	text-decoration: line-through;
 }
-.ZMSObject.preview.highlight {
+.preview.highlight {
 	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
 	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#E2E3DE')">;
 	cursor:pointer;

@@ -1347,7 +1347,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       return ''.join(l)
 
     def _getBodyContent(self, REQUEST):
-      return self._getBodyContent2( REQUEST)
+      html = self._getBodyContent2( REQUEST)
+      if  _globals.isPreviewRequest(REQUEST) and self.getConfProperty('ZMS.preview.contentEditable',1)==1:
+        ids = ['contentEditable',self.id]
+        css = ['contentEditable']
+        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
+      return html
 
     def getBodyContent(self, REQUEST, forced=False):
       """
@@ -1375,10 +1380,14 @@ class ZMSObject(ZMSItem.ZMSItem,
       """
       html = ''
       try:
+        ids = ['zmiRenderShort',self.id]
+        css = ['zmiRenderShort']
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          html += '<div class="form-label">%s</div>'%self.getTitlealt(REQUEST)
+          css.append('form-label')
+          html = self.getTitlealt(REQUEST)
         else:
-          html += self._getBodyContent(REQUEST)
+          html = self._getBodyContent(REQUEST)
+        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:

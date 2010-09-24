@@ -11,27 +11,51 @@ $(function(){
 				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
 	$.plugin('zms').get('body',function(){
-	  if (self.location.href.indexOf('preview=preview')>0) {
-	    $('.ZMSObject')
-          .mouseover( function(evt) {
-            $(this).addClass('preview').addClass('highlight'); 
-          })
-          .mouseout( function(evt) {
-            $(this).removeClass('preview').removeClass('highlight'); 
-          })
-          .dblclick( function(evt) {
-            var id = $(this).attr('id');
-            var href = self.location.href;
-            if (href.indexOf('?')>0) {
-              href = href.substr(0,href.indexOf('?'));
+		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
+			pluginFancybox('.contentEditable',function() {});
+			$('.contentEditable,.zmiRenderShort')
+				.mouseover( function(evt) {
+					$(this).addClass('preview').addClass('highlight'); 
+				})
+				.mouseout( function(evt) {
+					$(this).removeClass('preview').removeClass('highlight'); 
+				})
+				.dblclick( function(evt) {
+					evt.stopPropagation();
+					var href = self.location.href;
+					if (href.indexOf('?')>0) {
+						href = href.substr(0,href.indexOf('?'));
+					}
+					if (href.lastIndexOf('/')>0) {
+						href = href.substr(0,href.lastIndexOf('/'));
+					}
+            var parents = $(this).parents('.contentEditable,.zmiRenderShort');
+            for ( var i = 0; i < parents.length; i++) {
+              var pid = $(parents[i]).attr('id');
+              pid = pid.substr(pid.indexOf('_')+1);
+              href += '/'+pid;
             }
-            if (href.lastIndexOf('/')>0) {
-              href = href.substr(0,href.lastIndexOf('/'));
+            var pid = $(this).attr('id');
+            pid = pid.substr(pid.indexOf('_')+1);
+            href += '/'+pid;
+            href += '/manage_main';
+            if (self.location.href.indexOf('/manage')>0) {
+              self.location.href = href;
             }
-            self.location.href = href+'/'+id+'/manage_main'; 
-          })
-          .attr( "title", "Double-click to edit!");
-	  }
+            else {
+              href += '_iframe';
+              $.fancybox({
+                'autoDimensions':false,
+                'href':href,
+                'transitionIn':'fade',
+                'transitionOut':'fade',
+                'type':'iframe',
+                'width':819
+						});
+					}
+				})
+			.attr( "title", "Double-click to edit!");
+		}
 	});
 });
 

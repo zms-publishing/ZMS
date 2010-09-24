@@ -156,6 +156,7 @@ class ZMSCustom(ZMSContainerObject):
     # ----------
     manage_container = HTMLFile('dtml/ZMSContainerObject/manage_main', globals())
     manage_main = manage_properties = HTMLFile('dtml/ZMSObject/manage_main', globals())
+    manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals())
     metaobj_record_select = HTMLFile('dtml/ZMSRecordSet/record_select', globals())
     metaobj_record_update = HTMLFile('dtml/ZMSRecordSet/record_update', globals())
     metaobj_record_insert = HTMLFile('dtml/ZMSRecordSet/record_insert', globals())

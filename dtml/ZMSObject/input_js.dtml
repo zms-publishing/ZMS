@@ -17,11 +17,16 @@ $(function() {
 function onResize() {
   var ta = $('textarea:not([name^=alternate_])');
   if (ta.length==1) {
+    if ($(ta.parents('div')[0]).css('display')=='none') {
+      ta = $('object[name^=editor_'+ta.attr('name')+']');
+    }
     if (taMinHeight==null) {
       taMinHeight = $(ta).attr('offsetHeight') / 2;
     }
     var innerDims = getInnerDimensions();
-    $(ta).css('height',Math.max($(ta).attr('offsetHeight')+(innerDims.height-document.body.offsetHeight)-10,taMinHeight));
+    var bodyDims = getBodyDimensions();
+    var newHeight = Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
+    ta.css('height',newHeight);
   }
 }
 

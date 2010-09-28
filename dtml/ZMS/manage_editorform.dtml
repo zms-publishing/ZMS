@@ -3,7 +3,6 @@
 </head>
 
 <dtml-if manage_editorFrame>
- <body class="zmi" onload="onResizeBody()" onresize="onResizeBody()">
  <script language="JavaScript">
  <!--//
 
@@ -144,16 +143,36 @@
      }
    }
 
-   /**
-    * <html-body>: onResize-Event.
-    */
-   function onResizeBody() {
-     document.forms['form0'].elements['editor'].style.width = (document.body.clientWidth * 90 / 100) + "px"; // 90%;
-     document.forms['form0'].elements['editor'].style.height = (document.body.clientHeight * 90 / 100) + "px"; // 90%;
-   }
-   
- //-->
- </script>
+////////////////////////////////////////////////////////////////////////////////
+///// Resize textareas
+////////////////////////////////////////////////////////////////////////////////
+
+var taMinHeight = null;
+
+$(function() {
+  onResize();
+  $(window).resize(function() {
+    onResize();
+  });
+});
+
+function onResize() {
+  var ta = $('textarea:not([name^=alternate_])');
+  if (ta.length==1) {
+    if (taMinHeight==null) {
+      taMinHeight = $(ta).attr('offsetHeight') / 2;
+    }
+    var innerDims = getInnerDimensions();
+    var bodyDims = getBodyDimensions();
+    $(ta).css('height',Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight));
+  }
+}
+
+//-->
+</script>
+
+ <body class="zmi">
+ <div>
  <table cellpadding="0" cellspacing="0" border="0" width="100%">
  <tr valign="middle" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;">
   <td align="left" class="form-small" style="color:#ffffff;" nowrap="nowrap"><dtml-var headline></td>
@@ -176,6 +195,7 @@
    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
   </div>
   </form>
+ </div>
  </div>
  </body>
 

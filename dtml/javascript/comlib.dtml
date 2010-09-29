@@ -601,14 +601,13 @@ function getBodyDimensions() {
   }
 }
 
-function getInnerDimensions()
-{
-  if (window.innerWidth) {
+function getInnerDimensions() {
+  if (window.innerWidth) { // Mozilla/Firefox
     return {width: window.innerWidth, height: window.innerHeight};
-  } else if (document.body && document.body.offsetWidth) {
-   // important: for IE set body width = 100%
-    $('body').css({'width':'100%','height':'100%'});
-    return {width: document.body.offsetWidth, height: document.body.offsetHeight};
+  } else if (document.documentElement && document.documentElement.clientWidth) { // IE6/IE8
+    return {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight};
+  } else if (document.body && document.body.clientWidth) {
+    return {width: document.body.clientWidth, height: document.body.clientHeight};
   } else {
     return {width: 0, height: 0};
   }

@@ -24,10 +24,11 @@
 
 # Imports.
 from __future__ import nested_scopes
-from zope.interface import implements
 from App.special_dtml import HTMLFile
 import copy
+import zope.interface
 # Product Imports.
+import IZMSConfigurationProvider
 import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager
 import ZMSItem
 
@@ -43,7 +44,9 @@ class ZMSFormatProvider(
         ZMSItem.ZMSItem,
         ZMSTextformatManager.ZMSTextformatManager,
         ZMSCharformatManager.ZMSCharformatManager):
-    implements(IZMSFormatProvider.IZMSFormatProvider)
+    zope.interface.implements(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSFormatProvider.IZMSFormatProvider)
 
     # Properties.
     # -----------
@@ -56,10 +59,11 @@ class ZMSFormatProvider(
     def manage_options(self):
       return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options))
 
-    manage_sub_options = (
-	{'label': 'TAB_TEXTFORMATS','action': 'manage_textformats'},
-	{'label': 'TAB_CHARFORMATS','action': 'manage_charformats'},
-	)
+    def manage_sub_options(self):
+      return (
+        {'label': 'TAB_TEXTFORMATS','action': 'manage_textformats'},
+        {'label': 'TAB_CHARFORMATS','action': 'manage_charformats'},
+        )
 
     # Management Interface.
     # ---------------------

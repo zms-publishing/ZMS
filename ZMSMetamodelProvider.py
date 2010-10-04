@@ -24,10 +24,11 @@
 
 # Imports.
 from __future__ import nested_scopes
-from zope.interface import implements
 from App.special_dtml import HTMLFile
 import copy
+import zope.interface
 # Product Imports.
+import IZMSConfigurationProvider
 import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager
 import ZMSItem
 
@@ -43,7 +44,9 @@ class ZMSMetamodelProvider(
         ZMSItem.ZMSItem,
         ZMSMetaobjManager.ZMSMetaobjManager,
         ZMSMetadictManager.ZMSMetadictManager):
-    implements(IZMSMetamodelProvider.IZMSMetamodelProvider)
+    zope.interface.implements(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSMetamodelProvider.IZMSMetamodelProvider)
 
     # Properties.
     # -----------
@@ -56,10 +59,11 @@ class ZMSMetamodelProvider(
     def manage_options(self):
       return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options))
 
-    manage_sub_options = (
-	{'label': 'TAB_METADATA','action': 'manage_metas'},
-	{'label': 'TAB_METAOBJ','action': 'manage_main'},
-	)
+    def manage_sub_options(self):
+      return (
+        {'label': 'TAB_METADATA','action': 'manage_metas'},
+        {'label': 'TAB_METAOBJ','action': 'manage_main'},
+        )
 
     # Management Interface.
     # ---------------------

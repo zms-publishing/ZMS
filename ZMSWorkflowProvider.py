@@ -22,12 +22,13 @@
 ################################################################################
 
 # Imports.
-from zope.interface import implements
 from App.special_dtml import HTMLFile
 import copy
 import time
 import urllib
+import zope.interface
 # Product Imports.
+import IZMSConfigurationProvider
 import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 import ZMSItem
 import _fileutil
@@ -109,7 +110,9 @@ class ZMSWorkflowProvider(
         ZMSItem.ZMSItem,
         ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager,
         ZMSWorkflowTransitionsManager.ZMSWorkflowTransitionsManager):
-    implements(IZMSWorkflowProvider.IZMSWorkflowProvider)
+    zope.interface.implements(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSWorkflowProvider.IZMSWorkflowProvider)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties
@@ -124,9 +127,10 @@ class ZMSWorkflowProvider(
     def manage_options(self):
       return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options))
 
-    manage_sub_options = (
-    {'label': 'TAB_WORKFLOW','action': 'manage_main'},
-    )
+    def manage_sub_options(self):
+      return (
+        {'label': 'TAB_WORKFLOW','action': 'manage_main'},
+        )
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface

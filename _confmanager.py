@@ -23,7 +23,6 @@
 
 # Imports.
 from __future__ import nested_scopes
-from zope.interface import implements
 from cStringIO import StringIO
 from App.Common import package_home
 from App.special_dtml import HTMLFile
@@ -35,7 +34,9 @@ from Products.PythonScripts import PythonScript
 import os
 import stat
 import urllib
+import zope.interface
 # Product imports.
+from IZMSConfigurationProvider import IZMSConfigurationProvider
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
 import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 import _globals
@@ -125,11 +126,11 @@ def updateConf(self, REQUEST):
 ################################################################################
 ################################################################################
 class ConfManager(
-    _multilangmanager.MultiLanguageManager,        # Languages
-    _metacmdmanager.MetacmdManager,            # Actions
-    _filtermanager.FilterManager,            # Filters (XML Im-/Export)
+    _multilangmanager.MultiLanguageManager,
+    _metacmdmanager.MetacmdManager,
+    _filtermanager.FilterManager,
     ):
-    implements(
+    zope.interface.implements(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
       IZMSFormatProvider.IZMSFormatProvider,
       IZMSSvnInterface.IZMSSvnInterface)
@@ -518,9 +519,10 @@ class ConfManager(
       l = []
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
-      for ob in self.objectValues(['ZMSMetamodelProvider','ZMSFormatProvider','ZMSWorkflowProvider']):
-        for d in ob.manage_sub_options:
-          l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
+      for ob in self.objectValues():
+        if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):
+          for d in ob.manage_sub_options():
+            l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
       l.append({'label':'TAB_METACMD','action':'manage_customizeMetacmdForm'})
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})

@@ -40,27 +40,38 @@
 </dtml-comment>
 <td id="_Manager">
 <dtml-var "f_headline(_,_,headline='Manager')">
+<dtml-let meta_types="[]">
+<dtml-in "filtered_meta_types()" mapping>
+<dtml-let si=sequence-item>
+<dtml-if "not product=='zms' and name.startswith('ZMS')">
+<dtml-call "meta_types.append(si)">
+</dtml-if>
+</dtml-let>
+</dtml-in>
+<dtml-in "['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']">
+<dtml-let meta_type=sequence-item>
+<dtml-call "meta_types.append({'name':meta_type,'action':meta_type,})">
+</dtml-let>
+</dtml-in>
 <form name="ManagerForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="Manager">
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <div class="form-small">
 <div class="zmi_col_left">ZMS base-components</div>
 <div class="zmi_col_right">
-<select class="form-small" name="meta_type" onchange="if (this.options[this.selectedIndex].value!='') document.getElementById('addMetaTypeBtn').click();">
+<select class="form-small" name="meta_type" onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 <option value="">Select type to add...</option>
-<dtml-in "['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']">
-<dtml-let meta_type=sequence-item>
-<dtml-if "len(objectValues(meta_type))==0">
-<option value="<dtml-var meta_type>"><dtml-var "getZMILangStr(meta_type)"></option>
+<dtml-in meta_types mapping>
+<dtml-if "len(objectValues(name))==0">
+<option value="<dtml-var action>"><dtml-var "getZMILangStr(name)"></option>
 </dtml-if>
-</dtml-let>
 </dtml-in>
 </select>
 <input class="form-small" type="submit" id="addMetaTypeBtn" name="btn" value="Add" />
 </div>
 </div>
 <div class="clearfloating" style="clear:both"></div>
-<dtml-in "objectValues(['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
+<dtml-in "objectValues(map(lambda x: x['name'],meta_types))">
  <div class="form-small"
   ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>"
   ><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)</a
@@ -68,6 +79,7 @@
 </dtml-in>
 <input class="form-submit" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />
 </form>
+</dtml-let>
 <br/></td>
 
 <dtml-comment>

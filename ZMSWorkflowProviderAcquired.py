@@ -38,11 +38,6 @@ class ZMSWorkflowProviderAcquired(
     meta_type = 'ZMSWorkflowProviderAcquired'
     icon = "misc_/zms/ZMSWorkflowProvider.png"
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Management Options
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage_sub_options = (
-    )
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.__init__: 

@@ -219,7 +219,8 @@ class ObjChildren:
         append = True
         try:
           for ob in self.cp_get_obs( REQUEST):
-            append = append and ob.meta_id in meta_ids
+            metaObj = ob.getMetaobj( ob.meta_id)
+            append = append and (ob.meta_id in meta_ids or 'type(%s)'%metaObj['type'] in meta_ids)
         except:
           append = False
         if append:

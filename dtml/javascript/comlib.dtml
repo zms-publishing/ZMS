@@ -217,25 +217,29 @@ function fireEvent( el, evtName) {
   }
 
   function highlight_text(text) {
-     var exp = "";
-     for (var i = 0; i < text.length; i++) {
-       var ch = text.charAt(i);
-       if ( ch != '*') {
-         exp += "(" + ch + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
-       }
-     }
-     var regexp = new RegExp( "(" + exp + ")", "g");
-     var el = document.getElementsByTagName("body")[0];
-     var content=el.innerHTML.split("<"); 
-     for(var mb=0; mb < content.length; mb++) {
-        var cell = content[mb].split(">");
-        if(cell[1] && cell[1]!="" && cell[1].basicTrim()!="") { 
-           cell[1] = cell[1].replace( regexp, "<span name=\"highlight\" class=\"highlight\">$1</span>"); 
-           content[mb]=cell.join(">");
-        }
-     }
-     content=content.join("<"); 
-     el.innerHTML=content; 
+    var exp = "";
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if ( ch != '*') {
+        exp += "(" + ch + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
+      }
+    }
+    var regexp = new RegExp( "(" + exp + ")", "g");
+    var el = $('body');
+    $('*',el)
+        .andSelf()
+        .contents()
+        .filter(function(){
+            return this.nodeType === 3;
+        })
+        .filter(function(){
+            // Only match when contains 'simple string' anywhere in the text
+            return this.nodeValue.match(regexp);
+        })
+        .each(function(){
+            // Do something with this.nodeValue
+            $(this).parent().html($(this).parent().html().replace( regexp, "<span class=\"highlight\">$1</span>"));
+        });
      var els = document.getElementsByName('highlight');
      if ( els.length>0) {
        scrollToElement(els[0]);

@@ -2770,8 +2770,7 @@ $()
 ><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=REQUEST)+'</td>')"
 ><dtml-call "custom.append('<td class=\042form-text\042>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
 ><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
-><a href="#div_table_cell_editor" id="a_table_cell_editor"></a
-><div style="visibility:hidden;display:none;"
+><div style="display:none;"
 ><div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;"
 ><dtml-call "REQUEST.set('richeditshow_callback',',function(){$.fancybox.resize();}')"
 ><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
@@ -2783,12 +2782,7 @@ $()
 ></dtml-let>
 <script>
 $(function(){
-	$.plugin('fancybox').get('a#a_table_cell_editor',function() {
-		$("a#a_table_cell_editor").fancybox({
-			modal:true,
-			scrolling:'no'
-		});
-	});
+	pluginFancybox('div#div_table_cell_editor',function() {});
 });
 </script>
 
@@ -2878,7 +2872,10 @@ function table_cell_edit(el_td)
 	</dtml-if>
 	</dtml-let>
 	// Open cell editor.
-	$("a#a_table_cell_editor").click();
+	$.fancybox({
+			href:'#div_table_cell_editor',
+			modal:true,
+			scrolling:'no'});
 	$.fancybox.resize();
 }
 
@@ -2905,7 +2902,7 @@ function table_cell_change()
 function table_cell_cancel()
 {
 	// Reset cell background.
-	var el_td = $('#content_'+ table_cell_id).parents(".contentEditable");
+	var el_td = $('#content_'+ table_cell_id).parents(".table_cell_editable");
 	el_td.css( "backgroundColor", table_cell_bgcolor);
 	table_cell_bgcolor = null;
 	// Close cell editor.
@@ -2915,8 +2912,8 @@ function table_cell_cancel()
 
 function table_cell_init()
 {
-  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".contentEditable").css( 'backgroundColor', '#FFFFE8');});
-  $("form[name=<dtml-var fmName>] .contentEditable").dblclick( function () { table_cell_edit($(this));});
+  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").css( 'backgroundColor', '#FFFFE8');});
+  $("form[name=<dtml-var fmName>] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
 }
 
 function actionBtnClick(el, fct)
@@ -3145,7 +3142,7 @@ $(function(){
       <div class="ZMSTable">
        <table style="width:100%" class="ZMSTable">
        <tr>
-       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="contentEditable">
+       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="table_cell_editable">
         <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
@@ -3393,7 +3390,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.3]]></item>
+            <item key="revision"><![CDATA[1.4.4]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

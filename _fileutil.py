@@ -261,21 +261,13 @@ def importPath(self, path):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _fileutil.remove:
 
-Removes path (and all its subdirectories if deep==1).
+Removes path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def remove(path, deep=0):
   path = getOSPath(path)
   mode = os.stat(path)[stat.ST_MODE]
   if stat.S_ISDIR(mode):
-    if deep == 1:
-      for filename in os.listdir(path):
-        filepath = path + os.sep + filename
-        mode = os.stat(filepath)[stat.ST_MODE]
-        if stat.S_ISDIR(mode):
-          remove(filepath,deep)
-        else: 
-          os.remove(filepath)
-    os.rmdir(path)
+    shutil.rmtree(path)
   else:
     os.remove(path)
 

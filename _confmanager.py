@@ -37,6 +37,7 @@ import urllib
 import zope.interface
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
+from IZMSNotificationService import IZMSNotificationService
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
 import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 import _globals
@@ -502,6 +503,24 @@ class ConfManager(
                 else:
                   obs.append( ob)
       return obs
+
+
+    # --------------------------------------------------------------------------
+    #  ConfManager.getNotifications:
+    #
+    #  Collects notifications from services.
+    # --------------------------------------------------------------------------
+    def getNotifications(self,format='json'):
+      """
+      getNotifications
+      """
+      notifications = []
+      for ob in self.objectValues():
+        if IZMSNotificationService in list(zope.interface.providedBy(ob)):
+          notifications.extend(ob.getNotifications())
+      if format == 'json':
+        notifications = self.str_json(notifications)
+      return notifications
 
 
     """

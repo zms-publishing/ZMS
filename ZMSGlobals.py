@@ -38,6 +38,7 @@ import re
 import tempfile
 import time
 import urllib
+import zope.interface
 # Product Imports.
 import _blobfields
 import _fileutil
@@ -185,6 +186,20 @@ class ZMSGlobals:
       @rtype: C{any}
       """
       return _globals.nvl( a1, a2, n)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSGlobals.zope_interface_providedBy:
+    # --------------------------------------------------------------------------
+    def zope_interface_providedBy(self, clazz):
+      """
+      Returns list of interfaces provided by given clazz.
+      @param clazz: Class
+      @type v: C{any}
+      @rtype: C{list}
+      """
+      return map(lambda x: str(x), list(zope.interface.providedBy(clazz)))
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.boolint:

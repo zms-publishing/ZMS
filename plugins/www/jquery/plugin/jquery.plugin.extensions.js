@@ -11,6 +11,7 @@ $(function(){
 				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
 	$.plugin('zms').get('body',function(){
+		// Content-Editable ////////////////////////////////////////////////////////
 		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 			pluginFancybox('.contentEditable',function() {});
 			$('.contentEditable,.zmiRenderShort')
@@ -29,33 +30,34 @@ $(function(){
 					if (href.lastIndexOf('/')>0) {
 						href = href.substr(0,href.lastIndexOf('/'));
 					}
-            var parents = $(this).parents('.contentEditable,.zmiRenderShort');
-            for ( var i = 0; i < parents.length; i++) {
-              var pid = $(parents[i]).attr('id');
-              pid = pid.substr(pid.indexOf('_')+1);
-              href += '/'+pid;
-            }
-            var pid = $(this).attr('id');
-            pid = pid.substr(pid.indexOf('_')+1);
-            href += '/'+pid;
-            href += '/manage_main';
-            if (self.location.href.indexOf('/manage')>0) {
-              self.location.href = href;
-            }
-            else {
-              href += '_iframe';
-              $.fancybox({
-                'autoDimensions':false,
-                'href':href,
-                'transitionIn':'fade',
-                'transitionOut':'fade',
-                'type':'iframe',
-                'width':819
+					var parents = $(this).parents('.contentEditable,.zmiRenderShort');
+					for ( var i = 0; i < parents.length; i++) {
+						var pid = $(parents[i]).attr('id');
+						pid = pid.substr(pid.indexOf('_')+1);
+						href += '/'+pid;
+					}
+					var pid = $(this).attr('id');
+					pid = pid.substr(pid.indexOf('_')+1);
+					href += '/'+pid;
+					href += '/manage_main';
+					if (self.location.href.indexOf('/manage')>0) {
+						self.location.href = href;
+					}
+					else {
+						href += '_iframe';
+						$.fancybox({
+							'autoDimensions':false,
+							'href':href,
+							'transitionIn':'fade',
+							'transitionOut':'fade',
+							'type':'iframe',
+							'width':819
 						});
 					}
 				})
 			.attr( "title", "Double-click to edit!");
 		}
+		////////////////////////////////////////////////////////////////////////////
 	});
 });
 
@@ -64,8 +66,12 @@ $(function(){
  * @see http://fancybox.net/
  */
 $(function(){
-	pluginFancybox('a.fancybox',function() {
-			$('a.fancybox').fancybox({
+	pluginFancyboxDefault('a.fancybox');
+});
+
+function pluginFancyboxDefault(s) {
+	pluginFancybox(s,function() {
+			$(s).fancybox({
 				'autoScale'		: false,
 				'titleShow'		: false,
 				'hideOnContentClick': true,
@@ -74,7 +80,7 @@ $(function(){
 			});
 		}
 	);
-});
+}
 
 function pluginFancybox(s, c) {
 	$.plugin('fancybox',{

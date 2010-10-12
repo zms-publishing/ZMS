@@ -241,19 +241,23 @@
 		var that = this,
 			files = (typeof this.files == 'string') ? [this.files] : this.files,
 			callback = arguments[1] || this.callback;
-		this.selectors = arguments[0] || this.selectors;
+		this.files = [];
+ 		this.selectors = arguments[0] || this.selectors;
 	
 	// Store Load callback
 	// This will be called when all files have finished loading
 		this.tmp_callback.push( callback);
 	
 	// Do not load files if they are not needed
-		if(this.isNeeded() !== true ) {
+		if(this.isNeeded() !== true) {
 			return this;
 		}
 		
 		// Do not load files if they are already queued
 		if (files.length == this.queue.length) {
+			if(this.queue.length == 0) {
+				this.run();
+			}
 			return this;
 		}
 		
@@ -302,7 +306,7 @@
 				return self; }
 				
 		// When settings provided, create a new Plugin
-			if(typeof param == 'object') {
+			if(typeof param == 'object' && typeof $.plugins[name] == 'undefined') {
 				var plugin = $.plugins[name];
 				if(typeof plugin != 'object') {
 					$.plugins[name] = new Plugin(name,$.extend(defaults,param));

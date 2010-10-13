@@ -65,22 +65,19 @@ $(function(){
 /* Fancybox
  * @see http://fancybox.net/
  */
-$(function(){
-	pluginFancyboxDefault('a.fancybox');
-});
+var pluginFancyboxDefaultOptions = {
+			'autoScale'		: false,
+			'titleShow'		: false,
+			'hideOnContentClick': true,
+			'transitionIn'	: 'elastic',
+			'transitionOut'	: 'elastic'
+		};
 
-function pluginFancyboxDefault(s) {
-	pluginFancybox(s,function() {
-			$(s).fancybox({
-				'autoScale'		: false,
-				'titleShow'		: false,
-				'hideOnContentClick': true,
-				'transitionIn'	: 'elastic',
-				'transitionOut'	: 'elastic'
-			});
-		}
-	);
-}
+$(function(){
+	pluginFancybox('a.fancybox',function() {
+		$('a.fancybox').fancybox(pluginFancyboxDefaultOptions);
+	});
+});
 
 function pluginFancybox(s, c) {
 	$.plugin('fancybox',{

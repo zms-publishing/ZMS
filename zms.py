@@ -625,6 +625,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())
 
 
+def containerFilter(container):
+  return container.meta_type == 'Folder'
+
+
 ################################################################################
 ################################################################################
 ###

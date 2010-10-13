@@ -106,6 +106,10 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
     RESPONSE.redirect('%s/manage_main?lang=%s'%(self.absolute_url(),lang))
 
 
+def containerFilter(container):
+  return container.meta_type == 'ZMSCustom'
+
+
 ################################################################################
 ################################################################################
 ###

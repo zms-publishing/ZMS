@@ -37,13 +37,9 @@ import _objattrs
 import _pathhandler
 
 
-################################################################################
-################################################################################
-###   
-###   C o n s t r u c t o r ( s )
-###   
-################################################################################
-################################################################################
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Constructor
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def manage_addZMSAttributeContainer(self):
   """ manage_addZMSAttributeContainer """
   id = str(time.time())
@@ -55,19 +51,18 @@ def manage_addZMSAttributeContainer(self):
   return obj
 
 
-################################################################################
-################################################################################
-###
-###   C l a s s
-###
-################################################################################
-################################################################################
+def containerFilter(container):
+  return container.meta_type.startswith('ZMS')
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Class
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class ZMSAttributeContainer(
-        Folder,					# Folder.
-	_objattrs.ObjAttrs,			# Object-Attributes.
-	_pathhandler.PathHandler		# Path-Handler
-	): 
-	
+      Folder,
+      _objattrs.ObjAttrs,
+      _pathhandler.PathHandler):
+
   # Properties.
   # -----------
   meta_type = 'ZMSAttributeContainer'
@@ -82,7 +77,14 @@ class ZMSAttributeContainer(
   # Management Interface.
   # ---------------------
   manage_propertiesForm = HTMLFile('dtml/objattrs/manage_propertiesform', globals())
-  
+
+
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  Constructor
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  def __init__(self, id): 
+    self.id = id
+
 
   # ----------------------------------------------------------------------------
   #  ZMSAttributeContainer.getObjAttrs:
@@ -122,16 +124,6 @@ class ZMSAttributeContainer(
     return []
 
 
-  ##############################################################################
-  #  ZMSAttributeContainer.__init__: 
-  #
-  #  Constructor (initialise a new instance of ZMSAttributeContainer).
-  ##############################################################################
-  def __init__(self, id): 
-    """ ZMSAttributeContainer.__init__ """
-    self.id = id
-
-  
   ##############################################################################
   #  ZMSAttributeContainer.manage_changeProperties: 
   #

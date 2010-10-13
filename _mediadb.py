@@ -37,14 +37,9 @@ import _globals
 import _objattrs
 
 
-################################################################################
-################################################################################
-###   
-###   C o n s t r u c t o r ( s )
-###   
-################################################################################
-################################################################################
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Constructor
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
   """ manage_addMediaDb """
   obj = MediaDb(location)
@@ -52,6 +47,10 @@ def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
   recurse_addMediaDb(self,self.getMediaDb())
   if RESPONSE is not None:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())
+
+
+def containerFilter(container):
+  return container.meta_type == 'ZMS'
 
 
 ################################################################################
@@ -195,18 +194,13 @@ def manage_delMediaDb(self, REQUEST=None, RESPONSE=None):
   return message
 
 
-################################################################################
-################################################################################
-###
-###   Class
-###
-################################################################################
-################################################################################
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Class
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class MediaDb(
-    OFS.SimpleItem.Item,
-    Persistent,
-    Acquisition.Implicit,
-    ): 
+      OFS.SimpleItem.Item,
+      Persistent,
+      Acquisition.Implicit):
 
     # Properties.
     # -----------
@@ -215,27 +209,20 @@ class MediaDb(
     # Management Options.
     # -------------------
     manage_options = (
-	{'label': 'Edit','action': 'manage_browse'},
-	{'label': 'Properties','action': 'manage_properties'},
-        ) 
+      {'label': 'Edit','action': 'manage_browse'},
+      {'label': 'Properties','action': 'manage_properties'},
+      )
 
+    # Management Interface.
+    # ---------------------
     manage_index_html = HTMLFile('dtml/acl_mediadb/manage_index', globals())
     manage_browse = HTMLFile('dtml/acl_mediadb/manage_browse', globals())
     manage_properties = HTMLFile('dtml/acl_mediadb/manage_properties', globals())
 
-    """
-    ############################################################################
-    #
-    #   CONSTRUCTOR
-    #
-    ############################################################################
-    """
 
-    ############################################################################
-    #  MediaDb.__init__: 
-    #
-    #  Initialise a new instance of MediaDb.
-    ############################################################################
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    Constructor
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, location):
       self.id = 'acl_mediadb'
       self.location = location

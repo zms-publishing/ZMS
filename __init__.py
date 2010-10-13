@@ -49,14 +49,14 @@ import _zmsattributecontainer
 import zmsdocument
 import zmsfile
 import zmsfolder
+import zmsgraphic
 import zmsnote
+import zmsrubrik
 import zmssysfolder
 import zmstable
 import zmsteaserelement
 import zmsteasercontainer
 import zmstextarea
-import zmsgraphic
-import zmsrubrik
 
 
 ################################################################################
@@ -73,89 +73,58 @@ def initialize(context):
             zms.ZMS,
             permission = 'Add ZMSs',
             constructors = ( zms.manage_addZMSForm, zms.manage_addZMS),
-            )
-        context.registerClass(
-            zmssysfolder.ZMSSysFolder,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsnote.ZMSNote,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsfolder.ZMSFolder,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsdocument.ZMSDocument,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmstextarea.ZMSTextarea,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
+            container_filter = zms.containerFilter,
             )
         context.registerClass(
             zmscustom.ZMSCustom,
             permission = 'Add ZMSs',
             constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsteasercontainer.ZMSTeaserContainer,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsteaserelement.ZMSTeaserElement,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsgraphic.ZMSGraphic,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmstable.ZMSTable,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
-            )
-        context.registerClass(
-            zmsfile.ZMSFile,
-            permission = 'Add ZMSs',
-            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
+            container_filter = zmscustom.containerFilter,
             )
         context.registerClass(
             zmssqldb.ZMSSqlDb,
             permission = 'Add ZMSs',
             constructors = (zmssqldb.manage_addZMSSqlDbForm, zmssqldb.manage_addZMSSqlDb),
+            container_filter = zmscustom.containerFilter,
             )
         context.registerClass(
             zmslinkcontainer.ZMSLinkContainer,
             permission = 'Add ZMSs',
             constructors = (zmslinkcontainer.manage_addZMSLinkContainer, zmslinkcontainer.manage_addZMSLinkContainer),
+            container_filter = zmscustom.containerFilter,
             )
         context.registerClass(
             zmslinkelement.ZMSLinkElement,
             permission = 'Add ZMSs',
             constructors = (zmslinkelement.manage_addZMSLinkElementForm, zmslinkelement.manage_addZMSLinkElement),
+            container_filter = zmscustom.containerFilter,
             )
         context.registerClass(
             _mediadb.MediaDb,
             permission = 'Add ZMSs',
             constructors = (_mediadb.manage_addMediaDb, _mediadb.manage_addMediaDb),
-            icon = 'www/acl_mediadb.gif'
+            icon = 'www/acl_mediadb.gif',
+            container_filter = _mediadb.containerFilter,
             )
         context.registerClass(
             _zmsattributecontainer.ZMSAttributeContainer,
             permission = 'Add ZMSs',
             constructors = (_zmsattributecontainer.manage_addZMSAttributeContainer, _zmsattributecontainer.manage_addZMSAttributeContainer),
+            container_filter = _zmsattributecontainer.containerFilter,
             )
-            
+        
+        # register deprecated classes
+        dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
+        context.registerClass(zmsdocument.ZMSDocument,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsfile.ZMSFile,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsfolder.ZMSFolder,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsgraphic.ZMSGraphic,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsnote.ZMSNote,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmssysfolder.ZMSSysFolder,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmstable.ZMSTable,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsteasercontainer.ZMSTeaserContainer,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmsteaserelement.ZMSTeaserElement,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
+        context.registerClass(zmstextarea.ZMSTextarea,constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
         
         # automated registration for util
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()

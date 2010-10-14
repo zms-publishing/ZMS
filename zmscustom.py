@@ -107,7 +107,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
 
 
 def containerFilter(container):
-  return container.meta_type == 'ZMSCustom'
+  return container.meta_type in ['ZMS','ZMSCustom']
 
 
 ################################################################################

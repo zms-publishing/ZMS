@@ -375,13 +375,12 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('fk')"
+      ><dtml-call "REQUEST.set('valueraw',row.get(id,''))"     
       ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
       ><dtml-call "REQUEST.set('options',[])"
       ><dtml-if "fk.get('mysqlset')"
-       ><dtml-if value
-        ><dtml-if "value.find('\'')<value.rfind('\'')"
-         ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')])"
-        ></dtml-if
+       ><dtml-if valueraw
+         ><dtml-call "REQUEST.set('value',list(valueraw)[0])"
        ></dtml-if
        ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
         ><dtml-let r=sequence-item rtype="r['type']"
@@ -490,22 +489,15 @@
      </dtml-comment
      ><dtml-elif "grid_col.get('multiselect')"
       ><dtml-if "multiselect.get('custom') or multiselect.get('mysqlset')"
+       ><dtml-call "REQUEST.set('valueraw',row.get(id,''))"
        ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
        ><dtml-call "REQUEST.set('options',[])"
        ><dtml-if "multiselect.get('custom')"
         ><dtml-call "options.extend(dt_html(multiselect.get('custom'),REQUEST))"
        ><dtml-elif "multiselect.get('mysqlset')"
-        ><dtml-if value
-         ><dtml-if "value.find('\'') < value.rfind('\'')"
-          ><dtml-if "value.find('\', \'')"
-           ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')].split('\', \''))"
-          ><dtml-else
-           ><dtml-call "REQUEST.set('value',value[value.find('\'')+1:value.rfind('\'')].split('\',\''))"
-          ></dtml-if
-         ><dtml-else
-          ><dtml-call "REQUEST.set('value',value.split(','))"
+         ><dtml-if valueraw
+          ><dtml-call "REQUEST.set('value',list(valueraw))"
          ></dtml-if
-        ></dtml-if
          ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
          ><dtml-let r=sequence-item rtype="r['type']"
           ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"

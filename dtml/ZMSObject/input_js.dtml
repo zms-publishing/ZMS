@@ -104,7 +104,10 @@ function onFormSubmitCheckLock(fmName) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function onFormSubmit(fmName) {
+function onFormSubmit(fmName,flag) {
+  if (!flag) {
+    return true;
+  }
   if (self.btnClicked == "break") {
     return false;
   }
@@ -115,7 +118,6 @@ function onFormSubmit(fmName) {
         key="objAttr['id']"
         required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
         visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+metaobjIds+['*','boolean','constant','method','resource']"
-        fmName="'form0'"
         elName="getObjAttrName(objAttr,lang)"
         elLabel="getObjAttrLabel(objAttr)"
 ><dtml-if visible
@@ -177,6 +179,12 @@ function zmiChooseActionResource(el) {
     $(el).attr( 'selectedIndex', 0);
   }
 }
+
+$(function() {
+  $('form[name=<dtml-var fmName>]').submit( function() {
+    return onFormSubmit('<dtml-var fmName>',true);
+  });
+});
 
 //-->
 </script>

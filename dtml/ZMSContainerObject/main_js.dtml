@@ -160,14 +160,14 @@ function zmiConfirmAction(fm, target, label)
  * @param sort_id
  * @param custom
  */
-function zmiExecuteAction(fm, target, id, sort_id, custom) 
-{
-  var fm = $(fm);
-  $('input[id=id_prefix]',fm).val( id);
-  $('input[id=_sort_id]',fm).val( sort_id);
-  $('input[id=custom]',fm).val( custom);
-  fm.attr('action',target);
-  fm.submit();
+function zmiExecuteAction(fm, target, id, sort_id, custom) {
+	var $fm = $(fm);
+	$('input[id=id_prefix]',$fm).val( id);
+	$('input[id=_sort_id]',$fm).val( sort_id);
+	$('input[id=custom]',$fm).val( custom);
+	$fm.attr('action',target);
+	$fm.unbind('submit');
+	$fm.submit();
 }
 
 /**

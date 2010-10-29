@@ -84,7 +84,9 @@ function onFormSubmitHideLock() {
 function onFormSubmitSubmit(fmName) {
   checkLock = false;
   $('<input type="hidden" name="btn" value="'+self.btnClicked+'"/>').appendTo('form[name='+fmName+']');
-  $('form[name='+fmName+']').submit();
+  var $fm = $('form[name='+fmName+']');
+  $fm.unbind('submit');
+  $fm.submit();
 }
 
 function onFormSubmitCheckLock(fmName) {

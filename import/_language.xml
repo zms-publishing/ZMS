@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
-<?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:o="urn:schemas-microsoft-com:office:office"
  xmlns:x="urn:schemas-microsoft-com:office:excel"
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-  <LastAuthor>Sebastian Hoffmann</LastAuthor>
+  <LastAuthor>G008620</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
-  <LastSaved>2010-09-02T21:26:39Z</LastSaved>
-  <Version>11.9999</Version>
+  <LastSaved>2010-11-03T08:50:52Z</LastSaved>
+  <Version>10.6858</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <DownloadComponents/>
@@ -92,17 +91,43 @@
    <Font x:Family="Swiss"/>
   </Style>
   <Style ss:ID="s30">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:WrapText="1"/>
+   <Alignment ss:Vertical="Top"/>
+   <Font/>
   </Style>
   <Style ss:ID="s31">
+   <Alignment ss:Vertical="Top"/>
+   <Font x:Family="Swiss"/>
+   <Interior/>
+  </Style>
+  <Style ss:ID="s32">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Top"/>
+   <Font x:Family="Swiss"/>
+  </Style>
+  <Style ss:ID="s33">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:ReadingOrder="RightToLeft"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:WrapText="1"/>
+  </Style>
+  <Style ss:ID="s35">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Top"/>
+   <Font/>
+  </Style>
+  <Style ss:ID="s36">
    <Alignment ss:Vertical="Top" ss:ReadingOrder="RightToLeft" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:Family="Roman" ss:Size="12"/>
   </Style>
-  <Style ss:ID="s32">
+  <Style ss:ID="s37">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:ReadingOrder="RightToLeft"/>
+   <Font/>
+   <Interior/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s38">
    <Alignment ss:Vertical="Top" ss:ReadingOrder="RightToLeft" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:Family="Roman"/>
   </Style>
-  <Style ss:ID="s33">
+  <Style ss:ID="s39">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -113,51 +138,25 @@
    <Font x:Family="Swiss" ss:Bold="1"/>
    <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s34">
+  <Style ss:ID="s40">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s35">
+  <Style ss:ID="s41">
    <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
    <Font x:Family="Swiss"/>
   </Style>
-  <Style ss:ID="s36">
+  <Style ss:ID="s42">
    <Alignment ss:Vertical="Top" ss:ReadingOrder="RightToLeft" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:Family="Roman"/>
    <NumberFormat/>
   </Style>
-  <Style ss:ID="s37">
+  <Style ss:ID="s43">
    <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:Family="Roman" ss:Size="12"/>
   </Style>
-  <Style ss:ID="s38">
+  <Style ss:ID="s44">
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
    <Font ss:FontName="Times New Roman" x:Family="Roman" ss:Size="12"/>
-  </Style>
-  <Style ss:ID="s39">
-   <Alignment ss:Vertical="Top"/>
-   <Font/>
-  </Style>
-  <Style ss:ID="s40">
-   <Alignment ss:Vertical="Top"/>
-   <Font x:Family="Swiss"/>
-   <Interior/>
-  </Style>
-  <Style ss:ID="s41">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Top"/>
-   <Font x:Family="Swiss"/>
-  </Style>
-  <Style ss:ID="s42">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:ReadingOrder="RightToLeft"/>
-  </Style>
-  <Style ss:ID="s43">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Top"/>
-   <Font/>
-  </Style>
-  <Style ss:ID="s44">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Top" ss:ReadingOrder="RightToLeft"/>
-   <Font/>
-   <Interior/>
-   <NumberFormat ss:Format="@"/>
   </Style>
   <Style ss:ID="s45">
    <Alignment ss:Vertical="Top"/>
@@ -174,7 +173,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="475" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="461" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
    <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75"/>
@@ -335,8 +334,8 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">ACTION_GENERATE_PREVIEW</Data></Cell>
-    <Cell><Data ss:Type="String">Vorschau generieren</Data></Cell>
-    <Cell><Data ss:Type="String">generate preview</Data></Cell>
+    <Cell><Data ss:Type="String">Norm-Vorschau erzeugen</Data></Cell>
+    <Cell><Data ss:Type="String">generate norm-preview</Data></Cell>
     <Cell ss:Index="5"><Data ss:Type="String">Generare previsione</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">产生预览</Data></Cell>
     <Cell ss:StyleID="s26"><Data ss:Type="String">ايجاد پيش نمايش</Data></Cell>
@@ -1048,7 +1047,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">कस्तम</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تخصيص</Data></Cell>
     <Cell><Data ss:Type="String">Thói quen</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מותאם אישית</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מותאם אישית</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_DATE</Data></Cell>
@@ -1758,7 +1757,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">गांठ</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مركز</Data></Cell>
     <Cell><Data ss:Type="String">Nút</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">קשר</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">קשר</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_NONE</Data></Cell>
@@ -1889,7 +1888,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">मुल जनक</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">اللغة الرئيسية</Data></Cell>
     <Cell><Data ss:Type="String">Cha mẹ</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">אב</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">אב</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_PASSWORD</Data></Cell>
@@ -2084,7 +2083,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">रेकार्ड</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تسجيل</Data></Cell>
     <Cell><Data ss:Type="String">bản ghi</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רשומה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רשומה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_RECORDS</Data></Cell>
@@ -2318,7 +2317,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अवस्थायें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">حال</Data></Cell>
     <Cell><Data ss:Type="String">Các trạng thái</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">תצורות</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">תצורות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_STATIC</Data></Cell>
@@ -2358,7 +2357,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">सटाईल सीत</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">نموذج</Data></Cell>
     <Cell><Data ss:Type="String">Kiểu trang</Data></Cell>
-    <Cell ss:StyleID="s41"><Data ss:Type="String">Stylesheet</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">Stylesheet</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_SUBOBJECTS</Data></Cell>
@@ -2370,18 +2369,6 @@
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Những đối tượng con</Data></Cell>
     <Cell><Data ss:Type="String">תת- פריטים</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">ATTR_SUCCESSOR</Data></Cell>
-    <Cell><Data ss:Type="String">Nachfolger</Data></Cell>
-    <Cell><Data ss:Type="String">Successor</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Successore</Data></Cell>
-    <Cell ss:Index="8" ss:StyleID="s26"/>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">последователь</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">उत्तरवर्ती</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">التالي</Data></Cell>
-    <Cell><Data ss:Type="String">Thừa kế</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עוקב</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_TABLE</Data></Cell>
@@ -2665,30 +2652,13 @@
     <Cell><Data ss:Type="String">הוספה</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">BTN_AQBOTTOM</Data></Cell>
-    <Cell><Data ss:Type="String">nach unten</Data></Cell>
-    <Cell><Data ss:Type="String">to bottom</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">verso sotto</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">忑下</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">به آخر</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">вниз</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">निचे तक</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">لأسفل</Data></Cell>
-    <Cell><Data ss:Type="String">tới dưới trang</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String">למטה</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">BTN_AQTOP</Data></Cell>
-    <Cell><Data ss:Type="String">von oben</Data></Cell>
-    <Cell><Data ss:Type="String">from top</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">verso sopra</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">自顶</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">از بالا</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">сверху вниз</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">ऊपर से</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">من القمة</Data></Cell>
-    <Cell><Data ss:Type="String">từ đầu trang</Data></Cell>
-    <Cell><Data ss:Type="String">מלמעלה</Data></Cell>
+    <Cell><Data ss:Type="String">BTN_APPLY</Data></Cell>
+    <Cell><Data ss:Type="String">Übernehmen</Data></Cell>
+    <Cell><Data ss:Type="String">Apply</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s26"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_BACK</Data></Cell>
@@ -2752,7 +2722,7 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_CLOSE</Data></Cell>
-    <Cell><Data ss:Type="String">Schliessen</Data></Cell>
+    <Cell><Data ss:Type="String">Schließen</Data></Cell>
     <Cell><Data ss:Type="String">Close</Data></Cell>
     <Cell><Data ss:Type="String">Fin</Data></Cell>
     <Cell><Data ss:Type="String">Chiudere</Data></Cell>
@@ -2983,21 +2953,6 @@
     <Cell ss:StyleID="s29"><Data ss:Type="String">הזמן</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">BTN_LOGOUT</Data></Cell>
-    <Cell><Data ss:Type="String">Logout</Data></Cell>
-    <Cell><Data ss:Type="String">Logout</Data></Cell>
-    <Cell><Data ss:Type="String">Sortie du système</Data></Cell>
-    <Cell><Data ss:Type="String">Terminare attavita'</Data></Cell>
-    <Cell><Data ss:Type="String">Término de sesión</Data></Cell>
-    <Cell><Data ss:Type="String">注销</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">خروج</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">выход</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">निकास</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">خروج مستخدم</Data></Cell>
-    <Cell><Data ss:Type="String">Đăng xuất</Data></Cell>
-    <Cell><Data ss:Type="String">יציאה</Data></Cell>
-   </Row>
-   <Row>
     <Cell><Data ss:Type="String">BTN_NEXT</Data></Cell>
     <Cell><Data ss:Type="String">Weiter</Data></Cell>
     <Cell><Data ss:Type="String">Next</Data></Cell>
@@ -3022,19 +2977,6 @@
     <Cell><Data ss:Type="String">Mở</Data></Cell>
     <Cell><Data ss:Type="String">פתח</Data></Cell>
    </Row>
-   <Row>
-    <Cell><Data ss:Type="String">BTN_OVERTAKE</Data></Cell>
-    <Cell><Data ss:Type="String">Übernehmen</Data></Cell>
-    <Cell><Data ss:Type="String">Overtake</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Assumere</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">应用</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">رد شدن</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">перенять</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">जा लेना</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">أخذ المبادءة</Data></Cell>
-    <Cell><Data ss:Type="String">Áp dụng</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String">קח</Data></Cell>
-   </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">BTN_OVERWRITE</Data></Cell>
     <Cell><Data ss:Type="String">Überschreiben</Data></Cell>
@@ -3046,7 +2988,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">के ऊपर लिखना</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">الكتابة على الوحدة الموجودة</Data></Cell>
     <Cell><Data ss:Type="String">Ghi đè</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">החלף</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">החלף</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_PASTE</Data></Cell>
@@ -3127,7 +3069,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पुनः नामांकण</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">إعادة التسمية</Data></Cell>
     <Cell><Data ss:Type="String">Đổi tên</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">שנה שם</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">שנה שם</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_REQUESTCOMMIT</Data></Cell>
@@ -3168,7 +3110,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">व्यतीत हो जाना</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">عودة إلى السابق</Data></Cell>
     <Cell><Data ss:Type="String">Đi vòng lại</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">שחזר</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">שחזר</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_SAVE</Data></Cell>
@@ -3307,7 +3249,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">चढ़ाना</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">رفع الملفات</Data></Cell>
     <Cell><Data ss:Type="String">Tải lên</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">העלה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">העלה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_ZOOM</Data></Cell>
@@ -3482,7 +3424,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s निवेश करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">إدراج %s</Data></Cell>
     <Cell><Data ss:Type="String">Chèn vào %s</Data></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String">הכנס %s</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">הכנס %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">CAPTION_LOCKED</Data></Cell>
@@ -3494,22 +3436,9 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%s قفل شده</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">закрыто %s</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s बंद</Data></Cell>
-    <Cell ss:StyleID="s30"><Data ss:Type="String">s% مغلق</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">s% مغلق</Data></Cell>
     <Cell><Data ss:Type="String">%s bị khóa</Data></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String">%s נעול</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">CAPTION_LOGO</Data></Cell>
-    <Cell><Data ss:Type="String">Logo (Management-Interface)</Data></Cell>
-    <Cell><Data ss:Type="String">Logo (Management-Interface)</Data></Cell>
-    <Cell><Data ss:Type="String">Logo (Management-Interface)</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">商标（管翆介鿢）</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">صفحه اول</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">лого</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">छाप (प्रबन्ध-माध्यम)</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الشعار (واجهة الإدارة)</Data></Cell>
-    <Cell><Data ss:Type="String">Thương hiệu (Sự quản lí-Giao diện)</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String">לוגן(ממשק ניהול)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">%s נעול</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">CAPTION_PROPERTIES</Data></Cell>
@@ -3524,7 +3453,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s विषेशतायें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">خصائص %s</Data></Cell>
     <Cell><Data ss:Type="String">Các thuộc tính %s</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מאפיינים %s</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מאפיינים %s</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">CAPTION_SELECT</Data></Cell>
@@ -3617,7 +3546,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">[&lt;a%s&gt;और&lt;/a&gt;]</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">[&lt;a%s&gt;أكثر&lt;/a&gt;]</Data></Cell>
     <Cell><Data ss:Type="String">[&lt;a%s&gt;Hơn nữa&lt;/a&gt;]</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">[&lt;a%s&gt;יותר&lt;/a&gt;]</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">[&lt;a%s&gt;יותר&lt;/a&gt;]</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">IP_OR_DOMAIN</Data></Cell>
@@ -3631,7 +3560,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">आई पी / डोमेंन</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">آي بي/النطاق</Data></Cell>
     <Cell><Data ss:Type="String">Địa chỉ IP/Miền</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">IP/דומיין</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">IP/דומיין</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">LANG</Data></Cell>
@@ -3819,7 +3748,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">और</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">أكثر</Data></Cell>
     <Cell><Data ss:Type="String">Hơn nữa</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עוד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עוד</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_ACCESS_FORBIDDEN</Data></Cell>
@@ -3829,7 +3758,7 @@
     <Cell ss:Index="8" ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">доступ на %s закрыт</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s पर प्रवेश करना वर्जित हें!</Data></Cell>
-    <Cell ss:StyleID="s30"><Data ss:Type="String">الإطلاع على s%غير مسموح </Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">الإطلاع على s%غير مسموح </Data></Cell>
     <Cell><Data ss:Type="String">Truy cập tới %s bị cấm!</Data></Cell>
     <Cell><Data ss:Type="String">גישה ל %s אסורה!</Data></Cell>
    </Row>
@@ -3898,7 +3827,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">क्या आप सचमुच वस्तु मिटना चाहतें हें?</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">هل حقا تريد حذف هذا البيان؟</Data></Cell>
     <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa đối tượng này?</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">האם אתה באמת רוצה למחוק את הפריט?</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">האם אתה באמת רוצה למחוק את הפריט?</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="38.25">
     <Cell><Data ss:Type="String">MSG_CONFIRM_DELOBJS</Data></Cell>
@@ -3923,7 +3852,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">اين عمل ممکن است روي زبانهاي موجود اثر ب?ذارد. آيا مايليد ادامه دهيد ؟</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">Эта акция может отразиться на зависимые языки  (%s). Хотите продолжать?</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">यह क्रिया अवरोही भाषायें (%s) को प्रभाव कर सकता हें। क्या आप फिर भी करना चाहेंगे?</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">هذا الفعل قد يؤثر على اللغات المندرجة  (%s). هل تريد الأستمرار على أي حال؟</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">هذا الفعل قد يؤثر على اللغات المندرجة  (%s). هل تريد الأستمرار على أي حال؟</Data></Cell>
     <Cell><Data ss:Type="String">Hành động này có thể ảnh hướng tới các ngôn ngữ kế thừa (%s). Dù sao quý vị thực sự vẫn muốn tiếp tục?</Data></Cell>
     <Cell><Data ss:Type="String">הפעולה הזו עלולה להשפיע על השפות מתחת(%s). האם אתה רוצה להמשיך בכל זאת?</Data></Cell>
    </Row>
@@ -3940,7 +3869,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">क्या आप सचमुच परिवर्तनो को छोड़ देंगे?</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">هل حقا تريد إلغاء التغييرات؟</Data></Cell>
     <Cell><Data ss:Type="String">Quý vị thực sự muốn loại bỏ những thay đổi?</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">האם אתה בטוח רוצה להפטר מהשינויים?</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">האם אתה בטוח רוצה להפטר מהשינויים?</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_CONFIRM_MOVEOBJ</Data></Cell>
@@ -3976,9 +3905,9 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%i شي حذف گرديد</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">%i выбранный объект стерт</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%i वस्तु(यें) को मिटा दियाँ</Data></Cell>
-    <Cell ss:StyleID="s30"><Data ss:Type="String">i% تم حذف البيان البيانات</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">i% تم حذف البيان البيانات</Data></Cell>
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã xóa.</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">%i  פריט(ים) נמחקו</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">%i  פריט(ים) נמחקו</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="63.75">
     <Cell><Data ss:Type="String">MSG_DTMLGENERATOR</Data></Cell>
@@ -3991,7 +3920,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">एत्रिबूत परिभाषा के ठिक बगल के निशान चित्र को दबाके डि टि एम एल कोड उत्पन्न करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">لتوليد كود DTML رجاء الضغط على الأيقونة بجانب تعريف البيان</Data></Cell>
     <Cell><Data ss:Type="String">Tạo ra mã DTML bằng cách kích chuột vào biểu tượng phía bên phải kế bên phần định nghĩa thuộc tính.</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">תייצור קוד DTML ע&quot;י הקשה על האייקון שצמוד להגדרת המאפיין</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">תייצור קוד DTML ע&quot;י הקשה על האייקון שצמוד להגדרת המאפיין</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_EMPTYCONTAINER</Data></Cell>
@@ -4017,7 +3946,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अपवाद घटित हो गया</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">حدث استثناء</Data></Cell>
     <Cell><Data ss:Type="String">Một ngoại lệ đã diễn ra</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">קרתה תקלה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">קרתה תקלה</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_EXPORTED</Data></Cell>
@@ -4030,7 +3959,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s सफलता से निर्यात हो गया</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تم تصدير %s بنجاح</Data></Cell>
     <Cell><Data ss:Type="String">%s đã xuất ra thành công</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">%s הוצאו בהצלחה</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">%s הוצאו בהצלחה</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="63.75">
     <Cell><Data ss:Type="String">MSG_FILTER</Data></Cell>
@@ -4039,19 +3968,19 @@
     <Cell ss:Index="8" ss:StyleID="s26"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">जेत एम एस वस्तुयें तथा सरबर साईद बेत्च क्रियाएँ पर अपना कस्तम आ/निर्यात छ्लनी के परिभाषा देना</Data></Cell>
-    <Cell ss:StyleID="s32"><Data ss:Type="String">حدد أختيارك من مرشحات التصدير/الأستيراد لـ ZMS والأنماط المطلوبة لاستكمال خطوات العملية</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">حدد أختيارك من مرشحات التصدير/الأستيراد لـ ZMS والأنماط المطلوبة لاستكمال خطوات العملية</Data></Cell>
     <Cell><Data ss:Type="String">Định nghĩa các bộ lọc xuất/nhập theo thói quen của quý vị cho các đối tượng ZMS và các kiểu bước xử lí được yêu cầu. </Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">הגדר פילטרי ייבוא/ייצוא מותאמים אישית עבור אובייקטי ZMS  וצעדי התהליכים הדרושים </Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">הגדר פילטרי ייבוא/ייצוא מותאמים אישית עבור אובייקטי ZMS  וצעדי התהליכים הדרושים </Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="191.25" ss:StyleID="s34">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">MSG_FTP</Data></Cell>
+   <Row ss:AutoFitHeight="0" ss:Height="191.25" ss:StyleID="s40">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">MSG_FTP</Data></Cell>
     <Cell><Data ss:Type="String">Geben Sie hier die Zugangsdaten für den FTP-Export der kompletten WWW-Site zu Ihrem Provider an. Geben Sie im Feld IP-Adresse / Domäne den DNS-Eintrag Ihrer Domäne an (beispielsweise www.mydomain.de). Mit Export starten Sie den FTP-Exportvorgang.</Data></Cell>
     <Cell><Data ss:Type="String">Please enter the provider's access code  for the FTP-export of the complete WWW-Site. Please enter the DNS-name of your domain into the field IP / Domain (e.g. www.mydomain.org). Press export to start the FTP-export process.</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">请输入您的 FTP-访问忂数，把整个网站装入濿供商的朿务器。 在&quot;IP-地忀/域&quot; 的字段输入 DNS 忿称 （例如：www.mydomain.com）。 在导出段开始导出。</Data></Cell>
     <Cell><Data ss:Type="String">لطفا تمام پارامترهاي دسترسي به FTP-export سايت را وارد کنيد</Data></Cell>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">задайте здесь данные для входа в(на) FTP-експорт полного www-сейта вашего провайдера. задайте в поле IP(интернет)-адресса домайн(Область) DNS-ввод(название) вашей домайн. (например &lt;b&gt;www.mydomain.de&lt;/b&gt;). с помощью экспорта начните FTP-процесс.</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">задайте здесь данные для входа в(на) FTP-експорт полного www-сейта вашего провайдера. задайте в поле IP(интернет)-адресса домайн(Область) DNS-ввод(название) вашей домайн. (например &lt;b&gt;www.mydomain.de&lt;/b&gt;). с помощью экспорта начните FTP-процесс.</Data></Cell>
     <Cell><Data ss:Type="String">अपने प्रबन्धक को पूरे डबल्यू डबल्यू डबल्यू-स्थल का एफ ति पि-निर्यात करने के लिए एक्सेस पेरामेतर को क्रिप्या दो</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">رجاء إدخال معطيات الإدخال لتصدير الموقع كاملا لمورد الخدمة لديك عن طريق الـ FTP . يرجى إدخال اسم النطاق الخاص بك  DNS  في خانة آي بي / النطاق. ( أي www.mydomain.org ) أضغط على تصدير لبدء عملية التصدير بواسطة FTP</Data></Cell>
+    <Cell ss:StyleID="s42"><Data ss:Type="String">رجاء إدخال معطيات الإدخال لتصدير الموقع كاملا لمورد الخدمة لديك عن طريق الـ FTP . يرجى إدخال اسم النطاق الخاص بك  DNS  في خانة آي بي / النطاق. ( أي www.mydomain.org ) أضغط على تصدير لبدء عملية التصدير بواسطة FTP</Data></Cell>
     <Cell><Data ss:Type="String">Hãy nhập vào mã số truy cập của nhà cung cấp cho việc xuất FTP của trang www hoàn chỉnh. Hãy nhập vào tên DNS của miền mà quý vị dùng trong trường địa chỉ IP/Miền (ví dụ như www.mydomain.org). Hãy xuất ra để bắt đầu tiến trình xuất FTP. </Data></Cell>
     <Cell><Data ss:Type="String">אנא הכנס את קוד הספק עבור ייצוא FTP של האתר www השלם. אנא הכנס את שם ה-DNS של הדומיין שלך לתוך השדה פרוטוקול אינטרנט/דומיין (לדוגמא: (www.mydomain.org</Data></Cell>
    </Row>
@@ -4066,7 +3995,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s फाइल सफलता से आयात हो गया</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تم استيراد ملف %s بنجاح</Data></Cell>
     <Cell><Data ss:Type="String">Tệp tin %s đã nhập vào thành công</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">קובץ s% יובא בהצלחה</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">קובץ s% יובא בהצלחה</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="409.5">
     <Cell><Data ss:Type="String">MSG_INACTIVE</Data></Cell>
@@ -4076,7 +4005,7 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">सरबर-गलती&lt;br/&gt;&lt;br/&gt;&#10;दस्तावेज नही मीला&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#10;यह सरबर मे आपका अनुरोध किया गया दस्तावेज उपस्थित नही है।&lt;br/&gt;&lt;br/&gt;&#10;क्रिप्या आपका दिया गया यु आर एल को दोबारा जाँच करे या आपके मदद के लिए पृष्ठ मे उपस्थित खोज प्रकार्य का उपयोग करे&lt;br/&gt;&lt;br/&gt;&#10;अगर आप जानते हे की यु आर एल सही हे फिर भी गलती का सामना कर रहा हे तो हमारे वेबमास्तर को सूचित करे। आपका धन्यवाद&lt;br/&gt;&lt;br/&gt;&#10;</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">خطأ بالسرفر&lt;br/&gt;&lt;br/&gt;المستند غير موجود&lt;br/&gt;&lt;br/&gt;المستند المطلوب لايوجد على هذا السرفر&lt;br/&gt;&lt;br/&gt;رجاء مراجعة العنوان الإلكتروني أو استخدام وظيفة البحث بهذه الصفحة للعثور على مرادك&lt;br/&gt;&lt;br/&gt; إذا كنت متأكدا من إدخال العنوان الصحيح لكنك تواجه هذا الخطأ، رجاء اخطار مدير الموقع . شكرا&lt;br/&gt;&lt;br/&gt;</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">خطأ بالسرفر&lt;br/&gt;&lt;br/&gt;المستند غير موجود&lt;br/&gt;&lt;br/&gt;المستند المطلوب لايوجد على هذا السرفر&lt;br/&gt;&lt;br/&gt;رجاء مراجعة العنوان الإلكتروني أو استخدام وظيفة البحث بهذه الصفحة للعثور على مرادك&lt;br/&gt;&lt;br/&gt; إذا كنت متأكدا من إدخال العنوان الصحيح لكنك تواجه هذا الخطأ، رجاء اخطار مدير الموقع . شكرا&lt;br/&gt;&lt;br/&gt;</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">MÁY CHỦ - LỖI&lt;br/&gt;&lt;br/&gt;&#10;Tài liệu không được tìm thấy&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#10;Tài liệu được yêu cầu không tồn tại trong máy chủ này.&lt;br/&gt;&lt;br/&gt;&#10;Hãy kiểm tra lại URL hoặc sử dụng chức năng tìm kiếm trên trang này để tìm ra những gì quý vị tìm kiếm.&lt;br/&gt;&lt;br/&gt;&#10;Nếu quý vị dùng hoàn toàn đúng tên địa chỉ URL và quý vị vẫn gặp lỗi, hãy thông báo với Webmasster của quý vị. Cám ơn.&lt;br/&gt;&lt;br/&gt;&#10;</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">שרת-שגיאה &lt;br/&gt;&lt;br/&gt; &#10;המסמך לא נמצא &lt;br/&gt;&lt;br/&gt;&#10;המסמך הדרוש אינו קיים על השרת הזה &lt;br/&gt;&lt;br/&gt;&#10;אנא בדוק שוב את כתובת האינטרנט או השתמש באפשרות חיפוש בדף הנוכחי כדי למצוא את מה שאתה מחפש &lt;br/&gt;&lt;br/&gt;&#10;אם הקשת בוודאות את כתובת האינטרנט הנכונה ואתה עדיין מקבל שגיאה, אנא יידע את האחראי על תמיכת הרשת שלנו. תודה &lt;br/&gt;&lt;br/&gt;</Data></Cell>
    </Row>
@@ -4089,9 +4018,9 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">%s вставлено</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s निवेश कर दियाँ</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">%s تم ادراج</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">%s تم ادراج</Data></Cell>
     <Cell><Data ss:Type="String">%s đã được chèn</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">s% הוכנס </Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">s% הוכנס </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_LOADING</Data></Cell>
@@ -4123,7 +4052,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%s به پايين منتقل شد</Data></Cell>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">जेत एम एस वस्तुयें पर अपना कस्तम क्रियाएँ तथा फँषन्स के परिभाषा देना</Data></Cell>
-    <Cell ss:StyleID="s32"><Data ss:Type="String">حدد الوظائف والعمليات المطلوبة  على ZMS </Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">حدد الوظائف والعمليات المطلوبة  على ZMS </Data></Cell>
     <Cell><Data ss:Type="String">Định nghĩa các hành động quen thuộc của chính quý vị và các chức năng trên các đối tượng ZMS.</Data></Cell>
     <Cell><Data ss:Type="String">הגדר את הפעולות המותאמות אלייך ופונקציות של פריטי ZMS.</Data></Cell>
    </Row>
@@ -4135,7 +4064,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%s به بالا منتقل شد</Data></Cell>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">(अधि) दस्तावेज तत्व का ठीक सूचना अधि अंकड़े(मेता दाता) होता है। वह नियत संख्या व्याख्या तत्व (उदाहरण,शीर्षक,लेखक, तिथि, सम्पादक, विषय इत्यादि) के मदद से नितत्व के चरित्रचित्रण करते हे।</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">البيانات المتقدمة عبارة عن معلومات مفصلة عن محتوى المستند (meta).  حيث تصف المحتوى بمساعدة عدد محدد من عناصر التوصيف (مثل: العنوان، المؤلف، التاريخ،المحرر، الموضوع، ...الخ.)</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">البيانات المتقدمة عبارة عن معلومات مفصلة عن محتوى المستند (meta).  حيث تصف المحتوى بمساعدة عدد محدد من عناصر التوصيف (مثل: العنوان، المؤلف، التاريخ،المحرر، الموضوع، ...الخ.)</Data></Cell>
     <Cell><Data ss:Type="String">Metadata là thông tin chính xác về (meta) nội dung của tài liệu. Chúng mô tả đặc điểm nội dung với sự hỗ trợ của một số lượng cố định các thành phần mô tả (ví dụ như tiêu đề, tác giả, ngày tháng, nhà biên tập, các chủ đề, v.v. )</Data></Cell>
     <Cell><Data ss:Type="String">מטא-נתונים הם מידע מדויק אודות (מטא) תוכן המסמך. הם מאפיינים את התוכן בעזרת מספר קבוע של אלמנטי תיאור( כגון: כותרת, מחבר, תאריך, עורך, נושאים וכו'...)</Data></Cell>
    </Row>
@@ -4147,7 +4076,7 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">विशेष वस्तुयें के द्वारा अपने कस्तम स्त्रकचर जेत एम एस वस्तुयें को परिभाषित कर सक्ता हे। वस्तुयें तेक्स्बोडि मे प्रदर्शित होता हे ,  दस्तावेज पृष्ठ होता हे  ओर तिसरइलिमेन्त्स तिसर मे प्रदर्शित होत हे।</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">العناصر الخاصة تسمح بتحديد خاصيتك من عناصر ZMS. حيث تعرض العناصر في سياق النص، وتمثل المستندات صفحات، وتظهر عناصر ومكونات الركن لافت النظر  تحت  ركن لافت النظر!</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">العناصر الخاصة تسمح بتحديد خاصيتك من عناصر ZMS. حيث تعرض العناصر في سياق النص، وتمثل المستندات صفحات، وتظهر عناصر ومكونات الركن لافت النظر  تحت  ركن لافت النظر!</Data></Cell>
     <Cell><Data ss:Type="String">Định nghĩa mô hình riêng của các đối tượng ZMS.</Data></Cell>
     <Cell><Data ss:Type="String">הגדר את הדגם שלך של פריטי ZMS.</Data></Cell>
    </Row>
@@ -4196,9 +4125,9 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">فعلا وظيفه ای موجود نيست</Data></Cell>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">सिमेट्रिकल मल्टिलिङ्वेजम मे हर भाषा के कोन्टेन्त त्रि ओब्जेक्स का आइडेन्तिक वेराइन्त होता हे।</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">في حالة تعدد اللغات يتم إضافة نسخة مطابقة ومتماثلة من عناصر المحتوى لكل لغة يتم استخدامها</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">في حالة تعدد اللغات يتم إضافة نسخة مطابقة ومتماثلة من عناصر المحتوى لكل لغة يتم استخدامها</Data></Cell>
     <Cell><Data ss:Type="String">Trong môi trường đa ngôn ngữ có hệ thống, đối với mỗi ngôn ngữ, sự thay đổi đồng nhất của tất cả các đối tượng cây nội dung được hiện thực hóa.</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">ברב-לשונות סימטרית ממומשת לכל שפה גרסה זהה של כל פריטי העץ. </Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ברב-לשונות סימטרית ממומשת לכל שפה גרסה זהה של כל פריטי העץ. </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="38.25">
     <Cell><Data ss:Type="String">MSG_MULTILANGDICT</Data></Cell>
@@ -4208,7 +4137,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">?چسبانده شده از Clip Board</Data></Cell>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">शब्द्कोश मे बहूभाषायें के टेमप्लेत का कुंजीशब्दो को दर्ज करे</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">سجل الكلمات الرئيسية بالنموذج المعد لذلك في القاموس.</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">سجل الكلمات الرئيسية بالنموذج المعد لذلك في القاموس.</Data></Cell>
     <Cell><Data ss:Type="String">Đăng kí những từ khóa cho các bản mẫu đa ngôn ngữ trong từ điển.</Data></Cell>
     <Cell><Data ss:Type="String">הכנס מילות מפתח לתבנית רב-לשונית במילון</Data></Cell>
    </Row>
@@ -4221,9 +4150,9 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%s برگرفته از</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">Никаких элементов не было выбрано </Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">कोई भी वस्तु को विवरण नहीं कियाँ</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">لم يتم تحديد آية بنود</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">لم يتم تحديد آية بنود</Data></Cell>
     <Cell><Data ss:Type="String">Không có hạng mục nào được xác định cụ thể!</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">לא הוגדרו פריטים!</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">לא הוגדרו פריטים!</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_NOREFERENCES</Data></Cell>
@@ -4236,7 +4165,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">جايگزيني&gt;%s&lt;</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">внутренних ссылок на %s не найдено</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">अभी कोई भी आंतरिक संदर्भे %s पर नही हे</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">لا يوجد حاليا أي مراجع داخلية لـ %s</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">لا يوجد حاليا أي مراجع داخلية لـ %s</Data></Cell>
     <Cell><Data ss:Type="String">Hiện tại không có những tham chiếu bên trong tới %s</Data></Cell>
     <Cell><Data ss:Type="String">אין כרגע התייחסויות פנימיות לs%</Data></Cell>
    </Row>
@@ -4249,9 +4178,9 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">آيا مي خواهيد تمام رويداد هاي i %s را جانشين کنيد</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">никаких заданий не находится в</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">यह अभी कोई भी क्रियायें नहीं हे</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">لا يوجد حاليا آية مهام معلقة</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">لا يوجد حاليا آية مهام معلقة</Data></Cell>
     <Cell><Data ss:Type="String">Hiện tại không có nhiệm vụ nào trong</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">אין כרגע מטלות ב</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">אין כרגע מטלות ב</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_PASTED</Data></Cell>
@@ -4262,7 +4191,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">براي (ستون s%) مقدارنامشخص است</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">Из клипборда введено</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">क्लिप बोर्द से चिप्का दियाँ</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">تم اللصق من الذاكرة</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">تم اللصق من الذاكرة</Data></Cell>
     <Cell><Data ss:Type="String">Được cắt dán từ clipboard.</Data></Cell>
     <Cell ss:StyleID="s45"><Data ss:Type="String">הודבק מלוח גזירים.</Data></Cell>
    </Row>
@@ -4275,9 +4204,9 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">ссылки  от %s</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%s को रिफरेन्स किया हे</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">s% روجع بواسطة</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">s% روجع بواسطة</Data></Cell>
     <Cell><Data ss:Type="String">%s được tham chiếu bởi</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">%s הופנה ע&quot;י </Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">%s הופנה ע&quot;י </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_REPLACE</Data></Cell>
@@ -4288,7 +4217,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">%i شي به سطل زباله انتقال يافت</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">измененить &gt;%s&lt; на &gt;%s&lt; ?</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">कया &gt;%s&lt; को &gt;%s&lt; से बदलदे?</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">إحلال &gt;%s&lt; بـ &gt;%s&lt;؟</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">إحلال &gt;%s&lt; بـ &gt;%s&lt;؟</Data></Cell>
     <Cell><Data ss:Type="String">Có nên thay thế &gt;%s&lt; bởi &gt;%s&lt;?</Data></Cell>
     <Cell><Data ss:Type="String">האם להחליף &gt;%s&lt; ע&quot;י &gt;%s&lt;?</Data></Cell>
    </Row>
@@ -4301,9 +4230,9 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">помечать все %i изменения из &gt;%s&lt;?</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%i बार मिले &gt;%s&lt; को बदलदे?</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">إحلال كل %i معاملات من &gt;%s&lt;؟</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">إحلال كل %i معاملات من &gt;%s&lt;؟</Data></Cell>
     <Cell><Data ss:Type="String">Có nên thay thế tất cả %i những sự xuất hiện của &gt;%s&lt;?</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">האם לתייג את כל מופעי ה%i מתוך  &gt;%s&lt;?</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">האם לתייג את כל מופעי ה%i מתוך  &gt;%s&lt;?</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_REQUIRED</Data></Cell>
@@ -4314,7 +4243,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">فايل %s ارسال شد</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">место занесения информации %s должно быть заполненно</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">फिल्ड '%s' का मूल्य अनुपस्थित हे</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">رجاء إدخال قيمة لـلحقل  '%s'!</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">رجاء إدخال قيمة لـلحقل  '%s'!</Data></Cell>
     <Cell><Data ss:Type="String">Trường dữ liệu '%s' phải có một giá trị.</Data></Cell>
     <Cell><Data ss:Type="String">הכנס ערך לשדה  '%s'.</Data></Cell>
    </Row>
@@ -4327,9 +4256,9 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">रोल्बेक अखण्डनीय रूप से वर्किङ वरसन को करेन्त लाइव वरसन से बदल दिया !</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">سيؤدي التراجع إلى حذف النسخة العاملة وإحلالها بالنسخة النشطة الحالية نهائيا </Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">سيؤدي التراجع إلى حذف النسخة العاملة وإحلالها بالنسخة النشطة الحالية نهائيا </Data></Cell>
     <Cell><Data ss:Type="String">Sự vòng lại sẽ thay thế phiên bản đang làm việc bởi phiên bản hiện tại!</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">חזרה לאחור תחליף בצורה בלתי הפיכה את הגרסה הנוכחית בגרסה החיה הקיימת!</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">חזרה לאחור תחליף בצורה בלתי הפיכה את הגרסה הנוכחית בגרסה החיה הקיימת!</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_TRASHED</Data></Cell>
@@ -4340,9 +4269,9 @@
     <Cell ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">%i объекты перемещенны в мусорный ящик</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">%i वस्तु(यें) को कूड़े काठ मे दाल दियाँ</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">تم حذف عدد %i عنصر/ عناصر إلى سلة المهملات </Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">تم حذف عدد %i عنصر/ عناصر إلى سلة المهملات </Data></Cell>
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã chuyển tới thùng rác.</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">%i פריט(ים ) נשלח(ו) לסל המיחזור</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">%i פריט(ים ) נשלח(ו) לסל המיחזור</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">MSG_UNDONE</Data></Cell>
@@ -4351,9 +4280,9 @@
     <Cell ss:Index="8" ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"/>
     <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">عدد %i عنصر/ عناصر قد تم التراجع عنها</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">عدد %i عنصر/ عناصر قد تم التراجع عنها</Data></Cell>
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã không được thực hiện.</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">%i פריט(ים) שלא נעשו</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">%i פריט(ים) שלא נעשו</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="63.75">
     <Cell><Data ss:Type="String">MSG_UNDOVERSION</Data></Cell>
@@ -4364,7 +4293,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">از</Data></Cell>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">इस वस्तुयें के सब वर्क-फ्लो वरशन के इतिहास निचे दिये हे। आप यह वस्तु के पहले वरशन मे पुनःठिक कर सकता हे</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">يظهر بالأسفل تاريخ جميع النسخ من هذا العنصر، يمكنك مقارنة أي نسختين أو إعادة هذا العنصر إلى نسخة سابقة</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">يظهر بالأسفل تاريخ جميع النسخ من هذا العنصر، يمكنك مقارنة أي نسختين أو إعادة هذا العنصر إلى نسخة سابقة</Data></Cell>
     <Cell><Data ss:Type="String">Ở phía dưới quý vị có thể nhìn thấy lịch sử của tất cả các phiên bản của đối tượng này. Quý vị có thể so sánh hai phiên bản hoặc thiết lập lại đối tượng này tới một phiên bản sớm hơn.</Data></Cell>
     <Cell><Data ss:Type="String">למטה תוכל לראות את ההיסטוריה של כל הגרסאות של הפריט הנוכחי. תוכל להשוות בין שתי גרסאות או לאפס את הפריט לגרסה הקודמת.</Data></Cell>
    </Row>
@@ -4388,7 +4317,7 @@
     <Cell ss:Index="8" ss:StyleID="s26"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s28"><Data ss:Type="String">जेत एम एस वस्तुयें पर अपना कस्तम वर्कफ्लो के परिभाषा देना</Data></Cell>
-    <Cell ss:StyleID="s31"><Data ss:Type="String">حدد طريقة تسلسل العمل الخاصة بك  لعناصر ZMS</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">حدد طريقة تسلسل العمل الخاصة بك  لعناصر ZMS</Data></Cell>
     <Cell><Data ss:Type="String">Định nghĩa lịch trình công việc theo thói quen của riêng quý vị trên các đối tượng ZMS.</Data></Cell>
     <Cell><Data ss:Type="String">הגדר את רצף הפעולות המותאם אלייך עבור פריטיZMS.</Data></Cell>
    </Row>
@@ -4475,7 +4404,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">एक मात्र</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مفرد</Data></Cell>
     <Cell><Data ss:Type="String">Đơn</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">יחיד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">יחיד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_AB_SOLID</Data></Cell>
@@ -4490,7 +4419,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">ठोस</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">صلب</Data></Cell>
     <Cell><Data ss:Type="String">Rắn</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מלא</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מלא</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">OPT_AP_SUB_ALL</Data></Cell>
@@ -4503,7 +4432,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पूरा उप-पदानुक्रम</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تسلسل هرمي فرعي</Data></Cell>
     <Cell><Data ss:Type="String">hoàn thành phân cấp phụ</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">תת-היררכיה שלמה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">תת-היררכיה שלמה</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">OPT_AP_SUB_NAV</Data></Cell>
@@ -4516,7 +4445,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">उप-पदानुक्रम के सम्पूर्ण निर्देशिका-पृष्ठ</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">كل مجلدات الصفحات تحت التسلسل الهرمي الفرعي</Data></Cell>
     <Cell><Data ss:Type="String">chỉ những thư mục của phân cấp phụ</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רק תיקיות של תת-היררכיה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רק תיקיות של תת-היררכיה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_AP_THIS</Data></Cell>
@@ -4542,7 +4471,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">लक्ष्य अंतःस्थापित करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">إظهار محتوى الرابط فقط دون المساس بالمحتوى</Data></Cell>
     <Cell><Data ss:Type="String">nhúng vào các mục tiêu</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">לשתול מטרה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">לשתול מטרה</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">OPT_AT_NEW</Data></Cell>
@@ -4567,7 +4496,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">रिकरसिव्ली अंतःस्थापित करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">إظهار محتوى مجلد الرابط بالكامل دون المساس بالمحتوى</Data></Cell>
     <Cell><Data ss:Type="String">nhúng trở lại</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">שתול בצורה רקורסיבית</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">שתול בצורה רקורסיבית</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">OPT_AT_REMOTE</Data></Cell>
@@ -4578,7 +4507,7 @@
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">nhúng từ xa</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">שתול ... מרוחק</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">שתול ... מרוחק</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">OPT_AT_REPLACE</Data></Cell>
@@ -4591,7 +4520,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">उसी खिड़की पर अनुगमन करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">افتح في ذات النافذة</Data></Cell>
     <Cell><Data ss:Type="String">theo cùng một cửa sổ</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עקוב באותו חלון</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עקוב באותו חלון</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_A_BOTTOM</Data></Cell>
@@ -4647,7 +4576,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">बांया (पाठ को दाहिने प्लव करे)</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">يسارا (حرك النص يمينا)</Data></Cell>
     <Cell><Data ss:Type="String">Trái (động phía bên phải của văn bản)</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">שמאלה(גלישת טקסט ימינה)</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">שמאלה(גלישת טקסט ימינה)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_A_MIDDLE</Data></Cell>
@@ -4703,7 +4632,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">दाहिना (पाठ को बांये प्लव करे)</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">يمينا (حرك النص يسارا)</Data></Cell>
     <Cell><Data ss:Type="String">Phải (động phía bên trái của văn bản)</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">ימינה (גלישת טקסט שמאלה)</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">ימינה (גלישת טקסט שמאלה)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_A_TOP</Data></Cell>
@@ -4745,7 +4674,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पृष्ठ</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">صفحة</Data></Cell>
     <Cell><Data ss:Type="String">Trang</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עמוד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עמוד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_AC_2</Data></Cell>
@@ -4898,7 +4827,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">इंडेंट ब्लोक (जैसे कोटेशन्स)</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">محازاة الكل</Data></Cell>
     <Cell><Data ss:Type="String">Khối thụt vào (ví dụ như đoạn trích)</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">בלוק שהוכנס (כגון:ציטוטים)</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">בלוק שהוכנס (כגון:ציטוטים)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_F_ORDEREDLIST</Data></Cell>
@@ -4921,7 +4850,7 @@
     <Cell ss:Index="8" ss:StyleID="s26"/>
     <Cell ss:StyleID="s27"><Data ss:Type="String">HTML</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">हच ति एम एल</Data></Cell>
-    <Cell ss:StyleID="s30"><Data ss:Type="String">HTML</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
     <Cell><Data ss:Type="String">HTML</Data></Cell>
    </Row>
@@ -4936,7 +4865,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">बुलेटेद सूची</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">قائمة معلمة</Data></Cell>
     <Cell><Data ss:Type="String">Danh sách được gạch đầu dòng</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רשימת תבליטים</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רשימת תבליטים</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="25.5">
     <Cell><Data ss:Type="String">OPT_L_0</Data></Cell>
@@ -5042,7 +4971,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पड़ी रेखा</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">رمز خاص</Data></Cell>
     <Cell><Data ss:Type="String">Kí tự đặc biệt</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">תו מיוחד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">תו מיוחד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">OPT_S_ITALIC</Data></Cell>
@@ -5112,7 +5041,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">ऊपर</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">القمة</Data></Cell>
     <Cell><Data ss:Type="String">Trên</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עליון</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עליון</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RECOMMEND_THIS_PAGE</Data></Cell>
@@ -5205,7 +5134,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अधीन डबल्यू डबल्यू डबल्यू-स्थल को सम्मिलित करे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">ضمن المواقع الثانوية المتفرعة من الأصل</Data></Cell>
     <Cell><Data ss:Type="String">bao gồm các trang-www phụ thuộc</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">כלול אתרי WWW כפופוים</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">כלול אתרי WWW כפופוים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SEARCH_HEADER</Data></Cell>
@@ -5252,13 +5181,13 @@
     <Cell><Data ss:Type="String">Các kết quả</Data></Cell>
     <Cell><Data ss:Type="String">תוצאות חיפוש</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="102" ss:StyleID="s34">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">SEARCH_HINT</Data></Cell>
+   <Row ss:AutoFitHeight="0" ss:Height="102" ss:StyleID="s40">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">SEARCH_HINT</Data></Cell>
     <Cell><Data ss:Type="String">Bitte tragen Sie einen Begriff ein und klicken Sie auf &quot;Suchen&quot;. Die Optionen können normalerweise unverändert bleiben.</Data></Cell>
     <Cell><Data ss:Type="String">Please enter a String and click &quot;search&quot;. In most cases the Options can remain unchanged.</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">请濒入濜索字，然忎忕击&quot;濜索&quot;。 在多数情况下选项丿用更改。</Data></Cell>
     <Cell><Data ss:Type="String">لطفا کلمه اي وارد کنيد و سپس دکمه جستجو را فشار دهيد</Data></Cell>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">пожайлуста внесите слово (название) и нажмите на поиск. опции(критерии) изменять не обязательно. (могут оставаться не измененными.)</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">пожайлуста внесите слово (название) и нажмите на поиск. опции(критерии) изменять не обязательно. (могут оставаться не измененными.)</Data></Cell>
     <Cell><Data ss:Type="String">कृप्या कोई पाठ को डाल्कर &quot;खोज&quot; पर दबाये। विकल्पें अधिकतम अवसर मे अपरिवर्तित रह सकते हे</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">رجاء إدخال المعطيات ثم الضغط على &quot;بحث&quot; ، في معظم الحالات يمكن الاحتفاظ بنفس الخيارات دون تغيير</Data></Cell>
     <Cell><Data ss:Type="String">Hãy nhập vào một Chuỗi và kích chuột vào &quot;tìm kiếm&quot;. Trong hầu hết các trường hợp, mục Các tùy chọn có thể vẫn không thay đổi.</Data></Cell>
@@ -5340,7 +5269,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">निम्नलिखित परिणामों को लोटायें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">عادت بالنتائج التالية</Data></Cell>
     <Cell><Data ss:Type="String">trả về các kết quả sau</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">החזיר את התוצאות הבאות</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">החזיר את התוצאות הבאות</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">SEARCH_RETURNEDSTATS</Data></Cell>
@@ -5419,7 +5348,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अन्वेषक-शैली</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">طراز المستكشف </Data></Cell>
     <Cell><Data ss:Type="String">Kiểu-Trình duyệt</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">סגנון אקספלורר</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">סגנון אקספלורר</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SITEMAPLAYOUT1</Data></Cell>
@@ -5458,7 +5387,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अन्वेषक-शैली</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">طراز المستكشف (AJAX)</Data></Cell>
     <Cell><Data ss:Type="String">Kiểu-Trình duyệt (AJAX)</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">סגנון אקספלורר (AJAX)</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">סגנון אקספלורר (AJAX)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSDOCUMENT</Data></Cell>
@@ -5493,7 +5422,7 @@
     <Cell ss:StyleID="s27"/>
     <Cell ss:Index="11" ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Môđun-Nội dung</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מודול תוכן</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מודול תוכן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSOBJECT</Data></Cell>
@@ -5507,7 +5436,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पृष्ठ-अंश</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">عنصر صفحة</Data></Cell>
     <Cell><Data ss:Type="String">Thành phần-Trang</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רכיב בעמוד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רכיב בעמוד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSOBJECTS</Data></Cell>
@@ -5521,7 +5450,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">पृष्ठ-अंश</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">عناصر صفحة</Data></Cell>
     <Cell><Data ss:Type="String">Các thành phần-Trang</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רכיבים  בעמוד</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רכיבים  בעמוד</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSPACKAGE</Data></Cell>
@@ -5686,7 +5615,7 @@
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Định dạng đặc tính</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עיצוב גופן</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עיצוב גופן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_CONFIGURATION</Data></Cell>
@@ -5829,7 +5758,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">जीवित</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مباشر</Data></Cell>
     <Cell><Data ss:Type="String">Sống</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">חיי</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">חיי</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_LOCKED</Data></Cell>
@@ -5869,7 +5798,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">अधि अंकड़े</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">توصيف البيانات</Data></Cell>
     <Cell><Data ss:Type="String">Các đặc tính-meta</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מטא-תכונות</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מטא-תכונות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ZMSLog</Data></Cell>
@@ -5880,7 +5809,7 @@
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Người đăng nhập</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">רשומה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">רשומה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ZMSFormatProvider</Data></Cell>
@@ -5905,7 +5834,7 @@
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Mô hình-Nội dung</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">דגם-תוכן</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">דגם-תוכן</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_METAOBJ</Data></Cell>
@@ -5917,21 +5846,6 @@
     <Cell ss:StyleID="s28"/>
     <Cell><Data ss:Type="String">Các đối tượng-Nội dung</Data></Cell>
     <Cell><Data ss:Type="String">פריטי -תוכן</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">TAB_OWNERSHIP</Data></Cell>
-    <Cell><Data ss:Type="String">Eigentümer</Data></Cell>
-    <Cell><Data ss:Type="String">Ownership</Data></Cell>
-    <Cell><Data ss:Type="String">Propriété</Data></Cell>
-    <Cell><Data ss:Type="String">Proprieta</Data></Cell>
-    <Cell><Data ss:Type="String">Propiedad</Data></Cell>
-    <Cell><Data ss:Type="String">所有濃</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">مالکيت</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">владелец </Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">मलकियत</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الملكية</Data></Cell>
-    <Cell><Data ss:Type="String">Sự sở hữu</Data></Cell>
-    <Cell><Data ss:Type="String">בעלות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_PREVIEW</Data></Cell>
@@ -6046,7 +5960,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">कार्यें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مهام</Data></Cell>
     <Cell><Data ss:Type="String">Các nhiệm vụ</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">מטלות</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">מטלות</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_TEXTFORMATS</Data></Cell>
@@ -6060,7 +5974,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">संरूपें</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">تنضيد</Data></Cell>
     <Cell><Data ss:Type="String">Các định dạng đoạn văn</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">עיצוב פסקה</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">עיצוב פסקה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW</Data></Cell>
@@ -6073,16 +5987,6 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">تسلسل العمل</Data></Cell>
     <Cell><Data ss:Type="String">Lịch trình công việc</Data></Cell>
     <Cell><Data ss:Type="String">מהלך עבודה</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">TAB_WAIT</Data></Cell>
-    <Cell><Data ss:Type="String">Bitte warten</Data></Cell>
-    <Cell><Data ss:Type="String">Please wait</Data></Cell>
-    <Cell ss:Index="9" ss:StyleID="s29"/>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">क्रिप्या इन्तज़ार करे</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">رجاء الإنتظار</Data></Cell>
-    <Cell><Data ss:Type="String">Hãy đợi</Data></Cell>
-    <Cell><Data ss:Type="String">אנא המתן</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">TASK_CHANGED_BY_DATE</Data></Cell>
@@ -6148,7 +6052,7 @@
     <Cell ss:StyleID="s26"><Data ss:Type="String">سايت</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">WWW-сейт</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">वेब स्थल</Data></Cell>
-    <Cell ss:StyleID="s30"><Data ss:Type="String">www-موقع</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">www-موقع</Data></Cell>
     <Cell><Data ss:Type="String">trang-www</Data></Cell>
     <Cell><Data ss:Type="String">אתר-www</Data></Cell>
    </Row>
@@ -6236,7 +6140,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">कड़ी समूह</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مجموعة روابط</Data></Cell>
     <Cell><Data ss:Type="String">Tập hợp liên kết</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">אוסף לינקים</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">אוסף לינקים</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSLINKELEMENT</Data></Cell>
@@ -6294,7 +6198,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">एस क्यू एल- अंकड़े स्रोत</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">مصدر SQL</Data></Cell>
     <Cell><Data ss:Type="String">Nguồn dữ liệu-SQL</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">SQL מקור נתונים </Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">SQL מקור נתונים </Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSSYSFOLDER</Data></Cell>
@@ -6383,111 +6287,6 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">سلة المهملات</Data></Cell>
     <Cell><Data ss:Type="String">Thùng rác</Data></Cell>
     <Cell><Data ss:Type="String">סל מיחזור</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY0</Data></Cell>
-    <Cell><Data ss:Type="String">Montag</Data></Cell>
-    <Cell><Data ss:Type="String">Monday</Data></Cell>
-    <Cell><Data ss:Type="String">Lundi</Data></Cell>
-    <Cell><Data ss:Type="String">Lunedi</Data></Cell>
-    <Cell><Data ss:Type="String">Lunes</Data></Cell>
-    <Cell><Data ss:Type="String">星期一</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">دوشنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">понедельник</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">सोमवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الأثنين</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ hai</Data></Cell>
-    <Cell><Data ss:Type="String">יום שני</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY1</Data></Cell>
-    <Cell><Data ss:Type="String">Dienstag</Data></Cell>
-    <Cell><Data ss:Type="String">Tuesday</Data></Cell>
-    <Cell><Data ss:Type="String">Mardi</Data></Cell>
-    <Cell><Data ss:Type="String">Martedi</Data></Cell>
-    <Cell><Data ss:Type="String">Martes</Data></Cell>
-    <Cell><Data ss:Type="String">星期二</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">سه شنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">вторник</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">मंगलवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الثلاثاء</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ ba</Data></Cell>
-    <Cell><Data ss:Type="String">יום שלישי</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY2</Data></Cell>
-    <Cell><Data ss:Type="String">Mittwoch</Data></Cell>
-    <Cell><Data ss:Type="String">Wednesday</Data></Cell>
-    <Cell><Data ss:Type="String">Mercredi</Data></Cell>
-    <Cell><Data ss:Type="String">Mercoledi</Data></Cell>
-    <Cell><Data ss:Type="String">Miércoles</Data></Cell>
-    <Cell><Data ss:Type="String">星期三</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">چهارشنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">среда</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">बुधवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الأربعاء</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ tư</Data></Cell>
-    <Cell><Data ss:Type="String">יום רביעי</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY3</Data></Cell>
-    <Cell><Data ss:Type="String">Donnerstag</Data></Cell>
-    <Cell><Data ss:Type="String">Thursday</Data></Cell>
-    <Cell><Data ss:Type="String">Jeudi</Data></Cell>
-    <Cell><Data ss:Type="String">Giovedi</Data></Cell>
-    <Cell><Data ss:Type="String">Jueves</Data></Cell>
-    <Cell><Data ss:Type="String">星期四</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">پنج شنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">четверг</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">बृहस्पतिवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الخميس</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ năm</Data></Cell>
-    <Cell><Data ss:Type="String">יום חמישי</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY4</Data></Cell>
-    <Cell><Data ss:Type="String">Freitag</Data></Cell>
-    <Cell><Data ss:Type="String">Friday</Data></Cell>
-    <Cell><Data ss:Type="String">Vendredi</Data></Cell>
-    <Cell><Data ss:Type="String">Venerdi</Data></Cell>
-    <Cell><Data ss:Type="String">Viernes</Data></Cell>
-    <Cell><Data ss:Type="String">星期五</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">جمعه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">пятница</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">शुक्रवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الجمعة</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ sáu</Data></Cell>
-    <Cell><Data ss:Type="String">יום שישי</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY5</Data></Cell>
-    <Cell><Data ss:Type="String">Samstag</Data></Cell>
-    <Cell><Data ss:Type="String">Saturday</Data></Cell>
-    <Cell><Data ss:Type="String">Samedi</Data></Cell>
-    <Cell><Data ss:Type="String">Sabato</Data></Cell>
-    <Cell><Data ss:Type="String">Sábado</Data></Cell>
-    <Cell><Data ss:Type="String">星期六</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">شنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">суббота</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">शनिवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">السبت</Data></Cell>
-    <Cell><Data ss:Type="String">Thứ bảy</Data></Cell>
-    <Cell><Data ss:Type="String">יום שבת</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">WEEKDAY6</Data></Cell>
-    <Cell><Data ss:Type="String">Sonntag</Data></Cell>
-    <Cell><Data ss:Type="String">Sunday</Data></Cell>
-    <Cell><Data ss:Type="String">Dimanche</Data></Cell>
-    <Cell><Data ss:Type="String">Domenica</Data></Cell>
-    <Cell><Data ss:Type="String">Domingo</Data></Cell>
-    <Cell><Data ss:Type="String">星期日</Data></Cell>
-    <Cell ss:StyleID="s26"><Data ss:Type="String">يکشنبه</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">воскресенье</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">रविवार</Data></Cell>
-    <Cell ss:StyleID="s28"><Data ss:Type="String">الأحد</Data></Cell>
-    <Cell><Data ss:Type="String">Chủ nhật</Data></Cell>
-    <Cell><Data ss:Type="String">יום ראשון</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">DAYOFWEEK0</Data></Cell>
@@ -6648,11 +6447,12 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
-   <TopRowVisible>441</TopRowVisible>
+   <TopRowVisible>147</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>469</ActiveRow>
+     <ActiveRow>158</ActiveRow>
+     <RangeSelection>R159</RangeSelection>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

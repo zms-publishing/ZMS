@@ -183,11 +183,11 @@
 
 <dtml-comment>
 ################################################################################
-### ZMI Logo
+### Logo (ZMI)
 ################################################################################
 </dtml-comment>
   <a name="_zmi_logo"></a>
-  <dtml-var "f_headline(_,_,headline=getZMILangStr('CAPTION_LOGO'))">
+  <dtml-var "f_headline(_,_,headline='Logo (ZMI)')">
   <table cellspacing="0" cellpadding="2" border="0" style="clear:left">
   <tr valign="middle">
    <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>

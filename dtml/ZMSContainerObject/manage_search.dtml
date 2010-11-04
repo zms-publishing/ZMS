@@ -170,7 +170,7 @@
       <div class="form-small">
        <dtml-if "ob.meta_id=='ZMSFile'">
         <dtml-let f="ob.getObjProperty('file',REQUEST)">
-         <dtml-if f><img src="<dtml-var "f.getMimeTypeIconSrc()">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
+         <dtml-if f><img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
          <a href="<dtml-var "url[:url.rfind('/')]">/manage_main?lang=<dtml-var lang>&preview=preview" class="zmi"
           ><b><dtml-var "search_quote(title)"></b></a>
          <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>

@@ -253,7 +253,7 @@ function changeType( el)
       s += '<' + 'dtml-let '+v+'=<dtml-if "metaObj['type']=='ZMSRecordSet'">"formatObjAttrValue(getObjAttr(\''+v+'\'),'+v+',lang)"<dtml-else>"'+obj_prop+'"</dtml-if>>\n';
       s += ' <' + 'dtml-if '+v+'>\n';
       s += '  <a href="<'+'dtml-var "'+v+'.getHref(REQUEST)">">\n';
-      s += '   <img src="<'+'dtml-var "'+v+'.getMimeTypeIconSrc()">" alt="<'+'dtml-var "'+v+'.getContentType()">" border="0" align="absmiddle" />\n';
+      s += '   <img src="<'+'dtml-var "getMimeTypeIconSrc('+v+'.getContentType())">" alt="<'+'dtml-var "'+v+'.getContentType()">" border="0" align="absmiddle" />\n';
       s += '   <' + 'dtml-var "'+v+'.getFilename()">\n';
       s += '  </a>\n';
       s += ' <' + '/dtml-if>\n';

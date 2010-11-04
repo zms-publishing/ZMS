@@ -193,7 +193,7 @@
    {'key':'ZMS.export.xml.tidy','title':'Export with HTML Tidy Library','desc':'ZMS can use the HTML Tidy Library to process inline (X)HTML in the XML export to avoid CDATA-sections.','datatype':'boolean'},
    {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (; separated).','datatype':'string','default':''},
    {'key':'ZMS.protected_mode','title':'Protected mode','desc':'ZMS can run in a protected mode.','datatype':'boolean'},
-   {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','rad_upload']},
+   {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','ajax_upload','rad_upload']},
    {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
    {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
    {'key':'ZMSGraphic.zmi_max_width','title':'Image.max_width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},
@@ -627,24 +627,11 @@ function confKeyChange(b)
 <dtml-var "f_headline(_,_,headline='Installed Products')">
 <table cellspacing="0" cellpadding="1" border="0">
   <tr valign="top">
-    <td class="form-small"><input class="form-checkbox" type="checkbox" name="pil:int" value="1" <dtml-if "getConfProperty('InstalledProducts.pil')==1">checked="checked"</dtml-if>></td>
+    <td class="form-small"><input class="form-checkbox" type="checkbox" name="pil:int" value="1" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
     <td class="form-small">
       <b><a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi">Python Imaging Library (PIL)</a><br/>required by Image-Processor</b><br/>
-      <dtml-if "Control_Panel.sys_platform().find('win')>=0">
-        <u>IMPORTANT NOTE</u>: The path to the <code>python.exe</code> <b>must be included</b> in the Windows PATH environment variable.
-        Also refer to <a href="http://www.zope.org/Members/SmileyChris/howto/pil_for_windows" class="zmi">Installing PIL into Zope for Windows</a> by SmileyChris
-      <dtml-elif "Control_Panel.sys_platform().find('linux')>=0">
-        <u>IMPORTANT NOTE</u>: The path to the <code>PIL</code> <b>must be included</b> in the PYTHONPATH environment variable.
-        You should replace <code>$PILHOME</code> with your local settings and include the following lines in your <code>/etc/profile.locale</code>:<br/>
-        <code>PYTHONPATH=$PILHOME/:$PILHOME/PIL</code><br/>
-        <code>export PYTHONPATH</code>
-      </dtml-if>
-      <dtml-if "getConfProperty('InstalledProducts.pil')">
+      <dtml-if "pilutil().enabled()">
       <table cellspacing="0" cellpadding="0" border="0">
-      <tr valign="middle">
-       <td class="form-small">Python-Path</td>
-       <td class="form-small"><input class="form-small" type="text" name="pil_pythonpath" value="<dtml-var "getConfProperty('InstalledProducts.pil.pythonpath','python')">"></td>
-      </tr>
       <tr valign="middle">
        <td class="form-small">HighRes with Auto-Thumbnail max.</td>
        <td class="form-small"><input class="form-small" type="text" name="pil_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">" size="4" style="text-align:right">px</td>

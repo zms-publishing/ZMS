@@ -2,34 +2,26 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
 // ############################################################################
-// ### radioOnClick:
+// ### getZMILangStr:
 // ############################################################################
-function radioOnClick(el, url) {
-  location.href = url + '?lang=<dtml-var lang>&amp;' + el.name + '=' + escape(el.value);
+function getZMILangStr(key) {
+	var langDict = {
+		<dtml-in "['MSG_CONFIRM_DELOBJ']"><dtml-let si=sequence-item>
+		'<dtml-var si>':'<dtml-var "getZMILangStr(si)">'<dtml-unless sequence-end>,</dtml-unless></dtml-let></dtml-in>
+	};
+	var langStr = langDict[key];
+	if (typeof langStr == 'string') {
+		return langStr;
+	}
+	return key;
 }
 
 
 // ############################################################################
-// ### zmiDelBlobBtnClick:
+// ### radioOnClick:
 // ############################################################################
-function zmiDelBlobBtnClick(elName) {
-  if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
-    $('input[name=del_'+elName+']').val(1);
-    $('div#table_'+elName).hide('normal');
-    $('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
-    var img = $('img#img_'+elName);
-    if (img.length > 0) {
-      img.css({border:'1px solid red'});
-      var div = $('div#div_opaque_'+elName);
-      var pos = img.position();
-      div.css({
-        position:'absolute',
-        left:pos.left,
-        top:pos.top,
-        width:img.outerWidth(),
-        height:img.outerHeight()});
-    }
-  }
+function radioOnClick(el, url) {
+  location.href = url + '?lang=<dtml-var lang>&amp;' + el.name + '=' + escape(el.value);
 }
 
 

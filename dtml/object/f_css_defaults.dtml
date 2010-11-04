@@ -131,6 +131,15 @@ a.fancybox img {
 	background:#fff url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
 }
 
+div.ZMSGraphic_extEdit_action {
+	margin:0px 0px 20px 0px;
+}
+
+a.ZMSGraphic_extEdit_action img {
+	padding:1px 1px 9px 1px;
+	background:transparent url(<dtml-var MISC_ZMS>ico_plus.gif) bottom right no-repeat;
+}
+
 div.ZMSGraphic {
 	background-color: #F8F8F8;
 	margin: 4px;

@@ -142,7 +142,7 @@ class ZMSCustom(ZMSContainerObject):
     __authorPermissions__ = (
         'manage','manage_main','manage_container','manage_workspace',
         'manage_addZMSModule',
-        'manage_properties','manage_changeProperties',
+        'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_deleteObjs','manage_undoObjs','manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',

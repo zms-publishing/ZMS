@@ -1,0 +1,6 @@
+Components
+=============
+Widgets
+-------------
+[X] Slider
+[X] Datepicker

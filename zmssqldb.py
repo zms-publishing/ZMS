@@ -108,7 +108,7 @@ class ZMSSqlDb(ZMSObject):
         'manage_ajaxQuery', 'manage_exportexcel',
         )
     __administratorPermissions__ = (
-        'manage_properties','manage_changeProperties',
+        'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_configuration', 'manage_changeConfiguration',
         'manage_sql', 
         )

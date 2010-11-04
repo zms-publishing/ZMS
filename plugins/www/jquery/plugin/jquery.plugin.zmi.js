@@ -2,10 +2,16 @@
 // ### Notification Service
 // ############################################################################
 
+/**
+ *
+ */
 function zmiGetNotifications() {
 	$.get('getNotifications',
 		{},
 		function(data) {
+			if (data.length==0) {
+				return;
+			}
 			var notifications = eval('('+data+')');
 			var maxseverity = null;
 			var html = '';
@@ -38,14 +44,22 @@ function zmiGetNotifications() {
 					'');
 				pluginFancybox('a[href=#ZMIManageTabsNotificationsDiv]',function() {
 					$('a[href=#ZMIManageTabsNotificationsDiv]').fancybox({
-						});
 					});
+				});
 			}
-			setTimeout('zmiGetNotifications()',5000);
+			setTimeout('zmiGetNotifications()',60000);
 		});
 }
+
+/**
+ *
+ */
 function zmiClearNotifications() {
 }
+
+/**
+ *
+ */
 $(function() {
 	pluginFancybox('body',function() {});
 	zmiGetNotifications();
@@ -149,3 +163,4 @@ function getDate(s) {
       }
   }
 }
+

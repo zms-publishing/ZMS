@@ -175,7 +175,7 @@ class ObjTypes:
           imgtag += '<div class="caption">'
           imgtag += '<a href="%s"><img src="%smime_type.image_basic.gif" title="%s" border="0" align="middle" /></a>&nbsp;'%(s_url,self.MISC_ZMS,imghires.getContentType())
           imgtag += '<a href="%s">%s</a>&nbsp;'%(s_url,imghires.filename)
-          imgtag += '<b>(%s)</b>'%imghires.getDataSizeStr()
+          imgtag += '<b>(%s)</b>'%self.getDataSizeStr(imghires.get_size())
           imgtag += '</div>'
           
       else:
@@ -242,7 +242,7 @@ class ObjTypes:
         elif len(imgzoomattr) > 0:
           s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
           imgzoomclazz = 'zoom'
-          imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),imgzoomobj.getDataSizeStr())
+          imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),self.getDataSizeStr(imgzoomobj.get_size()))
           
           # Zoom (SuperRes).
           # ----------------

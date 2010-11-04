@@ -1,0 +1,90 @@
+<!-- BO plugins/fileupload/valums-file-uploader/input.dtml -->
+
+<dtml-comment>
+################################################################################
+### Ajax Upload
+###  A file upload script with progress-bar, drag-and-drop.
+###  please refer to http://valums.com/ajax-upload/
+################################################################################
+</dtml-comment>
+
+<dtml-unless "REQUEST.get('f_zmiFileUpload')">
+<link rel="stylesheet" type="text/css" href="/++resource++zms_/fileupload/ajax_upload/fileuploader.css" />
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/fileupload/ajax_upload/fileuploader.js"></script>
+<style>
+.qq-upload-button {
+	display:block; /* or inline-block */
+	text-align:center;
+	padding: 1px 3px;
+	margin:2px;
+	background-image:url(/misc_/zms/zmisubmit.gif);
+	font-size: 10px;
+	color: #323232;
+	border: solid 1px #919191;
+}
+.qq-upload-button-hover {
+}
+</style>
+<dtml-call "REQUEST.set('f_zmiFileUpload',True)">
+</dtml-unless>
+<script>
+$(function() {
+		var $fu = $('div#file-uploader-<dtml-var key>')[0];
+		var uploader = new qq.FileUploader({
+				// pass the dom node (ex. $(selector)[0] for jQuery users)
+				element: $fu,
+				// path to server-side upload script
+				action: '<dtml-var absolute_url>/preloadObjProperty',
+				// additional data to send, name-value pairs
+				params: {
+					<dtml-if ZMS_INSERT>'meta_id':'<dtml-var ZMS_INSERT>',</dtml-if>
+					'lang':'<dtml-var lang>',
+					'key':'<dtml-var key>',
+					'session_id':'<dtml-var "SESSION.getId()">',
+					'form_id':'<dtml-var ZMI_TIME>',
+					'dataRequestKey':'qqfile',
+					'filenameUnescape':'1'
+				},
+				// validation
+				// ex. ['jpg', 'jpeg', 'png', 'gif'] or []
+				allowedExtensions: [],
+				// each file size limit in bytes
+				// this option isn't supported in all browsers
+				sizeLimit: 0, // max size
+				minSizeLimit: 0, // min size
+				
+				// set to true to output server response to console
+				debug: false,
+				
+				// events
+				// you can return false to abort submit
+				onSubmit: function(id, fileName){},
+				onProgress: function(id, fileName, loaded, total){},
+				onComplete: function(id, fileName, responseJSON){
+					$.get('getTempBlobjPropertyUrl',{
+							'lang':'<dtml-var lang>',
+							'key':'<dtml-var key>',
+							'session_id':'<dtml-var "SESSION.getId()">',
+							'form_id':'<dtml-var ZMI_TIME>'
+						},
+						function(data) {
+							var img = eval('('+data+')');
+							var togglePil = 
+							ZMSGraphic_extEdit_set('<dtml-var elName>', img['src'], img['filename'], img['width'], img['height'],'<dtml-if "pilutil().enabled()"><dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')"></dtml-if>');
+						}
+					);
+				},
+				onCancel: function(id, fileName){
+				},
+				messages: {
+					// error messages, see qq.FileUploaderBasic for content
+				},
+				showMessage: function(message){
+					alert(message);
+				}
+			});
+});
+</script>
+<div id="file-uploader-<dtml-var key>"></div>
+
+<!-- EO plugins/fileupload/valums-file-uploader/input.dtml -->

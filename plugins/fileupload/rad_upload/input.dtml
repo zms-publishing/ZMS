@@ -38,7 +38,7 @@ function uploadCompleted() {
 <param name="archive" value="http://bscw.hoffmannliebenberg.de/pub/bscw.cgi/d881805/dndplus.jar">
 <param name="code" value="com.radinks.dnd.DNDAppletPlus">
 <param name="name" value="Rad Upload Plus">
-<param name="url" value = "<dtml-var absolute_url>/uploadObjProperty?lang=<dtml-var lang>&key=<dtml-var key>&session_id=<dtml-var "SESSION.getId()">&form_id=<dtml-var ZMI_TIME><dtml-if ZMS_INSERT>&ZMS_INSERT=<dtml-var ZMS_INSERT></dtml-if>">
+<param name="url" value = "<dtml-var absolute_url>/preloadObjProperty?lang=<dtml-var lang>&key=<dtml-var key>&session_id=<dtml-var "SESSION.getId()">&form_id=<dtml-var ZMI_TIME><dtml-unless ZMS_INSERT>&set:int=1</dtml-unless>">
 <param name="message" value="Drag and drop or copy and paste (ctrl-C, ctrl-V) your files">
 <param name="name" value="Rad Upload Plus">
 <dtml-if elMaxlength><param name="max_upload" value="<dtml-var elMaxlength>"></dtml-if>

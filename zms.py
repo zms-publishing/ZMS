@@ -650,7 +650,7 @@ class ZMS(
     # Version-Info.
     # -------------
     zms_build = '133'        # Internal use only, designates object model!
-    zms_patch = 'a'          # Internal use only!
+    zms_patch = 'b'          # Internal use only!
 
     # Properties.
     # -----------
@@ -686,7 +686,7 @@ class ZMS(
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
-        'manage_properties','manage_changeProperties',
+        'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_search','manage_search_attrs','manage_tasks',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',

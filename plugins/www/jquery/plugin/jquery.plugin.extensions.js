@@ -62,6 +62,18 @@ $(function(){
 });
 
 
+/* jQuery UI
+ * @see http://jqueryui.com
+ */
+function pluginUI(s, c) {
+	$.plugin('ui',{
+		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.5.custom.min.js',
+				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.5.custom.css']
+		});
+	$.plugin('ui').get(s,c);
+}
+
+
 /* Fancybox
  * @see http://fancybox.net/
  */
@@ -111,4 +123,16 @@ function pluginJEC(s, c) {
 		files: ['/++resource++zms_/jquery/jec/jquery.jec.min-0.5.2.js']
 	});
 	$.plugin('jec').get(s,c);
+}
+
+
+/* Jcrop - the jQuery Image Cropping Plugin
+ * @see http://deepliquid.com/content/Jcrop.html
+ */
+function pluginJcrop(s, c) {
+	$.plugin('jcrop',{
+		files: ['/++resource++zms_/jquery/jcrop/jquery.Jcrop.min.js',
+				'/++resource++zms_/jquery/jcrop/jquery.Jcrop.css']
+		});
+	$.plugin('jcrop').get(s,c);
 }

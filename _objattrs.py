@@ -1040,7 +1040,25 @@ class ObjAttrs:
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
-      
+        
+        # Attributes
+        obj_vers = self.getObjVersion(REQUEST)
+        orig = self._getObjAttrValue(obj_attr,obj_vers,lang)
+        if orig is not None:
+          blob = None
+          # Resize
+          if REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
+            w = REQUEST['width_%s'%attr]
+            h = REQUEST['height_%s'%attr]
+            if w != int(orig.width) or h != int(orig.height):
+              #--print '_objattrs: resize',orig.width,'x',orig.height,' to ',w,'x',h
+              if not self.pilutil().enabled():
+                blob = orig
+                blob.width = w
+                blob.height = h
+          if blob:
+            self.setObjProperty( key, blob, lang)
+        
         # Upload
         if isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
           set, value = True, value
@@ -1049,21 +1067,18 @@ class ObjAttrs:
         elif REQUEST.has_key('del_%s'%attr) and int(REQUEST['del_%s'%attr]) == 1:
           set, value = True, None
         
-        # Insert
-        elif REQUEST.get('ZMS_INSERT',None) is not None:
-          # Reset
-          set, value = True, None
-          # Preload
+        # Preload
+        else:
           SESSION = REQUEST.get('SESSION',None)
           form_id = REQUEST.get('form_id',None)
           if SESSION is not None and form_id is not None:
-            session_id = SESSION.getId()
+            session_id = REQUEST.get('session_id',SESSION.getId())
             temp_folder = self.temp_folder
             id = session_id + '_' + form_id + '_' + key
             if id in temp_folder.objectIds():
               f = getattr( temp_folder, id).data
               filename = getattr( temp_folder, id).title
-              value = {'data':f,'filename':filename}
+              set, value = True, {'data':f,'filename':filename}
               temp_folder.manage_delObjects([id])
       
       #-- Integer-Fields
@@ -1195,12 +1210,14 @@ class ObjAttrs:
 
 
     ############################################################################
-    #  ObjAttrs.uploadObjProperty:
+    #  ObjAttrs.preloadObjProperty:
     #
-    #  Upload property.
+    #  Preload property.
     ############################################################################
-    def uploadObjProperty(self, REQUEST, RESPONSE=None):
-      """ ObjAttrs.uploadObjProperty """
+    def preloadObjProperty(self, REQUEST, RESPONSE=None):
+      """ ObjAttrs.preloadObjProperty """
+      content_type = 'text/plain'
+      message = '{"success":true}'
       # Additional parameters.
       for qs in REQUEST['QUERY_STRING'].split('&'):
         e = qs.find('=')
@@ -1208,26 +1225,170 @@ class ObjAttrs:
           k = qs[:e]
           v = qs[e+1:]
           REQUEST.set(k,v)
+      
       # Mandatory parameters.
       lang = REQUEST['lang']
       key = REQUEST['key']
-      value = REQUEST['userfile[0]']
-      # Handle request.
-      if REQUEST.get('ZMS_INSERT'):
-        #-- INSERT: Add to temp-folder.
-        session_id = REQUEST['session_id']
-        form_id = REQUEST['form_id']
+      
+      dataRequestKey = REQUEST.get('dataRequestKey')
+      filenameUnescape = REQUEST.get('filenameUnescape')
+      if dataRequestKey:
+        value = REQUEST[dataRequestKey]
+        if isinstance(value,ZPublisher.HTTPRequest.FileUpload):
+          filename = value.filename
+        else:
+          filename = value
+          value = REQUEST['BODY']
+          if filenameUnescape:
+            filename = _globals.unescape(filename)
+      else:
+        value = REQUEST['userfile[0]']
+        filename = value.filename
+      blob = self.ImageFromData(value,filename)
+      filename = blob.getFilename()
+      
+      # Preload to temp-folder.
+      session_id = REQUEST['session_id']
+      form_id = REQUEST['form_id']
+      temp_folder = self.temp_folder
+      id = session_id + '_' + form_id + '_' + key
+      if id in temp_folder.objectIds():
+        temp_folder.manage_delObjects([id])
+      meta_id = REQUEST.get('meta_id',self.meta_id)
+      obj_attr = self.getObjAttr(key,meta_id)
+      datatype = obj_attr['datatype_key']
+      if datatype == _globals.DT_IMAGE:
+        file = temp_folder.manage_addImage( id=id, title=filename, file=value)
+      else:
+        file = temp_folder.manage_addFile( id=id, title=filename, file=value)
+      
+      if REQUEST.get('set'):
+        self.setReqProperty(key,REQUEST)
+        message = self.getZMILangStr( 'MSG_UPLOADED')+'('+self.getLangFmtDate(time.time())+')'
+      
+      # Return with success.
+      RESPONSE.setHeader('Content-Type',content_type)
+      return message
+
+
+    def manage_changeTempBlobjProperty(self, lang, key, form_id, action, REQUEST, RESPONSE=None):
+      """ ObjAttrs.manage_changeTempBlobjProperty """
+      rtn = {}
+      # Mandatory parameters.
+      SESSION = REQUEST.get('SESSION',None)
+      if SESSION is not None:
+        session_id = SESSION.getId()
         temp_folder = self.temp_folder
         id = session_id + '_' + form_id + '_' + key
+        src = self.getTempBlobjPropertyUrl( format=None, REQUEST=REQUEST, RESPONSE=RESPONSE)['src']
+        file = getattr( temp_folder, id)
+        orig = self.ImageFromData(file.data,file.title)
+        orig.lang = lang
+        if action == 'preview':
+          maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max',100)
+          blob = self.pilutil().thumbnail( orig, maxdim)
+          thumbkey = key
+          for suffix in ['hires','superres']:
+            if thumbkey.endswith(suffix):
+              thumbkey = thumbkey[:-len(suffix)]
+              break
+          thumbid = session_id + '_' + form_id + '_' + thumbkey
+          if thumbid in temp_folder.objectIds():
+            temp_folder.manage_delObjects([thumbid])
+          temp_folder.manage_addImage( id=thumbid, title=blob.getFilename(), file=blob.getData())
+          file = getattr( temp_folder, thumbid)
+          meta_id = REQUEST.get('meta_id',self.meta_id)
+          obj_attr = self.getObjAttr(thumbkey,meta_id)
+          elName = self.getObjAttrName(obj_attr,lang)
+          rtn['elName'] = elName
+          rtn['height'] = int(file.getProperty('height'))
+          rtn['width'] = int(file.getProperty('width'))
+          rtn['filename'] = blob.getFilename()
+          rtn['src'] = self.url_append_params(file.absolute_url(),{'ts':time.time()})
+          # extra
+          rtn['lang'] = thumbkey
+          rtn['key'] = thumbkey
+          rtn['form_id'] = form_id
+        elif action == 'crop':
+          x0 = REQUEST['x0']
+          y0 = REQUEST['y0']
+          x1 = REQUEST['x1']
+          y2 = REQUEST['y2']
+          box = (x0, y0, x1, y2)
+          blob = self.pilutil().crop( orig, box)
+          file.manage_upload(blob.getData())
+          rtn['height'] = y2-y0
+          rtn['width'] = x1-x0
+          rtn['filename'] = blob.getFilename()
+          rtn['src'] = src
+        elif action == 'resize':
+          width = REQUEST['width']
+          height = REQUEST['height']
+          size = (width,height)
+          blob = self.pilutil().resize( orig, size)
+          file.manage_upload(blob.getData())
+          rtn['height'] = height
+          rtn['width'] = width
+          rtn['filename'] = blob.getFilename()
+          rtn['src'] = src
+      # Return JSON.
+      return self.str_json(rtn)
+
+
+    def getTempBlobjPropertyUrl(self, format='json', REQUEST=None, RESPONSE=None):
+      """ ObjAttrs.getTempBlobjPropertyUrl """
+      rtn = {}
+      # Mandatory parameters.
+      lang = REQUEST['lang']
+      key = REQUEST['key']
+      SESSION = REQUEST.get('SESSION',None)
+      form_id = REQUEST.get('form_id',None)
+      if SESSION is not None and form_id is not None:
+        session_id = SESSION.getId()
+        temp_folder = self.temp_folder
+        id = session_id + '_' + form_id + '_' + key
+        if id not in temp_folder.objectIds():
+          obj_attr = self.getObjAttr(key)
+          datatype = obj_attr['datatype_key']
+          blob = self.getObjProperty(key,REQUEST)
+          filename = blob.getFilename()
+          value = blob.getData()
+          if datatype == _globals.DT_IMAGE:
+            file = temp_folder.manage_addImage( id=id, title=filename, file=value)
+          else:
+            file = temp_folder.manage_addFile( id=id, title=filename, file=value)
+        file = getattr( temp_folder, id)
+        if file.meta_type == 'Image':
+          rtn['height'] = int(file.getProperty('height'))
+          rtn['width'] = int(file.getProperty('width'))
+        rtn['content_type'] = file.content_type
+        rtn['filename'] = file.title
+        rtn['src'] = self.url_append_params(file.absolute_url(),{'ts':time.time()})
+      # Return JSON.
+      if format == 'json':
+        rtn = self.str_json(rtn)
+      return rtn
+
+
+    def clearTempBlobjProperty(self, format='json', REQUEST=None, RESPONSE=None):
+      """ ObjAttrs.clearTempBlobjProperty """
+      rtn = {}
+      # Mandatory parameters.
+      lang = REQUEST['lang']
+      key = REQUEST['key']
+      SESSION = REQUEST.get('SESSION',None)
+      form_id = REQUEST.get('form_id',None)
+      if SESSION is not None and form_id is not None:
+        session_id = SESSION.getId()
+        temp_folder = self.temp_folder
+        id = session_id + '_' + form_id + '_' + key
+        print id, temp_folder.objectIds()
         if id in temp_folder.objectIds():
           temp_folder.manage_delObjects([id])
-        file = temp_folder.manage_addFile( id=id, title=value.filename, file=value)
-      else:
-        #-- SAVE: Set property.
-        self.setObjProperty( key, value, lang)
-      # Return with message.
-      message = self.getZMILangStr( 'MSG_UPLOADED')+'('+self.getLangFmtDate(time.time())+')'
-      return message
+      # Return JSON.
+      if format == 'json':
+        rtn = self.str_json(rtn)
+      return rtn
 
 
     # --------------------------------------------------------------------------

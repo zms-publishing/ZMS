@@ -97,7 +97,7 @@ class ZMSLinkContainer(ZMSContainerObject):
     __authorPermissions__ = (
 		'manage','manage_main','manage_workspace',
 		'manage_deleteObjs','manage_undoObjs',
-		'manage_properties','manage_changeProperties',
+		'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
 		'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
 		'manage_wfTransition', 'manage_wfTransitionFinalize',
 		'manage_ajaxFilteredChildActions',

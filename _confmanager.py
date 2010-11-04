@@ -728,7 +728,6 @@ class ConfManager(
       elif key == 'InstalledProducts':
         if btn == 'Change':
           self.setConfProperty('InstalledProducts.pil',REQUEST.get('pil',None))
-          self.setConfProperty('InstalledProducts.pil.pythonpath',REQUEST.get('pil_pythonpath','python'))
           self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',0))
           message = self.getZMILangStr('MSG_CHANGED')

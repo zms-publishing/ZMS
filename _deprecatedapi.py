@@ -202,4 +202,80 @@ class DeprecatedAPI:
     print "[manage_addZMSTextarea]: @deprecated!"
     return self.manage_addZMSCustom('ZMSTextarea',values,REQUEST)
 
+  # --------------------------------------------------------------------------
+  #  DeprecatedAPI.pil_img_*:
+  # --------------------------------------------------------------------------
+  def createThumbnail( self, img, maxdim=100, qual=75):
+    """
+    Creates thumbnail of given image.
+    @param img: Image
+    @type img: C{MyImage}
+    @param qual: JPEG quality (default: 75)
+    @type qual: C{int}
+    @return: Thumbnail
+    @rtype: C{MyImage}
+    """
+    warnings.warn('Using <%s @ %s>.createThumbnail(...) is deprecated.'
+                 ' Use pilutil().thumbnail(...) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
+    return self.pilutil().thumbnail( img, maxdim, qual)
+
+  def pil_img_resize( self, img, size, mode='resize', sffx='_thumbnail', qual=75):
+    """
+    Returns a resized copy of an image. The size argument gives the requested
+    size in pixels, as a 2-tuple: (width, height).
+    @param img: Image
+    @type img: C{MyImage}
+    @param size: Size 2-tuple: (width, height)
+    @type size: C{tuple}
+    @param mode: Mode
+    @type mode: C{string}
+    @param qual: JPEG quality (default: 75)
+    @type qual: C{int}
+    @return: Resized image
+    @rtype: C{MyImage}
+    """
+    warnings.warn('Using <%s @ %s>.pil_img_resize(...) is deprecated.'
+                 ' Use pilutil().resize(...) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
+    return self.pilutil().resize( img, size, mode, sffx, qual)
+
+  def pil_img_crop( self, img, box, qual=75):
+    """
+    Returns a rectangular region from the current image. The box is a 4-tuple 
+    defining the left, upper, right, and lower pixel coordinate.
+    @param img: Image
+    @type img: C{MyImage}
+    @param box Box 4-tuple: (left, upper, right, bottom)
+    @param qual: JPEG quality (default: 75)      
+    @type box: C{tuple}
+    @return: Cropped image
+    @rtype: C{MyImage}
+    """
+    warnings.warn('Using <%s @ %s>.pil_img_crop(...) is deprecated.'
+                 ' Use pilutil().crop(...) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
+    return self.pilutil().crop( img, box, qual)
+
+  def pil_img_rotate( self, img, direction, qual=75):
+    """
+    Returns rotated version of the current image. Direction is a simple string 
+    defining either left (=90 degree rotation clockwise), right (-90 degree) or 180.
+    @param img: Image
+    @type img: C{MyImage}
+    @param direction string: left, right, 180
+    @param qual: JPEG quality (default: 75)
+    @type box: C{string}
+    @return: Rotated image
+    @rtype: C{MyImage}
+    """
+    warnings.warn('Using <%s @ %s>.pil_img_rotate(...) is deprecated.'
+                 ' Use pilutil().rotate(...) instead.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
+    return self.pilutil().rotate( img, direction, qual)
+
 ################################################################################

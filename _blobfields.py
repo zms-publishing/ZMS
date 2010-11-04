@@ -265,7 +265,7 @@ Process image-fields and shrink superres to hires and hires to lores.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImageFields(self, lang, REQUEST):
   message = ''
-  if self.getConfProperty('InstalledProducts.pil') == 1:
+  if self.pilutil().enabled():
     obj_attrs = self.getObjAttrs()
     for key in obj_attrs.keys():
       obj_attr = self.getObjAttr(key)
@@ -291,8 +291,8 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
         if _globals.debug( self): 
           _globals.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
-        loresImg = _pilutil.pil_img_conv(self,hiresImg,maxdim)
-        self.setObjProperty(loresKey,loresImg,lang)
+        thumb = self.pilutil().thumbnail( hiresImg, maxdim)
+        self.setObjProperty(loresKey,thumb,lang)
   except:
     _globals.writeError( self, '[thumbnailImage]')
   return message
@@ -645,7 +645,9 @@ class MyBlob:
         accept_ranges = parent.getConfProperty('ZMS.blobfields.accept_ranges','bytes')
         if len( accept_ranges) > 0:
           RESPONSE.setHeader('Accept-Ranges', accept_ranges)
-        cacheable = parent.hasPublicAccess() or parent.isCachedPage( REQUEST)
+        cacheable = not REQUEST.get('preview') == 'preview'
+        if cacheable: 
+          cacheable = parent.hasPublicAccess() or parent.isCachedPage( REQUEST)
         # Hook for custom cacheable rules: return True/False
         if cacheable:
           try:

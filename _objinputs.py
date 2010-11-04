@@ -185,7 +185,7 @@ class ObjInputs:
     html.append('<input ')
     html.append(' class="%s"'%css)
     html.append(' type="%s"'%type)
-    html.append(' id="%s"'%elName)
+    html.append(' id="%s"'%elName.replace(':int',''))
     html.append(' name="%s"'%elName)
     if size:
       html.append(' size="%i"'%size)

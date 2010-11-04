@@ -1246,70 +1246,11 @@ class ZMSGlobals:
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSGlobals.createThumbnail:
+    #  ZMSGlobals.pilutil:
     # --------------------------------------------------------------------------
-    def createThumbnail( self, img, maxdim=100, qual=75):
-      """
-      Creates thumbnail of given image.
-      @param img: Image
-      @type img: C{MyImage}
-      @param qual: JPEG quality (default: 75)
-      @type qual: C{int}
-      @return: Thumbnail
-      @rtype: C{MyImage}
-      """
-      return _pilutil.pil_img_conv( self, img, maxdim, qual)
+    def pilutil( self):
+      return _pilutil.pilutil(self)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.pil_img_resize:
-    # --------------------------------------------------------------------------
-    def pil_img_resize( self, img, size, mode='resize', sffx='_thumbnail', qual=75):
-      """
-      Returns a resized copy of an image. The size argument gives the requested
-      size in pixels, as a 2-tuple: (width, height).
-      @param img: Image
-      @type img: C{MyImage}
-      @param size: Size 2-tuple: (width, height)
-      @type size: C{tuple}
-      @param mode: Mode
-      @type mode: C{string}
-      @param qual: JPEG quality (default: 75)
-      @type qual: C{int}
-      @return: Resized image
-      @rtype: C{MyImage}
-      """
-      return _pilutil.pil_img_resize( self, img, size, mode, sffx, qual)
-
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.pil_img_crop:
-    # --------------------------------------------------------------------------
-    def pil_img_crop( self, img, box, qual=75):
-      """
-      Returns a rectangular region from the current image. The box is a 4-tuple 
-      defining the left, upper, right, and lower pixel coordinate.
-      @param img: Image
-      @type img: C{MyImage}
-      @param box Box 4-tuple: (left, upper, right, bottom)
-      @param qual: JPEG quality (default: 75)      
-      @type box: C{tuple}
-      @return: Cropped image
-      @rtype: C{MyImage}
-      """
-      return _pilutil.pil_img_crop( self, img, box, qual)
-
-    def pil_img_rotate( self, img, direction, qual=75):
-      """
-      Returns rotated version of the current image. Direction is a simple string 
-      defining either left (=90 degree rotation clockwise), right (-90 degree) or 180.
-      @param img: Image
-      @type img: C{MyImage}
-      @param direction string: left, right, 180
-      @param qual: JPEG quality (default: 75)
-      @type box: C{string}
-      @return: Rotated image
-      @rtype: C{MyImage}
-      """
-      return _pilutil.pil_img_rotate( self, img, direction, qual)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getZipArchive:
@@ -1634,7 +1575,7 @@ class ZMSGlobals:
         # Return name of weekday
         elif fmt_str == 'Day':
           dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
-          return self.getLangStr('WEEKDAY%i'%((dt.dow()-1)%7),lang)
+          return self.getLangStr('DAYOFWEEK%i'%((dt.dow()-1)%7),lang)
         # Return name of month
         elif fmt_str == 'Month':
           return self.getLangStr('MONTH%i'%t[1],lang)

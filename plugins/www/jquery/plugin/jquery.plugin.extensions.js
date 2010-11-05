@@ -67,8 +67,8 @@ $(function(){
  */
 function pluginUI(s, c) {
 	$.plugin('ui',{
-		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.5.custom.min.js',
-				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.5.custom.css']
+		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.6.custom.min.js',
+				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.6.custom.css']
 		});
 	$.plugin('ui').get(s,c);
 }

@@ -173,15 +173,10 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="461" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="462" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="60">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="193.5"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="198.75"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75" ss:Span="6"/>
-   <Column ss:Index="11" ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="107.25"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="571.5"/>
-   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="246.75"/>
+   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="108.75" ss:Span="11"/>
    <Row ss:StyleID="s22">
     <Cell ss:StyleID="s23"/>
     <Cell><Data ss:Type="String">ger</Data></Cell>
@@ -196,6 +191,21 @@
     <Cell><Data ss:Type="String">ara</Data></Cell>
     <Cell><Data ss:Type="String">vie</Data></Cell>
     <Cell><Data ss:Type="String">heb</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">LOCALE</Data></Cell>
+    <Cell><Data ss:Type="String">de</Data></Cell>
+    <Cell><Data ss:Type="String">en</Data></Cell>
+    <Cell><Data ss:Type="String">fr</Data></Cell>
+    <Cell><Data ss:Type="String">it</Data></Cell>
+    <Cell><Data ss:Type="String">es</Data></Cell>
+    <Cell><Data ss:Type="String">zh-CN</Data></Cell>
+    <Cell><Data ss:Type="String">fa</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">ru</Data></Cell>
+    <Cell><Data ss:Type="String">hi</Data></Cell>
+    <Cell><Data ss:Type="String">ar</Data></Cell>
+    <Cell><Data ss:Type="String">vi</Data></Cell>
+    <Cell><Data ss:Type="String">he</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="s25"><Data ss:Type="String">ABOUT</Data></Cell>
@@ -3909,7 +3919,7 @@
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã xóa.</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">%i  פריט(ים) נמחקו</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="63.75">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_DTMLGENERATOR</Data></Cell>
     <Cell><Data ss:Type="String">Generierung von DTML-Code per Mausklick auf das Icon rechts neben der jeweiligen Attribut-Definition!</Data></Cell>
     <Cell><Data ss:Type="String">Generate DTML-code by clicking on the icon right next to the attribute definiton.</Data></Cell>
@@ -3922,7 +3932,7 @@
     <Cell><Data ss:Type="String">Tạo ra mã DTML bằng cách kích chuột vào biểu tượng phía bên phải kế bên phần định nghĩa thuộc tính.</Data></Cell>
     <Cell ss:StyleID="s30"><Data ss:Type="String">תייצור קוד DTML ע&quot;י הקשה על האייקון שצמוד להגדרת המאפיין</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_EMPTYCONTAINER</Data></Cell>
     <Cell><Data ss:Type="String">Es gibt keine Objekte in</Data></Cell>
     <Cell><Data ss:Type="String">There are currently no items in</Data></Cell>
@@ -3948,7 +3958,7 @@
     <Cell><Data ss:Type="String">Một ngoại lệ đã diễn ra</Data></Cell>
     <Cell ss:StyleID="s30"><Data ss:Type="String">קרתה תקלה</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_EXPORTED</Data></Cell>
     <Cell><Data ss:Type="String">%s exportiert.</Data></Cell>
     <Cell><Data ss:Type="String">%s successfully exported.</Data></Cell>
@@ -3961,7 +3971,7 @@
     <Cell><Data ss:Type="String">%s đã xuất ra thành công</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">%s הוצאו בהצלחה</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="63.75">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_FILTER</Data></Cell>
     <Cell><Data ss:Type="String">Definieren Sie Ihre eigenen Im/Export-Filter für ZMS-Objekte und die dafür erforderlichen Prozessschritt-Typen.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own custom im/export-filters for ZMS objects and the required types of processing steps.</Data></Cell>
@@ -3972,7 +3982,7 @@
     <Cell><Data ss:Type="String">Định nghĩa các bộ lọc xuất/nhập theo thói quen của quý vị cho các đối tượng ZMS và các kiểu bước xử lí được yêu cầu. </Data></Cell>
     <Cell ss:StyleID="s30"><Data ss:Type="String">הגדר פילטרי ייבוא/ייצוא מותאמים אישית עבור אובייקטי ZMS  וצעדי התהליכים הדרושים </Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="191.25" ss:StyleID="s40">
+   <Row ss:AutoFitHeight="0" ss:StyleID="s40">
     <Cell ss:StyleID="s39"><Data ss:Type="String">MSG_FTP</Data></Cell>
     <Cell><Data ss:Type="String">Geben Sie hier die Zugangsdaten für den FTP-Export der kompletten WWW-Site zu Ihrem Provider an. Geben Sie im Feld IP-Adresse / Domäne den DNS-Eintrag Ihrer Domäne an (beispielsweise www.mydomain.de). Mit Export starten Sie den FTP-Exportvorgang.</Data></Cell>
     <Cell><Data ss:Type="String">Please enter the provider's access code  for the FTP-export of the complete WWW-Site. Please enter the DNS-name of your domain into the field IP / Domain (e.g. www.mydomain.org). Press export to start the FTP-export process.</Data></Cell>
@@ -3984,7 +3994,7 @@
     <Cell><Data ss:Type="String">Hãy nhập vào mã số truy cập của nhà cung cấp cho việc xuất FTP của trang www hoàn chỉnh. Hãy nhập vào tên DNS của miền mà quý vị dùng trong trường địa chỉ IP/Miền (ví dụ như www.mydomain.org). Hãy xuất ra để bắt đầu tiến trình xuất FTP. </Data></Cell>
     <Cell><Data ss:Type="String">אנא הכנס את קוד הספק עבור ייצוא FTP של האתר www השלם. אנא הכנס את שם ה-DNS של הדומיין שלך לתוך השדה פרוטוקול אינטרנט/דומיין (לדוגמא: (www.mydomain.org</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_IMPORTED</Data></Cell>
     <Cell><Data ss:Type="String">Datei %s importiert.</Data></Cell>
     <Cell><Data ss:Type="String">File %s successfully imported.</Data></Cell>
@@ -3997,7 +4007,7 @@
     <Cell><Data ss:Type="String">Tệp tin %s đã nhập vào thành công</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">קובץ s% יובא בהצלחה</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="409.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_INACTIVE</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">S E R V E R - F E H L E R&lt;br/&gt;&lt;br/&gt;&#10;Dokument nicht gefunden&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#10;Die von Ihnen gewählte Adresse/URL ist auf unserem Server nicht bzw. nicht mehr vorhanden.&lt;br/&gt;&lt;br/&gt;&#10;Möglicherweise haben Sie einen veralteten Link bzw. ein altes Bookmark verwendet. Versuchen Sie den von Ihnen gewünschten Inhalt über unsere Homepage oder über unser Archiv zu finden.&lt;br/&gt;&lt;br/&gt;&#10;Wenn Sie einem Link in unserem Angebot gefolgt sind, versuchen Sie es bitte in einigen Minuten noch einmal.&lt;br/&gt;&lt;br/&gt;&#10;Sollten Sie noch weitere Fragen zu unserem Angebot haben, so schauen Sie bitte in die Hilfe oder schreiben Sie uns eine E-Mail.</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">S E R V E R - E R R O R&lt;br/&gt;&lt;br/&gt;&#10;Document not found&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#10;The document  requested does not exist on this server.&lt;br/&gt;&lt;br/&gt;&#10;Please double check the URL or use the search function on this page to find what you are looking for.&lt;br/&gt;&lt;br/&gt;&#10;If you definitely use the correct URL and you are encountering an error still, please inform our Webmaster. Thank you.&lt;br/&gt;&lt;br/&gt;&#10;</Data></Cell>
@@ -4022,7 +4032,7 @@
     <Cell><Data ss:Type="String">%s đã được chèn</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">s% הוכנס </Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_LOADING</Data></Cell>
     <Cell><Data ss:Type="String">laden…</Data></Cell>
     <Cell><Data ss:Type="String">loading…</Data></Cell>
@@ -4033,7 +4043,7 @@
     <Cell><Data ss:Type="String">đang tải…</Data></Cell>
     <Cell><Data ss:Type="String">טוען...</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="114.75">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_MAX_ROWS_EXCEEDED</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">Hinweis:&lt;br/&gt;&#10;Aufgrund Ihrer Angaben wurden %i Datensätze (max. %i) gefunden. Bitte überprüfen Sie, ob sich Ihre Suchanfrage durch weitere Eingaben noch weiter eingrenzen läßt.</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">Warning:&lt;br/&gt;&#10;%i records (max. %i) have been found.</Data></Cell>
@@ -4044,7 +4054,7 @@
     <Cell ss:StyleID="s28"><Data ss:Type="String">Cảnh báo:&lt;br/&gt;&#10;%i các bản ghi (tối đa %i) đã được tìm thấy.</Data></Cell>
     <Cell ss:StyleID="s28"><Data ss:Type="String">אזהרה:&lt;br/&gt;&#10;i% רשומות (מקסימום i% ) נמצאו</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="51">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_METACMD</Data></Cell>
     <Cell><Data ss:Type="String">Hier können Sie Ihre eigenen Aktionen und Funktionen für ZMS-Objekte definieren.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own custom actions and functions on ZMS objects.</Data></Cell>
@@ -4056,7 +4066,7 @@
     <Cell><Data ss:Type="String">Định nghĩa các hành động quen thuộc của chính quý vị và các chức năng trên các đối tượng ZMS.</Data></Cell>
     <Cell><Data ss:Type="String">הגדר את הפעולות המותאמות אלייך ופונקציות של פריטי ZMS.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="127.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_METADICT</Data></Cell>
     <Cell><Data ss:Type="String">Metadaten sind präzise Informationen über (meta) den Inhalt des Dokuments; sie charakterisieren den Inhalt mithilfe eines festgelegten Satzes an Beschreibungs-Elementen (z.B. Titel, Autor, Datum, Verleger, Schlagworte etc.).</Data></Cell>
     <Cell><Data ss:Type="String">Metadata are precise information about (meta) the document content. They characterize the content with the help of a fixed number of description elements (e.g. title, author, date, editor, subjects, etc.).</Data></Cell>
@@ -4068,7 +4078,7 @@
     <Cell><Data ss:Type="String">Metadata là thông tin chính xác về (meta) nội dung của tài liệu. Chúng mô tả đặc điểm nội dung với sự hỗ trợ của một số lượng cố định các thành phần mô tả (ví dụ như tiêu đề, tác giả, ngày tháng, nhà biên tập, các chủ đề, v.v. )</Data></Cell>
     <Cell><Data ss:Type="String">מטא-נתונים הם מידע מדויק אודות (מטא) תוכן המסמך. הם מאפיינים את התוכן בעזרת מספר קבוע של אלמנטי תיאור( כגון: כותרת, מחבר, תאריך, עורך, נושאים וכו'...)</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="114.75">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_METAOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Hier können Sie Ihr eigenes Modell für ZMS-Objekte definieren.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own model of ZMS objects.</Data></Cell>
@@ -4080,7 +4090,7 @@
     <Cell><Data ss:Type="String">Định nghĩa mô hình riêng của các đối tượng ZMS.</Data></Cell>
     <Cell><Data ss:Type="String">הגדר את הדגם שלך של פריטי ZMS.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_MOVEDOBJDOWN</Data></Cell>
     <Cell><Data ss:Type="String">%s nach unten verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">Moved %s down.</Data></Cell>
@@ -4093,7 +4103,7 @@
     <Cell><Data ss:Type="String">Đã chuyển %s xuống.</Data></Cell>
     <Cell><Data ss:Type="String">הועבר s% למטה.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_MOVEDOBJTOPOS</Data></Cell>
     <Cell><Data ss:Type="String">%s an Position %i verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">Moved %s to position %i.</Data></Cell>
@@ -4104,7 +4114,7 @@
     <Cell><Data ss:Type="String">Đã chuyển %s tới vị trí %i.</Data></Cell>
     <Cell><Data ss:Type="String">הועבר s% לעמדת i%.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_MOVEDOBJUP</Data></Cell>
     <Cell><Data ss:Type="String">%s nach oben verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">Moved %s up.</Data></Cell>
@@ -4117,7 +4127,7 @@
     <Cell><Data ss:Type="String">Đã chuyển %s lên.</Data></Cell>
     <Cell><Data ss:Type="String">הועבר s% למעלה.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="76.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_MULTILANG</Data></Cell>
     <Cell><Data ss:Type="String">In der symmetrischen Multilingualität wird für jede Sprache eine identische Variante der Objekte des Content-Baums angelegt.</Data></Cell>
     <Cell><Data ss:Type="String">In symmetrical multiligualism for every language an identical variant of all content tree objects is realized.</Data></Cell>
@@ -4208,7 +4218,7 @@
     <Cell><Data ss:Type="String">%s được tham chiếu bởi</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">%s הופנה ע&quot;י </Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_REPLACE</Data></Cell>
     <Cell><Data ss:Type="String">Soll &gt;%s&lt; durch &gt;%s&lt; ersetzt werden?</Data></Cell>
     <Cell><Data ss:Type="String">Should &gt;%s&lt; be replaced by &gt;%s&lt;?</Data></Cell>
@@ -4221,7 +4231,7 @@
     <Cell><Data ss:Type="String">Có nên thay thế &gt;%s&lt; bởi &gt;%s&lt;?</Data></Cell>
     <Cell><Data ss:Type="String">האם להחליף &gt;%s&lt; ע&quot;י &gt;%s&lt;?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_REPLACEALL</Data></Cell>
     <Cell><Data ss:Type="String">Sollen alle %i Vorkommnisse von &gt;%s&lt; ausgezeichnet werden?</Data></Cell>
     <Cell><Data ss:Type="String">Should be replaced all %i occurances of &gt;%s&lt;?</Data></Cell>
@@ -4234,7 +4244,7 @@
     <Cell><Data ss:Type="String">Có nên thay thế tất cả %i những sự xuất hiện của &gt;%s&lt;?</Data></Cell>
     <Cell ss:StyleID="s30"><Data ss:Type="String">האם לתייג את כל מופעי ה%i מתוך  &gt;%s&lt;?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_REQUIRED</Data></Cell>
     <Cell><Data ss:Type="String">Feld '%s' muß einen Wert haben!</Data></Cell>
     <Cell><Data ss:Type="String">Field '%s' must have a value.</Data></Cell>
@@ -4247,7 +4257,7 @@
     <Cell><Data ss:Type="String">Trường dữ liệu '%s' phải có một giá trị.</Data></Cell>
     <Cell><Data ss:Type="String">הכנס ערך לשדה  '%s'.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="51">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_ROLLBACKVERSIONCHANGES</Data></Cell>
     <Cell><Data ss:Type="String">Mit Zurücknehmen löschen Sie unwiderruflich die Arbeitsversion und ersetzen diese durch die aktuelle Liveversion!</Data></Cell>
     <Cell><Data ss:Type="String">Rollback irrevocably replaces the working version with the current live version!</Data></Cell>
@@ -4260,7 +4270,7 @@
     <Cell><Data ss:Type="String">Sự vòng lại sẽ thay thế phiên bản đang làm việc bởi phiên bản hiện tại!</Data></Cell>
     <Cell ss:StyleID="s30"><Data ss:Type="String">חזרה לאחור תחליף בצורה בלתי הפיכה את הגרסה הנוכחית בגרסה החיה הקיימת!</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_TRASHED</Data></Cell>
     <Cell><Data ss:Type="String">%i Objekt(e) in den Papierkorb verschoben.</Data></Cell>
     <Cell><Data ss:Type="String">%i Object(s) moved to trashcan.</Data></Cell>
@@ -4273,7 +4283,7 @@
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã chuyển tới thùng rác.</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">%i פריט(ים ) נשלח(ו) לסל המיחזור</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_UNDONE</Data></Cell>
     <Cell><Data ss:Type="String">%i Objekt(e) rückgängig gemacht.</Data></Cell>
     <Cell><Data ss:Type="String">%i Object(s) undone.</Data></Cell>
@@ -4284,7 +4294,7 @@
     <Cell><Data ss:Type="String">%i (Các) đối tượng đã không được thực hiện.</Data></Cell>
     <Cell ss:StyleID="s37"><Data ss:Type="String">%i פריט(ים) שלא נעשו</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="63.75">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_UNDOVERSION</Data></Cell>
     <Cell><Data ss:Type="String">Unten sehen Sie die Historie aller Versionen dieses Objekts. Sie können Versionen miteinander vergleichen oder das Objekt auf eine frühere Version zurücksetzen.</Data></Cell>
     <Cell><Data ss:Type="String">Below you see the history of all versions of this object. You can compare two versions or reset this object to an earlier version.</Data></Cell>
@@ -4309,7 +4319,7 @@
     <Cell><Data ss:Type="String">Tệp tin đã được tải lên.</Data></Cell>
     <Cell><Data ss:Type="String">קובץ נטען.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">MSG_WORKFLOW</Data></Cell>
     <Cell><Data ss:Type="String">Hier können Sie Ihren eigenen Workflow für ZMS-Objekte definieren.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own custom workflow on ZMS objects.</Data></Cell>
@@ -6447,12 +6457,11 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
-   <TopRowVisible>147</TopRowVisible>
+   <TopRowVisible>272</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>158</ActiveRow>
-     <RangeSelection>R159</RangeSelection>
+     <ActiveRow>260</ActiveRow>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

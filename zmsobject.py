@@ -106,7 +106,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
     f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
-    f_css_sys = HTMLFile('dtml/object/f_css_sys', globals()) # CSS: Fixed System StyleSheet
     f_css_defaults = HTMLFile('dtml/object/f_css_defaults', globals()) # CSS: Default StyleSheet (WAI)
     f_css_printhtml = HTMLFile('dtml/object/f_css_printhtml', globals()) # CSS: Fixed PrintHTML StyleSheet
     f_submitInputFields = HTMLFile('dtml/object/f_submitinputfields', globals())

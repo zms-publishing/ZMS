@@ -1,4 +1,42 @@
 // ############################################################################
+// ### Forms
+// ############################################################################
+
+$(function(){
+	pluginUI('input.datepicker',function() {
+		var dayNames = [getZMILangStr('DAYOFWEEK0'), getZMILangStr('DAYOFWEEK1')
+					, getZMILangStr('DAYOFWEEK2'), getZMILangStr('DAYOFWEEK3')
+					, getZMILangStr('DAYOFWEEK4'), getZMILangStr('DAYOFWEEK5')
+					, getZMILangStr('DAYOFWEEK6')];
+		var dayNamesMin = [];
+		var dayNamesShort = [];
+		for (var i = 0; i < dayNames.length; i++) {
+			dayNamesMin[i] = dayNames[i].substr(0,2);
+			dayNamesShort[i] = dayNames[i].substr(0,3);
+		}
+		var monthNames = [getZMILangStr('MONTH1'), getZMILangStr('MONTH2')
+					, getZMILangStr('MONTH3'), getZMILangStr('MONTH4'), getZMILangStr('MONTH5')
+					, getZMILangStr('MONTH6'), getZMILangStr('MONTH7'), getZMILangStr('MONTH8')
+					, getZMILangStr('MONTH9'), getZMILangStr('MONTH10'), getZMILangStr('MONTH11')
+					, getZMILangStr('MONTH12')];
+		var monthNamesShort = [];
+		for (var i = 0; i < monthNames.length; i++) {
+			monthNamesShort[i] = monthNames[i].substr(0,3);
+		}
+		$('input.datepicker').datepicker({
+			'dateFormat'			: getZMILangStr('DATE_FMT').replace('%d','dd').replace('%m','mm').replace('%Y','yy'),
+			'dayNames'				: dayNames,
+			'dayNamesMin'			: dayNamesMin,
+			'dayNamesShort'		: dayNamesShort,
+			'monthNames'			: monthNames,
+			'monthNamesShort'	: monthNamesShort,
+			'showWeek'		: true
+		});
+	});
+});
+
+
+// ############################################################################
 // ### Notification Service
 // ############################################################################
 

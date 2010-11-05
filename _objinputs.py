@@ -129,28 +129,11 @@ class ObjInputs:
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     html.append('<span class="%s" title="%s">'%(css,self.getZMILangStr(fmt_str)))
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra))
     if enabled and fmt_str != 'TIME_FMT':
-      html.append('<a href="javascript:calendarBtnClick(\'%s\',\'%s\')" class="button">'%(fmName,elName))
-      html.append('<img src="%sbtn_calendar.gif" title="%s..." border="0" align="middle"/>'%(self.MISC_ZMS,self.getZMILangStr('ATTR_CALENDAR')))
-      html.append('</a>')
+      css += ' datepicker'
+    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra))
     html.append('</span>')
     return ''.join(html)
-
-
-  # ----------------------------------------------------------------------------
-  #  getDateInput:
-  #
-  #	@param fmName
-  #	@param elName
-  #	@param value
-  #	@param enabled
-  #	@param REQUEST
-  #	@param css	CSS-Class
-  #	@return String
-  # ----------------------------------------------------------------------------
-  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-element', extra=''):
-    return self.getDateTimeInput(fmName=fmName,elName=elName,size=8,value=value,enabled=enabled,fmt_str='DATE_FMT',REQUEST=REQUEST,css=css, extra=extra)
 
 
   # ----------------------------------------------------------------------------
@@ -260,7 +243,8 @@ class ObjInputs:
     html.append(' onclick="if (this.checked) { this.form.elements[\'%s\'].value=1; } else {this.form.elements[\'%s\'].value=0;};"'%(elName,elName))
     html.append(' />')
     return ''.join(html)
-    
+
+
   # ----------------------------------------------------------------------------
   # 	getTextArea:
   #

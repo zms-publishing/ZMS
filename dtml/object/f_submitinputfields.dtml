@@ -32,14 +32,14 @@
        </div>
       </td
       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
-       ><td align="right"><div class="form-text"><dtml-var "getZMILangStr('ATTR_START_DAT')"></div></td
+       ><td><div class="form-text"><dtml-var "getZMILangStr('ATTR_START_DAT')"></div></td
       ></dtml-if
      ></tr
      ></table
     ></dtml-if
     ></dtml-unless
    ></td
-   ><td align="right"
+   ><td
     ><table cellspacing="0" cellpadding="0" border="0" width="100%"
     ><tr valign="middle"
      ><dtml-comment>

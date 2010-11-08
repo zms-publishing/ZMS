@@ -535,6 +535,10 @@ a.button:hover img.button1, a.button:active img.button1 {
  * +- [ZMI] Miscellaneous
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
+ 
+.datepicker {
+	background: white url(/misc_/zms/calendar.png) top right no-repeat;
+}
 
 .zmiDisplayIcon {
 	margin: 2px;

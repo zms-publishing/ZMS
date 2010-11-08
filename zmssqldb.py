@@ -286,30 +286,36 @@ class ZMSSqlDb(ZMSObject):
         return "'%s'"%v
 
 
-    # --------------------------------------------------------------------------
-    # ZMSSqlDb.commit:
-    # --------------------------------------------------------------------------
     def commit(self):
+      """
+      Commit.
+      """
       da = self.getDA()
       dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.commit()
 
 
-    # --------------------------------------------------------------------------
-    # ZMSSqlDb.rollback:
-    # --------------------------------------------------------------------------
     def rollback(self):
+      """
+      Rollback.
+      """
       da = self.getDA()
       dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.rollback()
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.query:
-    # --------------------------------------------------------------------------
     def query(self, qs, max_rows=None):
+      """
+      Execute select-statement.
+      @param qs: The select-statement
+      @type qs: C{str}
+      @param max_rows: The maximum number of rows (default: None, unlimited)
+      @type max_rows: C{str}
+      @return: Dictionary: columns C{list}, records C{list}.
+      @rtype: C{dict}
+      """
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
@@ -387,10 +393,14 @@ class ZMSSqlDb(ZMSObject):
       
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.executeQuery:
-    # --------------------------------------------------------------------------
     def executeQuery(self, qs):
+      """
+      Execute modify-statement.
+      @param qs: The modify-statement
+      @type qs: C{str}
+      @return: Number of affected rows.
+      @rtype: C{int}
+      """
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB

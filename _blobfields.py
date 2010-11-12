@@ -666,6 +666,11 @@ class MyBlob:
           # http://support.microsoft.com/kb/323308/en-us
           if not REQUEST.get('URL','').startswith( 'https://'):
             RESPONSE.setHeader('Pragma', 'no-cache')
+
+        # Hook for custom RESPONSE-headers
+        name = 'getCustomBlobResponseHeaders' 
+        if hasattr(parent,name):
+          v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
         
         if self.ZCacheable_isCachingEnabled():
             result = self.ZCacheable_get(default=None)

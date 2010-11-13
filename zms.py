@@ -23,7 +23,6 @@
 
 # Imports.
 from __future__ import nested_scopes
-from AccessControl.User import UserFolder
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 from OFS.Image import Image

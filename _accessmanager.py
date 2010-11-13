@@ -24,7 +24,7 @@
 # Imports.
 from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
-from AccessControl.User import UserFolder
+from OFS.userfolder import UserFolder
 from types import StringTypes
 import copy
 import sys

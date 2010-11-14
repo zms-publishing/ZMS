@@ -24,7 +24,10 @@
 # Imports.
 from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
-from OFS.userfolder import UserFolder
+try: # Zope >= 2.13.0
+  from OFS.userfolder import UserFolder
+except:
+  from AccessControl.User import UserFolder 
 from types import StringTypes
 import copy
 import sys

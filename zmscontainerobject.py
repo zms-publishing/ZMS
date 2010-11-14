@@ -25,7 +25,10 @@
 from __future__ import nested_scopes
 from App.Common import package_home
 from App.special_dtml import HTMLFile
-import OFS.role
+try: # Zope >= 2.13.0
+  from AccessControl.Role import RoleManager
+except: 
+  from OFS.role import RoleManager
 import copy
 import re
 import string
@@ -103,8 +106,8 @@ def getNextSibling(self, REQUEST, incResource=False):
 ################################################################################
 class ZMSContainerObject(
     ZMSObject,
-    OFS.role.RoleManager,
-    _accessmanager.AccessableContainer,    # Access manager.
+    RoleManager,
+    _accessmanager.AccessableContainer,
     _importable.Importable,
     _scormlib.SCORMLib,
     _versionmanager.VersionManagerContainer

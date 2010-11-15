@@ -26,9 +26,9 @@ from __future__ import nested_scopes
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 try: # Zope >= 2.13.0
-  from AccessControl.Role import RoleManager
-except: 
   from OFS.role import RoleManager
+except: 
+  from AccessControl.Role import RoleManager
 import copy
 import re
 import string
@@ -558,6 +558,7 @@ class ZMSContainerObject(
       actions = []
       if self.meta_id == 'ZMSTrashcan':
         return actions
+
       REQUEST = self.REQUEST
       lang = REQUEST['lang']
       auth_user = REQUEST['AUTHENTICATED_USER']
@@ -638,6 +639,67 @@ class ZMSContainerObject(
 
 
     # --------------------------------------------------------------------------
+    #  ZMSContainerObject.filtered_container_actions:
+    # --------------------------------------------------------------------------
+    def filtered_container_actions(self, path='', objAttr=None):
+      actions = []
+      
+      REQUEST = self.REQUEST
+      lang = REQUEST['lang']
+      auth_user = REQUEST['AUTHENTICATED_USER']
+      absolute_url = '/'.join(list(self.getPhysicalPath())+[''])
+      
+      if objAttr is None:
+        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
+      repetitive = objAttr.get('repetitive',0)==1
+      mandatory = objAttr.get('mandatory',0)==1
+      
+      #-- Actions.
+      if len(path) > 0:
+        coverage = self.getDCCoverage(REQUEST)
+        if self.getAutocommit() or \
+           self.getPrimaryLanguage() == lang or \
+           coverage == 'global.%s'%lang or \
+           coverage.startswith('local.'):
+          actions.append((self.getZMILangStr('BTN_EDIT'),path + 'manage_main'))
+          if repetitive or not mandatory:
+            if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
+              actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
+            can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
+            if can_delete:
+              ob_access = self.getObjProperty('manage_access',REQUEST)
+              can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0))
+              metaObj = self.getMetaobj( self.meta_id)
+              can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
+            if can_delete:
+              actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
+            actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
+          actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
+          if repetitive or not mandatory:
+            actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
+            actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
+      
+      #-- Action: Paste.
+      if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0) and self.cb_dataValid():
+        if objAttr['type']=='*':
+          meta_ids = objAttr['keys']
+        else:
+          meta_ids = [objAttr['type']]
+        append = True
+        try:
+          for ob in self.cp_get_obs( REQUEST):
+            metaObj = ob.getMetaobj( ob.meta_id)
+            append = append and (ob.meta_id in meta_ids or 'type(%s)'%metaObj['type'] in meta_ids)
+        except:
+          append = False
+        if append:
+          actions.append((self.getZMILangStr('BTN_PASTE'),'manage_pasteObjs'))
+      
+      # Return action list.
+      return actions
+
+    
+    # --------------------------------------------------------------------------
     #  ZMSContainerObject.manage_ajaxFilteredContainerActions:
     # --------------------------------------------------------------------------
     def manage_ajaxFilteredContainerActions(self, REQUEST):
@@ -649,13 +711,11 @@ class ZMSContainerObject(
       
       #-- Get actions.
       path = ''
-      cmdpath = ''
       if self.getLevel() > 0:
         path = '../'
-        cmdpath = self.id + '/'
       actions = []
       actions.extend( self.filtered_insert_actions())
-      for x in filter(lambda x: path == '' or not x[1].startswith(path), self.filtered_edit_actions(path,cmdpath)):
+      for x in filter(lambda x: path == '' or not x[1].startswith(path), self.filtered_edit_actions(path)):
         label = x[0]
         value = x[1]
         if value.find('manage_pasteObjs') < 0:

@@ -184,62 +184,29 @@ class ObjChildren:
     #  ObjChildren.filtered_container_actions_objChildren:
     #
     #  Object-actions of management interface.
+    #  @see zmsobject.filtered_edit_action
     # --------------------------------------------------------------------------
     def filtered_container_actions_objChildren(self, objAttr, path, REQUEST):
       actions = []
-      lang = REQUEST['lang']
-      auth_user = REQUEST['AUTHENTICATED_USER']
       
-      #-- Actions.
+      if objAttr is None:
+        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
       repetitive = objAttr.get('repetitive',0)==1
       mandatory = objAttr.get('mandatory',0)==1
-      if len(path) > 0:
-        if self.getAutocommit() or self.getPrimaryLanguage() == lang or self.getDCCoverage(REQUEST).startswith('local.'):
-          actions.append((self.getZMILangStr('BTN_EDIT'),path + 'manage_main'))
-          if repetitive or not mandatory and (self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory()):
-            if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
-              actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
-            can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
-            if can_delete:
-              ob_access = self.getObjProperty('manage_access',REQUEST)
-              can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0))
-              metaObj = self.getMetaobj( self.meta_id)
-              can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
-            if can_delete:
-              actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
-            actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
-          actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-          if repetitive or not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
-          if repetitive or not mandatory: actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
-      if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0) and (self.cb_dataValid()):
-        if objAttr['type']=='*':
-          meta_ids = objAttr['keys']
-        else:
-          meta_ids = [objAttr['type']]
-        append = True
-        try:
-          for ob in self.cp_get_obs( REQUEST):
-            metaObj = ob.getMetaobj( ob.meta_id)
-            append = append and (ob.meta_id in meta_ids or 'type(%s)'%metaObj['type'] in meta_ids)
-        except:
-          append = False
-        if append:
-          actions.append((self.getZMILangStr('BTN_PASTE'),'manage_pasteObjs'))
       
-      #-- Commands.
-      actions.extend(self.filtered_command_actions(path,REQUEST))
-      
-      #-- Headline.
-      if len(actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
-      
-      #-- Insert.
       if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0):
         ob = self
         if len( path) > 0:
           ob = self.getParentNode()
         actions.extend(ob.filtered_insert_actions(path,objAttr))
-        
+      
+      sub_actions = []
+      sub_actions.extend(self.filtered_container_actions(objAttr,path))
+      sub_actions.extend(self.filtered_command_actions(path,REQUEST))
+      if len(sub_actions) > 0:
+        actions.append(('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
+        actions.extend(sub_actions)
+      
       # Return action list.
       return actions
 

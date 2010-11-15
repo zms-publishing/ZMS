@@ -906,48 +906,23 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.filtered_edit_actions:
+    #
+    #  @see _objchildren.filtered_container_actions_objChildren
     # --------------------------------------------------------------------------
-    def filtered_edit_actions(self, path='', cmdpath=''):
+    def filtered_edit_actions(self, path='', objAttr=None):
       actions = []
       REQUEST = self.REQUEST
-      lang = REQUEST['lang']
-      auth_user = REQUEST['AUTHENTICATED_USER']
       
-      #-- Actions.
-      coverage = self.getDCCoverage(REQUEST)
-      if len(path) > 0:
-        if self.getAutocommit() or \
-           self.getPrimaryLanguage() == lang or \
-           coverage == 'global.%s'%lang or \
-           coverage.find('local.')==0:
-          if self.getAutocommit() or self.inObjStates(['STATE_NEW'],REQUEST) or not self.getHistory():
-            if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
-              actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
-            can_delete = self.meta_id != 'ZMSTrashcan'and not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
-            if can_delete:
-              ob_access = self.getObjProperty('manage_access',REQUEST)
-              can_delete = (not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0)
-              metaObj = self.getMetaobj( self.meta_id)
-              can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
-            if can_delete:
-              method = 'manage_deleteObjs'
-              if self.getParentByLevel(1).meta_type == 'ZMSTrashcan': 
-                method = 'manage_eraseObjs'
-              actions.append((self.getZMILangStr('BTN_DELETE'),method))
-            actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
-          actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-          if self.cb_dataValid():
-            actions.append((self.getZMILangStr('BTN_PASTE'),'manage_pasteObjs'))
-          actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
-          actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
+      if objAttr is None:
+        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
       
-      #-- Commands.
-      actions.extend(self.filtered_command_actions(cmdpath,REQUEST))
+      sub_actions = []
+      sub_actions.extend(self.filtered_container_actions(path,objAttr))
+      sub_actions.extend(self.filtered_command_actions(path,REQUEST))
+      if len(sub_actions) > 0:
+        actions.append(('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
+        actions.extend(sub_actions)
       
-      #-- Headline,
-      if len(actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
-        
       # Return action list.
       return actions
 
@@ -993,7 +968,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       path = self.id + '/'
       actions = []
       actions.extend( self.getParentNode().filtered_insert_actions(path))
-      actions.extend( self.filtered_edit_actions(path,path))
+      actions.extend( self.getParentNode().filtered_edit_actions(path))
       actions.extend( self.filtered_workflow_actions(path))
       
       #-- Build xml.

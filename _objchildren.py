@@ -201,7 +201,7 @@ class ObjChildren:
         actions.extend(ob.filtered_insert_actions(path,objAttr))
       
       sub_actions = []
-      sub_actions.extend(self.filtered_container_actions(objAttr,path))
+      sub_actions.extend(self.getParentNode().filtered_container_actions(path,objAttr))
       sub_actions.extend(self.filtered_command_actions(path,REQUEST))
       if len(sub_actions) > 0:
         actions.append(('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))

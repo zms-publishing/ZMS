@@ -653,6 +653,7 @@ class ZMSContainerObject(
         objAttr = self.getMetaobjAttr( self.meta_id, 'e')
       repetitive = objAttr.get('repetitive',0)==1
       mandatory = objAttr.get('mandatory',0)==1
+      objChildren = self.getObjChildren(objAttr['id'],REQUEST)
       
       #-- Actions.
       if len(path) > 0:
@@ -675,12 +676,12 @@ class ZMSContainerObject(
               actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
             actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
           actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-          if repetitive or not mandatory:
+          if len(objChildren) > 1:
             actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
             actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
       
       #-- Action: Paste.
-      if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0) and self.cb_dataValid():
+      if (repetitive or len(objChildren)==0) and self.cb_dataValid():
         if objAttr['type']=='*':
           meta_ids = objAttr['keys']
         else:

@@ -44,6 +44,7 @@ import _importable
 import _objattrs
 import _scormlib
 import _versionmanager
+import _zmi_actions_util
 
 __all__= ['ZMSContainerObject']
 
@@ -551,194 +552,38 @@ class ZMSContainerObject(
     ### 
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.filtered_insert_actions:
-    # --------------------------------------------------------------------------
-    def filtered_insert_actions(self, path='', objAttr=None):
-      actions = []
-      if self.meta_id == 'ZMSTrashcan':
-        return actions
-
-      REQUEST = self.REQUEST
-      lang = REQUEST['lang']
-      auth_user = REQUEST['AUTHENTICATED_USER']
-      absolute_url = '/'.join(list(self.getPhysicalPath())+[''])
-      
-      if objAttr is None:
-        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
-      
-      #-- Objects.
-      repetitive = objAttr.get('repetitive',0)==1
-      if repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0:
-        metaObjIds = self.getMetaobjIds()
-        meta_ids = []
-        if objAttr['type']=='*':
-          for meta_id in objAttr['keys']:
-            if meta_id.startswith('type(') and meta_id.endswith(')'):
-              for metaObjId in metaObjIds:
-                metaObj = self.getMetaobj( metaObjId)
-                if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
-                  meta_ids.append( metaObj['id'])
-            elif objAttr['id']=='e' and meta_id in metaObjIds:
-              metaObj = self.getMetaobj( meta_id)
-              if metaObj['enabled'] == 1:
-                meta_ids.append( meta_id)
-            elif meta_id in metaObjIds:
-              meta_ids.append( meta_id)
-            else:
-              _globals.writeError( self, '[filtered_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(self.meta_id,objAttr['id'],meta_id))
-        else:
-          meta_ids.append( objAttr['type'])
-        for meta_id in meta_ids:
-          metaObj = self.getMetaobj(meta_id)
-          ob_access = True
-          ob_manage_access = self.getMetaobjAttr(meta_id,'manage_access')
-          if ob_manage_access is not None:
-            try:
-              ob_access = _globals.dt_html(self,ob_manage_access['custom'],REQUEST)
-            except:
-              _globals.writeError( self, '[filtered_insert_actions]: can\'t get manage_access from %s'%meta_id)
-          can_insert = True
-          if objAttr['type']=='*':
-            can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( self.intersection_list( ob_access.get( 'insert'), self.getUserRoles(auth_user))) > 0))
-            mo_access = metaObj.get( 'access')
-            if type(mo_access) is dict:
-              mo_access_insert_roles = mo_access.get('insert')
-              if type(mo_access_insert_roles) is list:
-                can_insert = can_insert and len( self.intersection_list( mo_access_insert_roles, self.getUserRoles(auth_user))) > 0
-              mo_access_insert_nodes = self.string_list(mo_access.get('insert_custom','{$}'))
-              sl = []
-              sl.extend(map( lambda x: (self.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
-              sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))
-              can_insert = can_insert and len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
-          if can_insert:
-            if meta_id in self.dGlobalAttrs.keys():
-              value = 'manage_addProduct/zms/%s'%self.dGlobalAttrs[meta_id]['constructor']
-            elif metaObj['type']=='ZMSModule':
-              value = 'manage_addZMSModule'
-            elif objAttr['type'] in meta_ids and repetitive and objAttr.get('custom'):
-              value = 'manage_addZMSCustomDefault'
-            else:
-              value = 'manage_addProduct/zms/manage_addzmscustomform'
-            action = (self.display_type(REQUEST,meta_id),value)
-            if action not in actions:
-              actions.append( action)
-      
-      #-- Insert Commands.
-      actions.extend(self.filtered_command_actions(path,REQUEST,insert_actions=True))
-      
-      #-- Sort.
-      actions.sort()
-      
-      #-- Headline.
-      if len(actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('ACTION_INSERT')%self.display_type(REQUEST),''))
-      
-      # Return action list.
-      return actions
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.filtered_container_actions:
-    # --------------------------------------------------------------------------
-    def filtered_container_actions(self, path='', objAttr=None):
-      actions = []
-      
-      REQUEST = self.REQUEST
-      lang = REQUEST['lang']
-      auth_user = REQUEST['AUTHENTICATED_USER']
-      absolute_url = '/'.join(list(self.getPhysicalPath())+[''])
-      
-      if objAttr is None:
-        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
-      repetitive = objAttr.get('repetitive',0)==1
-      mandatory = objAttr.get('mandatory',0)==1
-      objChildren = self.getObjChildren(objAttr['id'],REQUEST)
-      
-      #-- Actions.
-      if len(path) > 0:
-        coverage = self.getDCCoverage(REQUEST)
-        if self.getAutocommit() or \
-           self.getPrimaryLanguage() == lang or \
-           coverage == 'global.%s'%lang or \
-           coverage.startswith('local.'):
-          actions.append((self.getZMILangStr('BTN_EDIT'),path + 'manage_main'))
-          if repetitive or not mandatory:
-            if self.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST):
-              actions.append((self.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
-            can_delete = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
-            if can_delete:
-              ob_access = self.getObjProperty('manage_access',REQUEST)
-              can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( self.intersection_list( ob_access.get( 'delete'), self.getUserRoles(auth_user))) > 0))
-              metaObj = self.getMetaobj( self.meta_id)
-              can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( self.intersection_list( metaObj.get( 'access').get( 'delete'), self.getUserRoles(auth_user))) > 0))
-            if can_delete:
-              actions.append((self.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
-            actions.append((self.getZMILangStr('BTN_CUT'),'manage_cutObjects'))
-          actions.append((self.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-          if len(objChildren) > 1:
-            actions.append((self.getZMILangStr('ACTION_MOVEUP'),path + 'manage_moveObjUp'))
-            actions.append((self.getZMILangStr('ACTION_MOVEDOWN'),path + 'manage_moveObjDown'))
-      
-      #-- Action: Paste.
-      if (repetitive or len(objChildren)==0) and self.cb_dataValid():
-        if objAttr['type']=='*':
-          meta_ids = objAttr['keys']
-        else:
-          meta_ids = [objAttr['type']]
-        append = True
-        try:
-          for ob in self.cp_get_obs( REQUEST):
-            metaObj = ob.getMetaobj( ob.meta_id)
-            append = append and (ob.meta_id in meta_ids or 'type(%s)'%metaObj['type'] in meta_ids)
-        except:
-          append = False
-        if append:
-          actions.append((self.getZMILangStr('BTN_PASTE'),'manage_pasteObjs'))
-      
-      # Return action list.
-      return actions
-
-    
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.manage_ajaxFilteredContainerActions:
-    # --------------------------------------------------------------------------
-    def manage_ajaxFilteredContainerActions(self, REQUEST):
+    def manage_ajaxZMIActions(self, context_id, REQUEST, RESPONSE):
       """
-      Returns AJAX-XML with filtered-container-actions.
+      Returns ZMI actions.
+      
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: the response
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       
       #-- Get actions.
-      path = ''
-      if self.getLevel() > 0:
-        path = '../'
       actions = []
-      actions.extend( self.filtered_insert_actions())
-      for x in filter(lambda x: path == '' or not x[1].startswith(path), self.filtered_edit_actions(path)):
-        label = x[0]
-        value = x[1]
-        if value.find('manage_pasteObjs') < 0:
-          value = path+value
-        actions.append( (label, value))
-      actions.extend( self.filtered_workflow_actions())
+      container = self
+      objPath = ''
+      if context_id == '':
+        context = container
+        actions.extend( _zmi_actions_util.zmi_actions(self,self))
+        actions.extend( self.filtered_workflow_actions())
+      else:
+        context = getattr(container,context_id,None)
+        attr_id = _globals.id_prefix(context_id)
+        actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
+        if context is not None:
+          objPath = context.id+'/'
+      if context is not None:
+        actions.extend( context.filtered_workflow_actions(objPath))
       
-      #-- Build xml.
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      filename = 'manage_ajaxFilteredContainerActions.xml'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      #-- Build json.
+      RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
-      self.f_standard_html_request( self, REQUEST)
-      xml = self.getXmlHeader()
-      xml += "<select id=\""+self.id+"\">\n"
-      for action in actions:
-        xml += "<option label=\"" + _globals.html_quote(action[0]) + "\" value=\"" + action[1] + "\"/>\n"
-      xml += "</select>\n"
-      return xml
+      return self.str_json({'id':context_id,'actions':map(lambda x: [x[0],x[1]], actions)})
 
 
     ############################################################################

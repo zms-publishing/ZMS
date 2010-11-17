@@ -9,13 +9,9 @@
  <dtml-unless no_icon>
   <dtml-if "_['sequence-index']==len(objectPathElements)-1">
    <dtml-unless ZMS_INSERT>
-    <dtml-if "hasAccess(REQUEST)">
-     <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" class="zmi"
-      ><dtml-var f_display_icon
-     ></a>
-    <dtml-else>
-     <dtml-var f_display_icon>
-    </dtml-if>
+    <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" class="zmi"
+     ><dtml-var f_display_icon
+    ></a>
    </dtml-unless>
   </dtml-if>
  </dtml-unless>
@@ -25,11 +21,7 @@
   <dtml-call "REQUEST.set('reqMaxLen',max(3,24-2*len(objectPathElements)))">
  </dtml-if>
  <dtml-call "REQUEST.set('objTitle',string_maxlen(getTitlealt(REQUEST),REQUEST['reqMaxLen']))">
- <dtml-if "hasAccess(REQUEST)">
-  <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" title="<dtml-var "getTitlealt(REQUEST)" html_quote>" class="zmi"><dtml-var "REQUEST['objTitle']"></a>
- <dtml-else>
-  <dtml-var "REQUEST['objTitle']">
- </dtml-if>
+ <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" title="<dtml-var "getTitlealt(REQUEST)" html_quote>" class="zmi"><dtml-var "REQUEST['objTitle']"></a>
 </dtml-in>
 <dtml-if ZMS_INSERT>
  &raquo;

@@ -210,7 +210,7 @@ class ZMSLinkElement(ZMSContainerObject):
         'manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_userForm','manage_user',
         )
     __ac_permissions__=(

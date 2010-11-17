@@ -68,11 +68,8 @@
 ></a
 ></dtml-if
 ><br/><dtml-unless isTrashcan
-  ><select id="select_actions_<dtml-var id>" class="form-small" 
-            onfocus="zmiExpandActionSelectContainer(this,'<dtml-var absolute_url>')" 
-            onmouseover="zmiExpandActionSelectContainer(this,'<dtml-var absolute_url>')" 
-            onchange="zmiChooseAction(this,'e','0')">
-<option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%display_type(REQUEST)"></option>
+><select id="select_actions_" class="form-small zmi-action" onchange="zmiChooseAction(this,'e','0')">
+<option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option>
 </select>
 </dtml-unless>
 
@@ -131,9 +128,7 @@
 </dtml-comment>
 
 <dtml-in "childNodes[:max(len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
-<dtml-let oCurrent=sequence-item
-          coverage="getDCCoverage(REQUEST)"
-          accessRights="hasAccess(REQUEST)">
+<dtml-let oCurrent=sequence-item coverage="getDCCoverage(REQUEST)">
 
 <tr valign="top" id="tr_<dtml-var id>">
 
@@ -141,27 +136,20 @@
 <!-- ##### object ##### -->
 </dtml-comment>
 <td class="zmiContainerColLeft form-small"
-><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless>
-><dtml-if accessRights
+><input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless>
 ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"
 ><dtml-var f_display_icon
 ><dtml-var "display_type(REQUEST)"
 ></a
 ></dtml-let
-><dtml-else
-><dtml-var f_display_icon
-><dtml-var "display_type(REQUEST)"
-></dtml-if
-><dtml-if accessRights
-><br/><select id="select_actions_<dtml-var id>" class="form-small" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+><br/><select id="select_actions_<dtml-var id>" class="form-small zmi-action" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
 ><dtml-if "_['sequence-index']==pageElementCount and pageCount>pageCountMin"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=<dtml-var pageCountMin>#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_COLLAPSE')"></option
 ></dtml-if
-><option value=""><dtml-if isTrashcan><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"><dtml-else><dtml-var "'----- %s -----'%getZMILangStr('ACTION_INSERT')%getParentNode().display_type(REQUEST)"></dtml-if></option
+><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
 ></select>
-</dtml-if>
 </td>
 
 <dtml-comment>
@@ -192,9 +180,7 @@
 <dtml-if "pageCount>SESSION.get('pageCountMax')">
 
 <dtml-in "childNodes[pageElementCount:]">
-<dtml-let oCurrent=sequence-item
-          coverage="getDCCoverage(REQUEST)"
-          accessRights="hasAccess(REQUEST)">
+<dtml-let oCurrent=sequence-item coverage="getDCCoverage(REQUEST)">
 
 <tr valign="top">
 
@@ -202,8 +188,7 @@
 <!-- ##### object ##### -->
 </dtml-comment>
 <dtml-if sequence-start>
-<td rowspan="<dtml-var "len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small">
-<dtml-let actions="getParentNode().filtered_insert_actions()"
+<td rowspan="<dtml-var "len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small"
 ><select class="form-small" onchange="zmiChooseAction(this,'e','<dtml-var "getSortId()">')"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=999999#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_EXPAND')"></option
@@ -212,9 +197,7 @@
 ><option value="manage_cutObjects"><dtml-var "getZMILangStr('BTN_CUT')"></option
 ><option value="manage_copyObjects"><dtml-var "getZMILangStr('BTN_COPY')"></option
 ><dtml-if cb_dataValid><option value="manage_pasteObjs"><dtml-var "getZMILangStr('BTN_PASTE')"></option></dtml-if
-><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
 ></select
-></dtml-let
 ></td
 ></dtml-if>
 
@@ -223,7 +206,7 @@
 </dtml-comment>
 <td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorLight1</dtml-if>">
 <div class="zmiRenderShort form-small" id="tr_<dtml-var id>">
-<input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "accessRights and (getAutocommit() or coverage[coverage.find('.')+1:]==lang)">disabled="disabled"</dtml-unless> />
+<input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless> />
 <input type="hidden" name="sort_id_<dtml-var id>" value="<dtml-var "getSortId()">">
 <a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)"></a>
 </div>
@@ -296,17 +279,4 @@
 </dtml-let>
 
 </form>
-
-<script type="text/javascript">
-<!--//
-  $(function() {
-    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
-    // Expand (populate) action-selects.
-    $("select[id*=select_actions_]:gt(0)")
-      .focus( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); })
-      .mouseover( function(evt) { zmiExpandActionSelectChild(this,'<dtml-var absolute_url>'); });
-  });
-//-->
-</script>
-
 <dtml-var manage_page_footer>

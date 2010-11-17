@@ -684,7 +684,7 @@ class ZMS(
         'manage_deleteObjs','manage_undoObjs',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxDragDrop','manage_ajaxFilteredContainerActions','manage_ajaxFilteredChildActions',
+        'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_search','manage_search_attrs','manage_tasks',
         'manage_wfTransition', 'manage_wfTransitionFinalize',

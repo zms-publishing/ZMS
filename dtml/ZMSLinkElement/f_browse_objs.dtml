@@ -252,7 +252,6 @@ function processResponse(data)
     var page = pages[i];
     var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
     var page_absolute_url = $(page).attr("absolute_url");
-    var page_access = $(page).attr("access")=="True" || $(page).attr("access")=="1";
     var page_meta_id = $(page).attr("meta_id");
     var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
     var page_titlealt = $(page).attr("titlealt");
@@ -261,7 +260,7 @@ function processResponse(data)
     var div = document.createElement( "div");
     $(div).attr( {id: "div_" + page_id});
     $(div).addClass( "form-small");
-    if ( page_access && page_has_children) {
+    if ( page_has_children) {
       var a = document.createElement( "a");
       a.setAttribute( "href", "javascript:clickElement('" + page_id + "','" + page_absolute_url + "');");
       var img = document.createElement( "img");
@@ -520,7 +519,7 @@ function followHref( href, extra)
 
  ><dtml-call "REQUEST.set('pos',0)"
  ><dtml-in breadcrumbs
-  ><dtml-let ob=sequence-item ob_level=sequence-index ob_access="hasAccess(REQUEST)"
+  ><dtml-let ob=sequence-item ob_level=sequence-index
    ><dtml-if "ob in catalog_items"
     ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
    ><dtml-else
@@ -529,15 +528,13 @@ function followHref( href, extra)
     ><dtml-call "REQUEST.set('pos',len(catalog_items))"
    ></dtml-if
    ><dtml-if sequence-end
-    ><dtml-if ob_access
-     ><dtml-in "getChildNodes(REQUEST)"
-      ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
-       ><dtml-call "catalog_items.insert(pos,ob)"
-       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
-       ><dtml-call "REQUEST.set('pos',pos+1)"
-      ></dtml-let
-     ></dtml-in
-    ></dtml-if
+    ><dtml-in "getChildNodes(REQUEST)"
+     ><dtml-let ob=sequence-item
+      ><dtml-call "catalog_items.insert(pos,ob)"
+      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
+      ><dtml-call "REQUEST.set('pos',pos+1)"
+     ></dtml-let
+    ></dtml-in
    ></dtml-if
   ></dtml-let
  ></dtml-in
@@ -547,11 +544,11 @@ function followHref( href, extra)
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob
-   ><dtml-let index=sequence-index ob_access="hasAccess(REQUEST)" has_children="len(getChildNodes(REQUEST))>0"
+   ><dtml-let index=sequence-index has_children="len(getChildNodes(REQUEST))>0"
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
     ><dtml-in "range( ob_level, last_level + 1)"></div></dtml-in
     ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"
-    ><dtml-if "ob_access and has_children"
+    ><dtml-if has_children
      ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
       id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" width="16" height="16" border="0" title="+" align="absmiddle"></a
     ><dtml-else

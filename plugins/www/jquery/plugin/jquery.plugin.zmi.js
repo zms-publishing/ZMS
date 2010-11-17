@@ -3,6 +3,13 @@
 // ############################################################################
 
 $(function(){
+	// Action-Lists
+	$("input.zmi-ids-list:checkbox").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
+	$("select.zmi-action")
+		.focus( function(evt) { zmiActionPopulate(this); })
+		.mouseover( function(evt) { zmiActionPopulate(this); }
+	);
+	// Date-Picker
 	pluginUI('input.datepicker',function() {
 		var dayNames = [getZMILangStr('DAYOFWEEK0'), getZMILangStr('DAYOFWEEK1')
 					, getZMILangStr('DAYOFWEEK2'), getZMILangStr('DAYOFWEEK3')
@@ -35,6 +42,57 @@ $(function(){
 	});
 });
 
+
+// ############################################################################
+// ### ZMI Action-Lists
+// ############################################################################
+
+var zmiActionPrefix = 'select_actions_';
+
+/**
+ * Populate action-list.
+ *
+ * @param el
+ */
+function zmiActionPopulate(el) 
+{
+	if ( el.options[el.options.length-1].text.indexOf('---') != 0) {
+		return;
+	}
+	
+	// Set wait-cursor.
+	$(document.body).css( "cursor", "wait");
+	
+	// Get params.
+	var action = self.location.href;
+	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
+	action = action+'/manage_ajaxZMIActions';
+	var params = {};
+	params['lang'] = getZMILang();
+	params['context_id'] = $(el).attr('id').substr(zmiActionPrefix.length);
+	
+	// JQuery.AJAX.get
+	$.get( action, params, function(data) {
+		// Reset wait-cursor.
+		$(document.body).css( "cursor", "auto");
+		// Get object-id.
+		var value = eval('('+data+')');
+		var id = value['id'].replace(/\./,"_").replace(/\-/,"_");
+		var actions = value['actions'];
+		var select = document.getElementById(zmiActionPrefix+id);
+		if ( select.options[select.options.length-1].text.indexOf('---') != 0)
+			return;
+		for (var i in actions) {
+			if ( i > 0) {
+				var label = actions[i][0];
+				var value = actions[i][1];
+				var option = new Option( label, value);
+				select.options[ select.length] = option;
+			}
+		}
+		select.selectedIndex = 0;
+	});
+}
 
 // ############################################################################
 // ### Notification Service

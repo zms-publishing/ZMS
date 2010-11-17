@@ -91,7 +91,6 @@ function processResponse(data)
     var page = pages[i];
     var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
     var page_absolute_url = $(page).attr("absolute_url");
-    var page_access = $(page).attr("access")=="True" || $(page).attr("access")=="1";
     var page_meta_type = $(page).attr("meta_type");
     var div = document.createElement( "div");
     $(div).attr( {id: "div_" + page_id});
@@ -122,46 +121,40 @@ function processResponse(data)
     }
     img.onmousedown=Function("dragstart(this)");
     img.onmouseover=Function("divmouseover(this)");
-    if (page_access) {
-      var a = document.createElement( "a");
-      $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_main')");
-      $(a).addClass( "zmi");
-      a.appendChild( img);
-      var titlealt = document.createTextNode( page.getAttribute("titlealt"));
-      if ( self.location.href.indexOf(page_absolute_url)==0) {
-        var b = document.createElement( "b");
-        b.appendChild( titlealt);
-        titlealt = b;
-      }
-      a.appendChild( titlealt);
-      div.appendChild( a)
-      if ( page_meta_type == "ZMS") {
-        div.appendChild( document.createTextNode( " "));
-        if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSADMINISTRATOR')">,')>=0) {
-          var a = document.createElement( "a");
-          $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_customize')");
-          var img = document.createElement( "img");
-          $(img).attr( {src: "<dtml-var MISC_ZMS>btn_custom.gif", title: "<dtml-var "getZMILangStr('TAB_CONFIGURATION')">", align: "absmiddle"});
-          $(img).css( "border", "1px dotted black");
-          a.appendChild( img);
-          div.appendChild( a);
-          div.appendChild( document.createTextNode( " "));
-        }
-        if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')">,')>=0) {
-          var a = document.createElement( "a");
-          $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_users')");
-          var img = document.createElement( "img");
-          $(img).attr( {src: "<dtml-var MISC_ZMS>icon_users.gif", title: "<dtml-var "getZMILangStr('TAB_ACCESS')">", align: "absmiddle"});
-          $(img).css( "border", "1px dotted black");
-          a.appendChild( img);
-          div.appendChild( a);
-          div.appendChild( document.createTextNode( " "));
-        }
-      }
+    var a = document.createElement( "a");
+    $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_main')");
+    $(a).addClass( "zmi");
+    a.appendChild( img);
+    var titlealt = document.createTextNode( page.getAttribute("titlealt"));
+    if ( self.location.href.indexOf(page_absolute_url)==0) {
+      var b = document.createElement( "b");
+      b.appendChild( titlealt);
+      titlealt = b;
     }
-    else {
-      div.appendChild( img);
-      div.appendChild( document.createTextNode( page.getAttribute("titlealt")));
+    a.appendChild( titlealt);
+    div.appendChild( a)
+    if ( page_meta_type == "ZMS") {
+      div.appendChild( document.createTextNode( " "));
+      if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSADMINISTRATOR')">,')>=0) {
+        var a = document.createElement( "a");
+        $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_customize')");
+        var img = document.createElement( "img");
+        $(img).attr( {src: "<dtml-var MISC_ZMS>btn_custom.gif", title: "<dtml-var "getZMILangStr('TAB_CONFIGURATION')">", align: "absmiddle"});
+        $(img).css( "border", "1px dotted black");
+        a.appendChild( img);
+        div.appendChild( a);
+        div.appendChild( document.createTextNode( " "));
+      }
+      if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')">,')>=0) {
+        var a = document.createElement( "a");
+        $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_users')");
+        var img = document.createElement( "img");
+        $(img).attr( {src: "<dtml-var MISC_ZMS>icon_users.gif", title: "<dtml-var "getZMILangStr('TAB_ACCESS')">", align: "absmiddle"});
+        $(img).css( "border", "1px dotted black");
+        a.appendChild( img);
+        div.appendChild( a);
+        div.appendChild( document.createTextNode( " "));
+      }
     }
     el.append( div);
     var div_children = document.createElement( "div");
@@ -568,8 +561,7 @@ function drag(ereignis) {
 
  ><dtml-call "REQUEST.set('pos',0)"
  ><dtml-in breadcrumbs
-  ><dtml-let ob=sequence-item ob_level=sequence-index ob_access="hasAccess(REQUEST)"
-   ><dtml-if ob_access
+  ><dtml-let ob=sequence-item ob_level=sequence-index
    ><dtml-unless "isPageElement()"
     ><dtml-if "ob in catalog_items"
      ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
@@ -580,12 +572,10 @@ function drag(ereignis) {
     ></dtml-if
     ><dtml-if "getHome().id==home_id"
     ><dtml-in "getChildNodes(REQUEST,PAGES)"
-     ><dtml-let ob=sequence-item ob_access="hasAccess(REQUEST)"
-      ><dtml-if ob_access
-       ><dtml-call "catalog_items.insert(pos,ob)"
-       ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
-       ><dtml-call "REQUEST.set('pos',pos+1)"
-      ></dtml-if
+     ><dtml-let ob=sequence-item
+      ><dtml-call "catalog_items.insert(pos,ob)"
+      ><dtml-call "catalog_items2.insert(pos,{'ob':ob,'ob_level':ob_level+1})"
+      ><dtml-call "REQUEST.set('pos',pos+1)"
      ></dtml-let
     ></dtml-in
     ><dtml-if "meta_type=='ZMS'"
@@ -597,7 +587,6 @@ function drag(ereignis) {
     ></dtml-if
     ></dtml-if
    ></dtml-unless
-   ></dtml-if
   ></dtml-let
  ></dtml-in
 
@@ -606,7 +595,7 @@ function drag(ereignis) {
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob
-   ><dtml-let index=sequence-index access="hasAccess(REQUEST)"
+   ><dtml-let index=sequence-index
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
     ><dtml-in "_.range( ob_level, last_level + 1)"></div></dtml-in
      ><div id="div_<dtml-var ob_id>" class="form-small"
@@ -617,12 +606,12 @@ function drag(ereignis) {
       ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
        id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" title="+" align="absmiddle"></a
      ></dtml-if
-     ><dtml-if access><a href="javascript:followHref('<dtml-var absolute_url>/manage_main')" class="zmi"></dtml-if
+     ><a href="javascript:followHref('<dtml-var absolute_url>/manage_main')" class="zmi"
      ><dtml-var f_display_icon
      ><dtml-if "ob in breadcrumbs"><b></dtml-if
      ><dtml-var "getTitlealt(REQUEST)"
      ><dtml-if "ob in breadcrumbs"></b></dtml-if
-     ><dtml-if access></a></dtml-if>
+     ></a>
      <dtml-if "meta_type=='ZMS'">
       <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',ob)"><a href="javascript:followHref('<dtml-var absolute_url>/manage_customize')"><img src="<dtml-var MISC_ZMS>btn_custom.gif" title="<dtml-var "getZMILangStr('TAB_CONFIGURATION')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
       <dtml-if "AUTHENTICATED_USER.has_permission('ZMS UserAdministrator',ob)"><a href="javascript:followHref('<dtml-var absolute_url>/manage_users')"><img src="<dtml-var MISC_ZMS>icon_users.gif" title="<dtml-var "getZMILangStr('TAB_ACCESS')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>

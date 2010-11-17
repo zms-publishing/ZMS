@@ -33,26 +33,20 @@
    </dtml-if>
    <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
-     ><dtml-let accessRights="hasAccess(REQUEST)" actions="filtered_container_actions_objChildren(objAttr,str(id)+'/',REQUEST)"
-       ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
-       ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
-        ><dtml-if accessRights><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"></dtml-if
-        ><dtml-var f_display_icon
-         ><dtml-if "objAttr.get('repetitive',0)==1"
-          ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
-         ><dtml-else
-          ><dtml-var "display_type(REQUEST)"
-         ></dtml-if
-        ><dtml-if accessRights></a></dtml-if
-       ></dtml-let
-      ><dtml-if accessRights
-       ><dtml-if actions
-        ><select id="select_actions_<dtml-var id>" class="form-small" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
-         ><dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)"
-        ></select
+     ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
+     ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
+      ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"
+      ><dtml-var f_display_icon
+       ><dtml-if "objAttr.get('repetitive',0)==1"
+        ><dtml-var "'%s %i'%(display_type(REQUEST),_['sequence-index']+1)"
+       ><dtml-else
+        ><dtml-var "display_type(REQUEST)"
        ></dtml-if
-      ></dtml-if
+      ></a
      ></dtml-let
+     ><select class="form-small zmi-action" id="select_actions_<dtml-var id>" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+      ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
+     ></select
     ></td>
     <td>
      <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -85,11 +79,9 @@
       </dtml-comment>
       <div class="form-element zmi_col_right">
        <dtml-if "objAttr.get('repetitive',0)==1 or len(getObjChildren(objAttr['id'],REQUEST))==0"
-        ><dtml-let actions="filtered_container_actions_objChildren(objAttr,'',REQUEST)"
-         ><select class="form-small" onchange="zmiChooseAction(this,'<dtml-var "objAttr['id']">','9900')">
-          <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
-         </select
-        ></dtml-let
+        ><select class="form-small zmi-action" id="select_actions_<dtml-var "objAttr['id']">" onchange="zmiChooseAction(this,'<dtml-var "objAttr['id']">','9900')"
+         ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
+        ></select
        ></dtml-if>
       </div>
      </td>

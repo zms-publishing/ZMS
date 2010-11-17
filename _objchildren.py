@@ -172,45 +172,6 @@ class ObjChildren:
       return self.getChildNodes(REQUEST,meta_types,reid)
 
 
-    """
-    ############################################################################
-    ###
-    ###  Action-List
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ObjChildren.filtered_container_actions_objChildren:
-    #
-    #  Object-actions of management interface.
-    #  @see zmsobject.filtered_edit_action
-    # --------------------------------------------------------------------------
-    def filtered_container_actions_objChildren(self, objAttr, path, REQUEST):
-      actions = []
-      
-      if objAttr is None:
-        objAttr = self.getMetaobjAttr( self.meta_id, 'e')
-      repetitive = objAttr.get('repetitive',0)==1
-      mandatory = objAttr.get('mandatory',0)==1
-      
-      if (repetitive or len(self.getObjChildren(objAttr['id'],REQUEST))==0):
-        ob = self
-        if len( path) > 0:
-          ob = self.getParentNode()
-        actions.extend(ob.filtered_insert_actions(path,objAttr))
-      
-      sub_actions = []
-      sub_actions.extend(self.getParentNode().filtered_container_actions(path,objAttr))
-      sub_actions.extend(self.filtered_command_actions(path,REQUEST))
-      if len(sub_actions) > 0:
-        actions.append(('----- %s -----'%self.getZMILangStr('ACTION_SELECT')%self.getZMILangStr('ATTR_ACTION'),''))
-        actions.extend(sub_actions)
-      
-      # Return action list.
-      return actions
-
-
     ############################################################################
     #  ObjChildren.manage_initObjChild: 
     #

@@ -1,6 +1,14 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
+/**
+ * Returns language.
+ */
+function getZMILang() {
+  return '<dtml-var lang>';
+}
+
+
 // ############################################################################
 // ### getZMILangStr:
 // ############################################################################

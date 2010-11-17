@@ -33,6 +33,7 @@ class pilutil:
     self.context = context
 
 
+  enabled__roles__ = None
   def enabled(self):
     if self.context.getConfProperty('InstalledProducts.pil'):
       return True
@@ -43,6 +44,7 @@ class pilutil:
       return False
 
 
+  thumbnail__roles__ = None
   def thumbnail(self, img, maxdim, qual=75):
     # Resize image
     size = (maxdim, maxdim)
@@ -63,6 +65,7 @@ class pilutil:
     return image
 
 
+  resize__roles__ = None
   def resize(self, img, size, mode='resize', qual=75):
     """
     Resize image.
@@ -128,6 +131,7 @@ class pilutil:
     return image
 
 
+  crop__roles__ = None
   def crop(self, img, box, qual=75):
     """
     Crop image.
@@ -162,6 +166,7 @@ class pilutil:
     return image
 
 
+  rotate__roles__ = None
   def rotate( self, img, direction, qual=75):
     """
     Rotate image.

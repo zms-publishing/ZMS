@@ -265,30 +265,38 @@ class VersionItem:
 
 
     # --------------------------------------------------------------------------
+    #  VersionItem.syncObjModifiedChildren:
+    #
+    #  Returns true if object has modified children, false otherwise.
+    # --------------------------------------------------------------------------
+    def syncObjModifiedChildren(self, REQUEST, depth=0):
+      obj_state = 'STATE_MODIFIED_OBJS'
+      rtnVal = False
+      for child in self.getVersionItems( REQUEST):
+        if child.isObjModified(REQUEST):
+          rtnVal = True
+        else:
+          rtnVal = child.syncObjModifiedChildren( REQUEST, depth+1)
+        if rtnVal:
+          break
+      if depth==0:
+        if rtnVal:
+          if not self.inObjStates( [ obj_state], REQUEST):
+            self.setObjState( obj_state, REQUEST[ 'lang'])
+        else:
+          if self.inObjStates( [ obj_state], REQUEST):
+            self.delObjStates( [ obj_state], REQUEST)
+      return rtnVal
+
+
+    # --------------------------------------------------------------------------
     #  VersionItem.hasObjModifiedChildren:
     #
     #  Returns true if object has modified children, false otherwise.
     # --------------------------------------------------------------------------
-    def hasObjModifiedChildren(self, REQUEST):
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'hasObjModifiedChildren'
-      try:
-        rtnVal = self.fetchReqBuff( reqBuffId, REQUEST)
-        return rtnVal
-      except:
-        
-        rtnVal = False
-        for child in self.getVersionItems( REQUEST):
-          if child.isObjModified(REQUEST):
-            rtnVal = True
-          else:
-            rtnVal = child.hasObjModifiedChildren( REQUEST)
-          if rtnVal:
-            break
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, rtnVal, REQUEST)
+    def hasObjModifiedChildren(self, REQUEST, depth=0):
+      obj_state = 'STATE_MODIFIED_OBJS'
+      return self.inObjStates( [ obj_state], REQUEST)
 
 
     # --------------------------------------------------------------------------
@@ -382,7 +390,7 @@ class VersionItem:
         self.__work_state__.states = []
         self.__work_state__ = copy.deepcopy(self.__work_state__)
       else:
-        self.delObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
+        self.delObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_MODIFIED_OBJS', 'STATE_DELETED'], REQUEST)
 
 
     # --------------------------------------------------------------------------
@@ -496,19 +504,15 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger thumbnail generation of image fields ####
-      _globals.writeLog( self, "[onChangeObj.1]")
       _blobfields.thumbnailImageFields( self, lang, REQUEST)
       
       ##### Trigger custom onChangeObj-Event (if there is one) ####
-      _globals.writeLog( self, "[onChangeObj.2]")
       _globals.triggerEvent( self, 'onChangeObjEvt', preview=True, REQUEST=REQUEST)
       
       ##### Commit or initiate workflow transition ####
       if self.getAutocommit() or forced:
-        _globals.writeLog( self, "[onChangeObj.3a]")
         self.commitObj(REQUEST,forced,do_history)
       else:
-        _globals.writeLog( self, "[onChangeObj.3b]")
         self.autoWfTransition(REQUEST)
       _globals.writeLog( self, "[onChangeObj]: Finished!")
 
@@ -1197,8 +1201,9 @@ class VersionManagerContainer:
       # Enter Container.
       if not self.isVersionContainer():
         return self.getVersionContainer().autoWfTransition(REQUEST)
-        return
+      
       # Enter Workflow.
+      self.syncObjModifiedChildren(REQUEST)
       enter = len(self.getWfStates(REQUEST)) == 0
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)
       if not enter:

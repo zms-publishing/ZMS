@@ -378,7 +378,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
     except:
       pass
   
-  ##### Build 132a: Rename logo to zmi_logo ####
+  ##### Build 133a: Rename logo to zmi_logo ####
   if getattr( docElmnt, 'build', '000') < '133':
     if self.meta_type == 'ZMS':
       autocommit = self.getConfProperty('ZMS.autocommit',1)
@@ -399,6 +399,11 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       self.delConfProperty('ZMS.workflow.acquire')
       self.delConfProperty('ZMS.workflow.activities')
       self.delConfProperty('ZMS.workflow.transitions')
+  
+  ##### Build 134c: Store object-state for modified sub-objects in version-container ####
+  if getattr( docElmnt, 'build', '000') < '134':
+    if not self.getAutocommit() and self.isVersionContainer():
+      self.syncObjModifiedChildren( REQUEST)
   
   # Recursion.
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
@@ -648,7 +653,7 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '133'        # Internal use only, designates object model!
+    zms_build = '134'        # Internal use only, designates object model!
     zms_patch = 'c'          # Internal use only!
 
     # Properties.

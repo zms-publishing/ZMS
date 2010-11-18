@@ -42,9 +42,9 @@ function versionNrOnClick(el, version_nr)
 {
   var tr = document.getElementById( 'tr_'+version_nr);
   if ( el.checked) 
-    tr.className = "zmiTeaserColor";
+    $('tr#tr_'+version_nr).addClass('zmiTeaserColor');
   else
-    tr.className = "";
+    $('tr#tr_'+version_nr).removeClass('zmiTeaserColor');
 }
 
 /**
@@ -98,7 +98,7 @@ function previewImgBtnProcessResponse(data)
 
 <dtml-var f_bo_area>
 
-<p class="form-text"><dtml-var "getZMILangStr('MSG_UNDOVERSION')"></p>
+<div class="form-help"><dtml-var "getZMILangStr('MSG_UNDOVERSION')"></div><br/>
 
 <dtml-let level="getLevel()" obj_versions="getObjVersions()" change_history="getObjProperty('change_history',REQUEST)">
 
@@ -332,15 +332,9 @@ function previewImgBtnProcessResponse(data)
      <dtml-let obj_index=sequence-index obj_version=sequence-item>
       <dtml-with obj_version>
        <dtml-call "REQUEST.set('ZMS_VERSION_%s'%aq_parent.id,id)">
-       <dtml-if "len(history_versions)==0">
-        <dtml-if "getObjProperty('master_version',REQUEST)==change_history_item.get('master_version',0) and 
-                  getObjProperty('major_version',REQUEST)==change_history_item.get('major_version',0)">
-         <dtml-call "history_versions.append({'version_nr':'%i.%i.%i'%(getObjProperty('master_version',REQUEST),getObjProperty('major_version',REQUEST),getObjProperty('minor_version',REQUEST)),'oCurrent':obj_version})">
-        <dtml-elif "obj_index > 0 and getAutocommit() and 
-                    getObjProperty('master_version',REQUEST)==change_history_item.get('master_version',0) and 
-                    getObjProperty('major_version',REQUEST)<change_history_item.get('major_version',0)">
-         <dtml-call "history_versions.append({'version_nr':'%i.%i.%i'%(change_history_item.get('master_version',0),change_history_item.get('major_version',0),0),'oCurrent':obj_versions[obj_index-1]})">
-        </dtml-if>
+       <dtml-if "getObjProperty('master_version',REQUEST)==change_history_item.get('master_version',0) and 
+                 getObjProperty('major_version',REQUEST)==change_history_item.get('major_version',0)">
+        <dtml-call "history_versions.append({'version_nr':'%i.%i.%i'%(getObjProperty('master_version',REQUEST),getObjProperty('major_version',REQUEST),getObjProperty('minor_version',REQUEST)),'oCurrent':obj_version})">
        </dtml-if>
       </dtml-with>
      </dtml-let>
@@ -568,9 +562,9 @@ function previewImgBtnProcessResponse(data)
 <div class="form-element">
 <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COMPARE')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersionForm';">
 <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersion';">
-</div>
-</div>
 <br/><br/>
+</div>
+</div>
 </form>
 </dtml-let>
 

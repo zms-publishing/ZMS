@@ -146,7 +146,7 @@
    <dtml-let node=sequence-item ob="getLinkObj(node,REQUEST)">
     <div class="form-small">
      <dtml-if "ob is not None">
-      <dtml-var "f_breadcrumbs(_,_,objectPathElements=ob.breadcrumbs_obj_path(),no_icon=1,REQUEST=REQUEST)">
+      <dtml-var "f_breadcrumbs(_,_,objectPathElements=ob.breadcrumbs_obj_path(),additionalObjectPathElements=[],no_icon=1,REQUEST=REQUEST)">
      <dtml-else>
       <img src="<dtml-var MISC_ZMS>internal_link_broken.gif" alt="" border="0" align="absmiddle"/> <dtml-var node>
      </dtml-if>

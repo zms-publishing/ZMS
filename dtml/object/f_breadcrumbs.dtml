@@ -1,43 +1,39 @@
-<dtml-unless objectPathElements>
- <dtml-call "REQUEST.set('objectPathElements',breadcrumbs_obj_path())">
-</dtml-unless>
+<dtml-unless objectPathElements><dtml-call "REQUEST.set('objectPathElements',breadcrumbs_obj_path())"></dtml-unless>
 <span class="form-small">
-<dtml-in objectPathElements>
- <dtml-if "len(objectPathElements)>1">
-  &raquo;
- </dtml-if>
- <dtml-unless no_icon>
-  <dtml-if "_['sequence-index']==len(objectPathElements)-1">
-   <dtml-unless ZMS_INSERT>
-    <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" class="zmi"
+<dtml-in objectPathElements
+ ><dtml-if "len(objectPathElements)>1">&raquo;</dtml-if
+ ><dtml-unless no_icon
+  ><dtml-if "_['sequence-index']==len(objectPathElements)-1"
+   ><dtml-unless ZMS_INSERT
+    ><a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" class="zmi"
      ><dtml-var f_display_icon
     ></a>
-   </dtml-unless>
-  </dtml-if>
- </dtml-unless>
- <dtml-if sequence-end>
-  <dtml-call "REQUEST.set('reqMaxLen',len(getTitlealt(REQUEST)))">
- <dtml-else>
-  <dtml-call "REQUEST.set('reqMaxLen',max(3,24-2*len(objectPathElements)))">
- </dtml-if>
- <dtml-call "REQUEST.set('objTitle',string_maxlen(getTitlealt(REQUEST),REQUEST['reqMaxLen']))">
- <a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" title="<dtml-var "getTitlealt(REQUEST)" html_quote>" class="zmi"><dtml-var "REQUEST['objTitle']"></a>
+   </dtml-unless
+  ></dtml-if
+ ></dtml-unless
+><dtml-if sequence-end
+ ><dtml-call "REQUEST.set('reqMaxLen',len(getTitlealt(REQUEST)))"
+><dtml-else
+ ><dtml-call "REQUEST.set('reqMaxLen',max(3,24-2*len(objectPathElements)))"
+></dtml-if
+><dtml-call "REQUEST.set('objTitle',string_maxlen(getTitlealt(REQUEST),REQUEST['reqMaxLen']))"
+><a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang><dtml-if "_['sequence-index']+1<len(objectPathElements)">#_<dtml-var "objectPathElements[_['sequence-index']+1].id"></dtml-if>" title="<dtml-var "getTitlealt(REQUEST)" html_quote>" class="zmi"><dtml-var "REQUEST['objTitle']"></a>
 </dtml-in>
-<dtml-if ZMS_INSERT>
+
+<dtml-if ZMS_INSERT> 
  &raquo;
- <img src="<dtml-var "display_icon(REQUEST,ZMS_INSERT)">" title="<dtml-var "display_type(REQUEST,ZMS_INSERT)">" border="0" align="absmiddle">
- <i><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i>
-<dtml-elif "REQUEST.get('AUTHENTICATED_USER').has_permission('ZMS Administrator',REQUEST.get('ZMS_THIS')) and ('manage_main' in REQUEST['URL'].split('/') or 'manage_properties' in REQUEST['URL'].split('/'))">
- <dtml-with "REQUEST['ZMS_THIS'].metaobj_manager">
-  <dtml-unless "id in REQUEST['URL'].split('/')">
-   &nbsp;<a style="text-decoration:none" href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':REQUEST['ZMS_THIS'].meta_id})">" target="_blank" class="zmi"><span title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">">&middot;</span></a>
-  </dtml-unless>
- </dtml-with>
-</dtml-if>
-<dtml-if additionalObjectPathElements>
- <dtml-in additionalObjectPathElements mapping>
-  &raquo;
-  <a href="<dtml-var "url_append_params(href,{'lang':lang})">" class="zmi"><dtml-var title></a>
- </dtml-in>
-</dtml-if>
-</span>
+ <img src="<dtml-var "display_icon(REQUEST,ZMS_INSERT)">" title="<dtml-var "display_type(REQUEST,ZMS_INSERT)">" border="0" align="absmiddle" />
+ <em><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></em>
+<dtml-elif "REQUEST.get('AUTHENTICATED_USER').has_permission('ZMS Administrator',REQUEST.get('ZMS_THIS')) and ('manage_main' in REQUEST['URL'].split('/') or 'manage_properties' in REQUEST['URL'].split('/'))"
+ ><dtml-with "REQUEST['ZMS_THIS'].metaobj_manager"
+  ><dtml-unless "id in REQUEST['URL'].split('/')"
+   >&nbsp;<a style="text-decoration:none" href="<dtml-var "url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'id':REQUEST['ZMS_THIS'].meta_id})">" target="_blank" class="zmi"><span title="<dtml-var "getZMILangStr(meta_type)"> (<dtml-var "getZMILangStr('TAB_METAOBJ')">">&middot;</span></a>
+  </dtml-unless
+ ></dtml-with
+></dtml-if
+><dtml-if additionalObjectPathElements
+><dtml-in additionalObjectPathElements mapping
+> &raquo; <a href="<dtml-var "url_append_params(href,{'lang':lang})">" class="zmi"><dtml-var title></a>
+</dtml-in
+></dtml-if
+></span>

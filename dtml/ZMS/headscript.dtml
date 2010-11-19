@@ -10,5 +10,4 @@
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>zmilib_js?lang=<dtml-var lang>"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>comlib_js"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS>formlib.js"></script>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS>datelib.js"></script>
 </dtml-if>

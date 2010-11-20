@@ -65,9 +65,28 @@ $(function(){
 /* jQuery UI
  * @see http://jqueryui.com
  */
+$(function(){
+	// Date-Picker
+	var lang = window.navigator.language;
+	if (typeof lang == 'undefined') {
+		lang = window.navigator.userLanguage
+	}
+	pluginUI('input.datepicker',function() {
+		$.datepicker.setDefaults( $.datepicker.regional[ lang]);
+		$('input.datepicker').datepicker({
+			'showWeek'	: true
+		});
+	});
+});
+
 function pluginUI(s, c) {
+	var lang = window.navigator.language;
+	if (typeof lang == 'undefined') {
+		lang = window.navigator.userLanguage
+	}
 	$.plugin('ui',{
 		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.6.custom.min.js',
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js',
 				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.6.custom.css']
 		});
 	$.plugin('ui').get(s,c);

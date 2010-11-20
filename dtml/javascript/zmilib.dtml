@@ -14,10 +14,7 @@ function getZMILang() {
 // ############################################################################
 function getZMILangStr(key) {
 	var langDict = {
-		<dtml-in "['DATE_FMT','DAYOFWEEK0','DAYOFWEEK1','DAYOFWEEK2','DAYOFWEEK3'
-				,'DAYOFWEEK4','DAYOFWEEK5','DAYOFWEEK6','MONTH1','MONTH2','MONTH3'
-				,'MONTH4','MONTH5','MONTH6','MONTH7','MONTH8','MONTH9','MONTH10'
-				,'MONTH11','MONTH12','MSG_CONFIRM_DELOBJ','LOCALE']"><dtml-let si=sequence-item>
+		<dtml-in "['MSG_CONFIRM_DELOBJ','LOCALE']"><dtml-let si=sequence-item>
 '<dtml-var si>':'<dtml-var "getZMILangStr(si)">'<dtml-unless sequence-end>,</dtml-unless>
 </dtml-let></dtml-in>
 	};

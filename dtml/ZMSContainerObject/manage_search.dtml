@@ -153,7 +153,7 @@
    </dtml-in>
   </dtml-in>
 
-  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(int(qs),int(qe),len(qres))"></b></div>
+  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(int(qs),int(qe),len(qres),REQUEST['_s'])"></b></div>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 

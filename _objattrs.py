@@ -29,6 +29,7 @@ import ZPublisher.HTTPRequest
 import string
 import time
 import urllib
+import zExceptions
 # Product Imports.
 import _blobfields
 import _globals
@@ -173,7 +174,7 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
       except:
         e = "[cloneobjattr]: Can't clone object-attribute: obj_attr=%s, lang=%s, v=%s!"%(str(obj_attr), str(lang), str(v))
         _globals.writeError( self, e)
-        raise e
+        raise zExceptions.InternalError(e)
     elif type(v) is list or type(v) is tuple:
       v = self.copy_list(v)
     elif type(v) is dict:
@@ -694,7 +695,7 @@ class ObjAttrs:
       try:
         if ( type( par) is dict and par.get( 'fetchReqBuff') in [ 0, False]) or \
            ( REQUEST.get( 'ZMS_VERSION_%s'%self.id) is not None):
-          raise 'ReqBuff set inactive!'
+          raise zExceptions.InternalError('ReqBuff set inactive!')
         forced = type( par) is dict and par.get( 'fetchReqBuff') in [ 1, True]
         value = self.fetchReqBuff( reqBuffId, REQUEST, forced)
         return value

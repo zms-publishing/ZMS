@@ -34,6 +34,7 @@ import os
 import tempfile
 import time
 import urllib
+import zExceptions
 # Product Imports.
 import _blobfields
 import _fileutil
@@ -595,7 +596,7 @@ class FilterItem:
         outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
         _fileutil.exportObj( data, outfilename)
       else:
-        raise "Unknown format '%s'"%ob_filter.get('format','')
+        raise zExceptions.InternalError("Unknown format '%s'"%ob_filter.get('format',''))
       return tempfolder, outfilename
 
 

@@ -36,6 +36,7 @@ import re
 import sys
 import time
 import urllib
+import zExceptions
 
 
 """ Globals. """
@@ -522,7 +523,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
   if reply_code == 404 or reply_code >= 500:
     error = "[%i]: %s at %s [%s]"%(reply_code,message,url,method)
     writeBlock( self, "[http_import.error]: %s"%error)
-    raise error
+    raise zExceptions.InternalError(error)
   elif reply_code==200:
     # get content
     f = req.getfile()
@@ -837,7 +838,7 @@ def parseLangFmtDate(s):
             if len(v) == 0:
               break
             if fmt[0] != v[0]:
-              raise "Exception"
+              raise zExceptions.InternalError
             fmt = fmt[1:]
             v = v[1:]
           if dctTime['Y'] + dctTime['m'] + dctTime['d'] == 0:
@@ -855,7 +856,7 @@ def parseLangFmtDate(s):
              (dctTime['H']!=0 and dctTime['H']-1 not in range(24)) or \
              (dctTime['M']!=0 and dctTime['M']-1 not in range(60)) or \
              (dctTime['S']!=0 and dctTime['S']-1 not in range(60)):
-            raise 'Exception'
+            raise zExceptions.InternalError
           value = getDateTime((dctTime['Y'],dctTime['m'],dctTime['d'],dctTime['H'],dctTime['M'],dctTime['S'],0,1,-1))
       except:
         pass

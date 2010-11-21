@@ -24,6 +24,7 @@
 # Imports.
 import time
 import urllib
+import zExceptions
 
 
 dct_op = {'index':'','sitemap':'sitemap','index_print':'print'}
@@ -147,8 +148,8 @@ class ReqBuff:
           value = getattr(buff,reqBuffId)
           return value
         except:
-          raise '%s not found in ReqBuff!'%reqBuffId
-      raise 'ReqBuff is inactive!'
+          raise zExceptions.InternalError('%s not found in ReqBuff!'%reqBuffId)
+      raise zExceptions.InternalError('ReqBuff is inactive!')
 
     # --------------------------------------------------------------------------
     #  storeReqBuff:

@@ -30,6 +30,7 @@ import sys
 import urllib
 import tempfile
 import time
+import zExceptions
 # Product Imports.
 from zmsobject import ZMSObject
 import _fileutil
@@ -272,7 +273,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           d = self.parseLangFmtDate(v)
           if d is None:
-            raise 'Exception'
+            raise zExceptions.InternalError
           return "'%s'"%self.getLangFmtDate(d,'eng','%s_FMT'%col['type'].upper())
         except:
           if da.meta_type == 'Z Gadfly Database Connection':
@@ -819,7 +820,7 @@ class ZMSSqlDb(ZMSObject):
           rowid = rs[0]['existing_id']
           return rowid
       except:
-        raise _globals.writeError( self, '[getFk]: can\'t find existing row - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[getFk]: can\'t find existing row - sqlStatement=' + sqlStatement))
       
       rowid = None
       if createIfNotExists:
@@ -848,7 +849,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           self.executeQuery( sqlStatement)
         except:
-          raise _globals.writeError( self, '[createFk]: can\'t insert row - sqlStatement=' + sqlStatement)
+          raise zExceptions.InternalError(_globals.writeError( self, '[createFk]: can\'t insert row - sqlStatement=' + sqlStatement))
         
         # Return with row-id.
         rowid = (filter(lambda x: x['id']==primary_key, c)+[{'value':None}])[0]['value']
@@ -861,7 +862,7 @@ class ZMSSqlDb(ZMSObject):
             for r in self.query( sqlStatement)['records']:
               rowid = r['value']
           except:
-            raise _globals.writeError( self, '[createFk]: can\'t get primary-key - sqlStatement=' + sqlStatement)
+            raise zExceptions.InternalError(_globals.writeError( self, '[createFk]: can\'t get primary-key - sqlStatement=' + sqlStatement))
       
       return rowid
 
@@ -883,7 +884,7 @@ class ZMSSqlDb(ZMSObject):
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
       if tablename is None:
-        raise "[recordSet_Insert]: tablename must not be None!"
+        raise zExceptions.InternalError("[recordSet_Insert]: tablename must not be None!")
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -980,7 +981,7 @@ class ZMSSqlDb(ZMSObject):
       try:
         old = self.query( sqlStatement)['records'][0]
       except:
-        raise _globals.writeError( self, '[recordSet_Update]: can\'t get old - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t get old - sqlStatement=' + sqlStatement))
       # Get columns to update
       c = []
       for tablecol in tablecols:
@@ -1043,7 +1044,7 @@ class ZMSSqlDb(ZMSObject):
         try:
           self.executeQuery( sqlStatement)
         except:
-          raise _globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement)
+          raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
       # Return with row-id.
       return rowid
 
@@ -1063,7 +1064,7 @@ class ZMSSqlDb(ZMSObject):
       REQUEST = self.REQUEST
       lang = REQUEST['lang']
       if tablename is None:
-        raise "[recordSet_Delete]: tablename must not be None!"
+        raise zExceptions.InternalError("[recordSet_Delete]: tablename must not be None!")
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -1076,7 +1077,7 @@ class ZMSSqlDb(ZMSObject):
       try:
         self.executeQuery( sqlStatement)
       except:
-        raise _globals.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement))
 
 
     ############################################################################
@@ -1114,13 +1115,13 @@ class ZMSSqlDb(ZMSObject):
             value = self.sql_quote__(tablename,id,value)
           return value
       except:
-        raise _globals.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement))
 
     def delete_blob( self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None):
       """ ZMSSqlDb.delete_blob """
       user = self.findUser( auth_user)
       if user is None:
-        raise "Invalid user"
+        raise zExceptions.Unauthorized
       return self._delete_blob( tablename=tablename, id=id, rowid=rowid)
 
 
@@ -1159,7 +1160,7 @@ class ZMSSqlDb(ZMSObject):
           for r in self.query( sqlStatement)['records']:
             oldfilename = r['v']
         except:
-          raise _globals.writeError( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement)
+          raise zExceptions.InternalError(_globals.writeError( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement))
       # Remove old file from server-fs
       try:
         self.localfs_remove(path+oldfilename)
@@ -1172,7 +1173,7 @@ class ZMSSqlDb(ZMSObject):
       """ ZMSSqlDb.set_blob """
       user = self.findUser( auth_user)
       if user is None:
-        raise "Invalid user"
+        raise zExceptions.Unauthorized
       return self._set_blob( tablename=tablename, id=id, rowid=rowid, xml=xml)
 
 
@@ -1199,7 +1200,7 @@ class ZMSSqlDb(ZMSObject):
           filename = r['v']
           data = self.localfs_read( path+filename, REQUEST=REQUEST)
       except:
-        raise _globals.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement))
       return data
 
 
@@ -1512,7 +1513,7 @@ class ZMSSqlDb(ZMSObject):
               filename = _fileutil.findExtension(ext, folder, deep)
               break
         if filename is None:
-          raise "XML-File not found!"
+          raise zExceptions.InternalError("XML-File not found!")
       
       # Import Filter.
       if REQUEST.get('filter','') in self.getFilterIds():

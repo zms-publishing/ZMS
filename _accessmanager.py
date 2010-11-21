@@ -33,6 +33,7 @@ import copy
 import sys
 import time
 import urllib
+import zExceptions
 # Product Imports.
 import _globals
 
@@ -201,7 +202,7 @@ class AccessableObject:
       depth = 0
       while ob is not None:
         if depth > sys.getrecursionlimit():
-          raise "Maximum recursion depth exceeded"
+          raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = self.getRefObjPath(ob)
         if nodekey in nodes.keys():
@@ -237,7 +238,7 @@ class AccessableObject:
       depth = 0
       while ob is not None:
         if depth > sys.getrecursionlimit():
-          raise "Maximum recursion depth exceeded"
+          raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = self.getRefObjPath(ob)
         if nodekey in nodes.keys():
@@ -574,7 +575,7 @@ class AccessManager(AccessableContainer):
       depth = 0
       while True:
         if depth > sys.getrecursionlimit():
-          raise "Maximum recursion depth exceeded"
+          raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         if ob is None: 
           break

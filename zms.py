@@ -34,6 +34,7 @@ import sys
 import time
 import transaction
 import urllib
+import zExceptions
 # Product imports.
 import _accessmanager
 import _builder
@@ -82,7 +83,7 @@ def recurse_cleanArtefacts( self, level=0):
   for ob in self.objectValues():
     if absattr(self.id) == absattr(ob.id):
       print (" "*level)+"recurse_cleanArtefacts", ob.absolute_url(), ob.meta_type
-      raise "InfiniteRecursionError"
+      raise zExceptions.InternalError('InfiniteRecursionError')
     else:
       try:
         recurse_cleanArtefacts( ob, level+1)
@@ -805,7 +806,7 @@ class ZMS(
         depth = 0
         while ob.meta_type != 'Folder': 
           if depth > sys.getrecursionlimit():
-            raise "Maximum recursion depth exceeded"
+            raise zExceptions.InternalError('Maximum recursion depth exceeded')
           depth = depth + 1
           ob = ob.aq_parent
       except:

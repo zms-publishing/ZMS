@@ -34,6 +34,7 @@ import copy
 import os
 import sys
 import time
+import zExceptions
 # Product Imports.
 import _blobfields
 import _fileutil
@@ -639,7 +640,7 @@ class ZMSMetaobjManager:
       if ob is not None:
         attrs = ob.get('attrs',ob.get('__obj_attrs__'))
         if attrs is None:
-          raise 'Can\'t getMetaobjAttrIds: %s'%(str(meta_id))
+          raise zExceptions.InternalError('Can\'t getMetaobjAttrIds: %s'%(str(meta_id)))
         if len( types) > 0:
           attrs = filter( lambda x: x['type'] in types, attrs)
       return attrs
@@ -660,7 +661,7 @@ class ZMSMetaobjManager:
       meta_obj = meta_objs.get(meta_id,{})
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))
       if attrs is None:
-        raise 'Can\'t getMetaobjAttr %s.%s'%(str(meta_id),str(key))
+        raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(meta_id),str(key)))
       for attr in attrs:
         if key == attr['type']:
           meta_attrs = self.getMetadictAttrs()
@@ -1047,7 +1048,7 @@ class ZMSMetaobjManager:
               id = ''
               message = self.getZMILangStr('MSG_CHANGED')
             else:
-              raise 'All instances of "%s" must be deleted before definition can be deleted: <a href="%s/manage_main#_%s">%s</a>!'%(id,metaobj.getParentNode().absolute_url(),metaobj.id,metaobj.absolute_url())
+              raise zExceptions.Forbidden('All instances of "%s" must be deleted before definition can be deleted: <a href="%s/manage_main#_%s">%s</a>!'%(id,metaobj.getParentNode().absolute_url(),metaobj.id,metaobj.absolute_url()))
           # Delete Attribute.
           elif key == 'attr' and btn == 'delete':
             attr_id = REQUEST['attr_id']

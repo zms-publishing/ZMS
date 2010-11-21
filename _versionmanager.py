@@ -29,6 +29,7 @@ import operator
 import sys
 import time
 import urllib
+import zExceptions
 # Product Imports.
 import _globals 
 import _blobfields 
@@ -175,7 +176,7 @@ class VersionItem:
         if checkPending:
           #-- Check for pending changes.
           if self.getObjStateNames(REQUEST):
-            raise "Can't tagObjVersions: %s@%s has pending changes %s"%(self.meta_id,self.absolute_url(),str(self.getObjStateNames(REQUEST)))
+            raise zExceptions.InternalError("Can't tagObjVersions: %s@%s has pending changes %s"%(self.meta_id,self.absolute_url(),str(self.getObjStateNames(REQUEST))))
         else:
           #-- Tag master-version.
           obj_version = None
@@ -996,7 +997,7 @@ class VersionItem:
         preview = _globals.isPreviewRequest( REQUEST)
         has_version_work = self.version_work_id is not None and hasattr( self, self.version_work_id)
         has_version_live = self.version_live_id is not None and hasattr( self, self.version_live_id)
-        raise _globals.writeError( self, '[getObjVersion]: an unexpected error occured!')
+        raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersion]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------
@@ -1017,7 +1018,7 @@ class VersionItem:
         # return object-items
         return obs
       except:
-        raise _globals.writeError( self, '[getObjVersions]: an unexpected error occured!')
+        raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersions]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------

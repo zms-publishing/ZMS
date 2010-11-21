@@ -24,6 +24,7 @@
 # Imports.
 from App.Common import package_home
 from App.special_dtml import HTMLFile
+from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import os
 import sys
@@ -31,7 +32,7 @@ import tempfile
 import time
 import transaction
 import urllib
-from cStringIO import StringIO
+import zExceptions
 # Product Imports.
 import _fileutil
 import _filtermanager
@@ -124,7 +125,7 @@ def importFile(self, file, REQUEST, handler):
           filename = _fileutil.findExtension(ext, folder, deep)
 	  break
     if filename is None:
-      raise "XML-File not found!"
+      raise zExceptions.InternalError('XML-File not found!')
   
   # Import Filter.
   if REQUEST.get('filter','') in self.getFilterIds():

@@ -24,7 +24,6 @@
 # Imports.
 from __future__ import nested_scopes
 from webdav.common import rfc1123_date
-from zExceptions import Unauthorized 
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport
 from OFS.CopySupport import absattr
@@ -35,6 +34,7 @@ from types import StringTypes
 import copy
 import urllib
 import warnings
+import zExceptions 
 # Product Imports.
 import _fileutil
 import _globals
@@ -223,7 +223,7 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
     if len(maxlength) > 0:
       size = blob.get_size()
       if size > int(maxlength):
-        raise 'Exception','size=%i > %s=%i' %(size,maxlength_prop,int(maxlength))
+        raise zExceptions.Forbidden('size=%i > %s=%i' %(size,maxlength_prop,int(maxlength)))
   # Store data in media-db.
   if self is not None and mediadbStorable:
     mediadb = self.getMediaDb()
@@ -622,7 +622,7 @@ class MyBlob:
               target = parent.url_append_params(target,{'QUERY_STRING':REQUEST.get('QUERY_STRING')})
             return RESPONSE.redirect(target)
           else:
-            raise Unauthorized
+            raise zExceptions.Unauthorized
         
         if self._if_modified_since_request_handler(REQUEST, RESPONSE):
             # we were able to handle this by returning a 304 (not modified) 

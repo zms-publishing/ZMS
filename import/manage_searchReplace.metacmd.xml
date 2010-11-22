@@ -107,8 +107,8 @@
    <tr>
     <td></td>
     <td>
-     <input class="form-submit" type="submit" name="btn" value=" Ersetzen ">
-     <input class="form-submit" type="submit" name="btn" value=" Abbrechen ">
+     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value=" Ersetzen ">
+     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value=" Abbrechen ">
     </td>
    </tr>
    </table>

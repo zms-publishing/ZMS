@@ -113,7 +113,7 @@
 <dtml-comment>
 <!-- ##### change ##### -->
 </dtml-comment>
-<td class="zmiContainerColRight"><dtml-var "manage_main_change(_,_,ob=oCurrent,REQUEST=REQUEST)"></td>
+<td class="zmiContainerColRight"><dtml-var "manage_main_change(_,_,ob=oCurrent,lenChildNodes=len(childNodes),REQUEST=REQUEST)"></td>
 
 </tr>
 

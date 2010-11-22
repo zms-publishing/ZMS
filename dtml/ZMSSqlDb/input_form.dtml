@@ -246,7 +246,7 @@
           /><input type="hidden" id="new_<dtml-var mmsid><dtml-var sequence-index>" value="" onchange="$('#<dtml-var mmsid><dtml-var sequence-index>').val(this.value);"
           /><input type="text" class="<dtml-var css>" style="vertical-align:bottom;background-color:#ddd;" id="displayfield_<dtml-var mmsid><dtml-var sequence-index>" value="" disabled="disabled"
           /><img 
-              class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+              class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
               src="<dtml-var MISC_ZMS>btn_edit.gif"
               title="<dtml-var "getZMILangStr('BTN_OPEN')">" 
               onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var mmsid><dtml-var sequence-index>','multimultiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
@@ -266,7 +266,7 @@
        ></dtml-in
        ><td style="vertical-align:bottom"
        ><img 
-          class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+          class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>btn_add.gif"
           title="<dtml-var "getZMILangStr('BTN_INSERT')">" 
           onclick="return multiMultiSelectAddElement('<dtml-var mmsid>',<dtml-var "len(multimultiselect.get('tables',[]))">)"
@@ -356,12 +356,12 @@
         ></dtml-let
        ></td
        ><td style="vertical-align:middle"
-        ><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
+        ><img class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>btn_delete.gif"
             title="<dtml-var "getZMILangStr('BTN_DELETE')">" 
             onclick="return multiMultiSelectRemoveElements('<dtml-var mmsid>')"
        /><br
-       /><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
+       /><img class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>btn_edit.gif"
             title="Linked Dataset" 
             onclick="javascript:var v=$('#<dtml-var mmsid>').val()[0]; v=v.substr(0,v.indexOf('/')); window.open('manage_main?lang=ger&qentity=<dtml-var "multimultiselect.get('tables',[])[0]['tablename']">&rowid='+v+'&action=update','<dtml-var "getZMILangStr('BTN_OPEN')">')"
@@ -431,15 +431,15 @@
         <input type="text" class="<dtml-var css> lazy" id="<dtml-var "'displayfield_%s'%id">" name="<dtml-var "'displayfield_%s'%id">" value="" disabled="disabled"/>
        </dtml-in>
        <img 
-          class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
+          class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>btn_add.gif"
           title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" 
           onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','select','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"/>
-       <img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
+       <img class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>btn_edit.gif"
             title="Linked Dataset" 
             onclick="window.open('manage_main?lang=<dtml-var "REQUEST.get('lang')">&amp;qentity=<dtml-var "js_quote(fk.get('tablename'))">&amp;rowid=<dtml-var "row.get(id,'')" html_quote>&amp;action=update'); return false;"/>
-       <dtml-if nullable><img class="form-submit" style="vertical-align:middle;padding:1px 2px;background:#fff"
+       <dtml-if nullable><img class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"
             src="<dtml-var MISC_ZMS>btn_delete.gif"
             title="<dtml-var "getZMILangStr('BTN_DELETE')">" 
             onclick="$('<dtml-var elName>').val('null'); ('$<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if>
@@ -585,9 +585,9 @@
             ></dtml-let
            ></dtml-in
           ></select
-          ><input class="form-submit" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
-          ><input class="form-submit" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
-          ><dtml-if nullable><input class="form-submit" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#<dtml-var elName>').val('null'); $('#<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if
+          ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="..." title="<dtml-var "getZMILangStr('ACTION_SELECT')%getLangStr(label,lang)">" onclick="return browseDbBtnClick('form0','<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if>','<dtml-var id>','multiselect','<dtml-var "js_quote(fk.get('fieldname'))">','<dtml-var "js_quote(fk.get('displayfield'))">','<dtml-var "js_quote(fk.get('tablename'))">')"
+          ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
+          ><dtml-if nullable><input class="ui-button ui-state-default ui-corner-all" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#<dtml-var elName>').val('null'); $('#<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if
          ><dtml-else
           ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, maxlen=maxlen, enabled=1, REQUEST=REQUEST)"
          ></dtml-if
@@ -624,7 +624,7 @@
              <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
              <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
              <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-             <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
+             <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
             </div>
            </td>
            <td width="10"><img src="<dtml-var spacer_gif>" border="0" width="10" height="1"></td>
@@ -659,7 +659,7 @@
            <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
            <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
            <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-           <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
+           <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
           </div>
         </dtml-if>
        <dtml-except>
@@ -667,7 +667,7 @@
          <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
          <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
          <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
-         <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1)';"/>
+         <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1)';"/>
         </div>
         <dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb html_quote newline_to_br><br/>
        </dtml-try>

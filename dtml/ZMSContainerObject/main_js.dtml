@@ -140,32 +140,33 @@ function zmiChooseAction(e, id, sort_id)
 //------------------------------------------------------------------------------
 
 var zmiActionButtons = [
-      {'id':'trashcan','standalone':false},
-      {'id':'cut','standalone':false},
-      {'id':'copy','standalone':false},
-      {'id':'paste','standalone':true}
-    ];
+		{'id':'trash','standalone':false},
+		{'id':'cut','standalone':false},
+		{'id':'copy','standalone':false},
+		{'id':'paste','standalone':true}
+	];
 
 /**
  *
  * @param sender
  * @param evt
  */
-function zmiActionButtonsRefresh(sender,evt) 
-{
-  var fm = $(sender).parents('form');
-  var ids = countSelectedCheckboxes(fm,'ids') > 0;
-  // Switch buttons.
-  for (var ac in zmiActionButtons) {
-     var id = zmiActionButtons[ac]['id'];
-     var img = $("img[id^="+id+"Btn]");
-     var standalone = zmiActionButtons[ac]['standalone'];
-     var active = 0;
-     if (ids || standalone) {
-       active = 1;
-     }
-     img.attr('src','<dtml-var MISC_ZMS>btn_'+id+active+'.gif');
-  }
+function zmiActionButtonsRefresh(sender,evt) {
+	var fm = $(sender).parents('form');
+	var ids = countSelectedCheckboxes(fm,'ids') > 0;
+	// Switch buttons.
+	for (var ac=0; ac<zmiActionButtons.length; ac++) {
+		var id = zmiActionButtons[ac]['id'];
+		var standalone = zmiActionButtons[ac]['standalone'];
+		var active = ids || standalone;
+		var $li = $("span[id^="+id+"Btn]").parents("li");
+		if (active) {
+			$li.addClass("ui-state-default");
+		}
+		else {
+			$li.removeClass("ui-state-default");
+		}
+	}
   // Switch selected rows.
   var clazz = "zmiTeaserColor";
   var els = $("input[name=ids:list][type=checkbox]");
@@ -210,9 +211,9 @@ function zmiActionButtonClick(sender, ac, target, sort_id) {
  * @param sender
  * @param v		Boolean value for new (un-)checked state.
  */
-function zmiSelectionButtonClick(sender,v) 
+function zmiToggleSelectionButtonClick(sender) 
 {
   var fm = $(sender).parents('form');
-  selectCheckboxes(fm,v);
+  selectCheckboxes(fm,!$('input[type=checkbox]',fm).attr('checked'));
   zmiActionButtonsRefresh();
 }

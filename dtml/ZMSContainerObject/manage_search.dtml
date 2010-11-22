@@ -89,11 +89,9 @@
     </tr>
    </dtml-if>
   </dtml-let>
-  <tr valign="middle">
-   <td></td>
-   <td class="form-element">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SEARCH')" html_quote>">
-   </td>
+  <tr>
+   <td>&nbsp;</td>
+   <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SEARCH')" html_quote>"></td>
   </tr>
   </table>
 

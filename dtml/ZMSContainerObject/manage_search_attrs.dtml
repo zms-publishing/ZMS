@@ -451,10 +451,10 @@ window.onload = function(e) {
     </div>
    </td>
   </tr>
-  <tr valign="middle">
-   <td colspan="3" class="form-element">
+  <tr>
+   <td colspan="3">
     <hr size="1"/>
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SEARCH')" html_quote>" onclick="searchBtnClick('<dtml-var id>','<dtml-var absolute_url>')">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SEARCH')" html_quote>" onclick="searchBtnClick('<dtml-var id>','<dtml-var absolute_url>')">
    </td>
   </tr>
   </table>

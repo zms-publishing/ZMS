@@ -71,16 +71,6 @@ h1, h2, h3 {
 	border: none;
 }
 
-.system-msg {
-	font-family: Courier New, Courier, monospace;
-	font-size: 11px;
-	background: white url(/misc_/zms/msg_info_bg.gif) top left repeat-x;
-	border:	1px solid black;
-	margin: 6px;
-	padding: 4px;
-	color: #603;
-}
-
 .form-title {
 	font-family: Arial, Helvetica, sans-serif; 
 	font-weight: bold;
@@ -683,26 +673,14 @@ input.lazy {
 .zmiDivOpaque {background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * +- [ZMI] Popup
+ * +- [JQUERY] UI
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-#zmiOverlay {
-  filter:Alpha(opacity=80);
-  -moz-opacity:0.80;
-  opacity:0.80;
-  background-color:black;
-  display:block;
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-}
-#zmiPopup {
-  padding:4px;
-}
-#zmiPopup.error {
-  border:4px solid red;
-  background-color:#FDD;
-}
+#tabs ul li a { font-size: 10px; text-decoration: none; }
+.ui-tabs .ui-tabs-hide { display: none; }
+.ui-tabs .ui-tabs-panel { margin: 0; padding: 4px 0px 0px 0px; }
+.ui-widget-header { vertical-align: middle; padding: 2px 4px 2px 4px; }
+ul#icons {margin: 0; padding: 0; }
+ul#icons li {margin: 0px; position: relative; padding: 4px; cursor: pointer; float: left; list-style: none; }
+ul#icons span.ui-icon {float: left; margin: 0; }

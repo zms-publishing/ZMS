@@ -226,9 +226,9 @@
         </dtml-if>
         <img src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="0" align="absmiddle" />
        </td>
-       <td class="form-element" nowrap="nowrap">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this,'obj');">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
+       <td nowrap="nowrap">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
        </td>
        <td class="zmiNeutralColorLight1" rowspan="2" width="20"><input class="form-checkbox" type="checkbox" disabled="disabled" /></td>
       </tr>
@@ -353,11 +353,9 @@
         <dtml-var "getEnumInput(fmName='form0', elName='inpContentType', size=0, value=filter.get('content_type',''), enum='content_type')">
        </nobr>
       </td>
-      <td class="form-element" nowrap="nowrap">
-       <nobr>
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
-       </nobr>
+      <td nowrap="nowrap">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
       </td>
       <td class="form-element" rowspan="2" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "filter['id']">" checked="checked" /></td>
      </tr>
@@ -445,7 +443,7 @@
              <input class="form-small" type="file" name="newFilterProcessFile" size="15">
             </td>
             <td class="form-small" align="right">
-             <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
+             <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
             </td>
            </tr>
            </table>
@@ -658,7 +656,7 @@
     <div align="center" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
    </td>
    <td class="form-element">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
    <td class="zmiNeutralColorLight1" align="right">&nbsp;</td>
   </tr>
@@ -694,7 +692,7 @@
        </select> 
        <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"> (<dtml-var "getZMILangStr('ATTR_DISPLAY')">)</div>
       </td>
-      <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
+      <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
      </tr>
      </table>
     </td>
@@ -810,9 +808,9 @@
       <td colspan="2"><dtml-var "getTextArea(fmName='form1', elName='inpCommand', cols=25, rows=5, value=process.get('command',''), enabled=1, REQUEST=REQUEST, css='form-fixed' )"></td>
       <td nowrap="nowrap">
        <nobr>
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px"><br/>
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px"><br/>
         <dtml-unless filterIds>
-         <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px">
+         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px">
         </dtml-unless>
        </nobr>
       </td>
@@ -895,7 +893,7 @@
     </table>
    </td>
    <td class="form-element">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
    <td class="zmiNeutralColorLight1">&nbsp;</td>
   </tr>
@@ -945,7 +943,7 @@
     </tr>
     <tr valign="middle">
      <td>&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
     </tr>
     </table>
    </td>

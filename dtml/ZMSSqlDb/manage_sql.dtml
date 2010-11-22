@@ -19,8 +19,8 @@
 
 <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=10,value=REQUEST.get('el_data','<Enter SQL here...>'),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra=' style='+QUOT+'width:100%;color:#0000FF;background-color:#F8F8FF;'+QUOT)"></td>
 <hr size="1"/>
-<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXECUTE')" html_quote>" onclick="self.btnClicked=this.value;">
-<input class="form-submit" name="btn" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value;">
+<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXECUTE')" html_quote>" onclick="self.btnClicked=this.value;">
+<input class="ui-button ui-state-default ui-corner-all" name="btn" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 
 </form>

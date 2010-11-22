@@ -100,7 +100,7 @@
   </dtml-comment>
   <tr valign="middle">
    <td>&nbsp;</td>
-   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>"></td>
+   <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>"></td>
   </tr>
   <tr>
    <td>&nbsp;</td>
@@ -206,7 +206,7 @@
   </tr>
   <tr>
    <td>&nbsp;</td>
-   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>"></td>
+   <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>"></td>
   </tr>
   <tr>
    <td>&nbsp;</td>

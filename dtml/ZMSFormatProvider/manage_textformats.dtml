@@ -114,8 +114,8 @@
        <div class="form-small"><dtml-var "getZMILangStr('ATTR_DEFAULT')"></div>
        </td>
        <td nowrap="nowrap">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
        </td>
        <td rowspan="3" class="zmiNeutralColorLight1" width="20"><input class="form-element" type="checkbox" name="ids:list" value="<dtml-var "fmt.getId()">" checked="checked"></td>
      </tr>
@@ -187,7 +187,7 @@
   <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
  </td>
  <td colspan="2">
-  <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+  <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
  </td>
 </tr>
 </dtml-if>
@@ -214,7 +214,7 @@
      </tr>
      <tr valign="middle">
       <td>&nbsp;</td>
-      <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+      <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
      </tr>
      </table>
     </td>

@@ -107,9 +107,9 @@
    <td>&nbsp;</td>
    <td>
     <div class="form-element">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;" />
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;" />
      <dtml-unless "getStylesheet().id()==cssId">
-      <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="self.btnClicked=this.value;" />
+      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="self.btnClicked=this.value;" />
      </dtml-unless>
     </div>
    </td>
@@ -145,7 +145,7 @@
     </td>
   <tr>
    <td>&nbsp;</td>
-   <td><div class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"></div></td>
+   <td><div class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"></div></td>
   </tr>
   <tr>
    <td>&nbsp;</td>
@@ -169,12 +169,12 @@
     </select>
     </div>
    </td>
-   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>"></td>
+   <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>"></td>
   </tr>
   <tr valign="middle">
    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_IMPORT')"></div></td>
    <td><div class="form-element"><input class="form-element" type="file" name="theme" size="25" value=""></div></td>
-   <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>"></td>
+   <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>"></td>
   </tr>
   <tr>
    <td>&nbsp;</td>
@@ -195,7 +195,7 @@
   </tr>
   <tr>
    <td>&nbsp;</td>
-   <td><div class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_UPLOAD')">"></div></td>
+   <td><div class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_UPLOAD')">"></div></td>
   </tr>
   <tr>
    <td>&nbsp;</td>

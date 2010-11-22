@@ -44,7 +44,7 @@ $(function(){
   <dtml-var "getTextInput(fmName=fmName,elName='_%s'%elName,size=20,value='',enabled=enabled,REQUEST=REQUEST,css=css+' '+type,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
   <a href="javascript:if ($('#_<dtml-var elName>').val().length>0) {var v=$('#_<dtml-var elName>').val();$('#_<dtml-var elName>').val('');appendToMultiselect(document.getElementById('<dtml-var elName>'),v);}"
    ><img 
-      class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+      class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
       src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">"
   /></a>
   <table cellspacing="0" cellpadding="1" border="0">
@@ -65,7 +65,7 @@ $(function(){
    <td style="vertical-align:bottom"
     ><a href="javascript:if (document.getElementById('<dtml-var elName>').selectedIndex>=0 && confirm('<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">')) {removeFromMultiselect(document.getElementById('<dtml-var elName>'));}"
      ><img 
-        class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+        class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
         src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">"
     /></a></td>
   </tr>

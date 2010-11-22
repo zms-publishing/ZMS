@@ -13,11 +13,11 @@
 </dtml-comment>
 <dtml-if "REQUEST.get('key')=='Maintenance'">
 <dtml-if "REQUEST.get('btn','').startswith('Reindex')">
-<div class="system-msg"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST,clients='catalog_portal_clients' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST,clients='catalog_portal_clients' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn','').startswith('Correct')">
-<div class="system-msg"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(clients='internal_links_portal_clients' in REQUEST.form.get('options',[]),unify_ids='internal_links_unify_ids' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(clients='internal_links_portal_clients' in REQUEST.form.get('options',[]),unify_ids='internal_links_unify_ids' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn','').startswith('Clear')">
-<div class="system-msg"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
+<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
 <dtml-elif "REQUEST.get('btn')=='Change'">
  <dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
  <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('ZMS_InternalLinks_autocorrection')==1)">
@@ -77,7 +77,7 @@
   ><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)</a
  > (<dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">)</div>
 </dtml-in>
-<input class="form-submit" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />
+<input class="ui-button ui-state-default ui-corner-all" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />
 </form>
 </dtml-let>
 <br/></td>
@@ -107,9 +107,9 @@
     ></textarea>
   </td>
 </tr>
-<tr valign="top">
-  <td></td>
-  <td class="form-small"><input class="form-submit" type="submit" name="btn" value="Change"></td>
+<tr>
+  <td>&nbsp;</td>
+  <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change"></td>
 </tr>
 </table>
 </form>
@@ -147,9 +147,9 @@
       </select>
      </td>
     </tr>
-<tr valign="middle">
+<tr>
  <td>&nbsp;</td>
- <td class="form-element"><input class="form-submit" name="btn" type="submit" value="Import"/></td>
+ <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="Import"/></td>
 </tr>
 </table>
 </form>
@@ -168,7 +168,7 @@
 
 <dtml-let
   conf="getConfProperties()" 
-  conf_keys="filter(lambda x: not x.startswith('ZMS.version') and not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
+  conf_keys="filter(lambda x: not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x.startswith('ZMS.log') and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
   res="[
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -283,10 +283,10 @@ function confKeyChange(b)
   html += '<span class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="portal_clients" value="portal_clients"<dtml-if "REQUEST.form.get('portal_clients')"> checked="checked"</dtml-if>>&nbsp;Clients&nbsp;</span>&nbsp;&nbsp;';
   </dtml-if>
   html += '<br/>';
-  html += '<input class="form-submit" type="submit" name="btn" value="Change"/>';
-  html += '<input class="form-submit" type="submit" name="btn" value="Delete"/>';
+  html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change"/>';
+  html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Delete"/>';
   html += '&nbsp;&nbsp;';
-  html += '<input class="form-submit" type="submit" name="btn" value="Cancel" onclick="$(\'#conf_key\').val(\'\');"/>';
+  html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Cancel" onclick="$(\'#conf_key\').val(\'\');"/>';
   $('#td_conf_value').html(html);
   $('#tr_conf_values').hide();
   $('#tr_conf_value').show();
@@ -430,7 +430,7 @@ function confKeyChange(b)
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small">&nbsp;</td>
- <td class="form-small"><input type="submit" onclick="self.btnClicked=this.value;" value="Change" name="btn" class="form-submit"/></td>
+ <td class="form-small"><input type="submit" onclick="self.btnClicked=this.value;" value="Change" name="btn" class="ui-button ui-state-default ui-corner-all"/></td>
  <td class="form-small" colspan="2">&nbsp;</td>
 </tr>
 </tbody>
@@ -456,21 +456,21 @@ function confKeyChange(b)
    <td class="form-small"><b>Location</b></td>
    <td class="form-small"><input class="form-small" type="text" name="mediadb_location" value="" size="40"></td>
   </tr>
-  <tr valign="middle">
-   <td></td>
-   <td class="form-small"><input class="form-submit" type="submit" name="btn" value="Create"></td>
+  <tr>
+   <td>&nbsp;</td>
+   <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Create"></td>
   </tr>
   <dtml-else>
   <tr valign="middle">
    <td class="form-small"><b>Location</b></td>
    <td class="form-small"><dtml-var "getMediaDb().location"></td>
   </tr>
-  <tr valign="middle">
-   <td></td>
-   <td class="form-small">
-    <input class="form-submit" type="submit" name="btn" value="Remove">
+  <tr>
+   <td>&nbsp;</td>
+   <td>
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Remove">
     <dtml-if "getMediaDb().location.replace('\\','/').find('/'+getHome().id)>=0">
-     <input class="form-submit" type="submit" name="btn" value="Pack">
+     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Pack">
     </dtml-if> 
    </td>
   </tr>
@@ -504,9 +504,9 @@ function confKeyChange(b)
  <td class="form-small"><input class="form-small" type="submit" value="?" onclick="return versionNodesDivDisplay(this);"/></td>
 </tr>
 <tr valign="middle">
- <td></td>
- <td class="form-small" colspan="2">
-  <input class="form-submit" type="submit" name="btn" value="Change" onclick="self.btnClicked=this.value;">
+ <td>&nbsp;</td>
+ <td colspan="2">
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change" onclick="self.btnClicked=this.value;">
  </td>
 </tr>
 </table>
@@ -569,12 +569,12 @@ function confKeyChange(b)
  </td>
 </tr>
 <tr valign="middle">
- <td></td>
- <td class="form-small">
-  <input class="form-submit" type="submit" name="btn" value="Change">
+ <td>&nbsp;</td>
+ <td>
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change">
   &nbsp;&nbsp;
-  <input class="form-submit" type="submit" name="btn" value="Copy to Location">
-  <input class="form-submit" type="submit" name="btn" value="Update from Location">
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Copy to Location">
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Update from Location">
  </td>
 </tr>
 </table>
@@ -644,10 +644,10 @@ function confKeyChange(b)
       </dtml-if>
     </td>
   </tr>
-  <tr valign="top">
-    <td></td>
-    <td class="form-small">
-      <input class="form-submit" type="submit" name="btn" value="Change">
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+      <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change">
     </td>
   </tr>
 </table>

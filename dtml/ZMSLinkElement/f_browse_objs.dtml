@@ -491,7 +491,7 @@ function followHref( href, extra)
     <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_FILE')">
    </div>
   </td>
-  <td class="form-small"><input class="form-submit" type="submit" name="btn" value="  OK  " onclick="btnClick(this)"></td>
+  <td class="form-small"><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="  OK  " onclick="btnClick(this)"></td>
  </tr>
  </table>
  <br/>

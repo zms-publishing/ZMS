@@ -210,8 +210,8 @@ function mms_normalize_rows(el_tbody) {
        ></select>
       </td>
       <td class="form-element" style="width:*;text-align:right">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"/>
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>"/>
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>"/>
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>"/>
       </td>
      </tr>
      
@@ -585,7 +585,7 @@ function mms_normalize_rows(el_tbody) {
     </tr>
     <tr valign="middle">
      <td>&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
     </tr>
     </table>
    </td>

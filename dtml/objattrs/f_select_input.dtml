@@ -113,10 +113,10 @@
  <td>
   <div class="form-small"><br/></div>
   <div class="zmiNeutralColorMedium0">
-   <div padding="1"><input class="form-submit" type="submit" value="&gt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="form-submit" type="submit" value="&lt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&gt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&lt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
   </div>
  </td>
  <td class="<dtml-var css>">

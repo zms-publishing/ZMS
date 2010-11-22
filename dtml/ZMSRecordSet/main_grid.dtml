@@ -51,7 +51,7 @@
   <td colspan="<dtml-var "3+len(obj_attrs)">">
    <a href="#"
     ><img 
-      class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+      class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
       src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" onclick="gridform.submit()"
   ></a>
   </td>

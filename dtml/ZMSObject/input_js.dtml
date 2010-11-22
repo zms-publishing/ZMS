@@ -35,50 +35,34 @@ function onResize() {
 ////////////////////////////////////////////////////////////////////////////////
 
 var checkLock = true;
-var divFormSubmitHtml = null;
 
 function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
-  if ($('#zmiPopup').length>0) {
-    return;
-  }
-  var html = '';
-  html += '<div id="zmiPopup" class="error">';
-  html += '<div class="form-text">';
-  html += '<div style="font-weight:bold;color:white;background-color:red;"><dtml-var "getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')"></div>';
-  html += '<table>';
-  html += '<tr>';
-  html += '<td class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></td>';
-  html += '<td class="form-element">'+change_dt+' <dtml-var "getZMILangStr('BY')"> '+change_uid+'</td>';
-  html += '</tr>';
-  html += '</table>';
-  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="onFormSubmitHideLock()"/>';
-  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_OVERWRITE')">" onclick="onFormSubmitSubmit(\''+fmName+'\');"/>';
-  html += '<input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">" onclick="window.open(self.location.href);"/>';
-  html += '</div>';
-  html += '</div>';
-  /**/
-  var div = $($('div.form-submit')[0]);
-  divFormSubmitHtml = div.html();
-  div.html(html);
-  /*
-  $('<div id="zmiOverlay">'+html+'</div>').appendTo('body');
-  if (document.height) {
-    $('#zmiOverlay').css({'height':document.height});
-    $('#zmiPopup').css({'left':window.pageXOffset,'top':window.pageYOffset});
-  }
-  else {
-    $('#zmiOverlay').css('height',document.body.scrollHeight);
-    $('#zmiPopup').css({'top':document.body.scrollTop,'left':document.body.scrollLeft});
-  }
-  */
-}
 
-function onFormSubmitHideLock() {
-  var div = $($('div.form-submit')[0]);
-  div.html(divFormSubmitHtml);
-  divFormSubmitHtml = null;
-  $('#zmiPopup').remove();
-  $('#zmiOverlay').remove();
+	if ($('#zmiPopup').length==0) {
+		var html = '';
+		html += '<div style="display:none">';
+		html += '<div id="zmiPopup" class="ui-state-error ui-corner-all" style="padding: 1em;">';
+		html += '</div>';
+		html += '</div>';
+		$('body').append(html);
+	}
+	var html = '';
+	html += '<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>';
+	html += '<strong><dtml-var "getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')"></strong><br/>';
+	html += '<nobr>'+change_dt+' <dtml-var "getZMILangStr('BY')"> '+change_uid+'</nobr><br/>';
+	html += '<nobr>';
+	html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_OVERWRITE')">" onclick="onFormSubmitSubmit(\''+fmName+'\');"/>';
+	html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">" onclick="window.open(self.location.href);"/>';
+	html += '</nobr>';
+	$('#zmiPopup').html(html);
+	pluginFancybox('#zmiPopup',function() {
+		$.fancybox({
+			'href':'#zmiPopup',
+			'autoDimensions':true,
+			'transitionIn':'fade',
+			'transitionOut':'fade'
+		});
+	});
 }
 
 function onFormSubmitSubmit(fmName) {

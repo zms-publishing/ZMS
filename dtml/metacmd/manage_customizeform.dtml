@@ -131,8 +131,8 @@
    <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=False,REQUEST=REQUEST)"></td>
    <td><div class="form-small"><dtml-var "metaCmd['description']"></div></td>
    <td valign="top" nowrap="nowrap">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this);">
-    <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this);">
+    <dtml-unless has_acquisition><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
    </td>
    <td>&nbsp;</td>
   </tr>
@@ -156,8 +156,8 @@
     <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_description&headline=<dtml-var "getZMILangStr('ATTR_DESCRIPTION')" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
    </td>
    <td nowrap="nowrap">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
-    <dtml-unless has_acquisition><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+    <dtml-unless has_acquisition><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);"></dtml-unless>
    </td>
    <td class="form-element" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "metaCmd['id']">" checked="checked"></td>
   </tr>
@@ -285,7 +285,7 @@
       <dtml-var "getCheckbox(fmName='form0',elName='_exec:int',value=1,enabled=True,REQUEST=REQUEST)">
       <div class="form-small">Exec</div>
      </td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
     </tr>
     </table>
   </tr>
@@ -320,7 +320,7 @@
        </select> 
        <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"> (<dtml-var "getZMILangStr('ATTR_DISPLAY')">)</div>
       </td>
-      <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
+      <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this,'obj');"></td>
      </tr>
      </table>
     </td>
@@ -350,7 +350,7 @@
     </tr>
     <tr valign="middle">
      <td>&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
     </tr>
     </table>
    </td>

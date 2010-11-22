@@ -4,10 +4,11 @@
 <div style="padding:4px">
 
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
- <div class="system-msg">
-  <dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
-  (<dtml-var "getLangFmtDate(ZopeTime())">)
- </div>
+<div class="ui-state-highlight ui-corner-all" style="padding:1em;">
+<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+<dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
+(<dtml-var "getLangFmtDate(ZopeTime())">)
+</div>
 </dtml-if>
 
 <script language="JavaScript">
@@ -104,8 +105,8 @@
   </dtml-in>
  </dtml-let>
  <tr>
-  <td class="form-label">&nbsp;</td>
-  <td class="form-element"><input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;"></td>
+  <td>&nbsp;</td>
+  <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;"></td>
  </table>
  </form>
 </dtml-let>

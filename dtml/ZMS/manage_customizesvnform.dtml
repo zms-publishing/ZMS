@@ -64,7 +64,7 @@
  <dtml-if sequence-end>
   </table>
   <hr size="1"/>
-  <input class="form-submit" type="submit" name="btn" value="<dtml-var headline>">
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var headline>">
   &nbsp;&nbsp;
  </dtml-if>
 <dtml-else>
@@ -73,7 +73,7 @@
 </dtml-in>
 </dtml-let>
 
-  <input class="form-submit" type="submit" name="btn" value="Back">
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Back">
   </form>
   <br/>
 

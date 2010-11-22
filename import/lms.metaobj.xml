@@ -204,8 +204,8 @@ Subject: Registration: <dtml-var "getDocumentElement().getTitle(REQUEST)">
 <dtml-var "getLangStr('LMS_REG_CONFIRM_ANNOUNCE',lang)">.<br />
 <hr size="1" />
 <p class="form-element">
- <input class="form-submit" type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEND',lang)">"> &nbsp;&nbsp;&nbsp;&nbsp; 
- <input class="form-submit" type="reset" name="btn" value="<dtml-var "getLangStr('BTN_RESET',lang)">">
+ <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getLangStr('BTN_SEND',lang)">"> &nbsp;&nbsp;&nbsp;&nbsp; 
+ <input class="ui-button ui-state-default ui-corner-all" type="reset" name="btn" value="<dtml-var "getLangStr('BTN_RESET',lang)">">
 </p>
 </form>
 

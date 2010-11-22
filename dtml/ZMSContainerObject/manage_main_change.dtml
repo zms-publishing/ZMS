@@ -9,11 +9,16 @@
 <dtml-if "getObjProperty('change_dt',REQUEST)">
  <dtml-call "info.append(getLangFmtDate(getObjProperty('change_dt',REQUEST),manage_lang,'SHORTDATETIME_FMT')+'\n')">
 </dtml-if>
+<dtml-if lenChildNodes>
+ <dtml-call "info.append('%i %s\n'%(lenChildNodes,getZMILangStr('ATTR_OBJECTS')))">
+</dtml-if>
+<dtml-comment>
 <dtml-if "isPage()">
  <dtml-call "info.append('%i %s\n'%(len(getChildNodes(REQUEST)),getZMILangStr('ATTR_OBJECTS')))">
 <dtml-else>
  <dtml-call "info.append(getDataSizeStr(get_size(REQUEST))+'\n')">
 </dtml-if>
+</dtml-comment>
 <div class="form-small"><dtml-var "''.join(info)" newline_to_br></div>
 </dtml-let>
 

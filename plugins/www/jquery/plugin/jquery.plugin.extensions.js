@@ -10,6 +10,7 @@ $(function(){
 		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js',
 				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
+	// Always load
 	$.plugin('zms').get('body',function(){
 		// Content-Editable ////////////////////////////////////////////////////////
 		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
@@ -66,27 +67,55 @@ $(function(){
  * @see http://jqueryui.com
  */
 $(function(){
+	// Always load
+	pluginUI('body',function(){});
+	// Icons
+	pluginUI('ul#icons',function() {
+		// apply minimum-width to avoid line-breaks
+		var uls = $('ul#icons');
+		for ( var i = 0; i < uls.length; i++) {
+			var ul = $(uls[i]);
+			var lis = $('li',ul);
+			ul.css('min-width',lis.length*$(lis[0]).outerWidth());
+		}
+		// hover states on the static widgets
+		$('ul#icons li').hover(
+			function() {
+				if ($(this).hasClass('ui-state-default')) {
+					$(this).addClass('ui-state-hover');
+				}
+			},
+			function() {
+				if ($(this).hasClass('ui-state-default')) {
+					$(this).removeClass('ui-state-hover');
+				}
+			}
+		);
+	});
 	// Date-Picker
-	var lang = window.navigator.language;
-	if (typeof lang == 'undefined') {
-		lang = window.navigator.userLanguage
-	}
 	pluginUI('input.datepicker',function() {
-		$.datepicker.setDefaults( $.datepicker.regional[ lang]);
+		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
 		$('input.datepicker').datepicker({
 			'showWeek'	: true
 		});
 	});
 });
 
-function pluginUI(s, c) {
+function pluginLanguage() {
 	var lang = window.navigator.language;
 	if (typeof lang == 'undefined') {
 		lang = window.navigator.userLanguage
 	}
+	if (lang.indexOf('-') > 0) {
+		lang = lang.substr(0,lang.indexOf('-'));
+	}
+	return lang;
+}
+
+function pluginUI(s, c) {
 	$.plugin('ui',{
 		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.6.custom.min.js',
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js',
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js',
 				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.6.custom.css']
 		});
 	$.plugin('ui').get(s,c);

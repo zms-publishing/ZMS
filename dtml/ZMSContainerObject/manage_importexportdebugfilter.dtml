@@ -37,7 +37,7 @@
 <input type="hidden" name="tempfolder" value="<dtml-var tempfolder>"/>
 <input type="hidden" name="outfilename" value="<dtml-var outfilename>"/>
 
-<input class="form-submit" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
+<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
 <hr size="1"/>
 
 <dtml-call "REQUEST.set('contentTypes',enumManager.getValues('content_type'))">
@@ -137,7 +137,7 @@
         </table>
 
 <hr size="1"/>
-<input class="form-submit" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
+<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="&nbsp;&raquo;&nbsp;"/>
 </form>
 
 </td>

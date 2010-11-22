@@ -9,7 +9,7 @@
 -->
 
 <dtml-unless "REQUEST.get('f_zmiBlobJs')">
-	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]">/objattrs/zmi.blob.js"></script>
 	<dtml-call "REQUEST.set('f_zmiBlobJs',True)">
 </dtml-unless>
 

@@ -155,7 +155,7 @@
   </dtml-in>
   </div>
  </div>
- <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;">
+ <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;">
  <br/><br/>
  </form>
 </dtml-if>
@@ -327,8 +327,8 @@
        </table>
       </td>
       <td nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
       </td>
      </tr>
     </dtml-let>
@@ -347,7 +347,7 @@
      <td><dtml-var "getTextInput(fmName='acForm',elName='newName',size=12,value='', type='text', enabled=1, REQUEST=REQUEST, css='form-small')"></td>
      <td><input class="form-element" type="file" name="newIcon" size="15"></td>
      <td>&nbsp;&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
     </tr>
     <tr>
      <td align="right"><div class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"><dtml-var FORM_LABEL_MANDATORY></div></td>
@@ -518,8 +518,8 @@
       <td><dtml-var "getTextInput(fmName='trForm',elName='inpId',size=15,value=itm['id'])"></td>
       <td><dtml-var "getTextInput(fmName='trForm',elName='inpName',size=20,value=itm['name'])"></td>
       <td nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="btnClick(this);">
       </td>
      </tr>
      <tr valign="top" class="zmiNeutralColorMedium0">
@@ -592,7 +592,7 @@
      <td><dtml-var "getTextInput(fmName='trForm',elName='newId',size=10,value='TR_', type='text', enabled=1, REQUEST=REQUEST, css='form-small')"></td>
      <td><dtml-var "getTextInput(fmName='trForm',elName='newName',size=12,value='', type='text', enabled=1, REQUEST=REQUEST, css='form-small')"></td>
      <td>&nbsp;&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);"></td>
     </tr>
     <tr>
      <td align="right"><div class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
@@ -689,7 +689,7 @@
       </tr>
       <tr valign="middle">
        <td>&nbsp;</td>
-       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
+       <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
       </tr>
       </table>
      </td>

@@ -296,7 +296,7 @@ function processResponseGetChildNodes(data)
 <dtml-var f_bo_area>
 
 <form onsubmit="return false;">
-<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')" html_quote>" onclick="searchBtnClick('<dtml-var "getHome().id">_<dtml-var id>','<dtml-var absolute_url>')">
+<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')" html_quote>" onclick="searchBtnClick('<dtml-var "getHome().id">_<dtml-var id>','<dtml-var absolute_url>')">
 </form>
 <hr size="1"/>
 

@@ -36,16 +36,16 @@
   </table>
   <hr size="1" />
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
-  <tr valign="middle">
-   <td class="form-element">
-    <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>">
+  <tr>
+   <td>
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>">
     <dtml-if "getFtp(REQUEST)">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_PING')" html_quote>">
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_PING')" html_quote>">
     </dtml-if>
    </td>
-   <td class="form-element" align="right">
+   <td align="right">
     <dtml-if "getFtp(REQUEST)">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>">
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>">
     </dtml-if>
    </td>
   </tr>

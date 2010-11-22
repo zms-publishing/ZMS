@@ -109,7 +109,7 @@ function previewImgBtnProcessResponse(data)
  ins.diff, ins.modified { color: green; }
  -->
  </style>
- <div class="system-msg">
+ <div class="ui-state-highlight ui-corner-all" style="padding:1em;">
   <div class="form-small">
 
  <dtml-if "version_nrs[0]>version_nrs[1]">
@@ -559,11 +559,9 @@ function previewImgBtnProcessResponse(data)
 </table>
 
 <div class="zmiNeutralColorMedium0">
-<div class="form-element">
-<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COMPARE')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersionForm';">
-<input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersion';">
+<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COMPARE')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersionForm';">
+<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersion';">
 <br/><br/>
-</div>
 </div>
 </form>
 </dtml-let>

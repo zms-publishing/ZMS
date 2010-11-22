@@ -84,11 +84,11 @@ function chooseObj(i) {
  <tr valign="top">
   <td class="form-label"><dtml-var "getZMILangStr('ATTR_FILTER')"></td>
   <td class="form-element"><dtml-var "getTextInput(fmName='form0',elName='qfilter',size=10,value=qfilter)"></td>
-  <td class="form-element" style="white-space:nowrap;">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">" />
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">" />
+  <td style="white-space:nowrap;">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">" />
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">" />
     <img
-          class="form-submit" style="vertical-align:bottom;padding:1px 2px;background:#fff"
+          class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
           src="<dtml-var MISC_ZMS>btn_add.gif"
           title="<dtml-var "getZMILangStr('BTN_ADD')">"
           onclick="javascript:window.open('manage_main?lang=ger&action=insert&qentity=<dtml-var "REQUEST.get('tablename')">','<dtml-var "getZMILangStr('BTN_ADD')">')"

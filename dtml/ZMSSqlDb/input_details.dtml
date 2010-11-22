@@ -71,7 +71,7 @@
      <dtml-var "intersection_sql(_,_,rowid=details_rowid,grid_cols=grid_cols,ZMS_TABLE_PREFIX=details['tablename'],ZMS_ENTITY=details['tablename'])"
     ></dtml-if
    ></dtml-let
-   ><div class="system-msg">Record inserted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
+   ><div class="ui-state-highlight ui-corner-all" style="padding:1em;">Record inserted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('ZMS_DETAILS_ACTION','')"
   ><dtml-comment>
     ############################################################################
@@ -99,7 +99,7 @@
      <dtml-var "intersection_sql(_,_,rowid=details_rowid,grid_cols=grid_cols,ZMS_TABLE_PREFIX=details['tablename'],ZMS_ENTITY=details['tablename'])"
     ></dtml-if
    ></dtml-let
-   ><div class="system-msg">Record updated! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
+   ><div class="ui-state-highlight ui-corner-all" style="padding:1em;">Record updated! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('ZMS_DETAILS_ACTION','')"
   ><dtml-comment>
     ############################################################################
@@ -109,7 +109,7 @@
   ><dtml-elif "REQUEST.get('ZMS_DETAILS_ACTION')=='delete_%s'%details['tablename']"
    ><dtml-call "recordSet_Delete(details['tablename'],details_rowid)"
    ><dtml-call "REQUEST.set('details_normalize',details_ordered)"
-   ><div class="system-msg">Record deleted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
+   ><div class="ui-state-highlight ui-corner-all" style="padding:1em;">Record deleted! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
    ><dtml-call "REQUEST.set('ZMS_DETAILS_ACTION','')"
   ><dtml-comment>
     ############################################################################
@@ -130,7 +130,7 @@
    ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details['tablename'],primary_key,details_rowid))"
    ><dtml-call "executeQuery(' '.join(sqlStatement))"
    ><dtml-call "REQUEST.set('details_normalize',details_ordered)"
-   ><div class="system-msg">Record moved! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
+   ><div class="ui-state-highlight ui-corner-all" style="padding:1em;">Record moved! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
   ></dtml-if
 
   ><dtml-comment>+-+-+-+- Normalize +-+-+-+-</dtml-comment
@@ -256,8 +256,8 @@
   ZMS_CSS_EXTRA='zmiTeaserColor',
   ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
   )">
- <input id="submit_<dtml-var "details['tablename']">" class="form-submit" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
- <input class="form-submit" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
+ <input id="submit_<dtml-var "details['tablename']">" class="ui-button ui-state-default ui-corner-all" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
+ <input class="ui-button ui-state-default ui-corner-all" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
 </div>
 
  </dtml-let>

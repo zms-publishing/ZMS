@@ -140,10 +140,10 @@
   </tr>
   </dtml-let>
   </dtml-in>
-  <tr valign="middle">
-   <td class="form-element" colspan="3">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
+  <tr>
+   <td colspan="3">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
    </td>
   </tr>
   </table>

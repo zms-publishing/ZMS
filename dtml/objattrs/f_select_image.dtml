@@ -11,7 +11,7 @@
 <dtml-let can_generate_preview="pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'))">
 
 <dtml-unless "REQUEST.get('f_zmiGraphicExtEdit')">
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]">/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 <div style="display:none">
 	<div id="ZMSGraphic_extEdit_actions" class="zmiNeutralColorMedium0">
 		<table cellspacing="0" cellpadding="3" border="0">
@@ -21,7 +21,7 @@
 				<dtml-var "getZMILangStr('ATTR_HEIGHT')">
 				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_width:int',size=4,value=0,enabled=False)"> x
 				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_height:int',size=4,value=0,enabled=False)"> px
-				<input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_APPLY')">" onclick="return ZMSGraphic_extEdit_apply();">
+				<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_APPLY')">" onclick="return ZMSGraphic_extEdit_apply();">
 			</td>
 	 	</tr>
 		<tr valign="top">
@@ -45,7 +45,7 @@
 </dtml-unless>
 
 <dtml-unless "REQUEST.get('f_zmiBlobJs')">
-	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]">/objattrs/zmi.blob.js"></script>
 	<dtml-call "REQUEST.set('f_zmiBlobJs',True)">
 </dtml-unless>
 
@@ -139,7 +139,7 @@
 					<dtml-if "key.find('superres')<0 and value.getContentType().find('image')==0">
 						<input type="hidden" id="width_<dtml-var elName>" name="width_<dtml-var elName>:int" value="<dtml-var "value.width">"/>
 						<input type="hidden" id="height_<dtml-var elName>" name="height_<dtml-var elName>:int" value="<dtml-var "value.height">"/>
-						<a href="javascript:ZMSGraphic_extEdit_action('<dtml-var elName>','<dtml-if "pilutil().enabled()"><dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')"></dtml-if>')" class="ZMSGraphic_extEdit_action"
+						<a href="javascript:ZMSGraphic_extEdit_action('<dtml-var elName>','<dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')">',<dtml-var "int(pilutil().enabled())">)" class="ZMSGraphic_extEdit_action"
 							><img id="img_<dtml-var elName>" src="<dtml-var "value.getHref(REQUEST)">"
 								<dtml-if "max([int(value.width),int(value.height)])>80">
 									<dtml-if "int(value.width)>int(value.height)">

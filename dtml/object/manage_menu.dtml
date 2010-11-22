@@ -515,7 +515,7 @@ function drag(ereignis) {
  </dtml-if>
 </div>
 
-<div id="system_msg" class="system-msg" style="display:none;visibility:hidden;"></div>
+<div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;display:none;visibility:hidden;"></div>
 
 <dtml-comment>
 <!-- ####################################################################### -->

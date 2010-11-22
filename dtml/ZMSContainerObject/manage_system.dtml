@@ -50,11 +50,11 @@ function toggleSelect() {
     <option value="&dtml.url_quote-action;">&dtml-name;</option>
     </dtml-in>
     </select>
-    <input class="form-submit" type="submit" name="submit" value=" Add " />
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="submit" value=" Add " />
   <dtml-else>
     <dtml-in filtered_meta_types mapping sort=name>
     <input type="hidden" name=":method" value="&dtml.url_quote-action;" />
-    <input class="form-submit" type="submit" name="submit" value=" Add &dtml-name;" />
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="submit" value=" Add &dtml-name;" />
     </dtml-in>
   </dtml-if>
   </form>
@@ -177,30 +177,30 @@ function toggleSelect() {
   <td align="left" valign="top">
   <div class="form-element">
   <dtml-unless dontAllowCopyAndPaste>
-  <input class="form-submit" type="submit" name="manage_renameForm:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_renameForm:method"
    value="Rename" />
-  <input class="form-submit" type="submit" name="manage_cutObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_cutObjects:method"
    value="Cut" />
-  <input class="form-submit" type="submit" name="manage_copyObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_copyObjects:method"
    value="Copy" />
   <dtml-if cb_dataValid>
-  <input class="form-submit" type="submit" name="manage_pasteObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
    value="Paste" />
   </dtml-if>
   </dtml-unless>
   <dtml-if "_.SecurityCheckPermission('Delete objects',this())">
-  <input class="form-submit" type="submit" name="manage_delObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_delObjects:method"
    value="Delete" />
   </dtml-if>
   <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-  <input class="form-submit" type="submit"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit"
    name="manage_importExportForm:method"
    value="Import/Export" />
   </dtml-if>
 <script type="text/javascript">
 <!--
 if (document.forms[0]) {
-  document.write('<input class="form-submit" type="submit" name="selectButton" value="Select All" onClick="toggleSelect(); return false">')
+  document.write('<input class="ui-button ui-state-default ui-corner-all" type="submit" name="selectButton" value="Select All" onClick="toggleSelect(); return false">')
   }
 //-->
 </script>
@@ -220,13 +220,13 @@ There are currently no items in <em>&dtml-title_or_id;</em>
 <dtml-unless dontAllowCopyAndPaste>
 <dtml-if cb_dataValid>
 <div class="form-element">
-<input class="form-submit" type="submit" name="manage_pasteObjects:method"
+<input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
  value="Paste" />
 </div>
 </dtml-if>
 </dtml-unless>
 <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-<input class="form-submit" type="submit"
+<input class="ui-button ui-state-default ui-corner-all" type="submit"
   name="manage_importExportForm:method" value="Import/Export" />
 </dtml-if>
 </td>

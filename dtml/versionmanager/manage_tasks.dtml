@@ -34,8 +34,8 @@
      </dtml-in>
     </select>
    </td>
-   <td class="form-element">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">"/>
+   <td>
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">"/>
    </td>
    <td class="form-small">
     <dtml-if "len(getDescendantLanguages(lang, REQUEST)) > 1">

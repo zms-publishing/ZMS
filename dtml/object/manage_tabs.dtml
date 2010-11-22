@@ -76,20 +76,14 @@
 <tr valign="top">
 <td>
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
-<div class="system-msg">
-<img src="<dtml-var MISC_ZMS>msg_info.gif" title="Info" border="0" align="absmiddle"/>
+<div class="ui-state-highlight ui-corner-all" style="padding:1em;">
+<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 <dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>
-<dtml-elif "len(REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message','')))>0">
-<div class="system-msg">
-<img src="<dtml-var MISC_ZMS>msg_warning.gif" title="Warning" border="0" align="absmiddle"/>
-<dtml-var "REQUEST.form.get('manage_tabs_warning_message',REQUEST.get('manage_tabs_warning_message',''))">
-(<dtml-var "getLangFmtDate(ZopeTime())">)
-</div>
 <dtml-elif "len(REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message','')))>0">
-<div class="system-msg">
-<img src="<dtml-var MISC_ZMS>msg_error.gif" title="Error" border="0" align="absmiddle"/>
+<div class="ui-state-error ui-corner-all" style="padding:1em;">
+<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
 <dtml-var "REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>

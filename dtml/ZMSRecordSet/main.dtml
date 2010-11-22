@@ -165,8 +165,8 @@
   </dtml-in>
   <tr valign="middle">
    <td class="form-element" colspan="2">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
-    <input class="form-submit" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
+    <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
    </td>
   </tr>
   </dtml-unless>
@@ -218,7 +218,7 @@
  <dtml-unless "REQUEST.get('action','') in ['insert','update']">
   <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export'])">
   <hr size="1"/>
-  <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">  
+  <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">  
  </dtml-unless>
  
  </dtml-if> 

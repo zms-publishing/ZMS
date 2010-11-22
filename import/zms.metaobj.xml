@@ -1351,7 +1351,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
  <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
  <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
  <td width="100">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" accesskey="<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" title="ALT+Shift+<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" accesskey="<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" title="ALT+Shift+<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
    &nbsp;&nbsp;
  </td>
 </tr>
@@ -2377,23 +2377,23 @@ function remoteResponseTimedout() {
   <td valign="top" nowrap="nowrap">
   <div class="form-element">
   <dtml-unless dontAllowCopyAndPaste>
-  <input class="form-submit" type="submit" name="manage_renameForm:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_renameForm:method"
    value="<dtml-var "getZMILangStr('BTN_RENAME')" html_quote>" />
-  <input class="form-submit" type="submit" name="manage_cutObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_cutObjects:method"
    value="<dtml-var "getZMILangStr('BTN_CUT')" html_quote>" />
-  <input class="form-submit" type="submit" name="manage_copyObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_copyObjects:method"
    value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" />
   <dtml-if cb_dataValid>
-  <input class="form-submit" type="submit" name="manage_pasteObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
    value="<dtml-var "getZMILangStr('BTN_PASTE')" html_quote>" />
   </dtml-if>
   </dtml-unless>
   <dtml-if "_.SecurityCheckPermission('Delete objects',this())">
-  <input class="form-submit" type="submit" name="manage_delObjects:method"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_delObjects:method"
    value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" />
   </dtml-if>
   <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-  <input class="form-submit" type="submit"
+  <input class="ui-button ui-state-default ui-corner-all" type="submit"
    name="manage_importExportForm:method"
    value="Import/Export" />
   </dtml-if>
@@ -2413,13 +2413,13 @@ function remoteResponseTimedout() {
 <dtml-unless dontAllowCopyAndPaste>
 <dtml-if cb_dataValid>
 <div class="form-element">
-<input class="form-submit" type="submit" name="manage_pasteObjects:method"
+<input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
  value="Paste" />
 </div>
 </dtml-if>
 </dtml-unless>
 <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-<input class="form-submit" type="submit"
+<input class="ui-button ui-state-default ui-corner-all" type="submit"
   name="manage_importExportForm:method" value="Import/Export" />
 </dtml-if>
 </td>
@@ -2775,8 +2775,8 @@ $()
 ><dtml-call "REQUEST.set('richeditshow_callback',',function(){$.fancybox.resize();}')"
 ><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
 ><hr
-><input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
-><input class="form-submit" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"
+><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
+><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"
 ></div
 ></div
 ></dtml-let>

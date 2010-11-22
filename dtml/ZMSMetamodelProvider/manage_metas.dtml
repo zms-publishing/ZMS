@@ -296,7 +296,7 @@ function hideDstMetaTypes( id)
  <tr class="zmiNeutralColorStrong0">
   <td colspan="2">&nbsp;</td>
   <td colspan="8" class="form-element">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
   </td>
  </tr>
 </dtml-if>
@@ -332,7 +332,7 @@ function hideDstMetaTypes( id)
          </dtml-in>
         </select> 
        </td>
-       <td class="form-element"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this);"></td>
+       <td class="form-element"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>" onclick="btnClick(this);"></td>
       </tr>
       </table>
      </td>
@@ -367,7 +367,7 @@ function hideDstMetaTypes( id)
     </tr>
     <tr valign="middle">
      <td>&nbsp;</td>
-     <td><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
+     <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this,'obj');"></td>
     </tr>
     </table>
    </td>

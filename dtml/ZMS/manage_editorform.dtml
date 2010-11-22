@@ -24,17 +24,7 @@
          var el = fm.elements[i];
          if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
            // Clear div with system-msg.
-           var divs = parent.cameFromForm.document.getElementsByTagName( "div");
-           var b = false;
-           for ( var j = 0; j < divs.length && !b; j++) {
-             var div = divs[ j];
-             if ( div.className == 'system-msg') {
-               div.innerHTML = "";
-               div.style.visibility = "hidden";
-               div.style.display = "none";
-               b = true;
-             }
-           }
+           $('#system_msg').hide('normal').html('');
            // Click change-button.
            el.click();
            // Process response.
@@ -53,7 +43,7 @@
      if( cnt < max) {
        if ( parent.cameFromForm && parent.cameFromForm.document.forms['<dtml-var fmName>']) {
          // Find div with system-msg.
-         var divs = parent.cameFromForm.document.getElementsByTagName( "div");
+         var divs = parent.cameFromForm.document.getElementByTagName( "div");
          var b = false;
          for ( var j = 0; j < divs.length && !b; j++) {
            var div = divs[ j];
@@ -62,10 +52,7 @@
                   div.style.display != "none" &&
                   div.innerHTML != "") {
                <dtml-if displayPreview>
-               var sysMsg = document.getElementById('system-msg');
-               sysMsg.style.display = 'block';
-               sysMsg.style.visibility = 'visible';
-               sysMsg.innerHTML = div.innerHTML;
+               $('#system_msg').html(div.innerHTML).show('normal');
                // Reload preview-form.
                if ( parent.previewForm) {
                  parent.previewForm.location.reload();
@@ -179,7 +166,7 @@ function onResize() {
   <td align="right" class="form-small" style="color:#ff9900;" nowrap="nowrap"><a href="#" onclick="parent.location.href=parent.cameFromForm.location.href;" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_BACK')">" border="0" align="absmiddle"/></a></td>
  </tr>
  </table>
- <div class="form-small"><div id="system-msg" class="system-msg" style="display:none;visibility:hidden;"></div>
+ <div class="form-small"><div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;display:none;visibility:hidden;"></div>
   <form name="form0" onsubmit="return onForm0Submit(this)" style="margin:8px">
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <div class="form-element">
@@ -190,9 +177,9 @@ function onResize() {
     bodyOnLoad();
   //-->
   </script>
-  <div class="form-element">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;">
-   <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
+  <div>
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;">
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
   </div>
   </form>
  </div>

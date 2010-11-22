@@ -80,9 +80,9 @@
 </tr>
 </table>
 <hr size="1">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="form-submit" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 </form>
 <dtml-var f_eo_area>
@@ -173,9 +173,9 @@
 </tr>
 </table>
 <hr size="1">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="form-submit" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 </form>
 <dtml-var f_eo_area>
@@ -300,9 +300,9 @@
 </tr>
 </table>
 <hr size="1">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="form-submit" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SEND'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_RESET'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="reset"  value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 </form>
 <dtml-var f_eo_area>
@@ -499,8 +499,8 @@
 </tr>
 </table>
 <hr size="1">
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SAVE'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
-<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="form-submit" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SAVE'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">&nbsp;&nbsp;
+<dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var submitBtn html_quote>" accesskey="<dtml-var "submitBtn[0]" html_quote>" title="ALT+<dtml-var "submitBtn[0]" html_quote>" onclick="self.btnClicked=this.value;">
 <br/><br/>
 </form>
 <dtml-var f_eo_area>

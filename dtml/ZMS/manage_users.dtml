@@ -162,9 +162,9 @@ $(function() {
     <td class="form-small"><dtml-var "getTextInput(fmName='searchForm',elName='search_term',size=12,value=REQUEST.get('search_term',''),type='text',REQUEST=REQUEST,css='form-small')"></td>
    </tr>
    <tr class="zmiNeutralColorLight0" valign="middle">
-    <td class="form-small" colspan="2" align="right">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SEARCH')">">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')">">
+    <td colspan="2" align="right">
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SEARCH')">">
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')">">
     </td>
    </tr>
    </table>
@@ -284,11 +284,11 @@ $(function() {
        </tr>
        </table>
       </td>
-      <td class="form-element" align="right" nowrap="nowrap">
+      <td align="right" nowrap="nowrap">
        <dtml-if "localUserFldr==userFldr">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
-        <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
+        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="btnClick(this,'obj');">
        </dtml-if>
       </td>
      </tr>
@@ -422,7 +422,7 @@ $(function() {
          </script>
          <tr>
           <td class="form-small" align="right"><a href="javascript:nodesBtnClick()"><img name="nodesBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle" /></a></td>
-          <td class="form-small"><input class="form-small" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_INVITE')">" onclick="btnClick(this,'obj');"></td>
+          <td><input class="form-small" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_INVITE')">" onclick="btnClick(this,'obj');"></td>
          </tr>
         </dtml-if>
        <!-- Insert Node -->
@@ -483,7 +483,7 @@ $(function() {
        <!-- Submit -->
        <tr valign="middle" class="zmiNeutralColorLight0">
         <td class="form-label">&nbsp;</td>
-        <td class="form-small"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');"></td>
+        <td class="form-small"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');"></td>
        </tr>
        </table>
       </td>
@@ -491,8 +491,8 @@ $(function() {
     <dtml-else>
        </table>
       </td>
-      <td class="form-element" align="right" nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
+      <td align="right">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
       </td>
      </tr>
     </dtml-in>
@@ -632,8 +632,8 @@ $(function() {
     </table>
     </dtml-let>
     </td>
-    <td class="form-element" colspan="2">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
+    <td colspan="2">
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
     </td>
    </tr>
   </dtml-if>
@@ -686,8 +686,8 @@ $(function() {
       <td class="form-element" rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var sequence-item>" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
       <!-- Id -->
       <td class="form-text" valign="middle"><a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var sequence-item></b></a></td>
-      <td class="form-element" align="right" nowrap="nowrap">
-       <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
+      <td align="right">
+       <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
       </td>
      </tr>
      <tr valign="top" class="zmiNeutralColorMedium0">
@@ -755,8 +755,8 @@ $(function() {
        </tr>
        <!-- Submit -->
        <tr valign="middle" class="zmiNeutralColorLight0">
-        <td class="form-label">&nbsp;</td>
-        <td class="form-small"><input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');"></td>
+        <td>&nbsp;</td>
+        <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');"></td>
        </tr>
        </table>
       </td>
@@ -794,8 +794,8 @@ $(function() {
     </tr>
     </table>
     </td>
-    <td class="form-element">
-     <input class="form-submit" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
+    <td>
+     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
     </td>
    </tr>
   </dtml-if>

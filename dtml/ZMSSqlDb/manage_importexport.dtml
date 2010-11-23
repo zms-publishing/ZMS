@@ -20,7 +20,6 @@
 </head>
 
 <dtml-var "manage_tabs(_,_,p_languages=True)">
-<dtml-var f_bo_area>
 
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
 <colgroup>
@@ -96,6 +95,4 @@
 
 </table>
   
-<dtml-var f_eo_area>
-
 <dtml-var manage_page_footer>

@@ -343,9 +343,12 @@ function followHref( href, extra)
 
 //-->
 </script>
-</head>
-<body class="zmi zmiNeutralColorLight0">
-<div style="padding:4px">
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi zmiNeutralColorLight0">
+		<div style="padding:4px">
 
 <dtml-with l_thisPage>
 
@@ -610,7 +613,7 @@ function followHref( href, extra)
 
 </dtml-with>
 
-</div>
-</body>
+		</div>
+	</body>
 </html>
 </dtml-if>

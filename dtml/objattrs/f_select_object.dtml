@@ -18,7 +18,8 @@
   <dtml-in res>
    <dtml-if sequence-start>
     <tr>
-     <td colspan="2" class="zmiNeutralColorMedium0 zmiDelimiter">
+     <td colspan="2">
+      <div class="zmiDelimiter ui-widget-content ui-corner-all">
       <div class="form-label<dtml-if disabled>-disabled</dtml-if> zmi_col_left"
        onclick="toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=zmi_delimiter_<dtml-var "objAttr['id']">_toggle]');toggleCookie('<dtml-var cookie>');"
        ><img id="zmi_delimiter_<dtml-var "objAttr['id']">_toggle" border="0" align="absmiddle" 
@@ -28,10 +29,11 @@
       <div class="form-small zmi_col_right">
        <dtml-var "'%i %s\n'%(len(res),getZMILangStr('ATTR_OBJECTS'))">
       </div>
+      </div>
      </td>
     </tr>
    </dtml-if>
-   <tr valign="top" id="tr_<dtml-var id>" class="zmiNeutralColorMedium0"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
+   <tr valign="top" id="tr_<dtml-var id>"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
     <td class="zmiContainerColLeft form-small"
      ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
      ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
@@ -44,7 +46,7 @@
        ></dtml-if
       ></a
      ></dtml-let
-     ><select class="form-small zmi-action" id="select_actions_<dtml-var id>" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+     ><select class="form-small zmi-action" id="select_actions_<dtml-var id>" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')"
       ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
      ></select
     ></td>
@@ -69,7 +71,8 @@
    </tr>
   <dtml-else>
    <tr id="tr_<dtml-var "objAttr['id']">">
-     <td colspan="2" class="zmiNeutralColorMedium0 zmiDelimiter">
+     <td colspan="2">
+      <div class="zmiDelimiter ui-widget-content ui-corner-all">
       <div class="form-label zmi_col_left">
        <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif"/>
        <dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if>
@@ -79,10 +82,11 @@
       </dtml-comment>
       <div class="form-element zmi_col_right">
        <dtml-if "objAttr.get('repetitive',0)==1 or len(getObjChildren(objAttr['id'],REQUEST))==0"
-        ><select class="form-small zmi-action" id="select_actions_<dtml-var "objAttr['id']">" onchange="zmiChooseAction(this,'<dtml-var "objAttr['id']">','9900')"
+        ><select class="form-small zmi-action" id="select_actions_<dtml-var "objAttr['id']">" onchange="zmiActionChoose(this,'<dtml-var "objAttr['id']">','9900')"
          ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
         ></select
        ></dtml-if>
+      </div>
       </div>
      </td>
     </tr>

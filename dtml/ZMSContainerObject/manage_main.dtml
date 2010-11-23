@@ -45,7 +45,7 @@
 
 <dtml-let oCurrent="this()">
 
-<table cellspacing="0" cellpadding="0" border="0" width="100%" class="zmiNeutralColorMedium0">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>
  <col width="200" />
  <col />
@@ -68,7 +68,7 @@
 ></a
 ></dtml-if
 ><br/><dtml-unless isTrashcan
-><select id="select_actions_" class="form-small zmi-action" onchange="zmiChooseAction(this,'e','0')">
+><select id="select_actions_" class="form-small zmi-action" onchange="zmiActionChoose(this,'e','0')">
 <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option>
 </select>
 </dtml-unless>
@@ -143,7 +143,7 @@
 ><dtml-var "display_type(REQUEST)"
 ></a
 ></dtml-let
-><br/><select id="select_actions_<dtml-var id>" class="form-small zmi-action" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+><br/><select id="select_actions_<dtml-var id>" class="form-small zmi-action" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')"
 ><dtml-if "_['sequence-index']==pageElementCount and pageCount>pageCountMin"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=<dtml-var pageCountMin>#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_COLLAPSE')"></option
@@ -189,7 +189,7 @@
 </dtml-comment>
 <dtml-if sequence-start>
 <td rowspan="<dtml-var "len(childNodes)-pageElementCount">" class="zmiContainerColLeft form-small"
-><select class="form-small" onchange="zmiChooseAction(this,'e','<dtml-var "getSortId()">')"
+><select class="form-small" onchange="zmiActionChoose(this,'e','<dtml-var "getSortId()">')"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=999999#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_EXPAND')"></option
 ><option value="">----- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"> -----</option

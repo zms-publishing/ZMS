@@ -85,32 +85,13 @@ function zmiConfirmAction(fm, target, label)
 }
 
 /**
- * Execute action from select.
- *
- * @param fm
- * @param target
- * @param id
- * @param sort_id
- * @param custom
- */
-function zmiExecuteAction(fm, target, id, sort_id, custom) {
-	var $fm = $(fm);
-	$('input[id=id_prefix]',$fm).val( id);
-	$('input[id=_sort_id]',$fm).val( sort_id);
-	$('input[id=custom]',$fm).val( custom);
-	$fm.attr('action',target);
-	$fm.unbind('submit');
-	$fm.submit();
-}
-
-/**
  * Choose action from select.
  *
  * @param e
  * @param id
  * @param sort_id
  */
-function zmiChooseAction(e, id, sort_id) 
+function zmiActionChoose(e, id, sort_id) 
 {
   var fm = $(e.form);
   var i = e.selectedIndex;
@@ -127,7 +108,7 @@ function zmiChooseAction(e, id, sort_id)
     $("input[name=ids:list][type=checkbox][value="+id+"]",fm).attr( 'checked', true);
     // Confirm and execute.
     if (zmiConfirmAction(fm,action,label)) {
-      zmiExecuteAction(fm,action,id,sort_id,label);
+      zmiActionExecute(fm,e,action,id,sort_id,label);
     }
   }
   // Reset checkbox and select.
@@ -200,7 +181,7 @@ function zmiActionButtonClick(sender, ac, target, sort_id) {
   if (ids || standalone) {
     // Confirm and execute.
     if (zmiConfirmAction(fm,target)) {
-      zmiExecuteAction(fm, target,'e',sort_id);
+      zmiActionExecute(fm, sender, target,'e',sort_id);
     }
   }
 }

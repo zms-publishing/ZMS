@@ -55,8 +55,6 @@ dtmlMethodWithoutExecExampleCode = \
   ' <title>$$NAME$$</title>\n' + \
   '</head>\n' + \
   '<dtml-var "manage_tabs(_,_,my_manage_options=[{\'label\':\'$$NAME$$\',\'action\':\'\'}])">\n' + \
-  '<dtml-var f_bo_area>\n' + \
-  '<dtml-var f_bo_area>\n' + \
   '<dtml-var manage_page_header>\n' + \
   ''
 

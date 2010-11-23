@@ -78,8 +78,6 @@
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-<dtml-var f_bo_area>
-
 <div class="form-help"><dtml-var "getZMILangStr('MSG_MULTILANG')"> <dtml-var "getZMILangStr('MSG_MULTILANGDICT')"></div>
 <br/>
 
@@ -204,7 +202,7 @@
    </td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td colspan="4" class="form-element">
+   <td colspan="4">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>
@@ -276,9 +274,9 @@
   </tr>
   </dtml-let>
   </dtml-in>
-  <tr valign="top" class="zmiNeutralColorLight0">
+  <tr class="zmiNeutralColorLight0">
    <td>&nbsp;</td>
-   <td colspan="3" class="form-element">
+   <td colspan="3">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
    </td>
@@ -316,8 +314,8 @@
     </table>
    </td>
   </tr>
-  <tr valign="top" class="zmiNeutralColorLight0">
-   <td colspan="3" class="form-element">
+  <tr class="zmiNeutralColorLight0">
+   <td colspan="3">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>
@@ -341,7 +339,7 @@
       </select>
      </td>
     </tr>
-    <tr valign="middle">
+    <tr>
      <td>&nbsp;</td>
      <td><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>" onclick="btnClick(this);"></td>
     </tr>
@@ -351,7 +349,5 @@
   </table>
   </form>
   <br/>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

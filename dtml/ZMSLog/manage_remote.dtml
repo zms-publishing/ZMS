@@ -1,6 +1,9 @@
 <dtml-var manage_page_header>
-</head>
-<body class="zmi">
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi zmiNeutralColorLight0">
 <a name="_top"></a>
 <div class="zmi">
 

@@ -1,7 +1,11 @@
 <dtml-var manage_page_header>
-<body class="zmi zmiNeutralColorMedium0">
- <form style="padding:4px">
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="self.parent.close();">
- </form>
-</body>
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi zmiNeutralColorMedium0">
+		<form style="padding:4px">
+			<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" onclick="self.parent.close();">
+		</form>
+	</body>
 </html>

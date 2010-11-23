@@ -40,8 +40,6 @@
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_IMPORTEXPORT','action':'manage_importexport'},{'label':'FTP','action':'manage_importexportFtp'}])">
 </dtml-if>
 
-<dtml-var f_bo_area>
-
 <dtml-comment>
 ################################################################################
 ###  IMPORT
@@ -217,7 +215,5 @@
 <dtml-comment>
 <!-- ###################################################################### -->
 </dtml-comment>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

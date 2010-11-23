@@ -9,10 +9,10 @@
  </dtml-if>
 </dtml-in>
 
-<div id="ZMIManageTabsSubContainer">
-<ul id="ZMIManageTabsSub">
+<div class="ui-tabs ui-widget ui-widget-content" id="tabs_sub">
+<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-content">
 <dtml-in manage_options mapping>
- <li<dtml-if "_['sequence-index']==a_"> class="on"</dtml-if>
+<li class="ui-state-default ui-corner-top<dtml-if "_['sequence-index']==a_"> ui-tabs-selected ui-state-active</dtml-if>"
   ><dtml-if "action and not action==''"
    ><a href="<dtml-var "url_append_params('%s/%s'%(getSelf().absolute_url(),action),{'lang':lang})">" onclick="javascript:return confirmChanges(this);"
     ><dtml-var "getZMILangStr(label)"
@@ -24,6 +24,10 @@
 </dtml-in>
 </ul>
 </div>
+
+<div class="ZMIManageBodySub ui-widget-content">
+<dtml-call "REQUEST.set('f_zmiUiWidgetContent',REQUEST.get('f_zmiUiWidgetContent',[]))">
+<dtml-call "REQUEST.get('f_zmiUiWidgetContent').append(1)">
 
 </dtml-if>
 </dtml-with>

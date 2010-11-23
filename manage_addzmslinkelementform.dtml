@@ -1,13 +1,16 @@
 <dtml-let meta_id="'ZMSLinkElement'" metaObj="getMetaobj(meta_id)" metaobjIds="getMetaobjIds()">
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
-</head>
-<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('BTN_INSERT'),'action':''}])">
-<dtml-var f_bo_area>
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi">
+		<div class="zmi">
 
 <!-- ### Meta-Object: Default -->
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-<form name="<dtml-var fmName>" action="manage_addZMSLinkElement" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
+<form name="<dtml-var fmName>" action="manage_addZMSLinkElement" target="_parent" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
 <input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 <input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 <input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
@@ -22,8 +25,9 @@
 <!-- ### Buttons -->
 <dtml-var f_submitBtn>
 
-</form>
-
-<dtml-var f_eo_area>
-<dtml-var manage_page_footer>
 </dtml-let>
+
+			</form>
+		</div><!-- .zmi -->
+	</body>
+</html>

@@ -4,7 +4,6 @@
 </head>
 
 <dtml-var manage_tabs>
-<dtml-var f_bo_area>
 
 <dtml-let filter="getFilter(filterId)" filterProcesses="getFilterProcesses(filter['id'])">
 
@@ -151,5 +150,4 @@
 
 </dtml-let>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

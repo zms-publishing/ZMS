@@ -16,8 +16,10 @@
 </dtml-comment>
 <dtml-if "objAttr['type']=='delimiter'">
 <tr id="tr_<dtml-var key>">
- <td colspan="2" class="zmiNeutralColorLight1 zmiDelimiter">
-  <div class="form-label"><dtml-var elLabel></div>
+ <td colspan="2">
+  <div class="zmiDelimiter ui-widget-content ui-corner-all">
+   <div class="form-label"><dtml-var elLabel></div>
+  </div>
  </td>
 </tr>
 

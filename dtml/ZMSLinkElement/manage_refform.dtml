@@ -1,9 +1,7 @@
 <dtml-var manage_page_header>
 </head>
 <dtml-var manage_tabs>
-<dtml-var f_bo_area>
 
-<div style="padding:4px">
 <dtml-call "synchronizeRefByObjs()">
 <dtml-let ref_by="getRefByObjs(REQUEST)">
  <dtml-if ref_by>
@@ -34,7 +32,5 @@
   <div class="form-element"><dtml-var "getZMILangStr('MSG_NOREFERENCES')%('<em>%s</em>'%getTitlealt(REQUEST))">!</div>
  </dtml-if>
 </dtml-let>
-</div>
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

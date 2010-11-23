@@ -1,9 +1,12 @@
 <dtml-let meta_id="getMetaobjId(custom)" metaObj="getMetaobj(meta_id)" metaobjIds="getMetaobjIds()">
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
-</head>
-<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('BTN_INSERT'),'action':''}])">
-<dtml-var f_bo_area>
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi">
+		<div class="zmi">
 
 <dtml-if "getMetaobjZMI(meta_id,REQUEST)">
 
@@ -21,7 +24,7 @@
 
 <!-- ### Meta-Object: Default -->
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-<form name="<dtml-var fmName>" action="manage_addZMSCustom" method="post" onsubmit="return onFormSubmit('<dtml-var fmName>')" enctype="multipart/form-data">
+<form name="<dtml-var fmName>" action="manage_addZMSCustom" target="_parent" method="post" onsubmit="return onFormSubmit('<dtml-var fmName>')" enctype="multipart/form-data">
 <input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
 <input type="hidden" name="meta_id" value="<dtml-var meta_id>"/>
 <input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
@@ -41,8 +44,8 @@
 </form>
 
 </dtml-if>
-
-<dtml-var f_eo_area>
-<dtml-var manage_page_footer>
-
 </dtml-let>
+
+		</div><!-- .zmi -->
+	</body>
+</html>

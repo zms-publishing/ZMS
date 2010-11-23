@@ -90,8 +90,6 @@
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-<dtml-var f_bo_area>
-
 <dtml-try>
 
 <dtml-comment>
@@ -706,7 +704,5 @@
 </dtml-comment>
 
  </table>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

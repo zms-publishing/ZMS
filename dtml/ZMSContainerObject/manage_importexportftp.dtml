@@ -6,8 +6,6 @@
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_IMPORTEXPORT','action':'manage_importexport'},{'label':'FTP','action':'manage_importexportFtp'}])">
 </dtml-if>
 
-<dtml-var f_bo_area>
-
  <form name="form1" action="manage_customizeFtp" method="post">
  <input type="hidden" name="lang" value="<dtml-var lang>">
 
@@ -55,7 +53,5 @@
   </table>
   
  </form>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

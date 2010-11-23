@@ -24,10 +24,14 @@
 
 //-->
 </script>
-</head>
-<body class="zmi zmiNeutralColorLight0">
-<div style="padding:4px">
-<div align="center" style="padding:4px"><center>
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi zmiNeutralColorLight0">
+		<div style="padding:4px">
+			<div align="center" style="padding:4px">
+				<center>
 
 <form name="form0">
 <nobr>
@@ -45,7 +49,9 @@
 </nobr>
 </form>
 
-</center></div>
-</body>
+				</center>
+			</div>
+		</div>
+	</body>
 </html>
 

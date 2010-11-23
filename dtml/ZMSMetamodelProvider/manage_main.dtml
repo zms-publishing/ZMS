@@ -371,7 +371,6 @@ function changeType( el)
 </dtml-let>
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
-<dtml-var f_bo_area>
 
 <div class="form-help"><dtml-var "getZMILangStr('MSG_METAOBJ')"></div><br/>
 
@@ -1336,5 +1335,4 @@ function changeType( el)
 
 </dtml-let>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

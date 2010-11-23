@@ -157,11 +157,14 @@ function onResize() {
 
 //-->
 </script>
-
- <body class="zmi">
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	 <body class="zmi zmiNeutralColorLight0">
  <div>
  <table cellpadding="0" cellspacing="0" border="0" width="100%">
- <tr valign="middle" style="background:url(<dtml-var MISC_ZMS>bggradient_black.gif) #000;">
+ <tr valign="middle" style="background-color:#000;">
   <td align="left" class="form-small" style="color:#ffffff;" nowrap="nowrap"><dtml-var headline></td>
   <td align="right" class="form-small" style="color:#ff9900;" nowrap="nowrap"><a href="#" onclick="parent.location.href=parent.cameFromForm.location.href;" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_BACK')">" border="0" align="absmiddle"/></a></td>
  </tr>

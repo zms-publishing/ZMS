@@ -395,7 +395,6 @@ window.onload = function(e) {
 <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',this())">
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_SEARCH','action':'manage_search'},{'label':'ATTR_ATTRS','action':'manage_search_attrs'}])">
 </dtml-if>
-<dtml-var f_bo_area>
 
 <!-- FORM -->
 <form action="<dtml-var URL>" method="get" onsubmit="return false;">
@@ -470,5 +469,4 @@ window.onload = function(e) {
 
 <br/><br/>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

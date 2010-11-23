@@ -138,8 +138,6 @@
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-<dtml-var f_bo_area>
-
  <div class="form-help"><dtml-var "getZMILangStr('MSG_FILTER')"></div><br />
 
  <table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -957,6 +955,4 @@
 
  </table>
  
-<dtml-var f_eo_area>
-
 <dtml-var manage_page_footer>

@@ -13,8 +13,6 @@
 </head>
 
 <dtml-var "manage_tabs(_,_,p_languages=True)">
-<dtml-var f_bo_area>
-<div style="padding:4px">
  <form name="form0" method="get" onsubmit="return onFormSubmit(this)">
  <input type="hidden" name="lang" value="<dtml-var lang>">
  <input type="hidden" name="preview" value="preview">
@@ -62,7 +60,5 @@
    <dtml-var task_wf>
   </dtml-if>
  </dtml-if>
-</div>
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

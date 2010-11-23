@@ -1,7 +1,6 @@
 <dtml-var manage_page_header>
 </head>
 <dtml-var manage_tabs>
-<dtml-var f_bo_area>
 
 <p class="form-help">
 This page lists the entries that have been logged in this ZMS instance
@@ -108,5 +107,4 @@ No entries logged.
 </form>
 <br/>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

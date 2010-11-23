@@ -10,7 +10,9 @@
 </colgroup>
 
 <tr>
- <td colspan="2" class="zmiHeadline">
+ <td colspan="2">
+  <div class="ui-widget-header ui-helper-clearfix ui-corner-all">
+
   <table cellspacing="0" cellpadding="0" border="0" width="100%">
   <colgroup>
    <col width="20%" />
@@ -25,11 +27,9 @@
     ><dtml-if "'active' in obj_attrs.keys()"
      ><table cellspacing="0" cellpadding="0" border="0" width="100%"
      ><tr valign="middle"
-      ><td
-       ><div class="form-label">
+      ><td>
         <dtml-var "getZMILangStr('ATTR_ACTIVE')">
         <dtml-var "getObjInput('active',REQUEST)">
-       </div>
       </td
       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
        ><td><div class="form-text"><dtml-var "getZMILangStr('ATTR_START_DAT')"></div></td
@@ -62,7 +62,6 @@
      ##### Language.Label #####
      </dtml-comment>
     <td align="right">
-     <div class="form-text">
      <dtml-if "'attr_dc_coverage' in obj_attrs.keys()">
       <dtml-let options="[]">
       <dtml-if ZMS_INSERT
@@ -113,14 +112,15 @@
       </dtml-let>
       </dtml-let>
      </dtml-if>
-     <img src="<dtml-var spacer_gif>" border="0" width="2" height="12" />
-     </div>
+     <img src="<dtml-var spacer_gif>" border="0" width="2" height="26" align="absmiddle"/>
     </td>
     </tr>
     </table>
    </td>
   </tr>
   </table>
+
+  </div>
  </td>
 </tr>
 
@@ -151,7 +151,7 @@
     <div class="form-element">
     <dtml-let actions="filtered_workflow_actions()">
      <dtml-if actions>
-      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiChooseAction(this,'<dtml-var id>','<dtml-var "getSortId()">')">
+      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')">
        <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
       </select>
      </dtml-if>

@@ -155,18 +155,3 @@ function confirmChanges(el)
   }
   return true;
 }
-
-// ############################################################################
-// ### f_open_input(fmName, elName, css, wrap)
-// ############################################################################
-function f_open_input(fmName, elName, css, wrap) 
-{
-  var url = "f_open_input_html";
-  url += "?lang=<dtml-var lang>";
-  url += "&fmName="+fmName;
-  url += "&elName="+elName;
-  url += "&css="+css;
-  url += "&wrap="+wrap;
-  open_function(url,530,300,",resizable=no,scrollbars=no");
-}
-

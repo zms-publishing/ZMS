@@ -167,8 +167,6 @@ function mms_normalize_rows(el_tbody) {
 </dtml-in>
 
 <dtml-var manage_tabs>
-<dtml-var f_bo_area>
-<div style="padding:8px;">
 
 <form name="form0" action="manage_changeConfiguration" onsubmit="return onFormSubmit(this)" method="post" enctype="multipart/form-data">
 <input type="hidden" name="key" value="">
@@ -520,7 +518,7 @@ function mms_normalize_rows(el_tbody) {
            ></dtml-let
           ></dtml-in
          ></select
-         >&nbsp;&nbsp;&nbsp;<input class="form-submit form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
+         >&nbsp;&nbsp;&nbsp;<input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
         </td>
        </tr>
 
@@ -595,7 +593,5 @@ function mms_normalize_rows(el_tbody) {
 ></form
 ><br/>
 
-</div>
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>
 </dtml-try>

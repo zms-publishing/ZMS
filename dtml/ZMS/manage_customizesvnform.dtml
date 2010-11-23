@@ -4,8 +4,6 @@
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-<dtml-var f_bo_area>
-
 <dtml-let homeId="getHome().id" basepath="getConfProperty('SVN.path','')" dicon="{
           'conflict':'%sico_warning.gif'%MISC_ZMS,
           'error':'%sico_error.gif'%MISC_ZMS,
@@ -76,7 +74,5 @@
   <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Back">
   </form>
   <br/>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

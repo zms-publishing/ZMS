@@ -96,8 +96,6 @@ function previewImgBtnProcessResponse(data)
 
 <dtml-var "manage_tabs(_,_,p_languages=True)">
 
-<dtml-var f_bo_area>
-
 <div class="form-help"><dtml-var "getZMILangStr('MSG_UNDOVERSION')"></div><br/>
 
 <dtml-let level="getLevel()" obj_versions="getObjVersions()" change_history="getObjProperty('change_history',REQUEST)">
@@ -565,7 +563,5 @@ function previewImgBtnProcessResponse(data)
 </div>
 </form>
 </dtml-let>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

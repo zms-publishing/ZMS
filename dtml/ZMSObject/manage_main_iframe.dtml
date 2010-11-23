@@ -12,7 +12,6 @@ $(function() {
 </script>
 <a name="_top"></a>
 <div class="zmi">
-  <dtml-var f_bo_area>
   <dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
   <dtml-if metaObjZMI>
    <!-- ### Meta-Object: Custom Management Interface -->
@@ -39,7 +38,6 @@ $(function() {
    ></form>
    </dtml-if>
   </dtml-let>
-  <dtml-var f_eo_area>
 </div>
 </body>
 </html>

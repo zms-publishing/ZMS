@@ -25,7 +25,6 @@
 ></dtml-in>
 
 <dtml-var manage_tabs>
-<dtml-var f_bo_area>
 
 <dtml-if traceSql>
  <div class="form-fixed" style="border: 1px solid black; background-color:white;
@@ -190,8 +189,6 @@
 </dtml-if>
 
 </form>
-
-<dtml-var f_eo_area>
 
 </dtml-let>
 

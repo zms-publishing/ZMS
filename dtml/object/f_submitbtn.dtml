@@ -1,13 +1,13 @@
 <dtml-unless omit_submitBtn>
 <dtml-call "REQUEST.set('submitBtnCount',REQUEST.get('submitBtnCount',-1)+1)">
-<div class="form-submit">
+<div class="ZMIManageBody ui-widget-content">
 <dtml-if "not REQUEST.form.has_key('ZMS_VERSION_%s'%id)">
 <dtml-if "REQUEST.get('ZMS_INSERT') is not None"
  ><dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_INSERT'))"
 ><dtml-else
  ><dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_SAVE'))"
 ></dtml-if
-><input class="ui-button ui-state-default ui-corner-all" id="submitBtn<dtml-var "REQUEST.get('submitBtnCount')">" name="btn" type="submit" value="<dtml-var "REQUEST.get('submitBtn')" html_quote>" accesskey="<dtml-var "REQUEST.get('submitBtn')[0]" html_quote>" title="ALT+Shift+<dtml-var "REQUEST.get('submitBtn')[0]" html_quote>" onclick="<dtml-var "REQUEST.get('beforeSubmitBtnClick','')">processMultiselectsOnFormSubmit(); self.btnClicked=this.value;<dtml-var "REQUEST.get('afterSubmitBtnClick','')">">
+><input class="ui-button ui-state-active ui-corner-all" id="submitBtn<dtml-var "REQUEST.get('submitBtnCount')">" name="btn" type="submit" value="<dtml-var "REQUEST.get('submitBtn')" html_quote>" accesskey="<dtml-var "REQUEST.get('submitBtn')[0]" html_quote>" title="ALT+Shift+<dtml-var "REQUEST.get('submitBtn')[0]" html_quote>" onclick="<dtml-var "REQUEST.get('beforeSubmitBtnClick','')">processMultiselectsOnFormSubmit(); self.btnClicked=this.value;<dtml-var "REQUEST.get('afterSubmitBtnClick','')">">
 </dtml-if>
 <dtml-if "REQUEST.get('ZMS_INSERT') is not None"
  ><dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_CANCEL'))"

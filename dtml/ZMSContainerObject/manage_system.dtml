@@ -28,8 +28,6 @@ function toggleSelect() {
 
 <dtml-var manage_tabs>
 
-<dtml-var f_bo_area>
-
 <dtml-unless skey><dtml-call expr="REQUEST.set('skey', 'id')"></dtml-unless>
 <dtml-unless rkey><dtml-call expr="REQUEST.set('rkey', '')"></dtml-unless>
 
@@ -242,7 +240,5 @@ window.parent.update_menu();
 //-->
 </script>
 </dtml-if>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

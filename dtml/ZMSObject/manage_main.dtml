@@ -7,7 +7,6 @@
   <dtml-var manage_page_header>
   </head>
   <dtml-var "manage_tabs(_,_,p_languages=True)">
-  <dtml-var f_bo_area>
   <dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
   <dtml-if metaObjZMI>
    <!-- ### Meta-Object: Custom Management Interface -->
@@ -43,7 +42,6 @@
     </form>
    </dtml-if>
   </dtml-let>
-  <dtml-var f_eo_area>
   <dtml-var manage_page_footer>
  </dtml-if>
 </dtml-let>

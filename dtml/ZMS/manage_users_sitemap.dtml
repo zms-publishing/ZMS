@@ -293,7 +293,6 @@ function processResponseGetChildNodes(data)
 
 <dtml-var "manage_tabs(_,_,p_languages=1)">
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_EDIT','action':'manage_users'},{'label':'TAB_SITEMAP','action':'manage_users_sitemap'}])">
-<dtml-var f_bo_area>
 
 <form onsubmit="return false;">
 <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DISPLAY')" html_quote>" onclick="searchBtnClick('<dtml-var "getHome().id">_<dtml-var id>','<dtml-var absolute_url>')">
@@ -327,5 +326,4 @@ function processResponseGetChildNodes(data)
  
 </dtml-let>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

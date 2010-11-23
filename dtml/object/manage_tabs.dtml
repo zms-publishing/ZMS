@@ -29,15 +29,15 @@
 
 <div id="ZMIManageTabsBar">
 <div class="zmi_col_left">
-<div id="ZMIManageTabsContainer">
-<ul id="ZMIManageTabs">
+<div class="ui-tabs ui-widget ui-widget-content" id="tabs">
+<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-content">
 <dtml-let ZMIManageTabs="getObjProperty('manage_tabs.ZMIManageTabs',REQUEST)">
 <dtml-if ZMIManageTabs>
 <dtml-var ZMIManageTabs>
 <dtml-else>
 <dtml-in manage_options mapping>
-<li<dtml-if "_['sequence-index']==a_"> class="on"</dtml-if
-  >><dtml-if "action and not action==''"
+<li class="ui-state-default ui-corner-top<dtml-if "_['sequence-index']==a_"> ui-tabs-selected ui-state-active</dtml-if>"
+  ><dtml-if "action and not action==''"
    ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);"><dtml-var "getZMILangStr(label)"></a><dtml-else
    ><span><dtml-var "getZMILangStr(label)"></span></dtml-if
 ></li>
@@ -72,7 +72,11 @@
 </dtml-if>
 </dtml-with>
 
-<table cellspacing="0" cellpadding="2" border="0" width="100%" class="zmiNeutralColorMedium0 zmiInfo">
+<div class="ZMIManageBody ui-widget-content">
+<dtml-call "REQUEST.set('f_zmiUiWidgetContent',REQUEST.get('f_zmiUiWidgetContent',[]))">
+<dtml-call "REQUEST.get('f_zmiUiWidgetContent').append(1)">
+
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
 <tr valign="top">
 <td>
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">

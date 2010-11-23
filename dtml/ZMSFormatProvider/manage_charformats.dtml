@@ -53,7 +53,6 @@
 ])">
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
-<dtml-var f_bo_area>
 
 <br/>
 <form name="form0" action="manage_changeCharformat" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
@@ -224,5 +223,4 @@
 </form>
 <br/>
 
-<dtml-var f_eo_area>
 <dtml-var manage_page_footer>

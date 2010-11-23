@@ -1,7 +1,10 @@
 <dtml-var manage_page_header>
-</head>
-<body class="zmi zmiNeutralColorStrong0">
-<div style="padding:4px">
+		<style>
+			html {background:transparent}
+		</style>
+	</head>
+	<body class="zmi zmiNeutralColorStrong0">
+		<div style="padding:4px">
 
 <dtml-call "REQUEST.set('change_dt',getObjProperty('change_dt',REQUEST))">
 <dtml-call "REQUEST.set('lang',getParentLanguage(lang))">
@@ -42,6 +45,6 @@
   
 </dtml-let>
 
-</div>
-</body>
+		</div>
+	</body>
 </html>

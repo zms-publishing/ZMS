@@ -1,7 +1,6 @@
 <dtml-var manage_page_header>
 </head>
 <dtml-var "manage_tabs(_,_,p_languages=True)">
-<dtml-var f_bo_area>
 
 <form name="form0" action="manage_changeProperties" method="post">
 <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -23,6 +22,4 @@
  
 </form>
  
-<dtml-var f_eo_area>
-
 <dtml-var manage_page_footer>

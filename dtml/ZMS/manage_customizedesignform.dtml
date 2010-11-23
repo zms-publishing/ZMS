@@ -24,8 +24,6 @@
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-<dtml-var f_bo_area>
-
   <form name="form0" action="manage_customizeDesign" method="post" onsubmit="return onForm0Submit(this)" enctype="multipart/form-data">
   <input type="hidden" name="lang" value="<dtml-var lang>">
 
@@ -205,7 +203,5 @@
 <!-- ###################################################################### -->
 
   </form>
-
-<dtml-var f_eo_area>
 
 <dtml-var manage_page_footer>

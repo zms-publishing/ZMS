@@ -63,6 +63,54 @@ function zmiActionPopulate(el)
 	});
 }
 
+/**
+ * Execute action from select.
+ *
+ * @param fm
+ * @param target
+ * @param id
+ * @param sort_id
+ * @param custom
+ */
+function zmiActionExecute(fm, el, target, id, sort_id, custom) {
+	var $fm = $(fm);
+	$('input[id=id_prefix]',$fm).val( id);
+	$('input[id=_sort_id]',$fm).val( sort_id);
+	$('input[id=custom]',$fm).val( custom);
+	if (target.indexOf('manage_addProduct/')==0) {
+		var html = '';
+		html += '<tr id="tr_manage_addProduct" class="zmiTeaserColor">';
+		html += '<td class="zmiContainerColLeft"><img src="/misc_/zms/btn_add.gif" border="0" align="absmiddle"/> '+custom+'</td>';
+		html += '<td class="zmiContainerColCenter"></td>';
+		html += '<td class="zmiContainerColRight"></td>';
+		html += '</tr>';
+		$(html).insertAfter($($(el).parents('tr')[0]));
+		var href = target;
+		var inputs = $('input:hidden',$fm);
+		var q = '?';
+		for ( var i = 0; i < inputs.length; i++) {
+			href += q + $(inputs[i]).attr('name') + '=' + $(inputs[i]).val();
+			q = '&amp;';
+		}
+		$.fancybox({
+			'autoDimensions':false,
+			'href':href,
+			'transitionIn':'fade',
+			'transitionOut':'fade',
+			'type':'iframe',
+			'width':819,
+			'onClosed':function() {
+				$('tr#tr_manage_addProduct').remove();
+			}
+		});
+	}
+	else {
+		$fm.attr('action',target);
+		$fm.unbind('submit');
+		$fm.submit();
+	}
+}
+
 // ############################################################################
 // ### Notification Service
 // ############################################################################

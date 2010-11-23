@@ -1,5 +1,10 @@
+<dtml-in "REQUEST.get('f_zmiUiWidgetContent',[])">
+</div><!-- [manage_tabs].ui-widget-content -->
+</dtml-in>
 <div class="zmi_footer">
-<div class="zmi_col_left"><a id="strong" href="http://www.zms-publishing.com" target="_blank" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine">ZMS</a>&nbsp;&copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a></div>
+<div class="zmi_col_left">
+ <a id="strong" href="http://www.zms-publishing.com" target="_blank" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine">ZMS</a>&nbsp;&copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+</div><!-- .zmi_col_left -->
 <div class="zmi_col_right">
  <form action="<dtml-var URL>" method="get">
  <input type="hidden" name="lang" value="<dtml-var lang>">
@@ -14,8 +19,8 @@
  |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <a id="strong" href="javascript:open_frame('<dtml-var AUTHENTICATED_USER>','manage_userForm','lang=<dtml-var lang>',440,320,',resizable=yes,scrollbars=yes')" title="<dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></a>
  |&nbsp;<a href="#_top"><img src="<dtml-var MISC_ZMS>bottom_pagetop.gif" border="0" title="<dtml-var "getZMILangStr('PAGETOP')">" style="vertical-align:middle"/></a>
  </form>
-</div>
-</div>
-</div>
+</div><!-- .zmi_col_right -->
+</div><!-- .zmi_footer -->
+</div><!-- [manage_page_header].zmi -->
 </body>
 </html>

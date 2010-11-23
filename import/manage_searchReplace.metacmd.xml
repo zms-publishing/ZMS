@@ -60,14 +60,12 @@
  <dtml-var manage_page_header>
  </head>
  <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
- <dtml-var f_bo_area>
 
   <div class="form-text">
     <dtml-var "manage_searchReplace(_,_,process=1)"><br/><br/>
     [<a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>">Zurück...</a>]
   </div>
 
- <dtml-var f_eo_area>
  <dtml-var manage_page_footer>
 
 <dtml-comment>
@@ -89,7 +87,6 @@
  <dtml-var manage_page_header>
  </head>
  <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
- <dtml-var f_bo_area>
 
   <div class="form-text">Sie können jedes oder alle Vorkommen von einem Textmuster im aktuellen Objekt und auch allen Unterobjekten suchen und ersetzen.</div>
   <form name="form0">
@@ -114,7 +111,6 @@
    </table>
   </form>
 
- <dtml-var f_eo_area>
  <dtml-var manage_page_footer>
 
 <dtml-comment>

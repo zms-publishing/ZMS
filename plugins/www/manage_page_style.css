@@ -684,6 +684,6 @@ input.lazy {
 .ui-tabs .ui-tabs-hide { display: none; }
 .ui-tabs .ui-tabs-panel { margin: 0; padding: 4px 0px 0px 0px; }
 .ui-widget-header { vertical-align: middle; padding: 2px 4px 2px 4px; }
-ul#icons {margin: 0; padding: 0; }
-ul#icons li {margin: 0px; position: relative; padding: 4px; cursor: pointer; float: left; list-style: none; }
+ul#icons { margin: 0; padding: 0; }
+ul#icons li { position: relative; margin: 2px 2px 4px 2px; padding: 0px; cursor: pointer; float: left; list-style: none; }
 ul#icons span.ui-icon {float: left; margin: 0; }

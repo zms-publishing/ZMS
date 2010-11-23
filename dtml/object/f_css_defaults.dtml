@@ -128,7 +128,8 @@ div.ZMSFile div.description, div.ZMSLinkElement div.description
 
 a.fancybox img {
 	padding:1px 1px 21px 1px;
-	background:#fff url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
+	background:transparent url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
+	background-color:transparent; 
 }
 
 div.ZMSGraphic_extEdit_action {

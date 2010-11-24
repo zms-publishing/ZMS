@@ -440,7 +440,7 @@
              <b>{trans}</b>
              <input class="form-small" type="file" name="newFilterProcessFile" size="15">
             </td>
-            <td class="form-small" align="right">
+            <td align="right">
              <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
             </td>
            </tr>
@@ -653,7 +653,7 @@
     </nobr>
     <div align="center" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
    </td>
-   <td class="form-element">
+   <td>
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
    <td class="zmiNeutralColorLight1" align="right">&nbsp;</td>
@@ -890,7 +890,7 @@
     <tr><td align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td></tr>
     </table>
    </td>
-   <td class="form-element">
+   <td>
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
    <td class="zmiNeutralColorLight1">&nbsp;</td>

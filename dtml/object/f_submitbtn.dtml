@@ -1,6 +1,6 @@
 <dtml-unless omit_submitBtn>
 <dtml-call "REQUEST.set('submitBtnCount',REQUEST.get('submitBtnCount',-1)+1)">
-<div class="ZMIManageBody ui-widget-content">
+<div class="ZMIManageBody ui-widget-content ui-corner-all">
 <dtml-if "not REQUEST.form.has_key('ZMS_VERSION_%s'%id)">
 <dtml-if "REQUEST.get('ZMS_INSERT') is not None"
  ><dtml-call "REQUEST.set('submitBtn',getZMILangStr('BTN_INSERT'))"

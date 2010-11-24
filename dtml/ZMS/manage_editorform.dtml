@@ -6,25 +6,21 @@
  <script language="JavaScript">
  <!--//
 
-   var max = 100;  // maximum tries
+   var max = 10; // maximum tries
    var cnt = 0;
    var elv = "";
-
-   function bodyOnLoad() {
-     cnt = 0;
-     setTimeout('initEditor()',300);
-   }
 
    function onForm0Submit(fm) {
      if ( self.btnClicked == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
        var fm = parent.cameFromForm.document.forms['<dtml-var fmName>'];
-       fm.elements['<dtml-var elName>'].value = document.forms['form0'].elements['editor'].value;
+       fm.elements['<dtml-var elName>'].value = $('#editor').val();
        fireEvent( fm.elements['<dtml-var elName>'], 'change');
        for (var i = 0; i < fm.elements.length; i++) {
          var el = fm.elements[i];
          if ( el.type == 'submit' && el.name == 'btn' && el.value == '<dtml-var "getZMILangStr('BTN_SAVE')">') {
            // Clear div with system-msg.
            $('#system_msg').hide('normal').html('');
+           onResize();
            // Click change-button.
            el.click();
            // Process response.
@@ -43,26 +39,20 @@
      if( cnt < max) {
        if ( parent.cameFromForm && parent.cameFromForm.document.forms['<dtml-var fmName>']) {
          // Find div with system-msg.
-         var divs = parent.cameFromForm.document.getElementByTagName( "div");
-         var b = false;
-         for ( var j = 0; j < divs.length && !b; j++) {
-           var div = divs[ j];
-           if ( div.className == 'system-msg') {
-             if ( div.style.visibility != "hidden" &&
-                  div.style.display != "none" &&
-                  div.innerHTML != "") {
-               <dtml-if displayPreview>
-               $('#system_msg').html(div.innerHTML).show('normal');
-               // Reload preview-form.
-               if ( parent.previewForm) {
-                 parent.previewForm.location.reload();
-               }
-               </dtml-if>
-               b = true;
-               // Set counter to maximum to finish initialization.
-               cnt = max;
-             }
+         var div = $('div#system_msg',parent.cameFromForm.document);
+         if (div.length > 0 && div.html() != '') {
+           <dtml-if displayPreview>
+           // Update div with system-msg.
+           $('#system_msg').html(div.html()).show('normal');
+           onResize();
+           // Reload preview-form.
+           if ( parent.previewForm) {
+             parent.previewForm.location.reload();
            }
+           </dtml-if>
+           b = true;
+           // Set counter to maximum to finish initialization.
+           cnt = max;
          }
        }
        if( cnt < max) {
@@ -82,8 +72,7 @@
          document.title = parent.cameFromForm.document.title;
          parent.document.title = parent.cameFromForm.document.title;
          // Set element-value.
-         var el = document.forms['form0'].elements['editor'];
-         el.value = parent.cameFromForm.document.forms['<dtml-var fmName>'].elements['<dtml-var elName>'].value;
+         $('#editor').val(parent.cameFromForm.document.forms['<dtml-var fmName>'].elements['<dtml-var elName>'].value);
          // Set counter to maximumto finish initialization.
          cnt = max;
        }
@@ -123,9 +112,9 @@
      else {
        firedChangeEditor = false;
        repeatChangeEditor = false;
-       var el = document.forms['form0'].elements['editor'];
-       if ( el.value != elv) {
-         elv = el.value;
+       var v = $('#editor').val();
+       if ( v != elv) {
+         elv = v;
        }
      }
    }
@@ -146,48 +135,55 @@ $(function() {
 function onResize() {
   var ta = $('textarea:not([name^=alternate_])');
   if (ta.length==1) {
+    if ($(ta.parents('div')[0]).css('display')=='none') {
+      ta = $('object[name^=editor_'+ta.attr('name')+']');
+    }
     if (taMinHeight==null) {
       taMinHeight = $(ta).attr('offsetHeight') / 2;
     }
     var innerDims = getInnerDimensions();
     var bodyDims = getBodyDimensions();
-    $(ta).css('height',Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight));
+    var newHeight = Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
+    ta.css('height',newHeight);
   }
 }
 
-//-->
-</script>
+		////////////////////////////////////////////////////////////////////////////
+		///// Init
+		////////////////////////////////////////////////////////////////////////////
+
+		$(function() {
+			setTimeout('initEditor()',300);
+		});
+
+		//-->
+		</script>
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
-	 <body class="zmi zmiNeutralColorLight0">
- <div>
- <table cellpadding="0" cellspacing="0" border="0" width="100%">
- <tr valign="middle" style="background-color:#000;">
-  <td align="left" class="form-small" style="color:#ffffff;" nowrap="nowrap"><dtml-var headline></td>
-  <td align="right" class="form-small" style="color:#ff9900;" nowrap="nowrap"><a href="#" onclick="parent.location.href=parent.cameFromForm.location.href;" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_BACK')">" border="0" align="absmiddle"/></a></td>
- </tr>
- </table>
- <div class="form-small"><div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;display:none;visibility:hidden;"></div>
-  <form name="form0" onsubmit="return onForm0Submit(this)" style="margin:8px">
-  <input type="hidden" name="lang" value="<dtml-var lang>">
-  <div class="form-element">
-   <textarea class="form-fixed" name="editor" wrap="off" cols="80" rows="15" style="width:90%;height:90%;" onkeyup="onChangeEditor(this)" onchange="onChangeEditor(this)"></textarea>
-  </div>
-  <script language="JavaScript">
-  <!--//
-    bodyOnLoad();
-  //-->
-  </script>
-  <div>
-   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;">
-   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="self.btnClicked=this.value;">
-  </div>
-  </form>
- </div>
- </div>
- </body>
+	<body class="zmi neutralColorWhite">
+	<div>
+		<div class="form-small zmi_header" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td class="form-small" style="color:#fff;" nowrap="nowrap"><dtml-var headline></td>
+			</tr>
+			</table>
+		</div>
+		<div class="form-small">
+			<div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;margin:1em;display:none;"></div>
+			<form name="form0" onsubmit="return onForm0Submit(this)" style="margin:8px">
+				<input type="hidden" name="lang" value="<dtml-var lang>">
+				<div class="form-element">
+					<textarea class="form-fixed" id="editor" name="editor" wrap="off" cols="80" rows="15" style="width:90%;height:90%;" onkeyup="onChangeEditor(this)" onchange="onChangeEditor(this)"></textarea>
+				</div>
+				<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;">
+				<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_CLOSE')" html_quote>" onclick="self.btnClicked=this.value;">
+			</form>
+		</div>
+	</div>
+	</body>
 
 <dtml-else>
  <frameset name="editorFrameset" cols="30%,70%">

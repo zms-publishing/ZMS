@@ -426,16 +426,16 @@ function inputValue(v) {
                  var changed = false;
                  var name = theform.elements[i].name;
                  if (!isBlank(name)) {
-                         var type = theform[name].type;
+                         var type = theform.elements[i].type;
                          if (!ignoreFields[name]) {
                                  if (type=="hidden" && hiddenFields[name]) {
-                                         changed = isChanged(theform[name]);
+                                         changed = isChanged(theform.elements[i]);
                                          }
                                  else if (type=="hidden") {
                                          changed = false;
                                          }
                                  else {
-                                         changed = isChanged(theform[name]);
+                                         changed = isChanged(theform.elements[i]);
                                          }
                                  }
                          }

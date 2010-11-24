@@ -80,13 +80,13 @@
 <tr valign="top">
 <td>
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
-<div class="ui-state-highlight ui-corner-all" style="padding:1em;">
+<div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;">
 <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 <dtml-var "REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>
 <dtml-elif "len(REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message','')))>0">
-<div class="ui-state-error ui-corner-all" style="padding:1em;">
+<div id="system_msg" class="ui-state-error ui-corner-all" style="padding:1em;">
 <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
 <dtml-var "REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)

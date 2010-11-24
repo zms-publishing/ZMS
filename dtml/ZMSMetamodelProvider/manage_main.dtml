@@ -466,7 +466,7 @@ function changeType( el)
         ><div class="form-small"><dtml-var "getZMILangStr('ATTR_SUBOBJECTS')"></div
        ><dtml-else>&nbsp;</dtml-if
       ></td>
-      <td colspan="2" nowrap="nowrap" class="form-element">
+      <td colspan="2" nowrap="nowrap">
        <dtml-if "metaObj['type']=='ZMSPackage'"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');"/></dtml-if>
        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this,'obj');">
        <dtml-unless has_acquisition><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"></dtml-unless>
@@ -505,7 +505,7 @@ function changeType( el)
         ></dtml-in
        ></select>
       </td>
-      <td colspan="2" nowrap="nowrap" class="form-element">
+      <td colspan="2" nowrap="nowrap">
        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'all');"/>
        <dtml-unless has_acquisition><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"/></dtml-unless>
       </td>

@@ -1,14 +1,14 @@
 <dtml-in "REQUEST.get('f_zmiUiWidgetContent',[])">
 </div><!-- [manage_tabs].ui-widget-content -->
 </dtml-in>
-<div class="zmi_footer">
+<div class="zmi_header">
 <div class="zmi_col_left">
- <a id="strong" href="http://www.zms-publishing.com" target="_blank" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine">ZMS</a>&nbsp;&copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+ &copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
 </div><!-- .zmi_col_left -->
 <div class="zmi_col_right">
  <form action="<dtml-var URL>" method="get">
  <input type="hidden" name="lang" value="<dtml-var lang>">
- <select name="manage_lang" onchange="this.form.submit();" style="color:#eee;border:0;background-color:#323232;">
+ <select name="manage_lang" onchange="this.form.submit();">
  <dtml-in "getManageLanguages()">
   <option value="<dtml-var sequence-item>" <dtml-if "_['sequence-item']==manage_lang">selected="selected"</dtml-if>><dtml-var "getLangStr('LANG',_['sequence-item'])"></option>
  </dtml-in>
@@ -20,7 +20,7 @@
  |&nbsp;<a href="#_top"><img src="<dtml-var MISC_ZMS>bottom_pagetop.gif" border="0" title="<dtml-var "getZMILangStr('PAGETOP')">" style="vertical-align:middle"/></a>
  </form>
 </div><!-- .zmi_col_right -->
-</div><!-- .zmi_footer -->
+</div><!-- .zmi_header -->
 </div><!-- [manage_page_header].zmi -->
 </body>
 </html>

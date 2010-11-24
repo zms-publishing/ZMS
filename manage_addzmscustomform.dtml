@@ -2,11 +2,12 @@
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
 	<body class="zmi">
 		<div class="zmi">
+			<div class="ZMIManageBody ui-widget-content">
 
 <dtml-if "getMetaobjZMI(meta_id,REQUEST)">
 
@@ -46,6 +47,7 @@
 </dtml-if>
 </dtml-let>
 
+			</div>
 		</div><!-- .zmi -->
 	</body>
 </html>

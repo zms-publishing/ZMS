@@ -285,8 +285,8 @@ function hideDstMetaTypes( id)
   <td class="form-small" align="center" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">">
    <input class="form-checkbox" type="checkbox" name="_repetitive:int" value="1"/>
   </td>
-  <td class="form-small" colspan="2">
-   <input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+  <td colspan="2">
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
   </td>
 </tr>
 
@@ -294,7 +294,7 @@ function hideDstMetaTypes( id)
 <dtml-if "getMetadictAttrs()">
  <tr class="zmiNeutralColorStrong0">
   <td colspan="2">&nbsp;</td>
-  <td colspan="8" class="form-element">
+  <td colspan="8">
    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
   </td>
  </tr>
@@ -347,7 +347,7 @@ function hideDstMetaTypes( id)
 </dtml-comment>
  <dtml-if "REQUEST.get('section','import')=='import'">
   <tr>
-   <td colspan="10"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+   <td colspan="10"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 valign=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
    <td colspan="10">

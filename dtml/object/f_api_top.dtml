@@ -1,6 +1,6 @@
 <dtml-var "manage_page_header(_,_,ZMS_TITLE='API Documentation')">
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
 	<body class="zmi">

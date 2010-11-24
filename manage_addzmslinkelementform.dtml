@@ -2,7 +2,7 @@
 <dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
 <dtml-var manage_page_header>
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
 	<body class="zmi">
@@ -27,7 +27,8 @@
 
 </dtml-let>
 
-			</form>
+				</form>
+			</div>
 		</div><!-- .zmi -->
 	</body>
 </html>

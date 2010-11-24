@@ -426,10 +426,10 @@ function confKeyChange(b)
  <td class="form-small"></td>
  <td class="form-small"><input type="submit" value="Clear &raquo; " name="btn" style="width:60px" /></td>
 </tr>
-<tr valign="top" class="zmiNeutralColorLight0">
- <td class="form-small">&nbsp;</td>
- <td class="form-small"><input type="submit" onclick="self.btnClicked=this.value;" value="Change" name="btn" class="ui-button ui-state-default ui-corner-all"/></td>
- <td class="form-small" colspan="2">&nbsp;</td>
+<tr class="zmiNeutralColorLight0">
+ <td>&nbsp;</td>
+ <td><input type="submit" onclick="self.btnClicked=this.value;" value="Change" name="btn" class="ui-button ui-state-default ui-corner-all"/></td>
+ <td colspan="2">&nbsp;</td>
 </tr>
 </tbody>
 </table>

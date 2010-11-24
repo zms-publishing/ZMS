@@ -11,16 +11,17 @@
 		//-->
 		</script>
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
 	<body class="zmi">
 		<div class="zmi">
-			<form name="form0" action="manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
-				<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
-				<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
-				<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-				<dtml-let f_submitInputFieldsTable="True"><dtml-var f_submitInputFields></dtml-let>
+			<div class="ZMIManageBody ui-widget-content">
+				<form name="form0" action="manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
+					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
+					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
+					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
+					<dtml-let f_submitInputFieldsTable="True"><dtml-var f_submitInputFields></dtml-let>
 
 <!-- ### Connection Id -->
 <tr>
@@ -55,9 +56,10 @@
  <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
 </tr>
 
-				</table>
-				<dtml-var f_submitBtn>
-			</form>
+					</table>
+					<dtml-var f_submitBtn>
+				</form>
+			</div>
 		</div><!-- .zmi -->
 	</body>
 </html>

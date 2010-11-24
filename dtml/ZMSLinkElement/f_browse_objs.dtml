@@ -344,7 +344,7 @@ function followHref( href, extra)
 //-->
 </script>
 		<style>
-			html {background:transparent}
+			body.zmi {background:transparent!important}
 		</style>
 	</head>
 	<body class="zmi zmiNeutralColorLight0">

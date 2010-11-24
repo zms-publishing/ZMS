@@ -77,7 +77,7 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 	$('input[id=id_prefix]',$fm).val( id);
 	$('input[id=_sort_id]',$fm).val( sort_id);
 	$('input[id=custom]',$fm).val( custom);
-	if (target.indexOf('manage_addProduct/')==0) {
+	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		var html = '';
 		html += '<tr id="tr_manage_addProduct" class="zmiTeaserColor">';
 		html += '<td class="zmiContainerColLeft"><img src="/misc_/zms/btn_add.gif" border="0" align="absmiddle"/> '+custom+'</td>';

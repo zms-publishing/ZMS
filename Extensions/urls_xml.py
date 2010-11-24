@@ -151,7 +151,7 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
               RESPONSE.write('<!-- ERROR %s -->\n'%(s))
     
     # Process children.
-    for child in obj.getChildNodes(REQUEST,self.PAGES):
+    for child in obj.filteredChildNodes(REQUEST,self.PAGES):
         recurseHtmlPages(self,child,'%s/%s'%(path,child.getDeclId(REQUEST)),lang, REQUEST, RESPONSE)
 
 
@@ -221,6 +221,8 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     for lang in self.getLangIds():
       RESPONSE.write('<url lang="%s" content_type="text/javascript"><![CDATA[/content/zmilib_js?lang=%s]]></url>\n'%(lang,lang))
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[/content/comlib_js]]></url>\n')
+    RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js'))
+    RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)

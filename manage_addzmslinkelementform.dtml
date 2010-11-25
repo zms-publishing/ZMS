@@ -7,28 +7,21 @@
 	</head>
 	<body class="zmi">
 		<div class="zmi">
-
-<!-- ### Meta-Object: Default -->
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-<form name="<dtml-var fmName>" action="manage_addZMSLinkElement" target="_parent" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
-<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
-<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
-<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-<dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
-
-<!-- ### Attributes -->
-<dtml-var obj_input_js>
-<dtml-var obj_input_fields>
-
-</table>
-
-<!-- ### Buttons -->
-<dtml-var f_submitBtn>
-
-</dtml-let>
-
+			<div class="ZMIManageBody ui-widget-content">
+				<!-- ### Meta-Object: Default -->
+				<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+				<form name="<dtml-var fmName>" action="manage_addZMSLinkElement" target="_parent" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
+					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
+					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
+					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
+					<dtml-let f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+					<dtml-var obj_input_js>
+					<dtml-var obj_input_fields>
+					<dtml-var zmi_form_section_end>
+					<dtml-var f_submitBtn>
 				</form>
 			</div>
 		</div><!-- .zmi -->
 	</body>
 </html>
+</dtml-let>

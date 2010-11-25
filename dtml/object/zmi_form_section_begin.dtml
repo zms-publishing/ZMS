@@ -1,0 +1,26 @@
+<!-- zmi_form_section_begin -->
+<dtml-if zmi_form_section_headline>
+ <dtml-call "REQUEST.set('_zmi_form_section_headlines',REQUEST.get('_zmi_form_section_headlines',[]))">
+ <dtml-if "len(REQUEST.get('_zmi_form_section_headlines'))==0">
+  <div class="zmi-form-section ui-accordion ui-widget ui-helper-reset ui-accordion-icons">
+ </dtml-if>
+ <dtml-let collapsed_cookie="'%s_collapsed'%zmi_form_section_id" active="not zmi_form_collapsed and not REQUEST.cookies.get(collapsed_cookie)">
+  <h3 id="<dtml-var zmi_form_section_id>" class="ui-accordion-header ui-helper-reset ui-state-<dtml-if active>active<dtml-else>default</dtml-if> ui-corner-all">
+   <span class="ui-icon ui-icon-triangle-1-<dtml-if active>s<dtml-else>e</dtml-if>"></span>
+   <span class="zmi-accordion-headline"><dtml-var zmi_form_section_headline></span>
+  </h3>
+  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom <dtml-if active>ui-accordion-content-active</dtml-if>">
+ </dtml-let>
+ <dtml-call "REQUEST.get('_zmi_form_section_headlines').append(zmi_form_section_headline)">
+<dtml-elif zmi_form_section>
+ <div class="zmi-form-section ui-widget-content ui-corner-all">
+ <dtml-call "REQUEST.set('_zmi_form_section_div',True)">
+<dtml-else>
+ <dtml-call "REQUEST.set('_zmi_form_section_div',False)">
+</dtml-if>
+<table cellspacing="0" cellpadding="1" border="0" width="100%">
+<colgroup>
+ <col width="20%" />
+ <col width="80%" />
+</colgroup>
+<!-- /zmi_form_section_begin -->

@@ -508,7 +508,7 @@ function drag(ereignis) {
 <div class="zmi">
 
 <dtml-with "getHome()">
-<div class="form-small zmi_header" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
+<div class="form-small zmi-document-margin" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
  <dtml-if "AUTHENTICATED_USER.has_permission('Manage',this())">
   <a href="<dtml-var "_.string.split(str(absolute_url()),str(getId()))[0]">/<dtml-var id>/manage_workspace" target="_parent"><img src="<dtml-var icon>" title="<dtml-var meta_type>" border="0" align="absmiddle"/></a>
   <a href="<dtml-var "_.string.split(str(absolute_url()),str(getId()))[0]">/<dtml-var id>/manage_workspace" target="_parent" style="color:white; font-weight:bold;"><dtml-var id></a>

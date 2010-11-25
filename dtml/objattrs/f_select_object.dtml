@@ -1,39 +1,25 @@
 <dtml-comment> 
 ********************************************************************************
 *	f_selectObject
-*	@param objLabel
+*	@param elLabel
 *	@param objAttr
 *	@param REQUEST
 ********************************************************************************
 </dtml-comment>
 
-<dtml-if ZMS_INSERT>
-<tr valign="top">
- <td class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></td>
- <td class="form-element"><i><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%display_type(REQUEST,ZMS_INSERT)"></i></td>
-</tr>
-<dtml-else>
- <dtml-let cookie="'%s.%s.delimiter.collapsed'%(meta_id,objAttr['id'])" res="getObjChildren(objAttr['id'],REQUEST)">
+<dtml-unless ZMS_INSERT>
+ <dtml-let zmi_form_section_id="'%s_%s'%(meta_id,objAttr['id'])" objChildren="getObjChildren(objAttr['id'],REQUEST)">
+  <dtml-var zmi_form_section_end>
+  <dtml-let headline="[elLabel]"> 
+  <dtml-if required>
+   <dtml-call "headline.append(FORM_LABEL_MANDATORY)">
+  </dtml-if>
+  <dtml-call "headline.append(' <span class=\042form-small\042>(%i %s)</span>'%(len(objChildren),getZMILangStr('ATTR_OBJECTS')))">
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id=zmi_form_section_id,zmi_form_section_headline=''.join(headline),zmi_form_collapsed=len(objChildren)==0)">
+  </dtml-let>
   <!-- Object.EDIT -->
-  <dtml-in res>
-   <dtml-if sequence-start>
-    <tr>
-     <td colspan="2">
-      <div class="zmiDelimiter ui-widget-content ui-corner-all">
-      <div class="form-label<dtml-if disabled>-disabled</dtml-if> zmi_col_left"
-       onclick="toggleElement('tr[id^=tr_<dtml-var "objAttr['id']">]');toggleImage('img[id=zmi_delimiter_<dtml-var "objAttr['id']">_toggle]');toggleCookie('<dtml-var cookie>');"
-       ><img id="zmi_delimiter_<dtml-var "objAttr['id']">_toggle" border="0" align="absmiddle" 
-        <dtml-if "REQUEST.cookies.get(cookie)">src="<dtml-var MISC_ZMS>pl.gif" title="+"<dtml-else>src="<dtml-var MISC_ZMS>mi.gif" title="-"</dtml-if>>
-       <dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if>
-      </div>
-      <div class="form-small zmi_col_right">
-       <dtml-var "'%i %s\n'%(len(res),getZMILangStr('ATTR_OBJECTS'))">
-      </div>
-      </div>
-     </td>
-    </tr>
-   </dtml-if>
-   <tr valign="top" id="tr_<dtml-var id>"<dtml-if "REQUEST.cookies.get(cookie)"> style="visibility:hidden;display:none;"</dtml-if>>
+  <dtml-in objChildren>
+   <tr valign="top" id="tr_<dtml-var id>">
     <td class="zmiContainerColLeft form-small"
      ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
      ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
@@ -71,25 +57,12 @@
    </tr>
   <dtml-else>
    <tr id="tr_<dtml-var "objAttr['id']">">
-     <td colspan="2">
-      <div class="zmiDelimiter ui-widget-content ui-corner-all">
-      <div class="form-label zmi_col_left">
-       <img border="0" align="absmiddle" src="<dtml-var MISC_ZMS>pl.gif"/>
-       <dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if>
-      </div>
-      <dtml-comment>
-      <!-- ##### actions ##### -->
-      </dtml-comment>
-      <div class="form-element zmi_col_right">
-       <dtml-if "objAttr.get('repetitive',0)==1 or len(getObjChildren(objAttr['id'],REQUEST))==0"
-        ><select class="form-small zmi-action" id="select_actions_<dtml-var "objAttr['id']">" onchange="zmiActionChoose(this,'<dtml-var "objAttr['id']">','9900')"
-         ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option
-        ></select
-       ></dtml-if>
-      </div>
-      </div>
+     <td colspan="2" class="form-small">
+      <select class="form-small zmi-action" id="select_actions_<dtml-var "objAttr['id']">" onchange="zmiActionChoose(this,'<dtml-var "objAttr['id']">','9900')">
+       <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option>
+      </select>
      </td>
     </tr>
   </dtml-in>
  </dtml-let>
-</dtml-if>
+</dtml-unless>

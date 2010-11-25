@@ -6,7 +6,7 @@
 	<body class="zmi">
 		<a name="_top"></a>
 		<div class="zmi" style="width:100%;">
-			<div class="zmi_header">
+			<div class="zmi-document-margin">
 				<div class="zmi_col_left">
 					&nbsp;|&nbsp;<a href="manage_main?lang=<dtml-var lang>" target="_parent"><dtml-var "getZMILangStr('BACK')"> <dtml-var "getZMILangStr('TO')"> <dtml-var "display_type(REQUEST)"><dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "string_maxlen(getTitlealt(REQUEST),25)"></dtml-if></a>
 					&nbsp;|&nbsp;<a id="a_zms_api" class="a_zmi_api" href="#" style="font-weight:bold;">ZMS API Documentation</a>

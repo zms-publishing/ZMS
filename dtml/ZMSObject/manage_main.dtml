@@ -15,6 +15,13 @@
    <!-- ### Meta-Object: RecordSet -->
    <dtml-var metaobj_recordset_main>
   <dtml-else>
+<script type="text/javascript">
+<!--//
+  $(function() {
+    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
+  })
+//-->
+</script>
    <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
    ><dtml-call "initObjChildren(REQUEST)"
    ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data"
@@ -23,21 +30,10 @@
    ><input type="hidden" id="id_prefix" name="id_prefix" value="e"
    ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
    ><input type="hidden" id="custom" name="custom" value=""
-   ><dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
-    <!-- ### Attributes -->
+   ><dtml-let f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
     <dtml-var obj_input_js>
     <dtml-var obj_input_fields>
-    </table>
-
-<script type="text/javascript">
-<!--//
-  $(function() {
-    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
-  })
-//-->
-</script>
-
-    <!-- ### Buttons -->
+    <dtml-var zmi_form_section_end>
     <dtml-var f_submitBtn>
     </form>
    </dtml-if>

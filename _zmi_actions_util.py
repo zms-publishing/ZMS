@@ -60,32 +60,33 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   mandatory = objAttr.get('mandatory',0)==1
   
   #-- Action: Edit.
-  actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main'))
-  if context is not None and context.getLevel() > 0:
-    if repetitive or not mandatory:
-      #-- Action: Undo.
-      can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
-      if can_undo:
-        actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
-      #-- Action: Delete.
-      can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST)
-      if can_delete:
-        ob_access = context.getObjProperty('manage_access',REQUEST)
-        can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
-        metaObj = container.getMetaobj( context.meta_id)
-        can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
-      if can_delete:
-        actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
-      #-- Action: Cut.
-      actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects')) 
-      #-- Action: Copy.
-    actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
-    #-- Actions: Move.
-    can_move = objChildren > 1
-    if can_move:
-      actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp'))
-      actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown'))
-    
+  if context is not None:
+    actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main'))
+    if context.getLevel() > 0:
+      if repetitive or not mandatory:
+        #-- Action: Undo.
+        can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
+        if can_undo:
+          actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
+        #-- Action: Delete.
+        can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST)
+        if can_delete:
+          ob_access = context.getObjProperty('manage_access',REQUEST)
+          can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
+          metaObj = container.getMetaobj( context.meta_id)
+          can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
+        if can_delete:
+          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
+        #-- Action: Cut.
+        actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects')) 
+        #-- Action: Copy.
+      actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
+      #-- Actions: Move.
+      can_move = objChildren > 1
+      if can_move:
+        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp'))
+        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown'))
+  
   #-- Action: Paste.
   if repetitive or objChildren==0:
     if container.cb_dataValid():

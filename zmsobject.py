@@ -110,6 +110,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_css_printhtml = HTMLFile('dtml/object/f_css_printhtml', globals()) # CSS: Fixed PrintHTML StyleSheet
     f_submitInputFields = HTMLFile('dtml/object/f_submitinputfields', globals())
     f_submitBtn = HTMLFile('dtml/object/f_submitbtn', globals())
+    zmi_form_section_begin = HTMLFile('dtml/object/zmi_form_section_begin', globals())
+    zmi_form_section_end = HTMLFile('dtml/object/zmi_form_section_end', globals())
     f_collectionBtn = HTMLFile('dtml/object/f_collectionbtn', globals())
     f_languages = HTMLFile('dtml/object/f_languages', globals())
     f_frame = HTMLFile('dtml/object/f_frame', globals()) 

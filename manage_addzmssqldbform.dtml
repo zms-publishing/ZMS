@@ -1,5 +1,5 @@
 <dtml-call "REQUEST.set('ZMS_INSERT','ZMSSqlDb')">
-<dtml-var manage_page_header>
+	<dtml-var manage_page_header>
 		<script language="JavaScript">
 		<!--//
 			function onFormSubmit(fm) {
@@ -21,42 +21,40 @@
 					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-					<dtml-let f_submitInputFieldsTable="True"><dtml-var f_submitInputFields></dtml-let>
-
-<!-- ### Connection Id -->
-<tr>
- <td><div class="form-label">Connection Id<dtml-var FORM_LABEL_MANDATORY></div></td>
- <td>
-  <select class="form-element" name="connection_id">
-   <option value="">--- Select Connection Id ---</option>
-   <dtml-in SQLConnectionIDs>
-    <option value="<dtml-var sequence-item>"
-     <dtml-if connection_id>
-      <dtml-if "connection_id==_vars['sequence-item']">
-       selected="selected"
-      </dtml-if>
-     </dtml-if>><dtml-var sequence-key> <dtml-with "_.getattr(this(),_['sequence-item'])">(<dtml-var meta_type>)</dtml-with></option>
-   </dtml-in>
-  </select>
- </td>
-</tr>
-<!-- ### Max. Rows -->
-<tr valign="top">
- <td><div class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></div></td>
- <td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
-</tr>
-<!-- ### Charset -->
-<tr valign="top">
- <td><div class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></div></td>
- <td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value='latin-1',enum='charset')"></td>
-</tr>
-<!-- ### Model -->
-<tr valign="top">
- <td><div class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></div></td>
- <td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
-</tr>
-
-					</table>
+					<dtml-var f_submitInputFields>
+					<!-- ### Connection Id -->
+					<tr>
+						<td><div class="form-label">Connection Id<dtml-var FORM_LABEL_MANDATORY></div></td>
+						<td>
+							<select class="form-element" name="connection_id">
+								<option value="">--- Select Connection Id ---</option>
+								<dtml-in SQLConnectionIDs>
+									<option value="<dtml-var sequence-item>"
+										<dtml-if connection_id>
+											<dtml-if "connection_id==_vars['sequence-item']">
+												selected="selected"
+											</dtml-if>
+										</dtml-if>><dtml-var sequence-key> <dtml-with "_.getattr(this(),_['sequence-item'])">(<dtml-var meta_type>)</dtml-with></option>
+								</dtml-in>
+							</select>
+						</td>
+					</tr>
+					<!-- ### Max. Rows -->
+					<tr valign="top">
+						<td><div class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></div></td>
+						<td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
+					</tr>
+					<!-- ### Charset -->
+					<tr valign="top">
+						<td><div class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></div></td>
+						<td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value='latin-1',enum='charset')"></td>
+					</tr>
+					<!-- ### Model -->
+					<tr valign="top">
+						<td><div class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></div></td>
+						<td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
+					</tr>
+					<dtml-var zmi_form_section_end>
 					<dtml-var f_submitBtn>
 				</form>
 			</div>

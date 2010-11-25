@@ -164,7 +164,7 @@ function onResize() {
 	</head>
 	<body class="zmi neutralColorWhite">
 	<div>
-		<div class="form-small zmi_header" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
+		<div class="form-small zmi-document-margin" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 			<tr>
 				<td class="form-small" style="color:#fff;" nowrap="nowrap"><dtml-var headline></td>

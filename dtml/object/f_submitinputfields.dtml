@@ -1,23 +1,11 @@
+<!-- f_submitInputFields -->
 <dtml-let obj_attrs="getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id))">
 
 <input type="hidden" name="lang" value="<dtml-var lang>"/>
 <input type="hidden" name="preview" value="preview"/>
 
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<colgroup>
- <col width="20%" />
- <col width="80%" />
-</colgroup>
-
-<tr>
- <td colspan="2">
-  <div class="ui-widget-header ui-helper-clearfix ui-corner-all">
-
-  <table cellspacing="0" cellpadding="0" border="0" width="100%">
-  <colgroup>
-   <col width="20%" />
-   <col width="80%" />
-  </colgroup>
+ <div class="ui-widget-header ui-helper-clearfix ui-corner-all">
+  <dtml-var zmi_form_section_begin>
   <tr valign="middle">
     <dtml-comment>
     ##### Active.Toggle #####
@@ -32,7 +20,7 @@
         <dtml-var "getObjInput('active',REQUEST)">
       </td
       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
-       ><td><div class="form-text"><dtml-var "getZMILangStr('ATTR_START_DAT')"></div></td
+       ><td><dtml-var "getZMILangStr('ATTR_START_DAT')"></td
       ></dtml-if
      ></tr
      ></table
@@ -47,7 +35,6 @@
      </dtml-comment
      ><td
       ><dtml-unless f_submitInputFieldsInactive
-      ><div class="form-text"
        ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
         ><dtml-var "getObjInput('attr_active_start',REQUEST)"
        ></dtml-if
@@ -55,7 +42,6 @@
         ><dtml-var "getZMILangStr('ATTR_END_DAT')"
         ><dtml-var "getObjInput('attr_active_end',REQUEST)"
        ></dtml-if
-      ></div
       ></dtml-unless
      ></td
      ><dtml-comment>
@@ -118,37 +104,26 @@
     </table>
    </td>
   </tr>
-  </table>
-
-  </div>
- </td>
-</tr>
+  <dtml-var zmi_form_section_end>
+ </div>
 
  <dtml-if ZMS_INSERT>
-  <tr valign="middle">
-   <td><div class="form-label"><dtml-var "getZMILangStr('BTN_INSERT')"></div></td>
-   <td>
-    <div class="form-element">
-     <dtml-var "getLangFmtDate(ZopeTime())">
-    </div>
-   </td>
-  </tr>
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
  <dtml-else>
-  <dtml-if "getObjProperty('created_dt',REQUEST) and getObjProperty('created_uid',REQUEST)">
-   <tr valign="middle">
-    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_CREATED')"></div></td>
-    <td>
-     <div class="form-element">
-      <dtml-var "getLangFmtDate(getObjProperty('created_dt',REQUEST))">
-      <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('created_uid',REQUEST)">
-     </div>
-    </td>
-   </tr>
-  </dtml-if>
+  <dtml-let headline="[]">
+   <dtml-call "headline.append(getZMILangStr('ATTR_LAST_MODIFIED'))">
+   <dtml-call "headline.append('&nbsp;&nbsp;&nbsp;')">
+   <dtml-call "headline.append('<span class=\042form-text\042>')">
+   <dtml-call "headline.append(' '+getLangFmtDate(getObjProperty('change_dt',REQUEST)))">
+   <dtml-call "headline.append(' '+getZMILangStr('BY'))"> 
+   <dtml-call "headline.append(' '+getObjProperty('created_uid',REQUEST))">
+   <dtml-call "headline.append('</span>')">
+   <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='change_',zmi_form_section_headline=''.join(headline),zmi_form_collapsed=False)">
+  </dtml-let>
   <tr valign="middle">
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
-   <td>
+   <td colspan="2">
     <div class="form-element">
+    <dtml-var version_object_state>
     <dtml-let actions="filtered_workflow_actions()">
      <dtml-if actions>
       <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')">
@@ -156,20 +131,19 @@
       </select>
      </dtml-if>
     </dtml-let>
-    <dtml-var version_object_state>
-     <dtml-if "getObjProperty('change_dt',REQUEST)">
-      <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))">
-     </dtml-if>
-     <dtml-if "getObjProperty('change_uid',REQUEST)">
-      <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('change_uid',REQUEST)">
-     </dtml-if>
+    (<dtml-if "getObjProperty('created_dt',REQUEST) and getObjProperty('created_uid',REQUEST)">
+     <dtml-var "getZMILangStr('ATTR_CREATED')">:
+     <dtml-var "getLangFmtDate(getObjProperty('created_dt',REQUEST))">
+     <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('created_uid',REQUEST)">,
+    </dtml-if>
+    <dtml-var "len(getChildNodes(REQUEST))"> <dtml-var "getZMILangStr('ATTR_OBJECTS')">,
+    <dtml-var "getDataSizeStr(get_size())">)
     </div>
    </td>
   </tr>
+  <dtml-var zmi_form_section_end>
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
  </dtml-if>
 
-<dtml-unless f_submitInputFieldsTable>
- </table>
-</dtml-unless>
-
 </dtml-let>
+<!-- /f_submitInputFields -->

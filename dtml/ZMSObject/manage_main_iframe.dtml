@@ -1,44 +1,46 @@
 <dtml-let lurl="URL.replace('?','/').split('/')" metaObj="getMetaobj(meta_id)" metaObjManage="getMetaobjAttr(meta_id,'manage')" metaobjIds="getMetaobjIds()">
-<dtml-var manage_page_header>
-</head>
-<body class="zmi">
-<script>
-$(function() {
-  <dtml-if manage_tabs_message>
-  parent.$.fancybox.close();
-  parent.location.reload();
-  </dtml-if>
-});
-</script>
-<a name="_top"></a>
-<div class="zmi">
-  <dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
-  <dtml-if metaObjZMI>
-   <!-- ### Meta-Object: Custom Management Interface -->
-   <dtml-var metaObjZMI>
-  <dtml-elif "getType()=='ZMSRecordSet'">
-   <!-- ### Meta-Object: RecordSet -->
-   <dtml-var metaobj_recordset_main>
-  <dtml-else>
-   <!-- ### Meta-Object: Default -->
-   <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
-   ><dtml-call "initObjChildren(REQUEST)"
-   ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')"
-   ><input type="hidden" name="manage_target" value="<dtml-var URL>"
-   ><input type="hidden" name="preview" value="preview"
-   ><input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"
-   ><input type="hidden" id="id_prefix" name="id_prefix" value="e"
-   ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
-   ><input type="hidden" id="custom" name="custom" value=""
-   ><dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let
-   ><dtml-var obj_input_js
-   ><dtml-var obj_input_fields
-   ></table
-   ><dtml-var f_submitBtn
-   ></form>
-   </dtml-if>
-  </dtml-let>
-</div>
-</body>
+	<dtml-var manage_page_header>
+		<script>
+			$(function() {
+				<dtml-if manage_tabs_message>
+				parent.$.fancybox.close();
+				parent.location.reload();
+				</dtml-if>
+			});
+		</script>
+		<style>
+			body.zmi {background:transparent!important}
+		</style>
+	</head>
+	<body class="zmi">
+		<div class="zmi">
+			<dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
+				<dtml-if metaObjZMI>
+					<!-- ### Meta-Object: Custom Management Interface -->
+					<dtml-var metaObjZMI>
+				<dtml-elif "getType()=='ZMSRecordSet'">
+					<!-- ### Meta-Object: RecordSet -->
+					<dtml-var metaobj_recordset_main>
+				<dtml-else>
+					<!-- ### Meta-Object: Default -->
+					<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+					<dtml-call "initObjChildren(REQUEST)">
+					<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
+						<input type="hidden" name="manage_target" value="<dtml-var URL>">
+						<input type="hidden" name="preview" value="preview">
+						<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>">
+						<input type="hidden" id="id_prefix" name="id_prefix" value="e">
+						<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
+						<input type="hidden" id="custom" name="custom" value="">
+						<dtml-let f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+						<dtml-var obj_input_js>
+						<dtml-var obj_input_fields>
+						<dtml-var zmi_form_section_end>
+						<dtml-var f_submitBtn>
+					</form>
+				</dtml-if>
+			</dtml-let>
+		</div>
+	</body><!-- .zmi -->
 </html>
 </dtml-let>

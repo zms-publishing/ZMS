@@ -9,6 +9,24 @@ $(function(){
 		.focus( function(evt) { zmiActionPopulate(this); })
 		.mouseover( function(evt) { zmiActionPopulate(this); }
 	);
+	$('.ui-accordion h3').click( function(evt) {
+		var $container = $(this);
+		var $icon = $('span:first',$container);
+		var $content = $('.ui-accordion-content',$(this).parents('div')[0]);
+		if ($container.hasClass('ui-state-active')) {
+			$content.hide('normal');
+		}
+		else {
+			$content.show('normal');
+		}
+		$container.toggleClass('ui-state-active').toggleClass('ui-state-default');
+		$icon.toggleClass('ui-icon-triangle-1-s').toggleClass('ui-icon-triangle-1-e');
+		//$content.toggleClass('ui-accordion-content-active');
+		var zmi_form_section_id = $container.attr('id');
+		if (typeof zmi_form_section_id != 'undefined') {
+			toggleCookie(zmi_form_section_id+'_collapsed');
+		}
+	});
 });
 
 
@@ -80,9 +98,7 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		var html = '';
 		html += '<tr id="tr_manage_addProduct" class="zmiTeaserColor">';
-		html += '<td class="zmiContainerColLeft"><img src="/misc_/zms/btn_add.gif" border="0" align="absmiddle"/> '+custom+'</td>';
-		html += '<td class="zmiContainerColCenter"></td>';
-		html += '<td class="zmiContainerColRight"></td>';
+		html += '<td colspan="3"><div style="border:3px solid black"><img src="/misc_/zms/btn_add.gif" border="0" align="absmiddle"/> '+custom+'</div></td>';
 		html += '</tr>';
 		$(html).insertAfter($($(el).parents('tr')[0]));
 		var href = target;

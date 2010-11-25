@@ -15,13 +15,8 @@
 ##### Delimiter #####
 </dtml-comment>
 <dtml-if "objAttr['type']=='delimiter'">
-<tr id="tr_<dtml-var key>">
- <td colspan="2">
-  <div class="zmiDelimiter ui-widget-content ui-corner-all">
-   <div class="form-label"><dtml-var elLabel></div>
-  </div>
- </td>
-</tr>
+ <dtml-var zmi_form_section_end>
+ <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='%s_%s'%(metaObj['id'],objAttr['id']),zmi_form_section_headline=elLabel,zmi_form_collapsed=False)">
 
 <dtml-comment>
 ##### Hint #####
@@ -97,7 +92,8 @@
     ><dtml-unless "REQUEST.get('submitBtnCount') is not None"
      ><dtml-let primitiveMetaobjAttrIds="getMetaobjAttrIds(metaObj['id'],metaobj_manager.valid_types)"
       ><dtml-unless "len(primitiveMetaobjAttrIds) > 0 and primitiveMetaobjAttrIds[-1] in metaobjAttrIds[sx:]"
-       ><tr><td colspan="2"><dtml-var f_submitBtn></td></tr
+       ><dtml-var zmi_form_section_end
+       ><dtml-var f_submitBtn
        ><dtml-call "REQUEST.set('omit_submitBtn',True)"
       ></dtml-unless
      ></dtml-let

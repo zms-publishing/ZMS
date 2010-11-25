@@ -3,7 +3,6 @@
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-/* BO manage_page_style.css */
 h1, h2, h3 {
 	font-family: Arial, sans-serif; 
 }
@@ -136,8 +135,6 @@ div.note {
 	width: 96%;
 }
 
-/* EO manage_page_style.css */
-
 body.zmi {
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -240,7 +237,7 @@ img#zmibg {
 	left: 0;
 }
 
-.zmi_header {
+.zmi-document-margin {
 	vertical-align: middle;
 	background-color:#777;
 	color: #eee;
@@ -250,20 +247,20 @@ img#zmibg {
 	padding: 0;
 }
 
-.zmi_header a:link, .zmi_header a:visited {
+.zmi-document-margin a:link, .zmi-document-margin a:visited {
 	text-decoration: none;
 	color: #eee;
 	font-size: 10px;
 }
-.zmi_header a:hover {
+.zmi-document-margin a:hover {
 	text-decoration: underline;
 	color: #f90;
 }
-.zmi_header a#strong {
+.zmi-document-margin a#strong {
 	font-weight:bold;
 }
 
-.zmi_header select {
+.zmi-document-margin select {
 	background: #777;
 	color: #fff;
 	font-size: 10px;
@@ -272,8 +269,8 @@ img#zmibg {
 	margin-top:-3px;
 }
 
-.zmi_header div.zmi_col_left,
-.zmi_header div.zmi_col_right {
+.zmi-document-margin div.zmi_col_left,
+.zmi-document-margin div.zmi_col_right {
 	margin:3px;
 }
 
@@ -417,7 +414,7 @@ a.button:hover img.button1, a.button:active img.button1 {
 
 #ZMIManageTabsBar {
 	background:url(/misc_/zms/get_logo_gradient.gif) top right repeat-y;
-	height:27px;
+	height:30px;
 }
 
 #ZMIManageTabsContainer {
@@ -466,7 +463,28 @@ a.button:hover img.button1, a.button:active img.button1 {
  * +- [ZMI] Miscellaneous
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
- 
+
+.zmi-form-section.ui-accordion {
+	margin-top:4px;
+}
+.zmi-form-section.ui-widget-content {
+	margin-top:4px;
+	padding:4px;
+}
+.zmi-accordion-headline {
+	margin-left:30px;
+}
+.zmi-tabs ul li {
+	float:left;
+	margin-right:1em;
+}
+.zmi-tabs .zmi-tabs-active a {
+	font-weight:bold!important;
+}
+.zmi-tabs ul li span {
+	float:left;
+}
+
 .datepicker {
 	background: white url(/misc_/zms/calendar.png) top right no-repeat;
 }
@@ -487,10 +505,11 @@ a.button:hover img.button1, a.button:active img.button1 {
 	font-size: 11px;
 }
 
-.form-small {
-	font-size: 11px;
-	font-family: Arial, sans-serif;
-	color: #000;
+.form-small, select.form-small, input.form-small, textarea.form-small {
+	font-size: 11px!important;
+	font-family: Arial, sans-serif!important;
+	font-weight: normal;
+	color: #222;
 }
 
 .collectionBtn {

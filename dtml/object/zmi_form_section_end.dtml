@@ -1,0 +1,16 @@
+<!-- zmi_form_section_end -->
+</table>
+<dtml-if "REQUEST.get('_zmi_form_section_div')==True">
+ </div><!-- .zmi-form-section -->
+ <dtml-call "REQUEST.set('_zmi_form_section_div',None)">
+<dtml-else>
+ <dtml-call "REQUEST.set('_zmi_form_section_headlines',REQUEST.get('_zmi_form_section_headlines',[]))">
+ <dtml-if "len(REQUEST.get('_zmi_form_section_headlines'))>0">
+  </div><!-- .zmi-form-section -->
+  <dtml-call "REQUEST.set('_zmi_form_section_headlines',REQUEST.get('_zmi_form_section_headlines')[:-1])">
+  <dtml-if "len(REQUEST.get('_zmi_form_section_headlines'))==0">
+   </div>
+  </dtml-if>
+ </dtml-if>
+</dtml-if>
+<!-- /zmi_form_section_end -->

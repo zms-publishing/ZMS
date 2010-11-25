@@ -1,6 +1,6 @@
 <dtml-let meta_id="getMetaobjId(custom)" metaObj="getMetaobj(meta_id)" metaobjIds="getMetaobjIds()">
-<dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
-<dtml-var manage_page_header>
+	<dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
+	<dtml-var manage_page_header>
 		<style>
 			body.zmi {background:transparent!important}
 		</style>
@@ -8,46 +8,34 @@
 	<body class="zmi">
 		<div class="zmi">
 			<div class="ZMIManageBody ui-widget-content">
-
-<dtml-if "getMetaobjZMI(meta_id,REQUEST)">
-
-<!-- ### Meta-Object: Custom Management Interface -->
-<dtml-var "getMetaobjZMI(meta_id,REQUEST)">
-
-<dtml-elif "metaObj['type']=='ZMSRecordSet'">
-
-<!-- ### Meta-Object: RecordSet -->
-<dtml-call "REQUEST.set('btn',getZMILangStr('BTN_INSERT'))">
-<dtml-call "REQUEST.set('active_%s'%lang,1)">
-<dtml-call "manage_addZMSCustom(meta_id=meta_id,lang=lang,_sort_id=_sort_id,REQUEST=REQUEST,RESPONSE=RESPONSE)">
-
-<dtml-else>
-
-<!-- ### Meta-Object: Default -->
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
-<form name="<dtml-var fmName>" action="manage_addZMSCustom" target="_parent" method="post" onsubmit="return onFormSubmit('<dtml-var fmName>')" enctype="multipart/form-data">
-<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
-<input type="hidden" name="meta_id" value="<dtml-var meta_id>"/>
-<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
-<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
-<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-<dtml-let f_submitInputFieldsTable="True" f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
-
-<!-- ### Attributes -->
-<dtml-var obj_input_js>
-<dtml-var obj_input_fields>
-
-</table>
-
-<!-- ### Buttons -->
-<dtml-var f_submitBtn>
-
-</form>
-
-</dtml-if>
-</dtml-let>
-
+				<dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
+					<dtml-if metaObjZMI>
+						<!-- ### Meta-Object: Custom Management Interface -->
+						<dtml-var metaObjZMI>
+					<dtml-elif "metaObj['type']=='ZMSRecordSet'">
+						<!-- ### Meta-Object: RecordSet -->
+						<dtml-call "REQUEST.set('btn',getZMILangStr('BTN_INSERT'))">
+						<dtml-call "REQUEST.set('active_%s'%lang,1)">
+						<dtml-call "manage_addZMSCustom(meta_id=meta_id,lang=lang,_sort_id=_sort_id,REQUEST=REQUEST,RESPONSE=RESPONSE)">
+					<dtml-else>
+						<!-- ### Meta-Object: Default -->
+						<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+						<form name="<dtml-var fmName>" action="manage_addZMSCustom" target="_parent" method="post" onsubmit="return onFormSubmit('<dtml-var fmName>')" enctype="multipart/form-data">
+							<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
+							<input type="hidden" name="meta_id" value="<dtml-var meta_id>"/>
+							<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
+							<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
+							<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
+							<dtml-let f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
+							<dtml-var obj_input_js>
+							<dtml-var obj_input_fields>
+							<dtml-var zmi_form_section_end>
+							<dtml-var f_submitBtn>
+						</form>
+					</dtml-if>
+				</dtml-let>
 			</div>
 		</div><!-- .zmi -->
 	</body>
 </html>
+</dtml-let>

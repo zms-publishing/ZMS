@@ -133,8 +133,6 @@ function processResponse()
 //-->
 </script>
 
-<a name="_top"></a>
-
 <dtml-let breadcrumbs="breadcrumbs_obj_path()" catalog_items="[]"
 
  ><dtml-call "REQUEST.set('pos',0)"

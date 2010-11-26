@@ -5,9 +5,8 @@
        <dtml-comment>##### Update.Delimiter #####</dtml-comment>
        <dtml-if "type=='delimiter'">
         <dtml-unless pk>
-         <tr valign="middle" class="zmiNeutralColorStrong0 zmiDelimiter">
-          <th colspan="2" class="form-label" align="left"><dtml-var name></th>
-         </tr>
+         <dtml-var zmi_form_section_end>
+         <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='%s_%s'%(meta_id,id),zmi_form_section_headline=name,zmi_form_collapsed=False)">
         </dtml-unless>
        <dtml-comment>##### Update.Hint #####</dtml-comment>
        <dtml-elif "type=='hint'">

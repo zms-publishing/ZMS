@@ -109,7 +109,11 @@
 </dtml-comment>
 <dtml-elif "objAttr['type']=='richtext'">
 <tr id="tr_<dtml-var key>" valign="top">
- <td colspan="2" class="zmiNeutralColorMedium0"><dtml-var "getObjInput(key,REQUEST)"></td>
+ <td colspan="2">
+  <div class="ui-widget-content ui-corner-all">
+   <dtml-var "getObjInput(key,REQUEST)">
+  </div>
+ </td>
 </tr>
 <dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
 

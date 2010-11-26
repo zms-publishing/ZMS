@@ -1,10 +1,9 @@
   <dtml-call "REQUEST.set('row',row)">
-  <dtml-var "f_headline(_,_,headline=getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD'))">
-  <table cellspacing="0" cellpadding="1" border="0" width="100%">
-  <colgroup>
-   <col width="20%" />
-   <col width="80%" />
-  </colgroup>
+
+  <div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
+   <dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">
+  </div>
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
 
   <dtml-in "metaObj['attrs']" mapping>
    <dtml-unless "id.find('_')==0">
@@ -16,9 +15,8 @@
        <dtml-comment>##### FORM-DELIMITER #####</dtml-comment>
        <dtml-if "type=='delimiter'">
         <dtml-unless pk>
-         <tr id="tr_<dtml-var id>" valign="middle" class="zmiNeutralColorStrong0 zmiDelimiter">
-          <td colspan="2" class="form-label"><dtml-var name></td>
-         </tr>
+         <dtml-var zmi_form_section_end>
+         <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='%s_%s'%(meta_id,id),zmi_form_section_headline=name,zmi_form_collapsed=False)">
         </dtml-unless>
        <dtml-comment>##### FORM-HINT #####</dtml-comment>
        <dtml-elif "type=='hint'">
@@ -101,5 +99,5 @@
 
   <dtml-var metaobj_recordset_details>
 
-  </table>
+  <dtml-var zmi_form_section_end>
   <dtml-var f_submitBtn>

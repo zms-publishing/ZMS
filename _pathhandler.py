@@ -41,13 +41,15 @@ def validateId(self, id, REQUEST):
     langs = []
     for lang in self.getLanguages():
       req={ 'lang': lang, 'preview': REQUEST.get('preview','')}
-      if id == self.getDeclId( req):
+      decl_id = self.getDeclId( REQUEST)
+      if id == decl_id:
         langs.append( lang)
     if len( langs) == 1:
-      REQUEST.set( 'lang', langs[0])
+      self.REQUEST.set( 'lang', langs[0])
     return len( langs) > 0
   else:
-    return id == self.getDeclId( REQUEST)
+    decl_id = self.getDeclId( REQUEST)
+    return id == decl_id
   return False
 
 
@@ -62,7 +64,8 @@ def filterId(self, id, REQUEST):
   if len( filtered_obs) > 0:
     return filtered_obs[0]
   elif self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-    filtered_obs = filter( lambda x: x.isVisible( REQUEST) and x.isPage() and validateId( x, id, REQUEST), obs)
+    req = { 'lang': REQUEST.get('lang'), 'preview': REQUEST.get('preview')}
+    filtered_obs = filter( lambda x: x.isVisible( req) and x.isPage() and validateId( x, id, req), obs)
     if len( filtered_obs) > 0:
       return filtered_obs[0]
   return None

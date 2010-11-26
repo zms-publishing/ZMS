@@ -14,7 +14,9 @@
   <dtml-if required>
    <dtml-call "headline.append(FORM_LABEL_MANDATORY)">
   </dtml-if>
-  <dtml-call "headline.append(' <span class=\042form-small\042>(%i %s)</span>'%(len(objChildren),getZMILangStr('ATTR_OBJECTS')))">
+  <dtml-if "len(objChildren)>0">
+   <dtml-call "headline.append(' <span class=\042form-small\042>(%i %s)</span>'%(len(objChildren),getZMILangStr('ATTR_OBJECTS')))">
+  </dtml-if>
   <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id=zmi_form_section_id,zmi_form_section_headline=''.join(headline),zmi_form_collapsed=len(objChildren)==0)">
   </dtml-let>
   <!-- Object.EDIT -->

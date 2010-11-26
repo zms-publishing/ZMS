@@ -69,6 +69,7 @@ class ObjTypes:
     # ---------
     f_selectRichtext = HTMLFile('dtml/objattrs/f_select_richtext', globals())
     f_xstandard_styles = HTMLFile('dtml/objattrs/f_xstandard_styles', globals())
+    f_xstandard_css = HTMLFile('dtml/objattrs/f_xstandard_css', globals())
 
     # Object.
     # -------

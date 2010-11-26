@@ -171,13 +171,14 @@
   </dtml-in>
 </dtml-unless>
 
-  <dtml-if headline><dtml-var "f_headline(_,_,headline=headline%getZMILangStr('ATTR_RECORD')
-    +'<img src=%sbtn_refresh.gif onclick=window.location.reload() onmouseover=\042document.body.style.cursor=\'pointer\'\042 onmouseout=\042document.body.style.cursor=\'auto\'\042 style=\042margin-left:8px;vertical-align:middle;text-align:right;\042/>'%MISC_ZMS)"></dtml-if headline>
-  <table cellspacing="0" cellpadding="1" border="0" width="100%">
-  <colgroup>
-   <col width="20%" />
-   <col width="80%" />
-  </colgroup>
+  <dtml-if headline>
+   <div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
+    <span class="ui-icon ui-icon-refresh" style="float:left" title="<dtml-var "getZMILangStr('BTN_REFRESH')">" onclick="window.location.reload()"></span>
+    <span><dtml-var "headline%getZMILangStr('ATTR_RECORD')"></span>
+   </div>
+  </dtml-if headline>
+
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
   <dtml-unless "grid_col.get('disabled') or id.lower() in map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
@@ -746,7 +747,7 @@
   </dtml-unless>
   </dtml-let>
   </dtml-in>
-  </table>
+  <dtml-var zmi_form_section_end>
 
 <dtml-unless ZMS_HIDE_FORM>
   <dtml-var f_submitBtn>

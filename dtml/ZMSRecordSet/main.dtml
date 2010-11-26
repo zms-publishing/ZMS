@@ -88,11 +88,7 @@
 ###############################################################################
 </dtml-comment>
 
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<colgroup>
- <col width="20%" />
- <col width="80%" />
-</colgroup>
+<dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
 <tr valign="middle">
  <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
  <td>
@@ -106,7 +102,7 @@
   </dtml-if>
  </div>
 </tr>
-</table>
+<dtml-var zmi_form_section_end>
 
  <!----// BO Filter row (Input-Fields) //---->
  <dtml-if "REQUEST.get('action','')==''">
@@ -115,12 +111,11 @@
   <input type="hidden" name="qorder" value="<dtml-var qorder>">
   <input type="hidden" name="qorderdir" value="<dtml-var qorderdir>">
   <input type="hidden" name="qstart" value="<dtml-var qstart>">
-  <table cellspacing="0" cellpadding="2" border="0">
-  <tr>
-   <td colspan="2">
-    <dtml-var "f_headline(_,_,headline='%s <input class=form-small type=text name=qsize:int value=%i size=2>  %s <input class=form-small type=text name=qfilters:int value=%i size=2>'%(getZMILangStr('ATTR_ROWS'),qsize,getZMILangStr('ATTR_FILTER'),SESSION['qfilters']))">
-   </td>
-  </tr>
+  <div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
+   <dtml-var "getZMILangStr('ATTR_ROWS')"> <input class="form-small" type="text" name="qsize:int" value="<dtml-var qsize>" size="2">
+   <dtml-var "getZMILangStr('ATTR_FILTER')"> <input class="form-small" type="text" name="qfilters:int" value="<dtml-var "SESSION['qfilters']">" size="2">
+  </div>
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
   <dtml-call "REQUEST.set('found_fk_key',False)">
    <dtml-in "metaObj['attrs']" mapping>
     <dtml-if "id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')">
@@ -163,14 +158,14 @@
   </tr>
   </dtml-let>
   </dtml-in>
-  <tr valign="middle">
-   <td class="form-element" colspan="2">
+  <tr>
+   <td colspan="2">
     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
    </td>
   </tr>
   </dtml-unless>
-  </table>
+  <dtml-var zmi_form_section_end>
   </form>
  </dtml-if>
  <!----// EO Filter row (Input-Fields) //---->
@@ -217,8 +212,9 @@
 </dtml-comment>
  <dtml-unless "REQUEST.get('action','') in ['insert','update']">
   <dtml-var "metaobj_recordset_main_grid(_,_,grid_options=['insert','update','delete','export'])">
-  <hr size="1"/>
-  <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">  
+  <div class="zmi-form-section ui-widget-content ui-corner-all">
+   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="location.href='<dtml-var "getParentNode().absolute_url()">/manage_main?lang=<dtml-var lang>#_<dtml-var id>';">
+  </div>
  </dtml-unless>
  
  </dtml-if> 

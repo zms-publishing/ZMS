@@ -504,8 +504,7 @@ function drag(ereignis) {
 		</style>
 	</head>
 	<body class="zmi neutralColorWhite" onload="draginit()">
-<a name="_top"></a>
-<div class="zmi">
+		<div class="zmi">
 
 <dtml-with "getHome()">
 <div class="form-small zmi-document-margin" style="width:100%;padding-left:8px;whitespace:nowrap;vertical-align:middle;">

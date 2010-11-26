@@ -1,8 +1,9 @@
 <body class="zmi">
-<img id="zmibg" src="/misc_/zms/zmibg.jpg" alt="" />
-<a name="_top"></a>
-<div class="zmi">
-<div class="zmi-document-margin">
-<a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>zms_banner.gif" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine" border="0"/></a>
-</div>
-<div id="zmi_logo"><a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_zmi_logo" border="0" title="<dtml-var "getTitle(REQUEST)">" /></a></div>
+	<img id="zmibg" src="/misc_/zms/zmibg.jpg" alt="" />
+	<div class="zmi">
+	<div class="zmi-document-margin">
+		<a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>zms_banner.gif" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine" border="0"/></a>
+	</div>
+	<div id="zmi_logo">
+		<a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_zmi_logo" border="0" title="<dtml-var "getTitle(REQUEST)">" /></a>
+	</div>

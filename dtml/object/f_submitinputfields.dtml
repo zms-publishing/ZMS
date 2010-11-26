@@ -116,7 +116,7 @@
    <dtml-call "headline.append('<span class=\042form-text\042>')">
    <dtml-call "headline.append(' '+getLangFmtDate(getObjProperty('change_dt',REQUEST)))">
    <dtml-call "headline.append(' '+getZMILangStr('BY'))"> 
-   <dtml-call "headline.append(' '+getObjProperty('created_uid',REQUEST))">
+   <dtml-call "headline.append(' '+getObjProperty('change_uid',REQUEST))">
    <dtml-call "headline.append('</span>')">
    <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='change_',zmi_form_section_headline=''.join(headline),zmi_form_collapsed=False)">
   </dtml-let>

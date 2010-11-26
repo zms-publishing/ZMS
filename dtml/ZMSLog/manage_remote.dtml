@@ -4,8 +4,7 @@
 		</style>
 	</head>
 	<body class="zmi zmiNeutralColorLight0">
-<a name="_top"></a>
-<div class="zmi">
+		<div class="zmi">
 
 <script language="JavaScript">
 <!--//
@@ -104,6 +103,6 @@
 
   </form>
 
-</div>
-</body>
+		</div><!-- .zmi -->
+	</body><!-- .zmi -->
 </html>

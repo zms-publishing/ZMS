@@ -146,7 +146,7 @@
     ><dtml-else
      ><dtml-var "getParentNode().absolute_url().replace('https://','http://')">/f_xstandard_styles?elId=<dtml-var id>&amp;elName=<dtml-var "REQUEST.get('elName')"
     ></dtml-if>" />
-  <param name="CSS" value="<dtml-var "getStylesheet().absolute_url().replace('https://','http://')">" />
+  <param name="CSS" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_css" />
   <param name="Lang" value="<dtml-if "lang=='ger'">de<dtml-else>en</dtml-if>" />
   <param name="CMSImageLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseImages" />
   <param name="CMSAttachmentLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseFiles<dtml-if lang>?lang=<dtml-var lang></dtml-if>" />

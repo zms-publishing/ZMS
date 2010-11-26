@@ -1,5 +1,3 @@
-<a name="_top"></a>
-
 <dtml-let breadcrumbs="breadcrumbs_obj_path()"
 
  ><dtml-call "REQUEST.set('docElmnt',None)"

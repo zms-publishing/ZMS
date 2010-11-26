@@ -1,3 +1,5 @@
+<!-- f_selectRichtext -->
+
 <dtml-try>
 <dtml-call "REQUEST.set('data',REQUEST.get('data',value))"
 ><dtml-if "REQUEST.get('data') is None"
@@ -40,11 +42,14 @@
 ### Standard Editor
 ################################################################################
 </dtml-comment>
-<div id="zmiStandardEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
+<div id="zmiStandardEditor<dtml-var elName>" class="zmiNeutralColorMedium0 <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]"> ui-helper-hidden</dtml-if></dtml-if>">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<tr valign="middle">
+<td>
 <table cellspacing="0" cellpadding="0" border="0">
 <tr valign="middle">
  <dtml-comment> ***** Label ***** </dtml-comment>
- <dtml-if lang_str><td class="form-label">&nbsp;<strong><dtml-var lang_str></strong>&nbsp;</td></dtml-if>
+ <dtml-if lang_str><td class="form-label" style="padding:4px;"><dtml-var lang_str></td></dtml-if>
  <dtml-comment> ***** Custom ***** </dtml-comment>
  <dtml-if custom_str><dtml-var custom_str></dtml-if>
  <dtml-comment> ***** Paragraph-Format ***** </dtml-comment>
@@ -55,21 +60,28 @@
  <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id',key+'align','=='))>0"><dtml-var f_selectAlign></dtml-if></dtml-if>
  <dtml-comment> ***** Displaytype ***** </dtml-comment>
  <dtml-if b_f_selectDisplaytype><dtml-var f_selectDisplaytype></dtml-if>
+</tr>
+</table>
+</td>
+<td align="right"
  <dtml-comment> ***** RichText-Editor (activate) ***** </dtml-comment>
  <dtml-if "REQUEST.get('richedit_fmt')">
-  <td
-   ><a href="#"
+   <a href="#"
       onclick="zmiStandardOnSubmitEventHandler(); zmiRichtextEditorShow('zmiRichtextEditor<dtml-var elName>','zmiStandardEditor<dtml-var elName>','<dtml-var "REQUEST.get('richedit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
       onmouseover="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_hover.gif';"
       onmouseout="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_off.gif';"
       class="button"
     ><img name="zmiRichtextBtn<dtml-var elName>" src="<dtml-var MISC_ZMS>wysiwyg_off.gif" title="<dtml-var "REQUEST.get('richedit_fmt').getDisplay()">" border="0" align="absmiddle"
-   ></a
-  ></td>
+   ></a>
+ <dtml-else>
+  &nbsp;
  </dtml-if>
+</td>
+</tr>
+<tr>
+ <td colspan="2" align="center"><dtml-var "getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap=wrap,extra=' onselect=\042storeCaret(this)\042 style=\042width:99%;\042')"></td>
 </tr>
 </table>
-<dtml-var "getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap=wrap,extra=' onselect='+QUOT+'storeCaret(this)'+QUOT+' style='+QUOT+'width:100%;'+QUOT)">
 </div>
 
 <dtml-comment>
@@ -78,15 +90,15 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "REQUEST.get('richedit_fmt')">
-<div id="zmiRichtextEditor<dtml-var elName>" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;visibility:hidden;"</dtml-if></dtml-if>>
+<div id="zmiRichtextEditor<dtml-var elName>" class="zmiNeutralColorMedium0<dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [None,REQUEST.get('richedit_fmt').getId()]"> ui-helper-hidden</dtml-if></dtml-if>">
 <dtml-unless "REQUEST.get('f_zmiRichtextEditorShow')">
 <script type="text/javascript">
 <!--//
 <dtml-comment> ***** RichText-Editor (switch) ***** </dtml-comment>
 function zmiRichtextEditorShow( show_id, hide_id, format, callback)
   {
-    $('#'+show_id).css( { display: "block", visibility: "visible"});
-    $('#'+hide_id).css( { display: "none", visibility: "hidden"});
+    $('#'+hide_id).hide('normal');
+    $('#'+show_id).show('normal');
     if ( format) {
       $('#format').val(format);
     }
@@ -100,10 +112,10 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback)
 </dtml-unless>
 <dtml-comment> ***** RichText-Editor (de-activate) ***** </dtml-comment>
 <dtml-if "REQUEST.get('htmledit_fmt')"
-><table class="zmiNeutralColorMedium0" width="100%"
+><table cellspacing="0" cellpadding="0" border="0" width="100%"
 ><tr valign="middle"
  ><dtml-comment> ***** Label ***** </dtml-comment
- ><dtml-if lang_str><td><div class="form-label">&nbsp;<strong><dtml-var lang_str></strong>&nbsp;</div></td></dtml-if
+ ><dtml-if lang_str><td class="form-label" style="padding:4px;"><dtml-var lang_str></td></dtml-if
  ><td align="right"
   ><a href="#"
       onclick="zmiRichtextOnSubmitEventHandler(); zmiRichtextEditorShow('zmiStandardEditor<dtml-var elName>','zmiRichtextEditor<dtml-var elName>','<dtml-var "REQUEST.get('htmledit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
@@ -137,3 +149,5 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback)
 <dtml-except>
 #2: <dtml-var error_type>: <dtml-var error_value><hr><dtml-var error_tb newline_to_br html_quote>
 </dtml-try>
+
+<!-- /f_selectRichtext -->

@@ -4,7 +4,7 @@
 <dtml-comment>***** Init parameters *****</dtml-comment
 ><dtml-call "SESSION.set('qsize_%s'%id,REQUEST.form.get('qsize',SESSION.get('qsize_%s'%id,20)))"
 ><dtml-call "REQUEST.set('qsize',SESSION.get('qsize_%s'%id))"
-><dtml-call "REQUEST.set('qcharset',_.getattr(this(),'charset','utf-8'))"
+><dtml-call "REQUEST.set('qcharset',getattr(this(),'charset','utf-8'))"
 ><dtml-call "REQUEST.set('qstart',REQUEST.get('qstart',0))"
 ><dtml-call "REQUEST.set('qbatch',REQUEST.get('qbatch',3))"
 ><dtml-call "REQUEST.set('qindex',REQUEST.get('qindex',-1))"
@@ -48,7 +48,7 @@
 <input type="hidden" name="qstart" value="<dtml-var qstart>">
 
 <dtml-comment>***** COUNT *****</dtml-comment>
-<dtml-call "REQUEST.set('row_max',_.getattr(this(),'max_rows',999))"
+<dtml-call "REQUEST.set('row_max',getattr(this(),'max_rows',999))"
 ><dtml-call "REQUEST.set('row_count',0)"
 ><dtml-call "REQUEST.set('res',[])"
 ><dtml-call "REQUEST.set('resSlctStmnt',''.join(REQUEST.get('sqlStatement',[])))"
@@ -92,7 +92,9 @@
 <dtml-call "headline.append('<input class=form-small type=text name=qsize:int value=%i size=2> '%qsize)">
 <dtml-call "headline.append(getZMILangStr('ATTR_FILTER')+' ')">
 <dtml-call "headline.append('<input class=form-small type=text name=qfilters:int value=%i size=2>'%SESSION[sessqfilterskey])">
-<dtml-var "f_headline(_,_,headline=''.join(headline))">
+<div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
+ <dtml-var "''.join(headline)">
+</div>
 <dtml-except>
  ***** [HEADLINE] <dtml-var error_type>: <dtml-var error_value> *****<br/><dtml-var error_tb newline_to_br html_quote>
 </dtml-try>
@@ -103,8 +105,8 @@
 <dtml-let entity=sequence-item>
 <dtml-if columns>
 <dtml-if "SESSION[sessqentitykey]==id">
-  <table cellspacing="0" cellpadding="2" border="0">
-  <dtml-in "_.range(SESSION[sessqfilterskey])">
+  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
+  <dtml-in "range(SESSION[sessqfilterskey])">
   <dtml-let filterattr="'filterattr%i'%_['sequence-index']"
             filterop="'filterop%i'%_['sequence-index']"
             filtervalue="'filtervalue%i'%_['sequence-index']"
@@ -122,8 +124,8 @@
      ></dtml-in>
     </select>
    </td>
-   <td class="form-label">
-    <select class="form-label" name="<dtml-var filterop>"
+   <td class="form-element">
+    <select class="form-element" name="<dtml-var filterop>"
     ><dtml-in "['LIKE','=','<','<=','>','>=','NULL','NOT NULL']"
      ><dtml-let op=sequence-item
       ><dtml-if "op!='LIKE' or not gadfly"
@@ -132,20 +134,18 @@
      ></dtml-let
     ></dtml-in
     ></select>
-   </td>
-   <td class="form-element">
     <dtml-var "getTextInput(fmName='form0',elName=filtervalue,size=30,value=SESSION.get(sessionvalue,''))">
    </td>
   </tr>
   </dtml-let>
   </dtml-in>
   <tr>
-   <td colspan="3">
+   <td colspan="2">
     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_REFRESH')">">
     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_RESET')">">
    </td>
   </tr>
-  </table>
+  <dtml-var zmi_form_section_end>
 </dtml-if>
 </dtml-if>
 </dtml-let>

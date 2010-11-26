@@ -1,17 +1,17 @@
 <dtml-var manage_page_header>
-</head>
-<body class="zmi">
-<a name="_top"></a>
-<div class="zmi" style="width:100%;">
-<div class="zmi-document-margin">
-<div class="zmi_col_left">
-&nbsp;|&nbsp;<a href="manage_main?lang=<dtml-var lang>" target="_parent"><dtml-var "getZMILangStr('BACK')"> <dtml-var "getZMILangStr('TO')"> <dtml-var "display_type(REQUEST)"><dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "string_maxlen(getTitlealt(REQUEST),25)"></dtml-if></a>
-&nbsp;|&nbsp;<a href="preview_html?lang=<dtml-var lang>" target="_parent" <dtml-unless "REQUEST.has_key('live') and REQUEST['live']=='live'">style="font-weight:bold;"</dtml-unless>><dtml-var "getZMILangStr('TAB_PREVIEW')"></a>
-<dtml-unless "getAutocommit()">
-&nbsp;|&nbsp;<a href="preview_html?lang=<dtml-var lang>&live=live" target="_parent" <dtml-if "REQUEST.has_key('live') and REQUEST['live']=='live'">style="font-weight:bold;"</dtml-if>><dtml-var "getZMILangStr('TAB_LIVE')"></a>
-</dtml-unless>
-</div>
-<div class="zmi_col_right"><dtml-if preview_top_zmi_col_right><dtml-var preview_top_zmi_col_right></dtml-if></div></div>
-</div>
-</body>
+	</head>
+	<body class="zmi">
+		<div class="zmi" style="width:100%;">
+			<div class="zmi-document-margin">
+				<div class="zmi_col_left">
+					&nbsp;|&nbsp;<a href="manage_main?lang=<dtml-var lang>" target="_parent"><dtml-var "getZMILangStr('BACK')"> <dtml-var "getZMILangStr('TO')"> <dtml-var "display_type(REQUEST)"><dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "string_maxlen(getTitlealt(REQUEST),25)"></dtml-if></a>
+					&nbsp;|&nbsp;<a href="preview_html?lang=<dtml-var lang>" target="_parent" <dtml-unless "REQUEST.has_key('live') and REQUEST['live']=='live'">style="font-weight:bold;"</dtml-unless>><dtml-var "getZMILangStr('TAB_PREVIEW')"></a>
+					<dtml-unless "getAutocommit()">
+						&nbsp;|&nbsp;<a href="preview_html?lang=<dtml-var lang>&live=live" target="_parent" <dtml-if "REQUEST.has_key('live') and REQUEST['live']=='live'">style="font-weight:bold;"</dtml-if>><dtml-var "getZMILangStr('TAB_LIVE')"></a>
+					</dtml-unless>
+				</div>
+				<div class="zmi_col_right"><dtml-if preview_top_zmi_col_right><dtml-var preview_top_zmi_col_right></dtml-if></div>
+			</div><!-- .zmi-document-margin -->
+		</div><!-- .zmi -->
+	</body><!-- .zmi -->
 </html>

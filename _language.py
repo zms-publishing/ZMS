@@ -23,53 +23,43 @@
 
 # Imports.
 from App.Common import package_home
+import OFS.misc_
 # Product Imports.
 import _fileutil
 import _globals
+import _xmllib
 
 
 ################################################################################
 ################################################################################
 ###
-###   class Language:
+###   class lamgdict:
 ###
 ################################################################################
 ################################################################################
-class Language:
-    
-    dctLangStr = {}
-    lstManageLangStr = []
+class langdict:
 
-    # --------------------------------------------------------------------------
-    #  Language.getManageLanguages:
-    # --------------------------------------------------------------------------
-    def getManageLanguages(self):
-      if len(self.lstManageLangStr) == 0:
-        self.initLangStr()
-      return self.lstManageLangStr
-
-
-    # --------------------------------------------------------------------------
-    #  Language.initLangStr:
-    # --------------------------------------------------------------------------
-    def initLangStr(self, filename='_language.xml'):
-      """ Language.initLangStr """
+    def __init__(self, filename='_language.xml'):
+      """
+      Constructor 
+      """
       manage_langs = []
-      lang_strs = {}
+      lang_dict = {}
       filepath = package_home(globals())+'/import/'
       xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
-      nWorkbook = self.xmlParse(xmlfile)
-      for nWorksheet in self.xmlNodeSet(nWorkbook,'Worksheet'):
-        for nTable in self.xmlNodeSet(nWorksheet,'Table'):
-          for nRow in self.xmlNodeSet(nTable,'Row'):
+      builder = _xmllib.XmlBuilder()
+      nWorkbook = builder.parse(xmlfile)
+      for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):
+        for nTable in _xmllib.xmlNodeSet(nWorksheet,'Table'):
+          for nRow in _xmllib.xmlNodeSet(nTable,'Row'):
             lRow = []
             currIndex = 0
-            for nCell in self.xmlNodeSet(nRow,'Cell'):
+            for nCell in _xmllib.xmlNodeSet(nRow,'Cell'):
               ssIndex = int(nCell.get('attrs',{}).get('ss:Index',currIndex+1))
               currData = None
               for i in range(currIndex+1,ssIndex):
                 lRow.append(currData)
-              for nData in self.xmlNodeSet(nCell,'Data'):
+              for nData in _xmllib.xmlNodeSet(nCell,'Data'):
                 currData = nData['cdata']
               lRow.append(currData)
               currIndex = ssIndex
@@ -84,16 +74,43 @@ class Language:
                   if i+1 < len(lRow):
                     if lRow[i+1] is not None:
                       value[manage_langs[i]] = lRow[i+1] # unicode(lRow[i+1],'utf-8').encode('utf-8')
-                lang_strs[key] = value
+                lang_dict[key] = value
       xmlfile.close()
-      self.lstManageLangStr = manage_langs
-      self.dctLangStr = lang_strs
+      self.manage_langs = manage_langs
+      self.langdict = lang_dict
+
+    def get_manage_langs(self):
+      """
+      Returns list of manage-languages.
+      """
+      return self.manage_langs
+
+    def get_langdict(self):
+      """
+      Returns list of manage-languages.
+      """
+      return self.langdict
 
 
-    # --------------------------------------------------------------------------
-    #  Language.get_manage_lang:
-    # --------------------------------------------------------------------------
+################################################################################
+################################################################################
+###
+###   class Language:
+###
+################################################################################
+################################################################################
+class Language:
+    
+    def get_manage_langs(self):
+      """
+      Returns list of manage-languages.
+      """
+      return OFS.misc_.misc_.zms['langdict'].get_manage_langs()
+
     def get_manage_lang(self):
+      """
+      Returns preferred of manage-language for current content-language.
+      """
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
       if req is not None:
@@ -110,18 +127,16 @@ class Language:
         manage_lang = 'eng'
       return manage_lang
 
-
-    # --------------------------------------------------------------------------
-    #  Language.getZMILangStr:
-    # --------------------------------------------------------------------------
     def getZMILangStr(self, key):
+      """
+      Returns language-string for current manage-language.
+      """
       return self.getLangStr( key, self.get_manage_lang())
 
-
-    # --------------------------------------------------------------------------
-    #  Language.getLangStr:
-    # --------------------------------------------------------------------------
     def getLangStr(self, key, lang=None):
+      """
+      Returns language-string for current content-language.
+      """
       # language
       if lang is None:
         try:
@@ -136,20 +151,20 @@ class Language:
           value = self.fetchReqBuff( 'get_lang_dict', self.REQUEST, forced=True)
         except:
           value = self.storeReqBuff( 'get_lang_dict', self.get_lang_dict(), self.REQUEST)
-        dict = value
-        if dict.has_key(key):
-          if dict[key].has_key(lang):
-            return dict[key][lang]
+        d = value
+        if d.has_key(key):
+          if d[key].has_key(lang):
+            return d[key][lang]
       except:
         pass
       
       # Return system value.
-      if len(self.dctLangStr.keys()) == 0:
-        self.initLangStr()
-      if self.dctLangStr.has_key(key):
-        if not self.dctLangStr[key].has_key(lang):
+      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+      if d.has_key(key):
+        if not d[key].has_key(lang):
           lang = 'eng'
-        return self.dctLangStr[key][lang]
+        if d[key].has_key(lang):
+          return d[key][lang]
       
       return key
 

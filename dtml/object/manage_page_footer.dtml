@@ -9,7 +9,7 @@
  <form action="<dtml-var URL>" method="get">
  <input type="hidden" name="lang" value="<dtml-var lang>">
  <select name="manage_lang" onchange="this.form.submit();">
- <dtml-in "getManageLanguages()">
+ <dtml-in "get_manage_langs()">
   <option value="<dtml-var sequence-item>" <dtml-if "_['sequence-item']==manage_lang">selected="selected"</dtml-if>><dtml-var "getLangStr('LANG',_['sequence-item'])"></option>
  </dtml-in>
  </select>

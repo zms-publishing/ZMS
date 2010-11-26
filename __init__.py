@@ -42,6 +42,7 @@ import zmscustom
 import zmssqldb
 import zmslinkcontainer
 import zmslinkelement
+import _language
 import _mediadb
 import _sequence
 import _zmsattributecontainer
@@ -129,6 +130,9 @@ def initialize(context):
         
         # automated registration for util
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()
+        
+        # automated registration for language-dictionary
+        OFS.misc_.misc_.zms['langdict']=_language.langdict()
         
         # automated registration for other resources
         for img_path in ['www/','plugins/www/']:

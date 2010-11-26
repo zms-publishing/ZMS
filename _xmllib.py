@@ -952,6 +952,26 @@ class XmlAttrBuilder:
       pass  # ignored
 
 
+def xmlNodeSet(mNode, sTagName='', iDeep=0):
+  """
+  Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
+  @return: List of dictionaries of XML-Structure.
+  @rtype: C{list}
+  """
+  lNodeSet = []
+  lNode = mNode
+  if type(mNode) is list and len(mNode) == 2:
+    lNode = mNode[1]
+  lTags = lNode.get('tags',[])
+  for i in range(0,len(lTags)/2):
+    lTagName = lTags[i*2]
+    lNode = lTags[i*2+1]
+    if sTagName in [lTagName,'']:
+      lNodeSet.append(lNode)
+    if iDeep==1:
+      lNodeSet.extend(xmlNodeSet(lNode,sTagName,iDeep))
+  return lNodeSet
+
 
 """
 ################################################################################

@@ -134,7 +134,7 @@
       </td>
       <td class="form-element">
        <select class="form-element" name="<dtml-var sequence-item>_manage">
-       <dtml-in "getManageLanguages()">
+       <dtml-in "get_manage_langs()">
         <option value="<dtml-var sequence-item>"
          <dtml-if "getManageLanguage(langId)==_['sequence-item']">
           selected="selected"
@@ -189,7 +189,7 @@
    </td>
    <td class="form-element">
     <select class="form-element" name="language_manage">
-    <dtml-in "getManageLanguages()">
+    <dtml-in "get_manage_langs()">
      <option value="<dtml-var sequence-item>"
       <dtml-if "lang==_['sequence-item']">
        selected="selected"

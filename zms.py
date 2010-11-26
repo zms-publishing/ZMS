@@ -440,7 +440,6 @@ def recurse_updateVersionPatch(docElmnt, self, REQUEST):
   _confmanager.initCSS(self)
   self.getSequence()
   self.synchronizeObjAttrs()
-  self.initLangStr()
   self.initRoleDefs()
   return message
 

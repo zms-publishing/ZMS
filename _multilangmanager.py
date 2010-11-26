@@ -227,7 +227,7 @@ class MultiLanguageManager:
       languages = self.getLangs().get(id)
       if type(languages) is dict and languages.has_key('manage'):
         rtn = languages['manage']
-      elif id in self.getManageLanguages():
+      elif id in self.get_manage_langs():
         rtn = id
       elif id in ['de','at']:
         rtn = 'ger'
@@ -442,7 +442,6 @@ class MultiLanguageManager:
       # Change.
       # -------
       elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
-        self.initLangStr()
         for id in self.getLangIds():
           newLabel = REQUEST.get('%s_label'%id).strip()
           newParent = REQUEST.get('%s_parent'%id).strip()

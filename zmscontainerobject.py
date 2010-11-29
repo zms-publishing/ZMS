@@ -569,7 +569,6 @@ class ZMSContainerObject(
       if context_id == '':
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self,self))
-        actions.extend( self.filtered_workflow_actions())
       else:
         context = getattr(container,context_id,None)
         attr_id = _globals.id_prefix(context_id)

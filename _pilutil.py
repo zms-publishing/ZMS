@@ -66,7 +66,7 @@ class pilutil:
 
 
   resize__roles__ = None
-  def resize(self, img, size, mode='resize', qual=75):
+  def resize(self, img, size, mode='resize', sffx='_thumbnail', qual=75):
     """
     Resize image.
     """
@@ -82,6 +82,7 @@ class pilutil:
     
     # Resize image
     im = Image.open(filepath)
+    im = im.convert('RGB')
     maxdim = max(list(size))
     if mode == 'thumbnail':
       try:
@@ -119,7 +120,13 @@ class pilutil:
     # Read resized image from file-system
     f = open(filepath,'rb')
     result_data = f.read()
-    result_filename = _fileutil.extractFilename(filepath)
+    thumb_sffx = str(sffx)
+    getfilename = _fileutil.extractFilename(filepath).split('.')
+    filename = getfilename[0:-1]
+    filename = ".".join(filename)
+    filename = filename.replace('.','_')
+    extension = _fileutil.extractFileExt(filepath)
+    result_filename = filename + thumb_sffx + '.' + extension
     result = {'data':result_data,'filename':result_filename}
     f.close()
     

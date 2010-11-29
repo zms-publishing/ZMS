@@ -9,7 +9,9 @@ Add External Method with the following option:
 #
 # Copyright 2008 {xmachina GmbH. All rights reserved.
 # xmachina. Use is subject to license terms.
-# 
+#
+# $Id: urls_xml.py 13940 2010-06-28 07:45:47Z vy $ 
+#
 
 import Products.zms._blobfields
 import Products.zms._globals
@@ -47,6 +49,8 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
       base_path += self.id + '/'
     if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and incl_embedded:
       ob = ob.getRefObj()
+      # xm-cw 0018774: urls_xml.py scheitert an cms/pub_ra und cms/pub_psa... 
+      return
     if ob is None:
       return
     
@@ -70,8 +74,9 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
                   if filename not in l:
                     l.extend([filename,blob.getContentType()])
             except:
-              s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+              s = Products.zms._globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
               RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+              raise
           elif datatype == Products.zms._globals.DT_LIST and obj_attr.get('type') in ['image','file']:
             try:
               if obj_attr['multilang']==1 or lang==ob.getPrimaryLanguage() or (obj_attr['multilang']==0 and lang!=ob.getPrimaryLanguage()):
@@ -86,8 +91,9 @@ def recurseRessources(self, base_path, REQUEST, incl_embedded, RESPONSE):
                     l.extend([filename,blob.getContentType()])
                   i += 1
             except:
-              s = Products.zms._globals.writeException(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+              s = Products.zms._globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
               RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+              raise
     for i in range(len(l)/2):
       fn = l[i*2]
       ct = l[i*2+1]
@@ -106,6 +112,7 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
     try:
       if REQUEST.get('DEBUG'):
         RESPONSE.write('<!-- DEBUG recurseHtmlPages(self, obj, %s, %s, REQUEST, RESPONSE) -->\n'%(path, lang))
+        RESPONSE.write('<!-- DEBUG isVisible %s -->\n'%(obj.isVisible(REQUEST)))
     except:
         RESPONSE.write('<!-- ERROR exception -->\n')
     
@@ -117,7 +124,18 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
         dctOp = getattr(self,'urls.dctOp')() # Hook for custom pages 'urls.dctOp': return dict.
       except:
         dctOp = {'index':'','sitemap':'sitemap','index_print':'print'}
-      
+
+      # BO 0024404: ZMS-Erweiterungen News-Archiv -> Hook to include attr_stage4_urls Porperty into dctOp
+      if obj.getObjProperty('attr_stage4_urls',REQUEST):
+
+          stage4_urls = obj.getObjProperty('attr_stage4_urls',REQUEST).split(',')
+
+          for s4_url in stage4_urls:
+
+              s4_url = s4_url.strip()
+              dctOp.update({str(s4_url):str(s4_url)})
+      # EO 0024404
+	  
       for key in dctOp.keys():
           if key == 'index' and \
                   level > 0 and \
@@ -147,8 +165,9 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
                         filename = '%s/%s'%( path, metaObjAttr['id'])
                         RESPONSE.write('<url><![CDATA[%s]]></url>\n'%(filename))
             except:
-              s = Products.zms._globals.writeException( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
+              s = Products.zms._globals.writeError( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
               RESPONSE.write('<!-- ERROR %s -->\n'%(s))
+              raise
     
     # Process children.
     for child in obj.filteredChildNodes(REQUEST,self.PAGES):
@@ -224,6 +243,15 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js'))
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     
+    # plugins
+    resourcepath = self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]
+    basepath = self.localfs_package_home()+'/plugins/www'
+    for file in self.localfs_readPath(basepath,recursive=True):
+      filepath = '/'+resourcepath+file['local_filename'][len(basepath):].replace('\\','/')
+      filename = file['filename']
+      content_type = guess_content_type( filename)
+      RESPONSE.write('<url content_type="%s"><![CDATA[%s]]></url>\n'%(content_type,filepath))
+    
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)
 
@@ -236,3 +264,5 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     
     RESPONSE.write('</urls>\n');
     return 
+
+# eof

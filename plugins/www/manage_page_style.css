@@ -19,23 +19,9 @@ h1, h2, h3 {
 	color: #333;
 }
 
-.tab-small {
-	font-family: Arial, sans-serif; 
-	font-size: 10px;
-	color: #333;
-}
-
 .location-bar {
 	background-color: #efefef;
 	border: none;
-}
-
-.strong-header {
-	font-family: Arial, sans-serif;
-	font-size: 11px;
-	font-weight: bold;
-	background-color: black;
-	color: white;
 }
 
 .list-header {
@@ -84,14 +70,6 @@ h1, h2, h3 {
 	color:#666;
 }
 
-.form-optional {
-	font-family: Arial, sans-serif; 
-	font-weight: bold;
-	font-style: italic;
-	font-size: 12px;
-	color: #333;
-}
-
 .form-element {
 	font-family: Arial, sans-serif;
 	font-size: 12px;
@@ -114,15 +92,6 @@ h1, h2, h3 {
 	font-family: Arial, sans-serif;
 	font-size: 12px;
 	color: #333;
-}
-
-.form-mono {
-	font-family: monospace;
-	font-size: 11px;
-	text-decoration: none;
-}
-
-.form-highlight {
 }
 
 div.note {
@@ -192,11 +161,9 @@ a.zmi:hover, a.zmi:active {
 .zmiNeutralColorTrans { background-color:#0f0; } 
 .zmiNeutralColorWhite { background-color:#fff; }
 .zmiNeutralColorBlack { background-color:#000; }
-.zmiNeutralColorStrong0, body.zmiNeutralColorStrong0 { background-color:#AAA; }
-.zmiNeutralColorStrong1, body.zmiNeutralColorStrong1 { background-color:#BBB; }
-.zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#CCC; }
-.zmiNeutralColorMedium1, body.zmiNeutralColorMedium1 { background-color:#DDD; }
-.zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#F2F3EE; }
+.zmiNeutralColorStrong0, body.zmiNeutralColorStrong0 { background-color:#CCC; }
+.zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#DDD; }
+.zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#EEE; }
 .zmiNeutralColorLight1, body.zmiNeutralColorLight1 { background-color:#E2E3DE; }
 .zmiTeaserColor { background-color:#BEDAFD; }
 
@@ -308,22 +275,21 @@ div.zmiRenderShort {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-table.zmiHeadline tr td, td.zmiHeadline, div.zmiHeadline {
-	background-color: #C9C9C9;
-	padding-left: 3px;
-	height: 22px;
-	line-height: 22px;
-	font-size: 11px;
-	font-weight: normal;
-	color:#666;
+/* IE6: caveat with multiple classes */
+div.zmi-headline {
+	padding:2px 2px 2px 4px!important;
+	background:url(/misc_/zms/spacer.gif)!important;
+	background-color: #E2E3DE!important;
 }
-table.zmiHeadline tr td div, td.zmiHeadline, div.zmiHeadline {
-	text-transform: uppercase;
-	letter-spacing: 1px;
+.zmi-headline.ui-widget-header.ui-state-default {
+	padding:2px 2px 2px 4px;
+	background:url(/misc_/zms/spacer.gif);
+	background-color: #E2E3DE;
 }
-div.zmiHeadline img {
-	vertical-align:bottom;
+td div.zmi-headline, td>div.zmi-headline.ui-widget-header.ui-state-default {
+	border:0!important;
 }
+
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Button
@@ -448,6 +414,7 @@ a.button:hover img.button1, a.button:active img.button1 {
 
 .ZMIManageBody {
 	padding: 10px;
+	margin-top: 0!important;
 }
 
 
@@ -455,6 +422,13 @@ a.button:hover img.button1, a.button:active img.button1 {
  * +- [ZMI] Miscellaneous
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
+
+td input.ui-button {
+	padding:2px 6px !important;
+	margin: 3px 0px 0px 0px;
+	color: #222 !important;
+	font-weight: normal !important;
+}
 
 .zmi-form-section.ui-accordion,
 .zmi-form-section.ui-widget-header {
@@ -593,7 +567,7 @@ select {
  */
 
 input.lazy {
-  width:26em;
+	width:26em;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -609,7 +583,9 @@ input.lazy {
  */
 
 div#tabs, div#tabs ul.ui-tabs-nav { float:left; }
-div#tabs_sub ul.ui-tabs-nav li a { padding:3px 5px 3px 5px; }
+div.zmi-tabs.ui-widget-header { height:24px!important; }
+div.zmi-tabs.ui-widget-header ul.ui-tabs-nav { padding-top:4px!important; }
+div.zmi-tabs.ui-widget-header ul.ui-tabs-nav li a { color:white; }
 div.ui-tabs { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav li a { font-family:Arial, sans-serif; font-size:11px !important; font-weight: normal; text-decoration: none; }

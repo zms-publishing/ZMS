@@ -1,4 +1,4 @@
-<div class="zmiHeadline">
+<div class="zmi-headline ui-widget-header ui-state-default ui-helper-reset ui-helper-clearfix">
 <div class="zmi_col_left"><dtml-var headline></div>
 <div class="zmi_col_right"><dtml-var extra missing="&nbsp;"></div>
 </div>

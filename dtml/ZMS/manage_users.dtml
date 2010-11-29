@@ -142,7 +142,7 @@ $(function() {
    <input type="hidden" name="hide_roles" value="1">
    <input type="hidden" name="key" value="">
    <input type="hidden" name="lang" value="<dtml-var lang>">
-   <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'),extra='<img src=%sicon_users.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"><br />
+   <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'))"><br />
    <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
    <tr>
     <td colspan="2"><dtml-var "f_headline(_,_,headline=getUserFolder().meta_type)"></td>
@@ -255,12 +255,12 @@ $(function() {
   <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
    <!-- Header -->
    <tr>
-    <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'),extra='<img src=%sicon_users.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"></td>
+    <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'))"></td>
    </tr>
    <dtml-if "REQUEST.form.get('id','')!=''">
     <!-- Columns -->
     <input type="hidden" name="id" value="<dtml-var "REQUEST.get('id')">">
-    <tr valign="top" class="zmiNeutralColorMedium1">
+    <tr valign="top" class="zmiNeutralColorMedium0">
      <!-- Id -->
      <td class="form-text" colspan="3">
       <table cellspacing="0" cellpadding="1" border="0">
@@ -291,7 +291,7 @@ $(function() {
        </dtml-if>
       </td>
      </tr>
-     <tr valign="top" class="zmiNeutralColorMedium1">
+     <tr valign="top" class="zmiNeutralColorMedium0">
       <td colspan="4">
        <table cellspacing="1" cellpadding="1" border="0">
        <dtml-if "localUserFldr==userFldr">
@@ -342,13 +342,13 @@ $(function() {
         <!-- E-Mail -->
         <dtml-unless "getLDAPUserAttr(userName,'email')">
          <tr valign="middle">
-          <td class="form-optional" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+          <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
           <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=15,value=getUserAttr(name,'email',''))"></td>
          </tr>
         </dtml-unless>
         <!-- Profil -->
         <tr valign="middle">
-         <td class="form-optional" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PROFILE')"></td>
+         <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PROFILE')"></td>
          <td class="form-element"><dtml-var "getUrlInput(fmName='form1',elName='profile',elTextName='',size=15,value=getUserAttr(name,'profile',''),enabled=1,REQUEST=REQUEST,css='form-element')"></td>
         </tr>
        </dtml-if>
@@ -669,7 +669,7 @@ $(function() {
   <table cellspacing="1" cellpadding="0" border="0" width="100%" class="zmiNeutralColorStrong0">
   <!-- Header -->
   <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_ROLES'),extra='<img src=%sicon_roles.gif align=absmiddle border=0 alt=>'%MISC_ZMS)"></td>
+   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_ROLES'))"></td>
   </tr>
   <!-- Columns -->
   <tr class="zmiNeutralColorStrong0">

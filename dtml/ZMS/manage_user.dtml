@@ -38,7 +38,7 @@
  <table cellspacing="1" cellpadding="2" border="0">
  <!-- E-Mail -->
  <tr valign="middle">
-  <td class="form-optional"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+  <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
   <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=25,value=getUserAttr(userObj,'email',''))"></td>
  </tr>
  <dtml-unless "getUserFolder().meta_type=='LDAPUserFolder' and userObj.getId() in getUserFolder().getUserNames()">
@@ -57,7 +57,7 @@
  <dtml-let profile="getUserAttr(userObj,'profile','')" ob="getLinkObj(profile,REQUEST)"> 
   <dtml-if profile>
    <tr valign="middle">
-    <td class="form-optional"><dtml-var "getZMILangStr('ATTR_PROFILE')"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('ATTR_PROFILE')"></td>
     <td class="form-element">   
      <dtml-if ob>
       <dtml-with ob>

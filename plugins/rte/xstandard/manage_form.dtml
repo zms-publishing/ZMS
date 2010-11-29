@@ -86,7 +86,7 @@
     for (var e=0; e < zmiRichtextElNames.length; e++) {
       var elName = zmiRichtextElNames[e];
       var el = document.getElementById('zmiRichtextEditor'+elName);
-      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+      if ( el != null && el.style.display == 'block') {
         try {
           if(typeof(document.getElementById('editor_'+elName).EscapeUnicode) == 'undefined') {
             throw "Error"

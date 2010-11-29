@@ -43,10 +43,9 @@
    <dtml-unless required>
     <tr id="tr_<dtml-var key><dtml-var sequence-index>">
      <td colspan="2">
-      <table cellspacing="0" cellpadding="1" border="0" width="100%" class="zmiHeadline">
-      <tr valign="middle">
-       <td><div class="form-label"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
-       <td align="right">
+      <div class="zmi-headline ui-widget-header ui-state-default ui-helper-reset ui-helper-clearfix">
+       <div class="zmi_col_left"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div>
+       <div class="zmi_col_right">
         <dtml-if required>
          &nbsp;
         <dtml-else>
@@ -59,9 +58,8 @@
           <option value="manage_deleteObjs?ids:list=<dtml-var id>&manage_target=<dtml-var URL>"><dtml-var "getZMILangStr('BTN_DELETE')"></option>
          </select>
         </dtml-if>
-       </td>
-      </tr>
-      </table>
+       </div>
+      </div>
      </td>
     </tr>
    </dtml-unless>

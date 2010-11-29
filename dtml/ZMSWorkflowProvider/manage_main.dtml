@@ -106,7 +106,7 @@
  <form name="workflowForm" action="manage_changeWorkflow" method="post" onsubmit="return onWorkflowFormSubmit(this)" style="margin:8px">
  <input type="hidden" name="key" value="custom">
  <input type="hidden" name="lang" value="<dtml-var lang>">
- <div class="zmiHeadline">
+ <div class="zmi-headline ui-widget-header ui-state-default ui-helper-reset ui-helper-clearfix">
   <table cellspacing="0" cellpadding="0" border="0">
   <tr valign="middle">
    <td class="form-label"><dtml-var "getZMILangStr('ATTR_ACTIVE')"></td>

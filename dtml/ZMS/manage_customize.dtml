@@ -24,7 +24,7 @@
 </dtml-if>
 </dtml-if>
 
-<table cellspacing="1" cellpadding="8" border="0" class="zmiNeutralColorStrong1" width="100%">
+<table cellspacing="1" cellpadding="8" border="0" class="zmiNeutralColorStrong0" width="100%">
 <colgroup>
  <col width="50%"/>
  <col width="50%"/>
@@ -392,7 +392,7 @@ function confKeyChange(b)
 <input type="hidden" name="key" value="Maintenance">
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <dtml-var "f_headline(_,_,headline='Maintenance')">
-<table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong1">
+<table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
 <tbody>
 <tr valign="top">
  <td class="form-small"></td>

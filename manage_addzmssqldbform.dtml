@@ -13,6 +13,11 @@
 		<style>
 			body.zmi {background:transparent!important}
 		</style>
+		<script>
+			$(function(){
+				self.parent.zmiFancyboxResizeInnerFrame(getBodyDimensions());
+			});
+		</script>
 	</head>
 	<body class="zmi">
 		<div class="zmi">

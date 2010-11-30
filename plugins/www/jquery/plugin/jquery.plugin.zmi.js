@@ -30,6 +30,13 @@ $(function(){
 });
 
 
+function zmiFancyboxResizeInnerFrame(dims) {
+	var deltah = $('#fancybox-wrap').height()-$('#fancybox-inner').height();
+	$('#fancybox-inner').height(dims.height);
+	$('#fancybox-wrap').height(dims.height+deltah);
+}
+
+
 // ############################################################################
 // ### ZMI Action-Lists
 // ############################################################################

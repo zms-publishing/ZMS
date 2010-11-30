@@ -97,8 +97,7 @@
 					<tr>
 					<!-- Displaytype -->
 					<dtml-if metaObj><dtml-if "REQUEST.get('b_f_selectDisplaytype',True)"><dtml-if "len(filter_list(metaObj['attrs'],'id','displaytype','=='))>0">
-						<td><dtml-var f_selectD
-						isplaytype></td>
+						<td><dtml-var f_selectDisplaytype></td>
 						<dtml-call "REQUEST.set('b_f_selectDisplaytype',False)">
 					</dtml-if></dtml-if></dtml-if>
 					<!-- Buttons -->

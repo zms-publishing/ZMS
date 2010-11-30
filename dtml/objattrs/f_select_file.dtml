@@ -51,12 +51,16 @@
 					<tr>
 					<!-- Buttons -->
 					<dtml-let buttons_visible="value is not None and (hasObjProperty(key,REQUEST) or getObjAttr(key)['multilang']==0)">
-						<td><a id="undo_btn_<dtml-var elName>" href="javascript:zmiUndoBlobBtnClick('<dtml-var elName>');" class="button" style="display:none"
-							><img src="<dtml-var MISC_ZMS>btn_undo.png" title="<dtml-var " getZMILangStr('BTN_UNDO')">"
-						></a></td>
-						<td><a id="delete_btn_<dtml-var elName>" href="javascript:zmiDelBlobBtnClick('<dtml-var elName>');" class="button" <dtml-unless buttons_visible>style="display:none"</dtml-unless>
-							><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var " getZMILangStr('BTN_DELETE')">"
-						></a></td>
+						<td>
+							<ul class="zmi-icons ui-widget ui-helper-clearfix">
+								<li id="undo_btn_<dtml-var elName>" class="ui-corner-all ui-state-default ui-helper-hidden" title="<dtml-var "getZMILangStr('BTN_UNDO')">">
+									<span class="ui-icon ui-icon-arrowreturn-1-w" onclick="zmiUndoBlobBtnClick('<dtml-var elName>');"></span>
+								</li>
+								<li id="delete_btn_<dtml-var elName>" class="ui-corner-all ui-state-default <dtml-unless buttons_visible>ui-helper-hidden</dtml-unless>" title="<dtml-var "getZMILangStr('BTN_DELETE')">">
+									<span class="ui-icon ui-icon-trash" onclick="zmiDelBlobBtnClick('<dtml-var elName>');"></span>
+								</li>
+							</ul>
+						</td>
 					</dtml-let>
 					</tr>
 					</table>

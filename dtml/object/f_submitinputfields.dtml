@@ -16,11 +16,11 @@
      ><table cellspacing="0" cellpadding="0" border="0" width="100%"
      ><tr valign="middle"
       ><td>
-        <dtml-var "getZMILangStr('ATTR_ACTIVE')">
+        <label for="active"><dtml-var "getZMILangStr('ATTR_ACTIVE')"></label>
         <dtml-var "getObjInput('active',REQUEST)">
       </td
       ><dtml-if "'active' in obj_attrs.keys() and 'attr_active_start' in obj_attrs.keys()"
-       ><td><dtml-var "getZMILangStr('ATTR_START_DAT')"></td
+       ><td align="right"><dtml-var "getZMILangStr('ATTR_START_DAT')"></td
       ></dtml-if
      ></tr
      ></table

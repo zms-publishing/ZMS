@@ -68,7 +68,7 @@ function zmiUndoBlobDelete(elName) {
  */
 function zmiUndoBlobBtnClick(elName) {
 	// Undo delete.
-	$('input[name=del_'+elName+']').val(0);
+	zmiUndoBlobDelete(elName);
 	// Restore properties.
 	var d = zmiBlobDict[elName];
 	for (var k in d) {
@@ -89,7 +89,7 @@ function zmiUndoBlobBtnClick(elName) {
  * Click delete-button.
  */
 function zmiDelBlobBtnClick(elName) {
-	if ($('input[name=del_'+elName+']').val()!=1 && confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+	if ($('input[name=del_'+elName+']').val()!=1) {
 		// Apply flag.
 		$('input[name=del_'+elName+']').val(1);
 		// Clear properties.

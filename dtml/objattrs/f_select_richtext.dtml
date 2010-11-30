@@ -63,16 +63,15 @@
 </tr>
 </table>
 </td>
-<td align="right"
+<td align="right">
  <dtml-comment> ***** RichText-Editor (activate) ***** </dtml-comment>
  <dtml-if "REQUEST.get('richedit_fmt')">
-   <a href="#"
+   <div class="zmi-button ui-widget-content ui-corner-all"
       onclick="zmiStandardOnSubmitEventHandler(); zmiRichtextEditorShow('zmiRichtextEditor<dtml-var elName>','zmiStandardEditor<dtml-var elName>','<dtml-var "REQUEST.get('richedit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
-      onmouseover="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_hover.gif';"
-      onmouseout="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_off.gif';"
-      class="button"
-    ><img name="zmiRichtextBtn<dtml-var elName>" src="<dtml-var MISC_ZMS>wysiwyg_off.gif" title="<dtml-var "REQUEST.get('richedit_fmt').getDisplay()">" border="0" align="absmiddle"
-   ></a>
+      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_hover.gif');"
+      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_off.gif');"
+    ><img src="<dtml-var MISC_ZMS>wysiwyg_off.gif" title="<dtml-var "REQUEST.get('richedit_fmt').getDisplay()">" border="0" align="absmiddle"
+   ></div>
  <dtml-else>
   &nbsp;
  </dtml-if>
@@ -117,13 +116,12 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback)
  ><dtml-comment> ***** Label ***** </dtml-comment
  ><dtml-if lang_str><td class="form-label" style="padding:4px;"><dtml-var lang_str></td></dtml-if
  ><td align="right"
-  ><a href="#"
+  ><div class="zmi-button ui-widget-content ui-corner-all"
       onclick="zmiRichtextOnSubmitEventHandler(); zmiRichtextEditorShow('zmiStandardEditor<dtml-var elName>','zmiRichtextEditor<dtml-var elName>','<dtml-var "REQUEST.get('htmledit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
-      onmouseover="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_off.gif';"
-      onmouseout="zmiRichtextBtn<dtml-var elName>.src='<dtml-var MISC_ZMS>wysiwyg_hover.gif';"
-      class="button"
-    ><img name="zmiRichtextBtn<dtml-var elName>" src="<dtml-var MISC_ZMS>wysiwyg_hover.gif" title="<dtml-var "REQUEST.get('htmledit_fmt').getDisplay()">" border="0" align="absmiddle"
-  ></a
+      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_off.gif');"
+      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_hover.gif');"
+    ><img src="<dtml-var MISC_ZMS>wysiwyg_hover.gif" title="<dtml-var "REQUEST.get('htmledit_fmt').getDisplay()">" border="0" align="absmiddle"
+  ></div
  ></td
 ></tr
 ></table

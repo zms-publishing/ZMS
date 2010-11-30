@@ -295,6 +295,14 @@ td div.zmi-headline, td>div.zmi-headline.ui-widget-header.ui-state-default {
  * +- Button
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
+ 
+.zmi-button {
+	width: 20px!important;
+	height: 20px!important;
+	padding: 0!important;
+	margin: 0!important;
+	cursor:pointer;
+}
 
 img.vbutton, a.vbutton img {
 	width: 10px;
@@ -312,7 +320,6 @@ a.button img {
 img.button, a.button:link img, a.button:visited img,
 img.vbutton, a.vbutton:link img, a.vbutton:visited img,
 img.hbutton, a.hbutton:link img, a.hbutton:visited img {
-	background-color: #CCC;
 	border-top: solid 1px #E6E4E6;
 	border-left: solid 1px #E6E4E6;
 	border-right: solid 1px #B6B4B6;
@@ -330,7 +337,6 @@ a.hbutton:hover img, a.hbutton:active img {
 
 img.button0,
 a.button:link img.button0, a.button:visited img.button0 {
-	background-color: #CCC;
 	border-top: solid 1px #E6E4E6;
 	border-left: solid 1px #E6E4E6;
 	border-right: solid 1px #B6B4B6;
@@ -590,8 +596,8 @@ div.ui-tabs { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav li a { font-family:Arial, sans-serif; font-size:11px !important; font-weight: normal; text-decoration: none; }
 .ui-widget-header { vertical-align: middle; padding: 2px 4px 2px 4px; }
-ul#icons { margin: 0; padding: 0; }
-ul#icons li { position: relative; margin: 2px 2px 4px 2px; padding: 0px; cursor: pointer; float: left; list-style: none; }
-ul#icons span.ui-icon {float: left; margin: 0; }
+ul.zmi-icons, ul#icons { margin: 0; padding: 0; }
+ul.zmi-icons li, ul#icons li { position: relative; margin: 2px 2px 4px 2px; padding: 0px; cursor: pointer; float: left; list-style: none; }
+ul.zmi-icons span.ui-icon, ul#icons span.ui-icon {float: left; margin: 0; }
 .ui-button {position:static!important;}
 .ui-accordion-content { margin:0!important; padding:4px!important; }

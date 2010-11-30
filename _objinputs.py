@@ -214,6 +214,7 @@ class ObjInputs:
   #
   #	@param fmName
   #	@param elName
+  #	@param elId
   #	@param value
   #	@param enabled
   #	@param hidden           Add hidden Input-Field if not enabled
@@ -222,7 +223,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, value, enabled=True, hidden=True, REQUEST=None, css='form-checkbox', extra=''):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-checkbox', extra=''):
     html = []
     checked = str(value) == '1'
     if elName.find(':int') > 0 and value in [True, False]:
@@ -234,6 +235,8 @@ class ObjInputs:
     html.append(' value="%s"'%str(value))
     html.append(' />')
     html.append('<input ')
+    if type(elId) is str:
+      html.append(' id="%s"'%elId)
     html.append(' class="%s"'%css)
     html.append(' type="checkbox"')
     if not enabled:

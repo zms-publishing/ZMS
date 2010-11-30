@@ -470,7 +470,7 @@ class ObjAttrs:
       
       #-- Boolean-Fields.
       elif inputtype == 'boolean':
-        return self.getCheckbox(fmName=fmName,elName=elName,value=value,enabled=enabled,hidden=False,REQUEST=REQUEST)
+        return self.getCheckbox(fmName=fmName,elName=elName,elId=obj_attr['id'],value=value,enabled=enabled,hidden=False,REQUEST=REQUEST)
       
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete','multiautocomplete']:

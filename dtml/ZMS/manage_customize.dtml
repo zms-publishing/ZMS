@@ -255,10 +255,12 @@ function confKeyChange(b)
     html = '';
   }
   if (datatype == 'boolean') {
-    html += '<input class="form-checkbox" id="conf_value" name="conf_value:int" type="checkbox" value="1"';
+    html += '<input type="hidden" id="conf_value" name="conf_value:int" type="checkbox" value="'+(''+value=='1'?'1':'0')+'"/>';
+    html += '<input class="form-checkbox" type="checkbox" value="1"';
     if (''+value=='1') {
       html += ' checked="checked"';
     }
+    html += ' onclick="if(this.checked){$(\'#conf_value\').val(1)}else{$(\'#conf_value\').val(0)}"';
     html += '/>';
   }
   else if (conf_dict[v] != undefined && conf_dict[v]['options'] != undefined) {
@@ -402,27 +404,27 @@ function confKeyChange(b)
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small"><b>Catalog</b></td>
- <td class="form-small"><input type="checkbox" value="1" name="catalog_awareness_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.CatalogAwareness.active',1)==1">checked="checked"</dtml-if>/>Awareness</td>
+ <td class="form-small"><input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.CatalogAwareness.active',1)==1">checked="checked"</dtml-if>/>&nbsp;<label for="catalog_awareness_active">Awareness</label></td>
  <td class="form-small">
-  <dtml-if "getPortalClients()"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="options:list" value="catalog_portal_clients"<dtml-if "'catalog_portal_clients' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;Clients&nbsp;&nbsp;</div></dtml-if>
+  <dtml-if "getPortalClients()"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" id="catalog_portal_clients" name="options:list" value="catalog_portal_clients"<dtml-if "'catalog_portal_clients' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;<label for="catalog_portal_clients">Clients</label>&nbsp;&nbsp;</div></dtml-if>
 </td>
  <td class="form-small"><input type="submit" value="Reindex &raquo; " name="btn" style="width:60px" /></td>
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small"><b>Internal links</b></td>
  <td class="form-small">
-  <div class="form-small"><input type="checkbox" value="1" name="ZMS_InternalLinks_autocorrection:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.autocorrection',0)==1">checked="checked"</dtml-if>/>&nbsp;Auto-Correct</div>
-  <div class="form-small"><input type="checkbox" value="1" name="ZMS_InternalLinks_keepsynchron:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1">checked="checked"</dtml-if>/>&nbsp;Keep-Synchron</div>
+  <div class="form-small"><input type="checkbox" value="1" id="ZMS_InternalLinks_autocorrection" name="ZMS_InternalLinks_autocorrection:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.autocorrection',0)==1">checked="checked"</dtml-if>/>&nbsp;<label for="ZMS_InternalLinks_autocorrection">Auto-Correct</label></div>
+  <div class="form-small"><input type="checkbox" value="1" id="ZMS_InternalLinks_keepsynchron" name="ZMS_InternalLinks_keepsynchron:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1">checked="checked"</dtml-if>/>&nbsp;<label for="ZMS_InternalLinks_keepsynchron">Keep-Synchron</label></div>
  </td>
  <td class="form-small">
-  <dtml-if "getPortalClients()"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="options:list" value="internal_links_portal_clients"<dtml-if "'internal_links_portal_clients' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;Clients&nbsp;&nbsp;</div></dtml-if>
-  <dtml-if "getPortalMaster() is None"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" name="options:list" value="internal_links_unify_ids"<dtml-if "'internal_links_unify_ids' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;Unify Ids&nbsp;&nbsp;</div></dtml-if>
+  <dtml-if "getPortalClients()"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" id="internal_links_portal_clients" name="options:list" value="internal_links_portal_clients"<dtml-if "'internal_links_portal_clients' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;<label for="internal_links_portal_clients">Clients</label>&nbsp;&nbsp;</div></dtml-if>
+  <dtml-if "getPortalMaster() is None"><div class="zmiNeutralColorMedium0"><input class="form-checkbox" type="checkbox" id="internal_links_unify_ids" name="options:list" value="internal_links_unify_ids"<dtml-if "'internal_links_unify_ids' in REQUEST.form.get('options',[])"> checked="checked"</dtml-if>>&nbsp;<label for="internal_links_unify_ids">Unify Ids</label>&nbsp;&nbsp;</div></dtml-if>
  </td>
  <td class="form-small"><input type="submit" value="Correct &raquo; " name="btn" style="width:60px" title="Report and fix broken links" /></td>
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small"><b>Static cache</b></td>
- <td class="form-small"><input type="checkbox" value="1" name="cache_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.cache.active')==1">checked="checked"</dtml-if>/> Active</td>
+ <td class="form-small"><input type="checkbox" value="1" id="cache_active" name="cache_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.cache.active')==1">checked="checked"</dtml-if>/>&nbsp;<label for="cache_active">Active</label></td>
  <td class="form-small"></td>
  <td class="form-small"><input type="submit" value="Clear &raquo; " name="btn" style="width:60px" /></td>
 </tr>
@@ -496,8 +498,8 @@ function confKeyChange(b)
 <div class="form-small">Activate or deactivate the integrated history-mechanism.</div>
 <table cellspacing="0" cellpadding="1" border="0">
 <tr valign="middle">
- <td class="form-small" nowrap="nowrap"><b>Active</b></td>
- <td class="form-small"><input class="form-checkbox" type="checkbox" name="active:int" value="1" <dtml-if "getConfProperty('ZMS.Version.active',0)==1">checked="checked"</dtml-if>></td>
+ <td class="form-small"><strong><label for="history_active">Active</label></strong></td>
+ <td class="form-small"><input class="form-checkbox" type="checkbox" id="history_active" name="active:int" value="1" <dtml-if "getConfProperty('ZMS.Version.active',0)==1">checked="checked"</dtml-if>></td>
  <td class="form-small"><textarea class="form-small" title="Nodes" cols="20" rows="1" name="nodes" wrap="virtual" style="height:20px"><dtml-var "'\n'.join(getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea></td>
  <td class="form-small"><input class="form-small" type="submit" value="?" onclick="return versionNodesDivDisplay(this);"/></td>
 </tr>
@@ -615,19 +617,20 @@ function confKeyChange(b)
 
 <dtml-comment>
 ################################################################################
-###  Installed Products
+###  Installed Libraries
 ################################################################################
 </dtml-comment>
 <td id="_InstalledProducts">
 <form name="InstalledProductsForm" action="manage_customizeSystem" method="post">
 <input type="hidden" name="key" value="InstalledProducts">
 <input type="hidden" name="lang" value="<dtml-var lang>">
-<dtml-var "f_headline(_,_,headline='Installed Products')">
+<dtml-var "f_headline(_,_,headline='Installed Libraries')">
 <table cellspacing="0" cellpadding="1" border="0">
   <tr valign="top">
-    <td class="form-small"><input class="form-checkbox" type="checkbox" name="pil:int" value="1" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
+    <td class="form-small"><input class="form-checkbox" type="checkbox" id="pil" name="pil:int" value="1" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
     <td class="form-small">
-      <b><a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi">Python Imaging Library (PIL)</a><br/>required by Image-Processor</b><br/>
+      <strong><label for="pil">Python Imaging Library (PIL)</label></strong>
+      <a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>external_link.gif" alt="" border="0" align="absmiddle"/></a>
       <dtml-if "pilutil().enabled()">
       <table cellspacing="0" cellpadding="0" border="0">
       <tr valign="middle">

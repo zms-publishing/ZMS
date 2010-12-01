@@ -142,10 +142,9 @@ $(function() {
    <input type="hidden" name="hide_roles" value="1">
    <input type="hidden" name="key" value="">
    <input type="hidden" name="lang" value="<dtml-var lang>">
-   <dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'))"><br />
-   <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
+   <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0" width="100%">
    <tr>
-    <td colspan="2"><dtml-var "f_headline(_,_,headline=getUserFolder().meta_type)"></td>
+    <td><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_USER'))"></td>
    </tr>
    <tr valign="middle" class="zmiNeutralColorLight0">
     <td class="form-small">
@@ -157,11 +156,11 @@ $(function() {
        </dtml-let>
       </dtml-in>
      </select>
+    <dtml-var "getTextInput(fmName='searchForm',elName='search_term',size=12,value=REQUEST.get('search_term',''),type='text',REQUEST=REQUEST,css='form-small')">
     </td>
-    <td class="form-small"><dtml-var "getTextInput(fmName='searchForm',elName='search_term',size=12,value=REQUEST.get('search_term',''),type='text',REQUEST=REQUEST,css='form-small')"></td>
    </tr>
    <tr class="zmiNeutralColorLight0" valign="middle">
-    <td colspan="2" align="right">
+    <td align="right">
      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SEARCH')">">
      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')">">
     </td>
@@ -170,10 +169,10 @@ $(function() {
   
    <!-- Display Results -->  
    <dtml-if "REQUEST.get('btn','')==getZMILangStr('BTN_SEARCH')">
-    <br />
-     <dtml-in expr="findUser(search_param=search_param, search_term=search_term)" mapping sort="sn">
+    <dtml-if search_term>
+     <dtml-in expr="findUser(search_param=search_param, search_term=search_term)" mapping>
        <dtml-if sequence-start>
-        <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0">
+        <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0" width="100%">
         <tr valign="middle">
          <td class="form-label">&nbsp;</td>
          <td class="form-label">Id</td>
@@ -185,7 +184,7 @@ $(function() {
         </tr>
        </dtml-if>
        <dtml-call "REQUEST.set('userId',unicode(_[getProperty( '_login_attr' )],'latin-1').encode('utf-8'))">
-       <tr valign="top" class="">
+       <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
         <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
         <td class="form-small"><a href="?lang=<dtml-var lang>&id=<dtml-var userId>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var userId></b></a></td>
         <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
@@ -208,15 +207,17 @@ $(function() {
     <dtml-else>
      <div class="form-small">None</div>
     </dtml-in>
+   </dtml-if>
   <dtml-else>
-   <br />
-   <dtml-in "getConfProperty('ZMS.security.users',{}).keys()">
+   <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0" width="100%">
+   <tr>
+    <td class="form-label">#<dtml-var "len(getConfProperty('ZMS.security.users',{}).keys())"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></td>
+   </tr>
+   <dtml-in "getConfProperty('ZMS.security.users',{}).keys()" sort>
     <dtml-let name=sequence-item user="getUser(name)">
-    <dtml-if sequence-start>
-     <table cellspacing="1" cellpadding="1" border="0" width="80%" class="zmiNeutralColorStrong0">
-    </dtml-if>
-    <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
-     <td align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
+    <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
+     <td align="right" class="form-small"><strong><dtml-var "_['sequence-index']+1">.</strong></td>
      <td>
       <div class="form-small">
        <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
@@ -231,11 +232,13 @@ $(function() {
       </div>
      </td>
     </tr>
-    <dtml-if sequence-end>
-     </table>
-    </dtml-if>
     </dtml-let>
+   <dtml-else>
+    <tr class="zmiNeutralColorLight0">
+     <td colspan="2" class="form-small">None</td>
+    </tr>
    </dtml-in>
+   </table>
   </dtml-if>
   </form>
   
@@ -537,7 +540,7 @@ $(function() {
     <dtml-in filtered_userids size=qsize start=qstart mapping>
       <dtml-let userObj="localUserFldr.getUser(name)">
        <dtml-if userObj>
-        <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
+        <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
          <td class="form-small" align="right"><dtml-var "_['sequence-index']+1">.</td>
          <td class="form-small" colspan="2">
           <img src="p_/User_icon" border="0" align="absmiddle" />
@@ -576,7 +579,7 @@ $(function() {
          </td>
         </tr>
        <dtml-else>
-        <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
+        <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
          <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
          <td class="form-small"><input type="radio" disabled="disabled" checked="checked"/></td>
          <td class="form-small" colspan="3"><dtml-var name></td>
@@ -760,13 +763,11 @@ $(function() {
        </table>
       </td>
      </tr>
-    <dtml-else>
-     <dtml-if "REQUEST.get('id','')==''">
-      <tr valign="top" class="zmiDblclickable zmiNeutralColorWhite">
+    <dtml-elif "REQUEST.get('id','')==''">
+      <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
        <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
        <td class="form-small" colspan="3"><a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var sequence-item></b></a></td>
       </tr>
-     </dtml-if>
     </dtml-if>
    <dtml-else>
     <tr class="zmiNeutralColorLight0">

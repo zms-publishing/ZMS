@@ -115,9 +115,8 @@ function pluginLanguage() {
 function pluginUI(s, c) {
 	$.plugin('ui',{
 		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.6.custom.min.js',
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js',
-				'/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.6.custom.css']
-		});
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js'
+		]});
 	$.plugin('ui').get(s,c);
 }
 

@@ -1,7 +1,7 @@
 <dtml-var manage_page_header>
 </head>
 
-<dtml-var "manage_tabs(_,_,p_languages=1)">
+<dtml-var manage_tabs>
 <dtml-if "getLevel() == 0 and AUTHENTICATED_USER.has_permission('ZMS Administrator',this())">
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_IMPORTEXPORT','action':'manage_importexport'},{'label':'FTP','action':'manage_importexportFtp'}])">
 </dtml-if>
@@ -9,30 +9,25 @@
  <form name="form1" action="manage_customizeFtp" method="post">
  <input type="hidden" name="lang" value="<dtml-var lang>">
 
-  <div class="form-text"><dtml-var "getZMILangStr('MSG_FTP')"></div><br />
-  <table cellspacing="0" cellpadding="1" border="0" width="100%">
-  <colgroup>
-   <col width="20%" />
-   <col width="80%" />
-  </colgroup>
+  <div class="form-text"><dtml-var "getZMILangStr('MSG_FTP')"></div>
+  <dtml-var zmi_form_section_begin>
   <tr valign="middle">
-    <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('IP_OR_DOMAIN')"></td>
-    <td class="form-element" nowrap="nowrap"><dtml-var "getTextInput(fmName='form1',elName='site',size=20,value=_.getattr(this(),'attr_provider_ftp_site',''))"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('IP_OR_DOMAIN')"></td>
+    <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='site',size=20,value=_.getattr(this(),'attr_provider_ftp_site',''))"></td>
   </tr>
   <tr valign="middle">
-    <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PATH')"></td>
-    <td class="form-element" nowrap="nowrap"><dtml-var "getTextInput(fmName='form1',elName='path',size=20,value=_.getattr(this(),'attr_provider_ftp_path',''))"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('ATTR_PATH')"></td>
+    <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='path',size=20,value=_.getattr(this(),'attr_provider_ftp_path',''))"></td>
   </tr>
   <tr valign="middle">
-    <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_USER')"></td>
-    <td class="form-element" nowrap="nowrap"><dtml-var "getTextInput(fmName='form1',elName='userid',size=20,value=_.getattr(this(),'attr_provider_ftp_userid',''))"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('ATTR_USER')"></td>
+    <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='userid',size=20,value=_.getattr(this(),'attr_provider_ftp_userid',''))"></td>
   </tr>
   <tr valign="middle">
-    <td class="form-label" nowrap="nowrap"><dtml-var "getZMILangStr('ATTR_PASSWORD')"></td>
-    <td class="form-element" nowrap="nowrap"><dtml-var "getPasswordInput(fmName='form1',elName='password',value=_.getattr(this(),'attr_provider_ftp_password',''))"></td>
+    <td class="form-label"><dtml-var "getZMILangStr('ATTR_PASSWORD')"></td>
+    <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='password',value=_.getattr(this(),'attr_provider_ftp_password',''))"></td>
   </tr>
-  </table>
-  <hr size="1" />
+  <dtml-var zmi_form_section_end>
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
   <tr>
    <td>
@@ -46,9 +41,6 @@
      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>">
     </dtml-if>
    </td>
-  </tr>
-  <tr>
-   <td>&nbsp;</td>
   </tr>
   </table>
   

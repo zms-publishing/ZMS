@@ -1211,8 +1211,7 @@ class VersionManagerContainer:
         wfStates = self.getWfStates(REQUEST)
         for wfTransition in self.getWfTransitions():
           enter = enter or \
-             (len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0 and \
-              len(wfTransition.get('to',[])) == 0)
+             len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0
           if enter:
             break
       if enter and modified:
@@ -1264,9 +1263,17 @@ class VersionManagerContainer:
       url = ''
       message = ''
       wfTransitions = self.getWfTransitions()
-      for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
+      if _globals.debug( self):
+        _globals.writeLog( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(wfTransitions))
+      wfTransitions = filter(lambda x: x['name']==custom, wfTransitions)
+      if _globals.debug( self):
+        _globals.writeLog( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(wfTransitions))
+      for wfTransition in wfTransitions:
         # Delete old state.
-        self.delObjStates(self.getWfStates(REQUEST), REQUEST)
+        wfStates = self.getWfStates(REQUEST)
+        if _globals.debug( self):
+          _globals.writeLog( self, "[manage_wfTransition]: wfStates.0=%s"%str(wfStates))
+        self.delObjStates(wfStates, REQUEST)
         # Add new state.
         for wfState in wfTransition.get('to',[]):
           if _globals.debug( self): 

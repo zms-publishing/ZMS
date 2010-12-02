@@ -38,14 +38,17 @@ $(function(){
 						href += '/'+pid;
 					}
 					var pid = $(this).attr('id');
-					pid = pid.substr(pid.indexOf('_')+1);
+					var lang = pid.substr(pid.lastIndexOf('_')+1);
+					pid = pid.substr(pid.indexOf('_')+1,pid.lastIndexOf('_')-pid.indexOf('_')-1);
 					href += '/'+pid;
 					href += '/manage_main';
-					if (self.location.href.indexOf('/manage')>0) {
+					if (self.location.href.indexOf('/manage')>0
+						&& self.location.href.indexOf('/manage_translate')<0) {
 						self.location.href = href;
 					}
 					else {
 						href += '_iframe';
+						href += '?lang='+lang;
 						$.fancybox({
 							'autoDimensions':false,
 							'href':href,

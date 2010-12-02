@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+    <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
+    <item key="data"><![CDATA[<dtml-var manage_page_header>
+<style>
+.zmi-translate-left {
+	padding:4px;
+	background-color:#FFFFE8;
+}
+.zmi-translate-left .zmi-translate-element {
+	margin:5px 10px 5px 0px;
+	border: 1px solid darkgreen;
+}
+.zmi-translate-left .zmi-translate-element-id {
+	color:white;
+	background-color: darkgreen;
+}
+.zmi-translate-right {
+	padding:4px;
+	background-color:#FFFFFF;
+}
+.zmi-translate-right .zmi-translate-element {
+	margin:5px 10px 5px 0px;
+	border: 1px solid red;
+}
+.zmi-translate-right .zmi-translate-element-id {
+	color:white;
+	background-color: red;
+}
+.zmiRenderShort {
+	width:350px!important;
+}
+</style>
+</head>
+<dtml-var manage_tabs>
+<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+
+<form id="<dtml-var fmName>" method="get">
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+<dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
+<dtml-in "['left','right']">
+<dtml-let si=sequence-item>
+<td class="zmi-translate-<dtml-var sequence-item>">
+   <dtml-let lang_req_key="{'left':'lang','right':'lang2'}[si]">
+    <select class="form-small" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
+     <dtml-if "getDCCoverage(REQUEST).find('global.')==0">
+      <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[len('global.'):],REQUEST)">
+       <dtml-let seq_lang=sequence-item>
+        <dtml-unless "seq_lang in exclude_langs">
+        <dtml-unless "REQUEST.has_key(lang_req_key)"><dtml-call "REQUEST.set(lang_req_key,seq_lang)"></dtml-unless>
+        <option value="<dtml-var seq_lang html_quote>" 
+          <dtml-if "REQUEST.get(lang_req_key)==seq_lang">selected="selected"</dtml-if>
+         ><dtml-var "getLanguageLabel(seq_lang)"><dtml-if "seq_lang==getPrimaryLanguage()"> [*]</dtml-if></option>
+        </dtml-unless>
+       </dtml-let>
+      </dtml-in>
+     <dtml-else>
+      <dtml-let seq_lang="getDCCoverage(REQUEST)[len('local.'):]">
+       <dtml-unless "seq_lang in exclude_langs">
+       <dtml-unless "REQUEST.has_key(lang_req_key)"><dtml-call "REQUEST.set(lang_req_key,seq_lang)"></dtml-unless>
+       <option value="<dtml-var seq_lang html_quote>"
+         <dtml-if "REQUEST.get(lang_req_key)==seq_lang">selected="selected"</dtml-if>
+        ><dtml-var "getLanguageLabel(seq_lang)"><dtml-if "seq_lang==getPrimaryLanguage()"> [*]</dtml-if></option>
+       </dtml-unless>
+      </dtml-let>
+     </dtml-if>
+    </select>
+    <dtml-call "exclude_langs.append(lang)">
+    <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key))">
+   </dtml-let>
+   <div id="<dtml-var id>" class="zmi-translate-element">
+    <span class="zmi-translate-element-id"><dtml-var id></span>
+    <div class="zmiRenderShort" id="contentEditable_<dtml-var id>_<dtml-var lang>">
+     <h1><dtml-var "getTitle(REQUEST)"></h1>
+     <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
+    </div>
+   </div>
+   <dtml-in childNodes>
+    <div id="<dtml-var id>" class="zmi-translate-element">
+     <span class="zmi-translate-element-id"><dtml-var id></span>
+     <dtml-var "renderShort(REQUEST)">
+    </div>
+   </dtml-in>
+</td>
+</dtml-let>
+</dtml-in>
+</dtml-let>
+</tr>
+</table>
+</form>
+
+<dtml-var manage_page_footer>]]>
+    </item>
+    <item key="description"/>
+    <item key="exec" type="int">0</item>
+    <item key="id"><![CDATA[manage_translate]]></item>
+    <item key="meta_type"><![CDATA[DTML Method]]></item>
+    <item key="meta_types" type="list">
+      <list>
+        <item><![CDATA[ZMSDocument]]></item>
+        <item><![CDATA[ZMSFolder]]></item>
+        <item><![CDATA[ZMS]]></item>
+      </list>
+    </item>
+    <item key="name"><![CDATA[Translate...]]></item>
+    <item key="roles" type="list">
+      <list>
+        <item><![CDATA[ZMSAdministrator]]></item>
+        <item><![CDATA[ZMSAuthor]]></item>
+        <item><![CDATA[ZMSEditor]]></item>
+      </list>
+    </item>
+  </dictionary>

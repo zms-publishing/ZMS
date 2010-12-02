@@ -210,16 +210,26 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
     metaCmd = context.getMetaCmd(metaCmdId)
     if (insert_actions and metaCmd['id'].startswith('manage_add')) or \
        (not insert_actions and not metaCmd['id'].startswith('manage_add')):
-      hasMetaType = context.meta_id in metaCmd['meta_types']
-      hasRole = False
-      hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
-      hasRole = hasRole or auth_user.has_role('Manager')
-      nodes = context.string_list(metaCmd.get('nodes','{$}'))
-      sl = []
-      sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
-      sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
-      hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
-      if hasMetaType and hasRole and hasNode:
+      canExecute = True
+      if canExecute:
+        hasCustomPermission = _globals.dt_html(context,metaCmd.get('custom',''),REQUEST) != False
+        canExecute = canExecute and hasCustomPermission
+      if canExecute:
+        hasMetaType = context.meta_id in metaCmd['meta_types']
+        canExecute = canExecute and hasMetaType
+      if canExecute:
+        hasRole = False
+        hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
+        hasRole = hasRole or auth_user.has_role('Manager')
+        canExecute = canExecute and hasRole
+      if canExecute:
+        nodes = context.string_list(metaCmd.get('nodes','{$}'))
+        sl = []
+        sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
+        sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
+        hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+        canExecute = canExecute and hasNode
+      if canExecute:
         actions.append((metaCmd['name'],objPath+'manage_executeMetacmd'))
   
   # Return action list.

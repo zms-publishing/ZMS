@@ -70,10 +70,13 @@
 </div>
 <div class="clearfloating" style="clear:both"></div>
 <dtml-in "objectValues(map(lambda x: x['name'],meta_types))">
+ <dtml-let si=sequence-item manageable="meta_type=='ZCatalog' or operator_getattr(operator_getattr(si,'__class__'),'manage_main') is not None">
  <div class="form-small"
   ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>"
-  ><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)</a
- > (<dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">)</div>
+  ><dtml-if manageable><a href="<dtml-var id>/manage_main" class="zmi" target="_blank"></dtml-if
+  ><img src="<dtml-var icon>" alt="<dtml-var meta_type>" title="<dtml-var "getZMILangStr(meta_type)">" border="0" align="absmiddle" style="margin-right:4px;"/><dtml-var id> (<dtml-var "getZMILangStr(meta_type)">)<dtml-if manageable></a></dtml-if>
+  (<dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">)</div>
+ </dtml-let>
 </dtml-in>
 <input class="ui-button ui-state-default ui-corner-all" type="submit" id="removeMetaTypesBtn" name="btn" value="Remove" />
 </form>

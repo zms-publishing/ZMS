@@ -1240,7 +1240,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if _globals.isPreviewRequest(REQUEST) and \
          self.getConfProperty('ZMS.preview.contentEditable',1)==1 and \
          not self.isPage():
-        ids = ['contentEditable',self.id]
+        ids = ['contentEditable',self.id,REQUEST.get('lang')]
         css = ['contentEditable']
         html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
       return html

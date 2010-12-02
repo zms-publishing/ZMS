@@ -119,13 +119,14 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     newDescription = item['description']
     newMetaTypes = item['meta_types']
     newRoles = item['roles']
+    newCustom = item.get('custom','')
     newNodes = item.get('nodes','{$}')
     newData = item['data']
 
     # Return with new id.
     return setMetacmd(self, None, newId, newAcquired, newName, newMethod, \
-      newData, newExec, newDescription, newMetaTypes, newRoles, newNodes, \
-      zms_system)
+      newData, newExec, newDescription, newMetaTypes, newRoles, newCustom, \
+      newNodes, zms_system)
 
 
 def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
@@ -173,7 +174,7 @@ def delMetacmd(self, id):
 # ------------------------------------------------------------------------------
 def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
       newData=None, newExec=0, newDescription='', newMetaTypes=[], \
-      newRoles=['ZMSAdministrator'], newNodes='{$}', zms_system=0):
+      newRoles=['ZMSAdministrator'], newCustom='', newNodes='{$}', zms_system=0):
   obs = copy.deepcopy(getRawMetacmds(self))
 
   # Catalog.
@@ -189,6 +190,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
   new['description'] = newDescription
   new['meta_types'] = newMetaTypes
   new['roles'] = newRoles
+  new['custom'] = newCustom
   new['nodes'] = newNodes
   new['exec'] = newExec
   new['zms_system'] = zms_system
@@ -369,9 +371,10 @@ class MetacmdManager:
           newDescription = REQUEST.get('el_description','').strip()
           newMetaTypes = REQUEST.get('el_meta_types',[])
           newRoles = REQUEST.get('el_roles',[])
+          newCustom = REQUEST.get('el_custom','')
           newNodes = REQUEST.get('el_nodes','')
           id = setMetacmd(self, id, newId, newAcquired, newName, newMethod, newData, newExec, newDescription, \
-            newMetaTypes, newRoles, newNodes)
+            newMetaTypes, newRoles, newCustom, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
         
         # Copy.
@@ -407,6 +410,7 @@ class MetacmdManager:
               el_meta_types = metaCmd['meta_types']
               el_roles = metaCmd['roles']
               el_exec = metaCmd['exec']
+              el_custom = metaCmd.get('custom','')
               # Object.
               ob = getattr(self,metaCmdId)
               el_meta_type = ob.meta_type
@@ -415,11 +419,11 @@ class MetacmdManager:
               else:
                 el_data = ob.body()
               # Value.
-              value.append({'id':el_id,'name':el_name,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'name':el_name,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'custom':el_custom,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(value)==1:
             value = value[0]
-            filename = '%s.metacmd.xml'%ids[0]
+            filename = '%s.metacmd.xml'%value['id']
           else:
             filename = 'export.metacmd.xml'
           content_type = 'text/xml; charset=utf-8'

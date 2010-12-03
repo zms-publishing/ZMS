@@ -161,7 +161,7 @@ function ZMSGraphic_extEdit_apply() {
 		var h = $('input#ZMSGraphic_extEdit_height').val();
 		var v = Math.round(100*w/ZMSGraphic_act_width);
 		if ( w != $('input#width_'+ZMSGraphic_elName).val() || h != $('input#height_'+ZMSGraphic_elName).val()) {
-			if (ZMSGraphic_params) {
+			if (ZMSGraphic_pil) {
 				var params = {'action':'resize','width:int':w,'height:int':h};
 				for (var i in ZMSGraphic_params) {
 					params[i] = ZMSGraphic_params[i];
@@ -173,6 +173,10 @@ function ZMSGraphic_extEdit_apply() {
 							ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
 						});
 				v = 100;
+			}
+			else {
+				$('input#width_'+ZMSGraphic_elName).val(w);
+				$('input#height_'+ZMSGraphic_elName).val(h)
 			}
 			$('span#dimensions_'+ZMSGraphic_elName).html(w+'x'+h+'px ['+v+'%]');
 		}

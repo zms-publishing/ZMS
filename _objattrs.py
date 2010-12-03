@@ -1039,24 +1039,6 @@ class ObjAttrs:
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
         
-        # Attributes
-        obj_vers = self.getObjVersion(REQUEST)
-        orig = self._getObjAttrValue(obj_attr,obj_vers,lang)
-        if orig is not None:
-          blob = None
-          # Resize
-          if REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
-            w = REQUEST['width_%s'%attr]
-            h = REQUEST['height_%s'%attr]
-            if w != int(orig.width) or h != int(orig.height):
-              #--print '_objattrs: resize',orig.width,'x',orig.height,' to ',w,'x',h
-              if not self.pilutil().enabled():
-                blob = orig
-                blob.width = w
-                blob.height = h
-          if blob:
-            self.setObjProperty( key, blob, lang)
-        
         # Upload
         if isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
           set, value = True, value
@@ -1074,9 +1056,18 @@ class ObjAttrs:
             temp_folder = self.temp_folder
             id = session_id + '_' + form_id + '_' + key
             if id in temp_folder.objectIds():
-              f = getattr( temp_folder, id).data
+              o = getattr( temp_folder, id)
+              f = o.data
               filename = getattr( temp_folder, id).title
               set, value = True, {'data':f,'filename':filename}
+              if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
+                w = REQUEST['width_%s'%attr]
+                h = REQUEST['height_%s'%attr]
+                if w != int(o.width) or h != int(o.height):
+                  #-- print '_objattrs: resize',o.width,'x',o.height,' to ',w,'x',h
+                  value = _blobfields.createBlobField( self, datatype, value)
+                  value.width = w
+                  value.height = h
               temp_folder.manage_delObjects([id])
       
       #-- Integer-Fields

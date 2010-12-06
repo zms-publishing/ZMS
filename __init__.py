@@ -32,6 +32,7 @@ __version__ = '0.1'
 # Imports.
 from App.Common import package_home
 from App.ImageFile import ImageFile
+import ConfigParser
 import OFS.misc_
 import os
 import stat
@@ -131,8 +132,18 @@ def initialize(context):
         # automated registration for util
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()
         
-        # automated registration for language-dictionary
+        # automated registration of language-dictionary
         OFS.misc_.misc_.zms['langdict']=_language.langdict()
+        
+        # automated registration of configuration
+        confdict = {}
+        PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
+        cfp = ConfigParser.ConfigParser()
+        cfp.readfp(open(os.path.join(PRODUCT_HOME,'etc','zms.conf')))
+        for section in cfp.sections():
+          for option in cfp.options(section):
+            confdict[section+'.'+option] = cfp.get( section, option)
+        OFS.misc_.misc_.zms['confdict']=confdict
         
         # automated registration for other resources
         for img_path in ['www/','plugins/www/']:

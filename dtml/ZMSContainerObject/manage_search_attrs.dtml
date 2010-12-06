@@ -391,7 +391,7 @@ window.onload = function(e) {
 //-->
 </script>
 </head>
-<dtml-var "manage_tabs(_,_,my_manage_options=[{'label':getZMILangStr('TAB_SEARCH'),'action':''}],p_languages=True)">
+<dtml-var "manage_tabs(_,_,p_languages=1)">
 <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',this())">
  <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_SEARCH','action':'manage_search'},{'label':'ATTR_ATTRS','action':'manage_search_attrs'}])">
 </dtml-if>
@@ -405,9 +405,9 @@ window.onload = function(e) {
 
   <table cellspacing="1" cellpadding="0" border="0">
   <tr valign="top">
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ATTRS')"></div></td>
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_OPTION')"></div></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_ATTRS')"></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_OPTION')"></td>
   </tr>
   <tr valign="top">
    <td>
@@ -423,7 +423,7 @@ window.onload = function(e) {
    </td>
    <td>
     <table cellspacing="1" cellpadding="0" border="0">
-    <dtml-in "_.range(5)">
+    <dtml-in "range(5)">
      <tr>
       <td>
        <div class="form-element">
@@ -452,7 +452,6 @@ window.onload = function(e) {
   </tr>
   <tr>
    <td colspan="3">
-    <hr size="1"/>
     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SEARCH')" html_quote>" onclick="searchBtnClick('<dtml-var id>','<dtml-var absolute_url>')">
    </td>
   </tr>
@@ -463,10 +462,8 @@ window.onload = function(e) {
 <div id="searchDiv_<dtml-var id>" class="form-label" style="display:none;visibility:hidden;">
  <dtml-var "getZMILangStr('SEARCH_HEADERRESULT')">
  <a href="#" onclick="stopBtnClick();" onmouseover="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_cancel" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CANCEL')">" border="0" align="absmiddle"/></a>
- <div id="currentDiv" class="form-small" style="background-color:#ffffe0;border:1px solid black;margin:4px;"/>
+ <div id="currentDiv" class="form-small" style="background-color:#ffffe0;border:1px solid black;margin:4px;"></div>
 </div>
 <div id="resultDiv_<dtml-var id>"></div>
-
-<br/><br/>
 
 <dtml-var manage_page_footer>

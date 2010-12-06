@@ -59,7 +59,6 @@
 ><li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>
 <li<dtml-if "REQUEST.get('dtpref_system','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li></dtml-if>
 <li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
-<li<dtml-if "URL.find('/manage_search')>0"> class="on"</dtml-if>><a href="manage_search?lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if> accesskey="F"><img src="<dtml-var MISC_ZMS>op_search.gif" title="<dtml-var "getZMILangStr('TAB_SEARCH')">: ALT+Shift+F" border="0" width="14" height="14" /></a></li>
 <li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14" /></a></li>
 </ul>
 </div>

@@ -11,7 +11,7 @@
 <dtml-let can_generate_preview="pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'))">
 
 <dtml-unless "REQUEST.get('f_zmiGraphicExtEdit')">
-<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]">/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version').split('/')[1]">/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 <div style="display:none">
 	<div id="ZMSGraphic_extEdit_actions" class="zmiNeutralColorMedium0">
 		<table cellspacing="0" cellpadding="3" border="0">
@@ -45,7 +45,7 @@
 </dtml-unless>
 
 <dtml-unless "REQUEST.get('f_zmiBlobJs')">
-	<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]">/objattrs/zmi.blob.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version').split('/')[1]">/objattrs/zmi.blob.js"></script>
 	<dtml-call "REQUEST.set('f_zmiBlobJs',True)">
 </dtml-unless>
 

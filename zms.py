@@ -671,7 +671,8 @@ class ZMS(
     {'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'},
     {'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'},
     {'label': 'TAB_CONFIGURATION','action': 'manage_customize'},
-    {'label': 'TAB_PREVIEW',      'action': 'preview_html'}, # empty string defaults to index_html
+    {'label': 'TAB_SEARCH',       'action': 'manage_search'},
+    {'label': 'TAB_PREVIEW',      'action': 'preview_html'},
     )
 
     # Management Permissions.

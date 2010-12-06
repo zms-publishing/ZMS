@@ -31,6 +31,7 @@ from OFS.CopySupport import absattr
 from OFS.Image import Image
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
+import OFS.misc_
 import os
 import stat
 import urllib
@@ -584,6 +585,8 @@ class ConfManager(
     #  @return any
     # --------------------------------------------------------------------------
     def getConfProperty(self, key, default=None):
+      if default is None:
+        default = OFS.misc_.misc_.zms['confdict'].get(key)
       return self.getConfProperties().get( key, default)
 
     # --------------------------------------------------------------------------

@@ -22,7 +22,7 @@
 	<body class="zmi">
 		<div class="zmi">
 			<div class="ZMIManageBody ui-widget-content">
-				<form name="form0" action="manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
+				<form name="form0" action="manage_addZMSSqlDb" target="_parent" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
 					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">

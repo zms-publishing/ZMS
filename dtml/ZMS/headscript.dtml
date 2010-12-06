@@ -4,8 +4,8 @@
 ></dtml-with
 ><dtml-else>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS><dtml-var "getConfProperty('jquery.version','jquery-1.4.2.min.js')">"></script>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js')">"></script>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js')">"></script>
+<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.version')">"></script>
+<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.extensions')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS>styleswitcher.js"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>zmilib_js?lang=<dtml-var lang>"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-if ZMS_ROOT><dtml-var ZMS_ROOT>/</dtml-if>comlib_js"></script>

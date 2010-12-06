@@ -126,15 +126,18 @@ class ZMSCustom(ZMSContainerObject):
     # Management Options.
     # -------------------
     def manage_options(self):
+      pc = self.isPageContainer()
       opts = []
       opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
-      if self.isPageContainer():
+      if pc:
         opts.append({'label': 'TAB_PROPERTIES', 'action': 'manage_properties'})
       opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
       opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
       opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
-      opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'}) # empty string defaults to index_html
+      if pc:
+        opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
+      opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'})
       return tuple(opts)
 
     # Management Permissions.

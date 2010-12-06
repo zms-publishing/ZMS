@@ -585,7 +585,7 @@ class ConfManager(
     #  @return any
     # --------------------------------------------------------------------------
     def getConfProperty(self, key, default=None):
-      if default is None:
+      if OFS.misc_.misc_.zms['confdict'].has_key(key):
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       return self.getConfProperties().get( key, default)
 

@@ -22,15 +22,22 @@
 ################################################################################
 
 # Imports.
-from zope.interface import implements
+from App.special_dtml import HTMLFile
+import copy
+import urllib
+import zope.interface
 # Product Imports.
+import IZMSConfigurationProvider
 import IZMSWorkflowProvider
 import ZMSItem
+import _versionmanager
 
 
 class ZMSWorkflowProviderAcquired(
         ZMSItem.ZMSItem):
-    implements(IZMSWorkflowProvider.IZMSWorkflowProvider)
+    zope.interface.implements(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSWorkflowProvider.IZMSWorkflowProvider)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties
@@ -38,11 +45,22 @@ class ZMSWorkflowProviderAcquired(
     meta_type = 'ZMSWorkflowProviderAcquired'
     icon = "misc_/zms/ZMSWorkflowProvider.png"
 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    Management Options
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    manage_options_default_action = '../manage_customize'
+    def manage_options(self):
+      return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options))
+
+    def manage_sub_options(self):
+      return (
+        {'label': 'TAB_WORKFLOW','action': 'manage_main'},
+        )
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    No Management Interface
+    Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage_main = None
+    manage = manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals())
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -58,18 +76,23 @@ class ZMSWorkflowProviderAcquired(
     ZMSWorkflowProviderAcquired.getAutocommit
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
-      portalMaster = self.getPortalMaster()
-      if portalMaster is not None:
-        workflow_manager = portalMaster.workflow_manager
-        return workflow_manager.getAutocommit()
-      return 1
+      return getattr(self,'autocommit',1)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.getNodes
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getNodes(self):
-      return self.getPortalMaster().workflow_manager.getNodes()
+      return getattr(self,'nodes',['{$}'])
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    ZMSWorkflowProviderAcquired.doAutocommit:
+    
+    Auto-Commit ZMS-tree.
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def doAutocommit(self, lang, REQUEST):
+      _versionmanager.doAutocommit(self,REQUEST)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -101,5 +124,30 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitions(self):
       return self.getPortalMaster().workflow_manager.getTransitions()
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    ZMSWorkflowProviderAcquired.manage_changeWorkflow:
+    
+    Chang workflow.
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def manage_changeWorkflow(self, lang, key='', btn='', REQUEST=None, RESPONSE=None):
+      """ ZMSWorkflowProvider.manage_changeWorkflow """
+      message = ''
+      
+      # Active.
+      # -------
+      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
+        # Autocommit & Nodes.
+        old_autocommit = getattr(self,'autocommit',1)
+        new_autocommit = REQUEST.get('workflow',0) == 0
+        self.autocommit = new_autocommit
+        self.nodes = self.string_list(REQUEST.get('nodes',''))
+        if old_autocommit == 0 and new_autocommit == 1:
+          self.doAutocommit(lang,REQUEST)
+        message = self.getZMILangStr('MSG_CHANGED')
+      
+      # Return with message.
+      message = urllib.quote(message)
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
 
 ################################################################################

@@ -75,21 +75,6 @@
 ><dtml-else
 ><dtml-var "'<dtml-var f_bodyContent>'"
 ></dtml-if
-><dtml-if ZMS_HIGHLIGHT
-><script type="text/javascript"
- ><dtml-in "REQUEST.get(ZMS_HIGHLIGHT,'').split(QUOT)"
- ><dtml-let si="_['sequence-item'].strip()"
-  ><dtml-if si
-   ><dtml-if sequence-even
-    ><dtml-in "si.split(' ')"
-     ><dtml-if sequence-item>do_highlight('<dtml-var sequence-item>');</dtml-if
-    ></dtml-in
-   ><dtml-else
-   >do_highlight('<dtml-var si>');</dtml-if
-  ></dtml-if
- ></dtml-let
- ></dtml-in
-></script></dtml-if
 ><dtml-else
 ><dtml-call "RESPONSE.setStatus(503)"
 ><p class="standard"><dtml-var "getLangStr('MSG_INACTIVE',lang)"></p
@@ -97,9 +82,6 @@
 ></dtml-if
 
 ><dtml-comment>--------- STANDARD_HTML_FOOTER --------------------</dtml-comment
-><dtml-if manage_preview
-><script type="text/javascript">do_manage_preview();</script
-></dtml-if
 ><dtml-var f_standard_html_footer
 
 ><dtml-comment>--------- INACTIVE --------------------------------</dtml-comment

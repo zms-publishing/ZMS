@@ -1,13 +1,4 @@
  //-------------------------------------------------------------------
- // isNull(value)
- //   Returns true if value is null
- //-------------------------------------------------------------------
- function isNull(val) {
-         if (val == null) { return true; }
-         return false;
-         }
-
- //-------------------------------------------------------------------
  // isBlank(value)
  //   Returns true if value only contains spaces
  //-------------------------------------------------------------------
@@ -18,70 +9,6 @@
                  }
          return true;
          }
-
- //-------------------------------------------------------------------
- // isInteger(value)
- //   Returns true if value contains all digits
- //-------------------------------------------------------------------
- function isInteger(val) {
-         for (var i=0; i < val.length; i++) {
-                 if (!isDigit(val.charAt(i))) { return false; }
-                 }
-         return true;
-         }
-
- //-------------------------------------------------------------------
- // isNumeric(value)
- //   Returns true if value contains a positive float value
- //-------------------------------------------------------------------
- function isNumeric(val) {
-         var dp = false;
-         for (var i=0; i < val.length; i++) {
-                 if (!isDigit(val.charAt(i))) {
-                         if (val.charAt(i) == '.') {
-                                 if (dp == true) { return false; } // already saw a decimal point
-                                 else { dp = true; }
-                                 }
-                         else {
-                                 return false;
-                                 }
-                         }
-                 }
-         return true;
-         }
-
- //-------------------------------------------------------------------
- // isDigit(value)
- //   Returns true if value is a 1-character digit
- //-------------------------------------------------------------------
- function isDigit(num) {
-         var string="1234567890";
-         if (string.indexOf(num) != -1) {
-                 return true;
-                 }
-         return false;
-         }
-
- //-------------------------------------------------------------------
- // setNullIfBlank(input_object)
- //   Sets a form field to "" if it isBlank()
- //-------------------------------------------------------------------
- function setNullIfBlank(obj) {
-         if (isBlank(obj.value)) {
-                 obj.value = "";
-                 }
-         }
-
- //-------------------------------------------------------------------
- // setFieldsToUpperCase(input_object)
- //   Sets value of form field toUpperCase() for all fields passed
- //-------------------------------------------------------------------
- function setFieldsToUpperCase() {
-         for (var i=0; i<arguments.length; i++) {
-           var obj = arguments[i];
-           obj.value = obj.value.toUpperCase();
-         }
- }
 
  //-------------------------------------------------------------------
  // disallowBlank(input_object[,message[,true]])
@@ -127,30 +54,6 @@
  }
 
  //-------------------------------------------------------------------
- // disallowModify(input_object[,message[,true]])
- //   Checks a form field for a value different than defaultValue.
- //   Optionally alerts and focuses
- //-------------------------------------------------------------------
- function disallowModify(obj) {
-         var msg;
-         var dofocus;
-         if (arguments.length>1) { msg = arguments[1]; }
-         if (arguments.length>2) { dofocus = arguments[2]; } else { dofocus=false; }
-         if (getInputValue(obj) != getInputDefaultValue(obj)) {
-                 if (!isBlank(msg)) {
-                         alert(msg);
-                         }
-                 if (dofocus) {
-                         obj.select();
-                         obj.focus();
-                         }
-                 setInputValue(obj,getInputDefaultValue(obj));
-                 return true;
-                 }
-         return false;
-         }
-
- //-------------------------------------------------------------------
  // inputValue(v)
  //-------------------------------------------------------------------
 function inputValue(v) {
@@ -166,44 +69,6 @@ function inputValue(v) {
   }
   return v;
 }
-
- //-------------------------------------------------------------------
- // floatInputChange(input_object)
- //-------------------------------------------------------------------
- function floatInputChange(input_object) {
-   var ok = !isNaN(input_object.value);
-   if (!ok) {
-     alert(">"  + input_object.value + "< is not a valid 'float'-value!");
-     input_object.value = s;
-     input_object.focus();
-     return false;
-   }
-   return true;
- }
-
- //-------------------------------------------------------------------
- // floatInputChange(input_object)
- //-------------------------------------------------------------------
- function intInputChange(input_object) {
-   var ok = true;
-   var s = "";
-   for (i=0; i<input_object.value.length; i++) {
-       ch = input_object.value.charAt(i);
-       ch_ok =
-          (ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' ||
-       	  ch == '5' || ch == '6' || ch == '7' || ch == '8' || ch == '9');
-       ok = ok && ch_ok;
-       if (ch_ok)
-         s += ch;
-   }
-   if (!ok) {
-     alert(">"  + input_object.value + "< is not a valid 'int'-value!");
-     input_object.value = s;
-     input_object.focus();
-     return false;
-   }
-   return true;
- }
 
  //-------------------------------------------------------------------
  // isChanged(input_object)
@@ -257,143 +122,6 @@ function inputValue(v) {
                  }
          // return false for all other input types (button, image, etc)
          return false;
-         }
-
- //-------------------------------------------------------------------
- // getInputValue(input_object)
- //   Get the value of any form input field
- //   Multiple-select fields are returned as comma-separated values
- //   (Doesn't support input types: button,file,password,reset,submit)
- //-------------------------------------------------------------------
- function getInputValue(obj) {
-         if ((typeof obj.type != "string") && (obj.length > 0) && (obj[0] != null) && (obj[0].type=="radio")) {
-                 for (var i=0; i<obj.length; i++) {
-                         if (obj[i].checked == true) { return obj[i].value; }
-                         }
-                 return "";
-                 }
-         if (obj.type=="text")
-                 { return obj.value; }
-         if (obj.type=="hidden")
-                 { return obj.value; }
-         if (obj.type=="textarea")
-                 { return obj.value; }
-         if (obj.type=="checkbox") {
-                 if (obj.checked == true) {
-                         return obj.value;
-                         }
-                 return "";
-                 }
-         if (obj.type=="select-one") {
-                 if (obj.options.length > 0) {
-                         return obj.options[obj.selectedIndex].value;
-                         }
-                 else {
-                         return "";
-                         }
-                 }
-         if (obj.type=="select-multiple") {
-                 var val = "";
-                 for (var i=0; i<obj.options.length; i++) {
-                         if (obj.options[i].selected) {
-                                 val = val + "" + obj.options[i].value + ",";
-                                 }
-                         }
-                 if (val.length > 0) {
-                         val = val.substring(0,val.length-1); // remove trailing comma
-                         }
-                 return val;
-                 }
-         return "";
-         }
-
- //-------------------------------------------------------------------
- // getInputDefaultValue(input_object)
- //   Get the default value of any form input field when it was created
- //   Multiple-select fields are returned as comma-separated values
- //   (Doesn't support input types: button,file,password,reset,submit)
- //-------------------------------------------------------------------
- function getInputDefaultValue(obj) {
-         if ((typeof obj.type != "string") && (obj.length > 0) && (obj[0] != null) && (obj[0].type=="radio")) {
-                 for (var i=0; i<obj.length; i++) {
-                         if (obj[i].defaultChecked == true) { return obj[i].value; }
-                         }
-                 return "";
-                 }
-         if (obj.type=="text")
-                 { return obj.defaultValue; }
-         if (obj.type=="hidden")
-                 { return obj.defaultValue; }
-         if (obj.type=="textarea")
-                 { return obj.defaultValue; }
-         if (obj.type=="checkbox") {
-                 if (obj.defaultChecked == true) {
-                         return obj.value;
-                         }
-                 return "";
-                 }
-         if (obj.type=="select-one") {
-                 if (obj.options.length > 0) {
-                         for (var i=0; i<obj.options.length; i++) {
-                                 if (obj.options[i].defaultSelected) {
-                                         return obj.options[i].value;
-                                         }
-                                 }
-                         }
-                 return "";
-                 }
-         if (obj.type=="select-multiple") {
-                 var val = "";
-                 for (var i=0; i<obj.options.length; i++) {
-                         if (obj.options[i].defaultSelected) {
-                                 val = val + "" + obj.options[i].value + ",";
-                                 }
-                         }
-                 if (val.length > 0) {
-                         val = val.substring(0,val.length-1); // remove trailing comma
-                         }
-                 return val;
-                 }
-         return "";
-         }
-
- //-------------------------------------------------------------------
- // setInputValue()
- //   Set the value of any form field. In cases where no matching value
- //   is available (select, radio, etc) then no option will be selected
- //   (Doesn't support input types: button,file,password,reset,submit)
- //-------------------------------------------------------------------
- function setInputValue(obj,val) {
-         if ((typeof obj.type != "string") && (obj.length > 0) && (obj[0] != null) && (obj[0].type=="radio")) {
-                 for (var i=0; i<obj.length; i++) {
-                         if (obj[i].value == val) {
-                                 obj[i].checked = true;
-                                 }
-                         else {
-                                 obj[i].checked = false;
-                                 }
-                         }
-                 }
-         if (obj.type=="text")
-                 { obj.value = val; }
-         if (obj.type=="hidden")
-                 { obj.value = val; }
-         if (obj.type=="textarea")
-                 { obj.value = val; }
-         if (obj.type=="checkbox") {
-                 if (obj.value == val) { obj.checked = true; }
-                 else { obj.checked = false; }
-                 }
-         if ((obj.type=="select-one") || (obj.type=="select-multiple")) {
-                 for (var i=0; i<obj.options.length; i++) {
-                         if (obj.options[i].value == val) {
-                                 obj.options[i].selected = true;
-                                 }
-                         else {
-                                 obj.options[i].selected = false;
-                                 }
-                         }
-                 }
          }
 
  //-------------------------------------------------------------------

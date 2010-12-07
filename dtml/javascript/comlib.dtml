@@ -6,20 +6,6 @@
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
 // #############################################################################
-// ### Protoypes:
-// #############################################################################
-
-  String.prototype.removeWhiteSpaces = function() {return(this.replace(/\s+/g,""));};
-  String.prototype.leftTrim = function() {return(this.replace(/^\s+/,""));};
-  String.prototype.rightTrim = function() {return(this.replace(/\s+$/,""));};
-  String.prototype.basicTrim = function() {return(this.replace(/\s+$/,"").replace(/^\s+/,""));};
-  String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
-
-  Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=i;break;}}return idx;};
-  Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
-  Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
-
-// #############################################################################
 // ### toggleElement:
 // #############################################################################
 function toggleElement( selector) {
@@ -39,21 +25,6 @@ function toggleElement( selector) {
     else {
       els.hide('fast');
     }
-  }
-  return;
-}
-
-// #############################################################################
-// ### toggleImage:
-// #############################################################################
-function toggleImage( selector) {
-  var els = $(selector);
-  if ( els.attr("title") == "-") {
-    els.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
-  }
-  else 
-  if ( els.attr("title") == "+") {
-    els.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
   }
   return;
 }
@@ -128,20 +99,6 @@ function getRelativeUrl(path, url) {
 }
 
 // #############################################################################
-// ### getCoords
-// #############################################################################
-function getCoords(theElement) {
-  var coords = {x: 0, y: 0};
-  var element = theElement;
-  while (element) {
-    coords.x += element.offsetLeft;
-    coords.y += element.offsetTop;
-    element = element.offsetParent;
-  }
-  return coords;
-}
-
-// #############################################################################
 // ### scrollToElement
 // ### @see http://radio.javaranch.com/pascarello/2005/01/09/1105293729000.html
 // #############################################################################
@@ -180,76 +137,6 @@ function fireEvent( el, evtName) {
     }
   }
 }
-
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * +- [ZMI] Manage Preview
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- */
-
-  function manage_preview() {
-    var divs = $('div');
-    for ( var i = 0; i < divs.length; i++) {
-      var div = $(divs[i]);
-      var id= div.attr('id');
-      if (id!=undefined) {
-        if (id.indexOf('pageelement')==0 || id.indexOf('pageregion')==0) {
-          var mdiv = document.getElementById(id);
-          var ldiv = document.createElement( "div");
-          ldiv.appendChild( document.createTextNode(id));
-          mdiv.appendChild( ldiv);
-          div.css( { border:"5px solid black" ,background:"red"});
-        }
-      }
-    }
-  }
-
-  function do_manage_preview() { 
-    window.setTimeout("manage_preview()",100);
-  }
-
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * +- [ZMI] Highlight Text
- * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- */
-
-  function capitalize(Text) {
-    c=Text.split(""); c[0]=c[0].toUpperCase(); return c.join("");
-  }
-
-  function highlight_text(text) {
-    var exp = "";
-    for (var i = 0; i < text.length; i++) {
-      var ch = text.charAt(i);
-      if ( ch != '*') {
-        exp += "(" + ch + "|" + text.toUpperCase().charAt(i) + "|" + text.toLowerCase().charAt(i) + ")";
-      }
-    }
-    var regexp = new RegExp( "(" + exp + ")", "g");
-    var el = $('body');
-    $('*',el)
-        .andSelf()
-        .contents()
-        .filter(function(){
-            return this.nodeType === 3;
-        })
-        .filter(function(){
-            // Only match when contains 'simple string' anywhere in the text
-            return this.nodeValue.match(regexp);
-        })
-        .each(function(){
-            // Do something with this.nodeValue
-            $(this).parent().html($(this).parent().html().replace( regexp, "<span class=\"highlight\">$1</span>"));
-        });
-     var els = document.getElementsByName('highlight');
-     if ( els.length>0) {
-       scrollToElement(els[0]);
-     }
-  }
-
-  function do_highlight(text) { 
-    window.setTimeout("highlight_text('"+text+"')",100);
-  }
-
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Character Format
@@ -596,6 +483,23 @@ function storeCaret( textEl)
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
+/**
+ * Returns coordinates of given element
+ */
+function getCoords(theElement) {
+  var coords = {x: 0, y: 0};
+  var element = theElement;
+  while (element) {
+    coords.x += element.offsetLeft;
+    coords.y += element.offsetTop;
+    element = element.offsetParent;
+  }
+  return coords;
+}
+
+/**
+ * Returns body dimensions
+ */
 function getBodyDimensions() {
   if (document.body && document.body.offsetWidth) {
     var div = $('body>div');
@@ -605,6 +509,9 @@ function getBodyDimensions() {
   }
 }
 
+/**
+ * Returns inner dimensions
+ */
 function getInnerDimensions() {
   if (window.innerWidth) { // Mozilla/Firefox
     return {width: window.innerWidth, height: window.innerHeight};

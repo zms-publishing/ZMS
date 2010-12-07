@@ -5,13 +5,34 @@
 /*
  * Defaults
  */
+
+String.prototype.removeWhiteSpaces = function() {return(this.replace(/\s+/g,""));};
+String.prototype.leftTrim = function() {return(this.replace(/^\s+/,""));};
+String.prototype.rightTrim = function() {return(this.replace(/\s+$/,""));};
+String.prototype.basicTrim = function() {return(this.replace(/\s+$/,"").replace(/^\s+/,""));};
+String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
+Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=i;break;}}return idx;};
+Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
+Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
+var zmiParams = {};
+
 $(function(){
-	$.plugin('zms',{
+	// Parse params.
+	var href = self.location.href;
+	var i = href.indexOf('?');
+	href = href.substr(i+1);
+	var l = href.split('&');
+	for ( var j = 0; j < l.length; j++) {
+		i = l[j].indexOf('=');
+		zmiParams[l[j].substr(0,i)] = unescape(l[j].substr(i+1));
+	}
+	// ZMI plugin
+	$.plugin('zmi',{
 		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js',
 				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
 	// Always load
-	$.plugin('zms').get('body',function(){
+	$.plugin('zmi').get('body',function(){
 		// Content-Editable ////////////////////////////////////////////////////////
 		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 			pluginFancybox('.contentEditable',function() {});
@@ -63,6 +84,13 @@ $(function(){
 		}
 		////////////////////////////////////////////////////////////////////////////
 	});
+	// ZMS plugins
+	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
+		$.plugin('zmi_highlight',{
+			files: ['/++resource++zms_/jquery/plugin/jquery.plugin.zmi_highlight.js']
+			});
+		$.plugin('zmi_highlight').get('body',function(){});
+	}
 });
 
 

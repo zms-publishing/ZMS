@@ -11,6 +11,8 @@ String.prototype.leftTrim = function() {return(this.replace(/^\s+/,""));};
 String.prototype.rightTrim = function() {return(this.replace(/\s+$/,""));};
 String.prototype.basicTrim = function() {return(this.replace(/\s+$/,"").replace(/^\s+/,""));};
 String.prototype.superTrim = function() {return(this.replace(/\s+/g," ").replace(/\s+$/,"").replace(/^\s+/,""));};
+String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)};
+String.prototype.endsWith = function(str) {return (this.match(str+"$")==str)};
 Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=i;break;}}return idx;};
 Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
 Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
@@ -52,16 +54,20 @@ $(function(){
 					if (href.lastIndexOf('/')>0) {
 						href = href.substr(0,href.lastIndexOf('/'));
 					}
-					var parents = $(this).parents('.contentEditable,.zmiRenderShort');
+					var parents = $(this).parents('.contentEditable');
 					for ( var i = 0; i < parents.length; i++) {
 						var pid = $(parents[i]).attr('id');
 						pid = pid.substr(pid.indexOf('_')+1);
-						href += '/'+pid;
+						if (!href.endsWith('/'+pid)) {
+							href += '/'+pid;
+						}
 					}
 					var pid = $(this).attr('id');
 					var lang = pid.substr(pid.lastIndexOf('_')+1);
 					pid = pid.substr(pid.indexOf('_')+1,pid.lastIndexOf('_')-pid.indexOf('_')-1);
-					href += '/'+pid;
+					if (!href.endsWith('/'+pid)) {
+						href += '/'+pid;
+					}
 					href += '/manage_main';
 					if (self.location.href.indexOf('/manage')>0
 						&& self.location.href.indexOf('/manage_translate')<0) {

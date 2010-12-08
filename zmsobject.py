@@ -1271,14 +1271,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       """
       html = ''
       try:
-        ids = ['zmiRenderShort',self.id]
-        css = ['zmiRenderShort']
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          css.append('form-label')
           html = self.getTitlealt(REQUEST)
+          html = '<div class="contentEditable form-label" id="contentEditable_%s_%s">%s</div>'%(self.id,REQUEST['lang'],html)
         else:
           html = self._getBodyContent(REQUEST)
-        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
+        html = '<div class="zmiRenderShort">%s</div><!-- .zmiRenderShort -->'%html
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:

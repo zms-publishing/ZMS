@@ -14,7 +14,7 @@ function getZMILang() {
 // ############################################################################
 function getZMILangStr(key) {
 	var langDict = {
-		<dtml-in "['MSG_CONFIRM_DELOBJ','LOCALE']"><dtml-let si=sequence-item>
+		<dtml-in "['BTN_UPLOAD','BTN_CANCEL','MSG_CONFIRM_DELOBJ','LOCALE']"><dtml-let si=sequence-item>
 '<dtml-var si>':'<dtml-var "getZMILangStr(si)">'<dtml-unless sequence-end>,</dtml-unless>
 </dtml-let></dtml-in>
 	};
@@ -23,14 +23,6 @@ function getZMILangStr(key) {
 		return langStr;
 	}
 	return key;
-}
-
-
-// ############################################################################
-// ### radioOnClick:
-// ############################################################################
-function radioOnClick(el, url) {
-  location.href = url + '?lang=<dtml-var lang>&amp;' + el.name + '=' + escape(el.value);
 }
 
 

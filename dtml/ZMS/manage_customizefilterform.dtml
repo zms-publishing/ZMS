@@ -7,6 +7,20 @@
 <script language="JavaScript">
 <!--//
 
+$(function() {
+	$('.zmiDblclickable')
+		.mouseover( function(evt) {
+			$(this).addClass('zmiTeaserColor'); 
+		})
+		.mouseout( function(evt) {
+			$(this).removeClass('zmiTeaserColor'); 
+		})
+		.dblclick( function(evt) {
+			self.location.href = $('a[target=]',this).attr('href'); 
+		})
+		.attr( "title", "Double-click to edit!");
+});
+
   /**
    * @param fm
    */
@@ -140,14 +154,12 @@
 
  <div class="form-help"><dtml-var "getZMILangStr('MSG_FILTER')"></div><br />
 
- <table cellspacing="0" cellpadding="0" border="0" width="100%">
-
 <dtml-comment>
-<!-- ######################################################################
+<!-- ###########################################################################
      ###
-     ###   F I L T E R S
+     ###   FILTERS
      ###
-     ######################################################################
+     ###########################################################################
 -->
 </dtml-comment>
 
@@ -165,8 +177,6 @@
  <form name="form0" action="manage_changeFilter" method="post" onsubmit="return onForm0Submit(this)" enctype="multipart/form-data" style="margin:8px">
  <input type="hidden" name="key" value="">
  <input type="hidden" name="lang" value="<dtml-var lang>">
- <tr>
-  <td>
    <table cellspacing="0" cellpadding="0" border="0" width="100%">
    <tr>
     <td><div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('ATTR_FILTER')"></div></td>
@@ -175,13 +185,12 @@
    </table>
    <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
    <colgroup>
-    <col width="20" />
     <col />
     <col />
     <col />
     <col />
     <col />
-    <col width="20" />
+    <col width="20"/>
    </colgroup>
 
   <dtml-in "getFilterIds()">
@@ -190,7 +199,7 @@
     <!-- Header -->
     <dtml-if sequence-start>
     <tr>
-     <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+     <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
     </tr>
     </dtml-if>
 
@@ -198,7 +207,6 @@
      <dtml-if "filter.get('acquired',0) == 1">
       <!-- Acquired Filter -->
       <tr class="zmiNeutralColorStrong0">
-       <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
        <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')" html_quote></div></td>
        <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')" html_quote></div></td>
        <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_FORMAT')" html_quote></div></td>
@@ -206,8 +214,8 @@
        <td>&nbsp;</td>
       </tr>
       <tr valign="top" class="zmiNeutralColorMedium0">
-       <td class="form-element" rowspan="2" width="20"><input class="form-element" type="radio" name="id" value="<dtml-var "filter['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
        <td class="form-element" nowrap="nowrap">
+         <input type="hidden" name="id" value="<dtml-var "filter['id']">">
          <a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "filter['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><div class="form-text"><dtml-var "string_maxlen(filter['id'],20)" html_quote></div></a>
        </td>
        <td class="form-element" nowrap="nowrap"><dtml-var "filter.get('name','')" html_quote></td>
@@ -228,7 +236,7 @@
         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" onclick="btnClick(this,'obj');">
         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
        </td>
-       <td class="zmiNeutralColorLight1" rowspan="2" width="20"><input class="form-checkbox" type="checkbox" disabled="disabled" /></td>
+       <td rowspan="2" width="20"><input class="form-checkbox" type="checkbox" disabled="disabled" /></td>
       </tr>
       <tr valign="top" class="zmiNeutralColorMedium0">
        <td colspan="5">
@@ -238,9 +246,9 @@
          <td>
           <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="80%">
           <tr valign="middle">
-           <td class="form-small" nowrap="nowrap"><b>&nbsp;</b></td>
+           <td>&nbsp;</td>
            <td class="form-small" nowrap="nowrap"><b><dtml-var "getZMILangStr('ATTR_PROCESS')"></b></td>
-           <td class="form-small" nowrap="nowrap"><b>&nbsp;</b></td>
+           <td>&nbsp;</td>
           </tr>
           <dtml-in "getFilterProcesses(REQUEST['id'])">
            <dtml-let pid=sequence-index filterProcess=sequence-item process="getProcess(filterProcess['id'])">
@@ -262,7 +270,7 @@
               <dtml-let f="filterProcess['file']">
                <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle">
                <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var "filterProcess['id']">/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a> 
-               <b>(<dtml-var "f.getDataSizeStr()">)</b>
+               <b>(<dtml-var "getDataSizeStr(f.get_size())">)</b>
               </dtml-let>
              <dtml-else>
               &nbsp;
@@ -319,7 +327,6 @@
       </tr>
      <dtml-else>
      <tr class="zmiNeutralColorStrong0">
-      <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')" html_quote></div></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')" html_quote></div></td>
       <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_FORMAT')" html_quote></div></td>
@@ -327,8 +334,8 @@
       <td>&nbsp;</td>
      </tr>
      <tr valign="top" class="zmiNeutralColorMedium0">
-      <td class="form-element" rowspan="2" width="20"><input class="form-element" type="radio" name="id" value="<dtml-var "filter['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
       <td class="form-element" nowrap="nowrap">
+       <input type="hidden" name="id" value="<dtml-var "filter['id']">">
        <dtml-if "filter.get('zms_system',0) == 1">
         <img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/>
        </dtml-if>
@@ -359,17 +366,17 @@
      </tr>
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td colspan="5">
-       <table cellspacing="0" cellpadding="5" border="0" width="80%">
-	
+       <table cellspacing="0" cellpadding="5" border="0" width="90%">
+
        <!-- Filter-Processes -->
        <tr>
         <td>
          <!-- Header -->
-         <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="80%">
-         <tr valign="middle">
-          <td class="form-small" nowrap="nowrap"><b>&nbsp;</b></td>
-          <td class="form-small" nowrap="nowrap"><b><dtml-var "getZMILangStr('ATTR_PROCESS')"></b></td>
-          <td class="form-small" nowrap="nowrap"><b>&nbsp;</b></td>
+         <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
+         <tr>
+          <td>&nbsp;</td>
+          <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_PROCESS')"></b></td>
+          <td>&nbsp;</td>
          </tr>
          <!-- Change / Delete Processes -->
          <dtml-in "getFilterProcesses(REQUEST['id'])">
@@ -394,12 +401,14 @@
              <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or 
                        process.get('command','').find('{trans}')>=0">
               <tr>
-               <td class="form-small" nowrap="nowrap"><b>{trans}</b></td>
-               <td class="form-small" nowrap="nowrap"><input class="form-small" type="file" name="newFilterProcessFile_<dtml-var pid>" size="15"></td>
-               <td class="form-small" nowrap="nowrap" align="right">
+               <td class="form-small">{trans}</td>
+               <td class="form-small"><input class="form-small" type="file" name="newFilterProcessFile_<dtml-var pid>" size="15"></td>
+              </tr>
+              <tr>
+               <td class="form-small" colspan="2">
                 <dtml-let f="filterProcess.get('file',None)">
                  <dtml-if "f is not None and f != ''">
-                  <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle">
+                  <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "getDataSizeStr(f.get_size())">" border="0" align="absmiddle">
                   <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var pid>:int/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a> 
                  </dtml-if>
                 </dtml-let>
@@ -437,7 +446,7 @@
            <table cellspacing="1" cellpadding="0" border="0" width="100%">
            <tr>
             <td class="form-small" nowrap="nowrap">
-             <b>{trans}</b>
+             {trans}
              <input class="form-small" type="file" name="newFilterProcessFile" size="15">
             </td>
             <td align="right">
@@ -503,8 +512,7 @@
      </dtml-if>
     <dtml-else>
      <dtml-if "REQUEST.get('id','')==''">
-      <tr valign="top" class="neutralColorWhite">
-       <td class="form-element" width="20"><input class="form-element" type="radio" name="id" value="<dtml-var "filter['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+      <tr valign="top" class="zmiDblclickable neutralColorWhite">
        <td colspan="5">
         <dtml-call "REQUEST.set('src',filter.get('content_type',''))">
         <dtml-if "src.find(';')>0">
@@ -517,16 +525,15 @@
         </dtml-if>
         <table cellspacing="4" cellpadding="4" border="0">
         <tr>
-        <td class="neutralColorWhite">
-        <div class="form-label">
+        <td>
+        <div class="form-title">
          <dtml-if "filter.get('zms_system',0) == 1">
           <img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/>
          </dtml-if>
          <dtml-if "filter.get('acquired',0) == 1">
-          <a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "filter['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><div class="form-label"><dtml-var "filter.get('name','')" html_quote></div></a>
-         <dtml-else>
-          <dtml-var "filter.get('name','')" html_quote>
+          <a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "filter['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a>
          </dtml-if>
+          <a href="?lang=<dtml-var lang>&id=<dtml-var "filter['id']">" class="zmi"><strong><dtml-var "filter.get('name','')" html_quote></strong></a>
         </div>
         <table cellspacing="0" cellpadding="0" border="0">
         <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="4" /></td></tr>
@@ -537,16 +544,16 @@
           ><dtml-else
            ><dtml-var "getZMILangStr('ATTR_NONE')"
           ></dtml-if
-         ></td><td class="form-small" style="color:blue"><b>&nbsp;{IN}</b></td></tr>
+         ></td><td class="form-small" style="color:blue">&nbsp;{IN}</td></tr>
         <dtml-elif "filter['format']=='export'">
-         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><dtml-var "filter['format'].capitalize()"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:#777; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+          ><dtml-var "filter['format'].capitalize()"> <span style="color:#D9E100;">ZMS</span></td></tr>
         <dtml-elif "filter['format']=='XHTML'">
-         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><img src="<dtml-var MISC_ZMS>mime_type.text_html.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:#777; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+          ><img src="<dtml-var MISC_ZMS>mime_type.text_html.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <span style="color:#D9E100;">ZMS</span></td></tr>
         <dtml-elif "filter['format'] in ['XML','XML_incl_embedded']">
-         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:#777; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+          ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" /><dtml-var "filter['format']"> <span style="color:#D9E100;">ZMS</span></td></tr>
         </dtml-if>
         <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="8" style="border-left: 1px solid navy;"></td></tr>
         <dtml-in "getFilterProcesses(filter['id'])">
@@ -557,7 +564,7 @@
             <dtml-let f="filterProcess['file']">
              <td align="center" class="form-small" style="white-space: nowrap; background-color: white; border: 1px solid navy; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
               <dtml-if "len(process.keys())==1"><img src="<dtml-var MISC_ZMS>ico_error.gif" title="ERROR: Processing-step type '<dtml-var "process['id']">' not found!" border="0" align="absmiddle"/>&nbsp;<span style="border: 2px solid red;"></dtml-if>
-              <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle"/>
+              <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "getDataSizeStr(f.get_size())">" border="0" align="absmiddle"/>
               <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var pid>:int/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a>
               <dtml-if "len(process.keys())==1"></span></dtml-if>
              </td>
@@ -572,11 +579,10 @@
              <td class="form-small" style="white-space: nowrap; color: navy;"
               ><img src="<dtml-var MISC_ZMS>arr_lft.gif" border="0" align="absmiddle"
               ><img src="<dtml-var spacer_gif>" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
-              ><b>{trans}</b
-              ><img src="<dtml-var spacer_gif>" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
+              >{trans}<img src="<dtml-var spacer_gif>" border="0" width="8" height="1" style="border-top: 1px solid navy;" align="absmiddle"
              ></td>
              <td align="center" class="form-small" style="white-space: nowrap; background-color: white; border: 1px solid navy; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;">
-              <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "f.getDataSizeStr()">" border="0" align="absmiddle">
+              <img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">, <dtml-var "getDataSizeStr(f.get_size())">" border="0" align="absmiddle">
               <a href="get_conf_blob?path=ZMS.filter.filters/<dtml-var "filter['id']">/processes/<dtml-var pid>:int/file" target="_blank" class="zmi"><dtml-var "f.getFilename()"></a>
              </td>
             </dtml-let>
@@ -590,8 +596,8 @@
          </dtml-let>
         </dtml-in>
         <dtml-if "filter['format']=='import'">
-         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:black; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" />XML <font style="font-weight: bold; color:#D9E100; background-color:#000000;">&nbsp;ZMS&nbsp;</font></td></tr>
+         <tr><td align="center" class="form-small" style="white-space: nowrap; color:white; background-color:#777; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
+          ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" />XML <span style="color:#D9E100;">ZMS</span></td></tr>
         <dtml-else>
          <tr><td align="center" class="form-small" style="white-space: nowrap; border: 1px dotted blue; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
           ><dtml-if "filter.get('content_type','') in contentTypes"
@@ -599,7 +605,7 @@
           ><dtml-else
            ><dtml-var "getZMILangStr('ATTR_NONE')"
           ></dtml-if
-         ></td><td class="form-small" style="color:blue"><b>&nbsp;{OUT}</b></td></tr>
+         ></td><td class="form-small" style="color:blue">&nbsp;{OUT}</td></tr>
         </dtml-if>
         <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="4" /></td></tr>
         </table>
@@ -607,7 +613,7 @@
         </tr>
         </table>
        </td>
-       <td class="zmiNeutralColorLight1" width="20">
+       <td width="20">
         <dtml-if "filter.get('acquired',0) == 1">
           <input class="form-checkbox" type="checkbox" disabled="disabled" />
         <dtml-else>
@@ -624,10 +630,9 @@
   <!-- Insert Filter-Item -->
   <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr valign="top" class="zmiNeutralColorLight0">
-   <td>&nbsp;</td>
    <td class="form-element">
     <table cellspacing="0" cellpadding="0" border="0">
     <tr><td class="form-element"><dtml-var "getTextInput(fmName='form0', elName='newId', size=8, value='' )"></td></tr>
@@ -656,7 +661,7 @@
    <td>
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
-   <td class="zmiNeutralColorLight1" align="right">&nbsp;</td>
+   <td width="20">&nbsp;</td>
   </tr>
   </dtml-if>
 
@@ -669,10 +674,9 @@
      <dtml-if "filterId not in thisIds or not ZMS_THIS.getFilter(filterId).get('acquired',0) == 1">
       <dtml-unless count>
        <tr>
-        <td colspan="7"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
+        <td colspan="6"><dtml-var "f_headline(_,_,headline='%s: %s'%(getZMILangStr('BTN_ACQUIRE'),portalMaster.getHome().id))"></td>
        </tr>
        <tr class="zmiNeutralColorLight0">
-        <td>&nbsp;</td>
         <td colspan="6" class="form-element">
          <table cellspacing="0" cellpadding="0" border="0">
          <tr valign="top">
@@ -699,44 +703,29 @@
  </dtml-if>
  </table>
  <br/>
- </td>
- </tr>
  </form>
 
 </dtml-if>
 
 
 <dtml-comment>
-<!-- ######################################################################
+<!-- ###########################################################################
      ###
-     ###   P R O C E S S E S
+     ###   PROCESSES
      ###
-     ######################################################################
+     ###########################################################################
 -->
 </dtml-comment>
 
 <dtml-if "REQUEST.get('id','')=='' or REQUEST.get('id','') in getProcessIds()">
 
+ <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('ATTR_PROCESSES')"></div>
  <form name="form1" action="manage_changeProcess" method="post" onsubmit="return onForm1Submit(this)" enctype="multipart/form-data" style="margin:8px">
  <input type="hidden" name="key" value="">
  <input type="hidden" name="lang" value="<dtml-var lang>">
- <tr>
-  <td>
-   <table cellspacing="0" cellpadding="0" border="0" width="100%">
-   <tr>
-    <td><div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('ATTR_PROCESSES')"></div></td>
-    <td align="right"
-     ><dtml-if "REQUEST.get('id','')==''"
-      ><a href="javascript:exportBtnClick(document.forms['form1'])"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a
-     ><dtml-else
-      ><img src="<dtml-var spacer_gif>" border="0" width="20" height="20";
-     ></dtml-if
-    ></td>
-   </tr>
-   </table>
+ 
    <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
    <colgroup>
-    <col width="20" />
     <col />
     <col />
     <col />
@@ -750,14 +739,14 @@
     <!-- Header -->
     <dtml-if sequence-start>
     <tr>
-     <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+     <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
     </tr>
     <tr class="zmiNeutralColorStrong0">
-     <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
      <td><div class="form-label" colspan="2"><dtml-var "getZMILangStr('ATTR_COMMANDLINE')"></div></td>
      <td>&nbsp;</td>
+     <td align="right"><a href="javascript:exportBtnClick(document.forms['form1'])"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a></td>
     </tr>
     </dtml-if>
 
@@ -777,16 +766,15 @@
      <dtml-if "process.get('acquired',0) == 1">
       <!-- Acquired Process -->
       <tr valign="top" class="zmiNeutralColorMedium0">
-       <td width="20" rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var "process['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
-       <td><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "filter['id']">?id=<dtml-var "process['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><div class="form-text"><dtml-var "string_maxlen(process['id'],20)" html_quote></div></a></td>
-       <td><div class="form-element"><dtml-var "process.get('name','')" html_quote></div></td>
-       <td><div class="form-small" colspan="2"><code><dtml-var "process.get('command','')" html_quote></code></div></td>
-       <td class="zmiNeutralColorLight1" width="20"><input class="form-checkbox" type="checkbox" disabled="disabled" /></td>
+       <td><input type="hidden" name="id" value="<dtml-var "process['id']">"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "filter['id']">?id=<dtml-var "process['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><div class="form-text"><dtml-var "string_maxlen(process['id'],20)" html_quote></div></a></td>
+       <td class="form-element"><dtml-var "process.get('name','')" html_quote></td>
+       <td class="form-small" colspan="2"><code><dtml-var "process.get('command','')" html_quote></code></td>
+       <td width="20"><input class="form-checkbox" type="checkbox" disabled="disabled" /></td>
       </tr>
      <dtml-else>
      <tr valign="top" class="zmiNeutralColorMedium0">
-      <td width="20" rowspan="2"><input class="form-element" type="radio" name="id" value="<dtml-var "process['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');" checked="checked"></td>
       <td>
+       <input type="hidden" name="id" value="<dtml-var "process['id']">">
        <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)']">
         <img src="<dtml-var "getattr(this(),process['id']).icon">" title="<dtml-var "process['type']">" border="0" align="absmiddle"/>
        <dtml-else>
@@ -803,7 +791,7 @@
        <input type="hidden" name="inpType" value="<dtml-var "process.get('type','process')">">
       </td>
       <td><dtml-var "getTextInput(fmName='form1', elName='inpName', size=12, value=process.get('name','') )"></td>
-      <td colspan="2"><dtml-var "getTextArea(fmName='form1', elName='inpCommand', cols=25, rows=5, value=process.get('command',''), enabled=1, REQUEST=REQUEST, css='form-fixed' )"></td>
+      <td><dtml-var "getTextArea(fmName='form1', elName='inpCommand', cols=25, rows=5, value=process.get('command',''), enabled=1, REQUEST=REQUEST, css='form-fixed' )"></td>
       <td nowrap="nowrap">
        <nobr>
         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');" style="width:85px"><br/>
@@ -812,6 +800,9 @@
         </dtml-unless>
        </nobr>
       </td>
+       <td width="20">
+        <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "process['id']">" checked="checked"/>
+       </td>
      </tr>
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td class="form-small" colspan="5">
@@ -827,8 +818,7 @@
      </dtml-if>
     <dtml-else>
      <dtml-if "REQUEST.get('id','')==''">
-      <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
-       <td class="form-small"><input class="form-element" type="radio" name="id" value="<dtml-var "process['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+      <tr valign="top" class="zmiDblclickable <dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
        <td class="form-small" nowrap="nowrap">
         <dtml-if "process.get('type','process') in ['DTML Method','External Method','Script (Python)']">
          <img src="<dtml-var "getattr(this(),process['id']).icon">" title="<dtml-var "process['type']">" border="0" align="absmiddle"/>
@@ -841,11 +831,11 @@
         <dtml-if "process.get('acquired',0) == 1">
          <a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "process['id']">" title="@<dtml-var "getConfProperty('Portal.Master')">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a>
         </dtml-if>
-        <dtml-var "string_maxlen(process['id'],20)" html_quote>
+        <a href="?lang=<dtml-var lang>&id=<dtml-var "process['id']">" class="zmi"><strong><dtml-var "string_maxlen(process['id'],20)" html_quote></strong></a>
        </td>
        <td class="form-small"><dtml-var "process.get('name','')" html_quote></td>
        <td class="form-small" colspan="2"><code><dtml-var "string_maxlen(process.get('command',''),40)" html_quote></code></td>
-       <td class="zmiNeutralColorLight1" width="20">
+       <td width="20">
         <dtml-if "process.get('acquired',0) == 1">
          <input class="form-checkbox" type="checkbox" disabled="disabled" />
         <dtml-else>
@@ -862,10 +852,9 @@
   <!-- Insert Process-Item -->
   <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+   <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr valign="top" class="zmiNeutralColorLight0">
-   <td>&nbsp;</td>
    <td class="form-element">
     <table cellspacing="0" cellpadding="0" border="0">
     <tr><td class="form-element"><dtml-var "getTextInput(fmName='form1', elName='newId', size=8, value='' )"></td></tr>
@@ -893,34 +882,31 @@
    <td>
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">
    </td>
-   <td class="zmiNeutralColorLight1">&nbsp;</td>
+   <td>&nbsp;</td>
   </tr>
   </dtml-if>
  </table>
  <br/>
- </td>
- </tr>
  </form>
  
 </dtml-if>
 
 <dtml-comment>
-<!-- ######################################################################
+<!-- ###########################################################################
      ###
-     ###   C O N F I G U R A T I O N
+     ###   CONFIGURATION
      ###
-     ######################################################################
+     ###########################################################################
 -->
 </dtml-comment>
 
 <dtml-if "REQUEST.get('id','')==''">
- <tr>
-  <td>
-   <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('TAB_CONFIGURATION')"></div>
-   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
-  <form name="form2" action="manage_changeFilter" method="post" onsubmit="return onForm1Submit(this)" enctype="multipart/form-data" style="margin:8px">
+
+ <div class="form-label">&#8594;&nbsp;<dtml-var "getZMILangStr('TAB_CONFIGURATION')"></div>
+ <form name="form2" action="manage_changeFilter" method="post" onsubmit="return onForm1Submit(this)" enctype="multipart/form-data" style="margin:8px">
   <input type="hidden" name="key" value="">
   <input type="hidden" name="lang" value="<dtml-var lang>">
+  <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
   <tr>
    <td><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
@@ -946,13 +932,9 @@
     </table>
    </td>
   </tr>
-  </form>
-   </table>
-   <br/>
-  </td>
- </tr>
+  </table>
+  <br/>
+ </form>
 </dtml-if>
 
- </table>
- 
 <dtml-var manage_page_footer>

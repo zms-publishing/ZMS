@@ -74,22 +74,18 @@
        <dtml-if "len(seq_desc_langs)>1">
         &nbsp;
          <img name="coverageBtn" src="<dtml-var MISC_ZMS>btn_multilang<dtml-var "int(coverage.find('global.')==0)">.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" align="absmiddle">
-         <dtml-if "getParentLanguage(seq_lang)==''">
-          <b>global</b>
-         <dtml-else>
-          <b>local</b>
-         </dtml-if>
+         <label for="attr_dc_coverage"><dtml-if "getParentLanguage(seq_lang)==''">global<dtml-else>local</dtml-if></label>
          <dtml-if "lang==seq_lang">
           <input type="hidden" name="attr_dc_coverage" value="<dtml-var coverage>">
           <dtml-if "len(seq_desc_langs)>1 and len(options)>1">
-           <input class="form-checkbox" type="checkbox" <dtml-if "coverage.find('global.')==0">checked="checked"</dtml-if> onclick="if (this.checked) { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang1.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='global.<dtml-var lang>'; } else { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang0.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='local.<dtml-var lang>'; }"
+           <input id="attr_dc_coverage" class="form-checkbox" type="checkbox" <dtml-if "coverage.find('global.')==0">checked="checked"</dtml-if> onclick="if (this.checked) { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang1.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='global.<dtml-var lang>'; } else { coverageBtn.src='<dtml-var MISC_ZMS>btn_multilang0.gif'; document.forms['form0'].elements['attr_dc_coverage'].value='local.<dtml-var lang>'; }"
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
           <dtml-else>
-           <input type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
+           <input id="attr_dc_coverage" type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
           </dtml-if>
          <dtml-else>
-           <input type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
+           <input id="attr_dc_coverage" type="checkbox" disabled="disabled" <dtml-if "int(coverage.find('global.')==0)">checked="checked"</dtml-if>
              title="<dtml-var "getZMILangStr('ATTR_LANGS')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>">
          </dtml-if>
        <dtml-else>

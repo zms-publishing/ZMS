@@ -60,11 +60,12 @@
 
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
   <colgroup>
-   <col width="40" />
-   <col width="20" />
+   <col width="80"/>
    <col />
    <col />
-   <col width="20" />
+   <col />
+   <col />
+   <col width="20"/>
   </colgroup>
 
 <!-- Edit -->
@@ -73,24 +74,20 @@
   <dtml-if sequence-start>
    <!-- Header -->
    <tr>
-    <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
+    <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'),extra='<a href='+QUOT+'javascript:exportBtnClick()'+QUOT+'><img src='+QUOT+MISC_ZMS+'mime_type.text_xml.gif'+QUOT+' title='+QUOT+getZMILangStr('BTN_EXPORT')+' (XML)'+QUOT+' border='+QUOT+'1'+QUOT+' align='+QUOT+'absmiddle'+QUOT+'/></a>')"></td>
    </tr>
   </dtml-if>
   <dtml-if "REQUEST['id']==fmt['id']">
    <!-- Headline -->
    <tr valign="top">
-    <td>&nbsp;</td>
-    <td><input class="form-element" type="radio" name="id" value="" <dtml-if "REQUEST.get('id','')==''">checked="checked"</dtml-if> onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-    <td colspan="5"><div class="form-label"><dtml-var "getZMILangStr('ATTR_ATTRS')"></div></td>
+    <td colspan="6"><div class="form-label"><dtml-var "getZMILangStr('ATTR_ATTRS')"></div></td>
    </tr>
    <tr valign="top" class="zmiNeutralColorMedium0">
-        <td>&nbsp;</td>
-        <td><input class="form-element" type="radio" name="id" value="<dtml-var "fmt['id']">" checked="checked" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
         <td colspan="4">
          <table cellspacing="1" cellpadding="0" border="0">
          <tr valign="middle">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></div></td>
-          <td><dtml-var "getTextInput(fmName='form0',elName='new_id',size=20,value=fmt['id'],type='text',REQUEST=REQUEST,css='form-small')"></td>
+          <td><input type="hidden" name="id" value="<dtml-var "fmt['id']">"><dtml-var "getTextInput(fmName='form0',elName='new_id',size=20,value=fmt['id'],type='text',REQUEST=REQUEST,css='form-small')"></td>
          </tr>
          <tr valign="middle">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('ATTR_CAPTION')"></b></div></td>
@@ -135,22 +132,22 @@
          </dtml-if>
          </table>
         </td>
-        <td colspan="2" nowrap="nowrap">
+        <td nowrap="nowrap">
          <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
          <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
         </td>
+        <td align="right" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "fmt['id']">" checked="checked"/></td>
    </tr>
   <dtml-elif "REQUEST['id']==''">
    <tr valign="top" class="neutralColorWhite">
     <td class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,url='manage_changeCharformat?id=%s'%fmt['id'])"></td>
-    <td><input class="form-element" type="radio" name="id" value="<dtml-var "fmt['id']">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
-    <td colspan="4" class="form-label">
-     <div class="zmiNeutralColorMedium0">
+    <td colspan="4" style="padding:4px;">
+     <div class="zmiNeutralColorMedium0 form-small">
       <dtml-if "fmt.get('btn')">
        <a href="#" class="button"><img src="<dtml-var "fmt['btn']">" title="<dtml-var "fmt['display']">" border="0" align="absmiddle"/></a>&nbsp;
-       <dtml-var "fmt['id']">
+       <a href="?lang=<dtml-var lang>&id=<dtml-var "fmt['id']">" class="zmi"><strong><dtml-var "fmt['id']"></strong></a>
       <dtml-else>
-       &nbsp;<img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">&nbsp;
+       <a href="?lang=<dtml-var lang>&id=<dtml-var "fmt['id']">" class="zmi">&nbsp;<img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">&nbsp;</a>
       </dtml-if>
      </div>
      <dtml-if "fmt['tag']">
@@ -168,10 +165,10 @@
   <!-- Insert -->
   <dtml-if "REQUEST.get('id','')==''">
   <tr>
-   <td colspan="7"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
+   <td colspan="6"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0" valign="top">
-   <td colspan="2">&nbsp;</td>
+   <td>&nbsp;</td>
    <td class="form-element">
     <dtml-var "getTextInput(fmName='form0',elName='_id',size=10)">
     <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
@@ -184,19 +181,20 @@
     <input class="form-element" type="file" name="_btn" size="15">
     <div align="right" class="form-small">Button</div>
    </td>
-   <td class="form-element" colspan="2">
+   <td class="form-element">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
    </td>
+   <td>&nbsp;</td>
   </tr>
   </dtml-if>
 
   <!-- Import -->
   <dtml-if "REQUEST.get('id','')==''">
    <tr>
-    <td colspan="7"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+    <td colspan="6"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
    </tr>
    <tr class="zmiNeutralColorLight0">
-    <td colspan="7">
+    <td colspan="6">
      <table cellspacing="0" cellpadding="2" border="0">
      <tr valign="middle">
       <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>

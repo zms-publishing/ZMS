@@ -210,13 +210,12 @@ class ZMSLinkContainer(ZMSContainerObject):
       """
       html = ''
       try:
-        ids = ['zmiRenderShort',self.id]
-        css = ['zmiRenderShort']
         html = ''.join(
           map(lambda x: x.renderShort(REQUEST), 
             filter(lambda x: x.isVisible(REQUEST), 
               self.getChildNodes(REQUEST,['ZMSLinkElement']))))
-        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
+        html = '<div class="contentEditable" id="contentEditable_%s_%s">%s</div>'%(self.id,REQUEST['lang'],html)
+        html = '<div class="zmiRenderShort">%s</div><!-- .zmiRenderShort -->'%html
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:

@@ -165,7 +165,7 @@ a.zmi:hover, a.zmi:active {
 .zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#DDD; }
 .zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#EEE; }
 .zmiNeutralColorLight1, body.zmiNeutralColorLight1 { background-color:#E2E3DE; }
-.zmiTeaserColor { background-color:#BEDAFD; }
+.zmiTeaserColor { background-color:#BEDAFD!important; }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Columns

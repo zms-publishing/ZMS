@@ -241,9 +241,6 @@ class ObjTypes:
         # Zoom (HiRes).
         # -------------
         elif len(imgzoomattr) > 0:
-          s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
-          imgzoomclazz = 'zoom'
-          imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),self.getDataSizeStr(imgzoomobj.get_size()))
           
           # Zoom (SuperRes).
           # ----------------
@@ -251,11 +248,13 @@ class ObjTypes:
           if key in self.getObjAttrs().keys() and self.getConfProperty('ZMSGraphic.superres',0)==1:
             imgsuperzoomobj = self.getObjProperty(key,REQUEST)
             if imgsuperzoomobj is not None:
-              imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
-              imgzoomobj = imgsuperzoomobj
               s_url = getHref2Zoom(self,imgzoomobj,REQUEST)
+              imgzoomclazz = 'zoom'
+              imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'),self.getDataSizeStr(imgzoomobj.get_size()))
+              imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
+              s_url = getHref2Zoom(self,imgsuperzoomobj,REQUEST)
               imgzoomclazz = 'superzoom'
-              imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'),imgzoomobj.getDataSizeStr())
+              imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'),imgsuperzoomobj.getDataSizeStr())
               imgzoom += '<a href="%s" class="%s"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
           
           # Image-Zoom.

@@ -13,6 +13,10 @@
 <script language="JavaScript">
 <!--//
 
+  function radioOnClick(el, url) {
+    location.href = url + '?lang=<dtml-var lang>&amp;' + el.name + '=' + escape(el.value);
+  }
+
   /**
    * @param fm
    */
@@ -159,7 +163,7 @@
    <dtml-else>
     <dtml-if "REQUEST.get('id','')==''">
      <tr valign="top" class="neutralColorWhite">
-      <td class="form-element"><input class="form-element" type="radio" name="id" value="<dtml-var "fmt.getId()">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
+      <td class="zmiNeutralColorStrong0"><input class="form-element" type="radio" name="id" value="<dtml-var "fmt.getId()">" onclick="radioOnClick(this,'<dtml-var URL0>');"></td>
       <td colspan="4"><div title="<dtml-var "fmt.getId()">" style="padding:4px;margin:4px;border:<dtml-if "fmt.getId()==getTextFormatDefault()">2px<dtml-else>1px</dtml-if> dashed black;"><dtml-var "renderText(fmt.getDisplay(), REQUEST)"></div></td>
       <td align="right" width="20"><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "fmt.getId()">"/></td>
      </tr>
@@ -185,9 +189,10 @@
   <dtml-var "getTextInput('form0','_display',15,'')">
   <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div>
  </td>
- <td colspan="2">
+ <td>
   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
  </td>
+ <td>&nbsp;</td>
 </tr>
 </dtml-if>
 

@@ -16,7 +16,7 @@
 </dtml-comment>
 <dtml-if "objAttr['type']=='delimiter'">
  <dtml-var zmi_form_section_end>
- <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='%s_%s'%(metaObj['id'],objAttr['id']),zmi_form_section_headline=elLabel,zmi_form_collapsed=False)">
+ <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id=objAttr['id'],zmi_form_section_headline=elLabel,zmi_form_collapsed=False)">
 
 <dtml-comment>
 ##### Hint #####

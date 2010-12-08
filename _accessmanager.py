@@ -654,6 +654,11 @@ class AccessManager(AccessableContainer):
       message = ''
       id = REQUEST.get('id','')
       
+      # Cancel.
+      # -------
+      if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+        id = ''
+      
       # Insert.
       # -------
       if btn == self.getZMILangStr('BTN_INSERT'):

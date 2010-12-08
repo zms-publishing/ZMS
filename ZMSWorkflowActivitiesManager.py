@@ -27,6 +27,7 @@ import ZPublisher.HTTPRequest
 import copy
 import sys
 import time
+import urllib
 # Product Imports.
 import _blobfields
 import _globals
@@ -137,6 +138,11 @@ class ZMSWorkflowActivitiesManager:
     message = ''
     id = REQUEST.get('id','')
     
+    # Cancel.
+    # -------
+    if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      id = ''
+    
     # Change.
     # -------
     if btn == self.getZMILangStr('BTN_SAVE'):
@@ -149,7 +155,7 @@ class ZMSWorkflowActivitiesManager:
           newIcon = item.get('icon',None)
         else:
           newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-      id = self.setActivity(self, item.get('id',None), newId, newName, newIcon)
+      id = self.setActivity( item.get('id',None), newId, newName, newIcon)
       message = self.getZMILangStr('MSG_CHANGED')
     
     # Delete.
@@ -170,7 +176,7 @@ class ZMSWorkflowActivitiesManager:
           newIcon = item.get('icon',None)
         else:
           newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-      id = self.setActivity(self, item.get('id',None), newId, newName, newIcon)
+      id = self.setActivity( item.get('id',None), newId, newName, newIcon)
       message = self.getZMILangStr('MSG_INSERTED')%id
     
     # Move to.

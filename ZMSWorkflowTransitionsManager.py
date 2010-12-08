@@ -26,6 +26,7 @@ from __future__ import nested_scopes
 import copy
 import sys
 import time
+import urllib
 # Product Imports.
 import _globals
 
@@ -119,6 +120,11 @@ class ZMSWorkflowTransitionsManager:
     message = ''
     id = REQUEST.get('id','')
     
+    # Cancel.
+    # -------
+    if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      id = ''
+    
     # Change.
     # -------
     if btn == self.getZMILangStr('BTN_SAVE'):
@@ -129,7 +135,7 @@ class ZMSWorkflowTransitionsManager:
       newTo = REQUEST.get('inpTo')
       newPerformer = REQUEST.get('inpPerformer',[])
       newDtml = REQUEST.get('inpDtml','').strip()
-      message += self.setTransition(self, item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
+      message += self.setTransition( item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
       message += self.getZMILangStr('MSG_CHANGED')
       id = newId
     
@@ -149,7 +155,7 @@ class ZMSWorkflowTransitionsManager:
       newTo = REQUEST.get('newTo',[])
       newPerformer = REQUEST.get('newPerformer',[])
       newDtml = REQUEST.get('newDtml','').strip()
-      message += self.setTransition(self, item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
+      message += self.setTransition( item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
       message += self.getZMILangStr('MSG_INSERTED')%id
       id = newId
     

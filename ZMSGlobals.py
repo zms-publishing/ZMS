@@ -32,6 +32,7 @@ from types import StringTypes
 from binascii import b2a_base64, a2b_base64
 import base64
 import copy
+import fnmatch
 import operator
 import os
 import re
@@ -404,7 +405,16 @@ class ZMSGlobals:
       """
       if encoding is not None:
         s = unicode( s, encoding)
+      # remove all tags.
+      s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
+      s = re.sub( '<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
+      s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
       if len(s) > maxlen:
+        if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
+           s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
+          maxlen = maxlen + s[maxlen:].find(';')
+        if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
+          maxlen += 1
         s = s[:maxlen] + etc
       return s
 
@@ -1134,7 +1144,10 @@ class ZMSGlobals:
           k=filter(lambda x: str_item(x[0])!=v, k)
         else:
           v = str_item(v).lower()
-          k=filter(lambda x: str_item(x[0]).lower().find(v)>=0, k)
+          if v.find('*')>=0 or v.find('?')>=0:
+            k=filter(lambda x: fnmatch.fnmatch(str_item(x[0]).lower(),v), k)
+          else:
+            k=filter(lambda x: str_item(x[0]).lower().find(v)>=0, k)
       # Filter Numbers.
       elif type(v) is int or type(v) is float:
         if o=='=' or o=='==':

@@ -114,6 +114,11 @@ body.zmi {
 	font-size: 66%;
 }
 
+body.zmi.zmisitemap {
+	background-color:#fff !important;
+	background-image:none !important;
+}
+
 body.zmi div.zmi {
 	width: 800px;
 	/*

@@ -503,7 +503,7 @@ function drag(ereignis) {
 			body.zmi {background:transparent!important}
 		</style>
 	</head>
-	<body class="zmi neutralColorWhite" onload="draginit()">
+	<body class="zmi zmisitemap" onload="draginit()">
 		<div class="zmi">
 
 <dtml-with "getHome()">
@@ -517,7 +517,7 @@ function drag(ereignis) {
  </dtml-if>
 </div>
 
-<div class="ZMIManageBody ui-widget-content">
+<div class="ZMIManageBody">
 
 <div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;display:none;visibility:hidden;"></div>
 

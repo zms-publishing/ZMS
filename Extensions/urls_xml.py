@@ -137,18 +137,11 @@ def recurseHtmlPages(self, obj, path, lang, REQUEST, RESPONSE):
       # EO 0024404
 	  
       for key in dctOp.keys():
-          if key == 'index' and \
-                  level > 0 and \
-                  self.getConfProperty('ZMS.pathhandler',0) != 0 and \
-                  self.getConfProperty('ZMS.export.pathhandler',0) == 1:
-              filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
+          if key == 'sitemap':
+              pageext = '.html'
           else:
-              if key == 'sitemap':
-                  pageext = '.html'
-              else:
-                  pageext = obj.getPageExt( REQUEST)
-              filename = '%s/%s_%s%s'%( path, key, lang, pageext)
-          
+              pageext = obj.getPageExt( REQUEST)
+          filename = '%s/%s_%s%s'%( path, key, lang, pageext)
           content_type = 'text/html'
           RESPONSE.write('<url lang="%s" content_type="%s"><![CDATA[%s]]></url>\n'%(lang,content_type,filename))
           

@@ -160,6 +160,8 @@ a.zmi:hover, a.zmi:active {
 	color: #f90;
 }
 
+.zmiTableRowSelected { background-color:#008!important;}
+.zmiTableRowSelected>.form-small { color:white;}
 .zmiTableRowOdd { background-color:#FEFEFE; }
 .zmiTableRowEven { background-color:#F4F4F4; }
 
@@ -170,7 +172,8 @@ a.zmi:hover, a.zmi:active {
 .zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#DDD; }
 .zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#EEE; }
 .zmiNeutralColorLight1, body.zmiNeutralColorLight1 { background-color:#E2E3DE; }
-.zmiTeaserColor { background-color:#BEDAFD!important; }
+.zmiTeaserColor { background-color:#BEDAFD!important;}
+.zmiTeaserColor>.form-small { color:#222;}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Columns

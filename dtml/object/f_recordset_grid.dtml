@@ -22,7 +22,7 @@
   <dtml-if grid_options>
    <col width="<dtml-var "max(
      len(filter(lambda x: x in ['insert','export'],grid_options.keys())),
-     len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*22">"/>
+     len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*25">"/>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
@@ -33,23 +33,29 @@
   </dtml-in>
    <col/>
  </colgroup>
-
-
+ 
  <dtml-try>
  <tr class="neutralColorMedium">
   <dtml-if grid_options>
-  <th class="form-small" align="left" style="white-space:nowrap"
-   ><dtml-if "'insert' in grid_options.keys()"
-   ><a href="<dtml-var "grid_options['insert']['action']">" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_add.gif" alt="add" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
-    /></a
-   ></dtml-if
-   ><dtml-if "'export' in grid_options.keys()"
-   ><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('manage_target')"> target="<dtml-var "grid_options['export'].get('manage_target')">"</dtml-if>
-    ><img src="<dtml-var "grid_options['export']['icon']">" alt="export" title="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
-    /></a
-   ></dtml-if
-  ></th>
+  <th class="form-small" align="left">
+   <ul id="icons" class="ui-widget ui-helper-clearfix">
+   <dtml-if "'insert' in grid_options.keys()">
+      <li
+         class="ui-state-default ui-corner-all"
+         title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..."
+       ><a href="<dtml-var "grid_options['insert']['action']">"
+         ><span class="ui-icon ui-icon-plus"></span
+       ></a
+      ></li>
+   </dtml-if>
+   <dtml-if "'export' in grid_options.keys()">
+      <li><a href="<dtml-var "grid_options['export']['action']">" class="button"<dtml-if "grid_options['export'].get('manage_target')"> target="<dtml-var "grid_options['export'].get('manage_target')">"</dtml-if>
+          ><img src="<dtml-var "grid_options['export']['icon']">" alt="export" title="<dtml-var "getZMILangStr('BTN_EXPORT')">..." border="0"
+          /></a
+      ></li>
+   </dtml-if>
+   </ul>
+  </th>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
@@ -105,50 +111,65 @@
      > zmiTeaserColor</dtml-if>"
 >
   <dtml-if grid_options>
-  <td class="neutralColorMedium" align="left" valign="top" nowrap="nowrap"
-   ><dtml-if "'delete' in grid_options.keys()"
-   ><div style="float:left;width:20px;"
-   ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_options['delete']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">');" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
-   /></a
-   ></div
-   ></dtml-if
-   ><dtml-if "'sort' in grid_options.keys()"
-   ><div style="float:left;width:20px;"
-    ><dtml-if "_['res-index']==0"
-     ><img src="<dtml-var MISC_ZMS>spacer.gif" border="0" class="hbutton"
-    ><dtml-else
-     ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['up']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="hbutton"
-      ><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0"
-     ></a
-    ></dtml-if
-    ><br
-    ><dtml-if "_['res-index']==len(res)-1"
-     ><img src="<dtml-var MISC_ZMS>spacer.gif" border="0" class="hbutton"
-    ><dtml-else
-     ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['down']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="hbutton"
-      ><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0"
-     ></a
-    ></dtml-if
-   ></div
-   ></dtml-if
-   ><dtml-if "'update' in grid_options.keys()"
-   ><div style="float:left;width:20px;"
-   ><a href="<dtml-var "url_append_params(grid_options['update']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_edit.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
-   /></a
-   ></div
-   ></dtml-if
-   ><dtml-if "'choose' in grid_options.keys()"
-   ><div style="float:left;width:20px;"
-   ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>"
-       onmouseover="chooseBtn<dtml-var res-index>.src='<dtml-var MISC_ZMS>btn_choose_on.gif';"
-       onmouseout="chooseBtn<dtml-var res-index>.src='<dtml-var MISC_ZMS>btn_choose.gif';"
-    ><img name="chooseBtn<dtml-var res-index>" src="<dtml-var MISC_ZMS>btn_choose.gif" alt="<dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_RECORD')">..." border="0"
-   /></a
-   ></div
-   ></dtml-if
-  ></td>
+  <td class="neutralColorMedium" align="left" valign="top">
+   <ul id="icons" class="ui-widget ui-helper-clearfix">
+   <dtml-if "'delete' in grid_options.keys()">
+        <li
+           class="ui-state-default ui-corner-all"
+           title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..."
+         ><span class="ui-icon ui-icon-trash"
+           onclick="confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_options['delete']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">');"
+         ></span
+        ></li>
+   </dtml-if>
+   <dtml-if "'update' in grid_options.keys()">
+      <li
+         class="ui-state-default ui-corner-all"
+         title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
+       ><a href="<dtml-var "url_append_params(grid_options['update']['action']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">"
+         ><span class="ui-icon ui-icon-pencil"></span
+       ></a
+      ></li>
+   </dtml-if>
+   <dtml-if "'sort' in grid_options.keys()">
+     <dtml-if "_['res-index']==0">
+            <li
+               class="ui-state-default ui-corner-all"
+            ></li>
+     <dtml-else>
+            <li
+               class="ui-state-default ui-corner-all"
+               title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">"
+             ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['up']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">"
+               ><span class="ui-icon ui-icon-arrow-1-n"></span
+             ></a
+            ></li>
+     </dtml-if>
+     <dtml-if "_['res-index']==len(res)-1">
+            <li
+               class="ui-state-default ui-corner-all"
+            ></li>
+     <dtml-else>
+            <li
+               class="ui-state-default ui-corner-all"
+               title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">"
+             ><a href="<dtml-var "url_append_params(grid_options['sort']['action']['down']%str(row.get('id',_['res-index'])),{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})">"
+               ><span class="ui-icon ui-icon-arrow-1-s"></span
+             ></a
+            ></li>
+     </dtml-if>
+   </dtml-if>
+   <dtml-if "'choose' in grid_options.keys()">
+        <li
+           class="ui-state-default ui-corner-all"
+           title="<dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_RECORD')">..."
+         ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>"
+           ><span class="ui-icon ui-icon-triangle-1-e"></span
+         ></a
+        ></li>
+    </dtml-if>
+   </ul>
+  </td>
   </dtml-if>
    <dtml-in grid_cols mapping>
     <dtml-let grid_col=sequence-item>
@@ -229,7 +250,7 @@
            ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
             ><a href="<dtml-let choose="grid_options['choose']['action']%str(row.get('id',_['res-index']))"><dtml-if "choose.find('javascript:')==0"><dtml-var choose><dtml-else><dtml-var "url_append_params(choose,{'qorder':REQUEST.get('qorder',''),'qorderdir':REQUEST.get('qorderdir','asc')})"></dtml-if></dtml-let>" class="zmi"
            ></dtml-if
-           ><dtml-if "u.find('<?xml')==0"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="XML" border="0"/><dtml-else><dtml-var u></dtml-if
+           ><dtml-if "u.find('<'+'?xml')==0"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="XML" border="0"/><dtml-else><dtml-var u></dtml-if
            ><dtml-if "_['sequence-start'] and 'choose' in grid_options.keys()"
             ></a
            ></dtml-if

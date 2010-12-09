@@ -90,9 +90,8 @@
 
 <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
 <tr valign="middle">
- <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></div></td>
- <td>
-  <div class="form-element">
+ <td class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></td>
+ <td class="form-element">
   <dtml-var version_object_state>
   <dtml-if "getObjProperty('change_dt',REQUEST)">
    <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))">
@@ -100,7 +99,6 @@
   <dtml-if "getObjProperty('change_uid',REQUEST)">
    <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('change_uid',REQUEST)">
   </dtml-if>
- </div>
 </tr>
 <dtml-var zmi_form_section_end>
 
@@ -112,8 +110,13 @@
   <input type="hidden" name="qorderdir" value="<dtml-var qorderdir>">
   <input type="hidden" name="qstart" value="<dtml-var qstart>">
   <div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
-   <dtml-var "getZMILangStr('ATTR_ROWS')"> <input class="form-small" type="text" name="qsize:int" value="<dtml-var qsize>" size="2">
-   <dtml-var "getZMILangStr('ATTR_FILTER')"> <input class="form-small" type="text" name="qfilters:int" value="<dtml-var "SESSION['qfilters']">" size="2">
+   <div class="zmi_col_left">
+    <dtml-var "getZMILangStr('ATTR_ROWS')"> <input class="form-small" type="text" name="qsize:int" value="<dtml-var qsize>" size="2">
+    <dtml-var "getZMILangStr('ATTR_FILTER')"> <input class="form-small" type="text" name="qfilters:int" value="<dtml-var "SESSION['qfilters']">" size="2">
+   </div>
+   <div class="zmi_col_right">
+    <dtml-var "len(res)">  <dtml-var "getZMILangStr('OF')"> <dtml-var "len(res_abs)">
+   </div>
   </div>
   <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
   <dtml-call "REQUEST.set('found_fk_key',False)">

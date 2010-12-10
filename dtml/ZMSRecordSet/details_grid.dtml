@@ -11,17 +11,22 @@
 ###############################################################################
 </dtml-comment>
 
-<div class="form-small">
-<dtml-var "_.min(1,len(res))"> - <dtml-var "len(res)">
+<dtml-var "min(1,len(res))"> - <dtml-var "len(res)">
 <table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong0">
  <tr class="neutralColorMedium">
-  <th align="left" valign="top"
-   ><dtml-if "'insert' in grid_options"
-   ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':qindex,'ZMS_ACTION':'insert'})">" style="color:black" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..." border="0"
-   ></a
-   ></dtml-if
-  ></th>
+ <th align="left" valign="top">
+  <ul id="icons" class="ui-widget ui-helper-clearfix">
+    <dtml-if "'insert' in grid_options">
+      <li
+         class="ui-state-default ui-corner-all"
+         title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_RECORD')">..."
+       ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':qindex,'ZMS_ACTION':'insert'})">"
+         ><span class="ui-icon ui-icon-plus"></span
+       ></a
+      ></li>
+    </dtml-if>
+  </ul>
+ </th>
   <th class="form-small">#</th>
   <dtml-in "metaObjDetail['attrs']" mapping>
   <dtml-if custom>
@@ -35,26 +40,29 @@
  </tr>
  <dtml-in res>
   <dtml-let res-index=sequence-index>
-  <tr valign="top"
-   <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">
-    bgcolor="navy"
-   <dtml-elif sequence-odd>
-    class="neutralColorLight"
-   <dtml-else>
-    class="neutralColorWhite"
-   </dtml-if>>
-  <td class="neutralColorMedium" align="left" valign="top" nowrap="nowrap"
-   ><dtml-if "'delete' in grid_options"
-   ><a href="javascript:confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_url,{'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'delete'})">');" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..." border="0"
-   ></a
-   ></dtml-if
-   ><dtml-if "'update' in grid_options"
-   ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'update'})">" class="button"
-    ><img src="<dtml-var MISC_ZMS>btn_edit.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
-   ></a
-   ></dtml-if
-  ></td>
+  <tr valign="top" class="zmiTableRow<dtml-if sequence-odd>Odd<dtml-else>Even</dtml-if><dtml-if "REQUEST.get('qindex',-1)==_['res-index']"> zmiTableRowSelected</dtml-if><dtml-if "'update' in grid_options"> zmiDblclickable</dtml-if>">
+  <td class="neutralColorMedium" align="left" valign="top" nowrap="nowrap">
+   <ul id="icons" class="ui-widget ui-helper-clearfix">
+     <dtml-if "'delete' in grid_options">
+        <li
+           class="ui-state-default ui-corner-all"
+           title="<dtml-var "getZMILangStr('CAPTION_DELETE')%getZMILangStr('ATTR_RECORD')">..."
+         ><span class="ui-icon ui-icon-trash"
+           onclick="confirmDeleteBtnOnClick('<dtml-var "url_append_params(grid_url,{'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'delete'})">');"
+         ></span
+        ></li>
+     </dtml-if>
+     <dtml-if "'update' in grid_options">
+      <li
+         class="ui-state-default ui-corner-all"
+         title="<dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">..."
+       ><a href="<dtml-var "url_append_params(grid_url,{'lang':lang,'qsize:int':qsize,'qorder':qorder,'qorderdir':qorderdir,'qstart':qstart,'qindex:int':_['sequence-index'],'ZMS_ACTION':'update'})">"
+         ><span class="ui-icon ui-icon-pencil"></span
+       ></a
+      ></li>
+    </dtml-if>
+   </ul>
+  </td>
   <td class="form-small" align="right" <dtml-if "REQUEST.get('qindex',-1)==_['res-index']">style="color:white"</dtml-if>><dtml-var "_['sequence-index']+1">.</td>
   <dtml-let row=sequence-item>
    <dtml-in "metaObjDetail['attrs']" mapping>
@@ -84,7 +92,7 @@
         <dtml-if v>
          <center>
           <dtml-try>
-           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "_.min(int(v.getWidth()),20)">" height="<dtml-var "_.min(int(v.getHeight()),20)">" border="0"></a>
+           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "min(int(v.getWidth()),20)">" height="<dtml-var "min(int(v.getHeight()),20)">" border="0"></a>
           <dtml-except>
            <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "getMimeTypeIconSrc(v.getContentType())">" title="<dtml-var "v.getFilename()">" border="0"></a>
           </dtml-try>
@@ -127,7 +135,7 @@
        <dtml-comment>##### Grid.Amount #####</dtml-comment>
        <dtml-elif "type=='amount'">
         <dtml-try>
-         <dtml-var "getConfProperty('ZMS.locale.amount.unit','EUR')">&nbsp;<dtml-var "'%1.2f'%_.float(v)">
+         <dtml-var "getConfProperty('ZMS.locale.amount.unit','EUR')">&nbsp;<dtml-var "'%1.2f'%float(v)">
         <dtml-except>
          <dtml-var "getConfProperty('ZMS.locale.amount.unit','EUR')">&nbsp;<dtml-var v>
         </dtml-try>
@@ -154,4 +162,3 @@
 <dtml-unless res>
  <div class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)">!</div>
 </dtml-unless>
-</div>

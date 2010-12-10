@@ -292,25 +292,25 @@ function changeType( el)
       s += ' <'+'dtml-var '+obj_prop_quoted+'>\n';
       s += '</'+'dtml-if>\n';
     }
-    // Show hint.
-    var dtmlHintTextDiv = $('#dtmlHintText');
-    var html = s;
-    var i;
-    while ( ( i = html.indexOf( '<')) >= 0) {
-      html = html.substr( 0, i) + '&lt;' + html.substr( i + 1);
-    }
-    html = html.substr( 0, html.length - 1);
-    dtmlHintTextDiv.html('<pre>'+html+'</pre>');
-    var dtmlHintBtn = $('#dtmlHintBtn'+v);
-    var pos = dtmlHintBtn.position();
-    var dtmlHintDiv = $('#dtmlHint');
-    dtmlHintDiv.css({
-      position:'absolute',
-      top:pos.top+dtmlHintBtn.outerHeight(),
-      left:0
-    });
-    dtmlHintDiv.show('normal');
-  }
+	// Show hint.
+	var html = s;
+	var i;
+	while ( ( i = html.indexOf( '<')) >= 0) {
+		html = html.substr( 0, i) + '&lt;' + html.substr( i + 1);
+	}
+	html = html.substr( 0, html.length - 1);
+	html = '<pre>'+html+'</pre>';
+	$('#dtmlHintText').html(html);
+	pluginFancybox('#dtmlHintText',function() {
+		$.fancybox({
+			'href':'#dtmlHintText',
+			'title':'DTML: '+v,
+			'autoDimensions':true,
+			'transitionIn':'fade',
+			'transitionOut':'fade'
+		});
+	});
+}
 
   /**
    *
@@ -514,11 +514,9 @@ function changeType( el)
      <!-- Object-Attributes -->
      <tr class="zmiNeutralColorMedium0">
       <td colspan="7">
-       <table cellspacing="0" cellpadding="5" border="0" width="90%">
-       <tr>
-       <td>
+
        <!-- Headline -->
-       <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="80%">
+       <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
        <tr valign="middle">
         <td class="form-small" colspan="2"><b>&nbsp;</b></td>
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></td>
@@ -824,8 +822,7 @@ function changeType( el)
 
        <!-- Insert Attribute -->
        <tr valign="middle">
-        <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0"/></td>
-        <td><img src="<dtml-var spacer_gif>" border="0" width="16" height="16" style="vertical-align:middle" /></td>
+        <td colspan="2" align="right"><div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">"><span class="ui-icon ui-icon-plus"></span></div></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_id" value="" size="10" style="width:80px;"></td>
         <td class="form-small"><input class="form-small" type="text" name="attr_name" value="" size="15" style="width:120px;"></td>
         <td class="form-small">
@@ -855,11 +852,8 @@ function changeType( el)
        </table>
 
        <!-- BO Edit -->
-       <div id="dtmlHint" style="display:none;align:center;" onclick="dtmlHintBtnClose();">
-       <div style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;">
-        <div align="right"><a href="#" onclick="dtmlHintBtnClose();" onmouseover="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_close').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_close" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" style="vertical-align:middle" /></a></div>
-        <div id="dtmlHintText" class="form-small" style="padding:4px;"></div>
-       </div>
+       <div style="display:none;align:center;">
+        <div id="dtmlHintText" class="form-small" style="background-color:#FFFFE8;padding:4px;"></div>
        </div>
        <dtml-if "REQUEST.has_key('inp_id_name')">
        <br />
@@ -969,9 +963,6 @@ function changeType( el)
       </dtml-unless>
       <!-- EO Access -->
 
-       </td>
-       </tr>
-       </table>
       </td>
      </tr>
      </dtml-unless>
@@ -1266,19 +1257,18 @@ function changeType( el)
       ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
       ><dtml-in packages
        ><dtml-let package=sequence-item package_id="id_quote(package)"
-         ><div class="form-small">
-          <a href="javascript:selectCheckboxes($('#slctnoneBtn').parents('form'),false)" class="button"
-           ><img id="slctnoneBtn" src="<dtml-var MISC_ZMS>btn_slctnone.gif" title="<dtml-var "getZMILangStr('BTN_SLCTNONE')">" border="0" align="absmiddle"
-          ></a
-          ><a href="javascript:selectCheckboxes($('#slctallBtn').parents('form'),true)" class="button"
-           ><img id="slctallBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" title="<dtml-var "getZMILangStr('BTN_SLCTALL')">" border="0" align="absmiddle"
-          ></a
+         ><div class="form-small"
+          ><div class="zmi-icon ui-widget ui-helper-clearfix ui-state-default ui-corner-all" title="title="<dtml-var "getZMILangStr('BTN_SLCTALL')">/<dtml-var "getZMILangStr('BTN_SLCTNONE')">" style="float:left;" onclick="selectCheckboxes($(this).parents('form'));"
+           ><span class="ui-icon ui-icon-check"></span
+          ></div
+          ><div class="ui-helper-clearfix"
           ><input class="form-checkbox" type="checkbox" name="createIdsFilter:list" value="<dtml-var package>" checked="checked"
           ><dtml-if "not metaObjMap.get(package)"
-           ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" style="border:none; vertical-align:middle;"
+           ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" align="absmiddle"
           ></dtml-if
           ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
           ><code style="color:navy"><b><dtml-var package missing="<default>" html_quote></b></code>
+          </div>
           <dtml-in metaObjs
            ><dtml-let metaObj=sequence-item
             ><dtml-if "metaObj.get('package')==package"
@@ -1287,7 +1277,7 @@ function changeType( el)
               ><dtml-if "metaObjMap.get(metaObj['id'])"
                ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" style="vertical-align:middle"
               ><dtml-else
-               ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" style="border:none; vertical-align:middle;"
+                ><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">" border="0" align="absmiddle"
               ></dtml-if
               ><dtml-if temp_import_zms_system><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
               ><b><dtml-var "metaObj['name']"></b>

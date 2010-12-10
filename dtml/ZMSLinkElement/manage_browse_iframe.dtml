@@ -1,10 +1,7 @@
-<dtml-if "_.hasattr(getHome(),'browse_objs')"
-><dtml-var browse_objs
-><dtml-else>
 <dtml-var manage_page_header>
 
 <dtml-call "REQUEST.set('thisObj',this())">
-<dtml-call "REQUEST.set('l_thisObj',getLinkObj(REQUEST.get('elUrlValue','')))">
+<dtml-call "REQUEST.set('l_thisObj',getLinkObj(REQUEST.get('elValue','')))">
 <dtml-if "l_thisObj is None">
  <dtml-call "REQUEST.set('l_thisObj',getSelf([PAGES,PAGEELEMENTS]))">
 </dtml-if>
@@ -181,17 +178,15 @@
   /**
    *
    */
-  function selectObject(url, anchor, title) 
-  {
+  function selectObject(url, anchor, title) {
    <dtml-if fmName>
-     var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
+     var fm = self.parent.document.forms['<dtml-var fmName>'];
      if ( fm) {
        var path = getInternalUrl(url);
-       var elUrl = fm.elements['<dtml-var elUrlName>'];
-       elUrl.value = path;
+       self.parent.zmiBrowseObjsApplyUrlValue('<dtml-var fmName>','<dtml-var elName>',path);
      }
      else {
-       self.parent.opener.selectObject(url,title);
+       self.parent.selectObject(url,title);
      }
    <dtml-else>
      if ($('#type').val().indexOf('dtml')==0) {
@@ -200,9 +195,9 @@
      else {
        url = getRelativeUrl(url,anchor);
      }
-     self.parent.opener.selectObject(url,title);
+     self.parent.selectObject(url,title);
    </dtml-if>
-    self.parent.close();
+    self.parent.$.fancybox.close();
   }
 
 /**
@@ -244,8 +239,8 @@ function processResponse(data)
   // Get object-id.
   var id = $("pages",data).attr("id").replace(/\./,"_").replace(/\-/,"_");
   // Get and clear html-element (div).
-  var el = $("#"+id+"_children");
-  el.empty( );
+  var $el = $("#"+id+"_children");
+  var html = '';
   // Get and iterate pages.
   var pages = $("pages",data).children("page");
   for (var i = 0; i < pages.length; i++) {
@@ -257,21 +252,14 @@ function processResponse(data)
     var page_titlealt = $(page).attr("titlealt");
     var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
     var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
-    var div = document.createElement( "div");
-    $(div).attr( {id: "div_" + page_id});
-    $(div).addClass( "form-small");
+    html += '<div id="div_'+page_id+'" class="form-small">';
     if ( page_has_children) {
-      var a = document.createElement( "a");
-      a.setAttribute( "href", "javascript:clickElement('" + page_id + "','" + page_absolute_url + "');");
-      var img = document.createElement( "img");
-      $(img).attr( {id: page_id + "_img", src: "<dtml-var MISC_ZMS>pl.gif", border: 0, align: "absmiddle", title: "+"});
-      a.appendChild( img);
-      div.appendChild( a)
+      html += '<a href="javascript:clickElement(\''+page_id+'\',\''+page_absolute_url+'\')">';
+      html += '<img id="'+page_id+'_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" align="absmiddle" title="+">';
+      html += '</a>';
     }
     else {
-      var img = document.createElement( "img");
-      $(img).attr( {src: "<dtml-var spacer_gif>", width: 16, height: 16, border: 0, align: "absmiddle", title: ""});
-      div.appendChild( img);
+      html += '<img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle" title="">';
     }
     var page_anchor = "";
     var page_index = "";
@@ -284,40 +272,29 @@ function processResponse(data)
         page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
       }
     }
-    var input = document.createElement( "input");
-    $(input).attr( "type", "radio");
-    $(input).addClass( "form-radio");
-    input.onclick = Function( "selectObject('"+page_absolute_url+"','"+page_anchor+"','"+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+"')");
-    div.appendChild( input);
+    html += '<input type="radio" class="form-radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_anchor+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')">';
     var img = document.createElement( "img");
     if ( page_meta_id == "ZMSLinkElement") {
-      $(img).attr( {src: "<dtml-var MISC_ZMS>ico_ref.gif", border: 0, align: "absmiddle", title: $(page).attr("display_type")});
-      $(img).css( {backgroundImage: "url("+$(page).attr("display_icon")+")"});
+      html += '<img src="<dtml-var MISC_ZMS>ico_ref.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
     }
     else if ( page.getAttribute("restricted") == "True" || page.getAttribute("restricted") == "1") {
-      $(img).attr( {src: "<dtml-var MISC_ZMS>restricted.gif", border: 0, align: "absmiddle", title: $(page).attr("display_type")});
-      $(img).css( {backgroundImage: "url("+$(page).attr("display_icon")+")"});
+      html += '<img src="<dtml-var MISC_ZMS>restricted.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
     }
     else {
-      $(img).attr( {id: "icon_" + page_id, src: $(page).attr("display_icon"), border: 0, align: "absmiddle", title: $(page).attr("display_type")});
+      html += '<img id="icon_'+page_id+'" src="'+$(page).attr("display_icon")+'" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
     }
-    div.appendChild( img);
     if ( page_meta_id == "ZMSGraphic" || page_meta_id == "ZMSTextarea") {
       for (var j = 0; j < page.childNodes.length; j++) {
         var item = page.childNodes[j];
         if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
-          div.appendChild( document.createTextNode( search_quote( item.firstChild.data, 25)));
+          page_titlealt = search_quote(item.firstChild.data,25);
         }
       }
     }
-    else {
-      div.appendChild( document.createTextNode( page_titlealt));
-    }
-    el.append( div);
-    var div_children = document.createElement( "div");
-    $(div_children).attr( "id", page_id + "_children");
-    $(div_children).css( "margin", "4px 1px 1px 8px");
-    el.append( div_children);
+    html += '<a href="'+page_absolute_url+'/manage_main" target="_blank" class="zmi">'+page_titlealt+'</a>';
+    html += '</div>';
+    html += '<div id="'+page_id+'_children" style="margin:4px 1px 1px 8px"></div>';
+    $el.html(html);
   }
 }
 
@@ -333,7 +310,7 @@ function followHref( href, extra)
   href += '&came_from=<dtml-var "REQUEST.form.get( 'came_from', getHome().absolute_url())">';
   href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
   href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
-  href += '&elUrlName=<dtml-var "REQUEST.get( 'elUrlName', '')" url_quote>';
+  href += '&elName=<dtml-var "REQUEST.get( 'elName', '')" url_quote>';
   href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
   if ( extra) {
     href += extra;
@@ -344,11 +321,10 @@ function followHref( href, extra)
 //-->
 </script>
 		<style>
-			body.zmi {background:transparent!important}
+			body.zmi {background-color:#EEE!important;padding:10px;}
 		</style>
 	</head>
-	<body class="zmi zmiNeutralColorLight0">
-		<div style="padding:4px">
+	<body class="zmi ui-widget-content ui-corner-all">
 
 <dtml-with l_thisPage>
 
@@ -359,7 +335,8 @@ function followHref( href, extra)
  ###  Choose type
  ###############################################################################
  </dtml-comment>
- <dtml-if "len(REQUEST.get('came_from',''))==0 and URL.split('/')[-1].find('manage')<0">
+ <dtml-if "REQUEST.get('came_from','')==''">
+ <div class="zmi-form-section ui-widget-content ui-corner-all">
  <table cellspacing="0" cellpadding="1" border="0">
  <tr id="tr_type" valign="middle">
   <td class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
@@ -423,18 +400,17 @@ function followHref( href, extra)
          }
        }
       <dtml-if fmName>
-       var fm = self.parent.opener.document.forms['<dtml-var fmName>'];
+       var fm = self.parent.document.forms['<dtml-var fmName>'];
        if ( fm) {
-         var elUrl = fm.elements['<dtml-var elUrlName>'];
-         elUrl.value = path;
+         self.parent.zmiBrowseObjsApplyUrlValue('<dtml-var fmName>','<dtml-var elName>',path);
        }
        else  {
-         self.parent.opener.selectObject(path,title);
+         self.parent.selectObject(path,title);
        }
       <dtml-else>
-       self.parent.opener.selectObject(path,title);
+       self.parent.selectObject(path,title);
       </dtml-if>
-       self.parent.close();
+       self.parent.$.fancybox.close();
      }
 
    //-->
@@ -497,6 +473,7 @@ function followHref( href, extra)
   <td class="form-small"><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="  OK  " onclick="btnClick(this)"></td>
  </tr>
  </table>
+ </div>
  <br/>
  </dtml-if>
 
@@ -613,7 +590,5 @@ function followHref( href, extra)
 
 </dtml-with>
 
-		</div>
 	</body>
 </html>
-</dtml-if>

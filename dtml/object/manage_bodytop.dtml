@@ -1,10 +1,15 @@
-<body class="zmi">
-	<img id="zmibg" src="/misc_/zms/zmibg.jpg" alt="" />
+<body class="zmi<dtml-if "REQUEST.cookies.get('zmi_maximized')"> maximized</dtml-if>">
+	<img id="zmibg" src="<dtml-var MISC_ZMS>zmibg.jpg" alt="" />
 	<div class="zmi">
 	<div id="zmi_header">
 		<div class="zmi-document-margin">
-			<a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>zms_banner.gif" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine" border="0"/></a>
-		</div>
+			<div class="zmi_col_left">
+				<img id="zmi_banner" src="<dtml-var MISC_ZMS>zms_banner.gif" title="<dtml-var zms_version> - ZOPE based contentmanagement system for science, technology and medicine" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
+			</div><!-- .zmi_col_left -->
+			<div class="zmi_col_right">
+				<img id="zmi_maximize" src="<dtml-var spacer_gif>" border="0" onclick="zmiToggleMaximize()">
+			</div><!-- .zmi_col_right -->
+		</div><!-- .zmi-document-margin -->
 		<div id="zmi_logo">
 			<a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_zmi_logo" border="0" title="<dtml-var "getTitle(REQUEST)">" /></a>
 		</div><!-- #zmi_logo -->

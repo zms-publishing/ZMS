@@ -1,9 +1,24 @@
-  <dtml-call "REQUEST.set('row',row)">
+<dtml-call "REQUEST.set('row',row)">
 
-  <div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
-   <dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">
-  </div>
-  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
+<div class="zmi-form-section ui-widget-header ui-helper-clearfix ui-corner-all">
+ <div class="zmi_col_left">
+  <dtml-var "getZMILangStr('CAPTION_EDIT')%getZMILangStr('ATTR_RECORD')">
+ </div>
+ <div class="zmi_col_right form-small">
+  (<dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')">:
+  <dtml-if "row.get('_change_uid') and row.get('_change_dt')">
+    <dtml-var "getLangFmtDate(row.get('_change_dt'))">
+    <dtml-var "getZMILangStr('BY')"> <dtml-var "row.get('_change_uid')">
+  <dtml-else>?</dtml-if>
+  , <dtml-var "getZMILangStr('ATTR_CREATED')">:
+  <dtml-if "row.get('_created_uid') and row.get('_created_dt')">
+    <dtml-var "getLangFmtDate(row.get('_created_dt'))">
+    <dtml-var "getZMILangStr('BY')"> <dtml-var "row.get('_created_uid')">
+  <dtml-else>?</dtml-if>)
+ </div>
+</div>
+
+<dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
 
   <dtml-in "metaObj['attrs']" mapping>
    <dtml-unless "id.find('_')==0">
@@ -97,7 +112,6 @@
    </dtml-unless>
   </dtml-in>
 
-  <dtml-var metaobj_recordset_details>
-
-  <dtml-var zmi_form_section_end>
-  <dtml-var f_submitBtn>
+<dtml-var metaobj_recordset_details>
+<dtml-var zmi_form_section_end>
+<dtml-var f_submitBtn>

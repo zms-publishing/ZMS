@@ -112,6 +112,8 @@
   <dtml-if "REQUEST.get('btn','') not in [ getZMILangStr('BTN_CANCEL'), getZMILangStr('BTN_BACK')]">
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-call "REQUEST.set('new_row',[])">
+  <dtml-call "new_row.extend(['_created_uid',AUTHENTICATED_USER.getId(),'_created_dt',parseLangFmtDate(ZopeTime())])">
+  <dtml-call "new_row.extend(['_change_uid',AUTHENTICATED_USER.getId(),'_change_dt',parseLangFmtDate(ZopeTime())])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
     <dtml-if "type in metaobj_manager.valid_types or type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes">
@@ -142,6 +144,8 @@
   <dtml-call "REQUEST.set('res_abs',copy_list(res_abs))">
   <dtml-call "REQUEST.set('row',res[qindex])">
   <dtml-call "REQUEST.set('new_row',[])">
+  <dtml-in "['uid','dt']"><dtml-let si=sequence-item sk="'_created_%s'%si"><dtml-if "row.get(sk)"><dtml-call "new_row.extend([sk,row.get(sk)])"></dtml-if></dtml-let></dtml-in>
+  <dtml-call "new_row.extend(['_change_uid',AUTHENTICATED_USER.getId(),'_change_dt',parseLangFmtDate(ZopeTime())])">
   <dtml-in "metaObj['attrs'][1:]" mapping>
    <dtml-let obj_attr="getObjAttr(id)" obj_attrName="getObjAttrName(obj_attr,lang)">
     <dtml-if "type in metaobj_manager.valid_types or type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes">

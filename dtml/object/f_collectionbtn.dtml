@@ -5,7 +5,7 @@
 *	@param url
 *******************************************************************************
 </dtml-comment>
-<ul id="icons" class="ui-widget ui-helper-clearfix"
+<ul class="zmi-icons ui-widget ui-helper-clearfix"
  ><li
   ><select class="form-small collectionBtn" onchange="location.href='<dtml-var url>&btn=move_to&lang=<dtml-var lang>&pos:int='+this.selectedIndex" onfocus="collectionPositionPopulate(this,<dtml-var sequence-length>)" onmouseover="collectionPositionPopulate(this,<dtml-var sequence-length>)"
    ><option selected="selected"><dtml-var "_['sequence-index']+1"></option

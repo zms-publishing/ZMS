@@ -441,7 +441,6 @@ class Exportable(_filtermanager.FilterItem):
           t = rfindDelimiter(html[:k],'<') # search start of tag
           # <img src="url">
           # <a href='url'">
-          # <a href="javascript:open_function('url'...">
           if (html[ t + 1: t + 4].lower() == 'img' and html[ k - 3: k].lower() == 'src') \
               or (html[ t + 1].lower() == 'a' and html[ k - 4: k].lower() == 'href'):
             l = findDelimiter(html[ d + 1:])

@@ -1,7 +1,4 @@
-<dtml-try>
-<dtml-var "_['comlib.js']">
-<dtml-except>
-<dtml-call "REQUEST.RESPONSE.setHeader('Expires',_.DateTime(_.DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())">
+<dtml-call "REQUEST.RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())">
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
@@ -47,58 +44,6 @@ function toggleCookie( key) {
 }
 
 // #############################################################################
-// ### getRelativeUrl:
-// #############################################################################
-function getRelativeUrl(path, url) {
-  var currntPath = path;
-  if (currntPath.indexOf('<dtml-var SERVER_URL>')==0)
-    currntPath = currntPath.substr(<dtml-var "len(SERVER_URL)+1">);
-  else if (currntPath.indexOf('/')==0)
-    currntPath = currntPath.substr(1);
-  var targetPath = url;
-  if (targetPath.indexOf('<dtml-var SERVER_URL>')==0)
-    targetPath = targetPath.substr(<dtml-var "len(SERVER_URL)+1">);
-  else if (targetPath.indexOf('/')==0)
-    targetPath = targetPath.substr(1);
-  while ( currntPath.length > 0 && targetPath.length > 0) {
-     var i = currntPath.indexOf( '/');
-     var j = targetPath.indexOf( '/');
-     if ( i < 0)
-       currntElmnt = currntPath;
-     else
-       currntElmnt = currntPath.substring( 0, i);
-     if ( j < 0)
-       targetElmnt = targetPath;
-     else 
-       targetElmnt = targetPath.substring( 0, j);
-     if ( currntElmnt != targetElmnt)
-       break;
-     if ( i < 0)
-       currntPath = '';
-     else
-       currntPath = currntPath.substring( i + 1);
-     if ( j < 0)
-       targetPath = '';
-     else
-       targetPath = targetPath.substring( j + 1);
-  }
-  while ( currntPath.length > 0) {
-     var i = currntPath.indexOf( '/');
-     if ( i < 0) {
-       currntElmnt = currntPath;
-       currntPath = '';
-     }
-     else {
-       currntElmnt = currntPath.substring( 0, i);
-       currntPath = currntPath.substring( i + 1);
-     }
-     targetPath = '../' + targetPath;
-  }
-  url = './' + targetPath;
-  return url;
-}
-
-// #############################################################################
 // ### fireEvent
 // ### @see http://www.rakshith.net/blog/?p=35
 // #############################################################################
@@ -130,59 +75,42 @@ function fireEvent( el, evtName) {
 
 var selectedText = "";
 
-/*
- * manage_browseObjsBtnClick:
- * @param elTitleName (@deprecated)
+/**
+ * zmiBrowseObjs
  */
-function manage_browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
-{
-  var title = "<dtml-var "url_quote(getZMILangStr('CAPTION_CHOOSEOBJ'))">";
-  var url = "manage_browse_objs";
-  var elUrlValue = "";
-  if (fmName.length>0 && elUrlName.length>0)
-  {
-    elUrlValue = document.forms[ fmName].elements[ elUrlName].value;
-  }
-  params = 'lang=' + lang;
-  params += '&fmName=' + escape( fmName);
-  params += '&elUrlName=' + escape( elUrlName);
-  params += '&elUrlValue=' + escape( elUrlValue);
-  if ( selectedText) {
-    params += '&selectedText=' + escape( selectedText);
-  }
-  open_frame(title,url,params,420,360,",resizable=yes,scrollbars=yes");
-  return false;
+function zmiBrowseObjs(fmName, elName, lang) {
+	var elValue = '';
+	if (fmName.length>0 && elName.length>0) {
+		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
+	}
+	var title = "<dtml-var "getZMILangStr('CAPTION_CHOOSEOBJ')">";
+	var href = "manage_browse_iframe";
+	href += '?lang='+lang;
+	href += '&fmName='+fmName;
+	href += '&elName='+elName;
+	href += '&elValue='+escape(elValue);
+	if ( selectedText) {
+		href += '&selectedText=' + escape( selectedText);
+	}
+	$.fancybox({
+		'href':href,
+		'title':title,
+		'type':'iframe',
+		'autoDimensions':true,
+		'transitionIn':'fade',
+		'transitionOut':'fade'
+	});
+	return false;
 }
 
-/*
- * browseObjsBtnClick:
- * @param elTitleName (@deprecated)
- */
-function browseObjsBtnClick(fmName, elUrlName, elTitleName, lang)
-{
-  var title = "<dtml-var "url_quote(getZMILangStr('CAPTION_CHOOSEOBJ'))">";
-  var url = "f_browse_objs";
-  var elUrlValue = "";
-  if (fmName.length>0 && elUrlName.length>0)
-  {
-    elUrlValue = document.forms[ fmName].elements[ elUrlName].value;
-  }
-  params = 'lang=' + lang;
-  params += '&fmName=' + escape( fmName);
-  params += '&elUrlName=' + escape( elUrlName);
-  params += '&elUrlValue=' + escape( elUrlValue);
-  if ( selectedText) {
-    params += '&selectedText=' + escape( selectedText);
-  }
-  open_frame(title,url,params,420,360,",resizable=yes,scrollbars=yes");
-  return false;
+function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
+	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
 }
-
 
 /**
  */
-function selectObject(path, title) 
-{
+function selectObject(path, title) {
+	confirm('comlib::selectObject');
   if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1)
     path = '<'+'dtml-var expr="getLinkUrl(\''+path+'\',REQUEST)"/>';
   var fTag = 'a';
@@ -385,10 +313,7 @@ function setTextFormat( fTag, ld, rd, lang)
     return;
   if ( !untagSelectedText( fTag, fAttrs, ld, rd, lang)) {
     if (fTag == 'a' && selectedText.indexOf('http://') < 0 && selectedText.indexOf('@') < 0) {
-      if ( self.fm)
-        browseObjsBtnClick('','','',lang);
-      else
-        browseObjsBtnClick('None','','',lang);
+      zmiBrowseObjs('','',lang);
     } 
     else {
       var aTag = ld
@@ -616,6 +541,3 @@ function open_function(url,width,height,options)
       }
     }
   }
-
-
-</dtml-try>

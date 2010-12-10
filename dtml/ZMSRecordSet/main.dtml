@@ -88,19 +88,38 @@
 ###############################################################################
 </dtml-comment>
 
-<dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
-<tr valign="middle">
- <td class="form-label"><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></td>
- <td class="form-element">
-  <dtml-var version_object_state>
-  <dtml-if "getObjProperty('change_dt',REQUEST)">
-   <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))">
-  </dtml-if>
-  <dtml-if "getObjProperty('change_uid',REQUEST)">
-   <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('change_uid',REQUEST)">
-  </dtml-if>
-</tr>
-<dtml-var zmi_form_section_end>
+  <dtml-let headline="[]">
+   <dtml-call "headline.append(getZMILangStr('ATTR_LAST_MODIFIED'))">
+   <dtml-call "headline.append('&nbsp;&nbsp;&nbsp;')">
+   <dtml-call "headline.append('<span class=\042form-text\042>')">
+   <dtml-call "headline.append(' '+getLangFmtDate(getObjProperty('change_dt',REQUEST)))">
+   <dtml-call "headline.append(' '+getZMILangStr('BY'))"> 
+   <dtml-call "headline.append(' '+getObjProperty('change_uid',REQUEST))">
+   <dtml-call "headline.append('</span>')">
+   <dtml-var "zmi_form_section_begin(_,_,zmi_form_section_id='change_',zmi_form_section_headline=''.join(headline),zmi_form_collapsed=False)">
+  </dtml-let>
+  <tr valign="middle">
+   <td colspan="2">
+    <div class="form-element">
+    <dtml-var version_object_state>
+    <dtml-let actions="filtered_workflow_actions()">
+     <dtml-if actions>
+      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')">
+       <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
+      </select>
+     </dtml-if>
+    </dtml-let>
+    (<dtml-if "getObjProperty('created_dt',REQUEST) and getObjProperty('created_uid',REQUEST)">
+     <dtml-var "getZMILangStr('ATTR_CREATED')">:
+     <dtml-var "getLangFmtDate(getObjProperty('created_dt',REQUEST))">
+     <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('created_uid',REQUEST)">,
+    </dtml-if>
+    <dtml-var "len(getChildNodes(REQUEST))"> <dtml-var "getZMILangStr('ATTR_OBJECTS')">,
+    <dtml-var "getDataSizeStr(get_size())">)
+    </div>
+   </td>
+  </tr>
+  <dtml-var zmi_form_section_end>
 
  <!----// BO Filter row (Input-Fields) //---->
  <dtml-if "REQUEST.get('action','')==''">
@@ -114,7 +133,7 @@
     <dtml-var "getZMILangStr('ATTR_ROWS')"> <input class="form-small" type="text" name="qsize:int" value="<dtml-var qsize>" size="2">
     <dtml-var "getZMILangStr('ATTR_FILTER')"> <input class="form-small" type="text" name="qfilters:int" value="<dtml-var "SESSION['qfilters']">" size="2">
    </div>
-   <div class="zmi_col_right">
+   <div class="zmi_col_right form-small">
     <dtml-var "len(res)">  <dtml-var "getZMILangStr('OF')"> <dtml-var "len(res_abs)">
    </div>
   </div>

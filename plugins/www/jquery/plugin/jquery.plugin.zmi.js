@@ -1,4 +1,26 @@
 // ############################################################################
+// ### Common
+// ############################################################################
+
+/**
+ * Max-/Minimize ZMI.
+ */
+function zmiToggleMaximize() {
+	toggleCookie('zmi_maximized');
+	$('body').toggleClass('maximized');
+}
+
+/**
+ * Un-/select checkboxes.
+ */
+function selectCheckboxes(fm, v) {
+  if (typeof v == 'undefined') {
+    v = !$(':checkbox:not([name~=active])',fm).attr('checked');
+  }
+  $(':checkbox:not([name~=active])',fm).attr('checked',v)
+}
+
+// ############################################################################
 // ### Forms
 // ############################################################################
 
@@ -118,6 +140,7 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		$.fancybox({
 			'autoDimensions':false,
 			'href':href,
+			'title':custom,
 			'transitionIn':'fade',
 			'transitionOut':'fade',
 			'type':'iframe',

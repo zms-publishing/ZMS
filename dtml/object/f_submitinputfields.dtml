@@ -103,9 +103,7 @@
   <dtml-var zmi_form_section_end>
  </div>
 
- <dtml-if ZMS_INSERT>
-  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
- <dtml-else>
+ <dtml-unless ZMS_INSERT>
   <dtml-let headline="[]">
    <dtml-call "headline.append(getZMILangStr('ATTR_LAST_MODIFIED'))">
    <dtml-call "headline.append('&nbsp;&nbsp;&nbsp;')">
@@ -138,8 +136,8 @@
    </td>
   </tr>
   <dtml-var zmi_form_section_end>
-  <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
- </dtml-if>
+ </dtml-unless>
+ <dtml-var "zmi_form_section_begin(_,_,zmi_form_section=True)">
 
 </dtml-let>
 <!-- /f_submitInputFields -->

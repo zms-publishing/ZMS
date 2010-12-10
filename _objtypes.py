@@ -38,12 +38,6 @@ def getHref2Zoom(self, img, REQUEST):
     href = m( self, img=img, REQUEST=REQUEST)
   else:
     href = img.getHref(REQUEST)
-    try:
-      width = int(img.width)
-      height = int(img.height)
-      href = "javascript:open_function('%s',%i,%i,'')"%(href,width,height)
-    except:
-      pass
   return href
 
 

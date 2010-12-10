@@ -53,7 +53,7 @@ class ObjInputs:
       html.append(' name="btn"')
       html.append(' value="..."')
       if extra.find('onclick') < 0:
-        html.append(' onclick="return browseObjsBtnClick(\'%s\',\'%s\',\'%s\',\'%s\')"'%(fmName,elName,elTextName,self.REQUEST.get('lang',self.getPrimaryLanguage())))
+        html.append(' onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"'%(fmName,elName,self.REQUEST.get('lang',self.getPrimaryLanguage())))
       html.append(' %s/>'%extra)
     html.append('</div>')
     ref_obj = self.getLinkObj(value,REQUEST)

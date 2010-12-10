@@ -79,7 +79,7 @@ class ZReferableItem:
   # Management Permissions.
   # -----------------------
   __authorPermissions__ = (
-		'manage_RefForm', 'manage_browse_objs',
+		'manage_RefForm', 'manage_browse_iframe',
 		)
   __ac_permissions__=(
 		('ZMS Author', __authorPermissions__),
@@ -88,7 +88,7 @@ class ZReferableItem:
   # Management Interface.
   # ---------------------
   manage_RefForm = HTMLFile('dtml/ZMSLinkElement/manage_refform', globals())
-  manage_browse_objs = f_browse_objs = HTMLFile('dtml/ZMSLinkElement/f_browse_objs', globals()) 
+  manage_browse_iframe = HTMLFile('dtml/ZMSLinkElement/manage_browse_iframe', globals()) 
 
 
   # ----------------------------------------------------------------------------

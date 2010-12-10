@@ -175,14 +175,6 @@ function inputValue(v) {
          }
 
 //-------------------------------------------------------------------
-// selectCheckboxes(fm, v)
-//  Un-/select checkboxes.
-//-------------------------------------------------------------------
-function selectCheckboxes(fm, v) {
-    $(':checkbox:not([name~=active])',fm).attr('checked',v)
-  }
-
-//-------------------------------------------------------------------
 // countSelectedCheckboxes(fm)
 //  Count selected checkboxes.
 //-------------------------------------------------------------------

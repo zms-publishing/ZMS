@@ -127,7 +127,14 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback)
 ></table
 ></dtml-if>
 <dtml-comment> ***** RichText-Editor (custom) ***** </dtml-comment>
-<dtml-var "getPlugin('rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml',REQUEST)">
+<dtml-try>
+	<dtml-var "getPlugin('rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml',REQUEST)">
+<dtml-except>
+	<!-- ERROR: 
+		<dtml-var error_type>: <dtml-var error_value>
+		<dtml-var error_tb> 
+	-->
+</dtml-try>
 </div>
 </dtml-if>
 

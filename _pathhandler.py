@@ -79,6 +79,9 @@ def filterId(self, id, REQUEST):
 def handleBlobAttrs(self, name, REQUEST):
   if _globals.debug( self):
     _globals.writeLog( self, '[__bobo_traverse__]: If the object has blob-fields find by filename and display data.')
+  langs = self.getLangIds()
+  if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
+    name = name.replace('_%s.'%langs[0],'.')
   for key in self.getObjAttrs().keys():
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']

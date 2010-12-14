@@ -151,10 +151,35 @@ function pluginLanguage() {
 
 function pluginUI(s, c) {
 	$.plugin('ui',{
-		files: ['/++resource++zms_/jquery/ui/js/jquery-ui-1.8.6.custom.min.js',
+		files: [
+				'/++resource++zms_/jquery/ui/js/jquery-ui-1.8.7.custom.min.js',
 				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js'
 		]});
 	$.plugin('ui').get(s,c);
+}
+
+function zmiAutocompleteDefaultFormatter(l, q) {
+	return $.map(l,function(x){
+		return {label: x.replace(
+								new RegExp(
+										"(?![^&;]+;)(?!<[^<>]*)(" +
+										$.ui.autocomplete.escapeRegex(q) +
+										")(?![^<>]*>)(?![^&;]+;)", "gi"
+										), "<strong>$1</strong>" ),
+						value: x};
+						})
+}
+
+function zmiAutocomplete(s, o) {
+	pluginUI(s,function() {
+		$(s).autocomplete(o)
+		.data( "autocomplete" )._renderItem = function( ul, item ) {
+				return $( "<li></li>" )
+					.data( "item.autocomplete", item )
+					.append( "<a>" + item.label + "</a>" )
+					.appendTo( ul );
+		};
+	});
 }
 
 

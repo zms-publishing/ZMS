@@ -31,7 +31,7 @@
 					<dtml-if value>
 						<dtml-let l="[]">
 							<dtml-if "value.getMediadbfile() is not None"><dtml-call"l.append('MediaDb')"></dtml-if>
-							<dtml-if l><span class="form-label"><dtml-var "', '.join(l)">:</span></dtml-if>
+							<dtml-if l><span class="ui-icon ui-icon-info" title="<dtml-var "', '.join(l)">" style="float:left"></span></dtml-if>
 						</dtml-let>
 						<dtml-try>
 							<strong><span id="filename_<dtml-var elName>"><img src="<dtml-var "getMimeTypeIconSrc(value.getContentType())">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle"> <dtml-var "value.filename"></span></strong>
@@ -71,6 +71,7 @@
 				<!-- Upload -->
 				<dtml-if "lang in  getLanguages(REQUEST)">
 					<dtml-try>
+						<dtml-call "REQUEST.set('ZMS_ALLOWED_EXTENSIONS',[])">
 						<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
 					<dtml-except>
 						<!-- ERROR: 

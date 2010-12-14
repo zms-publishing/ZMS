@@ -69,7 +69,7 @@
 						<dtml-let l="[]">
 							<dtml-if "value.getMediadbfile() is not None"><dtml-call"l.append('MediaDb')"></dtml-if>
 							<dtml-if "pilutil().enabled()"><dtml-call"l.append('PIL')"></dtml-if>
-							<dtml-if l><span class="form-label"><dtml-var "', '.join(l)">:</span></dtml-if>
+							<dtml-if l><span class="ui-icon ui-icon-info" title="<dtml-var "', '.join(l)">" style="float:left"></span></dtml-if>
 						</dtml-let>
 						<dtml-try>
 							<strong><span id="filename_<dtml-var elName>" title="<dtml-var "value.filename">"><img src="<dtml-var "getMimeTypeIconSrc(value.getContentType())">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle"> <dtml-var "value.filename" size=28></span></strong>
@@ -125,6 +125,7 @@
 					<tr valign="middle">
 						<td class="form-element">
 							<dtml-try>
+								<dtml-call "REQUEST.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])">
 								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
 							<dtml-except>
 								<!-- ERROR: 

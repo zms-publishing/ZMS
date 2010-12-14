@@ -1,4 +1,4 @@
-<!-- BO plugins/fileupload/valums-file-uploader/input.dtml -->
+<!-- BO plugins/fileupload/ajax_upload/input.dtml -->
 
 <dtml-comment>
 ################################################################################
@@ -18,10 +18,6 @@
 	padding: 1px 3px;
 	margin:2px;
 	font-size: 10px;
-	color: #323232;
-	border: solid 1px #919191;
-}
-.qq-upload-button-hover {
 }
 </style>
 <dtml-call "REQUEST.set('f_zmiFileUpload',True)">
@@ -46,7 +42,7 @@ $(function() {
 				},
 				// validation
 				// ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-				allowedExtensions: [],
+				allowedExtensions: <dtml-var "REQUEST.get('ZMS_ALLOWED_EXTENSIONS',[])">,
 				// each file size limit in bytes
 				// this option isn't supported in all browsers
 				sizeLimit: 0, // max size
@@ -82,8 +78,9 @@ $(function() {
 					alert(message);
 				}
 			});
+	$('.qq-upload-button').addClass('ui-button').addClass('ui-state-default').addClass('ui-corner-all');
 });
 </script>
 <div id="file-uploader-<dtml-var key>"></div>
 
-<!-- EO plugins/fileupload/valums-file-uploader/input.dtml -->
+<!-- EO plugins/fileupload/ajax_upload/input.dtml -->

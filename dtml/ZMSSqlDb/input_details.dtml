@@ -243,7 +243,8 @@
 - Show details input-form
 --------------------------------------------------------------------------------
 </dtml-comment>
-<div class="detailelements" id="table_<dtml-var "details['tablename']">" style="<dtml-unless "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
+<div id="table_<dtml-var "details['tablename']">" class="detailelements" style="<dtml-unless "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']">display:none;</dtml-unless>margin: 10px 0px 2px 0px;">
+<dtml-call "zmi_form_section_begin(_,_,zmi_form_section_key=details['tablename'])">
  <dtml-var "input_form(_,_,
   headline='',
   rowid=details_rowid,
@@ -258,7 +259,8 @@
   )">
  <input id="submit_<dtml-var "details['tablename']">" class="ui-button ui-state-default ui-corner-all" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
  <input class="ui-button ui-state-default ui-corner-all" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
-</div>
+<dtml-call "zmi_form_section_end(_,_,zmi_form_section_key=details['tablename'])">
+</div><!-- #table_<dtml-var "details['tablename']">.detailelements -->
 
  </dtml-let>
 </div>

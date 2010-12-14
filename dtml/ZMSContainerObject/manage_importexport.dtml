@@ -169,7 +169,7 @@
     </select>
     </div>
     <div id="div_charset" class="form-small" style="display:none;float:left;">
-     <dtml-var "getEnumInput(fmName='exportForm',elName='ZMS_CHARSET',size=7,value='utf-8',enum='charset')">
+     <dtml-var "getSelect(fmName='exportForm', elName='ZMS_CHARSET', value='utf-8', inputtype='select', lang_str='Encoding', required=1, optpl=enumManager.getValues('charset'), enabled=1, REQUEST=REQUEST)">
     </div>
     <dtml-if zms_log>
     <div id="div_debug" class="form-small" style="display:none;float:left;">

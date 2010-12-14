@@ -195,7 +195,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     #  ObjAttrs.ajaxGetObjOptions:
     # --------------------------------------------------------------------------
-    def ajaxGetObjOptions(self, key, meta_id, REQUEST):
+    def ajaxGetObjOptions(self, key, meta_id, fmt=None, REQUEST=None):
       """ ObjAttrs.ajaxGetObjOptions """
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/plain; charset=utf-8'
@@ -209,9 +209,11 @@ class ObjAttrs:
       q = REQUEST.get( 'q', '').upper()
       if q:
         l = filter( lambda x: x.upper().find( q) >= 0, l)
-      if REQUEST.has_key( 'limit'):
-        limit = int(REQUEST.get( 'limit'))
+      limit = int(REQUEST.get('limit',self.getConfProperty('ZMS.input.autocomplete.limit',15)))
+      if len(l) > limit:
         l = l[:limit]
+      if fmt == 'json':
+        return self.str_json(l)
       return '\n'.join(l)
 
 

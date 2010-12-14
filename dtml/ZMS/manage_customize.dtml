@@ -174,7 +174,7 @@
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
    {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
-   {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string','default':'jquery-1.4.2.min.js'},
+   {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},
    {'key':'jquery.plugin.version','title':'JQuery plugin version','desc':'JQuery plugin version','datatype':'string'},
    {'key':'jquery.plugin.extensions','title':'JQuery plugin extensions','desc':'JQuery plugin extensions','datatype':'string'},
    {'key':'ZMS.blobfields.grant_public_access','title':'Grant public access to blob-fields','desc':'Blob-fields in restricted nodes are not visible. You may grant public access to blob-fields by activating this option.','datatype':'boolean'},
@@ -315,27 +315,26 @@ function confKeyChange(b)
   }
   keys.sort();
 
-  $(function() {
-    pluginAutocomplete('#conf_key',function() {
-      $("#conf_key").autocomplete(keys, {
-          width: $('#conf_key').css( "width"),
-          selectFirst: false
-        });
-      $("#conf_key").result(function(event, data, formatted) {
-        if (data) {
-          $(this).parent().next().find("input").val(data[1]);
-        }
-      });
-    });
-    confKeyChange(true);
-  });
-
+$(function() {
+	zmiAutocomplete('#conf_key',{
+		source: function( request, response) {
+			var term = request.term;
+			var matcher = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
+			response(zmiAutocompleteDefaultFormatter($.map(keys,function(x,i){
+				if (i<<dtml-var "getConfProperty('ZMS.input.autocomplete.limit',10)"> && matcher.test(x)) {
+					return x;
+				}
+			}),term));
+		}
+	});
+	confKeyChange(true);
+});
 
 </script>
 
  <table cellspacing="0" cellpadding="1" border="0">
  <tr valign="top">
-  <td class="form-small"><b>Option</b></td>
+  <td class="form-small"><strong>Option</strong></td>
   <td class="form-small">
    <select class="form-small" id="conf_opt" name="conf_opt" onchange="confOptChange(true)" onkeyup="confOptChange(true)" onclick="confOptChange(true)" style="background:transparent;">
     <option value="">--- Select option ---</option>
@@ -349,11 +348,11 @@ function confKeyChange(b)
   <td class="form-small" id="td_conf_desc"></td>
  </tr>
  <tr valign="top">
-  <td class="form-small"><b>Key</b></td>
-  <td class="form-small"><input class="form-small" type="text" size="40" id="conf_key" name="conf_key" value="<dtml-var "REQUEST.get('conf_key','')">" onchange="confKeyChange(true)" onkeyup="confKeyChange(true)"/></td>
+  <td class="form-small"><strong>Key</strong></td>
+  <td class="form-small"><input class="form-small" type="text" size="40" id="conf_key" name="conf_key" value="<dtml-var "REQUEST.get('conf_key','')">" onchange="confKeyChange(true)" onkeyup="confKeyChange(true)" style="background:white url(<dtml-var MISC_ZMS>ico_autocomplete.gif) right bottom no-repeat;"/></td>
  </tr>
  <tr valign="top" id="tr_conf_value" style="display:none;">
-  <td class="form-small"><b>Value</b></td>
+  <td class="form-small"><strong>Value</strong></td>
   <td class="form-small" id="td_conf_value"></td>
  </tr>
  <tr valign="top" id="tr_conf_values">

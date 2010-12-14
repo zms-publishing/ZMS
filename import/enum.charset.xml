@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <dictionary>
-<item key="latin-1">Default (Latin1)</item>
+<item key="utf-8">Unicode (Utf8)</item>
+<item key="latin-1">Western Europe (Latin1)</item>
 <item key="latin-2">Eastern Europe (Latin2)</item>
 <item key="latin-3">Southern Europe (Latin3)</item>
 <item key="latin-4">Northern Europe (Latin4)</item>

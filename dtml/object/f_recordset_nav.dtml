@@ -1,8 +1,7 @@
-<!--
+<!-- BO dtml/object/f_recordset_nav.dtml -->
+
+<dtml-comment>
 ###############################################################################
-###
-###   N A V
-###   
 ###   @explicit-param grid_url[string]
 ###   @implicit-param qsize[int]
 ###   @implicit-param qorder[string]
@@ -10,9 +9,8 @@
 ###   @implicit-param qstart[int]
 ###   @implicit-param res[list]: <dtml-var "len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
-###
 ###############################################################################
--->
+</dtml-comment
 
 <dtml-try>
 
@@ -71,3 +69,5 @@
  </dtml-if>
 
 </dtml-try>
+
+<!-- EO dtml/object/f_recordset_nav.dtml -->

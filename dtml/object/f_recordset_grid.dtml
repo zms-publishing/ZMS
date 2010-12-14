@@ -1,19 +1,17 @@
-<!--
+<!-- BO dtml/object/f_recordset_grid.dtml -->
+
+<dtml-comment>
 ###############################################################################
-###
-###   dtml/object/f_recordset_grid.dtml
-###   
 ###   @explicit-param grid_url[string]
-###   @explicit-param grid_cols[list]: <dtml-var grid_cols>
+###   @explicit-param grid_cols[list]
 ###   @implicit-param qsize[int]
 ###   @implicit-param qorder[string]
 ###   @implicit-param qorderdir[string]		desc|asc
 ###   @implicit-param qstart[int]
-###   @implicit-param res[list] <dtml-var "len(res)">
+###   @implicit-param res[list]
 ###   @implicit-param REQUEST[HttpRequest]
-###
 ###############################################################################
--->
+</dtml-comment>
 
  <dtml-var f_recordset_nav>
 
@@ -285,3 +283,4 @@
 
  <dtml-var f_recordset_nav>
 
+<!-- EO dtml/object/f_recordset_grid.dtml -->

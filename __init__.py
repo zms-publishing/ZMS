@@ -146,7 +146,7 @@ def initialize(context):
         OFS.misc_.misc_.zms['confdict']=confdict
         
         # automated registration for other resources
-        for img_path in ['www/','plugins/www/']:
+        for img_path in ['www/']:
           path = package_home(globals()) + os.sep + img_path
           for file in os.listdir(path):
             filepath = path + os.sep + file 

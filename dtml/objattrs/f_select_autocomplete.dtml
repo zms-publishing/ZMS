@@ -24,52 +24,58 @@
 <dtml-if "type=='multiautocomplete'">
 
 <script type="text/javascript">
-$(function(){
-	pluginAutocomplete('#_<dtml-var elName>',function() {
-		$("#_<dtml-var elName>").autocomplete("ajaxGetObjOptions", {
-			extraParams: {'key':'<dtml-var key>','meta_id':'<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">'},
-			width: function() { return this.css( "width");},
-			selectFirst: false
-		});
-		$("#_<dtml-var elName>").result(function(event, data, formatted) {
-			if (data) {
-				$(this).val('');
-				appendToMultiselect(document.getElementById('<dtml-var elName>'),data);
+$().ready(function() {
+	zmiAutocomplete('#_<dtml-var elName>',{
+		source: function( request, response) {
+			var term = request.term;
+			var params = {};
+			params.q = term;
+			params.key = '<dtml-var key>';
+			params.meta_id = 'ZMS';
+			params.fmt = 'json';
+			$.get( "ajaxGetObjOptions", params, function( data) {
+				if (data.length>0) {
+					response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
+				}
+			});
+		},
+		select: function( event, ui ) {
+			if (ui.item) {
+				appendToMultiselect(document.getElementById('<dtml-var elName>'),ui.item.value);
+				ui.item.value = '';
 			}
-		});
+			this.value = '';
+		}
 	});
 });
 </script>
 
-  <dtml-var "getTextInput(fmName=fmName,elName='_%s'%elName,size=20,value='',enabled=enabled,REQUEST=REQUEST,css=css+' '+type,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
-  <a href="javascript:if ($('#_<dtml-var elName>').val().length>0) {var v=$('#_<dtml-var elName>').val();$('#_<dtml-var elName>').val('');appendToMultiselect(document.getElementById('<dtml-var elName>'),v);}"
-   ><img 
-      class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
-      src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">"
-  /></a>
-  <table cellspacing="0" cellpadding="1" border="0">
-  <tr>
-   <td class="form-element">
-    <select class="form-element" id="<dtml-var elName>" name="<dtml-var elName>:list" multiple="multiple" size="<dtml-var "max(5,min(0,len(value)))">">
-     <dtml-in value>
-      <dtml-let optval=sequence-item
-                opttitle=sequence-item
-                optdisp="string_maxlen(opttitle,30)">
-       <dtml-if optval>
-        <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp></option>
-       </dtml-if>
-      </dtml-let>
-     </dtml-in>
-    </select>
-   </td>
-   <td style="vertical-align:bottom"
-    ><a href="javascript:if (document.getElementById('<dtml-var elName>').selectedIndex>=0 && confirm('<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">')) {removeFromMultiselect(document.getElementById('<dtml-var elName>'));}"
-     ><img 
-        class="ui-button ui-state-default ui-corner-all" style="vertical-align:bottom;padding:1px 2px;background:#fff"
-        src="<dtml-var MISC_ZMS>btn_delete.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">"
-    /></a></td>
-  </tr>
-  </table>
+<table cellspacing="1" cellpadding="1" border="0" class="zms-multiautocomplete">
+<tr valign="top" class="zmiNeutralColorLight1">
+	<td class="form-element">
+		<dtml-var "getTextInput(fmName=fmName,elName='_%s'%elName,size=20,value='',enabled=enabled,REQUEST=REQUEST,css='ui-autocomplete-input',extra=' style=\042background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;\042')">
+	</td>
+	<td>
+		<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" title="<dtml-var "getZMILangStr('BTN_ADD')">">
+			<span class="ui-icon ui-icon-circle-plus" onclick="if ($('#_<dtml-var elName>').val().length>0) {var v=$('#_<dtml-var elName>').val();$('#_<dtml-var elName>').val('');appendToMultiselect(document.getElementById('<dtml-var elName>'),v);}"></span>
+		</div>
+	</td>
+</tr>
+<tr valign="top" class="zmiNeutralColorLight1">
+	<td class="form-element">
+		<select class="form-element" id="<dtml-var elName>" name="<dtml-var elName>:list" multiple="multiple" size="<dtml-var "max(5,min(0,len(value)))">">
+			<dtml-in value><dtml-let optval=sequence-item opttitle=sequence-item optdisp="string_maxlen(opttitle,50)"><dtml-if optval>
+				<option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp></option>
+			</dtml-if></dtml-let></dtml-in>
+		</select>
+	</td>
+	<td>
+		<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" title="<dtml-var "getZMILangStr('BTN_DELETE')">">
+			<span class="ui-icon ui-icon-trash" onclick="if (document.getElementById('<dtml-var elName>').selectedIndex>=0) {removeFromMultiselect(document.getElementById('<dtml-var elName>'));}"></span>
+		</div>
+	</td>
+</tr>
+</table>
 
 <dtml-comment>
 ################################################################################
@@ -80,20 +86,25 @@ $(function(){
 
 <script type="text/javascript">
 $().ready(function() {
-	pluginAutocomplete('#<dtml-var elName>',function() {
-		$("#<dtml-var elName>").autocomplete("ajaxGetObjOptions?key=<dtml-var key>&meta_id=<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">", {
-			width: $("#<dtml-var elName>").css( "width"),
-			selectFirst: false
-		});
-		$("#<dtml-var elName>").result(function(event, data, formatted) {
-			if (data)
-				$(this).parent().next().find("input").val(data[1]);
-		});
+	zmiAutocomplete('#<dtml-var elName>',{
+		source: function( request, response) {
+			var term = request.term;
+			var params = {};
+			params.q = term;
+			params.key = '<dtml-var key>';
+			params.meta_id = 'ZMS';
+			params.fmt = 'json';
+			$.get( "ajaxGetObjOptions", params, function( data) {
+				if (data.length>0) {
+					response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
+				}
+			});
+		}
 	});
 });
 </script>
 
-  <dtml-var "getTextInput(fmName=fmName,elName=elName,size=20,value=value,enabled=enabled,REQUEST=REQUEST,css=css+' '+type,extra=' style='+QUOT+'width:20em;background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;'+QUOT)">
+<dtml-var "getTextInput(fmName=fmName,elName=elName,size=20,value=value,enabled=enabled,REQUEST=REQUEST,css='ui-autocomplete-input',extra=' style=\042background:white url('+MISC_ZMS+'ico_autocomplete.gif) right bottom no-repeat;\042')">
 
 <dtml-comment>
 ################################################################################

@@ -6,41 +6,34 @@
 <script language="JavaScript">
 <!--//
 
-$().ready(function() {
-  var els = $('input.autocomplete');
-  els.attr( 'size', 12);
-  els.css( {'width':'20em', 'background':'white url(<dtml-var MISC_ZMS>ico_autocomplete.gif) right bottom no-repeat'});
-  for (var i = 0; i < els.length; i++) {
-    var el = $(els[i]);
-    var name = el.attr('name');
-    var prefix = name.substr(0, "attr_".length+name.substr("attr_".length).indexOf("_"));
-    var column_id = name;
-    for (var j=0; j < 3; j++) {
-      column_id = column_id.substr(column_id.indexOf('_')+1);
-    }
-    var select_tablename = prefix + '_tablename_' + column_id;
-    el.autocomplete("ajaxGetAutocompleteColumns", {
-      extraParams: {
-        selectTable: select_tablename,
-        tableName: function(event) {
-          var tableName = '';
-          var els = $('select[name^=attr_][name*=_tablename_]');
-          for ( var i = 0; i < els.length; i++) {
-            var el = $(els[i]);
-            tableName += el.attr('name')+':'+el.val()+'|';
-          }
-          return tableName;
-        }
-      },
-      width: el.css( "width"),
-      selectFirst: false,
-      cacheLength: 1
-    });
-    el.result(function(event, data, formatted) {
-      if (data)
-        $(this).parent().next().find("input").val(data[1]);
-      });
-  }
+$(function() {
+	$('input.ui-autocomplete-input')
+		.attr( 'size', 12)
+		.css( {'width':'20em', 'background':'white url(<dtml-var MISC_ZMS>ico_autocomplete.gif) right bottom no-repeat'})
+		.each(function() {
+			var el = $(this);
+			var name = el.attr('name');
+			var prefix = name.substr(0, "attr_".length+name.substr("attr_".length).indexOf("_"));
+			var column_id = name;
+			for (var j=0; j < 3; j++) {
+				column_id = column_id.substr(column_id.indexOf('_')+1);
+			}
+			var select_tablename = prefix + '_tablename_' + column_id;
+			zmiAutocomplete('input#'+el.attr('id'),{
+				source: function( request, response) {
+					var term = request.term;
+					var params = {};
+					params.q = term;
+					params.tableName = $('select[name='+select_tablename+']',el.parents('table')[0]).val();
+					params.fmt = 'json'
+					$.get( "ajaxGetAutocompleteColumns", params, function( data) {
+						if (data.length>0) {
+							response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
+						}
+					});
+				}
+			});
+		});
 });
 
 function onFormSubmit( fm) {
@@ -371,7 +364,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_details_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_details_fk_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "details.get('fk','')">"></td
+             ><td class="form-small"><input type="text" id="attr_details_fk_<dtml-var "column['id']">" name="attr_details_fk_<dtml-var "column['id']">" class="ui-autocomplete-input" value="<dtml-var "details.get('fk','')">"></td
             ></tr
            ></dtml-let
            ><dtml-let fk="column.get('fk',{})" style="int(not column.has_key('fk'))*'style=\042display:none;\042'"
@@ -381,11 +374,11 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Fieldname</td
-             ><td class="form-small"><input type="text" name="attr_fk_fieldname_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "fk.get('fieldname','')">"></td
+             ><td class="form-small"><input type="text" id="attr_fk_fieldname_<dtml-var "column['id']">" name="attr_fk_fieldname_<dtml-var "column['id']">" class="ui-autocomplete-input" value="<dtml-var "fk.get('fieldname','')">"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Displayfield</td
-             ><td class="form-small"><input type="text" name="attr_fk_displayfield_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "fk.get('displayfield','')">"></td
+             ><td class="form-small"><input type="text" id="attr_fk_displayfield_<dtml-var "column['id']">" name="attr_fk_displayfield_<dtml-var "column['id']">" class="ui-autocomplete-input" value="<dtml-var "fk.get('displayfield','')">"></td
             ></tr
             ><tr id="tr_fk_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Maxlen</td
@@ -415,7 +408,7 @@ function mms_normalize_rows(el_tbody) {
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Foreign Key</td
-             ><td class="form-small"><input type="text" name="attr_multiselect_fk_<dtml-var "column['id']">" class="autocomplete" value="<dtml-var "multiselect.get('fk','')">"></td
+             ><td class="form-small"><input type="text" id="attr_multiselect_fk_<dtml-var "column['id']">" name="attr_multiselect_fk_<dtml-var "column['id']">" class="ui-autocomplete-input" value="<dtml-var "multiselect.get('fk','')">"></td
             ></tr
             ><tr id="tr_multiselect_<dtml-var "column['id']">" class="zmiNeutralColorLight0" <dtml-var style>
              ><td class="form-small" nowrap="nowrap">A.Lazy</td

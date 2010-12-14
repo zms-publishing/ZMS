@@ -8,6 +8,18 @@
 <!--//
 
 $(function() {
+	$('#inpContentType,#newContentType').change(function() {
+		var id = $(this).attr('id');
+		var v = $(this).val();
+		if ( v.indexOf(";") > 0) {
+			v = v.substring( 0, v.indexOf(";"));
+		}
+		while ( v.indexOf("-") > 0) {
+			v = v.substring( 0, v.indexOf("-")) + "_" + v.substring( v.indexOf("-")+1);
+		}
+		v = "<dtml-var MISC_ZMS>mime_type." + v.substring(0,v.indexOf("/")) + "_" + v.substring(v.indexOf("/")+1) + ".gif";
+		$('img#'+id+'Icon').attr({'src':v,'alt':$(this).val()});
+	});
 	$('.zmiDblclickable')
 		.mouseover( function(evt) {
 			$(this).addClass('zmiTeaserColor'); 
@@ -110,40 +122,6 @@ $(function() {
     fm.elements['key'].value = key;
     self.btnClicked = el.value;
   }
-  
-  /**
-   * @param el
-   */
-  function inpContentTypeChange(el)
-  {
-    var v = el.value;
-    if ( v.indexOf(";") > 0) {
-      v = v.substring( 0, v.indexOf(";"));
-    }
-    while ( v.indexOf("-") > 0) {
-      v = v.substring( 0, v.indexOf("-")) + "_" + v.substring( v.indexOf("-")+1);
-    }
-    v = "<dtml-var MISC_ZMS>mime_type." + v.substring(0,v.indexOf("/")) + "_" + v.substring(v.indexOf("/")+1) + ".gif";
-    document.images["inpContentTypeIcon"].src = v;
-    document.images["inpContentTypeIcon"].alt = el.value;
-  }
-
-  /**
-   * @param el
-   */
-  function newContentTypeChange( el)
-  {
-    var v = el.value;
-    if ( v.indexOf(";") > 0) {
-      v = v.substring( 0, v.indexOf(";"));
-    }
-    while ( v.indexOf("-") > 0) {
-      v = v.substring( 0, v.indexOf("-")) + "_" + v.substring( v.indexOf("-")+1);
-    }
-    v = "<dtml-var MISC_ZMS>mime_type." + v.substring(0,v.indexOf("/")) + "_" + v.substring(v.indexOf("/")+1) + ".gif";
-    document.images["newContentTypeIcon"].src = v;
-    document.images["newContentTypeIcon"].alt = el.value;
-  }
 
 //-->
 </script>
@@ -166,11 +144,12 @@ $(function() {
 <dtml-if "REQUEST.get('id','')=='' or REQUEST.get('id','') in getFilterIds()">
 
 <dtml-call "REQUEST.set('contentTypes',enumManager.getValues('content_type'))">
+<dtml-var "map(lambda x: x[0], contentTypes)">
 <dtml-call "REQUEST.set('filterFormatOptpl',[])">
 <dtml-call "filterFormatOptpl.append(['import', 'Import' ])">
 <dtml-call "filterFormatOptpl.append(['export', 'Export' ])">
 <dtml-call "filterFormatOptpl.append(['XML', 'XML-Export' ])">
-<dtml-call "filterFormatOptpl.append(['XML_incl_embedded', 'XML-Export (incl. embedded objects)' ])">
+<dtml-call "filterFormatOptpl.append(['XML_incl_embedded', 'XML-Export (incl. embedded)' ])">
 <dtml-call "filterFormatOptpl.append(['XHTML', 'XHTML-Export' ])">
 <dtml-if "_.hasattr(this(),'getObjToXml_DocElmnt')"><dtml-call "filterFormatOptpl.append(['myXML', _.getattr(this(),'getObjToXml_DocElmnt').title_or_id()+'-Export' ])"></dtml-if>
 
@@ -344,7 +323,6 @@ $(function() {
       <td><dtml-var "getTextInput(fmName='form0', elName='inpName', size=12, value=filter.get('name','') )"></td>
       <td><dtml-var "getSelect(fmName='form0', elName='inpFormat', value=filter.get('format',''), inputtype='select', lang_str='ATTR_FORMAT', required=1, optpl=filterFormatOptpl, enabled=1, REQUEST=REQUEST)"></td>
       <td class="form-element" align="center" nowrap="nowrap">
-       <nobr>
         <dtml-call "REQUEST.set('src',filter.get('content_type',''))">
         <dtml-if "src.find(';')>0">
          <dtml-call "REQUEST.set('src',src[:src.find(';')])">
@@ -354,9 +332,8 @@ $(function() {
         <dtml-else>
          <dtml-call "REQUEST.set('src',spacer_gif)">
         </dtml-if>
-        <img name="inpContentTypeIcon" src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="1" align="absmiddle" />
-        <dtml-var "getEnumInput(fmName='form0', elName='inpContentType', size=0, value=filter.get('content_type',''), enum='content_type')">
-       </nobr>
+        <img id="inpContentTypeIcon" src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="1" align="absmiddle" style="float:left"/>
+        <dtml-var "getSelect(fmName='form0', elName='inpContentType', value=filter.get('content_type',''), inputtype='select', lang_str='ATTR_TYPE', required=1, optpl=enumManager.getValues('content_type'), enabled=1, REQUEST=REQUEST)">
       </td>
       <td nowrap="nowrap">
        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
@@ -539,8 +516,8 @@ $(function() {
         <tr><td align="center"><img src="<dtml-var spacer_gif>" border="0" width="1" height="4" /></td></tr>
         <dtml-if "filter['format']=='import'">
          <tr><td align="center" class="form-small" style="white-space: nowrap; border: 1px dotted blue; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><dtml-if "filter.get('content_type','') in contentTypes"
-           ><img src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="0" align="absmiddle" /><b><dtml-var "contentTypes[contentTypes.index(filter.get('content_type',''))+1]"></b
+          ><dtml-if "filter.get('content_type','') in map(lambda x: x[0], contentTypes)"
+           ><img src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="0" align="absmiddle" /><b><dtml-var "filter_list(contentTypes,0,filter.get('content_type',''),'==')[0][1]"></b
           ><dtml-else
            ><dtml-var "getZMILangStr('ATTR_NONE')"
           ></dtml-if
@@ -600,8 +577,8 @@ $(function() {
           ><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "filter['format']">" border="0" align="absmiddle" />XML <span style="color:#D9E100;">ZMS</span></td></tr>
         <dtml-else>
          <tr><td align="center" class="form-small" style="white-space: nowrap; border: 1px dotted blue; padding:2px; margin-left:4px; margin-right:4px; margin-top:0px; margin-bottom:0px;"
-          ><dtml-if "filter.get('content_type','') in contentTypes"
-           ><img src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="0" align="absmiddle" /><b><dtml-var "contentTypes[contentTypes.index(filter.get('content_type',''))+1]"></b
+          ><dtml-if "filter.get('content_type','') in map(lambda x: x[0], contentTypes)"
+           ><img src="<dtml-var src>" title="<dtml-var "filter.get('content_type','')">" border="0" align="absmiddle" /><b><dtml-var "filter_list(contentTypes,0,filter.get('content_type',''),'==')[0][1]"></b
           ><dtml-else
            ><dtml-var "getZMILangStr('ATTR_NONE')"
           ></dtml-if
@@ -652,11 +629,10 @@ $(function() {
     </table>
    </td>
    <td class="form-element" align="center" nowrap="nowrap">
-    <nobr>
-     <img name="newContentTypeIcon" src="<dtml-var spacer_gif>" border="1" align="absmiddle" />
-     <dtml-var "getEnumInput(fmName='form0', elName='newContentType', size=0, value='', enum='content_type')">
-    </nobr>
-    <div align="center" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>
+    <table cellspacing="0" cellpadding="0" border="0">
+    <tr><td><img id="newContentTypeIcon" src="<dtml-var spacer_gif>" border="1" align="absmiddle" style="float:left;"/><dtml-var "getSelect(fmName='form0', elName='newContentType', value='', inputtype='select', lang_str='ATTR_TYPE', required=1, optpl=enumManager.getValues('content_type'), enabled=1, REQUEST=REQUEST)"></td></tr>
+    <tr><td align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></td></tr>
+    </table>
    </td>
    <td>
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'obj');">

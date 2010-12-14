@@ -3,7 +3,7 @@
 ><dtml-var headScript
 ></dtml-with
 ><dtml-else>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var MISC_ZMS><dtml-var "getConfProperty('jquery.version','jquery-1.4.2.min.js')">"></script>
+<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.version')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.version')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.extensions')">"></script>
 </dtml-if>

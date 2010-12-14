@@ -46,18 +46,18 @@
 					</tr>
 					<!-- ### Max. Rows -->
 					<tr valign="top">
-						<td><div class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></div></td>
-						<td><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
+						<td class="form-label">Max. Rows<dtml-var FORM_LABEL_MANDATORY></td>
+						<td class="form-element"><dtml-var "getTextInput(fmName='form0', elName='max_rows:int', size=5, value=999)"></td>
 					</tr>
 					<!-- ### Charset -->
 					<tr valign="top">
-						<td><div class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></div></td>
-						<td><dtml-var "getEnumInput(fmName='form0',elName='charset',size=7,value='latin-1',enum='charset')"></td>
+						<td class="form-label">Charset<dtml-var FORM_LABEL_MANDATORY></td>
+						<td class="form-element"><dtml-var "getSelect(fmName='form0', elName='charset', value='latin-1', inputtype='select', lang_str='Charset', required=1, optpl=enumManager.getValues('charset'), enabled=1, REQUEST=REQUEST)"></td>
 					</tr>
 					<!-- ### Model -->
 					<tr valign="top">
-						<td><div class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></div></td>
-						<td><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
+						<td class="form-label">Model<dtml-var FORM_LABEL_MANDATORY></td>
+						<td class="form-element"><dtml-var "getTextArea(fmName='form0', elName='model', cols=40, rows=5, value=toXmlString([]), enabled=1, REQUEST=REQUEST, css='form-fixed', wrap='off')"></td>
 					</tr>
 					<dtml-var zmi_form_section_end>
 					<dtml-var f_submitBtn>

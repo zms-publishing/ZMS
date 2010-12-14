@@ -1,25 +1,17 @@
-<!--
+<!-- BO dtml/ZMSSqlDb/input_form.dtml -->
+
+<dtml-comment>
 ###############################################################################
-###
-###   dtml/ZMSSqlDb/input_form.dtml
-###   
-###   @explicit-param grid_url[string]
-###   @explicit-param ZMS_HIDE_FORM[boolean=False]    +
-###           Hide <form/>-tag.
-###   @explicit-param ZMS_HIDE_HIDDEN_INPUTS[boolean=False]
-###           Hide hidden input-fields.
-###   @explicit-param ZMS_TABLE_PREFIX[string]
-###           Tablename as prefix for input-fields.
-###   @explicit-param ZMS_ENTITY[string]
-###           Tablename (override SESSION[sessqentitykey])
-###   @explicit-param ZMS_CSS_EXTRA[color]
-###           
-###   @explicit-param ZMS_EXCLUDE_IDS[list]
-###           Ids to exclude
-###   @implicit-param REQUEST[HttpRequest]
-###
+###   @explicit-param grid_url[string]						
+###   @explicit-param ZMS_HIDE_FORM[boolean=False]			Hide <form/>-tag.
+###   @explicit-param ZMS_HIDE_HIDDEN_INPUTS[boolean=False]	Hide hidden input-fields.
+###   @explicit-param ZMS_TABLE_PREFIX[string]				Tablename as prefix for input-fields.
+###   @explicit-param ZMS_ENTITY[string]					Tablename (override SESSION[sessqentitykey])
+###   @explicit-param ZMS_CSS_EXTRA[color]					
+###   @explicit-param ZMS_EXCLUDE_IDS[list]					Ids to exclude
+###   @implicit-param REQUEST[HttpRequest]					
 ###############################################################################
--->
+</dtml-comment>
 
 <dtml-call "REQUEST.set('row',record)"
 ><dtml-call "REQUEST.set('entity_',REQUEST.get('entity'))"
@@ -186,30 +178,36 @@
   ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+elNameOld)"></dtml-if
   ><dtml-try>
    <tr id="tr_<dtml-var id>">
-    <dtml-comment>
-    ############################################################################
-    ## LABEL
-    ############################################################################
-    </dtml-comment>
-    <td class="form-label">
-     <dtml-if pk>
-      <img src="<dtml-var MISC_ZMS>btn_key.gif" border="0" align="middle"/>
+   <dtml-comment>
+   #############################################################################
+   ## LABEL
+   #############################################################################
+   </dtml-comment>
+   <td class="form-label">
+    <dtml-if pk>
+     <img src="<dtml-var MISC_ZMS>btn_key.gif" border="0" align="middle"/>
+    </dtml-if>
+    <dtml-var "getLangStr(label,lang)"><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if>
+   </td>
+   <dtml-comment>
+   #############################################################################
+   ## DETAILS
+   #############################################################################
+   </dtml-comment>
+   <dtml-if "grid_col.get('details')">
+    <td>
+     <dtml-if ZMS_INSERT>
+      <dtml-var "getZMILangStr('MSG_AFTER_INSERT')%getZMILangStr('ATTR_RECORD')">
+     <dtml-else>
+      <dtml-var input_details>
      </dtml-if>
-     <dtml-var "getLangStr(label,lang)"><dtml-if mandatory><dtml-var FORM_LABEL_MANDATORY></dtml-if>
     </td>
-    <dtml-if "grid_col.get('details')">
-    <dtml-comment>
-    ############################################################################
-    ## DETAILS
-    ############################################################################
-    </dtml-comment>
-    <td><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('MSG_AFTER_INSERT')%getZMILangStr('ATTR_RECORD')"><dtml-else><dtml-var input_details></dtml-if></td>
-    <dtml-else>
-    <dtml-comment>
-    ############################################################################
-    ## ELEMENT
-    ############################################################################
-    </dtml-comment>
+   <dtml-comment>
+   #############################################################################
+   ## ELEMENT
+   #############################################################################
+   </dtml-comment>
+   <dtml-else>
     <td class="form-element">
      <dtml-if "grid_col.get('password')">
      <dtml-unless ZMS_INSERT>
@@ -728,7 +726,7 @@
      </dtml-if>
      <span id="<dtml-var "'info_%s'%id">" />
     </td>
-    </dtml-if>
+   </dtml-if>
    </tr>
    <dtml-comment>
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -761,3 +759,5 @@
 <dtml-call "REQUEST.set('qexcludeids',REQUEST.get('qexcludeids_'))">
 <dtml-call "REQUEST.set('entity',REQUEST.get('entity_'))">
 </dtml-let>
+
+<!-- EO dtml/ZMSSqlDb/input_form.dtml -->

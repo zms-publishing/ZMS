@@ -45,7 +45,7 @@ function uploadCompleted() {
 <param name="encode_path" value="no">
 <param name="translate_path" value="no">
 <param name="full_path" value="no">
-<param name="props_file" value="<dtml-var BASE0><dtml-var MISC_ZMS>rad_upload.conf">
+<param name="props_file" value="<dtml-var "getConfProperty('ZMS.input.rad_upload.conf','/++resource++zms_/rad_upload/rad_upload.conf')">">
 </object>
 
 <!-- BO plugins/fileupload/rad_upload/input.dtml -->

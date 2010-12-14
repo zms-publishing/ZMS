@@ -65,31 +65,6 @@ class ObjInputs:
 
 
   # ----------------------------------------------------------------------------
-  #  ObjInputs.getEnumInput:
-  #
-  #	@param fmName
-  #	@param elName
-  # ----------------------------------------------------------------------------
-  def getEnumInput(self, fmName, elName, size, value, enum, enabled=True, REQUEST=None, css='form-element'):
-    html = []
-    html.append('<span class="%s">'%css)
-    if size > 0:
-      html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css))
-    else:
-      html.append(self.getHiddenInput(fmName,elName,value,'%sChange(this);'%elName))
-    if enabled:
-      html.append('<input ')
-      html.append(' class="%s"'%css)
-      html.append(' type="submit"')
-      html.append(' name="btn"')
-      html.append(' value="..."')
-      html.append(' onclick="return browseEnumBtnClick(\'%s\',\'%s\',\'%s\')"'%(fmName,elName,enum))
-      html.append('/>')
-    html.append('</span>')
-    return ''.join(html)
-
-
-  # ----------------------------------------------------------------------------
   #  getHiddenInput:
   #
   #	@param fmName

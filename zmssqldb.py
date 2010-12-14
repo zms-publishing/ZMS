@@ -1259,7 +1259,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.ajaxGetAutocompleteColumns:
     # --------------------------------------------------------------------------
-    def ajaxGetAutocompleteColumns(self, selectTable, tableName, REQUEST):
+    def ajaxGetAutocompleteColumns(self, tableName, fmt=None, REQUEST=None):
       """ ZMSSqlDb.ajaxGetAutocompleteColumns """
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/plain; charset=utf-8'
@@ -1268,17 +1268,16 @@ class ZMSSqlDb(ZMSObject):
       RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
-      tableName = filter(lambda x: x.startswith(selectTable+':'),tableName.split('|'))[0]
-      tableName = tableName[tableName.find(':')+1:]
       l = map( lambda x: x['id'], filter( lambda x: x['type'] != '?', self.getEntity( tableName)['columns']))
       q = REQUEST.get( 'q', '').upper()
       if q:
         l = filter( lambda x: x.upper().find( q) >= 0, l)
-      if REQUEST.has_key( 'limit'):
-        limit = int(REQUEST.get( 'limit'))
+      limit = int(REQUEST.get('limit',self.getConfProperty('ZMS.input.autocomplete.limit',15)))
+      if len(l) > limit:
         l = l[:limit]
-      rtn = '\n'.join(l)
-      return rtn
+      if fmt == 'json':
+        return self.str_json(l)
+      return '\n'.join(l)
 
     ############################################################################
     #  ZMSSqlDb.manage_changeConfiguration: 

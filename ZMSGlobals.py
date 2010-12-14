@@ -1576,7 +1576,7 @@ class ZMSGlobals:
         # Return name of weekday
         elif fmt_str == 'Day':
           dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
-          return self.getLangStr('DAYOFWEEK%i'%((dt.dow()-1)%7),lang)
+          return self.getLangStr('DAYOFWEEK%i'%(dt.dow()%7),lang)
         # Return name of month
         elif fmt_str == 'Month':
           return self.getLangStr('MONTH%i'%t[1],lang)

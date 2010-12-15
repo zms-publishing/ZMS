@@ -15,9 +15,9 @@
  </dtml-in>
  </select>
  <dtml-if ZMI_TIME>
- |&nbsp;<dtml-var "_.float(int((ZopeTime().timeTime()-ZMI_TIME)*100.0)/100.0)"> secs.
+ |&nbsp;<dtml-var "float(int((ZopeTime().timeTime()-ZMI_TIME)*100.0)/100.0)"> secs.
  </dtml-if>
- |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <a id="strong" href="javascript:open_frame('<dtml-var AUTHENTICATED_USER>','manage_userForm','lang=<dtml-var lang>',440,320,',resizable=yes,scrollbars=yes')" title="<dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></a>
+ |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <span id="strong" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',$(this).attr('title'))" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></span>
  </form>
 </div><!-- .zmi_col_right -->
 </div><!-- .zmi-document-margin -->

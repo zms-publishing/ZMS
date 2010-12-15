@@ -120,21 +120,18 @@
      var workflowNodesDiv = document.getElementById( 'workflowNodesDiv');
      if (el) {
        var coords = getCoords(el);
-       workflowNodesDiv.style.visibility = 'visible';
-       workflowNodesDiv.style.display = 'block';
-       workflowNodesDiv.style.position = 'absolute';
        workflowNodesDiv.style.left = (coords.x+el.offsetWidth)+"px";
        workflowNodesDiv.style.top = (coords.y+el.offsetHeight)+"px";
+       $(workflowNodesDiv).show('normal');
      }
      else {
-       workflowNodesDiv.style.visibility = 'hidden';
-       workflowNodesDiv.style.display = 'none';
+       $(workflowNodesDiv).hide('normal');
      }
      return false;
    }
  //-->
  </script>
- <div id="workflowNodesDiv" class="form-small" style="background-color:#ffffe0;visibility:hidden;display:none;position:absolute;">
+ <div id="workflowNodesDiv" class="form-small ui-helper-hidden" style="background-color:#ffffe0;position:absolute;">
   <div align="right"><a href="#" onclick="workflowNodesDivDisplay(null);" onmouseover="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_logout" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" align="absmiddle"/></a></div>
   <div class="form-small" style="padding:4px;">
   <dtml-in "getNodes()">

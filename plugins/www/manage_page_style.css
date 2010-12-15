@@ -6,7 +6,7 @@
 h1, h2, h3 {
 	font-family: Arial, sans-serif; 
 }
-
+s
 .form-help {
 	font-family: Arial, sans-serif;
 	font-size:11px;
@@ -241,6 +241,10 @@ body.zmi.maximized td.zmiContainerColLeft select {
 	background:url(/misc_/zms/get_logo_gradient.gif) top right repeat-y;
 }
 
+#system_msg {
+	padding: 1em;
+}
+
 /* @see http://css-tricks.com/how-to-resizeable-background-image/ */
 img#zmibg {
 	z-index:-1000;
@@ -274,8 +278,10 @@ img#zmibg {
 	text-decoration: underline;
 	color: #f90;
 }
-.zmi-document-margin a#strong {
+.zmi-document-margin span#strong {
 	font-weight:bold;
+	cursor:pointer;
+	text-decoration:underline;
 }
 
 .zmi-document-margin select {

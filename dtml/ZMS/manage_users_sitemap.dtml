@@ -71,12 +71,8 @@ function searchBtnClick(id,href)
     }
   }
   // Start processing.
-  var searchDiv = document.getElementById( "searchDiv");
-  searchDiv.style.display = "block";
-  searchDiv.style.visibility = "visible";
-  var icon_cancel = document.getElementById('icon_cancel');
-  icon_cancel.style.display = "inline";
-  icon_cancel.style.visibility = "visible";
+  $('searchDiv').show('normal');
+  $('icon_cancel').show('normal');
   ajaxGetChildNodes(id,0,href);
 }
 
@@ -85,9 +81,7 @@ function searchBtnClick(id,href)
  */
 function stopBtnClick()
 {
-  var icon_cancel = document.getElementById('icon_cancel');
-  icon_cancel.style.display = "none";
-  icon_cancel.style.visibility = "hidden";
+  $('icon_cancel').hide('normal');
   canceled = true;
 }
 
@@ -96,10 +90,8 @@ function stopBtnClick()
  */
 function ensureVisible(div) 
 {
-  if ( div.style.display == "none" && 
-       div.style.visibility == "hidden") {
-     div.style.display = "block";
-     div.style.visibility = "visible";
+  if ( div.style.display == "none") {
+     $(div).show('normal');
      ensureVisible( div.parentNode);
   }
 }
@@ -278,12 +270,8 @@ function processResponseGetChildNodes(data)
     ajaxGetChildNodes(page_id,level_offs,absolute_url);
   }
   else {
-    var searchDiv = document.getElementById( "searchDiv");
-    searchDiv.style.display = "none";
-    searchDiv.style.visibility = "hidden";
-    var icon_cancel = document.getElementById('icon_cancel');
-    icon_cancel.style.display = "none";
-    icon_cancel.style.visibility = "hidden";
+    $('#searchDiv').hide('normal');
+    $('#icon_cancel').hide('normal');
   }
 }
 
@@ -299,7 +287,7 @@ function processResponseGetChildNodes(data)
 </form>
 <hr size="1"/>
 
- <div id="searchDiv" class="form-label" style="display:none;visibility:hidden;">
+ <div id="searchDiv" class="form-label ui-helper-hidden">
   <a href="#" onclick="stopBtnClick();" onmouseover="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_cancel" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CANCEL')">" border="0" align="absmiddle"/></a>
   <div id="currentDiv" class="form-small" style="background-color:#ffffe0;border:1px solid black;margin:4px;"></div>
  </div>

@@ -1,7 +1,26 @@
 <dtml-var manage_page_header>
-</head>
-<body class="zmi zmiNeutralColorLight0">
-<div style="padding:4px">
+		<style>
+			body.zmi {background-color:#EEE!important;padding:10px;}
+		</style>
+		<script language="JavaScript">
+			function form0Submit(fm) {
+				var b = true;
+				if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
+					if (fm.elements['password'] && fm.elements['confirm']) {
+						b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
+						b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
+						if (fm.elements['password'].value!=fm.elements['confirm'].value) {
+							b = false;
+							alert('<dtml-var "getZMILangStr('ATTR_PASSWORD')"><><dtml-var "getZMILangStr('ATTR_CONFIRM')">!');
+						}
+					}
+				}
+			return b;
+		}
+		</script>
+	</head>
+	<body class="zmi ui-widget-content ui-corner-all">
+		<form name="form0" action="manage_user" method="post" onsubmit="return form0Submit(this);">
 
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
 <div class="ui-state-highlight ui-corner-all" style="padding:1em;">
@@ -11,37 +30,14 @@
 </div>
 </dtml-if>
 
-<script language="JavaScript">
-<!--//
-
-  function form0Submit(fm) {
-    var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
-      if (fm.elements['password'] && fm.elements['confirm']) {
-        b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
-        b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
-        if (fm.elements['password'].value!=fm.elements['confirm'].value) {
-          b = false;
-          alert('<dtml-var "getZMILangStr('ATTR_PASSWORD')"><><dtml-var "getZMILangStr('ATTR_CONFIRM')">!');
-        }
-      }
-    }
-    return b;
-  }
-
-//-->
-</script>
-  
-<dtml-let userObj=AUTHENTICATED_USER>
- <form name="form0" action="manage_user" method="post" onsubmit="return form0Submit(this);">
  <input type="hidden" name="lang" value="<dtml-var lang>">
  <table cellspacing="1" cellpadding="2" border="0">
  <!-- E-Mail -->
  <tr valign="middle">
   <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
-  <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=25,value=getUserAttr(userObj,'email',''))"></td>
+  <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=25,value=getUserAttr(AUTHENTICATED_USER,'email',''))"></td>
  </tr>
- <dtml-unless "getUserFolder().meta_type=='LDAPUserFolder' and userObj.getId() in getUserFolder().getUserNames()">
+ <dtml-unless "getUserFolder().meta_type=='LDAPUserFolder' and AUTHENTICATED_USER.getId() in getUserFolder().getUserNames()">
  <!-- Password -->
  <tr valign="middle">
   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_PASSWORD')"></div></td>
@@ -54,7 +50,7 @@
  </tr>
  </dtml-unless>
  <!-- Profil -->
- <dtml-let profile="getUserAttr(userObj,'profile','')" ob="getLinkObj(profile,REQUEST)"> 
+ <dtml-let profile="getUserAttr(AUTHENTICATED_USER,'profile','')" ob="getLinkObj(profile,REQUEST)"> 
   <dtml-if profile>
    <tr valign="middle">
     <td class="form-label"><dtml-var "getZMILangStr('ATTR_PROFILE')"></td>
@@ -75,7 +71,7 @@
   </dtml-if>
  </dtml-let>
  <!-- Display/Edit Node(s) -->
- <dtml-let nodes="getUserAttr(userObj,'nodes',{})" nodekeys="nodes.keys()">
+ <dtml-let nodes="getUserAttr(AUTHENTICATED_USER,'nodes',{})" nodekeys="nodes.keys()">
   <dtml-call "nodekeys.sort()">
   <dtml-call "REQUEST.set('count',0)">
   <dtml-in nodekeys>
@@ -108,9 +104,7 @@
   <td>&nbsp;</td>
   <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;"></td>
  </table>
- </form>
-</dtml-let>
 
-</div>
-</body>
+		</form>
+	</body>
 </html>

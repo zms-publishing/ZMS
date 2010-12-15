@@ -172,7 +172,7 @@ function onResize() {
 			</table>
 		</div>
 		<div class="form-small">
-			<div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;margin:1em;display:none;"></div>
+			<div id="system_msg" class="ui-state-highlight ui-corner-all ui-helper-hidden"></div>
 			<form name="form0" onsubmit="return onForm0Submit(this)" style="margin:8px">
 				<input type="hidden" name="lang" value="<dtml-var lang>">
 				<div class="form-element">

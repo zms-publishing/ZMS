@@ -10,18 +10,30 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "REQUEST.get('key')=='Maintenance'">
-<dtml-if "REQUEST.get('btn','').startswith('Reindex')">
-<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Catalog:</b> Reindex<br/><dtml-var "reindexCatalog(REQUEST,clients='catalog_portal_clients' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn','').startswith('Correct')">
-<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Internal links:</b> Correct<br/><dtml-var "synchronizeRefs(clients='internal_links_portal_clients' in REQUEST.form.get('options',[]),unify_ids='internal_links_unify_ids' in REQUEST.form.get('options',[]))"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn','').startswith('Clear')">
-<div class="ui-state-highlight ui-corner-all" style="padding:1em;"><b>Static cache:</b> Clear<br/><dtml-var "clearCachePages()"><hr/>(<dtml-var "getLangFmtDate(ZopeTime())">)</div>
-<dtml-elif "REQUEST.get('btn')=='Change'">
- <dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
- <dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('ZMS_InternalLinks_autocorrection')==1)">
- <dtml-call "setConfProperty('ZMS.InternalLinks.keepsynchron',REQUEST.get('ZMS_InternalLinks_keepsynchron')==1)">
- <dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
-</dtml-if>
+	<dtml-if "REQUEST.get('btn','').startswith('Reindex')">
+		<div id="system_msg" class="ui-state-highlight ui-corner-all">
+			<b>Catalog:</b>
+			Reindex<br/><dtml-var "reindexCatalog(REQUEST,clients='catalog_portal_clients' in REQUEST.form.get('options',[]))">
+			(<dtml-var "getLangFmtDate(ZopeTime())">)
+		</div>
+	<dtml-elif "REQUEST.get('btn','').startswith('Correct')">
+		<div id="system_msg" class="ui-state-highlight ui-corner-all">
+			<b>Internal links:</b>
+			Correct<br/><dtml-var "synchronizeRefs(clients='internal_links_portal_clients' in REQUEST.form.get('options',[]),unify_ids='internal_links_unify_ids' in REQUEST.form.get('options',[]))">
+			(<dtml-var "getLangFmtDate(ZopeTime())">)
+		</div>
+	<dtml-elif "REQUEST.get('btn','').startswith('Clear')">
+		<div id="system_msg" class="ui-state-highlight ui-corner-all">
+			<b>Static cache:</b>
+			Clear<br/><dtml-var "clearCachePages()">
+			(<dtml-var "getLangFmtDate(ZopeTime())">)
+		</div>
+	<dtml-elif "REQUEST.get('btn')=='Change'">
+		<dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
+		<dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('ZMS_InternalLinks_autocorrection')==1)">
+		<dtml-call "setConfProperty('ZMS.InternalLinks.keepsynchron',REQUEST.get('ZMS_InternalLinks_keepsynchron')==1)">
+		<dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
+	</dtml-if>
 </dtml-if>
 
 <table cellspacing="1" cellpadding="8" border="0" class="zmiNeutralColorStrong0" width="100%">
@@ -518,21 +530,18 @@ $(function() {
      var versionNodesDiv = document.getElementById( 'versionNodesDiv');
      if (el) {
        var coords = getCoords(el);
-       versionNodesDiv.style.visibility = 'visible';
-       versionNodesDiv.style.display = 'block';
-       versionNodesDiv.style.position = 'absolute';
        versionNodesDiv.style.left = (coords.x+el.offsetWidth)+"px";    
        versionNodesDiv.style.top = (coords.y+el.offsetHeight)+"px";
+       $(versionNodesDiv).show('normal');
      }
      else {
-       versionNodesDiv.style.visibility = 'hidden';
-       versionNodesDiv.style.display = 'none';
+       $(versionNodesDiv).hide('normal');
      }
      return false;
    }
  //-->
  </script>
- <div id="versionNodesDiv" class="form-small" style="background-color:#ffffe0;visibility:hidden;display:none;position:absolute;">
+ <div id="versionNodesDiv" class="form-small ui-helper-hidden" style="background-color:#ffffe0;position:absolute;">
   <div align="right"><a href="#" onclick="versionNodesDivDisplay(null);" onmouseover="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.icon_logout.src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_logout" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CLOSE')">" border="0" align="absmiddle"/></a></div>
   <div class="form-small" style="padding:4px;">
   <dtml-in "getConfProperty('ZMS.Version.nodes',['{$}'])">

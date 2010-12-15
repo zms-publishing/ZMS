@@ -11,15 +11,13 @@ function clickElement(id,href)
     if ( img.title == "-") {
       img.src = "<dtml-var MISC_ZMS>pl.gif";
       img.title = "+";
-      el.style.visibility = "hidden";
-      el.style.display = "none";
+      $(el).hide('normal');
     }
     else 
     if ( img.title == "+") {
       img.src = "<dtml-var MISC_ZMS>mi.gif";
       img.title = "-";
-      el.style.visibility = "visible";
-      el.style.display = "block";
+      $(el).show('normal');
       if ( ( el.childNodes.length < 1) || ( el.childNodes.length == 1 && el.firstChild.nodeType != 1)) {
         el.appendChild( document.createTextNode( "<dtml-var "getLangStr('MSG_LOADING',lang)">"));
         setxml(id,href);

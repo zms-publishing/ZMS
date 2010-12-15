@@ -519,7 +519,7 @@ function drag(ereignis) {
 
 <div class="ZMIManageBody">
 
-<div id="system_msg" class="ui-state-highlight ui-corner-all" style="padding:1em;display:none;visibility:hidden;"></div>
+<div id="system_msg" class="ui-state-highlight ui-corner-all ui-helper-hidden"></div>
 
 <dtml-comment>
 <!-- ####################################################################### -->

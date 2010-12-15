@@ -57,8 +57,7 @@ function previewImgBtnClick(version_nr)
   if ( img.title == '+') {
     img.title = "-";
     img.src = "<dtml-var MISC_ZMS>mi.gif";
-    div.style.visibility = 'visible';
-    div.style.display = 'block';
+    $(div).show('normal');
     if ( div.title == "+") {
       // JQuery.AJAX.get
       $(document.body).css( "cursor", "wait");
@@ -68,8 +67,7 @@ function previewImgBtnClick(version_nr)
   else {
     img.title = "+";
     img.src = "<dtml-var MISC_ZMS>pl.gif";
-    div.style.visibility = 'hidden';
-    div.style.display = 'none';
+    $(div).hide('normal');
   }
 }
 
@@ -316,7 +314,7 @@ function previewImgBtnProcessResponse(data)
        <dtml-if "isPage()">
        <tr valign="top">
         <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
        </dtml-if>
        </dtml-let>
@@ -404,7 +402,7 @@ function previewImgBtnProcessResponse(data)
       <dtml-if "isPage()">
        <tr valign="top">
         <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
       </dtml-if>
       </dtml-let>
@@ -472,7 +470,7 @@ function previewImgBtnProcessResponse(data)
       <dtml-if "isPage()">
         <tr valign="top">
          <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
-         <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
+         <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
         </tr>
       </dtml-if>
      </dtml-let>
@@ -545,7 +543,7 @@ function previewImgBtnProcessResponse(data)
      <dtml-if "isPage()">
        <tr valign="top">
         <td align="right"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"></td>
-        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="visibility:hidden;display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
+        <td class="neutralColorWhite" colspan="2"><div id="div_<dtml-var version_nr>" title="+" style="display:none;border:1px solid black;padding:3px;background-color:white;"><img src="<dtml-var spacer_gif>" border="0" width="2" height="1"/></div></td>
        </tr>
      </dtml-if>
      </dtml-let>
@@ -556,12 +554,11 @@ function previewImgBtnProcessResponse(data)
 
 </table>
 
-<div class="zmiNeutralColorMedium0">
-<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COMPARE')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersionForm';">
-<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersion';">
-<br/><br/>
-</div>
-</form>
 </dtml-let>
 
+		<div class="zmi-form-section ui-widget-content ui-corner-all">
+			<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_COMPARE')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersionForm';">
+			<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_RESET')" html_quote>" onclick="self.btnClicked=this.value; document.forms['form0'].action='manage_UndoVersion';">
+		</div>
+	</form>
 <dtml-var manage_page_footer>

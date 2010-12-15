@@ -22,8 +22,7 @@
     el.style.left = coords.x + "px";
     el.style.top = coords.y + "px";
     el.style.position = "absolute";
-    el.style.display = "block";
-    el.style.visibility = "visible";
+    $(el).show('normal');
   }
 
   /**
@@ -465,7 +464,7 @@ function followHref( href, extra)
    <div id="input_url" class="form-small">
     <input class="form-small" type="text" name="url" size="25" value="<dtml-var "REQUEST.get('url','')">">
    </div>
-   <div id="input_localfs" class="form-small" style="display:none;visibility:hidden;">
+   <div id="input_localfs" class="form-small ui-helper-hidden">
     <input class="form-small" type="file" name="localfs" size="25" onchange="btnClick(this)"><br/>
     <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_FILE')">
    </div>

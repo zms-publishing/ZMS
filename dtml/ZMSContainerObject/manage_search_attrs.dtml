@@ -14,9 +14,7 @@ var selected_option = null;
  */
 function searchBtnClick(id,href) 
 {
-  var icon_cancel = document.getElementById('icon_cancel');
-  icon_cancel.style.display = "inline";
-  icon_cancel.style.visibility = "visible";
+  $('#icon_cancel').show('normal');
   canceled = false;
   currentIndex = 0;
   children = new Array();
@@ -48,9 +46,7 @@ function searchBtnClick(id,href)
   // Start processing.
   var resultDiv = document.getElementById( "resultDiv_"+id);
   resultDiv.innerHTML = '';
-  var searchDiv = document.getElementById( "searchDiv_"+id);
-  searchDiv.style.display = "block";
-  searchDiv.style.visibility = "visible";
+  $('#searchDiv_'+id).show('normal');
   ajaxGetChildNodes(id,href);
 }
 
@@ -59,9 +55,7 @@ function searchBtnClick(id,href)
  */
 function stopBtnClick()
 {
-  var icon_cancel = document.getElementById('icon_cancel');
-  icon_cancel.style.display = "none";
-  icon_cancel.style.visibility = "hidden";
+  $('#icon_cancel').hide('normal');
   canceled = true;
 }
 
@@ -70,10 +64,8 @@ function stopBtnClick()
  */
 function ensureVisible(div) 
 {
-  if ( div.style.display == "none" && 
-       div.style.visibility == "hidden") {
-     div.style.display = "block";
-     div.style.visibility = "visible";
+  if ( div.style.display == "none") {
+     $(div).show('normal');
      ensureVisible( div.parentNode);
   }
 }
@@ -158,11 +150,9 @@ function processResponseGetChildNodes(data)
     if ( page_has_children || found) {
       var div = document.createElement( "div");
       div.setAttribute( "id", page_id);
-      div.setAttribute( "class", "form-small");
-      div.setAttribute( "className", "form-small");
+      div.setAttribute( "class", "form-small ui-helper-hidden");
+      div.setAttribute( "className", "form-small ui-helper-hidden");
       div.style.margin = "1px 1px 1px 1px";
-      div.style.display = "none";
-      div.style.visibility = "hidden";
       if ( page_has_children) {
         var img = document.createElement( "img");
         img.setAttribute( "id", page_id + "_img");
@@ -202,11 +192,9 @@ function processResponseGetChildNodes(data)
       div.appendChild( a);
       var resultDiv = document.createElement( "div");
       resultDiv.setAttribute( "id", "resultDiv_"+page_id);
-      resultDiv.setAttribute( "class", "form-small");
-      resultDiv.setAttribute( "className", "form-small");
+      resultDiv.setAttribute( "class", "form-small ui-helper-hidden");
+      resultDiv.setAttribute( "className", "form-small ui-helper-hidden");
       resultDiv.style.margin = "4px 1px 1px 8px";
-      resultDiv.style.display = "none";
-      resultDiv.style.visibility = "hidden";
       div.appendChild( resultDiv);
       el.appendChild( div);
       if ( found) {
@@ -231,9 +219,7 @@ function processResponseGetChildNodes(data)
   }
   else {
     currentDiv.innerHTML = "[" + currentIndex + " <dtml-var "getZMILangStr('ATTR_OBJECTS')">]";
-    var icon_cancel = document.getElementById('icon_cancel');
-    icon_cancel.style.display = "none";
-    icon_cancel.style.visibility = "hidden";
+    $('#icon_cancel').hide('normal');
   }
 }
 
@@ -459,7 +445,7 @@ window.onload = function(e) {
 
   </form>
 
-<div id="searchDiv_<dtml-var id>" class="form-label" style="display:none;visibility:hidden;">
+<div id="searchDiv_<dtml-var id>" class="form-label ui-helper-hidden">
  <dtml-var "getZMILangStr('SEARCH_HEADERRESULT')">
  <a href="#" onclick="stopBtnClick();" onmouseover="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout1.gif'" onmouseout="document.getElementById('icon_cancel').src='<dtml-var MISC_ZMS>icon_logout0.gif'"><img id="icon_cancel" src="<dtml-var MISC_ZMS>icon_logout0.gif" alt="<dtml-var "getZMILangStr('BTN_CANCEL')">" border="0" align="absmiddle"/></a>
  <div id="currentDiv" class="form-small" style="background-color:#ffffe0;border:1px solid black;margin:4px;"></div>

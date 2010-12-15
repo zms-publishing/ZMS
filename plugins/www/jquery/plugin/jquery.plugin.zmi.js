@@ -3,6 +3,20 @@
 // ############################################################################
 
 /**
+ * Open link in iframe.
+ */
+function zmiIframe(href, title) {
+	$.fancybox({
+		'href':href,
+		'title':title,
+		'type':'iframe',
+		'autoDimensions':true,
+		'transitionIn':'fade',
+		'transitionOut':'fade'
+	});
+}
+
+/**
  * Max-/Minimize ZMI.
  */
 function zmiToggleMaximize() {

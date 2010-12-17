@@ -1,11 +1,6 @@
 ################################################################################
 # zmscustom.py
 #
-# $Id: zmscustom.py,v 1.9 2004/11/30 20:04:16 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.9 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -33,6 +28,7 @@ from zmscontainerobject import ZMSContainerObject
 import _fileutil
 import _globals
 import _importable
+import _ziputil
 
 
 # ------------------------------------------------------------------------------
@@ -404,20 +400,7 @@ class ZMSCustom(ZMSContainerObject):
       message = ''
       
       if self.meta_id=='ZMSSysFolder':
-        import os, tempfile
-        # Create temporary folder.
-        folder = tempfile.mktemp()
-        os.mkdir(folder)
-        # Save to temporary file.
-        filename = _fileutil.getOSPath('%s/%s'%(folder,_fileutil.extractFilename(file.filename)))
-        _fileutil.exportObj(file,filename)
-        if _fileutil.extractFileExt(filename) == 'zip':
-          _fileutil.extractZipArchive(filename)
-          _fileutil.remove(filename)
-        # Import temporary file.
-        _fileutil.importPath(self,folder)
-        # Remove temporary files.
-        _fileutil.remove(folder,deep=1)
+        _ziputil.importZip2Zodb( self, file)
         # Message.
         message += self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%_fileutil.extractFilename(file.filename))
       elif self.getType()=='ZMSRecordSet':

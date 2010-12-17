@@ -382,11 +382,11 @@ function changeType( el)
 ################################################################################
 </dtml-comment>
 
- <form name="form0" action="manage_changeProperties" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
+ <form name="form0" action="manage_changeProperties" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
  <input type="hidden" name="key" value="">
  <input type="hidden" name="lang" value="<dtml-var lang>">
  <input type="hidden" name="id" value="<dtml-var "REQUEST.get('id')">">
- <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="98%">
+ <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
   <colgroup>
    <col />
    <col />
@@ -439,11 +439,11 @@ function changeType( el)
 
      <!-- Headline -->
      <tr class="zmiNeutralColorStrong0">
-      <td><div class="form-label">&nbsp;</div></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_VERSION')"></div></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
-      <td><div class="form-label"><dtml-var "getZMILangStr('SOTYPE_ZMSPACKAGE')"></div></td>
+      <td>&nbsp;</td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_VERSION')"></td>
+      <td class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
+      <td class="form-label"><dtml-var "getZMILangStr('SOTYPE_ZMSPACKAGE')"></td>
       <td colspan="2">&nbsp;</td>
      </tr>
 
@@ -517,6 +517,22 @@ function changeType( el)
 
        <!-- Headline -->
        <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
+       <colgroup>
+        <col width="70" />
+        <col width="20" />
+        <col />
+        <col />
+        <col />
+        <col width="20" />
+        <dtml-if "metaObj['type']=='ZMSRecordSet'">
+        <col width="20" />
+        <dtml-else>
+        <col width="20" />
+        <col width="20" />
+        </dtml-if>
+        <col />
+        <col width="20" />
+       </colgroup>
        <tr valign="middle">
         <td class="form-small" colspan="2"><b>&nbsp;</b></td>
         <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_ID')"></b></td>
@@ -529,8 +545,8 @@ function changeType( el)
          <td class="form-small" align="center"><img src="<dtml-var MISC_ZMS>btn_multilang1.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" border="0" /></td>
          <td class="form-small" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">" align="center"><strong>0..n</strong></td>
         </dtml-if>
-        <td class="form-small">&nbsp;</td>
-        <td class="form-small" align="center"><strong>DTML</strong></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
        </tr>
        <!-- Change / Delete Attributes -->
        <dtml-in "metaObj['attrs']"
@@ -597,7 +613,9 @@ function changeType( el)
               ><img src="/misc_/OFSP/dtmldocument.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
              /></dtml-if
             ><dtml-elif "oAttr['type'] == 'External Method'"
-             ><img src="misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+             ><img src="/misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+            ><dtml-elif "oAttr['type'] == 'Folder'"
+             ><img src="/misc_/OFSP/Folder_icon.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
             ><dtml-elif "oAttr['type'] == 'Page Template'"
              ><dtml-with "getattr(this(),oAttr['id'])"
               ><dtml-if pt_errors
@@ -647,50 +665,51 @@ function changeType( el)
             /></dtml-if
            ></td
           ><dtml-comment>***** Id *****</dtml-comment
-          ><td class="form-small" <dtml-if "oAttr['type']=='delimiter'">bgcolor="#F4F4F4"</dtml-if>
+          ><td class="form-small" width="79" <dtml-if "oAttr['type']=='delimiter'">bgcolor="#F4F4F4"</dtml-if>
            ><input type="hidden" name="old_ids:list" value="<dtml-var "oAttr['id']">"
            ><input type="hidden" name="attr_meta_type_<dtml-var "oAttr['meta_type']">" value="<dtml-var "oAttr['meta_type']">"
            ><input type="text" name="attr_id_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['id']">" size="10"
              <dtml-if "oAttr['type'] in ['delimiter']">
-              class="form-small" style="width:80px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
+              class="form-small" style="width:79px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
-              class="form-small" style="width:80px; border-width=1;"
+              class="form-small" style="width:79px; border-width=1;"
              <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
-              class="form-fixed" style="width:80px; "
+              class="form-fixed" style="width:79px; "
              <dtml-else>
-              class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:80px;"
+              class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:79px;"
              </dtml-if>>
           </td>
           <dtml-comment>***** Name *****</dtml-comment>
-          <td class="form-small" <dtml-if "oAttr['type']=='delimiter'">bgcolor="#F4F4F4"</dtml-if>>
+          <td class="form-small" width="119" <dtml-if "oAttr['type']=='delimiter'">bgcolor="#F4F4F4"</dtml-if>>
            <input type="text" name="attr_name_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['name']">" size="15"
              <dtml-if "oAttr['type'] in ['delimiter']">
-              class="form-small" style="width:120px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
+              class="form-small" style="width:119px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
-              class="form-small" style="width:120px; border-width=1;"
+              class="form-small" style="width:119px; border-width=1;"
              <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
-              class="form-fixed" style="width:120px; "
+              class="form-fixed" style="width:119px; "
              <dtml-else>
-              class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:120px;"
+              class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:119px;"
              </dtml-if>>
           </td>
           <dtml-comment>
-          ##### METHOD #####
+          ##### FOLDER #####
           </dtml-comment>
-          <dtml-if "oAttr['type'] in ['method']+valid_zopetypes">
-          <td nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
+          <dtml-if "oAttr['type'] in ['Folder']">
+          <td class="form-small" nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">5<dtml-else>6</dtml-if>">
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
-           <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
-           <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;" onchange="changeCustom(this);"><dtml-var "oAttr.get('custom','')" html_quote></textarea
-           ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_custom_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['id']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom"></a>
-          </td>
-          <td align="center"
-           ><a href="javascript:dtmlHintBtnClick('<dtml-var "oAttr['id']">')"><img id="dtmlHintBtn<dtml-var "oAttr['id']">" src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="1" align="absmiddle"/></a
+           <input class="form-small" type="file" name="attr_custom_<dtml-var "oAttr['id']">" size="15">
+           <dtml-if "oAttr.get('custom',None)">
+            <dtml-let f="oAttr['custom']">
+             <a href="<dtml-var "f.absolute_url()">" target="_blank" class="zmi" title="<dtml-var "f.getContentType()">"><dtml-var "string_maxlen(f.title,20)"></a>
+             <strong>(<dtml-var "getDataSizeStr(f.get_size())">)</strong>
+            </dtml-let>
+           </dtml-if>
           </td>
           <dtml-comment>
           ##### RESOURCE #####
           </dtml-comment>
-          <dtml-elif "oAttr['type']=='resource'">
+          <dtml-elif "oAttr['type'] in ['resource']">
           <td class="form-small" nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
            <input class="form-small" type="file" name="attr_custom_<dtml-var "oAttr['id']">" size="15">
@@ -701,8 +720,21 @@ function changeType( el)
             </dtml-let>
            </dtml-if>
           </td>
-          <td class="form-small" align="center"
-           ><a href="javascript:dtmlHintBtnClick('<dtml-var "oAttr['id']">')"><img id="dtmlHintBtn<dtml-var "oAttr['id']">" src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="1" align="absmiddle"/></a
+          <td align="center">
+           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
+          </td>
+          <dtml-comment>
+          ##### METHOD #####
+          </dtml-comment>
+          <dtml-elif "oAttr['type'] in ['method']+valid_zopetypes">
+          <td nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
+           <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
+           <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
+           <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;" onchange="changeCustom(this);"><dtml-var "oAttr.get('custom','')" html_quote></textarea
+           ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_custom_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['id']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom"></a>
+          </td>
+          <td align="center">
+           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
           </td>
           <dtml-comment>
           ##### ATTRIBUTE #####
@@ -759,7 +791,7 @@ function changeType( el)
             ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
            ></td>
           </dtml-unless>
-          <td class="form-small" nowrap="nowrap" width="158"
+          <td class="form-small" nowrap="nowrap" width="150"
            ><nobr
            ><dtml-if "oAttr['type'] in ['dialog']"
 	    ><img src="<dtml-var spacer_gif>" alt="" border="0" width="18" height="16"
@@ -811,8 +843,8 @@ function changeType( el)
            </dtml-if
            ></nobr
           ></td>
-          <td align="center"
-           ><a href="javascript:dtmlHintBtnClick('<dtml-var "oAttr['id']">')"><img id="dtmlHintBtn<dtml-var "oAttr['id']">" src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="1" style="vertical-align:middle" /></a
+          <td align="center">
+           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
           </td>
           </dtml-if>
           </dtml-if>

@@ -1,11 +1,6 @@
 ################################################################################
 # _fileutil.py
 #
-# $Id: _fileutil.py,v 1.9 2004/11/30 20:03:17 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.9 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -234,28 +229,6 @@ def readFile(filename, mode='b', threshold=2 << 16):
   except:
     mt, enc = 'content/unknown', ''
   return data, mt, enc, size
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_fileutil.importPath:
-
-Imports path.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def importPath(self, path):
-  path = getOSPath(path)
-  mode = os.stat(path)[stat.ST_MODE]
-  if stat.S_ISDIR(mode):
-    for filename in os.listdir(path):
-      filepath = path + os.sep + filename
-      mode = os.stat(filepath)[stat.ST_MODE]
-      if stat.S_ISDIR(mode):
-        folder = self.manage_addFolder(id=filename)
-        folder = getattr(self,filename)
-        importPath(folder,filepath)
-      else: 
-        f = open(filepath,'rb')
-        file = self.manage_addFile(id=filename,file=f.read())
-        f.close()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -105,7 +105,7 @@ function hideDstMetaTypes( id)
  <input type="hidden" name="lang" value="<dtml-var lang>">
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
   <colgroup>
-   <col width="40" />
+   <col width="70" />
    <col width="20" />
    <col />
    <col />
@@ -125,12 +125,12 @@ function hideDstMetaTypes( id)
   <tr class="zmiNeutralColorStrong0">
    <td>&nbsp;</td>
    <td>&nbsp;</td>
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></div></td>
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></div></td>
-   <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
-   <td align="center"><div class="form-label" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center">(<dtml-var FORM_LABEL_MANDATORY>)</div></td>
-   <td align="center"><div class="form-label"><img src="<dtml-var MISC_ZMS>btn_multilang1.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" border="0"></div></td>
-   <td align="center"><div class="form-label" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">">0..n</div></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></td>
+   <td class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></td>
+   <td class="form-label" align="center" title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center">(<dtml-var FORM_LABEL_MANDATORY>)</td>
+   <td class="form-label" align="center"><img src="<dtml-var MISC_ZMS>btn_multilang1.gif" title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" border="0"></td>
+   <td class="form-label" align="center" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">">0..n</td>
    <td>&nbsp;</td>
    <td>&nbsp;</td>
   </tr>
@@ -254,8 +254,7 @@ function hideDstMetaTypes( id)
 
 <!-- Insert Metadata -->
 <tr valign="middle" class="zmiNeutralColorMedium0">
-  <td align="right" class="zmiNeutralColorStrong0"><img src="<dtml-var MISC_ZMS>btn_add.gif" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">" border="0" class="button" /></td>
-  <td>&nbsp;</td>
+  <td colspan="2" align="right"><div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_ATTR')">"><span class="ui-icon ui-icon-plus"></span></div></td>
   <td class="form-small" title="<dtml-var "getZMILangStr('ATTR_ID')">">
    <dtml-var "getTextInput(fmName='form0',elName='_id',size=10)">
   </td>

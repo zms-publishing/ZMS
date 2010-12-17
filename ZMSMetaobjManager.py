@@ -1,11 +1,6 @@
 ################################################################################
 # ZMSMetaobjManager.py
 #
-# $Id:$
-# $Name:$
-# $Author:$
-# $Revision:$
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -39,6 +34,7 @@ import zExceptions
 import _blobfields
 import _fileutil
 import _globals
+import _ziputil
 import IZMSSvnInterface
 
 
@@ -47,10 +43,10 @@ import IZMSSvnInterface
 # ------------------------------------------------------------------------------
 def syncType( self, meta_id, attr):
   try:
-    if (attr['type'] in ['resource']) or \
+    if (attr['type'] in ['resource','Folder']) or \
        (attr.get('mandatory',0)==1 and attr['type'] in self.getMetaobjIds()) or \
        (attr.get('repetitive',0)==1 and attr['type'] in self.getMetaobjIds()):
-      ob = getattr( self, meta_id+'.'+attr['id'], None)
+      ob = getattr( self, meta_id+'.'+_globals.id_quote(attr['id']), None)
       if ob is not None:
         attr['custom'] = ob
     elif not self.getConfProperty('ZMS.metaobj_manager.syncType',1):
@@ -111,7 +107,7 @@ class ZMSMetaobjManager:
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
-    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Page Template', 'Script (Python)', 'Z SQL Method']
+    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Folder', 'Page Template', 'Script (Python)', 'Z SQL Method']
 
 
     ############################################################################
@@ -753,15 +749,15 @@ class ZMSMetaobjManager:
           newCustom += 'SELECT * FROM tablename\n'
       
       # Handle resources.
-      if (newType in ['resource']) or \
+      if (newType in ['resource','Folder']) or \
          (newMandatory and newType in self.getMetaobjIds()) or \
          (newRepetitive and newType in self.getMetaobjIds()):
         if isinstance( newCustom, _blobfields.MyFile):
-          if oldId is not None and id+'.'+oldId in self.objectIds():
-            self.manage_delObjects(ids=[id+'.'+oldId])
-          self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
-        elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds(['File']):
-          self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
+          if oldId is not None and id+'.'+_globals.id_quote(oldId) in self.objectIds():
+            self.manage_delObjects(ids=[id+'.'+_globals.id_quote(oldId)])
+          self.manage_addFile( id=id+'.'+_globals.id_quote(newId), file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
+        elif oldId is not None and oldId != newId and id+'.'+_globals.id_quote(oldId) in self.objectIds(['File']):
+          self.manage_renameObject(id=id+'.'+_globals.id_quote(oldId),new_id=id+'.'+newId)
         newCustom = ''
       
       attr = {}
@@ -786,7 +782,7 @@ class ZMSMetaobjManager:
         message = _globals.dt_parse( self, dtml)
         if len( message) > 0:
           attr['errors'] = message
-          message = '<div class="form-label">' + newId + '</div><div style="color:red; background-color:yellow; ">%s</div>'%message
+          message = '<div class="ui-state-error ui-corner-all">DTML-Error in '+newId+'<br>'+message+'</div>'
         else:
           # Handle methods.
           if newType == 'method':
@@ -826,7 +822,7 @@ class ZMSMetaobjManager:
         for ob_id in newId.split('/')[:-1]:
           if ob_id not in container.objectIds():
             container.manage_addFolder(id=ob_id,title='Folder: %s'%id)
-          container = getattr( container, ob_id, None)
+          container = getattr( container, ob_id)
         newObId = newId.split('/')[-1]
         # Get container (old).
         if oldId is not None:
@@ -854,6 +850,8 @@ class ZMSMetaobjManager:
             container.manage_addDTMLDocument( newObId, newName, newCustom)
           elif newType == 'External Method':
             ExternalMethod.manage_addExternalMethod( container, newObId, newName, newId, newId)
+          elif newType == 'Folder':
+            container.manage_addFolder(id=newObId,title=newName)
           elif newType == 'Page Template':
             ZopePageTemplate.manage_addPageTemplate( container, newObId, newName, newCustom)
           elif newType == 'Script (Python)':
@@ -876,13 +874,17 @@ class ZMSMetaobjManager:
             container.manage_renameObject( id=oldObId, new_id=newObId)
         # Change Zope-Object.
         newOb = getattr( container, newObId)
-        if newType in [ 'DTML Method', 'DTML Document' ]:
+        if newType in [ 'DTML Method', 'DTML Document']:
           newOb.manage_edit( title=newName, data=newCustom)
           roles=[ 'Manager']
           newOb._proxy_roles=tuple(roles)
           if newId.find( 'manage_') >= 0:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
+        elif newType in [ 'Folder']:
+          f = getattr( self, id+'.'+_globals.id_quote(newId), None)
+          if f is not None:
+            _ziputil.importZip2Zodb( newOb, f.data)
         elif newType == 'Script (Python)':
           newOb.ZPythonScript_setTitle( newName)
           newOb.write(newCustom)

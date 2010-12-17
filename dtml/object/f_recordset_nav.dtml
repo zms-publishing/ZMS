@@ -10,7 +10,7 @@
 ###   @implicit-param res[list]: <dtml-var "len(res)">
 ###   @implicit-param REQUEST[HttpRequest]
 ###############################################################################
-</dtml-comment
+</dtml-comment>
 
 <dtml-try>
 

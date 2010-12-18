@@ -155,7 +155,7 @@
 <dtml-if "metaObj['id']!='ZMSGraphic' or key!='imgsuperres' or getConfProperty('ZMSGraphic.superres',0)==1">
 <tr id="tr_<dtml-var key>" valign="top">
  <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
- <td><dtml-var "getObjInput(key,REQUEST)"></td>
+ <td><dtml-try><dtml-var "getObjInput(key,REQUEST)"><dtml-except><dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br html_quote></dtml-try></td>
 </tr>
 <dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
 

@@ -16,7 +16,7 @@ $(function() {
 			$(this).removeClass('zmiTeaserColor'); 
 		})
 		.dblclick( function(evt) {
-			self.location.href = $('a[target=]',this).attr('href'); 
+			self.location.href = $('a[href*="id="]',this).attr('href'); 
 		})
 		.attr( "title", "Double-click to edit!");
 });
@@ -92,6 +92,35 @@ $(function() {
     var fm = el.form;
     self.btnClicked = el.value;
   }
+
+////////////////////////////////////////////////////////////////////////////////
+///// Resize textareas
+////////////////////////////////////////////////////////////////////////////////
+
+var taMinHeight = null;
+
+$(function() {
+  onResize();
+  $(window).resize(function() {
+    onResize();
+  });
+});
+
+function onResize() {
+  var ta = $('textarea:not([name^=alternate_])');
+  if (ta.length==1) {
+    if ($(ta.parents('div')[0]).css('display')=='none') {
+      ta = $('object[name^=editor_'+ta.attr('name')+']');
+    }
+    if (taMinHeight==null) {
+      taMinHeight = $(ta).attr('offsetHeight') / 2;
+    }
+    var innerDims = getInnerDimensions();
+    var bodyDims = getBodyDimensions();
+    var newHeight = Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
+    ta.css('height',newHeight);
+  }
+}
 
 //-->
 </script>

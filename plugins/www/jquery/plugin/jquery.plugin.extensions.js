@@ -130,11 +130,13 @@ $(function(){
 		);
 	});
 	// Date-Picker
-	pluginUI('input.datepicker',function() {
+	pluginUI('input.datepicker,input.datetimepicker',function() {
 		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
-		$('input.datepicker').datepicker({
+		var opt = {
 			'showWeek'	: true
-		});
+		};
+		$('input.datepicker').datepicker(opt);
+		$('input.datetimepicker').datetimepicker(opt);
 	});
 });
 
@@ -153,7 +155,8 @@ function pluginUI(s, c) {
 	$.plugin('ui',{
 		files: [
 				'/++resource++zms_/jquery/ui/js/jquery-ui-1.8.7.custom.min.js',
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js'
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js',
+				'/++resource++zms_/jquery/plugin/jquery.plugin.datetimepicker.js'
 		]});
 	$.plugin('ui').get(s,c);
 }

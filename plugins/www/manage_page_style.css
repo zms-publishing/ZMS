@@ -511,7 +511,7 @@ td input.ui-button {
 	float:left;
 }
 
-.datepicker {
+.datepicker,.datetimepicker {
 	background: white url(/misc_/zms/calendar.png) top right no-repeat;
 }
 

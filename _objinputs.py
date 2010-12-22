@@ -104,8 +104,11 @@ class ObjInputs:
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     html.append('<span class="%s" title="%s">'%(css,self.getZMILangStr(fmt_str)))
-    if enabled and fmt_str != 'TIME_FMT':
-      css += ' datepicker'
+    if enabled:
+      if fmt_str == 'DATE_FMT':
+        css += ' datepicker'
+      elif fmt_str == 'DATETIME_FMT':
+        css += ' datetimepicker'
     html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra))
     html.append('</span>')
     return ''.join(html)

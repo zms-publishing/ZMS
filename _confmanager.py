@@ -739,7 +739,11 @@ class ConfManager(
       elif key == 'Manager':
         if btn == 'Add':
           meta_type = REQUEST.get('meta_type','')
-          if meta_type == 'ZMSLog':
+          if meta_type == 'Sequence':
+            obj = _sequence.Sequence()
+            self._setObject(obj.id, obj)
+            message = 'Added '+meta_type
+          elif meta_type == 'ZMSLog':
             obj = zmslog.ZMSLog()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type

@@ -83,6 +83,19 @@
 ################################################################################
 ### JavaScript
 ################################################################################
+</dtml-comment
+><dtml-comment>
+----- Ensure jQuery is available, otherwise ZMI will not work at all!
+</dtml-comment
+><dtml-try
+	><dtml-call "http_import('http://'+HTTP_HOST+'/'+getConfProperty('jquery.version'))"
+><dtml-except
+	><dtml-if "str(error_value).startswith('[404]')"
+		><dtml-call "delConfProperty('jquery.version')"
+	></dtml-if
+></dtml-try
+><dtml-comment>
+-----
 </dtml-comment>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.version')">"></script>
 <script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.version')">"></script>

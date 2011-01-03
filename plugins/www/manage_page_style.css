@@ -651,8 +651,8 @@ ul.ui-tabs-nav { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav li a { font-family:Arial, sans-serif; font-size:11px !important; font-weight: normal; text-decoration: none; }
 .ui-widget-header { vertical-align: middle; padding: 2px 4px 2px 4px; }
 div.zmi-icon { margin: 0; padding: 0; width:16px; }
-ul.zmi-icons, ul#icons { margin: 0; padding: 0; }
-ul.zmi-icons li, ul#icons li { position: relative; margin: 2px 2px 4px 2px; padding: 0; cursor: pointer; float: left; list-style: none; }
+ul.zmi-icons, ul#icons, ul.icons { margin: 0; padding: 0; }
+ul.zmi-icons li, ul#icons li, ul.icons li { position: relative; margin: 2px 2px 4px 2px; padding: 0; cursor: pointer; float: left; list-style: none; }
 ul.zmi-icons span.ui-icon, ul#icons span.ui-icon {float: left; margin: 0; }
 .ui-button {position:static!important;}
 .ui-accordion-content { margin:0!important; padding:4px!important; }

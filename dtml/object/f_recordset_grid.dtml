@@ -36,7 +36,7 @@
  <tr class="neutralColorMedium">
   <dtml-if grid_options>
   <th class="form-small" align="left">
-   <ul id="icons" class="ui-widget ui-helper-clearfix">
+   <ul class="icons ui-widget ui-helper-clearfix">
    <dtml-if "'insert' in grid_options.keys()">
       <li
          class="ui-state-default ui-corner-all"
@@ -110,7 +110,7 @@
 >
   <dtml-if grid_options>
   <td class="neutralColorMedium" align="left" valign="top">
-   <ul id="icons" class="ui-widget ui-helper-clearfix">
+   <ul class="icons ui-widget ui-helper-clearfix">
    <dtml-if "'delete' in grid_options.keys()">
         <li
            class="ui-state-default ui-corner-all"

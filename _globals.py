@@ -493,7 +493,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
     host = host[:i]
   
   # Open HTTP connection.
-  writeBlock( self, "[http_import.%s]: %s:%i --> %s?%s"%(method,host,port,url,qs))
+  writeLog( self, "[http_import.%s]: %s:%i --> %s?%s"%(method,host,port,url,qs))
   req = HTTP(host,port)
   
   # Set request-headers.
@@ -522,7 +522,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
   #### get parameter from content
   if reply_code == 404 or reply_code >= 500:
     error = "[%i]: %s at %s [%s]"%(reply_code,message,url,method)
-    writeBlock( self, "[http_import.error]: %s"%error)
+    writeLog( self, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
   elif reply_code==200:
     # get content
@@ -545,7 +545,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
     return rtn
   else:
     result = '['+str(reply_code)+']: '+str(message)
-    writeBlock( self, "[http_import.result]: %s"%result)
+    writeLog( self, "[http_import.result]: %s"%result)
     return result
 
 

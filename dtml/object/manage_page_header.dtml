@@ -88,7 +88,7 @@
 ----- Ensure jQuery is available, otherwise ZMI will not work at all!
 </dtml-comment
 ><dtml-try
-	><dtml-call "http_import('http://'+HTTP_HOST+'/'+getConfProperty('jquery.version'))"
+	><dtml-call "http_import('http://'+HTTP_HOST+getConfProperty('jquery.version'))"
 ><dtml-except
 	><dtml-if "str(error_value).startswith('[404]')"
 		><dtml-call "delConfProperty('jquery.version')"

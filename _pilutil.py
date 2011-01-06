@@ -50,18 +50,8 @@ class pilutil:
     size = (maxdim, maxdim)
     thumb = self.resize( img, size, mode='thumbnail', qual=qual)
     
-    # Recalculate filename
-    lang_sffx = '_' + img.lang
-    thumb_sffx = '_thumbnail'
-    filename = thumb.getFilename()
-    fileext = '.'+_fileutil.extractFileExt(filename)
-    filename = filename[:-len(fileext)]
-    if filename.endswith(lang_sffx):
-      filename = filename[:-len(lang_sffx)]
-    filename = _fileutil.extractFilename(filename+thumb_sffx+lang_sffx+fileext)
-    
     # Returns resulting image
-    image = self.context.ImageFromData(thumb.getData(),filename)
+    image = self.context.ImageFromData(thumb.getData(),thumb.getFilename())
     return image
 
 

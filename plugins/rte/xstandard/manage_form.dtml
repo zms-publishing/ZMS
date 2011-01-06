@@ -147,7 +147,7 @@ function getRelativeUrl(path, url) {
     for (var e=0; e < zmiRichtextElNames.length; e++) {
       var elName = zmiRichtextElNames[e];
       var el = document.getElementById('zmiRichtextEditor'+elName);
-      if ( el != null && el.style.display == 'block') {
+      if ( el != null && el.style.display != 'none') {
         try {
           if(typeof(document.getElementById('editor_'+elName).EscapeUnicode) == 'undefined') {
             throw "Error"

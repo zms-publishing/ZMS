@@ -208,7 +208,6 @@ class ObjInputs:
       value = int(value)
     html.append('<input ')
     html.append(' type="hidden"')
-    html.append(' id="%s"'%elName)
     html.append(' name="%s"'%elName)
     html.append(' value="%s"'%str(value))
     html.append(' />')
@@ -221,7 +220,7 @@ class ObjInputs:
       html.append(' disabled="disabled"')
     if checked: 
       html.append(' checked="checked"')
-    html.append(' onclick="if (this.checked) { this.form.elements[\'%s\'].value=1; } else {this.form.elements[\'%s\'].value=0;};"'%(elName,elName))
+    html.append(' onclick="if (this.checked){$(\'input[name=%s]\',this.form).val(1)}else{$(\'input[name=%s]\',this.form).val(0)}"'%(elName,elName))
     html.append(' />')
     return ''.join(html)
 

@@ -42,7 +42,7 @@
 ### Standard Editor
 ################################################################################
 </dtml-comment>
-<div id="zmiStandardEditor<dtml-var elName>" class="zmiNeutralColorMedium0 <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]"> ui-helper-hidden</dtml-if></dtml-if>">
+<div id="zmiStandardEditor<dtml-var elName>" class="zmiNeutralColorMedium0" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;"</dtml-if></dtml-if>>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr valign="middle">
 <td>
@@ -89,7 +89,7 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "REQUEST.get('richedit_fmt')">
-<div id="zmiRichtextEditor<dtml-var elName>" class="zmiNeutralColorMedium0<dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [None,REQUEST.get('richedit_fmt').getId()]"> ui-helper-hidden</dtml-if></dtml-if>">
+<div id="zmiRichtextEditor<dtml-var elName>" class="zmiNeutralColorMedium0" <dtml-if "REQUEST.get('richedit_fmt')"><dtml-if "REQUEST.get('format') not in [None,REQUEST.get('richedit_fmt').getId()]">style="display:none;"</dtml-if></dtml-if>>
 <dtml-unless "REQUEST.get('f_zmiRichtextEditorShow')">
 <script type="text/javascript">
 <!--//

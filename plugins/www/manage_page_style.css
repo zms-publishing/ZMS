@@ -118,7 +118,9 @@ body.zmi.zmisitemap {
 	background-color:#fff !important;
 	background-image:none !important;
 }
-
+body.zmi.zmisitemap div.ZMIManageBody a {
+	text-decoration:none;
+}
 #zmi_banner {
 	width:460px;
 	height:20px;

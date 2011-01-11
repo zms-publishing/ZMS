@@ -118,6 +118,7 @@
   </dtml-comment
   ><dtml-elif "REQUEST.get('ZMS_DETAILS_ACTION')=='move_up_%s'%details['tablename'] or
                REQUEST.get('ZMS_DETAILS_ACTION')=='move_down_%s'%details['tablename']"
+  ><dtml-try
    ><dtml-comment>+-+-+-+- Move +-+-+-+-</dtml-comment
    ><dtml-call "REQUEST.set('sqlStatement',[])"
    ><dtml-call "sqlStatement.append( 'UPDATE '+details['tablename'])"
@@ -131,23 +132,36 @@
    ><dtml-call "executeQuery(' '.join(sqlStatement))"
    ><dtml-call "REQUEST.set('details_normalize',details_ordered)"
    ><div class="ui-state-highlight ui-corner-all" style="padding:1em;">Record moved! (<dtml-var "getLangFmtDate(ZopeTime())">)</div
+  ><dtml-except
+  >input_details - can't move: <dtml-var error_type>: <dtml-var error_value><hr><dtml-var error_tb newline_to_br html_quote
+  ></dtml-try
   ></dtml-if
 
   ><dtml-comment>+-+-+-+- Normalize +-+-+-+-</dtml-comment
   ><dtml-if details_normalize
+  ><dtml-try
+  ><dtml-let details_tablename="details['tablename']" details_fk="details['fk']"
    ><dtml-call "REQUEST.set('sqlStatement',[])"
-   ><dtml-call "sqlStatement.append( 'SELECT * FROM '+details['tablename'])"
-   ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
+   ><dtml-call "sqlStatement.append( 'SELECT * FROM '+details_tablename)"
+   ><dtml-call "sqlStatement.append( 'WHERE '+details_fk+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
    ><dtml-call "sqlStatement.append( 'ORDER BY sort_id')"
    ><dtml-in "query(' '.join(sqlStatement))['records']" mapping
-    ><dtml-call "REQUEST.set('sqlStatement',[])"
-    ><dtml-call "sqlStatement.append( 'UPDATE '+details['tablename'])"
-    ><dtml-call "sqlStatement.append( 'SET sort_id='+sql_quote__(details['tablename'],'sort_id',(_['sequence-index']+1)*10))"
-    ><dtml-call "sqlStatement.append( 'WHERE '+details['fk']+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
-    ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details['tablename'],primary_key,_[primary_key]))"
-    ><dtml-call "executeQuery(' '.join(sqlStatement))"
+    ><dtml-try
+     ><dtml-call "REQUEST.set('sqlStatement',[])"
+     ><dtml-call "sqlStatement.append( 'UPDATE '+details_tablename)"
+     ><dtml-call "sqlStatement.append( 'SET sort_id='+sql_quote__(details_tablename,'sort_id',(_['sequence-index']+1)*10))"
+     ><dtml-call "sqlStatement.append( 'WHERE '+details_fk+'='+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))"
+     ><dtml-call "sqlStatement.append( 'AND '+primary_key+'='+sql_quote__(details_tablename,primary_key,_[primary_key]))"
+     ><dtml-call "executeQuery(' '.join(sqlStatement))"
+    ><dtml-except
+     >input_details - can't normalize.2: [<dtml-var sequence-index>] <dtml-var error_type>: <dtml-var error_value><hr><dtml-var error_tb newline_to_br html_quote
+    ></dtml-try
    ></dtml-in
    ><dtml-call "REQUEST.set('details_normalize',False)"
+  ></dtml-let
+  ><dtml-except
+  >input_details - can't normalize.1: <dtml-var error_type>: <dtml-var error_value><hr><dtml-var error_tb newline_to_br html_quote
+  ></dtml-try
   ></dtml-if
 
   ><dtml-call "REQUEST.set('sqlStatement',[recordSet_Select(details['tablename'],where='%s.%s='%(details['tablename'],details['fk'])+sql_quote__(SESSION[sessqentitykey],master_key,master_row.get('id','')))])"

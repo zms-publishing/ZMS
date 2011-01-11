@@ -107,7 +107,6 @@
   </tr>
 
   <dtml-in "getLangIds()">
-
    <dtml-let langId=sequence-item langObj="getLang(langId)">
     <tr valign="top" class="neutralColorWhite">
       <td>
@@ -116,14 +115,14 @@
        </dtml-if>
       </td>
       <td><div class="form-text"><dtml-var sequence-item></div></td>
-      <td><dtml-var "getTextInput('form0','%s_label'%langId,15,getLanguageLabel(langId))"></td>
+      <td><dtml-var "getTextInput(fmName='form0',elName='%s_label'%langId,size=15,value=langObj['label'])"></td>
       <td>
        <select class="form-element" name="<dtml-var langId>_parent">
        <option value=""><dtml-var "getZMILangStr('ATTR_PRIMARY')"> (*)</option>
        <dtml-in "getLangIds()">
         <dtml-if "_['sequence-item']!=langId">
          <option value="<dtml-var sequence-item>"
-          <dtml-if "getParentLanguage(langId)==_['sequence-item']">
+          <dtml-if "langObj['parent']==_['sequence-item']">
            selected="selected"
           </dtml-if>
            ><dtml-var "getLanguageLabel(_['sequence-item'])"
@@ -136,7 +135,7 @@
        <select class="form-element" name="<dtml-var sequence-item>_manage">
        <dtml-in "get_manage_langs()">
         <option value="<dtml-var sequence-item>"
-         <dtml-if "getManageLanguage(langId)==_['sequence-item']">
+         <dtml-if "langObj['manage']==_['sequence-item']">
           selected="selected"
          </dtml-if>
           ><dtml-var "getLangStr('LANG',_['sequence-item'])"
@@ -146,34 +145,13 @@
       </td>
      </tr>
    </dtml-let>
-
-  <dtml-if sequence-end>
-  <!-- Footer -->
-  <tr valign="top" class="zmiNeutralColorLight0">
-   <td>&nbsp;</td>
-   <td colspan="4">
-    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
-    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
-   </td>
-  </tr>
-  </dtml-if>
-
   </dtml-in>
 
   <!-- Insert -->
-  <tr>
-   <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
-  </tr>
-  <tr class="zmiNeutralColorLight0">
-   <td rowspan="2"><img src="<dtml-var spacer_gif>" border="0" width="20" height="20"/></td>
-   <td class="form-element">
-    <dtml-var "getTextInput('form0','language_id',7,'')">
-    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_ID')"></div>
-   </td>
-   <td class="form-element">
-    <dtml-var "getTextInput('form0','language_label',15,'')">
-    <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_LANG')"></div>
-   </td>
+  <tr class="neutralColorWhite">
+   <td><div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_LANG')">"><span class="ui-icon ui-icon-plus"></span></div></td>
+   <td class="form-element"><dtml-var "getTextInput('form0','language_id',7,'')"></td>
+   <td class="form-element"><dtml-var "getTextInput('form0','language_label',15,'')"></td>
    <td class="form-element">
     <select class="form-element" name="language_parent">
     <dtml-in "getLangIds()">
@@ -185,7 +163,6 @@
      ></option>
     </dtml-in>
     </select>
-    <div class="form-small"><dtml-var "getZMILangStr('ATTR_PARENT')"></div>
    </td>
    <td class="form-element">
     <select class="form-element" name="language_manage">
@@ -198,14 +175,18 @@
      ></option>
     </dtml-in>
     </select>
-    <div class="form-small">Interface</div>
    </td>
   </tr>
-  <tr class="zmiNeutralColorLight0">
+
+  <!-- Footer -->
+  <tr valign="top" class="zmiNeutralColorLight0">
+   <td>&nbsp;</td>
    <td colspan="4">
-    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>
+
   </table>
   </form>
   <br/>
@@ -222,23 +203,25 @@
   <form name="form1" action="manage_changeLangDictProperties" method="post" onsubmit="return form1OnSubmit(this)" enctype="multipart/form-data" style="margin:8px">
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
-
-  <dtml-if "len(getLangDict()) > 0">
+  <dtml-let langIds="getLangIds()" colspan="2+len(langIds)">
 
   <!-- Header -->
   <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
+   <td colspan="<dtml-var colspan>"><dtml-var "f_headline(_,_,headline=getZMILangStr('TAB_EDIT'))"></td>
   </tr>
   <tr class="zmiNeutralColorStrong0" valign="middle">
    <td><a href="javascript:exportBtnClick()"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a></td>
    <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_KEY')"></b></td>
-   <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_LANG')"></b></td>
-   <td class="form-small"><b>DTML</b></td>
+   <dtml-in langIds>
+    <dtml-let langId=sequence-item>
+      <td class="form-small"><b><dtml-var "getLanguageLabel(langId)"></b></td>
+     </dtml-let>
+    </dtml-in>
   </tr>
 
   <dtml-in "getLangDict()">
   <dtml-let dict=sequence-item>
-  <tr valign="top" class="<dtml-if sequence-odd>zmiTableRowOdd<dtml-else>zmiTableRowEven</dtml-if>">
+  <tr valign="top" class="neutralColorWhite">
     <td class="form-element">
      <dtml-if "len(dict.get('acquired',[]))>0">
       <input class="form-checkbox" type="checkbox" disabled="disabled" />
@@ -246,86 +229,42 @@
       <input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var "dict['key']">"/>
      </dtml-if>
     </td>
-    <td class="form-small">
-     <dtml-var "dict['key']">
-    </td>
-    <td class="form-element">
-      <table cellspacing="0" cellpadding="0" border="0">
-      <tr>
-      <dtml-in "getLangIds()">
-      <dtml-let langId=sequence-item>
-      <td class="form-small">
-       <dtml-var "getTextInput( fmName='form1', elName='%s_value_%s'%(dict['key'],langId), size=8, value=dict.get(langId,''), enabled=langId not in dict.get('acquired',[]), css='form-small')">
-       <dtml-if "len(getLangIds())>1">
-        <div class="form-small" align="right"><dtml-var "getLanguageLabel(langId)"></div>
-       </dtml-if>
-      </td>
-      <dtml-if "(_['sequence-index']+1)%3==0">
-        </tr><tr>
-      </dtml-if>
-      </dtml-let>
-      </dtml-in>
-      </tr>
-      </table>
-    </td>
-    <td class="form-small">
-     <code>getLangStr('<dtml-var "dict['key']">',lang)</code>
-    </td>
+    <td class="form-small" title="getLangStr('<dtml-var "dict['key']">',lang)"><dtml-var "dict['key']"></td>
+    <dtml-in langIds>
+     <dtml-let langId=sequence-item>
+      <td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='%s_value_%s'%(dict['key'],langId), size=8, value=dict.get(langId,''), enabled=langId not in dict.get('acquired',[]), css='form-small')"></td>
+     </dtml-let>
+    </dtml-in>
   </tr>
   </dtml-let>
   </dtml-in>
+
+  <!-- Insert Multi-Language Key -->
+  <tr valign="top" class="neutralColorWhite">
+   <td><div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%getZMILangStr('ATTR_KEY')">"><span class="ui-icon ui-icon-plus"></span></div></td>
+   <td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_key', size=8, value='', css='form-small')"></td>
+   <dtml-in langIds>
+    <dtml-let langId=sequence-item>
+     <td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_value_%s'%_['sequence-item'], size=8, value='', css='form-small')"></td>
+    </dtml-let>
+   </dtml-in>
+  </tr>
+
+  <!-- Footer -->
   <tr class="zmiNeutralColorLight0">
    <td>&nbsp;</td>
-   <td colspan="3">
+   <td colspan="<dtml-var "colspan-1">">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this);">
    </td>
   </tr>
 
-  </dtml-if>
-
-  <!-- Insert Multi-Language Key -->
-  <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_INSERT'))"></td>
-  </tr>
-  <tr valign="top" class="zmiNeutralColorLight0">
-   <td rowspan="2"><img src="<dtml-var spacer_gif>" border="0" width="20" height="20"/></td>
-   <td class="form-element">
-    <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_key', size=8, value='', css='form-small')"></td></tr>
-    <tr><td class="form-small" align="right"><dtml-var "getZMILangStr('ATTR_KEY')"></td></tr>
-    </table>
-   </td>
-   <td class="form-element" colspan="2">
-    <table cellspacing="0" cellpadding="0" border="0">
-    <tr>
-     <dtml-in "getLangIds()">
-      <td class="form-element">
-       <table cellspacing="0" cellpadding="0" border="0">
-       <tr><td class="form-small"><dtml-var "getTextInput( fmName='form1', elName='_value_%s'%_['sequence-item'], size=8, value='', css='form-small')"></td></tr>
-       <tr><td class="form-small" align="right"><dtml-var "getLanguageLabel(_['sequence-item'])"></td></tr>
-       </table>
-      </td>
-      <dtml-if "(_['sequence-index']+1)%3==0">
-       </tr><tr>
-      </dtml-if>
-     </dtml-in>
-    </tr>
-    </table>
-   </td>
-  </tr>
-  <tr class="zmiNeutralColorLight0">
-   <td colspan="3">
-    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
-   </td>
-  </tr>
-
   <!-- Import Multi-Language Set -->
   <tr>
-   <td colspan="4"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
+   <td colspan="<dtml-var colspan>"><dtml-var "f_headline(_,_,headline='<img src=%smime_type.text_xml.gif alt=XML border=0 align=absmiddle>&nbsp;%s'%(MISC_ZMS,getZMILangStr('BTN_IMPORT')))"></td>
   </tr>
   <tr class="zmiNeutralColorLight0">
-   <td colspan="4">
+   <td colspan="<dtml-var colspan>">
     <table cellspacing="0" cellpadding="2" border="0">
     <tr valign="middle">
      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" align="absmiddle"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
@@ -346,6 +285,8 @@
     </table>
    </td>
   </tr>
+  
+  </dtml-let>
   </table>
   </form>
   <br/>

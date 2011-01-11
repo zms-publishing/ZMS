@@ -44,8 +44,6 @@ import _fileutil
 import _ftpmanager
 import _globals
 import _importable
-import _language
-import _multilangmanager
 import _objattrs
 import _xmllib
 import _zcatalogmanager
@@ -498,6 +496,9 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   manager = ZMSFormatProvider.ZMSFormatProvider()
   obj._setObject( manager.id, manager)
   
+  ### Init languages.
+  obj.setLanguage(lang,REQUEST['lang_label'],'',manage_lang)
+  
   ### Log.
   if REQUEST.get('zmslog'):
     zmslog = ZMSLog( copy_to_stdout=True, logged_entries=[ 'ERROR', 'INFO'])
@@ -510,10 +511,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   
   ### Init zcatalog.
   obj.recreateCatalog(lang)
-  
-  ### Init languages.
-  obj.setPrimaryLanguage(lang)
-  obj.setLanguage(lang,REQUEST['lang_label'],'',manage_lang)
   
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'zms', REQUEST)
@@ -646,7 +643,6 @@ class ZMS(
         _builder.Builder,
         _confmanager.ConfManager,
         _ftpmanager.FtpManager,
-        _language.Language,
         _objattrs.ObjAttrsManager,
         _zcatalogmanager.ZCatalogManager,
         ):

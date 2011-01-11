@@ -558,6 +558,14 @@ class ConfManager(
     """
 
     # --------------------------------------------------------------------------
+    #  ConfManager.getConfManager:
+    #
+    #  Returns configuration-manager.
+    # --------------------------------------------------------------------------
+    def getConfManager(self):
+      return self
+
+    # --------------------------------------------------------------------------
     #  ConfManager.getConfProperties:
     #
     #  Returns property from configuration.
@@ -920,50 +928,84 @@ class ConfManager(
 
     ############################################################################
     ###
-    ###   Interface IZMSMetamodelProvider: delegate to metaobj_manager
+    ###   Interface IZMSMetamodelProvider: delegate
     ###
     ############################################################################
+
+    def getMetaobjManager(self):
+      return self.metaobj_manager
 
     def getMetaobjId(self, name):
-      return self.metaobj_manager.getMetaobjId( name)
+      return self.getMetaobjManager().getMetaobjId( name)
 
     def getMetaobjIds(self, sort=1, excl_ids=[]):
-      return self.metaobj_manager.getMetaobjIds( sort, excl_ids)
+      return self.getMetaobjManager().getMetaobjIds( sort, excl_ids)
 
     def getMetaobj(self, id):
-      return self.metaobj_manager.getMetaobj( id)
+      return self.getMetaobjManager().getMetaobj( id)
 
     def getMetaobjAttrIds(self, meta_id, types=[]):
-      return self.metaobj_manager.getMetaobjAttrIds( meta_id, types)
+      return self.getMetaobjManager().getMetaobjAttrIds( meta_id, types)
 
     def getMetaobjAttrs(self, meta_id,  types=[]):
-      return self.metaobj_manager.getMetaobjAttrs( meta_id)
+      return self.getMetaobjManager().getMetaobjAttrs( meta_id)
 
     def getMetaobjAttr(self, meta_id, key):
-      return self.metaobj_manager.getMetaobjAttr( meta_id, key)
+      return self.getMetaobjManager().getMetaobjAttr( meta_id, key)
 
     def getMetaobjAttrIdentifierId(self, meta_id):
-      return self.metaobj_manager.getMetaobjAttrIdentifierId( meta_id)
+      return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)
 
     def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
-      return self.metaobj_manager.notifyMetaobjAttrAboutValue( meta_id, key, value)
+      return self.getMetaobjManager().notifyMetaobjAttrAboutValue( meta_id, key, value)
+
 
     ############################################################################
     ###
-    ###   Interface IZMSFormatProvider: delegate to format_manager
+    ###   Interface IZMSFormatProvider: delegate
     ###
     ############################################################################
+
+    def getFormatManager(self):
+      return self.format_manager
 
     def getTextFormatDefault(self):
-      return self.format_manager.getTextFormatDefault()
+      return self.getFormatManager().getTextFormatDefault()
 
     def getTextFormat(self, id, REQUEST):
-      return self.format_manager.getTextFormat(id, REQUEST)
+      return self.getFormatManager().getTextFormat(id, REQUEST)
 
     def getTextFormats(self, REQUEST):
-      return self.format_manager.getTextFormats(REQUEST)
+      return self.getFormatManager().getTextFormats(REQUEST)
 
     def getCharFormats(self):
-      return self.format_manager.getCharFormats()
+      return self.getFormatManager().getCharFormats()
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSLocale: delegate
+    ###
+    ############################################################################
+
+    def getLocale(self):
+      return self
+
+    """
+    def get_manage_langs(self):
+      return self.getLocale().get_manage_langs()
+
+    def get_manage_lang(self):
+      return self.getLocale().get_manage_lang()
+
+    def getZMILangStr(self, key):
+      return self.getLocale().getZMILangStr( key)
+
+    def getLangStr(self, key, lang):
+      return self.getLocale().getLangStr( key, lang)
+
+    def getPrimaryLanguage(self):
+      return self.getLocale().getPrimaryLanguage()
+    """
 
 ################################################################################

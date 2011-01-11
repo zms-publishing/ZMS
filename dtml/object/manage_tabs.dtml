@@ -1,5 +1,7 @@
 <dtml-var manage_bodyTop>
 
+<dtml-try>
+
 <dtml-unless my_manage_options
   ><dtml-call "REQUEST.set('my_lang', lang)"
   ><dtml-call "REQUEST.set('my_manage_options',filtered_manage_options())"
@@ -31,19 +33,13 @@
 <div class="zmi_col_left">
 <div class="ui-tabs ui-widget ui-widget-content" id="tabs">
 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-content">
-<dtml-let ZMIManageTabs="getObjProperty('manage_tabs.ZMIManageTabs',REQUEST)">
-<dtml-if ZMIManageTabs>
-<dtml-var ZMIManageTabs>
-<dtml-else>
 <dtml-in manage_options mapping>
 <li class="ui-state-default ui-corner-top<dtml-if "_['sequence-index']==a_"> ui-tabs-selected ui-state-active</dtml-if>"
   ><dtml-if "action and not action==''"
-   ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);"><dtml-var "getZMILangStr(label)"></a><dtml-else
-   ><span><dtml-var "getZMILangStr(label)"></span></dtml-if
+   ><a href="<dtml-var action>?lang=<dtml-var lang>" onclick="javascript:return confirmChanges(this);"><dtml-var "content.getZMILangStr(label)"></a><dtml-else
+   ><span><dtml-var "content.getZMILangStr(label)"></span></dtml-if
 ></li>
 </dtml-in>
-</dtml-if>
-</dtml-let>
 </ul>
 </div>
 </div>
@@ -58,8 +54,8 @@
 ></dtml-if
 ><li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>
 <li<dtml-if "REQUEST.get('dtpref_system','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li></dtml-if>
-<li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
-<li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14" /></a></li>
+<li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "content.getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
+<li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "content.getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14" /></a></li>
 </ul>
 </div>
 <dtml-except>
@@ -92,9 +88,13 @@
 </div>
 </dtml-if>
 <dtml-unless omit_breadcrumbs>
+<dtml-if meta_id>
 <div class="zmi_col_left"><dtml-var f_breadcrumbs></div>
 <div class="zmi_col_right"><dtml-if p_languages><dtml-var f_languages><dtml-else><img src="<dtml-var spacer_gif>" width="1" height="24" border="0" /></dtml-if></div>
+</dtml-if>
 </dtml-unless>
 </td>
 </tr>
 </table>
+
+<dtml-except>[manage_tabs] <dtml-var error_type>: <dtml-var error_value></dtml-try>

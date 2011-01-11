@@ -1,3 +1,4 @@
+<dtml-try>
 <dtml-in "REQUEST.get('f_zmiUiWidgetContent',[])">
 </div><!-- [manage_tabs].ui-widget-content -->
 </dtml-in>
@@ -10,18 +11,21 @@
  <form action="<dtml-var URL>" method="get">
  <input type="hidden" name="lang" value="<dtml-var lang>">
  <select name="manage_lang" onchange="this.form.submit();">
- <dtml-in "get_manage_langs()">
-  <option value="<dtml-var sequence-item>" <dtml-if "_['sequence-item']==manage_lang">selected="selected"</dtml-if>><dtml-var "getLangStr('LANG',_['sequence-item'])"></option>
+ <dtml-in "getLocale().get_manage_langs()">
+  <option value="<dtml-var sequence-item>" <dtml-if "_['sequence-item']==REQUEST.get('manage_lang')">selected="selected"</dtml-if>><dtml-var "getLocale().getLangStr('LANG',_['sequence-item'])"></option>
  </dtml-in>
  </select>
  <dtml-if ZMI_TIME>
  |&nbsp;<dtml-var "float(int((ZopeTime().timeTime()-ZMI_TIME)*100.0)/100.0)"> secs.
  </dtml-if>
+ <dtml-if meta_id>
  |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <span id="strong" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',$(this).attr('title'))" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></span>
+ </dtml-if>
  </form>
 </div><!-- .zmi_col_right -->
 </div><!-- .zmi-document-margin -->
 </div><!-- #zmi_footer -->
 </div><!-- [manage_page_header].zmi -->
+<dtml-except>[manage_page_footer] <dtml-var error_type>: <dtml-var error_value></dtml-try>
 </body>
 </html>

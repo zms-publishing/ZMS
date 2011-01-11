@@ -18,9 +18,10 @@
  <table cellspacing="1" cellpadding="1" border="0" class="neutralColorStrong" width="100%">
  <colgroup>
   <dtml-if grid_options>
-   <col width="<dtml-var "max(
+   <col style="width:<dtml-var "max(
      len(filter(lambda x: x in ['insert','export'],grid_options.keys())),
-     len(filter(lambda x: x in ['delete','sort','update','choose'],grid_options.keys())))*25">"/>
+     len(filter(lambda x: x in ['sort'],grid_options.keys()))*2+
+     len(filter(lambda x: x in ['delete','update','choose'],grid_options.keys())))*25">px!important"/>
   </dtml-if>
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>

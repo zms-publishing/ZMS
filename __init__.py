@@ -43,7 +43,7 @@ import zmscustom
 import zmssqldb
 import zmslinkcontainer
 import zmslinkelement
-import _language
+import _multilangmanager
 import _mediadb
 import _sequence
 import _zmsattributecontainer
@@ -133,7 +133,7 @@ def initialize(context):
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()
         
         # automated registration of language-dictionary
-        OFS.misc_.misc_.zms['langdict']=_language.langdict()
+        OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
         
         # automated registration of configuration
         confdict = {}

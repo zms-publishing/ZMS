@@ -1,11 +1,6 @@
 ################################################################################
 # _objinputs.py
 #
-# $Id: _objinputs.py,v 1.7 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -43,6 +38,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element', extra=''):
+    lang = self.REQUEST.get('lang')
     html = []
     html.append('<div class="%s">'%css)
     html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css))
@@ -53,13 +49,13 @@ class ObjInputs:
       html.append(' name="btn"')
       html.append(' value="..."')
       if extra.find('onclick') < 0:
-        html.append(' onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"'%(fmName,elName,self.REQUEST.get('lang',self.getPrimaryLanguage())))
+        html.append(' onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"'%(fmName,elName,lang))
       html.append(' %s/>'%extra)
     html.append('</div>')
     ref_obj = self.getLinkObj(value,REQUEST)
     if ref_obj is not None:
       html.append('<div class="form-small">')
-      html.append('<b>%s</b>: %s'%(self.getZMILangStr('ATTR_TARGET'),ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=REQUEST['lang'],REQUEST=REQUEST)))
+      html.append('<b>%s</b>: %s'%(self.getZMILangStr('ATTR_TARGET'),ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
       html.append('</div>')
     return ''.join(html)
 
@@ -96,11 +92,10 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-element', extra=''):
+    lang = self.REQUEST.get('lang')
     html = []
-    lang = REQUEST.get( 'lang', self.getPrimaryLanguage())
-    manage_lang = REQUEST.get( 'manage_lang', self.getManageLanguage(lang))
     if not type(value) is str:
-      value = self.getLangFmtDate(value,manage_lang,fmt_str)
+      value = self.getLangFmtDate(value,lang,fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     html.append('<span class="%s" title="%s">'%(css,self.getZMILangStr(fmt_str)))
@@ -241,6 +236,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-element', wrap='virtual', extra=''):
+    lang = REQUEST.get('lang')
     html = []
     html.append('<textarea ')
     html.append(' class="%s"'%css)
@@ -326,7 +322,7 @@ class ObjInputs:
           ref_url = inline_links[c]
           ref_obj = self.getLinkObj(ref_url,REQUEST)
           if ref_obj is not None:
-            html.append('<img src="%sinternal_link.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=REQUEST['lang'],REQUEST=REQUEST)))
+            html.append('<img src="%sinternal_link.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
           else:
             html.append('<img src="%sinternal_link_broken.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_url))
           html.append('</div>')

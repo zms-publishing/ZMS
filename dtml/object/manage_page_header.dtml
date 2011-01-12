@@ -30,7 +30,7 @@
  ><dtml-call "REQUEST.set( 'lang',getPrimaryLanguage())"
 ></dtml-unless
 ><dtml-unless "REQUEST.has_key( 'manage_lang')"
- ><dtml-call "SESSION.set('manage_lang',REQUEST.form.get('manage_lang',SESSION.get('manage_lang',getManageLanguage(lang))))"
+ ><dtml-call "SESSION.set('manage_lang',REQUEST.form.get('manage_lang',SESSION.get('manage_lang',get_manage_lang())))"
  ><dtml-call "REQUEST.set('manage_lang',SESSION.get('manage_lang'))"
 ></dtml-unless
 ><dtml-unless manage_tabs_message
@@ -38,7 +38,7 @@
 ></dtml-unless
 ><dtml-unless "REQUEST['lang'] in getLanguages(REQUEST)"
  ><dtml-call "REQUEST.set('lang',getLanguages(REQUEST)[0])"
- ><dtml-call "REQUEST.set('manage_lang',getManageLanguage(lang))"
+ ><dtml-call "REQUEST.set('manage_lang',get_manage_lang())"
 ></dtml-unless
 ><dtml-unless "REQUEST['manage_lang'] in getLocale().get_manage_langs()"
  ><dtml-call "REQUEST.set('manage_lang','eng')"

@@ -246,8 +246,8 @@ class MultiLanguageManager:
           manage_lang = sess.get('manage_lang')
         if manage_lang is None:
           lang = req.get('lang')
-          if lang is not None:
-            manage_lang = self.getManageLanguage( lang)
+          if lang in self.getLangIds():
+            manage_lang = self.getLang(lang)['manage']
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -282,22 +282,31 @@ class MultiLanguageManager:
       
       return key
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.setPrimaryLanguage: 
-    #
-    #  Sets ID of the primary language.
-    # --------------------------------------------------------------------------
-    def setPrimaryLanguage(self, lang):
-      self.language_primary = lang
 
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getPrimaryLanguage: 
-    #
-    #  Returns ID of the primary language.
-    # --------------------------------------------------------------------------
     def getPrimaryLanguage(self):
+      """
+      Get id of primary-language
+      """
       return self.language_primary
+
+    def setPrimaryLanguage(self, v):
+      """
+      Set id of primary-language
+      """
+      self.language_primary = v
+
+
+    def getLangs(self):
+      """
+      Get language-dictionary
+      """
+      return getattr(self,'attr_languages',{})
+
+    def setLangs(self, v):
+      """
+      Set language-dictionary
+      """
+      self.attr_languages = v.copy()
 
 
     # --------------------------------------------------------------------------
@@ -335,56 +344,39 @@ class MultiLanguageManager:
 
 
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getManageLanguage: 
-    #
-    #  Returns ID of the preferred language for the management interface.
-    # --------------------------------------------------------------------------
-    def getManageLanguage(self, id):
-      languages = self.getLangs().get(id)
-      if type(languages) is dict and languages.has_key('manage'):
-        rtn = languages['manage']
-      elif id in self.get_manage_langs():
-        rtn = id
-      elif id in ['de','at']:
-        rtn = 'ger'
-      elif id in ['fr']:
-        rtn = 'fra'
-      else:
-        rtn = 'eng'
-      return rtn
-
-
-    # --------------------------------------------------------------------------
     #  MultiLanguageManager.getLanguageLabel: 
     #
     #  Returns language-label of specified ID.
     # --------------------------------------------------------------------------
     def getLanguageLabel(self, id):
-      label = id
-      langs = self.getLangs()
-      if langs.has_key(id):
-        label = langs[id]['label']
-      return label
-
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLangs:
-    # 
-    #  Returns dictionary of languages.
-    # --------------------------------------------------------------------------
-    def getLangs(self):
-      return getattr(self,'attr_languages',{})
+      return self.getLang(id).get('label',id)
 
 
     # --------------------------------------------------------------------------
     #  MultiLanguageManager.getLang: 
     # --------------------------------------------------------------------------
     def getLang(self, id):
-      return self.getLangs()[id]
+      return self.getLangs().get(id,{})
 
 
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLangIds: 
+    #  MultiLanguageManager.getLangTree:
+    #
+    #  Returns list of Ids of languages (primary language 1st).
+    # --------------------------------------------------------------------------
+    def getLangTree(self, base=None):
+      if base is None:
+        base = self.getPrimaryLanguage()
+      l = [(base,self.getLang(base))]
+      for langId in self.getLangIds():
+        lang = self.getLang(langId)
+        if lang['parent'] == base:
+          l.extend(self.getLangTree(langId))
+      return l
+
+
+    # --------------------------------------------------------------------------
+    #  MultiLanguageManager.getLangIds:
     #
     #  Returns list of Ids of languages (primary language 1st).
     # --------------------------------------------------------------------------
@@ -479,7 +471,7 @@ class MultiLanguageManager:
           if id != lang and self.getParentLanguage(id) == '':
             attr_languages = self.getLangs()
             attr_languages[id]['parent'] = lang
-            self.attr_languages = attr_languages.copy()
+            self.setLangs( attr_languages)
         self.setPrimaryLanguage(lang)
       
       #-- Set/Add language.
@@ -488,7 +480,7 @@ class MultiLanguageManager:
       attr_languages[lang]['label'] = label
       attr_languages[lang]['parent'] = parent
       if newManage is not None: attr_languages[lang]['manage'] = newManage
-      self.attr_languages = attr_languages.copy()
+      self.setLangs( attr_languages)
       
       #-- Set/Add Standard DTML-Methods.
       self.setLangMethods(lang)
@@ -520,12 +512,9 @@ class MultiLanguageManager:
     def delLanguage(self, lang):
       
       #-- Delete language.
-      dctLanguages = self.getLangs()
-      self.attr_languages = {}
-      for id in dctLanguages.keys():
-        if id != lang:
-          self.attr_languages[id] = dctLanguages[id]
-      self.attr_languages = self.attr_languages.copy()
+      attr_languages = self.getLangs()
+      del attr_languages[lang]
+      self.setLangs( attr_languages)
       
       #-- Delete Standard DTML-Methods.
       pageexts = ['.html']

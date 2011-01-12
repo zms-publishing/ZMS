@@ -841,7 +841,7 @@ class ZMSContainerObject(
         if self.getConfProperty('ZMS.protected_mode',0):
           _globals.writeError(self,'[getChildNodes.protected]')
         else:
-          raise Exception
+          raise exc
       # Sort child-nodes.
       childNodes.sort()
       # Return child-nodes in correct sort-order.

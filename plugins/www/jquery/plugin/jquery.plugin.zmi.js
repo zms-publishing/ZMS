@@ -7,6 +7,7 @@
  */
 function zmiIframe(href, title) {
 	$.fancybox({
+		'hideOnOverlayClick':false,
 		'href':href,
 		'title':title,
 		'type':'iframe',
@@ -153,6 +154,7 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		}
 		$.fancybox({
 			'autoDimensions':false,
+			'hideOnOverlayClick':false,
 			'href':href,
 			'title':custom,
 			'transitionIn':'fade',

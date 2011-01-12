@@ -78,6 +78,7 @@ $(function(){
 						href += '?lang='+lang;
 						$.fancybox({
 							'autoDimensions':false,
+							'hideOnOverlayClick':false,
 							'href':href,
 							'transitionIn':'fade',
 							'transitionOut':'fade',

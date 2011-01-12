@@ -1,11 +1,6 @@
 ################################################################################
 # zmslinkelement.py
 #
-# $Id: zmslinkelement.py,v 1.7 2004/11/23 23:04:47 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -524,12 +519,10 @@ class ZMSLinkElement(ZMSContainerObject):
         if type( remote_obj) is list:
           rtnVal = remote_obj[1]['attrs']['is_page'] in ['1','True']
       else:
-        req = {'lang':self.getPrimaryLanguage(),'preview':'preview'}
-        embedded = self.isEmbedded(req)
-        ref_obj = self.getRefObj()
-        rtnVal = rtnVal or (ref_obj is None and embedded)
-        if ref_obj is not None:
-          rtnVal = rtnVal or (ref_obj.isPage() and embedded)
+        if self.isEmbedded( self.REQUEST):
+          ref_obj = self.getRefObj()
+          if ref_obj is not None:
+            rtnVal = rtnVal or ref_obj.isPage()
       return rtnVal
 
 
@@ -547,6 +540,8 @@ class ZMSLinkElement(ZMSContainerObject):
           ref_obj = self.getRefObj()
           if ref_obj is not None:
             rtnVal = rtnVal or ref_obj.isPageElement()
+          else:
+            rtnVal = rtnVal or True
         elif self.getObjProperty('align',self.REQUEST) not in ['','NONE']:
           rtnVal = rtnVal or True
       return rtnVal
@@ -692,6 +687,9 @@ class ZMSLinkElement(ZMSContainerObject):
           rtn += proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded( REQUEST):
           ref_obj = self.getRefObj()
+          if ref_obj is None:
+            ref = self.getObjProperty('attr_ref',REQUEST)
+            ref_obj = self.getLinkObj(ref)
           if ref_obj is not None:
             rtn += ref_obj._getBodyContent( REQUEST)
         else:
@@ -716,7 +714,9 @@ class ZMSLinkElement(ZMSContainerObject):
         except:
           rtn += _globals.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref)
       
-      elif self.isEmbedded(REQUEST) and ref_obj is not None:
+      elif self.isEmbedded(REQUEST):
+        if ref_obj is None:
+          ref_obj = self.getLinkObj(ref)
         if ref_obj is None or ref_obj.isPage():
           rtn += ZMSContainerObject.renderShort(self,REQUEST)
         else:

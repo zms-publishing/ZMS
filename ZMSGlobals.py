@@ -994,7 +994,7 @@ class ZMSGlobals:
       if type(qorder) is str:
         sorted = map(lambda x: (sort_item(x.get(qorder,None)),x),l)
       elif type(qorder) is list:
-        sorted = map(lambda x: (','.join(map(lambda y: sort_item(x[y])), qorder),x),l)
+        sorted = map(lambda x: (','.join(map(lambda y: sort_item(x[y]), qorder)),x),l)
       else:
         sorted = map(lambda x: (sort_item(x[qorder]),x),l)
       if ignorecase==1 and len(sorted) > 0 and type(sorted[0][0]) is str:

@@ -239,15 +239,18 @@ class MultiLanguageManager:
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
       if req is not None:
-        sess = getattr( req, 'SESSION', None)
-        if sess is not None:
-          if req.form.has_key('reset_manage_lang'):
-            sess.set('manage_lang',None)
-          manage_lang = sess.get('manage_lang')
-        if manage_lang is None:
-          lang = req.get('lang')
-          if lang in self.getLangIds():
-            manage_lang = self.getLang(lang)['manage']
+        if req.form.has_key('manage_lang'):
+          manage_lang = req.get('manage_lang')
+        else:
+          sess = getattr( req, 'SESSION', None)
+          if sess is not None:
+            if req.form.has_key('reset_manage_lang'):
+              sess.set('manage_lang',None)
+            manage_lang = sess.get('manage_lang')
+          if manage_lang is None:
+            lang = req.get('lang')
+            if lang in self.getLangIds():
+              manage_lang = self.getLang(lang)['manage']
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang

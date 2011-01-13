@@ -144,7 +144,6 @@ $(function() {
 <dtml-if "REQUEST.get('id','')=='' or REQUEST.get('id','') in getFilterIds()">
 
 <dtml-call "REQUEST.set('contentTypes',enumManager.getValues('content_type'))">
-<dtml-var "map(lambda x: x[0], contentTypes)">
 <dtml-call "REQUEST.set('filterFormatOptpl',[])">
 <dtml-call "filterFormatOptpl.append(['import', 'Import' ])">
 <dtml-call "filterFormatOptpl.append(['export', 'Export' ])">

@@ -30,9 +30,9 @@
  ><dtml-call "REQUEST.set( 'lang',getPrimaryLanguage())"
 ></dtml-unless
 ><dtml-unless "REQUEST.has_key( 'manage_lang')"
- ><dtml-call "SESSION.set('manage_lang',REQUEST.form.get('manage_lang',SESSION.get('manage_lang',get_manage_lang())))"
- ><dtml-call "REQUEST.set('manage_lang',SESSION.get('manage_lang'))"
+ ><dtml-call "REQUEST.set('manage_lang',SESSION.get('manage_lang',get_manage_lang()))"
 ></dtml-unless
+><dtml-call "SESSION.set('manage_lang',REQUEST.get('manage_lang'))"
 ><dtml-unless manage_tabs_message
  ><dtml-call "REQUEST.set( 'manage_tabs_message',updateVersion(lang,REQUEST)+getConfProperty('ZMS.manage_tabs_message',''))"
 ></dtml-unless
@@ -64,7 +64,7 @@
 ### Title
 ################################################################################
 </dtml-comment>
-<title>ZMS | <dtml-if meta_id><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if><dtml-var title_or_id></dtml-if></title>
+<title>ZMS | <dtml-if meta_id><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if><dtml-else><dtml-var title_or_id></dtml-if></title>
 
 <dtml-comment>
 ################################################################################

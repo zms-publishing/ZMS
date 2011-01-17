@@ -255,16 +255,22 @@ class MultiLanguageManager:
         manage_lang = 'eng'
       return manage_lang
 
-    def getZMILangStr(self, key):
+    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
       """
       Returns language-string for current manage-language.
       """
-      return self.getLangStr( key, self.get_manage_lang())
+      lang_str = self.getLangStr( key, self.get_manage_lang())
+      if RESPONSE is not None:
+        RESPONSE.setHeader('Cache-Control','public, max-age=3600')
+        RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
+      return lang_str
 
-    def getLangStr(self, key, lang):
+    def getLangStr(self, key, lang=None):
       """
       Returns language-string for current content-language.
       """
+      if lang is None:
+        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       
       # Return custom value.
       try:

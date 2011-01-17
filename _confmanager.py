@@ -998,10 +998,10 @@ class ConfManager(
     def get_manage_lang(self):
       return self.getLocale().get_manage_lang()
 
-    def getZMILangStr(self, key):
+    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
       return self.getLocale().getZMILangStr( key)
 
-    def getLangStr(self, key, lang):
+    def getLangStr(self, key, lang=None):
       return self.getLocale().getLangStr( key, lang)
 
     def getPrimaryLanguage(self):

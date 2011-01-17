@@ -33,7 +33,7 @@ class IZMSLocale(Interface):
     @rtype: C{string}
     """
 
-  def getZMILangStr(self, key):
+  def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
     """
     Returns language-string for current manage-language.
     @rtype: C{string}

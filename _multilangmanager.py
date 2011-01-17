@@ -250,7 +250,7 @@ class MultiLanguageManager:
           if manage_lang is None:
             lang = req.get('lang')
             if lang in self.getLangIds():
-              manage_lang = self.getLang(lang)['manage']
+              manage_lang = self.getLang(lang).get('manage')
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -473,7 +473,7 @@ class MultiLanguageManager:
     # 
     #  Set/add language with specified values.
     # --------------------------------------------------------------------------
-    def setLanguage(self, lang, label, parent, newManage=None):
+    def setLanguage(self, lang, label, parent, newManage):
       
       if len(parent) == 0:
         for id in self.getLangs().keys():
@@ -488,7 +488,7 @@ class MultiLanguageManager:
       attr_languages[lang] = {}
       attr_languages[lang]['label'] = label
       attr_languages[lang]['parent'] = parent
-      if newManage is not None: attr_languages[lang]['manage'] = newManage
+      attr_languages[lang]['manage'] = newManage
       self.setLangs( attr_languages)
       
       #-- Set/Add Standard DTML-Methods.

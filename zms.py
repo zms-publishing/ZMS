@@ -577,7 +577,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       titlealt = 'LCMS'
       title = 'Learning Content Management System'
       lcms = initZMS(lcmsHomeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
-      lcms.setLanguage('eng', 'English', 'ger')
+      lcms.setLanguage('eng', 'English', 'ger', 'eng')
       # Init configuration.
       _confmanager.initConf(lcms, 'lcms', REQUEST)
       _confmanager.initConf(obj, 'lms', REQUEST)

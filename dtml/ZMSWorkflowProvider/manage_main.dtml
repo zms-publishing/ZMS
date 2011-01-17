@@ -107,7 +107,7 @@ $(function() {
 });
 
 function onResize() {
-  var ta = $('textarea:not([name^=alternate_])');
+  var ta = $('textarea[rows!=1]:not([name^=alternate_])');
   if (ta.length==1) {
     if ($(ta.parents('div')[0]).css('display')=='none') {
       ta = $('object[name^=editor_'+ta.attr('name')+']');

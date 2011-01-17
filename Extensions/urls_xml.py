@@ -230,9 +230,6 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
         RESPONSE.write('<url content_type="%s"><![CDATA[%s/%s]]></url>\n'%(content_type,folder,ob_id))
     
     # @see headScript
-    for lang in self.getLangIds():
-      RESPONSE.write('<url lang="%s" content_type="text/javascript"><![CDATA[/content/zmilib_js?lang=%s]]></url>\n'%(lang,lang))
-    RESPONSE.write('<url content_type="text/javascript"><![CDATA[/content/comlib_js]]></url>\n')
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js'))
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     

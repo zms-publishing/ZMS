@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
-    <item key="data"><![CDATA[<dtml-var manage_page_header>
+    <item key="data"><![CDATA[<dtml-comment>
+################################################################################
+2011-01-17 [zmsdev] Revised table-structure: one row per object
+2010-12-02 [zmsdev] Initial revision
+################################################################################
+</dtml-comment>
+
+<dtml-var manage_page_header>
 <style>
 .zmi-translate-left {
 	padding:4px;
@@ -37,12 +44,11 @@
 
 <form id="<dtml-var fmName>" method="get">
 <table cellspacing="0" cellpadding="0" border="0">
-<tr>
+<tr valign="top">
 <dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
 <dtml-in "['left','right']">
-<dtml-let si=sequence-item>
-<td class="zmi-translate-<dtml-var sequence-item>">
-   <dtml-let lang_req_key="{'left':'lang','right':'lang2'}[si]">
+<dtml-let si=sequence-item lang_req_key="{'left':'lang','right':'lang2'}[si]">
+<td class="zmi-translate-<dtml-var si>">
     <select class="form-small" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
      <dtml-if "getDCCoverage(REQUEST).find('global.')==0">
       <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[len('global.'):],REQUEST)">
@@ -67,8 +73,8 @@
      </dtml-if>
     </select>
     <dtml-call "exclude_langs.append(lang)">
+    <dtml-call "REQUEST.set(lang_req_key+'_bk',REQUEST.get(lang_req_key))">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key))">
-   </dtml-let>
    <div id="<dtml-var id>" class="zmi-translate-element">
     <span class="zmi-translate-element-id"><dtml-var id></span>
     <div class="zmiRenderShort" id="contentEditable_<dtml-var id>_<dtml-var lang>">
@@ -76,14 +82,23 @@
      <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
     </div>
    </div>
-   <dtml-in childNodes>
+</td>
+</dtml-let>
+</dtml-in>
+<dtml-in childNodes>
+ <tr valign="top">
+  <dtml-in "['left','right']">
+   <dtml-let si=sequence-item lang_req_key="{'left':'lang','right':'lang2'}[si]">
+    <td class="zmi-translate-<dtml-var si>">
+    <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">
      <span class="zmi-translate-element-id"><dtml-var id></span>
      <dtml-var "renderShort(REQUEST)">
     </div>
-   </dtml-in>
-</td>
-</dtml-let>
+    </td>
+   </dtml-let>
+  </dtml-in>
+ </tr>
 </dtml-in>
 </dtml-let>
 </tr>

@@ -26,15 +26,15 @@
       <dtml-if "getHistory()"
        ><a href="javascript:open_frame('<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang> (<dtml-var "getZMILangStr('STATE_MODIFIED')">)','<dtml-var absolute_url>/manage_VersionLangModified','lang=<dtml-var lang>',440,320,',resizable=yes,scrollbars=yes')" class="button"
       ></dtml-if
-      ><img src="<dtml-var MISC_ZMS>btn_lang_modified.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang> (<dtml-var "getZMILangStr('STATE_MODIFIED')">)" border="0" align="absmiddle"
+      ><img src="<dtml-var MISC_ZMS>btn_lang_modified.gif" width="16" height="16" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang> (<dtml-var "getZMILangStr('STATE_MODIFIED')">)" border="0" align="absmiddle"
       ><dtml-if "getHistory()"
        ></a
       ></dtml-if>
      <dtml-else>
-      <img src="<dtml-var MISC_ZMS>btn_lang_local.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang>" border="0" align="absmiddle"/>
+      <img src="<dtml-var MISC_ZMS>btn_lang_local.gif" width="16" height="16" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-var seq_lang>" border="0" align="absmiddle"/>
      </dtml-if>
     <dtml-else>
-     <img src="<dtml-var MISC_ZMS>btn_lang_global.gif" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>" border="0" align="absmiddle"/>
+     <img src="<dtml-var MISC_ZMS>btn_lang_global.gif" width="16" height="16" title="<dtml-var "getZMILangStr('ATTR_LANG')">: <dtml-in seq_desc_langs><dtml-var sequence-item><dtml-unless sequence-end>, </dtml-unless></dtml-in>" border="0" align="absmiddle"/>
     </dtml-if>
    </dtml-if>
   </dtml-if>

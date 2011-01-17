@@ -128,11 +128,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     active_input_fields = '' # Deprecated
     version_input_fields = '' # Deprecated
 
-    # JavaScript.
-    # -----------
-    comlib_js = HTMLFile('dtml/javascript/comlib', globals()) # Common Functions
-    zmilib_js = HTMLFile('dtml/javascript/zmilib', globals()) # Manage-Functions
-
 
     ############################################################################
     #  ZMSObject.__init__: 

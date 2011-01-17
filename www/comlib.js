@@ -1,52 +1,160 @@
-<dtml-call "REQUEST.RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())">
-<dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
+/**
+ * Returns language-string.
+ */
+function getZMILangStr(key) {
+	return $.ajax({
+		url: 'getZMILangStr',
+		data:{'key':key},
+		datatype:'text',
+		async: false
+		}).responseText;
+}
 
-// #############################################################################
-// ### toggleElement:
-// #############################################################################
+
+/**
+ * Confirm delete.
+ *
+ * @param href
+ */
+function confirmDeleteBtnOnClick(href) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		if (href.indexOf('lang=') < 0) {
+			href += '&amp;lang='+zmiLang;
+		}
+		location.href = href;
+	}
+}
+
+/**
+ * Returns configuration-files.
+ */
+var zmiExpandConfFilesProgress = false;
+function zmiExpandConfFiles(el, pattern) {
+	if (!zmiExpandConfFilesProgress) {
+		if ( el.options.length <=1) {
+			zmiExpandConfFilesProgress = true;
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// JQuery.AJAX.get
+			$.get( 'getConfFiles',
+				{id:el.id,pattern:pattern},
+					function(data) {
+						// Reset wait-cursor.
+						$(document.body).css( "cursor", "auto");
+						//
+						var select = document.getElementById('init');
+						var items = $("item",data);
+						for (var i = 0; i < items.length; i++) {
+							var item = $(items[i]);
+							var value = item.attr("key");
+							var label = item.text();
+							var option = new Option( label, value);
+							select.options[ select.length] = option;
+						}
+						select.selectedIndex = 0;
+						zmiExpandConfFilesProgress = false;
+					});
+		}
+	}
+}
+
+/**
+ * collectionPositionPopulate
+ *
+ * @param el
+ * @param len
+ * @see f_collectionbtn.dtml
+ */
+function collectionPositionPopulate(el, len) {
+	if ( el.options.length == 1) {
+		selectedValue = el.options[0].text;
+		el.options.length = 0;
+		for (var i = 0; i < len; i++) {
+			var value = ''+(i+1);
+			addOption( el, value, value, selectedValue);
+		}
+	}
+}
+
+/**
+ * collectionDeleteBtnOnClick
+ *
+ * @param href
+ * @see f_collectionbtn.dtml
+ */
+function collectionDeleteBtnOnClick(href) {
+	confirmDeleteBtnOnClick(href + '&amp;btn=delete');
+}
+
+/**
+ * Confirm changes.
+ */
+function confirmChanges(el) {
+	if (el && self.name == 'cameFromForm') {
+		el.target = '_parent';
+	}
+	if (navigator.platform.indexOf("Mac")<0) {
+		var anyFormModified = false;
+		for (i=0; i<document.forms.length; i++) {
+			anyFormModified |= isFormModified(document.forms[i]);
+		}
+		if ( anyFormModified) {
+			if (!confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+/**
+ * Toggle display of element.
+ */
 function toggleElement( selector) {
-  var els = $(selector);
-  if ( selector.indexOf("tr[")==0) {
-    if (els.css("visibility")=='hidden') {
-      els.css({'visibility':'visible','display':''});
-    }
-    else {
-      els.css({'visibility':'hidden','display':'none'});
-    }
-  }
-  else {
-    if (els.css("display")=='none') {
-      els.show('fast');
-    }
-    else {
-      els.hide('fast');
-    }
-  }
-  return;
+	var els = $(selector);
+	if ( selector.indexOf("tr[")==0) {
+		if (els.css("visibility")=='hidden') {
+			els.css({'visibility':'visible','display':''});
+		}
+		else {
+			els.css({'visibility':'hidden','display':'none'});
+		}
+	}
+	else {
+		if (els.css("display")=='none') {
+			els.show('fast');
+		}
+		else {
+			els.hide('fast');
+		}
+	}
+	return;
 }
 
-// #############################################################################
-// ### toggleCookie:
-// #############################################################################
+/**
+ * Toggle cookie.
+ * 
+ * @import /plugins/www/jquery/jquery.cookies.2.1.0.min.js
+ */
 function toggleCookie( key) {
-  try {
-    var value = $.cookies.get(key);
-    if (value==null || value=='0') {
-      $.cookies.set(key,'1');
-    }
-    else {
-      $.cookies.del(key);
-    }
-  }
-  catch(e) {
-  } 
+	try {
+		var value = $.cookies.get(key);
+		if (value==null || value=='0') {
+			$.cookies.set(key,'1');
+		}
+		else {
+			$.cookies.del(key);
+		}
+	}
+	catch(e) {
+	}
 }
 
-// #############################################################################
-// ### fireEvent
-// ### @see http://www.rakshith.net/blog/?p=35
-// #############################################################################
+/**
+ * Fire event.
+ *
+ * @see http://www.rakshith.net/blog/?p=35
+ */
 function fireEvent( el, evtName) {
   //On IE
   if( el.fireEvent)
@@ -83,7 +191,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	if (fmName.length>0 && elName.length>0) {
 		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
 	}
-	var title = "<dtml-var "getZMILangStr('CAPTION_CHOOSEOBJ')">";
+	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	var href = "manage_browse_iframe";
 	href += '?lang='+lang;
 	href += '&fmName='+fmName;
@@ -110,9 +218,9 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
 /**
  */
 function selectObject(path, title) {
-	confirm('comlib::selectObject');
-  if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1)
+  if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1) {
     path = '<'+'dtml-var expr="getLinkUrl(\''+path+'\',REQUEST)"/>';
+  }
   var fTag = 'a';
   var aTag = '<'+fTag+' href="'+path+'">';
   var eTag = '</'+fTag+'>';
@@ -435,11 +543,10 @@ function getInnerDimensions() {
 }
 
 
-// #############################################################################
-// ### open_frame:
-// #############################################################################
-function open_frame(title,url,params,width,height,options)
-  {
+/**
+ * Opens url in new frame-window
+ */
+function open_frame(title,url,params,width,height,options) {
     href = "f_frame";
     href += "?" + params;
     href += "&p_url=" + url;
@@ -479,59 +586,6 @@ function open_frame(title,url,params,width,height,options)
       + ",dependent=yes"
       + ",left=" + (screen.width-width)/2
       + ",top=" + (screen.height-height)/2
-      + options
-      );
-    if ( msgWindow) {
-      msgWindow.focus();
-      if ( msgWindow.opener == null) {
-        msgWindow.opener = self;
-      }
-    }
-  }
-
-
-// #############################################################################
-// ### open_function:
-// #############################################################################
-function open_function(url,width,height,options)
-  {
-    if ( height > screen.availHeight || width > screen.availWidth) {
-      if ( options.indexOf( "scrollbars=") < 0) {
-        if ( height > screen.availHeight)
-          height = screen.availHeight;
-        if ( width > screen.availWidth)
-          width = screen.availWidth;
-        options += ",scrollbars=yes,resizable=yes";
-      }
-    }
-    var name = url;
-    var i = name.lastIndexOf( "/");
-    if ( i > 0) {
-      name = name.substring(i+1);
-    }
-    else {
-      name = url;
-    }
-    i = name.indexOf("?");
-    if ( i > 0) {
-      name = name.substring(0,i);
-    }
-    i = name.indexOf("-");
-    if ( i > 0) {
-      name = name.substring(0,i);
-    }
-    i = name.indexOf(".");
-    if ( i > 0) {
-      name = name.substring(0,i);
-    }
-    var left = ( screen.width  - width  ) / 2;
-    var top  = ( screen.height - height ) / 2;
-    var msgWindow = open(url, name, "width=" + width + ",height=" + height
-      + ",screenX=" + left
-      + ",screenY=" + top
-      + ",dependent=yes"
-      + ",left=" + left
-      + ",top=" + top
       + options
       );
     if ( msgWindow) {

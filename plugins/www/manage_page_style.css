@@ -6,7 +6,7 @@
 h1, h2, h3 {
 	font-family: Arial, sans-serif; 
 }
-s
+
 .form-help {
 	font-family: Arial, sans-serif;
 	font-size:11px;
@@ -17,11 +17,6 @@ s
 	font-family: Arial, sans-serif;
 	font-size: 11px;
 	color: #333;
-}
-
-.location-bar {
-	background-color: #efefef;
-	border: none;
 }
 
 .list-header {
@@ -125,7 +120,7 @@ body.zmi.zmisitemap div.ZMIManageBody a {
 	width:460px;
 	height:20px;
 	cursor:pointer;
-	background:url(<dtml-var MISC_ZMS>zms_banner.gif);
+	background:url(/misc_/zms/zms_banner.png);
 }
 
 body.zmi div.zmi {
@@ -173,10 +168,10 @@ a.zmi:hover, a.zmi:active {
 .zmiNeutralColorTrans { background-color:#0f0; } 
 .zmiNeutralColorWhite { background-color:#fff; }
 .zmiNeutralColorBlack { background-color:#000; }
-.zmiNeutralColorStrong0, body.zmiNeutralColorStrong0 { background-color:#CCC; }
-.zmiNeutralColorMedium0, body.zmiNeutralColorMedium0 { background-color:#DDD; }
-.zmiNeutralColorLight0, body.zmiNeutralColorLight0 { background-color:#EEE; }
-.zmiNeutralColorLight1, body.zmiNeutralColorLight1 { background-color:#E2E3DE; }
+.zmiNeutralColorStrong0 { background-color:#CCC; }
+.zmiNeutralColorMedium0 { background-color:#DDD; }
+.zmiNeutralColorLight0 { background-color:#EEE; }
+.zmiNeutralColorLight1 { background-color:#E2E3DE; }
 .zmiTeaserColor { background-color:#BEDAFD!important;}
 .zmiTeaserColor>.form-small { color:#222;}
 
@@ -240,7 +235,7 @@ body.zmi.maximized td.zmiContainerColLeft select {
  */
 
 #zmi_logo {
-	background:url(/misc_/zms/get_logo_gradient.gif) top right repeat-y;
+	background:url(/misc_/zms/get_logo_gradient.png) top right repeat-y;
 }
 
 #system_msg {
@@ -436,7 +431,7 @@ a.button:hover img.button1, a.button:active img.button1 {
  */
 
 #ZMIManageTabsBar {
-	background:url(/misc_/zms/get_logo_gradient.gif) top right repeat-y;
+	background:url(/misc_/zms/get_logo_gradient.png) top right repeat-y;
 	height:30px;
 }
 
@@ -519,6 +514,8 @@ td input.ui-button {
 
 .zmiDisplayIcon {
 	margin: 2px;
+	width: 16px;
+	height: 16px;
 	border: none;
 	vertical-align: middle;
 }

@@ -37,7 +37,7 @@ $(function(){
 	$.plugin('zmi').get('body',function(){
 		// Content-Editable ////////////////////////////////////////////////////////
 		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
-			pluginFancybox('.contentEditable',function() {});
+			pluginFancybox('.contentEditable,.zmiRenderShort',function() {});
 			$('.contentEditable,.zmiRenderShort')
 				.mouseover( function(evt) {
 					$(this).addClass('preview').addClass('highlight'); 
@@ -47,6 +47,8 @@ $(function(){
 				})
 				.dblclick( function(evt) {
 					evt.stopPropagation();
+					var pid = $(this).attr('id');
+					var lang = pid.substr(pid.lastIndexOf('_')+1);
 					var href = self.location.href;
 					if (href.indexOf('?')>0) {
 						href = href.substr(0,href.indexOf('?'));
@@ -55,18 +57,22 @@ $(function(){
 						href = href.substr(0,href.lastIndexOf('/'));
 					}
 					var parents = $(this).parents('.contentEditable');
-					for ( var i = 0; i < parents.length; i++) {
-						var pid = $(parents[i]).attr('id');
+					parents[parents.length+1] = $(this);
+					for ( var i = 0; i <= parents.length; i++) {
+						var pid;
+						if ( i==parents.length) {
+							pid = $(this).attr('id');
+						}
+						else {
+							pid = $(parents[i]).attr('id');
+						}
 						pid = pid.substr(pid.indexOf('_')+1);
+						if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
+							pid = pid.substr(0,pid.length-('_'+lang).length);
+						}
 						if (!href.endsWith('/'+pid)) {
 							href += '/'+pid;
 						}
-					}
-					var pid = $(this).attr('id');
-					var lang = pid.substr(pid.lastIndexOf('_')+1);
-					pid = pid.substr(pid.indexOf('_')+1,pid.lastIndexOf('_')-pid.indexOf('_')-1);
-					if (!href.endsWith('/'+pid)) {
-						href += '/'+pid;
 					}
 					href += '/manage_main';
 					if (self.location.href.indexOf('/manage')>0

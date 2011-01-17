@@ -99,7 +99,7 @@ function zmiActionPopulate(el)
 	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
 	action = action+'/manage_ajaxZMIActions';
 	var params = {};
-	params['lang'] = getZMILang();
+	params['lang'] = zmiLang;
 	params['context_id'] = $(el).attr('id').substr(zmiActionPrefix.length);
 	
 	// JQuery.AJAX.get

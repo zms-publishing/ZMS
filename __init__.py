@@ -1,11 +1,6 @@
 ################################################################################
 # Initialisation file for the ZMS Product for Zope
 #
-# $Id: __init__.py,v 1.3 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.3 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -35,6 +30,7 @@ from App.ImageFile import ImageFile
 import ConfigParser
 import OFS.misc_
 import os
+import re
 import stat
 # Product Imports.
 import _globals
@@ -153,6 +149,84 @@ def initialize(context):
             mode = os.stat(filepath)[stat.ST_MODE]
             if not stat.S_ISDIR(mode):
               registerImage(filepath,file)
+        
+        # automated packing of CSS
+        css = confdict.get('zmi.css').split(',')
+        if 'all' not in css:
+          print "automated combination of external CSS:"
+          for key in css:
+            fn = translate_path(confdict.get('zmi.%s'%key))
+            fh = open(fn,'r')
+            fc = fh.read()
+            fh.close()
+            s0 = len(fc)
+            # Pack
+            fc = fc.strip()
+            fc = re.sub( '/\*((.|\n|\r|\t)*?)\*/', '', fc)
+            while True:
+              done = False
+              for k in ['=','+','{','}','(',')',';',',',':']:
+                for sk in [' ','\n']:
+                  while fc.find(sk+k)>=0:
+                    fc=fc.replace(sk+k,k)
+                    done = True
+                  while fc.find(k+sk)>=0:
+                    fc=fc.replace(k+sk,k)
+                    done = True
+              d = ['\t','','  ',' ','\n\n','\n',';}','}']
+              for i in range(len(d)/2):
+                k = d[i*2]
+                v = d[i*2+1]
+                while fc.find(k) >= 0:
+                  fc = fc.replace(k,v)
+                  done = True
+              if not done:
+                break
+            fileobj = open(translate_path(confdict.get('zmi.all')),'w')
+            s1 = len(fc)
+            print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
+            fileobj.write(fc)
+            fileobj.close()
+        
+        # automated combination of external JavaScript
+        libs = confdict.get('jquery.libs').split(',')
+        if 'all' not in libs:
+          print "automated combination of external JavaScript:",libs
+          fileobj = open(translate_path(confdict.get('jquery.all')),'w')
+          for key in libs:
+            fn = translate_path(confdict.get('jquery.%s'%key))
+            fh = open(fn,'r')
+            fc = fh.read()
+            fh.close()
+            s0 = len(fc)
+            # Pack
+            fc = fc.strip()
+            fc = re.sub( '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', '', fc)
+            fc = re.sub( '// ((.|\r|\t)*?)\n', '', fc)
+            fc = re.sub( '//-((.|\r|\t)*?)\n', '', fc)
+            while True:
+              done = False
+              for k in ['=','+','-','(',')',';',',',':']:
+                for sk in [' ','\n']:
+                  while fc.find(sk+k)>=0:
+                    fc=fc.replace(sk+k,k)
+                    done = True
+                  while fc.find(k+sk)>=0:
+                    fc=fc.replace(k+sk,k)
+                    done = True
+              d = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
+              for i in range(len(d)/2):
+                k = d[i*2]
+                v = d[i*2+1]
+                while fc.find(k) >= 0:
+                  fc = fc.replace(k,v)
+                  done = True
+              if not done:
+                break
+            s1 = len(fc)
+            print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
+            fileobj.write(fc)
+          fileobj.close()
     
     except:
         """If you can't register the product, dump error. 
@@ -168,6 +242,17 @@ def initialize(context):
         type, val, tb = sys.exc_info()
         sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
         del type, val, tb
+
+def translate_path(s):
+  """
+  translate path
+  """
+  ZMS_HOME = package_home(globals())
+  if s.startswith('/++resource++zms_/'):
+    l = ['plugins','www']+s.split('/')[2:]
+  elif s.startswith('/misc_/zms/'):
+    l = ['www']+s.split('/')[3:]
+  return os.sep.join([ZMS_HOME]+l)
 
 def registerImage(filepath,s):
   """

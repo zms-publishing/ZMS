@@ -1,3 +1,4 @@
+<dtml-call "REQUEST.RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime() + 3600).toZone('GMT+1').rfc822())">
 <dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')">
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/javascript; charset=utf-8')">
 
@@ -20,15 +21,15 @@ function zmiConfirmAction(fm, target, label)
     i = 1;
   }
   if (target.indexOf("manage_rollbackObjChanges") >= 0) {
-    b = confirm("<dtml-var "js_quote(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'))">");
+    b = confirm(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'));
   }
   else if (target.indexOf("manage_cutObjects") >= 0) {
-    var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_CUTOBJS'))">";
+    var msg1 = getZMILangStr('MSG_CONFIRM_CUTOBJS');
     msg1 = msg1.replace("%i",""+i);
     <dtml-let langs="getDescendantLanguages(lang)">
      var msg2 = "";
      <dtml-if "len(langs)>1">
-      msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
+      msg2 += getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS');
       var s = "";
       <dtml-in langs>
       s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";
@@ -43,17 +44,17 @@ function zmiConfirmAction(fm, target, label)
     b = i > 0 && confirm(msg);
   }
   else if (target.indexOf("manage_eraseObjs") >= 0) {
-    var msg = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DELOBJS'))">";
+    var msg = getZMILangStr('MSG_CONFIRM_DELOBJS');
     msg = msg.replace("%i",""+i);
     b = i > 0 && confirm(msg);
   }
   else if (target.indexOf("manage_deleteObjs") >= 0) {
-    var msg1 = "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_TRASHOBJS'))">";
+    var msg1 = getZMILangStr('MSG_CONFIRM_TRASHOBJS');
     msg1 = msg1.replace("%i",""+i);
     <dtml-let langs="getDescendantLanguages(lang)">
      var msg2 = "";
      <dtml-if "len(langs)>1">
-      msg2 += "<dtml-var "js_quote(getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS'))">";
+      msg2 += getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS');
       var s = "";
       <dtml-in langs>
       s += "<dtml-var "getLanguageLabel(_['sequence-item'])">";

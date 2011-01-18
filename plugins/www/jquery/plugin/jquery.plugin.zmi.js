@@ -236,7 +236,7 @@ function zmiClearNotifications() {
  *
  */
 $(function() {
-	pluginFancybox('body',function() {});
+	pluginFancybox('body.zmi',function() {});
 	zmiGetNotifications();
 });
 

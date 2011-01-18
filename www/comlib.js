@@ -133,21 +133,21 @@ function toggleElement( selector) {
 
 /**
  * Toggle cookie.
- * 
- * @import /plugins/www/jquery/jquery.cookies.2.1.0.min.js
  */
 function toggleCookie( key) {
-	try {
-		var value = $.cookies.get(key);
-		if (value==null || value=='0') {
-			$.cookies.set(key,'1');
+	runPluginCookies(function() {
+		try {
+			var value = $.cookies.get(key);
+			if (value==null || value=='0') {
+				$.cookies.set(key,'1');
+			}
+			else {
+				$.cookies.del(key);
+			}
 		}
-		else {
-			$.cookies.del(key);
+		catch(e) {
 		}
-	}
-	catch(e) {
-	}
+	});
 }
 
 /**

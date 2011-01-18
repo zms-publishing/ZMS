@@ -150,11 +150,11 @@ def initialize(context):
             if not stat.S_ISDIR(mode):
               registerImage(filepath,file)
         
-        # automated packing of CSS
-        css = confdict.get('zmi.css').split(',')
-        if 'all' not in css:
-          print "automated combination of external CSS:"
-          for key in css:
+        # automated combination of external CSS
+        gen = confdict.get('zmi.css.gen','').split(',')
+        if gen[0] != '':
+          print "automated combination of external CSS:",gen
+          for key in gen:
             fn = translate_path(confdict.get('zmi.%s'%key))
             fh = open(fn,'r')
             fc = fh.read()
@@ -165,12 +165,12 @@ def initialize(context):
             fc = re.sub( '/\*((.|\n|\r|\t)*?)\*/', '', fc)
             while True:
               done = False
-              for k in ['=','+','{','}','(',')',';',',',':']:
+              for k in ['=','+','{','}','(',';',',',':']:
                 for sk in [' ','\n']:
                   while fc.find(sk+k)>=0:
                     fc=fc.replace(sk+k,k)
                     done = True
-                  while fc.find(k+sk)>=0:
+                  while k+sk not in [') ','}\n'] and fc.find(k+sk)>=0:
                     fc=fc.replace(k+sk,k)
                     done = True
               d = ['\t','','  ',' ','\n\n','\n',';}','}']
@@ -189,11 +189,11 @@ def initialize(context):
             fileobj.close()
         
         # automated combination of external JavaScript
-        libs = confdict.get('jquery.libs').split(',')
-        if 'all' not in libs:
-          print "automated combination of external JavaScript:",libs
+        gen = confdict.get('jquery.libs.gen','').split(',')
+        if gen[0] != '':
+          print "automated combination of external JavaScript:",gen
           fileobj = open(translate_path(confdict.get('jquery.all')),'w')
-          for key in libs:
+          for key in gen:
             fn = translate_path(confdict.get('jquery.%s'%key))
             fh = open(fn,'r')
             fc = fh.read()
@@ -202,8 +202,7 @@ def initialize(context):
             # Pack
             fc = fc.strip()
             fc = re.sub( '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', '', fc)
-            fc = re.sub( '// ((.|\r|\t)*?)\n', '', fc)
-            fc = re.sub( '//-((.|\r|\t)*?)\n', '', fc)
+            fc = re.sub( '//( |-|\$)((.|\r|\t)*?)\n', '', fc)
             while True:
               done = False
               for k in ['=','+','-','(',')',';',',',':']:

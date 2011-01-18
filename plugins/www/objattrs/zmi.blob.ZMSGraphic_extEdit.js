@@ -191,16 +191,18 @@ function changeJcropAvailability(available, cropping)
 		$ZMSGraphic_cropapi.destroy();
 	}
 	if (available) {
-		$ZMSGraphic_cropapi = $.Jcrop($ZMSGraphic_img,{
-				allowSelect	: false,
-				minSize		: [25, 25],
-				maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
-				handles		: true,
-				onChange	: ZMSGraphic_extEdit_changedSelection,
-				onSelect	: ZMSGraphic_extEdit_changedSelection
-			});
-		$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
-		$ZMSGraphic_cropapi.focus();
+		runPluginJcrop(function() {
+			$ZMSGraphic_cropapi = $.Jcrop($ZMSGraphic_img,{
+					allowSelect	: false,
+					minSize		: [25, 25],
+					maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
+					handles		: true,
+					onChange	: ZMSGraphic_extEdit_changedSelection,
+					onSelect	: ZMSGraphic_extEdit_changedSelection
+				});
+			$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
+			$ZMSGraphic_cropapi.focus();
+		});
 	}
 }
 
@@ -225,8 +227,7 @@ function ZMSGraphic_extEdit_changedSelection(c) {
 }
 
 $(function () {
-	pluginFancybox('body',function(){});
-	pluginJcrop('body',function(){});
+	pluginFancybox('body.zmi',function(){});
 	pluginUI('#ZMSGraphic_extEdit_vslider',function(){
 		$("#ZMSGraphic_extEdit_vslider").slider({
 			orientation: "vertical",

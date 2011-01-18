@@ -30,8 +30,7 @@ $(function(){
 	}
 	// ZMI plugin
 	$.plugin('zmi',{
-		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js',
-				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
+		files: ['/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
 		});
 	// Always load
 	$.plugin('zmi').get('body',function(){
@@ -47,8 +46,6 @@ $(function(){
 				})
 				.dblclick( function(evt) {
 					evt.stopPropagation();
-					var pid = $(this).attr('id');
-					var lang = pid.substr(pid.lastIndexOf('_')+1);
 					var href = self.location.href;
 					if (href.indexOf('?')>0) {
 						href = href.substr(0,href.indexOf('?'));
@@ -56,8 +53,8 @@ $(function(){
 					if (href.lastIndexOf('/')>0) {
 						href = href.substr(0,href.lastIndexOf('/'));
 					}
+					var lang = null;
 					var parents = $(this).parents('.contentEditable');
-					parents[parents.length+1] = $(this);
 					for ( var i = 0; i <= parents.length; i++) {
 						var pid;
 						if ( i==parents.length) {
@@ -66,12 +63,17 @@ $(function(){
 						else {
 							pid = $(parents[i]).attr('id');
 						}
-						pid = pid.substr(pid.indexOf('_')+1);
-						if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
-							pid = pid.substr(0,pid.length-('_'+lang).length);
-						}
-						if (!href.endsWith('/'+pid)) {
-							href += '/'+pid;
+						if (pid.length > 0) {
+							if (lang == null) {
+								lang = pid.substr(pid.lastIndexOf('_')+1);
+							}
+							pid = pid.substr(pid.indexOf('_')+1);
+							if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
+								pid = pid.substr(0,pid.length-('_'+lang).length);
+							}
+							if (!href.endsWith('/'+pid)) {
+								href += '/'+pid;
+							}
 						}
 					}
 					href += '/manage_main';
@@ -111,17 +113,9 @@ $(function(){
  * @see http://jqueryui.com
  */
 $(function(){
-	// Always load
-	pluginUI('body',function(){});
-	// Icons
-	pluginUI('ul#icons',function() {
-		// apply minimum-width to avoid line-breaks
-		var uls = $('ul#icons');
-		for ( var i = 0; i < uls.length; i++) {
-			var ul = $(uls[i]);
-			var lis = $('li',ul);
-			ul.css('min-width',lis.length*$(lis[0]).outerWidth());
-		}
+	// Always load in ZMI
+	pluginUI('body.zmi',function(){
+		// Icons:
 		// hover states on the static widgets
 		$('ul#icons li').hover(
 			function() {
@@ -135,9 +129,7 @@ $(function(){
 				}
 			}
 		);
-	});
-	// Date-Picker
-	pluginUI('input.datepicker,input.datetimepicker',function() {
+		// Date-Picker
 		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
 		var opt = {
 			'showWeek'	: true
@@ -234,7 +226,8 @@ function pluginAutocomplete(s, c) {
 }
 
 
-/* jQuery Editable Combobox (jEC)
+/**
+ * jQuery Editable Combobox (jEC)
  * @see http://code.google.com/p/jquery-jec/
  */
 function pluginJEC(s, c) {
@@ -245,13 +238,25 @@ function pluginJEC(s, c) {
 }
 
 
-/* Jcrop - the jQuery Image Cropping Plugin
+/**
+ * Jcrop - the jQuery Image Cropping Plugin
  * @see http://deepliquid.com/content/Jcrop.html
  */
-function pluginJcrop(s, c) {
+function runPluginJcrop(c) {
 	$.plugin('jcrop',{
 		files: ['/++resource++zms_/jquery/jcrop/jquery.Jcrop.min.js',
 				'/++resource++zms_/jquery/jcrop/jquery.Jcrop.css']
 		});
-	$.plugin('jcrop').get(s,c);
+	$.plugin('jcrop').get('body',c);
+}
+
+/**
+ * jQuery Cookies
+ * @see http://code.google.com/p/cookies
+ */
+function runPluginCookies(c) {
+	$.plugin('cookies',{
+		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js']
+		});
+	$.plugin('cookies').get('body',c);
 }

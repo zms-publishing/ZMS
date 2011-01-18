@@ -145,7 +145,7 @@
 				this.target.append('<style type="text\/css" rel="stylesheet" data-file-id="'+fileId+'">'+cached+'<\/style>');
 			}
 			else if(extension == 'js') {
-				this.target.append('<script type="text\/javascript" data-file-id="'+fileId+'">'+cached+'<\/script>');
+				this.target.append('<script type="text\/javascript" async="true" data-file-id="'+fileId+'">'+cached+'<\/script>');
 			}
 				
 		// Call postLoad callback (queueing etc)

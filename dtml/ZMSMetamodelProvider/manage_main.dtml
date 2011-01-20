@@ -301,15 +301,13 @@ function changeType( el)
 	html = html.substr( 0, html.length - 1);
 	html = '<pre>'+html+'</pre>';
 	$('#dtmlHintText').html(html);
-	pluginFancybox('#dtmlHintText',function() {
-		$.fancybox({
+	showFancybox({
 			'href':'#dtmlHintText',
 			'title':'DTML: '+v,
 			'autoDimensions':true,
 			'transitionIn':'fade',
 			'transitionOut':'fade'
 		});
-	});
 }
 
   /**
@@ -793,22 +791,7 @@ function changeType( el)
           </dtml-unless>
           <td class="form-small" nowrap="nowrap" width="150"
            ><nobr
-           ><dtml-if "oAttr['type'] in ['dialog']"
-	    ><img src="<dtml-var spacer_gif>" alt="" border="0" width="18" height="16"
-	    ><select title="Dialog" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" style="width:158px; height:20px;"
-	     ><option value="">--- <dtml-var "getZMILangStr('CAPTION_SELECT')"> ---</option
-	     ><dtml-in "metaObj['attrs']"
-	      ><dtml-let dialog=sequence-item
-	       ><dtml-if "dialog['type'] in ['DTML Method','DTML Document']"
-	        ><option value="<dtml-var "dialog['id']">"
-	         <dtml-if "(oAttr.get('custom','') == dialog['id']) or (operator_gettype(oAttr.get('keys',[])) is operator_gettype([]) and dialog['id'] in oAttr.get('keys',[]))">selected="selected"</dtml-if>
-	         ><dtml-var "dialog['id']"
-	        ></option
-	       ></dtml-if
-	      ></dtml-let
-	     ></dtml-in
-	    ></select
-           ><dtml-elif "oAttr['type'] in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']"
+           ><dtml-if "oAttr['type'] in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']"
             ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
             ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
@@ -884,7 +867,7 @@ function changeType( el)
        </table>
 
        <!-- BO Edit -->
-       <div style="display:none;align:center;">
+       <div class="ui-helper-hidden">
         <div id="dtmlHintText" class="form-small" style="background-color:#FFFFE8;padding:4px;"></div>
        </div>
        <dtml-if "REQUEST.has_key('inp_id_name')">

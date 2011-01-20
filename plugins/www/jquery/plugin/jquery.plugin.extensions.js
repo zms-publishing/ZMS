@@ -28,77 +28,68 @@ $(function(){
 		i = l[j].indexOf('=');
 		zmiParams[l[j].substr(0,i)] = unescape(l[j].substr(i+1));
 	}
-	// ZMI plugin
-	$.plugin('zmi',{
-		files: ['/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
-		});
-	// Always load
-	$.plugin('zmi').get('body',function(){
-		// Content-Editable ////////////////////////////////////////////////////////
-		if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
-			pluginFancybox('.contentEditable,.zmiRenderShort',function() {});
-			$('.contentEditable,.zmiRenderShort')
-				.mouseover( function(evt) {
-					$(this).addClass('preview').addClass('highlight'); 
-				})
-				.mouseout( function(evt) {
-					$(this).removeClass('preview').removeClass('highlight'); 
-				})
-				.dblclick( function(evt) {
-					evt.stopPropagation();
-					var href = self.location.href;
-					if (href.indexOf('?')>0) {
-						href = href.substr(0,href.indexOf('?'));
-					}
-					if (href.lastIndexOf('/')>0) {
-						href = href.substr(0,href.lastIndexOf('/'));
-					}
-					var lang = null;
-					var parents = $(this).parents('.contentEditable');
-					for ( var i = 0; i <= parents.length; i++) {
-						var pid;
-						if ( i==parents.length) {
-							pid = $(this).attr('id');
-						}
-						else {
-							pid = $(parents[i]).attr('id');
-						}
-						if (pid.length > 0) {
-							if (lang == null) {
-								lang = pid.substr(pid.lastIndexOf('_')+1);
-							}
-							pid = pid.substr(pid.indexOf('_')+1);
-							if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
-								pid = pid.substr(0,pid.length-('_'+lang).length);
-							}
-							if (!href.endsWith('/'+pid)) {
-								href += '/'+pid;
-							}
-						}
-					}
-					href += '/manage_main';
-					if (self.location.href.indexOf('/manage')>0
-						&& self.location.href.indexOf('/manage_translate')<0) {
-						self.location.href = href;
+	// Content-Editable ////////////////////////////////////////////////////////
+	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
+		$('.contentEditable,.zmiRenderShort')
+			.mouseover( function(evt) {
+				$(this).addClass('preview').addClass('highlight'); 
+			})
+			.mouseout( function(evt) {
+				$(this).removeClass('preview').removeClass('highlight'); 
+			})
+			.dblclick( function(evt) {
+				evt.stopPropagation();
+				var href = self.location.href;
+				if (href.indexOf('?')>0) {
+					href = href.substr(0,href.indexOf('?'));
+				}
+				if (href.lastIndexOf('/')>0) {
+					href = href.substr(0,href.lastIndexOf('/'));
+				}
+				var lang = null;
+				var parents = $(this).parents('.contentEditable');
+				for ( var i = 0; i <= parents.length; i++) {
+					var pid;
+					if ( i==parents.length) {
+						pid = $(this).attr('id');
 					}
 					else {
-						href += '_iframe';
-						href += '?lang='+lang;
-						$.fancybox({
-							'autoDimensions':false,
-							'hideOnOverlayClick':false,
-							'href':href,
-							'transitionIn':'fade',
-							'transitionOut':'fade',
-							'type':'iframe',
-							'width':819
-						});
+						pid = $(parents[i]).attr('id');
 					}
-				})
-			.attr( "title", "Double-click to edit!");
-		}
-		////////////////////////////////////////////////////////////////////////////
-	});
+					if (pid.length > 0) {
+						if (lang == null) {
+							lang = pid.substr(pid.lastIndexOf('_')+1);
+						}
+						pid = pid.substr(pid.indexOf('_')+1);
+						if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
+							pid = pid.substr(0,pid.length-('_'+lang).length);
+						}
+						if (!href.endsWith('/'+pid)) {
+							href += '/'+pid;
+						}
+					}
+				}
+				href += '/manage_main';
+				if (self.location.href.indexOf('/manage')>0
+					&& self.location.href.indexOf('/manage_translate')<0) {
+					self.location.href = href;
+				}
+				else {
+					href += '_iframe';
+					href += '?lang='+lang;
+					showFancybox({
+						'autoDimensions':false,
+						'hideOnOverlayClick':false,
+						'href':href,
+						'transitionIn':'fade',
+						'transitionOut':'fade',
+						'type':'iframe',
+						'width':819
+					});
+				}
+			})
+		.attr( "title", "Double-click to edit!");
+	}
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{
@@ -109,12 +100,12 @@ $(function(){
 });
 
 
-/* jQuery UI
+/**
+ * jQuery UI
  * @see http://jqueryui.com
  */
 $(function(){
-	// Always load in ZMI
-	pluginUI('body.zmi',function(){
+	$('body.zmi').each(function(){
 		// Icons:
 		// hover states on the static widgets
 		$('ul#icons li').hover(
@@ -129,13 +120,15 @@ $(function(){
 				}
 			}
 		);
-		// Date-Picker
-		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
-		var opt = {
-			'showWeek'	: true
-		};
-		$('input.datepicker').datepicker(opt);
-		$('input.datetimepicker').datetimepicker(opt);
+		pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
+			// Date-Picker
+			$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
+			var opt = {
+				'showWeek'	: true
+			};
+			$('input.datepicker').datepicker(opt);
+			$('input.datetimepicker').datetimepicker(opt);
+		});
 	});
 });
 
@@ -150,14 +143,13 @@ function pluginLanguage() {
 	return lang;
 }
 
-function pluginUI(s, c) {
-	$.plugin('ui',{
+function pluginUIDatepicker(s, c) {
+	$.plugin('ui_datepicker',{
 		files: [
-				'/++resource++zms_/jquery/ui/js/jquery-ui-1.8.7.custom.min.js',
 				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js',
 				'/++resource++zms_/jquery/plugin/jquery.plugin.datetimepicker.js'
 		]});
-	$.plugin('ui').get(s,c);
+	$.plugin('ui_datepicker').get(s,c);
 }
 
 function zmiAutocompleteDefaultFormatter(l, q) {
@@ -173,19 +165,18 @@ function zmiAutocompleteDefaultFormatter(l, q) {
 }
 
 function zmiAutocomplete(s, o) {
-	pluginUI(s,function() {
-		$(s).autocomplete(o)
-		.data( "autocomplete" )._renderItem = function( ul, item ) {
-				return $( "<li></li>" )
-					.data( "item.autocomplete", item )
-					.append( "<a>" + item.label + "</a>" )
-					.appendTo( ul );
-		};
-	});
+	$(s).autocomplete(o)
+	.data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+				.data( "item.autocomplete", item )
+				.append( "<a>" + item.label + "</a>" )
+				.appendTo( ul );
+	};
 }
 
 
-/* Fancybox
+/**
+ * Fancybox
  * @see http://fancybox.net/
  */
 var pluginFancyboxDefaultOptions = {
@@ -197,9 +188,11 @@ var pluginFancyboxDefaultOptions = {
 		};
 
 $(function(){
-	pluginFancybox('a.fancybox',function() {
-		$('a.fancybox').fancybox(pluginFancyboxDefaultOptions);
-	});
+	$('a.fancybox')
+		.click(function() {
+			pluginFancyboxDefaultOptions['href'] = $(this).attr('href');
+			return showFancybox(pluginFancyboxDefaultOptions);
+		});
 });
 
 function pluginFancybox(s, c) {
@@ -211,9 +204,18 @@ function pluginFancybox(s, c) {
 	$.plugin('fancybox').get(s,c);
 }
 
+function showFancybox(p) {
+	pluginFancybox('body',function() {
+		$.fancybox(p);
+	});
+	return false;
+}
 
-/* Autocomplete
+
+/**
+ * Autocomplete
  * @see http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/
+ * @deprecated
  */
 function pluginAutocomplete(s, c) {
 	$.plugin('autocomplete',{
@@ -259,4 +261,15 @@ function runPluginCookies(c) {
 		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js']
 		});
 	$.plugin('cookies').get('body',c);
+}
+
+/**
+ * jQuery Dimensions
+ * @see 
+ */
+function runPluginDimensions(c) {
+	$.plugin('dimensions',{
+		files: ['/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
+		});
+	$.plugin('dimensions').get('body',c);
 }

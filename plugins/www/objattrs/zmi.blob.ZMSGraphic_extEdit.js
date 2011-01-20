@@ -67,7 +67,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			$("#ZMSGraphic_extEdit_perc").html(v+'%');
 			
 			// Show in Fancybox
-			$.fancybox({
+			showFancybox({
 				'href':'#ZMSGraphic_extEdit_actions',
 				'autoDimensions':true,
 				'transitionIn':'fade',
@@ -227,23 +227,20 @@ function ZMSGraphic_extEdit_changedSelection(c) {
 }
 
 $(function () {
-	pluginFancybox('body.zmi',function(){});
-	pluginUI('#ZMSGraphic_extEdit_vslider',function(){
-		$("#ZMSGraphic_extEdit_vslider").slider({
-			orientation: "vertical",
-			range: "min",
-			min: 0,
-			max: 100,
-			slide: function(event, ui) {
-				var v = ui.value;
-				$("#ZMSGraphic_extEdit_perc").html(v+'%');
-				var w = Math.round(v*ZMSGraphic_act_width/100);
-				var h = Math.round(v*ZMSGraphic_act_height/100);
-				$('input#ZMSGraphic_extEdit_width').val(w);
-				$('input#ZMSGraphic_extEdit_height').val(h);
-				$ZMSGraphic_img.attr({'width':w,'height':h});
-			}
-		});
+	$("#ZMSGraphic_extEdit_vslider").slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 100,
+		slide: function(event, ui) {
+			var v = ui.value;
+			$("#ZMSGraphic_extEdit_perc").html(v+'%');
+			var w = Math.round(v*ZMSGraphic_act_width/100);
+			var h = Math.round(v*ZMSGraphic_act_height/100);
+			$('input#ZMSGraphic_extEdit_width').val(w);
+			$('input#ZMSGraphic_extEdit_height').val(h);
+			$ZMSGraphic_img.attr({'width':w,'height':h});
+		}
 	});
 	$ZMSGraphic_buttons = $('img[id^=ZMSGraphic_extEdit_]');
 	for ( var i = 0; i < $ZMSGraphic_buttons.length; i++) {

@@ -6,7 +6,7 @@
  * Open link in iframe.
  */
 function zmiIframe(href, title) {
-	$.fancybox({
+	showFancybox({
 		'hideOnOverlayClick':false,
 		'href':href,
 		'title':title,
@@ -29,10 +29,10 @@ function zmiToggleMaximize() {
  * Un-/select checkboxes.
  */
 function selectCheckboxes(fm, v) {
-  if (typeof v == 'undefined') {
-    v = !$(':checkbox:not([name~=active])',fm).attr('checked');
-  }
-  $(':checkbox:not([name~=active])',fm).attr('checked',v)
+	if (typeof v == 'undefined') {
+		v = !$(':checkbox:not([name~=active])',fm).attr('checked');
+	}
+	$(':checkbox:not([name~=active])',fm).attr('checked',v)
 }
 
 // ############################################################################
@@ -68,6 +68,7 @@ $(function(){
 
 
 function zmiFancyboxResizeInnerFrame(dims) {
+	// Works with jquery.fancybox-1.3.1: has to be reworked for 1.3.4!
 	var deltah = $('#fancybox-wrap').height()-$('#fancybox-inner').height();
 	$('#fancybox-inner').height(dims.height);
 	$('#fancybox-wrap').height(dims.height+deltah);
@@ -99,7 +100,7 @@ function zmiActionPopulate(el)
 	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
 	action = action+'/manage_ajaxZMIActions';
 	var params = {};
-	params['lang'] = zmiLang;
+	params['lang'] = getZMILang();
 	params['context_id'] = $(el).attr('id').substr(zmiActionPrefix.length);
 	
 	// JQuery.AJAX.get
@@ -152,8 +153,7 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 			href += q + $(inputs[i]).attr('name') + '=' + $(inputs[i]).val();
 			q = '&amp;';
 		}
-		$.fancybox({
-			'autoDimensions':false,
+		showFancybox({
 			'hideOnOverlayClick':false,
 			'href':href,
 			'title':custom,
@@ -217,9 +217,8 @@ function zmiGetNotifications() {
 					'</div>'+
 					'</div>'+
 					'');
-				pluginFancybox('a[href=#ZMIManageTabsNotificationsDiv]',function() {
-					$('a[href=#ZMIManageTabsNotificationsDiv]').fancybox({
-					});
+				$('a[href=#ZMIManageTabsNotificationsDiv]').click(function(){
+					showFancybox({href:$(this).attr('href')});
 				});
 			}
 			setTimeout('zmiGetNotifications()',60000);
@@ -236,7 +235,6 @@ function zmiClearNotifications() {
  *
  */
 $(function() {
-	pluginFancybox('body.zmi',function() {});
 	zmiGetNotifications();
 });
 

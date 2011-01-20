@@ -160,20 +160,17 @@ function onResize() {
   </tr>
   </table>
  </div>
- <script language="JavaScript">
- <!--//
-   function workflowNodesDivDisplay(el) {
+	<script language="JavaScript">
+		function workflowNodesDivDisplay(el) {
 			// Show in Fancybox
-			$.fancybox({
+			return showFancybox({
 				'href':'#workflowNodesDiv',
 				'autoDimensions':true,
 				'transitionIn':'fade',
 				'transitionOut':'fade',
 			});
-     return false;
-   }
- //-->
- </script>
+		}
+	</script>
  <div style="display:none;"><div id="workflowNodesDiv" class="form-small" style="background-color:#ffffe0;padding:4px;">
   <dtml-in "getNodes()">
    <dtml-let node=sequence-item ob="getLinkObj(node,REQUEST)">

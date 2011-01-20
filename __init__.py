@@ -27,6 +27,7 @@ __version__ = '0.1'
 # Imports.
 from App.Common import package_home
 from App.ImageFile import ImageFile
+from DateTime.DateTime import DateTime
 import ConfigParser
 import OFS.misc_
 import os
@@ -132,7 +133,7 @@ def initialize(context):
         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
         
         # automated registration of configuration
-        confdict = {}
+        confdict = {'last_modified':long(DateTime().timeTime())}
         PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
         cfp = ConfigParser.ConfigParser()
         cfp.readfp(open(os.path.join(PRODUCT_HOME,'etc','zms.conf')))
@@ -205,7 +206,7 @@ def initialize(context):
             fc = re.sub( '//( |-|\$)((.|\r|\t)*?)\n', '', fc)
             while True:
               done = False
-              for k in ['=','+','-','(',')',';',',',':']:
+              for k in ['=','+','-','(',')',';',',',':','&','|']:
                 for sk in [' ','\n']:
                   while fc.find(sk+k)>=0:
                     fc=fc.replace(sk+k,k)

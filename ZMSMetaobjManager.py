@@ -102,7 +102,7 @@ class ZMSMetaobjManager:
 
     # Globals.
     # --------
-    valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dialog','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
+    valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
     valid_xtypes =    ['constant','delimiter','hint','interface','method','resource']
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
@@ -699,7 +699,7 @@ class ZMSMetaobjManager:
         newCustom = ''
       if newType in ['resource'] and (type(newCustom) is str or type(newCustom) is int):
         newCustom = None
-      if newType not in ['*','autocomplete','dialog','multiautocomplete','multiselect','recordset','select']:
+      if newType not in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']:
         newKeys = []
       if newType in self.getMetaobjIds(sort=0)+['*']:
         newMultilang = 0

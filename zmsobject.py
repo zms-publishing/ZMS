@@ -159,20 +159,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.get_zmi_logo:
-    # --------------------------------------------------------------------------
-    get_zmi_logo__roles__ = None
-    def get_zmi_logo(self, REQUEST, RESPONSE):
-      """ ZMS.get_zmi_logo """
-      v = self.zmi_logo
-      try:
-        v = v.data
-      except:
-        v = v.index_html(REQUEST,RESPONSE)
-      return v
-
-
-    # --------------------------------------------------------------------------
     #  ZMSObject.get_conf_blob:
     # --------------------------------------------------------------------------
     get_conf_blob__roles__ = None

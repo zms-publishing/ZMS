@@ -11,6 +11,6 @@
 			</div><!-- .zmi_col_right -->
 		</div><!-- .zmi-document-margin -->
 		<div id="zmi_logo">
-			<dtml-if meta_id><a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/get_zmi_logo" border="0" title="<dtml-var "getTitle(REQUEST)">" /></a></dtml-if>
+			<dtml-if meta_id><a href="<dtml-var "getHref2IndexHtml({'lang':lang})">" target="_top"><img src="<dtml-var "getDocumentElement().absolute_url()">/zmi_logo" width="<dtml-var "zmi_logo.width">" height="<dtml-var "zmi_logo.height">" border="0" title="<dtml-var "getTitle(REQUEST)">" /></a></dtml-if>
 		</div><!-- #zmi_logo -->
 	</div><!-- #zmi_header -->

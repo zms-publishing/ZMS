@@ -17,7 +17,7 @@ h1,h2,h3{font-family:Arial,sans-serif}
 div.note{font-size:11px;background-color:#ffffd0;color:black;border:1px solid #000;margin:6px 0px;padding:4px;width:96%}
 body.zmi{font-family:Arial,sans-serif;margin:0;padding:0;border:0;background:transparent!important;background-color:#6598cd!important;font-size:66%}
 body.zmi.zmisitemap{background-color:#fff !important;background-image:none !important}
-body.zmi.zmisitemap div.ZMIManageBody a{text-decoration:none}
+body.zmi.zmisitemap a{text-decoration:none}
 #zmi_banner{width:460px;height:20px;cursor:pointer;background:url(/misc_/zms/zms_banner.png)}
 body.zmi div.zmi{width:800px}
 body.zmi img{border:0}
@@ -47,8 +47,6 @@ body.zmi.maximized div.zmi{width:auto}
 body.zmi.maximized #zmi_maximize{background:url(/++resource++zms_/img/minimize.png)}
 body.zmi.maximized #zmi_header,body.zmi.maximized #zmi_logo,body.zmi.maximized #ZMIManageTabsBar{background-color:#fff !important}
 body.zmi.maximized div.zmiRenderShort{width:auto}
-body.zmi.maximized td.zmiContainerColLeft a{text-decoration:none}
-body.zmi.maximized td.zmiContainerColLeft select{display:block;width:97% !important}
 #zmi_logo{background:url(/misc_/zms/get_logo_gradient.png) top right repeat-y}
 #system_msg{padding:1em}
 img#zmibg{z-index:-1000;width:100%;height:101%;position:absolute;top:0;left:0}
@@ -112,13 +110,12 @@ select{font:100% Arial,sans-serif;border:1px solid #666;color:black;vertical-ali
 input.lazy{width:26em}
 .zmiDivOpaque{background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85}
 div#tabs,div#tabs ul.ui-tabs-nav{float:left}
-div#tabs ul.ui-tabs-nav li a{padding-left:0.9em;padding-right:0.9em}
+div#tabs a{padding-left:0.9em;padding-right:0.9em}
 div.zmi-tabs.ui-widget-header{height:24px!important}
 div.zmi-tabs.ui-widget-header ul.ui-tabs-nav{padding-top:4px!important}
-div.zmi-tabs.ui-widget-header ul.ui-tabs-nav li a{color:white}
 div.ui-tabs{margin:0;padding:0;border:0;background:transparent}
 ul.ui-tabs-nav{margin:0;padding:0;border:0;background:transparent}
-ul.ui-tabs-nav li a{font-family:Arial,sans-serif;font-size:11px !important;font-weight:normal;text-decoration:none}
+ul.ui-tabs-nav a{font-family:Arial,sans-serif;font-size:11px !important;font-weight:normal;text-decoration:none}
 .ui-widget-header{vertical-align:middle;padding:2px 4px 2px 4px}
 div.zmi-icon{margin:0;padding:0;width:16px}
 ul.zmi-icons,ul#icons,ul.icons{margin:0;padding:0}

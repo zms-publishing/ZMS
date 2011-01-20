@@ -168,12 +168,10 @@ class langdict:
 ################################################################################
 class MultiLanguageObject:
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageObject.getLanguages: 
-    #
-    #  Returns list of Ids of languages (primary language 1st).
-    # --------------------------------------------------------------------------
     def getLanguages(self, REQUEST=None):
+      """
+      Returns IDs of languages (primary language 1st)
+      """
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'getLanguages'
@@ -192,12 +190,10 @@ class MultiLanguageObject:
         return self.storeReqBuff( reqBuffId, value, REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageObject.getDescendantLanguages: 
-    #
-    #  Returns IDs of descendant languages.
-    # --------------------------------------------------------------------------
     def getDescendantLanguages(self, id, REQUEST=None):
+      """
+      Returns IDs of descendant languages
+      """
       obs = []
       user_langs = ['*']
       if REQUEST is not None:
@@ -318,18 +314,18 @@ class MultiLanguageManager:
       self.attr_languages = v.copy()
 
 
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getParentLanguage: 
-    #
-    #  Returns ID of parent language.
-    # --------------------------------------------------------------------------
     def getParentLanguage(self, id):
-      parent = None
-      langs = self.getLangs()
-      if langs.has_key(id):
-        lang = langs[id]
-        parent = lang['parent']
-      return parent
+      """
+      Returns label of language specified by ID.
+      """
+      return self.getLang(id).get('parent')
+
+
+    def getLanguageLabel(self, id):
+      """
+      Returns label of language specified by ID.
+      """
+      return self.getLang(id).get('label',id)
 
 
     # --------------------------------------------------------------------------
@@ -350,15 +346,6 @@ class MultiLanguageManager:
         else:
           break
       return obs
-
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLanguageLabel: 
-    #
-    #  Returns language-label of specified ID.
-    # --------------------------------------------------------------------------
-    def getLanguageLabel(self, id):
-      return self.getLang(id).get('label',id)
 
 
     # --------------------------------------------------------------------------

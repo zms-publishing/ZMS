@@ -3734,7 +3734,7 @@ return teaserElmnts
  ><dtml-in "getChildNodes(REQUEST)"
   ><dtml-let teaserElmnt=sequence-item manage_main="'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),REQUEST['lang'])"
    ><div class="form-small"
-    ><a href="<dtml-var manage_main>"><img src="<dtml-var MISC_ZMS>internal_link.gif" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(REQUEST)">" border="0" align="absmiddle"/></a
+    ><a href="<dtml-var manage_main>"><img src="<dtml-var MISC_ZMS>internal_link.gif" width="16" height="16" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(REQUEST)">" border="0" align="absmiddle"/></a
      ><dtml-let
        url="getLinkUrl(teaserElmnt.getObjProperty('attr_url',REQUEST))"
        img_src="teaserElmnt.getObjProperty('attr_img_src',REQUEST)+'?'"

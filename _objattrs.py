@@ -1,11 +1,6 @@
 ################################################################################
 # _objattrs.py
 #
-# $Id: _objattrs.py,v 1.11 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.11 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -440,7 +435,7 @@ class ObjAttrs:
         return ''.join(inp)
       
       #-- Text-Fields.
-      elif inputtype in [ 'text', 'xml', 'dialog']:
+      elif inputtype in [ 'text', 'xml']:
         css = 'form-element'
         wrap = 'virtual'
         if inputtype in ['xml']:
@@ -451,24 +446,7 @@ class ObjAttrs:
         cols = None
         rows = 5
         extra = ' onselect="storeCaret(this)"'
-        inp = []
-        inp.append(self.getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap,extra))
-        if inputtype == 'dialog':
-          try:
-            title = self.getZMILangStr('CAPTION_CHOOSEOBJ')
-            url = '%s/%s'%(self.absolute_url(),obj_attr[inputtype]['url'])
-            params = ''
-            params += 'lang=' + lang
-            params += '&fmName=' + fmName
-            params += '&elName=' + elName
-            width = 420
-            height = 360
-            extra = ',resizable=yes,scrollbars=yes'
-            inp.append('<input class="form-element" type="submit" name="btn" value="..." onclick="open_frame(\'%s\',\'%s\',\'%s\',%i,%i,\'%s\'); return false;" style="vertical-align:top"/>'%(title,url,params,width,height,extra))
-          except:
-            inp = []
-            inp.append('<div class="form-element"><i>%s</i></div>'%(self.getZMILangStr('MSG_AFTER_INSERT')%self.display_type(REQUEST,meta_id)))
-        return ''.join(inp)
+        return self.getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap,extra)
       
       #-- Boolean-Fields.
       elif inputtype == 'boolean':
@@ -665,7 +643,7 @@ class ObjAttrs:
       datatype = obj_attr['datatype_key']
       obj_vers = self.getObjVersion(REQUEST)
       lang = REQUEST.get('lang',self.getPrimaryLanguage())
-      while 1:
+      while True:
         value = self._getObjAttrValue(obj_attr,obj_vers,lang)
         empty = False
         if obj_attr['multilang'] and \
@@ -741,6 +719,10 @@ class ObjAttrs:
     #  ObjAttrs.attr:
     #
     #  Get one or set one or more attributes.
+    #
+    #  attr(key) -> getObjProperty(key,REQUEST)
+    #  attr(key,value) -> setObjProperty(key,value)
+    #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
       request = self.REQUEST
@@ -1480,16 +1462,6 @@ class ObjAttrsManager:
           elif attr['type'] in ['multiautocomplete','multiselect']:
             dct['type'] = attr['type']
             dct['datatype'] = 'list'
-          elif attr['type'] in ['dialog']:
-            if type( attr['keys']) is list and len( attr['keys']) == 1:
-              url = attr['keys'][0]
-            else:
-              url = attr['custom']
-            dct['type'] = attr['type']
-            dct['datatype'] = 'text'
-            dct['size'] = 25
-            dct[attr['type']] = {}
-            dct[attr['type']]['url'] = url
           elif attr.get('default','') != '':
             dct['default'] = attr['default']
           elif attr.get('repetitive',0):

@@ -132,7 +132,6 @@ class ZMSContainerObject(
     manage_main_btn = HTMLFile('dtml/ZMSContainerObject/manage_main_btn', globals())
     manage_main_change = HTMLFile('dtml/ZMSContainerObject/manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
-    main_js = HTMLFile('dtml/ZMSContainerObject/main_js', globals())
     manage_main = HTMLFile('dtml/ZMSContainerObject/manage_main', globals())
     manage_search = HTMLFile('dtml/ZMSContainerObject/manage_search', globals())
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())

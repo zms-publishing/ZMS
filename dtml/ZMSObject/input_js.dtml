@@ -55,14 +55,12 @@ function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
 	html += '<input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_DISPLAY')">" onclick="window.open(self.location.href);"/>';
 	html += '</nobr>';
 	$('#zmiPopup').html(html);
-	pluginFancybox('#zmiPopup',function() {
-		$.fancybox({
+	showFancybox({
 			'href':'#zmiPopup',
 			'autoDimensions':true,
 			'transitionIn':'fade',
 			'transitionOut':'fade'
 		});
-	});
 }
 
 function onFormSubmitSubmit(fmName) {

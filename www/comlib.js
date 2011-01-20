@@ -1,4 +1,19 @@
 /**
+ * Returns language.
+ */
+function getZMILang() {
+	var lang = zmiParams['lang'];
+	if (typeof lang != 'undefined') {
+		return lang;
+	}
+	return $.ajax({
+		url: 'getPrimaryLanguage',
+		datatype:'text',
+		async: false
+		}).responseText;
+}
+
+/**
  * Returns language-string.
  */
 function getZMILangStr(key) {
@@ -19,7 +34,7 @@ function getZMILangStr(key) {
 function confirmDeleteBtnOnClick(href) {
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 		if (href.indexOf('lang=') < 0) {
-			href += '&amp;lang='+zmiLang;
+			href += '&amp;lang='+getZMILang();
 		}
 		location.href = href;
 	}
@@ -200,7 +215,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	if ( selectedText) {
 		href += '&selectedText=' + escape( selectedText);
 	}
-	$.fancybox({
+	showFancybox({
 		'href':href,
 		'title':title,
 		'type':'iframe',

@@ -60,25 +60,20 @@ function exportBtnClick()
  *
  * @param el		Html-Form Element
  */
-function btnClick(el) 
-{
-  self.btnClicked = el.value;
+function btnClick(el) {
+	self.btnClicked = el.value;
 }
 
-function showDstMetaTypes( id) 
-{
-  var img = $("img:last","#a_"+id);
-  var pos = img.position();
-  var div = $("#dst_meta_types_"+id);
-  div.css( {top: pos.top+img.outerHeight(), left: pos.left+img.outerWidth(), position: 'absolute'});
-  div.show("normal");
+function showDstMetaTypesBtnClick( id) {
+	showFancybox({
+			'href':'#dst_meta_types_'+id,
+			'title':'Usage',
+			'autoDimensions':true,
+			'transitionIn':'fade',
+			'transitionOut':'fade'
+		});
 }
 
-function hideDstMetaTypes( id) 
-{
-  var div = $("#dst_meta_types_"+id);
-  div.hide("normal");
-}
 //-->
 </script>
 </head>
@@ -101,12 +96,29 @@ function hideDstMetaTypes( id)
 -->
 </dtml-comment>
 
+ <div class="ui-helper-hidden">
+  <dtml-in "getMetadictAttrs()"
+   ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
+    ><dtml-if metadictAttr
+    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#FFFFE8;padding:4px;"
+     ><dtml-in "getMetaobjIds()"
+      ><dtml-let meta_id=sequence-item
+       ><dtml-if "metadictAttrId in getMetadictAttrs(meta_id)"
+        ><dtml-var "display_type(REQUEST,meta_id)"><br /></dtml-if
+      ></dtml-let
+     ></dtml-in
+    ></div
+    ></dtml-if
+   ></dtml-let
+  ></dtml-in>
+ </div>
+
  <form name="form0" action="manage_changeMetaProperties" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data" style="margin:8px">
  <input type="hidden" name="lang" value="<dtml-var lang>">
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
   <colgroup>
    <col width="70" />
-   <col width="20" />
+   <col width="70" />
    <col />
    <col />
    <col />
@@ -134,21 +146,6 @@ function hideDstMetaTypes( id)
    <td>&nbsp;</td>
    <td>&nbsp;</td>
   </tr>
-
-  <dtml-in "getMetadictAttrs()"
-   ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
-    ><dtml-if metadictAttr
-    ><div id="dst_meta_types_<dtml-var metadictAttrId>" class="form-small" style="background-color:#ffffc0;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;border:1px dashed black;padding:2px;position:absolute;display:none;"
-     ><dtml-in "getMetaobjIds()"
-      ><dtml-let meta_id=sequence-item
-       ><dtml-if "metadictAttrId in getMetadictAttrs(meta_id)"
-        ><dtml-var "display_type(REQUEST,meta_id)"><br /></dtml-if
-      ></dtml-let
-     ></dtml-in
-    ></div
-    ></dtml-if
-   ></dtml-let
-  ></dtml-in>
 
 <dtml-comment>
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -180,22 +177,30 @@ function hideDstMetaTypes( id)
 
    <tr valign="middle" class="zmiNeutralColorMedium0">
     <td valign="top" class="zmiNeutralColorStrong0"><dtml-var "f_collectionBtn(_,_,required=metadictAttr['id'] in ['titlealt','title'],url='manage_changeMetaProperties?id=%s'%(metadictAttr['id']))"></td>
-    <td class="form-small" style="white-space:nowrap;text-align:right;"
-     ><nobr><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
-     ><img
-     <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
-     <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif"
-     <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif"
-     <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif"
-     <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">"
-     </dtml-if>
-     alt="Icon" style="border:0px;vertical-align;middle;"
-     ><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" style="vertical-align:middle;border:0px;" /></dtml-if
-     ></a
-     ><dtml-if "metadictAttr.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().metaobj_manager.absolute_url()+'/'+URL.split('/')[-1]">" target="_blank"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
-     ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align;middle;" /></dtml-if
-     ><input type="hidden" name="old_ids:list" value="<dtml-var "metadictAttr['id']">"/></nobr></td>
-   <dtml-if "metadictAttr.get('acquired',0) == 1">
+    <td class="form-small">
+     <input type="hidden" name="old_ids:list" value="<dtml-var "metadictAttr['id']">"/>
+     <ul class="zmi-icons ui-widget ui-helper-clearfix">
+      <li class="ui-state-default ui-corner-all">
+       <span class="ui-icon ui-icon-info" onclick="showDstMetaTypesBtnClick('<dtml-var "metadictAttr['id']">')" title="<dtml-var "getZMILangStr('TAB_METAOBJ')">" style="cursor:pointer"></span>
+      </li>
+      <li
+       ><a id="a_<dtml-var metadictAttrId>" href="#" onmouseover="showDstMetaTypes('<dtml-var metadictAttrId>')" onmouseout="hideDstMetaTypes('<dtml-var metadictAttrId>')"
+       ><img
+       <dtml-if "metadictAttr.get('errors')"> src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_attr.gif)" title="ERROR: <dtml-var "metadictAttr['errors']">"
+       <dtml-elif "metadictAttr['type'] in ['delimiter','hint','interface']"> src="<dtml-var MISC_ZMS>ico_item.gif"
+       <dtml-elif "metadictAttr['type'] == 'method'"> src="<dtml-var MISC_ZMS>ico_method.gif"
+       <dtml-elif "metadictAttr['type'] in metaobj_manager.valid_datatypes"> src="<dtml-var MISC_ZMS>ico_attr.gif"
+       <dtml-else> src="<dtml-var "display_icon(REQUEST,metadictAttr['type'])">"
+       </dtml-if>
+       alt="Icon" border="0" align="absmiddle"
+       ></a
+      ><dtml-if "metadictAttr.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" alt="Icon" alt="Default" border="0" align="absmiddle"/></dtml-if
+      ><dtml-if "metadictAttr.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().metaobj_manager.absolute_url()+'/'+URL.split('/')[-1]">" target="_blank"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+      ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align;middle;" /></dtml-if
+      ></li>
+     </ul>
+    </td>
+   <dtml-if "metadictAttr.get('acquired',0)==1">
      <td class="form-text"><dtml-var "string_maxlen(metadictAttr['id'],20)"></td>
      <td class="form-text"><dtml-var "metadictAttr['name']"></td>
      <td class="form-text"><i>(<dtml-var "metadictAttr['type']">)</i></td>

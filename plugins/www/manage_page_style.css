@@ -113,7 +113,7 @@ body.zmi.zmisitemap {
 	background-color:#fff !important;
 	background-image:none !important;
 }
-body.zmi.zmisitemap div.ZMIManageBody a {
+body.zmi.zmisitemap a {
 	text-decoration:none;
 }
 #zmi_banner {
@@ -220,13 +220,6 @@ body.zmi.maximized  #ZMIManageTabsBar {
 }
 body.zmi.maximized div.zmiRenderShort {
  width:auto;
-}
-body.zmi.maximized td.zmiContainerColLeft a {
- text-decoration:none;
-}
-body.zmi.maximized td.zmiContainerColLeft select {
- display:block;
- width:97% !important
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -641,13 +634,12 @@ input.lazy {
  */
 
 div#tabs, div#tabs ul.ui-tabs-nav { float:left; }
-div#tabs ul.ui-tabs-nav li a { padding-left:0.9em; padding-right:0.9em; }
+div#tabs a { padding-left:0.9em; padding-right:0.9em; }
 div.zmi-tabs.ui-widget-header { height:24px!important; }
 div.zmi-tabs.ui-widget-header ul.ui-tabs-nav { padding-top:4px!important;}
-div.zmi-tabs.ui-widget-header ul.ui-tabs-nav li a { color:white; }
 div.ui-tabs { margin:0; padding:0; border:0; background:transparent; }
 ul.ui-tabs-nav { margin:0; padding:0; border:0; background:transparent; }
-ul.ui-tabs-nav li a { font-family:Arial, sans-serif; font-size:11px !important; font-weight: normal; text-decoration: none; }
+ul.ui-tabs-nav a { font-family:Arial, sans-serif; font-size:11px !important; font-weight: normal; text-decoration: none; }
 .ui-widget-header { vertical-align: middle; padding: 2px 4px 2px 4px; }
 div.zmi-icon { margin: 0; padding: 0; width:16px; }
 ul.zmi-icons, ul#icons, ul.icons { margin: 0; padding: 0; }

@@ -1,11 +1,6 @@
 ################################################################################
 # _metacmdmanager.py
 #
-# $Id: _metacmdmanager.py,v 1.7 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -267,9 +262,14 @@ class MetacmdObject:
             portalMaster = self.getPortalMaster()
             if portalMaster is not None:
               masterDtmlMthd = getattr(portalMaster,metaCmd['id'])
-              newData = masterDtmlMthd.raw
               ob = getattr(self,metaCmd['id'])
-              ob.manage_edit(title=ob.title,data=newData)
+              if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
+                newData = masterDtmlMthd.raw
+                ob.manage_edit(title=ob.title,data=newData)
+              elif ob.meta_type in [ 'Script (Python)']:
+                newData = masterDtmlMthd.read()
+                ob.ZPythonScript_setTitle( ob.title)
+                ob.write(newData)
           # Execute directly.
           if metaCmd.get('exec',0) == 1:
             ob = getattr(self,metaCmd['id'],None)
@@ -301,12 +301,22 @@ class MetacmdManager:
     manage_customizeMetacmdForm = HTMLFile('dtml/metacmd/manage_customizeform', globals()) 
 
 
+    def getMetaCmdDescription(self, id=None, name=None):
+      """
+      Returns description of meta-command specified by ID.
+      """
+      return self.getMetaCmd(id,name).get('description','')
+
+
     # --------------------------------------------------------------------------
     #  MetacmdManager.getMetaCmd
     # --------------------------------------------------------------------------
-    def getMetaCmd(self, id):
+    def getMetaCmd(self, id=None, name=None):
       obs = getRawMetacmds(self)
-      obs = filter(lambda x: x['id']==id, obs)
+      if id is not None:
+        obs = filter(lambda x: x['id']==id, obs)
+      if name is not None:
+        obs = filter(lambda x: x['name']==name, obs)
       # Not found!
       if len(obs) == 0:
         return None
@@ -319,7 +329,7 @@ class MetacmdManager:
           if ob is None:
             return ob
           ob['acquired'] = 1
-      ob['meta_type'] = getattr(self,id).meta_type
+      ob['meta_type'] = getattr(self,ob['id']).meta_type
       return ob
 
 

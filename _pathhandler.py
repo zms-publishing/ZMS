@@ -1,11 +1,6 @@
 ################################################################################
 # _pathhandler.py
 #
-# $Id: _pathhandler.py,v 1.6 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.6 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -41,7 +36,7 @@ def validateId(self, id, REQUEST):
     langs = []
     for lang in self.getLanguages():
       req={ 'lang': lang, 'preview': REQUEST.get('preview','')}
-      decl_id = self.getDeclId( REQUEST)
+      decl_id = self.getDeclId( req)
       if id == decl_id:
         langs.append( lang)
     if len( langs) == 1:

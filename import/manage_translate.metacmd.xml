@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-21-01 [fhoffmann] Revised for maximize css
 2011-01-17 [zmsdev] Revised table-structure: one row per object
 2010-12-02 [zmsdev] Initial revision
 ################################################################################
@@ -37,18 +38,27 @@
 .zmiRenderShort {
 	width:350px!important;
 }
+.zmiRenderShort {
+	width:350px!important;
+}
+body.maximized .zmiRenderShort {
+	width:auto !important;
+}
+
+#fancybox-overlay {opacity:0 !important}
+
 </style>
 </head>
 <dtml-var manage_tabs>
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 
 <form id="<dtml-var fmName>" method="get">
-<table cellspacing="0" cellpadding="0" border="0">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr valign="top">
 <dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
 <dtml-in "['left','right']">
 <dtml-let si=sequence-item lang_req_key="{'left':'lang','right':'lang2'}[si]">
-<td class="zmi-translate-<dtml-var si>">
+<td class="zmi-translate-<dtml-var si>" width="50%">
     <select class="form-small" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
      <dtml-if "getDCCoverage(REQUEST).find('global.')==0">
       <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[len('global.'):],REQUEST)">

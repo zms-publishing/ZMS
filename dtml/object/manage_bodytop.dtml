@@ -1,5 +1,6 @@
 <body class="zmi<dtml-if "REQUEST.cookies.get('zmi_maximized')"> maximized</dtml-if>">
-	<img id="zmibg" src="<dtml-var MISC_ZMS>zmibg.jpg" alt="" />
+<!--[if gt IE 8]><img id="zmibg" src="<dtml-var MISC_ZMS>zmibg.jpg" alt="" /><![endif]-->
+<!--[if !IE]>--><img id="zmibg" src="<dtml-var MISC_ZMS>zmibg.jpg" alt="" /><!--<![endif]-->
 	<div class="zmi">
 	<div id="zmi_header">
 		<div class="zmi-document-margin">

@@ -51,13 +51,16 @@
  <col />
  <col width="100" />
 </colgroup>
+<tbody>
 
 <tr valign="top" id="tr_<dtml-var id>">
 
 <dtml-comment>
 <!-- ##### object ##### -->
 </dtml-comment>
-<td class="zmiContainerColLeft form-small"
+<td class="zmiContainerColLeft"
+><div class="form-small ui-helper-clearfix"
+><span style="float:left"
 ><dtml-if isTrashcan
 ><img src="<dtml-var "display_icon(REQUEST)">" class="zmiDisplayIcon"
 ><b><dtml-var "display_type(REQUEST)"></b
@@ -67,7 +70,8 @@
 ><b><dtml-var "display_type(REQUEST)"></b
 ></a
 ></dtml-if
-><br/><dtml-unless isTrashcan
+></span
+></div><dtml-unless isTrashcan
 ><select id="select_actions_" class="form-small zmi-action" onchange="zmiActionChoose(this,'e','0')">
 <option value=""><dtml-var "'----- %s -----'%getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_ACTION')"></option>
 </select>
@@ -115,8 +119,6 @@
 </dtml-comment>
 <td class="zmiContainerColRight"><dtml-var "manage_main_change(_,_,ob=oCurrent,lenChildNodes=len(childNodes),REQUEST=REQUEST)"></td>
 
-</tr>
-
 <dtml-comment>
 <!-- ###################################################################### -->
 <!-- ###################################################################### -->
@@ -127,15 +129,33 @@
 <!-- ###################################################################### -->
 </dtml-comment>
 
+<dtml-let pageDict="{False:[],True:[]}">
 <dtml-in "childNodes[:max(len(childNodes)*(pageCount<=SESSION.get('pageCountMax')),pageElementCount)]">
 <dtml-let oCurrent=sequence-item coverage="getDCCoverage(REQUEST)">
+
+<dtml-if "len(pageDict[isPage()])==0">
+</tr>
+</tbody>
+</table>
+
+<table class="zmi-sortable" cellspacing="0" cellpadding="0" border="0" width="100%">
+<colgroup>
+ <col width="200" />
+ <col />
+ <col width="100" />
+</colgroup>
+<tbody>
+</dtml-if>
+<dtml-call "pageDict[isPage()].append(id)">
 
 <tr valign="top" id="tr_<dtml-var id>">
 
 <dtml-comment>
 <!-- ##### object ##### -->
 </dtml-comment>
-<td class="zmiContainerColLeft form-small"
+<td class="zmiContainerColLeft"
+><div class="form-small ui-helper-clearfix"
+><span style="float:left"
 ><input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless>
 ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"
@@ -143,7 +163,9 @@
 ><dtml-var "display_type(REQUEST)"
 ></a
 ></dtml-let
-><br/><select id="select_actions_<dtml-var id>" class="form-small zmi-action" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')"
+></span
+></div
+><select id="select_actions_<dtml-var id>" class="form-small zmi-action" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')"
 ><dtml-if "_['sequence-index']==pageElementCount and pageCount>pageCountMin"
 ><option value=""><dtml-var "'----- %s -----'%getZMILangStr('ATTR_COMPACTVIEW')"></option
 ><option value="manage_main?lang=<dtml-var lang>&sess_pageCountMax:int=<dtml-var pageCountMin>#_<dtml-var id>"><dtml-var "getZMILangStr('BTN_COLLAPSE')"></option
@@ -166,6 +188,7 @@
 
 </dtml-let>
 </dtml-in>
+</dtml-let>
 
 <dtml-comment>
 <!-- ###################################################################### -->
@@ -272,6 +295,7 @@
 </tr>
 </dtml-if>
 
+</tbody>
 </table>
 
 </dtml-let>

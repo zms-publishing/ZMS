@@ -108,7 +108,7 @@ $(function(){
 	$('body.zmi').each(function(){
 		// Icons:
 		// hover states on the static widgets
-		$('ul#icons li').hover(
+		$('ul#icons li,ul.zmi-icons li,div.zmi-icon').hover(
 			function() {
 				if ($(this).hasClass('ui-state-default')) {
 					$(this).addClass('ui-state-hover');
@@ -207,6 +207,7 @@ function pluginFancybox(s, c) {
 function showFancybox(p) {
 	pluginFancybox('body',function() {
 		$.fancybox(p);
+		$("#fancybox-wrap").draggable();
 	});
 	return false;
 }

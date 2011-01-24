@@ -1,11 +1,6 @@
 ################################################################################
 # zmsobject.py
 #
-# $Id: zmsobject.py,v 1.12 2004/11/24 20:54:37 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.12 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -1177,7 +1172,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     # Moves an object to specified position in sort order.
     ############################################################################
-    def manage_moveObjToPos(self, lang, pos, REQUEST, RESPONSE):
+    def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
       if pos == 1:
@@ -1187,7 +1182,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent.normalizeSortIds(_globals.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%self.display_type(REQUEST)),(pos+1))
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+      if fmt == 'json':
+        return self.str_json(message)
+      else:
+        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
 
 
     # --------------------------------------------------------------------------

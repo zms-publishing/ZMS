@@ -37,25 +37,24 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element', extra=''):
+  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element'):
     lang = self.REQUEST.get('lang')
     html = []
-    html.append('<div class="%s">'%css)
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css))
+    styles = ['float:left']
+    if size:
+      styles.append( 'width:%iem'%size)
+    else:
+      styles.append( 'width:80%')
+    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra=' style="%s"'%(';'.join(styles))))
     if enabled:
-      html.append('<input ')
-      html.append(' class="%s"'%css)
-      html.append(' type="submit"')
-      html.append(' name="btn"')
-      html.append(' value="..."')
-      if extra.find('onclick') < 0:
-        html.append(' onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"'%(fmName,elName,lang))
-      html.append(' %s/>'%extra)
-    html.append('</div>')
+      html.append('<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" style="float:left">')
+      html.append('<span class="ui-icon ui-icon-newwin" onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"></span>'%(fmName,elName,lang))
+      html.append('</div>')
     ref_obj = self.getLinkObj(value,REQUEST)
     if ref_obj is not None:
-      html.append('<div class="form-small">')
-      html.append('<b>%s</b>: %s'%(self.getZMILangStr('ATTR_TARGET'),ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
+      html.append('<div class="form-small" style="clear:both">')
+      html.append('<span class="ui-icon ui-icon-extlink" style="float:left"></span>')
+      html.append(ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST))
       html.append('</div>')
     return ''.join(html)
 
@@ -150,9 +149,9 @@ class ObjInputs:
     if extra.find('style=') < 0:
       styles = []
       if size:
-        styles.append( 'width:%iem;'%size)
+        styles.append( 'width:%iem'%size)
       else:
-        styles.append( 'width:80%;')
+        styles.append( 'width:80%')
       if elName.endswith(':int'):
         styles.append( 'text-align:right')
       html.append(' style="%s"'%(';'.join(styles)))
@@ -250,9 +249,9 @@ class ObjInputs:
     if extra.find('style=') < 0:
       styles = []
       if cols:
-        styles.append( 'width:%iem;'%cols)
+        styles.append( 'width:%iem'%cols)
       else:
-        styles.append( 'width:80%;')
+        styles.append( 'width:80%')
       html.append(' style="%s"'%(';'.join(styles)))
     if not enabled:
       html.append(' disabled="disabled"')

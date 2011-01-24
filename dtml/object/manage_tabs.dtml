@@ -86,6 +86,9 @@
 <dtml-var "REQUEST.form.get('manage_tabs_error_message',REQUEST.get('manage_tabs_error_message',''))">
 (<dtml-var "getLangFmtDate(ZopeTime())">)
 </div>
+<dtml-else>
+<div id="system_msg" class="ui-state-highlight ui-corner-all ui-helper-hidden">
+</div>
 </dtml-if>
 <dtml-unless omit_breadcrumbs>
 <dtml-if meta_id>

@@ -151,7 +151,7 @@
    <td class="form-element" align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=1,hidden=1,REQUEST=REQUEST)"></td>
    <td class="form-small">
     <textarea class="form-small" name="el_description" cols="80" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaCmd['description']" html_quote></textarea>
-    <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_description&headline=<dtml-var "getZMILangStr('ATTR_DESCRIPTION')" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
+    <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_description&headline=<dtml-var "getZMILangStr('ATTR_DESCRIPTION')" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a>
    </td>
    <td nowrap="nowrap">
     <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this);">
@@ -200,11 +200,11 @@
        <td class="form-small"><b><dtml-var "getZMILangStr('BTN_EXECUTE')"></b></td>
        <td nowrap="nowrap">
         <textarea class="form-small" name="el_custom" cols="60" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaCmd.get('custom','')" html_quote></textarea>
-        <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_nodes&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_CUSTOM'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
+        <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_nodes&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_CUSTOM'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a>
        </td>
        <td nowrap="nowrap">
         <textarea class="form-small" name="el_nodes" cols="60" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaCmd.get('nodes','{$}')" html_quote></textarea>
-        <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_nodes&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>table_cell_edit.gif" border="0" align="bottom" /></a>
+        <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=el_nodes&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a>
        </td>
        <td>
         <select class="form-small" name="el_roles:list" multiple="multiple" size="<dtml-var "_.min(10,len(userdefined_roles()))">">

@@ -1175,10 +1175,14 @@ class ZMSObject(ZMSItem.ZMSItem,
     def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
-      if pos == 1:
-        self.setSortId(0)
+      sibling_sort_ids = map(lambda x: x.sort_id,parent.getChildNodes())
+      sibling_sort_ids.remove(self.sort_id)
+      pos = pos - 1
+      if pos < len(sibling_sort_ids):
+        new_sort_id = int(sibling_sort_ids[pos][1:])-1
       else:
-        self.setSortId(pos * 10 + 5)
+        new_sort_id = int(sibling_sort_ids[-1][1:])+1
+      self.setSortId(new_sort_id)
       parent.normalizeSortIds(_globals.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%self.display_type(REQUEST)),(pos+1))

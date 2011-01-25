@@ -724,6 +724,7 @@ class ZMS(
     # ----------
     index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
     not_found_html = HTMLFile('dtml/ZMS/not_found', globals()) # index_html
+    f_index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
     f_inactive_html = HTMLFile('dtml/ZMS/f_inactive', globals()) # inactive_html
     f_headDoctype = HTMLFile('dtml/ZMS/f_headdoctype', globals()) # Template: DOCTYPE
     f_bodyContent_Sitemap = HTMLFile('dtml/ZMS/f_bodycontent_sitemap', globals()) # Template: Sitemap

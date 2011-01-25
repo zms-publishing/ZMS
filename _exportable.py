@@ -506,9 +506,9 @@ class Exportable(_filtermanager.FilterItem):
           root = getattr( obj, '__root__', None)
           if root is not None:
             REQUEST.set('ZMS_PROXY_%s'%root.id,obj)
-            html = root.index_html( root, REQUEST)
+            html = root.f_index_html( root, REQUEST)
           else:
-            html = obj.index_html( obj, REQUEST)
+            html = obj.f_index_html( obj, REQUEST)
           
           # Remove new others.
           for rk in REQUEST.other.keys():

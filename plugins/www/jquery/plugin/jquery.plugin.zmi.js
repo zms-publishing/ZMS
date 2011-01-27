@@ -43,8 +43,17 @@ var zmiSortableRownum = null;
 
 $(function(){
 	// Sort (Move Up/Down)
+	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+		ui.children().each(function() {
+			$(this).width($(this).width());
+		});
+		return ui;
+	};
 	$("table.zmi-sortable tbody").sortable({
-			handle:'.zmiContainerColLeft',
+			helper:fixHelper,
+			forcePlaceholderSize:true,
+			placeholder:'ui-state-highlight',
+			handle:'.zmiContainerColLeft span.ui-icon-arrowthick-2-n-s',
 			start: function(event, ui) {
 				var trs = $('table.zmi-sortable tbody tr');
 				var i = 0;

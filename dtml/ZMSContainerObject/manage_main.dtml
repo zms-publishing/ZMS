@@ -134,7 +134,6 @@
 <dtml-let oCurrent=sequence-item coverage="getDCCoverage(REQUEST)">
 
 <dtml-if "len(pageDict[isPage()])==0">
-</tr>
 </tbody>
 </table>
 

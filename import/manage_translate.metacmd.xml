@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-28-01 [fhoffmann] Revised for fancybox transparency css
 2011-21-01 [fhoffmann] Revised for maximize css
 2011-01-17 [zmsdev] Revised table-structure: one row per object
 2010-12-02 [zmsdev] Initial revision
@@ -10,7 +11,8 @@
 </dtml-comment>
 
 <dtml-var manage_page_header>
-<style>
+
+<style type="text/css">
 .zmi-translate-left {
 	padding:4px;
 	background-color:#FFFFE8;
@@ -44,9 +46,13 @@
 body.maximized .zmiRenderShort {
 	width:auto !important;
 }
-
-#fancybox-overlay {opacity:0 !important}
-
+#fancybox-overlay { 
+	background-color:transparent !important;
+	opacity:0 !important;
+	filter: alpha(opacity = 0) !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)" !important;
+}
+#fancybox-wrap { cursor:move; }
 </style>
 </head>
 <dtml-var manage_tabs>
@@ -88,8 +94,12 @@ body.maximized .zmiRenderShort {
    <div id="<dtml-var id>" class="zmi-translate-element">
     <span class="zmi-translate-element-id"><dtml-var id></span>
     <div class="zmiRenderShort" id="contentEditable_<dtml-var id>_<dtml-var lang>">
-     <h1><dtml-var "getTitle(REQUEST)"></h1>
-     <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
+     <dtml-if "meta_id not in ['ZMSDocument','ZMSFolder','ZMS']">
+      <dtml-var "getBodyContent(REQUEST)">
+     <dtml-else>
+      <h1><dtml-var "getTitle(REQUEST)"></h1>
+      <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
+     </dtml-if>
     </div>
    </div>
 </td>
@@ -102,8 +112,9 @@ body.maximized .zmiRenderShort {
     <td class="zmi-translate-<dtml-var si>">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">
-     <span class="zmi-translate-element-id"><dtml-var id></span>
-     <dtml-var "renderShort(REQUEST)">
+     <span class="zmi-translate-element-id"<dtml-if "isActive(REQUEST)!=True"
+      >title="Inactive" style="background-color:#999"</dtml-if>><dtml-var id></span>
+      <dtml-var "renderShort(REQUEST)">
     </div>
     </td>
    </dtml-let>

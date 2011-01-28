@@ -3,73 +3,66 @@
 <script language="JavaScript">
 <!--//
 
-  /**
-   */
-  function form0OnSubmit(fm) 
-  {
-    var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
-      b = b && !disallowBlank(fm.elements['language_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-      b = b && !disallowBlank(fm.elements['language_label'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_LANG')">",false);
-      b = b && !disallowBlank(fm.elements['language_parent'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PARENT')">",false);
-    }
-    var c = 0;
-    for (i=0; i<fm.elements.length; i++) 
-    {
-      var el  = fm.elements[i];
-      if (el.name.indexOf("_parent")>0) 
-      {
-        var si = el.selectedIndex;
-        var v = el.options[si].value;
-        if (v.length == 0) c++;
-      }
-    }
-    b = b && (c==1);
-    return b;
-  }
-
-  /**
-   */
-  function form1OnSubmit(fm) 
-  {
-    var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") 
-    {
-        var elFile = fm.elements['file'];
-        var elInit = fm.elements['init'];
-    	if (isBlank(elFile.value) && isBlank(elInit.value))
-	{
-            b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+/**
+ *
+ */
+function form0OnSubmit(fm) {
+	var b = true;
+	if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['language_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+		b = b && !disallowBlank(fm.elements['language_label'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_LANG')">",false);
+		b = b && !disallowBlank(fm.elements['language_parent'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PARENT')">",false);
 	}
-    }
-    return b;
-  }
+	var c = 0;
+	for (var i=0; i<fm.elements.length; i++) {
+		var el  = fm.elements[i];
+		if (el.name.indexOf("_parent")>0) {
+			var si = el.selectedIndex;
+			var v = el.options[si].value;
+			if (v.length == 0) c++;
+		}
+	}
+	b = b && (c==1);
+	return b;
+}
 
-  /**
-   */
-  function exportBtnClick() 
-  {
-    fm = document.forms['form1'];
-    href = fm.action + '?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
-    for (i=0; i<fm.elements.length; i++) 
-    {
-      el = fm.elements[i];
-      if (el.name=='ids:list' && el.type=='checkbox' && el.checked)
-      {
-        href+='&'+el.name+'='+el.value;
-      }
-    }
-    window.open(href);
-  }
+/**
+ *
+ */
+function form1OnSubmit(fm) {
+	var b = true;
+	if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')">") {
+		var elFile = fm.elements['file'];
+		var elInit = fm.elements['init'];
+		if (isBlank(elFile.value) && isBlank(elInit.value)) {
+			b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+		}
+	}
+	return b;
+}
 
-  /**
-   */
-  function btnClick(el) 
-  {
-    var fm = el.form;
-    self.btnClicked = el.value;
-  }
+/**
+ *
+ */
+function exportBtnClick() {
+	var fm = document.forms['form1'];
+	href = fm.action + '?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
+	for (i=0; i<fm.elements.length; i++) {
+		el = fm.elements[i];
+		if (el.name=='ids:list' && el.type=='checkbox' && el.checked) {
+			href+='&'+el.name+'='+el.value;
+		}
+	}
+	window.open(href);
+}
+
+/**
+ *
+ */
+function btnClick(el) {
+	var fm = el.form;
+	self.btnClicked = el.value;
+}
 
 //-->
 </script>
@@ -161,7 +154,7 @@ $(function() {
        <dtml-in "getLangIds()">
         <dtml-if "_['sequence-item']!=langId">
          <option value="<dtml-var sequence-item>"
-          <dtml-if "langObj['parent']==_['sequence-item']">
+          <dtml-if "langObj.get('parent')==_['sequence-item']">
            selected="selected"
           </dtml-if>
            ><dtml-var "getLanguageLabel(_['sequence-item'])"
@@ -174,7 +167,7 @@ $(function() {
        <select class="form-element" name="<dtml-var langId>_manage">
        <dtml-in "get_manage_langs()">
         <option value="<dtml-var sequence-item>"
-         <dtml-if "langObj['manage']==_['sequence-item']">
+         <dtml-if "langObj.get('manage')==_['sequence-item']">
           selected="selected"
          </dtml-if>
           ><dtml-var "getLangStr('LANG',_['sequence-item'])"

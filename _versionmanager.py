@@ -1,11 +1,6 @@
 ################################################################################
 # _versionmanager.py
 #
-# $Id: _versionmanager.py,v 1.12 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.12 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -1196,8 +1191,7 @@ class VersionManagerContainer:
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
-      if _globals.debug( self):
-        _globals.writeLog( self, "[autoWfTransition]")
+      _globals.writeBlock( self, "[autoWfTransition]")
       lang = REQUEST['lang']
       # Enter Container.
       if not self.isVersionContainer():
@@ -1205,23 +1199,28 @@ class VersionManagerContainer:
       
       # Enter Workflow.
       self.syncObjModifiedChildren(REQUEST)
-      enter = len(self.getWfStates(REQUEST)) == 0
+      wfStates = self.getWfStates(REQUEST)
+      _globals.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)
+      # Check if current workflow-state is empty.
+      enter = len(wfStates) == 0
       if not enter:
-        wfStates = self.getWfStates(REQUEST)
+        # Check if current workflow-state is from-state of a workflow-exit (empty to-state).
         for wfTransition in self.getWfTransitions():
-          enter = enter or \
-             len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0
-          if enter:
+          if len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0 and \
+             len(wfTransition.get('to',[])) == 0:
+            _globals.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
+            enter = True
             break
-      if enter and modified:
+      if modified and enter:
+        # Initialize with workflow-entry (empty from-state).
         for wfTransition in self.getWfTransitions():
           if len(wfTransition.get('from',[])) == 0 and \
-             len(wfTransition.get('to',[])) > 0:
-            if _globals.debug( self): 
-              _globals.writeLog( self, "[autoWfTransition]: name=%s, id=%s"%(wfTransition['name'],wfTransition['id']))
+             len(wfTransition.get('to',[])) == 1:
+            _globals.writeBlock( self, "[autoWfTransition]: name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
             # Delete old state.
-            self.delObjStates(self.getWfStates(REQUEST), REQUEST)
+            _globals.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
+            self.delObjStates(wfStates, REQUEST)
             # Add new state.
             self.setObjState(wfTransition.get('to',[])[0], lang)
             # Set Properties.
@@ -1230,7 +1229,8 @@ class VersionManagerContainer:
             break
       elif not enter and not modified:
         # Delete old state.
-        self.delObjStates(self.getWfStates(REQUEST), REQUEST)
+        _globals.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
+        self.delObjStates(wfStates, REQUEST)
 
 
     ############################################################################
@@ -1240,8 +1240,7 @@ class VersionManagerContainer:
     ############################################################################
     def manage_wfTransition(self, lang, custom, REQUEST, RESPONSE):
       """ WorkflowContainer.manage_wfTransition """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[manage_wfTransition]")
+      _globals.writeBlock( self, "[manage_wfTransition]")
       wfTransitions = self.getWfTransitions()
       for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
         dtml = wfTransition.get('dtml','')
@@ -1258,26 +1257,21 @@ class VersionManagerContainer:
     ############################################################################
     def manage_wfTransitionFinalize(self, lang, custom, REQUEST, RESPONSE=None):
       """ WorkflowContainer.manage_wfTransitionFinalize """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[manage_wfTransitionFinalize]")
+      _globals.writeBlock( self, "[manage_wfTransitionFinalize]")
       url = ''
       message = ''
       wfTransitions = self.getWfTransitions()
-      if _globals.debug( self):
-        _globals.writeLog( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(wfTransitions))
+      _globals.writeBlock( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(map(lambda x: x['id'],wfTransitions)))
       wfTransitions = filter(lambda x: x['name']==custom, wfTransitions)
-      if _globals.debug( self):
-        _globals.writeLog( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(wfTransitions))
+      _globals.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(map(lambda x: x['id'],wfTransitions)))
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)
-        if _globals.debug( self):
-          _globals.writeLog( self, "[manage_wfTransition]: wfStates.0=%s"%str(wfStates))
+        _globals.writeBlock( self, "[manage_wfTransition]: wfStates.0=%s"%str(wfStates))
         self.delObjStates(wfStates, REQUEST)
         # Add new state.
         for wfState in wfTransition.get('to',[]):
-          if _globals.debug( self): 
-            _globals.writeLog( self, "[manage_wfTransition]: Add %s"%wfState)
+          _globals.writeBlock( self, "[manage_wfTransition]: Add %s"%wfState)
           self.setObjState(wfState, lang)
           message += REQUEST.get('manage_tabs_message', filter(lambda x: x['id']==wfState,self.getWfActivities())[0]['name'])
         # Set Properties.
@@ -1384,8 +1378,7 @@ class VersionManagerContainer:
     #  VersionManagerContainer.rollbackObj
     # --------------------------------------------------------------------------
     def rollbackObj(self, REQUEST):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[rollbackObj]")
+      _globals.writeBlock( self, "[rollbackObj]")
         
       ##### Self ####
       if REQUEST.has_key('lang'): self.resetWfStates(REQUEST)

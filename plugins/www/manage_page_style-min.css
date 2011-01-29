@@ -111,6 +111,7 @@ input.lazy{width:26em}
 .zmiDivOpaque{background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85}
 div#tabs,div#tabs ul.ui-tabs-nav{float:left}
 div#tabs a{padding-left:0.9em;padding-right:0.9em}
+div#tabs_sub a [ color:white!important}
 div.zmi-tabs.ui-widget-header{height:24px!important}
 div.zmi-tabs.ui-widget-header ul.ui-tabs-nav{padding-top:4px!important}
 div.ui-tabs{margin:0;padding:0;border:0;background:transparent}

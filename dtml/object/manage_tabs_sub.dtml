@@ -9,7 +9,7 @@
  </dtml-if>
 </dtml-in>
 
-<div class="zmi-tabs ui-widget-header ui-helper-clearfix ui-corner-all">
+<div class="zmi-tabs ui-widget-header ui-helper-clearfix ui-corner-all" id="tabs_sub">
 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-content">
 <dtml-in manage_options mapping>
 <li <dtml-if "_['sequence-index']==a_">class="zmi-tabs-active"><span class="ui-icon ui-icon-triangle-1-e"></span</dtml-if>

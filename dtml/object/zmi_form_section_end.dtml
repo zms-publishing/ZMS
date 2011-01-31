@@ -23,4 +23,5 @@
 <dtml-except>
 [zmi_form_section_end] <dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br>
 </dtml-try>
+<div></div>
 <!-- /zmi_form_section_end -->

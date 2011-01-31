@@ -312,23 +312,27 @@ class MetacmdManager:
     #  MetacmdManager.getMetaCmd
     # --------------------------------------------------------------------------
     def getMetaCmd(self, id=None, name=None):
-      obs = getRawMetacmds(self)
+      obs = []
+      for x in getRawMetacmds(self):
+        # Acquire from parent.
+        if x.get('acquired',0)==1:
+          portalMaster = self.getPortalMaster()
+          if portalMaster is not None:
+            x = portalMaster.getMetaCmd(x['id']) 
+            x['acquired'] = 1
+        else:
+          x = x.copy()
+        obs.append(x)
+      # Filter by Id.
       if id is not None:
         obs = filter(lambda x: x['id']==id, obs)
+      # Filter by Name.
       if name is not None:
         obs = filter(lambda x: x['name']==name, obs)
       # Not found!
       if len(obs) == 0:
         return None
-      ob = obs[0].copy()
-      # Acquire from parent.
-      if ob.get('acquired',0)==1:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          ob = portalMaster.getMetaCmd(id)
-          if ob is None:
-            return ob
-          ob['acquired'] = 1
+      ob = obs[0]
       ob['meta_type'] = getattr(self,ob['id']).meta_type
       return ob
 

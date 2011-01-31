@@ -25,7 +25,6 @@
    <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
    ><dtml-call "initObjChildren(REQUEST)"
    ><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data"
-   ><input type="hidden" name="preview" value="preview"
    ><input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"
    ><input type="hidden" id="id_prefix" name="id_prefix" value="e"
    ><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"

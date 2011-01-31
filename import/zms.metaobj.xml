@@ -2762,7 +2762,7 @@ $()
 
 <dtml-comment>
 --------------------------------------------------------------------------------
---- Table-Cell Editor (Fancybox)
+--- Table-Cell Editor
 --------------------------------------------------------------------------------
 </dtml-comment>
 <dtml-let custom="[]"
@@ -2772,7 +2772,6 @@ $()
 ><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
 ><div style="display:none;"
 ><div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;"
-><dtml-call "REQUEST.set('richeditshow_callback',',function(){$.fancybox.resize();}')"
 ><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
 ><hr
 ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
@@ -2780,11 +2779,6 @@ $()
 ></div
 ></div
 ></dtml-let>
-<script>
-$(function(){
-	pluginFancybox('div#div_table_cell_editor',function() {});
-});
-</script>
 
 <dtml-comment>
 --------------------------------------------------------------------------------
@@ -2872,11 +2866,12 @@ function table_cell_edit(el_td)
 	</dtml-if>
 	</dtml-let>
 	// Open cell editor.
-	$.fancybox({
-			href:'#div_table_cell_editor',
-			modal:true,
-			scrolling:'no'});
-	$.fancybox.resize();
+	$('#div_table_cell_editor').dialog({
+			title:'<dtml-var "getZMILangStr('ATTR_COL')">: <dtml-var "getZMILangStr('BTN_EDIT')">',
+			width:'auto',
+			height:'auto',
+			modal:true
+	});
 }
 
 function table_cell_change()
@@ -2906,7 +2901,7 @@ function table_cell_cancel()
 	el_td.css( "backgroundColor", table_cell_bgcolor);
 	table_cell_bgcolor = null;
 	// Close cell editor.
-	$.fancybox.close();
+	$('#div_table_cell_editor').dialog('close');
 	return false;
 }
 
@@ -3390,7 +3385,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.4]]></item>
+            <item key="revision"><![CDATA[1.4.5]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -4265,6 +4260,902 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
             <item key="package"/>
             <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSPackage]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[com.zms.newsletter]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+              </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="insert_custom"/>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
+            <item key="id"><![CDATA[com.zms.newsletter]]></item>
+            <item key="name"><![CDATA[com.zms.newsletter]]></item>
+            <item key="package"/>
+            <item key="revision"><![CDATA[1.1.0]]></item>
+            <item key="type"><![CDATA[ZMSPackage]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[newsletter]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[titlealt]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Navigation-Title]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[title]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Title]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="Newsletter.gif" type="file">47494638396112001000b300004c4e4cc48e0ca4a2a4f9f694b9d4f4fafdeffc02fcfccc56d3e3f76c6e6c848284f1412981b6eff4624cfceb7cfcfebc21f90401000006002c0000000012001000030470d084496b355896cdfb0e4a16140f69966890888fe0be2ff0a8acb02105a233328d05031b6388682c78039fc461c3e916474072f50b16860c82960070280307db0da1e579a94b0176cd3b7cc380b81c5041830ff83c1e1800847e7a81137e191216168485060a098d8e8e7f8a92931911003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="Newsletter_disabled.gif" type="file">47494638396112001000b300004c4e4c848284cccecca4a2a4eceeecfc02fc6c6e6c8c8a8cf4f6f4e4e2e4acaeac747274fcfafc8c8e8c15123c00000021f90401000005002c0000000012001000030475b0b449eba1254bc6bbe74da0350c5296486a228d3132432ccb00722c2332700992fc8a5a6b44d80d148ac42d48b88d12bbde6fb1600e338d2203a91078058044038715ec4a3f6f50ecc242b9f0a0e02a3103ee7840a55dfffae7040d0022657f5f13831a12158c82848a01069293938f8a97989711003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon_disabled]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon: Disabled]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nl_sender]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Sender]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nl_reply_to]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Reply-To]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nl_subscriber]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Subscriber]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[newsletterSubscribers]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nl_letters]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Letters]]></item>
+                    <item key="repetitive" type="int">1</item>
+                    <item key="type"><![CDATA[newsletterItem]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO initReq //-->
+
+ <dtml-call "REQUEST.set('actionId','ACTION%s'%meta_id)">
+
+<!--// EO initReq //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[initReq]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Init Request]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO displayMailhost //-->
+
+ <dtml-unless MailHost>
+  <div style="border: solid 1px black;"><div style="margin: 3px; color: maroon;">
+   <u>WARNING:</u> No MailHost found! (<dtml-var "getLangFmtDate(ZopeTime(),lang,'DATETIME_FMT')">)
+  </div></div>
+  <br/><br/>
+ </dtml-unless>
+
+<!--// EO displayMailhost //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[displayMailhost]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Display Mailhost]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO displaySubscriptionForm //-->
+
+<div class="secndColorLight0" style="border:solid 1px #888888; padding:4px;">
+ <table border="0" cellspacing="0" cellpadding="10" width="100%">
+ <form name="registrationForm" method="post">
+ <input type="hidden" name="<dtml-var actionId>" value="subscribe">
+ <tr valign="top"> 
+  <td>
+   Ja, senden Sie mir regelmässig den aktuellen Newsletter zu; 
+   ich kann diesen jederzeit formlos <a href="<dtml-var "url_append_params(getHref2IndexHtml(REQUEST,deep=0),{actionId:'displayUnsubscriptionForm'})">">abbestellen</a>.<br/>
+  </td>
+ </tr>
+ <tr valign="top"> 
+  <td class="copyright" nowrap valign="top">Meine E-mail-Adresse:<br/>
+   <input type="text" name="name" size="40" style="width:365px"><br/> 
+   <input type="submit" value="Abschicken">
+  </td>
+ </tr>
+ </form>
+ </table>
+</div>
+
+<!--// EO displaySubscriptionForm //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[displaySubscriptionForm]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Display Subscription Form]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO displayUnsubscriptionForm //-->
+
+<div class="secndColorLight0" style="border:solid 1px #888888; padding:4px;">
+ <table border="0" cellspacing="0" cellpadding="10" width="100%">
+ <form name="registrationForm" method="post">
+ <input type="hidden" name="<dtml-var actionId>" value="unsubscribe">
+ <tr valign="top"> 
+  <td>
+   Ich möchte den aktuellen Newsletter abbestellen.<br/>
+  </td>
+ </tr>
+ <tr valign="top"> 
+  <td class="copyright" nowrap valign="top">Meine E-mail-Adresse:<br/>
+   <input type="text" name="name" size="40" style="width:365px"><br/> 
+   <input type="submit" value="Abschicken">
+  </td>
+ </tr>
+ </form>
+ </table>
+</div>
+
+<!--// EO displayUnsubscriptionForm //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[displayUnsubscriptionForm]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Display Unsubscription Form]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO subscribe //-->
+
+<dtml-with nl_subscriber>
+ <dtml-call "REQUEST.set('subsEmail',name.strip())">
+ <dtml-call "REQUEST.set('res',getObjProperty('records',REQUEST))">
+ <dtml-call "REQUEST.set('exist',filter_list(res,'subsEmail',subsEmail,'=='))">
+ <dtml-if "_.len(exist)==0">
+  <dtml-call "res.append({'subsDt':parseLangFmtDate(getLangFmtDate(ZopeTime(),lang,'DATETIME_FMT'),lang,'DATETIME_FMT'),'subsEmail':subsEmail})">
+  <dtml-call "setObjStateModified(REQUEST)">
+  <dtml-call "setObjProperty('records',res,lang)">
+  <dtml-call "onChangeObj(REQUEST)">
+  <dtml-call "REQUEST.set('subsAction','Nutzer hat Newsletter abonniert')">
+  <dtml-var "getObjProperty('notifyManager',REQUEST)">
+  <dtml-call "REQUEST.set('msg','Vielen Dank für die Bestellung des Newsletters!<br/>Sie sind in die Abonnenten-Liste aufgenommen und werden den nächsten regelmäßigen Newsletter erhalten.')">
+ <dtml-else>
+  <dtml-call "REQUEST.set('msg','Sie sind bereits seit %s in der Abonnenten-Liste eingetragen.'%getLangFmtDate(exist[0]['subsDt'],lang,'DATETIME_FMT'))">
+ </dtml-if>
+</dtml-with>
+
+<h2>Bestätigung</h2>
+<div class="secndColorLight0" style="border:solid 1px #888888; padding:4px;"><dtml-var msg></div>
+
+<!--// EO subscribe //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[subscribe]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Subscribe]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO unsubscribe //-->
+
+<dtml-with nl_subscriber>
+ <dtml-call "REQUEST.set('subsEmail',name.strip())">
+ <dtml-call "REQUEST.set('res',getObjProperty('records',REQUEST))">
+ <dtml-call "REQUEST.set('exist',filter_list(res,'subsEmail',subsEmail,'=='))">
+ <dtml-if "_.len(exist)>0">
+  <dtml-call "setObjStateModified(REQUEST)">
+  <dtml-call "setObjProperty('records',filter_list(res,'subsEmail',subsEmail,'!='),lang)">
+  <dtml-call "onChangeObj(REQUEST)">
+  <dtml-call "REQUEST.set('subsAction','Nutzer hat Newsletter abbestellt')">
+  <dtml-var "getObjProperty('notifyManager',REQUEST)">
+  <dtml-call "REQUEST.set('msg','Sie wurden aus der Abonnenten-Liste entfernt!')">
+ <dtml-else>
+  <dtml-call "REQUEST.set('msg','Sie sind nicht in der Abonnenten-Liste eingetragen.')">
+ </dtml-if>
+</dtml-with>
+
+<h2>Bestätigung</h2>
+<div class="secndColorLight0" style="border:solid 1px #888888; padding:4px;"><dtml-var msg></div>
+
+<!--// EO unsubscribe //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[unsubscribe]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Unsubscribe]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO getSubscribers //-->
+
+<dtml-with nl_subscriber>
+ <dtml-call "REQUEST.set('subscribers',[])">
+ <dtml-in "getObjProperty('records',REQUEST)" mapping>
+  <dtml-call "subscribers.append(subsEmail)">
+ </dtml-in>
+ <dtml-return subscribers>
+</dtml-with>
+
+<!--// EO getSubscribers //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[getSubscribers]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Returns list of subscribers]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO notifyManager //-->
+
+<!--// ##### Send mail to list-owner ##### //-->
+<dtml-try>
+<dtml-sendmail MailHost="MailHost">
+From: <dtml-var "getObjProperty('nl_sender',REQUEST)">
+To: <dtml-var "getObjProperty('nl_sender',REQUEST)">
+Subject: <dtml-var "getObjProperty('title',REQUEST)">: <dtml-var "REQUEST.get('subsAction')">
+
+<dtml-var "REQUEST.get('subsAction')">
+-------------------------------------
+<dtml-var "REQUEST.get('subsEmail')">
+-------------------------------------
+
+</dtml-sendmail>
+<dtml-except>
+<p>
+<strong>Error Type: &dtml-error_type;</strong><br />
+<strong>Error Value: &dtml-error_value;</strong><br /> 
+</p>
+</dtml-try>
+
+<!--// EO notifyManager //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[notifyManager]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Notify list-manager of (un-)subscription]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!-- BO bodyContentZMSCustom_newsletter -->
+
+<dtml-var bodyContent_PagePre>
+<dtml-var "getObjProperty('initReq',REQUEST)">
+<dtml-var "getObjProperty('displayMailhost',REQUEST)">
+<dtml-var "getObjProperty(REQUEST.get(actionId,'displaySubscriptionForm'),REQUEST)">
+<dtml-var bodyContent_PagePost>
+
+<!-- EO bodyContentZMSCustom_newsletter -->]]>
+                    </item>
+                    <item key="id"><![CDATA[bodyContentZMSCustom_newsletter]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Template: Newsletter]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[DTML Method]]></item>
+                  </dictionary>
+                </item>
+              </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">1</item>
+            <item key="id"><![CDATA[newsletter]]></item>
+            <item key="name"><![CDATA[Newsletter]]></item>
+            <item key="package"><![CDATA[com.zms.newsletter]]></item>
+            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="type"><![CDATA[ZMSDocument]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[newsletterItem]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[titlealt]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Navigation-Title]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[title]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Title]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="NewsletterItem.gif" type="file">47494638396110001000f700004e4e4e64a1e5ee3720f0442ff2614fa3a3a382b3ea8dbdf0b1d0f2b6d3f3b9d5f3bdd7f4bed8f4c2daf5c5dcf5c9def6cadff6d0e3f7d1e3f7d6e6f8dae9f9dceaf9ddeaf9dfecfae1edfae4eefae8f1fbe9f2fbebf3fcedf4fcf0f6fcf2f7fdf5f9fdf9fbfefcfdfefefeffed1717ffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000024002c00000000100010000008730049081c48b0a0c1830813122cc0b0a1c386000416284191a208101d3254887020228989154784f0a0e10281011d2596086020804b0e18260c1090f263c58b19294470b0a0e644962e0d5890f08041029f25447ed870610284060a10f83c40b5aa55aa1e0b00d8cab52b578560c38a1d5b3020003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="NewsletterItem_disabled.gif" type="file">47494638396110001000b30000fc02fc8c8a8ccccdcce8e8e8dcdcdcf9f9f9a4a2a4d4d4d4f1f0f16c6a6cb4b6b4949694747674e4e2e4fcfefcacaaac21f90401000000002c000000001000100003044c10c849abbd3853c3bbef8c643824591408d2104a088ca5832243c0b4a2b33c4b9f368c04ee553afd0887c370b4eb3d0604a4605990a11aab8360ea3228bee0f0b7cb289bcf668d7acd6e5722003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon_disabled]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon: Disabled]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nli_bodytext]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Body (Text)]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[text]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nli_bodyelements]]></item>
+                    <item key="keys" type="list">
+                      <list>
+                        <item><![CDATA[ZMSTextarea]]></item>
+                        <item><![CDATA[ZMSGraphic]]></item>
+                      </list>
+                    </item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Body (Html)]]></item>
+                    <item key="repetitive" type="int">1</item>
+                    <item key="type"><![CDATA[*]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[nli_sent]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Sent]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[datetime]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO sendItem //-->
+  
+<dtml-if MailHost>
+ <dtml-if "'send_mail' in getHome().objectIds()">
+  <dtml-call "REQUEST.set('message',getObjProperty('sendViaSendMail',REQUEST))">
+ <dtml-elif "MailHost.meta_type=='Mail Host'">
+  <dtml-call "REQUEST.set('message',getObjProperty('sendViaMailHost',REQUEST))">
+ <dtml-elif "MailHost.meta_type=='Maildrop Host'">
+  <dtml-call "REQUEST.set('message',getObjProperty('sendViaMaildropHost',REQUEST))">
+ <dtml-else>
+  <dtml-call "REQUEST.set('message','MailHost has invalid meta_type=%s!'%MailHost.meta_type)">
+ </dtml-if>
+<dtml-else>
+ <dtml-call "REQUEST.set('message','MailHost not found!')">
+</dtml-if>
+<dtml-return message>
+
+<!--// EO sendItem //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[sendItem]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Send item]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<dtml-comment>--// BO sendViaSendMail //--</dtml-comment>
+
+<!--// ##### Get container ##### //-->
+<dtml-call "REQUEST.set('container',getSelf(['newsletter']))">
+<dtml-call "container.getObjProperty('initReq',REQUEST)">
+
+<!--// ##### Send mail ##### //-->
+<dtml-let body="[]" bodytext="getObjProperty('nli_bodytext',REQUEST)" bodyhtml="'\n'.join(_.map(lambda x: x.getBodyContent(REQUEST), getObjChildren('nli_bodyelements',REQUEST)))">
+<dtml-call "REQUEST.set('body',[])">
+<dtml-call "REQUEST.set('files',[])">
+<dtml-if bodyhtml>
+ <dtml-call "body.append('<html>\n')">
+ <dtml-call "body.append('<body>\n')">
+ <dtml-call "body.append('<p>Kein Interesse mehr am %s?</p>\n'%container.getObjProperty('title',REQUEST))"> 
+ <dtml-call "body.append('<p>Abbestellen unter: %s</p>\n'%url_append_params(container.getHref2IndexHtml({'lang':lang}),{actionId:'displayUnsubscriptionForm'}))">
+ <dtml-call "body.append('<hr/>\n')">
+ <dtml-call "body.append(bodyhtml)">
+ <dtml-call "body.append('<hr/>\n')">
+ <dtml-call "body.append('</body>\n')">
+ <dtml-call "body.append('</html>\n')">
+ <dtml-call "REQUEST.set('body','\n'.join(body))">
+ <dtml-call "REQUEST.set('body',re_sub('<img class=\042zoom\042 src=\042%s(.*?)\042(.*?)>'%MISC_ZMS,'',REQUEST.get('body')))">
+ <dtml-in "getObjChildren('nli_bodyelements',REQUEST)"
+  ><dtml-in "getObjAttrs().keys()"
+   ><dtml-let key=sequence-item obj_attr="getObjAttr(key)" value="getObjProperty(key,REQUEST)"
+    ><dtml-if "obj_attr['type']=='image' and value is not None"
+     ><dtml-let cid="'%s_%s'%(id,key)"
+      ><dtml-call "files.append({'cid':cid,'filename':value.getFilename(),'data':value.getData()})"
+      ><dtml-call "REQUEST.set('body',re_sub('<img(.*?)src=\042%s\042(.*?)>'%value.getHref(REQUEST),'<img\\1src=\042cid:%s\042\\2>'%cid,REQUEST.get('body')))">
+     ></dtml-let
+    ></dtml-if
+   ></dtml-let
+  ></dtml-in
+ ></dtml-in>
+<dtml-else>
+ <dtml-call "body.append('Kein Interesse mehr am %s?\n'%container.getObjProperty('title',REQUEST))"> 
+ <dtml-call "body.append('Abbestellen unter: %s\n'%url_append_params(container.getHref2IndexHtml({'lang':lang}),{actionId:'displayUnsubscriptionForm'}))">
+ <dtml-call "body.append('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n')">
+ <dtml-call "body.append(bodytext)">
+ <dtml-call "body.append('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n')">
+ <dtml-call "REQUEST.set('body','\n'.join(body))">
+</dtml-if>
+</dtml-let>
+
+<dtml-try>
+ <dtml-call "writeStdout(send_mail(
+  send_from='%s <%s>'%(container.getObjProperty('nl_sender',REQUEST),container.getObjProperty('nl_reply_to',REQUEST)), 
+  send_to=[container.getObjProperty('nl_sender',REQUEST)], 
+  subject=getObjProperty('title',REQUEST), 
+  text=body, 
+  files=files, 
+  send_cc=container.getObjProperty('getSubscribers',REQUEST), 
+  smtp_host=MailHost.smtp_host, 
+  smtp_port=MailHost.smtp_port, 
+  smtp_uid=MailHost.smtp_uid, 
+  smtp_pwd=MailHost.smtp_pwd))">
+ <dtml-call "REQUEST.set('message','[%s]: Newsletter sent to %i recipient(s) successfully.'%(MailHost.meta_type,_.len(subscribers)))">
+<dtml-except>
+ <dtml-call "REQUEST.set('message','[%s]: Newsletter not sent!'%(MailHost.meta_type))">
+</dtml-try>
+
+<!--// ##### Register sent date ##### //-->
+<dtml-call "setObjStateModified(REQUEST)">
+<dtml-call "setObjProperty('nli_sent',ZopeTime(),lang)">
+<dtml-call "onChangeObj(REQUEST)">
+
+<!--// ##### Return with message ##### //-->
+<dtml-return message>
+
+<dtml-comment>--// EO sendViaSendMail //--</dtml-comment>]]>
+                    </item>
+                    <item key="id"><![CDATA[sendViaSendMail]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">1</item>
+                    <item key="name"><![CDATA[Send via send_mail (External Method)]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO sendViaMailHost //-->
+
+<!--// ##### Get container ##### //-->
+<dtml-call "REQUEST.set('container',getSelf(['newsletter']))">
+<dtml-call "container.getObjProperty('initReq',REQUEST)">
+<dtml-call "REQUEST.set('subscribers',container.getObjProperty('getSubscribers',REQUEST))">
+
+<!--// ##### Get recipients ##### //-->
+<dtml-call "REQUEST.set('bcc','')">
+<dtml-in subscribers>
+ <dtml-unless sequence-start>
+  <dtml-call "REQUEST.set('bcc',bcc+',')">
+ </dtml-unless>
+ <dtml-call "REQUEST.set('bcc',bcc+_['sequence-item'])">
+</dtml-in>
+
+<!--// ##### Send mail ##### //-->
+<dtml-try>
+<dtml-sendmail MailHost="MailHost">
+From: <dtml-var "container.getObjProperty('nl_sender',REQUEST)"> <<dtml-var "container.getObjProperty('nl_reply_to',REQUEST)">>
+To: <dtml-var "container.getObjProperty('nl_sender',REQUEST)">
+Bcc: <dtml-var bcc>
+Subject: <dtml-var "_.unicode(getObjProperty('title',REQUEST),'utf-8').encode('latin-1')">
+
+Kein Interesse mehr am <dtml-var "container.getObjProperty('title',REQUEST)">? 
+Abbestellen unter: <dtml-var "url_append_params(container.getHref2IndexHtml({'lang':lang}),{actionId:'displayUnsubscriptionForm'})">
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+<dtml-var "_.unicode(getObjProperty('nli_bodytext',REQUEST),'utf-8').encode('latin-1')">
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+</dtml-sendmail> 
+ <dtml-call "REQUEST.set('message','[%s]: Newsletter sent to %i recipient(s) successfully.'%(MailHost.meta_type,_.len(subscribers)))">
+<dtml-except>
+ <dtml-call "REQUEST.set('message','[%s]: Newsletter not sent!'%(MailHost.meta_type))">
+</dtml-try>
+
+<!--// ##### Register sent date ##### //-->
+<dtml-call "setObjStateModified(REQUEST)">
+<dtml-call "setObjProperty('nli_sent',ZopeTime(),lang)">
+<dtml-call "onChangeObj(REQUEST)">
+
+<!--// ##### Return with message ##### //-->
+<dtml-return message>
+
+<!--// EO sendViaMailHost //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[sendViaMailHost]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Send via Mail Host]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!--// BO sendViaMaildropHost //-->
+
+<!--// ##### Get container ##### //-->
+<dtml-call "REQUEST.set('container',getSelf(['newsletter']))">
+<dtml-call "container.getObjProperty('initReq',REQUEST)">
+<dtml-call "REQUEST.set('subscribers',container.getObjProperty('getSubscribers',REQUEST))">
+
+<!--// ##### Send mail ##### //-->
+<dtml-call "REQUEST.set('count',0)">
+<dtml-call "REQUEST.set('sent',0)">
+<dtml-in subscribers>
+<dtml-try>
+<dtml-sendmail MailHost="MailHost">
+##To:<dtml-var sequence-item>
+##From:<dtml-var "container.getObjProperty('nl_sender',REQUEST)">
+From: <dtml-var "container.getObjProperty('nl_sender',REQUEST)"> <<dtml-var "container.getObjProperty('nl_reply_to',REQUEST)">>
+To: <dtml-var sequence-item>
+Subject: <dtml-var "_.unicode(getObjProperty('title',REQUEST),'utf-8').encode('latin-1')">
+
+Kein Interesse mehr am <dtml-var "container.getObjProperty('title',REQUEST)">? 
+Abbestellen unter: <dtml-var "url_append_params(container.getHref2IndexHtml({'lang':lang}),{actionId:'displayUnsubscriptionForm'})">
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+<dtml-var "_.unicode(getObjProperty('nli_bodytext',REQUEST),'utf-8').encode('latin-1')">
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+</dtml-sendmail> 
+ <dtml-call "REQUEST.set('sent',sent+1)">
+<dtml-except></dtml-try>
+<dtml-call "REQUEST.set('count',count+1)">
+</dtml-in>
+<dtml-call "REQUEST.set('message','[%s]: Newsletter sent to %i of %i recipient(s) successfully.'%(MailHost.meta_type,sent,count))">
+
+<!--// ##### Register sent date ##### //-->
+<dtml-call "setObjStateModified(REQUEST)">
+<dtml-call "setObjProperty('nli_sent',ZopeTime(),lang)">
+<dtml-call "onChangeObj(REQUEST)">
+
+<!--// ##### Return with message ##### //-->
+<dtml-return message>
+
+<!--// EO sendViaMailDropHost //-->]]>
+                    </item>
+                    <item key="id"><![CDATA[sendViaMaildropHost]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Send via Maildrop Host]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[method]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_newsletterItem //--</dtml-comment>
+
+<dtml-var bodyContent_PagePre>
+<dtml-let bodytext="getObjProperty('nli_bodytext',REQUEST)" bodyhtml="'\n'.join(_.map(lambda x: x.getBodyContent(REQUEST), getObjChildren('nli_bodyelements',REQUEST)))">
+<dtml-if bodyhtml>
+<div id="nli_bodyhtml">
+<dtml-var bodyhtml>
+</div>
+<dtml-else>
+<div id="nli_bodytext">
+<code><dtml-var bodytext html_quote newline_to_br></code>
+</div>
+</dtml-if>
+</dtml-let>
+<dtml-var bodyContent_PagePost>
+
+<dtml-comment>--// EO bodyContentZMSCustom_newsletterItem //--</dtml-comment>]]>
+                    </item>
+                    <item key="id"><![CDATA[bodyContentZMSCustom_newsletterItem]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Template: Newsletter-Item]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[DTML Method]]></item>
+                  </dictionary>
+                </item>
+              </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
+            <item key="id"><![CDATA[newsletterItem]]></item>
+            <item key="name"><![CDATA[Newsletter-Item]]></item>
+            <item key="package"><![CDATA[com.zms.newsletter]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
+            <item key="type"><![CDATA[ZMSDocument]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="key"><![CDATA[newsletterSubscribers]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="__obj_attrs__" type="list">
+              <list>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[records]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Records]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[list]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom">
+                      <data content_type="image/gif" filename="NewsletterSubscribers.gif" type="file">47494638396112001000f70000040204c58f0df4e694fcc854fcfed5fce56dfcfdbbfcfa7f848284fc02fc4c4e4c6c6e6cfcd765fcfef8fcfc96fcee8400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000009002c00000000120010000708840013041848b060c10408053658c8b0e1c2000812062040b1a2458a01164834c0912304081d3966dc18f263480323110670c0b2a54b9629053e98f9b12684990f6206c049f3264f9d058206fd2834a84e0648194040ba34e951a6499516d4a87280d5ab57030808a0206255ac5807764d28d0a0c1b164132058c0b66d5baf69e3ca4d1810003b</data>
+                    </item>
+                    <item key="id"><![CDATA[icon]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Icon]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[resource]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom" type="int">1</item>
+                    <item key="id"><![CDATA[subsEmail]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[e-Mail]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[string]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom" type="int">1</item>
+                    <item key="id"><![CDATA[subsDt]]></item>
+                    <item key="mandatory" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Date/Time]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[datetime]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!-- BO bodyContentZMSCustom_newsletterSubscribers -->
+
+  <h2 class="heading2"><dtml-var "getTitlealt(REQUEST)"></h2>
+  <p class="description"><dtml-var "_.len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+
+<!-- EO bodyContentZMSCustom_newsletterSubscribers -->]]>
+                    </item>
+                    <item key="id"><![CDATA[bodyContentZMSCustom_newsletterSubscribers]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">0</item>
+                    <item key="name"><![CDATA[Template: Newsletter-Subscribers]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[DTML Method]]></item>
+                  </dictionary>
+                </item>
+              </list>
+            </item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                    <item><![CDATA[ZMSAdministrator]]></item>
+                    <item><![CDATA[ZMSAuthor]]></item>
+                    <item><![CDATA[ZMSEditor]]></item>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="insert_custom"><![CDATA[{$}]]></item>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
+            <item key="id"><![CDATA[newsletterSubscribers]]></item>
+            <item key="name"><![CDATA[Newsletter-Subscribers]]></item>
+            <item key="package"><![CDATA[com.zms.newsletter]]></item>
+            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="type"><![CDATA[ZMSRecordSet]]></item>
           </dictionary>
         </item>
       </dictionary>

@@ -237,6 +237,48 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 }
 
 // ############################################################################
+// ### Url-Input
+// ############################################################################
+
+/**
+ * zmiBrowseObjs
+ */
+function zmiBrowseObjs(fmName, elName, lang) {
+	var elValue = '';
+	if (fmName.length>0 && elName.length>0) {
+		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
+	}
+	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	var href = "manage_browse_iframe";
+	href += '?lang='+lang;
+	href += '&fmName='+fmName;
+	href += '&elName='+elName;
+	href += '&elValue='+escape(elValue);
+	if ( selectedText) {
+		href += '&selectedText=' + escape( selectedText);
+	}
+	if ($('#zmiDialog').length==0) {
+		$('body').append('<div id="zmiDialog"></div>');
+	}
+	$('#zmiDialog').dialog({
+			autoOpen: false,
+			title: title,
+			height: 'auto',
+			width: 'auto'
+		}).html('<iframe src="'+href+'" width="100%" height="320" border="0"></iframe>').dialog('open');
+	return false;
+}
+
+function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
+	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
+}
+
+function zmiDialogClose(id) {
+	$('#'+id).dialog('close');
+	$('body').remove('#'+id);
+}
+
+// ############################################################################
 // ### Notification Service
 // ############################################################################
 

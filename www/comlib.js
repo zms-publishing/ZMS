@@ -199,38 +199,6 @@ function fireEvent( el, evtName) {
 var selectedText = "";
 
 /**
- * zmiBrowseObjs
- */
-function zmiBrowseObjs(fmName, elName, lang) {
-	var elValue = '';
-	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
-	}
-	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
-	var href = "manage_browse_iframe";
-	href += '?lang='+lang;
-	href += '&fmName='+fmName;
-	href += '&elName='+elName;
-	href += '&elValue='+escape(elValue);
-	if ( selectedText) {
-		href += '&selectedText=' + escape( selectedText);
-	}
-	showFancybox({
-		'href':href,
-		'title':title,
-		'type':'iframe',
-		'autoDimensions':true,
-		'transitionIn':'fade',
-		'transitionOut':'fade'
-	});
-	return false;
-}
-
-function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
-	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
-}
-
-/**
  */
 function selectObject(path, title) {
   if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1) {

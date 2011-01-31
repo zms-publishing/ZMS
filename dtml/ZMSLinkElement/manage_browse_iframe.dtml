@@ -196,7 +196,7 @@
      }
      self.parent.selectObject(url,title);
    </dtml-if>
-    self.parent.$.fancybox.close();
+    self.parent.zmiDialogClose('zmiDialog');
   }
 
 /**
@@ -409,7 +409,7 @@ function followHref( href, extra)
       <dtml-else>
        self.parent.selectObject(path,title);
       </dtml-if>
-       self.parent.$.fancybox.close();
+       self.parent.zmiDialogClose('zmiDialog');
      }
 
    //-->

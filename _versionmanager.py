@@ -1227,10 +1227,6 @@ class VersionManagerContainer:
             self.setObjProperty('work_uid',str(REQUEST.get('AUTHENTICATED_USER')),lang)
             self.setObjProperty('work_dt',_globals.getDateTime( time.time()),lang)
             break
-      elif not enter and not modified:
-        # Delete old state.
-        _globals.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
-        self.delObjStates(wfStates, REQUEST)
 
 
     ############################################################################
@@ -1245,9 +1241,9 @@ class VersionManagerContainer:
       for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
         dtml = wfTransition.get('dtml','')
         if len(dtml) > 0:
-	  return _globals.dt_html(self, dtml, REQUEST) 
-	else:
-	  return self.manage_wfTransitionFinalize(lang, custom, REQUEST, RESPONSE)
+          return _globals.dt_html(self, dtml, REQUEST) 
+        else:
+          return self.manage_wfTransitionFinalize(lang, custom, REQUEST, RESPONSE)
 
 
     ############################################################################
@@ -1267,7 +1263,7 @@ class VersionManagerContainer:
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)
-        _globals.writeBlock( self, "[manage_wfTransition]: wfStates.0=%s"%str(wfStates))
+        _globals.writeBlock( self, "[manage_wfTransition]: delObjStates(%s)"%str(wfStates))
         self.delObjStates(wfStates, REQUEST)
         # Add new state.
         for wfState in wfTransition.get('to',[]):

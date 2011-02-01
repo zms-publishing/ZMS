@@ -842,29 +842,31 @@ class ZMSMetaobjManager:
         if oldId is None or oldId == newId:
           # Delete existing Zope-Object.
           if newObId in container.objectIds():
-            container.manage_delObjects( ids=[ newObId])
+            if newType not in [ 'DTML Method', 'DTML Document', 'Script (Python)', 'Z SQL Method']:
+              container.manage_delObjects( ids=[ newObId])
           # Add new Zope-Object.
-          if newType == 'DTML Method':
-            container.manage_addDTMLMethod( newObId, newName, newCustom)
-          elif newType == 'DTML Document':
-            container.manage_addDTMLDocument( newObId, newName, newCustom)
-          elif newType == 'External Method':
-            ExternalMethod.manage_addExternalMethod( container, newObId, newName, newId, newId)
-          elif newType == 'Folder':
-            container.manage_addFolder(id=newObId,title=newName)
-          elif newType == 'Page Template':
-            ZopePageTemplate.manage_addPageTemplate( container, newObId, newName, newCustom)
-          elif newType == 'Script (Python)':
-            PythonScript.manage_addPythonScript( container, newObId)
-          elif newType == 'Z SQL Method':
-            try:
-              from Products.ZSQLMethods import SQL
-              connection_id = self.SQLConnectionIDs()[0][0]
-              arguments = ''
-              template = ''
-              SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
-            except:
-              pass
+          if newObId not in container.objectIds():
+            if newType == 'DTML Method':
+              container.manage_addDTMLMethod( newObId, newName, newCustom)
+            elif newType == 'DTML Document':
+              container.manage_addDTMLDocument( newObId, newName, newCustom)
+            elif newType == 'External Method':
+              ExternalMethod.manage_addExternalMethod( container, newObId, newName, newId, newId)
+            elif newType == 'Folder':
+              container.manage_addFolder(id=newObId,title=newName)
+            elif newType == 'Page Template':
+              ZopePageTemplate.manage_addPageTemplate( container, newObId, newName, newCustom)
+            elif newType == 'Script (Python)':
+              PythonScript.manage_addPythonScript( container, newObId)
+            elif newType == 'Z SQL Method':
+              try:
+                from Products.ZSQLMethods import SQL
+                connection_id = self.SQLConnectionIDs()[0][0]
+                arguments = ''
+                template = ''
+                SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
+              except:
+                pass
         # Rename Zope-Object.
         elif oldId != newId:
           if oldContainer != container:

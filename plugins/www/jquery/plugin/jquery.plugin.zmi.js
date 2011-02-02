@@ -264,8 +264,8 @@ function zmiBrowseObjs(fmName, elName, lang) {
 			autoOpen: false,
 			title: title,
 			height: 'auto',
-			width: 'auto'
-		}).html('<iframe src="'+href+'" width="100%" height="320" border="0"></iframe>').dialog('open');
+			width: 'auto',
+		}).html('<iframe src="'+href+'" style="width:100%; min-width:200px; height:100%; min-height: 320px; border:0;"></iframe>').dialog('open');
 	return false;
 }
 

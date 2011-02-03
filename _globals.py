@@ -1,11 +1,6 @@
 ################################################################################
 # _globals.py
 #
-# $Id: _globals.py,v 1.12 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.12 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -293,7 +288,8 @@ def dt_parse(self, value):
     dtml = DocumentTemplate.DT_HTML.HTML(value)
     dtml.cook()
   except:
-    message += sys.exc_value
+    writeError( self, '[dt_parse]')
+    message += str(sys.exc_value)
   return message
 
 

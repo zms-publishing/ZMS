@@ -155,6 +155,7 @@ def initialize(context):
         gen = confdict.get('zmi.css.gen','').split(',')
         if gen[0] != '':
           print "automated combination of external CSS:",gen
+          fileobj = open(translate_path(confdict.get('zmi.all')),'w')
           for key in gen:
             fn = translate_path(confdict.get('zmi.%s'%key))
             fh = open(fn,'r')
@@ -183,11 +184,10 @@ def initialize(context):
                   done = True
               if not done:
                 break
-            fileobj = open(translate_path(confdict.get('zmi.all')),'w')
             s1 = len(fc)
             print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
             fileobj.write(fc)
-            fileobj.close()
+          fileobj.close()
         
         # automated combination of external JavaScript
         gen = confdict.get('jquery.libs.gen','').split(',')

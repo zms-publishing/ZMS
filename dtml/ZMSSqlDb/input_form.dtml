@@ -387,9 +387,9 @@
       ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
       ><dtml-call "REQUEST.set('options',[])"
       ><dtml-if "fk.get('mysqlset')"
-       ><dtml-if valueraw
+       ><dtml-if valueraw><dtml-if "valueraw!=str(valueraw)"
          ><dtml-call "REQUEST.set('value',list(valueraw)[0])"
-       ></dtml-if
+       ></dtml-if></dtml-if
        ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
         ><dtml-let r=sequence-item rtype="r['type']"
          ><dtml-in "rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(',')"

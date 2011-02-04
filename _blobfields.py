@@ -1,11 +1,6 @@
 ################################################################################
 # _blobfields.py
 #
-# $Id: _blobfields.py,v 1.10 2004/11/30 20:03:16 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.10 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -211,10 +206,11 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   if objtype == _globals.DT_IMAGE:
     clazz = MyImage
     maxlength_prop = 'ZMS.input.image.maxlength'
-  elif objtype == _globals.DT_FILE :
+  elif objtype == _globals.DT_FILE:
     clazz = MyFile
     maxlength_prop = 'ZMS.input.file.maxlength'
   blob = clazz( id='',title='',file=file)
+  blob.aq_parent = self
   blob.mediadbfile = None
   blob.filename = _fileutil.extractFilename( filename)
   # Check size.
@@ -228,7 +224,6 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   if self is not None and mediadbStorable:
     mediadb = self.getMediaDb()
     if mediadb is not None:
-      blob.aq_parent = self
       blob.mediadbfile = mediadb.storeFile( blob)
       blob.data = ''
   return blob

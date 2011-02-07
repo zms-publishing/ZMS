@@ -161,11 +161,16 @@ function zmiActionPopulate(el)
 	// Get params.
 	var action = self.location.href;
 	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
-	action = action+'/manage_ajaxZMIActions';
+	var extrapath = $('a:first',$(el).parents('td')[0]).attr('href').split('/');
+	if (extrapath.length > 2) {
+		for ( var i = 0; i < extrapath.length - 2; i++) {
+			action += '/'+extrapath[i];
+		}
+	}
+	action += '/manage_ajaxZMIActions';
 	var params = {};
 	params['lang'] = getZMILang();
 	params['context_id'] = $(el).attr('id').substr(zmiActionPrefix.length);
-	
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
 		// Reset wait-cursor.
@@ -179,9 +184,15 @@ function zmiActionPopulate(el)
 			return;
 		for (var i in actions) {
 			if ( i > 0) {
-				var label = actions[i][0];
-				var value = actions[i][1];
-				var option = new Option( label, value);
+				var optlabel = actions[i][0];
+				var optvalue = '';
+				if (extrapath.length > 2) {
+					for ( var j = 0; j < extrapath.length - 2; j++) {
+						optvalue += extrapath[j]+'/';
+					}
+				}
+				optvalue += actions[i][1];
+				var option = new Option( optlabel, optvalue);
 				select.options[ select.length] = option;
 			}
 		}

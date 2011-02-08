@@ -8,7 +8,12 @@
 	@param REQUEST
 -->
 
-<dtml-let can_generate_preview="pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'))">
+<dtml-let 
+	can_generate_preview="pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'))"
+	max_generate_preview="{
+		'imghires':'InstalledProducts.pil.thumbnail.max',
+		'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)"
+	>
 
 <dtml-unless "REQUEST.get('f_zmiGraphicExtEdit')">
 <script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version').split('/')[1]">/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
@@ -26,7 +31,7 @@
 	 	</tr>
 		<tr valign="top">
 			<td class="form-label zmiNeutralColorWhite" width="35">
-				<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_preview" src="<dtml-var MISC_ZMS>arrow_in.png" alt="<dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')"> (max. <dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">x<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">px)"/></div>
+				<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_preview" src="<dtml-var MISC_ZMS>arrow_in.png" alt="<dtml-var " getZMILangStr('ACTION_GENERATE_PREVIEW')"> (max. <dtml-var "getConfProperty(max_generate_preview,100)">x<dtml-var "getConfProperty(max_generate_preview,100)">px)"/></div>
 				<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_crop" src="<dtml-var MISC_ZMS>image_crop.png" alt="Crop image"/></div>
 				<div id="ZMSGraphic_extEdit_vslider" style="height:100px;"></div><br/>
 				<div id="ZMSGraphic_extEdit_perc" class="form-small"></div>
@@ -139,7 +144,7 @@
 							<td class="form-small">
 								<input class="form-checkbox" type="checkbox" id="generate_preview" name="generate_preview_<dtml-var elName>:int" value="1" <dtml-if "getObjProperty('img',REQUEST) is None">checked="checked"</dtml-if>>
 								<label for="generate_preview"><dtml-var "getZMILangStr('ACTION_GENERATE_PREVIEW')"></label>
-								(max. <dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">x<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">px)
+								(max. <dtml-var "getConfProperty(max_generate_preview,100)">x<dtml-var "getConfProperty(max_generate_preview,100)">px)
 							</td>
 						</dtml-if>
 					</tr>

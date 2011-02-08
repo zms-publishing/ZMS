@@ -14,14 +14,14 @@
   }
 
   function displaytypeBtnClick( key, value) {
-      $('input[name=displaytype:int]').val(value);
+      $('input#displaytype').val(value);
       switchDisplaytypeBtns( key);
   }
 
 //-->
 </script>
 
-  <input type="hidden" name="displaytype:int" value="<dtml-if displaytype><dtml-var displaytype><dtml-else>2</dtml-if>">
+  <input type="hidden" id="displaytype" name="displaytype:int" value="<dtml-if displaytype><dtml-var displaytype><dtml-else>2</dtml-if>">
   <dtml-if "not isDisabledAttr(getObjAttr('displaytype'),REQUEST)">
    <dtml-in "_.range(len(displaytypes)/2)"
     ><dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]"

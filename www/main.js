@@ -72,7 +72,7 @@ function zmiConfirmAction(fm, target, label) {
 			datatype:'text',
 			async: false
 			}).responseText;
-		if (description.length > 0) {
+		if (typeof description != 'undefined' && description.length > 0) {
 			b = confirm(description);
 		}
 	}

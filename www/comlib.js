@@ -196,6 +196,7 @@ function fireEvent( el, evtName) {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
+var selectedRange = null;
 var selectedText = "";
 
 /**
@@ -245,8 +246,14 @@ function tagSelectedText( aTag, eTag) {
   var input = self.el;
   /* internet explorer */
   if( typeof document.selection != 'undefined') {
-    var range = document.selection.createRange();
-    var selText = range.text;
+    /* Selected range may have changed */
+    while (selectedRange.text.indexOf(selectedText)!=0) {
+      selectedRange.moveStart('character',1);
+    }
+    while (selectedRange.text!=selectedText) {
+      selectedRange.moveEnd('character',-1);
+    }
+    var selText = selectedRange.text;
     /* Strip trailing blanks */
     var trailingBlanks = '';
     while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
@@ -260,11 +267,11 @@ function tagSelectedText( aTag, eTag) {
         newText = aTag + trailingBlanks;
       else
         newText = aTag + selText + eTag + trailingBlanks;
-      range.text = newText;
+      selectedRange.text = newText;
       /* Anpassen der Cursorposition */
-      range = document.selection.createRange();
-      range.moveStart('character', newText.length);
-      range.select();
+      selectedRange = document.selection.createRange();
+      selectedRange.moveStart('character', newText.length);
+      selectedRange.select();
     }
   }
   /* newer gecko-based browsers */
@@ -303,32 +310,31 @@ function untagSelectedText( fTag, fAttrs, ld, rd, lang) {
   var input = self.el;
   /* internet explorer */
   if( typeof document.selection != 'undefined') {
-    var range = document.selection.createRange();
-    var selText = range.text;
+    var selText = selectedRange.text;
     var startTag = ld+fTag;
     var endTag = ld+'/'+fTag+rd;
     if ( selText.indexOf(startTag) == 0 && selText.lastIndexOf(endTag) == selText.length - endTag.length) {
       selText = selText.substr( startTag.length + 1, selText.lastIndexOf( endTag) - startTag.length - 1); 
       /* Apply value */
-      range.text = selText;
+      selectedRange.text = selText;
       return true;
     }
     else {
-      range.moveStart('character', -(startTag.length+1));
-      range.moveEnd('character', endTag.length);
-      var taggedText = range.text;
+      selectedRange.moveStart('character', -(startTag.length+1));
+      selectedRange.moveEnd('character', endTag.length);
+      var taggedText = selectedRange.text;
       if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
         /* Apply value */
-        range.text = selText;
+        selectedRange.text = selText;
         return true;
       }
       else if ( fAttrs.length > 0) {
         startTag += fAttrs;
-        range.moveStart('character', -fAttrs.length);
-        var taggedText = range.text;
+        selectedRange.moveStart('character', -fAttrs.length);
+        var taggedText = selectedRange.text;
         if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
           /* Apply value */
-          range.text = selText;
+          selectedRange.text = selText;
           return true;
         }
       }
@@ -389,8 +395,8 @@ function setTextFormat( fTag, ld, rd, lang)
   selectedText = '';
   /* internet explorer */
   if( typeof document.selection != 'undefined') {
-    var range = document.selection.createRange();
-    selectedText = range.text;
+    selectedRange = document.selection.createRange();
+    selectedText = selectedRange.text;
   }
   /* newer gecko-based browsers */
   else if( typeof input.selectionStart != 'undefined') {
@@ -439,9 +445,9 @@ function zmiRicheditInsertTab( fmName, elName)
     var insText = '\t';
     /* internet explorer */
     if( typeof doc.selection != 'undefined') {
-      var range = doc.selection.createRange();
+      selectedRange = doc.selection.createRange();
       // insert text
-      range.text = insText;
+      selectedRange.text = insText;
     }
     /* newer gecko-based browsers */
     else if( typeof input.selectionStart != 'undefined') {

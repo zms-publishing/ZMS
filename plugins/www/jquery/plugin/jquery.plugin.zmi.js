@@ -161,13 +161,16 @@ function zmiActionPopulate(el)
 	// Get params.
 	var action = self.location.href;
 	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
-	var anchorpath = $('a:first',$(el).parents('td')[0]).attr('href');
 	var extrapath = '';
-	if (typeof anchorpath != 'undefined') {
-		var extrapath = anchorpath.split('/');
-		if (extrapath.length > 2) {
-			for ( var i = 0; i < extrapath.length - 2; i++) {
-				action += '/'+extrapath[i];
+	var $anchor = $('a:first',$(el).parents('td')[0]);
+	if ($anchor) {
+		var anchorpath = $anchor.attr('href');
+		if (typeof anchorpath != 'undefined') {
+			var extrapath = anchorpath.split('/');
+			if (extrapath.length > 2) {
+				for ( var i = 0; i < extrapath.length - 2; i++) {
+					action += '/'+extrapath[i];
+				}
 			}
 		}
 	}

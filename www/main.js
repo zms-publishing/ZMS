@@ -102,14 +102,14 @@ function zmiActionChoose(e, id, sort_id) {
 	}
 	else {
 		// Set checkbox.
-		$("input[name=ids:list][type=checkbox][value="+id+"]",fm).attr( 'checked', true);
+		$("input[name=\x22ids:list\x22][value="+id+"]:checkbox",fm).attr( 'checked', true);
 		// Confirm and execute.
 		if (zmiConfirmAction(fm,action,label)) {
 			zmiActionExecute(fm,e,action,id,sort_id,label);
 		}
 	}
 	// Reset checkbox and select.
-	$("input[name=ids:list][type=checkbox][value="+id+"]",fm).attr( 'checked', false);
+	$("input[name=\x22ids:list\x22][value="+id+"]:checkbox",fm).attr( 'checked', false);
 	e.selectedIndex = 0;
 }
 
@@ -147,7 +147,7 @@ function zmiActionButtonsRefresh(sender,evt) {
 	}
 	// Switch selected rows.
 	var clazz = "zmiTeaserColor";
-	var els = $("input[name=ids:list][type=checkbox]");
+	var els = $("input[name=\x22ids:list\x22]:checkbox");
 	for (var i = 0; i < els.length; i++) {
 		var tr = $($(els[i]).parents("tr")[0]);
 		if (els[i].checked) {

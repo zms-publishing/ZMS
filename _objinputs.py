@@ -214,7 +214,7 @@ class ObjInputs:
       html.append(' disabled="disabled"')
     if checked: 
       html.append(' checked="checked"')
-    html.append(' onclick="if (this.checked){$(\'input[name=%s]\',this.form).val(1)}else{$(\'input[name=%s]\',this.form).val(0)}"'%(elName,elName))
+    html.append(' onclick="if (this.checked){$(\'input[name=\\x22%s\\x22]\',this.form).val(1)}else{$(\'input[name=\\x22%s\\x22]\',this.form).val(0)}"'%(elName,elName))
     html.append(' />')
     return ''.join(html)
 

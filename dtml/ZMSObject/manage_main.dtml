@@ -18,7 +18,7 @@
 <script type="text/javascript">
 <!--//
   $(function() {
-    $("input[name=ids:list][type=checkbox]").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
+    $("input[name=\x22ids:list\x22]:checkbox").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
   })
 //-->
 </script>

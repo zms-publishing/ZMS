@@ -32,7 +32,7 @@
 
 <script>
 function zmiRefresh() {
-	var lcb = $('input:checkbox[name=qindex:list]');
+	var lcb = $("input[name=\x22qindex:list\x22]:checkbox");
 	for ( var i = 0; i < lcb.length; i++) {
 		var $cb = $(lcb[i]);
 		if ($cb.attr('checked')) {
@@ -44,7 +44,7 @@ function zmiRefresh() {
 	}
 }
 $(function() {
-	$('input:checkbox[name=qindex:list]').change( function(evt) {
+	$("input[name=\x22qindex:list\x22]:checkbox").change( function(evt) {
 		zmiRefresh();
 	});
 	$('.zmiDblclickable')

@@ -2570,7 +2570,7 @@ function remoteResponseTimedout() {
 function onZMSTableFormSubmit()
 {
   var xml = '';
-  var type = parseInt($('input[name=type:int]:checked').val());
+  var type = parseInt($("input[name=\x22type:int\x22]:checked").val());
   xml += '<list>\n';
   for ( var y = 0; y < parseInt($('#rows').val()); y++) {
     xml += "<item type=\"list\"><list>\n";

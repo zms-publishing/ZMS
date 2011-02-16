@@ -217,7 +217,11 @@
       ><dtml-try
        ><dtml-let v="str(row[id])"
         ><dtml-if "v.startswith('Set([\'') and v.endswith('\'])')"
-         ><dtml-call "operator_setitem(row,id,v[v.find('\'')+1:v.rfind('\'')])"
+         ><dtml-if "v.find('\', \'')>0"
+          ><dtml-call "operator_setitem(row,id,v[v.find('\'')+1:v.rfind('\'')].split('\', \''))"
+         ><dtml-else
+          ><dtml-call "operator_setitem(row,id,v[v.find('\'')+1:v.rfind('\'')])"
+         ></dtml-if
         ></dtml-if
        ></dtml-let
       ><dtml-except
@@ -383,7 +387,7 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('fk')"
-      ><dtml-call "REQUEST.set('valueraw',row.get(id,''))"     
+      ><dtml-call "REQUEST.set('valueraw',row.get(id,''))"
       ><dtml-call "REQUEST.set('value',str(row.get(id,'')))"
       ><dtml-call "REQUEST.set('options',[])"
       ><dtml-if "fk.get('mysqlset')"

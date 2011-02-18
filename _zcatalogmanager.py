@@ -1,11 +1,6 @@
 ################################################################################
 # _zcatalogmanager.py
 #
-# $Id: _zcatalogmanager.py,v 1.8 2004/11/30 20:03:17 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.8 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -261,13 +256,14 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def catalogData(self, REQUEST):
       source = ''
+      mimetype = 'text/plain'
+      encoding = 'utf-8'
       key = self.zcat_data_key()
       if key is not None:
         file = self.getObjProperty( key, REQUEST)
         if file is not None:
           source = file.getData()
           mimetype = file.getContentType()
-          encoding = 'utf-8'
       return source, mimetype, encoding
 
 
@@ -281,7 +277,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  ZCatalogItem.zcat_data_key:
     # --------------------------------------------------------------------------
     def zcat_data_key(self):
-      ids = self.getMetaobjAttrIds(self.meta_id,types=[_globals.DT_FILE])
+      ids = self.getMetaobjAttrIds(self.meta_id,types=['file'])
       if len(ids) == 1:
         return ids[ 0]
       return None

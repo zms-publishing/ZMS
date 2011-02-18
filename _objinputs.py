@@ -109,6 +109,21 @@ class ObjInputs:
 
 
   # ----------------------------------------------------------------------------
+  #  getDateInput:
+  #
+  #	@param fmName
+  #	@param elName
+  #	@param value
+  #	@param enabled
+  #	@param REQUEST
+  #	@param css	CSS-Class
+  #	@return String
+  # ----------------------------------------------------------------------------
+  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-element', extra=''):
+    return self.getDateTimeInput(fmName=fmName,elName=elName,size=8,value=value,enabled=enabled,fmt_str='DATE_FMT',REQUEST=REQUEST,css=css, extra=extra)
+
+
+  # ----------------------------------------------------------------------------
   #  getPasswordInput:
   #
   #	@param fmName

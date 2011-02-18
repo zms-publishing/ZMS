@@ -426,7 +426,7 @@ class ZMSLinkElement(ZMSContainerObject):
         if len(rtn) == 0:
           ref_obj = self.getRefObj()
           if ref_obj is None:
-            rtn = ZMSContainerObject.getTitlealt(self,REQUEST)
+            rtn = super(ZMSLinkElement,self).getTitlealt(REQUEST)
           else:
             rtn = ref_obj.getTitlealt(REQUEST)
       return rtn
@@ -457,7 +457,7 @@ class ZMSLinkElement(ZMSContainerObject):
         if len(rtn) == 0:
           ref_obj = self.getRefObj()
           if ref_obj is None:
-            rtn = ZMSContainerObject.getTitle(self,REQUEST)
+            rtn = super(ZMSLinkElement,self).getTitle(REQUEST)
           else:
             rtn = ref_obj.getTitle(REQUEST)
       return rtn
@@ -497,7 +497,7 @@ class ZMSLinkElement(ZMSContainerObject):
     #  ZMSLinkElement.isActive:
     # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
-      active = ZMSContainerObject.isActive(self,REQUEST) 
+      active = super(ZMSLinkElement,self).isActive(REQUEST) 
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
         if type( remote_obj) is list:
@@ -615,7 +615,7 @@ class ZMSLinkElement(ZMSContainerObject):
       else:
         ref_obj = self.getRefObj()
         if isinstance(ref_obj,ZMSContainerObject):
-          rtn = ZMSContainerObject.getNavItems( self, current, REQUEST, opt, depth)
+          rtn = super(ZMSLinkElement,self).getNavItems( current, REQUEST, opt, depth)
       return rtn
 
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
@@ -637,7 +637,7 @@ class ZMSLinkElement(ZMSContainerObject):
       else:
         ref_obj = self.getRefObj()
         if isinstance(ref_obj,ZMSContainerObject):
-          rtn = ZMSContainerObject.getNavElements( self, REQUEST, expand_tree, current_child, subElements)
+          rtn = super(ZMSLinkElement,self).getNavElements( REQUEST, expand_tree, current_child, subElements)
       return rtn
 
     def getNavElements(self, REQUEST, expand_tree=1, current_child=None, subElements=[]):
@@ -718,7 +718,7 @@ class ZMSLinkElement(ZMSContainerObject):
         if ref_obj is None:
           ref_obj = self.getLinkObj(ref)
         if ref_obj is None or ref_obj.isPage():
-          rtn += ZMSContainerObject.renderShort(self,REQUEST)
+          rtn += super(ZMSLinkElement,self).renderShort(REQUEST)
         else:
           rtn += ref_obj.renderShort(REQUEST)
       

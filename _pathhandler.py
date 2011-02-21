@@ -90,7 +90,6 @@ def handleBlobAttrs(self, name, REQUEST):
         langfilename = href.split( '/')[ -1]
         if langfilename.find( '?') > 0:
           langfilename = langfilename[ :langfilename.find( '?')]
-        print langfilename, name, name_without_lang_suffix
         if langfilename == name or \
            langfilename == _globals.url_encode(name) or \
            langfilename == name_without_lang_suffix or \

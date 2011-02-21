@@ -75,8 +75,9 @@ def handleBlobAttrs(self, name, REQUEST):
   if _globals.debug( self):
     _globals.writeLog( self, '[__bobo_traverse__]: If the object has blob-fields find by filename and display data.')
   langs = self.getLangIds()
+  name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
-    name = name.replace('_%s.'%langs[0],'.')
+    name_without_lang_suffix = name.replace('_%s.'%langs[0],'.')
   for key in self.getObjAttrs().keys():
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
@@ -89,8 +90,11 @@ def handleBlobAttrs(self, name, REQUEST):
         langfilename = href.split( '/')[ -1]
         if langfilename.find( '?') > 0:
           langfilename = langfilename[ :langfilename.find( '?')]
+        print langfilename, name, name_without_lang_suffix
         if langfilename == name or \
-           langfilename == _globals.url_encode(name):
+           langfilename == _globals.url_encode(name) or \
+           langfilename == name_without_lang_suffix or \
+           langfilename == _globals.url_encode(name_without_lang_suffix):
           return value
   return None
 

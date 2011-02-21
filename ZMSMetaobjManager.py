@@ -46,7 +46,7 @@ def syncType( self, meta_id, attr):
     if (attr['type'] in ['resource','Folder']) or \
        (attr.get('mandatory',0)==1 and attr['type'] in self.getMetaobjIds()) or \
        (attr.get('repetitive',0)==1 and attr['type'] in self.getMetaobjIds()):
-      ob = getattr( self, meta_id+'.'+_globals.id_quote(attr['id']), None)
+      ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
         attr['custom'] = ob
     elif not self.getConfProperty('ZMS.metaobj_manager.syncType',1):

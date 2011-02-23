@@ -508,7 +508,11 @@
         ><dtml-call "options.extend(dt_html(multiselect.get('custom'),REQUEST))"
        ><dtml-elif "multiselect.get('mysqlset')"
          ><dtml-if valueraw
-          ><dtml-call "REQUEST.set('value',list(valueraw))"
+          ><dtml-if "valueraw.startswith('Set([\'') and valueraw.endswith('\'])')"
+           ><dtml-call "REQUEST.set('value',list(valueraw))"
+          ><dtml-else  
+           ><dtml-call "REQUEST.set('value',valueraw.split(','))"
+          ></dtml-if
          ></dtml-if
          ><dtml-in "query('DESCRIBE %s %s'%(entity,id))['records']"
          ><dtml-let r=sequence-item rtype="r['type']"

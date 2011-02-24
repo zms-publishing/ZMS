@@ -1,11 +1,6 @@
 ################################################################################
 # zmssqldb.py
 #
-# $Id: zmssqldb.py,v 1.9 2004/11/23 23:04:49 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.9 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -222,20 +217,23 @@ class ZMSSqlDb(ZMSObject):
     #  Return Database Adapter (DA).
     # --------------------------------------------------------------------------
     def getDA(self):
-      da = getattr(self,self.connection_id)
-      if da.meta_type == 'Z MySQL Database Connection':
-        # Try to re-connect if not connected.
-        try: 
-          dbc = da._v_database_connection 
-        except AttributeError: 
-          da.connect(da.connection_string) 
-          dbc = da._v_database_connection
-        # Try to set character-set to utf-8.
-        try:
-          dbc.query('SET NAMES utf8') 
-          dbc.query('SET CHARACTER SET utf8')
-        except:
-          pass
+      da = None
+      conn_id = getattr( self, "connection_id", None)
+      if conn_id is not None:
+        da = getattr(self,conn_id)
+        if da.meta_type == 'Z MySQL Database Connection':
+          # Try to re-connect if not connected.
+          try: 
+            dbc = da._v_database_connection 
+          except AttributeError: 
+            da.connect(da.connection_string) 
+            dbc = da._v_database_connection
+          # Try to set character-set to utf-8.
+          try:
+            dbc.query('SET NAMES utf8') 
+            dbc.query('SET CHARACTER SET utf8')
+          except:
+            pass
       return da
 
 
@@ -325,6 +323,7 @@ class ZMSSqlDb(ZMSObject):
       _globals.writeBlock( self, '[query]: qs=%s, max_rows=%i'%(qs,max_rows))
       da = self.getDA()
       dbc = da._v_database_connection
+      if da.meta_type == 'Z SQLite Database Connection': qs = str(qs)
       res = dbc.query(qs,max_rows)
       if type(res) is str:
         f=StringIO()
@@ -447,9 +446,11 @@ class ZMSSqlDb(ZMSObject):
         return self.fetchReqBuff( reqBuffId, REQUEST, True)
       except:
         pass
-        
+      
       entities = []
       da = self.getDA()
+      if da is None: return entities
+      
       tableBrwsrs = da.tpValues()
       
       # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -472,9 +473,27 @@ class ZMSSqlDb(ZMSObject):
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             cols = []
             try:
-              for columnBrwsr in tableBrwsr.tpValues():
-                colId = columnBrwsr.tpId()
-                colDescr = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
+              columnBrwsrs = []
+              if da.meta_type == 'Z SQLite Database Connection':
+                for columnBrwsr in tableBrwsr.tpValues():
+                  desc = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
+                  desc = desc[desc.find("(")+1:desc.rfind(")")]
+                  for c in desc.split(","):
+                    c = c.strip()
+                    if c.startswith('"') and c.find(' ') > 0:
+                      col = {}
+                      col["id"] = c[1:c.find(' ')-1]
+                      col["description"] = c[c.find(' ')+1:]
+                      columnBrwsrs.append(col)
+              else:
+                for columnBrwsr in tableBrwsr.tpValues():
+                  col = {}
+                  col["id"] = columnBrwsr.tpId()
+                  col["description"] = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
+                  columnBrwsrs.append(col)
+              for columnBrwsr in columnBrwsrs:
+                colId = columnBrwsr["id"]
+                colDescr = columnBrwsr["description"]
                 colType = 'string'
                 colSize = None
                 if colDescr.find('INT') >= 0:
@@ -505,6 +524,7 @@ class ZMSSqlDb(ZMSObject):
                 col['type'] = colType
                 col['sort'] = 1
                 col['nullable'] = not col['mandatory']
+                print ">>>>>>>>>>>>>>>>>>>>> col <<<<<<<<<<<<<<<<<<<\n",col
                 # Add Column.
                 cols.append(col)
             except:

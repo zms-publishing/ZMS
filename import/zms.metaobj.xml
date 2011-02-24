@@ -4147,7 +4147,7 @@ function onZMSTextareaFormSubmit()
   var b = true;
   if (self.btnClicked != "<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" &&
       self.btnClicked != "<dtml-var "getZMILangStr('BTN_BACK')" html_quote>") {
-    var txt = '<xml>'+$('#text_<dtml-var lang>').val()+'</xml>';
+    var txt = '<xml>'+$('#text_<dtml-var lang>').val().replace('&','')+'</xml>';
     if ( txt.indexOf( '<'+'dtml-') < 0) {
       try {
         if (window.DOMParser) {
@@ -4239,7 +4239,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
             <item key="id"><![CDATA[ZMSTextarea]]></item>
             <item key="name"><![CDATA[ZMSTextarea]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.0.1]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

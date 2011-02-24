@@ -119,7 +119,7 @@
   <dtml-else>
    <object>
     <objectName><dtml-var id></objectName> 
-    <label><dtml-if "meta_id=='ZMSTextarea'"><dtml-var "search_quote(getObjAttrValue(getObjAttr('text'),REQUEST),25,'.')"><dtml-else><dtml-var "getTitlealt(REQUEST).replace('&',' ')"></dtml-if></label> 
+    <label><dtml-if "meta_id=='ZMSTextarea'"><dtml-var "search_quote(getObjAttrValue(getObjAttr('text'),REQUEST),25,'.').replace('&',' ')"><dtml-else><dtml-var "getTitlealt(REQUEST).replace('&',' ')"></dtml-if></label> 
     <path><dtml-var url></path>
     <icon>document</icon> 
      <attrs>

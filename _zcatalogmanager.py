@@ -80,8 +80,12 @@ def search_quote(s, maxlen=255, tag='&middot;'):
   s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
   # limit characters.
   if len(s) > maxlen:
-    blank = s.find(' ',maxlen)
-    s = s[:blank] + tag * 3
+    if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
+       s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
+      maxlen = maxlen + s[maxlen:].find(';')
+    if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
+      maxlen += 1
+    s = s[:maxlen] + tag * 3
   # return quoted search string.
   return s
 
@@ -256,14 +260,13 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def catalogData(self, REQUEST):
       source = ''
-      mimetype = 'text/plain'
-      encoding = 'utf-8'
       key = self.zcat_data_key()
       if key is not None:
         file = self.getObjProperty( key, REQUEST)
         if file is not None:
           source = file.getData()
           mimetype = file.getContentType()
+          encoding = 'utf-8'
       return source, mimetype, encoding
 
 
@@ -277,7 +280,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  ZCatalogItem.zcat_data_key:
     # --------------------------------------------------------------------------
     def zcat_data_key(self):
-      ids = self.getMetaobjAttrIds(self.meta_id,types=['file'])
+      ids = self.getMetaobjAttrIds(self.meta_id,types=[_globals.DT_FILE])
       if len(ids) == 1:
         return ids[ 0]
       return None

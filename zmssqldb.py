@@ -465,8 +465,8 @@ class ZMSSqlDb(ZMSObject):
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
         for tableBrwsr in tableBrwsrs:
-          tableName = getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))()
-          tableType = getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))()
+          tableName = str(getattr(tableBrwsr,'Name',getattr(tableBrwsr,'name',None))())
+          tableType = str(getattr(tableBrwsr,'Type',getattr(tableBrwsr,'type',None))())
           if tableType.upper() == 'TABLE':
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- COLUMNS
@@ -482,8 +482,8 @@ class ZMSSqlDb(ZMSObject):
                     c = c.strip()
                     if c.startswith('"') and c.find(' ') > 0:
                       col = {}
-                      col["id"] = c[1:c.find(' ')-1]
-                      col["description"] = c[c.find(' ')+1:]
+                      col["id"] = str(c[1:c.find(' ')-1])
+                      col["description"] =str(c[c.find(' ')+1:])
                       columnBrwsrs.append(col)
               else:
                 for columnBrwsr in tableBrwsr.tpValues():
@@ -524,7 +524,6 @@ class ZMSSqlDb(ZMSObject):
                 col['type'] = colType
                 col['sort'] = 1
                 col['nullable'] = not col['mandatory']
-                print ">>>>>>>>>>>>>>>>>>>>> col <<<<<<<<<<<<<<<<<<<\n",col
                 # Add Column.
                 cols.append(col)
             except:
@@ -532,14 +531,15 @@ class ZMSSqlDb(ZMSObject):
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- TABLE
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-            entity = {}
-            entity['id'] = tableName
-            entity['type'] = 'table'
-            entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
-            entity['sort_id'] = entity['label'].upper()
-            entity['columns'] = self.sort_list(cols,'index')
-            # Add Table.
-            entities.append(entity)
+            if len(cols) > 0:
+              entity = {}
+              entity['id'] = tableName
+              entity['type'] = 'table'
+              entity['label'] = ' '.join( map( lambda x: x.capitalize(), tableName.split('_'))).strip()
+              entity['sort_id'] = entity['label'].upper()
+              entity['columns'] = self.sort_list(cols,'index')
+              # Add Table.
+              entities.append(entity)
       
       #-- Custom properties
       model = self.getModel()
@@ -1392,7 +1392,6 @@ class ZMSSqlDb(ZMSObject):
                         d[ xk[0]][ xk[-1]][ xk[1]] = xv
               for i in c:
                 l = d[i].values()
-                print d[i]
                 l = map( lambda x: (x['index'],x), l)
                 l.sort()
                 l = map( lambda x: x[1], l)

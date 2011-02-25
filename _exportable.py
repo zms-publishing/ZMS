@@ -1,11 +1,6 @@
 ################################################################################
 # _exportable.py
 #
-# $Id:$
-# $Name:$
-# $Author:$
-# $Revision:$
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -48,7 +43,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
       if ob.meta_type == 'Folder':
         ob_id = ob.id
         exportFolder(self, ob,'%s/%s'%(path,id),ob_id,REQUEST,depth+1)
-      else:
+      elif ob not in [ 'User Folder']:
         try:
           ob_id = ob.id()
         except:

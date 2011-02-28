@@ -571,7 +571,7 @@ class Exportable(_filtermanager.FilterItem):
           _globals.writeError( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
       
       # Process children.
-      for child in obj.getChildNodes(REQUEST,self.PAGES):
+      for child in obj.filteredChildNodes(REQUEST,self.PAGES):
         self.recurse_downloadHtmlPages(child,'%s/%s'%(path,child.getDeclId(REQUEST)),lang,REQUEST)
 
 

@@ -43,7 +43,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
       if ob.meta_type == 'Folder':
         ob_id = ob.id
         exportFolder(self, ob,'%s/%s'%(path,id),ob_id,REQUEST,depth+1)
-      elif ob not in [ 'User Folder']:
+      elif ob.meta_type not in [ 'User Folder']:
         try:
           ob_id = ob.id()
         except:

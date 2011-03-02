@@ -1004,7 +1004,13 @@ class VersionItem:
       try:
         obs = []
         for ob in self.objectValues(['ZMSAttributeContainer']):
-          obs.insert(0,(getattr( ob,'master_version',0) * 10000 + getattr( ob,'major_version',0) * 100 + getattr( ob,'minor_version',0),ob))
+          master_version = getattr( ob,'master_version',0)
+          if type(master_version) is not int: master_version = 0
+          major_version = getattr( ob,'major_version',0)
+          if type(major_version) is not int: major_version = 0
+          minor_version = getattr( ob,'minor_version',0)
+          if type(minor_version) is not int: minor_version = 0
+          obs.insert(0,(master_version*10000+major_version*100+minor_version,ob))
         # sort object-items
         obs.sort()
         obs.reverse()

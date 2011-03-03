@@ -170,8 +170,9 @@ div.ZMSGraphic.floatright {
 	margin-left:10px;
 }
 
-div.ZMSGraphic.center {
+div.ZMSGraphic.center div.graphic {
 	text-align:center;
+	margin:0px auto;
 }
 
 div.graphic.alignleft {

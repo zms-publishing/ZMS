@@ -184,24 +184,22 @@ function zmiActionPopulate(el)
 		$(document.body).css( "cursor", "auto");
 		// Get object-id.
 		var value = eval('('+data+')');
-		var id = value['id'].replace(/\./,"_").replace(/\-/,"_");
+		var id = value['id'].replace(/\./,"_");
 		var actions = value['actions'];
 		var select = document.getElementById(zmiActionPrefix+id);
 		if ( select.options[select.options.length-1].text.indexOf('---') != 0)
 			return;
-		for (var i in actions) {
-			if ( i > 0) {
-				var optlabel = actions[i][0];
-				var optvalue = '';
-				if (extrapath.length > 2) {
-					for ( var j = 0; j < extrapath.length - 2; j++) {
-						optvalue += extrapath[j]+'/';
-					}
+		for (var i = 1; i < actions.length; i++) {
+			var optlabel = actions[i][0];
+			var optvalue = '';
+			if (extrapath.length > 2) {
+				for ( var j = 0; j < extrapath.length - 2; j++) {
+					optvalue += extrapath[j]+'/';
 				}
-				optvalue += actions[i][1];
-				var option = new Option( optlabel, optvalue);
-				select.options[ select.length] = option;
 			}
+			optvalue += actions[i][1];
+			var option = new Option( optlabel, optvalue);
+			select.options[ select.length] = option;
 		}
 		select.selectedIndex = 0;
 	});

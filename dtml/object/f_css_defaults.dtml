@@ -144,7 +144,7 @@ a.ZMSGraphic_extEdit_action img {
 }
 
 div.ZMSGraphic {
-	background-color: #F8F8F8;
+	background-color: transparent;
 	margin: 4px;
 }
 
@@ -197,23 +197,19 @@ div.ZMSGraphic.right div.graphic img {
 	display:inline !important;
 }
 
-a.zoom img.zoom {
-	width: 23px;
-	height: 21px;
-	background: url(<dtml-var MISC_ZMS>zoom.gif);
-}
-
+a.zoom img.zoom,
+a.superzoom img.superzoom,
 a.download img.download {
-	width: 23px;
+	width: 26px;
 	height: 21px;
-	background: url(<dtml-var MISC_ZMS>download.gif);
+	background-position:top right;
+	background-repeat:no-repeat;
+	margin:0px;
+	padding:0px;
 }
-
-a.superzoom img.superzoom {
-	width: 23px;
-	height: 21px;
-	background: url(<dtml-var MISC_ZMS>superzoom.gif);
-}
+a.zoom img.zoom { background-image: url(<dtml-var MISC_ZMS>zoom.gif); }
+a.download img.download { background-image: url(<dtml-var MISC_ZMS>download.gif); }
+a.superzoom img.superzoom { background-image: url(<dtml-var MISC_ZMS>superzoom.gif); }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [WAI] ZMSTables

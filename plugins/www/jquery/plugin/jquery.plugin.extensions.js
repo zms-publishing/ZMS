@@ -39,7 +39,7 @@ $(function(){
 			})
 			.dblclick( function(evt) {
 				evt.stopPropagation();
-				var href = self.location.href;
+				var href = ""+self.location.href;
 				if (href.indexOf('?')>0) {
 					href = href.substr(0,href.indexOf('?'));
 				}
@@ -54,7 +54,7 @@ $(function(){
 						pid = $(this).attr('id');
 					}
 					else {
-						pid = $(parents[i]).attr('id');
+						pid = $(parents[parents.length-i-1]).attr('id');
 					}
 					if (pid.length > 0) {
 						if (lang == null) {

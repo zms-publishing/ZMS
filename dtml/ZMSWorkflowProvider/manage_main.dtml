@@ -461,7 +461,7 @@ function onResize() {
               </dtml-if>
              </td>
              <td class="form-small">
-              <img src="<dtml-var spacer_gif>" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" />
+              <img src="<dtml-var spacer_gif>" border="0" width="14" height="7" style="border-bottom: 1px solid navy !important;"  align="absmiddle" />
              </td>
              <td class="form-small">
               <div style="white-space: nowrap; border: 1px solid navy; background-color: #D0FFD0; padding: 0px 2px 0px 2px;">
@@ -483,9 +483,9 @@ function onResize() {
              </td>
              <td class="form-small">
               <dtml-if "itm.get('dtml','')">
-               <nobr><img src="<dtml-var spacer_gif>" border="0" width="7" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle" /><img src="<dtml-var spacer_gif>" border="0" width="7" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" border="0"/></nobr>
+               <nobr><img src="<dtml-var spacer_gif>" border="0" width="7" height="1" style="border-top: 1px solid navy !important;" align="absmiddle" /><img src="misc_/OFSP/dtmlmethod.gif" title="DTML Method" border="0" align="absmiddle" /><img src="<dtml-var spacer_gif>" border="0" width="7" height="1" style="border-top: 1px solid navy !important;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" border="0"/></nobr>
               <dtml-else>
-               <nobr><img src="<dtml-var spacer_gif>" border="0" width="14" height="1" style="border-top: 1px solid navy;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" border="0"/></nobr>
+               <nobr><img src="<dtml-var spacer_gif>" border="0" width="14" height="1" style="border-top: 1px solid navy !important;" align="absmiddle" /><img src="<dtml-var MISC_ZMS>arr_rgt.gif" border="0"/></nobr>
               </dtml-if>
              </td>
              <td class="form-small">

@@ -1175,7 +1175,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
-      sibling_sort_ids = map(lambda x: x.sort_id,parent.getChildNodes())
+      sibling_sort_ids = map(lambda x: x.sort_id,parent.getChildNodes(REQUEST))
       sibling_sort_ids.remove(self.sort_id)
       pos = pos - 1
       if pos < len(sibling_sort_ids):

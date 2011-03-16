@@ -49,13 +49,13 @@ $(function(){
 		});
 		return ui;
 	};
-	$("table.zmi-sortable tbody").sortable({
+	$("table.zmi-sortable > tbody").sortable({
 			helper:fixHelper,
 			forcePlaceholderSize:true,
 			placeholder:'ui-state-highlight',
 			handle:'.zmiContainerColLeft span.ui-icon-arrowthick-2-n-s',
 			start: function(event, ui) {
-				var trs = $('table.zmi-sortable tbody tr');
+				var trs = $('table.zmi-sortable > tbody > tr');
 				var i = 0;
 				for (i = 0; i < trs.length; i++) {
 					if ( $(trs[i]).attr('id')==ui.item.attr('id')) {
@@ -65,7 +65,7 @@ $(function(){
 				zmiSortableRownum = i;
 			},
 			stop: function(event, ui) {
-				var trs = $('table.zmi-sortable tbody tr');
+				var trs = $('table.zmi-sortable > tbody > tr');
 				var i = 0;
 				for (i = 0; i < trs.length; i++) {
 					if ( $(trs[i]).attr('id')==ui.item.attr('id')) {

@@ -208,7 +208,7 @@ function selectObject(path, title) {
   var fTag = 'a';
   var aTag = '<'+fTag+' href="'+path+'">';
   var eTag = '</'+fTag+'>';
-  tagSelectedText( aTag, eTag);
+  tagSelectedText( aTag, eTag, true);
 }
 
 /**
@@ -242,16 +242,21 @@ function taggedStart( s1, s2)
 /**
  * Tag selected text.
  */
-function tagSelectedText( aTag, eTag) {
+function tagSelectedText( aTag, eTag, bMayHaveChanged) {
   var input = self.el;
   /* internet explorer */
   if( typeof document.selection != 'undefined') {
-    /* Selected range may have changed */
-    while (selectedRange.text.indexOf(selectedText)!=0) {
-      selectedRange.moveStart('character',1);
+    if (bMayHaveChanged) {
+      /* Selected range may have changed */
+      while (selectedRange.text.indexOf(selectedText)!=0) {
+        selectedRange.moveStart('character',1);
+      }
+      while (selectedRange.text!=selectedText) {
+        selectedRange.moveEnd('character',-1);
+      }
     }
-    while (selectedRange.text!=selectedText) {
-      selectedRange.moveEnd('character',-1);
+    else {
+      selectedRange = document.selection.createRange();
     }
     var selText = selectedRange.text;
     /* Strip trailing blanks */
@@ -306,7 +311,7 @@ function tagSelectedText( aTag, eTag) {
  * Untag selected text.
  * Returns true if selected text was untagged, false otherwise.
  */
-function untagSelectedText( fTag, fAttrs, ld, rd, lang) {
+function untagSelectedText( fTag, fAttrs, ld, rd) {
   var input = self.el;
   /* internet explorer */
   if( typeof document.selection != 'undefined') {
@@ -408,7 +413,7 @@ function setTextFormat( fTag, ld, rd, lang)
   }
   if ( selectedText.length == 0)
     return;
-  if ( !untagSelectedText( fTag, fAttrs, ld, rd, lang)) {
+  if ( !untagSelectedText( fTag, fAttrs, ld, rd)) {
     if (fTag == 'a' && selectedText.indexOf('http://') < 0 && selectedText.indexOf('@') < 0) {
       zmiBrowseObjs('','',lang);
     } 
@@ -428,7 +433,7 @@ function setTextFormat( fTag, ld, rd, lang)
       }
       aTag += rd;
       var eTag = ld+'/'+fTag+rd;
-      tagSelectedText( aTag, eTag, lang);
+      tagSelectedText( aTag, eTag);
     }
   }
 }

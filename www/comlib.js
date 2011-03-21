@@ -248,11 +248,18 @@ function tagSelectedText( aTag, eTag, bMayHaveChanged) {
   if( typeof document.selection != 'undefined') {
     if (bMayHaveChanged) {
       /* Selected range may have changed */
+      var infiniteLoopHandler;
+      infiniteLoopHandler = 0;
       while (selectedRange.text.indexOf(selectedText)!=0) {
         selectedRange.moveStart('character',1);
+        infiniteLoopHandler++;
+        if(infiniteLoopHandler>999)return;
       }
+      ininiteLoopHandler = 0;
       while (selectedRange.text!=selectedText) {
         selectedRange.moveEnd('character',-1);
+        infiniteLoopHandler++;
+        if(infiniteLoopHandler>999)return;
       }
     }
     else {

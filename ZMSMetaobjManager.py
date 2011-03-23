@@ -46,7 +46,10 @@ def syncType( self, meta_id, attr):
     if (attr['type'] in ['resource','Folder']) or \
        (attr.get('mandatory',0)==1 and attr['type'] in self.getMetaobjIds()) or \
        (attr.get('repetitive',0)==1 and attr['type'] in self.getMetaobjIds()):
-      ob = getattr( self, meta_id+'.'+attr['id'], None)
+      attr_id = attr['id']
+      if attr['type'] == 'Folder':
+        if attr_id is not None: attr_id = _globals.id_quote(attr_id)
+      ob = getattr( self, meta_id+'.'+attr_id, None)
       if ob is not None:
         attr['custom'] = ob
     elif not self.getConfProperty('ZMS.metaobj_manager.syncType',1):
@@ -752,12 +755,15 @@ class ZMSMetaobjManager:
       if (newType in ['resource','Folder']) or \
          (newMandatory and newType in self.getMetaobjIds()) or \
          (newRepetitive and newType in self.getMetaobjIds()):
+        if newType == 'Folder':
+          if oldId is not None: oldId = _globals.id_quote(oldId)
+          if newId is not None: newId = _globals.id_quote(newId)
         if isinstance( newCustom, _blobfields.MyFile):
-          if oldId is not None and id+'.'+_globals.id_quote(oldId) in self.objectIds():
-            self.manage_delObjects(ids=[id+'.'+_globals.id_quote(oldId)])
-          self.manage_addFile( id=id+'.'+_globals.id_quote(newId), file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
-        elif oldId is not None and oldId != newId and id+'.'+_globals.id_quote(oldId) in self.objectIds(['File']):
-          self.manage_renameObject(id=id+'.'+_globals.id_quote(oldId),new_id=id+'.'+newId)
+          if oldId is not None and id+'.'+oldId in self.objectIds():
+            self.manage_delObjects(ids=[id+'.'+oldId])
+          self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
+        elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds(['File']):
+          self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
         newCustom = ''
       
       attr = {}

@@ -48,7 +48,6 @@ import _globals
 import _mimetypes
 import _pilutil
 import _xmllib
-import zmsmathutil
 
 __all__= ['ZMSGlobals']
 
@@ -115,8 +114,6 @@ class ZMSGlobals:
     @group Regular Expressions: re_*
     @group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
     """
-
-    zmsmathutil = zmsmathutil.zmsmathutil()
 
     # --------------------------------------------------------------------------
     #  Meta-Type Selectors.

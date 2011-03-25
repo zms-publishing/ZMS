@@ -239,6 +239,13 @@ function taggedStart( s1, s2)
   return -1;
 }
 
+function zmiWriteDebug(s) {
+  if ($('textarea#debug').length==0) {
+    $('body').append('<textarea id="debug" rows="50" cols="80"></textarea>');
+  }
+	$("textarea#debug").val("["+(new Date())+"] "+s+"\n"+$("textarea#debug").val());
+}
+
 /**
  * Tag selected text.
  */
@@ -248,18 +255,11 @@ function tagSelectedText( aTag, eTag, bMayHaveChanged) {
   if( typeof document.selection != 'undefined') {
     if (bMayHaveChanged) {
       /* Selected range may have changed */
-      var infiniteLoopHandler;
-      infiniteLoopHandler = 0;
       while (selectedRange.text.indexOf(selectedText)!=0) {
         selectedRange.moveStart('character',1);
-        infiniteLoopHandler++;
-        if(infiniteLoopHandler>999)return;
       }
-      ininiteLoopHandler = 0;
       while (selectedRange.text!=selectedText) {
         selectedRange.moveEnd('character',-1);
-        infiniteLoopHandler++;
-        if(infiniteLoopHandler>999)return;
       }
     }
     else {
@@ -279,11 +279,16 @@ function tagSelectedText( aTag, eTag, bMayHaveChanged) {
         newText = aTag + trailingBlanks;
       else
         newText = aTag + selText + eTag + trailingBlanks;
-      selectedRange.text = newText;
-      /* Anpassen der Cursorposition */
-      selectedRange = document.selection.createRange();
-      selectedRange.moveStart('character', newText.length);
-      selectedRange.select();
+      if (selText == input.value) {
+        input.value = newText;
+      }
+      else {
+        selectedRange.text = newText;
+        /* Anpassen der Cursorposition */
+        selectedRange = document.selection.createRange();
+        selectedRange.moveStart('character', newText.length);
+        selectedRange.select();
+      }
     }
   }
   /* newer gecko-based browsers */

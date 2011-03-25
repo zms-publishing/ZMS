@@ -938,6 +938,8 @@ class ZMSSqlDb(ZMSObject):
              (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
              (not tablecol.get('multimultiselect')):
           value = values.get(id,values.get(id.lower(),values.get(id.upper(),'')))
+          if type(value) is list:
+            value = ','.join(value)
           c.append({'id':id,'value':value})
       # Assemble sql-statement
       sqlStatement = []
@@ -1052,6 +1054,8 @@ class ZMSSqlDb(ZMSObject):
             value = values.get(id)
             if value == '' and tablecol.get('nullable'):
               value = None
+            elif type(value) is list:
+              value = ','.join(value)
             if value != old_values.get(id,old[id]):
               c.append({'id':id,'value':value})
       # Assemble sql-statement

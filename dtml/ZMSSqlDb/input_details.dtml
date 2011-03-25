@@ -38,7 +38,7 @@
     ############################################################################
   </dtml-comment
   ><dtml-if "REQUEST.get('ZMS_DETAILS_ACTION')=='insert_%s'%details['tablename'] and 
-             REQUEST.get('details_btn')==getZMILangStr('BTN_INSERT')"
+             REQUEST.get('details_btn_%s'%details['tablename'])==getZMILangStr('BTN_INSERT')"
    ><dtml-let values="{}"
     ><dtml-comment>+-+-+-+- Foreign-Key +-+-+-+-</dtml-comment
     ><dtml-call "operator_setitem(values,details['fk'],rowid)"
@@ -79,7 +79,7 @@
     ############################################################################
   </dtml-comment
   ><dtml-elif "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename'] and 
-             REQUEST.get('details_btn')==getZMILangStr('BTN_SAVE')"
+             REQUEST.get('details_btn_%s'%details['tablename'])==getZMILangStr('BTN_SAVE')"
    ><dtml-let values="{}" old_values="{}"
     ><dtml-in grid_cols mapping
      ><dtml-if blob
@@ -230,7 +230,7 @@
 </dtml-comment>
 <dtml-call "REQUEST.set('details_row',{})"
 ><dtml-call "REQUEST.set('details_rowid',REQUEST.get('details_rowid',-1))"
-><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_INSERT'))"
+><dtml-call "REQUEST.set('details_submit_%s'%details['tablename'],getZMILangStr('BTN_INSERT'))"
 ><dtml-if "REQUEST.get('ZMS_DETAILS_ACTION')=='update_%s'%details['tablename']"
  ><dtml-call "REQUEST.set('sqlStatement',[])"
  ><dtml-call "sqlStatement.append('SELECT * FROM %s '%details['tablename'])"
@@ -244,7 +244,7 @@
    ><dtml-call "REQUEST.set('row',_['sequence-item'])"
    ><dtml-call f_recordset_init
    ><dtml-call "REQUEST.set('details_row',row)"
-   ><dtml-call "REQUEST.set('details_submit',getZMILangStr('BTN_SAVE'))"
+   ><dtml-call "REQUEST.set('details_submit_%s'%details['tablename'],getZMILangStr('BTN_SAVE'))"
   ></dtml-in
  ><dtml-except
   ><div class="form-fixed" style="border: 1px solid black; background-color:white;color: red; margin:2px; padding:2px;">SQLException - Can't select records: <dtml-var error_type html_quote>: <dtml-var error_value html_quote><br/><dtml-var error_tb newline_to_br html_quote></div
@@ -271,8 +271,8 @@
   ZMS_CSS_EXTRA='zmiTeaserColor',
   ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
   )">
- <input id="submit_<dtml-var "details['tablename']">" class="ui-button ui-state-default ui-corner-all" type="submit" name="details_btn" value="<dtml-var details_submit>"/>
- <input class="ui-button ui-state-default ui-corner-all" type="reset" name="details_btn" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
+ <input id="submit_<dtml-var "details['tablename']">" class="ui-button ui-state-default ui-corner-all" type="submit" name="<dtml-var "'details_btn_%s'%details['tablename']">" value="<dtml-var "REQUEST.get('details_submit_%s'%details['tablename'])">"/>
+ <input class="ui-button ui-state-default ui-corner-all" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>
 <dtml-call "zmi_form_section_end(_,_,zmi_form_section_key=details['tablename'])">
 </div><!-- #table_<dtml-var "details['tablename']">.detailelements -->
 

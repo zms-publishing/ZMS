@@ -269,7 +269,7 @@
   ZMS_TABLE_PREFIX=details['tablename'],
   ZMS_ENTITY=details['tablename'],
   ZMS_CSS_EXTRA='zmiTeaserColor',
-  ZMS_EXCLUDE_IDS=[primary_key,details['fk'].lower(),'sort_id'],
+  ZMS_EXCLUDE_IDS=REQUEST.get('ZMS_DETAILS_EXCLUDE_IDS',{}).get(details['tablename'],[])+[primary_key,details['fk'].lower(),'sort_id'],
   )">
  <input id="submit_<dtml-var "details['tablename']">" class="ui-button ui-state-default ui-corner-all" type="submit" name="<dtml-var "'details_btn_%s'%details['tablename']">" value="<dtml-var "REQUEST.get('details_submit_%s'%details['tablename'])">"/>
  <input class="ui-button ui-state-default ui-corner-all" type="reset" value="<dtml-var "getZMILangStr('BTN_RESET')">"/>

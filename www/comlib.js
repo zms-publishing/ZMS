@@ -275,12 +275,24 @@ function tagSelectedText( aTag, eTag, bMayHaveChanged) {
     if ( selText.length > 0) {
       /* Apply value */
       var newText;
-      if ( aTag.length > 0 && typeof eTag == 'undefined')
+      if ( aTag.length > 0 && typeof eTag == 'undefined') {
         newText = aTag + trailingBlanks;
-      else
+      }
+      else {
         newText = aTag + selText + eTag + trailingBlanks;
-      if (selText == input.value) {
-        input.value = newText;
+      }
+      if (bMayHaveChanged && input.value.indexOf(selText)==0) {
+        zmiWriteDebug("input.value='"+input.value+"'");
+        zmiWriteDebug("selText='"+selText+"'");
+        if (input.value==selText) {
+          input.value = newText;
+        }
+        else if (input.value.substr(selText.length).indexOf(selText)<0) {
+          input.value = input.value.replace(selText+trailingBlanks,newText);
+        }
+        else {
+          alert("can't tag selected text");
+        }
       }
       else {
         selectedRange.text = newText;

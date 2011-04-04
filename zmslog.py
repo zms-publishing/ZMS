@@ -164,7 +164,7 @@ class ZMSLog(ZMSItem.ZMSItem):
       """ZMSLog.manage_index_html"""
       path = self.getPath( REQUEST)
       RESPONSE.setHeader( 'Content-Type','Unknown')
-      RESPONSE.setHeader( 'Content-Disposition','inline;filename=%s'%_fileutil.extractFilename( path))
+      RESPONSE.setHeader( 'Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename( path))
       file = open( path, 'rb')
       rtn = file.read() 
       file.close()

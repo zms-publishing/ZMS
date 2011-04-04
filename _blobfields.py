@@ -636,7 +636,7 @@ class MyBlob:
         RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         RESPONSE.setHeader('Content-Type', self.content_type)
         RESPONSE.setHeader('Content-Length', self.get_size())
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%self.getFilename())
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%self.getFilename())
         accept_ranges = parent.getConfProperty('ZMS.blobfields.accept_ranges','bytes')
         if len( accept_ranges) > 0:
           RESPONSE.setHeader('Accept-Ranges', accept_ranges)

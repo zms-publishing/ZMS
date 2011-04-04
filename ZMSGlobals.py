@@ -1354,7 +1354,7 @@ class ZMSGlobals:
         RESPONSE.setHeader('Content-Type', mt)
         RESPONSE.setHeader('Content-Encoding', enc)
         RESPONSE.setHeader('Content-Length', fsize)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%_fileutil.extractFilename(filename))
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(filename))
         RESPONSE.setHeader('Accept-Ranges', 'bytes')
       return fdata
 

@@ -121,7 +121,7 @@ def exportXml(self, REQUEST, RESPONSE):
   filename = 'export.filter.xml'
   export = self.getXmlHeader() + self.toXmlString(value,1)
   RESPONSE.setHeader('Content-Type',content_type)
-  RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+  RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
   return export
 
 """

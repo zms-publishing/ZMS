@@ -385,7 +385,7 @@ class ZMSCustom(ZMSContainerObject):
         if len(qindex)==0 or str(i) in qindex:
           value.append(res[i])
       RESPONSE.setHeader('Content-Type','text/xml; charset=utf-8')
-      RESPONSE.setHeader('Content-Disposition','inline;filename=recordSet_Export.xml')
+      RESPONSE.setHeader('Content-Disposition','inline;filename="recordSet_Export.xml"')
       export = self.getXmlHeader() + self.toXmlString(value,True)
       return export
 

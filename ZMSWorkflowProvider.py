@@ -95,7 +95,7 @@ def exportXml(self, REQUEST, RESPONSE):
   content_type = 'text/xml; charset=utf-8'
   filename = 'workflow.xml'
   RESPONSE.setHeader('Content-Type',content_type)
-  RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+  RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
   return export
 
 

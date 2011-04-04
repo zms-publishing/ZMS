@@ -262,7 +262,7 @@ class ConfManager(
         content_type = 'text/xml; charset=utf-8'
         filename = 'getConfFiles.xml'
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
         return self.getXmlHeader() + self.toXmlString( filenames)

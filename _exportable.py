@@ -306,7 +306,7 @@ class Exportable(_filtermanager.FilterItem):
       # return export for download to browser
       if get_data:
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         return export
       else:
         message = 'Exported to %s (%s)'%(export,content_type)

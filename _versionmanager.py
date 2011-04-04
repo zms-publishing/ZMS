@@ -861,7 +861,7 @@ class VersionItem:
       content_type = 'text/xml; charset=utf-8'
       filename = 'ajaxBodyContentObjHistory.xml'
       RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       self.f_standard_html_request( self, REQUEST)

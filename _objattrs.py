@@ -196,7 +196,7 @@ class ObjAttrs:
       content_type = 'text/plain; charset=utf-8'
       filename = 'ajaxGetObjOptions.txt'
       RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       obj_attr = self.getObjAttr( key, meta_id)
@@ -221,7 +221,7 @@ class ObjAttrs:
       content_type = 'text/xml; charset=utf-8'
       filename = 'ajaxGetObjAttrs.xml'
       RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       return self.getXmlHeader() + self.toXmlString( self.getObjAttrs( meta_id))

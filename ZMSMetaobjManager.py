@@ -263,7 +263,7 @@ class ZMSMetaobjManager:
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       return export
 
 
@@ -1001,7 +1001,7 @@ class ZMSMetaobjManager:
       content_type = 'text/xml; charset=utf-8'
       filename = 'manage_ajaxChangeProperties.xml'
       RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       xml = self.getXmlHeader()

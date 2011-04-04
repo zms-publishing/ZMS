@@ -175,7 +175,7 @@ class ZMSObject(ZMSItem.ZMSItem,
                 v = l[ 0]
         RESPONSE.setHeader( 'Cache-Control', 'public, max-age=3600')
         RESPONSE.setHeader( 'Content-Type', v.getContentType())
-        RESPONSE.setHeader( 'Content-Disposition', 'inline;filename=%s'%v.getFilename())
+        RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%v.getFilename())
         v = v.getData()
       except:
         masterId = self.getConfProperty('Portal.Master','')
@@ -978,7 +978,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         content_type = 'text/xml; charset=utf-8'
         filename = 'ajaxGetChildNodes.xml'
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
         self.f_standard_html_request( self, REQUEST)
@@ -1059,7 +1059,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         content_type = 'text/xml; charset=utf-8'
         filename = 'ajaxGetChildNodes.xml'
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename=%s'%filename)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
         self.f_standard_html_request( self, REQUEST)

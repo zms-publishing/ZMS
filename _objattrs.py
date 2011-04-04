@@ -703,6 +703,7 @@ class ObjAttrs:
           value = self.getObjAttrValue( objAttr, REQUEST)
           if datatype == _globals.DT_TEXT and  type(value) in StringTypes:
             try:
+              value = _globals.re_sub(self,'<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
               value = _globals.dt_html(self,value,REQUEST)
             except:
               value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)

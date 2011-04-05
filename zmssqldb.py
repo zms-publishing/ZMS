@@ -201,13 +201,14 @@ class ZMSSqlDb(ZMSObject):
       charset = getattr(self,'charset','utf-8')
       row = {}
       for col in cols:
-        v = record[col['id']]
+        k = col['id'].lower()
+        v = record[k]
         if v is not None and type( v) is not int and type( v) is not float:
           try:
             v = unicode(v,charset).encode(encoding)
           except:
-            row[col['id']+'_exception'] = _globals.writeError( self, '[record_encode__]: can\'t %s'%col['id'])
-        row[col['id']] = v
+            row[k+'_exception'] = _globals.writeError( self, '[record_encode__]: can\'t %s'%k)
+        row[k] = v
       return row
 
 
@@ -305,7 +306,7 @@ class ZMSSqlDb(ZMSObject):
       conn.rollback()
 
 
-    def query(self, qs, max_rows=None):
+    def query(self, qs, max_rows=None, encoding=None):
       """
       Execute select-statement.
       @param qs: The select-statement
@@ -351,7 +352,8 @@ class ZMSSqlDb(ZMSObject):
         column['type'] = colType
         column['sort'] = 1
         columns.append(column)
-      keys = map(lambda x: x['id'], columns)
+      if encoding:
+        result = map(lambda x: self.record_encode__(columns,x,encoding), result)
       return {'columns':columns,'records':result}
 
 

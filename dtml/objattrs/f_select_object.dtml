@@ -28,6 +28,7 @@
     <td class="zmiContainerColLeft"
      ><div class="form-small ui-helper-clearfix"
      ><span style="float:left"
+     ><img class="grippy" src="<dtml-var spacer_gif>"
      ><input class="form-checkbox" type="checkbox" name="ids:list" value="<dtml-var id>" onclick="zmiActionButtonsRefresh(this)"
      ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
       ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" onclick="javascript:return confirmChanges();" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%display_type(REQUEST)">" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"

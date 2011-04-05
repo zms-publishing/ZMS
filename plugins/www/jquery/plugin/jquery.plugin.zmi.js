@@ -3,6 +3,14 @@
 // ############################################################################
 
 /**
+ * Resize iframe height to content-height:
+ * call parent.resizeIframe(document.body.scrollHeight) from iframe!
+ */
+function zmiIframeResize(s, newHeight) {
+	$(s).css({height:parseInt(newHeight)+10+'px'});
+}
+
+/**
  * Open link in iframe.
  */
 function zmiIframe(href, title) {
@@ -53,7 +61,7 @@ $(function(){
 			helper:fixHelper,
 			forcePlaceholderSize:true,
 			placeholder:'ui-state-highlight',
-			handle:'.zmiContainerColLeft span.ui-icon-arrowthick-2-n-s',
+			handle:'.zmiContainerColLeft img.grippy',
 			start: function(event, ui) {
 				var trs = $('table.zmi-sortable > tbody > tr');
 				var i = 0;
@@ -83,24 +91,6 @@ $(function(){
 					});
 				}
 				zmiSortableRownum = null;
-				// Remove indicator.
-				$('span.ui-icon-arrowthick-2-n-s',ui.item).remove();
-			}
-		});
-	$('table.zmi-sortable .zmiContainerColLeft')
-		.mouseover(function(evt){
-			// Show indicator.
-			if ( zmiSortableRownum == null) {
-				if ($('span.ui-icon-arrowthick-2-n-s',this).length==0) {
-					var $div = $($('div',this)[0]);
-					$div.append('<span class="ui-icon ui-icon-arrowthick-2-n-s" style="cursor:move"></span>');
-				}
-			}
-		})
-		.mouseleave(function(evt){
-			// Remove indicator.
-			if ( zmiSortableRownum == null) {
-				$('span.ui-icon-arrowthick-2-n-s',this).remove();
 			}
 		});
 	// Action-Lists
@@ -130,11 +120,16 @@ $(function(){
 });
 
 
-function zmiFancyboxResizeInnerFrame(dims) {
-	// Works with jquery.fancybox-1.3.1: has to be reworked for 1.3.4!
-	var deltah = $('#fancybox-wrap').height()-$('#fancybox-inner').height();
-	$('#fancybox-inner').height(dims.height);
-	$('#fancybox-wrap').height(dims.height+deltah);
+function zmiFancyboxResizeInnerFrame(s,dims) {
+	if (s.indexOf("#fancybox")==0){
+		// Works with jquery.fancybox-1.3.1: has to be reworked for 1.3.4!
+		var deltah = $('#fancybox-wrap').height()-$('#fancybox-inner').height();
+		$('#fancybox-inner').height(dims.height);
+		$('#fancybox-wrap').height(dims.height+deltah);
+	}
+	else {
+		$(s).css({height:parseInt(dims.height)+'px',width:parseInt(dims.width)+'px'});
+	}
 }
 
 
@@ -232,6 +227,22 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 			href += q + $(inputs[i]).attr('name') + '=' + $(inputs[i]).val();
 			q = '&amp;';
 		}
+
+		if ($('#zmiDialog').length==0) {
+			$('body').append('<div id="zmiDialog"></div>');
+		}
+		$('#zmiDialog').dialog({
+				autoOpen: false,
+				modal: true,
+				title: getZMILangStr('BTN_INSERT'),
+				height: 'auto',
+				width: 'auto',
+				close:function(event,ui) {
+					$('tr#tr_manage_addProduct').remove();
+				}
+			}).html('<iframe id="manage_add" src="'+href+'" style="border:0;"></iframe>').dialog('open');
+		return;
+
 		showFancybox({
 			'hideOnOverlayClick':false,
 			'href':href,

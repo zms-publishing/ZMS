@@ -155,6 +155,7 @@
 <td class="zmiContainerColLeft"
 ><div class="form-small ui-helper-clearfix"
 ><span style="float:left"
+><img class="grippy" src="<dtml-var spacer_gif>"
 ><input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless>
 ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
 ><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"
@@ -228,6 +229,7 @@
 </dtml-comment>
 <td class="zmiContainerColCenter<dtml-if "isActive(REQUEST)"> zmiNeutralColorLight0<dtml-else> zmiNeutralColorLight1</dtml-if>">
 <div class="zmiRenderShort form-small" id="tr_<dtml-var id>">
+<img class="grippy" src="<dtml-var spacer_gif>"/>
 <input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless> />
 <input type="hidden" name="sort_id_<dtml-var id>" value="<dtml-var "getSortId()">">
 <a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)"></a>

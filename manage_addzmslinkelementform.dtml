@@ -6,7 +6,7 @@
 		</style>
 		<script>
 			$(function(){
-				self.parent.zmiFancyboxResizeInnerFrame(getBodyDimensions());
+				self.parent.zmiFancyboxResizeInnerFrame("iframe#manage_add",getBodyDimensions());
 			});
 		</script>
 	</head>

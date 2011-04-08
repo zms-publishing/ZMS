@@ -690,7 +690,12 @@ class ObjAttrs:
           try:
             value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
           except:
-            value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
+            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
+        elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
+          try:
+            value = metaObjAttr['py'](zmscontext=self)
+          except:
+            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
         elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
           value = metaObjAttr.get('custom','')
         elif metaObjAttr is not None and metaObjAttr['type'] == 'resource':

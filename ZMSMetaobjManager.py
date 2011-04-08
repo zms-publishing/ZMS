@@ -58,6 +58,11 @@ def syncType( self, meta_id, attr):
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
         attr['custom'] = ob.raw
+    elif attr['type'] == 'py':
+      ob = getattr( self, meta_id+'.'+attr['id'], None)
+      if ob is not None:
+          attr['py'] = ob
+          attr['custom'] = ob.read()
     elif attr['type'] == 'interface':
       ob = getattr( self, meta_id+'.'+attr['id'], None)
       if ob is not None:
@@ -106,7 +111,7 @@ class ZMSMetaobjManager:
     # Globals.
     # --------
     valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
-    valid_xtypes =    ['constant','delimiter','hint','interface','method','resource']
+    valid_xtypes =    ['constant','delimiter','hint','interface','method','py','resource']
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
@@ -708,7 +713,7 @@ class ZMSMetaobjManager:
         newMultilang = 0
       
       # Defaults for Insert
-      method_types = [ 'method'] + self.valid_zopetypes
+      method_types = [ 'method','py'] + self.valid_zopetypes
       if oldId is None and \
          newType in method_types and \
          (newCustom == '' or type(newCustom) is not str):
@@ -727,8 +732,21 @@ class ZMSMetaobjManager:
           newCustom = ''
           newCustom += '<span tal:replace="here/title_or_id">content title or id</span>'
           newCustom += '<span tal:condition="template/title" tal:replace="template/title">optional template title</span>'
-        elif newType in [ 'Script (Python)']:
-          newCustom = ''
+        elif newType in [ 'py', 'Script (Python)']:
+          newCustom = '## Script (Python) ""\n'
+          newCustom += '##bind container=container\n'
+          newCustom += '##bind context=context\n'
+          newCustom += '##bind namespace=\n'
+          newCustom += '##bind script=script\n'
+          newCustom += '##bind subpath=traverse_subpath\n'
+          newCustom += '##parameters='
+          if newType in ['py']: newCustom += 'zmscontext'
+          newCustom += '\n'
+          newCustom += '##title='
+          if newType in ['py']: newCustom += newType+': '
+          newCustom += newName
+          newCustom += '\n'
+          newCustom += '##\n'
           newCustom += '# --// BO '+ newId + ' //--\n'
           newCustom += '# Example code:\n'
           newCustom += '\n'
@@ -800,6 +818,13 @@ class ZMSMetaobjManager:
             if oldId is not None and id+'.'+oldId in self.objectIds():
               self.manage_delObjects(ids=[id+'.'+oldId])
             self.manage_addDTMLMethod( id+'.'+newId, newType, newName)
+      # Handle pys.
+      if newType == 'py':
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        PythonScript.manage_addPythonScript( self, id+'.'+newId)
+        newOb = getattr(self,id+'.'+newId)
+        newOb.write(newCustom)
       
       # Replace
       ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)
@@ -894,7 +919,6 @@ class ZMSMetaobjManager:
           if f is not None:
             _ziputil.importZip2Zodb( newOb, f.data)
         elif newType == 'Script (Python)':
-          newOb.ZPythonScript_setTitle( newName)
           newOb.write(newCustom)
           roles=[ 'Manager']
           newOb._proxy_roles=tuple(roles)

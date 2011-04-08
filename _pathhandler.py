@@ -187,8 +187,8 @@ class PathHandler:
           f.lang = req.get('lang', self.getPrimaryLanguage())
           return f
         
-        # Pathhandler-Method.
-        if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method']):
+        # Pathhandler-Hook.
+        if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
           if name == TraversalRequest['path_to_handle'][-1]:
             req.set( 'path_', '/'.join(req.get('path_',[])+[name]))
             return self.getObjProperty('pathhandler',req)

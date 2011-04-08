@@ -238,7 +238,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           offs = 1
           c = 0
           for metaObjAttr in metaObjAttrs:
-            if metaObjAttr[ 'type'] in [ 'constant', 'method', 'string', 'select']:
+            if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
                 if type(v) in StringTypes:
@@ -265,7 +265,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           offs = 0
           c = 0
           for metaObjAttr in metaObjAttrs:
-            if metaObjAttr[ 'type'] in [ 'constant', 'method', 'string', 'select']:
+            if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
                 if type(v) in StringTypes:

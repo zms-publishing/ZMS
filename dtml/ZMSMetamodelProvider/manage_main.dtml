@@ -658,6 +658,8 @@ function changeType( el)
              /><dtml-else
               ><img src="<dtml-var MISC_ZMS>ico_method.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
              /></dtml-if
+            ><dtml-elif "oAttr['type']=='py'"
+             ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;" 
             ><dtml-else
              ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle" 
             /></dtml-if
@@ -671,7 +673,7 @@ function changeType( el)
               class="form-small" style="width:79px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
               class="form-small" style="width:79px; border-width=1;"
-             <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
+             <dtml-elif "oAttr['type'] in ['method','py','interface']+valid_zopetypes">
               class="form-fixed" style="width:79px; "
              <dtml-else>
               class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:79px;"
@@ -684,7 +686,7 @@ function changeType( el)
               class="form-small" style="width:119px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:#BBBBBB; border-width=1;"
              <dtml-elif "oAttr['type'] in ['hint']">
               class="form-small" style="width:119px; border-width=1;"
-             <dtml-elif "oAttr['type'] in ['method','interface']+valid_zopetypes">
+             <dtml-elif "oAttr['type'] in ['method','py','interface']+valid_zopetypes">
               class="form-fixed" style="width:119px; "
              <dtml-else>
               class="form-small<dtml-if "oAttr['id'].find('_')==0">-disabled</dtml-if>" style="width:119px;"
@@ -724,7 +726,7 @@ function changeType( el)
           <dtml-comment>
           ##### METHOD #####
           </dtml-comment>
-          <dtml-elif "oAttr['type'] in ['method']+valid_zopetypes">
+          <dtml-elif "oAttr['type'] in ['method','py']+valid_zopetypes">
           <td nowrap="nowrap" colspan="<dtml-if "metaObj['type']=='ZMSRecordSet'">4<dtml-else>5</dtml-if>">
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
            <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>

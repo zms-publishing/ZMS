@@ -952,6 +952,7 @@ class ZMSSqlDb(ZMSObject):
       sqlStatement.append( ')')
       sqlStatement = ' '.join(sqlStatement)
       try:
+        self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         self.executeQuery( sqlStatement)
       except:
         raise _globals.writeError( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement)
@@ -1068,6 +1069,7 @@ class ZMSSqlDb(ZMSObject):
         sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
         sqlStatement = ' '.join(sqlStatement)
         try:
+          self.executeQuery('SET @auth_user=\'%s\''%auth_user)
           self.executeQuery( sqlStatement)
         except:
           raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
@@ -1088,6 +1090,7 @@ class ZMSSqlDb(ZMSObject):
       @rtype: C{None}
       """
       REQUEST = self.REQUEST
+      auth_user = REQUEST.get('AUTHENTICATED_USER')      
       lang = REQUEST['lang']
       if tablename is None:
         raise zExceptions.InternalError("[recordSet_Delete]: tablename must not be None!")
@@ -1101,6 +1104,7 @@ class ZMSSqlDb(ZMSObject):
       sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
       sqlStatement = ' '.join(sqlStatement)
       try:
+        self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         self.executeQuery( sqlStatement)
       except:
         raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement))

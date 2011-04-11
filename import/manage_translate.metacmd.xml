@@ -52,37 +52,25 @@ body.maximized .zmiRenderShort {
 <dtml-var manage_tabs>
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 
+<dtml-call "REQUEST.set('lang1_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):]))">
+<dtml-call "REQUEST.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"> 
+<dtml-call "REQUEST.set('lang1_bk',lang1)"> 
+<dtml-call "REQUEST.set('lang2_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):])[1:])">
+<dtml-call "REQUEST.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"> 
+<dtml-call "REQUEST.set('lang2_bk',lang2)"> 
+
 <form id="<dtml-var fmName>" method="get">
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr valign="top">
 <dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
 <dtml-in "['left','right']">
-<dtml-let si=sequence-item lang_req_key="{'left':'lang','right':'lang2'}[si]">
+<dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
 <td class="zmi-translate-<dtml-var si>" width="50%">
     <select class="form-small" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
-     <dtml-if "getDCCoverage(REQUEST).find('global.')==0">
-      <dtml-in "getDescendantLanguages(getDCCoverage(REQUEST)[len('global.'):],REQUEST)">
-       <dtml-let seq_lang=sequence-item>
-        <dtml-unless "seq_lang in exclude_langs">
-        <dtml-unless "REQUEST.has_key(lang_req_key)"><dtml-call "REQUEST.set(lang_req_key,seq_lang)"></dtml-unless>
-        <option value="<dtml-var seq_lang html_quote>" 
-          <dtml-if "REQUEST.get(lang_req_key)==seq_lang">selected="selected"</dtml-if>
-         ><dtml-var "getLanguageLabel(seq_lang)"><dtml-if "seq_lang==getPrimaryLanguage()"> [*]</dtml-if></option>
-        </dtml-unless>
-       </dtml-let>
-      </dtml-in>
-     <dtml-else>
-      <dtml-let seq_lang="getDCCoverage(REQUEST)[len('local.'):]">
-       <dtml-unless "seq_lang in exclude_langs">
-       <dtml-unless "REQUEST.has_key(lang_req_key)"><dtml-call "REQUEST.set(lang_req_key,seq_lang)"></dtml-unless>
-       <option value="<dtml-var seq_lang html_quote>"
-         <dtml-if "REQUEST.get(lang_req_key)==seq_lang">selected="selected"</dtml-if>
-        ><dtml-var "getLanguageLabel(seq_lang)"><dtml-if "seq_lang==getPrimaryLanguage()"> [*]</dtml-if></option>
-       </dtml-unless>
-      </dtml-let>
-     </dtml-if>
+     <dtml-in "REQUEST.get('%s_options'%lang_req_key)" mapping>
+      <option value="<dtml-var sequence-key>" <dtml-if "_['sequence-key']==REQUEST[lang_req_key]">selected="selected"</dtml-if>><dtml-var label></option>
+     </dtml-in>
     </select>
-    <dtml-call "exclude_langs.append(lang)">
     <dtml-call "REQUEST.set(lang_req_key+'_bk',REQUEST.get(lang_req_key))">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key))">
    <div id="<dtml-var id>" class="zmi-translate-element">
@@ -102,7 +90,7 @@ body.maximized .zmiRenderShort {
 <dtml-in childNodes>
  <tr valign="top">
   <dtml-in "['left','right']">
-   <dtml-let si=sequence-item lang_req_key="{'left':'lang','right':'lang2'}[si]">
+   <dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
     <td class="zmi-translate-<dtml-var si>">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">

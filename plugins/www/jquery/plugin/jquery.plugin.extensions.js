@@ -70,8 +70,12 @@ $(function(){
 					}
 				}
 				href += '/manage_main';
-				if (self.location.href.indexOf('/manage')>0
-					&& self.location.href.indexOf('/manage_translate')<0) {
+				if (self.location.href.indexOf('/manage_translate')>0) {
+					href += '_iframe';
+					href += '?lang='+lang;
+					zmiIframe(href,{});
+				}
+				else if (self.location.href.indexOf('/manage')>0) {
 					self.location.href = href;
 				}
 				else {

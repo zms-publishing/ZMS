@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-04-11 [zmsdev] Replaced fancybox by jquery ui dialog.
 2011-28-01 [fhoffmann] Revised for fancybox transparency css
 2011-21-01 [fhoffmann] Revised for maximize css
 2011-01-17 [zmsdev] Revised table-structure: one row per object
@@ -46,13 +47,6 @@
 body.maximized .zmiRenderShort {
 	width:auto !important;
 }
-#fancybox-overlay { 
-	background-color:transparent !important;
-	opacity:0 !important;
-	filter: alpha(opacity = 0) !important;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)" !important;
-}
-#fancybox-wrap { cursor:move; }
 </style>
 </head>
 <dtml-var manage_tabs>

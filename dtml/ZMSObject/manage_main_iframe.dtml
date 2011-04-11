@@ -3,8 +3,12 @@
 		<script>
 			$(function() {
 				<dtml-if manage_tabs_message>
-				parent.$.fancybox.close();
-				parent.location.reload();
+					if (parent.$.fancybox) parent.$.fancybox.close();
+					if (parent.$('#zmiIframe')) parent.$('#zmiIframe').dialog("close");
+					parent.location.reload();
+				<dtml-else>
+					parent.zmiIframeResize(getBodyDimensions());
+					if (parent.$('#zmiIframe')) parent.$('#zmiIframe').dialog("option","title",document.title);
 				</dtml-if>
 			});
 		</script>
@@ -39,7 +43,7 @@
 					</form>
 				</dtml-if>
 			</dtml-let>
-		</div>
+		</div><!-- .zmi -->
 	</body><!-- .zmi -->
 </html>
 </dtml-let>

@@ -15,7 +15,7 @@
 		</style>
 		<script>
 			$(function(){
-				self.parent.zmiFancyboxResizeInnerFrame("iframe#manage_add",getBodyDimensions());
+				self.parent.zmiIframeResize(getBodyDimensions());
 			});
 		</script>
 	</head>

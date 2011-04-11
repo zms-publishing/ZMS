@@ -19,7 +19,7 @@
  |&nbsp;<dtml-var "float(int((ZopeTime().timeTime()-ZMI_TIME)*100.0)/100.0)"> secs.
  </dtml-if>
  <dtml-if meta_id>
- |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <span id="strong" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',$(this).attr('title'))" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></span>
+ |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <span id="strong" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',{'title':$(this).attr('title')})" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></span>
  </dtml-if>
  </form>
 </div><!-- .zmi_col_right -->

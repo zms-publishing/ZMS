@@ -5,7 +5,7 @@
            objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
            key="objAttr['id']"
            required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
-           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'resource']"
+           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'resource']"
            fmName="'form0'"
            elName="getObjAttrName(objAttr,lang)"
            elLabel="getObjAttrLabel(objAttr)"

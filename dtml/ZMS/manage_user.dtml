@@ -2,7 +2,7 @@
 		<style>
 			body.zmi {background-color:#EEE!important;padding:10px;}
 		</style>
-		<script language="JavaScript">
+		<script>
 			function form0Submit(fm) {
 				var b = true;
 				if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
@@ -15,8 +15,11 @@
 						}
 					}
 				}
-			return b;
-		}
+				return b;
+			}
+			$(function() {
+				parent.zmiIframeResize(getBodyDimensions());
+			});
 		</script>
 	</head>
 	<body class="zmi ui-widget-content ui-corner-all">

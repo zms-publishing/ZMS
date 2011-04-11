@@ -3,26 +3,27 @@
 // ############################################################################
 
 /**
- * Resize iframe height to content-height:
- * call parent.resizeIframe(document.body.scrollHeight) from iframe!
+ * Open link in iframe (jQuery UI Dialog).
  */
-function zmiIframeResize(s, newHeight) {
-	$(s).css({height:parseInt(newHeight)+10+'px'});
+function zmiIframe(href, opt) {
+	if ($('#zmiIframe').length==0) {
+		$('body').append('<div id="zmiIframe"></div>');
+	}
+	opt["autoOpen"] = false;
+	opt["modal"] = true;
+	opt["height"] = "auto";
+	opt["width"] = "auto";
+	$('#zmiIframe')
+		.dialog(opt)
+		.html('<iframe src="'+href+'" style="border:0;"></iframe>')
+		.dialog('open');
 }
 
 /**
- * Open link in iframe.
+ * Resize iframe.
  */
-function zmiIframe(href, title) {
-	showFancybox({
-		'hideOnOverlayClick':false,
-		'href':href,
-		'title':title,
-		'type':'iframe',
-		'autoDimensions':true,
-		'transitionIn':'fade',
-		'transitionOut':'fade'
-	});
+function zmiIframeResize(dims) {
+	$("#zmiIframe iframe").css({height:parseInt(dims.height)+'px',width:parseInt(dims.width)+'px'});
 }
 
 /**
@@ -120,19 +121,6 @@ $(function(){
 });
 
 
-function zmiFancyboxResizeInnerFrame(s,dims) {
-	if (s.indexOf("#fancybox")==0){
-		// Works with jquery.fancybox-1.3.1: has to be reworked for 1.3.4!
-		var deltah = $('#fancybox-wrap').height()-$('#fancybox-inner').height();
-		$('#fancybox-inner').height(dims.height);
-		$('#fancybox-wrap').height(dims.height+deltah);
-	}
-	else {
-		$(s).css({height:parseInt(dims.height)+'px',width:parseInt(dims.width)+'px'});
-	}
-}
-
-
 // ############################################################################
 // ### ZMI Action-Lists
 // ############################################################################
@@ -227,33 +215,12 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 			href += q + $(inputs[i]).attr('name') + '=' + $(inputs[i]).val();
 			q = '&amp;';
 		}
-
-		if ($('#zmiDialog').length==0) {
-			$('body').append('<div id="zmiDialog"></div>');
-		}
-		$('#zmiDialog').dialog({
-				autoOpen: false,
-				modal: true,
-				title: getZMILangStr('BTN_INSERT'),
-				height: 'auto',
-				width: 'auto',
+		// Show add-dialog.
+		zmiIframe(href,{
+				title:getZMILangStr('BTN_INSERT'),
 				close:function(event,ui) {
 					$('tr#tr_manage_addProduct').remove();
 				}
-			}).html('<iframe id="manage_add" src="'+href+'" style="border:0;"></iframe>').dialog('open');
-		return;
-
-		showFancybox({
-			'hideOnOverlayClick':false,
-			'href':href,
-			'title':custom,
-			'transitionIn':'fade',
-			'transitionOut':'fade',
-			'type':'iframe',
-			'width':819,
-			'onClosed':function() {
-				$('tr#tr_manage_addProduct').remove();
-			}
 		});
 	}
 	else {

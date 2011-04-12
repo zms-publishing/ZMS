@@ -905,6 +905,7 @@ class ZMSSqlDb(ZMSObject):
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
+      da = self.getDA()
       if tablename is None:
         raise zExceptions.InternalError("[recordSet_Insert]: tablename must not be None!")
       tabledefs = self.getEntities()
@@ -952,7 +953,11 @@ class ZMSSqlDb(ZMSObject):
       sqlStatement.append( ')')
       sqlStatement = ' '.join(sqlStatement)
       try:
-        self.executeQuery('SET @auth_user=\'%s\''%auth_user)
+        if da.meta_type == 'Z MySQL Database Connection':
+          self.executeQuery('SET @auth_user=\'%s\''%auth_user)
+      except:
+        raise _globals.writeError( self, '[recordSet_Insert]: can\'t set auth_user variable')
+      try:
         self.executeQuery( sqlStatement)
       except:
         raise _globals.writeError( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement)
@@ -992,6 +997,7 @@ class ZMSSqlDb(ZMSObject):
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
+      da = self.getDA()
       if tablename is None:
         raise "[recordSet_Update]: tablename must not be None!"
       tabledefs = self.getEntities()
@@ -1069,6 +1075,11 @@ class ZMSSqlDb(ZMSObject):
         sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
         sqlStatement = ' '.join(sqlStatement)
         try:
+          if da.meta_type == 'Z MySQL Database Connection':
+            self.executeQuery('SET @auth_user=\'%s\''%auth_user)
+        except:
+          raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))
+        try:
           self.executeQuery('SET @auth_user=\'%s\''%auth_user)
           self.executeQuery( sqlStatement)
         except:
@@ -1092,6 +1103,7 @@ class ZMSSqlDb(ZMSObject):
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')      
       lang = REQUEST['lang']
+      da = self.getDA()
       if tablename is None:
         raise zExceptions.InternalError("[recordSet_Delete]: tablename must not be None!")
       tabledefs = self.getEntities()
@@ -1103,6 +1115,11 @@ class ZMSSqlDb(ZMSObject):
       sqlStatement.append( 'DELETE FROM %s '%tablename)
       sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
       sqlStatement = ' '.join(sqlStatement)
+      try:
+        if da.meta_type == 'Z MySQL Database Connection':
+          self.executeQuery('SET @auth_user=\'%s\''%auth_user)
+      except:
+        raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))      
       try:
         self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         self.executeQuery( sqlStatement)

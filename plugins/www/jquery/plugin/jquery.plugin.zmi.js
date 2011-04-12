@@ -23,7 +23,11 @@ function zmiIframe(href, opt) {
  * Resize iframe.
  */
 function zmiIframeResize(dims) {
-	$("#zmiIframe iframe").css({height:parseInt(dims.height)+'px',width:parseInt(dims.width)+'px'});
+	$("#zmiIframe iframe").css({height:(parseInt(dims.height)+4)+'px',width:(parseInt(dims.width)+4)+'px'});
+	if(navigator.userAgent.indexOf("MSIE 6.0")>0) {
+		$('#zmiIframe').dialog("option","height",parseInt(dims.height)+50);
+		$('#zmiIframe').dialog("option","width",parseInt(dims.width)+25);
+	}
 }
 
 /**

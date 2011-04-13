@@ -681,7 +681,7 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
-        'manage','manage_main','manage_workspace',
+        'manage','manage_main','manage_main_iframe','manage_workspace',
         'manage_addZMSModule',
         'manage_deleteObjs','manage_undoObjs',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',

@@ -64,7 +64,7 @@
 ### Title
 ################################################################################
 </dtml-comment>
-<title>ZMS | <dtml-if meta_id><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if><dtml-else><dtml-var title_or_id></dtml-if></title>
+<title>ZMS | <dtml-if meta_id><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if><dtml-else><dtml-var title_or_id></dtml-if> | <dtml-var lang></title>
 
 <dtml-comment>
 ################################################################################

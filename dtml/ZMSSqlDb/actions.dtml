@@ -34,12 +34,14 @@
       ></dtml-unless
      ></dtml-unless
     ></dtml-in
-    ><dtml-call "REQUEST.set('rowid',recordSet_Insert(SESSION[sessqentitykey],values))"
-    ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_INSERTED')%getZMILangStr('ATTR_RECORD')+'<br/>')"
-    ><dtml-if rowid>
-     <!-- ### INTERSECTIONS -->
-     <dtml-var "intersection_sql(_,_,rowid=rowid)">
-    </dtml-if>
+    ><dtml-let lrowid="recordSet_Insert(SESSION[sessqentitykey],values)"
+     ><dtml-call "REQUEST.set('rowid',lrowid)"
+     ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_INSERTED')%getZMILangStr('ATTR_RECORD')+'<br/>')"
+     ><dtml-if rowid>
+      <!-- ### INTERSECTIONS -->
+      <dtml-var "intersection_sql(_,_,rowid=lrowid)">
+     </dtml-if>
+    </dtml-let>
    </dtml-let>
   </dtml-if>
   <dtml-call "REQUEST.set('target',url_append_params(URL,{'lang':lang, 'qorder':qorder, 'qorderdir':qorderdir, 'qstart':qstart, 'manage_tabs_message':message}))">
@@ -99,12 +101,14 @@
       ></dtml-unless
      ></dtml-unless
     ></dtml-in
-    ><dtml-call "REQUEST.set('rowid',recordSet_Update(SESSION[sessqentitykey],rowid,values,old_values))"
-    ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_CHANGED')+'<br/>')"
-    ><dtml-if rowid>
-     <!-- ### INTERSECTIONS -->
-     <dtml-var "intersection_sql(_,_,rowid=rowid)">
-    </dtml-if>
+    ><dtml-let lrowid="recordSet_Update(SESSION[sessqentitykey],rowid,values,old_values)"
+     ><dtml-call "REQUEST.set('rowid',lrowid)"
+     ><dtml-call "REQUEST.set('message',message+getZMILangStr('MSG_CHANGED')+'<br/>')"
+     ><dtml-if rowid>
+      <!-- ### INTERSECTIONS -->
+      <dtml-var "intersection_sql(_,_,rowid=rowid)">
+     </dtml-if>
+    </dtml-let>
    </dtml-let>
   </dtml-if>
   <!-- ### Return -->

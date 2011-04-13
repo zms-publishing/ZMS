@@ -1,11 +1,6 @@
 ################################################################################
 # zmslog.py
 #
-# $Id: zmslog.py,v 1.2 2004/11/30 20:04:16 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.2 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -189,7 +184,7 @@ class ZMSLog(ZMSItem.ZMSItem):
         
       elif REQUEST.get("btn") == "Upload":
         obj = REQUEST['file']
-        type = REQUEST['type']
+        type = 'b'
         filename = "%s%s%s"%(path,os.sep,_fileutil.extractFilename(obj.filename))
         _fileutil.exportObj( obj, filename, type)
         message = "Upload complete."

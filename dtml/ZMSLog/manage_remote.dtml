@@ -87,13 +87,6 @@
     </tr>
     <tr valign="top">
       <td class="form-label">&nbsp;</td>
-      <td class="form-element">
-        <input class="form-element" type="radio" name="type" value="" checked="checked">&nbsp;ASCII
-        <input class="form-element" type="radio" name="type" value="b">&nbsp;Binary
-      </td>
-    </tr>
-    <tr valign="top">
-      <td class="form-label">&nbsp;</td>
       <td class="form-element"><input class="form-element" type="submit" name="btn" value="Upload" onclick="uploadBtnClick()"></td>
     </tr>
     <tr>

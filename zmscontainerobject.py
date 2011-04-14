@@ -1,11 +1,6 @@
 ################################################################################
 # zmscontainerobject.py
 #
-# $Id: zmscontainerobject.py,v 1.10 2004/11/24 20:54:37 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.10 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -569,8 +564,11 @@ class ZMSContainerObject(
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self,self))
       else:
-        context = getattr(container,context_id,None)
         attr_id = _globals.id_prefix(context_id)
+        if attr_id == context_id:
+            context = None
+        else:
+            context = getattr(container,context_id,None)
         actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
         if context is not None:
           objPath = context.id+'/'

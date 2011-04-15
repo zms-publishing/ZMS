@@ -53,7 +53,7 @@ class ZMSItem(
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_dtpref', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 
+		'manage_dtpref', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 'manage_main_iframe' 
 		)
     __viewPermissions__ = (
 		'manage_menu',
@@ -75,7 +75,7 @@ class ZMSItem(
     manage_bodyTop = HTMLFile('dtml/object/manage_bodytop', globals()) # ZMI bodyTop
     manage_page_header = HTMLFile('dtml/object/manage_page_header', globals()) # ZMI Page Header
     manage_page_footer = HTMLFile('dtml/object/manage_page_footer', globals()) # ZMI Page Footer
-
+    manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals()) # ZMI Iframe
 
     # --------------------------------------------------------------------------
     #  ZMSItem.display_icon:

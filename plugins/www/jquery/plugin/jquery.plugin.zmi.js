@@ -147,7 +147,7 @@ function zmiActionPopulate(el)
 	
 	// Get params.
 	var action = self.location.href;
-	action = action.substr(0,action.lastIndexOf('?')>0?action.substr(0,action.lastIndexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
+	action = action.substr(0,action.indexOf('?')>0?action.substr(0,action.indexOf('?')).lastIndexOf('/'):action.lastIndexOf('/'));
 	var extrapath = '';
 	var $anchor = $('a:first',$(el).parents('td')[0]);
 	if ($anchor) {

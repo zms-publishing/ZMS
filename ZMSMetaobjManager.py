@@ -1053,11 +1053,11 @@ class ZMSMetaobjManager:
     ############################################################################
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
         """ ZMSMetaobjManager.manage_changeProperties """
+        old_model = copy.deepcopy(self.model)
         message = ''
         extra = {}
         t0 = time.time()
         id = REQUEST.get('id','').strip()
-        sync_id = None
         target = 'manage_main'
         REQUEST.set( '__get_metaobjs__', True)
         
@@ -1067,7 +1067,6 @@ class ZMSMetaobjManager:
           # -------
           # Delete Object.
           if key == 'obj' and btn == self.getZMILangStr('BTN_DELETE'):
-            sync_id = id
             ids = [id]
             metaObj = self.getMetaobj( id)
             if metaObj['type'] == 'ZMSPackage':
@@ -1091,7 +1090,6 @@ class ZMSMetaobjManager:
           # Change.
           # -------
           elif key == 'all' and btn == self.getZMILangStr('BTN_SAVE'):
-            sync_id = id
             savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
             # Change Object.
             newValue = {}
@@ -1137,7 +1135,6 @@ class ZMSMetaobjManager:
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')
           elif key == 'obj' and btn == self.getZMILangStr('BTN_SAVE'):
-            sync_id = id
             # Change Acquired-Object.
             subobjects = REQUEST.get('obj_subobjects',0)
             self.acquireMetaobj( id, subobjects)
@@ -1151,12 +1148,11 @@ class ZMSMetaobjManager:
             if metaOb.get('acquired',0) == 1:
               xml = self.getPortalMaster().metaobj_manager.exportMetaobjXml([id])
               self.importMetaobjXml(xml=xml)
-              message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%id)
+              message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%id)
           
           # Export.
           # -------
           elif btn == self.getZMILangStr('BTN_EXPORT'):
-            sync_id = False
             ids = REQUEST.get('ids',[])
             return self.exportMetaobjXml(ids,REQUEST,RESPONSE)
           
@@ -1213,7 +1209,6 @@ class ZMSMetaobjManager:
               newDefault = REQUEST.get('_default','')
               message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
               message += self.getZMILangStr('MSG_INSERTED')%attr_id
-            sync_id = id
           
           # Acquire.
           # --------
@@ -1268,23 +1263,35 @@ class ZMSMetaobjManager:
                 extra['section'] = 'import'
                 extra['temp_import_file_id'] = temp_id
                 extra['temp_import_zms_system:int'] = zms_system
-                sync_id = False
               else:
                 createIdsFilter = REQUEST.get('createIdsFilter')
-                sync_id = self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
-                message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+                self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
+                message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
           
           # Move to.
           # --------
           elif key == 'attr' and btn == 'move_to':
-            sync_id = False
             pos = REQUEST['pos']
             attr_id = REQUEST['attr_id']
             self.moveMetaobjAttr( id, attr_id, pos)
-            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%attr_id),(pos+1))
+            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id),(pos+1))
           
           ##### SYNCHRONIZE ####
-          if sync_id != False:
+          sync_id = []
+          for k in self.model.keys():
+            if old_model.has_key(k):
+              d = self.model[k]
+              valid_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in self.valid_types, d.get('attrs',[])))
+              valid_types_attrs.sort()
+              old_d = old_model[k]
+              old_valid_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in self.valid_types, old_d.get('attrs',[])))
+              old_valid_types_attrs.sort()
+              if valid_types_attrs != old_valid_types_attrs:
+                sync_id.append(k)
+            else:
+              sync_id.append(k)
+          if sync_id:
+            _globals.writeBlock( self, '[ZMSMetaobjManager.manage_changeProperties]: sync_id=%s'%str(sync_id))
             self.synchronizeObjAttrs( sync_id)
         
         # Handle exception.

@@ -1,0 +1,110 @@
+<dtml-comment>
+################################################################################
+###  CKEditor
+###  please refer to http://ckeditor.com/
+###
+###  Conf-Properties:
+###  plugin.rte.ckeditor.Height=400
+###  plugin.rte.ckeditor.Config
+################################################################################
+</dtml-comment>
+
+<dtml-unless "REQUEST.get('f_zmiRichtextOnSubmitEventHandler')">
+<script type="text/javascript">
+<!--//
+
+ var zmiRichtextElNames = new Array();
+ <dtml-call "REQUEST.set('count',0)"
+ ><dtml-in "getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id)).keys()"
+  ><dtml-let key=sequence-item obj_attr="getObjAttr(key,REQUEST.get('ZMS_INSERT',meta_id))"
+   ><dtml-if "obj_attr.get('type',None)=='richtext'"
+    >zmiRichtextElNames[<dtml-var count>]='<dtml-var "getObjAttrName(obj_attr,lang)">';<dtml-call "REQUEST.set('count',count+1)"
+    ></dtml-if>
+   </dtml-let
+ ></dtml-in
+ ><dtml-if "count==0"
+  >zmiRichtextElNames[<dtml-var count>]='<dtml-var "REQUEST.get('elName')">';<dtml-call "REQUEST.set('count',count+1)"
+ ></dtml-if>
+
+  function zmiStandardOnSubmitEventHandler() {
+    for (e in zmiRichtextElNames) {
+      var elName = zmiRichtextElNames[e];
+      var el = document.getElementById('zmiStandardEditor'+elName);
+      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+        try {
+          //var ck = CKeditorAPI.GetInstance('editor_'+elName);
+          //ck.SetData(data);
+          var data = $('#'+elName).val();
+          $( '#editor_'+elName ).val( data);
+        }
+        catch(er) {
+        }
+      }
+    }
+  }
+
+  <dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
+  function zmiRichtextOnSubmitEventHandler() {
+    for (e in zmiRichtextElNames) {
+      var elName = zmiRichtextElNames[e];
+      var el = document.getElementById('zmiRichtextEditor'+elName);
+      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+        try {
+          // Get value from editor.
+          //var ck = CKeditorAPI.GetInstance('editor_'+elName);
+          //var data = ck.GetData();
+          var data = $( '#editor_'+elName ).val();          
+          // Assign value to textarea.
+          $('#'+elName).val( data);
+        }
+        catch(er) {
+          $('#'+elName).val( $('#alternate_'+elName).val());
+        }
+      }
+    }
+  }
+
+//-->
+</script>
+<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
+</dtml-unless>
+
+<div id="editor_<dtml-var "REQUEST.get('elName')">"></div>
+<script type="text/javascript" src="/++resource++zms_/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/++resource++zms_/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript">
+  var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
+/*
+  window.onload = function()	{
+    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">',
+    {
+        toolbar : 'Basic'
+    });
+  };
+
+  function CKeditor_OnComplete( editorInstance )
+  {
+    var elName = editorInstance.Name.substr('editor_'.length);
+    var data = $('#'+elName).val();
+    editorInstance.SetData(data);
+  }
+*/
+  
+  $(function() {
+   
+    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).ckeditor();
+    var ck = $( '#editor_<dtml-var "REQUEST.get('elName')">' ).ckeditorGet();
+    ck.Height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+  	<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">ck.Config["CustomConfigurationsPath"] = "<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">";</dtml-if>
+    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ) ;
+/* 
+    var div = document.getElementById("editor_<dtml-var "REQUEST.get('elName')">");
+    var ck = new CKeditor("editor_<dtml-var "REQUEST.get('elName')">");
+    ck.Height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+  	<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">ck.Config["CustomConfigurationsPath"] = "<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">";</dtml-if>
+    div.innerHTML = ck.CreateHtml();
+*/
+  });
+
+//-->
+</script>

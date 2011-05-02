@@ -2,6 +2,9 @@
 ################################################################################
 ###  CKEditor
 ###  please refer to http://ckeditor.com/
+###  Important Note: The folder "lang" in the original distribution has been
+###  renamed into "lingua" and all references to the path "lang/" changed into
+###  "lingua/" due to Zope restrictions on subfolders named "lang".
 ###
 ###  Conf-Properties:
 ###  plugin.rte.ckeditor.Height=400
@@ -32,10 +35,8 @@
       var el = document.getElementById('zmiStandardEditor'+elName);
       if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
         try {
-          //var ck = CKeditorAPI.GetInstance('editor_'+elName);
-          //ck.SetData(data);
           var data = $('#'+elName).val();
-          $( '#editor_'+elName ).val( data);
+          CKEDITOR.instances['editor_'+elName].setData( data);
         }
         catch(er) {
         }
@@ -51,9 +52,7 @@
       if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
         try {
           // Get value from editor.
-          //var ck = CKeditorAPI.GetInstance('editor_'+elName);
-          //var data = ck.GetData();
-          var data = $( '#editor_'+elName ).val();          
+          var data = CKEDITOR.instances['editor_'+elName].getData();          
           // Assign value to textarea.
           $('#'+elName).val( data);
         }
@@ -69,41 +68,22 @@
 <dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
 </dtml-unless>
 
-<div id="editor_<dtml-var "REQUEST.get('elName')">"></div>
+<textarea id="editor_<dtml-var "REQUEST.get('elName')">"></textarea>
 <script type="text/javascript" src="/++resource++zms_/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/++resource++zms_/ckeditor/adapters/jquery.js"></script>
 <script type="text/javascript">
   var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
-/*
-  window.onload = function()	{
-    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">',
-    {
-        toolbar : 'Basic'
-    });
-  };
-
-  function CKeditor_OnComplete( editorInstance )
-  {
-    var elName = editorInstance.Name.substr('editor_'.length);
-    var data = $('#'+elName).val();
-    editorInstance.SetData(data);
-  }
-*/
   
   $(function() {
-   
-    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).ckeditor();
-    var ck = $( '#editor_<dtml-var "REQUEST.get('elName')">' ).ckeditorGet();
-    ck.Height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-  	<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">ck.Config["CustomConfigurationsPath"] = "<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">";</dtml-if>
-    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ) ;
-/* 
-    var div = document.getElementById("editor_<dtml-var "REQUEST.get('elName')">");
-    var ck = new CKeditor("editor_<dtml-var "REQUEST.get('elName')">");
-    ck.Height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-  	<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">ck.Config["CustomConfigurationsPath"] = "<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">";</dtml-if>
-    div.innerHTML = ck.CreateHtml();
-*/
+    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
+    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">', 
+  	  <dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')"
+  	    ><dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')"
+  	  ><dtml-else>
+        { toolbar: 'ZMSBasicToolbar' }	  
+  	  </dtml-if> );
+    CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+    CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
+
   });
 
 //-->

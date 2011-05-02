@@ -508,6 +508,10 @@ td input.ui-button {
 .zmi-tabs ul li span {
 	float:left;
 }
+.zmi-top-active {
+	font-weight:bold!important;
+	color:#F90;
+}
 
 .datepicker,.datetimepicker {
 	background: white url(/misc_/zms/calendar.png) top right no-repeat;

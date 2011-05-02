@@ -90,6 +90,7 @@ td input.ui-button{padding:2px 6px !important;margin:3px 0px 0px 0px;color:#222 
 .zmi-tabs ul li{float:left;margin-right:1em}
 .zmi-tabs .zmi-tabs-active a{font-weight:bold!important}
 .zmi-tabs ul li span{float:left}
+.zmi-top-active{font-weight:bold!important;color:#F90}
 .datepicker,.datetimepicker{background:white url(/misc_/zms/calendar.png) top right no-repeat}
 .zmiDisplayIcon{margin:2px;width:16px;height:16px;border:none;vertical-align:middle}
 .form-disabled{font-family:Arial,sans-serif;font-size:12px;color:gray}

@@ -248,7 +248,7 @@ $(function() {
    <td colspan="<dtml-var colspan>"><dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_DICTIONARY'))"></td>
   </tr>
   <tr class="zmiNeutralColorStrong0" valign="middle">
-   <td><a href="javascript:exportBtnClick()"><img src="<dtml-var MISC_ZMS>mime_type.text_xml.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a></td>
+   <td><a href="javascript:exportBtnClick()"><img src="<dtml-var MISC_ZMS>mime_type.application_x_excel.gif" title="<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote> (XML)" border="1"></a></td>
    <td class="form-small"><b><dtml-var "getZMILangStr('ATTR_KEY')"></b></td>
    <dtml-in langIds>
     <dtml-let langId=sequence-item>

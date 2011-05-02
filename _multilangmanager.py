@@ -44,7 +44,33 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
 
 def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+  if type(xml) is not str:
+    xml = xml.read()
   value = self.parseXmlString(xml)
+  if value is None:
+    value = []
+    builder = _xmllib.XmlBuilder()
+    nWorkbook = builder.parse(xml)
+    for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):
+      for nTable in _xmllib.xmlNodeSet(nWorksheet,'Table'):
+        r = 0
+        keys = []
+        for nRow in _xmllib.xmlNodeSet(nTable,'Row'):
+          c = 0
+          for nCell in _xmllib.xmlNodeSet(nRow,'Cell'):
+            for nData in _xmllib.xmlNodeSet(nCell,'Data'):
+              if r == 0:
+                if c == 0:
+                  key = 'key'
+                else:
+                  key = nData['cdata']
+                keys.append(key)
+              else:
+                if c == 0:
+                  value.append({})
+                value[-1][keys[c]] = nData['cdata']
+              c += 1
+          r += 1
   if type(value) is list:
     for item in value:
       _importXml( self, item, zms_system, createIfNotExists)
@@ -667,13 +693,10 @@ class MultiLanguageManager:
             item['key'] = id
             if id in ids or len(ids) == 0:
               value.append(item)
-          if len(value)==1:
-            value = value[0]
-          content_type = 'text/xml; charset=utf-8'
-          filename = 'export.langdict.xml'
-          export = self.getXmlHeader() + self.toXmlString(value,1)
-          RESPONSE.setHeader('Content-Type',content_type)
-          RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+          REQUEST.set('context',self)
+          REQUEST.set('value',value)
+          tmplt = HTMLFile('dtml/ZMS/manage_exportlanguages', globals())
+          export = tmplt(self,REQUEST)
           return export
         
         # Import.

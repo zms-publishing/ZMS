@@ -460,7 +460,7 @@ function changeType( el)
       <td><div class="form-element"><dtml-var "getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())"></div></td>
       <td align="center"
        ><dtml-if "metaObj['type']=='ZMSPackage'"
-        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=int(metaObj.get('subobjects',1)==1),enabled=True,REQUEST=REQUEST)"
+        ><dtml-var "getCheckbox(fmName='form0',elName='obj_subobjects:int',value=_.int(metaObj.get('subobjects',1)==1),enabled=True,REQUEST=REQUEST)"
         ><div class="form-small"><dtml-var "getZMILangStr('ATTR_SUBOBJECTS')"></div
        ><dtml-else>&nbsp;</dtml-if
       ></td>
@@ -766,15 +766,15 @@ function changeType( el)
           </td>
           <td title="<dtml-var "getZMILangStr('ATTR_MANDATORY')">" align="center"
            ><dtml-if "oAttr['type'] in metaObjIds+['*']"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=int(oAttr.get('mandatory',0)==1),enabled=metaObj['type']=='ZMSRecordSet' and not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=_.int(oAttr.get('mandatory',0)==1),enabled=metaObj['type']=='ZMSRecordSet' and not oAttr['meta_type'],REQUEST=REQUEST)"
            ><dtml-else
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=int(oAttr.get('mandatory',0)==1),enabled=not oAttr['type'] in ['constant'] and not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_mandatory_%s:int'%oAttr['id'],value=_.int(oAttr.get('mandatory',0)==1),enabled=not oAttr['type'] in ['constant'] and not oAttr['meta_type'],REQUEST=REQUEST)"
            ></dtml-if
           ></td>
           <dtml-if "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" align="center"
             ><dtml-if "oAttr['type'] not in ['constant']"
-             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
+             ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=_.int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
             ><dtml-else
              ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s_:int'%oAttr['id'],value=False,enabled=False,REQUEST=REQUEST)"
             ></dtml-if
@@ -783,12 +783,12 @@ function changeType( el)
            <td>&nbsp;</td>
           <dtml-else>
            <td title="<dtml-var "getZMILangStr('ATTR_MULTILANG')">" align="center"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%oAttr['id'],value=int(oAttr.get('multilang',1)==1 and not oAttr['type'] in ['constant']),enabled=not oAttr['meta_type'],REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_multilang_%s:int'%oAttr['id'],value=_.int(oAttr.get('multilang',1)==1 and not oAttr['type'] in ['constant']),enabled=not oAttr['meta_type'],REQUEST=REQUEST)"
            ></td>
           </dtml-if>
           <dtml-unless "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">" align="center"
-            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
+            ><dtml-var "getCheckbox(fmName='form0',elName='attr_repetitive_%s:int'%oAttr['id'],value=_.int(oAttr.get('repetitive',1)==1),enabled=False,REQUEST=REQUEST)"
            ></td>
           </dtml-unless>
           <td class="form-small" nowrap="nowrap" width="150"
@@ -949,7 +949,7 @@ function changeType( el)
          <tr valign="middle" class="zmiTableRowEven">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>
           <dtml-if "action=='insert'">
-           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
+           <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=_.int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
            <td class="form-small">
             <textarea class="form-small" name="access_<dtml-var action>_custom" cols="80" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaObj.get('access',{}).get('%s_custom'%action,'{$}')" html_quote></textarea>
             <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=access_<dtml-var action>_custom&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a>

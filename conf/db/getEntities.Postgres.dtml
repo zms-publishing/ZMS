@@ -40,7 +40,7 @@
   <dtml-if "colType.find('char')>0">
    <dtml-call "REQUEST.set('colType','string')">
   <dtml-elif "colType.find('int')>0">
-   <dtml-call "REQUEST.set('colSize',int(colType[3:]))">
+   <dtml-call "REQUEST.set('colSize',_.int(colType[3:]))">
    <dtml-call "REQUEST.set('colType','int')">
   </dtml-if> 
   <dtml-call "operator_setitem(column,'key',column_name)">

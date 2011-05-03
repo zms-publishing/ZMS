@@ -230,7 +230,7 @@ function onResize() {
           <tr valign="middle">
            <dtml-in "getActivities()" mapping>
            <dtml-let sidx=sequence-index>
-            <td align="center" class="form-small" width="<dtml-var "int(100/len(getActivities()))">%" nowrap="nowrap"
+            <td align="center" class="form-small" width="<dtml-var "_.int(100/len(getActivities()))">%" nowrap="nowrap"
              ><dtml-if "id==itm['id']"
               ><table cellspacing="0" cellpadding="0" border="0" width="100%"
               ><tr

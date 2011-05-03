@@ -242,7 +242,7 @@
      </dtml-comment>
        <dtml-else>
         <dtml-try>
-         <dtml-let sv="str(v)" u="string_maxlen(sv,max(int(200.0/len(grid_cols)),grid_col.get('minsize',20)))"
+         <dtml-let sv="str(v)" u="string_maxlen(sv,max(_.int(200.0/len(grid_cols)),grid_col.get('minsize',20)))"
           ><dtml-if "sv.startswith('Set([') and sv.endswith('])')"
            ><dtml-var "', '.join(map(lambda x: str(x), list(v)))"
           ><dtml-else

@@ -168,10 +168,10 @@ function processResponse()
  ><dtml-call "REQUEST.set( 'seq_end', False)"
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items
-  ><dtml-let ob=sequence-item index=sequence-index access="hasAccess(REQUEST)" highlight="int(ob in breadcrumbs)"
+  ><dtml-let ob=sequence-item index=sequence-index access="hasAccess(REQUEST)" highlight="_.int(ob in breadcrumbs)"
    ><dtml-if ob
    ><dtml-unless "seq_index==0 or seq_end"
-    ><dtml-call "REQUEST.set( 'offs_level', offs_level+int(meta_type=='ZMS'))"
+    ><dtml-call "REQUEST.set( 'offs_level', offs_level+_.int(meta_type=='ZMS'))"
    ></dtml-unless
    ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id,ob.id))"
    ><dtml-call "REQUEST.set( 'ob_level', getLevel()+offs_level)"

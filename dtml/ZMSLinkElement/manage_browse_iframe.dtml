@@ -539,8 +539,8 @@ function followHref( href, extra)
        ><span id="div_img_<dtml-var id>" class="form-small" style="display:none;background-color:#FFFFE0;border:1px solid gray;padding:3px;"
         ><img src="<dtml-var "value.getHref(REQUEST)">" border="1" style="margin:1px;background-image:url(<dtml-var MISC_ZMS>bg_imgpreview.gif);" 
          <dtml-try>
-          <dtml-if "max([int(value.width),int(value.height)])>80">
-           <dtml-if "int(value.width)>int(value.height)">
+          <dtml-if "max([_.int(value.width),_.int(value.height)])>80">
+           <dtml-if "_.int(value.width)>_.int(value.height)">
             width="80"
            <dtml-else>
             height="80"

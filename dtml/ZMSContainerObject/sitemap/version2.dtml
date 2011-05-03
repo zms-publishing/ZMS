@@ -42,7 +42,7 @@
 
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items
-  ><dtml-let ob=sequence-item index=sequence-index access="hasAccess(REQUEST)" highlight="int(ob in breadcrumbs)"
+  ><dtml-let ob=sequence-item index=sequence-index access="hasAccess(REQUEST)" highlight="_.int(ob in breadcrumbs)"
    ><dtml-call "REQUEST.set( 'ob_id', id)"
    ><dtml-call "REQUEST.set( 'ob_level', getLevel())"
    ><dtml-if "ob_level==0 and index > 0"

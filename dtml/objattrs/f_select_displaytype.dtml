@@ -26,7 +26,7 @@
    <dtml-in "_.range(len(displaytypes)/2)"
     ><dtml-let i=sequence-item key="displaytypes[i*2]" value="displaytypes[i*2+1]"
      ><a href="javascript:displaytypeBtnClick('<dtml-var key>',<dtml-var value>)" class="button"
-      ><img id="btn_displaytype_<dtml-var key>" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>.gif" class="button<dtml-var "int(dctDisplaytype.get(str(displaytype),'top')==key)">"
+      ><img id="btn_displaytype_<dtml-var key>" src="<dtml-var MISC_ZMS>btn_displaytype_<dtml-var key>.gif" class="button<dtml-var "_.int(dctDisplaytype.get(str(displaytype),'top')==key)">"
      ></a
     ></dtml-let
    ></dtml-in>

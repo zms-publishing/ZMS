@@ -92,7 +92,7 @@
         <dtml-if v>
          <center>
           <dtml-try>
-           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "min(int(v.getWidth()),20)">" height="<dtml-var "min(int(v.getHeight()),20)">" border="0"></a>
+           <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "min(_.int(v.getWidth()),20)">" height="<dtml-var "min(_.int(v.getHeight()),20)">" border="0"></a>
           <dtml-except>
            <a href="<dtml-var "v.getHref(REQUEST)">" target="_blank"><img src="<dtml-var "getMimeTypeIconSrc(v.getContentType())">" title="<dtml-var "v.getFilename()">" border="0"></a>
           </dtml-try>
@@ -119,7 +119,7 @@
            <dtml-let row=sequence-item>
             <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var "metaobj_record_summary(_,_,metaObj=metaObjDetail)">
-              <dtml-var "string_maxlen(REQUEST['summary'],max(int(200.0/len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],max(_.int(200.0/len(metaObj['attrs'])),20))">
               <dtml-call "REQUEST.set('break',1)">
             </dtml-if>
            </dtml-let>
@@ -142,7 +142,7 @@
 
        <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-elif "type not in ['constant']">
-        <dtml-var "string_maxlen(str(v),max(int(200.0/len(metaObj['attrs'])),20)).replace('<','&lt;')">
+        <dtml-var "string_maxlen(str(v),max(_.int(200.0/len(metaObj['attrs'])),20)).replace('<','&lt;')">
        </dtml-if>&nbsp;
 
        <dtml-comment>#####</dtml-comment>

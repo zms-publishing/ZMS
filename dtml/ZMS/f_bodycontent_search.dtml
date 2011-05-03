@@ -25,7 +25,7 @@
 ### Form
 ################################################################################
 </dtml-comment>
-<dtml-if "int(searchform)==1">
+<dtml-if "_.int(searchform)==1">
 
 <script type="text/javascript">
 $(function(){
@@ -78,7 +78,7 @@ $(function(){
     <select name="search_order_by:int">
      <dtml-in "range(1,2+1)">
       <option value="<dtml-var sequence-item>"
-       <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
+       <dtml-if "_.int(REQUEST['search_order_by'])==_['sequence-item']">
         selected="selected"
        </dtml-if>
       ><dtml-var "getLangStr('SEARCH_ORDERBY%i'%_['sequence-item'],lang)"></option>
@@ -162,7 +162,7 @@ $(function(){
  
   <p class="searchHeader">
    <dtml-var "getLangStr('SEARCH_NORESULTS',lang)">
-   (<dtml-var "int((DateTime().timeTime()-qt)*100.0)/100.0"> <dtml-var "getLangStr('SECONDS',lang)">)
+   (<dtml-var "DateTime().timeTime()-qt" fmt="%.2f"> <dtml-var "getLangStr('SECONDS',lang)">)
   </p>
   
  <dtml-else
@@ -181,8 +181,8 @@ $(function(){
   ></dtml-in>
 
   <p class="searchHeader">
-   <dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%('<strong>%i</strong>'%int(REQUEST.get('qs')),'<strong>%i</strong>'%int(REQUEST.get('qe')),'<strong>%i</strong>'%len(res),'<strong>%s</strong>'%REQUEST.get('_s').replace('<',''))">
-   (<dtml-var "int((DateTime().timeTime()-qt)*100.0)/100.0"> <dtml-var "getLangStr('SECONDS',lang)">)
+   <dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%('<strong>%i</strong>'%_.int(REQUEST.get('qs')),'<strong>%i</strong>'%_.int(REQUEST.get('qe')),'<strong>%i</strong>'%len(res),'<strong>%s</strong>'%REQUEST.get('_s').replace('<',''))">
+   (<dtml-var "DateTime().timeTime()-qt" fmt="%.2f"> <dtml-var "getLangStr('SECONDS',lang)">)
   </p>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">

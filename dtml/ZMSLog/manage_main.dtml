@@ -70,7 +70,7 @@ file(s).
 
 <div>
 <dtml-if entries>
- <dtml-let size="int(20)">
+ <dtml-let size="_.int(20)">
   <p>
    [<a href="getLOG" target="_blank">LOG</a>]
    <dtml-in entries previous size=size start=qs>

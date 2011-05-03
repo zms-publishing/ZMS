@@ -159,10 +159,10 @@
 					<dtml-if "key.find('superres')<0 and value.getContentType().find('image')==0">
 						<input type="hidden" id="width_<dtml-var elName>" name="width_<dtml-var elName>:int" value="<dtml-var "value.width">"/>
 						<input type="hidden" id="height_<dtml-var elName>" name="height_<dtml-var elName>:int" value="<dtml-var "value.height">"/>
-						<a href="javascript:ZMSGraphic_extEdit_action('<dtml-var elName>','<dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')">',<dtml-var "int(pilutil().enabled())">)" class="ZMSGraphic_extEdit_action"
+						<a href="javascript:ZMSGraphic_extEdit_action('<dtml-var elName>','<dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')">',<dtml-var "_.int(pilutil().enabled())">)" class="ZMSGraphic_extEdit_action"
 							><img id="img_<dtml-var elName>" src="<dtml-var "value.getHref(REQUEST)">"
-								<dtml-if "max([int(value.width),int(value.height)])>80">
-									<dtml-if "int(value.width)>int(value.height)">
+								<dtml-if "max([_.int(value.width),_.int(value.height)])>80">
+									<dtml-if "_.int(value.width)>_.int(value.height)">
 										width="80"
 									<dtml-else>
 										height="80"

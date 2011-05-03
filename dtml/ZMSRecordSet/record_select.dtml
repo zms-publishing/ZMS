@@ -64,7 +64,7 @@
             <dtml-try>
              <dtml-if "str(row.get(id_id,'undefined'))==str(v)">
               <dtml-var metaobj_record_summary>
-              <dtml-var "string_maxlen(REQUEST['summary'],max(int(200.0/len(metaObj['attrs'])),20))">
+              <dtml-var "string_maxlen(REQUEST['summary'],max(_.int(200.0/len(metaObj['attrs'])),20))">
              </dtml-if>
             <dtml-except></dtml-try>
            </dtml-let>

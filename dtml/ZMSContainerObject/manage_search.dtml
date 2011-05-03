@@ -56,7 +56,7 @@
     <select class="form-element" name="search_order_by:int">
      <dtml-in "_.range(1,2+1)">
       <option value="<dtml-var sequence-item>"
-       <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
+       <dtml-if "_.int(REQUEST['search_order_by'])==_['sequence-item']">
         selected="selected"
        </dtml-if>
       ><dtml-var "getZMILangStr('SEARCH_ORDERBY%i'%_['sequence-item'])"></option>
@@ -150,7 +150,7 @@
    </dtml-in>
   </dtml-in>
 
-  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(int(qs),int(qe),len(qres),REQUEST['_s'])"></b></div>
+  <div class="form-text"><b><dtml-var "getZMILangStr('SEARCH_RETURNEDSTATS')%(_.int(qs),_.int(qe),len(qres),REQUEST['_s'])"></b></div>
 
   <dtml-call "REQUEST.set('_u',getCatalogNavUrl(REQUEST))">
 

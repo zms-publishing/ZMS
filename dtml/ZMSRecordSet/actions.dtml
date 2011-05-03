@@ -84,7 +84,7 @@
    <dtml-let iqindices="[]">
    <dtml-in "REQUEST.get('qindices',[])">
     <dtml-let seqitem=sequence-item>
-     <dtml-call "iqindices.append(int(seqitem))">
+     <dtml-call "iqindices.append(_.int(seqitem))">
     </dtml-let>
    </dtml-in>
    <dtml-in iqindices sort reverse>

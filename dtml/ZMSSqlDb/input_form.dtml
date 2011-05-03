@@ -422,7 +422,7 @@
        </dtml-if>
        <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
        <dtml-in "query(sqlStatement)['records']"
-        ><dtml-let row=sequence-item maxlen="int(fk.get('maxlen',25))"
+        ><dtml-let row=sequence-item maxlen="_.int(fk.get('maxlen',25))"
          ><dtml-unless "row['qvalue']==None" 
          ><dtml-try
           ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
@@ -557,7 +557,7 @@
           SQL-ERROR: <dtml-var "''.join(sqlStatement)"
          ></dtml-try
         ></dtml-unless
-        ><dtml-let fk="dst['fk']" maxlen="int(fk.get('maxlen',25))"
+        ><dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))"
          ><dtml-call "REQUEST.set('sqlStatement',[])"
          ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
          ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"

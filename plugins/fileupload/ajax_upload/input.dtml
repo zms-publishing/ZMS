@@ -65,7 +65,7 @@ $(function() {
 						function(data) {
 							var img = eval('('+data+')');
 							var elParams = '<dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')">';
-							ZMSGraphic_extEdit_set('<dtml-var elName>', img['src'], img['filename'], img['width'], img['height'],elParams,<dtml-var "int(pilutil().enabled())">);
+							ZMSGraphic_extEdit_set('<dtml-var elName>', img['src'], img['filename'], img['width'], img['height'],elParams,<dtml-var "_.int(pilutil().enabled())">);
 						}
 					);
 				},

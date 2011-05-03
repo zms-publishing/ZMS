@@ -23,7 +23,7 @@
 
 ><dtml-let childNodes="getObjChildren(id_prefix,REQUEST)">
 
-<dtml-call "REQUEST.set('pageCountMin',int(getConfProperty('ZMS.compactview.pagecount.min','99999')))">
+<dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))">
 <dtml-call "SESSION.set('pageCountMax',REQUEST.form.get('sess_pageCountMax',SESSION.get('pageCountMax',REQUEST.get('pageCountMin'))))">
 <dtml-call "REQUEST.set('pageCount',0)">
 <dtml-in childNodes>
@@ -96,8 +96,8 @@
      <dtml-var "getTitle(REQUEST)"><br />
      <img src="<dtml-var "img.getHref(REQUEST)">" border="0"
       <dtml-try>
-       <dtml-if "int(img.width)>360">
-        width="360" height="<dtml-var "int(360*int(img.height)/int(img.width))">"
+       <dtml-if "_.int(img.width)>360">
+        width="360" height="<dtml-var "_.int(360*_.int(img.height)/_.int(img.width))">"
        <dtml-else>
         width="<dtml-var "img.width">" height="<dtml-var "img.height">"
        </dtml-if>
@@ -158,7 +158,7 @@
 ><img class="grippy" src="<dtml-var spacer_gif>"
 ><input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless>
 ><dtml-let l="['CAPTION_EDIT','ACTION_SELECT']"
-><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[int(isPage())])%display_type(REQUEST)">"
+><a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>" title="<dtml-var "getZMILangStr(l[_.int(isPage())])%display_type(REQUEST)">"
 ><dtml-var f_display_icon
 ><dtml-var "display_type(REQUEST)"
 ></a

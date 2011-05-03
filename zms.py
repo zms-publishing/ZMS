@@ -1,11 +1,6 @@
 ################################################################################
 # zms.py
 #
-# $Id: zms.py,v 1.13 2004/03/24 18:05:13 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.13 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -377,7 +372,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
     except:
       pass
   
-  ##### Build 133a: Rename logo to zmi_logo ####
+  ##### Build 133a: Create workflow-managers ####
   if getattr( docElmnt, 'build', '000') < '133':
     if self.meta_type == 'ZMS':
       autocommit = self.getConfProperty('ZMS.autocommit',1)
@@ -387,7 +382,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       transitions = self.getConfProperty('ZMS.workflow.transitions',[])
       if acquired or len(activities+transitions)>0:
         if acquired:
-          manager = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired()
+          manager = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired(autocommit,nodes)
         else:
           manager = ZMSWorkflowProvider.ZMSWorkflowProvider(autocommit,nodes,activities,transitions)
         if manager.id in self.objectIds():

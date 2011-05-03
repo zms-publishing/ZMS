@@ -1,11 +1,6 @@
 ################################################################################
 # ZMSWorkflowProviderAcquired.py
 #
-# $Id:$
-# $Name:$
-# $Author:$
-# $Revision:$
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -68,8 +63,10 @@ class ZMSWorkflowProviderAcquired(
     
     Constructor.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def __init__(self):
+    def __init__(self, autocommit=1, nodes=['{$}']):
       self.id = 'workflow_manager'
+      self.autocommit = autocommit
+      self.nodes = nodes
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

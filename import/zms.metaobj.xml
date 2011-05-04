@@ -602,71 +602,115 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO attr_img_src //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSFile.attr_img_src"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Image
+##
+# --// BO attr_img_src //--
 
-<dtml-return "getObjProperty('file',REQUEST).getMimeTypeIconSrc()">
+file = zmscontext.attr('file')
+return file.getMimeTypeIconSrc()
 
-<!--// EO attr_img_src //-->]]>
+# --// EO attr_img_src //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_img_src]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Image]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSFile.attr_img_src>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO attr_url //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSFile.attr_url"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Url
+##
+# --// BO attr_url //--
 
-<dtml-return "getObjProperty('file',REQUEST).getHref(REQUEST)">
+file = zmscontext.attr('file')
+return file.getHref(zmscontext.REQUEST)
 
-<!--// EO attr_url //-->]]>
+# --// EO attr_url //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_url]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Url]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSFile.attr_url>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO attr_abstract //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSFile.attr_abstract"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Abstract
+##
+# --// BO attr_abstract //--
+#
+return zmscontext.attr('attr_dc_description')
 
-<dtml-return "getObjProperty('attr_dc_description',REQUEST)">
-
-<!--// EO attr_abstract //-->]]>
+# --// EO attr_abstract //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_abstract]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSFile.attr_abstract>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO getHref2IndexHtml //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSFile.getHref2IndexHtml"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Function: index_html
+##
+# --// BO getHref2IndexHtml //--
 
-<dtml-let file="getObjProperty('file',REQUEST)">
- <dtml-if file>
-  <dtml-return "file.getHref(REQUEST)">
- </dtml-if>
-</dtml-let>
-<dtml-return "''">
+file = zmscontext.attr('file')
+if file:
+    return file.getHref(zmscontext.REQUEST)
+return ''
 
-<!--// EO getHref2IndexHtml //-->]]>
+# --// EO getHref2IndexHtml //--
+]]>
                     </item>
                     <item key="id"><![CDATA[getHref2IndexHtml]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
+                    <item key="multilang" type="int">1</item>
                     <item key="name"><![CDATA[Function: index_html]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSFile.getHref2IndexHtml>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -674,12 +718,12 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSFile //--</dtml-comment>
 
 <dtml-let
-  title="getObjProperty('title',REQUEST)"
-  titlealt="getObjProperty('titlealt',REQUEST)"
-  file="getObjProperty('file',REQUEST)"
-  align="getObjProperty('align',REQUEST)"
-  displaytype="getObjProperty('displaytype',REQUEST)"
-  abstract="getObjProperty('attr_abstract',REQUEST)"
+  title="attr('title')"
+  titlealt="attr('titlealt')"
+  file="attr('file')"
+  align="attr('align')"
+  displaytype="attr('displaytype')"
+  abstract="attr('attr_abstract')"
   subclass="[meta_id]"
  ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
  ><dtml-if "align in ['','NONE']"
@@ -750,7 +794,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
             <item key="id"><![CDATA[ZMSFile]]></item>
             <item key="name"><![CDATA[ZMSFile]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -1145,19 +1189,19 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>
 
 <dtml-let
-  displaytype="dctDisplaytype.get(str(getObjProperty('displaytype',REQUEST)),'left')"
-  align="getObjProperty('align',REQUEST)"
+  displaytype="dctDisplaytype.get(str(attr('displaytype')),'left')"
+  align="attr('align')"
   imgattr="'img'"
   imghiresattr="'imghires'"
   imgalign="''"
-  imgurl="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
+  imgurl="getLinkUrl(attr('attr_url'),REQUEST)"
   imgthumb="URL.find('/manage')>0"
-  imgspecial="getObjProperty('img_attrs_spec',REQUEST)"
+  imgspecial="attr('img_attrs_spec')"
   imgclass="'img'"
   text="getText(REQUEST)"
-  format="getObjProperty('format',REQUEST)"
+  format="attr('format')"
   renderedtext="renderText(format,'text',text,REQUEST)"
-  textalign="getObjProperty( 'textalign',REQUEST)"
+  textalign="attr('textalign')"
   textclass="'text'"
   bodyContent="renderDisplaytype(displaytype,imgattr,imghiresattr,imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,REQUEST)"
   subclass="[meta_id]"
@@ -1168,7 +1212,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
  ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
   ><dtml-call "subclass.append(' floatright')"
  ></dtml-if
- ><dtml-return "'<div class='+QUOT+' '.join(subclass)+QUOT+' id='+QUOT+id+QUOT+'>'+bodyContent+'</div>'"
+ ><dtml-return "'<div class=\042'+' '.join(subclass)+'\042 id=\042'+id+'\042>'+bodyContent+'</div>'"
 ></dtml-let>
 
 <dtml-comment>--// EO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>]]>
@@ -1215,7 +1259,7 @@ $("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
             <item key="id"><![CDATA[ZMSGraphic]]></item>
             <item key="name"><![CDATA[ZMSGraphic]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -1806,12 +1850,12 @@ function remoteResponseTimedout() {
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSLinkElement //--</dtml-comment>
 
 <dtml-let
-  title="getObjProperty('title',REQUEST)"
-  titlealt="getObjProperty('titlealt',REQUEST)"
-  ref="getObjProperty('attr_url',REQUEST)"
-  align="getObjProperty('align',REQUEST)"
-  displaytype="getObjProperty('displaytype',REQUEST)"
-  abstract="getObjProperty('attr_abstract',REQUEST)"
+  title="attr('title')"
+  titlealt="attr('titlealt')"
+  ref="attr('attr_url')"
+  align="attr('align')"
+  displaytype="attr('displaytype')"
+  abstract="attr('attr_abstract')"
   subclass="[meta_id]"
  ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
  ><dtml-if "align in ['','NONE']"
@@ -1825,8 +1869,8 @@ function remoteResponseTimedout() {
  ></dtml-if
  ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
   <div class="title">
-  <img src="<dtml-var "getObjProperty('attr_img_src',REQUEST)">" border="0" alt="" align="absmiddle"/>
-  <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "getObjProperty('attr_type',REQUEST)=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
+  <img src="<dtml-var "attr('attr_img_src')">" border="0" alt="" align="absmiddle"/>
+  <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "attr('attr_type')=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
   </div>
   <dtml-if "title and title!=titlealt"><div class="text"><dtml-var title></div></dtml-if>  
   <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
@@ -2617,8 +2661,8 @@ $()
 </script>
 
 <dtml-let
-  table_th="'<th style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></th>'"
-  table_td="'<td style='+QUOT+'border: solid 1px #999999;'+QUOT+'><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></td>'"
+  table_th="'<th style=\042border: solid 1px #999999;\042><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></th>'"
+  table_td="'<td style=\042border: solid 1px #999999;\042><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></td>'"
 >
 <img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
@@ -2646,7 +2690,7 @@ $()
    <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="type:int" value="1" checked="checked"></td>
    <td>
     <div class="ZMSTable">
-    <table>
+    <table class="ZMSTable">
     <tr><dtml-var table_th><dtml-var table_th><dtml-var table_th></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
@@ -2666,7 +2710,7 @@ $()
    <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="2"></td>
    <td>
     <div class="ZMSTable">
-    <table>
+    <table class="ZMSTable">
     <tr><th colspan="3" style="border: solid 1px #999999;"><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></th></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
@@ -2684,7 +2728,7 @@ $()
    <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="3"></td>
    <td>
     <div class="ZMSTable">
-    <table>
+    <table class="ZMSTable">
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
@@ -2702,7 +2746,7 @@ $()
    <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="4"></td>
    <td>
     <div class="ZMSTable">
-    <table>
+    <table class="ZMSTable">
     <tr><td><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></td><dtml-var table_th><dtml-var table_th></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
     <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
@@ -2728,7 +2772,7 @@ $()
    <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="5"></td>
    <td>
     <div class="ZMSTable">
-    <table>
+    <table class="ZMSTable">
     <tr>
      <dtml-var table_th>
      <dtml-var table_th>
@@ -2785,7 +2829,7 @@ $()
 --- Table-Cell Grid
 --------------------------------------------------------------------------------
 </dtml-comment>
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_type="getObjProperty('type',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="getObjProperty('widths',REQUEST)">
+<dtml-let table_table="attr('table')" table_type="attr('type')" table_colgroup_cols="attr('cols')" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="attr('widths')">
 
 <script language="JavaScript">
 <!--//
@@ -3072,7 +3116,7 @@ $(function(){
 <tr valign="middle" class="zmiNeutralColorStrong0">
  <td>&nbsp;</td>
  <td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0"></td>
- <dtml-in "_.range(table_cols)">
+ <dtml-in "range(table_cols)">
   <td
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr
@@ -3096,11 +3140,11 @@ $(function(){
 
 <tr>
  <td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
- <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=getObjProperty('colgroup',REQUEST),enabled=True,REQUEST=REQUEST)"></td>
- <dtml-in "_.range(table_cols)">
+ <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=attr('colgroup'),enabled=True,REQUEST=REQUEST)"></td>
+ <dtml-in "range(table_cols)">
   <dtml-let col_index=sequence-index>
    <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>">
-    <dtml-if "getObjProperty('colgroup',REQUEST)">
+    <dtml-if "attr('colgroup')">
      <input class="form-small" type="text" name="col<dtml-var col_index>" size="3" value="<dtml-if "col_index<len(table_colgroup_cols)"><dtml-var "table_colgroup_cols[col_index]"></dtml-if>" style="text-align:right;"/>
      (&Oslash;=<dtml-var "table_widths[col_index]">)%
     <dtml-else>
@@ -3112,7 +3156,7 @@ $(function(){
  <td>&nbsp;</td>
 </tr>
 
-<dtml-in "_.range(table_rows)"
+<dtml-in "range(table_rows)"
  ><dtml-let row_index=sequence-index
  ><tr valign="middle">
   <td class="zmiNeutralColorStrong0">
@@ -3141,7 +3185,7 @@ $(function(){
         <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
-         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style='+QUOT+'border:none;background-color:transparent;width:100%;'+QUOT)">
+         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
         <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is None or format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
          <dtml-var content>
@@ -3168,7 +3212,7 @@ $(function(){
    </table>
  </td>
  <td style="border-top: solid 1px #CCCCCC;">&nbsp;</td>
- <dtml-in "_.range(table_cols)">
+ <dtml-in "range(table_cols)">
   <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px black; border-bottom: solid 1px #CCCCCC;">&nbsp;</td>
  </dtml-in>
  <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px #CCCCCC;">&nbsp;</td>
@@ -3235,84 +3279,151 @@ $(function(){
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO widths //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTable.titlealt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: DC.Title.Alt
+##
+# --// BO titlealt //--
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_cols="len(table_table[-1])" table_weights="map(lambda x: 1, range( table_cols))">
- <dtml-in table_table>
-  <dtml-let table_row=sequence-item>
-   <dtml-in table_row mapping>
-    <dtml-let col_index=sequence-index table_cell=sequence-item table_cell_weight="len(re_sub('<(.*?)>', '', dt_html(table_cell.get('content',''),REQUEST)))">
-     <dtml-call "operator_setitem(table_weights,col_index,table_weights[col_index]+table_cell_weight)">
-    </dtml-let>
-   </dtml-in>
-  </dtml-let>
- </dtml-in>
- <dtml-return "map(lambda x: int((x*100.0)/sum(table_weights)), table_weights)">
-</dtml-let>
+titlealt = zmscontext.attr('caption')
+if titlealt:
+    return titlealt
+return zmscontext.display_type(zmscontext.REQUEST)
 
-<dtml-comment>--// EO widths //--</dtml-comment>]]>
+# --// EO titlealt //--
+]]>
+                    </item>
+                    <item key="id"><![CDATA[titlealt]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">1</item>
+                    <item key="name"><![CDATA[DC.Title.Alt]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTable.titlealt>]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[py]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTable.widths"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Col-Widths [list]
+##
+# --// BO widths //--
+
+REQUEST = zmscontext.REQUEST
+table = zmscontext.attr('table')
+ncols = max(map(lambda x: len(x), table))
+weights = map(lambda x: 1, range( ncols))
+for row in table:
+    i = 0
+    for cell in row:
+        weight = len(zmscontext.re_sub('<(.*?)>', '',zmscontext.dt_html(cell.get('content',''),REQUEST)))
+        weights[i] = weights[i] + weight
+        i += 1
+return map(lambda x: int((x*100.0)/sum(weights)), weights)
+
+# --// EO widths //--
+]]>
                     </item>
                     <item key="id"><![CDATA[widths]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Col-Widths [list]]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTable.widths>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO format(@key) //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTable.format"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: contentEditable.Cell: Get format (@key)
+##
+# --// BO format //--
 
-<dtml-if key>
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(key[key.find('_')+1:key.rfind('_')])" row="_.int(key[key.rfind('_')+1:])">
-  <dtml-return "table_table[row][col]['format']">
- </dtml-let>
-<dtml-else>
- <dtml-return "''">
-</dtml-if>
+REQUEST = zmscontext.REQUEST
+key = REQUEST.get('key')
+if key:
+    table = zmscontext.attr('table')
+    col = int(key[key.find('_')+1:key.rfind('_')])
+    row = int(key[key.rfind('_')+1:])
+    return table[row][col]['format']
+return ''
 
-<dtml-comment>--// EO format //--</dtml-comment>]]>
+# --// EO format //--
+]]>
                     </item>
                     <item key="id"><![CDATA[format]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[contentEditable.Cell: Get format (@key)]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTable.format>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO setObjProperty(@pKey,@pValue)  //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTable.setObjProperty"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: contentEditable.Cell: Set property (@pKey,@pValue)
+##
+# --// BO setObjProperty //--
 
-<dtml-if "pKey.find('table_')==0">
- <dtml-let table_table="getObjProperty('table',REQUEST)" col="_.int(pKey[pKey.find('_')+1:pKey.rfind('_')])" row="_.int(pKey[pKey.rfind('_')+1:])">
-  <dtml-call "operator_setitem(table_table[row][col],'content',pValue)">
-  <dtml-call "setObjProperty('table',table_table,lang)">
- </dtml-let>
-</dtml-if>
+REQUEST = zmscontext.REQUEST
+key = REQUEST.get('pKey')
+value = REQUEST.get('pValue')
+if key.startswith('table_'):
+    table = zmscontext.attr('table')
+    col = int(key[key.find('_')+1:key.rfind('_')])
+    row = int(key[key.rfind('_')+1:])
+    table[row][col]['content'] = value
+    lang = REQUEST.get('lang')
+    zmscontext.setObjProperty('table',table_table,lang)
 
-<dtml-comment>--// EO setObjProperty //--</dtml-comment>]]>
+# --// EO setObjProperty //--
+]]>
                     </item>
                     <item key="id"><![CDATA[setObjProperty]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[contentEditable.Cell: Set property (@pKey,@pValue)]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTable.setObjProperty>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
                     <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTable //--</dtml-comment>
 
-<dtml-let table_table="getObjProperty('table',REQUEST)" table_colgroup_cols="getObjProperty('cols',REQUEST)" table_summary="getObjProperty('attr_dc_description',REQUEST)"
+<dtml-let table_table="attr('table')" table_colgroup_cols="attr('cols')" table_summary="attr('attr_dc_description')"
  ><table id="<dtml-var id>" class="<dtml-var meta_id>"<dtml-if table_summary> summary="<dtml-var table_summary>"</dtml-if>
- ><caption align="<dtml-var "getObjProperty('align',REQUEST).lower()">"><dtml-var "getObjProperty('caption',REQUEST)"></caption
- ><dtml-if "getObjProperty('colgroup',REQUEST)"
+ ><caption align="<dtml-var "attr('align').lower()">"><dtml-var "attr('caption')"></caption
+ ><dtml-if "attr('colgroup')"
   ><colgroup
-   ><dtml-in "getObjProperty('widths',REQUEST)"
+   ><dtml-in "attr('widths')"
     ><dtml-let col_index=sequence-index
      ><col width="<dtml-if "col_index<len(table_colgroup_cols) and table_colgroup_cols[col_index]"><dtml-var "table_colgroup_cols[col_index]"><dtml-else><dtml-var sequence-item></dtml-if>%"
     ></dtml-let
@@ -3385,7 +3496,7 @@ $(function(){
             <item key="id"><![CDATA[ZMSTable]]></item>
             <item key="name"><![CDATA[ZMSTable]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.4.5]]></item>
+            <item key="revision"><![CDATA[1.5.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -3660,10 +3771,10 @@ return teaserElmnts
  ><dtml-if teaserElmnts
   ><div id="teaser"><dtml-in teaserElmnts
    ><dtml-let teaserElmnt=sequence-item teaserCntnr="teaserElmnt.getParentNode()"
-    ><dtml-call "REQUEST.set('borderstyle',teaserCntnr.getObjProperty('attr_borderstyle',REQUEST))"
-    ><dtml-call "REQUEST.set('bgcolor_border',teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST))"
-    ><dtml-call "REQUEST.set('bgcolor_title',teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST))"
-    ><dtml-call "REQUEST.set('bgcolor_text',teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST))"
+    ><dtml-call "REQUEST.set('borderstyle',teaserCntnr.attr('attr_borderstyle'))"
+    ><dtml-call "REQUEST.set('bgcolor_border',teaserCntnr.attr('attr_bgcolor_border'))"
+    ><dtml-call "REQUEST.set('bgcolor_title',teaserCntnr.attr('attr_bgcolor_title'))"
+    ><dtml-call "REQUEST.set('bgcolor_text',teaserCntnr.attr('attr_bgcolor_text'))"
     ><dtml-if "last_borderstyle != borderstyle or
                last_bgcolor_border != bgcolor_border or
                borderstyle==2"
@@ -3731,10 +3842,10 @@ return teaserElmnts
    ><div class="form-small"
     ><a href="<dtml-var manage_main>"><img src="<dtml-var MISC_ZMS>internal_link.gif" width="16" height="16" title="<dtml-var "getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(REQUEST)">" border="0" align="absmiddle"/></a
      ><dtml-let
-       url="getLinkUrl(teaserElmnt.getObjProperty('attr_url',REQUEST))"
-       img_src="teaserElmnt.getObjProperty('attr_img_src',REQUEST)+'?'"
-       title="teaserElmnt.getObjProperty('title',REQUEST)"
-       abstract="search_quote(teaserElmnt.getObjProperty('attr_abstract',REQUEST))"
+       url="getLinkUrl(teaserElmnt.attr('attr_url'))"
+       img_src="teaserElmnt.attr('attr_img_src')+'?'"
+       title="teaserElmnt.attr('title')"
+       abstract="search_quote(teaserElmnt.attr('attr_abstract'))"
       ><dtml-if title
        ><dtml-if url
         ><a href="<dtml-var url>" target="_blank" class="zmi"><b><dtml-var title></b></a
@@ -3797,7 +3908,7 @@ return teaserElmnts
             <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
             <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.0]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -3906,39 +4017,59 @@ return teaserElmnts
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO attr_img_src //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTeaserElement.attr_img_src"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Image
+##
+# --// BO attr_img_src //--
 
-<dtml-let attr_img="getObjProperty('attr_img',REQUEST)">
- <dtml-if attr_img>
-  <dtml-return "attr_img.getHref(REQUEST)">
- </dtml-if>
-</dtml-let>
-<dtml-return "''">
+img = zmscontext.attr('attr_img')
+if img:
+    return img.getHref(zmscontext.REQUEST)
+return ''
 
-<!--// EO attr_img_src //-->]]>
+# --// EO attr_img_src //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_img_src]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Image]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_img_src>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO attr_abstract //-->
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSTeaserElement.attr_abstract"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Abstract
+##
+# --// BO attr_abstract //--
 
-<dtml-return "getObjProperty('text',REQUEST)">
+return zmscontext.attr('text')
 
-<!--// EO attr_abstract //-->]]>
+# --// EO attr_abstract //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_abstract]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Abstract]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_abstract>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -3949,15 +4080,15 @@ CHANGES:
   v1.0.2 2009-01-25 fh: whitespace reduced
 </dtml-comment
 ><dtml-let
-  url="getLinkUrl(getObjProperty('attr_url',REQUEST),REQUEST)"
-  img_src_attr="getObjProperty('attr_img_src',REQUEST)"
+  url="getLinkUrl(attr('attr_url'),REQUEST)"
+  img_src_attr="attr('attr_img_src')"
   img_src="img_src_attr+'?'"
   img_filename="img_src[img_src.rfind('/')+1:img_src.find('?')]"
-  abstract="getObjProperty('attr_abstract',REQUEST)"
+  abstract="attr('attr_abstract')"
 ><div class="ZMSTeaserElement"<dtml-if bgcolor_title> style="background-color:<dtml-var "get_colormap().get(bgcolor_title,'transparent')">"</dtml-if>
 
  ><dtml-comment>*** Use title only for href-more </dtml-comment
- ><dtml-call "REQUEST.set('title_url',getObjProperty('title',REQUEST))"
+ ><dtml-call "REQUEST.set('title_url',attr('title'))"
  ><dtml-call "REQUEST.set('title_txt',title_url)"
  ><dtml-if "len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')"
   ><dtml-call "REQUEST.set('title_url',title_url[2:-2])"
@@ -3967,7 +4098,7 @@ CHANGES:
  ><dtml-comment>*** Title and Image </dtml-comment
  ><dtml-if "title_txt or img_filename"
   ><dtml-let
-    displaytype="dctDisplaytype.get(str(getObjProperty('displaytype',REQUEST)),'left')"
+    displaytype="dctDisplaytype.get(str(attr('displaytype')),'left')"
     img="'<img class='+QUOT+'title'+QUOT+' src='+QUOT+img_src_attr+QUOT+' alt='+QUOT+title_txt+QUOT+' border='+QUOT+'0'+QUOT+'/>'"
   ><dtml-if "displaytype=='top'"
    ><dtml-if img_filename><div class="graphic"><dtml-if url><a href="<dtml-var url>" title="<dtml-var title_url>"></dtml-if><dtml-var img><dtml-if url></a></dtml-if></div></dtml-if
@@ -4014,9 +4145,9 @@ CHANGES:
 
 <dtml-let
   teaserCntnr="getParentNode()"
-  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
-  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
-  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)">
+  bgcolor_border="teaserCntnr.attr('attr_bgcolor_border')"
+  bgcolor_title="teaserCntnr.attr('attr_bgcolor_title')"
+  bgcolor_text="teaserCntnr.attr('attr_bgcolor_text')">
  <dtml-if "REQUEST.get('URL','').find('/manage')>0">
   <div id="teaser">
    <div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="border: 1px solid <dtml-var "get_colormap().get(bgcolor_border,'black')">;"</dtml-if>>
@@ -4074,7 +4205,7 @@ CHANGES:
             <item key="id"><![CDATA[ZMSTeaserElement]]></item>
             <item key="name"><![CDATA[ZMSTeaserElement]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.2]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSTeaserElement]]></item>
           </dictionary>
         </item>
@@ -4239,7 +4370,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
             <item key="id"><![CDATA[ZMSTextarea]]></item>
             <item key="name"><![CDATA[ZMSTextarea]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.1]]></item>
+            <item key="revision"><![CDATA[1.1.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -4254,11 +4385,30 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
               <list>
               </list>
             </item>
-            <item key="enabled" type="int">1</item>
+            <item key="access" type="dictionary">
+              <dictionary>
+                <item key="delete" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="delete_custom"/>
+                <item key="edit" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="edit_custom"/>
+                <item key="insert" type="list">
+                  <list>
+                  </list>
+                </item>
+                <item key="insert_custom"/>
+              </dictionary>
+            </item>
+            <item key="enabled" type="int">0</item>
             <item key="id"><![CDATA[com.zms.foundation]]></item>
             <item key="name"><![CDATA[com.zms.foundation]]></item>
             <item key="package"/>
-            <item key="revision"><![CDATA[1.1.0]]></item>
+            <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSPackage]]></item>
           </dictionary>
         </item>

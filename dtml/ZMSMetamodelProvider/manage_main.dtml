@@ -223,104 +223,6 @@ function changeType( el)
     self.btnClicked = el.value;
   }
 
-  <dtml-if "REQUEST.get('id','')!=''">
-  <dtml-let metaObj="metaObjMap.get(REQUEST.get('id'),{})">
-  /**
-   *
-   * @param v		Attribute-ID
-   */
-  function dtmlHintBtnClick(v) {
-    var fm = document.forms['form0'];
-    var el_type = fm.elements['attr_type_'+v];
-    var attr_type = '?';
-    if ( el_type.options) {
-      attr_type = el_type.options[el_type.selectedIndex].value;
-    }
-    else {
-      attr_type = el_type.value;
-    }
-    var obj_prop = <dtml-if "metaObj['type']=='ZMSRecordSet'">v<dtml-else>'getObjProperty(\''+v+'\',REQUEST)'</dtml-if>;
-    var obj_prop_quoted = <dtml-if "metaObj['type']=='ZMSRecordSet'">v<dtml-else>'"getObjProperty(\''+v+'\',REQUEST)"'</dtml-if>;
-    var s = '';
-    if ( attr_type == 'image') {
-      s += '<' + 'dtml-let '+v+'=<dtml-if "metaObj['type']=='ZMSRecordSet'">"formatObjAttrValue(getObjAttr(\''+v+'\'),'+v+',lang)"<dtml-else>"'+obj_prop+'"</dtml-if>>\n';
-      s += ' <' + 'dtml-if '+v+'>\n';
-      s += '  <img src="<'+'dtml-var "'+v+'.getHref(REQUEST)">" alt="" border="0"/>\n';
-      s += ' <' + '/dtml-if>\n';
-      s += '<' + '/dtml-let>\n';
-    }
-    else if ( attr_type == 'file' || attr_type == 'resource') {
-      s += '<' + 'dtml-let '+v+'=<dtml-if "metaObj['type']=='ZMSRecordSet'">"formatObjAttrValue(getObjAttr(\''+v+'\'),'+v+',lang)"<dtml-else>"'+obj_prop+'"</dtml-if>>\n';
-      s += ' <' + 'dtml-if '+v+'>\n';
-      s += '  <a href="<'+'dtml-var "'+v+'.getHref(REQUEST)">">\n';
-      s += '   <img src="<'+'dtml-var "getMimeTypeIconSrc('+v+'.getContentType())">" alt="<'+'dtml-var "'+v+'.getContentType()">" border="0" align="absmiddle" />\n';
-      s += '   <' + 'dtml-var "'+v+'.getFilename()">\n';
-      s += '  </a>\n';
-      s += ' <' + '/dtml-if>\n';
-      s += '<' + '/dtml-let>\n';
-    }
-    else if ( attr_type == 'url') {
-      s += '<'+'dtml-if '+obj_prop_quoted+'>\n';
-      s += ' <a href="<' + 'dtml-var "getLinkUrl('+obj_prop+',REQUEST)">">\n';
-      s += '  <'+'dtml-var '+obj_prop_quoted+'>\n';
-      s += ' </a>\n';
-      s += '</'+'dtml-if>\n';
-    }
-    else if ( <dtml-in "['date','datetime','time']">attr_type == '<dtml-var sequence-item>'<dtml-unless sequence-end> ||</dtml-unless></dtml-in>) {
-      s += '<'+'dtml-if '+obj_prop_quoted+'>\n';
-      s += ' <' + 'dtml-var "getLangFmtDate('+obj_prop+',lang,\''+attr_type.toUpperCase()+'_FMT\')">\n';
-      s += '</'+'dtml-if>\n';
-    }    
-    else if ( <dtml-in valid_zopetypes>attr_type == '<dtml-var sequence-item>'<dtml-unless sequence-end> ||</dtml-unless></dtml-in>) {
-      s += '<'+'dtml-var '+v+'>\n';
-    }
-    else if ( <dtml-in "meta_types+['*']">attr_type == '<dtml-var sequence-item>'<dtml-unless sequence-end> ||</dtml-unless></dtml-in>) {
-      var repetitive = fm.elements['attr_repetitive_'+v+':int'].value == '1';
-      if ( repetitive) {
-        s += '<'+'dtml-in "getObjChildren(\''+v+'\',REQUEST)">\n';
-        s += ' <' + 'dtml-var "getBodyContent(REQUEST)">\n';
-        s += '</'+'dtml-in>\n';
-      }
-      else {
-        s += '<'+'dtml-if '+v+'>\n';
-        s += ' <' + 'dtml-var "'+v+'.getBodyContent(REQUEST)">\n';
-        s += '</'+'dtml-if>\n';
-      }
-    }
-    else {
-      s += '<'+'dtml-if '+obj_prop_quoted+'>\n';
-      s += ' <'+'dtml-var '+obj_prop_quoted+'>\n';
-      s += '</'+'dtml-if>\n';
-    }
-	// Show hint.
-	var html = s;
-	var i;
-	while ( ( i = html.indexOf( '<')) >= 0) {
-		html = html.substr( 0, i) + '&lt;' + html.substr( i + 1);
-	}
-	html = html.substr( 0, html.length - 1);
-	html = '<pre>'+html+'</pre>';
-	$('#dtmlHintText').html(html);
-	showFancybox({
-			'href':'#dtmlHintText',
-			'title':'DTML: '+v,
-			'autoDimensions':true,
-			'transitionIn':'fade',
-			'transitionOut':'fade'
-		});
-}
-
-  /**
-   *
-   */
-  function dtmlHintBtnClose() {
-    var dtmlHintDiv = $('#dtmlHint');
-    dtmlHintDiv.hide('normal');
-  }
-  </dtml-let>
-  </dtml-if>
-
-
   // ###########################################################################
   // ### Enabled
   // ###########################################################################
@@ -720,9 +622,7 @@ function changeType( el)
             </dtml-let>
            </dtml-if>
           </td>
-          <td align="center">
-           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
-          </td>
+          <td><!-- @todo: remove --></td>
           <dtml-comment>
           ##### METHOD #####
           </dtml-comment>
@@ -733,9 +633,7 @@ function changeType( el)
            <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;" onchange="changeCustom(this);"><dtml-var "oAttr.get('custom','')" html_quote></textarea
            ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_custom_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['id']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></a>
           </td>
-          <td align="center">
-           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
-          </td>
+          <td><!-- @todo: remove --></td>
           <dtml-comment>
           ##### ATTRIBUTE #####
           </dtml-comment>
@@ -828,9 +726,7 @@ function changeType( el)
            </dtml-if
            ></nobr
           ></td>
-          <td align="center">
-           <div class="zmi-icon ui-state-default"><span class="ui-icon ui-icon-info" onclick="dtmlHintBtnClick('<dtml-var "oAttr['id']">')" title="DTML" style="cursor:pointer"></span></div>
-          </td>
+          <td><!-- @todo: remove --></td>
           </dtml-if>
           </dtml-if>
         </tr>
@@ -869,9 +765,6 @@ function changeType( el)
        </table>
 
        <!-- BO Edit -->
-       <div class="ui-helper-hidden">
-        <div id="dtmlHintText" class="form-small" style="background-color:#FFFFE8;padding:4px;"></div>
-       </div>
        <dtml-if "REQUEST.has_key('inp_id_name')">
        <br />
        <a name="#Edit">

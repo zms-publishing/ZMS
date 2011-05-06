@@ -1199,13 +1199,17 @@ class ZMSObject(ZMSItem.ZMSItem,
       l = []
       v = ''
       tmpltId = self.metaobj_manager.getTemplateId( self.meta_id)
-      tmpltDtml = getattr(self,tmpltId,None)
-      if tmpltDtml is not None:
-        v = tmpltDtml(self,REQUEST)
-        try:
-          v = v.encode('utf-8')
-        except UnicodeDecodeError:
-          v = str(v)
+      if tmpltId in self.getMetaobjAttrIds(self.meta_id):
+        if self.getMetaobjAttr(self.meta_id,tmpltId)['type'] in ['method','py']:
+          v = self.attr(tmpltId)
+        else:
+          tmpltDtml = getattr(self,tmpltId,None)
+          if tmpltDtml is not None:
+            v = tmpltDtml(self,REQUEST)
+            try:
+              v = v.encode('utf-8')
+            except UnicodeDecodeError:
+              v = str(v)
       if self.getType()=='ZMSTeaserElement':
         l.append('<div ')
         l.append(' class="%s"'%self.getType())

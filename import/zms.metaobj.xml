@@ -200,7 +200,7 @@
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMS]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -421,7 +421,7 @@
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSDocument]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -706,7 +706,7 @@ return ''
                     </item>
                     <item key="id"><![CDATA[getHref2IndexHtml]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Function: index_html]]></item>
                     <item key="py"><![CDATA[<PythonScript at ZMSFile.getHref2IndexHtml>]]></item>
                     <item key="repetitive" type="int">0</item>
@@ -757,7 +757,7 @@ return ''
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSFile]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -989,7 +989,7 @@ return ''
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSFolder]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -1222,7 +1222,7 @@ return ''
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSGraphic]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -1871,7 +1871,7 @@ function remoteResponseTimedout() {
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -2012,8 +2012,7 @@ function onChangeZMSNoteDiv(id) {
 	<div id="<dtml-var id>" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)"><dtml-var "getText(REQUEST)" newline_to_br></div>
 </div>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>
-]]>
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
                     </item>
                     <item key="id"><![CDATA[renderShort]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -2097,8 +2096,7 @@ function onChangeZMSNoteDiv(id) {
 	<pre>DATABASE CONNECTION ERROR <a href="&dtml-id;/manage_properties">...</a></pre>
 </dtml-try>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>
-]]>
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
                     </item>
                     <item key="id"><![CDATA[renderShort]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3250,7 +3248,7 @@ return zmscontext.display_type(zmscontext.REQUEST)
                     </item>
                     <item key="id"><![CDATA[titlealt]]></item>
                     <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">1</item>
+                    <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[DC.Title.Alt]]></item>
                     <item key="py"><![CDATA[<PythonScript at ZMSTable.titlealt>]]></item>
                     <item key="repetitive" type="int">0</item>
@@ -3409,7 +3407,7 @@ if key.startswith('table_'):
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSTable]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -3812,8 +3810,7 @@ return teaserElmnts
   ></dtml-let
  ></dtml-in>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>
-]]>
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
                     </item>
                     <item key="id"><![CDATA[renderShort]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -4117,7 +4114,7 @@ CHANGES:
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -4280,9 +4277,9 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                     <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTextarea]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Template: ZMSTextarea]]></item>
+                    <item key="name"><![CDATA[Template: ZMSTextarwa]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
+                    <item key="type"><![CDATA[method]]></item>
                   </dictionary>
                 </item>
               </list>

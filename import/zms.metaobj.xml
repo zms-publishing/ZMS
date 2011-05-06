@@ -4277,7 +4277,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                     <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTextarea]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Template: ZMSTextarwa]]></item>
+                    <item key="name"><![CDATA[Template: ZMSTextarea]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[method]]></item>
                   </dictionary>

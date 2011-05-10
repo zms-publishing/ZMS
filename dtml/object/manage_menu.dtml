@@ -406,7 +406,7 @@ function dragmove(element) {
       if ($($("img",element)[0]).attr("src").toLowerCase().indexOf('<dtml-var MISC_ZMS>mi.gif')>=0) {
         pxinto = 0;
       }
-      var dropimage_offsetHeight = dropimage.attr('offsetHeight');
+      var dropimage_offsetHeight = dropimage.prop('offsetHeight');
       var zmstrashcan = $($("img",element)[1]).attr("src").toLowerCase().indexOf('zmstrashcan')>=0;
       if (!zmstrashcan && posy < element.offsetTop + element.offsetHeight / 2 - pxinto) {
         element.style.backgroundColor = "#eee";

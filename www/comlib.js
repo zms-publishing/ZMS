@@ -539,7 +539,7 @@ function getCoords(theElement) {
 function getBodyDimensions() {
   if (document.body && document.body.offsetWidth) {
     var div = $('body>div');
-    return {width: div.attr('offsetWidth'), height: div.attr('offsetHeight')};
+    return {width: div.prop('offsetWidth'), height: div.prop('offsetHeight')};
   } else {
     return {width: 0, height: 0};
   }

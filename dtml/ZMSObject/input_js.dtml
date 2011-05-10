@@ -21,11 +21,11 @@ function onResize() {
       ta = $('object[name^=editor_'+ta.attr('name')+']');
     }
     if (taMinHeight==null) {
-      taMinHeight = $(ta).attr('offsetHeight') / 2;
+      taMinHeight = $(ta).prop('offsetHeight') / 2;
     }
     var innerDims = getInnerDimensions();
     var bodyDims = getBodyDimensions();
-    var newHeight = Math.max($(ta).attr('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
+    var newHeight = Math.max($(ta).prop('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
     ta.css('height',newHeight);
   }
 }

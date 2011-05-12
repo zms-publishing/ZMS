@@ -217,7 +217,7 @@ function processMultiselectsOnFormSubmit() {
   for (var i=0; i < mss.length; i++) {
     var ms = $(mss[i]);
     if (ms.attr('name').indexOf('zms_mms_src_')!=0) {
-      $('option',ms).attr("selected","selected");
+      $('option',ms).prop("selected",true);
     }
   }
 }

@@ -24,8 +24,7 @@
 ><dtml-let row_=row
 
 ><dtml-unless "REQUEST.get('f_zmiInputFormJavaScript')"
-><script language="JavaScript"
-><!--//
+><script language="JavaScript">
 
   function onFormSubmit(fm) 
   {
@@ -52,7 +51,7 @@
     ><dtml-if multimultiselect
      ><dtml-let mmsid="'%s_%s'%(multimultiselect.get('tablename'),multimultiselect.get('fk'))"
       >// multimultiselect
-      $('#<dtml-var mmsid> option').attr("selected",true);
+      $('#<dtml-var mmsid> option').prop("selected",true);
      </dtml-let
     ></dtml-if
     ></dtml-unless
@@ -139,7 +138,6 @@
     }
   }
 
-//-->
 </script>
 <dtml-call "REQUEST.set('f_zmiInputFormJavaScript',True)">
 </dtml-unless>

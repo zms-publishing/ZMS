@@ -75,12 +75,14 @@
   
   $(function() {
     $( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
-    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">', 
-  	  <dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')"
-  	    ><dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')"
-  	  ><dtml-else>
-        { toolbar: 'ZMSBasicToolbar' }	  
-  	  </dtml-if> );
+    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">', {
+  	  <dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
+  	    customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
+        toolbar: 'ZMSCustomToolbar' 	  
+      <dtml-else>
+        toolbar: 'ZMSBasicToolbar' 	  
+  	  </dtml-if> 
+  	  });
     CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
     CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 

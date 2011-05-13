@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config )
   config.toolbar_ZMSBasicToolbar =
   [
       ['Format'],
-      ['Bold','Italic','Subscript','Superscript'],
+      ['Bold','Italic','Subscript','Superscript','-','Link'],
       ['NumberedList','BulletedList','-','Table'],
       ['Cut','Copy','Paste','PasteText','PasteFromWord'],
       ['Undo','Redo'],

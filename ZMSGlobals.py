@@ -1063,7 +1063,7 @@ class ZMSGlobals:
       elif type(i) is int or type(i) is float:
         return str(i)
       elif i is not None:
-        return '\'%s\''%(str(i).replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
+        return '\'%s\''%(str(i).replace('\\','\\\\').replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
       return '\'\''
 
     # --------------------------------------------------------------------------

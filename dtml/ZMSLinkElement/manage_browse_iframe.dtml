@@ -178,7 +178,7 @@
    *
    */
   function selectObject(url, anchor, title) {
-   <dtml-if fmName>
+   <dtml-if fmName><dtml-if elName>
      var fm = self.parent.document.forms['<dtml-var fmName>'];
      if ( fm) {
        var path = getInternalUrl(url);
@@ -187,7 +187,7 @@
      else {
        self.parent.selectObject(url,title);
      }
-   <dtml-else>
+   </dtml-if><dtml-else>
      if ($('#type').val().indexOf('dtml')==0) {
        url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
      }
@@ -398,7 +398,7 @@ function followHref( href, extra)
            path = path.substr( 0, i) + '/' + path.substr( i + 1);
          }
        }
-      <dtml-if fmName>
+      <dtml-if fmName><dtml-if elName>
        var fm = self.parent.document.forms['<dtml-var fmName>'];
        if ( fm) {
          self.parent.zmiBrowseObjsApplyUrlValue('<dtml-var fmName>','<dtml-var elName>',path);
@@ -406,7 +406,7 @@ function followHref( href, extra)
        else  {
          self.parent.selectObject(path,title);
        }
-      <dtml-else>
+      </dtml-if><dtml-else>
        self.parent.selectObject(path,title);
       </dtml-if>
        self.parent.zmiDialogClose('zmiDialog');

@@ -43,30 +43,20 @@ import IZMSSvnInterface
 # ------------------------------------------------------------------------------
 def syncType( self, meta_id, attr):
   try:
-    if (attr['type'] in ['resource','Folder']) or \
-       (attr.get('mandatory',0)==1 and attr['type'] in self.getMetaobjIds()) or \
-       (attr.get('repetitive',0)==1 and attr['type'] in self.getMetaobjIds()):
-      attr_id = attr['id']
-      if attr['type'] == 'Folder':
-        if attr_id is not None: attr_id = _globals.id_quote(attr_id)
-      ob = getattr( self, meta_id+'.'+attr_id, None)
-      if ob is not None:
-        attr['custom'] = ob
-    elif not self.getConfProperty('ZMS.metaobj_manager.syncType',1):
+    attr_id = attr['id']
+    if attr['type'] == 'Folder':
+      if attr_id is not None:
+        attr_id = _globals.id_quote(attr_id)
+    ob = getattr( self, meta_id+'.'+attr_id, None)
+    if ob is None:
       return
-    elif attr['type'] == 'method':
-      ob = getattr( self, meta_id+'.'+attr['id'], None)
-      if ob is not None:
-        attr['custom'] = ob.raw
+    if attr['type'] == 'method':
+      attr['custom'] = ob.raw
     elif attr['type'] == 'py':
-      ob = getattr( self, meta_id+'.'+attr['id'], None)
-      if ob is not None:
-          attr['py'] = ob
-          attr['custom'] = ob.read()
+      attr['py'] = ob
+      attr['custom'] = ob.read()
     elif attr['type'] == 'interface':
-      ob = getattr( self, meta_id+'.'+attr['id'], None)
-      if ob is not None:
-        attr['name'] = ob.raw
+      attr['name'] = ob.raw
     elif attr['type'] in self.valid_zopetypes:
       container = self.getHome()
       for ob_id in attr['id'].split('/')[:-1]:
@@ -81,6 +71,8 @@ def syncType( self, meta_id, attr):
         connection = ob.connection_id
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
+    else:
+      attr['custom'] = ob
   except:
     value = _globals.writeError(self,'[syncType]')
 
@@ -681,7 +673,7 @@ class ZMSMetaobjManager:
           attr['errors'] = attr.get('errors','')
           meta_types = meta_objs.keys()
           valid_types = self.valid_datatypes+self.valid_zopetypes+meta_types+['*']
-          # type is valid: sync type (copy can be edited directly in ZODB via FTP!)
+          # type is valid: sync type (copy might have been edited directly in ZODB via FTP!)
           if sync and attr['type'] in valid_types:
             attr['meta_type'] = ''
             syncType( self, meta_id, attr)

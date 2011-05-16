@@ -1487,12 +1487,13 @@ class ObjAttrsManager:
         _globals.writeError( self, '[synchronizeObjAttr]')
       return None
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrsManager.synchronizeObjAttrs:
-    #
-    #  Synchronizes object-attributes.
-    # --------------------------------------------------------------------------
     def synchronizeObjAttrs(self, sync_id=None):
+      """
+      Synchronizes dictionary of object-attributes.
+      @param sync_id: meta-id of content-object, if None synchronize all.
+      """
+      rtn = []
+      rtn.append('[%s.synchronizeObjAttrx]: %s'%(self.absolute_url(),str(sync_id)))
       if _globals.debug( self):
         _globals.writeLog( self, '[synchronizeObjAttrs]')
       
@@ -1570,10 +1571,10 @@ class ObjAttrsManager:
               if not b:
                 b = id in metaObjIds and portalClient.getMetaobj(id).get('acquired',0)==1
           if b:
-            portalClient.synchronizeObjAttrs(sync_id)
+            rtn.append(portalClient.synchronizeObjAttrs(sync_id))
         except:
           _globals.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
       
-      return ''
+      return '\n'.join(rtn)
 
 ################################################################################

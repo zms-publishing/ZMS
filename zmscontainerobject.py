@@ -560,15 +560,15 @@ class ZMSContainerObject(
       actions = []
       container = self
       objPath = ''
-      print "manage_ajaxZMIActions: context_id=",context_id
       if context_id == '':
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self,self))
       else:
         attr_id = _globals.id_prefix(context_id)
-        context = None
-        if attr_id in container.objectIds():
-          context = getattr(container,context_id,None)
+        if attr_id == context_id: 
+            context = None 
+        elif context_id in container.objectIds():
+            context = getattr(container,context_id,None)
         actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
         if context is not None:
           objPath = context.id+'/'

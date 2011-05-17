@@ -565,9 +565,7 @@ class ZMSContainerObject(
         actions.extend( _zmi_actions_util.zmi_actions(self,self))
       else:
         attr_id = _globals.id_prefix(context_id)
-        if attr_id == context_id: 
-            context = None 
-        elif context_id in container.objectIds():
+        if context_id in container.objectIds():
             context = getattr(container,context_id,None)
         actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
         if context is not None:

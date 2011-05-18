@@ -1,11 +1,6 @@
 ################################################################################
 # _accessmanager.py
 #
-# $Id: _accessmanager.py,v 1.11 2004/10/04 19:57:06 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.11 $
-# 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -373,7 +368,8 @@ class AccessableContainer(AccessableObject):
     def grantPublicAccess(self):
       self.restrictAccess()
       self.manage_acquiredPermissions(role_permissions(self,'Manager'))
-      for role in role_defs.keys():
+      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      for role in filter(lambda x: x not in ['Anonymous','Authenticated','Owner','Manager',],self.valid_roles()):
         permissions = []
         if self.getLevel() == 0:
           permissions = role_permissions(self,role)
@@ -391,8 +387,16 @@ class AccessableContainer(AccessableObject):
     def revokePublicAccess(self):
       self.restrictAccess()
       self.manage_acquiredPermissions([])
-      for role in role_defs.keys():
-        self.manage_role(role_to_manage=role,permissions=role_permissions(self,role))
+      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      for role in filter(lambda x: x not in ['Anonymous','Authenticated','Owner','Manager',],self.valid_roles()):
+        permissions=role_permissions(self,role)
+        if role in security_roles.keys():
+          permissions = []
+          ob = self.getParentNode()
+          while ob is not None and len(permissions)==0:
+            permissions = map(lambda x: x['name'], filter(lambda x: x['selected']=='SELECTED',ob.permissionsOfRole(role)))
+            ob = ob.getParentNode()
+        self.manage_role(role_to_manage=role,permissions=permissions)
       # Anonymous / Authenticated.
       permissions=['Access contents information']
       self.manage_role(role_to_manage='Anonymous',permissions=permissions)

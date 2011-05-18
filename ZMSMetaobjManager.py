@@ -1273,6 +1273,9 @@ class ZMSMetaobjManager:
           for k in self.model.keys():
             if old_model.has_key(k):
               d = self.model[k]
+              types = self.valid_types
+              for i in range(len(self.metas)/2):
+                  types.append(self.metas[i*2])
               valid_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in self.valid_types, d.get('attrs',[])))
               valid_types_attrs.sort()
               old_d = old_model[k]

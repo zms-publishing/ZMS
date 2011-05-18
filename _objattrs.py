@@ -1493,7 +1493,7 @@ class ObjAttrsManager:
       @param sync_id: meta-id of content-object, if None synchronize all.
       """
       rtn = []
-      rtn.append('[%s.synchronizeObjAttrx]: %s'%(self.absolute_url(),str(sync_id)))
+      rtn.append('[%s.synchronizeObjAttrs]: %s'%(self.absolute_url(),str(sync_id)))
       if _globals.debug( self):
         _globals.writeLog( self, '[synchronizeObjAttrs]')
       

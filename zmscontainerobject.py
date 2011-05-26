@@ -560,6 +560,7 @@ class ZMSContainerObject(
       actions = []
       container = self
       objPath = ''
+      context = None 
       if context_id == '':
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self,self))

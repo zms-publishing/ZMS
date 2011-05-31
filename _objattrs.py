@@ -132,6 +132,9 @@ def getobjattr(self, obj, obj_attr, lang):
   if v is None:
     datatype = obj_attr['datatype_key']
     default = obj_attr.get('default',_globals.dtMapping[datatype][1])
+    # Default inactive in untranslated languages.
+    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not self.isTranslated(lang,self.REQUEST):
+        default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
         default = time.time()

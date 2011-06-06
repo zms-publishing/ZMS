@@ -1,11 +1,6 @@
 ################################################################################
 # _confmanager.py
 #
-# $Id: _confmanager.py,v 1.9 2004/11/30 20:03:17 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.9 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -738,9 +733,8 @@ class ConfManager(
       ##### InstalledProducts ####
       elif key == 'InstalledProducts':
         if btn == 'Change':
-          self.setConfProperty('InstalledProducts.pil',REQUEST.get('pil',None))
           self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
-          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',0))
+          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',600))
           message = self.getZMILangStr('MSG_CHANGED')
       
       ##### Manager ####

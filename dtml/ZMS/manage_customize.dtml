@@ -638,7 +638,7 @@ $(function() {
 <dtml-var "f_headline(_,_,headline='Installed Libraries')">
 <table cellspacing="0" cellpadding="1" border="0">
   <tr valign="top">
-    <td class="form-small"><input class="form-checkbox" type="checkbox" id="pil" name="pil:int" value="1" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
+    <td class="form-small"><input class="form-checkbox" type="checkbox" disabled="disabled" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
     <td class="form-small">
       <strong><label for="pil">Python Imaging Library (PIL)</label></strong>
       <a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>external_link.gif" alt="" border="0" align="absmiddle"/></a>

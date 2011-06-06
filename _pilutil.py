@@ -35,10 +35,8 @@ class pilutil:
 
   enabled__roles__ = None
   def enabled(self):
-    if self.context.getConfProperty('InstalledProducts.pil'):
-      return True
     try:
-      import PIL
+      from PIL import Image
       return True
     except:
       return False

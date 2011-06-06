@@ -353,7 +353,7 @@ ul.zmi-icons span.ui-icon,ul#icons span.ui-icon{float:left;margin:0}
 .ui-widget-overlay{background:#666666 url(/++resource++zms_/jquery/ui/css/ui-lightness/images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat;opacity:.50;filter:Alpha(Opacity=50)}
 .ui-widget-shadow{margin:-5px 0 0 -5px;padding:5px;background:#000000 url(/++resource++zms_/jquery/ui/css/ui-lightness/images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x;opacity:.20;filter:Alpha(Opacity=20);-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px}
 .ui-resizable{position:relative}
-.ui-resizable-handle{position:absolute;font-size:0.1px;z-index:99999;display:block}
+.ui-resizable-handle{position:absolute;font-size:0.1px;z-index:99999;display:block;background-image:url(data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=)}
 .ui-resizable-disabled .ui-resizable-handle,.ui-resizable-autohide .ui-resizable-handle{display:none}
 .ui-resizable-n{cursor:n-resize;height:7px;width:100%;top:-5px;left:0}
 .ui-resizable-s{cursor:s-resize;height:7px;width:100%;bottom:-5px;left:0}
@@ -363,6 +363,7 @@ ul.zmi-icons span.ui-icon,ul#icons span.ui-icon{float:left;margin:0}
 .ui-resizable-sw{cursor:sw-resize;width:9px;height:9px;left:-5px;bottom:-5px}
 .ui-resizable-nw{cursor:nw-resize;width:9px;height:9px;left:-5px;top:-5px}
 .ui-resizable-ne{cursor:ne-resize;width:9px;height:9px;right:-5px;top:-5px}
+.ui-selectable-helper{position:absolute;z-index:100;border:1px dotted black}
 .ui-accordion{width:100%}
 .ui-accordion .ui-accordion-header{cursor:pointer;position:relative;margin-top:1px;zoom:1}
 .ui-accordion .ui-accordion-li-fix{display:inline}
@@ -422,7 +423,7 @@ button.ui-button::-moz-focus-inner{border:0;padding:0}
 .ui-slider-vertical{width:.8em;height:100px}
 .ui-slider-vertical .ui-slider-handle{left:-.3em;margin-left:0;margin-bottom:-.6em}
 .ui-slider-vertical .ui-slider-range{left:0;width:100%}
-.ui-slider-vertical .ui-slider-range-min{bottom:0;width:3px}
+.ui-slider-vertical .ui-slider-range-min{bottom:0}
 .ui-slider-vertical .ui-slider-range-max{top:0}
 .ui-tabs{position:relative;padding:.2em;zoom:1}
 .ui-tabs .ui-tabs-nav{margin:0;padding:.2em .2em 0}

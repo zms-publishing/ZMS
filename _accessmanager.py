@@ -392,10 +392,22 @@ class AccessableContainer(AccessableObject):
         permissions=role_permissions(self,role)
         if role in security_roles.keys():
           permissions = []
-          ob = self.getParentNode()
-          while ob is not None and len(permissions)==0:
-            permissions = map(lambda x: x['name'], filter(lambda x: x['selected']=='SELECTED',ob.permissionsOfRole(role)))
-            ob = ob.getParentNode()
+          # Authors & Editors
+          if len(permissions) == 0:
+            ob = self.getParentNode()
+            while ob is not None and len(permissions)==0:
+              permissions = map(lambda x: x['name'], filter(lambda x: x['selected']=='SELECTED',ob.permissionsOfRole(role)))
+              ob = ob.getParentNode()
+          # Subscribers
+          if len(permissions) == 0:
+            security_role = security_roles[role]
+            for node in security_role.keys():
+              ob = self.getLinkObj(node)
+              if ob == self:
+                for node_role in security_role[node]['roles']:
+                  node_role_id = node_role.replace(' ','')
+                  node_role_permissions = role_permissions(self,node_role_id)
+                  permissions = self.concat_list(permissions,node_role_permissions)
         self.manage_role(role_to_manage=role,permissions=permissions)
       # Anonymous / Authenticated.
       permissions=['Access contents information']

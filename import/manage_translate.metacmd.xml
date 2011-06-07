@@ -75,7 +75,7 @@ body.maximized .zmiRenderShort {
     <dtml-call "REQUEST.set(lang_req_key+'_bk',REQUEST.get(lang_req_key))">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key))">
    <div id="<dtml-var id>" class="zmi-translate-element">
-    <span class="zmi-translate-element-id"><dtml-var id></span>
+    <span class="zmi-translate-element-id notranslate"><dtml-var id></span>
     <div class="zmiRenderShort" id="contentEditable_<dtml-var id>_<dtml-var lang>">
      <dtml-if "meta_id not in ['ZMSDocument','ZMSFolder','ZMS']">
       <dtml-var "getBodyContent(REQUEST)">
@@ -95,7 +95,7 @@ body.maximized .zmiRenderShort {
     <td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">
-     <span class="zmi-translate-element-id"<dtml-if "isActive(REQUEST)!=True"
+     <span class="zmi-translate-element-id notranslate" <dtml-if "isActive(REQUEST)!=True"
       >title="Inactive" style="background-color:#999"</dtml-if>><dtml-var id></span>
       <dtml-var "renderShort(REQUEST)">
     </div>

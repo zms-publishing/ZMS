@@ -29,7 +29,7 @@
  ></dtml-if
 ></dtml-in>
 
-<div id="ZMIManageTabsBar">
+<div id="ZMIManageTabsBar" class="notranslate">
 <div class="zmi_col_left">
 <div class="ui-tabs ui-widget ui-widget-content" id="tabs">
 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-content">
@@ -71,7 +71,7 @@
 <dtml-call "REQUEST.set('f_zmiUiWidgetContent',REQUEST.get('f_zmiUiWidgetContent',[]))">
 <dtml-call "REQUEST.get('f_zmiUiWidgetContent').append(1)">
 
-<table cellspacing="0" cellpadding="2" border="0" width="100%">
+<table cellspacing="0" cellpadding="2" border="0" width="100%" class="notranslate">
 <tr valign="top">
 <td>
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">

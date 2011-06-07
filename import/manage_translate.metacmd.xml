@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-06-07 [fhoffmann] Google Translator Element added
 2011-04-11 [zmsdev] Replaced fancybox by jquery ui dialog.
 2011-28-01 [fhoffmann] Revised for fancybox transparency css
 2011-21-01 [fhoffmann] Revised for maximize css
@@ -65,8 +66,8 @@ body.maximized .zmiRenderShort {
 <dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
 <dtml-in "['left','right']">
 <dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
-<td class="zmi-translate-<dtml-var si>" width="50%">
-    <select class="form-small" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
+<td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">" width="50%">
+    <select class="form-small notranslate" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
      <dtml-in "REQUEST.get('%s_options'%lang_req_key)" mapping>
       <option value="<dtml-var sequence-key>" <dtml-if "_['sequence-key']==REQUEST[lang_req_key]">selected="selected"</dtml-if>><dtml-var label></option>
      </dtml-in>
@@ -91,7 +92,7 @@ body.maximized .zmiRenderShort {
  <tr valign="top">
   <dtml-in "['left','right']">
    <dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
-    <td class="zmi-translate-<dtml-var si>">
+    <td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">">
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">
      <span class="zmi-translate-element-id"<dtml-if "isActive(REQUEST)!=True"
@@ -107,7 +108,13 @@ body.maximized .zmiRenderShort {
 </tr>
 </table>
 </form>
-
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display:block"></div><script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: "de"}, "google_translate_element");
+};</script>
+<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- /Google Translate Element -->
 <dtml-var manage_page_footer>]]>
     </item>
     <item key="description"/>

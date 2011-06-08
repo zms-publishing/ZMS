@@ -23,7 +23,9 @@
 		</script>
 	</head>
 	<body class="zmi ui-widget-content ui-corner-all">
-		<form name="form0" action="manage_user" method="post" onsubmit="return form0Submit(this);">
+		<div class="zmi">
+			<div class="ZMIManageBody ui-widget-content">
+				<form name="form0" action="manage_user" method="post" onsubmit="return form0Submit(this);">
 
 <dtml-if "len(REQUEST.form.get('manage_tabs_message',REQUEST.get('manage_tabs_message','')))>0">
 <div class="ui-state-highlight ui-corner-all" style="padding:1em;">
@@ -108,6 +110,8 @@
   <td><input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_SAVE')">" onclick="self.btnClicked=this.value;"></td>
  </table>
 
-		</form>
+				</form>
+			</div>
+		</div>
 	</body>
 </html>

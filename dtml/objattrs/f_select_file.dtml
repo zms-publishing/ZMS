@@ -34,7 +34,7 @@
 							<dtml-if l><span class="ui-icon ui-icon-info" title="<dtml-var "', '.join(l)">" style="float:left"></span></dtml-if>
 						</dtml-let>
 						<dtml-try>
-							<strong><span id="filename_<dtml-var elName>"><img src="<dtml-var "getMimeTypeIconSrc(value.getContentType())">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle"> <dtml-var "value.filename"></span></strong>
+							<a href="<dtml-var "value.getHref(REQUEST)">" target="_blank" class="zmi"><strong><span id="filename_<dtml-var elName>"><img src="<dtml-var "getMimeTypeIconSrc(value.getContentType())">" title="<dtml-var "value.getContentType()">" border="0" align="absmiddle"> <dtml-var "value.filename"></span></strong></a>
 							<dtml-if "hasObjProperty(key,REQUEST) or getType()=='ZMSRecordSet'">
 								<i><span id="size_<dtml-var elName>">(<dtml-var "getDataSizeStr(value.get_size())">)</span></i>
 							<dtml-else>

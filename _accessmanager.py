@@ -429,25 +429,32 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def getValidUserids(self, search_term=''):
       valid_userids = []
+      c = 0
       for userFldr in self.getUserFolders():
         if userFldr.aq_parent.objectValues(['ZMS']):
-          if userFldr.meta_type == 'LDAPUserFolder':
-            search_param = userFldr.getProperty('_login_attr')
-            for user in userFldr.findUser(search_param=search_param,search_term=search_term):
-              d = {}
-              d['localUserFldr'] = userFldr
-              d['name'] = user[search_param]
-              for extra in ['givenName','sn']:
-                try: d[extra] = user[extra]
-                except: pass
-              valid_userids.append(d)
-          else:
+          if nr == 0 and userFldr.meta_type == 'LDAPUserFolder':
+            search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+            users = userFldr.findUser(search_param=search_param,search_term=search_term)
+            try:
+              for user in users:
+                d = {}
+                d['localUserFldr'] = userFldr
+                d['name'] = user[search_param]
+                for extra in ['givenName','sn']:
+                  try: d[extra] = user[extra]
+                  except: pass
+                valid_userids.append(d)
+            except:
+              _globals.writeError( self, '[getValidUserids]')
+              return valid_userids
+          elif userFldr.meta_type != 'LDAPUserFolder':
             for userName in userFldr.getUserNames():
               if search_term == '' or search_term == userName:
                 d = {}
                 d['localUserFldr'] = userFldr
                 d['name'] = userName
                 valid_userids.append(d)
+        c += 1
       return valid_userids
 
     # --------------------------------------------------------------------------

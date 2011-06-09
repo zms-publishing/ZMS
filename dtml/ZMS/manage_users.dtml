@@ -170,6 +170,7 @@ $(function() {
    <!-- Display Results -->  
    <dtml-if "REQUEST.get('btn','')==getZMILangStr('BTN_SEARCH')">
     <dtml-if search_term>
+     <dtml-let login_attr="getConfProperty('LDAPUserFolder.login_attr',getProperty( '_login_attr'))">
      <dtml-in expr="findUser(search_param=search_param, search_term=search_term)" mapping>
        <dtml-if sequence-start>
         <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0" width="100%">
@@ -183,7 +184,7 @@ $(function() {
          <td class="form-label">&nbsp;</td>
         </tr>
        </dtml-if>
-       <dtml-call "REQUEST.set('userId',unicode(_[getProperty( '_login_attr' )],'latin-1').encode('utf-8'))">
+       <dtml-call "REQUEST.set('userId',unicode(_[login_attr],'latin-1').encode('utf-8'))">
        <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
         <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
         <td class="form-small"><a href="?lang=<dtml-var lang>&id=<dtml-var userId>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var userId></b></a></td>
@@ -207,6 +208,7 @@ $(function() {
     <dtml-else>
      <div class="form-small">None</div>
     </dtml-in>
+    </dtml-let>
    </dtml-if>
   <dtml-else>
    <table cellspacing="1" cellpadding="1" border="0" class="zmiNeutralColorStrong0" width="100%">

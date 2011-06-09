@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-06-09 [fhoffmann] Save Automatic Pre-Translation
 2011-06-07 [fhoffmann] Google Translator Element added
 2011-04-11 [zmsdev] Replaced fancybox by jquery ui dialog.
 2011-28-01 [fhoffmann] Revised for fancybox transparency css
@@ -48,7 +49,62 @@
 body.maximized .zmiRenderShort {
 	width:auto !important;
 }
+.ui-widget-overlay {
+  opacity: 0.2;
+}
 </style>
+
+<script>
+function save(sender) {
+	var $container_div = $($(sender).parents("div")[0]);
+	var $rendershort_div = $("div.zmiRenderShort div.contentEditable",$container_div);
+	var id = $rendershort_div.attr("id");
+	id = id.substr(id.indexOf("_")+1);
+	id = id.substr(0,id.lastIndexOf("_"));
+	var lang = $rendershort_div.attr("id");
+	lang = lang.substr(lang.lastIndexOf("_")+1);
+	var html = $rendershort_div.html();
+	var text = html;
+	text = text.replace(/<font(.*?)>/gi,'');
+	text = text.replace(/<\/font(.*?)>/gi,'');
+	// Handle start-tag.
+	var startTag = text.split(">")[0].toLowerCase();
+	startTag = startTag.substr(startTag.indexOf("<")+1);
+	if (startTag.indexOf(" ")>0) {
+		startTag = startTag.substr(0,startTag.indexOf(" "));
+	}
+	var sre = '<'+startTag+'(.*?)>((.|\n|\r|\t)*?)<\/'+startTag+'(.*?)>';
+	var re = new RegExp(sre,'gi');
+	text = text.replace(re,'$2');
+	text = text.replace(/<span class=\"unicode\">(.*?)<\/span>/g,'');
+	// Handle sub-tag.
+	var subTag = text.split(">")[0].toLowerCase();
+	subTag = subTag.substr(subTag.indexOf("<")+1);
+	if (subTag.indexOf(" ")>0) {
+		startTag = subTag.substr(0,subTag.indexOf(" "));
+	}
+	if (subTag == 'br') {
+		re = new RegExp('<'+subTag+'>','gi');
+		text = text.replace(re,'\n');
+	}
+	else {
+		re = new RegExp('<'+subTag+'(.*?)>','gi');
+		text = text.replace(re,'');
+		re = new RegExp('<\/'+subTag+'>','gi');
+		text = text.replace(re,'\n');
+	}
+	if (confirm("Save Automatic Pre-Translation?\n\n"+text)) {
+		$container_div.addClass('zmiTeaserColor');
+		var params = {};
+		params['lang'] = lang;
+		params['text_'+lang] = text;
+		$.post(id+'/manage_changeProperties',params,function(data){
+			$container_div.removeClass('zmiTeaserColor');
+		},'html');
+	}
+}
+</script>
+
 </head>
 <dtml-var manage_tabs>
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
@@ -96,7 +152,7 @@ body.maximized .zmiRenderShort {
     <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
     <div id="<dtml-var id>" class="zmi-translate-element">
      <span class="zmi-translate-element-id notranslate" <dtml-if "isActive(REQUEST)!=True"
-      >title="Inactive" style="background-color:#999"</dtml-if>><dtml-var id></span>
+      >title="Inactive" style="background-color:#999"</dtml-if>><dtml-var id><dtml-if "si!='left'"><span title="Save Automatic Pre-Translation" style="cursor:pointer;" onclick="save(this)"> ▼ </span></dtml-if></span>
       <dtml-var "renderShort(REQUEST)">
     </div>
     </td>

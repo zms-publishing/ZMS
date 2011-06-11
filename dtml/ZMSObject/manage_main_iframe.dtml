@@ -1,14 +1,15 @@
-<dtml-let lurl="URL.replace('?','/').split('/')" metaObj="getMetaobj(meta_id)" metaObjManage="getMetaobjAttr(meta_id,'manage')" metaobjIds="getMetaobjIds()">
+<dtml-let metaObj="getMetaobj(meta_id)" metaObjManage="getMetaobjAttr(meta_id,'manage')" metaobjIds="getMetaobjIds()">
+
+<dtml-if ZMS_NO_BODY>
+	<dtml-var manage_page_request>
+		<div class="zmi" title="<dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if>">
+<dtml-else>
 	<dtml-var manage_page_header>
 		<script>
 			$(function() {
 				<dtml-if manage_tabs_message>
 					if (parent.$.fancybox) parent.$.fancybox.close();
-					if (parent.$('#zmiIframe')) parent.$('#zmiIframe').dialog("close");
 					parent.location.reload();
-				<dtml-else>
-					parent.zmiIframeResize(getBodyDimensions());
-					if (parent.$('#zmiIframe')) parent.$('#zmiIframe').dialog("option","title",document.title);
 				</dtml-if>
 			});
 		</script>
@@ -18,6 +19,8 @@
 	</head>
 	<body class="zmi">
 		<div class="zmi">
+</dtml-if>
+
 			<dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">
 				<dtml-if metaObjZMI>
 					<!-- ### Meta-Object: Custom Management Interface -->
@@ -29,8 +32,8 @@
 					<!-- ### Meta-Object: Default -->
 					<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 					<dtml-call "initObjChildren(REQUEST)">
-					<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
-						<input type="hidden" name="manage_target" value="<dtml-var URL>">
+					<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="<dtml-if ZMS_NO_BODY><dtml-var id>/</dtml-if>manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
+						<input type="hidden" name="manage_target" value="<dtml-if ZMS_NO_BODY><dtml-var "(HTTP_REFERER+'?')[:(HTTP_REFERER+'?').find('?')]"><dtml-else><dtml-var URL></dtml-if>">
 						<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>">
 						<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 						<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
@@ -44,6 +47,10 @@
 				</dtml-if>
 			</dtml-let>
 		</div><!-- .zmi -->
+
+<dtml-unless ZMS_NO_BODY>
 	</body><!-- .zmi -->
 </html>
+</dtml-unless>
+
 </dtml-let>

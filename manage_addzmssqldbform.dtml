@@ -1,5 +1,5 @@
-<dtml-call "REQUEST.set('ZMS_INSERT','ZMSSqlDb')">
-	<dtml-var manage_page_header>
+	<dtml-call "REQUEST.set('ZMS_INSERT','ZMSSqlDb')">
+	<dtml-call manage_page_request>
 		<script language="JavaScript">
 		<!--//
 			function onFormSubmit(fm) {
@@ -10,19 +10,9 @@
 			}
 		//-->
 		</script>
-		<style>
-			body.zmi {background:transparent!important}
-		</style>
-		<script>
-			$(function(){
-				self.parent.zmiIframeResize(getBodyDimensions());
-			});
-		</script>
-	</head>
-	<body class="zmi">
-		<div class="zmi">
+		<div class="zmi" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)">">
 			<div class="ZMIManageBody ui-widget-content">
-				<form name="form0" action="manage_addZMSSqlDb" target="_parent" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
+				<form name="form0" action="<dtml-var URL1>/manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
 					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
@@ -64,5 +54,3 @@
 				</form>
 			</div>
 		</div><!-- .zmi -->
-	</body>
-</html>

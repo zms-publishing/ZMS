@@ -1,11 +1,6 @@
 ################################################################################
 # ZMSItem.py
 #
-# $Id: $
-# $Name: $
-# $Author: $
-# $Revision: $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -73,6 +68,7 @@ class ZMSItem(
     manage_tabs = HTMLFile('dtml/object/manage_tabs', globals()) # ZMI Tabulators
     manage_tabs_sub = HTMLFile('dtml/object/manage_tabs_sub', globals()) # ZMI Tabulators (Sub)
     manage_bodyTop = HTMLFile('dtml/object/manage_bodytop', globals()) # ZMI bodyTop
+    manage_page_request = HTMLFile('dtml/object/manage_page_request', globals()) # ZMI Page Request
     manage_page_header = HTMLFile('dtml/object/manage_page_header', globals()) # ZMI Page Header
     manage_page_footer = HTMLFile('dtml/object/manage_page_footer', globals()) # ZMI Page Footer
     manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals()) # ZMI Iframe

@@ -9,14 +9,18 @@ function zmiIframe(href, opt) {
 	if ($('#zmiIframe').length==0) {
 		$('body').append('<div id="zmiIframe"></div>');
 	}
-	opt["autoOpen"] = false;
-	opt["modal"] = true;
-	opt["height"] = "auto";
-	opt["width"] = "auto";
-	$('#zmiIframe')
-		.dialog(opt)
-		.html('<iframe src="'+href+'" style="border:0;"></iframe>')
-		.dialog('open');
+	$.get(href,function(result) {
+			opt["autoOpen"] = false;
+			opt["modal"] = true;
+			opt["height"] = "auto";
+			opt["width"] = "auto";
+			$('#zmiIframe').html(result);
+			var title = $('#zmiIframe div.zmi').attr("title");
+			if (typeof title != "undefined" && title) {
+				opt["title"] = title;
+			}
+			$('#zmiIframe').dialog(opt).dialog('open');
+		});
 }
 
 /**

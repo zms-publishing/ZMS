@@ -73,6 +73,7 @@ $(function(){
 				if (self.location.href.indexOf('/manage_translate')>0) {
 					href += '_iframe';
 					href += '?lang='+lang;
+					href += '&ZMS_NO_BODY=1';
 					zmiIframe(href,{});
 				}
 				else if (self.location.href.indexOf('/manage')>0) {

@@ -1,62 +1,4 @@
-<dtml-call "RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime()-10000).toZone('GMT+1').rfc822())"
-><dtml-call "RESPONSE.setHeader('Cache-Control', 'no-cache')"
-><dtml-call "RESPONSE.setHeader('Pragma', 'no-cache')"
-
-><dtml-call "REQUEST.set('ZMI_TIME',ZopeTime().timeTime())"
-><dtml-call "REQUEST.set('ZMS_CHARSET',REQUEST.get('ZMS_CHARSET','utf-8'))"
-><dtml-call "REQUEST.set('MSIE',REQUEST.get('HTTP_USER_AGENT','').find('MSIE')>=0)"
-
-><dtml-if meta_id
-><dtml-if "len(absolute_url())>len(getDocumentElement().absolute_url())"
- ><dtml-unless "REQUEST['URL'].find(absolute_url()[len(getDocumentElement().absolute_url()):])>0"
-  ><dtml-call "RESPONSE.redirect(absolute_url()+'/'+REQUEST['URL'].split('/')[-1]+'?'+REQUEST.get('QUERY_STRING',''))">
- ></dtml-unless
-></dtml-if
-><dtml-call "REQUEST.set( 'ZMS_THIS',getSelf())"
-><dtml-call "REQUEST.set( 'ZMS_ROOT',getDocumentElement().absolute_url())"
-><dtml-call "REQUEST.set( 'ZMS_COMMON','%s/common'%getHome().absolute_url())"
-><dtml-if "(REQUEST.get('ZMS_PATHCROPPING',False) or getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','')==''"
- ><dtml-let base="REQUEST.get('BASE0','')"
-  ><dtml-if "ZMS_ROOT.find(base)==0"
-   ><dtml-call "REQUEST.set('ZMS_ROOT',ZMS_ROOT[len(base):])"
-   ><dtml-call "REQUEST.set('ZMS_COMMON',ZMS_COMMON[len(base):])"
-  ></dtml-if
- ></dtml-let
-></dtml-if
-><dtml-unless "REQUEST.get( 'live','')=='live'"
- ><dtml-call "REQUEST.set( 'preview','preview')"
-></dtml-unless
-><dtml-unless "REQUEST.has_key( 'lang')"
- ><dtml-call "REQUEST.set( 'lang',getPrimaryLanguage())"
-></dtml-unless
-><dtml-unless "REQUEST.has_key( 'manage_lang')"
- ><dtml-call "REQUEST.set('manage_lang',SESSION.get('manage_lang',get_manage_lang()))"
-></dtml-unless
-><dtml-call "SESSION.set('manage_lang',REQUEST.get('manage_lang'))"
-><dtml-unless manage_tabs_message
- ><dtml-call "REQUEST.set( 'manage_tabs_message',updateVersion(lang,REQUEST)+getConfProperty('ZMS.manage_tabs_message',''))"
-></dtml-unless
-><dtml-unless "REQUEST['lang'] in getLanguages(REQUEST)"
- ><dtml-call "REQUEST.set('lang',getLanguages(REQUEST)[0])"
- ><dtml-call "REQUEST.set('manage_lang',get_manage_lang())"
-></dtml-unless
-><dtml-unless "REQUEST['manage_lang'] in getLocale().get_manage_langs()"
- ><dtml-call "REQUEST.set('manage_lang','eng')"
-></dtml-unless
-><dtml-if "REQUEST.get('ZMS_ACTION') and not REQUEST.get('action')"
-><dtml-call "REQUEST.set('action',ZMS_ACTION)"
-><dtml-elif "not REQUEST.get('ZMS_ACTION') and REQUEST.get('action')"
-><dtml-call "REQUEST.set('ZMS_ACTION',action)"
-></dtml-if
-><dtml-unless "hasAccess(REQUEST)"
-><dtml-call "RESPONSE.redirect(url_append_params('%s/manage_main'%aq_parent.absolute_url(),{'lang':lang,'manage_tabs_message':getZMILangStr('MSG_ACCESS_FORBIDDEN')%'<i>%s</i>'%display_type(REQUEST),}))"
-></dtml-unless
-><dtml-var f_headDoctype
-><dtml-else
-><dtml-call "REQUEST.set( 'ZMS_THIS',this())"
-><dtml-call "REQUEST.set( 'lang','eng')"
-></dtml-if>
-
+<dtml-var manage_page_request>
 <head>
 
 <dtml-comment>
@@ -64,7 +6,7 @@
 ### Title
 ################################################################################
 </dtml-comment>
-<title>ZMS | <dtml-if meta_id><dtml-if ZMS_INSERT><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"><dtml-else><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if></dtml-if><dtml-else><dtml-var title_or_id></dtml-if> | <dtml-var lang></title>
+<title>ZMS | <dtml-if meta_id><dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if><dtml-else><dtml-var title_or_id></dtml-if> | <dtml-var lang></title>
 
 <dtml-comment>
 ################################################################################
@@ -72,7 +14,6 @@
 ################################################################################
 </dtml-comment>
 <meta http-equiv="content-type" content="text/html; charset=<dtml-var ZMS_CHARSET>"/>
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/html; charset=%s'%ZMS_CHARSET)">
 
 <dtml-comment>
 ################################################################################

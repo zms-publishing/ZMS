@@ -337,7 +337,7 @@ class AccessableObject:
       
       # Return with message.
       message = urllib.quote(message)
-      return RESPONSE.redirect('manage_userForm?lang=%s&manage_tabs_message=%s'%(lang,message))
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 
 ################################################################################
@@ -432,7 +432,7 @@ class AccessManager(AccessableContainer):
       c = 0
       for userFldr in self.getUserFolders():
         if userFldr.aq_parent.objectValues(['ZMS']):
-          if nr == 0 and userFldr.meta_type == 'LDAPUserFolder':
+          if c == 0 and userFldr.meta_type == 'LDAPUserFolder':
             search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
             users = userFldr.findUser(search_param=search_param,search_term=search_term)
             try:

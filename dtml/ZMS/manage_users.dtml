@@ -279,11 +279,13 @@ $(function() {
        <tr valign="top">
         <td class="form-small">
          <dtml-if "localUserFldr!=userFldr">@<a href="<dtml-var "localUserFldr.aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "localUserFldr.aq_parent.id"></a></dtml-if>
+         <dtml-if userObj>
          <dtml-in "difference_list(userObj.getRoles(),['Authenticated'])">
           <dtml-if sequence-start><i>(</dtml-if>
           <dtml-var sequence-item>
           <dtml-if sequence-end>)</i><dtml-else>,</dtml-if>
          </dtml-in>
+         </dtml-if>
         </td>
        </tr>
        </table>
@@ -548,11 +550,13 @@ $(function() {
           <img src="p_/User_icon" border="0" align="absmiddle" />
           <a href="?lang=<dtml-var lang>&id=<dtml-var name>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
           <dtml-if "localUserFldr!=userFldr">@<a href="<dtml-var "localUserFldr.aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "localUserFldr.aq_parent.id"></a></dtml-if>
+          <dtml-if userObj>
           <dtml-in "difference_list(userObj.getRoles(),['Authenticated'])">
            <dtml-if sequence-start><i>(</dtml-if>
            <dtml-var sequence-item>
            <dtml-if sequence-end>)</i><dtml-else>,</dtml-if>
           </dtml-in>
+          </dtml-if>
          </td>
          <td class="form-small">
           <!-- E-Mail -->

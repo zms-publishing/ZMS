@@ -10,7 +10,6 @@ function zmiIframe(href, opt) {
 		$('body').append('<div id="zmiIframe"></div>');
 	}
 	$.get(href,function(result) {
-			opt["autoOpen"] = false;
 			opt["modal"] = true;
 			opt["height"] = "auto";
 			opt["width"] = "auto";
@@ -19,19 +18,8 @@ function zmiIframe(href, opt) {
 			if (typeof title != "undefined" && title) {
 				opt["title"] = title;
 			}
-			$('#zmiIframe').dialog(opt).dialog('open');
+			$('#zmiIframe').dialog(opt);
 		});
-}
-
-/**
- * Resize iframe.
- */
-function zmiIframeResize(dims) {
-	$("#zmiIframe iframe").css({height:(parseInt(dims.height)+4)+'px',width:(parseInt(dims.width)+4)+'px'});
-	if(navigator.userAgent.indexOf("MSIE 6.0")>0) {
-		$('#zmiIframe').dialog("option","height",parseInt(dims.height)+50);
-		$('#zmiIframe').dialog("option","width",parseInt(dims.width)+25);
-	}
 }
 
 /**

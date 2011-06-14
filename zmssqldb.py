@@ -956,11 +956,11 @@ class ZMSSqlDb(ZMSObject):
         if da.meta_type == 'Z MySQL Database Connection':
           self.executeQuery('SET @auth_user=\'%s\''%auth_user)
       except:
-        raise _globals.writeError( self, '[recordSet_Insert]: can\'t set auth_user variable')
+        raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Insert]: can\'t set auth_user variable'))
       try:
         self.executeQuery( sqlStatement)
       except:
-        raise _globals.writeError( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement)
+        raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Insert]: can\'t insert row - sqlStatement=' + sqlStatement))
       # Return with row-id.
       rowid = (filter(lambda x: x['id']==primary_key, c)+[{'value':None}])[0]['value']
       if rowid is None:
@@ -972,7 +972,7 @@ class ZMSSqlDb(ZMSObject):
           for r in self.query( sqlStatement)['records']:
             rowid = r['value']
         except:
-          raise _globals.writeError( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement)
+          raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement))
       # Process blobs now.
       if blobs:
         self.recordSet_Update(tablename, rowid, blobs, old_values={})

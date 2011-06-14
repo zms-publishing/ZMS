@@ -216,20 +216,28 @@ $(function() {
     <td class="form-label">#<dtml-var "len(getConfProperty('ZMS.security.users',{}).keys())"></td>
     <td class="form-label"><dtml-var "getZMILangStr('ATTR_ID')"></td>
    </tr>
+   <dtml-let login_attr="getConfProperty('LDAPUserFolder.login_attr',getProperty( '_login_attr'))">
    <dtml-in "getConfProperty('ZMS.security.users',{}).keys()" sort>
-    <dtml-let name=sequence-item user="getUser(name)">
-    <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
+    <dtml-let name=sequence-item
+    ><dtml-if "login_attr=='dn'"
+     ><dtml-call "REQUEST.set('userObj',getUserByDN(name))"
+    ><dtml-else
+     ><dtml-call "REQUEST.set('userObj',getUser(name))"
+    ></dtml-if
+    ><tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
      <td align="right" class="form-small"><strong><dtml-var "_['sequence-index']+1">.</strong></td>
      <td>
       <div class="form-small">
        <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
-        <dtml-if user>
-         <dtml-in "[getUserDetails(encoded_dn=user.dn,format='dictionary')]" mapping>
+        <dtml-if userObj>
+         <dtml-in "[getUserDetails(encoded_dn=userObj.dn,format='dictionary')]" mapping>
           (<i>
            <dtml-if givenName><dtml-var "unicode(''.join(givenName),'latin-1').encode('utf-8')"></dtml-if>
            <dtml-if sn><dtml-var "unicode(''.join(sn),'latin-1').encode('utf-8')"></dtml-if>
           </i>)
          </dtml-in>
+        <dtml-else>
+         <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
         </dtml-if>
       </div>
      </td>
@@ -240,6 +248,7 @@ $(function() {
      <td colspan="2" class="form-small">None</td>
     </tr>
    </dtml-in>
+   </dtml-let>
    </table>
   </dtml-if>
   </form>
@@ -304,6 +313,16 @@ $(function() {
        <dtml-if "localUserFldr==userFldr">
         <!-- LDAP-Profile -->
         <dtml-if "userFldr.meta_type=='LDAPUserFolder'">
+         <dtml-with userFldr>
+         <dtml-let login_attr="getConfProperty('LDAPUserFolder.login_attr',getProperty( '_login_attr'))"
+          ><dtml-if "login_attr=='dn'"
+           ><dtml-call "REQUEST.set('userObj',getUserByDN(name))"
+          ><dtml-else
+           ><dtml-call "REQUEST.set('userObj',getUser(name))"
+          ></dtml-if
+         ></dtml-let>
+         </dtml-with>
+         <dtml-if userObj>
          <dtml-let cur_vals="userFldr.getUserDetails(encoded_dn=userObj.dn,format='dictionary')">
          <dtml-call "REQUEST.set('count',0)">
          <dtml-in "userFldr.getLDAPSchema()">
@@ -333,6 +352,9 @@ $(function() {
           </dtml-if>
          </dtml-in>
          </dtml-let>
+         <dtml-else>
+         <div class="form-text">None</div>
+         </dtml-if>
         </dtml-if>
         <dtml-unless "localUserFldr.meta_type=='LDAPUserFolder'">
         <!-- Password -->

@@ -69,24 +69,43 @@
 </dtml-unless>
 
 <textarea id="editor_<dtml-var "REQUEST.get('elName')">"></textarea>
-<script type="text/javascript" src="/++resource++zms_/ckeditor/ckeditor.js"></script>
-<script type="text/javascript">
-  var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
-  
-  $(function() {
-    $( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
-    CKEDITOR.replace( 'editor_<dtml-var "REQUEST.get('elName')">', {
-  	  <dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
-  	    customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
-        toolbar: 'ZMSCustomToolbar' 	  
-      <dtml-else>
-        toolbar: 'ZMSBasicToolbar' 	  
-  	  </dtml-if> 
-  	  });
-    CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-    CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 
-  });
+<script type="text/javascript">
+<!--//
+
+var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
+
+function pluginCkeditor(s, c) {
+	$.plugin('ckeditor',{
+			cache: false,
+			files: ['/++resource++zms_/ckeditor/ckeditor.js']
+		});
+	$.plugin('ckeditor').get(s,c);
+}
+
+function loadCkeditor(id, opt) {
+	var instance = CKEDITOR.instances[id];
+	if(instance) {
+		CKEDITOR.remove(instance);
+	}
+	CKEDITOR.replace(id, opt);
+}
+
+$(function() {
+	pluginCkeditor('#editor_<dtml-var "REQUEST.get('elName')">',function() {
+		$( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
+		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
+		loadCkeditor( 'editor_<dtml-var "REQUEST.get('elName')">', {
+			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
+				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
+				toolbar: 'ZMSCustomToolbar' 	  
+			<dtml-else>
+				toolbar: 'ZMSBasicToolbar' 	  
+			</dtml-if> 
+			});
+	})
+});
 
 //-->
 </script>

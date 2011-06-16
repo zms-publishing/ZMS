@@ -945,6 +945,7 @@ class ZMSSqlDb(ZMSObject):
             value = ','.join(value)
           c.append({'id':id,'value':value})
       # Assemble sql-statement
+      c = filter(lambda x: self.sql_quote__(tablename,x['id'],x['value'])!='NULL', c)
       sqlStatement = []
       sqlStatement.append( 'INSERT INTO %s ('%tablename)
       sqlStatement.append( ', '.join(map(lambda x: x['id'], c)))

@@ -10,15 +10,25 @@ function zmiIframe(href, opt) {
 		$('body').append('<div id="zmiIframe"></div>');
 	}
 	$.get(href,function(result) {
-			opt["modal"] = true;
-			opt["height"] = "auto";
-			opt["width"] = "auto";
-			$('#zmiIframe').html(result);
-			var title = $('#zmiIframe div.zmi').attr("title");
-			if (typeof title != "undefined" && title) {
-				opt["title"] = title;
+			var $result = $(result);
+			if ($("div#system_msg",$result).length>0) {
+				var manage_tabs_message = $("div#system_msg",$result).text();
+				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+				var href = self.location.href;
+				href = href.substr(0,href.indexOf("?"))+"?lang="+zmiParams["lang"]+"&manage_tabs_message="+manage_tabs_message;
+				self.location.href = href;
 			}
-			$('#zmiIframe').dialog(opt);
+			else {
+				opt["modal"] = true;
+				opt["height"] = "auto";
+				opt["width"] = "auto";
+				$('#zmiIframe').html(result);
+				var title = $('#zmiIframe div.zmi').attr("title");
+				if (typeof title != "undefined" && title) {
+					opt["title"] = title;
+				}
+				$('#zmiIframe').dialog(opt);
+			}
 		});
 }
 

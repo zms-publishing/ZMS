@@ -48,7 +48,7 @@ class ZMSItem(
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_dtpref', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 'manage_main_iframe' 
+		'manage_dtpref', 'manage_page_request', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 'manage_main_iframe' 
 		)
     __viewPermissions__ = (
 		'manage_menu',

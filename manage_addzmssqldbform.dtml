@@ -12,7 +12,8 @@
 		</script>
 		<div class="zmi" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)">">
 			<div class="ZMIManageBody ui-widget-content">
-				<form name="form0" action="<dtml-var URL1>/manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
+				<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'insert_form')"></dtml-unless>
+				<form name="<dtml-var fmName>" action="<dtml-var URL1>/manage_addZMSSqlDb" method="post" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
 					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
 					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
 					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">

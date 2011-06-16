@@ -14,7 +14,7 @@
 						<dtml-call "manage_addZMSCustom(meta_id=meta_id,lang=lang,_sort_id=_sort_id,REQUEST=REQUEST,RESPONSE=RESPONSE)">
 					<dtml-else>
 						<!-- ### Meta-Object: Default -->
-						<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+						<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'insert_form')"></dtml-unless>
 						<form name="<dtml-var fmName>" action="<dtml-var URL1>/manage_addZMSCustom" method="post" onsubmit="return onFormSubmit('<dtml-var fmName>')" enctype="multipart/form-data">
 							<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>"/>
 							<input type="hidden" name="meta_id" value="<dtml-var meta_id>"/>

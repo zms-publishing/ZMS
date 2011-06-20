@@ -699,6 +699,11 @@ class ObjAttrs:
             value = metaObjAttr['py'](zmscontext=self)
           except:
             value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
+        elif metaObjAttr is not None and metaObjAttr['type'] == 'zpt':
+          try:
+            value = metaObjAttr['zpt'](zmscontext=self)
+          except:
+            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
         elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
           value = metaObjAttr.get('custom','')
         elif metaObjAttr is not None and metaObjAttr['type'] == 'resource':

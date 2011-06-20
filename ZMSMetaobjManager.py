@@ -55,6 +55,9 @@ def syncType( self, meta_id, attr):
     elif attr['type'] == 'py':
       attr['py'] = ob
       attr['custom'] = ob.read()
+    elif attr['type'] == 'zpt':
+      attr['zpt'] = ob
+      attr['custom'] = ob.read()
     elif attr['type'] == 'interface':
       attr['name'] = ob.raw
     elif attr['type'] in self.valid_zopetypes:
@@ -63,8 +66,10 @@ def syncType( self, meta_id, attr):
         container = getattr( container, ob_id)
       ob_id = attr['id'].split('/')[-1]
       ob = getattr( container, ob_id)
-      if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
+      if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
+      elif ob.meta_type in [ 'Page Template']:
+        attr['custom'] = ob.read()
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.read()
       elif ob.meta_type in [ 'Z SQL Method']:
@@ -103,7 +108,7 @@ class ZMSMetaobjManager:
     # Globals.
     # --------
     valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
-    valid_xtypes =    ['constant','delimiter','hint','interface','method','py','resource']
+    valid_xtypes =    ['constant','delimiter','hint','interface','method','py','zpt','resource']
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
@@ -705,7 +710,7 @@ class ZMSMetaobjManager:
         newMultilang = 0
       
       # Defaults for Insert
-      method_types = [ 'method','py'] + self.valid_zopetypes
+      method_types = [ 'method','py','zpt'] + self.valid_zopetypes
       if oldId is None and \
          newType in method_types and \
          (newCustom == '' or type(newCustom) is not str):
@@ -720,7 +725,7 @@ class ZMSMetaobjManager:
           newCustom += '\n'
           newCustom += 'def ' + newId + '( self):\n'
           newCustom += '  return "This is the external method ' + newId + '"\n'
-        elif newType in [ 'Page Template']:
+        elif newType in [ 'zpt', 'Page Template']:
           newCustom = ''
           newCustom += '<span tal:replace="here/title_or_id">content title or id</span>'
           newCustom += '<span tal:condition="template/title" tal:replace="template/title">optional template title</span>'
@@ -817,6 +822,10 @@ class ZMSMetaobjManager:
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
         newOb = getattr(self,id+'.'+newId)
         newOb.write(newCustom)
+      elif newType == 'zpt':
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, newType+': '+newName, newCustom)
       
       # Replace
       ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)

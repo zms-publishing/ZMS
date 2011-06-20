@@ -1200,7 +1200,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       v = ''
       tmpltId = self.metaobj_manager.getTemplateId( self.meta_id)
       if tmpltId in self.getMetaobjAttrIds(self.meta_id):
-        if self.getMetaobjAttr(self.meta_id,tmpltId)['type'] in ['method','py']:
+        if self.getMetaobjAttr(self.meta_id,tmpltId)['type'] in ['method','py','zpt']:
           v = self.attr(tmpltId)
         else:
           tmpltDtml = getattr(self,tmpltId,None)

@@ -44,30 +44,18 @@ import IZMSSvnInterface
 def syncType( self, meta_id, attr):
   try:
     attr_id = attr['id']
-    if attr['type'] == 'Folder':
-      if attr_id is not None:
-        attr_id = _globals.id_quote(attr_id)
-    ob = getattr( self, meta_id+'.'+attr_id, None)
-    if ob is None:
-      return
-    if attr['type'] == 'method':
-      attr['custom'] = ob.raw
-    elif attr['type'] == 'py':
-      attr['py'] = ob
-      attr['custom'] = ob.read()
-    elif attr['type'] == 'zpt':
-      attr['zpt'] = ob
-      attr['custom'] = ob.read()
-    elif attr['type'] == 'interface':
-      attr['name'] = ob.raw
-    elif attr['type'] in self.valid_zopetypes:
+    if attr['type'] in self.valid_zopetypes:
       container = self.getHome()
-      for ob_id in attr['id'].split('/')[:-1]:
-        container = getattr( container, ob_id)
+      for ob_id in attr_id.split('/')[:-1]:
+         container = getattr( container, ob_id)
       ob_id = attr['id'].split('/')[-1]
       ob = getattr( container, ob_id)
       if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
+      elif ob.meta_type in [ 'Folder']:
+        zexp = ob.aq_parent.manage_exportObject( id=ob_id, download=1)
+        blob = _blobfields.createBlobField( self,_globals.DT_FILE, zexp, mediadbStorable=False)
+        attr['custom'] = blob
       elif ob.meta_type in [ 'Page Template']:
         attr['custom'] = ob.read()
       elif ob.meta_type in [ 'Script (Python)']:
@@ -77,7 +65,21 @@ def syncType( self, meta_id, attr):
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
     else:
-      attr['custom'] = ob
+      ob = getattr( self, meta_id+'.'+attr_id, None)
+      if ob is None:
+        return
+      if attr['type'] == 'method':
+        attr['custom'] = ob.raw
+      elif attr['type'] == 'py':
+        attr['py'] = ob
+        attr['custom'] = ob.read()
+      elif attr['type'] == 'zpt':
+        attr['zpt'] = ob
+        attr['custom'] = ob.read()
+      elif attr['type'] == 'interface':
+        attr['name'] = ob.raw
+      else:
+        attr['custom'] = ob
   except:
     value = _globals.writeError(self,'[syncType]')
 
@@ -265,7 +267,7 @@ class ZMSMetaobjManager:
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
       return export
 
 

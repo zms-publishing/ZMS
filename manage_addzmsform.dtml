@@ -253,6 +253,10 @@
  <td><input type="checkbox" name="zmslog:int" value="1" checked="checked"/></td>
 </tr>
 <tr valign="middle">
+ <td><div class="form-text"><em>Add Galleria</em></div></td>
+ <td><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/></td>
+</tr>
+<tr valign="middle">
  <td><div class="form-text"><em>Add Example Database</em></div></td>
  <td><input type="checkbox" name="specobj_exampledb:int" value="1"/></td>
 </tr>

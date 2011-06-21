@@ -586,6 +586,13 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Configuration ####
     
     #-- Example Database
+    if REQUEST.get('specobj_galleria',0) == 1:
+      # Init configuration.
+      _confmanager.initConf(obj, 'com.zms.jquery.galleria', REQUEST)
+      # Init content.
+      initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
+    
+    #-- Example Database
     if REQUEST.get('specobj_exampledb',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'exampledb', REQUEST)

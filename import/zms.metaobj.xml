@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list>
+<?xml version="1.0" encoding="utf-8"?>
+
+  <list>
     <item type="dictionary">
       <dictionary>
         <item key="key"><![CDATA[ZMS]]></item>
@@ -214,7 +215,7 @@
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -222,7 +223,7 @@
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -435,7 +436,7 @@
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -443,7 +444,7 @@
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -771,7 +772,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -779,7 +780,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1003,7 +1004,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1011,7 +1012,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1186,43 +1187,44 @@ return ''
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>
+                    <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSGraphic -->
 
-<dtml-let
-  displaytype="dctDisplaytype.get(str(attr('displaytype')),'left')"
-  align="attr('align')"
-  imgattr="'img'"
-  imghiresattr="'imghires'"
-  imgalign="''"
-  imgurl="getLinkUrl(attr('attr_url'),REQUEST)"
-  imgthumb="URL.find('/manage')>0"
-  imgspecial="attr('img_attrs_spec')"
-  imgclass="'img'"
-  text="getText(REQUEST)"
-  format="attr('format')"
-  renderedtext="renderText(format,'text',text,REQUEST)"
-  textalign="attr('textalign')"
-  textclass="'text'"
-  bodyContent="renderDisplaytype(displaytype,imgattr,imghiresattr,imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,REQUEST)"
-  subclass="[meta_id]"
- ><dtml-if "align in [ 'LEFT', 'CENTER', 'RIGHT']"
-  ><dtml-call "subclass.append(' '+align.lower())"
- ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatleft')"
- ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatright')"
- ></dtml-if
- ><dtml-return "'<div class=\042'+' '.join(subclass)+'\042 id=\042'+id+'\042>'+bodyContent+'</div>'"
-></dtml-let>
+<span tal:omit-tag="" tal:define="global 
+    zmscontext options/zmscontext;
+    subclass      python:[zmscontext.meta_id];
+    text          python:zmscontext.getText(request);
+    textclass     python:'text';
+    format        python:zmscontext.attr('format');
+    displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
+    align         python:zmscontext.attr('align');
+    textalign     python:zmscontext.attr('textalign');
+    imgclass      python:'img';
+    imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
+    imgthumb      python:request['URL'].find('/manage')>0;
+    imgspecial    python:zmscontext.attr('img_attrs_spec');
+    renderedtext  python:zmscontext.renderText(format,'text',text,request);
+    bodyContent   python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
+  </span>
+  <div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)" tal:content="structure bodyContent">The graphic</div>
+</span>
 
-<dtml-comment>--// EO bodyContentZMSCustom_ZMSGraphic //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSGraphic -->]]>
                     </item>
                     <item key="id"><![CDATA[bodyContentZMSCustom_ZMSGraphic]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSGraphic]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[zpt]]></item>
+                    <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSGraphic.bodyContentZMSCustom_ZMSGraphic>]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -1236,7 +1238,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1244,7 +1246,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1259,7 +1261,7 @@ return ''
             <item key="id"><![CDATA[ZMSGraphic]]></item>
             <item key="name"><![CDATA[ZMSGraphic]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.1.0]]></item>
+            <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -1498,7 +1500,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1506,7 +1508,7 @@ return ''
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1885,7 +1887,7 @@ function remoteResponseTimedout() {
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -1893,7 +1895,7 @@ function remoteResponseTimedout() {
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2061,7 +2063,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2069,7 +2071,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2145,7 +2147,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2153,7 +2155,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2481,7 +2483,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -2489,7 +2491,7 @@ zmscontext.commitObj(request)
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -3449,7 +3451,7 @@ if key.startswith('table_'):
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -3457,7 +3459,7 @@ if key.startswith('table_'):
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -3727,7 +3729,8 @@ for ob in obs:
 teaserElmnts.reverse()
 return teaserElmnts
 
-# --// EO getTeaserElements //--]]>
+# --// EO getTeaserElements //--
+]]>
                     </item>
                     <item key="id"><![CDATA[getTeaserElements]]></item>
                     <item key="mandatory" type="int">0</item>
@@ -3858,7 +3861,7 @@ return teaserElmnts
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -3866,7 +3869,7 @@ return teaserElmnts
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -4155,7 +4158,7 @@ CHANGES:
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -4163,7 +4166,7 @@ CHANGES:
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -4292,8 +4295,12 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                   <dictionary>
                     <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTextarea -->
 
-<span tal:omit-tag="" tal:define="global zmscontext options/zmscontext">
-  <span tal:omit-tag="" tal:content="structure python:zmscontext.renderText(zmscontext.attr('format'),'text',zmscontext.getText(request),request,zmscontext.id)">The text</span>
+<span tal:omit-tag="" tal:define="global 
+    zmscontext options/zmscontext;
+    text          python:zmscontext.getText(request);
+    format        python:zmscontext.attr('format');
+    renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)">
+  <span tal:omit-tag="" tal:content="structure renderedText">The text</span>
 </span>
 
 <!-- /bodyContentZMSCustom_ZMSTextarea -->]]>
@@ -4318,7 +4325,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -4326,7 +4333,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                     <item><![CDATA[ZMSEditor]]></item>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                     <item><![CDATA[ZMSAdministrator]]></item>
@@ -4341,7 +4348,7 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
             <item key="id"><![CDATA[ZMSTextarea]]></item>
             <item key="name"><![CDATA[ZMSTextarea]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.2.0]]></item>
+            <item key="revision"><![CDATA[1.2.1]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -4362,23 +4369,23 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
                   <list>
                   </list>
                 </item>
-                <item key="delete_custom"/>
+                <item key="delete_custom"></item>
                 <item key="edit" type="list">
                   <list>
                   </list>
                 </item>
-                <item key="edit_custom"/>
+                <item key="edit_custom"></item>
                 <item key="insert" type="list">
                   <list>
                   </list>
                 </item>
-                <item key="insert_custom"/>
+                <item key="insert_custom"></item>
               </dictionary>
             </item>
             <item key="enabled" type="int">0</item>
             <item key="id"><![CDATA[com.zms.foundation]]></item>
             <item key="name"><![CDATA[com.zms.foundation]]></item>
-            <item key="package"/>
+            <item key="package"></item>
             <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSPackage]]></item>
           </dictionary>

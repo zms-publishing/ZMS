@@ -298,6 +298,9 @@ function zmiGetNotifications() {
 			for ( var i = 0; i < notifications.length; i++) {
 				var notification = notifications[i];
 				var severity = notification['severity'];
+				if (severity == 'disabled') {
+					return;
+				}
 				html += '<div class="form-label">Current Messages:</div>';
 				html += '<div class="form-small">';
 				html += '<img src="/misc_/zms/ico_'+severity+'.gif" alt="" border="0" align="absmiddle"/> ';

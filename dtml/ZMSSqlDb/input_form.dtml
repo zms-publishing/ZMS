@@ -172,8 +172,8 @@
   <dtml-in grid_cols mapping>
   <dtml-let grid_col=sequence-item>
   <dtml-unless "grid_col.get('disabled') or id.lower() in map(lambda x: x.lower(), REQUEST.get('qexcludeids',[]))"
-  ><dtml-call "REQUEST.set('elName','new_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elName',ZMS_TABLE_PREFIX+'_'+elName)"></dtml-if
-  ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+elNameOld)"></dtml-if
+  ><dtml-call "REQUEST.set('elName','new_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elName',ZMS_TABLE_PREFIX+'_'+REQUEST.get('elName'))"></dtml-if
+  ><dtml-call "REQUEST.set('elNameOld','old_%s'%id)"><dtml-if ZMS_TABLE_PREFIX><dtml-call "REQUEST.set('elNameOld',ZMS_TABLE_PREFIX+'_'+REQUEST.get('elNameOld'))"></dtml-if
   ><dtml-try>
    <tr id="tr_<dtml-var id>">
    <dtml-comment>
@@ -432,13 +432,13 @@
        ></dtml-in>
       </dtml-if>
       <dtml-if "fk.has_key('lazy')">
-       <input type="hidden" id="<dtml-var "'new_%s'%id">" name="<dtml-var "'new_%s'%id">" value="<dtml-var "row.get(id,'')" html_quote>"/>
+       <input type="hidden" id="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'new_%s'%id">" name="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'new_%s'%id">" value="<dtml-var "row.get(id,'')" html_quote>"/>
        <dtml-in options>
         <dtml-let item=sequence-item key="item[0]" value="item[1]">
-         <input type="text" class="<dtml-var css> lazy" id="<dtml-var "'displayfield_%s'%id">" name="<dtml-var "'displayfield_%s'%id">" value="<dtml-var value>" disabled="disabled"/>
+         <input type="text" class="<dtml-var css> lazy" id="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'displayfield_%s'%id">" name="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'displayfield_%s'%id">" value="<dtml-var value>" disabled="disabled"/>
         </dtml-let>
        <dtml-else>
-        <input type="text" class="<dtml-var css> lazy" id="<dtml-var "'displayfield_%s'%id">" name="<dtml-var "'displayfield_%s'%id">" value="" disabled="disabled"/>
+        <input type="text" class="<dtml-var css> lazy" id="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'displayfield_%s'%id">" name="<dtml-if ZMS_TABLE_PREFIX><dtml-var ZMS_TABLE_PREFIX>_</dtml-if><dtml-var "'displayfield_%s'%id">" value="" disabled="disabled"/>
        </dtml-in>
        <img 
           class="ui-button ui-state-default ui-corner-all" style="vertical-align:middle;padding:1px 2px;background:#fff"

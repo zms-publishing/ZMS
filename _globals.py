@@ -772,39 +772,15 @@ Compares two dates and returns result.
   0: t0 == t1
  -1: t0 > t1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def compareDate(t0, t1, accuracy_time=1):
-  YEAR = 0
-  MONTH = 1
-  DAY = 2
-  HOURS = 3
-  MINUTES = 4
-  SECONDS = 5
-  t0 = getDateTime(t0)
-  y0 = t0[YEAR]
-  m0 = t0[MONTH]
-  d0 = t0[DAY]
-  H0 = t0[HOURS]
-  M0 = t0[MINUTES]
-  S0 = t0[SECONDS]
-  t1 = getDateTime(t1)
-  y1 = t1[YEAR]
-  m1 = t1[MONTH]
-  d1 = t1[DAY]
-  H1 = t1[HOURS]
-  M1 = t1[MINUTES]
-  S1 = t1[SECONDS]
-  if (y1 > y0) or \
-     (y1 == y0 and m1 > m0) or \
-     (y1 == y0 and m1 == m0 and d1 > d0) or \
-     (accuracy_time == 1 and y1 == y0 and m1 == m0 and d1 == d0 and H1 > H0) or \
-     (accuracy_time == 1 and y1 == y0 and m1 == m0 and d1 == d0 and H1 == H0 and M1 > M0) or \
-     (accuracy_time == 1 and y1 == y0 and m1 == m0 and d1 == d0 and H1 == H0 and M1 == M0 and S1 > S0):
+def compareDate(t0, t1):
+  mt0 = time.mktime(t0)
+  mt1 = time.mktime(t1)
+  if mt1 > mt0:
     return +1
-  elif (accuracy_time == 0 and y1 == y0 and m1 == m0 and d1 == d0) or \
-       (accuracy_time == 1 and y1 == y0 and m1 == m0 and d1 == d0 and H1 == H0 and M1 == M0 and S1 == S0):
-    return 0
-  else:
+  elif mt1 < mt0:
     return -1
+  else:
+    return 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.parseLangFmtDate:

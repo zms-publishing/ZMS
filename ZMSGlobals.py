@@ -1,11 +1,6 @@
 ################################################################################
 # ZMSGlobals.py
 #
-# $Id:$
-# $Name:$
-# $Author:$
-# $Revision:$
-# 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -1408,17 +1403,38 @@ class ZMSGlobals:
         pass
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
+      
+      # Check permissions.
+      if REQUEST is not None:
+        authorized = False
+        for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
+          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
+        if not authorized:
+          RESPONSE = REQUEST.RESPONSE
+          raise RESPONSE.unauthorized()
+      
+      # Read path.
       return _fileutil.readPath(filename, data, recursive)
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_command:
     # --------------------------------------------------------------------------
-    def localfs_command(self, command):
+    def localfs_command(self, command, REQUEST=None):
       """
       Executes command in local file-system.
       """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_command]: command=%s'%command)
+      
+      # Check permissions.
+      if REQUEST is not None:
+        authorized = False
+        if not authorized:
+          RESPONSE = REQUEST.RESPONSE
+          raise RESPONSE.unauthorized()
+      
+      # Execute command.
       os.system(command)
 
     #)
@@ -1623,11 +1639,5 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     def parseLangFmtDate(self, s, lang=None, fmt_str=None, recflag=None):
       return _globals.parseLangFmtDate(s)
-
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.compareDate:
-    # --------------------------------------------------------------------------
-    def compareDate(self, t0, t1, accuracy_time=1):
-      return _globals.compareDate(t0, t1, accuracy_time)
 
 ################################################################################

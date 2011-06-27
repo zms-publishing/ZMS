@@ -4,7 +4,7 @@
 
 ><dtml-call "REQUEST.set('ZMI_TIME',ZopeTime().timeTime())"
 ><dtml-call "REQUEST.set('ZMS_CHARSET',REQUEST.get('ZMS_CHARSET','utf-8'))"
-><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/html; charset=%s'%ZMS_CHARSET)"
+><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%ZMS_CHARSET)"
 
 ><dtml-call "REQUEST.set('MSIE',REQUEST.get('HTTP_USER_AGENT','').find('MSIE')>=0)"
 ><dtml-if meta_id

@@ -18,6 +18,7 @@
 
 # Imports.
 from __future__ import nested_scopes
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
 from types import StringTypes
 import ZPublisher.HTTPRequest
@@ -84,7 +85,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     # Documentation string.
     __doc__ = """ZMS product module."""
     # Version string. 
-    __version__ = '0.1' 
+    __version__ = '0.1'
+
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
 
     # Properties.
     # -----------
@@ -968,6 +974,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.ajaxGetNode:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxGetNode')
     def ajaxGetNode(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetNode """
       
@@ -1049,6 +1056,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.ajaxGetChildNodes:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxGetChildNodes')
     def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetChildNodes """
       

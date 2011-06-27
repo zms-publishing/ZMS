@@ -1362,12 +1362,23 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_write:
     # --------------------------------------------------------------------------
-    def localfs_write(self, filename, v, mode='b'):
+    def localfs_write(self, filename, v, mode='b', REQUEST=None):
       """
       Writes file to local file-system.
       """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
+      
+      # Check permissions.
+      if REQUEST is not None:
+        authorized = False
+        for perm in self.getConfProperty('ZMS.localfs_write','').split(';')+[package_home(globals())]:
+          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
+        if not authorized:
+          RESPONSE = REQUEST.RESPONSE
+          raise RESPONSE.unauthorized()
+      
+      # Write file.
       _fileutil.exportObj( v, filename, mode)
 
 

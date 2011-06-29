@@ -17,8 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+import Globals
 import copy
 import operator
 import sys
@@ -150,6 +151,12 @@ def doAutocommit(self, REQUEST):
 ################################################################################
 ################################################################################
 class VersionItem: 
+
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
 
     # Management Interface.
     # ---------------------
@@ -835,6 +842,7 @@ class VersionItem:
     # --------------------------------------------------------------------------
     #  VersionItem.ajaxBodyContentObjHistory:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxBodyContentObjHistory')
     def ajaxBodyContentObjHistory(self, version_nr, REQUEST):
       """
       Returns ajax-xml with body-content of object-history for given version-nr.
@@ -1395,5 +1403,10 @@ class VersionManagerContainer:
       _globals.writeLog( self, "[rollbackObj]: Finished!")
       # Return new URL.
       return url
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(VersionItem)
 
 ################################################################################

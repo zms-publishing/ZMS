@@ -22,7 +22,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 import copy
 import time
 import urllib

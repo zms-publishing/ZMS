@@ -1,11 +1,6 @@
 ################################################################################
 # _enummanager.py
 #
-# $Id: _enummanager.py,v 1.1 2003/10/11 15:10:04 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.1 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.Common import package_home
 # Product Imports.
 import _xmllib

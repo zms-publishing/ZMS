@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.special_dtml import HTMLFile
@@ -1392,7 +1391,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_readPath:
     # --------------------------------------------------------------------------
-    def localfs_readPath(self, filename, data=False, recursive=False):
+    def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
       """
       Reads path from local file-system.
       @rtype: C{list}

@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 import pyexpat
 from App.Common import package_home
 from OFS.Image import File

@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
 try: # Zope >= 2.13.0
   from OFS.userfolder import UserFolder

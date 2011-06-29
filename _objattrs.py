@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from DateTime.DateTime import DateTime
 from types import StringTypes
 import ZPublisher.HTTPRequest

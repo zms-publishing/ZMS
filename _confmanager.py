@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from cStringIO import StringIO
 from App.Common import package_home
 from App.special_dtml import HTMLFile

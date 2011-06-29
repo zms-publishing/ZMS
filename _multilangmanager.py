@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
 from App.Common import package_home
 import OFS.misc_

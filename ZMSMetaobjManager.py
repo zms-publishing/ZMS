@@ -18,7 +18,6 @@
 
 
 # Imports.
-from __future__ import nested_scopes
 from zope.interface import implements
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate

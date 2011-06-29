@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from webdav.common import rfc1123_date
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport

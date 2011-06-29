@@ -1,11 +1,6 @@
 ################################################################################
 # _zreferableitem.py
 #
-# $Id: _zreferableitem.py,v 1.9 2004/11/30 20:03:17 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.9 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2

@@ -17,8 +17,10 @@
 ################################################################################
 
 # Imports.
+from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from OFS.Image import Image
+import Globals
 import copy
 import urllib
 import tempfile
@@ -246,6 +248,12 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
 ################################################################################
 class Exportable(_filtermanager.FilterItem):
 
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
+
     ############################################################################
     #  Exportable.manage_export:
     #
@@ -320,6 +328,7 @@ class Exportable(_filtermanager.FilterItem):
     #
     #  Exports ZMS-object.
     ############################################################################
+    security.declareProtected('View', 'pub_export')
     def pub_export(self, export_format, lang, REQUEST, RESPONSE):
       """ Exportable.pub_export """
       self.f_standard_html_request( self, REQUEST)
@@ -628,5 +637,10 @@ class Exportable(_filtermanager.FilterItem):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(Exportable)
 
 ################################################################################

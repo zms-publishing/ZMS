@@ -44,18 +44,6 @@ import _multilangmanager
 import _mediadb
 import _sequence
 import _zmsattributecontainer
-#import _deprecated
-import zmsdocument
-import zmsfile
-import zmsfolder
-import zmsgraphic
-import zmsnote
-import zmsrubrik
-import zmssysfolder
-import zmstable
-import zmsteaserelement
-import zmsteasercontainer
-import zmstextarea
 
 
 ################################################################################
@@ -115,16 +103,6 @@ def initialize(context):
         # register deprecated classes
         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
         dummy_permission = 'Add ZMSs'
-        context.registerClass(zmsdocument.ZMSDocument, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsfile.ZMSFile, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsfolder.ZMSFolder, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsgraphic.ZMSGraphic, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsnote.ZMSNote, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmssysfolder.ZMSSysFolder, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmstable.ZMSTable, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsteasercontainer.ZMSTeaserContainer, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmsteaserelement.ZMSTeaserElement, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
-        context.registerClass(zmstextarea.ZMSTextarea, permission=dummy_permission, constructors=dummy_constructors,container_filter=zmscustom.containerFilter,)
         
         # automated registration for util
         OFS.misc_.misc_.zms['initutil']=_globals.initutil()

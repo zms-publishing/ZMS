@@ -1,11 +1,6 @@
 ################################################################################
 # _copysupport.py
 #
-# $Id: _copysupport.py,v 1.7 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.7 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 import copy
 import string
 import time

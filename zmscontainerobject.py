@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 try: # Zope >= 2.13.0
@@ -802,42 +801,36 @@ class ZMSContainerObject(
       order. If none, this is a empty NodeList. 
       """
       childNodes = []
-      try:
-        types = self.dGlobalAttrs.keys()
-        obs = self.objectValues( types)
-        # Filter ids.
-        if reid:
-          pattern = re.compile( reid)
-          obs = filter( lambda x: pattern.match( x.id), obs)
-        # Get all object-items.
-        if REQUEST is None:
-          childNodes = map( lambda x: ( getattr( x, 'sort_id', ''), x), obs)
-        # Get selected object-items.
-        else:
-          prim_lang = self.getPrimaryLanguage()
-          lang = REQUEST.get('lang',None)
-          # Get coverages.
-          coverages = [ '', 'obligation', None]
+      types = self.dGlobalAttrs.keys()
+      obs = self.objectValues( types)
+      # Filter ids.
+      if reid:
+        pattern = re.compile( reid)
+        obs = filter( lambda x: pattern.match( x.id), obs)
+      # Get all object-items.
+      if REQUEST is None:
+        childNodes = map( lambda x: ( getattr( x, 'sort_id', ''), x), obs)
+      # Get selected object-items.
+      else:
+        prim_lang = self.getPrimaryLanguage()
+        lang = REQUEST.get('lang',None)
+        # Get coverages.
+        coverages = [ '', 'obligation', None]
+        if lang is not None:
+          coverages.extend( [ 'global.'+lang, 'local.'+lang])
+          coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))
+        for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), obs):
+          coverage = None
           if lang is not None:
-            coverages.extend( [ 'global.'+lang, 'local.'+lang])
-            coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))
-          for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), obs):
-            coverage = None
-            if lang is not None:
-              obj_vers = ob.getObjVersion( REQUEST)
-              coverage = getattr( obj_vers, 'attr_dc_coverage', '')
-            if coverage in coverages:
-              proxy = ob.__proxy__()
-              if proxy is not None:
-                sort_id = getattr( ob, 'sort_id', '')
-                if ob.isPage():
-                  sort_id = 's' + sort_id
-                childNodes.append( ( sort_id, proxy))
-      except Exception, exc:
-        if self.getConfProperty('ZMS.protected_mode',0):
-          _globals.writeError(self,'[getChildNodes.protected]')
-        else:
-          raise exc
+            obj_vers = ob.getObjVersion( REQUEST)
+            coverage = getattr( obj_vers, 'attr_dc_coverage', '')
+          if coverage in coverages:
+            proxy = ob.__proxy__()
+            if proxy is not None:
+              sort_id = getattr( ob, 'sort_id', '')
+              if ob.isPage():
+                sort_id = 's' + sort_id
+              childNodes.append( ( sort_id, proxy))
       # Sort child-nodes.
       childNodes.sort()
       # Return child-nodes in correct sort-order.

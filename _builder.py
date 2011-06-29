@@ -1,11 +1,6 @@
 ################################################################################
 # _builder.py
 #
-# $Id: _builder.py,v 1.6 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.6 $
-#
 # Implementation of class Builder (see below).
 # 
 # This program is free software; you can redistribute it and/or

@@ -17,10 +17,10 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
 from types import StringTypes
+import Globals
 import ZPublisher.HTTPRequest
 import urllib
 import string
@@ -1368,5 +1368,10 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     def xmlGetTagName(self):
         return self.meta_id
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSObject)
 
 ################################################################################

@@ -17,8 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+import Globals
 import copy
 import os
 import sys
@@ -77,6 +78,12 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
 ################################################################################
 
 class ZMSSqlDb(ZMSObject):
+
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
 
     # Properties.
     # -----------
@@ -1672,8 +1679,14 @@ class ZMSSqlDb(ZMSObject):
     #
     #  Export data from Sql-Database.
     ############################################################################
+    security.declareProtected('View', 'pub_export')
     def pub_export(self, lang, REQUEST=None, RESPONSE=None): 
       """ Exportable.pub_export """
       return self.manage_export( lang, REQUEST, RESPONSE)
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSSqlDb)
 
 ################################################################################

@@ -1,11 +1,6 @@
 ################################################################################
 # _mediadb.py
 #
-# $Id: _mediadb.py,v 1.4 2004/11/30 20:03:17 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.4 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2

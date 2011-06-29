@@ -207,7 +207,6 @@
    {'key':'ZMS.export.xml.tidy','title':'Export with HTML Tidy Library','desc':'ZMS can use the HTML Tidy Library to process inline (X)HTML in the XML export to avoid CDATA-sections.','datatype':'boolean'},
    {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (; separated).','datatype':'string','default':''},
    {'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (; separated).','datatype':'string','default':''},
-   {'key':'ZMS.protected_mode','title':'Protected mode','desc':'ZMS can run in a protected mode.','datatype':'boolean'},
    {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','ajax_upload','rad_upload']},
    {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
    {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},

@@ -1,11 +1,6 @@
 ################################################################################
 # _filtermanager.py
 #
-# $Id: _filtermanager.py,v 1.8 2004/11/24 21:02:52 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.8 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 from Products.ExternalMethod import ExternalMethod

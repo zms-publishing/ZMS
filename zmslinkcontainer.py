@@ -1,11 +1,6 @@
 ################################################################################
 # zmslinkcontainer.py
 #
-# $Id: zmslinkcontainer.py,v 1.6 2004/11/24 20:54:37 zmsdev Exp $
-# $Name:$
-# $Author: zmsdev $
-# $Revision: 1.6 $
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -22,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import nested_scopes
 from App.special_dtml import HTMLFile
 import time
 import urllib

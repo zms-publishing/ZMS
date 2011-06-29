@@ -702,6 +702,7 @@ class ObjAttrs:
         elif metaObjAttr is not None and metaObjAttr['type'] == 'zpt':
           try:
             value = metaObjAttr['zpt'](zmscontext=self)
+            value = unicode(value).encode('utf-8')
           except:
             value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
         elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':

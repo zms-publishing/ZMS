@@ -1192,9 +1192,10 @@ return ''
 <span tal:omit-tag="" tal:define="global 
     zmscontext options/zmscontext;
     subclass      python:[zmscontext.meta_id];
-    text          python:zmscontext.getText(request);
+    text          python:unicode(zmscontext.getText(request),'utf-8');
+    format        python:unicode(zmscontext.attr('format'),'utf-8');
+    renderedtext  python:zmscontext.renderText(format,'text',text,request);
     textclass     python:'text';
-    format        python:zmscontext.attr('format');
     displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
     align         python:zmscontext.attr('align');
     textalign     python:zmscontext.attr('textalign');
@@ -1202,7 +1203,6 @@ return ''
     imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
     imgthumb      python:request['URL'].find('/manage')>0;
     imgspecial    python:zmscontext.attr('img_attrs_spec');
-    renderedtext  python:zmscontext.renderText(format,'text',text,request);
     bodyContent   python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
   <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
     <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
@@ -4297,8 +4297,8 @@ $("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
 
 <span tal:omit-tag="" tal:define="global 
     zmscontext options/zmscontext;
-    text          python:zmscontext.getText(request);
-    format        python:zmscontext.attr('format');
+    text          python:unicode(zmscontext.getText(request),'utf-8');
+    format        python:unicode(zmscontext.attr('format'),'utf-8');
     renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)">
   <span tal:omit-tag="" tal:content="structure renderedText">The text</span>
 </span>

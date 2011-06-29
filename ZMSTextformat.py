@@ -1,11 +1,6 @@
 ################################################################################
 # ZMSTextformat.py
 #
-# $Id:$
-# $Name:$
-# $Author:$
-# $Revision:$
-#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -34,7 +29,7 @@ import _globals
 def br_quote(text, subtag, REQUEST):
   if len(subtag) == 0:
     return text
-  if type(text) is not str:
+  if type(text) not in [str,unicode]:
     text = str(text)
   rtn = ''
   qcr = ''

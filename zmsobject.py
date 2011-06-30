@@ -162,7 +162,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.get_conf_blob:
     # --------------------------------------------------------------------------
-    get_conf_blob__roles__ = None
+    security.declarePublic('get_conf_blob')
     def get_conf_blob(self, path, REQUEST, RESPONSE):
       """ ZMS.get_conf_blob """
       v = self.getConfProperties()
@@ -943,7 +943,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.getParentNode:
     # --------------------------------------------------------------------------
-    getParentNode__roles__ = None
+    security.declarePublic('getParentNode')
     def getParentNode(self):
       """
       The parent of this node. 
@@ -1240,6 +1240,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
       return html
 
+    security.declareProtected('View', 'getBodyContent')
     def getBodyContent(self, REQUEST, forced=False):
       """
       HTML presentation in body-content. 
@@ -1260,6 +1261,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.renderShort:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
       """
       Renders short presentation of object.

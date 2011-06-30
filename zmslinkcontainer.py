@@ -17,7 +17,9 @@
 ################################################################################
 
 # Imports.
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+import Globals
 import time
 import urllib
 # Product Imports.
@@ -198,6 +200,7 @@ class ZMSLinkContainer(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSLinkContainer.renderShort:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
       """
       Renders short presentation of link-container.
@@ -238,5 +241,10 @@ class ZMSLinkContainer(ZMSContainerObject):
         return nodelist
       else:
         return filter(lambda ob: ob.getDCCoverage(REQUEST).find("."+lang)>0,nodelist)
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSLinkContainer)
 
 ################################################################################

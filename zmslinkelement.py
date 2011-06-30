@@ -17,7 +17,9 @@
 ################################################################################
 
 # Imports.
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+import Globals
 import sys
 import urllib
 # Product Imports.
@@ -700,6 +702,7 @@ class ZMSLinkElement(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.renderShort:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
       """
       Renders short presentation of link-element.
@@ -864,5 +867,10 @@ class ZMSLinkElement(ZMSContainerObject):
       proxy = self.getProxy()
       rtn = self.printHtmlPROXY( proxy, level, sectionizer, REQUEST, deep)
       return rtn
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSLinkElement)
 
 ################################################################################

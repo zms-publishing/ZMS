@@ -76,6 +76,11 @@ def manage_addZMSLinkContainer(self, lang, _sort_id, REQUEST, RESPONSE):
 ################################################################################
 class ZMSLinkContainer(ZMSContainerObject): 
 
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
     # Properties.
     # -----------
     meta_type = meta_id = "ZMSLinkContainer"

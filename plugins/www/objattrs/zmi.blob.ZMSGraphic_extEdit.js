@@ -66,17 +66,21 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			$("#ZMSGraphic_extEdit_vslider").slider("value",v);
 			$("#ZMSGraphic_extEdit_perc").html(v+'%');
 			
-			// Show in Fancybox
-			showFancybox({
-				'href':'#ZMSGraphic_extEdit_actions',
-				'autoDimensions':true,
-				'transitionIn':'fade',
-				'transitionOut':'fade',
-				'onClosed':function() {
+			// Show dialog
+			$('#ZMSGraphic_extEdit_actions')
+				.addClass('zmiNeutralColorWhite')
+				.css({padding:'10px',backgroundColor:'#FFF'})
+				.dialog({
+					'modal':true,
+					'height':'auto',
+					'width':'auto',
+					'resizable':false,
+					'title':getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
+					'beforeClose':function(event, ui) {
 						$('div#ZMSGraphic_extEdit_image').html('');
 						changeJcropAvailability(false);
 					}
-			});
+				});
 		}
 	)
 }
@@ -181,7 +185,8 @@ function ZMSGraphic_extEdit_apply() {
 			$('span#dimensions_'+ZMSGraphic_elName).html(w+'x'+h+'px ['+v+'%]');
 		}
 	}
-	$.fancybox.close();
+	// Close dialog.
+	$('#ZMSGraphic_extEdit_actions').dialog("close");
 	return false;
 }
 

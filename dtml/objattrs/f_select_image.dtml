@@ -18,7 +18,7 @@
 <dtml-unless "REQUEST.get('f_zmiGraphicExtEdit')">
 <script type="text/javascript" charset="UTF-8" src="/<dtml-var "getConfProperty('jquery.plugin.version').split('/')[1]">/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 <div style="display:none">
-	<div id="ZMSGraphic_extEdit_actions" class="zmiNeutralColorMedium0">
+	<div id="ZMSGraphic_extEdit_actions">
 		<table cellspacing="0" cellpadding="3" border="0">
 		<tr valign="top">
 			<td class="form-label zmiNeutralColorWhite" colspan="2" nowrap="nowrap">
@@ -37,7 +37,7 @@
 				<div id="ZMSGraphic_extEdit_perc" class="form-small"></div>
 				<div><img src="<dtml-var spacer_gif>" alt="" border="0" width="30" height="1"/></div>
 			</td>
-			<td>
+			<td class="zmiNeutralColorMedium0">
 				<div id="ZMSGraphic_extEdit_image" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);">
 					<img src="<dtml-var spacer_gif>" alt="" border="0">
 				</div>
@@ -131,7 +131,7 @@
 						<td class="form-element">
 							<dtml-try>
 								<dtml-call "REQUEST.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])">
-								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','ajax_upload')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
 							<dtml-except>
 								<!-- ERROR: 
 									<dtml-var error_type>: <dtml-var error_value>

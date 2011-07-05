@@ -64,42 +64,46 @@ $(function(){
 		});
 		return ui;
 	};
-	$("table.zmi-sortable > tbody").sortable({
-			helper:fixHelper,
-			forcePlaceholderSize:true,
-			placeholder:'ui-state-highlight',
-			handle:'.zmiContainerColLeft img.grippy',
-			start: function(event, ui) {
-				var trs = $('table.zmi-sortable > tbody > tr');
-				var i = 0;
-				for (i = 0; i < trs.length; i++) {
-					if ( $(trs[i]).attr('id')==ui.item.attr('id')) {
-						break;
+	// !!! Important: sortable() depends on JQuery UI !!!
+	var sortableTables = $("table.zmi-sortable > tbody");
+	if (sortableTables.length > 0) {
+		$("table.zmi-sortable > tbody").sortable({
+				helper:fixHelper,
+				forcePlaceholderSize:true,
+				placeholder:'ui-state-highlight',
+				handle:'.zmiContainerColLeft img.grippy',
+				start: function(event, ui) {
+					var trs = $('table.zmi-sortable > tbody > tr');
+					var i = 0;
+					for (i = 0; i < trs.length; i++) {
+						if ( $(trs[i]).attr('id')==ui.item.attr('id')) {
+							break;
+						}
 					}
-				}
-				zmiSortableRownum = i;
-			},
-			stop: function(event, ui) {
-				var trs = $('table.zmi-sortable > tbody > tr');
-				var i = 0;
-				for (i = 0; i < trs.length; i++) {
-					if ( $(trs[i]).attr('id')==ui.item.attr('id')) {
-						break;
+					zmiSortableRownum = i;
+				},
+				stop: function(event, ui) {
+					var trs = $('table.zmi-sortable > tbody > tr');
+					var i = 0;
+					for (i = 0; i < trs.length; i++) {
+						if ( $(trs[i]).attr('id')==ui.item.attr('id')) {
+							break;
+						}
 					}
+					if ( zmiSortableRownum != i) {
+						var id = ui.item.attr('id');
+						id = id.substr(id.indexOf('_')+1);
+						var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+(i+1)+'&fmt=json';
+						$.get(href,function(result){
+							var system_msg = eval('('+result+')');
+							$('#system_msg').html(system_msg).show('normal');
+							setTimeout(function(){$('#system_msg').hide('normal')},5000);
+						});
+					}
+					zmiSortableRownum = null;
 				}
-				if ( zmiSortableRownum != i) {
-					var id = ui.item.attr('id');
-					id = id.substr(id.indexOf('_')+1);
-					var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+(i+1)+'&fmt=json';
-					$.get(href,function(result){
-						var system_msg = eval('('+result+')');
-						$('#system_msg').html(system_msg).show('normal');
-						setTimeout(function(){$('#system_msg').hide('normal')},5000);
-					});
-				}
-				zmiSortableRownum = null;
-			}
-		});
+			});
+	}
 	// Action-Lists
 	$("input.zmi-ids-list:checkbox").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
 	$("select.zmi-action")

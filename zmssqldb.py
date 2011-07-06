@@ -1088,7 +1088,6 @@ class ZMSSqlDb(ZMSObject):
         except:
           raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))
         try:
-          self.executeQuery('SET @auth_user=\'%s\''%auth_user)
           self.executeQuery( sqlStatement)
         except:
           raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))

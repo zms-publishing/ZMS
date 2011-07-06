@@ -1639,4 +1639,10 @@ class ZMSGlobals:
     def parseLangFmtDate(self, s, lang=None, fmt_str=None, recflag=None):
       return _globals.parseLangFmtDate(s)
 
+    # -------------------------------------------------------------------------- 
+    #  ZMSGlobals.compareDate: 
+    # -------------------------------------------------------------------------- 
+    def compareDate(self, t0, t1): 
+      return _globals.compareDate(t0, t1) 
+
 ################################################################################

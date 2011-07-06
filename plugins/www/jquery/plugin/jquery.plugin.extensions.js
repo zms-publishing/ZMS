@@ -226,7 +226,6 @@ function showFancybox(p) {
 function pluginAutocomplete(s, c) {
 	$.plugin('autocomplete',{
 		files: ['/++resource++zms_/jquery/autocomplete/jquery.bgiframe.min.js',
-				'/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js',
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.min.js',
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.css']
 	});
@@ -267,15 +266,4 @@ function runPluginCookies(c) {
 		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js']
 		});
 	$.plugin('cookies').get('body',c);
-}
-
-/**
- * jQuery Dimensions
- * @see 
- */
-function runPluginDimensions(c) {
-	$.plugin('dimensions',{
-		files: ['/++resource++zms_/jquery/jquery.dimensions.1.2.0.min.js']
-		});
-	$.plugin('dimensions').get('body',c);
 }

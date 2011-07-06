@@ -101,16 +101,14 @@ function zmiDelBlobBtnClick(elName) {
 		$('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
 		var img = $('img#img_'+elName);
 		if (img.length > 0) {
-			runPluginDimensions(function() {
-				var div = $('div#div_opaque_'+elName);
-				var pos = img.position();
-				div.css({
-					position:'absolute',
-					left:pos.left,
-					top:pos.top,
-					width:img.outerWidth(),
-					height:img.outerHeight()
-				});
+			var div = $('div#div_opaque_'+elName);
+			var pos = img.offset();
+			div.css({
+				position:'absolute',
+				left:pos.left,
+				top:pos.top,
+				width:img.outerWidth(),
+				height:img.outerHeight()
 			});
 		}
 	}

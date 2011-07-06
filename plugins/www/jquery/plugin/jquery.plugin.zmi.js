@@ -57,16 +57,16 @@ function selectCheckboxes(fm, v) {
 var zmiSortableRownum = null;
 
 $(function(){
-	// Sort (Move Up/Down)
-	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
-		ui.children().each(function() {
-			$(this).width($(this).width());
-		});
-		return ui;
-	};
 	// !!! Important: sortable() depends on JQuery UI !!!
 	var sortableTables = $("table.zmi-sortable > tbody");
 	if (sortableTables.length > 0) {
+		// Sort (Move Up/Down)
+		var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+			ui.children().each(function() {
+				$(this).width($(this).width());
+			});
+			return ui;
+		};
 		$("table.zmi-sortable > tbody").sortable({
 				helper:fixHelper,
 				forcePlaceholderSize:true,
@@ -104,12 +104,17 @@ $(function(){
 				}
 			});
 	}
+	// Form-Elements
+	$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small")
+		.focus( function(evt) {$(this).addClass("form-element-focus"); })
+		.blur( function(evt) { $(this).removeClass("form-element-focus"); })
+		;
 	// Action-Lists
 	$("input.zmi-ids-list:checkbox").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
 	$("select.zmi-action")
 		.focus( function(evt) { zmiActionPopulate(this); })
-		.mouseover( function(evt) { zmiActionPopulate(this); }
-	);
+		.mouseover( function(evt) { zmiActionPopulate(this); })
+		;
 	$('.ui-accordion h3').click( function(evt) {
 		var $container = $(this);
 		var $icon = $('span:first',$container);

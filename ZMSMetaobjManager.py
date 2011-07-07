@@ -74,7 +74,7 @@ def syncType( self, meta_id, attr):
         attr['custom'] = ob.read()
       elif attr['type'] == 'zpt':
         attr['zpt'] = ob
-        attr['custom'] = ob.read()
+        attr['custom'] = unicode(ob.read()).encode('utf-8')
       elif attr['type'] == 'interface':
         attr['name'] = ob.raw
       else:

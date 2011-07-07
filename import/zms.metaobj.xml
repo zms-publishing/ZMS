@@ -1471,22 +1471,68 @@ return ''
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO onChangeObjEvt //--</dtml-comment>
-<dtml-let align="getObjProperty('align',REQUEST)">
-  <dtml-if align>
-    <dtml-in "getChildNodes(REQUEST,['ZMSLinkElement'])">
-      <dtml-call "setObjProperty('align',align)">
-    </dtml-in>
-  </dtml-if>
-</dtml-let>
-<dtml-comment>--// EO onChangeObjEvt //--</dtml-comment>]]>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSLinkContainer.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Event: onChangeObj
+##
+# --// BO onChangeObjEvt //--
+
+request = zmscontext.REQUEST
+align = zmscontext.attr('align')
+if align:
+    for childNode in zmscontext.getChildNodes(request,['ZMSLinkElement']):
+        childNode.attr('align',align)
+
+# --// EO onChangeObjEvt //--
+]]>
                     </item>
                     <item key="id"><![CDATA[onChangeObjEvt]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Event: Change]]></item>
+                    <item key="name"><![CDATA[Event: onChangeObj]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSLinkContainer.onChangeObjEvt>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkContainer -->
+
+<span tal:omit-tag="" tal:define="global 
+    zmscontext options/zmscontext;
+    subclass      python:[];
+    align         python:zmscontext.attr('align')">
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
+  </span>
+  <div tal:condition="python:len(subclass)>0"
+       tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
+       tal:content="structure python:zmscontext.renderShort(request)">
+    The content
+  </div>
+</span>
+
+<!-- /bodyContentZMSCustom_ZMSLinkContainer -->]]>
+                    </item>
+                    <item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkContainer]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">1</item>
+                    <item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[zpt]]></item>
+                    <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkContainer.bodyContentZMSCustom_ZMSLinkContainer>]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -1523,7 +1569,7 @@ return ''
             <item key="id"><![CDATA[ZMSLinkContainer]]></item>
             <item key="name"><![CDATA[ZMSLinkContainer]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.1]]></item>
+            <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -1759,121 +1805,145 @@ function remoteResponseTimedout() {
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO attr_img_src //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSLinkElement.attr_img_src"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Image
+##
+# --// BO attr_img_src //--
 
-<dtml-let
-  title="getObjProperty('title',REQUEST)"
-  ref="getObjProperty('attr_ref',REQUEST)"
-><dtml-if "ref.startswith('{$') and ref.endswith('}')">
-  <dtml-let  ref_obj="getLinkObj(ref)">
-   <dtml-if ref_obj>
-    <dtml-return "MISC_ZMS+'internal_link.gif'">
-   <dtml-else>
-    <dtml-return "MISC_ZMS+'internal_link_broken.gif'">
-   </dtml-if>
-  </dtml-let>
- <dtml-elif "ref.startswith('mailto:')">
-  <dtml-return "MISC_ZMS+'mail_link.gif'">
- <dtml-elif "title.lower()=='medline'">
-  <dtml-return "MISC_ZMS+'pubmed_small.gif'">
- <dtml-else>
-  <dtml-return "MISC_ZMS+'external_link.gif'">
- </dtml-if>
-</dtml-let>
+title = zmscontext.attr('file')
+ref = zmscontext.attr('attr_ref')
+if ref.startswith('{$') and ref.endswith('}'):
+    ref_obj = zmscontext.getLinkObj(ref)
+    if ref_obj:
+        return zmscontext.MISC_ZMS+'internal_link.gif'
+    else:
+        return zmscontext.MISC_ZMS+'internal_link_broken.gif'
+elif ref.startswith('mailto:'):
+    return zmscontext.MISC_ZMS+'mail_link.gif'
+elif title.lower()=='medline':
+    return zmscontext.MISC_ZMS+'pubmed_small.gif'
+else:
+    return zmscontext.MISC_ZMS+'external_link.gif'
 
-<dtml-comment>--// EO attr_img_src //--</dtml-comment>]]>
+# --// EO attr_img_src //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_img_src]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Image]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSLinkElement.attr_img_src>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO attr_url //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSLinkElement.attr_url"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Url
+##
+# --// BO attr_url //--
 
-<dtml-let
-  title="getObjProperty('title',REQUEST)"
-  ref="getObjProperty('attr_ref',REQUEST)"
-> <dtml-if "title.lower()=='medline'">
-  <dtml-return "'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%int(ref)">
- <dtml-else>
-  <dtml-return ref>
- </dtml-if>
-</dtml-let>
+title = zmscontext.attr('file')
+ref = zmscontext.attr('attr_ref')
+if title.lower()=='medline':
+  return 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%int(ref)
+else:
+  return ref
 
-
-<dtml-comment>--// EO attr_url //--</dtml-comment>]]>
+# --// EO attr_url //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_url]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Url]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSLinkElement.attr_url>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO attr_abstract //--</dtml-comment>
+                    <item key="custom"><![CDATA[## Script (Python) "ZMSLinkElement.attr_abstract"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Teaser.Abstract
+##
+# --// BO attr_abstract //--
 
-<dtml-return "getObjProperty('attr_dc_description',REQUEST)">
+return zmscontext.attr('attr_dc_description')
 
-<dtml-comment>--// EO attr_abstract //--</dtml-comment>]]>
+# --// EO attr_abstract //--
+]]>
                     </item>
                     <item key="id"><![CDATA[attr_abstract]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
+                    <item key="py"><![CDATA[<PythonScript at ZMSLinkElement.attr_abstract>]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[py]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSLinkElement //--</dtml-comment>
+                    <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkElement -->
 
-<dtml-let
-  title="attr('title')"
-  titlealt="attr('titlealt')"
-  ref="attr('attr_url')"
-  align="attr('align')"
-  displaytype="attr('displaytype')"
-  abstract="attr('attr_abstract')"
-  subclass="[meta_id]"
- ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
- ><dtml-if "align in ['','NONE']"
-  ><dtml-call "subclass.append(' none')"
- ><dtml-elif "align in [ 'LEFT', 'CENTER', 'RIGHT']"
-  ><dtml-call "subclass.append(' '+align.lower())"
- ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatleft')"
- ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatright')"
- ></dtml-if
- ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
-  <div class="title">
-  <img src="<dtml-var "attr('attr_img_src')">" border="0" alt="" align="absmiddle"/>
-  <a href="<dtml-var "getLinkUrl(ref,REQUEST)">"<dtml-if "attr('attr_type')=='new'"> target="_blank"</dtml-if>><dtml-var titlealt></a>
+<span tal:omit-tag="" tal:define="global 
+    zmscontext options/zmscontext;
+    subclass      python:[zmscontext.meta_id];
+    title         python:zmscontext.attr('title');
+    titlealt      python:zmscontext.attr('titlealt');
+    ref           python:zmscontext.attr('attr_url');
+    align         python:zmscontext.attr('align');
+    abstract      python:zmscontext.attr('attr_abstract').replace('\n','<br/>')">
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
+  </span>
+  <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT']">
+    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
+  </span>
+  <div tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
+       tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
+    <div class="title">
+      <img tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="" align="absmiddle"/>
+      <a tal:condition="python:zmscontext.attr('attr_type')=='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt" target="_blank">The titlealt</a>
+      <a tal:condition="python:zmscontext.attr('attr_type')!='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt">The titlealt</a>
+    </div>
+    <div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
+    <div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
   </div>
-  <dtml-if "title and title!=titlealt"><div class="text"><dtml-var title></div></dtml-if>  
-  <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
- </div>
+</span>
 
- </dtml-if>
-</dtml-let>
-
-<dtml-comment>--// EO bodyContentZMSCustom_ZMSLinkElement //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSLinkElement -->]]>
                     </item>
                     <item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkElement]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
                     <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
+                    <item key="type"><![CDATA[zpt]]></item>
+                    <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkElement.bodyContentZMSCustom_ZMSLinkElement>]]></item>
                   </dictionary>
                 </item>
               </list>
@@ -1910,7 +1980,7 @@ function remoteResponseTimedout() {
             <item key="id"><![CDATA[ZMSLinkElement]]></item>
             <item key="name"><![CDATA[ZMSLinkElement]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.0.1]]></item>
+            <item key="revision"><![CDATA[1.2.0]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>
@@ -1957,6 +2027,16 @@ function remoteResponseTimedout() {
                     <item key="name"><![CDATA[Text]]></item>
                     <item key="repetitive" type="int">0</item>
                     <item key="type"><![CDATA[text]]></item>
+                  </dictionary>
+                </item>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="id"><![CDATA[catalogText]]></item>
+                    <item key="mandatory" type="int">0</item>
+                    <item key="multilang" type="int">1</item>
+                    <item key="name"><![CDATA[Hook: Catalog-Text]]></item>
+                    <item key="repetitive" type="int">0</item>
+                    <item key="type"><![CDATA[constant]]></item>
                   </dictionary>
                 </item>
                 <item type="dictionary">
@@ -3670,26 +3750,6 @@ if key.startswith('table_'):
                 </item>
                 <item type="dictionary">
                   <dictionary>
-                    <item key="custom"><![CDATA[<!--// BO onChangeObjEvt //-->
-
-<dtml-in "['attr_borderstyle','attr_bgcolor_border','attr_bgcolor_title','attr_bgcolor_text']">
- <dtml-let key=sequence-item>
-  <dtml-call "setConfProperty('%s.defaults.%s'%(meta_id,key),getObjProperty(key,REQUEST))">
- </dtml-let>
-</dtml-in>
-
-<!--// EO onChangeObjEvt //-->]]>
-                    </item>
-                    <item key="id"><![CDATA[onChangeObjEvt]]></item>
-                    <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Event: Change]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[method]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
                     <item key="custom"><![CDATA[## Script (Python) "getTeaserElements"
 ##bind container=container
 ##bind context=context
@@ -3787,22 +3847,6 @@ return teaserElmnts
 ><dtml-comment>--// EO pageelement_Teaser //--</dtml-comment>]]>
                     </item>
                     <item key="id"><![CDATA[pageelement_Teaser]]></item>
-                    <item key="mandatory" type="int">0</item>
-                    <item key="multilang" type="int">0</item>
-                    <item key="name"><![CDATA[Template: Teaser]]></item>
-                    <item key="repetitive" type="int">0</item>
-                    <item key="type"><![CDATA[DTML Method]]></item>
-                  </dictionary>
-                </item>
-                <item type="dictionary">
-                  <dictionary>
-                    <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContent_Teaser //--</dtml-comment>
-
-<dtml-var pageelement_Teaser>
-
-<dtml-comment>--// EO bodyContent_Teaser //--</dtml-comment>]]>
-                    </item>
-                    <item key="id"><![CDATA[bodyContent_Teaser]]></item>
                     <item key="mandatory" type="int">0</item>
                     <item key="multilang" type="int">0</item>
                     <item key="name"><![CDATA[Template: Teaser]]></item>

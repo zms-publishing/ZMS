@@ -1,3 +1,5 @@
+<dtml-try>
+
 <dtml-var manage_page_request>
 <head>
 
@@ -46,3 +48,15 @@
 <dtml-in "getConfProperty('jquery.libs').split(',')"><dtml-let si=sequence-item sv="getConfProperty('jquery.%s'%si)"><script type="text/javascript" charset="UTF-8" src="<dtml-var sv>"></script>
 </dtml-let></dtml-in>
 <dtml-if "getConfProperty('manage_page_script.js')"><script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('manage_page_script.js')">"></script></dtml-if>
+
+<dtml-except>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<title>Zope</title>
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+</head>
+<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099">
+<!-- <dtml-var error_type>: <dtml-var error_value> -->
+</dtml-try>

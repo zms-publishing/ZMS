@@ -3,6 +3,7 @@
     <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
     <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-07-06 [fhoffmann] SESSION based lang settings
 2011-06-09 [fhoffmann] Save Automatic Pre-Translation
 2011-06-07 [fhoffmann] Google Translator Element added
 2011-04-11 [zmsdev] Replaced fancybox by jquery ui dialog.
@@ -110,10 +111,27 @@ function save(sender) {
 <dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 
 <dtml-call "REQUEST.set('lang1_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):]))">
-<dtml-call "REQUEST.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"> 
+<dtml-if "SESSION.get('lang1','')==''"
+  ><dtml-call "SESSION.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
+  ><dtml-call "REQUEST.set('lang1',SESSION.get('lang1'))"  
+><dtml-elif "REQUEST.get('lang1','')==''"
+  ><dtml-call "REQUEST.set('lang1',SESSION.get('lang1',lang1_options[0][0]))"
+><dtml-else
+  ><dtml-call "REQUEST.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
+  ><dtml-call "SESSION.set('lang1',REQUEST.get('lang1'))"    
+></dtml-if>
 <dtml-call "REQUEST.set('lang1_bk',lang1)"> 
+
 <dtml-call "REQUEST.set('lang2_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):])[1:])">
-<dtml-call "REQUEST.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"> 
+<dtml-if "SESSION.get('lang2','')==''"
+  ><dtml-call "SESSION.set('lang2',REQUEST.get('lang2',REQUEST.get('lang',lang2_options[0][0])))"
+  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
+><dtml-elif "REQUEST.get('lang2','')==''"
+  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
+><dtml-else
+  ><dtml-call "REQUEST.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
+  ><dtml-call "SESSION.set('lang2',REQUEST.get('lang2'))"      
+></dtml-if>
 <dtml-call "REQUEST.set('lang2_bk',lang2)"> 
 
 <form id="<dtml-var fmName>" method="get">
@@ -171,6 +189,14 @@ function googleTranslateElementInit() {
 };</script>
 <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- /Google Translate Element -->
+<dtml-comment>
+<pre title="DEBUG CODE">
+REQUEST lang1: <dtml-var "REQUEST.get('lang1','')">
+REQUEST lang2: <dtml-var "REQUEST.get('lang2','')">
+SESSION lang1: <dtml-var "SESSION.get('lang1','')">
+SESSION lang2: <dtml-var "SESSION.get('lang2','')">
+</pre>
+</dtml-comment>
 <dtml-var manage_page_footer>]]>
     </item>
     <item key="description"/>

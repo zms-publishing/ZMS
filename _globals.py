@@ -773,8 +773,8 @@ Compares two dates and returns result.
  -1: t0 > t1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def compareDate(t0, t1):
-  mt0 = time.mktime(t0)
-  mt1 = time.mktime(t1)
+  mt0 = time.mktime(stripDateTime(getDateTime(t0)))
+  mt1 = time.mktime(stripDateTime(getDateTime(t1)))
   if mt1 > mt0:
     return +1
   elif mt1 < mt0:

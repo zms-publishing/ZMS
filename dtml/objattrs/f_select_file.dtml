@@ -69,17 +69,22 @@
 			</table>
 			<div>
 				<!-- Upload -->
-				<dtml-if "lang in  getLanguages(REQUEST)">
-					<dtml-try>
-						<dtml-call "REQUEST.set('ZMS_ALLOWED_EXTENSIONS',[])">
-						<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','ajax_upload')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
-					<dtml-except>
-						<!-- ERROR: 
-							<dtml-var error_type>: <dtml-var error_value>
-							<dtml-var error_tb> 
-						-->
-						<dtml-var "getPlugin('fileupload/input_file/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
-					</dtml-try>
+				<dtml-if "lang in getLanguages(REQUEST)">
+					<table cellspacing="0" cellpadding="2" border="0">
+					<tr valign="middle">
+						<td class="form-element">
+							<dtml-try>
+								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','ajax_upload')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+							<dtml-except>
+								<!-- ERROR: 
+									<dtml-var error_type>: <dtml-var error_value>
+									<dtml-var error_tb> 
+								-->
+								<dtml-var "getPlugin('fileupload/input_file/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+							</dtml-try>
+						</td>
+					</tr>
+					</table>
 				</dtml-if>
 			</div>
 		</td>

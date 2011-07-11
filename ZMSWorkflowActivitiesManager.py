@@ -89,11 +89,12 @@ class ZMSWorkflowActivitiesManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowActivitiesManager.getActivity
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def getActivity(self, id):
+  def getActivity(self, id, for_export=False):
     activity = filter(lambda x: x['id']==id, self.getActivities())[0]
     activity = copy.deepcopy(activity)
-    if activity['icon']:
-      activity['icon'] = self.absolute_url()+'/'+id+'.icon'
+    if not for_export:
+      if activity['icon']:
+        activity['icon'] = self.absolute_url()+'/'+id+'.icon'
     return activity
 
 

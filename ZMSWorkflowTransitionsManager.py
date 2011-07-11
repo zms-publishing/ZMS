@@ -99,7 +99,7 @@ class ZMSWorkflowTransitionsManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.getTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def getTransition(self, id):
+  def getTransition(self, id, for_export=False):
     transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
     transition = copy.deepcopy(transition)
     transition['dtml'] = getattr(self,transition['id']).raw

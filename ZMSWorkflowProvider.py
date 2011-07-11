@@ -84,13 +84,17 @@ ZMSWorkflowProvider.exportXml
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def exportXml(self, REQUEST, RESPONSE):
   value = {}
-  value['activities'] = map(lambda x: self.getActivity(x),self.getActivityIds())
-  value['transitions'] = map(lambda x: self.getTransition(x),self.getTransitionIds())
+  value['activities'] = []
+  for x in self.getActivityIds():
+      value['activities'].extend([x,self.getActivity(x,for_export=True)])
+  value['transitions'] = []
+  for x in self.getTransitionIds():
+      value['transitions'].extend([x,self.getTransition(x,for_export=True)])
   export = self.getXmlHeader() + self.toXmlString(value,1)
   content_type = 'text/xml; charset=utf-8'
   filename = 'workflow.xml'
   RESPONSE.setHeader('Content-Type',content_type)
-  RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+  RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
   return export
 
 

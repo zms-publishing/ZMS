@@ -1465,7 +1465,7 @@ class ZMSGlobals:
       Serializes value to ZMS XML-Structure.
       @rtype: C{string}
       """
-      return _xmllib.toXml(self, v, xhtml, encoding)
+      return _xmllib.toXml(self, v, xhtml=xhtml, encoding=encoding)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.parseXmlString:

@@ -1,15 +1,19 @@
-<dtml-let oRoot="getHome()"
-
-><dtml-comment><!------- F_STANDARD_HTML_REQUEST ----------------></dtml-comment
+<dtml-comment><!------- F_STANDARD_HTML_REQUEST ----------------></dtml-comment
 ><dtml-call "RESPONSE.setHeader('Content-Type', 'text/html; charset=utf-8')"
 ><dtml-unless lang
 ><dtml-call "REQUEST.set('lang',getLanguage(REQUEST))"
 ></dtml-unless
 
+><dtml-if standard_html
+><dtml-call f_standard_html_request
+><dtml-var standard_html
+><dtml-else
+><dtml-let oRoot="getHome()"
+
 ><dtml-comment><!------- RESTRICT ACCESS ------------------------></dtml-comment
 ><dtml-unless "hasAccess(REQUEST)"
 ><dtml-comment><!-- CookieCrumbler Login Form --></dtml-comment
-><dtml-if "_.hasattr(oRoot,'login_form')"
+><dtml-if "hasattr(oRoot,'login_form')"
 ><dtml-return "RESPONSE.redirect('login_form%s'%(REQUEST.get('QUERY_STRING', '') and '?'+REQUEST.get('QUERY_STRING','')))"
 ><dtml-comment><!-- Redirect to parent --></dtml-comment
 ><dtml-elif "URL.find('/index_')>URL.find('.html')"
@@ -89,4 +93,6 @@
 ><dtml-try><dtml-var inactive_html><dtml-except><dtml-var f_inactive_html></dtml-try
 ></dtml-if
 
-></dtml-let>
+></dtml-let
+></dtml-if
+>

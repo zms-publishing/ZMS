@@ -1012,39 +1012,39 @@ class ZMSObject(ZMSItem.ZMSItem,
         restricted = self.hasRestrictedAccess()
       xml += "<page"
       xml += " absolute_url=\"%s\""%str(self.absolute_url())
-      xml += " access=\"%s\""%str(self.hasAccess(REQUEST))
-      xml += " active=\"%s\""%str(self.isActive(REQUEST))
+      xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
+      xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
       xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST))
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST,deep=0))
-      xml += " is_page=\"%s\""%(self.isPage())
-      xml += " is_pageelement=\"%s\""%(self.isPageElement())
+      xml += " is_page=\"%s\""%str(int(self.isPage()))
+      xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)
       xml += " title=\"%s\""%_globals.html_quote(self.getTitle(REQUEST))
       xml += " titlealt=\"%s\""%_globals.html_quote(self.getTitlealt(REQUEST))
-      if REQUEST.form.get('has_children', 1):
-        xml += " has_children=\"%s\""%str(len(self.getChildNodes(REQUEST,meta_types))>0)
+      if self.isPage() and REQUEST.form.get('has_children', 1):
+        xml += " has_children=\"%s\""%str(int(len(self.getChildNodes(REQUEST,meta_types))>0))
       if perms is not None:
         xml += " permissions=\"%s\""%str(','.join(perms))
       if restricted is not None:
         xml += " restricted=\"%s\""%str(restricted)
       xml += ">"
-      if users is not None:
+      if users:
         xml += "<users>%s</users>"%self.toXmlString(users)
       if REQUEST.form.get('get_attrs', 1):
         obj_attrs = self.getObjAttrs()
-        for key in obj_attrs.keys():
+        for key in filter(lambda x: x not in ['title','titlealt','created_dt','created_uid','change_uid','attr_dc_coverage','attr_cacheable'],obj_attrs.keys()):
           obj_attr = obj_attrs[ key]
-          if obj_attr['datatype_key'] in _globals.DT_STRINGS or \
+          if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
              obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
              obj_attr['datatype_key'] in _globals.DT_DATETIMES:
-            v = self.getObjAttrValue(obj_attr,REQUEST)
-            if v is not None:
+            v = self.getObjProperty(key,REQUEST)
+            if v:
               xml += "<%s>%s</%s>"%(key,self.toXmlString(v),key)
           elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
-            v = self.getObjAttrValue(obj_attr,REQUEST)
-            if v is not None:
+            v = self.getObjProperty(key,REQUEST)
+            if v:
               xml += "<%s>"%key
               xml += "<filename>%s</filename>"%_globals.html_quote(v.getFilename())
               xml += "<content_type>%s</content_type>"%_globals.html_quote(v.getContentType())

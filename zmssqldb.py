@@ -293,6 +293,7 @@ class ZMSSqlDb(ZMSObject):
         return "'%s'"%v
 
 
+    security.declarePrivate('commit')
     def commit(self):
       """
       Commit.
@@ -303,6 +304,7 @@ class ZMSSqlDb(ZMSObject):
       conn.commit()
 
 
+    security.declarePrivate('rollback')
     def rollback(self):
       """
       Rollback.
@@ -313,6 +315,7 @@ class ZMSSqlDb(ZMSObject):
       conn.rollback()
 
 
+    security.declarePrivate('query')
     def query(self, qs, max_rows=None, encoding=None):
       """
       Execute select-statement.
@@ -402,6 +405,7 @@ class ZMSSqlDb(ZMSObject):
       
 
 
+    security.declarePrivate('executeQuery')
     def executeQuery(self, qs):
       """
       Execute modify-statement.
@@ -624,7 +628,10 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Select:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Select')
     def recordSet_Select(self, tablename, select=None, where=None):
+      """
+      """
       da = self.getDA()
       gadfly = da.meta_type == 'Z Gadfly Database Connection'
       tabledef = self.getEntity(tablename)
@@ -670,6 +677,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Init:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Init')
     def recordSet_Init(self, REQUEST, all=True):
       """
       Initializes record-set.
@@ -711,6 +719,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Filter:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Filter')
     def recordSet_Filter(self, REQUEST):
       """
       Filter record-set by appending where clause to sql-statement.
@@ -783,6 +792,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Sort:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Sort')
     def recordSet_Sort(self, REQUEST):
       """
       Sort record-set by appending order-by clause to sql-statement.
@@ -824,6 +834,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.getFk
     # --------------------------------------------------------------------------
+    security.declarePrivate('getFk')
     def getFk(self, tablename, id, name, value, createIfNotExists=1):
       """
       Get reference for foreign-key relation.
@@ -899,6 +910,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Insert
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Insert')
     def recordSet_Insert(self, tablename, values={}):
       """
       Insert row into record-set.
@@ -990,6 +1002,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Update
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Update')
     def recordSet_Update(self, tablename, rowid, values={},old_values={}):
       """
       Update row in table.
@@ -1098,6 +1111,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.recordSet_Delete
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Delete')
     def recordSet_Delete(self, tablename, rowid):
       """
       Delete row from table.
@@ -1234,6 +1248,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.get_blob:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'get_blob')
     def get_blob( self, tablename, id, rowid, REQUEST, RESPONSE):
       """ ZMSSqlDb.get_blob """
       data = ''
@@ -1313,6 +1328,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.ajaxGetAutocompleteColumns:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxGetAutocompleteColumns')
     def ajaxGetAutocompleteColumns(self, tableName, fmt=None, REQUEST=None):
       """ ZMSSqlDb.ajaxGetAutocompleteColumns """
       RESPONSE = REQUEST.RESPONSE
@@ -1671,17 +1687,6 @@ class ZMSSqlDb(ZMSObject):
       RESPONSE.setHeader('Content-Type',content_type)
       RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       return ''.join(export)
-
-
-    ############################################################################
-    #  ZMSSqlDb.pub_export:
-    #
-    #  Export data from Sql-Database.
-    ############################################################################
-    security.declareProtected('View', 'pub_export')
-    def pub_export(self, lang, REQUEST=None, RESPONSE=None): 
-      """ Exportable.pub_export """
-      return self.manage_export( lang, REQUEST, RESPONSE)
 
 
 # call this to initialize framework classes, which

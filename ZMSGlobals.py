@@ -18,12 +18,14 @@
 
 # Imports.
 from AccessControl import AuthEncoding
+from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
 from cStringIO import StringIO
 from types import StringTypes
 from binascii import b2a_base64, a2b_base64
+import Globals
 import base64
 import copy
 import fnmatch
@@ -109,6 +111,12 @@ class ZMSGlobals:
     @group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
     """
 
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
+
     # --------------------------------------------------------------------------
     #  Meta-Type Selectors.
     # --------------------------------------------------------------------------
@@ -136,6 +144,7 @@ class ZMSGlobals:
       if content_type: file['content_type'] = content_type
       return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=False)
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.ImageFromData:
     # --------------------------------------------------------------------------
@@ -153,16 +162,6 @@ class ZMSGlobals:
       f.aq_parent = self
       return f
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.import_zexp:
-    # --------------------------------------------------------------------------
-    def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
-      """
-      Import zexp.
-      @param zexp
-      @type L{MyFile}
-      """
-      return _fileutil.import_zexp(self, zexp, new_id, id_prefix, _sort_id)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.nvl:
@@ -178,19 +177,6 @@ class ZMSGlobals:
       @rtype: C{any}
       """
       return _globals.nvl( a1, a2, n)
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.zope_interface_providedBy:
-    # --------------------------------------------------------------------------
-    def zope_interface_providedBy(self, clazz):
-      """
-      Returns list of interfaces provided by given clazz.
-      @param clazz: Class
-      @type v: C{any}
-      @rtype: C{list}
-      """
-      return map(lambda x: str(x), list(zope.interface.providedBy(clazz)))
 
 
     # --------------------------------------------------------------------------
@@ -210,6 +196,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.dt_html:
     # --------------------------------------------------------------------------
+    security.declarePrivate('dt_html')
     def dt_html(self, value, REQUEST):
       """
       Execute given DTML-snippet.
@@ -222,6 +209,7 @@ class ZMSGlobals:
       """
       return _globals.dt_html(self,value,REQUEST)
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.encrypt_schemes:
     # --------------------------------------------------------------------------
@@ -230,6 +218,7 @@ class ZMSGlobals:
       for id, prefix, scheme in AuthEncoding._schemes:
         ids.append( id)
       return ids
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.encrypt_password:
@@ -260,6 +249,7 @@ class ZMSGlobals:
             enc = scheme.encrypt(pw)
       return enc
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.encrypt_ordtype:
     # --------------------------------------------------------------------------
@@ -283,6 +273,7 @@ class ZMSGlobals:
           new += '&#x%s;'%str(hexlify(ch))
       return new
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.rand_int:
     # --------------------------------------------------------------------------
@@ -296,6 +287,7 @@ class ZMSGlobals:
       """
       from random import randint
       return randint(0,n)
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.get_diff:
@@ -377,6 +369,7 @@ class ZMSGlobals:
         diff = '<ins class="diff">' + v1 + '</ins><del class="diff">' + v2 + '</del>'
       return diff
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.string_maxlen:
     # --------------------------------------------------------------------------
@@ -409,15 +402,18 @@ class ZMSGlobals:
         s = s[:maxlen] + etc
       return s
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.url_quote:
     # --------------------------------------------------------------------------
     def url_quote(self, s):
       return urllib.quote(s)
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.http_import:
     # --------------------------------------------------------------------------
+    security.declarePrivate('http_import')
     def http_import(self, url, method='GET', auth=None, parse_qs=0):
       """
       Send Http-Request and return Response-Body.
@@ -467,6 +463,7 @@ class ZMSGlobals:
       url += targetdef
       return url+anchor
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.url_inherit_params:
     # --------------------------------------------------------------------------
@@ -500,6 +497,7 @@ class ZMSGlobals:
                 url += key + '=' + urllib.quote(str(v))
       return url+anchor
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.id_quote:
     # --------------------------------------------------------------------------
@@ -513,6 +511,7 @@ class ZMSGlobals:
       @rtype: C{string}
       """
       return _globals.id_quote(s)
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.get_id_prefix:
@@ -528,6 +527,7 @@ class ZMSGlobals:
       """
       return _globals.id_prefix(s)
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.js_quote:
     # --------------------------------------------------------------------------
@@ -538,11 +538,13 @@ class ZMSGlobals:
       text = text.replace('"', '\\"').replace("'", "\\'")
       return text
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.isPreviewRequest:
     # --------------------------------------------------------------------------
     def isPreviewRequest(self, REQUEST):
       return _globals.isPreviewRequest(REQUEST)
+
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getDataSizeStr: 
@@ -558,6 +560,7 @@ class ZMSGlobals:
       """
       return _fileutil.getDataSizeStr(len)
 
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getMimeTypeIconSrc:
     # --------------------------------------------------------------------------
@@ -569,27 +572,6 @@ class ZMSGlobals:
       @rtype: C{string}
       """
       return self.MISC_ZMS + _mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
-
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.nodes2html:
-    # --------------------------------------------------------------------------
-    def nodes2html( self, nodes):
-      REQUEST = self.REQUEST
-      breadcrumbs_ids = REQUEST['ZMS_THIS'].absolute_url().split( '/')
-      html = []
-      html.append( '<ul>')
-      for node in nodes:
-        css = node.meta_id
-        if node.getParentNode() in nodes:
-          css = css + ' parent'
-        else:
-          if node.id in breadcrumbs_ids: 
-            css = css + ' active'
-        html.append( '<li class="%s">'%( css))
-        html.append( '<a href="%s" title="%s">%s</a>'%( node.getHref2IndexHtml(REQUEST), node.getTitle(REQUEST), node.getTitlealt(REQUEST)))
-        html.append( '</li>')
-      html.append( '</ul>')
-      return ''.join( html)
 
 
     ############################################################################
@@ -718,6 +700,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.writeStdout:
     # --------------------------------------------------------------------------
+    security.declarePrivate('writeStdout')
     def writeStdout(self, info):
       """
       Write to standard-out (only allowed for development-purposes!).
@@ -730,6 +713,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.writeLog:
     # --------------------------------------------------------------------------
+    security.declarePrivate('writeLog')
     def writeLog(self, info):
       """
       Log debug-information.
@@ -742,6 +726,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.writeBlock:
     # --------------------------------------------------------------------------
+    security.declarePrivate('writeBlock')
     def writeBlock(self, info):
       """
       Log information.
@@ -803,6 +788,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.parse_stylesheet
     # --------------------------------------------------------------------------
+    security.declarePrivate('parse_stylesheet')
     def parse_stylesheet(self):
       """
       Parses default-stylesheet and returns elements.
@@ -838,6 +824,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.get_colormap:
     # --------------------------------------------------------------------------
+    security.declarePrivate('get_colormap')
     def get_colormap(self):
       """
       Parses default-stylesheet and returns color-map.
@@ -1259,6 +1246,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getZipArchive:
     # --------------------------------------------------------------------------
+    security.declarePrivate('getZipArchive')
     def getZipArchive(self, f):
       """
       Extract files from zip-archive and return list of extracted files.
@@ -1270,12 +1258,14 @@ class ZMSGlobals:
     # ------------------------------------------------------------------------------
     #  ZMSGlobals.extractZipArchive:
     # ------------------------------------------------------------------------------
+    security.declarePrivate('extractZipArchive')
     def extractZipArchive(self, f):
       return _fileutil.extractZipArchive(f)
 
     # --------------------------------------------------------------------------
     #  ZMSGlobals.buildZipArchive:
     # --------------------------------------------------------------------------
+    security.declarePrivate('buildZipArchive')
     def buildZipArchive( self, files, get_data=True):
       """
       Pack ZIP-Archive and return data.
@@ -1287,6 +1277,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_package_home:
     # --------------------------------------------------------------------------
+    security.declarePrivate('localfs_package_home')
     def localfs_package_home(self):
       """
       Returns package_home on local file-system.
@@ -1298,6 +1289,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_tempfile:
     # --------------------------------------------------------------------------
+    security.declarePrivate('localfs_tempfile')
     def localfs_tempfile(self):
       """
       Creates temp-folder on local file-system.
@@ -1308,6 +1300,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_read:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'localfs_read')
     def localfs_read(self, filename, mode='b', REQUEST=None):
       """
       Reads file from local file-system.
@@ -1356,6 +1349,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_write:
     # --------------------------------------------------------------------------
+    security.declarePrivate('localfs_write')
     def localfs_write(self, filename, v, mode='b', REQUEST=None):
       """
       Writes file to local file-system.
@@ -1379,6 +1373,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_remove:
     # --------------------------------------------------------------------------
+    security.declarePrivate('localfs_remove')
     def localfs_remove(self, path, deep=0):
       """
       Removes file from local file-system.
@@ -1391,6 +1386,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_readPath:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'localfs_reaadPath')
     def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
       """
       Reads path from local file-system.
@@ -1419,21 +1415,13 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.localfs_command:
     # --------------------------------------------------------------------------
-    def localfs_command(self, command, REQUEST=None):
+    security.declarePrivate('localfs_command')
+    def localfs_command(self, command):
       """
       Executes command in local file-system.
       """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_command]: command=%s'%command)
-      
-      # Check permissions.
-      if REQUEST is not None:
-        authorized = False
-        if not authorized:
-          RESPONSE = REQUEST.RESPONSE
-          raise RESPONSE.unauthorized()
-      
-      # Execute command.
       os.system(command)
 
     #)
@@ -1537,6 +1525,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.getPlugin:
     # --------------------------------------------------------------------------
+    security.declarePrivate('getPlugin')
     def getPlugin( self, path, REQUEST, pars={}):
       """
       Executes plugin.
@@ -1644,5 +1633,10 @@ class ZMSGlobals:
     # -------------------------------------------------------------------------- 
     def compareDate(self, t0, t1): 
       return _globals.compareDate(t0, t1) 
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSGlobals)
 
 ################################################################################

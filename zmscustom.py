@@ -17,8 +17,10 @@
 ################################################################################
 
 # Imports.
+from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
 from types import StringTypes
+import Globals
 import sys
 import time
 import urllib
@@ -114,6 +116,11 @@ def containerFilter(container):
 ################################################################################
 class ZMSCustom(ZMSContainerObject):
 
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
     # Properties.
     # -----------
     meta_type = "ZMSCustom"
@@ -148,6 +155,7 @@ class ZMSCustom(ZMSContainerObject):
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
+        'GET', 'PUT',
         )
     __ac_permissions__=(
 		('ZMS Author', __authorPermissions__),
@@ -253,6 +261,7 @@ class ZMSCustom(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSCustom.recordSet_Init:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Init')
     def recordSet_Init(self, REQUEST):
       """
       Initialize record-set.
@@ -269,6 +278,7 @@ class ZMSCustom(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSCustom.recordSet_Filter:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Filter')
     def recordSet_Filter(self, REQUEST):
       """
       Filter record-set.
@@ -339,6 +349,7 @@ class ZMSCustom(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSCustom.recordSet_Sort:
     # --------------------------------------------------------------------------
+    security.declarePrivate('recordSet_Sort')
     def recordSet_Sort(self, REQUEST):
       """
       Sort record-set.
@@ -371,6 +382,7 @@ class ZMSCustom(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSCustom.recordSet_Export:
     # --------------------------------------------------------------------------
+    security.declareProtected('View', 'recordSet_Export')
     def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None):
       """
       Export record-set to XML.
@@ -384,7 +396,7 @@ class ZMSCustom(ZMSContainerObject):
         if len(qindex)==0 or str(i) in qindex:
           value.append(res[i])
       RESPONSE.setHeader('Content-Type','text/xml; charset=utf-8')
-      RESPONSE.setHeader('Content-Disposition','inline;filename="recordSet_Export.xml"')
+      RESPONSE.setHeader('Content-Disposition','attachment;filename="recordSet_Export.xml"')
       export = self.getXmlHeader() + self.toXmlString(value,True)
       return export
 
@@ -411,5 +423,10 @@ class ZMSCustom(ZMSContainerObject):
       # Return with message.
       message = urllib.quote(message)
       return REQUEST.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ZMSCustom)
 
 ################################################################################

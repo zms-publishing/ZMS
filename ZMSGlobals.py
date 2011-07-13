@@ -179,40 +179,35 @@ class ZMSGlobals:
       return _globals.nvl( a1, a2, n)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.boolint:
-    # --------------------------------------------------------------------------
+    """
+    Returns int (0/1) for Boolean Type new in Python 2.3.
+    @param v: Value
+    @type v: C{bool}
+    @return: New instance of file.
+    @rtype: C{int}
+    @deprecated: use int instead!
+    """
     def boolint(self, v):
-      """
-      Returns int (0/1) for Boolean Type new in Python 2.3.
-      @param v: Value
-      @type v: C{bool}
-      @return: New instance of file.
-      @rtype: C{int}
-      @deprecated: use int instead!
-      """
       return int(v)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.dt_html:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('dt_html')
+    """
+    Execute given DTML-snippet.
+    @param value: DTML-snippet
+    @type value: C{string}
+    @param REQUEST: the triggering request
+    @type REQUEST: C{ZPublisher.HTTPRequest}
+    @return: Result of the execution or None
+    @rtype: C{any}
+    """
     def dt_html(self, value, REQUEST):
-      """
-      Execute given DTML-snippet.
-      @param value: DTML-snippet
-      @type value: C{string}
-      @param REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @return: Result of the execution or None
-      @rtype: C{any}
-      """
       return _globals.dt_html(self,value,REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.encrypt_schemes:
-    # --------------------------------------------------------------------------
+    """
+    Available encryption-schemes.
+    @return: list of encryption-scheme ids
+    @rtype: C{list}
+    """
     def encrypt_schemes(self):
       ids = []
       for id, prefix, scheme in AuthEncoding._schemes:
@@ -220,21 +215,18 @@ class ZMSGlobals:
       return ids
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.encrypt_password:
-    # --------------------------------------------------------------------------
+    """
+    Encrypts given password.
+    @param pw: Password
+    @type pw: C{string}
+    @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
+    @type algorithm: C{string}
+    @param hex: Hexlify
+    @type hex: C{bool}
+    @return: Encrypted password
+    @rtype: C{string}
+    """
     def encrypt_password(self, pw, algorithm='md5', hex=False):
-      """
-      Encrypts given password.
-      @param pw: Password
-      @type pw: C{string}
-      @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
-      @type algorithm: C{string}
-      @param hex: Hexlify
-      @type hex: C{bool}
-      @return: Encrypted password
-      @rtype: C{string}
-      """
       enc = None
       if algorithm.upper() == 'SHA-1':
         import sha
@@ -250,17 +242,14 @@ class ZMSGlobals:
       return enc
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.encrypt_ordtype:
-    # --------------------------------------------------------------------------
+    """
+    Encrypts given string with entities by random algorithm.
+    @param s: String
+    @type s: C{string}
+    @return: Encrypted string
+    @rtype: C{string}
+    """
     def encrypt_ordtype(self, s):
-      """
-      Encrypts given string with entities by random algorithm.
-      @param s: String
-      @type s: C{string}
-      @return: Encrypted string
-      @rtype: C{string}
-      """
       from binascii import hexlify
       new = ''
       for ch in s:
@@ -274,36 +263,30 @@ class ZMSGlobals:
       return new
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.rand_int:
-    # --------------------------------------------------------------------------
+    """
+    Random integer in given range.
+    @param n: Range
+    @type n: C{int}
+    @return: Random integer
+    @rtype: C{int}
+    """
     def rand_int(self, n):
-      """
-      Random integer in given range.
-      @param n: Range
-      @type n: C{int}
-      @return: Random integer
-      @rtype: C{int}
-      """
       from random import randint
       return randint(0,n)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.get_diff:
-    # --------------------------------------------------------------------------
+    """
+    Renders diff of two values in HTML.
+    @param v1: Value #1
+    @type v1: C{any}
+    @param v2: Value #2
+    @type v2: C{any}
+    @param datatype: Datatype
+    @type datatype: C{string}
+    @return: Diff rendered in HTML.
+    @rtype: C{string}
+    """
     def get_diff(self, v1, v2, datatype='string'):
-      """
-      Renders diff of two values in HTML.
-      @param v1: Value #1
-      @type v1: C{any}
-      @param v2: Value #2
-      @type v2: C{any}
-      @param datatype: Datatype
-      @type datatype: C{string}
-      @return: Diff rendered in HTML.
-      @rtype: C{string}
-      """
       diff = ''
       if v1 == v2:
         return diff
@@ -370,23 +353,20 @@ class ZMSGlobals:
       return diff
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.string_maxlen:
-    # --------------------------------------------------------------------------
+    """
+    Returns string with specified maximum-length. If original string exceeds 
+    maximum-length '...' is appended at the end.
+    @param s: String
+    @type s: C{string}
+    @param maxlen: Maximum-length
+    @type maxlen: C{int}
+    @param etc: Characters to be appended if maximum-length is exceeded
+    @type etc: C{string}
+    @param encoding: Encoding
+    @type encoding: C{string}
+    @rtype: C{string}
+    """
     def string_maxlen(self, s, maxlen=20, etc='...', encoding=None):
-      """
-      Returns string with specified maximum-length. If original string exceeds 
-      maximum-length '...' is appended at the end.
-      @param s: String
-      @type s: C{string}
-      @param maxlen: Maximum-length
-      @type maxlen: C{int}
-      @param etc: Characters to be appended if maximum-length is exceeded
-      @type etc: C{string}
-      @param encoding: Encoding
-      @type encoding: C{string}
-      @rtype: C{string}
-      """
       if encoding is not None:
         s = unicode( s, encoding)
       # remove all tags.
@@ -403,36 +383,43 @@ class ZMSGlobals:
       return s
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.url_quote:
-    # --------------------------------------------------------------------------
-    def url_quote(self, s):
-      return urllib.quote(s)
+    """
+    Replace special characters in string using the %xx escape. Letters, digits, 
+    and the characters '_.-' are never quoted. By default, this function is 
+    intended for quoting the path section of the URL. The optional safe 
+    parameter specifies additional characters that should not be quoted — its 
+    default value is '/'.
+    """
+    def url_quote(self, string, safe='/'):
+      return urllib.quote(string,safe)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.http_import:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('http_import')
+    """
+    Send Http-Request and return Response-Body.
+    @param url: Remote-URL
+    @type url: C{string}
+    @param method: Method
+    @type method: C{string}, values are GET or POST
+    @param auth: Authentication
+    @type auth: C{string}
+    @param parse_qs: Parse Query-String
+    @type parse_qs: C{int}, values are 0 or 1
+    @return: Response-Body
+    @rtype: C{string}
+    """
     def http_import(self, url, method='GET', auth=None, parse_qs=0):
-      """
-      Send Http-Request and return Response-Body.
-      @param url: Remote-URL
-      @type url: C{string}
-      @param method: Method
-      @type method: C{string}, values are GET or POST
-      @param auth: Authentication
-      @type auth: C{string}
-      @param parse_qs: Parse Query-String
-      @type parse_qs: C{int}, values are 0 or 1
-      @return: Response-Body
-      @rtype: C{string}
-      """
       return _globals.http_import( self, url, method, auth, parse_qs)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.url_append_params:
-    # --------------------------------------------------------------------------
+
+    """
+    Append params from dict to given url.
+    @param url: Url
+    @type url: C{string}
+    @param dict: dictionary of params (key/value pairs)
+    @type dict: C{dict}
+    @return: New url
+    @rtype: C{string}
+    """
     def url_append_params(self, url, dict):
       anchor = ''
       i = url.rfind('#')
@@ -498,39 +485,33 @@ class ZMSGlobals:
       return url+anchor
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.id_quote:
-    # --------------------------------------------------------------------------
+    """
+    Converts given string to identifier (removes special-characters and 
+    replaces German umlauts).
+    @param s: String
+    @type s: C{string}
+    @return: Identifier
+    @rtype: C{string}
+    """
     def id_quote(self, s):
-      """
-      Converts given string to identifier (removes special-characters and 
-      replaces German umlauts).
-      @param s: String
-      @type s: C{string}
-      @return: Identifier
-      @rtype: C{string}
-      """
       return _globals.id_quote(s)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.get_id_prefix:
-    # --------------------------------------------------------------------------
+    """
+    Returns prefix from identifier (which is the non-numeric part at the 
+    beginning).
+    @param s: Identifier
+    @type s: C{string}
+    @return: Prefix
+    @rtype: C{string}
+    """
     def get_id_prefix(self, s):
-      """
-      Returns prefix from identifier (which is the non-numeric part at the 
-      beginning).
-      @param s: Identifier
-      @type s: C{string}
-      @return: Prefix
-      @rtype: C{string}
-      """
       return _globals.id_prefix(s)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.js_quote:
-    # --------------------------------------------------------------------------
+    """
+    Replace special characters in string for javascript.
+    """
     def js_quote(self, text, charset=None):
       if type(text) is unicode:
         text= text.encode([charset, 'utf-8'][charset==None])
@@ -539,38 +520,30 @@ class ZMSGlobals:
       return text
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.isPreviewRequest:
-    # --------------------------------------------------------------------------
+    """
+    @rtype: C{Boolean}
+    """
     def isPreviewRequest(self, REQUEST):
       return _globals.isPreviewRequest(REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.getDataSizeStr: 
-    #
-    #  Display string for file-size.
-    # --------------------------------------------------------------------------
+    """
+    Returns display string for file-size (KB).
+    @param len: length (bytes)
+    @type len: C{int}
+    @rtype: C{string}
+    """
     def getDataSizeStr(self, len):
-      """
-      Returns display string for file-size (KB).
-      @param len: length (bytes)
-      @type len: C{int}
-      @rtype: C{string}
-      """
       return _fileutil.getDataSizeStr(len)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.getMimeTypeIconSrc:
-    # --------------------------------------------------------------------------
+    """
+    Returns the absolute-url of an icon representing the specified MIME-type.
+    @param mt: MIME-Type (e.g. image/gif, text/xml).
+    @type mt: C{string}
+    @rtype: C{string}
+    """
     def getMimeTypeIconSrc(self, mt):
-      """
-      Returns the absolute-url of an icon representing the specified MIME-type.
-      @param mt: MIME-Type (e.g. image/gif, text/xml).
-      @type mt: C{string}
-      @rtype: C{string}
-      """
       return self.MISC_ZMS + _mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
 
 
@@ -580,112 +553,91 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_gettype:
-    # --------------------------------------------------------------------------
+    """
+    Returns python-type of given value.
+    @param v: Value
+    @type v: C{any}
+    @rtype: C{type}
+    """
     def operator_gettype(self, v):
-      """
-      Returns python-type of given value.
-      @param v: Value
-      @type v: C{any}
-      @rtype: C{type}
-      """
       return type(v)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_setitem:
-    # --------------------------------------------------------------------------
+    """
+    Applies value for key in python-dictionary.
+    This is a convenience-function since it is not possible to use expressions
+    like a[b]=c in DTML.
+    @param a: Dictionary
+    @type a: C{dict}
+    @param b: Key
+    @type b: C{any}
+    @param c: Value
+    @type c: C{any}
+    @rtype: C{dict}
+    """
     def operator_setitem(self, a, b, c):
-      """
-      Applies value for key in python-dictionary.
-      This is a convenience-function since it is not possible to use expressions
-      like a[b]=c in DTML.
-      @param a: Dictionary
-      @type a: C{dict}
-      @param b: Key
-      @type b: C{any}
-      @param c: Value
-      @type c: C{any}
-      @rtype: C{dict}
-      """
       operator.setitem(a,b,c)
       return a
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_getitem:
-    # --------------------------------------------------------------------------
+    """
+    Retrieves value for key from python-dictionary.
+    @param a: Dictionary
+    @type a: C{dict}
+    @param b: Key
+    @type b: C{any}
+    @rtype: C{any}
+    """
     def operator_getitem(self, a, b):
-      """
-      Retrieves value for key from python-dictionary.
-      @param a: Dictionary
-      @type a: C{dict}
-      @param b: Key
-      @type b: C{any}
-      @rtype: C{any}
-      """
       return operator.getitem(a,b)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_delitem:
-    # --------------------------------------------------------------------------
+    """
+    Delete key from python-dictionary.
+    @param a: Dictionary
+    @type a: C{dict}
+    @param b: Key
+    @type b: C{any}
+    """
     def operator_delitem(self, a, b):
-      """
-      Delete key from python-dictionary.
-      @param a: Dictionary
-      @type a: C{dict}
-      @param b: Key
-      @type b: C{any}
-      """
       operator.delitem(a, b)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_setattr:
-    # --------------------------------------------------------------------------
+    """
+    Applies value for key to python-object.
+    This is a convenience-function since the use expressions like
+    setattr(a,b,c) is restricted in DTML.
+    @param a: Object
+    @type a: C{any}
+    @param b: Key
+    @type b: C{string}
+    @param c: Value
+    @type c: C{any}
+    @rtype: C{object}
+    """
     def operator_setattr(self, a, b, c):
-      """
-      Applies value for key to python-object.
-      This is a convenience-function since the use expressions like
-      setattr(a,b,c) is restricted in DTML.
-      @param a: Object
-      @type a: C{any}
-      @param b: Key
-      @type b: C{string}
-      @param c: Value
-      @type c: C{any}
-      @rtype: C{object}
-      """
       setattr(a,b,c)
       return a
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_getattr:
-    # --------------------------------------------------------------------------
+    """
+    Retrieves value for key from python-object.
+    This is a convenience-function since the use expressions like
+    getattr(a,b,c) is restricted in DTML.
+    @param a: Object
+    @type a: C{any}
+    @param b: Key
+    @type b: C{any}
+    @param c: Default-Value
+    @type c: C{any}
+    @rtype: C{any}
+    """
     def operator_getattr(self, a, b, c=None):
-      """
-      Retrieves value for key from python-object.
-      This is a convenience-function since the use expressions like
-      getattr(a,b,c) is restricted in DTML.
-      @param a: Object
-      @type a: C{any}
-      @param b: Key
-      @type b: C{any}
-      @param c: Default-Value
-      @type c: C{any}
-      @rtype: C{any}
-      """
       return getattr(a,b,c)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.operator_delattr:
-    # --------------------------------------------------------------------------
+    """
+    Delete key from python-object.
+    @param a: Object
+    @type a: C{any}
+    @param b: Key
+    @type b: C{any}
+    """
     def operator_delattr(self, a, b):
-      """
-      Delete key from python-object.
-      @param a: Object
-      @type a: C{any}
-      @param b: Key
-      @type b: C{any}
-      """
       return delattr(a,b)
 
     #)
@@ -697,42 +649,30 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.writeStdout:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('writeStdout')
+    """
+    Write to standard-out (only allowed for development-purposes!).
+    @param info: Object
+    @type info: C{any}
+    """
     def writeStdout(self, info):
-      """
-      Write to standard-out (only allowed for development-purposes!).
-      @param info: Object
-      @type info: C{any}
-      """
       print info
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.writeLog:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('writeLog')
+    """
+    Log debug-information.
+    @param info: Debug-information
+    @type info: C{any}
+    """
     def writeLog(self, info):
-      """
-      Log debug-information.
-      @param info: Debug-information
-      @type info: C{any}
-      """
       if _globals.debug( self):
         _globals.writeLog( self, info)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.writeBlock:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('writeBlock')
+    """
+    Log information.
+    @param info: Information
+    @type info: C{any}
+    """
     def writeBlock(self, info):
-      """
-      Log information.
-      @param info: Information
-      @type info: C{any}
-      """
       _globals.writeBlock( self, info)
 
     #)
@@ -744,32 +684,27 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.re_sub:
-    # --------------------------------------------------------------------------
+    """
+    Performs a search-and-replace across subject, replacing all matches of 
+    regex in subject with replacement. The result is returned by the sub() 
+    function. The subject string you pass is not modified.
+    @rtype: C{string}
+    """
     def re_sub( self, pattern, replacement, subject, ignorecase=False):
-      """
-      Performs a search-and-replace across subject, replacing all matches of 
-      regex in subject with replacement. The result is returned by the sub() 
-      function. The subject string you pass is not modified.
-      @rtype: C{string}
-      """
       if ignorecase:
         return re.compile( pattern, re.IGNORECASE).sub( replacement, subject)
       else:
         return re.compile( pattern).sub( replacement, subject)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.re_search:
-    # --------------------------------------------------------------------------
+
+    """
+    Scan through string looking for a location where the regular expression 
+    pattern produces a match, and return a corresponding MatchObject 
+    instance. Return None if no position in the string matches the pattern; 
+    note that this is different from finding a zero-length match at some
+    point in the string.
+    """
     def re_search( self, pattern, subject, ignorecase=False):
-      """
-      Scan through string looking for a location where the regular expression 
-      pattern produces a match, and return a corresponding MatchObject 
-      instance. Return None if no position in the string matches the pattern; 
-      note that this is different from finding a zero-length match at some
-      point in the string.
-      """
       if ignorecase:
         s = re.compile( pattern, re.IGNORECASE).split( subject)
       else:
@@ -785,16 +720,12 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.parse_stylesheet
-    # --------------------------------------------------------------------------
-    security.declarePrivate('parse_stylesheet')
+    """
+    Parses default-stylesheet and returns elements.
+    @return: Elements
+    @rtype: C{dict}
+    """
     def parse_stylesheet(self):
-      """
-      Parses default-stylesheet and returns elements.
-      @return: Elements
-      @rtype: C{dict}
-      """
       REQUEST = self.REQUEST
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
@@ -821,16 +752,12 @@ class ZMSGlobals:
         return self.storeReqBuff( reqBuffId, value, REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.get_colormap:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('get_colormap')
+    """
+    Parses default-stylesheet and returns color-map.
+    @return: Color-map
+    @rtype: C{dict}
+    """
     def get_colormap(self):
-      """
-      Parses default-stylesheet and returns color-map.
-      @return: Color-map
-      @rtype: C{dict}
-      """
       REQUEST = self.REQUEST
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
@@ -867,70 +794,61 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.intersection_list:
-    # --------------------------------------------------------------------------
+    """
+    Intersection of two lists (li & l2).
+    @param l1: List #1
+    @type l1: C{list}
+    @param l2: List #2
+    @type l2: C{list}
+    @returns: Intersection list
+    @rtype: C{list}
+    """
     def intersection_list(self, l1, l2):
-      """
-      Intersection of two lists (li & l2).
-      @param l1: List #1
-      @type l1: C{list}
-      @param l2: List #2
-      @type l2: C{list}
-      @returns: Intersection list
-      @rtype: C{list}
-      """
       l1 = list(l1)
       l2 = list(l2)
       return filter(lambda x: x in l2, l1)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.difference_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Difference of two lists (l1 - l2).
+    @param l1: List #1
+    @type l1: C{list}
+    @param l2: List #2
+    @type l2: C{list}
+    @returns: Difference list
+    @rtype: C{list}
+    """
     def difference_list(self, l1, l2):
-      """
-      Difference of two lists (l1 - l2).
-      @param l1: List #1
-      @type l1: C{list}
-      @param l2: List #2
-      @type l2: C{list}
-      @returns: Difference list
-      @rtype: C{list}
-      """
       l1 = list(l1)
       l2 = list(l2)
       return filter(lambda x: x not in l2, l1)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.concat_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Concatinates two lists (l1 + l2).
+    @param l1: List #1
+    @type l1: list
+    @param l2: List #2
+    @type l2: list
+    @returns: Concatinated list
+    @rtype: C{list}
+    """
     def concat_list(self, l1, l2):
-      """
-      Concatinates two lists (l1 + l2).
-      @param l1: List #1
-      @type l1: list
-      @param l2: List #2
-      @type l2: list
-      @returns: Concatinated list
-      @rtype: C{list}
-      """
       l1 = list(l1)
       l2 = list(l2)
       l = self.copy_list(l1)
       l.extend(filter(lambda x: x not in l1, l2))
       return l
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.dict_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Converts list to dictionary: key=l[x*2], value=l[x*2+1]
+    @param l: List
+    @type l: C{list}
+    @return: Dictionary
+    @rtype: C{dict}
+    """
     def dict_list(self, l):
-      """
-      Converts list to dictionary: key=l[x*2], value=l[x*2+1]
-      @param l: List
-      @type l: C{list}
-      @return: Dictionary
-      @rtype: C{dict}
-      """
       dict = {}
       for i in range(0,len(l)/2):
         key = l[i*2]
@@ -939,16 +857,13 @@ class ZMSGlobals:
       return dict
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.distinct_list:
-    # --------------------------------------------------------------------------
+    """
+    Returns distinct values of given field from list.
+    @param l: List
+    @type l: C{list}
+    @rtype: C{list}
+    """
     def distinct_list(self, l, i):
-      """
-      Returns distinct values of given field from list.
-      @param l: List
-      @type l: C{list}
-      @rtype: C{list}
-      """
       k = []
       for x in l:
         if type(i) is str:
@@ -958,17 +873,14 @@ class ZMSGlobals:
         if not v in k:
           k.append(v)
       return k
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.sort_list:
-    #
-    #  Sorts list by given field.
-    # --------------------------------------------------------------------------
+
+
+    """
+    Sorts list by given field.
+    @return: Sorted list.
+    @rtype: C{list}
+    """
     def sort_list(self, l, qorder, qorderdir='asc', ignorecase=1):
-      """
-      Sorts list by given field.
-      @return: Sorted list.
-      @rtype: C{list}
-      """
       if type(qorder) is str:
         sorted = map(lambda x: (sort_item(x.get(qorder,None)),x),l)
       elif type(qorder) is list:
@@ -982,13 +894,11 @@ class ZMSGlobals:
       if qorderdir == 'desc': sorted.reverse()
       return sorted
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.string_list:
-    # --------------------------------------------------------------------------
+
+    """
+    @rtype: C{list}
+    """
     def string_list(self, s, sep='\n'):
-      """
-      @rtype: C{list}
-      """
       l = []
       for i in s.split(sep):
         i = i.strip()
@@ -998,11 +908,10 @@ class ZMSGlobals:
           l.append(i)
       return l
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.tree_parents:
-    #
-    #  Returns parents for linked list.
-    # --------------------------------------------------------------------------
+
+    """
+    Returns parents for linked list.
+    """
     def tree_parents(self, l, i='id', r='idId', v='', deep=1, reverse=1):
       k = []
       for x in l:
@@ -1014,11 +923,10 @@ class ZMSGlobals:
         k.reverse()
       return k
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.tree_list:
-    #
-    #  Returns children for linked list.
-    # --------------------------------------------------------------------------
+
+    """
+    Returns children for linked list.
+    """
     def tree_list(self, l, i='id', r='idId', v='', deep=0):
       k = []
       for x in l:
@@ -1028,9 +936,10 @@ class ZMSGlobals:
             k.extend(self.tree_list(l,i,r,x[i],deep))
       return k
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.str_json:
-    # --------------------------------------------------------------------------
+
+    """
+    Returns a json-string representation of the object.
+    """
     def str_json(self, i):
       if type(i) is list or type(i) is tuple:
         return '['+','.join(map(lambda x: self.str_json(x),i))+']'
@@ -1047,9 +956,11 @@ class ZMSGlobals:
         return '\'%s\''%(str(i).replace('\\','\\\\').replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
       return '\'\''
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.str_item:
-    # --------------------------------------------------------------------------
+
+    """
+    Returns a string representation of the item.
+    @rtype: C{list}
+    """
     def str_item(self, i):
       if type(i) is list or type(i) is tuple:
         return '\n'.join(map(lambda x: self.str_item(x),i))
@@ -1064,23 +975,21 @@ class ZMSGlobals:
         return str(i)
       return ''
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.filter_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Filters list by given field.
+    @param l: List
+    @type l: C{list}
+    @param i: Field-name or -index
+    @type i: C{string} or C{int}
+    @param v: Field-value
+    @type v: C{any}
+    @param v: Match-operator
+    @type v: C{string}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
+    @return: Filtered list.
+    @rtype: C{list}
+    """
     def filter_list(self, l, i, v, o='%'):
-      """
-      Filters list by given field.
-      @param l: List
-      @type l: C{list}
-      @param i: Field-name or -index
-      @type i: C{string} or C{int}
-      @param v: Field-value
-      @type v: C{any}
-      @param v: Match-operator
-      @type v: C{string}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
-      @return: Filtered list.
-      @rtype: C{list}
-      """
       # Full-text scan.
       if i is None or len(str(i))==0:
         str_item = self.str_item
@@ -1166,13 +1075,15 @@ class ZMSGlobals:
           k=filter(lambda x: not x[0].equalTo(v), k)
       return map(lambda x: x[1], k)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.copy_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Copies list l.
+    @param l: List
+    @type l: C{list}
+    @return: Copy of list.
+    @rtype: C{list}
+    """
     def copy_list(self, l):
-      """
-      Copies list l.
-      """
       if _globals.debug( self):
         _globals.writeLog( self, '[copy_list]: %i records'%len(l))
       try:
@@ -1181,13 +1092,11 @@ class ZMSGlobals:
         v = copy.copy(l)
       return v
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.sync_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Syncronizes list l with new list nl using the column i as identifier.
+    """
     def sync_list(self, l, nl, i):
-      """
-      Syncronizes list l with new list nl using the column i as identifier.
-      """
       k = []
       for x in l:
         k.extend([x[i],x])
@@ -1204,13 +1113,11 @@ class ZMSGlobals:
           k.extend([x[i],x])
       return map(lambda x: k[x*2+1], range(0,len(k)/2))
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.aggregate_list:
-    # --------------------------------------------------------------------------
+
+    """
+    Aggregates given field in list.
+    """
     def aggregate_list(self, l, i):
-      """
-      Aggregates given field in list.
-      """
       k = []
       for li in copy.deepcopy(l):
         del li[i]
@@ -1236,84 +1143,74 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.pilutil:
-    # --------------------------------------------------------------------------
+    """
+    Returns util with PIL functions.
+    """
     def pilutil( self):
       return _pilutil.pilutil(self)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.getZipArchive:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('getZipArchive')
+    """
+    Extract files from zip-archive and return list of extracted files.
+    @return: Extracted files (binary)
+    @rtype: C{list}
+    """
     def getZipArchive(self, f):
-      """
-      Extract files from zip-archive and return list of extracted files.
-      @return: Extracted files (binary)
-      @rtype: C{list}
-      """
       return _fileutil.getZipArchive(f)
 
-    # ------------------------------------------------------------------------------
-    #  ZMSGlobals.extractZipArchive:
-    # ------------------------------------------------------------------------------
+
+    """
+    Extract zip-archive.
+    """
     security.declarePrivate('extractZipArchive')
     def extractZipArchive(self, f):
       return _fileutil.extractZipArchive(f)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.buildZipArchive:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('buildZipArchive')
+
+    """
+    Pack zip-archive and return data.
+    @return: zip-archive (binary)
+    @rtype: C{string}
+    """
     def buildZipArchive( self, files, get_data=True):
-      """
-      Pack ZIP-Archive and return data.
-      @return: ZIP-archive (binary)
-      @rtype: C{string}
-      """
       return _fileutil.buildZipArchive( files, get_data)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_package_home:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('localfs_package_home')
+
+    """
+    Returns package_home on local file-system.
+    @return: package_home()
+    @rtype: C{string}
+    """
     def localfs_package_home(self):
-      """
-      Returns package_home on local file-system.
-      @return: package_home()
-      @rtype: C{string}
-      """
       return package_home(globals())
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_tempfile:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('localfs_tempfile')
+
+    """
+    Creates temp-folder on local file-system.
+    @rtype: C{string}
+    """
     def localfs_tempfile(self):
-      """
-      Creates temp-folder on local file-system.
-      """
       tempfolder = tempfile.mktemp()
       return tempfolder
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_read:
-    # --------------------------------------------------------------------------
+
+    """
+    Reads file from local file-system.
+    You must grant permissions for reading from local file-system to
+    directories in Config-Tab / Miscelleaneous-Section.
+    @param filename: Filepath
+    @type filename: C{string}
+    @param filename: Access mode
+    @type filename: C{string}, values are 'b' - binary
+    @var REQUEST: the triggering request
+    @type REQUEST: C{ZPublisher.HTTPRequest}
+    @return: Contents of file
+    @rtype: C{string} or C{filestream_iterator}
+    """
     security.declareProtected('View', 'localfs_read')
     def localfs_read(self, filename, mode='b', REQUEST=None):
       """
-      Reads file from local file-system.
-      You must grant permissions for reading from local file-system to
-      directories in Config-Tab / Miscelleaneous-Section.
-      @param filename: Filepath
-      @type filename: C{string}
-      @param filename: Access mode
-      @type filename: C{string}, values are 'b' - binary
-      @var REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @return: Contents of file
-      @rtype: C{string} or C{filestream_iterator}
+      ZMSGlobals.localfs_read
       """
       try:
         filename = unicode(filename,'utf-8').encode('latin-1')
@@ -1346,14 +1243,10 @@ class ZMSGlobals:
       return fdata
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_write:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('localfs_write')
+    """
+    Writes file to local file-system.
+    """
     def localfs_write(self, filename, v, mode='b', REQUEST=None):
-      """
-      Writes file to local file-system.
-      """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
       
@@ -1370,27 +1263,23 @@ class ZMSGlobals:
       _fileutil.exportObj( v, filename, mode)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_remove:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('localfs_remove')
+    """
+    Removes file from local file-system.
+    """
     def localfs_remove(self, path, deep=0):
-      """
-      Removes file from local file-system.
-      """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
       _fileutil.remove( path, deep)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_readPath:
-    # --------------------------------------------------------------------------
+    """
+    Reads path from local file-system.
+    @rtype: C{list}
+    """
     security.declareProtected('View', 'localfs_reaadPath')
     def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
       """
-      Reads path from local file-system.
-      @rtype: C{list}
+      ZMSGlobals.localfs_readPath
       """
       try:
         filename = unicode(filename,'utf-8').encode('latin-1')
@@ -1412,14 +1301,10 @@ class ZMSGlobals:
       return _fileutil.readPath(filename, data, recursive)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.localfs_command:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('localfs_command')
+    """
+    Executes command in local file-system.
+    """
     def localfs_command(self, command):
-      """
-      Executes command in local file-system.
-      """
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_command]: command=%s'%command)
       os.system(command)
@@ -1433,86 +1318,71 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.getXmlHeader:
-    # --------------------------------------------------------------------------
+    """
+    Returns XML-Header (encoding=utf-8)
+    @param encoding: Encoding
+    @type encoding: C{string}
+    @rtype: C{string}
+    """
     def getXmlHeader(self, encoding='utf-8'):
-      """
-      Returns XML-Header (encoding=utf-8)
-      @param encoding: Encoding
-      @type encoding: C{string}
-      @rtype: C{string}
-      """
       return _xmllib.xml_header(encoding)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.toXmlString:
-    # --------------------------------------------------------------------------
+
+    """
+    Serializes value to ZMS XML-Structure.
+    @rtype: C{string}
+    """
     def toXmlString(self, v, xhtml=False, encoding='utf-8'):
-      """
-      Serializes value to ZMS XML-Structure.
-      @rtype: C{string}
-      """
       return _xmllib.toXml(self, v, xhtml=xhtml, encoding=encoding)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.parseXmlString:
-    # --------------------------------------------------------------------------
+
+    """
+    Parse value from ZMS XML-Structure.
+    @return: C{list} or C{dict}
+    @rtype: C{any}
+    """
     def parseXmlString(self, xml, mediadbStorable=True):
-      """
-      Parse value from ZMS XML-Structure.
-      @return: C{list} or C{dict}
-      @rtype: C{any}
-      """
       builder = _xmllib.XmlAttrBuilder()
       if type(xml) is str:
         xml = StringIO(xml)
       v = builder.parse( xml, mediadbStorable)
       return v
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.xslProcess:
-    # --------------------------------------------------------------------------
+
+    """
+    Process xml with xsl transformation.
+    @deprecated: Use ZMSGlobals.processData('xslt') instead.
+    """
     def xslProcess(self, xsl, xml):
-      """
-      Process xml with xsl transformation.
-      @deprecated: Use ZMSGlobals.processData('xslt') instead.
-      """
       return self.processData('xslt', xml, xsl)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.processData:
-    # --------------------------------------------------------------------------
+
+    """
+    Process data with custom transformation.
+    """
     def processData(self, processId, data, trans=None):
-      """
-      Process data with custom transformation.
-      """
       return _filtermanager.processData(self, processId, data, trans)
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.xmlParse:
-    # --------------------------------------------------------------------------
+
+    """
+    Parse arbitrary XML-Structure into dictionary.
+    @return: Dictionary of XML-Structure.
+    @rtype: C{dict}
+    """
     def xmlParse(self, xml):
-      """
-      Parse arbitrary XML-Structure into dictionary.
-      @return: Dictionary of XML-Structure.
-      @rtype: C{dict}
-      """
       builder = _xmllib.XmlBuilder()
       if type(xml) is str:
         xml = StringIO(xml)
       v = builder.parse(xml)
       return v
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.xmlNodeSet:
-    # --------------------------------------------------------------------------
+
+    """
+    Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
+    @return: List of dictionaries of XML-Structure.
+    @rtype: C{list}
+    """
     def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
-      """
-      Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
-      @return: List of dictionaries of XML-Structure.
-      @rtype: C{list}
-      """
       return _xmllib.xmlNodeSet( mNode, sTagName, iDeep)
 
 
@@ -1522,21 +1392,17 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSGlobals.getPlugin:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('getPlugin')
+    """
+    Executes plugin.
+    @param path: the plugin path in $ZMS_HOME/plugins/
+    @type path: C{string}
+    @param REQUEST: the triggering request
+    @type REQUEST: C{ZPublisher.HTTPRequest}
+    @param pars: the request parameters
+    @type pars: C{dict}
+    @return: Result of the execution or error-message
+    """
     def getPlugin( self, path, REQUEST, pars={}):
-      """
-      Executes plugin.
-      @param path: the plugin path in $ZMS_HOME/plugins/
-      @type path: C{string}
-      @param REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param pars: the request parameters
-      @type pars: C{dict}
-      @return: Result of the execution or error-message
-      """
       try:
         # Set request-parameters.
         for k in pars.keys():

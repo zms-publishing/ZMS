@@ -158,8 +158,8 @@ class ZMSCustom(ZMSContainerObject):
         'GET', 'PUT',
         )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		)
+        ('ZMS Author', __authorPermissions__),
+        )
 
 
     # Templates.
@@ -258,14 +258,12 @@ class ZMSCustom(ZMSContainerObject):
     ###
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.recordSet_Init:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Init')
+    """
+    Initialize record-set.
+    @return: list of records
+    @rtype: C{list}
+    """
     def recordSet_Init(self, REQUEST):
-      """
-      Initialize record-set.
-      """
       metaObj = self.getMetaobj(self.meta_id)
       res_id = metaObj['attrs'][0]['id']
       res = self.getObjProperty(res_id,REQUEST)
@@ -275,14 +273,12 @@ class ZMSCustom(ZMSContainerObject):
       return res
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.recordSet_Filter:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Filter')
+    """
+    Filter record-set.
+    @return: filtered list of records
+    @rtype: C{list}
+    """
     def recordSet_Filter(self, REQUEST):
-      """
-      Filter record-set.
-      """
       metaObj = self.getMetaobj(self.meta_id)
       res_id = REQUEST['res_id']
       res_abs = REQUEST['res_abs']
@@ -346,14 +342,12 @@ class ZMSCustom(ZMSContainerObject):
       return res
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.recordSet_Sort:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Sort')
+    """
+    Sort record-set.
+    @return: sorted list of records
+    @rtype: C{list}
+    """
     def recordSet_Sort(self, REQUEST):
-      """
-      Sort record-set.
-      """
       metaObj = self.getMetaobj(self.meta_id)
       
       res = REQUEST['res']

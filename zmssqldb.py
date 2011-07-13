@@ -293,39 +293,38 @@ class ZMSSqlDb(ZMSObject):
         return "'%s'"%v
 
 
-    security.declarePrivate('commit')
+    """
+    Makes all changes made since the previous commit/rollback permanent and 
+    releases any database locks currently held by the Connection object.
+    """
     def commit(self):
-      """
-      Commit.
-      """
       da = self.getDA()
       dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.commit()
 
 
-    security.declarePrivate('rollback')
+    """
+    Undoes all changes made in the current transaction and releases any database
+    locks currently held by this Connection object.
+    """
     def rollback(self):
-      """
-      Rollback.
-      """
       da = self.getDA()
       dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.rollback()
 
 
-    security.declarePrivate('query')
+    """
+    Execute select-statement.
+    @param qs: The select-statement
+    @type qs: C{str}
+    @param max_rows: The maximum number of rows (default: None, unlimited)
+    @type max_rows: C{str}
+    @return: Dictionary: columns C{list}, records C{list}.
+    @rtype: C{dict}
+    """
     def query(self, qs, max_rows=None, encoding=None):
-      """
-      Execute select-statement.
-      @param qs: The select-statement
-      @type qs: C{str}
-      @param max_rows: The maximum number of rows (default: None, unlimited)
-      @type max_rows: C{str}
-      @return: Dictionary: columns C{list}, records C{list}.
-      @rtype: C{dict}
-      """
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
@@ -405,15 +404,14 @@ class ZMSSqlDb(ZMSObject):
       
 
 
-    security.declarePrivate('executeQuery')
+    """
+    Execute modify-statement.
+    @param qs: The modify-statement
+    @type qs: C{str}
+    @return: Number of affected rows.
+    @rtype: C{int}
+    """
     def executeQuery(self, qs):
-      """
-      Execute modify-statement.
-      @param qs: The modify-statement
-      @type qs: C{str}
-      @return: Number of affected rows.
-      @rtype: C{int}
-      """
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
@@ -625,13 +623,10 @@ class ZMSSqlDb(ZMSObject):
     ###
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Select:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Select')
+    """
+    @rtype: C{string}
+    """
     def recordSet_Select(self, tablename, select=None, where=None):
-      """
-      """
       da = self.getDA()
       gadfly = da.meta_type == 'Z Gadfly Database Connection'
       tabledef = self.getEntity(tablename)
@@ -674,17 +669,13 @@ class ZMSSqlDb(ZMSObject):
       return ''.join(sqlStatement)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Init:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Init')
+    """
+    Initializes record-set.
+    @param REQUEST: the triggering request
+    @type REQUEST: ZPublisher.HTTPRequest
+    @rtype: C{None}
+    """
     def recordSet_Init(self, REQUEST, all=True):
-      """
-      Initializes record-set.
-      @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
-      @rtype: C{None}
-      """
       SESSION = REQUEST.SESSION
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       tablename = SESSION.get('qentity_%s'%self.id)
@@ -716,17 +707,13 @@ class ZMSSqlDb(ZMSObject):
       REQUEST.set('sqlStatement',sqlStatement)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Filter:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Filter')
+    """
+    Filter record-set by appending where clause to sql-statement.
+    @param REQUEST: the triggering request
+    @type REQUEST: ZPublisher.HTTPRequest
+    @rtype: C{None}
+    """
     def recordSet_Filter(self, REQUEST):
-      """
-      Filter record-set by appending where clause to sql-statement.
-      @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
-      @rtype: C{None}
-      """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
@@ -789,17 +776,13 @@ class ZMSSqlDb(ZMSObject):
           REQUEST.set('sqlStatement',sqlStatement)
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Sort:
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Sort')
+    """
+    Sort record-set by appending order-by clause to sql-statement.
+    @param REQUEST: the triggering request
+    @type REQUEST: ZPublisher.HTTPRequest
+    @rtype: C{None}
+    """
     def recordSet_Sort(self, REQUEST):
-      """
-      Sort record-set by appending order-by clause to sql-statement.
-      @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
-      @rtype: C{None}
-      """
       SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
@@ -831,18 +814,14 @@ class ZMSSqlDb(ZMSObject):
     ############################################################################
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getFk
-    # --------------------------------------------------------------------------
-    security.declarePrivate('getFk')
+    """
+    Get reference for foreign-key relation.
+    @param tablename: Name of the SQL-Table.
+    @type tablename: C{string}
+    @return: ID of the row that was inserted.
+    @rtype: int
+    """
     def getFk(self, tablename, id, name, value, createIfNotExists=1):
-      """
-      Get reference for foreign-key relation.
-      @param tablename: Name of the SQL-Table.
-      @type tablename: C{string}
-      @return: ID of the row that was inserted.
-      @rtype: int
-      """
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -907,20 +886,16 @@ class ZMSSqlDb(ZMSObject):
       return rowid
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Insert
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Insert')
+    """
+    Insert row into record-set.
+    @param tablename: Name of the SQL-Table.
+    @type tablename: C{string}
+    @param values: Columns (id/value) to be inserted.
+    @type values: C{dict}
+    @return: ID of the row that was inserted.
+    @rtype: C{any}
+    """
     def recordSet_Insert(self, tablename, values={}):
-      """
-      Insert row into record-set.
-      @param tablename: Name of the SQL-Table.
-      @type tablename: C{string}
-      @param values: Columns (id/value) to be inserted.
-      @type values: C{dict}
-      @return: ID of the row that was inserted.
-      @rtype: C{any}
-      """
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
@@ -999,22 +974,18 @@ class ZMSSqlDb(ZMSObject):
       return rowid
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Update
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Update')
+    """
+    Update row in table.
+    @param tablename: Name of the SQL-Table.
+    @type tablename: C{string}
+    @param rowid: ID of the row to be updated.
+    @type rowid: C{any}
+    @param values: Columns (id/value) to be updated.
+    @type values: C{dict}
+    @return: ID of the row that was updated.
+    @rtype: C{any}
+    """
     def recordSet_Update(self, tablename, rowid, values={},old_values={}):
-      """
-      Update row in table.
-      @param tablename: Name of the SQL-Table.
-      @type tablename: C{string}
-      @param rowid: ID of the row to be updated.
-      @type rowid: C{any}
-      @param values: Columns (id/value) to be updated.
-      @type values: C{dict}
-      @return: ID of the row that was updated.
-      @rtype: C{any}
-      """
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
@@ -1108,19 +1079,15 @@ class ZMSSqlDb(ZMSObject):
       return rowid
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.recordSet_Delete
-    # --------------------------------------------------------------------------
-    security.declarePrivate('recordSet_Delete')
+    """
+    Delete row from table.
+    @param tablename: Name of the SQL-Table.
+    @type tablename: C{string}
+    @param rowid: ID of the row to be deleted.
+    @type rowid: C{any}
+    @rtype: C{None}
+    """
     def recordSet_Delete(self, tablename, rowid):
-      """
-      Delete row from table.
-      @param tablename: Name of the SQL-Table.
-      @type tablename: C{string}
-      @param rowid: ID of the row to be deleted.
-      @type rowid: C{any}
-      @rtype: C{None}
-      """
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')      
       lang = REQUEST['lang']
@@ -1237,6 +1204,7 @@ class ZMSSqlDb(ZMSObject):
       self.localfs_write(path+filename,file.getData())
       return filename
 
+    security.declareProtected('View', 'set_blob')
     def set_blob( self, auth_user, tablename, id, rowid=None, xml=None, REQUEST=None, RESPONSE=None):
       """ ZMSSqlDb.set_blob """
       user = self.findUser( auth_user)

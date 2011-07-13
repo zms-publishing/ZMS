@@ -1932,7 +1932,9 @@ return zmscontext.attr('attr_dc_description')
     </div>
     <div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
     <div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
-    <img tal:condition="python:title.lower()=='medline'" tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="url" align="absmiddle" />
+    <a tal:condition="python:title.lower()=='medline'" 
+      tal:attributes="href python:zmscontext.getLinkUrl(ref,request)"
+      target="_blank"><img  tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="Medline" align="absmiddle" /></a>
   </div>
 </span>
 

@@ -387,8 +387,8 @@ class ZMSGlobals:
     Replace special characters in string using the %xx escape. Letters, digits, 
     and the characters '_.-' are never quoted. By default, this function is 
     intended for quoting the path section of the URL. The optional safe 
-    parameter specifies additional characters that should not be quoted — its 
-    default value is '/'.
+    parameter specifies additional characters that should not be quoted,
+    its default value is '/'.
     """
     def url_quote(self, string, safe='/'):
       return urllib.quote(string,safe)

@@ -63,9 +63,11 @@ $(function() {
 							'form_id':'<dtml-var ZMI_TIME>'
 						},
 						function(data) {
+							$('input[name=file-uploader-modified-<dtml-var key>]').val(new Date());
 							var img = eval('('+data+')');
 							var elParams = '<dtml-if ZMS_INSERT>meta_id=<dtml-var ZMS_INSERT>&</dtml-if>lang=<dtml-var lang>&key=<dtml-var key>&form_id=<dtml-var "REQUEST.get('ZMI_TIME')">';
 							ZMSGraphic_extEdit_set('<dtml-var elName>', img['src'], img['filename'], img['width'], img['height'],elParams,<dtml-var "_.int(pilutil().enabled())">);
+							onResize();
 						}
 					);
 				},
@@ -81,6 +83,7 @@ $(function() {
 	$('.qq-upload-button').addClass('ui-button').addClass('ui-state-default').addClass('ui-corner-all');
 });
 </script>
+<input type="text" name="file-uploader-modified-<dtml-var key>" value="" style="display:none;visibility:hidden;">
 <div id="file-uploader-<dtml-var key>"></div>
 
 <!-- EO plugins/fileupload/ajax_upload/input.dtml -->

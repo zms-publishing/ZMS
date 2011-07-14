@@ -67,6 +67,11 @@
 <dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
 </dtml-unless>
 
+<!--// fckeditor toolbox: setting path vars (req. by Uni Bern) //-->
+<dtml-call "RESPONSE.setCookie('home_id',getHref2IndexHtml(REQUEST), path='/')"> 
+<dtml-call "RESPONSE.setCookie('editor_id',getHref2IndexHtml(REQUEST), path='/')"> 
+<dtml-call "RESPONSE.setCookie('fck_lang', lang, path='/')"> 
+
 <div id="editor_<dtml-var "REQUEST.get('elName')">"></div>
 <script type="text/javascript" src="fckeditor/fckeditor.js"></script>
 <script type="text/javascript">

@@ -18,6 +18,7 @@
 
 # Imports.
 from cStringIO import StringIO
+from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
@@ -25,6 +26,7 @@ from OFS.CopySupport import absattr
 from OFS.Image import Image
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
+import Globals
 import OFS.misc_
 import os
 import stat
@@ -130,6 +132,11 @@ class ConfManager(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
       IZMSFormatProvider.IZMSFormatProvider,
       IZMSSvnInterface.IZMSSvnInterface)
+
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
 
     # Management Interface.
     # ---------------------
@@ -545,63 +552,64 @@ class ConfManager(
       return l
 
 
-    """
     ############################################################################
     ###
     ###   Configuration-Properties
     ###
     ############################################################################
-    """
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getConfManager:
-    #
-    #  Returns configuration-manager.
-    # --------------------------------------------------------------------------
+    """
+    Returns configuration-manager.
+    """
     def getConfManager(self):
       return self
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getConfProperties:
-    #
-    #  Returns property from configuration.
-    # --------------------------------------------------------------------------
+
+    """
+    Returns property from configuration.
+    @rtype: C{dict}
+    """
     def getConfProperties(self):
       return getattr( self, '__attr_conf_dict__', {})
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getConfProperty:
-    #
-    #  Removes property from configuration.
-    #
-    #  @param key    The key.
-    # --------------------------------------------------------------------------
+
+    """
+    Removes property from configuration.
+    
+    @param key: The key.
+    @type key: C{string}
+    @return None
+    """
+    security.declareProtected('ZMS Administrator', 'delConfProperty')
     def delConfProperty(self, key):
       self.setConfProperty(key,None)
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getConfProperty:
-    #
-    #  Returns property from configuration.
-    #
-    #  @param key    The key.
-    #  @param default    The default-value.
-    #  @return any
-    # --------------------------------------------------------------------------
+
+    """
+    Returns property from configuration.
+    
+    @param key: The key.
+    @type key: C{string}
+    @param default: The default-value.
+    @type default: C{any}
+    @rtype: C{any}
+    """
     def getConfProperty(self, key, default=None):
       if OFS.misc_.misc_.zms['confdict'].has_key(key):
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       return self.getConfProperties().get( key, default)
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.setConfProperty:
-    #
-    #  Sets property into configuration.
-    #
-    #  @param key    The key.
-    #  @param value    The value.
-    #  @return void
-    # --------------------------------------------------------------------------
+
+    """
+    Sets property into configuration.
+    
+    @param key: The key.
+    @type key: C{string}
+    @param value: The value.
+    @type value: C{any}
+    @return None
+    """
+    security.declareProtected('ZMS Administrator', 'setConfProperty')
     def setConfProperty(self, key, value):
       d = self.getConfProperties()
       if value is None:
@@ -1002,5 +1010,10 @@ class ConfManager(
     def getPrimaryLanguage(self):
       return self.getLocale().getPrimaryLanguage()
     """
+
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(ConfManager)
 
 ################################################################################

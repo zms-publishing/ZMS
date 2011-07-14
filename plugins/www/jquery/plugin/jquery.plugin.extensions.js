@@ -138,20 +138,14 @@ $(function(){
 });
 
 function pluginLanguage() {
-	var lang = window.navigator.language;
-	if (typeof lang == 'undefined') {
-		lang = window.navigator.userLanguage
-	}
-	if (lang.indexOf('-') > 0) {
-		lang = lang.substr(0,lang.indexOf('-'));
-	}
-	return lang;
+	return getZMILangStr('LOCALE',{'nocache':""+new Date()});
 }
 
 function pluginUIDatepicker(s, c) {
+	var lang = pluginLanguage();
 	$.plugin('ui_datepicker',{
 		files: [
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+pluginLanguage()+'.js',
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js',
 				'/++resource++zms_/jquery/plugin/jquery.plugin.datetimepicker.js'
 		]});
 	$.plugin('ui_datepicker').get(s,c);

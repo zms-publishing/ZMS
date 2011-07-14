@@ -16,11 +16,15 @@ function getZMILang() {
 /**
  * Returns language-string.
  */
-function getZMILangStr(key) {
+function getZMILangStr(key, data) {
+	if (typeof data == "undefined") {
+		data = {};
+	}
+	data['key'] = key;
 	return $.ajax({
 		url: 'getZMILangStr',
-		data:{'key':key},
-		datatype:'text',
+		data: data,
+		datatype: 'text',
 		async: false
 		}).responseText;
 }

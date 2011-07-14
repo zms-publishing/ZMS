@@ -282,7 +282,11 @@ class MultiLanguageManager:
       """
       lang_str = self.getLangStr( key, self.get_manage_lang())
       if RESPONSE is not None:
-        RESPONSE.setHeader('Cache-Control','public, max-age=3600')
+        if REQUEST.get('nocache'):
+          RESPONSE.setHeader('Cache-Control','no-cache')
+          RESPONSE.setHeader('Pragma', 'no-cache')
+        else:
+          RESPONSE.setHeader('Cache-Control','public, max-age=3600')
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       return lang_str
 

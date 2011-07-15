@@ -701,11 +701,11 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='date' or grid_col.get('date')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css+' date')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=11, value=row.get(id,''), enabled=1, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css+' date')">
      <dtml-elif "grid_col.get('type')=='datetime' or grid_col.get('datetime')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css+' datetime')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=11, value=row.get(id,''), enabled=1, fmt_str='DATETIME_FMT', REQUEST=REQUEST, css=css+' datetime')">
      <dtml-elif "grid_col.get('type')=='time' or grid_col.get('time')">
-      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=10, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css+' time')">
+      <dtml-var "getDateTimeInput(fmName='form0', elName=elName, size=11, value=row.get(id,''), enabled=1, fmt_str='TIME_FMT', REQUEST=REQUEST, css=css+' time')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- RICHTEXT

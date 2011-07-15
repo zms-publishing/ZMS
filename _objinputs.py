@@ -91,10 +91,10 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-element', extra=''):
-    lang = self.REQUEST.get('lang')
+    manage_lang = self.get_manage_lang()
     html = []
     if not type(value) is str:
-      value = self.getLangFmtDate(value,lang,fmt_str)
+      value = self.getLangFmtDate(value,manage_lang,fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     html.append('<span class="%s" title="%s">'%(css,self.getZMILangStr(fmt_str)))

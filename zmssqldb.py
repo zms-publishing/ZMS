@@ -209,7 +209,7 @@ class ZMSSqlDb(ZMSObject):
       charset = getattr(self,'charset','utf-8')
       row = {}
       for col in cols:
-        k = col['id'].lower()
+        k = col['id']
         v = record[k]
         if v is not None and isinstance( type(v), StringTypes):
           try:

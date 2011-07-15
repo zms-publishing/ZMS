@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from types import StringTypes
 import Globals
 import copy
 import os
@@ -210,7 +211,7 @@ class ZMSSqlDb(ZMSObject):
       for col in cols:
         k = col['id'].lower()
         v = record[k]
-        if v is not None and type( v) is not int and type( v) is not float:
+        if v is not None and isinstance( type(v), StringTypes):
           try:
             v = unicode(v,charset).encode(encoding)
           except:

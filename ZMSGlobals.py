@@ -1219,12 +1219,20 @@ class ZMSGlobals:
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
       
+      # Get absolute filename.
+      filename = _fileutil.absoluteOSPath(filename)
+      
       # Check permissions.
-      if REQUEST is not None:
-        authorized = False
-        for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
-          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
-        if not authorized:
+      request = self.REQUEST
+      authorized = False
+      perms = self.getConfProperty('ZMS.localfs_read','').split(';')
+      perms.append(package_home(globals()))
+      mediadb = self.getMediaDb()
+      if mediadb:
+          perms.append(mediadb.location)
+      for perm in perms:
+          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+      if not authorized:
           RESPONSE = REQUEST.RESPONSE
           raise RESPONSE.unauthorized()
       
@@ -1250,13 +1258,21 @@ class ZMSGlobals:
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
       
+      # Get absolute filename.
+      filename = _fileutil.absoluteOSPath(filename)
+      
       # Check permissions.
-      if REQUEST is not None:
-        authorized = False
-        for perm in self.getConfProperty('ZMS.localfs_write','').split(';')+[package_home(globals())]:
-          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
-        if not authorized:
-          RESPONSE = REQUEST.RESPONSE
+      request = self.REQUEST
+      authorized = False
+      perms = self.getConfProperty('ZMS.localfs_write','').split(';')
+      perms.append(package_home(globals()))
+      mediadb = self.getMediaDb()
+      if mediadb:
+          perms.append(mediadb.location)
+      for perm in perms:
+          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+      if not authorized:
+          RESPONSE = request.RESPONSE
           raise RESPONSE.unauthorized()
       
       # Write file.
@@ -1269,6 +1285,20 @@ class ZMSGlobals:
     def localfs_remove(self, path, deep=0):
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
+      
+      # Get absolute filename.
+      filename = _fileutil.absoluteOSPath(filename)
+      
+      # Check permissions.
+      request = self.REQUEST
+      authorized = False
+      for perm in self.getConfProperty('ZMS.localfs_write','').split(';')+[package_home(globals())]:
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm.lower())))
+      if not authorized:
+        RESPONSE = request.RESPONSE
+        raise RESPONSE.unauthorized()
+      
+      # Remove file.
       _fileutil.remove( path, deep)
 
 
@@ -1288,26 +1318,20 @@ class ZMSGlobals:
       if _globals.debug( self):
         _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
       
+      # Get absolute filename.
+      filename = _fileutil.absoluteOSPath(filename)
+      
       # Check permissions.
-      if REQUEST is not None:
-        authorized = False
-        for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
-          authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( perm.lower()))
-        if not authorized:
-          RESPONSE = REQUEST.RESPONSE
-          raise RESPONSE.unauthorized()
+      request = self.REQUEST
+      authorized = False
+      for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+      if not authorized:
+        RESPONSE = request.RESPONSE
+        raise RESPONSE.unauthorized()
       
       # Read path.
       return _fileutil.readPath(filename, data, recursive)
-
-
-    """
-    Executes command in local file-system.
-    """
-    def localfs_command(self, command):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[localfs_command]: command=%s'%command)
-      os.system(command)
 
     #)
 
@@ -1403,6 +1427,14 @@ class ZMSGlobals:
     @return: Result of the execution or error-message
     """
     def getPlugin( self, path, REQUEST, pars={}):
+      
+      # Check permissions.
+      request = self.REQUEST
+      authorized = path.find('..') < 0
+      if not authorized:
+        RESPONSE = REQUEST.RESPONSE
+        raise RESPONSE.unauthorized()
+      
       try:
         # Set request-parameters.
         for k in pars.keys():
@@ -1410,7 +1442,9 @@ class ZMSGlobals:
           REQUEST.set( k, pars[k])
           pars[k] = v
         # Execute plugin.
-        rtn = self.dt_html( self.localfs_read( self.localfs_package_home()+'/plugins/'+path), REQUEST)
+        filename = self.localfs_package_home()+'/plugins/'+path
+        fdata, mt, enc, fsize = _fileutil.readFile( filename, mode='b')
+        rtn = self.dt_html( fdata, REQUEST)
         # Restore request-parameters.
         for k in pars.keys():
           REQUEST.set( k, pars[k])

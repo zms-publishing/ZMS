@@ -96,16 +96,33 @@ _fileutil.getOSPath:
 
 Return path with OS separators.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def getOSPath(path, sep=None, chs=range(32)+[34,60,62,63,127]):
-  if sep is None: sep = os.sep
-  path = path.replace('\\',sep)
-  path = path.replace('/',sep)
-  if type( path) is type( ''):
+def getOSPath(path, chs=range(32)+[34,60,62,63,127]):
+  path = path.replace('\\',os.sep)
+  path = path.replace('/',os.sep)
+  if type( path) is str:
     path = unicode(path, 'latin-1')
   path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
   if len( chs) > 0:
     for ch in chs:
       path = path.replace(chr(ch),'')
+  return path
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_fileutil.absoluteOSPath:
+
+Return absolute-path with OS separators.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def absoluteOSPath(path):
+  path = getOSPath(path)
+  l0 = path.split(os.sep)
+  l1 = []
+  for i in l0:
+    if i == '..':
+      l1 = l1[:-1]
+    else:
+      l1 = l1 + [i]
+  path = os.sep.join(l1)
   return path
 
 

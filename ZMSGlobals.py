@@ -1231,7 +1231,7 @@ class ZMSGlobals:
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in map(lambda x: x.trim(), perms):
+      for perm in map(lambda x: x.strip(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
           RESPONSE = REQUEST.RESPONSE
@@ -1271,7 +1271,7 @@ class ZMSGlobals:
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in map(lambda x: x.trim(), perms):
+      for perm in map(lambda x: x.strip(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
           RESPONSE = request.RESPONSE
@@ -1300,7 +1300,7 @@ class ZMSGlobals:
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in map(lambda x: x.trim(), perms):
+      for perm in map(lambda x: x.strip(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm.lower())))
       if not authorized:
         RESPONSE = request.RESPONSE
@@ -1338,7 +1338,7 @@ class ZMSGlobals:
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in map(lambda x: x.trim(), perms):
+      for perm in map(lambda x: x.strip(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
         RESPONSE = request.RESPONSE

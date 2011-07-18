@@ -1226,11 +1226,12 @@ class ZMSGlobals:
       request = self.REQUEST
       authorized = False
       perms = self.getConfProperty('ZMS.localfs_read','').split(';')
+      perms.append(tempfile.gettempdir())
       perms.append(package_home(globals()))
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in perms:
+      for perm in map(lambda x: x.trim(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
           RESPONSE = REQUEST.RESPONSE
@@ -1265,11 +1266,12 @@ class ZMSGlobals:
       request = self.REQUEST
       authorized = False
       perms = self.getConfProperty('ZMS.localfs_write','').split(';')
+      perms.append(tempfile.gettempdir())
       perms.append(package_home(globals()))
       mediadb = self.getMediaDb()
       if mediadb:
           perms.append(mediadb.location)
-      for perm in perms:
+      for perm in map(lambda x: x.trim(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
           RESPONSE = request.RESPONSE
@@ -1292,7 +1294,13 @@ class ZMSGlobals:
       # Check permissions.
       request = self.REQUEST
       authorized = False
-      for perm in self.getConfProperty('ZMS.localfs_write','').split(';')+[package_home(globals())]:
+      perms = self.getConfProperty('ZMS.localfs_write','').split(';')
+      perms.append(tempfile.gettempdir())
+      perms.append(package_home(globals()))
+      mediadb = self.getMediaDb()
+      if mediadb:
+          perms.append(mediadb.location)
+      for perm in map(lambda x: x.trim(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm.lower())))
       if not authorized:
         RESPONSE = request.RESPONSE
@@ -1324,7 +1332,13 @@ class ZMSGlobals:
       # Check permissions.
       request = self.REQUEST
       authorized = False
-      for perm in self.getConfProperty('ZMS.localfs_read','').split(';')+[package_home(globals())]:
+      perms = self.getConfProperty('ZMS.localfs_read','').split(';')
+      perms.append(tempfile.gettempdir())
+      perms.append(package_home(globals()))
+      mediadb = self.getMediaDb()
+      if mediadb:
+          perms.append(mediadb.location)
+      for perm in map(lambda x: x.trim(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
         RESPONSE = request.RESPONSE

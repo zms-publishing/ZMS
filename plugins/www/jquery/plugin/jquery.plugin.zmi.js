@@ -227,8 +227,12 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		var inputs = $('input:hidden',$fm);
 		var q = '?';
 		for ( var i = 0; i < inputs.length; i++) {
-			href += q + $(inputs[i]).attr('name') + '=' + $(inputs[i]).val();
-			q = '&amp;';
+			var $input = $(inputs[i]);
+			var id = $input.attr("id");
+			if (jQuery.inArray(id,['form_id','id_prefix','_sort_id','custom','lang','preview'])>=0) {
+				href += q + $input.attr('name') + '=' + $input.val();
+				q = '&amp;';
+			}
 		}
 		// Show add-dialog.
 		zmiIframe(href,{

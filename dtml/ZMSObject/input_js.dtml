@@ -149,7 +149,7 @@ function onActionChange(el) {
    </dtml-in>
   }
   if (b)
-    location.href='<dtml-var "REQUEST['URL1']">/'+action+'?custom='+escape(label)+'&lang=<dtml-var lang>';
+    location.href='<dtml-var "REQUEST['URL1'][len(REQUEST['BASE0']):]">/'+action+'?custom='+escape(label)+'&lang=<dtml-var lang>';
   else
     el.selectedIndex=0;
 }

@@ -774,11 +774,14 @@ class ZMSMetaobjManager:
         if newType == 'Folder':
           if oldId is not None: oldId = _globals.id_quote(oldId)
           if newId is not None: newId = _globals.id_quote(newId)
-        if isinstance( newCustom, _blobfields.MyFile):
+        if not newCustom:
+          if oldId is not None and id+'.'+oldId in self.objectIds():
+            self.manage_delObjects(ids=[id+'.'+oldId])
+        elif isinstance( newCustom, _blobfields.MyFile):
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
           self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
-        elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds(['File']):
+        elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
         newCustom = ''
       
@@ -916,7 +919,7 @@ class ZMSMetaobjManager:
           if newId.find( 'manage_') >= 0:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
-        elif newType in [ 'Folder']:
+        elif newType == 'Folder':
           f = getattr( self, id+'.'+_globals.id_quote(newId), None)
           if f is not None:
             _ziputil.importZip2Zodb( newOb, f.data)
@@ -1122,7 +1125,8 @@ class ZMSMetaobjManager:
               newMetaType = REQUEST.get( 'attr_meta_type_%s'%old_id, '')
               newKeys = self.string_list(REQUEST.get('attr_keys_%s'%old_id,''),'\n')
               newCustom = REQUEST.get('attr_custom_%s'%old_id,'')
-              if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0':
+              if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0' and \
+                 REQUEST.get('attr_custom_%s_active'%old_id,'0') == '1':
                 savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
                 syncType( self, id, savedAttr)
                 newCustom = savedAttr['custom']

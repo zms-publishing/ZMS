@@ -211,7 +211,9 @@ class ZMSSqlDb(ZMSObject):
       for col in cols:
         k = col['id']
         v = record[k]
-        if v is not None and isinstance( type(v), StringTypes):
+        if self.getConfProperty('ZMSSqlDb.record_encode__.k.lower'):
+          k = k.lower()
+        if v is not None and (type(v) is str or type(v) is unicode):
           try:
             v = unicode(v,charset).encode(encoding)
           except:

@@ -1125,18 +1125,20 @@ class ZMSMetaobjManager:
               newMetaType = REQUEST.get( 'attr_meta_type_%s'%old_id, '')
               newKeys = self.string_list(REQUEST.get('attr_keys_%s'%old_id,''),'\n')
               newCustom = REQUEST.get('attr_custom_%s'%old_id,'')
+              newDefault = REQUEST.get('attr_default_%s'%old_id,'')
+              if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
+                  if len(getattr(newCustom,'filename','')) > 0:
+                      newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom, mediadbStorable=False)
+                  else:
+                      REQUEST.set('attr_custom_%s_modified'%old_id,'0')
               if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0' and \
                  REQUEST.get('attr_custom_%s_active'%old_id,'0') == '1':
-                savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
-                syncType( self, id, savedAttr)
-                newCustom = savedAttr['custom']
-              newDefault = REQUEST.get('attr_default_%s'%old_id,'')
+                  savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
+                  syncType( self, id, savedAttr)
+                  newCustom = savedAttr['custom']
               if len( newMetaType) > 0:
-                attr_id = old_id
-                newType = newMetaType
-              if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
-                if len(getattr(newCustom,'filename','')) > 0:
-                    newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom, mediadbStorable=False)
+                  attr_id = old_id
+                  newType = newMetaType
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')

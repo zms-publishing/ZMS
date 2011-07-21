@@ -1909,11 +1909,11 @@ return zmscontext.attr('attr_dc_description')
 <span tal:omit-tag="" tal:define="global 
     zmscontext options/zmscontext;
     subclass      python:[zmscontext.meta_id];
-    title         python:zmscontext.attr('title');
-    titlealt      python:zmscontext.attr('titlealt');
+    title         python:unicode(zmscontext.attr('title'),'utf-8');
+    titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
     ref           python:zmscontext.attr('attr_url');
     align         python:zmscontext.attr('align');
-    abstract      python:zmscontext.attr('attr_abstract').replace('\n','<br/>')">
+    abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8')">
   <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
     <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
   </span>
@@ -1983,7 +1983,7 @@ return zmscontext.attr('attr_dc_description')
             <item key="id"><![CDATA[ZMSLinkElement]]></item>
             <item key="name"><![CDATA[ZMSLinkElement]]></item>
             <item key="package"><![CDATA[com.zms.foundation]]></item>
-            <item key="revision"><![CDATA[1.2.1]]></item>
+            <item key="revision"><![CDATA[1.2.2]]></item>
             <item key="type"><![CDATA[ZMSObject]]></item>
           </dictionary>
         </item>

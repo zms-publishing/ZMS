@@ -3,35 +3,33 @@
 
 <dtml-var "manage_tabs(_,_,p_languages=1)">
 
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless
-
+<dtml-unless fmName
+ ><dtml-call "REQUEST.set('fmName', 'form0')"
+></dtml-unless
 ><dtml-let isTrashcan="meta_id=='ZMSTrashcan'"
+ ><dtml-if isTrashcan
+  ><dtml-call "REQUEST.set('id_prefix','')"
+ ><dtml-else
+  ><dtml-call "REQUEST.set('id_prefix','e')"
+  ><dtml-call "initObjChildren(REQUEST)"
+ ></dtml-if>
+<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px">
+<input type="hidden" id="lang" name="lang" value="<dtml-var lang>" />
+<input type="hidden" id="preview" name="preview" value="preview" />
+<input type="hidden" id="id_prefix" name="id_prefix" value="e" />
+<input type="hidden" id="_sort_id" name="_sort_id:int" value="0" />
+<input type="hidden" id="custom" name="custom" value="" />
 
-><dtml-if isTrashcan
- ><dtml-call "REQUEST.set('id_prefix','')"
-><dtml-else
- ><dtml-call "REQUEST.set('id_prefix','e')"
- ><dtml-call "initObjChildren(REQUEST)"
-></dtml-if
-
-><form id="<dtml-var fmName>" name="<dtml-var fmName>" action="#" method="post" style="margin:0px"
-><input type="hidden" name="lang" value="<dtml-var lang>"
-><input type="hidden" name="preview" value="preview"
-><input type="hidden" id="id_prefix" name="id_prefix" value="e"
-><input type="hidden" id="_sort_id" name="_sort_id:int" value="0"
-><input type="hidden" id="custom" name="custom" value=""
-
-><dtml-let childNodes="getObjChildren(id_prefix,REQUEST)">
-
-<dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))">
-<dtml-call "SESSION.set('pageCountMax',REQUEST.form.get('sess_pageCountMax',SESSION.get('pageCountMax',REQUEST.get('pageCountMin'))))">
-<dtml-call "REQUEST.set('pageCount',0)">
-<dtml-in childNodes>
- <dtml-if "isPage()">
-  <dtml-call "REQUEST.set('pageCount',pageCount+1)">
- </dtml-if>
-</dtml-in>
-<dtml-call "REQUEST.set('pageElementCount',len(childNodes)-pageCount)">
+<dtml-let childNodes="getObjChildren(id_prefix,REQUEST)"
+ ><dtml-call "REQUEST.set('pageCountMin',_.int(getConfProperty('ZMS.compactview.pagecount.min','99999')))"
+ ><dtml-call "SESSION.set('pageCountMax',REQUEST.form.get('sess_pageCountMax',SESSION.get('pageCountMax',REQUEST.get('pageCountMin'))))"
+ ><dtml-call "REQUEST.set('pageCount',0)"
+ ><dtml-in childNodes
+  ><dtml-if "isPage()"
+   ><dtml-call "REQUEST.set('pageCount',pageCount+1)"
+  ></dtml-if
+ ></dtml-in
+ ><dtml-call "REQUEST.set('pageElementCount',len(childNodes)-pageCount)">
 
 <dtml-comment>
 <!-- ###################################################################### -->

@@ -1,8 +1,8 @@
 <!-- f_submitInputFields -->
 <dtml-let obj_attrs="getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id))">
 
-<input type="hidden" name="lang" value="<dtml-var lang>"/>
-<input type="hidden" name="preview" value="preview"/>
+<input type="hidden" id="lang" name="lang" value="<dtml-var lang>"/>
+<input type="hidden" id="preview" name="preview" value="preview"/>
 
  <div class="ui-widget-header ui-helper-clearfix ui-corner-all">
   <dtml-var zmi_form_section_begin>

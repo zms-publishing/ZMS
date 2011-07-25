@@ -1054,6 +1054,47 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.ajaxGetParentNodes:
+    # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxGetParentNodes')
+    def ajaxGetParentNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
+      """ ZMSObject.ajaxGetParentNodes """
+      #-- Build xml.
+      xml = ''
+      if xml_header:
+        RESPONSE = REQUEST.RESPONSE
+        content_type = 'text/xml; charset=utf-8'
+        filename = 'ajaxGetChildNodes.xml'
+        RESPONSE.setHeader('Content-Type',content_type)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+        self.f_standard_html_request( self, REQUEST)
+        xml += self.getXmlHeader()
+      
+      xml += "<pages"
+      for key in REQUEST.form.keys():
+        if key.find('get_') < 0 and key not in ['lang','preview','http_referer','meta_types']:
+          xml += " %s=\"%s\""%(key,str(REQUEST.form.get(key)))
+      xml += " level=\"%i\""%self.getLevel()
+      xml += ">\n"
+      
+      ob = self
+      obs = []
+      while ob is not None:
+        obs.insert(0,ob)
+        ob = ob.getParentNode()
+      
+      REQUEST.form['get_attrs'] = REQUEST.form.get('get_attrs', 0)
+      for ob in obs:
+        xml += ob.ajaxGetNode( lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+      
+      xml += "</pages>"
+      
+      return xml
+
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.ajaxGetChildNodes:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetChildNodes')
@@ -1072,12 +1113,14 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.setHeader('Pragma', 'no-cache')
         self.f_standard_html_request( self, REQUEST)
         xml += self.getXmlHeader()
+      
       xml += "<pages"
       for key in REQUEST.form.keys():
         if key.find('get_') < 0 and key not in ['lang','preview','http_referer','meta_types']:
           xml += " %s=\"%s\""%(key,str(REQUEST.form.get(key)))
       xml += " level=\"%i\""%self.getLevel()
       xml += ">\n"
+      
       if type(meta_types) is list:
         new_meta_types = []
         for meta_type in meta_types:
@@ -1098,9 +1141,12 @@ class ZMSObject(ZMSItem.ZMSItem,
         obs.append( self.getTrashcan())
       if self.meta_type == 'ZMS':
         obs.extend( self.getPortalClients())
+      
       for ob in obs:
         xml += ob.ajaxGetNode( lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+      
       xml += "</pages>"
+      
       return xml
 
 

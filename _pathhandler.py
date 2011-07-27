@@ -31,9 +31,9 @@ import _globals
 #  Validates id against list of possible declarative id.
 # ------------------------------------------------------------------------------
 def validateId(self, id, REQUEST):
+  langs = []
   lang = REQUEST.get( 'lang')
   if lang is None:
-    langs = []
     for lang in self.getLanguages():
       req={ 'lang': lang, 'preview': REQUEST.get('preview','')}
       decl_id = self.getDeclId( req)
@@ -41,10 +41,12 @@ def validateId(self, id, REQUEST):
         langs.append( lang)
     if len( langs) == 1:
       self.REQUEST.set( 'lang', langs[0])
-    return len( langs) > 0
   else:
     decl_id = self.getDeclId( REQUEST)
-    return id == decl_id
+    if id == decl_id:
+      langs.append( lang)
+  if len( langs) > 0:
+    return True
   return False
 
 
@@ -78,23 +80,24 @@ def handleBlobAttrs(self, name, REQUEST):
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
     name_without_lang_suffix = name.replace('_%s.'%langs[0],'.')
-  for key in self.getObjAttrs().keys():
-    obj_attr = self.getObjAttr(key)
-    datatype = obj_attr['datatype_key']
-    if datatype in _globals.DT_BLOBS:
-      lang = self.getLanguageFromName( REQUEST['URL'])
-      REQUEST.set( 'lang', lang)
-      value = self.getObjProperty( key, REQUEST)
-      if value is not None:
-        href = value.getHref( REQUEST)
-        langfilename = href.split( '/')[ -1]
-        if langfilename.find( '?') > 0:
-          langfilename = langfilename[ :langfilename.find( '?')]
-        if langfilename == name or \
-           langfilename == _globals.url_encode(name) or \
-           langfilename == name_without_lang_suffix or \
-           langfilename == _globals.url_encode(name_without_lang_suffix):
-          return value
+  for ob in [self]+self.filteredChildNodes(REQUEST,['ZMSFile']):
+    for key in ob.getObjAttrs().keys():
+      obj_attr = ob.getObjAttr(key)
+      datatype = obj_attr['datatype_key']
+      if datatype in _globals.DT_BLOBS:
+        lang = ob.getLanguageFromName( REQUEST['URL'])
+        REQUEST.set( 'lang', lang)
+        value = ob.getObjProperty( key, REQUEST)
+        if value is not None:
+          href = value.getHref( REQUEST)
+          langfilename = href.split( '/')[ -1]
+          if langfilename.find( '?') > 0:
+            langfilename = langfilename[ :langfilename.find( '?')]
+          if langfilename == name or \
+             langfilename == _globals.url_encode(name) or \
+             langfilename == name_without_lang_suffix or \
+             langfilename == _globals.url_encode(name_without_lang_suffix):
+            return value
   return None
 
 

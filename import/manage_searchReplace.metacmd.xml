@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
-<item key="data"><![CDATA[<dtml-comment>
+  <item key="custom"/>
+  <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
 # Execute
 ################################################################################
@@ -14,29 +15,25 @@
 
  <!-- # Search and replace: -->
  <dtml-in "getObjAttrs().keys()">
-  <dtml-let obj_attr="getObjAttr(_['sequence-item'])">  
-   <dtml-if "obj_attr['datatype'] in ['string','text']">
-    <dtml-call "REQUEST.set('s_src',getObjProperty(obj_attr['id'],REQUEST))">
-    <dtml-call "REQUEST.set('s_dst','')">
-    <!-- # Init subcounter: -->
-    <dtml-call "REQUEST.set('subcount',0)">
-    <dtml-if "len(REQUEST.get('s_old','')) > 0">
-     <dtml-in "_.string.split(str(s_src),REQUEST.get('s_old',''))">
-      <dtml-call "REQUEST.set('s_dst',s_dst+_['sequence-item'])">
-      <dtml-unless sequence-end>
-       <dtml-call "REQUEST.set('s_dst',s_dst+REQUEST.get('s_new',''))">
-       <!-- Increase subcounter: -->
-       <dtml-call "REQUEST.set('subcount',REQUEST['subcount']+1)">
-      </dtml-unless>
-     </dtml-in>
-    </dtml-if>
-    <dtml-if "REQUEST['subcount'] > 0">
-     <dtml-call "setObjStateModified(REQUEST)">
-     <dtml-call "setObjProperty(obj_attr['id'],s_dst,lang)">
-     <dtml-call "onChangeObj(REQUEST)">
-     <!-- Increase counter: -->
-     <dtml-call "REQUEST.set('count',REQUEST['count']+REQUEST['subcount'])">
-    </dtml-if>
+  <dtml-let key=sequence-item objAttr="getObjAttr(key)">
+   <dtml-if "objAttr['datatype'] in ['string','text']">
+    <dtml-in "getObjVersions()">
+     <dtml-let objVers=sequence-item>
+      <dtml-in "getLangIds()">
+       <dtml-let langId=sequence-item objAttrName="getObjAttrName(objAttr,langId)" objAttrVal="operator_getattr(objVers,objAttrName,None)">
+        <dtml-if objAttrVal>
+         <dtml-try>
+          <dtml-if "len(objAttrVal.split(s_old))>1">
+           <dtml-call "operator_setattr(objVers,objAttrName,objAttrVal.replace(s_old,s_new))">
+           <dtml-call "REQUEST.set('count',REQUEST['count']+len(objAttrVal.split(s_old))-1)">
+          </dtml-if>
+         <dtml-except>
+         </dtml-try>
+        </dtml-if>
+       </dtml-let>
+      </dtml-in>
+     </dtml-let>
+    </dtml-in>
    </dtml-if>
   </dtml-let>
  </dtml-in>
@@ -117,24 +114,26 @@
 ################################################################################
 </dtml-comment>
 
-</dtml-if>]]></item>
-<item key="description"></item>
-<item key="exec" type="int">0</item>
-<item key="id"><![CDATA[manage_searchReplace]]></item>
-<item key="meta_type"><![CDATA[DTML Method]]></item>
-<item key="meta_types" type="list"><list>
-<item><![CDATA[ZMSGraphic]]></item>
-<item><![CDATA[ZMSDocument]]></item>
-<item><![CDATA[ZMSFolder]]></item>
-<item><![CDATA[ZMS]]></item>
-</list>
-</item>
-<item key="name"><![CDATA[Search+Replace...]]></item>
-<item key="roles" type="list"><list>
-<item><![CDATA[ZMSAdministrator]]></item>
-<item><![CDATA[ZMSAuthor]]></item>
-<item><![CDATA[ZMSEditor]]></item>
-</list>
-</item>
+</dtml-if>]]>
+  </item>
+  <item key="description"/>
+  <item key="exec" type="int">0</item>
+  <item key="id"><![CDATA[manage_searchReplace]]></item>
+  <item key="meta_type"><![CDATA[DTML Method]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[ZMSGraphic]]></item>
+      <item><![CDATA[ZMSDocument]]></item>
+      <item><![CDATA[ZMSFolder]]></item>
+      <item><![CDATA[ZMS]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Search+Replace...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+      <item><![CDATA[ZMSAuthor]]></item>
+      <item><![CDATA[ZMSEditor]]></item>
+    </list>
+  </item>
 </dictionary>
-

@@ -864,7 +864,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           REQUEST.set('fmName',fmName)
           html = []
           if REQUEST.get('ZMS_INSERT',None) is not None:
-            fmAction = 'manage_addZMSCustom'
+            fmAction = '%s/manage_addZMSCustom'%REQUEST['URL1'][len(REQUEST['BASE0']):]
             html.append('<form name="%s" action="%s" method="post" enctype="multipart/form-data">\n'%(fmName,fmAction))
             html.append('<input type="hidden" name="meta_id" value="%s">\n'%id)
             html.append('<input type="hidden" name="id" value="%s">\n'%REQUEST.get('id','e'))

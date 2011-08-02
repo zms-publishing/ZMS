@@ -163,7 +163,7 @@
   <dtml-call "REQUEST.set('res',[])">
  </dtml-if>
  <dtml-call "REQUEST.set('grid_options',{})">
- <dtml-call "operator_setitem(grid_options,'export',{'action':url_append_params('manage_exportexcel',{'lang':lang,'action':'insert'}),'manage_target':'_blank','icon':MISC_ZMS+'mime_type.application_x_excel.gif'})">
+ <dtml-call "operator_setitem(grid_options,'export',{'action':url_append_params('manage_exportexcel',{'lang':lang}),'manage_target':'_blank','icon':MISC_ZMS+'mime_type.application_x_excel.gif'})">
  <dtml-if primary_key>
   <dtml-let roles="getUserRoles(AUTHENTICATED_USER)" access="tabledef.get('access',{})">
    <dtml-if "access.get('insert') is None or len(intersection_list(access.get('insert'),roles))>0">

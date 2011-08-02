@@ -8,7 +8,7 @@
 ><dtml-call "REQUEST.set('qbatch',REQUEST.get('qbatch',3))"
 ><dtml-call "REQUEST.set('qsize',REQUEST.get('qsize',10))"
 ><dtml-call "REQUEST.set('qindex',REQUEST.get('qindex',-1))"
-><dtml-call "recordSet_Init(REQUEST)"
+><dtml-call "recordSet_Init(REQUEST,all=REQUEST.get('action','') in ['insert','update','delete'])"
 ><dtml-call "recordSet_Filter(REQUEST)"
 ><dtml-call "recordSet_Sort(REQUEST)"
 ><dtml-call "REQUEST.set('res',query(''.join(REQUEST.get('sqlStatement',[])))['records'])">

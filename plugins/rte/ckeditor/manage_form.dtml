@@ -96,6 +96,7 @@ $(function() {
 		$( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
 		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
+		CKEDITOR.config.format_tags = 'p;h1;h2;h3;pre;address;div';
 		loadCkeditor( 'editor_<dtml-var "REQUEST.get('elName')">', {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',

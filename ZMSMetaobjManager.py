@@ -238,9 +238,11 @@ class ZMSMetaobjManager:
                 ids.append( pkgMetaObjId)
       keys = self.model.keys()
       keys.sort()
+      revision = '0.0.0'
       for id in keys:
         if id in ids or len(ids) == 0:
           ob = copy.deepcopy(self.__get_metaobj__(id))
+          revision = ob.get( 'revision', revision)
           attrs = []
           for attr in ob['attrs']:
             attr_id = attr['id']
@@ -258,7 +260,7 @@ class ZMSMetaobjManager:
       # XML.
       if len(value)==1:
         value = value[0]
-        filename = '%s.metaobj.xml'%ids[0]
+        filename = '%s-%s.metaobj.xml'%(ids[0],revision)
       else:
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'

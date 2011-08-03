@@ -150,26 +150,6 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[attr_logo]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Logo]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_logo]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[attr_navigation]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Navigation]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_navigation]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="id"><![CDATA[e]]></item>
                   <item key="keys" type="list">
                     <list>
@@ -190,18 +170,22 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMS //--</dtml-comment
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMS -->
 
- ><dtml-var bodyContentZMSLib_page
+	<span tal:omit-tag="" tal:define="global 
+		zmscontext options/zmscontext">
+	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
+</span>
 
-><dtml-comment>--// EO bodyContentZMSCustom_ZMS //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMS -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSCustom_ZMS]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMS]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMS.bodyContentZMSCustom_ZMS>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -238,7 +222,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.0.2]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -411,18 +395,22 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSDocument //--</dtml-comment
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSDocument -->
 
- ><dtml-var bodyContentZMSLib_page
+	<span tal:omit-tag="" tal:define="global 
+		zmscontext options/zmscontext">
+	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
+</span>
 
-><dtml-comment>--// EO bodyContentZMSCustom_ZMSDocument //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSDocument -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSCustom_ZMSDocument]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Template: ZMSDocument]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSDocument.bodyContentZMSCustom_ZMSDocument>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -459,7 +447,7 @@
           <item key="id"><![CDATA[ZMSDocument]]></item>
           <item key="name"><![CDATA[ZMSDocument]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.0.1]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -552,29 +540,28 @@
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script language="javascript">
-<!--//
+                  <item key="name"><![CDATA[<script type="text/javascript">
 
-function elFileChange(el)
-{
-  var filename = $(el).val();
-  var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
-  if ( i > 0) {
-    filename = filename.substring(i+1);
-  }
-  var title = $("#title_<dtml-var lang>");
-  if ( title.val().length == 0) {
-    title.val(filename);
-  }
-  var titlealt = $("#titlealt_<dtml-var lang>");
-  if ( titlealt.val().length == 0) {
-    titlealt.val(filename);
-  }
+function elFileChange(el) {
+	var filename = $(el).val();
+	var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
+	if ( i > 0) {
+		filename = filename.substring(i+1);
+	}
+	var title = $("#title_"+getZMILang());
+	if ( title.val().length == 0) {
+		title.val(filename);
+	}
+	var titlealt = $("#titlealt_"+getZMILang());
+	if ( titlealt.val().length == 0) {
+		titlealt.val(filename);
+	}
 }
 
-$("#file_<dtml-var lang>").change( function() { elFileChange(this); } );
+$(function() {
+	$("#file_"+getZMILang()).change( function() { elFileChange(this); } );
+});
 
-//-->
 </script>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
@@ -716,49 +703,56 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSFile //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFile -->
 
-<dtml-let
-  title="attr('title')"
-  titlealt="attr('titlealt')"
-  file="attr('file')"
-  align="attr('align')"
-  displaytype="attr('displaytype')"
-  abstract="attr('attr_abstract')"
-  subclass="[meta_id]"
- ><dtml-if "align not in ['','NONE'] or REQUEST.get('URL','').find('/manage')>0"
- ><dtml-if "align in ['','NONE']"
-  ><dtml-call "subclass.append(' none')"
- ><dtml-elif "align in [ 'LEFT', 'CENTER', 'RIGHT']"
-  ><dtml-call "subclass.append(' '+align.lower())"
- ><dtml-elif "align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatleft')"
- ><dtml-elif "align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']"
-  ><dtml-call "subclass.append(' floatright')"
- ></dtml-if
- ><div class="<dtml-var "' '.join(subclass)">" id="<dtml-var id>">
-  <dtml-if file>
-   <div class="title">
-   <img src="<dtml-var "file.getMimeTypeIconSrc()">" title="<dtml-var "file.getContentType()"> (<dtml-var "file.getDataSizeStr()">)" border="0" alt="Icon" align="absmiddle"/>
-   <a href="<dtml-var "file.getHref(REQUEST)">" target="_blank"><dtml-var titlealt></a> (<dtml-var "file.getDataSizeStr()">)
-   </div>
-   <dtml-if title><div class="text"><dtml-var title></div></dtml-if>
-   <dtml-if abstract><div class="description"><dtml-var abstract newline_to_br></div></dtml-if>
-  <dtml-else>
-   <dtml-var "getZMILangStr('ATTR_NONE')">
-  </dtml-if>
- </div>
- </dtml-if>
-</dtml-let>
+<span tal:omit-tag="" tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
+		zmscontext options/zmscontext;
+		subclass      python:[zmscontext.meta_id];
+		title         python:zmscontext.attr('title');
+		titlealt      python:zmscontext.attr('titlealt');
+		file          python:zmscontext.attr('file');
+		align         python:zmscontext.attr('align');
+		displaytype   python:zmscontext.attr('displaytype');
+		abstract      python:zmscontext.attr('attr_abstract')">
+	<span tal:omit-tag="" tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0">
+		<span tal:omit-tag="" tal:condition="python:align in [ '', 'NONE']">
+			<span tal:omit-tag="" tal:define="global subclass python:subclass+['none']"></span>
+		</span>
+		<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+			<span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
+		</span>
+		<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
+		</span>
+		<span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
+		</span>
+		<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
+			<span tal:omit-tag="" tal:condition="python:file">
+				<div class="title">
+					<img tal:attributes="src python:file.getMimeTypeIconSrc(); title python:'%s (%s)'%(file.getContentType(),file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle"/>
+					<a tal:attributes="href python:file.getHref(request)" tal:content="structure python:titlealt" target="_blank">The titlealt</a>
+					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
+				</div>
+				<div tal:condition="python:title" tal:content="structure title" class="text">The title</div>
+				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
+			</span>
+			<span tal:omit-tag="" tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
+				None
+			</span>
+		</div>
+	</span>
+</span>
 
-<dtml-comment>--// EO bodyContentZMSCustom_ZMSFile //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSFile -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSCustom_ZMSFile]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Template: ZMSFile]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFile.bodyContentZMSCustom_ZMSFile>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -950,16 +944,6 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[attr_logo]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Logo]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_logo]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="id"><![CDATA[e]]></item>
                   <item key="keys" type="list">
                     <list>
@@ -979,18 +963,22 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSFolder //--</dtml-comment
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFolder -->
 
- ><dtml-var bodyContentZMSLib_page
+	<span tal:omit-tag="" tal:define="global 
+		zmscontext options/zmscontext">
+	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
+</span>
 
-><dtml-comment>--// EO bodyContentZMSCustom_ZMSFolder //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSFolder -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSCustom_ZMSFolder]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Template: ZMSFolder]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFolder.bodyContentZMSCustom_ZMSFolder>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -1027,7 +1015,7 @@ return ''
           <item key="id"><![CDATA[ZMSFolder]]></item>
           <item key="name"><![CDATA[ZMSFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.0.1]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -1276,26 +1264,27 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSLib_page //--</dtml-comment
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSLib_page -->
 
-><dtml-let childNodes="getObjChildren('e',REQUEST,PAGEELEMENTS)"
- ><dtml-if childNodes
-  ><dtml-var bodyContent_PagePre
-  ><dtml-in childNodes
-   ><dtml-var "getBodyContent(REQUEST)"
-  ></dtml-in
-  ><dtml-var bodyContent_PagePost
- ></dtml-if
-></dtml-let
+	<span tal:omit-tag="" tal:define="global 
+		childNodes    python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
+		<span tal:omit-tag="" tal:condition="childNodes">
+			<span tal:omit-tag="" tal:content="structure here/bodyContent_PagePre">The page-pre-content</span>
+			<span tal:omit-tag="" tal:repeat="childNode childNodes">
+				<span tal:omit-tag="" tal:content="structure python:childNode.getBodyContent(request)">The page-element body-content</span>
+			</span>
+			<span tal:omit-tag="" tal:content="structure here/bodyContent_PagePost">The page-post-content</span>
+		</span>
+	</span>
 
-><dtml-comment>--// EO bodyContentZMSLib_page //--</dtml-comment>]]>
+<!-- /bodyContentZMSLib_page -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSLib_page]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Template: Page]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[DTML Method]]></item>
+                  <item key="type"><![CDATA[Page Template]]></item>
                 </dictionary>
               </item>
             </list>
@@ -2878,7 +2867,6 @@ $()
 ><div style="display:none;"
 ><div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;"
 ><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
-><hr
 ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
 ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"
 ></div
@@ -2956,16 +2944,16 @@ function table_cell_edit(el_td)
 	}
 	el_td.css( "backgroundColor", "red");
 	// Apply values.
-	$('#zmiRichtextEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
-	$('#zmiStandardEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
+	$('#zmiRichtextEditor<dtml-var elName>').hide();
+	$('#zmiStandardEditor<dtml-var elName>').show();
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
 	$('#tag').val($('#tag_'+ table_cell_id).val());
 	$('#format').val($('#format_'+ table_cell_id).val());
 	<dtml-let elName="'content_editor'">
 	<dtml-if "REQUEST.get('richedit_fmt')">
 	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
-		$('#zmiRichtextEditor<dtml-var elName>').css( { display: "block", visibility: "visible"});
-		$('#zmiStandardEditor<dtml-var elName>').css( { display: "none", visibility: "hidden"});
+		$('#zmiRichtextEditor<dtml-var elName>').show();
+		$('#zmiStandardEditor<dtml-var elName>').hide();
 		zmiStandardOnSubmitEventHandler();
 	}
 	</dtml-if>
@@ -3249,7 +3237,7 @@ $(function(){
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
         <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is None or format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
-         <dtml-var content>
+         <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
         </div>
        </<dtml-var tag>>
        </tr>
@@ -3569,7 +3557,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.0]]></item>
+          <item key="revision"><![CDATA[1.6.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4109,11 +4097,8 @@ return zmscontext.attr('text')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--
-CHANGES:
-  v1.0.1 2008-11-25 tf: display HREF_MORE only if len(text)>0
-  v1.0.2 2009-01-25 fh: whitespace reduced
-</dtml-comment
+                  <item key="custom"><![CDATA[<dtml-comment>--// BO pageelement_TeaserElement //--</dtml-comment
+
 ><dtml-let
   url="getLinkUrl(attr('attr_url'),REQUEST)"
   img_src_attr="attr('attr_img_src')"
@@ -4164,6 +4149,7 @@ CHANGES:
   ></dtml-if
  ></div
 ></dtml-let
+
 ><dtml-comment>--// EO pageelement_TeaserElement //--</dtml-comment>]]>
                   </item>
                   <item key="id"><![CDATA[pageelement_TeaserElement]]></item>
@@ -4176,34 +4162,38 @@ CHANGES:
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO bodyContentZMSCustom_ZMSTeaserElement //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
 
-<dtml-let
-  teaserCntnr="getParentNode()"
-  bgcolor_border="teaserCntnr.attr('attr_bgcolor_border')"
-  bgcolor_title="teaserCntnr.attr('attr_bgcolor_title')"
-  bgcolor_text="teaserCntnr.attr('attr_bgcolor_text')">
- <dtml-if "REQUEST.get('URL','').find('/manage')>0">
-  <div id="teaser">
-   <div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="border: 1px solid <dtml-var "get_colormap().get(bgcolor_border,'black')">;"</dtml-if>>
-    <dtml-var pageelement_TeaserElement>
-   </div>
-  </div>
- <dtml-else>
-  <div class="<dtml-var "teaserCntnr.meta_id">">
-   <dtml-var pageelement_TeaserElement>
-  </div>
- </dtml-if>
-</dtml-let>
+<span tal:omit-tag="" tal:define="global 
+		zmscontext options/zmscontext;
+		teaserCntnr     python:zmscontext.getParentNode();
+		subclass        python:[teaserCntnr.meta_id];
+		style           python:[];
+		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
+		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
+		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
+	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
+		<span tal:omit-tag="" tal:condition="python:bgcolor_border">
+			<span tal:omit-tag="" tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></span>
+		</span>
+		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+			The teaser-element
+		</div>
+	</div>
+	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+		The teaser-element
+	</div>
+</span>
 
-<dtml-comment>--// EO bodyContentZMSCustom_ZMSTeaserElement //--</dtml-comment>]]>
+<!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.bodyContentZMSCustom_ZMSTeaserElement>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -4305,45 +4295,45 @@ CHANGES:
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script language="JavaScript">
-<!--//
+                  <item key="name"><![CDATA[<script type="text/javascript">
 
-function onZMSTextareaFormSubmit()
-{
-  var b = true;
-  if (self.btnClicked != "<dtml-var "getZMILangStr('BTN_CANCEL')" html_quote>" &&
-      self.btnClicked != "<dtml-var "getZMILangStr('BTN_BACK')" html_quote>") {
-    var txt = '<xml>'+$('#text_<dtml-var lang>').val().replace('&','')+'</xml>';
-    if ( txt.indexOf( '<'+'dtml-') < 0) {
-      try {
-        if (window.DOMParser) {
-          var parser=new DOMParser();
-          var doc=parser.parseFromString(txt,"text/xml");
-          if ( doc.childNodes[0].nodeName == 'parsererror') {
-            b = confirm('<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+'<dtml-var "getZMILangStr('MSG_CHANGE_ANYWAY')">\n');
-          }
-        } else if (window.ActiveXObject) {
-          var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-          xmlDoc.async="false";
-          xmlDoc.loadXML(txt);
-          if ( xmlDoc.childNodes.length == 0) {
-            b = confirm('<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+'Invalid (X)HTML!\n'+'<dtml-var "getZMILangStr('MSG_CHANGE_ANYWAY')">\n');
-          }
-        }
-      }
-      catch(e) {
-        alert(e.message);
-      }
-    }
-  }
-  if (!b)
-    return b;
-  return onFormSubmit('<dtml-var fmName>');
+function onZMSTextareaFormSubmit() {
+	var b = true;
+	if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
+			self.btnClicked != getZMILangStr('BTN_BACK')) {
+		var txt = '<xml>'+$('#text_'+getZMILang()).val().replace('&','')+'</xml>';
+		if ( txt.indexOf( '<'+'dtml-') < 0) {
+			try {
+				if (window.DOMParser) {
+					var parser=new DOMParser();
+					var doc=parser.parseFromString(txt,"text/xml");
+					if ( doc.childNodes[0].nodeName == 'parsererror') {
+						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+'getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+					}
+				} else if (window.ActiveXObject) {
+					var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async="false";
+					xmlDoc.loadXML(txt);
+					if ( xmlDoc.childNodes.length == 0) {
+						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+'getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+					}
+				}
+			}
+			catch(e) {
+				alert(e.message);
+			}
+		}
+	}
+	if (!b) {
+		return b;
+	}
+	return onFormSubmit('<dtml-var fmName>');
 }
 
-$("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
+$(function() {
+	$("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
+}
 
-//-->
 </script>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>

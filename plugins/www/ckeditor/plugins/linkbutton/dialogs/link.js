@@ -1,28 +1,50 @@
 var zmiDialog = null;
 
+function showPreviewZMSGraphic(id,src,icon,filename,size) {
+	var html= '';
+	html += '<div class="img_head"><img src="'+icon+'" border="0" align="absmiddle"/> '+filename+' ('+size+')</div>';
+	html += '<div class="img_img"><img src="'+src+'" border="0" align="absmiddle" style="max-width:200px;"/></div>';
+	html += '';
+	$("div#CKEDITOR_preview_"+id).html(html).show('normal');
+}
+
+function showPreviewZMSFile(id,href,icon,filename,size) {
+	var html= '';
+	html += '<div class="file_head"><a href="'+href+'" target="_blank" class="zmi"><img src="'+icon+'" border="0" align="absmiddle"/> '+filename+' ('+size+')</a></div>';
+	html += '';
+	$("div#CKEDITOR_preview_"+id).html(html).show('normal');
+}
+
+function hidePreview(id) {
+	$("div#CKEDITOR_preview_"+id).hide('normal');
+}
+
 function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = abs_url;
-			var extra = '';
+			var extra = null;
 			if ($(this).attr("meta_id")=='ZMSGraphic') {
 				var $img = $("img",this);
 				if ($img.length==1) {
 					link_url = '<img src=&quot;'+abs_url+'/'+$("filename",$img).text()+'&quot;/>';
-					extra += '<div style="padding-left:20px;" class="form-small">';
-					extra += '<img src="'+abs_url+'/'+$("filename",$img).text()+'" title="'+$("filename",$img).text()+'" style="border:1px dotted black; max-width:20px; max-height:20px;" align="absmiddle"/> ';
-					extra += $("filename",$img).text() + ' (' + $("content_type",$img).text() + ')';
-					extra += '</div>';
+					var src = abs_url+'/'+$("filename",$img).text();
+					var icon = $("icon",$img).text();
+					var filename = $("filename",$img).text();
+					var size = $("size",$img).text();
+					extra = 'showPreviewZMSGraphic(\''+$(this).attr("id")+'\',\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
 				}
 			}
 			else if ($(this).attr("meta_id")=='ZMSFile') {
 				var $file = $("file",this);
 				if ($file.length==1) {
-					link_url = '<a href=&quot;'+abs_url+'/'+$("filename",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+'</a>';
-					extra += '<div style="padding-left:20px;" class="form-small">';
-					extra += $("filename",$file).text()+ ' (' + $("content_type",$file).text() + ')';
-					extra += '</div>';
+					link_url = '<a href=&quot;'+abs_url+'/'+$("filename",$file).text()+'&quot; target=&quot;_blank&quot;><img src=&quot;'+$("icon",$file).text()+'&quot; title=&quot;'+$("content_type",$file).text()+'&quot; border=&quot;0&quot; align=&quot;absmiddle&quot;> '+$(this).attr("title")+' ('+$("size",$file).text()+')</a>';
+					var src = abs_url+'/'+$("filename",$file).text();
+					var icon = $("icon",$file).text();
+					var filename = $("filename",$file).text();
+					var size = $("size",$file).text();
+					extra = 'showPreviewZMSFile(\''+$(this).attr("id")+'\',\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
 				}
 			}
 			html += '<div id="div_'+$(this).attr("id")+'" style="padding:1px 2px 1px 8px; margin:0">';
@@ -31,9 +53,14 @@ function zmiAddPages(result, siblings) {
 			html += '</span>';
 			html += '<span onclick="zmiSelectObject(\''+$(this).attr("id")+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:underline;" class="zmi">';
 			html += '<img src="'+$(this).attr("display_icon")+'" title="'+$(this).attr("display_type")+'" align="absmiddle"/>';
+			if (extra != null) {
+				html += '<img src="/misc_/zms/internal_link.gif" title="Preview..." border="0" align="absmiddle" onmouseover="'+extra+'" onmouseout="hidePreview(\''+$(this).attr("id")+'\');"/>';
+			}
 			html += $(this).attr("titlealt");
 			html += '</span>';
-			html += extra;
+			if (extra != null) {
+				html += '<div id="CKEDITOR_preview_'+$(this).attr("id")+'" class="form-small ui-helper-hidden" style="border:1px solid black;"></div>';
+			}
 			html += '<div id="div_'+$(this).attr("id")+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
 			if (siblings) {
 				html += '</div>';

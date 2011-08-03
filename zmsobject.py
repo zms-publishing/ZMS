@@ -1048,6 +1048,8 @@ class ZMSObject(ZMSItem.ZMSItem,
               xml += "<%s>"%key
               xml += "<filename>%s</filename>"%_globals.html_quote(v.getFilename())
               xml += "<content_type>%s</content_type>"%_globals.html_quote(v.getContentType())
+              xml += "<size>%s</size>"%self.getDataSizeStr(v.get_size())
+              xml += "<icon>%s</icon>"%self.getMimeTypeIconSrc(v.getContentType())
               xml += "</%s>"%key
       xml += "</page>"
       return xml

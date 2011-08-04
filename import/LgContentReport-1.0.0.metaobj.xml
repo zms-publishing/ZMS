@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="key"><![CDATA[LgContentReport]]></item>
+  <item key="value" type="dictionary">
+    <dictionary>
+      <item key="__obj_attrs__" type="list">
+        <list>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom">
+                <data content_type="image/png" filename="ZMSplus.png" type="file">89504e470d0a1a0a0000000d4948445200000010000000100802000000909168360000000674524e5300ff00a300b1c39aa03e000000fe49444154789c63fcbf78230329808924d5e468603c7386741b8c8dff4310840d9783b39115b03030309c3dcb88267df62c231a17dd0fc8a210d5685cb87e264c33e0762273e176b2203b174dddaf3f7f5efe59b3ffe2e68f5fdffffef3fbc39ac29a10bca1f4f4d7f20b4f771a6b9aca08a9eebfbafef895c396b2c1f8e261c3d145061a067f99feea4bbafe65fc6da96bb5f6f00216e3eb3893c6abf7f5ac8c3c9e9ac90c0c0cc5ceb3375f9ef6ebf7267c36bcfbf8feeab3a31dbb131818183a7625dc7d75918d951d9f8618d7f4e3978eb131b06cbe3c8d8d91e5f08583c1b6098cf853eb64ee8beb8e2cfaf6e30b17074f904d5cee577d021a3001005b3185921b685ad90000000049454e44ae426082</data>
+              </item>
+              <item key="id"><![CDATA[icon]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Icon]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[resource]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[_records]]></item>
+              <item key="mandatory" type="int">1</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Records]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[list]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
+
+<div id="<dtml-var meta_id>">
+
+<script>
+
+/**
+ * Set interactions blocked.
+ */
+var interactionsBlocked = 0;
+function setInteractionsBlocked(blocked) {
+	if (blocked) {
+		if (interactionsBlocked == 0) {
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// Disable form input-fields.
+			$("div#<dtml-var meta_id> input,div#<dtml-var meta_id> select").attr("disabled","disabled");
+		}
+		interactionsBlocked += 1;
+	}
+	else {
+		if (interactionsBlocked > 0) {
+			interactionsBlocked -= 1;
+		}
+		if (interactionsBlocked == 0) {
+			// Reset wait-cursor.
+			$(document.body).css( "cursor", "auto");
+			// Enable form input-fields.
+			$("div#<dtml-var meta_id> input,div#<dtml-var meta_id> select").removeAttr("disabled");
+		}
+	}
+}
+
+
+function setProgressbox(selector) {
+	if (typeof selector == "string") {
+		selector = $(selector);
+	}
+	selector.html(
+			'<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> '+
+			'<dtml-var "getZMILangStr('MSG_LOADING')"> '
+		);
+}
+
+function writeSystemMsg(system_msg) {
+	$('div#local_msg_text').html(system_msg+" ("+(new Date())+")");
+	$('div#local_msg').show();
+	window.scrollTo(0,0);
+	window.setTimeout("$('div#local_msg').hide('slow')",5000);
+}
+
+function zmiInitPages() {
+	setInteractionsBlocked(true);
+	$.get("<dtml-var absolute_url>/{$}",{lang:zmiParams["lang"],self:1,ts:new Date()},function(result) {
+			var html = zmiAddPages(result,false);
+			$("#myDiv").html(html);
+			setInteractionsBlocked(false);
+		});
+}
+
+function zmiAddPages(result, siblings) {
+	var html = "";
+	$("page",result).each(function() {
+			var abs_url = $(this).attr("absolute_url");
+			html += '<div id="div_'+$(this).attr("id")+'" style="padding:1px 2px 1px 8px; margin:0">';
+			html += '<span onclick="zmiExpandObject(\''+$(this).attr("id")+'\',\''+$(this).attr("path")+'\');" style="cursor:pointer">';
+			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
+			html += '</span>';
+			html += '<a style="text-decoration:none;" href="'+abs_url+'/manage_main?lang=<dtml-var lang>" target="_blank" class="zmi">';
+			html += '<img src="'+$(this).attr("display_icon")+'" title="'+$(this).attr("display_type")+'" align="absmiddle"/>';
+			if ($(this).attr("meta_id") == "ZMS") {
+				html += '<strong>'+$(this).attr("id").substr(0,$(this).attr("id").indexOf("_"))+'</strong>: ';
+			}
+			html += $(this).attr("titlealt");
+			html += '</a>';
+			html += '<span title="Total Node Size">&nbsp;&sum;&thinsp;'
+			html += $(this).attr("size_str");
+			if ( $(this).attr("bin") != "0" && $(this).attr("bin") != "?") {
+				html += ' <span title="Binary Size">('+$(this).attr("bin_str") + ')</span>';
+			}
+			if ( $(this).attr("subobjects") != "1") {
+				html += ' '+$(this).attr("subobjects")+' <dtml-var "getZMILangStr('ATTR_OBJECTS')">';
+			}
+			html += ' </span>'
+			html += '<div id="div_'+$(this).attr("id")+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
+			if (siblings) {
+				html += '</div>';
+				html += '</div>';
+			}
+		});
+	$("page",result).each(function() {
+			if (!siblings) {
+				html += '</div>';
+				html += '</div>';
+			}
+		});
+	return html;
+}
+
+function zmiExpandObject(id,path) {
+	var $img = $("#div_"+id+" img:first");
+	if ($img.attr("title").length==1) {
+		var $div = $("#div_"+id+"_children");
+		if ($img.attr("title")=="+") {
+			$div.show("normal");
+			$img.attr({src:"/misc_/zms/mi.gif",title:"-"});
+			setProgressbox($div);
+			setInteractionsBlocked(true);
+			$.get("<dtml-var absolute_url>/"+path,{lang:zmiParams["lang"],ts:new Date()},function(result) {
+					var html = zmiAddPages(result,true);
+					if (html.length==0) {
+						$img.attr({src:"/misc_/zms/spacer.gif",title:""}).css({width:"16px",height:"16px"});
+					}
+					$div.html(html).addClass("loaded");
+					setInteractionsBlocked(false);
+				});
+		}
+		else {
+			$div.hide("normal");
+			$img.attr({src:"/misc_/zms/pl.gif",title:"+"});
+		}
+	}
+}
+
+function zmiIndexObject() {
+	$("div#local_msg").show();
+	setProgressbox("div#local_msg_text");
+	setInteractionsBlocked(true);
+	$.get("<dtml-var absolute_url>/manage_index<dtml-var meta_id>",{lang:zmiParams["lang"]},function(result){
+		writeSystemMsg(result);
+		$("input#zmi_index_object_btn").removeAttr("disabled").show("normal");
+		zmiInitPages();
+		setInteractionsBlocked(false);
+	});
+	return false;
+}
+
+$(function(){
+	zmiInitPages();
+	<dtml-if "len(attr('_records'))==0">
+	zmiIndexObject();
+	</dtml-if>
+});
+
+</script>
+
+<div id="local_msg" style="display:none;padding:0.3em;" class="ui-state-highlight ui-corner-all">
+<span class="ui-icon ui-icon-info" style="float:left; margin-right:0.3em;"></span>
+<span id="local_msg_text"></span>
+</div>
+<div id="myDiv"></div>
+<hr size="1"/>
+<input id="zmi_index_object_btn" type="submit" value="<dtml-var "getZMILangStr('BTN_REFRESH')">" onclick="return zmiIndexObject();"/>
+
+</div><!-- #<dtml-var meta_id> -->
+
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
+              </item>
+              <item key="id"><![CDATA[renderShort]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[ZMI: Render short]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[method]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[## Script (Python) "LgContentReport.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Event: onChangeObj
+##
+# --// BO onChangeObjEvt //--
+
+request = zmscontext.REQUEST
+zmscontext.commitObj(request)
+
+# --// EO onChangeObjEvt //--
+]]>
+              </item>
+              <item key="id"><![CDATA[onChangeObjEvt]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Event: onChangeObj]]></item>
+              <item key="py"><![CDATA[<PythonScript at LgContentReport.onChangeObjEvt>]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[py]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[## Script (Python) "LgContentReport.active"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Active
+##
+# --// BO active //--
+
+return True
+
+# --// EO active //--
+]]>
+              </item>
+              <item key="id"><![CDATA[active]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Active]]></item>
+              <item key="py"><![CDATA[<PythonScript at LgContentReport.active>]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[py]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[## Script (Python) "LgContentReport.pathhandler"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: PathHandler
+##
+# --// BO pathhandler //--
+
+request = container.REQUEST
+RESPONSE = request.RESPONSE
+RESPONSE.setHeader('Cache-Control','no-cache')
+
+path_ = request['path_']
+ob_ = zmscontext.getLinkObj(path_)
+xml = '<pages path_="'+path_+'">'
+root = zmscontext.getDocumentElement()
+records = zmscontext.attr('_records')
+obs = []
+if request.get('self'):
+  obs.append(ob_)
+else:
+  obs.extend(ob_.getChildNodes())
+  if ob_.meta_id == 'ZMS':
+    obs.extend(ob_.getPortalClients())
+for ob in obs:
+  ob_path = root.getRefObjPath(ob)
+  ob_item = {}
+  ob_display_type = ob.display_type(request)
+  ob_titlealt = ob.attr('titlealt')
+  if not ob_titlealt:
+    ob_titlealt = ob_display_type
+  for f in filter(lambda x: x['path']==ob_path, records):
+    ob_item = f
+  subobjects = filter(lambda x: x['path'].startswith(ob_path[:-1]),records)
+  bin = sum(map(lambda x: x['bin'],subobjects))
+  xml += '<page'
+  xml += ' id="'+ob.getHome().id+'_'+ob.id+'"'
+  xml += ' absolute_url="'+ob.absolute_url()+'"'
+  xml += ' path="'+ob_path+'"'
+  xml += ' titlealt="'+ob_titlealt+'"'
+  xml += ' display_type="'+ob_display_type+'"'
+  xml += ' display_icon="'+ob.display_icon(request)+'"'
+  xml += ' meta_id="'+ob.meta_id+'"'
+  xml += ' size="'+str(ob_item.get('size','?'))+'"'
+  xml += ' size_str="'+ob.getDataSizeStr(ob_item.get('size',0))+'"'
+  xml += ' bin="'+str(bin)+'"'
+  xml += ' bin_str="'+ob.getDataSizeStr(bin)+'"'
+  xml += ' subobjects="'+str(len(subobjects))+'"'
+  xml += '>'
+  xml += '</page>'
+xml += '</pages>'
+
+return zmscontext.FileFromData(xml,content_type='text/xml;charset=utf-8')
+
+# --// EO pathhandler //--
+]]>
+              </item>
+              <item key="id"><![CDATA[pathhandler]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[PathHandler]]></item>
+              <item key="py"><![CDATA[<PythonScript at LgContentReport.pathhandler>]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[py]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[## Script (Python) "manage_indexLgContentReport"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Index
+##
+# --// BO manage_indexLgContentReport //--
+
+def processObjects(root, self):
+  d = {}
+  path = root.getRefObjPath(self)
+  size = len(self.aq_parent.manage_exportObject(id=self.id,download=1,toxml=None,RESPONSE=None,REQUEST=request))
+  bin = 0
+  for key in self.getObjAttrs().keys():
+    obj_attr = self.getObjAttr(key)
+    if obj_attr['datatype'] in ['file','image']:
+      v = self.attr(key)
+      if v is not None:
+        bin += v.get_real_size()
+  d['path'] = path
+  d['size'] = size
+  d['bin'] = bin
+  l = [d]
+  for ob in self.objectValues(self.dGlobalAttrs.keys()):
+    l.extend(processObjects(root,ob))
+  if self.meta_id == 'ZMS':
+    for ob in self.getPortalClients():
+      l.extend(processObjects(root,ob))
+  return l
+
+request = context.REQUEST
+report = context.getSelf()
+
+root = report.getDocumentElement()
+l = processObjects(root,root)
+
+report.setObjStateModified(request)
+report.setObjProperty('_records',l)
+report.onChangeObj(request)
+
+return "Indexed %i objects"%len(l)
+
+# --// EO manage_indexLgContentReport //--
+]]>
+              </item>
+              <item key="id"><![CDATA[manage_indexLgContentReport]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Index]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[Script (Python)]]></item>
+            </dictionary>
+          </item>
+        </list>
+      </item>
+      <item key="access" type="dictionary">
+        <dictionary>
+          <item key="delete" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="delete_custom"></item>
+          <item key="edit" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="edit_custom"></item>
+          <item key="insert" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="insert_custom"><![CDATA[{$}]]></item>
+        </dictionary>
+      </item>
+      <item key="enabled" type="int">1</item>
+      <item key="id"><![CDATA[LgContentReport]]></item>
+      <item key="name"><![CDATA[Content-Report]]></item>
+      <item key="package"></item>
+      <item key="revision"><![CDATA[1.0.0]]></item>
+      <item key="type"><![CDATA[ZMSObject]]></item>
+    </dictionary>
+  </item>
+</dictionary>

@@ -4308,14 +4308,14 @@ function onZMSTextareaFormSubmit() {
 					var parser=new DOMParser();
 					var doc=parser.parseFromString(txt,"text/xml");
 					if ( doc.childNodes[0].nodeName == 'parsererror') {
-						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+'getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
 					}
 				} else if (window.ActiveXObject) {
 					var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 					xmlDoc.async="false";
 					xmlDoc.loadXML(txt);
 					if ( xmlDoc.childNodes.length == 0) {
-						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+'getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
 					}
 				}
 			}
@@ -4332,7 +4332,7 @@ function onZMSTextareaFormSubmit() {
 
 $(function() {
 	$("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
-}
+});
 
 </script>]]>
                   </item>

@@ -8,13 +8,13 @@
 ###
 ###  Conf-Properties:
 ###  plugin.rte.ckeditor.Height=400
+###  plugin.rte.ckeditor.FormatTags=p;h1;h2;h3;pre;address;div
 ###  plugin.rte.ckeditor.Config
 ################################################################################
 </dtml-comment>
 
 <dtml-unless "REQUEST.get('f_zmiRichtextOnSubmitEventHandler')">
 <script type="text/javascript">
-<!--//
 
  var zmiRichtextElNames = new Array();
  <dtml-call "REQUEST.set('count',0)"
@@ -29,49 +29,47 @@
   >zmiRichtextElNames[<dtml-var count>]='<dtml-var "REQUEST.get('elName')">';<dtml-call "REQUEST.set('count',count+1)"
  ></dtml-if>
 
-  function zmiStandardOnSubmitEventHandler() {
-    for (e in zmiRichtextElNames) {
-      var elName = zmiRichtextElNames[e];
-      var el = document.getElementById('zmiStandardEditor'+elName);
-      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-        try {
-          var data = $('#'+elName).val();
-          CKEDITOR.instances['editor_'+elName].setData( data);
-        }
-        catch(er) {
-        }
-      }
-    }
-  }
+function zmiStandardOnSubmitEventHandler() {
+	for (e in zmiRichtextElNames) {
+		var elName = zmiRichtextElNames[e];
+		var el = document.getElementById('zmiStandardEditor'+elName);
+		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+			try {
+				var data = $('#'+elName).val();
+				CKEDITOR.instances['editor_'+elName].setData( data);
+			}
+			catch(er) {
+			}
+		}
+	}
+}
 
-  <dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
-  function zmiRichtextOnSubmitEventHandler() {
-    for (e in zmiRichtextElNames) {
-      var elName = zmiRichtextElNames[e];
-      var el = document.getElementById('zmiRichtextEditor'+elName);
-      if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-        try {
-          // Get value from editor.
-          var data = CKEDITOR.instances['editor_'+elName].getData();          
-          // Assign value to textarea.
-          $('#'+elName).val( data);
-        }
-        catch(er) {
-          $('#'+elName).val( $('#alternate_'+elName).val());
-        }
-      }
-    }
-  }
+<dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
+function zmiRichtextOnSubmitEventHandler() {
+	for (e in zmiRichtextElNames) {
+		var elName = zmiRichtextElNames[e];
+		var el = document.getElementById('zmiRichtextEditor'+elName);
+		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
+			try {
+				// Get value from editor.
+				var data = CKEDITOR.instances['editor_'+elName].getData();
+				// Assign value to textarea.
+				$('#'+elName).val( data);
+			}
+			catch(er) {
+				$('#'+elName).val( $('#alternate_'+elName).val());
+			}
+		}
+	}
+}
 
-//-->
 </script>
 <dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
 </dtml-unless>
 
-<textarea id="editor_<dtml-var "REQUEST.get('elName')">"></textarea>
+<textarea id="editor_<dtml-var "REQUEST.get('elName')">" name="editor_<dtml-var "REQUEST.get('elName')">"></textarea>
 
 <script type="text/javascript">
-<!--//
 
 var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
 
@@ -96,17 +94,16 @@ $(function() {
 		$( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
 		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
-		CKEDITOR.config.format_tags = 'p;h1;h2;h3;pre;address;div';
+		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
 		loadCkeditor( 'editor_<dtml-var "REQUEST.get('elName')">', {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
-				toolbar: 'ZMSCustomToolbar' 	  
+				toolbar: 'ZMSCustomToolbar'
 			<dtml-else>
-				toolbar: 'ZMSBasicToolbar' 	  
-			</dtml-if> 
+				toolbar: 'ZMSBasicToolbar'
+			</dtml-if>
 			});
 	})
 });
 
-//-->
 </script>

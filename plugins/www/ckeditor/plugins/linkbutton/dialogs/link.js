@@ -51,15 +51,15 @@ function zmiAddPages(result, siblings) {
 			html += '<span onclick="zmiExpandObject(\''+$(this).attr("id")+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
-			html += '<span onclick="zmiSelectObject(\''+$(this).attr("id")+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:underline;" class="zmi">';
+			html += '<span onclick="zmiSelectObject(\''+$(this).attr("id")+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
 			html += '<img src="'+$(this).attr("display_icon")+'" title="'+$(this).attr("display_type")+'" align="absmiddle"/>';
-			if (extra != null) {
-				html += '<img src="/misc_/zms/internal_link.gif" title="Preview..." border="0" align="absmiddle" onmouseover="'+extra+'" onmouseout="hidePreview(\''+$(this).attr("id")+'\');"/>';
-			}
 			html += $(this).attr("titlealt");
+			if (extra != null) {
+				html += '<span title="Preview..." onmouseover="'+extra+'" onmouseout="hidePreview(\''+$(this).attr("id")+'\');"> ...</span>';
+			}
 			html += '</span>';
 			if (extra != null) {
-				html += '<div id="CKEDITOR_preview_'+$(this).attr("id")+'" class="form-small ui-helper-hidden" style="border:1px solid black;"></div>';
+				html += '<div id="CKEDITOR_preview_'+$(this).attr("id")+'" class="form-small ui-helper-hidden" style="padding-left:16px"></div>';
 			}
 			html += '<div id="div_'+$(this).attr("id")+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
 			if (siblings) {

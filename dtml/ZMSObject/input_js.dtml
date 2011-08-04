@@ -9,26 +9,26 @@
 var taMinHeight = null;
 
 $(function() {
-  onResize();
-  $(window).resize(function() {
-    onResize();
-  });
+	onResize();
+	$(window).resize(function() {
+		onResize();
+	});
 });
 
 function onResize() {
-  var ta = $('textarea:not([name^=alternate_])');
-  if (ta.length==1) {
-    if ($(ta.parents('div')[0]).css('display')=='none') {
-      ta = $('object[name^=editor_'+ta.attr('name')+']');
-    }
-    if (taMinHeight==null) {
-      taMinHeight = $(ta).prop('offsetHeight') / 2;
-    }
-    var innerDims = getInnerDimensions();
-    var bodyDims = getBodyDimensions();
-    var newHeight = Math.max($(ta).prop('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
-    ta.css('height',newHeight);
-  }
+	var ta = $('textarea:not([name^=alternate_],[name^=editor_])');
+	if (ta.length==1) {
+		if ($(ta.parents('div')[0]).css('display')=='none') {
+			ta = $('object[name^=editor_'+ta.attr('name')+']');
+		}
+		if (taMinHeight==null) {
+			taMinHeight = $(ta).prop('offsetHeight') / 2;
+		}
+		var innerDims = getInnerDimensions();
+		var bodyDims = getBodyDimensions();
+		var newHeight = Math.max($(ta).prop('offsetHeight')+(innerDims.height-bodyDims.height)-10,taMinHeight);
+		ta.css('height',newHeight);
+	}
 }
 
 </dtml-unless>
@@ -40,7 +40,6 @@ function onResize() {
 var checkLock = true;
 
 function onFormSubmitShowLock(fmName, change_uid, change_dt, form_dt) {
-
 	if ($('#zmiPopup').length==0) {
 		var html = '';
 		html += '<div style="display:none">';

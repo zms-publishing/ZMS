@@ -268,8 +268,7 @@ img#zmibg {
 	text-decoration: underline;
 	color: #f90;
 }
-.zmi-document-margin span#strong {
-	font-weight:bold;
+.ui-helper-clickable {
 	cursor:pointer;
 	text-decoration:underline;
 }

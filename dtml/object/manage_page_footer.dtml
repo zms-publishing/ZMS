@@ -16,10 +16,7 @@
  </dtml-in>
  </select>
  <dtml-if ZMI_TIME>
- |&nbsp;<dtml-var "ZopeTime().timeTime()-ZMI_TIME" fmt="%.2f"> secs.
- </dtml-if>
- <dtml-if meta_id>
- |&nbsp;<dtml-var "getZMILangStr('YOU_ARE')">: <span id="strong" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',{'title':$(this).attr('title')})" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(this()))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),15)"></span>
+  <img src="<dtml-var spacer_gif>" title="<dtml-var "ZopeTime().timeTime()-ZMI_TIME" fmt="%.2f"> secs." alt="" border="0" width="2" height="10" align="absmiddle">
  </dtml-if>
  </form>
 </div><!-- .zmi_col_right -->

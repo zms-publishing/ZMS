@@ -76,7 +76,7 @@ function setProgressbox(selector) {
 }
 
 function writeSystemMsg(system_msg) {
-	$('div#local_msg_text').html(system_msg+" ("+(new Date())+")");
+	$('span#local_msg_text').html(system_msg+" ("+(new Date())+")");
 	$('div#local_msg').show();
 	window.scrollTo(0,0);
 	window.setTimeout("$('div#local_msg').hide('slow')",5000);
@@ -296,8 +296,8 @@ for ob in obs:
   xml += ' id="'+ob.getHome().id+'_'+ob.id+'"'
   xml += ' absolute_url="'+ob.absolute_url()+'"'
   xml += ' path="'+ob_path+'"'
-  xml += ' titlealt="'+ob_titlealt+'"'
-  xml += ' display_type="'+ob_display_type+'"'
+  xml += ' titlealt="'+ob_titlealt.replace('&','&amp;')+'"'
+  xml += ' display_type="'+ob_display_type.replace('&','&amp;')+'"'
   xml += ' display_icon="'+ob.display_icon(request)+'"'
   xml += ' meta_id="'+ob.meta_id+'"'
   xml += ' size="'+str(ob_item.get('size','?'))+'"'
@@ -409,7 +409,7 @@ return "Indexed %i objects"%len(l)
       <item key="id"><![CDATA[LgContentReport]]></item>
       <item key="name"><![CDATA[Content-Report]]></item>
       <item key="package"></item>
-      <item key="revision"><![CDATA[1.0.0]]></item>
+      <item key="revision"><![CDATA[1.0.1]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

@@ -22,9 +22,9 @@
 
   <dtml-in "metaObj['attrs']" mapping>
    <dtml-unless "id.find('_')==0">
-   <dtml-let obj_attr="getObjAttr(id)">
     <dtml-unless sequence-start>
-     <dtml-unless "type in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'resource']">
+     <dtml-unless "type in metaobj_manager.valid_zopetypes+['constant','method','py','resource','zpt']">
+      <dtml-let obj_attr="getMetaobjAttr(meta_id,id)">
       <dtml-try>
       <dtml-let value="formatObjAttrValue(obj_attr,row.get(id,''),lang)">
        <dtml-comment>##### FORM-DELIMITER #####</dtml-comment>
@@ -106,9 +106,9 @@
         <td colspan="2"><div class="form-text">[<dtml-var id>]: <dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br></div></td>
        </tr>
       </dtml-try>
+      </dtml-let>
      </dtml-unless>
     </dtml-unless>
-   </dtml-let>
    </dtml-unless>
   </dtml-in>
 

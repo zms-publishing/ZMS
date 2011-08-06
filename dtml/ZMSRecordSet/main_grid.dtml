@@ -20,11 +20,13 @@
   ><dtml-let si=sequence-item obj_attr="getObjAttr(id).copy()"
    ><dtml-if custom
     ><dtml-unless sequence-start
+    ><dtml-unless "type in ['password']"
      ><dtml-if "type in metaobj_manager.valid_types or id==SESSION.get('fk_key_%s'%ZMS_THIS.id,'')"
       ><dtml-call "obj_attrs.append(obj_attr)"
      ><dtml-elif "type not in metaobj_manager.valid_xtypes+metaobj_manager.valid_zopetypes"
       ><dtml-call "obj_attrs.append(si)"
      ></dtml-if
+    ></dtml-unless
     ></dtml-unless
    ></dtml-if
   ></dtml-let

@@ -3825,7 +3825,7 @@ return teaserElmnts
       ></dtml-if
      ></dtml-if
      ><dtml-if "borderstyle != 3"
-      ><div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;"</dtml-if>
+      ><div class="<dtml-var "teaserCntnr.meta_id">"<dtml-if bgcolor_border> style="background-color: <dtml-var "get_colormap().get(bgcolor_border,'#ccc')">;"</dtml-if>
      ></dtml-if
     ></dtml-if
     ><dtml-if "meta_id in ['ZMSLinkElement','ZMSFile','ZMSTeaserElement']"

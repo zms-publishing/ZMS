@@ -25,7 +25,7 @@
 ### Form
 ################################################################################
 </dtml-comment>
-<dtml-if "_.int(searchform)==1">
+<dtml-if "int(searchform)==1">
 
 <script type="text/javascript">
 $(function(){
@@ -78,7 +78,7 @@ $(function(){
     <select name="search_order_by:int">
      <dtml-in "range(1,2+1)">
       <option value="<dtml-var sequence-item>"
-       <dtml-if "_.int(REQUEST['search_order_by'])==_['sequence-item']">
+       <dtml-if "int(REQUEST['search_order_by'])==_['sequence-item']">
         selected="selected"
        </dtml-if>
       ><dtml-var "getLangStr('SEARCH_ORDERBY%i'%_['sequence-item'],lang)"></option>
@@ -180,7 +180,7 @@ $(function(){
   ></dtml-in>
 
   <p class="searchHeader">
-   <dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%('<strong>%i</strong>'%_.int(REQUEST.get('qs')),'<strong>%i</strong>'%_.int(REQUEST.get('qe')),'<strong>%i</strong>'%len(res),'<strong>%s</strong>'%REQUEST.get('_s').replace('<',''))">
+   <dtml-var "getLangStr('SEARCH_RETURNEDSTATS',lang)%('<strong>%i</strong>'%int(REQUEST.get('qs')),'<strong>%i</strong>'%int(REQUEST.get('qe')),'<strong>%i</strong>'%len(res),'<strong>%s</strong>'%REQUEST.get('_s').replace('<',''))">
    (<dtml-var "DateTime().timeTime()-qt" fmt="%.2f"> <dtml-var "getLangStr('SECONDS',lang)">)
   </p>
 
@@ -213,8 +213,11 @@ $(function(){
      </dtml-unless>
      <dtml-if "ob.meta_id=='ZMSFile'">
       <dtml-let f="ob.getObjProperty('file',REQUEST)">
-       <dtml-if f><img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" /></dtml-if>
+       <dtml-if f><img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" />
+       <a href="<dtml-var "f.getHref(REQUEST)">"
+       <dtml-else>
        <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+       </dtml-if>
         ><dtml-var "search_quote(title)"></a>
        <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
       </dtml-let>

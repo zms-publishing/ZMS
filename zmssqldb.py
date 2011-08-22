@@ -109,7 +109,7 @@ class ZMSSqlDb(ZMSObject):
         'manage_ajaxZMIActions',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
-        'manage_ajaxQuery', 'manage_exportexcel',
+        'manage_exportexcel',
         )
     __administratorPermissions__ = (
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
@@ -319,25 +319,30 @@ class ZMSSqlDb(ZMSObject):
 
 
     """
-    Execute select-statement.
-    @param qs: The select-statement
-    @type qs: C{str}
+    Execute sql-statement.
+    Supports parameter-markers of mxODBCZopeDA.
+    @param sql: The sql-statement
+    @type sql: C{str}
+    @param params: The values for the parameters.
+    @type params: C{tuple}
     @param max_rows: The maximum number of rows (default: None, unlimited)
     @type max_rows: C{str}
+    """
+    def execute(self, sql, params=(), max_rows=None):
+      da = self.getDA()
+      dbc = da._v_database_connection
+      return dbc.execute(sql,params,max_rows)
+
+
+    """
+    Assemble query-result.
     @return: Dictionary: columns C{list}, records C{list}.
     @rtype: C{dict}
     """
-    def query(self, qs, max_rows=None, encoding=None):
+    def assemble_query_result(self, res, encoding=None):
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
-      if max_rows is None:
-        max_rows = getattr(self,'max_rows',999)
-      _globals.writeBlock( self, '[query]: qs=%s, max_rows=%i'%(qs,max_rows))
-      da = self.getDA()
-      dbc = da._v_database_connection
-      if da.meta_type == 'Z SQLite Database Connection': qs = str(qs)
-      res = dbc.query(qs,max_rows)
       if type(res) is str:
         f=StringIO()
         f.write(res)
@@ -369,59 +374,40 @@ class ZMSSqlDb(ZMSObject):
       return {'columns':columns,'records':result}
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSSqlDb.manage_ajaxQuery:
-    # --------------------------------------------------------------------------
-    def manage_ajaxQuery(self, qs, REQUEST):
-      """
-      ZMSObject.manage_ajaxQuery
-      """
-      #-- Build xml.
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      filename = 'ajaxQuery.xml'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      self.f_standard_html_request( self, REQUEST)
-      xml = '<?xml version="1.0" encoding="%s"?>'%REQUEST.get('encoding','iso-8859-1')
-      xml += '<records>'
-      result = self.query( qs, REQUEST.get('max_rows'))
-      c = 0
-      for record in result['records']:
-        c = c + 1
-        xml += '<record index="%i">'%c
-        for column in result['columns']:
-          id = column['id']
-          v = record[id]
-          if v:
-            v = str(v)
-            if column['type'] == 'string':
-              xml += '<%s><![CDATA[%s]]></%s>'%(id,v,id)
-            else:
-              xml += '<%s>%s</%s>'%(id,str(v),id)
-        xml += '</record>'
-      xml += '</records>'
-      return xml
-      
+    """
+    Execute select-statement.
+    @param sql: The select-statement
+    @type sql: C{str}
+    @param max_rows: The maximum number of rows (default: None, unlimited)
+    @type max_rows: C{str}
+    @return: Dictionary: columns C{list}, records C{list}.
+    @rtype: C{dict}
+    """
+    def query(self, sql, max_rows=None, encoding=None):
+      if max_rows is None:
+        max_rows = getattr(self,'max_rows',999)
+      _globals.writeBlock( self, '[query]: sql=%s, max_rows=%i'%(sql,max_rows))
+      da = self.getDA()
+      dbc = da._v_database_connection
+      if da.meta_type == 'Z SQLite Database Connection': sql = str(sql)
+      return self.assemble_query_result(dbc.query(sql,max_rows),encoding)
 
 
     """
     Execute modify-statement.
-    @param qs: The modify-statement
-    @type qs: C{str}
+    @param sql: The modify-statement
+    @type sql: C{str}
     @return: Number of affected rows.
     @rtype: C{int}
     """
-    def executeQuery(self, qs):
+    def executeQuery(self, sql):
       from cStringIO import StringIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
-      _globals.writeBlock( self, '[executeQuery]: qs=%s'%qs)
+      _globals.writeBlock( self, '[executeQuery]: sql=%s'%sql)
       da = self.getDA()
       dbc = da._v_database_connection
-      res = dbc.query(qs)
+      res = dbc.query(sql)
       if type(res) is str:
         f=StringIO()
         f.write(res)

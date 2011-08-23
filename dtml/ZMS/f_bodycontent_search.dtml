@@ -231,11 +231,24 @@ $(function(){
      <dtml-var "search_quote(description)">
     </span>
     <span class="linkpath">
-    <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+     <dtml-if "ob.meta_id=='ZMSFile'">
+      <dtml-let f="ob.getObjProperty('file',REQUEST)"
+                pg="ob.getParentNode()"
+       ><dtml-if f
+         ><a href="<dtml-var "pg.getHref2IndexHtml(REQUEST)">"
+         ><dtml-in "pg.breadcrumbs_obj_path()"
+           >&raquo;&nbsp;<dtml-var "search_quote(attr('titlealt'),20)"><dtml-unless sequence-end> </dtml-unless
+         ></dtml-in
+        ></a>
+       </dtml-if
+     ></dtml-let>
+    <dtml-else>
+     <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
       ><dtml-in "ob.breadcrumbs_obj_path()"
        >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end> </dtml-unless
       ></dtml-in
      ></a>
+    </dtml-if> 
     </span>
    </p>
  </dtml-let>

@@ -52,7 +52,7 @@ def syncType( self, meta_id, attr):
       if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Folder']:
-        zexp = ob.aq_parent.manage_exportObject( id=ob_id, download=1)
+        zexp = ob.aq_parent.manage_exportObject( id=ob.id, download=1)
         blob = _blobfields.createBlobField( self,_globals.DT_FILE, zexp, mediadbStorable=False)
         attr['custom'] = blob
       elif ob.meta_type in [ 'Page Template']:
@@ -880,8 +880,11 @@ class ZMSMetaobjManager:
         if oldId is None or oldId == newId:
           # Delete existing Zope-Object.
           if newObId in container.objectIds():
-            if newType not in [ 'DTML Method', 'DTML Document', 'Script (Python)', 'Z SQL Method']:
+            if newType not in [ 'DTML Method', 'DTML Document', 'Page Template', 'Script (Python)', 'Z SQL Method']:
               container.manage_delObjects( ids=[ newObId])
+          # Delete old Zope-Object if type is incompatible.
+          if newObId in container.objectIds() and getattr(container,newObId).meta_type != newType:
+            container.manage_delObjects( ids=[ newObId])
           # Add new Zope-Object.
           if newObId not in container.objectIds():
             if newType == 'DTML Method':

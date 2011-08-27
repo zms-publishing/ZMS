@@ -197,6 +197,7 @@ $(function(){
 function pluginFancybox(s, c) {
 	$.plugin('fancybox',{
 		files: ['/++resource++zms_/jquery/fancybox/jquery.easing-1.3.pack.js',
+				'/++resource++zms_/jquery/fancybox/jquery.mousewheel-3.0.4.pack.js',
 				'/++resource++zms_/jquery/fancybox/jquery.fancybox-1.3.1.pack.js',
 				'/++resource++zms_/jquery/fancybox/jquery.fancybox-1.3.1.css']
 		});

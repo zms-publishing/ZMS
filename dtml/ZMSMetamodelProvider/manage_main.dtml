@@ -12,7 +12,6 @@
 ></dtml-in>
 
 <script language="JavaScript">
-<!--//
 
 $(function() {
 	$('.zmiDblclickable')
@@ -29,17 +28,17 @@ $(function() {
 });
 
 function toggleElement( sender, id) {
-  var speed = "normal";
-  var img = $('#'+sender);
-  var el = $('#'+id);
-  if ( el.css("display").toLowerCase()=="none") {
-    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
-    el.show(speed);
-  }
-  else {
-    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
-    el.hide(speed);
-  }
+	var speed = "normal";
+	var img = $('#'+sender);
+	var el = $('#'+id);
+	if ( el.css("display").toLowerCase()=="none") {
+		img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-", alt: "-"});
+		el.show(speed);
+	}
+	else {
+		img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+", alt: "+"});
+		el.hide(speed);
+	}
 }
 
 /**
@@ -47,30 +46,28 @@ function toggleElement( sender, id) {
  *
  * @param el
  */
-function toggleRow( el)
-{
-  var clazz = "zmiTeaserColor";
-  var els = $("input[name=\x22ids:list\x22]:checkbox");
-  for (var i = 0; i < els.length; i++) {
-    var tr = $($(els[i]).parents("tr")[1]);
-    if (els[i].checked) {
-      tr.addClass( clazz);
-    }
-    else {
-      tr.removeClass( clazz);
-    }
-  }
+function toggleRow( el) {
+	var clazz = "zmiTeaserColor";
+	var els = $("input[name=\x22ids:list\x22]:checkbox");
+	for (var i = 0; i < els.length; i++) {
+		var tr = $($(els[i]).parents("tr")[1]);
+		if (els[i].checked) {
+			tr.addClass( clazz);
+		}
+		else {
+			tr.removeClass( clazz);
+		}
+	}
 }
 
 /**
  *
  * @param el
  */
-function changeType( el)
-{
-  disallowBlank(el,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-  var v = el.options[el.selectedIndex].value;
-  var arr = new Array();
+function changeType( el) {
+	disallowBlank(el,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
+	var v = el.options[el.selectedIndex].value;
+	var arr = new Array();
   <dtml-in meta_attrs
    ><dtml-let metadictAttrId=sequence-item metadictAttr="getMetadictAttr(metadictAttrId)"
     ><dtml-if metadictAttr
@@ -85,22 +82,20 @@ function changeType( el)
   }
 }
 
-  /**
-   *
-   * @param el
-   */
-  function changeCustom(el) 
-  {
-    $(el).css( 'backgroundColor', '#FFFFE8');
-    $('input[name='+el.name+'_modified]').val( '1');
-  }
+/**
+ *
+ * @param el
+ */
+function changeCustom(el) {
+	$(el).css( 'backgroundColor', '#FFFFE8');
+	$('input[name='+el.name+'_modified]').val( '1');
+}
 
-  /**
-   *
-   * @param el
-   */
-  function populateType(el, datatypes, metaattrs, foreignkeys, objecttypes, zopetypes) 
-  {
+/**
+ *
+ * @param el
+ */
+function populateType(el, datatypes, metaattrs, foreignkeys, objecttypes, zopetypes) {
     if ( el.options.length <= 1) {
       var selectedValue = '';
       if ( el.options.length == 1) {
@@ -153,110 +148,101 @@ function changeType( el)
     }
   }
 
-  /**
-   *
-   * @param fm		Html-Form
-   */
-  function onFormSubmit(fm) 
-  {
-    var b = true;
-    var key = fm.elements['key'].value;
-    if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") 
-    {
-      b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
-    }
-    if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>") 
-    {
-        var elFile = fm.elements['file'];
-        var elInit = fm.elements['init'];
-    	if (isBlank(elFile.value) && isBlank(elInit.value))
-          b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
-    }
-    if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>") 
-    {
-      b = b && !disallowBlank(fm.elements['aq_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('BTN_ACQUIRE')">",false);
-    }
-    if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
-      b = b && !disallowBlank(fm.elements['_meta_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-      b = b && !disallowBlank(fm.elements['_meta_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
-      b = b && !disallowBlank(fm.elements['_meta_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-    }
-    if (key=="attr" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
-      b = b && !disallowBlank(fm.elements['attr_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-      b = b && !disallowBlank(fm.elements['attr_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
-      b = b && !disallowBlank(fm.elements['_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-    }
-    return b;
-  }
+/**
+ *
+ * @param fm		Html-Form
+ */
+function onFormSubmit(fm) {
+	var b = true;
+	var key = fm.elements['key'].value;
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") {
+		b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
+	}
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_IMPORT')" html_quote>") {
+		var elFile = fm.elements['file'];
+		var elInit = fm.elements['init'];
+		if (isBlank(elFile.value) && isBlank(elInit.value)) {
+			b = b && !disallowBlank(elFile,"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_FILE')">",false);
+		}
+	}
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_ACQUIRE')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['aq_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('BTN_ACQUIRE')">",false);
+	}
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['_meta_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+		b = b && !disallowBlank(fm.elements['_meta_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+		b = b && !disallowBlank(fm.elements['_meta_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
+	}
+	if (key=="attr" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['attr_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+		b = b && !disallowBlank(fm.elements['attr_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
+		b = b && !disallowBlank(fm.elements['_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
+	}
+	return b;
+}
 
-  /**
-   * Export xml.
-   *
-   * @param type
-   */
-  function exportBtnClick() {
-    var fm = document.forms['form0'];
-    var href = fm.action+'?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
+/**
+ * Export xml.
+ *
+ * @param type
+ */
+function exportBtnClick() {
+	var fm = document.forms['form0'];
+	var href = fm.action+'?lang=<dtml-var lang>&btn=<dtml-var "getZMILangStr('BTN_EXPORT')" html_quote>';
     <dtml-if "REQUEST.get('id')">
     href+='&ids:list=<dtml-var "REQUEST.get('id')">';
     <dtml-else>
-    for (var i = 0; i < fm.elements.length; i++) 
-    {
+    for (var i = 0; i < fm.elements.length; i++) {
       el = fm.elements[i];
       if (el.name=='ids:list' && el.type=='checkbox' && el.checked)
         href+='&'+el.name+'='+el.value;
     }
     </dtml-if>
-    window.open(href);
-  }
+	window.open(href);
+}
 
-  /**
-   *
-   * @param el		Html-Form Element
-   * @param key		Key (obj|attr)
-   */
-  function btnClick(el, key) {
-    var fm = el.form;
-    fm.elements['key'].value = key;
-    self.btnClicked = el.value;
-  }
+/**
+ *
+ * @param el		Html-Form Element
+ * @param key		Key (obj|attr)
+ */
+function btnClick(el, key) {
+	var fm = el.form;
+	fm.elements['key'].value = key;
+	self.btnClicked = el.value;
+}
 
-  // ###########################################################################
-  // ### Enabled
-  // ###########################################################################
+// ###########################################################################
+// ### Enabled
+// ###########################################################################
+function enabledCheckboxClick(el) {
+	if (!el.disabled) {
+		var id = el.name.substring( el.name.indexOf('_')+1);
+		var setEnabled = 0;
+		if ( el.checked) {
+			setEnabled = 1;
+		}
+		// Set wait-cursor.
+		$(document.body).css( "cursor", "wait");
+		// JQuery.AJAX.get
+		$.get( "manage_ajaxChangeProperties?id="+id+"&lang=<dtml-var lang>&setEnabled:int="+setEnabled, enabledCheckboxClickResponse);
+	}
+}
 
-  function enabledCheckboxClick(el) {
-    if (!el.disabled) {
-      var id = el.name.substring( el.name.indexOf('_')+1);
-      var setEnabled = 0;
-      if ( el.checked) {
-        setEnabled = 1;
-      }
-      // Set wait-cursor.
-      $(document.body).css( "cursor", "wait");
-      // JQuery.AJAX.get
-      $.get( "manage_ajaxChangeProperties?id="+id+"&lang=<dtml-var lang>&setEnabled:int="+setEnabled, enabledCheckboxClickResponse);
-    }
-  }
+function enabledCheckboxClickResponse(data) {
+	// Reset wait-cursor.
+	$(document.body).css( "cursor", "auto");
+	// Get object-id.
+	var id = $("result",data).attr("id");
+	var enabled = $("result",data).attr("enabled");
+	if (enabled=="1") {
+		$('#a_'+id).css( "font-weight", "bold");
+	}
+	else {
+		$('#a_'+id).css( "font-weight", "normal");
+	}
+}
 
-  function enabledCheckboxClickResponse(data) {
-    // Reset wait-cursor.
-    $(document.body).css( "cursor", "auto");
-    // Get object-id.
-    var id = $("result",data).attr("id");
-    var enabled = $("result",data).attr("enabled");
-    if (enabled=="1") {
-      $('#a_'+id).css( "font-weight", "bold");
-    }
-    else {
-      $('#a_'+id).css( "font-weight", "normal");
-    }
-  }
-
-
-//-->
 </script>
 </head>
 
@@ -500,47 +486,49 @@ function changeType( el)
              /><dtml-else
               ><img src="<dtml-var MISC_ZMS>ico_meta.gif" title="Meta-Attribute" border="0" style="vertical-align:middle" 
              /></dtml-if
-            ><dtml-elif "oAttr['type'] == 'DTML Method'"
-             ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(/misc_/OFSP/dtmlmethod.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle"
-             /><dtml-else
-              ><img src="/misc_/OFSP/dtmlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
-             ></dtml-if
-            ><dtml-elif "oAttr['type'] == 'DTML Document'"
-             ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(/misc_/OFSP/dtmldocument.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
-             /><dtml-else
-              ><img src="/misc_/OFSP/dtmldocument.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
-             /></dtml-if
-            ><dtml-elif "oAttr['type'] == 'External Method'"
-             ><img src="/misc_/ExternalMethod/extmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
-            ><dtml-elif "oAttr['type'] == 'Folder'"
-             ><img src="/misc_/OFSP/Folder_icon.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
-            ><dtml-elif "oAttr['type'] == 'Page Template'"
-             ><dtml-with "getattr(this(),oAttr['id'])"
-              ><dtml-if pt_errors
-               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var icon>)" title="ERROR: <dtml-var expr="'\n'.join(pt_errors)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-elif pt_warnings
-               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var icon>)" title="WARNING: <dtml-var expr="'\n'.join(pt_warnings)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-else
-               ><img src="<dtml-var icon>" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
-              /></dtml-if
-             ></dtml-with
-            ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
-             ><img src="misc_/ZSQLMethods/sqlmethod.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
-            /><dtml-elif "oAttr['type'] == 'Script (Python)'"
+            ><dtml-elif "oAttr['type'] in valid_zopetypes"
              ><dtml-try
               ><dtml-call "REQUEST.set('ob',this())"
               ><dtml-in "oAttr['id'].split('/')"
                ><dtml-call "REQUEST.set('ob',getattr(ob,_['sequence-item']))"
               ></dtml-in
-              ><dtml-if "ob.errors"
-               ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="ERROR: <dtml-var expr="'\n'.join(ob.errors)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-elif "ob.warnings"
-               ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(misc_/PythonScripts/pyscript.gif)" title="WARNING: <dtml-var expr="'\n'.join(ob.warnings)" html_quote>" border="0" style="vertical-align:middle" 
-              /><dtml-else
-               ><img src="misc_/PythonScripts/pyscript.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
-              /></dtml-if
+              ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
+              ><dtml-if "oAttr['type'] == 'DTML Document'"
+               ><dtml-if "oAttr['errors']"
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
+               /><dtml-else
+                ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
+               /></dtml-if
+              ><dtml-elif "oAttr['type'] == 'DTML Method'"
+               ><dtml-if "oAttr['errors']"
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" style="vertical-align:middle"
+               /><dtml-else
+                ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
+               ></dtml-if
+              ><dtml-elif "oAttr['type'] == 'External Method'"
+               ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+              ><dtml-elif "oAttr['type'] == 'Folder'"
+               ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle"
+              ><dtml-elif "oAttr['type'] == 'Page Template'"
+               ><dtml-if "ob.pt_errors()"
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var expr="'\n'.join(ob.pt_errors())" html_quote>" border="0" style="vertical-align:middle" 
+               /><dtml-elif "ob.pt_warnings()"
+                ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var "ob.icon">)" title="WARNING: <dtml-var expr="'\n'.join(ob.pt_warnings())" html_quote>" border="0" style="vertical-align:middle" 
+               /><dtml-else
+                ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
+               /></dtml-if
+              ><dtml-elif "oAttr['type'] == 'Z SQL Method'"
+               ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
+              /><dtml-elif "oAttr['type'] == 'Script (Python)'"
+                ><dtml-if "ob.errors"
+                 ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var expr="'\n'.join(ob.errors)" html_quote>" border="0" style="vertical-align:middle" 
+                /><dtml-elif "ob.warnings"
+                 ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var "ob.icon">)" title="WARNING: <dtml-var expr="'\n'.join(ob.warnings)" html_quote>" border="0" style="vertical-align:middle" 
+                /><dtml-else
+                 ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
+                /></dtml-if
+              ></dtml-if
+              ></a
              ><dtml-except
               ><dtml-var error_type>: <dtml-var error_value><hr/><dtml-var error_tb newline_to_br
              ></dtml-try
@@ -555,15 +543,27 @@ function changeType( el)
               /></dtml-if
              ></dtml-let
             ><dtml-elif "oAttr['type']=='method'"
-             ><dtml-if "oAttr['errors']"
-              ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
-             /><dtml-else
-              ><img src="<dtml-var MISC_ZMS>ico_method.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
-             /></dtml-if
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+              ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
+               ><dtml-if "oAttr['errors']"
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
+               /><dtml-else
+                ><img src="<dtml-var MISC_ZMS>ico_method.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
+               /></dtml-if
+               /></a
+             ></dtml-let
             ><dtml-elif "oAttr['type']=='py'"
-             ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;" 
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+              ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
+                ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;"
+               /></a
+             ></dtml-let
             ><dtml-elif "oAttr['type']=='zpt'"
-             ><img src="/misc_/PageTemplates/zpt.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;" 
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+              ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
+               ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;"
+               /></a
+             ></dtml-let
             ><dtml-else
              ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle" 
             /></dtml-if

@@ -36,6 +36,20 @@ import _xmllib
 
 
 # ------------------------------------------------------------------------------
+#  _exportable.exportFiles:
+# ------------------------------------------------------------------------------
+def exportFiles(self, root, id, path):
+  if hasattr(root,id):
+    folder = getattr(root,id)
+    for ob in folder.objectValues(['File','Image']):
+      try:
+        ob_id = ob.id()
+      except:
+        ob_id = str(ob.id)
+      _fileutil.exportObj(ob,'%s/%s'%(path,ob_id))
+
+
+# ------------------------------------------------------------------------------
 #  _exportable.exportFolder:
 # ------------------------------------------------------------------------------
 def exportFolder(self, root, path, id, REQUEST, depth=0):
@@ -60,21 +74,6 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
           except:
             pass
         _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))
-
-
-# ------------------------------------------------------------------------------
-#  _exportable.exportMetaobjManager:
-# ------------------------------------------------------------------------------
-def exportMetaobjManager(self, root, path):
-  id = 'metaobj_manager'
-  if hasattr(root,id):
-    folder = getattr(root,id)
-    for ob in folder.objectValues(['File']):
-      try:
-        ob_id = ob.id()
-      except:
-        ob_id = str(ob.id)
-      _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))
 
 
 # ------------------------------------------------------------------------------
@@ -412,10 +411,11 @@ class Exportable(_filtermanager.FilterItem):
         folder = 'misc_/zms'
         for obj_id in self.misc_.zms._d.keys():
           _fileutil.exportObj(self.misc_.zms[obj_id],'%s/%s/%s'%(tempfolder,folder,obj_id))
-        exportMetaobjManager( self, self.getDocumentElement(), tempfolder)
+        exportFiles( self, self.getDocumentElement(), 'metaobj_manager', '%s/metaobj_manager'%tempfolder)
       
       if from_home:
         root = self.getHome()
+        exportFiles( self, root.aq_parent, root.id, tempfolder)
         for id in root.objectIds(['Folder']):
           exportFolder( self, root, tempfolder, id, REQUEST)
       

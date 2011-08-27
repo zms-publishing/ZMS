@@ -831,7 +831,9 @@ class ZMSMetaobjManager:
       elif newType == 'zpt':
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
-        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, newType+': '+newName, newCustom)
+        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType+': '+newName, text=newCustom)
+        newOb = getattr(self,id+'.'+newId)
+        newOb.output_encoding = 'utf-8'
       
       # Replace
       ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)
@@ -880,11 +882,11 @@ class ZMSMetaobjManager:
         if oldId is None or oldId == newId:
           # Delete existing Zope-Object.
           if newObId in container.objectIds():
-            if newType not in [ 'DTML Method', 'DTML Document', 'Page Template', 'Script (Python)', 'Z SQL Method']:
+            if newType not in self.valid_zopetypes:
               container.manage_delObjects( ids=[ newObId])
-          # Delete old Zope-Object if type is incompatible.
-          if newObId in container.objectIds() and getattr(container,newObId).meta_type != newType:
-            container.manage_delObjects( ids=[ newObId])
+            # Delete old Zope-Object if type is incompatible.
+            if newObId in container.objectIds() and getattr(container,newObId).meta_type != newType:
+              container.manage_delObjects( ids=[ newObId])
           # Add new Zope-Object.
           if newObId not in container.objectIds():
             if newType == 'DTML Method':
@@ -896,7 +898,9 @@ class ZMSMetaobjManager:
             elif newType == 'Folder':
               container.manage_addFolder(id=newObId,title=newName)
             elif newType == 'Page Template':
-              ZopePageTemplate.manage_addPageTemplate( container, newObId, newName, newCustom)
+              ZopePageTemplate.manage_addPageTemplate( container, newObId, title=newName, text=newCustom)
+              newOb = getattr( container, newObId)
+              newOb.output_encoding = 'utf-8'
             elif newType == 'Script (Python)':
               PythonScript.manage_addPythonScript( container, newObId)
             elif newType == 'Z SQL Method':

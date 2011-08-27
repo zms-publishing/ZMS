@@ -6,12 +6,12 @@
 <dtml-in "getObjAttrs().keys()"
 ><dtml-let key=sequence-item obj_attr="getMetaobjAttr(meta_id,key)"
 ><dtml-if "obj_attr is not None and obj_attr['meta_type'] and obj_attr['type'] not in ['image','file']"
-><dtml-let value="getObjProperty(key,REQUEST)"
+><dtml-let value="attr(key)"
 ><dtml-if value
 ><dtml-if "len(obj_attr['keys'])>0 and obj_attr['keys'][0].find('{$')==0"
 ><dtml-let ob="getLinkObj(obj_attr['keys'][0],REQUEST)"
 ><dtml-call "REQUEST.set('dict',[])"
-><dtml-in "ob.getObjProperty('records',REQUEST)"
+><dtml-in "ob.attr('records')"
 ><dtml-let x=sequence-item
 ><dtml-call "dict.extend([x['key'],x.get('value',x.get('value_%s'%lang))])"
 ></dtml-let
@@ -24,7 +24,7 @@
 </dtml-try
 ></dtml-let
 ><dtml-else>
-<meta name="<dtml-var "obj_attr['name']">" content="<dtml-if "operator_gettype(value) is _.list"><dtml-var "'; '.join(value)" html_quote><dtml-else><dtml-var value html_quote></dtml-if>" />
+<meta name="<dtml-var "obj_attr['name']">" content="<dtml-if "operator_gettype(value) is list"><dtml-var "'; '.join(value)" html_quote><dtml-elif "obj_attr['type'] in ['datetime','date']"><dtml-var "getLangFmtDate(value,lang)"><dtml-else><dtml-var value html_quote></dtml-if>" />
 </dtml-if
 ></dtml-if
 ></dtml-let

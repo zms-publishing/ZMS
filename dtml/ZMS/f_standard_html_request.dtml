@@ -1,4 +1,7 @@
-<dtml-unless lang
+<dtml-unless HTTP_ACCEPT_CHARSET
+><dtml-call "REQUEST.set('HTTP_ACCEPT_CHARSET','%s;q=0.7,*;q=0.7'%REQUEST.get('ZMS_CHARSET','utf-8'))"
+></dtml-unless
+><dtml-unless lang
 ><dtml-call "REQUEST.set('lang',getLanguage(REQUEST))"
 ></dtml-unless
 ><dtml-unless manage_lang

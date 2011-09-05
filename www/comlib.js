@@ -106,27 +106,6 @@ function collectionDeleteBtnOnClick(href) {
 }
 
 /**
- * Confirm changes.
- */
-function confirmChanges(el) {
-	if (el && self.name == 'cameFromForm') {
-		el.target = '_parent';
-	}
-	if (navigator.platform.indexOf("Mac")<0) {
-		var anyFormModified = false;
-		for (i=0; i<document.forms.length; i++) {
-			anyFormModified |= isFormModified(document.forms[i]);
-		}
-		if ( anyFormModified) {
-			if (!confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-/**
  * Toggle display of element.
  */
 function toggleElement( selector) {

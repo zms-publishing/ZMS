@@ -106,9 +106,9 @@ $(function(){
 	}
 	// Form-Elements
 	$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small")
-		.focus( function(evt) {$(this).addClass("form-element-focus"); })
-		.blur( function(evt) { $(this).removeClass("form-element-focus"); })
-		;
+		.focus( function(evt) {$(this).addClass("form-element-focused"); })
+		.blur( function(evt) { $(this).removeClass("form-element-focused"); })
+	;
 	// Action-Lists
 	$("input.zmi-ids-list:checkbox").click( function(evt) { zmiActionButtonsRefresh(this,evt); } );
 	$("select.zmi-action")
@@ -136,9 +136,107 @@ $(function(){
 });
 
 
-// ############################################################################
+// #############################################################################
+// ### ZMI Auto-Save
+// #############################################################################
+var zmiAutoSaveTimeout = null;
+var zmiAutoSaveIntervall = 1000;
+var zmiAutoChangeArr = {};
+
+function zmiAutoSave() {
+	var els = $("form.ZMIPropertiesForm .form-element-modified");
+	var values = {};
+	for (var i = 0; i < els.length; i++) {
+		var $el = $(els[i]);
+		var coords = $el.offset();
+		var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div></div>';
+		$("body").append(html);
+		values[$el.attr("id")] = $el.val();
+	}
+	runPluginJSON(function() {
+			// Store temp-form properties.
+			$.get("setTempFormProperties",{lang:zmiParams["lang"],key:self.location.href,values:$.toJSON(values)},function(result) {
+					$("div.zmiAutoSave").remove();
+				});
+		});
+}
+
+function zmiAutoChange(el) {
+	if (typeof zmiAutoChangeArr[$(el).attr("id")] != "undefined") {
+		if (!($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[$(el).attr("id")]["init"] != $(el).val()) {
+			$(el).addClass("form-element-modified");
+		}
+		else if (($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[$(el).attr("id")]["init"] == $(el).val()) {
+			$(el).removeClass("form-element-modified");
+		}
+		if (zmiAutoChangeArr[$(el).attr("id")]["last"] != $(el).val()) {
+			if (zmiAutoSaveTimeout != null) {
+				window.clearTimeout(zmiAutoSaveTimeout);
+			}
+			zmiAutoSaveTimeout = window.setTimeout("zmiAutoSave()",zmiAutoSaveIntervall);
+			zmiAutoChangeArr[$(el).attr("id")]["last"] = $(el).val();
+		}
+	}
+}
+
+function confirmChanges(el) {
+	if (el && self.name == 'cameFromForm') {
+		el.target = '_parent';
+	}
+	if (navigator.platform.indexOf("Mac")<0) {
+		var anyFormModified = false;
+		for (i=0; i<document.forms.length; i++) {
+			anyFormModified |= isFormModified(document.forms[i]);
+		}
+		if ( anyFormModified) {
+			if (!confirm(getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES'))) {
+				return false;
+			}
+		}
+	}
+	// Clear stored temp-form properties.
+	if ($(".form-element-modified").length > 0) {
+		$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {});
+	}
+	return true;
+}
+
+$(function() {
+	$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small",$("form.ZMIPropertiesForm"))
+		.keydown( function (evt) { zmiAutoChange(this); })
+		.keyup( function (evt) { zmiAutoChange(this); })
+		.click( function (evt) { zmiAutoChange(this); })
+		.change( function (evt) { zmiAutoChange(this); })
+		.each(function() {
+				zmiAutoChangeArr[$(this).attr("id")] = {'init':$(this).val(),'last':$(this).val()};
+			})
+	;
+	// Read stored temp-form properties.
+	$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
+			var data = eval("("+result+")");
+			var modified = false;
+			if (data) {
+				for (var i in data) {
+					var v = data[i];
+					modified |= $("#"+i).val() != v;
+				}
+			}
+			if (modified) {
+				if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
+					for (var i in data) {
+						var v = data[i];
+						$("#"+i).val(v).addClass("form-element-modified");
+						zmiAutoChangeArr[i]['last'] = v;
+					}
+				}
+			}
+		});
+});
+
+
+// #############################################################################
 // ### ZMI Action-Lists
-// ############################################################################
+// #############################################################################
 
 var zmiActionPrefix = 'select_actions_';
 

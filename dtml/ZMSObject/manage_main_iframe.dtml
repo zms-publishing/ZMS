@@ -32,7 +32,7 @@
 					<!-- ### Meta-Object: Default -->
 					<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
 					<dtml-call "initObjChildren(REQUEST)">
-					<form id="<dtml-var fmName>" name="<dtml-var fmName>" action="<dtml-if ZMS_NO_BODY><dtml-var id>/</dtml-if>manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
+					<form id="<dtml-var fmName>" class="ZMIPropertiesForm" name="<dtml-var fmName>" action="<dtml-if ZMS_NO_BODY><dtml-var id>/</dtml-if>manage_changeProperties" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('form0')">
 						<input type="hidden" name="manage_target" value="<dtml-if ZMS_NO_BODY><dtml-var "(HTTP_REFERER+'?')[:(HTTP_REFERER+'?').find('?')]"><dtml-else><dtml-var URL></dtml-if>">
 						<input type="hidden" name="form_id" value="<dtml-var ZMI_TIME>">
 						<input type="hidden" id="id_prefix" name="id_prefix" value="e">

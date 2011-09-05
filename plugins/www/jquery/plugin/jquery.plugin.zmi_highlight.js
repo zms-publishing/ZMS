@@ -22,7 +22,7 @@ function zmiScrollToElement(theElement) {
  * Highlight all occurences of given text.
  */
 function zmiDoHighlight(text) {
-	var exp = text.replace(/\W/g,'');
+	var exp = text.replace(/\W/g,'.?');
 	var regexp = new RegExp( "(" + exp + ")", "gi");
 	var el = $('body');
 	$('*',el)

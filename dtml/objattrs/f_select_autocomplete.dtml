@@ -64,8 +64,8 @@ $().ready(function() {
 <tr valign="top" class="zmiNeutralColorLight1">
 	<td class="form-element">
 		<select class="form-element" id="<dtml-var elName>" name="<dtml-var elName>:list" multiple="multiple" size="<dtml-var "max(5,min(0,len(value)))">">
-			<dtml-in value><dtml-let optval=sequence-item opttitle=sequence-item optdisp="string_maxlen(opttitle,50)"><dtml-if optval>
-				<option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp></option>
+			<dtml-in value><dtml-let optval=sequence-item opttitle=sequence-item><dtml-if optval>
+				<option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var opttitle></option>
 			</dtml-if></dtml-let></dtml-in>
 		</select>
 	</td>

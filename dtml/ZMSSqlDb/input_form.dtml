@@ -420,12 +420,12 @@
        </dtml-if>
        <dtml-call "REQUEST.set('sqlStatement',''.join(sqlStatement))">
        <dtml-in "query(sqlStatement)['records']"
-        ><dtml-let row=sequence-item maxlen="_.int(fk.get('maxlen',25))"
+        ><dtml-let row=sequence-item
          ><dtml-unless "row['qvalue']==None" 
          ><dtml-try
-          ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
+          ><dtml-call "options.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
          ><dtml-except
-          ><dtml-call "options.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
+          ><dtml-call "options.append([str(row['qkey']),str(row['qvalue'])])"
          ></dtml-try
          ></dtml-unless
         ></dtml-let
@@ -555,7 +555,7 @@
           SQL-ERROR: <dtml-var "''.join(sqlStatement)"
          ></dtml-try
         ></dtml-unless
-        ><dtml-let fk="dst['fk']" maxlen="_.int(fk.get('maxlen',25))"
+        ><dtml-let fk="dst['fk']"
          ><dtml-call "REQUEST.set('sqlStatement',[])"
          ><dtml-call "sqlStatement.append('SELECT ' + fk.get('fieldname') + ' AS qkey, ' + fk.get('displayfield') + ' AS qvalue ')"
          ><dtml-call "sqlStatement.append('FROM ' + fk.get('tablename') + ' ')"
@@ -582,9 +582,9 @@
           <dtml-in "query(''.join(sqlStatement))['records']"
            ><dtml-let row=sequence-item
             ><dtml-try
-             ><dtml-call "optpl.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),string_maxlen(unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),maxlen)])"
+             ><dtml-call "optpl.append([unicode(str(row['qkey']),REQUEST.get('qcharset','utf-8')).encode('utf-8'),unicode(str(row['qvalue']),REQUEST.get('qcharset','utf-8')).encode('utf-8')])"
             ><dtml-except
-             ><dtml-call "optpl.append([str(row['qkey']),string_maxlen(str(row['qvalue']),maxlen)])"
+             ><dtml-call "optpl.append([str(row['qkey']),str(row['qvalue'])])"
             ></dtml-try
            ></dtml-let
           ></dtml-in
@@ -603,7 +603,7 @@
           ><input class="ui-button ui-state-default ui-corner-all" type="submit" value="-" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="return multiMultiSelectRemoveElements('<dtml-var elName>')"
           ><dtml-if nullable><input class="ui-button ui-state-default ui-corner-all" type="submit" value="X" title="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#<dtml-var elName>').val('null'); $('#<dtml-var "'displayfield_%s'%id">').val('[null]'); return false;"/></dtml-if
          ><dtml-else
-          ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, maxlen=maxlen, enabled=1, REQUEST=REQUEST)"
+          ><dtml-var "getSelect(fmName='form0', elName='%s:list'%elName, value=value, inputtype='multiselect', lang_str=getLangStr(label,lang), required=0, optpl=optpl, enabled=1, REQUEST=REQUEST)"
          ></dtml-if
         ></dtml-let
        ></dtml-let

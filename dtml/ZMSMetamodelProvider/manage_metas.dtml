@@ -223,7 +223,7 @@ function showDstMetaTypesBtnClick( id) {
       <option value="">--- <dtml-var "getZMILangStr('ATTR_OBJECTS')"> ---</option>
       <dtml-in "getMetaobjIds(excl_ids=['ZMS'])">
        <dtml-let meta_type=sequence-item>
-        <option value="<dtml-var meta_type>" <dtml-if "metadictAttr['type']==meta_type">selected="selected"</dtml-if>><dtml-var "string_maxlen(display_type(REQUEST,meta_type),15)"></option>
+        <option value="<dtml-var meta_type>" <dtml-if "metadictAttr['type']==meta_type">selected="selected"</dtml-if>><dtml-var "display_type(REQUEST,meta_type)"></option>
        </dtml-let>
       </dtml-in>
      </select>
@@ -275,7 +275,7 @@ function showDstMetaTypesBtnClick( id) {
     <option value="">--- <dtml-var "getZMILangStr('ATTR_OBJECTS')"> ---</option>
     <dtml-in "getMetaobjIds(excl_ids=['ZMS'])">
      <dtml-let meta_type=sequence-item>
-      <option value="<dtml-var meta_type>"><dtml-var "string_maxlen(display_type(REQUEST,meta_type),15)"></option>
+      <option value="<dtml-var meta_type>"><dtml-var "display_type(REQUEST,meta_type)"></option>
      </dtml-let>
     </dtml-in>
    </select>

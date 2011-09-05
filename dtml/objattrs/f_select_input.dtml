@@ -8,7 +8,6 @@
 *	@param lang_str
 *	@param required
 *	@param options|optpl
-*	@param maxlen
 *	@param enabled
 *	@param css
 *	@param REQUEST
@@ -24,11 +23,6 @@
    ><dtml-call "REQUEST['optpl'].append([_['sequence-item'],_['sequence-item']])"
   ></dtml-in
  ></dtml-if
-></dtml-if
-><dtml-if maxlen
- ><dtml-call "REQUEST.set('optdispmaxlen',maxlen)"
-><dtml-else
- ><dtml-call "REQUEST.set('optdispmaxlen',30)"
 ></dtml-if
 >
 <dtml-comment>
@@ -65,15 +59,14 @@
    </dtml-unless>
    <dtml-in "REQUEST['optpl']">
     <dtml-let optval="_['sequence-item'][0].strip()"
-              opttitle="_['sequence-item'][1].strip()"
-              optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
+              opttitle="_['sequence-item'][1].strip()">
      <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>"
       <dtml-if "str(optval)==str(value)">
        selected="selected"
       <dtml-elif "str(value).find('[')==0 and optval in value">
        selected="selected"
       </dtml-if>
-     ><dtml-var optdisp html_quote></option>
+     ><dtml-var opttitle html_quote></option>
     </dtml-let>
    </dtml-in>
   </select>
@@ -94,15 +87,14 @@
    <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
-               opttitle="_['sequence-item'][1].strip()"
-               optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
+               opttitle="_['sequence-item'][1].strip()">
       <dtml-try>
        <dtml-unless "optval in value">
-        <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp html_quote></option>
+        <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var opttitle html_quote></option>
        </dtml-unless>
       <dtml-except>
        <dtml-unless "str(optval)==str(value)">
-        <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var optdisp html_quote></option>
+        <option value="<dtml-var optval>" title="<dtml-var opttitle>"><dtml-var opttitle html_quote></option>
        </dtml-unless>
       </dtml-try>
      </dtml-let>
@@ -125,14 +117,13 @@
    <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
-               opttitle="_['sequence-item'][1].strip()"
-               optdisp="string_maxlen(opttitle,REQUEST['optdispmaxlen'])">
+               opttitle="_['sequence-item'][1].strip()">
       <dtml-if "optval == value">
-       <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>" selected="selected"><dtml-var optdisp html_quote></option>
+       <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>" selected="selected"><dtml-var opttitle html_quote></option>
       <dtml-else>
        <dtml-try>
         <dtml-if "optval in value">
-         <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>" selected="selected"><dtml-var optdisp html_quote></option>
+         <option value="<dtml-var optval html_quote>" title="<dtml-var opttitle>" selected="selected"><dtml-var opttitle html_quote></option>
         </dtml-if>
        <dtml-except></dtml-try>
       </dtml-if>

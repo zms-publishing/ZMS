@@ -119,11 +119,11 @@
   <tr valign="top" class="zmiNeutralColorMedium0">
    <td class="form-text">
     <input type="hidden" name="id" value="<dtml-var "metaCmd['id']">"/>
-    <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
+    <a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"><img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
     ><dtml-if "metaCmd.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/></dtml-if
     ><dtml-if "metaCmd.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metaCmd['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
     ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" align="absmiddle"/></dtml-if
-    ><dtml-var "string_maxlen(metaCmd['id'],15)">
+    ><dtml-var "string_maxlen(metaCmd['id'],15)"></a>
    </td>
    <td><div class="form-text"><dtml-var "string_maxlen(metaCmd['name'],20)"></div></td>
    <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=False,REQUEST=REQUEST)"></td>
@@ -141,11 +141,11 @@
   <tr valign="top" class="zmiNeutralColorMedium0">
    <td class="form-element" nowrap="nowrap">
     <input type="hidden" name="id" value="<dtml-var "metaCmd['id']">"/>
-    <img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
+    <a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"><img src="<dtml-var "ob.icon">" title="<dtml-var "ob.meta_type">" border="0" align="absmiddle"
     ><dtml-if "metaCmd.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2" align="absmiddle"/></dtml-if
     ><dtml-if "metaCmd.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+URL.split('/')[-1]">?id=<dtml-var "metaCmd['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
     ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions: <dtml-var has_acquisition>" border="0" align="absmiddle"/></dtml-if
-    ><dtml-var "getTextInput('form0','el_id',10,metaCmd['id'])">
+    ><dtml-var "getTextInput('form0','el_id',15,metaCmd['id'])"></a>
    </td>
    <td><dtml-var "getTextInput('form0','el_name',15,metaCmd['name'])"></td>
    <td class="form-element" align="center"><dtml-var "getCheckbox(fmName='form0',elName='el_exec:int',value=metaCmd['exec'],enabled=1,hidden=1,REQUEST=REQUEST)"></td>
@@ -225,7 +225,7 @@
         <select class="form-small" name="el_meta_types:list" size="10" multiple="multiple">
         <dtml-in "getMetaobjIds()">
          <dtml-let meta_type=sequence-item>
-          <option value="<dtml-var meta_type>" <dtml-if "meta_type in metaCmd['meta_types']">selected="selected"</dtml-if>><dtml-var "string_maxlen(display_type(REQUEST,meta_type),15)"></option>
+          <option value="<dtml-var meta_type>" <dtml-if "meta_type in metaCmd['meta_types']">selected="selected"</dtml-if>><dtml-var "display_type(REQUEST,meta_type)"></option>
          </dtml-let>
         </dtml-in>
         </select>

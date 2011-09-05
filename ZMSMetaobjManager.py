@@ -786,6 +786,8 @@ class ZMSMetaobjManager:
         elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
         newCustom = ''
+      elif newType in self.getMetaobjIds():
+        newCustom = ''
       
       attr = {}
       attr['id'] = newId

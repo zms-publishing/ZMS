@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+  <item key="custom"/>
+  <item key="data"><![CDATA[# Import a standard function, and get the HTML request and response objects.
+from Products.PythonScripts.standard import html_quote
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+print context.manage_page_header(context,request)
+print context.manage_tabs(context,request)
+print context.f_headline(context,headline='Insert client...')
+print '<form method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_addClient"/>'
+print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print context.zmi_form_section_begin(context,request)
+
+# --- Insert client.
+# ---------------------------------
+if request.form.get('btn')==context.getZMILangStr('BTN_INSERT'):
+	message = []
+	home = context.getHome()
+	home.manage_addFolder(id=request['id'],title=request['title'])
+	folder_inst = getattr(home,request['id'])
+	request.set('lang_label',context.getLanguageLabel(request['lang']))
+	zms_inst = context.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
+	zms_inst.setConfProperty('Portal.Master',home.id)
+	context.setConfProperty('Portal.Clients',context.getConfProperty('Portal.Clients',[])+[request['id']])
+	message.append(context.getZMILangStr('MSG_INSERTED')%request['id'])
+	request.response.redirect(context.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Display initial insert form.
+# ---------------------------------
+else:
+	print '<tr valign="middle">'
+	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_ID'))
+	print '<td class="form-element"><input class="form-element" name="id" type="text" size="25"></td>'
+	print '</tr>'
+	print '<tr valign="middle">'
+	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_TITLE'))
+	print '<td class="form-element"><input class="form-element" name="title" type="text" size="50"></td>'
+	print '</tr>'
+	print '<tr valign="middle">'
+	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_TITLEALT'))
+	print '<td class="form-element"><input class="form-element" name="titlealt" type="text" size="80"></td>'
+	print '</tr>'
+	print '<tr valign="middle">'
+	print '<td>&nbsp;</td>'
+	print '<td>'
+	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_INSERT')
+	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_CANCEL')
+	print '</td>'
+	print '</tr>'
+
+# ---------------------------------
+
+print context.zmi_form_section_end(context,request)
+print '</form>'
+print context.manage_page_footer(context,request)
+
+return printed
+]]>
+  </item>
+  <item key="description"/>
+  <item key="exec" type="int">0</item>
+  <item key="id"><![CDATA[manage_addClient]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[ZMS]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Client...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+    </list>
+  </item>
+</dictionary>

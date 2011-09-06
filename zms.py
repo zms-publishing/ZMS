@@ -516,6 +516,14 @@ class ZMS(
       self.zmi_logo = Image(id='logo', title='', file=file.read())
       file.close()
 
+
+    # --------------------------------------------------------------------------
+    #  ZMS.initZMS: 
+    # --------------------------------------------------------------------------
+    def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST):
+      return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST)
+
+
     # --------------------------------------------------------------------------
     #  ZMS.zms_version:
     #

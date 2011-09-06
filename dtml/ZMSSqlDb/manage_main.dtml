@@ -115,7 +115,7 @@
             sessionvalue="'%s_%s'%(filtervalue,this().id)">
   <tr valign="middle">
    <td class="form-label" align="right">
-    <select class="form-label" name="<dtml-var filterattr>">
+    <select class="form-small" name="<dtml-var filterattr>">
      <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%('%s%i'%(getZMILangStr('ATTR_FILTER'),_['sequence-index']+1))"> ---</option>
      <dtml-in columns mapping
       ><dtml-if "type in ['date','datetime','identifier','int','float','multiselect','text','select','string']"
@@ -125,7 +125,7 @@
     </select>
    </td>
    <td class="form-element">
-    <select class="form-element" name="<dtml-var filterop>"
+    <select class="form-small" name="<dtml-var filterop>"
     ><dtml-in "['LIKE','=','<','<=','>','>=','NULL','NOT NULL']"
      ><dtml-let op=sequence-item
       ><dtml-if "op!='LIKE' or not gadfly"
@@ -134,7 +134,7 @@
      ></dtml-let
     ></dtml-in
     ></select>
-    <dtml-var "getTextInput(fmName='form0',elName=filtervalue,size=30,value=SESSION.get(sessionvalue,''))">
+    <dtml-var "getTextInput(fmName='form0',elName=filtervalue,size=30,value=SESSION.get(sessionvalue,''),css='form-small')">
    </td>
   </tr>
   </dtml-let>

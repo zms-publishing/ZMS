@@ -676,6 +676,7 @@ class ZMSMetaobjManager:
             return attr
         if key == attr['id']:
           attr = attr.copy()
+          attr['datatype_key'] = _globals.datatype_key(attr['type'])
           attr['mandatory'] = attr.get('mandatory',0)
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
@@ -785,8 +786,6 @@ class ZMSMetaobjManager:
           self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
         elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
-        newCustom = ''
-      elif newType in self.getMetaobjIds():
         newCustom = ''
       
       attr = {}

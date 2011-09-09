@@ -212,25 +212,27 @@ $(function() {
 			})
 	;
 	// Read stored temp-form properties.
-	$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
-			var data = eval("("+result+")");
-			var modified = false;
-			if (data) {
-				for (var i in data) {
-					var v = data[i];
-					modified |= $("#"+i).val() != v;
-				}
-			}
-			if (modified) {
-				if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
+	if ($("form.ZMIPropertiesForm").length > 0) {
+		$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
+				var data = eval("("+result+")");
+				var modified = false;
+				if (data) {
 					for (var i in data) {
 						var v = data[i];
-						$("#"+i).val(v).addClass("form-element-modified");
-						zmiAutoChangeArr[i]['last'] = v;
+						modified |= $("#"+i).val() != v;
 					}
 				}
-			}
-		});
+				if (modified) {
+					if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
+						for (var i in data) {
+							var v = data[i];
+							$("#"+i).val(v).addClass("form-element-modified");
+							zmiAutoChangeArr[i]['last'] = v;
+						}
+					}
+				}
+			});
+	}
 });
 
 

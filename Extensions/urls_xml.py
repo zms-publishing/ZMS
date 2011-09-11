@@ -5,6 +5,10 @@ Add External Method with the following option:
 'Title':    Mirror-Manager
 'Module':   zms.urls_xml
 'Function': manage_getMirrorURLs
+
+Request-Params:
+DEBUG                debug-mode
+EXPORT_RESOURCE_ZMS  export files from /++resource++zms_/jquery
 """
 #
 # Copyright 2008 {xmachina GmbH. All rights reserved.
@@ -234,13 +238,15 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     
     # plugins
-    resourcepath = self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js').split('/')[1]
-    basepath = self.localfs_package_home()+'/plugins/www'
-    for file in self.localfs_readPath(basepath,recursive=True):
-      filepath = '/'+resourcepath+file['local_filename'][len(basepath):].replace('\\','/')
-      filename = file['filename']
-      content_type = guess_content_type( filename)
-      RESPONSE.write('<url content_type="%s"><![CDATA[%s]]></url>\n'%(content_type,filepath))
+    if REQUEST.get('EXPORT_RESOURCE_ZMS'):
+      resourcepath = '/++resource++zms_/jquery'
+      basepath = self.localfs_package_home()+'/plugins/www/jquery'
+      for file in self.localfs_readPath(basepath,recursive=True):
+        if file['local_filename'].find('/.svn/') < 0:
+          filepath = resourcepath+file['local_filename'][len(basepath):].replace('\\','/')
+          filename = file['filename']
+          content_type = guess_content_type( filename)
+          RESPONSE.write('<url content_type="%s"><![CDATA[%s]]></url>\n'%(content_type,filepath))
     
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)

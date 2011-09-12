@@ -91,11 +91,11 @@
        <dtml-elif "type=='image'">
         <dtml-if v>
          <center>
-          <dtml-try>
-           <a href="<dtml-var "v.getHref(REQUEST)">" class="fancybox" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" width="<dtml-var "_.min(_.int(v.getWidth()),20)">" height="<dtml-var "_.min(_.int(v.getHeight()),20)">" border="1" align="absmiddle" style="padding:0"></a>
-          <dtml-except>
-           <a href="<dtml-var "v.getHref(REQUEST)">" class="fancybox" target="_blank"><img src="<dtml-var "getMimeTypeIconSrc(v.getContentType())">" title="<dtml-var "v.getFilename()">" border="1" align="absmiddle" style="padding:0"></a>
-          </dtml-try>
+          <a href="<dtml-var "v.getHref(REQUEST)">" class="fancybox ZMSGraphic_extEdit_action" target="_blank"><img src="<dtml-var "v.getHref(REQUEST)">" title="<dtml-var "v.getFilename()">" align="absmiddle"
+            <dtml-try>
+              width="<dtml-var "_.min(_.int(v.getWidth()),20)">" height="<dtml-var "_.min(_.int(v.getHeight()),20)">"
+            <dtml-except>
+            </dtml-try>></a>
          </center>
         </dtml-if>
 
@@ -142,8 +142,8 @@
 
        <dtml-comment>##### Grid.Default #####</dtml-comment>
        <dtml-elif "type not in ['constant']">
-        <dtml-var "string_maxlen(str(v),max(_.int(200.0/len(metaObj['attrs'])),20)).replace('<','&lt;')">
-       </dtml-if>&nbsp;
+        <dtml-var "string_maxlen(str(v),max(_.int(200.0/len(metaObj['attrs'])),20)).replace('<','&lt;')">&nbsp;
+       </dtml-if>
 
        <dtml-comment>#####</dtml-comment>
 

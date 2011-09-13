@@ -229,13 +229,9 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
     # @see _exportable.py::exportRessources, etc.
     folder = '/misc_/zms'
     for ob_id in self.misc_.zms._d.keys():
-      if ob_id != 'initutil':
+      if ob_id.find('.') > 0:
         content_type = guess_content_type( ob_id)
         RESPONSE.write('<url content_type="%s"><![CDATA[%s/%s]]></url>\n'%(content_type,folder,ob_id))
-    
-    # @see headScript
-    RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js'))
-    RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     
     # plugins
     if REQUEST.get('EXPORT_RESOURCE_ZMS'):
@@ -247,6 +243,10 @@ def manage_getMirrorURLs(self, REQUEST, RESPONSE):
           filename = file['filename']
           content_type = guess_content_type( filename)
           RESPONSE.write('<url content_type="%s"><![CDATA[%s]]></url>\n'%(content_type,filepath))
+    else:
+      # @see headScript
+      RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.version','/++resource++zms_/jquery/plugin/jquery.plugin.js'))
+      RESPONSE.write('<url content_type="text/javascript"><![CDATA[%s]]></url>\n'%self.getConfProperty('jquery.plugin.extensions','/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js'))
     
     for id in [ 'common', 'instance']:
         recurseFolder( self, self.getHome(), "", id, REQUEST, RESPONSE)

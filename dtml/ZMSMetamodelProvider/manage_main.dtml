@@ -512,8 +512,6 @@ function enabledCheckboxClickResponse(data) {
               ><dtml-elif "oAttr['type'] == 'Page Template'"
                ><dtml-if "ob.pt_errors()"
                 ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var expr="'\n'.join(ob.pt_errors())" html_quote>" border="0" style="vertical-align:middle" 
-               /><dtml-elif "ob.pt_warnings()"
-                ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var "ob.icon">)" title="WARNING: <dtml-var expr="'\n'.join(ob.pt_warnings())" html_quote>" border="0" style="vertical-align:middle" 
                /><dtml-else
                 ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
                /></dtml-if
@@ -555,13 +553,23 @@ function enabledCheckboxClickResponse(data) {
             ><dtml-elif "oAttr['type']=='py'"
              ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
               ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
-                ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;"
+                ><dtml-if "ob.errors"
+                 ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_py.gif)" title="ERROR: <dtml-var expr="'\n'.join(ob.errors)" html_quote>" border="0" style="vertical-align:middle" 
+                /><dtml-elif "ob.warnings"
+                 ><img src="<dtml-var MISC_ZMS>decorator_warning.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_py.gif)" title="WARNING: <dtml-var expr="'\n'.join(ob.warnings)" html_quote>" border="0" style="vertical-align:middle" 
+                /><dtml-else
+                 ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
+                /></dtml-if
                /></a
              ></dtml-let
             ><dtml-elif "oAttr['type']=='zpt'"
              ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
               ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
-               ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;"
+               ><dtml-if "ob.pt_errors()"
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var expr="'\n'.join(ob.pt_errors())" html_quote>" border="0" style="vertical-align:middle" 
+               /><dtml-else
+                ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
+               /></dtml-if
                /></a
              ></dtml-let
             ><dtml-else

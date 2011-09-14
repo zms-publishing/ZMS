@@ -551,7 +551,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if temp_id in temp_folder.objectIds():
         container = getattr(temp_folder,temp_id)
       elif createIfNotExists:
-        temp_folder.manage_addDTMLMethod(temp_id,self.getLangFmtDate(time.time()),'{}')
+        temp_folder.manage_addFile(id=temp_id,title=self.getLangFmtDate(time.time()),file='{}')
         container = getattr(temp_folder,temp_id)
       return container
 
@@ -567,9 +567,9 @@ class ZMSObject(ZMSItem.ZMSItem,
         if key.rfind("?") > 0:
           key = key[:key.rfind("?")]
         temp_key = '%s_%s'%(key,lang)
-        temp_properties = eval(container.raw)
+        temp_properties = eval(container.data)
         temp_properties[temp_key] = values
-        container.manage_edit(title=self.getLangFmtDate(time.time()),data=self.str_json(temp_properties))
+        container.manage_edit(title=self.getLangFmtDate(time.time()),content_type='text/json',filedata=self.str_json(temp_properties))
         rtn = 1
       if RESPONSE:
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -586,14 +586,14 @@ class ZMSObject(ZMSItem.ZMSItem,
         if key.rfind("?") > 0:
           key = key[:key.rfind("?")]
         temp_key = '%s_%s'%(key,lang)
-        temp_properties = eval(container.raw)
+        temp_properties = eval(container.data)
         if temp_properties.has_key(temp_key):
           rtn = temp_properties[temp_key]
           del temp_properties[temp_key]
           if len(temp_properties.keys()) == 0:
             container.aq_parent.manage_delObjects([container.id()])
           else:
-            container.manage_edit(title=self.getLangFmtDate(time.time()),data=self.str_json(temp_properties))
+            container.manage_edit(title=self.getLangFmtDate(time.time()),content_type='text/json',filedata=self.str_json(temp_properties))
       if RESPONSE:
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       return self.str_json(rtn)

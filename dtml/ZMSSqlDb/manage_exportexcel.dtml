@@ -46,7 +46,7 @@
 </dtml-comment>
   <dtml-in grid_cols mapping>
   <dtml-unless hide>
-   <Cell ss:StyleID="head"><Data ss:Type="String"><NamedCell ss:Name="_FilterDatabase"/><dtml-var label></Data></Cell>
+   <Cell ss:StyleID="head"><Data ss:Type="String"><NamedCell ss:Name="_FilterDatabase"/><dtml-var "getLangStr(label,lang)"></Data></Cell>
   </dtml-unless>
   </dtml-in>
 </Row>

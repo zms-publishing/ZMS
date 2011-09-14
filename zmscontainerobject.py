@@ -647,7 +647,6 @@ class ZMSContainerObject(
           items.append('>')
           items.append('<span>%s</span>'%_globals.html_quote(ob.getTitlealt(REQUEST)))
           items.append('</a>')
-          print self.id, ob.id, ob.getTitlealt(REQUEST),current.getPhysicalPath()
           if (max(depth,ob.getLevel()) < opt.get('maxdepth',100)) and \
              ((opt.get('complete',False)) or \
               (opt.get('deep',True) and ob.id != self.id and \

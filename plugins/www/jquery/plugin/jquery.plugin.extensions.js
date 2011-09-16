@@ -207,7 +207,11 @@ function pluginFancybox(s, c) {
 function showFancybox(p) {
 	pluginFancybox('body',function() {
 		$.fancybox(p);
-		$("#fancybox-wrap").draggable();
+		try {
+			$("#fancybox-wrap").draggable();
+		}
+		catch(e) {
+		}
 	});
 	return false;
 }

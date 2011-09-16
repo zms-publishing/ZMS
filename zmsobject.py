@@ -559,7 +559,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     def setTempFormProperties(self, lang, key, values, REQUEST, RESPONSE=None):
       """ ZMSObject.setTempFormProperties """
       rtn = 0
-      container = self.getTempFormPropertiesContainer(createIfNotExists=True)
+      createIfNotExists = self.getConfProperty('ZMS.TempFormProperties',1)==1
+      container = self.getTempFormPropertiesContainer(createIfNotExists=createIfNotExists)
       if container is not None:
         values = eval(values)
         key = key[key.find('://')+3:]

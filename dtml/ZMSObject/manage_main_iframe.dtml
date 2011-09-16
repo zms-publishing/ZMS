@@ -2,7 +2,7 @@
 
 <dtml-if ZMS_NO_BODY>
 	<dtml-var manage_page_request>
-		<div class="zmi" title="<dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if>">
+		<div class="zmi notranslate" title="<dtml-var "display_type(REQUEST)"> <dtml-if "display_type(REQUEST)!=getTitlealt(REQUEST)">: <dtml-var "getTitlealt(REQUEST)"></dtml-if> [<dtml-var "getLanguageLabel(lang).upper()">]">
 <dtml-else>
 	<dtml-var manage_page_header>
 		<script>
@@ -19,6 +19,8 @@
 	</head>
 	<body class="zmi">
 		<div class="zmi">
+			<div class="zmi_col_left">&nbsp;</div>
+			<div class="zmi_col_right"><dtml-var f_languages></div>
 </dtml-if>
 
 			<dtml-let metaObjZMI="getMetaobjZMI(meta_id,REQUEST)">

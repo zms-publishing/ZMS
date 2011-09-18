@@ -124,10 +124,10 @@ function save(sender) {
 
 <dtml-call "REQUEST.set('lang2_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):])[1:])">
 <dtml-if "SESSION.get('lang2','')==''"
-  >111<dtml-call "SESSION.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
-  >222<dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
+  ><dtml-call "SESSION.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
+  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
 ><dtml-elif "REQUEST.get('lang2','')==''"
-  >333<dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
+  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
 ></dtml-if>
 <dtml-call "REQUEST.set('lang2_bk',lang2)">
 

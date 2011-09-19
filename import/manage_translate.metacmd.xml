@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
   <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
   <item key="data"><![CDATA[<dtml-comment>
 ################################################################################
+2011-09-19 [zmsdev] applied fix 
+2011-09-16 [zmsdev] applied fix 
 2011-07-06 [fhoffmann] SESSION based lang settings
 2011-06-09 [fhoffmann] Save Automatic Pre-Translation
 2011-06-07 [fhoffmann] Google Translator Element added
@@ -112,22 +115,23 @@ function save(sender) {
 
 <dtml-call "REQUEST.set('lang1_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):]))">
 <dtml-if "SESSION.get('lang1','')==''"
-  ><dtml-call "SESSION.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
-  ><dtml-call "REQUEST.set('lang1',SESSION.get('lang1'))"  
+	><dtml-call "SESSION.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
+	><dtml-call "REQUEST.set('lang1',SESSION.get('lang1'))"  
 ><dtml-elif "REQUEST.get('lang1','')==''"
-  ><dtml-call "REQUEST.set('lang1',SESSION.get('lang1',lang1_options[0][0]))"
+	><dtml-call "REQUEST.set('lang1',SESSION.get('lang1',lang1_options[0][0]))"
 ><dtml-else
-  ><dtml-call "REQUEST.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
-  ><dtml-call "SESSION.set('lang1',REQUEST.get('lang1'))"    
+	><dtml-call "SESSION.set('lang1',REQUEST.get('lang1'))"
 ></dtml-if>
 <dtml-call "REQUEST.set('lang1_bk',lang1)"> 
 
 <dtml-call "REQUEST.set('lang2_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):])[1:])">
 <dtml-if "SESSION.get('lang2','')==''"
-  ><dtml-call "SESSION.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
-  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
+	><dtml-call "SESSION.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
+	><dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
 ><dtml-elif "REQUEST.get('lang2','')==''"
-  ><dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
+	><dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
+><dtml-else
+	><dtml-call "SESSION.set('lang2',REQUEST.get('lang2'))"
 ></dtml-if>
 <dtml-call "REQUEST.set('lang2_bk',lang2)">
 
@@ -196,7 +200,7 @@ SESSION lang2: <dtml-var "SESSION.get('lang2','')">
 </dtml-comment>
 <dtml-var manage_page_footer>]]>
   </item>
-  <item key="description"/>
+  <item key="description"></item>
   <item key="exec" type="int">0</item>
   <item key="id"><![CDATA[manage_translate]]></item>
   <item key="meta_type"><![CDATA[DTML Method]]></item>
@@ -210,9 +214,9 @@ SESSION lang2: <dtml-var "SESSION.get('lang2','')">
   <item key="name"><![CDATA[Translate...]]></item>
   <item key="roles" type="list">
     <list>
-      <item><![CDATA[ZMSAdministrator]]></item>
-      <item><![CDATA[ZMSAuthor]]></item>
       <item><![CDATA[ZMSEditor]]></item>
+      <item><![CDATA[ZMSAuthor]]></item>
+      <item><![CDATA[ZMSAdministrator]]></item>
     </list>
   </item>
 </dictionary>

@@ -134,16 +134,17 @@ class ReqBuff:
     #  @throws Exception
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST, forced=False):
-      url = REQUEST.get('URL','/manage')
-      url = url[url.rfind('/'):]
-      if forced or not url.find('/manage') >= 0:
-        buff = getReqBuff(self,REQUEST)
-        reqBuffId = getReqBuffId(self,key,REQUEST)
-        try:
-          value = getattr(buff,reqBuffId)
-          return value
-        except:
-          raise zExceptions.InternalError('%s not found in ReqBuff!'%reqBuffId)
+      if REQUEST.get('ZMS_FETCH_REQ_BUFF',True):
+        url = REQUEST.get('PSEUDOURL',REQUEST.get('URL','/manage'))
+        url = url[url.rfind('/'):]
+        if forced or not url.find('/manage') >= 0:
+          buff = getReqBuff(self,REQUEST)
+          reqBuffId = getReqBuffId(self,key,REQUEST)
+          try:
+            value = getattr(buff,reqBuffId)
+            return value
+          except:
+            raise zExceptions.InternalError('%s not found in ReqBuff!'%reqBuffId)
       raise zExceptions.InternalError('ReqBuff is inactive!')
 
     # --------------------------------------------------------------------------

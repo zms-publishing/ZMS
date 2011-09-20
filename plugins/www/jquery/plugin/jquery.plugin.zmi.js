@@ -148,10 +148,13 @@ function zmiAutoSave() {
 	var values = {};
 	for (var i = 0; i < els.length; i++) {
 		var $el = $(els[i]);
-		var coords = $el.offset();
-		var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div></div>';
-		$("body").append(html);
-		values[$el.attr("id")] = $el.val();
+		var elid = $(el).attr("id");
+		if (typeof elid != "undefined") {
+			var coords = $el.offset();
+			var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div></div>';
+			$("body").append(html);
+			values[elid] = $el.val();
+		}
 	}
 	runPluginJSON(function() {
 			// Store temp-form properties.
@@ -162,7 +165,8 @@ function zmiAutoSave() {
 }
 
 function zmiAutoChange(el) {
-	if (typeof zmiAutoChangeArr[$(el).attr("id")] != "undefined") {
+	var elid = $(el).attr("id");
+	if (typeof elid != "undefined" && typeof zmiAutoChangeArr[elid] != "undefined") {
 		if (!($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[$(el).attr("id")]["init"] != $(el).val()) {
 			$(el).addClass("form-element-modified");
 		}
@@ -208,7 +212,10 @@ $(function() {
 		.click( function (evt) { zmiAutoChange(this); })
 		.change( function (evt) { zmiAutoChange(this); })
 		.each(function() {
-				zmiAutoChangeArr[$(this).attr("id")] = {'init':$(this).val(),'last':$(this).val()};
+				var elid = $(this).attr("id");
+				if (typeof elid != "undefined") {
+					zmiAutoChangeArr[] = {'init':$(this).val(),'last':$(this).val()};
+				}
 			})
 	;
 	// Read stored temp-form properties.

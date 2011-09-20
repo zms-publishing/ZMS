@@ -1,5 +1,5 @@
 <dtml-let styles="parse_stylesheet()">
-<select class="form-element" name="<dtml-var elName>">
+<select class="form-element" id="<dtml-var elName>" name="<dtml-var elName>">
  <dtml-unless mandatory>
   <option value="">--- <dtml-var "getZMILangStr('CAPTION_SELECT')"> ---</option>
  </dtml-unless>

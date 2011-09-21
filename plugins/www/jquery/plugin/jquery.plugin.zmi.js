@@ -214,7 +214,7 @@ $(function() {
 		.each(function() {
 				var elid = $(this).attr("id");
 				if (typeof elid != "undefined") {
-					zmiAutoChangeArr[] = {'init':$(this).val(),'last':$(this).val()};
+					zmiAutoChangeArr[elid] = {'init':$(this).val(),'last':$(this).val()};
 				}
 			})
 	;

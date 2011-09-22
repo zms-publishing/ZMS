@@ -165,13 +165,13 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    html = html.replace( s_old, s_new)
    
    # Process links to resource-folders: images and assets.
-   for id in [ 'common', 'instance']:
-     if hasattr( self, id):
-       s_new = '"%s%s/'%(sRoot,id)
-       s_old = '"./%s/'%(id)
-       html = html.replace(s_old,s_new)
-       s_old = '"%s/'%(id)
-       html = html.replace(s_old,s_new)
+   for container in self.getResourceFolders():
+     id = container.id
+     s_new = '"%s%s/'%(sRoot,id)
+     s_old = '"./%s/'%(id)
+     html = html.replace(s_old,s_new)
+     s_old = '"%s/'%(id)
+     html = html.replace(s_old,s_new)
    
    # Process links to product-folder: images and assets.
    s_new = '"%smisc_/zms/'%sRoot

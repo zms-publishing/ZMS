@@ -56,41 +56,6 @@ import zmslog
 """
 
 # ------------------------------------------------------------------------------
-#  _confmanager.initCSS:
-# ------------------------------------------------------------------------------
-def initCSS(self):
-  stylesheet_css = getattr( self, 'stylesheet.css', None)
-  if stylesheet_css is not None:
-    container = getattr( self.getHome(), 'common', None)
-    folder = getattr( container, 'css', None)
-    if folder is not None:
-      container = getattr( self.getHome(), 'instance', None)
-      if container is None:
-        self.getHome().manage_addFolder( id='instance', title='Local Graphics and Assets')
-        container = getattr( self.getHome(), 'instance', None)
-      folder = getattr( container, 'css', None)
-    if folder is None:
-      container.manage_addFolder( id='css', title='Cascading Style-Sheets')
-      folder = getattr( container, 'css', None)
-    ids = self.objectIds(['DTML Method'])
-    excl_ids = filter( lambda x: x in ids, [ 'stylesheet.css'] + map( lambda x: 'stylesheet_%s.css'%x, self.getLangIds()))
-    move_ids = filter( lambda x: x not in excl_ids and x.find('.css') > 0, ids)
-    id = 'style.css'
-    title = 'Default CSS'
-    data = stylesheet_css.raw
-    if data.find( '<dtml-var') >= 0:
-      data = '<dtml-with content\n><dtml-call "REQUEST.RESPONSE.setHeader(\'Cache-Control\',\'public, max-age=3600\')"\n><dtml-var f_standard_html_request\n><dtml-var f_css_defaults>\n'+data+'\n</dtml-with>'
-    if id not in folder.objectIds():
-      folder.manage_addDTMLMethod( id, title, data)
-    self.manage_delObjects( ids=excl_ids)
-    try:
-      cb_copy_data = self.manage_cutObjects(move_ids,self.REQUEST)
-      folder.manage_pasteObjects(cb_copy_data=None,REQUEST=self.REQUEST)
-    except:
-      pass
-
-
-# ------------------------------------------------------------------------------
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, profile, REQUEST):
@@ -469,6 +434,28 @@ class ConfManager(
         return ob
       return None
 
+
+
+    # --------------------------------------------------------------------------
+    #  ConfManager.getResourceFolders:
+    #
+    #  Returns list of resource-folders.
+    # --------------------------------------------------------------------------
+    def getResourceFolders(self):
+      obs = []
+      ids = [ 'instance', 'common']
+      ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, self.getHome().objectValues(['Folder']))))
+      c = 0
+      for id in ids:
+        container = getattr( self, id, None)
+        if container is not None and len(container.objectValues(['ZMS']))==0:
+          obs.append(container)
+        if c == 1:
+          obs.append(self.getHome())
+        c += 1
+      return obs
+
+
     # --------------------------------------------------------------------------
     #  ConfManager.getStylesheet:
     #
@@ -491,14 +478,13 @@ class ConfManager(
     def getStylesheets(self):
       ids = []
       obs = []
-      for id in [ 'instance', 'common']:
-        container = getattr( self, id, None)
-        if container is not None:
-          folder = getattr( container, 'css', None)
+      for container in self.getResourceFolders():
+        for folder in [ getattr( container, 'css', None), container]:
           if folder is not None:
-            for ob in folder.objectValues(['DTML Method','DTML Document']):
+            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File']):
               id = absattr( ob.id)
-              if id not in ids:
+              path = ob.getPhysicalPath()
+              if len(filter(lambda x: x.endswith('css'), path)) > 0 and id not in ids:
                 ids.append( id)
                 if absattr( ob.id) == self.getConfProperty('ZMS.stylesheet','style.css'):
                   obs.insert( 0, ob)

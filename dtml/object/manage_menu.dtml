@@ -4,10 +4,10 @@
 <dtml-var manage_page_header>
 <style type="text/css">
 <!--
-  body, div, ul, li {
-    -moz-user-select:none;
-     white-space:nowrap;
-  }
+body, div, ul, li {
+	-moz-user-select:none;
+	white-space:nowrap;
+}
 -->
 </style>
 <script language="JavaScript">
@@ -21,52 +21,49 @@ var NODE_TYPE_CDATA = 4;
 /**
  *
  */
-function refresh()
-{
-  var sManageMain = "/manage";
-  var sManageMenu = "/manage_menu";
-  var sLocation = self.parent.manage_main.location + "";
-  var i = sLocation.indexOf(sManageMain);
-  var j = sLocation.indexOf('?');
-  var newLocation = sLocation.substring(0,i) + sManageMenu
-  if (j >= 0) newLocation += sLocation.substring(j);
-  self.location = newLocation;
+function refresh() {
+	var sManageMain = "/manage";
+	var sManageMenu = "/manage_menu";
+	var sLocation = self.parent.manage_main.location + "";
+	var i = sLocation.indexOf(sManageMain);
+	var j = sLocation.indexOf('?');
+	var newLocation = sLocation.substring(0,i) + sManageMenu
+	if (j >= 0) newLocation += sLocation.substring(j);
+	self.location = newLocation;
 }
 
 /**
  *
  */
-function followHref(href)
-{
-  self.window.parent.manage_main.location.href=href+'?lang=<dtml-var lang>&get_attrs:int=0&preview=preview';
+function followHref(href) {
+	self.window.parent.manage_main.location.href=href;
+	return false;
 }
-  
+
 /**
  *
  */
-function clickElement(id,href) 
-{
-  var speed = "fast";
-  var img = $("#"+id+"_img");
-  var el = $("#"+id+"_children");
-  if ( img.attr("title") == "-") {
-    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
-    el.hide( speed);
-  }
-  else 
-  if ( img.attr("title") == "+") {
-    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
-    el.show( speed);
-    if ( !el.attr( 'class')) {
-      el.addClass( 'form-small');
-      el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
-      el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
-      // Set wait-cursor.
-      $(document.body).css( "cursor", "wait");
-      // JQuery.AJAX.get
-      $.get( href+"/ajaxGetChildNodes?id="+id+"&meta_types:list=<dtml-var PAGES>&meta_types:list=ZMSTrashcan&lang=<dtml-var lang>&preview=preview&get_children:int=0&get_attrs:int=0&get_permissions=True&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
-    }
-  }
+function clickElement(id,href) {
+	var speed = "fast";
+	var img = $("#"+id+"_img");
+	var el = $("#"+id+"_children");
+	if ( img.attr("title") == "-") {
+		img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
+		el.hide( speed);
+	}
+	else if ( img.attr("title") == "+") {
+		img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
+		el.show( speed);
+		if ( !el.attr( 'class')) {
+			el.addClass( 'form-small');
+			el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
+			el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// JQuery.AJAX.get
+			$.get( href+"/ajaxGetChildNodes?id="+id+"&meta_types:list=<dtml-var PAGES>&meta_types:list=ZMSTrashcan&lang=<dtml-var lang>&preview=preview&get_children:int=0&get_attrs:int=0&get_permissions=True&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
+		}
+	}
 }
 
 /**
@@ -122,7 +119,7 @@ function processResponse(data)
     img.onmousedown=Function("dragstart(this)");
     img.onmouseover=Function("divmouseover(this)");
     var a = document.createElement( "a");
-    $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_main')");
+    $(a).attr( {href: page_absolute_url+"/manage_main?lang="+getZMILang(), onclick: "return followHref(this.href)"});
     $(a).addClass( "zmi");
     a.appendChild( img);
     var titlealt = document.createTextNode( page.getAttribute("titlealt"));
@@ -137,20 +134,22 @@ function processResponse(data)
       div.appendChild( document.createTextNode( " "));
       if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSADMINISTRATOR')">,')>=0) {
         var a = document.createElement( "a");
-        $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_customize')");
+        $(a).attr( {href: page_absolute_url+"/manage_customize?lang="+getZMILang(), onclick: "return followHref(this.href)"});
         var img = document.createElement( "img");
-        $(img).attr( {src: "<dtml-var MISC_ZMS>btn_custom.gif", title: "<dtml-var "getZMILangStr('TAB_CONFIGURATION')">", align: "absmiddle"});
-        $(img).css( "border", "1px dotted black");
+        $(img)
+        	.attr( {src: "<dtml-var MISC_ZMS>btn_custom.gif", title: "<dtml-var "getZMILangStr('TAB_CONFIGURATION')">", align: "absmiddle"})
+        	.css( "border", "1px dotted black");
         a.appendChild( img);
         div.appendChild( a);
         div.appendChild( document.createTextNode( " "));
       }
       if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')">,')>=0) {
         var a = document.createElement( "a");
-        $(a).attr( "href", "javascript:followHref('"+page_absolute_url+"/manage_users')");
+        $(a).attr( {href: page_absolute_url+"/manage_users?lang="+getZMILang(), onclick: "return followHref(this.ref)"});
         var img = document.createElement( "img");
-        $(img).attr( {src: "<dtml-var MISC_ZMS>icon_users.gif", title: "<dtml-var "getZMILangStr('TAB_ACCESS')">", align: "absmiddle"});
-        $(img).css( "border", "1px dotted black");
+        $(img)
+        	.attr( {src: "<dtml-var MISC_ZMS>icon_users.gif", title: "<dtml-var "getZMILangStr('TAB_ACCESS')">", align: "absmiddle"})
+        	.css( "border", "1px dotted black");
         a.appendChild( img);
         div.appendChild( a);
         div.appendChild( document.createTextNode( " "));
@@ -170,52 +169,44 @@ function processResponse(data)
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-function getHrefFromElement(element)
-{
-  var children = element.childNodes;
-  for ( var i = 0; i < children.length; i++) {
-    var child = children[i];
-    if (child.nodeType == NODE_TYPE_ELEMENT &&
-        child.nodeName == 'A') {
-      var href = child.getAttribute("href");
-      if ( href != null && href.indexOf('followHref') > 0 && href.indexOf('manage_main') > 0) {
-        href = href.substring( href.indexOf('\'')+1, href.lastIndexOf('\''));
-        href = href.substring( 0, href.lastIndexOf('/'));
-        return href;
-      }
-    }
-  }
-  return null;
+function getHrefFromElement(element) {
+	var children = element.childNodes;
+	for ( var i = 0; i < children.length; i++) {
+		var child = children[i];
+		if (child.nodeType == NODE_TYPE_ELEMENT && child.nodeName == 'A') {
+			var href = child.getAttribute("href");
+			if ( href != null && href.indexOf('manage_main') > 0) {
+				href = href.substring( 0, href.lastIndexOf('/'));
+				return href;
+			}
+		}
+	}
+	return null;
 }
 
-
-function setHrefToElement(element, new_href)
-{
-  var children = element.childNodes;
-  for ( var i = 0; i < children.length; i++) {
-    var child = children[i];
-    if (child.nodeType == NODE_TYPE_ELEMENT &&
-        child.nodeName == 'A') {
-      var href = child.getAttribute("href");
-      if ( href != null && href.indexOf('followHref') > 0 && href.indexOf('manage_main') > 0) {
-        child.setAttribute("href",href.substring( 0, href.indexOf('\'')+1) + new_href + href.substring( href.lastIndexOf('/')));
-      }
-    }
-  }
+function setHrefToElement(element, new_href) {
+	var children = element.childNodes;
+	for ( var i = 0; i < children.length; i++) {
+		var child = children[i];
+		if (child.nodeType == NODE_TYPE_ELEMENT && child.nodeName == 'A') {
+			var href = child.getAttribute("href");
+			if ( href != null && href.indexOf('manage_main') > 0) {
+				child.setAttribute("href",new_href + href.substring( href.lastIndexOf('/')));
+			}
+		}
+	}
 }
 
-
-function drop(href, target)
-{
-  // System-Message.
-  var system_msg = $("#system_msg");
-  system_msg.empty( );
-  system_msg.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
-  system_msg.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
-  system_msg.show( "normal");
-  // JQuery.AJAX.get
-  $(document.body).css( "cursor", "wait");
-  $.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&target="+escape(target), dropProcessResponse);
+function drop(href, target) {
+	// System-Message.
+	var system_msg = $("#system_msg");
+	system_msg.empty( );
+	system_msg.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
+	system_msg.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
+	system_msg.show( "normal");
+	// JQuery.AJAX.get
+	$(document.body).css( "cursor", "wait");
+	$.get( href+"/manage_ajaxDragDrop?lang=<dtml-var lang>&target="+escape(target), dropProcessResponse);
 }
 
 /**
@@ -531,7 +522,7 @@ function drag(ereignis) {
 <dtml-if objMap>
  <dtml-try>
   <div class="form-small" style="padding:10px 0px 10px 8px">
-   <select class="form-small" style="background-color:#FFFFD0" onchange="followHref(this.options[options.selectedIndex].value); this.selectedIndex=0;">
+   <select class="form-small" style="background-color:#FFFFD0" onchange="return followHref(this.options[options.selectedIndex].value+'?lang=<dtml-var lang>'); this.selectedIndex=0;">
     <option value="">--- Quicknavigation ---</option>
     <dtml-in "objMap.keys()" sort>
      <dtml-let k=sequence-item v="objMap[k]">
@@ -610,17 +601,16 @@ function drag(ereignis) {
       ><a href="javascript:clickElement('<dtml-var ob_id>','<dtml-var absolute_url>')"><img 
        id="<dtml-var ob_id>_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" title="+" align="absmiddle"></a
      ></dtml-if
-     ><a href="javascript:followHref('<dtml-var absolute_url>/manage_main')" class="zmi"
+     ><a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>" onclick="return followHref(this.href)" class="zmi"
      ><dtml-var f_display_icon
      ><dtml-if "ob in breadcrumbs"><b></dtml-if
      ><dtml-var "getTitlealt(REQUEST)"
      ><dtml-if "ob in breadcrumbs"></b></dtml-if
      ></a>
      <dtml-if "meta_type=='ZMS'">
-      <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',ob)"><a href="javascript:followHref('<dtml-var absolute_url>/manage_customize')"><img src="<dtml-var MISC_ZMS>btn_custom.gif" title="<dtml-var "getZMILangStr('TAB_CONFIGURATION')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
-      <dtml-if "AUTHENTICATED_USER.has_permission('ZMS UserAdministrator',ob)"><a href="javascript:followHref('<dtml-var absolute_url>/manage_users')"><img src="<dtml-var MISC_ZMS>icon_users.gif" title="<dtml-var "getZMILangStr('TAB_ACCESS')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
+      <dtml-if "AUTHENTICATED_USER.has_permission('ZMS Administrator',ob)"><a href="<dtml-var absolute_url>/manage_customize?lang=<dtml-var lang>" onclick="return followHref(this.href)"><img src="<dtml-var MISC_ZMS>btn_custom.gif" title="<dtml-var "getZMILangStr('TAB_CONFIGURATION')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
+      <dtml-if "AUTHENTICATED_USER.has_permission('ZMS UserAdministrator',ob)"><a href="<dtml-var absolute_url>/manage_users?lang=<dtml-var lang>" onclick="return followHref(this.href)"><img src="<dtml-var MISC_ZMS>icon_users.gif" title="<dtml-var "getZMILangStr('TAB_ACCESS')">" style="border: 1px dotted black;" align="absmiddle"/></a></dtml-if>
      </dtml-if>
-     <dtml-try><dtml-if "wl_isLocked()==1"><img src="/p_/davlocked"></dtml-if><dtml-except></dtml-try>
     </div
     ><div id="<dtml-var ob_id>_children" style="margin: 1px 1px 1px 8px"
     ><dtml-call "REQUEST.set( 'seq_index', seq_index + 1)"

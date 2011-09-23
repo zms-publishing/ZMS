@@ -219,7 +219,7 @@ class ZMSLinkContainer(ZMSContainerObject):
       try:
         html = ''.join(
           map(lambda x: x.renderShort(REQUEST), 
-            filter(lambda x: x.isVisible(REQUEST), 
+            filter(lambda x: x.isCommitted(REQUEST), 
               self.getChildNodes(REQUEST,['ZMSLinkElement']))))
         html = '<div class="contentEditable" id="contentEditable_%s_%s">%s</div>'%(self.id,REQUEST['lang'],html)
         html = '<div class="zmiRenderShort">%s</div><!-- .zmiRenderShort -->'%html

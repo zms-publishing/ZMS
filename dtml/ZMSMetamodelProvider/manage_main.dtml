@@ -541,7 +541,8 @@ function enabledCheckboxClickResponse(data) {
               /></dtml-if
              ></dtml-let
             ><dtml-elif "oAttr['type']=='method'"
-             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'],None)"
+              ><dtml-try
               ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
                ><dtml-if "oAttr['errors']"
                 ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: <dtml-var "oAttr['errors']">" border="0" align="absmiddle"
@@ -549,9 +550,13 @@ function enabledCheckboxClickResponse(data) {
                 ><img src="<dtml-var MISC_ZMS>ico_method.gif" title="<dtml-var "oAttr['type'].capitalize()">" border="0" style="vertical-align:middle" 
                /></dtml-if
                /></a
+               ><dtml-except
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_method.gif)" title="ERROR: '<dtml-if "ob is None">'<dtml-var "metaObj['id']+'.'+oAttr['id']">' not found!<dtml-else><dtml-var error_type>: <dtml-var error_value></dtml-if>" border="0" align="absmiddle"
+               ></dtml-try
              ></dtml-let
             ><dtml-elif "oAttr['type']=='py'"
-             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'],None)"
+              ><dtml-try
               ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
                 ><dtml-if "ob.errors"
                  ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_py.gif)" title="ERROR: <dtml-var expr="'\n'.join(ob.errors)" html_quote>" border="0" style="vertical-align:middle" 
@@ -561,9 +566,13 @@ function enabledCheckboxClickResponse(data) {
                  ><img src="<dtml-var MISC_ZMS>ico_py.gif" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>" 
                 /></dtml-if
                /></a
+               ><dtml-except
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var MISC_ZMS>ico_py.gif)" title="ERROR: '<dtml-var "metaObj['id']+'.'+oAttr['id']">' not found!" border="0" align="absmiddle"
+               ></dtml-try
              ></dtml-let
             ><dtml-elif "oAttr['type']=='zpt'"
-             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'])"
+             ><dtml-let ob="getattr(this(),metaObj['id']+'.'+oAttr['id'],None)"
+              ><dtml-try
               ><a href="<dtml-var "ob.absolute_url()">/manage_main" target="_blank"
                ><dtml-if "ob.pt_errors()"
                 ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(<dtml-var "ob.icon">)" title="ERROR: <dtml-var expr="'\n'.join(ob.pt_errors())" html_quote>" border="0" style="vertical-align:middle" 
@@ -571,6 +580,9 @@ function enabledCheckboxClickResponse(data) {
                 ><img src="<dtml-var "ob.icon">" title="<dtml-var "oAttr['type']">" border="0" style="vertical-align:middle;<dtml-if "oAttr['id'].find('/')>0">background-image:url(<dtml-var MISC_ZMS>ico_folder.gif);</dtml-if>"
                /></dtml-if
                /></a
+               ><dtml-except
+                ><img src="<dtml-var MISC_ZMS>decorator_error.gif" style="background-image:url(/misc_/PageTemplates/zpt.gif)" title="ERROR: '<dtml-var "metaObj['id']+'.'+oAttr['id']">' not found!" border="0" align="absmiddle"
+               ></dtml-try
              ></dtml-let
             ><dtml-else
              ><img src="<dtml-var MISC_ZMS>ico_attr.gif" title="Attribute" border="0" style="vertical-align:middle" 

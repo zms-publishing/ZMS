@@ -325,7 +325,7 @@ class ZMSMetaobjManager:
         file = open(filepath)
         # Execute action.
         if filepath in ids or '*' in ids:
-          ob.metaobj_manager.importMetaobjXml( file)
+          self.metaobj_manager.importMetaobjXml( file)
         elif filepath.endswith(suffix):
           try:
             filexml = self.parseXmlString( file, mediadbStorable=False)

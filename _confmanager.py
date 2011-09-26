@@ -267,10 +267,12 @@ class ConfManager(
           filemtime = None
           mtime = long(ob.bobobase_modification_time().timeTime())
           meta_type = ob.meta_type
-          if node.meta_type == 'Folder' and ob.meta_type in ['DTML Method','DTML Document','File','Image','Script (Python)']:
+          if node.meta_type == 'Folder' and ob.meta_type in ['DTML Method','DTML Document','File','Image','Page Template','Script (Python)']:
             if ob.meta_type in ['DTML Method','DTML Document']:
               filepath += '.dtml'
-            if ob.meta_type in ['Script (Python)']:
+            elif ob.meta_type in ['Page Template']:
+              filepath += '.zpt'
+            elif ob.meta_type in ['Script (Python)']:
               filepath += '.py'
             if os.path.exists( filepath):
               filestat = os.stat(filepath)
@@ -315,7 +317,9 @@ class ConfManager(
         filemtime = long(filestat[stat.ST_MTIME])
         if id.endswith('.dtml'):
           id = id[:id.rfind('.')]
-        if id.endswith('.py'):
+        elif id.endswith('.zpt'):
+          id = id[:id.rfind('.')]
+        elif id.endswith('.py'):
           id = id[:id.rfind('.')]
         path_ids.append( id)
         ob = getattr( node, id, None)
@@ -340,6 +344,10 @@ class ConfManager(
               meta_type = 'DTML Method'
               if filepath in ids or '*' in ids:
                 node.manage_addDTMLMethod( id=id, title='New DTML Method')
+            elif filename.endswith('.zpt'):
+              meta_type = 'Page Template'
+              if filepath in ids or '*' in ids:
+                node.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=id,title='New Page Template')
             elif filename.endswith('.py'):
               meta_type = 'Script (Python)'
               if filepath in ids or '*' in ids:
@@ -368,7 +376,10 @@ class ConfManager(
             if filepath in ids or '*' in ids:
               file = open(filepath)
               data = file.read()
-              ob.manage_upload(data)
+              if ob.meta_type == 'Page Template':
+                ob.pt_edit(data,content_type='text/html')
+              else:
+                ob.manage_upload(data)
               file.close()
       if node is not None and node.meta_type != 'ZMS':
         for ob in node.objectValues(['ZMS']):
@@ -486,7 +497,7 @@ class ConfManager(
               path = ob.getPhysicalPath()
               if len(filter(lambda x: x.endswith('css'), path)) > 0 and id not in ids:
                 ids.append( id)
-                if absattr( ob.id) == self.getConfProperty('ZMS.stylesheet','style.css'):
+                if id == self.getConfProperty('ZMS.stylesheet','style.css'):
                   obs.insert( 0, ob)
                 else:
                   obs.append( ob)

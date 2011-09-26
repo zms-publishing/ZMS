@@ -736,7 +736,10 @@ class ZMSGlobals:
       except:
         
         stylesheet = self.getStylesheet()
-        data = stylesheet.raw
+        if stylesheet.meta_type in ['DTML Document','DTML Method']:
+          data = stylesheet.raw
+        elif stylesheet.meta_type in ['File']:
+          data = stylesheet.data
         data = re.sub( '/\*(.*?)\*/', '', data)
         value = {}
         for elmnt in data.split('}'):

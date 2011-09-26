@@ -8,6 +8,7 @@
           'conflict':'%sico_warning.gif'%MISC_ZMS,
           'error':'%sico_error.gif'%MISC_ZMS,
           'DTML Method':'/misc_/OFSP/dtmlmethod.gif',
+          'Page Template':'/misc_/PageTemplates/zpt.gif',
           'Script (Python)':'/misc_/PythonScripts/pyscript.gif',
           'ZMSMetamodelProvider':'%sZMSMetamodelProvider.gif'%MISC_ZMS,
         }">

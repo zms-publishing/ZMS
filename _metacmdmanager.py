@@ -52,6 +52,9 @@ dtmlMethodWithoutExecExampleCode = \
   '<dtml-var manage_page_header>\n' + \
   ''
 
+pageTemplateExampleCode = \
+  ''
+
 pyScriptExampleCode = \
   '# Example code:\n' + \
   '\n' + \
@@ -193,6 +196,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
 
   # Insert Template.
   if id is None:
+    newTitle = '*** DO NOT DELETE OR MODIFY ***'
     if newAcquired:
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
@@ -200,7 +204,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
     if newId in self.objectIds():
       self.manage_delObjects(ids=[newId])
     if newMethod == 'DTML Method':
-      self.manage_addDTMLMethod(newId,'*** DO NOT DELETE OR MODIFY ***')
+      self.manage_addDTMLMethod(newId,newTitle)
       if newData is None:
         if newExec:
           newData = dtmlMethodWithExecExampleCode
@@ -208,8 +212,10 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
           newData = dtmlMethodWithoutExecExampleCode
         newData = newData.replace('$$NAME$$',newName)
     elif newMethod == 'DTML Document':
-      self.manage_addDTMLDocument(newId,'*** DO NOT DELETE OR MODIFY ***')
+      self.manage_addDTMLDocument(newId,newTitle)
       if newData is None: newData = dtmlMethodExampleCode
+    elif newMethod == 'Page Template':
+      self.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=newId,title=newTitle,text=pageTemplateExampleCode)
     elif newMethod == 'Script (Python)':
       PythonScript.manage_addPythonScript(self,newId)
       if newData is None: newData = pyScriptExampleCode
@@ -226,6 +232,8 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
     if newData is not None:
       if ob.meta_type in ['DTML Method','DTML Document']:
         ob.manage_edit(title=ob.title,data=newData)
+      elif ob.meta_type == 'Page Template':
+        ob.pt_edit(newData,content_type=ob.content_type)
       elif ob.meta_type == 'Script (Python)':
         ob.write(newData)
 
@@ -262,9 +270,13 @@ class MetacmdObject:
             if portalMaster is not None:
               masterDtmlMthd = getattr(portalMaster,metaCmd['id'])
               ob = getattr(self,metaCmd['id'])
-              if ob.meta_type in [ 'DTML Method', 'DTML Document', 'Page Template']:
+              if ob.meta_type in [ 'DTML Method', 'DTML Document']:
                 newData = masterDtmlMthd.raw
                 ob.manage_edit(title=ob.title,data=newData)
+              elif ob.meta_type in [ 'Page Template']:
+                newData = masterDtmlMthd.read()
+                newContentType = masterDtmlMthd.content_type
+                ob.pt_edit(newData,content_type=newContentType)
               elif ob.meta_type in [ 'Script (Python)']:
                 newData = masterDtmlMthd.read()
                 ob.ZPythonScript_setTitle( ob.title)
@@ -274,6 +286,8 @@ class MetacmdObject:
             ob = getattr(self,metaCmd['id'],None)
             if ob.meta_type in ['DTML Method','DTML Document']:
               message = ob(self,REQUEST,RESPONSE)
+            elif ob.meta_type == 'Page Template':
+              message = ob()
             elif ob.meta_type == 'Script (Python)':
               message = ob()
           # Execute redirect.
@@ -429,7 +443,9 @@ class MetacmdManager:
               el_meta_type = ob.meta_type
               if ob.meta_type in ['DTML Method','DTML Document']:
                 el_data = ob.raw
-              else:
+              elif ob.meta_type in ['Page Template']:
+                el_data = ob.read()
+              elif ob.meta_type in ['Script (Python)']:
                 el_data = ob.body()
               # Value.
               value.append({'id':el_id,'name':el_name,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'custom':el_custom,'meta_type':el_meta_type,'data':el_data})

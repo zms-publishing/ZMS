@@ -165,6 +165,20 @@
       <div class="form-element">
        <dtml-if "ob.meta_type in ['DTML Method','DTML Document']">
         <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=80,rows=20,value=ob.raw,enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra=' style=\042width:100%;\042')">
+       <dtml-elif "ob.meta_type=='Page Template'">
+        <table cellspacing="1" cellpadding="1" border="0">
+        <dtml-if "ob.pt_errors()">
+         <tr valign="top">
+          <td class="form-label">Errors</td>
+          <td style="background-color: #FFDDDD"><pre><dtml-var expr="'\n'.join(ob.pt_errors())" html_quote></pre></td>
+         </tr>
+        </dtml-if>
+        <tr>
+         <td align="left" valign="top" colspan="2">
+          <dtml-var "getTextArea(fmName='form0',elName='el_data:text',cols=50,rows=20,value=ob.read(),enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off')">
+         </td>
+        </tr>
+        </table>
        <dtml-elif "ob.meta_type=='Script (Python)'">
         <table cellspacing="1" cellpadding="1" border="0">
         <dtml-if "ob.errors">
@@ -239,7 +253,7 @@
   </dtml-if>
   <dtml-else>
    <dtml-if "REQUEST.get('id','')==''">
-    <tr class="neutralColorWhite">
+    <tr class="zmiNeutralColorWhite">
      <td colspan="5">
       <div class="form-small">
        <a href="?lang=<dtml-var lang>&id=<dtml-var "metaCmd['id']">" class="zmi">
@@ -280,6 +294,7 @@
       <select class="form-element" name="_type">
        <option value="DTML Method">DTML Method</option>
        <option value="DTML Document">DTML Document</option>
+       <option value="Page Template">Page Template</option>
        <option value="Script (Python)">Script (Python)</option>
       </select>
       <div align="right" class="form-small"><dtml-var "getZMILangStr('ATTR_TYPE')"></div>

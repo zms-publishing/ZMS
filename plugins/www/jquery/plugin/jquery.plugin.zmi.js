@@ -145,40 +145,42 @@ var zmiAutoChangeArr = {};
 
 function zmiAutoSave() {
 	var els = $("form.ZMIPropertiesForm .form-element-modified");
-	var values = {};
-	for (var i = 0; i < els.length; i++) {
-		var $el = $(els[i]);
-		var elid = $(el).attr("id");
-		if (typeof elid != "undefined") {
-			var coords = $el.offset();
-			var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div></div>';
-			$("body").append(html);
-			values[elid] = $el.val();
+	if (els) {
+		var values = {};
+		for (var i = 0; i < els.length; i++) {
+			var $el = $(els[i]);
+			var elid = $el.attr("id");
+			if (typeof elid != "undefined") {
+				var coords = $el.offset();
+				var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div>';
+				$("body").append(html);
+				values[elid] = $el.val();
+			}
 		}
+		runPluginJSON(function() {
+				// Store temp-form properties.
+				$.post("setTempFormProperties",{lang:zmiParams["lang"],key:self.location.href,values:$.toJSON(values)},function(result) {
+						$("div.zmiAutoSave").remove();
+					});
+			});
 	}
-	runPluginJSON(function() {
-			// Store temp-form properties.
-			$.get("setTempFormProperties",{lang:zmiParams["lang"],key:self.location.href,values:$.toJSON(values)},function(result) {
-					$("div.zmiAutoSave").remove();
-				});
-		});
 }
 
 function zmiAutoChange(el) {
 	var elid = $(el).attr("id");
 	if (typeof elid != "undefined" && typeof zmiAutoChangeArr[elid] != "undefined") {
-		if (!($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[$(el).attr("id")]["init"] != $(el).val()) {
+		if (!($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[elid]["init"] != $(el).val()) {
 			$(el).addClass("form-element-modified");
 		}
-		else if (($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[$(el).attr("id")]["init"] == $(el).val()) {
+		else if (($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[elid]["init"] == $(el).val()) {
 			$(el).removeClass("form-element-modified");
 		}
-		if (zmiAutoChangeArr[$(el).attr("id")]["last"] != $(el).val()) {
+		if (zmiAutoChangeArr[elid]["last"] != $(el).val()) {
 			if (zmiAutoSaveTimeout != null) {
 				window.clearTimeout(zmiAutoSaveTimeout);
 			}
 			zmiAutoSaveTimeout = window.setTimeout("zmiAutoSave()",zmiAutoSaveIntervall);
-			zmiAutoChangeArr[$(el).attr("id")]["last"] = $(el).val();
+			zmiAutoChangeArr[elid]["last"] = $(el).val();
 		}
 	}
 }

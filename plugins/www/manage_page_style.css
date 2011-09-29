@@ -123,6 +123,13 @@ body.zmi.zmisitemap a {
 	background:url(/misc_/zms/zms_banner.png);
 }
 
+#zmi_logout img {
+	width:13px;
+	height:11px;
+	cursor:pointer;
+	background:url(/++resource++zms_/img/logout.png) no-repeat;
+}
+
 body.zmi div.zmi {
 	width: 800px;
 }

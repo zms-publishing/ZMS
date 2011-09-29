@@ -10,6 +10,9 @@
 			<div class="zmi_col_right">
 				<dtml-if meta_id>
 					<span class="ui-helper-clickable" onclick="zmiIframe('manage_userForm?lang=<dtml-var lang>',{'title':$(this).attr('title')})" title="<dtml-var AUTHENTICATED_USER>: <dtml-var "', '.join(AUTHENTICATED_USER.getRolesInContext(ZMS_THIS))">"><dtml-var "string_maxlen(str(AUTHENTICATED_USER),25)"></span>
+					<dtml-if "getConfProperty('ZMS.logout.href','')">
+						<a href="<dtml-var "getConfProperty('ZMS.logout.href','')">" id="zmi_logout" title="Logout"><img src="<dtml-var spacer_gif>" alt="" border="0" align="absmiddle"/></a>
+					</dtml-if>
 				</dtml-if>
 				<span class="ui-helper-clickable"><img id="zmi_maximize" src="<dtml-var spacer_gif>" border="0" align="absmiddle" onclick="zmiToggleMaximize()"></span>
 			</div><!-- .zmi_col_right -->

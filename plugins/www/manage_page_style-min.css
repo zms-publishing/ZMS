@@ -19,6 +19,7 @@ body.zmi{font-family:Arial,sans-serif;margin:0;padding:0;border:0;background:tra
 body.zmi.zmisitemap{background-color:#fff !important;background-image:none !important}
 body.zmi.zmisitemap a{text-decoration:none}
 #zmi_banner{width:460px;height:20px;cursor:pointer;background:url(/misc_/zms/zms_banner.png)}
+#zmi_logout img{width:13px;height:11px;cursor:pointer;background:url(/++resource++zms_/img/logout.png) no-repeat}
 body.zmi div.zmi{width:800px}
 body.zmi img{border:0}
 h1{font-size:1.5em;line-height:2.2em}

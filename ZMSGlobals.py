@@ -166,6 +166,26 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.nvl:
     # --------------------------------------------------------------------------
+    def inline_if(self, cond, v1, v2):
+      """
+      Inline conditional:
+      - Java: cond?v1:v2
+      - Python >2.5: v1 if cond else v2
+      
+      @param v1: 1st argument
+      @type v1: C{any}
+      @param v2: 2nd argument
+      @type v2: C{any}
+      @rtype: C{any}
+      """
+      if cond:
+          return v1
+      else:
+          return v2
+
+    # --------------------------------------------------------------------------
+    #  ZMSGlobals.nvl:
+    # --------------------------------------------------------------------------
     def nvl(self, a1, a2, n=None):
       """
       Returns its first argument if it is not equal to third argument (None), 

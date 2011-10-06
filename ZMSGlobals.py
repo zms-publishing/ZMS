@@ -1337,7 +1337,7 @@ class ZMSGlobals:
     Reads path from local file-system.
     @rtype: C{list}
     """
-    security.declareProtected('View', 'localfs_reaadPath')
+    security.declareProtected('View', 'localfs_readPath')
     def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
       """
       ZMSGlobals.localfs_readPath

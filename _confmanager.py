@@ -514,7 +514,7 @@ class ConfManager(
       getNotifications
       """
       notifications = []
-      if self.getConfProperty('ZMS.ConfManager.getNotifications.disabled',0) == 1:
+      if self.getConfProperty('ZMS.ConfManager.getNotifications.disabled',1) == 1:
         notifications.append({'severity':'disabled'})
       for ob in self.objectValues():
         if IZMSNotificationService in list(zope.interface.providedBy(ob)):

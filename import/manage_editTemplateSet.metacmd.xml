@@ -664,7 +664,7 @@ div.ace_gutter {
 					<span id="action">pt_editAction</span>
 					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
 					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
-					<label for="expand">Expand</label><input id="expand" name="expand" class="form-element" tal:attributes="value ob/expand">
+					<label for="expand">Expand</label><input id="expand" name="expand:int" class="form-element" tal:attributes="value ob/expand">
 				</div>
 				<textarea id="text" name="text:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
 			</span>

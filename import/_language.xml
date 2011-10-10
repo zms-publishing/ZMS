@@ -3726,6 +3726,7 @@
     <Cell><Data ss:Type="String">[&lt;a%s&gt;More&lt;/a&gt;]</Data></Cell>
     <Cell><Data ss:Type="String">[&lt;a%s&gt;meer&lt;/a&gt;]</Data></Cell>
     <Cell><Data ss:Type="String">[&lt;a%s&gt;Plus&lt;/a&gt;]</Data></Cell>
+    <Cell><Data ss:Type="String">[&lt;a%s&gt;altro&lt;/a&gt;]</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">[&lt;a%s&gt;Más&lt;/a&gt;]</Data></Cell>
     <Cell><Data ss:Type="String">[&lt;a%s&gt;其它&lt;/a&gt;]</Data></Cell>
     <Cell ss:StyleID="s27"><Data ss:Type="String">[&lt;a%s&gt;بيشتر&lt;/a&gt;]</Data></Cell>

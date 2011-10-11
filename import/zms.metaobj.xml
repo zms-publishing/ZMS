@@ -2888,53 +2888,50 @@ var table_cell_id = '';
 var table_cell_bgcolor = null;
 var table_cell_offs = 2;
 
-function onZMSTableFormSubmit()
-{
-  var xml;
-  xml = '';
-  xml += '<list>\n';
-  var el_tbody = $($("#table_cell_editor").children()[0]);
-  var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
-  for ( var i=0; i < el_trs.length; i++) {
-    xml += "<item type=\"list\"><list>\n";
-    var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
-    for ( var j=0; j < el_tds.length; j++) {
-      xml += "<item type=\"dictionary\"><dictionary>\n";
-      var colspan = $(el_tds[j]).attr("colspan");
-      
-      if ( colspan) {
-        xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
-        var el_inputs = $("textarea,input",el_tds[j]);
-        for ( var k=0; k < el_inputs.length; k++) {
-          var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-          xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
-        }
-      }
-      else {
-        xml += '<item key="colspan" type="int">1</item>\n';
-      }
-      xml += '</dictionary></item>\n';
-    }
-    xml += '</list></item>\n';
-  }
-  xml += '</list>\n';
-  $("#table_table").val( xml);
-  xml = '';
-  xml += '<list>\n';
-  var el_trs = el_tbody.children().filter(":eq(1)");
-  for ( var i=0; i < el_trs.length; i++) {
-    var el_inputs = $("input:text",el_trs[i]);
-    for ( var j = 0; j < el_inputs.length; j++) {
-      xml += '<item type="string">'+$(el_inputs[j]).val()+'</item>\n';
-    }
-  }
-  xml += '</list>\n';
-  $("#table_colgroup_cols").val( xml);
-  return onFormSubmit('<dtml-var fmName>');
+function onZMSTableFormSubmit() {
+	var xml;
+	xml = '';
+	xml += '<list>\n';
+	var el_tbody = $($("#table_cell_editor").children()[0]);
+	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
+	for ( var i=0; i < el_trs.length; i++) {
+		xml += "<item type=\"list\"><list>\n";
+		var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
+		for ( var j=0; j < el_tds.length; j++) {
+			xml += "<item type=\"dictionary\"><dictionary>\n";
+			var colspan = $(el_tds[j]).attr("colspan");
+			if ( colspan) {
+				xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
+				var el_inputs = $("textarea,input",el_tds[j]);
+				for ( var k=0; k < el_inputs.length; k++) {
+					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+					xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
+				}
+			}
+			else {
+				xml += '<item key="colspan" type="int">1</item>\n';
+			}
+			xml += '</dictionary></item>\n';
+		}
+		xml += '</list></item>\n';
+	}
+	xml += '</list>\n';
+	$("#table_table").val( xml);
+	xml = '';
+	xml += '<list>\n';
+	var el_trs = el_tbody.children().filter(":eq(1)");
+	for ( var i=0; i < el_trs.length; i++) {
+		var el_inputs = $("input:text",el_trs[i]);
+		for ( var j = 0; j < el_inputs.length; j++) {
+			xml += '<item type="string">'+$(el_inputs[j]).val()+'</item>\n';
+		}
+	}
+	xml += '</list>\n';
+	$("#table_colgroup_cols").val( xml);
+	return onFormSubmit('<dtml-var fmName>');
 }
 
-function table_cell_edit(el_td)
-{
+function table_cell_edit(el_td) {
 	var el = $('textarea',el_td);
 	var el_name = el.attr('name');
 	table_cell_id = el_name.substr(el_name.indexOf('_')+1);
@@ -2949,6 +2946,7 @@ function table_cell_edit(el_td)
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
 	$('#tag').val($('#tag_'+ table_cell_id).val());
 	$('#format').val($('#format_'+ table_cell_id).val());
+	zmiRichtextSyncDataToView('<dtml-var elName>');
 	<dtml-let elName="'content_editor'">
 	<dtml-if "REQUEST.get('richedit_fmt')">
 	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
@@ -2963,12 +2961,14 @@ function table_cell_edit(el_td)
 			title:'<dtml-var "getZMILangStr('ATTR_COL')">: <dtml-var "getZMILangStr('BTN_EDIT')">',
 			width:'auto',
 			height:'auto',
-			modal:true
+			modal:true,
+			close: function(event, ui) {
+					table_cell_cancel(event);
+				}
 	});
 }
 
-function table_cell_change()
-{
+function table_cell_change() {
 	<dtml-if "REQUEST.get('richedit_fmt')">
 	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
 		zmiRichtextOnSubmitEventHandler();
@@ -2980,175 +2980,178 @@ function table_cell_change()
 		$('#preview_'+ table_cell_id).hide();
 	}
 	</dtml-if>
-  $('#format_'+ table_cell_id).val($('#format').val());
-  $('#tag_'+ table_cell_id).val($('#tag').val());
-  $('#content_'+ table_cell_id).val($('#content_editor').val());
-  $('#preview_'+ table_cell_id).html($('#content_editor').val());
-  return table_cell_cancel();
+	$('#format_'+ table_cell_id).val($('#format').val());
+	$('#tag_'+ table_cell_id).val($('#tag').val());
+	$('#content_'+ table_cell_id).val($('#content_editor').val());
+	$('#preview_'+ table_cell_id).html($('#content_editor').val());
+	return table_cell_cancel();
 }
 
-function table_cell_cancel()
-{
+function table_cell_cancel(event) {
 	// Reset cell background.
 	var el_td = $('#content_'+ table_cell_id).parents(".table_cell_editable");
 	el_td.css( "backgroundColor", table_cell_bgcolor);
 	table_cell_bgcolor = null;
 	// Close cell editor.
-	$('#div_table_cell_editor').dialog('close');
+	if (!event) {
+		$('#div_table_cell_editor').dialog('close');
+	}
 	return false;
 }
 
-function table_cell_init()
-{
-  $("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").css( 'backgroundColor', '#FFFFE8');});
-  $("form[name=<dtml-var fmName>] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
+function table_cell_init() {
+	$("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").css( 'backgroundColor', '#FFFFE8');});
+	$("form[name=<dtml-var fmName>] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
 }
 
-function actionBtnClick(el, fct)
-{
-  var x = 0;
-  var el_td = $($(el).parents("td")[1]);
-  while ( el_td.prev().length > 0) {
-    x++;
-    el_td = $(el_td.prev()[0]);
-  }
-  var y = 0;
-  var el_tr = $(el_td.parent("tr"));
-  while ( el_tr.prev().length > 0) {
-    y++;
-    el_tr = $(el_tr.prev()[0]);
-  }
-  var el_tbody = $($(el).parents("tbody")[1]);
-  el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
-  //////////////////////////////////////////////////////////////////////////////
-  /// DELETE
-  //////////////////////////////////////////////////////////////////////////////
-  if (fct.indexOf('delete') == 0) {
-    if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
-      if (fct.indexOf('delete_col') == 0) {
-        var el_trs = el_tbody.children();
-        for ( var i = 0; i < el_trs.length; i++) {
-          if ( i == table_cell_offs && <dtml-var table_type> == 2) {
-            var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
-            el_td.attr("colspan",parseInt(el_td.attr("colspan"))-1);
-          }
-          else {
-            var el_td = $($(el_trs[i]).children().filter(":eq("+x+")")[0]);
-            el_td.remove();
-          }
-        }
-        $('#cols').val( parseInt($('#cols').val())-1);
-      }
-      else if (fct.indexOf('delete_row') == 0) {
-        var el_tr = $(el_tbody.children().filter(":eq("+y+")")[0]);
-        el_tr.remove();
-        $('#rows').val( parseInt($('#rows').val())-1);
-      }
-    }
-  }
-  //////////////////////////////////////////////////////////////////////////////
-  /// INSERT
-  //////////////////////////////////////////////////////////////////////////////
-  else if (fct.indexOf('insert_col') == 0) {
-    var el_trs = el_tbody.children();
-    for ( var i = 0; i < el_trs.length; i++) {
-      if ( i == table_cell_offs && <dtml-var table_type> == 2) {
-        var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
-        el_td.attr("colspan",parseInt(el_td.attr("colspan"))+1);
-      }
-      else {
-        var el_tds = $(el_trs[i]).children();
-        var el_td = $(el_tds.filter(":eq("+x+")")[0]);
-        var new_td = $(el_tds[el_tds.length-2]).clone();
-        var el_inputs = $("textarea,input",new_td);
-        for ( var k = 0; k < el_inputs.length; k++) {
-          var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-          $(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
-          $(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
-          if ( key.indexOf("format") == 0) {
-            $(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
-          }
-          else if ( key.indexOf("content") == 0) {
-            $(el_inputs[k]).val( "");
-            $(el_inputs[k]).css( 'border', '2px solid #00FF00');
-          }
-          table_cell_uid++;
-        }
-        new_td.insertBefore( el_td);
-      }
-    }
-    $('#cols').val( parseInt($('#cols').val())+1);
-    table_cell_init();
-  }
-  else if (fct.indexOf('insert_row') == 0) {
-    var el_trs = el_tbody.children();
-    var el_tr = $(el_trs.filter(":eq("+y+")")[0]);
-    var new_tr = $(el_trs[el_trs.length-2]).clone();
-    var el_inputs = $("textarea,input",new_tr);
-    for ( var k = 0; k < el_inputs.length; k++) {
-      var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-      $(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
-      $(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
-      if ( key.indexOf("format") == 0) {
-        $(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
-      }
-      else if ( key.indexOf("content") == 0) {
-        $(el_inputs[k]).val( "");
-        $(el_inputs[k]).css( 'border', '2px solid #00FF00');
-      }
-      table_cell_uid++;
-    }
-    new_tr.insertBefore( el_tr);
-    $('#rows').val( parseInt($('#rows').val())-1);
-    table_cell_init();
-  }
-  //////////////////////////////////////////////////////////////////////////////
-  /// MOVE
-  //////////////////////////////////////////////////////////////////////////////
-  else if (fct.indexOf('move_col') == 0) {
-    var source_x = x;
-    var target_x = x;
-    if (fct == 'move_col_left')
-      target_x = target_x - 1;
-    else
-      target_x = target_x + 1;
-    var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
-    for ( var i = 0; i < el_trs.length; i++) {
-      var source_td = $($(el_trs[i]).children().filter(":eq("+source_x+")")[0]);
-      var source_inp = $("textarea,input",source_td);
-      var target_td = $($(el_trs[i]).children().filter(":eq("+target_x+")")[0]);
-      var target_inp = $("textarea,input",target_td);
-      for ( var j = 0; j < source_inp.length; j++) {
-        var v = $(source_inp[j]).val();
-        $(source_inp[j]).val( $(target_inp[j]).val());
-        $(target_inp[j]).val( v);
-      }
-    }
-  }
-  else if (fct.indexOf('move_row') == 0) {
-    var source_y = y;
-    var target_y = y;
-    if (fct == 'move_row_up')
-      target_y = target_y - 1;
-    else
-      target_y = target_y + 1;
-    var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
-    var source_inp = $("textarea,input",source_tr);
-    var target_tr = $(el_tbody.children().filter(":eq("+target_y+")")[0]);
-    var target_inp = $("textarea,input",target_tr);
-    for ( var j = 0; j < source_inp.length; j++) {
-      var v = $(source_inp[j]).val();
-      $(source_inp[j]).val( $(target_inp[j]).val());
-      $(target_inp[j]).val( v);
-    }
-  }
-  else {
-    var par = Math.max(x,y)-table_cell_offs;
-    var fm = document.forms['<dtml-var fmName>'];
-    fm.elements['function'].value = fct;
-    fm.elements['param'].value = par;
-    fm.submit();
-  }
+function actionBtnClick(el, fct) {
+	var x = 0;
+	var el_td = $($(el).parents("td")[1]);
+	while ( el_td.prev().length > 0) {
+		x++;
+		el_td = $(el_td.prev()[0]);
+	}
+	var y = 0;
+	var el_tr = $(el_td.parent("tr"));
+	while ( el_tr.prev().length > 0) {
+		y++;
+		el_tr = $(el_tr.prev()[0]);
+	}
+	var el_tbody = $($(el).parents("tbody")[1]);
+	el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
+	//////////////////////////////////////////////////////////////////////////////
+	/// DELETE
+	//////////////////////////////////////////////////////////////////////////////
+	if (fct.indexOf('delete') == 0) {
+		if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
+			if (fct.indexOf('delete_col') == 0) {
+				var el_trs = el_tbody.children();
+				for ( var i = 0; i < el_trs.length; i++) {
+					if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+						var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
+						el_td.attr("colspan",parseInt(el_td.attr("colspan"))-1);
+					}
+					else {
+						var el_td = $($(el_trs[i]).children().filter(":eq("+x+")")[0]);
+						el_td.remove();
+					}
+				}
+				$('#cols').val( parseInt($('#cols').val())-1);
+			}
+			else if (fct.indexOf('delete_row') == 0) {
+				var el_tr = $(el_tbody.children().filter(":eq("+y+")")[0]);
+				el_tr.remove();
+				$('#rows').val( parseInt($('#rows').val())-1);
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	/// INSERT
+	//////////////////////////////////////////////////////////////////////////////
+	else if (fct.indexOf('insert_col') == 0) {
+		var el_trs = el_tbody.children();
+		for ( var i = 0; i < el_trs.length; i++) {
+			if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+				var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
+				el_td.attr("colspan",parseInt(el_td.attr("colspan"))+1);
+			}
+			else {
+				var el_tds = $(el_trs[i]).children();
+				var el_td = $(el_tds.filter(":eq("+x+")")[0]);
+				var new_td = $(el_tds[el_tds.length-2]).clone();
+				var el_inputs = $("textarea,input",new_td);
+				for ( var k = 0; k < el_inputs.length; k++) {
+					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+					$(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
+					$(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
+					if ( key.indexOf("format") == 0) {
+						$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
+					}
+					else if ( key.indexOf("content") == 0) {
+						$(el_inputs[k]).val( "");
+						$(el_inputs[k]).css( 'border', '2px solid #00FF00');
+					}
+					table_cell_uid++;
+				}
+				new_td.insertBefore( el_td);
+			}
+		}
+		$('#cols').val( parseInt($('#cols').val())+1);
+		table_cell_init();
+	}
+	else if (fct.indexOf('insert_row') == 0) {
+		var el_trs = el_tbody.children();
+		var el_tr = $(el_trs.filter(":eq("+y+")")[0]);
+		var new_tr = $(el_trs[el_trs.length-2]).clone();
+		var el_inputs = $("textarea,input",new_tr);
+		for ( var k = 0; k < el_inputs.length; k++) {
+			var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+			$(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
+			$(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
+			if ( key.indexOf("format") == 0) {
+				$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
+			}
+			else if ( key.indexOf("content") == 0) {
+				$(el_inputs[k]).val( "");
+				$(el_inputs[k]).css( 'border', '2px solid #00FF00');
+			}
+			table_cell_uid++;
+		}
+		new_tr.insertBefore( el_tr);
+		$('#rows').val( parseInt($('#rows').val())-1);
+		table_cell_init();
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	/// MOVE
+	//////////////////////////////////////////////////////////////////////////////
+	else if (fct.indexOf('move_col') == 0) {
+		var source_x = x;
+		var target_x = x;
+		if (fct == 'move_col_left') {
+			target_x = target_x - 1;
+		}
+		else {
+			target_x = target_x + 1;
+		}
+		var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
+		for ( var i = 0; i < el_trs.length; i++) {
+			var source_td = $($(el_trs[i]).children().filter(":eq("+source_x+")")[0]);
+			var source_inp = $("textarea,input",source_td);
+			var target_td = $($(el_trs[i]).children().filter(":eq("+target_x+")")[0]);
+			var target_inp = $("textarea,input",target_td);
+			for ( var j = 0; j < source_inp.length; j++) {
+				var v = $(source_inp[j]).val();
+				$(source_inp[j]).val( $(target_inp[j]).val());
+				$(target_inp[j]).val( v);
+			}
+		}
+	}
+	else if (fct.indexOf('move_row') == 0) {
+		var source_y = y;
+		var target_y = y;
+		if (fct == 'move_row_up') {
+			target_y = target_y - 1;
+		}
+		else {
+			target_y = target_y + 1;
+		}
+		var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
+		var source_inp = $("textarea,input",source_tr);
+		var target_tr = $(el_tbody.children().filter(":eq("+target_y+")")[0]);
+		var target_inp = $("textarea,input",target_tr);
+		for ( var j = 0; j < source_inp.length; j++) {
+			var v = $(source_inp[j]).val();
+			$(source_inp[j]).val( $(target_inp[j]).val());
+			$(target_inp[j]).val( v);
+		}
+	}
+	else {
+		var par = Math.max(x,y)-table_cell_offs;
+		var fm = document.forms['<dtml-var fmName>'];
+		fm.elements['function'].value = fct;
+		fm.elements['param'].value = par;
+		fm.submit();
+	}
 }
 
 
@@ -3557,7 +3560,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.1]]></item>
+          <item key="revision"><![CDATA[1.6.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

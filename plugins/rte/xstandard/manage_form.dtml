@@ -220,9 +220,13 @@ function getRelativeUrl(path, url) {
 </object>
 
 <script type="text/javascript">
-<!--//
 
-  zmiRichtextInit('<dtml-var "REQUEST.get('elName')">');
+function zmiRichtextSyncDataToView(id) {
+	// do nothing
+}
 
-//-->
+$(function() {
+	zmiRichtextInit('<dtml-var "REQUEST.get('elName')">');
+});
+
 </script>

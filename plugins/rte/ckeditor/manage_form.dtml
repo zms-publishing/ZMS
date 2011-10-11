@@ -72,6 +72,7 @@ function zmiRichtextOnSubmitEventHandler() {
 <script type="text/javascript">
 
 var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
+var CKEDITOR_LOADED = {};
 
 function pluginCkeditor(s, c) {
 	$.plugin('ckeditor',{
@@ -83,19 +84,18 @@ function pluginCkeditor(s, c) {
 
 function loadCkeditor(id, opt) {
 	var instance = CKEDITOR.instances[id];
-	if(instance) {
-		CKEDITOR.remove(instance);
+	if(instance){
+		instance.destroy();
 	}
 	CKEDITOR.replace(id, opt);
 }
 
-$(function() {
-	pluginCkeditor('#editor_<dtml-var "REQUEST.get('elName')">',function() {
-		$( '#editor_<dtml-var "REQUEST.get('elName')">' ).val( $('#<dtml-var "REQUEST.get('elName')">').val() ); 
+function zmiRichtextInit(id) {
+	pluginCkeditor('#editor_'+id,function() {
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
 		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
-		loadCkeditor( 'editor_<dtml-var "REQUEST.get('elName')">', {
+		loadCkeditor( 'editor_'+id, {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
 				toolbar: 'ZMSCustomToolbar'
@@ -103,7 +103,20 @@ $(function() {
 				toolbar: 'ZMSBasicToolbar'
 			</dtml-if>
 			});
+		zmiRichtextSyncDataToView(id);
 	})
+}
+
+function zmiRichtextSyncDataToView(id) {
+	$( '#editor_'+id).val( $('#'+id).val());
+	var instance = CKEDITOR.instances['editor_'+id];
+	if(instance){
+		instance.setData($('#'+id).val());
+	}
+}
+
+$(function() {
+	zmiRichtextInit('<dtml-var "REQUEST.get('elName')">');
 });
 
 </script>

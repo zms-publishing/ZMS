@@ -480,7 +480,7 @@ snippets_arr["Page Template"]["snippet_bodyContent"] = {title:'Body-Content', ra
 				'\tthe body-content\n'+
 				'<'+'/div><'+'-- #content -->'};
 snippets_arr["Page Template"]["snippet_docTitle"] = {title:'Document-Title', raw: 
-				'<'+'div id="title" tal'+':content="python here.getTitle(request)">\n'+
+				'<'+'div id="title" tal'+':content="python:here.getTitle(request)">\n'+
 				'\tthe title\n'+
 				'<'+'/div><!'+'-- #title -->'};
 snippets_arr["Page Template"]["snippet_macroNav"] = {title:'Macro-Navigation', raw: 

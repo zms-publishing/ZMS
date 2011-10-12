@@ -37,7 +37,22 @@ function zmiDoHighlight(text) {
 		})
 		.each(function(){
 			// Do something with this.nodeValue
-			$(this).parent().html($(this).parent().html().replace( regexp, "<span class=\"highlight\">$1</span>"));
+			var raw = $(this).parent().html().split("<");
+			var html = raw[0].replace( regexp, "<span class=\"highlight\">$1</span>");
+			for (var i = 1; i < raw.length; i++) {
+				var j = raw[i].indexOf(">");
+				html += "<";
+				if (j<0) {
+					html = html
+						+ raw[i].replace( regexp, "<span class=\"highlight\">$1</span>");
+				}
+				else {
+					html = html
+						+ raw[i].substr(0,j+1)
+						+ raw[i].substr(j+1).replace( regexp, "<span class=\"highlight\">$1</span>");
+				}
+			}
+			$(this).parent().html(html);
 		});
 }
 

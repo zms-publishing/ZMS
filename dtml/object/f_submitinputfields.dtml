@@ -51,9 +51,15 @@
      <dtml-if "'attr_dc_coverage' in obj_attrs.keys()">
       <dtml-let options="[]">
       <dtml-if ZMS_INSERT
-       ><dtml-call "REQUEST.set('coverage','global.'+lang)"
-       ><dtml-call "options.append('global.'+lang)"
-      ><dtml-call "options.append('local.'+lang)"
+       ><dtml-call "REQUEST.set('parent_coverage',getDCCoverage(REQUEST))"
+       ><dtml-if "parent_coverage.startswith('local')"
+        ><dtml-call "REQUEST.set('coverage',parent_coverage)"
+        ><dtml-call "options.append(coverage)"
+       ><dtml-else
+        ><dtml-call "REQUEST.set('coverage','global.'+lang)"
+        ><dtml-call "options.append('global.'+lang)"
+        ><dtml-call "options.append('local.'+lang)"
+       ></dtml-if
       ><dtml-else
        ><dtml-call "REQUEST.set('coverage',getDCCoverage(REQUEST))"
        ><dtml-call "REQUEST.set('coverage_lang',coverage[coverage.find('.')+1:])"
@@ -64,8 +70,6 @@
         ><dtml-call "options.append('local.'+coverage_lang)"
        ></dtml-if
       ></dtml-if>
-      <dtml-unless ZMS_INSERT>
-      </dtml-unless>
       <dtml-unless "len(options)>1">
        <dtml-call "REQUEST.set('coverage',options[0])">
       </dtml-unless>

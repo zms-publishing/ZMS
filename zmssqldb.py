@@ -478,8 +478,14 @@ class ZMSSqlDb(ZMSObject):
                 for columnBrwsr in tableBrwsr.tpValues():
                   desc = getattr(columnBrwsr,'Description',getattr(columnBrwsr,'description',None))().upper()
                   desc = desc[desc.find("(")+1:desc.rfind(")")]
-                  for c in desc.split(","):
-                    c = c.strip()
+                  for cc in desc.split(","):
+                    c = ''
+                    for l in cc.split("\n"):
+                      if l.find('--') >= 0:
+                        l = l[:l.find('--')]
+                      l = l.strip()
+                      if len(l) > 0:
+                        c += l + ' '
                     if c.startswith('"') and c.find(' ') > 0:
                       col = {}
                       col["id"] = str(c[1:c.find(' ')-1])
@@ -1098,7 +1104,6 @@ class ZMSSqlDb(ZMSObject):
       except:
         raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))      
       try:
-        self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         self.executeQuery( sqlStatement)
       except:
         raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Delete]: can\'t delete row - sqlStatement=' + sqlStatement))

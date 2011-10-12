@@ -1,35 +1,44 @@
 <dtml-let breadcrumbs="breadcrumbs_obj_path()"
 
- ><dtml-call "REQUEST.set('pos',0)"
+><dtml-call "REQUEST.set('pos',0)"
  ><dtml-in breadcrumbs
-  ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
-   ><dtml-if "meta_type=='ZMS'"
-    ><dtml-call "REQUEST.set('catalog_items',[])"
-    ><dtml-call "REQUEST.set('pos',0)"
-   ></dtml-if
-   ><dtml-if ob_display
+  ><dtml-let ob=sequence-item
+   ><dtml-call "REQUEST.set('ob_display', hasAccess(REQUEST) and not isResource(REQUEST))"
+   ><dtml-if "REQUEST.get('ob_display')"
     ><dtml-if "ob in catalog_items"
      ><dtml-call "REQUEST.set('pos',catalog_items.index(ob)+1)"
     ><dtml-else
-     ><dtml-unless "ob in catalog_items"
       ><dtml-call "catalog_items.append(ob)"
       ><dtml-call "REQUEST.set('pos',len(catalog_items))"
-     ></dtml-unless
     ></dtml-if
     ><dtml-in "filteredChildNodes(REQUEST,PAGES)"
-     ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
-      ><dtml-unless "ob in catalog_items"
+     ><dtml-let ob=sequence-item
+      ><dtml-call "REQUEST.set('ob_display', hasAccess(REQUEST) and not ob in catalog_items)"
+      ><dtml-if "REQUEST.get('ob_display')"
+       ><dtml-in "breadcrumbs_obj_path()"
+        ><dtml-if "_['sequence-item'].isResource(REQUEST)"
+         ><dtml-call "REQUEST.set('ob_display', False)"
+        ></dtml-if
+       ></dtml-in
+      ></dtml-if
+      ><dtml-if "REQUEST.get('ob_display')"
        ><dtml-call "catalog_items.insert(pos,ob)"
        ><dtml-call "REQUEST.set('pos',pos+1)"
-      ></dtml-unless
+      ></dtml-if
       ><dtml-if "getLevel()==1"
        ><dtml-in "filteredChildNodes(REQUEST,PAGES)"
-        ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"
-         ><dtml-if ob_display
-         ><dtml-unless "ob in catalog_items"
+        ><dtml-let ob=sequence-item
+         ><dtml-call "REQUEST.set('ob_display', hasAccess(REQUEST) and not ob in catalog_items)"
+         ><dtml-if "REQUEST.get('ob_display')"
+          ><dtml-in "breadcrumbs_obj_path()"
+           ><dtml-if "_['sequence-item'].isResource(REQUEST)"
+            ><dtml-call "REQUEST.set('ob_display', False)"
+           ></dtml-if
+          ></dtml-in
+         ></dtml-if
+         ><dtml-if "REQUEST.get('ob_display')"
           ><dtml-call "catalog_items.insert(pos,ob)"
           ><dtml-call "REQUEST.set('pos',pos+1)"
-         ></dtml-unless
          ></dtml-if
         ></dtml-let
        ></dtml-in

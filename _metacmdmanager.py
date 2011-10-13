@@ -292,7 +292,8 @@ class MetacmdObject:
               message = ob()
           # Execute redirect.
           else:
-            return RESPONSE.redirect('%s?lang=%s'%(metaCmd['id'],lang))
+            params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix')}
+            return RESPONSE.redirect(self.url_append_params(metaCmd['id'],params,sep='&'))
       
       # Return with message.
       message = urllib.quote(message)

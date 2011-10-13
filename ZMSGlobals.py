@@ -440,7 +440,7 @@ class ZMSGlobals:
     @return: New url
     @rtype: C{string}
     """
-    def url_append_params(self, url, dict):
+    def url_append_params(self, url, dict, sep='&amp;'):
       anchor = ''
       i = url.rfind('#')
       if i > 0:
@@ -457,16 +457,16 @@ class ZMSGlobals:
       if i >= 0:
         targetdef = url[i:]
         url = url[:i]
-      sep = '?'
-      i = url.find(sep)
+      qs = '?'
+      i = url.find(qs)
       if i >= 0:
-        sep = '&amp;'
+        qs = sep
       for key in dict.keys():
         value = dict[key]
         qi = key + '=' + urllib.quote(str(value))
         if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
-          url += sep + qi
-        sep = '&amp;'
+          url += qs + qi
+        qs = sep
       url += targetdef
       return url+anchor
 
@@ -474,7 +474,7 @@ class ZMSGlobals:
     # --------------------------------------------------------------------------
     #  ZMSGlobals.url_inherit_params:
     # --------------------------------------------------------------------------
-    def url_inherit_params(self, url, REQUEST, exclude=[]):
+    def url_inherit_params(self, url, REQUEST, exclude=[], sep='&amp;'):
       anchor = ''
       i = url.rfind('#')
       if i > 0:
@@ -488,7 +488,7 @@ class ZMSGlobals:
               if url.find('?') < 0:
                 url += '?'
               else:
-                url += '&amp;'
+                url += sep
               if type(v) is int:
                 url += urllib.quote(key+':int') + '=' + urllib.quote(str(v))
               elif type(v) is float:
@@ -497,7 +497,7 @@ class ZMSGlobals:
                 c = 0
                 for i in v:
                   if c > 0:
-                    url += '&amp;'
+                    url += sep
                   url += urllib.quote(key+':list') + '=' + urllib.quote(str(i))
                   c = c + 1
               else:

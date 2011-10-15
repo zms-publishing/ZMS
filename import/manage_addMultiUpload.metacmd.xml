@@ -20,7 +20,6 @@ print context.zmi_form_section_begin(context,request)
 if request.form.get('btn')==context.getZMILangStr('BTN_IMPORT') and request.form.get('file'):
 	file = request['file']
 	temp_id = str(request.SESSION.getId())+'_'+str(request['form_id'])
-	print "temp_id=",temp_id
 	temp_folder = context.temp_folder
 	files = context.getZipArchive(file)
 	containers = []

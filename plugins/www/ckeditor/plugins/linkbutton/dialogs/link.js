@@ -45,7 +45,9 @@ function zmiAddPages(result, siblings) {
 			else if ($(this).attr("meta_id")=='ZMSFile') {
 				var $file = $("file",this);
 				if ($file.length==1) {
-					link_url = '<a href=&quot;'+abs_url+'/'+$("filename",$file).text()+'&quot; target=&quot;_blank&quot;><img src=&quot;'+$("icon",$file).text()+'&quot; title=&quot;'+$("content_type",$file).text()+'&quot; border=&quot;0&quot; align=&quot;absmiddle&quot;> '+$(this).attr("title")+' ('+$("size",$file).text()+')</a>';
+					var $fname = $("filename",$file).text();
+					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
+					link_url = '<a href=&quot;'+abs_url+'/'+$("filename",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
 					var src = abs_url+'/'+$("filename",$file).text();
 					var icon = $("icon",$file).text();
 					var filename = $("filename",$file).text();
@@ -110,11 +112,8 @@ function zmiSelectObject(id,abs_url,meta_id) {
 CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 	return { 
 		title:  getZMILangStr('CAPTION_CHOOSEOBJ'),
- 
-		minWidth: 200,
-		minHeight: 80,
- 
- 
+		minWidth: 250,
+		minHeight: 180,
 		contents: [ 
 			{
 				id: 'tab1',

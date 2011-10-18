@@ -10,18 +10,21 @@ CKEDITOR.editorConfig = function( config )
 	// config.uiColor = '#AADC6E';
 
   // Linkbutton: @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
-  config.extraPlugins = 'linkbutton';
+  config.extraPlugins = 'linkbutton,tableresize';
+
+  // skins
+  config.skin = 'v2';
+  // config.skin = 'office2003';
+  // config.skin = 'kama';
 
   //  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
   config.toolbar = 'ZMSBasicToolbar';
-  config.toolbar_ZMSBasicToolbar =
-  [
-      ['Format'],
-      ['Bold','Italic','Subscript','Superscript','-','Link','linkbutton'],
-      ['NumberedList','BulletedList','-','Table'],
-      ['Cut','Copy','Paste','PasteText','PasteFromWord'],
-      ['Undo','Redo'],
-      ['Maximize','-','About']
+  config.toolbar_ZMSBasicToolbar =[
+     ['Format'],
+     ['Bold','Italic','Underline','NumberedList','BulletedList'],
+     ['Undo','Redo'],
+     ['Find','linkbutton','Link','Unlink'],
+     ['Anchor','Table'],
+     ['Source','ShowBlocks','Maximize','About']
   ];
-	
 };

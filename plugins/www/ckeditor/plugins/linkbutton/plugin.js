@@ -8,13 +8,12 @@ CKEDITOR.plugins.add('linkbutton', {
  
 		editor.ui.addButton( 'linkbutton',
 			{
-				label : 'Internal Link',
+				label : 'Toolbox',
 				command : 'linkbuttonDlg',
-				icon: this.path + 'images/anchor.png',
+				icon: '/misc_/zms/btn_paste1.gif'
 			});
 
-		// @todo: remove ts (debugging only!)
-		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js?ts='+new Date());
+		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js');
 
 	}
 });

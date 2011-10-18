@@ -5,17 +5,17 @@
 /**
  * Open link in iframe (jQuery UI Dialog).
  */
-function zmiIframe(href, opt) {
+function zmiIframe(href, data, opt) {
 	if ($('#zmiIframe').length==0) {
 		$('body').append('<div id="zmiIframe"></div>');
 	}
-	$.get(href,function(result) {
+	$.get( href, data, function(result) {
 			var $result = $(result);
 			if ($("div#system_msg",$result).length>0) {
 				var manage_tabs_message = $("div#system_msg",$result).text();
 				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
 				var href = self.location.href;
-				href = href.substr(0,href.indexOf("?"))+"?lang="+zmiParams["lang"]+"&manage_tabs_message="+manage_tabs_message;
+				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
 				self.location.href = href;
 			}
 			else {
@@ -332,19 +332,17 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		html += '<td colspan="3"><div style="border:3px solid black"><img src="/misc_/zms/btn_add.gif" border="0" align="absmiddle"/> '+custom+'</div></td>';
 		html += '</tr>';
 		$(html).insertAfter($($(el).parents('tr')[0]));
-		var href = target;
 		var inputs = $('input:hidden',$fm);
-		var q = '?';
+		var data = {};
 		for ( var i = 0; i < inputs.length; i++) {
 			var $input = $(inputs[i]);
 			var id = $input.attr("id");
 			if (jQuery.inArray(id,['form_id','id_prefix','_sort_id','custom','lang','preview'])>=0) {
-				href += q + $input.attr('name') + '=' + $input.val();
-				q = '&amp;';
+				data[$input.attr('name')] = $input.val();
 			}
 		}
 		// Show add-dialog.
-		zmiIframe(href,{
+		zmiIframe(target,data,{
 				title:getZMILangStr('BTN_INSERT'),
 				close:function(event,ui) {
 					$('tr#tr_manage_addProduct').remove();

@@ -74,7 +74,7 @@ $(function(){
 					href += '_iframe';
 					href += '?lang='+lang;
 					href += '&ZMS_NO_BODY=1';
-					zmiIframe(href,{});
+					zmiIframe(href,{},{});
 				}
 				else if (self.location.href.indexOf('/manage')>0) {
 					self.location.href = href;

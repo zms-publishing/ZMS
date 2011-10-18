@@ -617,6 +617,7 @@ $(function() {
   SOFTWARE_HOME: <dtml-var getSOFTWARE_HOME><br />
   ZOPE_HOME: <dtml-var getZOPE_HOME><br />
   INSTANCE_HOME: <dtml-var getINSTANCE_HOME><br />
+  PRODUCT_HOME: <dtml-var getPRODUCT_HOME><br />
   CLIENT_HOME: <dtml-var getCLIENT_HOME><br />
   System Time: <dtml-var ZopeTime><br />
   Running For: <dtml-var process_time><br/>

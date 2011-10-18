@@ -125,6 +125,15 @@ class ZMSGlobals:
     NOREF = 4         #: virtual meta_type-flag for resolving meta-type of ZMSLinkElement-target-object.
     NORESOLVEREF = 5  #: virtual meta_type-flag for not resolving meta-type of ZMSLinkElement-target-object.
 
+
+    # --------------------------------------------------------------------------
+    #  ZMSGlobals.getPRODUCT_HOME:
+    # --------------------------------------------------------------------------
+    def getPRODUCT_HOME( self):
+      PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
+      return PRODUCT_HOME
+
+
     # --------------------------------------------------------------------------
     #  ZMSGlobals.FileFromData:
     # --------------------------------------------------------------------------

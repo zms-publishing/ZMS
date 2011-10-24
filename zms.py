@@ -544,6 +544,15 @@ class ZMS(
       return self
 
     # --------------------------------------------------------------------------
+    #  ZMS.getAbsoluteHome
+    # --------------------------------------------------------------------------
+    def getAbsoluteHome(self):
+      portalMaster = self.getPortalMaster()
+      if portalMaster:
+        return portalMaster.getAbsoluteHome()
+      return self.getHome()
+
+    # --------------------------------------------------------------------------
     #  ZMS.getHome
     # --------------------------------------------------------------------------
     def getHome(self):

@@ -591,7 +591,9 @@ class ConfManager(
     @type default: C{any}
     @rtype: C{any}
     """
+    security.declareProtected('Authenticated', 'getConfProperty')
     def getConfProperty(self, key, default=None):
+      """ ConfManager.getConfProperty """
       if OFS.misc_.misc_.zms['confdict'].has_key(key):
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       return self.getConfProperties().get( key, default)

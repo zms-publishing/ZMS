@@ -385,7 +385,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 			title: title,
 			height: 'auto',
 			width: 'auto'
-		}).html('<iframe src="'+href+'" style="width:100%; min-width:200px; height:100%; min-height: 320px; border:0;"></iframe>').dialog('open');
+		}).html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>').dialog('open');
 	return false;
 }
 

@@ -91,7 +91,7 @@
   <dtml-let img="getObjProperty('titleimage',REQUEST)">
    <dtml-if img>
     <div class="form-small">
-     <dtml-var "getTitle(REQUEST)"><br />
+     <dtml-var "getTitle(REQUEST)" html_quote><br />
      <img src="<dtml-var "img.getHref(REQUEST)">" border="0"
       <dtml-try>
        <dtml-if "_.int(img.width)>360">
@@ -102,12 +102,12 @@
       <dtml-except></dtml-try>>
     </div>
    <dtml-else>
-    <h1><dtml-var "getTitle(REQUEST)"></h1>
+    <h1><dtml-var "getTitle(REQUEST)" html_quote></h1>
    </dtml-if>
   </dtml-let>
    <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
   <dtml-unless childNodes>
-   <p class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)"></em>!</p>
+   <p class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)" html_quote></em>!</p>
   </dtml-unless>
  </div>
 </td>
@@ -230,7 +230,7 @@
 <img class="grippy" src="<dtml-var spacer_gif>"/>
 <input class="form-checkbox zmi-ids-list" type="checkbox" name="ids:list" value="<dtml-var id>" <dtml-unless "getAutocommit() or coverage.endswith('.'+lang)">disabled="disabled"</dtml-unless> />
 <input type="hidden" name="sort_id_<dtml-var id>" value="<dtml-var "getSortId()">">
-<a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)"></a>
+<a name="_<dtml-var id>" class="zmi" href="<dtml-var id>/manage_main?lang=<dtml-var lang>"><dtml-var f_display_icon><dtml-var "getTitlealt(REQUEST)" html_quote></a>
 </div>
 </td>
 

@@ -13,9 +13,7 @@ CKEDITOR.editorConfig = function( config )
   config.extraPlugins = 'linkbutton,tableresize';
 
   // skins
-  config.skin = 'v2';
-  // config.skin = 'office2003';
-  // config.skin = 'kama';
+  config.skin = getZMIConfProperty("CKEDITOR.config.skin","kama");
 
   //  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
   config.toolbar = 'ZMSBasicToolbar';

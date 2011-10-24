@@ -134,7 +134,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 					},
 					{
 						type: 'html',
-						html : '<div id="myDiv" style="overflow:scoll;"></div>'
+						html : '<div id="myDiv"></div>'
 					}
 				 ]
 			}
@@ -144,6 +144,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 					zmiDialog = this;
 					var href = self.location.href;
 					href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
+					$("#myDiv").parents("table.cke_dialog_contents td:first").css({height:"80%"});
 					$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
 					$.get(href,{lang:zmiParams["lang"]},function(result) {
 							var html = zmiAddPages(result,false);

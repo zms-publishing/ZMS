@@ -31,7 +31,7 @@ $().ready(function() {
 			var params = {};
 			params.q = term;
 			params.key = '<dtml-var key>';
-			params.meta_id = 'ZMS';
+			params.meta_id = '<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">';
 			params.fmt = 'json';
 			$.get( "ajaxGetObjOptions", params, function( data) {
 				if (data.length>0) {
@@ -92,7 +92,7 @@ $().ready(function() {
 			var params = {};
 			params.q = term;
 			params.key = '<dtml-var key>';
-			params.meta_id = 'ZMS';
+			params.meta_id = '<dtml-var "REQUEST.get('ZMS_INSERT',meta_id)">';
 			params.fmt = 'json';
 			$.get( "ajaxGetObjOptions", params, function( data) {
 				if (data.length>0) {

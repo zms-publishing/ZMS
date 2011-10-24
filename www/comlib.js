@@ -29,6 +29,22 @@ function getZMILangStr(key, data) {
 		}).responseText;
 }
 
+/**
+ * Returns conf-property.
+ */
+function getZMIConfProperty(key, defaultValue) {
+	var data  = {}
+	data['key'] = key;
+	if (typeof defaultValue != "undefined") {
+		data['default'] = defaultValue;
+	}
+	return $.ajax({
+		url: 'getConfProperty',
+		data: data,
+		datatype: 'text',
+		async: false
+		}).responseText;
+}
 
 /**
  * Confirm delete.

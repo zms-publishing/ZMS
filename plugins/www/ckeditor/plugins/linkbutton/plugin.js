@@ -13,7 +13,7 @@ CKEDITOR.plugins.add('linkbutton', {
 				icon: '/misc_/zms/btn_paste1.gif'
 			});
 
-		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js');
+		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js?ts='+new Date());
 
 	}
 });

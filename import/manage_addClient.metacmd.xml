@@ -24,6 +24,8 @@ if request.form.get('btn')==context.getZMILangStr('BTN_INSERT'):
 	request.set('lang_label',context.getLanguageLabel(request['lang']))
 	zms_inst = context.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
 	zms_inst.setConfProperty('Portal.Master',home.id)
+	for id in context.getMetaobjIds():
+		zms_inst.metaobj_manager.acquireMetaobj(id)
 	context.setConfProperty('Portal.Clients',context.getConfProperty('Portal.Clients',[])+[request['id']])
 	message.append(context.getZMILangStr('MSG_INSERTED')%request['id'])
 	request.response.redirect(context.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))

@@ -323,16 +323,18 @@ class AccessableObject:
         password = REQUEST.get('password','******')
         confirm = REQUEST.get('confirm','')
         if password!='******' and password==confirm:
-          try:
-            userFldr = self.getUserFolder()
-            roles = userObj.getRoles()
-            domains = userObj.getDomains()
-            userFldr.userFolderEditUser(id, password, roles, domains)
-          except: 
-            _globals.writeError(self,'[manage_user]: can\'t change password')
+          for userFldr in self.getUserFolders():
+            if id in userFldr.getUserNames():
+              try:
+                roles = userObj.getRoles()
+                domains = userObj.getDomains()
+                userFldr.userFolderEditUser(id, password, roles, domains)
+              except: 
+                message += _globals.writeError(self,'[manage_user]: can\'t change password')
+              break
         self.setUserAttr(userObj,'email',REQUEST.get('email','').strip())
         #-- Assemble message.
-        message = self.getZMILangStr('MSG_CHANGED')
+        message += self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.
       message = urllib.quote(message)

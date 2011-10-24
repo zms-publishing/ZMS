@@ -266,11 +266,11 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 	</ul>
 	<div id="tabs-0">
 		<div id="codeheader" >
-			<div tal:define="global ob python:here.getHome()" class="zmi_col_left">
+			<div tal:define="global ob python:here.getAbsoluteHome()" class="zmi_col_left">
 				<img tal:attributes="src ob/icon; title ob/meta_type" align="absmiddle"/>
 				<span class="form-small" tal:content="ob/id">the id</span>
 			</div>
-			<div class="zmi_col_right" >
+			<div class="zmi_col_right">
 			</div>
 		</div>
 		<div id="objectTree">
@@ -281,7 +281,7 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 			tal:attributes="src python:'%s?framebottom=True&lang=%s'%(request.get('URL'),request.get('lang'))"></iframe>
 	</div>
 	<div id="tabs-2">
-		<h1>ZMS TAL Editor 1.0.3</h1>
+		<h1>ZMS TAL Editor 1.0.4</h1>
 		<p class="form-small">Der ZMS TAL Editor ist eine ZMS-System-Erweiterung speziell f&uuml;r Web-Designer: 
 		optimale Gestaltungskontrolle durch das Nebeneinander von Code- und Vorschau-Fenster. 
 		Alle Code-&Auml;nderungen in CSS- oder Template-Dateien sind sofort in der Web-Ansicht sichtbar.
@@ -651,13 +651,13 @@ div.ace_gutter {
 				</div>
 				<textarea id="text" name="data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
 			</span>
-			<span tal:omit-tag="" tal:condition="python:ob.meta_type=='File' and ob.content_type.startswith('text/')">
+			<span tal:omit-tag="" tal:condition="python:ob.meta_type=='File' and (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
 				<div class="ui-helper-hidden">
 					<span id="action">manage_edit</span>
 					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
 					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
 				</div>
-				<textarea id="text" name="filedata:text" class="ui-helper-hidden form-element" tal:content="ob/data" style="width:100%">The object</textarea>
+				<textarea id="text" name="filedata:text" class="ui-helper-hidden form-element" tal:content="python:unicode(str(ob.data),'utf-8')" style="width:100%">The object</textarea>
 			</span>
 			<span tal:omit-tag="" tal:condition="python:ob.meta_type=='Page Template'">
 				<div class="ui-helper-hidden">
@@ -681,7 +681,7 @@ div.ace_gutter {
 			<textarea id="debug" class="ui-helper-hidden"></textarea>
 		</form>
 
-		<form id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not ob.content_type.startswith('text/')">
+		<form id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
 			<div class="ui-helper-hidden">
 				<span id="action">manage_upload</span>
 				<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
@@ -756,10 +756,10 @@ $(function() {
 		if (content_type == "text/html") {
 			Mode = require("ace/mode/html").Mode;
 		}
-		else if (content_type == "text/css") {
+		else if (content_type == "text/css" || content_type == "application/x-css") {
 			Mode = require("ace/mode/css").Mode;
 		}
-		else if (content_type == "text/javascript") {
+		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
 			Mode = require("ace/mode/javascript").Mode;
 		}
 		else if (content_type == "text/xml") {
@@ -797,7 +797,7 @@ $(function() {
 ### Object-Details
 ################################################################################ 
 -->
-<objectDetails tal:condition="python:request.has_key('objectDetails')" tal:define="global ob python:here.getHome(); path python:request.get('objectDetails')">
+<objectDetails tal:condition="python:request.has_key('objectDetails')" tal:define="global ob python:here.getAbsoluteHome(); path python:request.get('objectDetails')">
 	<span tal:omit-tag="" tal:repeat="ob_id python:path.split('/')[1:]">
 		<span tal:omit-tag="" tal:define="global ob python:getattr(ob,ob_id)"></span>
 	</span>
@@ -815,7 +815,7 @@ $(function() {
 ### Object-Values
 ################################################################################ 
 -->
-<objectValues tal:condition="python:request.has_key('objectValues')" tal:define="global context python:here.getHome()">
+<objectValues tal:condition="python:request.has_key('objectValues')" tal:define="global context python:here.getAbsoluteHome()">
 	<span tal:omit-tag="" tal:repeat="ob_id python:request['objectValues'].split('/')[1:]">
 		<span tal:omit-tag="" tal:define="global context python:getattr(context,ob_id)"></span>
 	</span>

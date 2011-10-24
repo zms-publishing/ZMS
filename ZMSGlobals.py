@@ -472,10 +472,16 @@ class ZMSGlobals:
         qs = sep
       for key in dict.keys():
         value = dict[key]
-        qi = key + '=' + urllib.quote(str(value))
-        if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
-          url += qs + qi
-        qs = sep
+        if type(value) is list:
+          for item in value:
+            qi = key + ':list=' + urllib.quote(str(item))
+            url += qs + qi
+            qs = sep
+        else:
+          qi = key + '=' + urllib.quote(str(value))
+          if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
+            url += qs + qi
+          qs = sep
       url += targetdef
       return url+anchor
 

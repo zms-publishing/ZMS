@@ -242,6 +242,11 @@
           <option value="<dtml-var meta_type>" <dtml-if "meta_type in metaCmd['meta_types']">selected="selected"</dtml-if>><dtml-var "display_type(REQUEST,meta_type)"></option>
          </dtml-let>
         </dtml-in>
+        <dtml-in "metaobj_manager.valid_objtypes">
+         <dtml-let objtype=sequence-item meta_type="'type(%s)'%objtype">
+          <option value="<dtml-var meta_type>" <dtml-if "meta_type in metaCmd['meta_types']">selected="selected"</dtml-if>><dtml-var meta_type></option>
+         </dtml-let>
+        </dtml-in>
         </select>
        </td>
       </tr>

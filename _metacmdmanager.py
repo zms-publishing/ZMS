@@ -258,6 +258,7 @@ class MetacmdObject:
     def manage_executeMetacmd(self, custom, lang, REQUEST, RESPONSE):
       """ MetacmdObject.manage_executeMetacmd """
       message = ''
+      target = self
       
       # Execute.
       # --------
@@ -285,19 +286,24 @@ class MetacmdObject:
           if metaCmd.get('exec',0) == 1:
             ob = getattr(self,metaCmd['id'],None)
             if ob.meta_type in ['DTML Method','DTML Document']:
-              message = ob(self,REQUEST,RESPONSE)
+              value = ob(self,REQUEST,RESPONSE)
             elif ob.meta_type == 'Page Template':
-              message = ob()
+              value = ob()
             elif ob.meta_type == 'Script (Python)':
-              message = ob()
+              value = ob()
+            if type(value) is str:
+              message = value
+            elif type(value) is tuple:
+              target = value[0]
+              message = value[1]
           # Execute redirect.
           else:
-            params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix')}
+            params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix'),'ids':REQUEST.get('ids',[])}
             return RESPONSE.redirect(self.url_append_params(metaCmd['id'],params,sep='&'))
       
       # Return with message.
       message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+      return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(),lang,message))
 
 
 

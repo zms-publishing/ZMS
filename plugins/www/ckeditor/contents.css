@@ -14,6 +14,7 @@ body
 
 	/* Remove the background color to make it transparent */
 	background-color: #fff;
+	background-image:url(/misc_/zms/spacer.gif)!important;
 }
 
 ol,ul,dl

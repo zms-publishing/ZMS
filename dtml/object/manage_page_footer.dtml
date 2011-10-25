@@ -9,7 +9,7 @@
 </div><!-- .zmi_col_left -->
 <div class="zmi_col_right">
  <form action="<dtml-var URL>" method="get">
- <input type="hidden" name="lang" value="<dtml-var lang>">
+ <input type="hidden" name="lang" value="<dtml-var "REQUEST.get('lang')">">
  <select name="manage_lang" onchange="this.form.submit();">
  <dtml-in "getLocale().get_manage_langs()">
   <option value="<dtml-var sequence-item>" <dtml-if "_['sequence-item']==REQUEST.get('manage_lang')">selected="selected"</dtml-if>><dtml-var "getLocale().getLangStr('LANG',_['sequence-item'])"></option>

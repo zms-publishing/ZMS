@@ -95,6 +95,53 @@ function zmiRichtextInit(id) {
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
 		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
+
+////////////////////////////////////////////////////////////////////////////////
+// Contents-CSS
+////////////////////////////////////////////////////////////////////////////////
+CKEDITOR.config.contentsCss = [];
+$("link[rel=stylesheet]").each(function() {
+		CKEDITOR.config.contentsCss.push($(this).attr("href"));
+	});
+CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
+
+////////////////////////////////////////////////////////////////////////////////
+// Import XStandard styles
+////////////////////////////////////////////////////////////////////////////////
+<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds()">
+CKEDITOR.config.format_tags = '';
+<dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
+<dtml-in "xmlNodeSet(xml_styles,'style')">
+<dtml-let xml_style=sequence-item
+><dtml-call "REQUEST.set('style_id',None)"><dtml-in "xmlNodeSet(xml_style,'id')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_id',id_quote(node['cdata']))"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_name',None)"><dtml-in "xmlNodeSet(xml_style,'name')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_name',node['cdata'])"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_elt',None)"><dtml-in "xmlNodeSet(xml_style,'elt')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_element',node['cdata'])"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_attrs',[])"
+><dtml-in "xmlNodeSet(xml_style,'attr')"
+	><dtml-let node=sequence-item
+		><dtml-in "xmlNodeSet(node,'name')"
+			><dtml-let nodeName=sequence-item
+				><dtml-call "REQUEST.set('style_attrs_nodeName',nodeName['cdata'])"
+			></dtml-let
+		></dtml-in
+		><dtml-in "xmlNodeSet(node,'value')"
+			><dtml-let nodeValue=sequence-item
+				><dtml-call "REQUEST.set('style_attrs_nodeValue',nodeValue['cdata'])"
+			></dtml-let
+		></dtml-in
+		><dtml-call "style_attrs.append((style_attrs_nodeName,style_attrs_nodeValue))"
+	></dtml-let
+></dtml-in
+>
+CKEDITOR.config.format_tags += (CKEDITOR.config.format_tags.length==0?'':';')+'<dtml-var style_id>';
+CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
+</dtml-let
+></dtml-in
+></dtml-let
+></dtml-if
+>
+////////////////////////////////////////////////////////////////////////////////
+
 		loadCkeditor( 'editor_'+id, {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',

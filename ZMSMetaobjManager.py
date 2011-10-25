@@ -56,7 +56,7 @@ def syncType( self, meta_id, attr):
         blob = _blobfields.createBlobField( self,_globals.DT_FILE, zexp, mediadbStorable=False)
         attr['custom'] = blob
       elif ob.meta_type in [ 'Page Template']:
-        attr['custom'] = ob.read()
+        attr['custom'] = unicode(ob.read()).encode('utf-8')
       elif ob.meta_type in [ 'Script (Python)']:
         attr['custom'] = ob.read()
       elif ob.meta_type in [ 'Z SQL Method']:
@@ -1204,15 +1204,18 @@ class ZMSMetaobjManager:
                 tmpltId = self.getTemplateId(id)
                 tmpltName = 'Template: %s'%newValue['name']
                 tmpltCustom = []
-                tmpltCustom.append('<dtml-comment>--// BO %s //--</dtml-comment>\n'%tmpltId)
+                tmpltCustom.append('<!-- %s -->\n'%tmpltId)
                 tmpltCustom.append('\n')
+                tmpltCustom.append('<span tal:omit-tag="" tal:define="global\n')
+                tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
                 if newValue['type'] == 'ZMSRecordSet':
-                  tmpltCustom.append('  <h2><dtml-var "getTitlealt(REQUEST)"></h2>\n')
-                  tmpltCustom.append('  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)[\'attrs\'][0][\'id\'],REQUEST))"> <dtml-var "getLangStr(\'ATTR_RECORDS\',lang)"></p>\n')
+                  tmpltCustom.append('\t<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>\n')
+                  tmpltCustom.append('\t<p class="description" tal:content="python:\'%i %s\'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)[\'attrs\'][0][\'id\'])),zmscontext.getLangStr(\'ATTR_RECORDS\',request[\'lang\']))">#N records</p>\n')
+                tmpltCustom.append('</span>\n')
                 tmpltCustom.append('\n')
-                tmpltCustom.append('<dtml-comment>--// EO %s //--</dtml-comment>\n'%tmpltId)
+                tmpltCustom.append('<!-- /%s -->\n'%tmpltId)
                 tmpltCustom = ''.join(tmpltCustom)
-                message += self.setMetaobjAttr(id,None,tmpltId,tmpltName,0,0,0,'DTML Method',[],tmpltCustom)
+                message += self.setMetaobjAttr(id,None,tmpltId,tmpltName,0,0,0,'zpt',[],tmpltCustom)
               message += self.getZMILangStr('MSG_INSERTED')%id
             # Insert Attribute.
             if key == 'attr':

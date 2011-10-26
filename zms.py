@@ -569,7 +569,10 @@ class ZMS(
           depth = depth + 1
           ob = ob.aq_parent
       except:
-        ob = getattr( docElmnt, docElmnt.absolute_url().split( '/')[-2])
+        try:
+          ob = getattr( docElmnt, docElmnt.absolute_url().split( '/')[-2])
+        except:
+          ob = docElmnt.aq_parent
       return ob
 
     # --------------------------------------------------------------------------

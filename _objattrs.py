@@ -616,13 +616,7 @@ class ObjAttrs:
       elif datatype == _globals.DT_URL and value.startswith('{$') and not value.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         try:
           old = value
-          ref_obj = self.getLinkObj(value)
-          if ref_obj is not None:
-            # Repair link.
-            value = self.getRefObjPath( ref_obj)
-          elif value.find('{$__') < 0:
-            # Broken link.
-            value = '{$__' + value[2:-1] + '__}'
+          value = self.validateLinkObj(value)
           set = old != value
         except:
           _globals.writeError(self,'[_getObjAttrValue]: Unexpected Exception when processing Url-Fields: value=%s!'%str(value))
@@ -985,13 +979,7 @@ class ObjAttrs:
       
       #-- Url-Fields
       if datatype == _globals.DT_URL and v.startswith('{$') and not v.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-        ref_obj = self.getLinkObj(v)
-        if ref_obj is not None:
-          # Repair link.
-          v = self.getRefObjPath(ref_obj)
-        elif v.find('{$') == 0 and v.find('{$__') < 0:
-          # Broken link.
-          v = '{$__' + v[2:-1] + '__}'
+        v = self.validateLinkObj(v)
       
       # Hook for custom formatting.
       name = 'formatCustomObjAttrValue'
@@ -1177,11 +1165,7 @@ class ObjAttrs:
         ref_obj = self.getLinkObj(value)
         if ref_obj is not None:
           ref_obj.registerRefObj(self,self.REQUEST)
-          # Repair link.
-          value = self.getRefObjPath(ref_obj)
-        elif value.startswith('{$') and not value.startswith('{$__'):
-          # Broken link.
-          value = '{$__' + value[2:-1] + '__}'
+        value = self.validateLinkObj(value)
       
       #-- Notify metaobj_manager.
       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)

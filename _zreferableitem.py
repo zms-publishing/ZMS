@@ -139,7 +139,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefObjPath:
   # ----------------------------------------------------------------------------
-  def getRefObjPath(self, ob):
+  def getRefObjPath(self, ob, anchor=''):
     ref = ''
     if ob is not None:
       path = ob.relative_obj_path()
@@ -159,7 +159,7 @@ class ZReferableItem:
             if len(s) > 0: s = s + '/'
             s += clientId
           path = s + '@' + path
-      ref = '{$' + path + '}'
+      ref = '{$' + path + anchor + '}'
     return ref
 
 
@@ -422,6 +422,26 @@ class ZReferableItem:
   """
 
   # ----------------------------------------------------------------------------
+  #  ZReferableItem.validateLinkObj:
+  #
+  #  Validates internal links.
+  # ----------------------------------------------------------------------------
+  def validateLinkObj(self, url):
+    if url.startswith('{$') and not url.startswith('{$__'):
+      ref_obj = self.getLinkObj(url)
+      ref_anchor = ''
+      if url.find('#') > 0:
+        ref_anchor = url[url.find('#'):-1]
+      if ref_obj is not None:
+        # Repair link.
+        url = self.getRefObjPath( ref_obj, ref_anchor)
+      else:
+        # Broken link.
+        url = '{$__' + url[2:-1] + '__}'
+    return url
+
+
+  # ----------------------------------------------------------------------------
   #  ZReferableItem.getLinkObj:
   #
   #  Resolves internal/external links and returns Object.
@@ -429,9 +449,12 @@ class ZReferableItem:
   def getLinkObj(self, url, REQUEST={}):
     ob = None
     if isInternalLink(url):
-      if url.find('{$__') != 0:
+      if not url.startswith('{$__'):
         docElmnt = None
         path = url[2:-1]
+        i = path.find('#')
+        if i > 0:
+          path = path[:i]
         i = path.find('@')
         if i > 0:
           clientIds = path[:i].split('/')
@@ -466,6 +489,9 @@ class ZReferableItem:
   def getLinkUrl( self, url, REQUEST=None):
     REQUEST = _globals.nvl( REQUEST, self.REQUEST)
     if isInternalLink(url):
+      ref_anchor = ''
+      if url.find('#') > 0:
+        ref_anchor = url[url.find('#'):-1]
       ob = self.getLinkObj(url,REQUEST)
       if ob is None:
         index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)
@@ -473,7 +499,7 @@ class ZReferableItem:
         index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
         if index_html == '':
           index_html = ob.getHref2IndexHtml(REQUEST)
-      return index_html
+      return index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'
       return prefix + self.encrypt_ordtype(url[len(prefix):])

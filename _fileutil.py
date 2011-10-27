@@ -101,7 +101,8 @@ def getOSPath(path, chs=range(32)+[34,39,60,62,63,127]):
   path = path.replace('/',os.sep)
   if type( path) is str:
     path = unicode(path, 'latin-1')
-  path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
+  if os.name != "nt":
+    path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
   if len( chs) > 0:
     for ch in chs:
       path = path.replace(chr(ch),'')
@@ -189,9 +190,12 @@ def readPath(path, data=True, recursive=True):
       local_filename = path + os.sep + filename
       mode = os.stat(local_filename)[stat.ST_MODE]
       if filter is None or fnmatch.fnmatch(filename, filter):
+        u_local_filename = local_filename
+        if type(u_local_filename) is not unicode:
+          u_local_filename = unicode(local_filename,'latin-1')
         d = {}
-        d['local_filename']=unicode(local_filename,'latin-1').encode('utf-8')
-        d['filename']=unicode(extractFilename(local_filename),'latin-1').encode('utf-8')
+        d['local_filename']=u_local_filename.encode('utf-8')
+        d['filename']=extractFilename(u_local_filename).encode('utf-8')
         if stat.S_ISDIR(mode):
           mtime = os.path.getmtime( local_filename)
           d['mtime']=mtime

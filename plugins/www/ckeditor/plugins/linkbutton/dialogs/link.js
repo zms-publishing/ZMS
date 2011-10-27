@@ -149,6 +149,9 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 					$.get(href,{lang:zmiParams["lang"]},function(result) {
 							var html = zmiAddPages(result,false);
 							$("#myDiv").html(html);
+							// Open siblings of current page-element.
+							var last_page_id = $("page[is_page=1]:last",result).attr("id");
+							$("div#div_"+last_page_id+" > span:first").click();
 						});
 				},
 

@@ -822,13 +822,14 @@ class ZMSMetaobjManager:
             if oldId is not None and id+'.'+oldId in self.objectIds():
               self.manage_delObjects(ids=[id+'.'+oldId])
             self.manage_addDTMLMethod( id+'.'+newId, newType, newName)
-      # Handle pys.
+      # Handle py.
       if newType == 'py':
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
         newOb = getattr(self,id+'.'+newId)
         newOb.write(newCustom)
+      # Handle zpt.
       elif newType == 'zpt':
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
@@ -883,7 +884,8 @@ class ZMSMetaobjManager:
         if oldId is None or oldId == newId:
           # Delete existing Zope-Object.
           if newObId in container.objectIds():
-            if newType not in self.valid_zopetypes:
+            if newType == 'Page Template' or \
+               newType not in self.valid_zopetypes:
               container.manage_delObjects( ids=[ newObId])
             # Delete old Zope-Object if type is incompatible.
             if newObId in container.objectIds() and getattr(container,newObId).meta_type != newType:

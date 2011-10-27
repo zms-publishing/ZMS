@@ -3482,7 +3482,7 @@ if key.startswith('table_'):
 		<colgroup tal:condition="python:zmscontext.attr('colgroup')">
 			<span tal:omit-tag="" tal:repeat="col python:zmscontext.attr('widths')">
 				<span tal:omit-tag="" tal:define="col_index repeat/col/index">
-					<col tal:condition="python:col_index<len(cols) and cols[col_index]" tal:attributes="width python:'%i%'%cols[col_index]"/>
+					<col tal:condition="python:col_index<len(cols) and cols[col_index]" tal:attributes="width python:str(cols[col_index])+'%'"/>
 					<col tal:condition="python:not (col_index<len(cols) and cols[col_index])" tal:attributes="width repeat/col"/>
 				</span>
 			</span>
@@ -3560,7 +3560,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.2]]></item>
+          <item key="revision"><![CDATA[1.6.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

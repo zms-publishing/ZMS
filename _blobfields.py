@@ -211,7 +211,7 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   blob = clazz( id='',title='',file=file)
   blob.aq_parent = self
   blob.mediadbfile = None
-  blob.filename = _fileutil.extractFilename( filename)
+  blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
     maxlength = self.getConfProperty(maxlength_prop,'')

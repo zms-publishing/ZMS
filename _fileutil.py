@@ -60,7 +60,7 @@ Import file from specified path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
   filepath = INSTANCE_HOME + '/import/' + filename
-  self.manage_importObject(filename)
+  self.manage_importObject(str(filename))
   remove(filepath)
 
 
@@ -70,9 +70,9 @@ _fileutil.extractFilename:
 Extract filename from path.
 IN:  path
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def extractFilename(path, sep=None):
+def extractFilename(path, sep=None, undoable=False):
   if sep is None:
-    path = getOSPath(path) 
+    path = getOSPath(path,undoable=undoable)
   items = path.split( os.sep)
   lastitem = items[len(items)-1]
   return lastitem
@@ -96,12 +96,12 @@ _fileutil.getOSPath:
 
 Return path with OS separators.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def getOSPath(path, chs=range(32)+[34,39,60,62,63,127]):
+def getOSPath(path, chs=range(32)+[34,39,60,62,63,127], undoable=False):
   path = path.replace('\\',os.sep)
   path = path.replace('/',os.sep)
   if type( path) is str:
     path = unicode(path, 'latin-1')
-  if os.name != "nt":
+  if undoable or os.name != "nt":
     path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
   if len( chs) > 0:
     for ch in chs:

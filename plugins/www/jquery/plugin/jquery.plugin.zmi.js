@@ -215,7 +215,7 @@ $(function() {
 		.change( function (evt) { zmiAutoChange(this); })
 		.each(function() {
 				var elid = $(this).attr("id");
-				if (typeof elid != "undefined") {
+				if (typeof elid != "undefined" && $(this).attr("type") != "file") {
 					zmiAutoChangeArr[elid] = {'init':$(this).val(),'last':$(this).val()};
 				}
 			})

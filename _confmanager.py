@@ -454,16 +454,16 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getResourceFolders(self):
       obs = []
-      ids = [ 'instance', 'common']
-      ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, self.getHome().objectValues(['Folder']))))
-      c = 0
+      ids = self.getConfProperty('ZMS.resourceFolders','instance,common').split(',')
+      if '*' in ids:
+        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, self.getHome().objectValues(['Folder']))))
       for id in ids:
-        container = getattr( self, id, None)
-        if container is not None and len(container.objectValues(['ZMS']))==0:
-          obs.append(container)
-        if c == 1:
+        if id == '*':
           obs.append(self.getHome())
-        c += 1
+        else:
+          container = getattr( self, id, None)
+          if container is not None and len(container.objectValues(['ZMS']))==0:
+            obs.append(container)
       return obs
 
 

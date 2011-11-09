@@ -69,8 +69,7 @@ function clickElement(id,href) {
 /**
  * Process response.
  */
-function processResponse(data) 
-{
+function processResponse(data) {
   // Reset wait-cursor.
   $(document.body).css( "cursor", "auto");
   // Get object-id.
@@ -119,7 +118,7 @@ function processResponse(data)
     img.onmousedown=Function("dragstart(this)");
     img.onmouseover=Function("divmouseover(this)");
     var a = document.createElement( "a");
-    $(a).attr( {href: page_absolute_url+"/manage_main?lang="+getZMILang(), onclick: "return followHref(this.href)"});
+    $(a).attr( {href: page_absolute_url+"/manage_main?lang="+getZMILang()}).click(function() {return followHref(this.href)});
     $(a).addClass( "zmi");
     a.appendChild( img);
     var titlealt = document.createTextNode( page.getAttribute("titlealt"));
@@ -134,7 +133,7 @@ function processResponse(data)
       div.appendChild( document.createTextNode( " "));
       if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSADMINISTRATOR')">,')>=0) {
         var a = document.createElement( "a");
-        $(a).attr( {href: page_absolute_url+"/manage_customize?lang="+getZMILang(), onclick: "return followHref(this.href)"});
+        $(a).attr( {href: page_absolute_url+"/manage_customize?lang="+getZMILang()}).click(function() {return followHref(this.href)});
         var img = document.createElement( "img");
         $(img)
         	.attr( {src: "<dtml-var MISC_ZMS>btn_custom.gif", title: "<dtml-var "getZMILangStr('TAB_CONFIGURATION')">", align: "absmiddle"})
@@ -145,7 +144,7 @@ function processResponse(data)
       }
       if ( (page.getAttribute("permissions")+',').indexOf('<dtml-var "getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')">,')>=0) {
         var a = document.createElement( "a");
-        $(a).attr( {href: page_absolute_url+"/manage_users?lang="+getZMILang(), onclick: "return followHref(this.ref)"});
+        $(a).attr( {href: page_absolute_url+"/manage_users?lang="+getZMILang()}).click(function() {return followHref(this.href)});;
         var img = document.createElement( "img");
         $(img)
         	.attr( {src: "<dtml-var MISC_ZMS>icon_users.gif", title: "<dtml-var "getZMILangStr('TAB_ACCESS')">", align: "absmiddle"})
@@ -212,8 +211,7 @@ function drop(href, target) {
 /**
  * Process response.
  */
-function dropProcessResponse(data) 
-{
+function dropProcessResponse(data) {
   $(document.body).css( "cursor", "auto");
   var result = data.getElementsByTagName('result')[0];
   var rc = parseInt(result.getAttribute("code"));
@@ -263,9 +261,8 @@ function dropProcessResponse(data)
 /**
  * Hide system-message.
  */
-function hideSystemMessage()
-{
-  $("#system_msg").hide("normal");
+function hideSystemMessage() {
+ 	$("#system_msg").hide("normal");
 }
 
 

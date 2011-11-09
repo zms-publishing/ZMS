@@ -24,6 +24,8 @@
 </dtml-comment>
 <dtml-if "HTTP_USER_AGENT.find('MSIE 8.0')>=0">
  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+<dtml-elif "HTTP_USER_AGENT.find('MSIE 9.0')>=0">
+ <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <dtml-else>
  <dtml-comment> IE 7 Compatibility Mode </dtml-comment>
  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />

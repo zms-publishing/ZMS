@@ -82,37 +82,6 @@ function zmiConfirmAction(fm, target, label) {
 	return b;
 }
 
-/**
- * Choose action from select.
- *
- * @param e
- * @param id
- * @param sort_id
- */
-function zmiActionChoose(e, id, sort_id) {
-	var fm = $(e.form);
-	var i = e.selectedIndex;
-	var label = e.options[i].text;
-	var action = e.options[i].value;
-	if (action.indexOf("%s/") == 0) {
-		action = id + action.substring(2, action.length);
-	}
-	if (action.indexOf('?') > 0) {
-		location.href = action;
-	}
-	else {
-		// Set checkbox.
-		$("input[name=\x22ids:list\x22][value="+id+"]:checkbox",fm).attr( 'checked', true);
-		// Confirm and execute.
-		if (zmiConfirmAction(fm,action,label)) {
-			zmiActionExecute(fm,e,action,id,sort_id,label);
-		}
-	}
-	// Reset checkbox and select.
-	$("input[name=\x22ids:list\x22][value="+id+"]:checkbox",fm).attr( 'checked', false);
-	e.selectedIndex = 0;
-}
-
 // -----------------------------------------------------------------------------
 //  -- Action-Buttons
 // -----------------------------------------------------------------------------

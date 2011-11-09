@@ -45,9 +45,9 @@ function zmiToggleMaximize() {
  */
 function selectCheckboxes(fm, v) {
 	if (typeof v == 'undefined') {
-		v = !$(':checkbox:not([name~=active])',fm).attr('checked');
+		v = !$(':checkbox:not([name~=active])',fm).prop('checked');
 	}
-	$(':checkbox:not([name~=active])',fm).attr('checked',v)
+	$(':checkbox:not([name~=active])',fm).prop('checked',v)
 }
 
 // ############################################################################
@@ -256,8 +256,7 @@ var zmiActionPrefix = 'select_actions_';
  *
  * @param el
  */
-function zmiActionPopulate(el) 
-{
+function zmiActionPopulate(el) {
 	if ( el.options[el.options.length-1].text.indexOf('---') != 0) {
 		return;
 	}
@@ -350,11 +349,49 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		});
 	}
 	else {
+		var $inputs = $("input:checkbox",$fm);
+		for (var i = 0; i < $inputs.length; i++) {
+			var $input = $($inputs[i]);
+			confirm($input.attr("name")+"="+$input.val()+"["+$input.attr("checked")+"]"+"["+$input.prop("checked")+"]");
+		}
 		$fm.attr('action',target);
 		$fm.unbind('submit');
 		$fm.submit();
 	}
 }
+
+/**
+ * Choose action from select.
+ *
+ * @param e
+ * @param id
+ * @param sort_id
+ */
+function zmiActionChoose(e, id, sort_id) {
+	var fm = $(e.form);
+	var $input = $('input[name="ids:list"][value='+id+']:checkbox',fm);
+	var i = e.selectedIndex;
+	var label = e.options[i].text;
+	var action = e.options[i].value;
+	if (action.indexOf("%s/") == 0) {
+		action = id + action.substring(2, action.length);
+	}
+	if (action.indexOf('?') > 0) {
+		location.href = action;
+	}
+	else {
+		// Set checkbox.
+		$input.prop( "checked", true);
+		// Confirm and execute.
+		if (zmiConfirmAction(fm,action,label)) {
+			zmiActionExecute(fm,e,action,id,sort_id,label);
+		}
+	}
+	// Reset checkbox and select.
+	$input.prop( "checked", false);
+	e.selectedIndex = 0;
+}
+
 
 // ############################################################################
 // ### Url-Input

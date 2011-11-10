@@ -349,11 +349,6 @@ function zmiActionExecute(fm, el, target, id, sort_id, custom) {
 		});
 	}
 	else {
-		var $inputs = $("input:checkbox",$fm);
-		for (var i = 0; i < $inputs.length; i++) {
-			var $input = $($inputs[i]);
-			confirm($input.attr("name")+"="+$input.val()+"["+$input.attr("checked")+"]"+"["+$input.prop("checked")+"]");
-		}
 		$fm.attr('action',target);
 		$fm.unbind('submit');
 		$fm.submit();

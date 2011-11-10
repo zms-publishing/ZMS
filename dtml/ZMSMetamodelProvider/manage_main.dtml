@@ -396,7 +396,7 @@ function enabledCheckboxClickResponse(data) {
        <dtml-unless has_acquisition><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"/></dtml-unless>
       </td>
      </tr>
-     <dtml-unless "metaObj['type'] in ['ZMSPackage']">
+     <dtml-unless "metaObj['type']=='ZMSPackage'">
      <!-- Object-Attributes -->
      <tr class="zmiNeutralColorMedium0">
       <td colspan="7">
@@ -404,16 +404,14 @@ function enabledCheckboxClickResponse(data) {
        <!-- Headline -->
        <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0" width="100%">
        <colgroup>
-        <col width="70" />
+        <col />
         <col width="20" />
         <col />
         <col />
         <col />
         <col width="20" />
-        <dtml-if "metaObj['type']=='ZMSRecordSet'">
         <col width="20" />
-        <dtml-else>
-        <col width="20" />
+        <dtml-if "metaObj['type']!='ZMSRecordSet'">
         <col width="20" />
         </dtml-if>
         <col />
@@ -445,7 +443,7 @@ function enabledCheckboxClickResponse(data) {
           <dtml-elif "not oAttr['meta_type']">
            class="zmiNeutralColorMedium0"
           </dtml-if>>
-          <td valign="top" class="zmiNeutralColorStrong0">
+          <td valign="top" class="zmiNeutralColorStrong0" style="width:120px">
            <dtml-var "f_collectionBtn(_,_,url='manage_changeProperties?id=%s&attr_id=%s&key=attr'%(REQUEST['id'],oAttr['id']))">
           </td>
           
@@ -899,7 +897,7 @@ function enabledCheckboxClickResponse(data) {
      </dtml-if>
     <dtml-else>
      <dtml-if "REQUEST.get('id','') == '' and (metaObj['package'] == '' or metaObj['type'] == 'ZMSPackage')">
-     <tr valign="top" class="neutralColorWhite">
+     <tr valign="top" class="zmiNeutralColorWhite">
       <td colspan="7">
        <table cellspacing="0" cellpadding="0" border="0" width="100%">
         <dtml-let metaObjs="[metaObj]"
@@ -1026,7 +1024,7 @@ function enabledCheckboxClickResponse(data) {
        ><tr valign="top"
        ><td colspan="2"
         ><input type="hidden" name="immediately:int" value="1"
-        ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
+        ><div class="zmiNeutralColorWhite" style="margin:10px;padding:10px;"
          ><dtml-in "temp_ids.split(',')"
           ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)" metaObj2="getPortalMaster().getMetaobj(metaObjId)" attr_ids="[]" metaObjAttrIds="map(lambda x: x['id'], metaObj['attrs'])" metaObjAttrIds2="map(lambda x: x['id'], metaObj2['attrs'])"
            ><dtml-call "REQUEST.set('attr_idx',0)"
@@ -1183,7 +1181,7 @@ function enabledCheckboxClickResponse(data) {
       ><dtml-call "packages.sort()"
       ><input type="hidden" name="zms_system:int" value="<dtml-var temp_import_zms_system>"
       ><div class="form-label"><dtml-var "f.title_or_id()"></div
-      ><div class="neutralColorWhite" style="margin:10px;padding:10px;"
+      ><div class="zmiNeutralColorWhite" style="margin:10px;padding:10px;"
       ><dtml-in packages
        ><dtml-let package=sequence-item package_id="id_quote(package)"
          ><div class="form-small"

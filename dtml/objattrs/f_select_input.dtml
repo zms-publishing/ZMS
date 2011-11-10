@@ -79,7 +79,12 @@
 </dtml-comment>
 <dtml-elif "type=='multiselect'">
  <dtml-let elSrcName="'zms_mms_src_%s'%elName">
- <table cellspacing="2" cellpadding="0" border="0">
+ <table cellspacing="0" cellpadding="0" border="0" width="100%" class="form-element-multiselect">
+ <colgroup>
+  <col />
+  <col width="20"/>
+  <col />
+ </colgroup>
  <tr valign="top">
  <td class="<dtml-var css>">
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></div>

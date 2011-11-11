@@ -202,100 +202,91 @@
 /**
  *
  */
-function clickElement(id,href) 
-{
-  var speed = "fast";
-  var img = $("#"+id+"_img");
-  var el = $("#"+id+"_children");
-  if ( img.attr("title") == "-") {
-    img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
-    el.hide( speed);
-  }
-  else 
-  if ( img.attr("title") == "+") {
-    img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
-    el.show( speed);
-    if ( !el.attr( 'class')) {
-      el.addClass( 'form-small');
-      el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
-      el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
-      // Set wait-cursor.
-      $(document.body).css( "cursor", "wait");
-      // JQuery.AJAX.get
-      $.get( href+"/ajaxGetChildNodes?id="+id+"&lang=<dtml-var lang>&preview=preview&get_restricted=True&http_referer="+escape(self.location.href), processResponse);
-    }
-  }
+function clickElement(id,href) {
+	var speed = "fast";
+	var img = $("#"+id+"_img");
+	var el = $("#"+id+"_children");
+	if ( img.attr("title") == "-") {
+		img.attr( { src: "<dtml-var MISC_ZMS>pl.gif", title: "+"});
+		el.hide( speed);
+	}
+	else if ( img.attr("title") == "+") {
+		img.attr( { src: "<dtml-var MISC_ZMS>mi.gif", title: "-"});
+		el.show( speed);
+		if ( !el.attr( 'class')) {
+			el.addClass( 'form-small');
+			el.append( '<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> ');
+			el.append( '<dtml-var "getZMILangStr('MSG_LOADING')"> ');
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// JQuery.AJAX.get
+			$.get( href+"/ajaxGetChildNodes",{id:id,lang:getZMILang(),preview:'preview',get_restricted:'True',http_referer:escape(self.location.href)}, function(data){
+					// Reset wait-cursor.
+					$(document.body).css( "cursor", "auto");
+					// Get object-id.
+					var id = $("pages",data).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+					// Get and clear html-element (div).
+					var $el = $("#"+id+"_children");
+					var html = '';
+					// Get and iterate pages.
+					var pages = $("pages",data).children("page");
+					for (var i = 0; i < pages.length; i++) {
+						var page = pages[i];
+						var page_id = $(page).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+						var page_absolute_url = $(page).attr("absolute_url");
+						var page_meta_id = $(page).attr("meta_id");
+						var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
+						var page_titlealt = $(page).attr("titlealt");
+						var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
+						var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
+						html += '<div id="div_'+page_id+'" class="form-small">';
+						if ( page_has_children) {
+							html += '<a href="javascript:clickElement(\''+page_id+'\',\''+page_absolute_url+'\')">';
+							html += '<img id="'+page_id+'_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" align="absmiddle" title="+">';
+							html += '</a>';
+						}
+						else {
+							html += '<img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle" title="">';
+						}
+						var page_anchor = "";
+						var page_index = "";
+						if ( page_is_pageelement) {
+							var page_file_filename = $("file>filename",page);
+							if (page_file_filename.length) {
+								page_anchor = "/" + page_file_filename.text();
+							}
+							else {
+								page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
+							}
+						}
+						html += '<input type="radio" class="form-radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_anchor+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')">';
+						if ( page_meta_id == "ZMSLinkElement") {
+							html += '<img src="<dtml-var MISC_ZMS>ico_ref.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
+						}
+						else if ( page.getAttribute("restricted") == "True" || page.getAttribute("restricted") == "1") {
+							html += '<img src="<dtml-var MISC_ZMS>restricted.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
+						}
+						else {
+							html += '<img id="icon_'+page_id+'" src="'+$(page).attr("display_icon")+'" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
+						}
+						if ( page_meta_id == "ZMSGraphic" || page_meta_id == "ZMSTextarea") {
+							for (var j = 0; j < page.childNodes.length; j++) {
+								var item = page.childNodes[j];
+								if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
+									page_titlealt = search_quote(item.firstChild.data,25);
+								}
+							}
+						}
+						html += '<a href="'+page_absolute_url+'/manage_main" target="_blank" class="zmi">'+page_titlealt+'</a>';
+						html += '</div>';
+						html += '<div id="'+page_id+'_children" style="margin:4px 1px 1px 8px"></div>';
+						$el.html(html);
+					}
+			});
+		}
+	}
 }
 
-
-/**
- * Process response.
- */
-function processResponse(data) 
-{
-  // Reset wait-cursor.
-  $(document.body).css( "cursor", "auto");
-  // Get object-id.
-  var id = $("pages",data).attr("id").replace(/\./,"_").replace(/\-/,"_");
-  // Get and clear html-element (div).
-  var $el = $("#"+id+"_children");
-  var html = '';
-  // Get and iterate pages.
-  var pages = $("pages",data).children("page");
-  for (var i = 0; i < pages.length; i++) {
-    var page = pages[i];
-    var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
-    var page_absolute_url = $(page).attr("absolute_url");
-    var page_meta_id = $(page).attr("meta_id");
-    var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
-    var page_titlealt = $(page).attr("titlealt");
-    var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
-    var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
-    html += '<div id="div_'+page_id+'" class="form-small">';
-    if ( page_has_children) {
-      html += '<a href="javascript:clickElement(\''+page_id+'\',\''+page_absolute_url+'\')">';
-      html += '<img id="'+page_id+'_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" align="absmiddle" title="+">';
-      html += '</a>';
-    }
-    else {
-      html += '<img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle" title="">';
-    }
-    var page_anchor = "";
-    var page_index = "";
-    if ( page_is_pageelement) {
-      var page_file_filename = $("file>filename",page);
-      if (page_file_filename.length) {
-        page_anchor = "/" + page_file_filename.text();
-      }
-      else {
-        page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
-      }
-    }
-    html += '<input type="radio" class="form-radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_anchor+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')">';
-    var img = document.createElement( "img");
-    if ( page_meta_id == "ZMSLinkElement") {
-      html += '<img src="<dtml-var MISC_ZMS>ico_ref.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-    }
-    else if ( page.getAttribute("restricted") == "True" || page.getAttribute("restricted") == "1") {
-      html += '<img src="<dtml-var MISC_ZMS>restricted.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-    }
-    else {
-      html += '<img id="icon_'+page_id+'" src="'+$(page).attr("display_icon")+'" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-    }
-    if ( page_meta_id == "ZMSGraphic" || page_meta_id == "ZMSTextarea") {
-      for (var j = 0; j < page.childNodes.length; j++) {
-        var item = page.childNodes[j];
-        if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
-          page_titlealt = search_quote(item.firstChild.data,25);
-        }
-      }
-    }
-    html += '<a href="'+page_absolute_url+'/manage_main" target="_blank" class="zmi">'+page_titlealt+'</a>';
-    html += '</div>';
-    html += '<div id="'+page_id+'_children" style="margin:4px 1px 1px 8px"></div>';
-    $el.html(html);
-  }
-}
 
 /**
  * Follow href.
@@ -303,18 +294,17 @@ function processResponse(data)
  * @param href
  * @param extra
  */
-function followHref( href, extra) 
-{
-  href += '?lang=<dtml-var lang>';
-  href += '&came_from=<dtml-var "REQUEST.form.get( 'came_from', getHome().absolute_url())">';
-  href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
-  href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
-  href += '&elName=<dtml-var "REQUEST.get( 'elName', '')" url_quote>';
-  href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
-  if ( extra) {
-    href += extra;
-  }
-  self.location.href = href;
+function followHref( href, extra) {
+	href += '?lang=<dtml-var lang>';
+	href += '&came_from=<dtml-var "REQUEST.form.get( 'came_from', getHome().absolute_url())">';
+	href += '&this_path=<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())">';
+	href += '&fmName=<dtml-var "REQUEST.get( 'fmName', '')" url_quote>';
+	href += '&elName=<dtml-var "REQUEST.get( 'elName', '')" url_quote>';
+	href += '&selectedText=<dtml-var "REQUEST.get( 'selectedText', '')" url_quote>';
+	if ( extra) {
+		href += extra;
+	}
+	self.location.href = href;
 }
 
 //-->

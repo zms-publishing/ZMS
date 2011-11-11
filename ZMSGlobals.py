@@ -1327,7 +1327,7 @@ class ZMSGlobals:
         _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
       
       # Get absolute filename.
-      filename = _fileutil.absoluteOSPath(filename)
+      filename = _fileutil.absoluteOSPath(path)
       
       # Check permissions.
       request = self.REQUEST

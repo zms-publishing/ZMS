@@ -260,7 +260,7 @@ class MultiLanguageManager:
       manage_lang = None
       req = getattr( self, 'REQUEST', None)
       if req is not None:
-        sess = getattr( req, 'SESSION', None)
+        sess = _globals.get_session(self)
         if req.form.has_key('manage_lang'):
           manage_lang = req.get('manage_lang')
         else:

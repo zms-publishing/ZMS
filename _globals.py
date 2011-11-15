@@ -341,6 +341,14 @@ def nvl(a1, a2, n=None):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_globals.get_session:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def get_session(self):
+  return getattr(self, 'session_data_manager', None) and \
+    self.session_data_manager.getSessionData(create=0)
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.triggerEvent:
 
 Hook for trigger of custom event (if there is one)

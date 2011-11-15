@@ -28,6 +28,7 @@ function hidePreview() {
 function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
+			var titlealt = "";
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = abs_url;
 			var extra = null;
@@ -39,6 +40,7 @@ function zmiAddPages(result, siblings) {
 					var icon = $("icon",$img).text();
 					var filename = $("filename",$img).text();
 					var size = $("size",$img).text();
+					titlealt = filename;
 					extra = 'showPreviewZMSGraphic(this,\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
 				}
 			}
@@ -52,21 +54,26 @@ function zmiAddPages(result, siblings) {
 					var icon = $("icon",$file).text();
 					var filename = $("filename",$file).text();
 					var size = $("size",$file).text();
+					titlealt = filename;
 					extra = 'showPreviewZMSFile(this,\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
 				}
 			}
-			html += '<div id="div_'+$(this).attr("id")+'" style="padding:1px 2px 1px 8px; margin:0">';
-			html += '<span onclick="zmiExpandObject(\''+$(this).attr("id")+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
+			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+			html += '<div id="div_'+id+'" style="padding:1px 2px 1px 8px; margin:0">';
+			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
-			html += '<span onclick="zmiSelectObject(\''+$(this).attr("id")+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
+			html += '<span onclick="zmiSelectObject(\''+id+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
 			html += '<img src="'+$(this).attr("display_icon")+'" title="'+$(this).attr("display_type")+'" align="absmiddle"/>';
 			if (extra != null) {
 				html += '<span class="ui-helper-clickable" onmouseover="'+extra+'" onmouseout="hidePreview();">&dArr;</span>';
 			}
-			html += $(this).attr("titlealt");
+			if (titlealt=="") {
+				titlealt = $(this).attr("titlealt");
+			}
+			html += titlealt;
 			html += '</span>';
-			html += '<div id="div_'+$(this).attr("id")+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
+			html += '<div id="div_'+id+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
 			if (siblings) {
 				html += '</div>';
 				html += '</div>';
@@ -101,12 +108,20 @@ function zmiExpandObject(id,abs_url,meta_id) {
 			$div.hide("normal");
 			$img.attr({src:"/misc_/zms/pl.gif",title:"+"});
 		}
+		zmiResizeObject();
 	}
 }
 
 function zmiSelectObject(id,abs_url,meta_id) {
 	zmiDialog.getContentElement('tab1', 'inp_url').setValue(abs_url);
 	zmiDialog.click("ok");
+}
+
+function zmiResizeObject() {
+	var $myDiv = $("#myDiv");
+	var $cke_dialog_footer = $(".cke_dialog_footer");
+	var height = $cke_dialog_footer.offset().top-$myDiv.offset().top-10;
+	$myDiv.css("height",height);
 }
 
 CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
@@ -134,7 +149,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 					},
 					{
 						type: 'html',
-						html : '<div id="myDiv"></div>'
+						html : '<div id="myDiv" style="overflow:auto"></div>'
 					}
 				 ]
 			}
@@ -142,9 +157,10 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 
 			onLoad: function() {
 					zmiDialog = this;
+					zmiDialog.on("resize",function(event){zmiResizeObject()});
+					zmiResizeObject();
 					var href = self.location.href;
 					href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
-					$("#myDiv").parents("table.cke_dialog_contents td:first").css({height:"80%"});
 					$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
 					$.get(href,{lang:zmiParams["lang"]},function(result) {
 							var html = zmiAddPages(result,false);

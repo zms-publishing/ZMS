@@ -121,11 +121,10 @@
      return path;
   }
 
-  /**
-   * Returns relative url.
-   */
-  function getRelativeUrl(url, anchor) 
-  {
+/**
+ * Returns relative url.
+ */
+function getRelativeUrl(url, anchor) {
      var currntPath = '<dtml-var "REQUEST.form.get( 'this_path', getSelf(PAGES).absolute_url())[len(SERVER_URL)+1:]">';
      var targetPath = url.substr(<dtml-var "len(SERVER_URL)+1">);
      while ( currntPath.length > 0 && targetPath.length > 0) {
@@ -172,12 +171,12 @@
      else
        url += 'index_<dtml-var lang>.html' + anchor;
     return url;
-  }
+}
 
-  /**
-   *
-   */
-  function selectObject(url, anchor, title) {
+/**
+ *
+ */
+function selectObject(url, anchor, title) {
    <dtml-if fmName><dtml-if elName>
      var fm = self.parent.document.forms['<dtml-var fmName>'];
      if ( fm) {
@@ -197,7 +196,71 @@
      self.parent.selectObject(url,title);
    </dtml-if>
     self.parent.zmiDialogClose('zmiDialog');
-  }
+}
+
+function zmiAddPages(result, siblings) {
+	var html = "";
+	$("page",result).each(function() {
+			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+			var abs_url = $(this).attr("absolute_url");
+			var meta_id = $(this).attr("meta_id");
+			var has_children = $(this).attr("has_children")=="True" || $(this).attr("has_children")=="1";
+			var titlealt = $(this).attr("titlealt");
+			var is_restricted = $(this).attr("restricted") == "True" || $(this).attr("restricted") == "1";
+			var is_page = $(this).attr("is_page")=="True" || $(this).attr("is_page")=="1";
+			var is_pageelement = $(this).attr("is_pageelement")=="True" || $(this).attr("is_pageelement")=="1";
+			html += '<div id="div_'+id+'" class="form-small">';
+			if ( has_children) {
+				html += '<a href="javascript:clickElement(\''+id+'\',\''+abs_url+'\')">';
+				html += '<img id="'+id+'_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" align="absmiddle" title="+">';
+				html += '</a>';
+			}
+			else {
+				html += '<img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle" title="">';
+			}
+			var anchor = "";
+			var index = "";
+			if ( is_pageelement) {
+				var file_filename = $("file>filename",this);
+				if (file_filename.length) {
+					anchor = "/" + file_filename.text();
+				}
+				else {
+					anchor = "#" + id.substring(id.indexOf("_")+1);
+				}
+			}
+			html += '<input type="radio" class="form-radio" onclick="selectObject(\''+abs_url+'\',\''+anchor+'\',\''+titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')">';
+			if ( meta_id == "ZMSLinkElement") {
+				html += '<img src="<dtml-var MISC_ZMS>ico_ref.gif" border="0" align="absmiddle" title="'+$(this).attr('display_type')+'" style="background:url('+$(this).attr('display_icon')+')">';
+			}
+			else if ( is_restricted) {
+				html += '<img src="<dtml-var MISC_ZMS>restricted.gif" border="0" align="absmiddle" title="'+$(this).attr('display_type')+'" style="background:url('+$(this).attr('display_icon')+')">';
+			}
+			else {
+				html += '<img id="icon_'+id+'" src="'+$(this).attr("display_icon")+'" border="0" align="absmiddle" title="'+$(this).attr('display_type')+'" style="background:url('+$(this).attr('display_icon')+')">';
+			}
+			if ( meta_id == "ZMSGraphic" || meta_id == "ZMSTextarea") {
+				for (var j = 0; j < this.childNodes.length; j++) {
+					var item = this.childNodes[j];
+					if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
+						titlealt = search_quote(item.firstChild.data,25);
+					}
+				}
+			}
+			html += '<a href="'+abs_url+'/manage_main" target="_blank" class="zmi">'+titlealt+'</a>';
+			html += '</div>';
+			html += '<div id="'+id+'_children" style="margin:4px 1px 1px 8px">';
+			if (siblings) {
+				html += '</div>';
+			}
+		});
+	$("page",result).each(function() {
+			if (!siblings) {
+				html += '</div>';
+			}
+		});
+	return html;
+}
 
 /**
  *
@@ -220,68 +283,15 @@ function clickElement(id,href) {
 			// Set wait-cursor.
 			$(document.body).css( "cursor", "wait");
 			// JQuery.AJAX.get
-			$.get( href+"/ajaxGetChildNodes",{id:id,lang:getZMILang(),preview:'preview',get_restricted:'True',http_referer:escape(self.location.href)}, function(data){
-					// Reset wait-cursor.
-					$(document.body).css( "cursor", "auto");
+			$.get( href+"/ajaxGetChildNodes",{id:id,lang:getZMILang(),preview:'preview',get_restricted:'True',http_referer:escape(self.location.href)}, function(result){
 					// Get object-id.
-					var id = $("pages",data).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+					var id = $("pages",result).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
 					// Get and clear html-element (div).
 					var $el = $("#"+id+"_children");
-					var html = '';
-					// Get and iterate pages.
-					var pages = $("pages",data).children("page");
-					for (var i = 0; i < pages.length; i++) {
-						var page = pages[i];
-						var page_id = $(page).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
-						var page_absolute_url = $(page).attr("absolute_url");
-						var page_meta_id = $(page).attr("meta_id");
-						var page_has_children = $(page).attr("has_children")=="True" || $(page).attr("has_children")=="1";
-						var page_titlealt = $(page).attr("titlealt");
-						var page_is_page = page.getAttribute("is_page")=="True" || page.getAttribute("is_page")=="1";
-						var page_is_pageelement = page.getAttribute("is_pageelement")=="True" || page.getAttribute("is_pageelement")=="1";
-						html += '<div id="div_'+page_id+'" class="form-small">';
-						if ( page_has_children) {
-							html += '<a href="javascript:clickElement(\''+page_id+'\',\''+page_absolute_url+'\')">';
-							html += '<img id="'+page_id+'_img" src="<dtml-var MISC_ZMS>pl.gif" border="0" align="absmiddle" title="+">';
-							html += '</a>';
-						}
-						else {
-							html += '<img src="<dtml-var spacer_gif>" width="16" height="16" border="0" align="absmiddle" title="">';
-						}
-						var page_anchor = "";
-						var page_index = "";
-						if ( page_is_pageelement) {
-							var page_file_filename = $("file>filename",page);
-							if (page_file_filename.length) {
-								page_anchor = "/" + page_file_filename.text();
-							}
-							else {
-								page_anchor = "#" + page_id.substring(page_id.indexOf("_")+1);
-							}
-						}
-						html += '<input type="radio" class="form-radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_anchor+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')">';
-						if ( page_meta_id == "ZMSLinkElement") {
-							html += '<img src="<dtml-var MISC_ZMS>ico_ref.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-						}
-						else if ( page.getAttribute("restricted") == "True" || page.getAttribute("restricted") == "1") {
-							html += '<img src="<dtml-var MISC_ZMS>restricted.gif" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-						}
-						else {
-							html += '<img id="icon_'+page_id+'" src="'+$(page).attr("display_icon")+'" border="0" align="absmiddle" title="'+$(page).attr('display_type')+'" style="background:url('+$(page).attr('display_icon')+')">';
-						}
-						if ( page_meta_id == "ZMSGraphic" || page_meta_id == "ZMSTextarea") {
-							for (var j = 0; j < page.childNodes.length; j++) {
-								var item = page.childNodes[j];
-								if ( item.nodeType == 1 && item.nodeName == "text" && item.firstChild) {
-									page_titlealt = search_quote(item.firstChild.data,25);
-								}
-							}
-						}
-						html += '<a href="'+page_absolute_url+'/manage_main" target="_blank" class="zmi">'+page_titlealt+'</a>';
-						html += '</div>';
-						html += '<div id="'+page_id+'_children" style="margin:4px 1px 1px 8px"></div>';
-						$el.html(html);
-					}
+					var html = zmiAddPages(result,true);
+					$el.html(html);
+					// Reset wait-cursor.
+					$(document.body).css( "cursor", "auto");
 			});
 		}
 	}

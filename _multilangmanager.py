@@ -26,6 +26,7 @@ import zope.interface
 # Product Imports.
 import IZMSLocale
 import _fileutil
+import _globals
 import _xmllib
 
 

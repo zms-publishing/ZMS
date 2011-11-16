@@ -1,4 +1,5 @@
 var zmiDialog = null;
+var zmiSelectedText = null;
 
 function showPreviewZMSGraphic(el,src,icon,filename,size) {
 	var html= '';
@@ -155,6 +156,15 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 			}
 		 ],
 
+			onShow: function() {
+					var selection = editor.getSelection();
+					if (CKEDITOR.env.ie) {
+						zmiSelectedText = selection.document.$.selection.createRange().text;
+					} else {
+						zmiSelectedText = selection.getNative();
+					}
+			},
+
 			onLoad: function() {
 					zmiDialog = this;
 					zmiDialog.on("resize",function(event){zmiResizeObject()});
@@ -172,7 +182,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
 				},
 
 			onOk: function() {
-					var selectedText = editor.getSelection().getNative();
+					var selectedText = zmiSelectedText;
 					var url = this.getContentElement('tab1', 'inp_url').getValue();
 					var text = url;
 					if ((""+selectedText).length>0) {

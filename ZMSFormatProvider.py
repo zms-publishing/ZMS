@@ -61,7 +61,9 @@ class ZMSFormatProvider(
 
     # Management Interface.
     # ---------------------
-    manage = manage_main = manage_textformats = HTMLFile('dtml/ZMSFormatProvider/manage_textformats', globals())
+    manage = HTMLFile('dtml/ZMSFormatProvider/manage_textformats', globals())
+    manage_main = HTMLFile('dtml/ZMSFormatProvider/manage_textformats', globals()) # -"-
+    manage_textformats = HTMLFile('dtml/ZMSFormatProvider/manage_textformats', globals()) # -"-
     manage_charformats = HTMLFile('dtml/ZMSFormatProvider/manage_charformats', globals())
 
     # Management Permissions.

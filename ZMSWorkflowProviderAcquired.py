@@ -55,7 +55,8 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals())
+    manage = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals())
+    manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals()) # -"-
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

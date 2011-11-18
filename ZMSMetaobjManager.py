@@ -771,12 +771,9 @@ class ZMSMetaobjManager:
           newCustom += 'SELECT * FROM tablename\n'
       
       # Handle resources.
-      if (newType in ['resource','Folder']) or \
+      if (newType in ['resource']) or \
          (newMandatory and newType in self.getMetaobjIds()) or \
          (newRepetitive and newType in self.getMetaobjIds()):
-        if newType == 'Folder':
-          if oldId is not None: oldId = _globals.id_quote(oldId)
-          if newId is not None: newId = _globals.id_quote(newId)
         if not newCustom:
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
@@ -932,9 +929,10 @@ class ZMSMetaobjManager:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Folder':
-          f = getattr( self, id+'.'+_globals.id_quote(newId), None)
-          if f is not None:
-            _ziputil.importZip2Zodb( newOb, f.data)
+          if isinstance( newCustom, _blobfields.MyFile) and len(newCustom.filename) > 0:
+            newOb.manage_delObjects(ids=newOb.objectIds())
+            _ziputil.importZip2Zodb( newOb, newCustom.getData())
+          attr['custom'] = ''
         elif newType == 'Script (Python)':
           newOb.write(newCustom)
           roles=[ 'Manager']

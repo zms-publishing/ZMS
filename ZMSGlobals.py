@@ -35,6 +35,7 @@ import re
 import tempfile
 import time
 import urllib
+import zExceptions
 import zope.interface
 # Product Imports.
 import _blobfields
@@ -1272,8 +1273,7 @@ class ZMSGlobals:
       for perm in map(lambda x: x.strip(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
-          RESPONSE = REQUEST.RESPONSE
-          raise RESPONSE.unauthorized()
+          raise zExceptions.Unauthorized
       
       # Read file.
       if type( mode) is dict:
@@ -1312,8 +1312,7 @@ class ZMSGlobals:
       for perm in map(lambda x: x.strip(), perms):
           authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
-          RESPONSE = request.RESPONSE
-          raise RESPONSE.unauthorized()
+          raise zExceptions.Unauthorized
       
       # Write file.
       _fileutil.exportObj( v, filename, mode)
@@ -1341,8 +1340,7 @@ class ZMSGlobals:
       for perm in map(lambda x: x.strip(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm.lower())))
       if not authorized:
-        RESPONSE = request.RESPONSE
-        raise RESPONSE.unauthorized()
+        raise zExceptions.Unauthorized
       
       # Remove file.
       _fileutil.remove( path, deep)
@@ -1379,8 +1377,7 @@ class ZMSGlobals:
       for perm in map(lambda x: x.strip(), perms):
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
       if not authorized:
-        RESPONSE = request.RESPONSE
-        raise RESPONSE.unauthorized()
+        raise zExceptions.Unauthorized
       
       # Read path.
       return _fileutil.readPath(filename, data, recursive)
@@ -1484,8 +1481,7 @@ class ZMSGlobals:
       request = self.REQUEST
       authorized = path.find('..') < 0
       if not authorized:
-        RESPONSE = REQUEST.RESPONSE
-        raise RESPONSE.unauthorized()
+        raise zExceptions.Unauthorized
       
       try:
         # Set request-parameters.

@@ -106,7 +106,6 @@ class ZMSSqlDb(ZMSObject):
         'manage','manage_main','manage_main_iframe','manage_workspace',
         'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxZMIActions',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_exportexcel',

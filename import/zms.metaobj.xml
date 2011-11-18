@@ -1912,7 +1912,7 @@ return zmscontext.attr('attr_dc_description')
   <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT']">
     <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
   </span>
-  <div tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
+  <div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
     <div class="title" tal:condition="python:title.lower()!='medline' and title">
       <img tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="url" align="absmiddle" />
@@ -1972,7 +1972,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.2]]></item>
+          <item key="revision"><![CDATA[1.2.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

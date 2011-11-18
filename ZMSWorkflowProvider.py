@@ -134,7 +134,8 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main', globals())
+    manage = HTMLFile('dtml/ZMSWorkflowProvider/manage_main', globals())
+    manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main', globals()) # -"-
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions

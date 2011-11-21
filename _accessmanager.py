@@ -275,6 +275,7 @@ class AccessableObject:
         public = public and parent.hasPublicAccess()
       return public
 
+
     # --------------------------------------------------------------------------
     #  AccessableObject.synchronizePublicAccess:
     # --------------------------------------------------------------------------
@@ -349,6 +350,31 @@ class AccessableObject:
 ################################################################################
 ################################################################################
 class AccessableContainer(AccessableObject): 
+
+    # --------------------------------------------------------------------------
+    #  AccessableContainer.synchronizeRolesAccess:
+    # --------------------------------------------------------------------------
+    def synchronizeRolesAccess(self):
+      message = []
+      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      for id in security_roles.keys():
+        self.manage_role(role_to_manage=id,permissions=[])
+        message.append("id="+id)
+        d = security_roles.get(id,{})
+        for node in d.keys():
+          message.append("node="+node)
+          ob = self.getLinkObj(node)
+          if ob is not None:
+            message.append("ob="+ob.absolute_url())
+            roles = d[node]['roles']
+            message.append("roles="+str(roles))
+            permissions = []
+            for role in roles:
+              permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
+            message.append("permissions="+str(permissions))
+            ob.manage_role(role_to_manage=id,permissions=permissions)
+      return '\n'.join(message)
+
 
     # --------------------------------------------------------------------------
     #  AccessableContainer.restrictAccess:

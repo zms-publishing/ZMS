@@ -90,6 +90,15 @@ function loadCkeditor(id, opt) {
 	CKEDITOR.replace(id, opt);
 }
 
+function zmiRichtextResize(id) {
+	var instance = CKEDITOR.instances['editor_'+id];
+	if(instance){
+		var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
+		zmiWriteDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
+		$(".cke_contents").css("height",newHeight);
+	}
+}
+
 function zmiRichtextInit(id) {
 	pluginCkeditor('#editor_'+id,function() {
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
@@ -145,10 +154,15 @@ CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', e
 		loadCkeditor( 'editor_'+id, {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
-				toolbar: 'ZMSCustomToolbar'
+				toolbar: 'ZMSCustomToolbar',
 			<dtml-else>
-				toolbar: 'ZMSBasicToolbar'
+				toolbar: 'ZMSBasicToolbar',
 			</dtml-if>
+			on:{
+				instanceReady: function(ev) {
+						zmiRichtextResize(id);
+					}
+				}
 			});
 		zmiRichtextSyncDataToView(id);
 	})

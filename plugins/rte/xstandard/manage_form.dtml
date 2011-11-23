@@ -86,61 +86,44 @@ function getRelativeUrl(path, url) {
   >zmiRichtextElNames[<dtml-var count>]='<dtml-var "REQUEST.get('elName')">';<dtml-call "REQUEST.set('count',count+1)"
  ></dtml-if>
 
-  function zmiRichtextInit(elName, validateXML) {
-    var txt = $('#'+elName).val();
-    if ( txt.length > 0) {
-      var zmiStandardEditorShow = false;
-      var ltxt = "<root>"+txt.toLowerCase()+"</root>";
-      if ( (ltxt.indexOf( "<form") >= 0) || 
-           (ltxt.indexOf( "<input") >= 0) || 
-           (ltxt.indexOf( "<script") >= 0) || 
-           (ltxt.indexOf( "<"+"dtml-") >= 0)) {
-        zmiStandardEditorShow = true;
-      }
-      else {
-        try {
-          if ( validateXML) {
-            if (window.DOMParser) {
-              confirm( "window.DOMParser");
-              var parser=new DOMParser();
-              var doc=parser.parseFromString(ltxt,"text/xml");
-              if ( doc.childNodes[0].nodeName == 'parsererror') {
-                throw '<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n';
-              }
-            } else if (window.ActiveXObject) {
-              var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-              xmlDoc.async="false";
-              xmlDoc.loadXML(ltxt);
-              if ( xmlDoc.childNodes.length == 0) {
-                throw '<dtml-var "getZMILangStr('CAPTION_WARNING')">\n'+'Invalid (X)HTML!\n';
-              }
-            }
-          }
-          $('#editor_'+elName).val( txt);
-          $('#editor_'+elName+'_value').val( txt);
-        }
-        catch(e) {
-          alert(e);
-          zmiStandardEditorShow = true;
-        }
-      }
-      if ( zmiStandardEditorShow) {
-        zmiRichtextEditorShow('zmiStandardEditor'+elName,'zmiRichtextEditor'+elName<dtml-if "REQUEST.get('htmledit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if></dtml-if>);
-      }
-    }
-  }
+function zmiRichtextResize(id) {
+	var newHeight = $("div#zmiRichtextEditor"+id).height()-20;
+	zmiWriteDebug("xstandard.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
+	$('object[name^=editor_'+id+']').css("height",newHeight);
+}
 
-  function zmiStandardOnSubmitEventHandler() {
-    for (var e=0; e < zmiRichtextElNames.length; e++) {
-      var elName = zmiRichtextElNames[e];
-      try {
-        $('#editor_'+elName).val( $('#'+elName).val());
-        $('#editor_'+elName+'_value').val( $('#'+elName).val());
-      }
-      catch(er) {
-      }
-    }
-  }
+function zmiRichtextInit(id) {
+	var txt = $('#'+id).val();
+	if ( txt.length > 0) {
+		var zmiStandardEditorShow = false;
+		var lowerTxt = txt.toLowerCase();
+		if ((lowerTxt.indexOf( "<form") >= 0) || 
+				(lowerTxt.indexOf( "<input") >= 0) || 
+				(lowerTxt.indexOf( "<script") >= 0) || 
+				(lowerTxt.indexOf( "<"+"dtml-") >= 0)) {
+			zmiStandardEditorShow = true;
+		}
+		else {
+			$('#editor_'+id).val( txt);
+			$('#editor_'+id+'_value').val( txt);
+		}
+		if ( zmiStandardEditorShow) {
+			zmiRichtextEditorShow('zmiStandardEditor'+id,'zmiRichtextEditor'+id<dtml-if "REQUEST.get('htmledit_fmt')"><dtml-if "REQUEST.get('format') in [None,REQUEST.get('richedit_fmt').getId()]">,'<dtml-var "REQUEST.get('htmledit_fmt').getId()">'</dtml-if></dtml-if>);
+		}
+	}
+}
+
+function zmiStandardOnSubmitEventHandler() {
+	for (var e=0; e < zmiRichtextElNames.length; e++) {
+		var elName = zmiRichtextElNames[e];
+		try {
+			$('#editor_'+elName).val( $('#'+elName).val());
+			$('#editor_'+elName+'_value').val( $('#'+elName).val());
+		}
+		catch(er) {
+		}
+	}
+}
 
   <dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
   function zmiRichtextOnSubmitEventHandler() {

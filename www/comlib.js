@@ -220,8 +220,7 @@ function untag( s) {
 /**
  * Get tagged index of untagged string in given string.
  */
-function taggedStart( s1, s2)
-{
+function taggedStart( s1, s2) {
   var r = '';
   var b = true;
   for (var i = 0; i < s1.length; i++) {
@@ -236,13 +235,6 @@ function taggedStart( s1, s2)
       return i;
   }
   return -1;
-}
-
-function zmiWriteDebug(s) {
-  if ($('textarea#debug').length==0) {
-    $('body').append('<textarea id="debug" rows="50" cols="80"></textarea>');
-  }
-	$("textarea#debug").val("["+(new Date())+"] "+s+"\n"+$("textarea#debug").val());
 }
 
 /**

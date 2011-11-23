@@ -93,18 +93,60 @@
 <dtml-unless "REQUEST.get('f_zmiRichtextEditorShow')">
 <script type="text/javascript">
 <!--//
-<dtml-comment> ***** RichText-Editor (switch) ***** </dtml-comment>
-function zmiRichtextEditorShow( show_id, hide_id, format, callback)
-  {
-    $('#'+hide_id).hide('normal');
-    $('#'+show_id).show('normal');
-    if ( format) {
-      $('#format').val(format);
-    }
-    if ( callback) {
-      callback.apply();
-    }
-  }
+
+<dtml-unless ZMS_NO_BODY>
+
+$(function() {
+	zmiRichtextEditorMaximize();
+	$(window).resize(function() {
+		zmiRichtextEditorMaximize();
+	});
+});
+
+</dtml-unless>
+
+/**
+ * Maximize single richtext.
+ */
+function zmiRichtextEditorMaximize(ta) {
+	var ta = $('div[id^=zmiStandardEditor] textarea');
+	if (ta.length==1 && ta.parents("form").attr("action").indexOf("manage_add")<0) {
+		var id = ta.attr('name');
+		if ($("div#zmiStandardEditor"+id).css("display")=="none") {
+			ta = $("div#zmiRichtextEditor"+id);
+		}
+		var innerDims = getInnerDimensions();
+		var bodyDims = getBodyDimensions();
+		var minHeight = 200;
+		var newHeight = Math.max($(ta).prop('offsetHeight')+(innerDims.height-bodyDims.height)-10,minHeight);
+		ta.css('height',newHeight);
+		try {
+			zmiRichtextResize(id);
+		}
+		catch (e) {
+			$("#ZMIManageTabsButtons").html(e);
+		}
+	}
+}
+
+
+/** 
+ * Switch Richtext-Editor.
+ */
+function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
+	if ( format) {
+		$('#format').val(format);
+	}
+	$('#'+hide_id).hide('normal');
+	$('#'+show_id).show('normal',function() {
+			if ( callback) {
+				callback.apply();
+			}
+			var id = show_id.substr(show_id.indexOf("Editor")+"Editor".length);
+			zmiWriteDebug("[zmiRichtextEditorShow]: id="+id);
+			zmiRichtextEditorMaximize(id);
+		});
+}
 //-->
 </script>
 <dtml-call "REQUEST.set('f_zmiRichtextEditorShow',True)">

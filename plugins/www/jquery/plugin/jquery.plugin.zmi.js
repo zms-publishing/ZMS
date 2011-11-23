@@ -50,6 +50,13 @@ function selectCheckboxes(fm, v) {
 	$(':checkbox:not([name~=active])',fm).prop('checked',v)
 }
 
+function zmiWriteDebug(s) {
+	var $div = $("div#zmi-debug");
+	if ($div.css("display")!="none") {
+		$div.html("["+(new Date())+"] "+s+'<br/>'+$div.html());
+	}
+}
+
 // ############################################################################
 // ### Forms
 // ############################################################################

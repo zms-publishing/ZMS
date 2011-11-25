@@ -20,6 +20,7 @@
 from DateTime.DateTime import DateTime
 from types import StringTypes
 import ZPublisher.HTTPRequest
+import datetime
 import string
 import time
 import urllib
@@ -783,13 +784,23 @@ class ObjAttrs:
           # Start time.
           elif key == 'attr_active_start':
             if value is not None:
-              dt = DateTime(time.mktime(value))
-              b = b and dt.isPast()
+              try:
+                dt = DateTime(time.mktime(value))
+                b = b and dt.isPast()
+              except:
+                # todo: consistent replacement of time by datetime
+                dtValue = datetime.datetime(value[0],value[1],value[2],value[3],value[4],value[5],value[6])
+                b = b and datetime.datetime.now() > dtValue
           # End time.
           elif key == 'attr_active_end':
             if value is not None:
-              dt = DateTime(time.mktime(value))
-              b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
+              try:
+                dt = DateTime(time.mktime(value))
+                b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
+              except:
+                # todo: consistent replacement of time by datetime
+                dtValue = datetime.datetime(value[0],value[1],value[2],value[3],value[4],value[5],value[6])
+                b = b and dtValue < datetime.datetime.now()
           if not b: break
       return b
 

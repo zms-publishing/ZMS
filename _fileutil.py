@@ -455,7 +455,7 @@ def writeZipFile( zf, basepath, path, filter):
       for pattern in filter.split(';'):
         match = match or fnmatch.fnmatch( arcname, pattern)
       if match:
-        zf.write( filepath, arcname)
+        zf.write( filepath, str(arcname))
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _fileutil.buildZipArchive:

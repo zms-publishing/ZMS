@@ -19,11 +19,9 @@
 # Imports.
 from cStringIO import StringIO
 from types import StringTypes
-try: # >= Zope-2.10
-  from zope.contenttype import guess_content_type
-except: # < Zope-2.10
-  from zope.app.content_types import guess_content_type
 import zipfile
+# Product Imports.
+import _globals
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -46,7 +44,7 @@ def importZip2Zodb(root, data):
     id = ids[-1]
     if id:
       file = zf.read( name)
-      mt, enc  = guess_content_type( id, file)
+      mt, enc  = _globals.guess_contenttype( id, file)
       if id in container.objectIds():
         container.manage_delObjects( [id])
       if mt.startswith('image'):

@@ -18,16 +18,14 @@
 
 # Imports.
 from ZPublisher.Iterators import filestream_iterator
-try: # >= Zope-2.10
-  from zope.contenttype import guess_content_type
-except: # < Zope-2.10
-  from zope.app.content_types import guess_content_type
 import fnmatch
 import os
 import shutil
 import stat
 import tempfile
 import zipfile
+# Product Imports.
+import _globals
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -210,7 +208,7 @@ def readPath(path, data=True, recursive=True):
             d['encoding']=enc
           else:
             try:
-              mt, enc = guess_content_type( local_filename)
+              mt, enc = _globals.guess_contenttype( local_filename)
             except:
               mt, enc = 'content/unknown', ''
             d['content_type']=mt
@@ -246,7 +244,7 @@ def readFile(filename, mode='b', threshold=2 << 16):
   else:
     data = filestream_iterator( filename, 'r'+mode)
   try:
-    mt, enc  = guess_content_type( filename, data)
+    mt, enc  = _globals.guess_contenttype( filename, data)
   except:
     mt, enc = 'content/unknown', ''
   return data, mt, enc, size

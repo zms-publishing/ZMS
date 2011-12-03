@@ -117,11 +117,12 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
 	else {
 		zmiUndoBlobDelete(elName);
 	}
-	var img = $('img#img_'+elName);
+	img = $('img#img_'+elName);
 	img.attr('src',src).css('background-color','#FF9900');
 	$('input#width_'+elName).val(width);
 	$('input#height_'+elName).val(height);
 	$('span#filename_'+elName).html(filename);
+	$('span#size_'+elName).html("");
 	$('span#dimensions_'+elName).html(width+'x'+height+'px');
 	zmiSwitchBlobButtons(elName);
 }

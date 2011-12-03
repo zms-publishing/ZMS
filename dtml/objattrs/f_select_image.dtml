@@ -131,7 +131,7 @@
 						<td class="form-element">
 							<dtml-try>
 								<dtml-call "REQUEST.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])">
-								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+								<dtml-var "getPlugin('fileupload/'+getConfProperty('ZMS.input.file.plugin')+'/input.dtml',REQUEST,{'elName':elName,'elMaxlength':getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
 							<dtml-except>
 								<!-- ERROR: 
 									<dtml-var error_type>: <dtml-var error_value>

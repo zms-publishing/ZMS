@@ -1056,7 +1056,8 @@ class ObjAttrs:
               o = getattr( temp_folder, id)
               f = o.data
               filename = getattr( temp_folder, id).title
-              set, value = True, {'data':f,'filename':filename}
+              mt, enc = _globals.guess_contenttype( filename, f)
+              set, value = True, {'data':f,'filename':filename,'content_type':mt}
               if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
                 w = REQUEST['width_%s'%attr]
                 h = REQUEST['height_%s'%attr]

@@ -22,6 +22,10 @@ from DateTime.DateTime import DateTime
 from httplib import HTTP
 from types import StringTypes
 from traceback import format_exception
+try: # >= Zope-2.10
+  from zope.contenttype import guess_content_type
+except: # < Zope-2.10
+  from zope.app.content_types import guess_content_type
 import cgi
 import copy
 import logging
@@ -130,6 +134,13 @@ def url_encode(url):
   for ch in ['[',']',' ','(',')']:
     url = url.replace(ch,'%'+bin2hex(ch).upper())
   return url
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_globals.guess_contenttype:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def guess_contenttype(filename, data):
+  mt, enc  = guess_content_type( filename, data)
+  return mt, enc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.format_sort_id:

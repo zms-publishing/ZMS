@@ -43,8 +43,7 @@ function zmiSwitchBlobButtons(elName) {
 	else {
 		$('#undo_btn_'+elName).hide('normal');
 	}
-	var img = $('img#img_'+elName);
-	var canDelete = $('input[name=del_'+elName+']').val()!=1 && img.length > 0;
+	var canDelete = $('input[name=del_'+elName+']').val()!=1;
 	if (canDelete) {
 		$('#delete_btn_'+elName).show('normal');
 	}
@@ -98,9 +97,9 @@ function zmiDelBlobBtnClick(elName) {
 			$('#'+l[i]+'_'+elName).html('');
 		}
 		// Create transparent overlay.
-		$('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
 		var img = $('img#img_'+elName);
 		if (img.length > 0) {
+			$('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
 			var div = $('div#div_opaque_'+elName);
 			var pos = img.offset();
 			div.css({

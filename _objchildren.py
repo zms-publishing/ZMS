@@ -161,6 +161,10 @@ class ObjChildren:
     #  ObjChildren.getObjChildren
     # --------------------------------------------------------------------------
     def getObjChildren(self, id, REQUEST, meta_types=None):
+      """
+      Returns a NodeList that contains all children of this node in 
+      correct order. If none, this is a empty NodeList. 
+      """
       objAttr = self.getObjChildrenAttr(id)
       reid = None
       if id:
@@ -169,6 +173,17 @@ class ObjChildren:
         else:
           reid = id
       return self.getChildNodes(REQUEST,meta_types,reid)
+
+
+    # --------------------------------------------------------------------------
+    #  ObjChildren.getObjChildren
+    # --------------------------------------------------------------------------
+    def filteredObjChildren(self, id, REQUEST, meta_types=None):
+      """
+      Returns a NodeList that contains all visible children of this node in 
+      correct order. If none, this is a empty NodeList. 
+      """
+      return filter(lambda ob: ob.isVisible(REQUEST),self.getObjChildren(id,REQUEST,meta_types))
 
 
     ############################################################################

@@ -518,6 +518,7 @@ class ZMSSqlDb(ZMSObject):
                     colType = 'text'
                   else:
                     colType = 'string'
+                colId = unicode(colId).encode('utf-8')
                 col = {}
                 col['key'] = colId
                 col['description'] = colDescr.strip()

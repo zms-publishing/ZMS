@@ -577,8 +577,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       return self.str_json(rtn)
 
     security.declareProtected('ZMS Author','getTempFormProperties')
-    def getTempFormProperties(self, lang, key, REQUEST, RESPONSE=None):
+    def getTempFormProperties(self, lang=None, key=None, REQUEST=None, RESPONSE=None):
       """ ZMSObject.getTempFormProperties """
+      if lang is None or key is None or REQUEST is None: return
       rtn = 0
       container = self.getTempFormPropertiesContainer()
       if container is not None:

@@ -1,5 +1,7 @@
 <dtml-let breadcrumbs="breadcrumbs_obj_path()"
 
+ ><dtml-call "REQUEST.set('catalog_items',[])"
+ ><dtml-call "REQUEST.set('pos',0)"
  ><dtml-call "REQUEST.set('docElmnt',None)"
  ><dtml-in breadcrumbs
   ><dtml-let ob=sequence-item ob_display="hasAccess(REQUEST) and not isResource(REQUEST)"

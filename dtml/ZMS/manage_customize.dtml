@@ -186,6 +186,7 @@
    {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
    {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
    {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
+   {'key':'HTTP.noproxy','title':'HTTP noproxy','desc':'comma-delimited list of url-patterns that do not use HTTP proxy.','datatype':'string'},
    {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},
    {'key':'jquery.ui.version','title':'JQuery UI version','desc':'JQuery UI version.','datatype':'string'},
    {'key':'jquery.plugin.version','title':'JQuery plugin version','desc':'JQuery plugin version','datatype':'string'},

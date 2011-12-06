@@ -803,26 +803,6 @@ class ConfManager(
       message = ''
       cssId = REQUEST.get('cssId','')
       
-      # Insert.
-      # -------
-      if btn == self.getZMILangStr('BTN_INSERT'):
-        #-- Stylesheet.
-        if REQUEST.has_key('newCssId'):
-          title = 'CSSschema'
-          data = '<dtml-with content\n><dtml-call "REQUEST.RESPONSE.setHeader(\'Cache-Control\',\'public, max-age=3600\')"\n><dtml-var f_standard_html_request\n><dtml-var f_css_defaults>\n\n</dtml-with>'
-          self.common.css.manage_addDTMLMethod( REQUEST.get('newCssId'), title, data)
-          message = self.getZMILangStr('MSG_INSERTED')%REQUEST.get('newCssId')
-          cssId = REQUEST.get('newCssId')
-      
-      # Delete.
-      # -------
-      if btn == self.getZMILangStr('BTN_DELETE'):
-        #-- Stylesheet.
-        if REQUEST.has_key('cssId'):
-          self.common.css.manage_delObjects(ids=[REQUEST.get('cssId')])
-          message = self.getZMILangStr('MSG_DELETED')%int(1)
-          cssId = ''
-      
       # Ex-/Import.
       # -----------
       if btn in [ self.getZMILangStr('BTN_EXPORT'), self.getZMILangStr('BTN_IMPORT')]:

@@ -28,6 +28,7 @@ except: # < Zope-2.10
   from zope.app.content_types import guess_content_type
 import cgi
 import copy
+import fnmatch
 import logging
 import operator
 import os
@@ -471,9 +472,9 @@ def authtobasic(auth, h):
 _globals.http_import:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
-
+  
   HTTP_PREFIX = 'http://'
-
+  
   # Get Query-String.
   qs = ''
   i = url.find('?')
@@ -483,11 +484,21 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
   
   # Get Host.
   host = ''
-  if not url.startswith(HTTP_PREFIX+'localhost') and \
-     not url.startswith(HTTP_PREFIX+'127.0.0.1'):
+  servername = url
+  if servername.startswith(HTTP_PREFIX):
+    servername = servername[len(HTTP_PREFIX):]
+  if servername.find('/') > 0:
+    servername = servername[:servername.find('/')]
+  useproxy = True
+  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),self.getConfProperty('HTTP.noproxy','').split(',')))
+  for noproxyurl in noproxy:
+    if fnmatch.fnmatch(servername,noproxyurl):
+      useproxy = False
+      break
+  if useproxy:
     host = self.getConfProperty('HTTP.proxy',host)
-  if len( host) == 0:
   
+  if len( host) == 0:
     # Remove HTTP-Prefix.
     if url.startswith( HTTP_PREFIX):
       url = url[ len( HTTP_PREFIX):]

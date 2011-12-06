@@ -9,5 +9,4 @@
 ><dtml-else
 ><dtml-in "getStylesheets()"><link rel="<dtml-unless sequence-start>alternate </dtml-unless>stylesheet" type="text/css" href="<dtml-if "(REQUEST.get('ZMS_PATHCROPPING',False) or getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','')==''"><dtml-var "absolute_url()[len(REQUEST.get('BASE0','')):]"><dtml-else><dtml-var "absolute_url()"></dtml-if>" />
 </dtml-in
-></dtml-if
-><dtml-if preview><style id="preview stylesheet" type="text/css"><!-- --></style></dtml-if>
+></dtml-if>

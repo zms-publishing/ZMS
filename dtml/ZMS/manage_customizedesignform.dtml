@@ -1,30 +1,9 @@
 <dtml-var manage_page_header>
-
-<script language="JavaScript">
-<!--//
-
-  /**
-   *
-   * @param fm		Html-Form
-   */
-  function onForm0Submit(fm) 
-  {
-    var b = true;
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") 
-    {
-      b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
-    }
-    return b;
-  }
-
-//-->
-</script>
 </head>
-
 <dtml-var manage_tabs>
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=customize_manage_options)">
 
-  <form name="form0" action="manage_customizeDesign" method="post" onsubmit="return onForm0Submit(this)" enctype="multipart/form-data">
+  <form name="form0" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
   <input type="hidden" name="lang" value="<dtml-var lang>">
 
 <!-- ######################################################################
@@ -83,11 +62,6 @@
       </select>
       &nbsp;&nbsp;<input class="form-checkbox" type="checkbox" name="default:int" value="1" <dtml-if "getStylesheet().id()==cssId">checked="checked"</dtml-if>/>&nbsp;Default&nbsp;&nbsp;&nbsp;&nbsp;
      </td>
-     <td align="right" class="form-small" valign="bottom">
-      <dtml-var "getZMILangStr('ACTION_INSERT')%display_type(REQUEST)">:
-      <input class="form-small" name="newCssId" value="styles-<dtml-var "len(ids)+1">.css" size="20"/>
-      <input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="self.btnClicked=this.value;" />
-     </td>
     </tr>
     </table>
     <!-- Textarea -->
@@ -97,7 +71,6 @@
        style="width:<dtml-var "_.int(size)*11">px"
        rows="25"
      ><dtml-with "getStylesheet(cssId)"><dtml-var raw html_quote></dtml-with></textarea>
-     <a href="manage_editorForm?displayPreview=True&came_from=<dtml-var URL>&lang=<dtml-var lang>&fmName=form0&elName=stylesheet:text&headline=<dtml-var "getZMILangStr('ATTR_STYLESHEET')+': '+cssId" url_quote>" onclick="javascript:return confirmChanges(this);" class="button"><img src="<dtml-var MISC_ZMS>ico_plus.gif" alt="<dtml-var "getZMILangStr('BTN_EDIT')">" title="<dtml-var "getZMILangStr('BTN_EDIT')">" border="0"/></a>
     </dtml-let>
    </td>
   </tr>
@@ -106,9 +79,6 @@
    <td>
     <div class="form-element">
      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="self.btnClicked=this.value;" />
-     <dtml-unless "getStylesheet().id()==cssId">
-      <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="self.btnClicked=this.value;" />
-     </dtml-unless>
     </div>
    </td>
   </tr>

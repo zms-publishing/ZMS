@@ -41,15 +41,6 @@
          // Find div with system-msg.
          var div = $('div#system_msg',parent.cameFromForm.document);
          if (div.length > 0 && div.html() != '') {
-           <dtml-if displayPreview>
-           // Update div with system-msg.
-           $('#system_msg').html(div.html()).show('normal');
-           onResize();
-           // Reload preview-form.
-           if ( parent.previewForm) {
-             parent.previewForm.location.reload();
-           }
-           </dtml-if>
            b = true;
            // Set counter to maximum to finish initialization.
            cnt = max;
@@ -187,7 +178,7 @@ function onResize() {
 
 <dtml-else>
  <frameset name="editorFrameset" cols="30%,70%">
-  <frame name="editorFrame" scrolling="auto" src="<dtml-var "url_append_params(URL,{'lang':lang,'came_from':came_from,'displayPreview':str(REQUEST.get('displayPreview','')),'fmName':fmName,'elName':elName,'headline':headline,'manage_editorFrame':'True'})">">
+  <frame name="editorFrame" scrolling="auto" src="<dtml-var "url_append_params(URL,{'lang':lang,'came_from':came_from,'fmName':fmName,'elName':elName,'headline':headline,'manage_editorFrame':'True'})">">
   <dtml-if displayPreview>
    <frameset rows="0,*">
     <frame name="cameFromForm" scrolling="auto" src="<dtml-var "url_append_params(came_from,{'lang':lang})">">

@@ -20,7 +20,7 @@
   <tr valign="middle">
    <th class="form-label"><dtml-var "getZMILangStr('ATTR_DISPLAY')"></th>
    <td class="form-element">
-    <select class="form-element" name="task_type">
+    <select class="form-element" id="task_type" name="task_type">
      <option value="">--- <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_DISPLAY')"> ---</option>
      <dtml-in "getWfActivities()" mapping>
       <option value="<dtml-var id>" <dtml-if "REQUEST.get('task_type','')==id">selected="selected"</dtml-if>><dtml-var name></option>

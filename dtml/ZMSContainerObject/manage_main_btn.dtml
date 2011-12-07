@@ -17,7 +17,7 @@
 # Trashcan
 ################################################################################
 </dtml-comment>
-<li class="ui-corner-all"
+<li class="ui-helper-hidden ui-state-default ui-corner-all"
    title="<dtml-var "getZMILangStr('BTN_DELETE')">"
  ><span id="trashBtn<dtml-var offs>" class="ui-icon ui-icon-trash"
    onclick="zmiActionButtonClick($('#trashBtn<dtml-var offs>'),0,'<dtml-if "getParentByLevel(1).meta_type=='ZMSTrashcan'">manage_eraseObjs<dtml-else>manage_deleteObjs</dtml-if>','<dtml-var "offs*9900">');"
@@ -30,13 +30,13 @@
 ################################################################################
 </dtml-comment>
 <dtml-unless dontAllowCopyAndPaste>
-<li class="ui-corner-all"
+<li class="ui-helper-hidden ui-state-default ui-corner-all"
    title="<dtml-var "getZMILangStr('BTN_CUT')">"
  ><span id="cutBtn<dtml-var offs>" class="ui-icon ui-icon-scissors"
    onclick="zmiActionButtonClick($('#cutBtn<dtml-var offs>'),1,'manage_cutObjects','<dtml-var "offs*9900">');"
  ></span
 ></li>
-<li class="ui-corner-all"
+<li class="ui-helper-hidden ui-state-default ui-corner-all"
    title="<dtml-var "getZMILangStr('BTN_COPY')">"
  ><span id="copyBtn<dtml-var offs>" class="ui-icon ui-icon-copy"
    onclick="zmiActionButtonClick($('#copyBtn<dtml-var offs>'),2,'manage_copyObjects','<dtml-var "offs*9900">');"

@@ -108,10 +108,10 @@ function zmiActionButtonsRefresh(sender,evt) {
 		var active = ids || standalone;
 		var $li = $("span[id^="+id+"Btn]").parents("li");
 		if (active) {
-			$li.addClass("ui-state-default");
+			$li.show("normal");
 		}
 		else {
-			$li.removeClass("ui-state-default");
+			$li.hide("normal");
 		}
 	}
 	// Switch selected rows.

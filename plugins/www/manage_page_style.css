@@ -213,6 +213,8 @@ body.zmi.maximized div.zmi {
 	width:13px;
 	height:11px;
 	cursor:pointer;
+	border-left: 1px solid white;
+	margin-left: 4px;
 	background:url(/++resource++zms_/img/maximize.png);
 }
 

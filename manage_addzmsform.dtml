@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <title>Add ZMS-Object</title>
-<link rel="stylesheet" type="text/css" href="<dtml-var BASEPATH1>/manage_page_style.css">
+<link rel="stylesheet" type="text/css" href="/++resource++zms_/manage_page_style-min.css">
 <script language="JavaScript">
 <!--//
 
@@ -55,55 +55,40 @@
 
 //-->
 </script>
-<style type="text/css">
-<!--
-.form-small * {
-  font-size: 11px;
-}
-.form-small {
-	font-size: 11px;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #000;
-}
--->
-</style>
 </head>
 
-<body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
+<body class="zmi">
+<div class="zmi zmiNeutralColorLight0">
 
-<table cellpadding="0" cellspacing="0" border="0" width="749" bgcolor="#777">
-<tr valign="middle">
- <td align="left"><a href="http://www.zms-publishing.com" target="_blank"><img src="<dtml-var MISC_ZMS>zms_banner.png" title="ZOPE based contentmanagement system for science, technology and medicine" border="0"></a></td>
-</tr>
-</table>
+	<div id="zmi_header">
+		<div class="zmi-document-margin">
+			<div class="zmi_col_left">
+				<img id="zmi_banner" src="/misc_/zms/spacer.gif" title="ZMS - ZOPE based contentmanagement system for science, technology and medicine" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
+			</div><!-- .zmi_col_left -->
+		</div><!-- .zmi-document-margin -->
+	</div><!-- #zmi_header -->
 
 <form action="manage_addZMS" method="post" onsubmit="return formOnSubmit(this)">
 <input type="hidden" name="preview" value="preview">
 
-<table cellspacing="2" width="749">
+<table cellspacing="2" width="100%">
 <tr valign="top">
- <td align="left" colspan="2"><div class="form-title">Add ZMS-Object</div></td>
+ <td align="left" class="form-label" colspan="2"><h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-all">Add ZMS-Instance</h3></td>
 </tr>
 
 <!-- ####################################################################### -->
 <!-- ###   B A S I C   P R O P E R T I E S                                   -->
 <!-- ####################################################################### -->
-<tr class="row-hilite">
- <th align="left" valign="top" colspan="2"><div class="form-label">Basic Properties</div></th>
-</tr>
 <tr valign="top">
- <td><div class="form-text">Folder-Id</div></td>
+ <td><div class="form-label">Folder-Id</div></td>
  <td><input class="form-element" type="text" name="folder_id" size="40" value="myzmsx"></td>
 </tr>
 
 <!-- ####################################################################### -->
 <!-- ###   P R I M A R Y   L A N G U A G E                                   -->
 <!-- ####################################################################### -->
-<tr class="row-hilite">
- <th align="left" valign="top" colspan="2"><div class="form-label">Primary Language</div></th>
-</tr>
 <tr valign="top">
- <td><div class="form-text">Language</div></td>
+ <td><div class="form-label">Language</div></td>
  <td>
   <table cellspacing="0" cellpadding="0" border="0">
   <tr>
@@ -141,7 +126,7 @@
 <!-- ###   T E M P L A T E S E T                                                -->
 <!-- ########################################################################## -->
 <tr class="row-hilite">
- <th align="left" valign="top" colspan="2">Templateset</th>
+ <td align="left" class="form-label" colspan="2"><h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">Templateset</h3></td>
 </tr>
 <tr valign="top">
  <td><div class="form-text">Theme</div></td>
@@ -227,18 +212,18 @@
 <!-- ###   I N I T I A L I Z A T I O N                                          -->
 <!-- ########################################################################## -->
 <tr class="row-hilite">
-  <th align="left" valign="top" colspan="2">Initialization</th>
+ <td align="left" class="form-label" colspan="2"><h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">Initialization</h3></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>with default content</em></div></td>
+ <td><div class="form-label"><em>with default content</em></div></td>
  <td><input type="radio" name="initialization:int" value="1" checked="checked"></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>with eLearning components</em></div></td>
+ <td><div class="form-label"><em>with eLearning components</em></div></td>
  <td><input type="radio" name="initialization:int" value="2"></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>None</em></div></td>
+ <td><div class="form-label"><em>None</em></div></td>
  <td><input type="radio" name="initialization:int" value="0"></td>
 </tr>
 
@@ -246,30 +231,30 @@
 <!-- ###   C O N F I G U R A T I O N                                            -->
 <!-- ########################################################################## -->
 <tr class="row-hilite">
-  <th align="left" valign="top" colspan="2">Configuration</th>
+ <td align="left" class="form-label" colspan="2"><h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all">Configuration</h3></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add ZMS Log</em></div></td>
+ <td><div class="form-label"><em>Add ZMS Log</em></div></td>
  <td><input type="checkbox" name="zmslog:int" value="1" checked="checked"/></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add Galleria</em></div></td>
+ <td><div class="form-label"><em>Add Galleria</em></div></td>
  <td><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add Example Database</em></div></td>
+ <td><div class="form-label"><em>Add Example Database</em></div></td>
  <td><input type="checkbox" name="specobj_exampledb:int" value="1"/></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add Bulletin Board</em></div></td>
+ <td><div class="form-label"><em>Add Bulletin Board</em></div></td>
  <td><input type="checkbox" name="specobj_discussions:int" value="1"/></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add Newsletter</em></div></td>
+ <td><div class="form-label"><em>Add Newsletter</em></div></td>
  <td><input type="checkbox" name="specobj_newsletter:int" value="1"/></td>
 </tr>
 <tr valign="middle">
- <td><div class="form-text"><em>Add Calendar</em></div></td>
+ <td><div class="form-label"><em>Add Calendar</em></div></td>
  <td><input type="checkbox" name="specobj_calendar:int" value="1"></td>
 </tr>
 
@@ -279,22 +264,22 @@
 </tr>
 <tr>
   <td>&nbsp;</td>
-  <td>
-    <input class="form-element" name="btn" type="submit" value="Add">
-    <input class="form-element" name="btn" type="submit" value="Cancel">
+  <td class="form-element">
+    <input class="ui-button ui-state-active ui-corner-all" name="btn" type="submit" value="Add">
+    <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="Cancel">
   </td>
 </tr>
 </table>
 </form>
 
-<table cellpadding="0" cellspacing="0" border="0" width="749" bgcolor="#777">
-<tr valign="middle">
- <td align="left">&nbsp;
-  <font style="font-family:Arial,sans-serif; font-size:8pt; font-weight:normal; color:white;">&nbsp;&copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;</font>
-  <a href="http://www.hoffmannliebenberg.de"><font style="font-family:Arial,sans-serif; font-size:8pt; font-weight:normal; color:white; text-decoration: underline; ">HOFFMANN+LIEBENBERG</font></a>
- </td>
-</tr>
-</table>
+	<div id="zmi_footer">
+		<div class="zmi-document-margin">
+			<div class="zmi_col_left">
+				 &copy;&nbsp;<dtml-var "ZopeTime().year()">&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+			</div><!-- .zmi_col_left -->
+		</div><!-- .zmi-document-margin -->
+	</div><!-- #zmi_footer -->
 
-</body>
+</div><!-- .zmi -->
+</body><!-- .zmi -->
 </html>

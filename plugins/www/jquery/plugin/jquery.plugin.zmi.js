@@ -27,7 +27,7 @@ function zmiIframe(href, data, opt) {
 				if (typeof title != "undefined" && title) {
 					opt["title"] = title;
 				}
-				$('#zmiIframe').dialog(opt);
+				initUI($('#zmiIframe')).dialog(opt);
 			}
 		});
 }

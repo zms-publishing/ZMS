@@ -111,31 +111,57 @@ $(function(){
  */
 $(function(){
 	$('body.zmi').each(function(){
-		// Icons:
-		// hover states on the static widgets
-		$('ul#icons li,ul.zmi-icons li,div.zmi-icon').hover(
-			function() {
-				if ($(this).hasClass('ui-state-default')) {
-					$(this).addClass('ui-state-hover');
-				}
-			},
-			function() {
-				if ($(this).hasClass('ui-state-default')) {
-					$(this).removeClass('ui-state-hover');
-				}
-			}
-		);
-		pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
-			// Date-Picker
-			$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
-			var opt = {
-				'showWeek'	: true
-			};
-			$('input.datepicker').datepicker(opt);
-			$('input.datetimepicker').datetimepicker(opt);
-		});
+		initUI(this);
 	});
 });
+
+function initUI(context) {
+	// Icons:
+	// hover states on the static widgets
+	$('ul#icons li,ul.zmi-icons li,div.zmi-icon',context).hover(
+		function() {
+			if ($(this).hasClass('ui-state-default')) {
+				$(this).addClass('ui-state-hover');
+			}
+		},
+		function() {
+			if ($(this).hasClass('ui-state-default')) {
+				$(this).removeClass('ui-state-hover');
+			}
+		}
+	);
+	pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
+		// Date-Picker
+		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
+		$('input.datepicker',context).datepicker({
+				showWeek: true
+			});
+		$('input.datetimepicker',context).datepicker({
+				showWeek: true,
+				beforeShow: function(input, inst) {
+						var v = $(input).val();
+						var e = '';
+						var i = v.indexOf(' ');
+						if ( i > 0) {
+							e = v.substr(i+1);
+							v = v.substr(0,i);
+						}
+						$(inst).data("inputfield",input);
+						$(inst).data("extra",e);
+					},
+				onClose: function(dateText, inst) {
+						if (dateText) {
+							var input = $(inst).data("inputfield");
+							var e = $(inst).data("extra");
+							if (e) {
+								$(input).val(dateText+" "+e);
+							}
+						}
+					}
+			});
+	});
+	return context;
+}
 
 function pluginLanguage() {
 	return getZMILangStr('LOCALE',{'nocache':""+new Date()});
@@ -145,8 +171,7 @@ function pluginUIDatepicker(s, c) {
 	var lang = pluginLanguage();
 	$.plugin('ui_datepicker',{
 		files: [
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js',
-				'/++resource++zms_/jquery/plugin/jquery.plugin.datetimepicker.js'
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js'
 		]});
 	$.plugin('ui_datepicker').get(s,c);
 }
@@ -190,6 +215,10 @@ $(function(){
 	$('a.fancybox')
 		.click(function() {
 			pluginFancyboxDefaultOptions['href'] = $(this).attr('href');
+			// Ensure that this link will be opened as an image!
+			if ($("img.img",this).length==1) {
+				pluginFancyboxDefaultOptions['type'] = 'image';
+			}
 			return showFancybox(pluginFancyboxDefaultOptions);
 		});
 });

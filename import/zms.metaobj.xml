@@ -2899,17 +2899,15 @@ function onZMSTableFormSubmit() {
 		var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
 		for ( var j=0; j < el_tds.length; j++) {
 			xml += "<item type=\"dictionary\"><dictionary>\n";
-			var colspan = $(el_tds[j]).attr("colspan");
-			if ( colspan) {
-				xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
-				var el_inputs = $("textarea,input",el_tds[j]);
-				for ( var k=0; k < el_inputs.length; k++) {
-					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-					xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
-				}
+			var colspan = $(el_tds[j]).prop("colspan");
+			if (typeof colspan=="undefined") {
+				colspan = 1;
 			}
-			else {
-				xml += '<item key="colspan" type="int">1</item>\n';
+			xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
+			var el_inputs = $("textarea,input",el_tds[j]);
+			for ( var k=0; k < el_inputs.length; k++) {
+				var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+				xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
 			}
 			xml += '</dictionary></item>\n';
 		}
@@ -3029,7 +3027,7 @@ function actionBtnClick(el, fct) {
 				for ( var i = 0; i < el_trs.length; i++) {
 					if ( i == table_cell_offs && <dtml-var table_type> == 2) {
 						var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
-						el_td.attr("colspan",parseInt(el_td.attr("colspan"))-1);
+						el_td.prop("colspan",parseInt(el_td.prop("colspan"))-1);
 					}
 					else {
 						var el_td = $($(el_trs[i]).children().filter(":eq("+x+")")[0]);
@@ -3225,7 +3223,7 @@ $(function(){
   ></td
   ><td style="border-top: solid 1px #CCCCCC; border-right: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>;">&nbsp;</td
   ><dtml-in "table_table[row_index]" mapping
-   ><dtml-let col_index=sequence-index cell=sequence-item
+   ><dtml-let col_index=sequence-index cell=sequence-item richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()"
     ><dtml-if "table_type==4 and row_index==0 and col_index==0"
      ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
     ><dtml-else
@@ -3234,12 +3232,12 @@ $(function(){
        <table style="width:100%" class="ZMSTable">
        <tr>
        <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="table_cell_editable">
-        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
-        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if "REQUEST.get('richedit_fmt') is None or format!=REQUEST.get('richedit_fmt').getId()">style="display:none;"</dtml-if>>
+        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless>>
          <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
         </div>
        </<dtml-var tag>>
@@ -3560,7 +3558,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.3]]></item>
+          <item key="revision"><![CDATA[1.6.4]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

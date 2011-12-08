@@ -216,13 +216,13 @@ $(function(){
        <dtml-if f><img src="<dtml-var "getMimeTypeIconSrc(f.getContentType())">" title="<dtml-var "f.getContentType()">" border="0" align="absmiddle" />
        <a href="<dtml-var "f.getHref(REQUEST)">"
        <dtml-else>
-       <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+       <a href="<dtml-var url>#ZMS_HIGHLIGHT=raw&raw=<dtml-var raw>"
        </dtml-if>
         ><dtml-var "search_quote(title)"></a>
        <dtml-if f><i>(<dtml-var "f.getDataSizeStr()">)</i></dtml-if>
       </dtml-let>
      <dtml-else>
-      <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+      <a href="<dtml-var url>#ZMS_HIGHLIGHT=raw&raw=<dtml-var raw>"
        ><dtml-var "search_quote(title)"></a>
      </dtml-if>
     </span>
@@ -243,7 +243,7 @@ $(function(){
        </dtml-if
      ></dtml-let>
     <dtml-else>
-     <a href="<dtml-var "url_append_params(url,{'ZMS_HIGHLIGHT':'raw','raw':raw})">"
+     <a href="<dtml-var url>#ZMS_HIGHLIGHT=raw&raw=<dtml-var raw>"
       ><dtml-in "ob.breadcrumbs_obj_path()"
        >&raquo;&nbsp;<dtml-var "search_quote(getTitlealt(REQUEST),20)"><dtml-unless sequence-end> </dtml-unless
       ></dtml-in

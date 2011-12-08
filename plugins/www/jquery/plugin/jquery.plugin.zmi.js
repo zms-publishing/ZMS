@@ -147,7 +147,7 @@ $(function(){
 // ### ZMI Auto-Save
 // #############################################################################
 var zmiAutoSaveTimeout = null;
-var zmiAutoSaveIntervall = 1000;
+var zmiAutoSaveIntervall = 10000;
 var zmiAutoChangeArr = {};
 
 function zmiAutoSave() {
@@ -215,39 +215,41 @@ function confirmChanges(el) {
 }
 
 $(function() {
-	$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small",$("form.ZMIPropertiesForm"))
-		.keydown( function (evt) { zmiAutoChange(this); })
-		.keyup( function (evt) { zmiAutoChange(this); })
-		.click( function (evt) { zmiAutoChange(this); })
-		.change( function (evt) { zmiAutoChange(this); })
-		.each(function() {
-				var elid = $(this).attr("id");
-				if (typeof elid != "undefined" && $(this).attr("type") != "file") {
-					zmiAutoChangeArr[elid] = {'init':$(this).val(),'last':$(this).val()};
-				}
-			})
-	;
-	// Read stored temp-form properties.
-	if ($("form.ZMIPropertiesForm").length > 0) {
-		$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
-				var data = eval("("+result+")");
-				var modified = false;
-				if (data) {
-					for (var i in data) {
-						var v = data[i];
-						modified |= $("#"+i).val() != v;
+	if (getZMIConfProperty("ZMS.TempFormProperties",1)==1) {
+		$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small",$("form.ZMIPropertiesForm"))
+			.keydown( function (evt) { zmiAutoChange(this); })
+			.keyup( function (evt) { zmiAutoChange(this); })
+			.click( function (evt) { zmiAutoChange(this); })
+			.change( function (evt) { zmiAutoChange(this); })
+			.each(function() {
+					var elid = $(this).attr("id");
+					if (typeof elid != "undefined" && $(this).attr("type") != "file") {
+						zmiAutoChangeArr[elid] = {'init':$(this).val(),'last':$(this).val()};
 					}
-				}
-				if (modified) {
-					if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
+				})
+		;
+		// Read stored temp-form properties.
+		if ($("form.ZMIPropertiesForm").length > 0) {
+			$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
+					var data = eval("("+result+")");
+					var modified = false;
+					if (data) {
 						for (var i in data) {
 							var v = data[i];
-							$("#"+i).val(v).addClass("form-element-modified");
-							zmiAutoChangeArr[i]['last'] = v;
+							modified |= $("#"+i).val() != v;
 						}
 					}
-				}
-			});
+					if (modified) {
+						if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
+							for (var i in data) {
+								var v = data[i];
+								$("#"+i).val(v).addClass("form-element-modified");
+								zmiAutoChangeArr[i]['last'] = v;
+							}
+						}
+					}
+				});
+		}
 	}
 });
 

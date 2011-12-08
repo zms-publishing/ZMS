@@ -19,14 +19,25 @@ Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.leng
 var zmiParams = {};
 
 $(function(){
-	// Parse params.
 	var href = self.location.href;
-	var i = href.indexOf('?');
-	href = href.substr(i+1);
-	var l = href.split('&');
-	for ( var j = 0; j < l.length; j++) {
-		i = l[j].indexOf('=');
-		zmiParams[l[j].substr(0,i)] = unescape(l[j].substr(i+1));
+	// Parse params (?) and pseudo-params (#).
+	var delimiter_list = ['?','#'];
+	for (var h = 0; h < delimiter_list.length; h++) {
+		var delimiter = delimiter_list[h];
+		var i = href.indexOf(delimiter);
+		if (i > 0) {
+			var query_string = href.substr(i+1);
+			var l = query_string.split('&');
+			for ( var j = 0; j < l.length; j++) {
+				i = l[j].indexOf('=');
+				if (i < 0) {
+					break;
+				}
+				if (typeof zmiParams[l[j].substr(0,i)] == "undefined") {
+					zmiParams[l[j].substr(0,i)] = unescape(l[j].substr(i+1));
+				}
+			}
+		}
 	}
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {

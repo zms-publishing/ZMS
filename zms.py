@@ -246,6 +246,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
   obj.setConfProperty('ZMS.autocommit',1)
   obj.setConfProperty('ZMS.Version.autopack',2)
+  obj.setConfProperty('ZMS.input.file.plugin','ajax_upload')
+  obj.setConfProperty('ZMS.TempFormProperties',1)
   
   ### Init zcatalog.
   obj.recreateCatalog(lang)

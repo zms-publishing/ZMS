@@ -505,26 +505,6 @@ class ConfManager(
       return obs
 
 
-    # --------------------------------------------------------------------------
-    #  ConfManager.getNotifications:
-    #
-    #  Collects notifications from services.
-    # --------------------------------------------------------------------------
-    def getNotifications(self,format='json'):
-      """
-      getNotifications
-      """
-      notifications = []
-      if self.getConfProperty('ZMS.ConfManager.getNotifications.disabled',1) == 1:
-        notifications.append({'severity':'disabled'})
-      for ob in self.objectValues():
-        if IZMSNotificationService in list(zope.interface.providedBy(ob)):
-          notifications.extend(ob.getNotifications())
-      if format == 'json':
-        notifications = self.str_json(notifications)
-      return notifications
-
-
     """
     ############################################################################
     ###

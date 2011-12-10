@@ -539,69 +539,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     ############################################################################
-    ###
-    ###  Properties
-    ###
-    ############################################################################
-
-    def getTempFormPropertiesContainer(self, createIfNotExists=False):
-      container = None
-      temp_folder = self.temp_folder
-      temp_id = 'ZMSTempFormPropertiesContainer_%s'%self.REQUEST['AUTHENTICATED_USER'].getId()
-      if temp_id in temp_folder.objectIds():
-        container = getattr(temp_folder,temp_id)
-      elif createIfNotExists:
-        temp_folder.manage_addFile(id=temp_id,title=self.getLangFmtDate(time.time()),file='{}')
-        container = getattr(temp_folder,temp_id)
-      return container
-
-    security.declareProtected('ZMS Author','setTempFormProperties')
-    def setTempFormProperties(self, lang, key, values, REQUEST, RESPONSE=None):
-      """ ZMSObject.setTempFormProperties """
-      rtn = 0
-      createIfNotExists = self.getConfProperty('ZMS.TempFormProperties',1)==1
-      container = self.getTempFormPropertiesContainer(createIfNotExists=createIfNotExists)
-      if container is not None:
-        values = eval(values)
-        key = key[key.find('://')+3:]
-        key = key[key.find('/')+1:]
-        if key.rfind("?") > 0:
-          key = key[:key.rfind("?")]
-        temp_key = '%s_%s'%(key,lang)
-        temp_properties = eval(container.data)
-        temp_properties[temp_key] = values
-        container.manage_edit(title=self.getLangFmtDate(time.time()),content_type='text/json',filedata=self.str_json(temp_properties))
-        rtn = 1
-      if RESPONSE:
-        RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-      return self.str_json(rtn)
-
-    security.declareProtected('ZMS Author','getTempFormProperties')
-    def getTempFormProperties(self, lang=None, key=None, REQUEST=None, RESPONSE=None):
-      """ ZMSObject.getTempFormProperties """
-      if lang is None or key is None or REQUEST is None: return
-      rtn = 0
-      container = self.getTempFormPropertiesContainer()
-      if container is not None:
-        key = key[key.find('://')+3:]
-        key = key[key.find('/')+1:]
-        if key.rfind("?") > 0:
-          key = key[:key.rfind("?")]
-        temp_key = '%s_%s'%(key,lang)
-        temp_properties = eval(container.data)
-        if temp_properties.has_key(temp_key):
-          rtn = temp_properties[temp_key]
-          del temp_properties[temp_key]
-          if len(temp_properties.keys()) == 0:
-            container.aq_parent.manage_delObjects([container.id()])
-          else:
-            container.manage_edit(title=self.getLangFmtDate(time.time()),content_type='text/json',filedata=self.str_json(temp_properties))
-      if RESPONSE:
-        RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-      return self.str_json(rtn)
-
-
-    ############################################################################
     #  ZMSObject.manage_changeProperties:
     #
     #  Change properties.

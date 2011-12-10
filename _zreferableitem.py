@@ -178,11 +178,10 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def getRefByObjs(self, REQUEST={}):
     ref_by = []
-    if _objattrs.hasobjattr(self,'ref_by'):
-      ref_by = getattr(self,'ref_by',[])
+    key = 'ref_by'
+    if key in self.__dict__.keys():
+      ref_by = getattr(self,key,[])
       ref_by = list(set(ref_by))
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[getRefByObjs]: ref_by=%s"%str(ref_by))
     return ref_by
 
 

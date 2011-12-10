@@ -110,23 +110,12 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 
 
 # ------------------------------------------------------------------------------
-#  _objattrs.hasobjattr:
-# ------------------------------------------------------------------------------
-def hasobjattr(obj, key):
-  try:
-    id = obj.id
-    keys = obj.__dict__.keys() 
-    return key in keys
-  except:
-    return hasattr( obj, key)
-
-# ------------------------------------------------------------------------------
 #  _objattrs.getobjattr:
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
   key = self.getObjAttrName(obj_attr,lang)
   v = None
-  if hasobjattr(obj,key):
+  if key in obj.__dict__.keys():
     v = getattr(obj,key)
   # Default value.
   if v is None:
@@ -548,7 +537,7 @@ class ObjAttrs:
       attr = self.getObjAttrName(obj_attr,lang)
       
       #-- Return true if object has specified property, false else.
-      return hasobjattr(ob,attr) and getattr(ob,attr,None) is not None
+      return attr in obj.__dict__.keys() and getattr(ob,attr,None) is not None
 
 
     """
@@ -759,10 +748,10 @@ class ObjAttrs:
       b = True
       if self.getType()=='ZMSRecordSet':
         return b
-      v = self.getObjProperty('active',REQUEST)
+      v = self.attr('active')
       if type(v) is bool:
         return v
-      v = self.getObjProperty('isActive',REQUEST)
+      v = self.attr('isActive')
       if type(v) is bool:
         b = b and v
       obj_vers = self.getObjVersion(REQUEST)
@@ -777,7 +766,8 @@ class ObjAttrs:
             lang = self.getParentLanguage(lang)
             if lang is not None:
               empty = value is None
-            if not empty: break
+            if not empty:
+              break
           # Toggle.
           if key == 'active':
             b = b and value

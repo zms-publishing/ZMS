@@ -854,7 +854,7 @@ function enabledCheckboxClickResponse(data) {
        <dtml-if "metaObj.get('access') is None">
         <dtml-call "operator_setitem(metaObj,'access',{})">
        </dtml-if>
-       <dtml-in "['insert','edit','delete']">
+       <dtml-in "['insert','delete']">
         <dtml-let action=sequence-item>
          <tr valign="middle" class="zmiTableRowEven">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>

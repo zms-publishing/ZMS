@@ -406,17 +406,19 @@ class MultiLanguageManager:
     #
     #  Returns list of Ids of languages (primary language 1st).
     # --------------------------------------------------------------------------
-    def getLangIds(self, sort=1):
+    def getLangIds(self, sort=False):
       obs = []
       langs = self.getLangs()
-      for key in langs.keys():
-        if key == self.getPrimaryLanguage(): 
-          label = '*'
-        else: 
-          label = langs[key]['label']
-        obs.append((label,key))
-      obs.sort()
-      return map(lambda ob: ob[1],obs)
+      if sort:
+        for key in langs.keys():
+          if key == self.getPrimaryLanguage(): 
+            label = '*'
+          else: 
+            label = langs[key]['label']
+          obs.append((label,key))
+        obs.sort()
+        return map(lambda ob: ob[1],obs)
+      return langs.keys()
 
 
     # --------------------------------------------------------------------------

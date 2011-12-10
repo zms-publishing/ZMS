@@ -1118,8 +1118,6 @@ class ZMSMetaobjManager:
             newValue['access'] = {
              'insert': REQUEST.get( 'access_insert', []),
              'insert_custom': REQUEST.get( 'access_insert_custom', ''),
-             'edit': REQUEST.get( 'access_edit', []),
-             'edit_custom': REQUEST.get( 'access_edit_custom', ''),
              'delete': REQUEST.get( 'access_delete', []),
              'delete_custom': REQUEST.get( 'access_delete_custom', ''),
             }

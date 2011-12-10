@@ -980,27 +980,18 @@ class VersionItem:
     #  version is returned, else the live-version is returned.
     # --------------------------------------------------------------------------
     def getObjVersion(self, REQUEST={}):
-      try:
-        ob = None
         id = REQUEST.get( 'ZMS_VERSION_%s'%self.id, None)
-        if id is not None and id not in self.objectIds(['ZMSAttributeContainer']):
-          id = None
-        if id is None:
-          preview = _globals.isPreviewRequest( REQUEST)
-          has_version_work = self.version_work_id is not None and hasattr( self, self.version_work_id)
-          has_version_live = self.version_live_id is not None and hasattr( self, self.version_live_id)
-          if (preview and has_version_work) or not (has_version_live):
-            id = self.version_work_id
-          elif (has_version_live) or not (preview and has_version_work):
-            id = self.version_live_id
-        ob = getattr( self, id)
-        s = ob.id # Never delete this line!
+        if id is not None:
+            return getattr( self, id)
+        elif REQUEST.get('preview') == 'preview':
+            ob = getattr(self, self.version_work_id, None)
+        else:
+            ob = getattr(self, self.version_live_id, None)
+        if ob is None:
+            ob = getattr(self, self.version_work_id, None)
+        if ob is None:
+            ob = getattr(self, self.version_live_id, None)
         return ob
-      except:
-        preview = _globals.isPreviewRequest( REQUEST)
-        has_version_work = self.version_work_id is not None and hasattr( self, self.version_work_id)
-        has_version_live = self.version_live_id is not None and hasattr( self, self.version_live_id)
-        raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersion]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------

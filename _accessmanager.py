@@ -157,27 +157,10 @@ class AccessableObject:
     #  AccessableObject.hasAccess:
     # --------------------------------------------------------------------------
     def hasAccess(self, REQUEST):
-      access = True
       auth_user = REQUEST.get('AUTHENTICATED_USER')
-      url = REQUEST.get('URL','/manage')
-      url = url[url.rfind('/'):]
-      if url.find('/manage') >= 0:
-        if access:
-          rights = self.getObjProperty( 'attr_dc_accessrights_restrictededitors', REQUEST)
-          if type( rights) is list and len( rights) > 0:
-            roles = auth_user.getRolesInContext(self)
-            access = len( filter( lambda x: x in roles, rights)) > 0
-            for right in rights:
-              access = access or auth_user.has_role( right)
-              access = access or auth_user.has_permission( right, self)
-        if access:
-          ob_access = self.getObjProperty('manage_access',REQUEST)
-          access = access and ((not type(ob_access) is dict) or (ob_access.get( 'edit') is None) or (len( self.intersection_list( self.concat_list( ob_access.get( 'edit'), [ 'Manager']), self.getUserRoles(auth_user))) > 0))
-        access = access and auth_user.has_permission( 'ZMS Author', self) in [ 1, True]
-      else:
-        access = access and auth_user.has_permission( 'View', self) in [ 1, True]
-        if not access:
-          access = access or self.hasPublicAccess() 
+      access = auth_user.has_permission( 'View', self) in [ 1, True]
+      if not access:
+        access = access or self.hasPublicAccess() 
       return access
 
     # --------------------------------------------------------------------------
@@ -208,14 +191,12 @@ class AccessableObject:
           ob = None
       # Resolve security_roles.
       security_roles = self.getConfProperty('ZMS.security.roles',{})
-      for id in roles:
-        if id in security_roles.keys():
-          dict = security_roles.get(id,{})
-          for v in dict.values():
-            for perm in v.get('roles',[]):
-              role = perm.replace( ' ', '')
-              if role not in roles:
-                roles.append( role)
+      for id in filter(lambda x: x in security_roles.keys(),roles):
+        dict = security_roles.get(id,{})
+        for v in dict.values():
+          for role in map(lambda x: x.replace( ' ', ''),v.get('roles',[])):
+            if role not in roles:
+              roles.append( role)
       return roles
 
     # --------------------------------------------------------------------------

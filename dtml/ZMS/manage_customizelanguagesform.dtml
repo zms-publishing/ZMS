@@ -1,4 +1,5 @@
 <dtml-var manage_page_header>
+<dtml-let langId="getLangIds(sort=True)">
 
 <script language="JavaScript">
 <!--//
@@ -151,7 +152,7 @@ $(function() {
       <td>
        <select class="form-element" name="<dtml-var langId>_parent">
        <option value=""><dtml-var "getZMILangStr('ATTR_PRIMARY')"> (*)</option>
-       <dtml-in "getLangIds()">
+       <dtml-in langIds>
         <dtml-if "_['sequence-item']!=langId">
          <option value="<dtml-var sequence-item>"
           <dtml-if "langObj.get('parent')==_['sequence-item']">
@@ -180,11 +181,6 @@ $(function() {
 </dtml-in>
 </dtml-let>
 
-  <dtml-in "getLangIds()">
-   <dtml-let langId=sequence-item langObj="getLang(langId)">
-   </dtml-let>
-  </dtml-in>
-
   <!-- Insert -->
   <tr class="neutralColorWhite">
    <td class="form-element">
@@ -194,7 +190,7 @@ $(function() {
    <td class="form-element"><dtml-var "getTextInput('form0','language_label',15,'')"></td>
    <td class="form-element">
     <select class="form-element" name="language_parent">
-    <dtml-in "getLangIds()">
+    <dtml-in langIds>
      <option value="<dtml-var sequence-item>"
       <dtml-if "_['sequence-item']==getPrimaryLanguage()">
         selected="selected"
@@ -241,7 +237,7 @@ $(function() {
   <form name="form1" action="manage_changeLangDictProperties" method="post" onsubmit="return form1OnSubmit(this)" enctype="multipart/form-data" style="margin:8px">
   <input type="hidden" name="lang" value="<dtml-var lang>">
   <table cellspacing="1" cellpadding="0" border="0" class="zmiNeutralColorStrong0">
-  <dtml-let langIds="getLangIds()" colspan="2+len(langIds)">
+  <dtml-let colspan="2+len(langIds)">
 
   <!-- Header -->
   <tr>
@@ -330,4 +326,5 @@ $(function() {
   </form>
   <br/>
 
+</dtml-let>
 <dtml-var manage_page_footer>

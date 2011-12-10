@@ -407,8 +407,7 @@ Returns true if current context is preview-request, false else.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def isPreviewRequest(REQUEST):
   return REQUEST is not None and \
-         REQUEST.get('preview','') == 'preview' and \
-         REQUEST.get('live','') == ''
+         REQUEST.get('preview','') == 'preview'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -418,7 +417,7 @@ def getPageWithElements(self, REQUEST):
   obs = self.getChildNodes(REQUEST)
   for ob in obs:
     if ob.isVisible(REQUEST):
-      if ob.isPageElement() or ob.getObjProperty('getPageWithElements',REQUEST) in ['1','True',1,True]:
+      if ob.isPageElement() or ob.attr('getPageWithElements') in ['1','True',1,True]:
         return self
       elif ob.isPage():
         return getPageWithElements(ob,REQUEST)

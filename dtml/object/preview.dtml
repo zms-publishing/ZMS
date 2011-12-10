@@ -1,3 +1,4 @@
+<dtml-call "REQUEST.set('preview','preview')">
 <dtml-var manage_page_header>
 <script language="JavaScript">
 <!--//
@@ -294,7 +295,7 @@
 </script> 
 </head>
 <frameset rows="20,*" border="0" frameborder="0" framespacing="0">
- <frame name="navigate" marginheight="1" scrolling="no" noresize="noresize" src="preview_top_html?lang=<dtml-var lang><dtml-if "REQUEST.has_key('live') and REQUEST['live']=='live'">&live=live</dtml-if>">
+ <frame name="navigate" marginheight="1" scrolling="no" noresize="noresize" src="preview_top_html?lang=<dtml-var lang>">
  <frame name="partner" marginheight="1" src="<dtml-var "getHref2IndexHtml(REQUEST)">">
 </frameset>
 </html>

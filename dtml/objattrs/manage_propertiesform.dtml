@@ -16,7 +16,7 @@
 <dtml-in "getObjAttrs().keys()" sort>
 <dtml-let key=sequence-item obj_attr="getObjAttr(key)">
  <dtml-if "obj_attr['multilang']">
-  <dtml-in "getLangIds()">
+  <dtml-in "getLangIds(sort=True)">
    <dtml-call "REQUEST.set('lang',_['sequence-item'])">
    <tr>
     <td><div class="form-label"><dtml-var key>_<dtml-var lang></div></td>

@@ -146,51 +146,6 @@ $(function(){
 // #############################################################################
 // ### ZMI Auto-Save
 // #############################################################################
-var zmiAutoSaveTimeout = null;
-var zmiAutoSaveIntervall = 10000;
-var zmiAutoChangeArr = {};
-
-function zmiAutoSave() {
-	var els = $("form.ZMIPropertiesForm .form-element-modified");
-	if (els) {
-		var values = {};
-		for (var i = 0; i < els.length; i++) {
-			var $el = $(els[i]);
-			var elid = $el.attr("id");
-			if (typeof elid != "undefined") {
-				var coords = $el.offset();
-				var html = '<div class="zmiAutoSave form-small zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...</div>';
-				$("body").append(html);
-				values[elid] = $el.val();
-			}
-		}
-		runPluginJSON(function() {
-				// Store temp-form properties.
-				$.post("setTempFormProperties",{lang:zmiParams["lang"],key:self.location.href,values:$.toJSON(values)},function(result) {
-						$("div.zmiAutoSave").remove();
-					});
-			});
-	}
-}
-
-function zmiAutoChange(el) {
-	var elid = $(el).attr("id");
-	if (typeof elid != "undefined" && typeof zmiAutoChangeArr[elid] != "undefined") {
-		if (!($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[elid]["init"] != $(el).val()) {
-			$(el).addClass("form-element-modified");
-		}
-		else if (($(el).hasClass("form-element-modified")) && zmiAutoChangeArr[elid]["init"] == $(el).val()) {
-			$(el).removeClass("form-element-modified");
-		}
-		if (zmiAutoChangeArr[elid]["last"] != $(el).val()) {
-			if (zmiAutoSaveTimeout != null) {
-				window.clearTimeout(zmiAutoSaveTimeout);
-			}
-			zmiAutoSaveTimeout = window.setTimeout("zmiAutoSave()",zmiAutoSaveIntervall);
-			zmiAutoChangeArr[elid]["last"] = $(el).val();
-		}
-	}
-}
 
 function confirmChanges(el) {
 	if (el && self.name == 'cameFromForm') {
@@ -207,51 +162,8 @@ function confirmChanges(el) {
 			}
 		}
 	}
-	// Clear stored temp-form properties.
-	if ($(".form-element-modified").length > 0) {
-		$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {});
-	}
 	return true;
 }
-
-$(function() {
-	if (getZMIConfProperty("ZMS.TempFormProperties",1)==1) {
-		$("select.form-element,input.form-element,textarea.form-element,select.form-small,input.form-small,textarea.form-small",$("form.ZMIPropertiesForm"))
-			.keydown( function (evt) { zmiAutoChange(this); })
-			.keyup( function (evt) { zmiAutoChange(this); })
-			.click( function (evt) { zmiAutoChange(this); })
-			.change( function (evt) { zmiAutoChange(this); })
-			.each(function() {
-					var elid = $(this).attr("id");
-					if (typeof elid != "undefined" && $(this).attr("type") != "file") {
-						zmiAutoChangeArr[elid] = {'init':$(this).val(),'last':$(this).val()};
-					}
-				})
-		;
-		// Read stored temp-form properties.
-		if ($("form.ZMIPropertiesForm").length > 0) {
-			$.get("getTempFormProperties",{"lang":zmiParams["lang"],key:self.location.href},function(result) {
-					var data = eval("("+result+")");
-					var modified = false;
-					if (data) {
-						for (var i in data) {
-							var v = data[i];
-							modified |= $("#"+i).val() != v;
-						}
-					}
-					if (modified) {
-						if (confirm("Form was closed before without saving pending changes. Do you want to restore form?")) {
-							for (var i in data) {
-								var v = data[i];
-								$("#"+i).val(v).addClass("form-element-modified");
-								zmiAutoChangeArr[i]['last'] = v;
-							}
-						}
-					}
-				});
-		}
-	}
-});
 
 
 // #############################################################################
@@ -438,74 +350,6 @@ function zmiDialogClose(id) {
 	$('#'+id).dialog('close');
 	$('body').remove('#'+id);
 }
-
-// ############################################################################
-// ### Notification Service
-// ############################################################################
-
-/**
- *
- */
-function zmiGetNotifications() {
-	$.get('getNotifications',
-		{},
-		function(data) {
-			if (data.length==0) {
-				return;
-			}
-			var notifications = eval('('+data+')');
-			var maxseverity = null;
-			var html = '';
-			for ( var i = 0; i < notifications.length; i++) {
-				var notification = notifications[i];
-				var severity = notification['severity'];
-				if (severity == 'disabled') {
-					return;
-				}
-				html += '<div class="form-label">Current Messages:</div>';
-				html += '<div class="form-small">';
-				html += '<img src="/misc_/zms/ico_'+severity+'.gif" alt="" border="0" align="absmiddle"/> ';
-				html += '<strong>'+notification['date']+'</strong> ';
-				html += notification['html'];
-				html += '</div>';
-				if ((maxseverity == null)
-					|| (severity == 'warning' && (maxseverity == 'info'))
-					|| (severity == 'warning' && (maxseverity == 'info' || maxseverity == 'warning'))) {
-					maxseverity = severity;
-				}
-			}
-			if (maxseverity != null) {
-				if ( $('#ZMIManageTabsButtons > li#ZMIManageTabsNotifications').length==0) {
-					$('#ZMIManageTabsButtons').html('<li id="ZMIManageTabsNotifications"></li>'+$('#ZMIManageTabsButtons').html());
-				}
-				$('#ZMIManageTabsButtons > li#ZMIManageTabsNotifications').html(
-					'<a href="#ZMIManageTabsNotificationsDiv"><img src="/misc_/zms/ico_'+maxseverity+'.gif" title="Click to open notifications..." border="0"></a>'+
-					'<div style="display:none">'+
-					'<div id="ZMIManageTabsNotificationsDiv">'+
-					html+
-					'</div>'+
-					'</div>'+
-					'');
-				$('a[href=#ZMIManageTabsNotificationsDiv]').click(function(){
-					showFancybox({href:$(this).attr('href')});
-				});
-			}
-			setTimeout('zmiGetNotifications()',60000);
-		});
-}
-
-/**
- *
- */
-function zmiClearNotifications() {
-}
-
-/**
- *
- */
-$(function() {
-	zmiGetNotifications();
-});
 
 // ############################################################################
 // ### Date Functions

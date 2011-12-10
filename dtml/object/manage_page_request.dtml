@@ -24,9 +24,6 @@
   ></dtml-if
  ></dtml-let
 ></dtml-if
-><dtml-unless "REQUEST.get( 'live','')=='live'"
- ><dtml-call "REQUEST.set( 'preview','preview')"
-></dtml-unless
 ><dtml-unless "REQUEST.has_key( 'lang')"
  ><dtml-call "REQUEST.set( 'lang',getPrimaryLanguage())"
 ></dtml-unless
@@ -49,9 +46,6 @@
 ><dtml-elif "not REQUEST.get('ZMS_ACTION') and REQUEST.get('action')"
 ><dtml-call "REQUEST.set('ZMS_ACTION',action)"
 ></dtml-if
-><dtml-unless "hasAccess(REQUEST)"
-><dtml-call "RESPONSE.redirect(url_append_params('%s/manage_main'%aq_parent.absolute_url(),{'lang':lang,'manage_tabs_message':getZMILangStr('MSG_ACCESS_FORBIDDEN')%'<i>%s</i>'%display_type(REQUEST),}))"
-></dtml-unless
 ><dtml-var f_headDoctype
 ><dtml-else
 ><dtml-call "REQUEST.set( 'ZMS_THIS',this())"

@@ -3740,6 +3740,7 @@ if key.startswith('table_'):
                   <item key="id"><![CDATA[e]]></item>
                   <item key="keys" type="list">
                     <list>
+                      <item><![CDATA[ZMSNote]]></item>
                       <item><![CDATA[ZMSFile]]></item>
                       <item><![CDATA[ZMSLinkElement]]></item>
                       <item><![CDATA[type(ZMSTeaserElement)]]></item>
@@ -3904,7 +3905,7 @@ return printed
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
@@ -3923,14 +3924,6 @@ return printed
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -3945,7 +3938,7 @@ return printed
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.2.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -129,8 +129,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
     t += 1
   
   # Debug.
-  if _globals.debug( self):
-    _globals.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
+  _globals.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
   
   # Return with message.
   message = 'Packed Media-Folder: %i files (total %i) deleted.'%(c,t)

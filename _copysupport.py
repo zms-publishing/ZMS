@@ -117,8 +117,7 @@ class CopySupport:
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[_set_sort_ids]: %s"%self.absolute_url())
+      _globals.writeLog( self, "[_set_sort_ids]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
       sort_id = REQUEST.get('_sort_id',0) + 1
@@ -133,8 +132,7 @@ class CopySupport:
     #  CopySupport._normalize_ids_after_copy:
     # --------------------------------------------------------------------------
     def _normalize_ids_after_copy(self, ids=[], forced=0, REQUEST=None):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[_normalize_ids_after_copy]: %s"%self.absolute_url())
+      _globals.writeLog( self, "[_normalize_ids_after_copy]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
       id_prefix = REQUEST.get( 'id_prefix')
@@ -184,8 +182,7 @@ class CopySupport:
     #  CopySupport._normalize_ids_after_move:
     # --------------------------------------------------------------------------
     def _normalize_ids_after_move(self, ids=[], forced=0, REQUEST=None):
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[_normalize_ids_after_move]: %s"%self.absolute_url())
+      _globals.writeLog( self, "[_normalize_ids_after_move]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
       id_prefix = REQUEST.get( 'id_prefix')
@@ -236,8 +233,7 @@ class CopySupport:
     ############################################################################
     def manage_cutObjects(self, ids=None, REQUEST=None):
       """Put a reference to the objects named in ids in the clip board"""
-      if _globals.debug( self): 
-        _globals.writeLog( self, "[manage_pasteObjs]")
+      _globals.writeLog( self, "[manage_pasteObjs]")
       super( self.__class__, self).manage_cutObjects( ids, REQUEST)
       # Return with message.
       if REQUEST is not None:

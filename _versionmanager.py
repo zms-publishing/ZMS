@@ -588,8 +588,7 @@ class VersionItem:
             if ob_version.id != version_hist_id and \
                ob_version.getObjProperty('major_version',REQUEST) == major_version:
               ids.append( ob_version.id)
-          if _globals.debug( self):
-            _globals.writeLog( self, "[_commitObjChanges]: Remove previous minor-versions: ids=%s"%str(ids))
+          _globals.writeLog( self, "[_commitObjChanges]: Remove previous minor-versions: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         
         else:
@@ -634,8 +633,7 @@ class VersionItem:
                 ids.append( id)
           self.version_work_id = None
           if len( ids) > 0:
-            if _globals.debug( self):
-              _globals.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
+            _globals.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -674,8 +672,7 @@ class VersionItem:
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
     def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      if _globals.debug( self):
-        _globals.writeLog( self, "[_rollbackObjChanges]")
+      _globals.writeLog( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
@@ -705,8 +702,7 @@ class VersionItem:
             if ob_version.getObjProperty('major_version',REQUEST) == major_version and \
                ob_version.getObjProperty('minor_version',REQUEST) > 0:
               ids.append( ob_version.id)
-          if _globals.debug( self):
-            _globals.writeLog( self, "[_rollbackObjChanges]: Remove next minor-versions: ids=%s"%str(ids))
+          _globals.writeLog( self, "[_rollbackObjChanges]: Remove next minor-versions: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         
         else:
@@ -719,8 +715,7 @@ class VersionItem:
               self.version_work_id = None
             elif self.version_live_id is not None and self.version_live_id != self.version_work_id:
               # Clone current live-version to work-version.
-              if _globals.debug( self):
-                _globals.writeLog( self, "[_rollbackObjChanges]: Clone current live-version '%s' to work-version '%s'"%(self.version_live_id,self.version_work_id))
+              _globals.writeLog( self, "[_rollbackObjChanges]: Clone current live-version '%s' to work-version '%s'"%(self.version_live_id,self.version_work_id))
               self.cloneObjAttrs(getattr(self,self.version_live_id),getattr(self,self.version_work_id),REQUEST)
       
       ##### Rollback version-items. ####
@@ -748,8 +743,7 @@ class VersionItem:
                 ids.append( id)
           self.version_work_id = None
           if len( ids) > 0:
-            if _globals.debug( self):
-              _globals.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
+            _globals.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -898,8 +892,7 @@ class VersionItem:
     #  Returns object-history for given version-nr.
     # --------------------------------------------------------------------------
     def getObjHistory(self, version_nr, REQUEST, children=True, deleted=True):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
+      _globals.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
       obs = []
       ZMS_VERSION = REQUEST.get( 'ZMS_VERSION_%s'%self.id)
       master_version = int( version_nr[ :version_nr.find( '.')])
@@ -917,8 +910,7 @@ class VersionItem:
              item.get( 'major_version', 0) <= major_version:
             version_dt = item[ 'version_dt']
             break
-      if _globals.debug( self):
-        _globals.writeLog( self, '[getObjHistory]: version_dt=%s'%str(version_dt))
+      _globals.writeLog( self, '[getObjHistory]: version_dt=%s'%str(version_dt))
       found = False
       last_ob_version = None
       for ob_version in self.getObjVersions():
@@ -931,8 +923,7 @@ class VersionItem:
         ob_version_change_dt = ob_version.getObjProperty( 'change_dt', REQUEST, {'fetchReqBuff':0})
         if ob_version_nr <= version_nr:
           if not children:
-            if _globals.debug( self):
-              _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
+            _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
             return last_ob_version
           for ob_child in self.getVersionItems( REQUEST, recursive=True):
             for ob_child_version in ob_child.getObjVersions():
@@ -954,8 +945,7 @@ class VersionItem:
           break
       if not found:
         if not children:
-          if _globals.debug( self):
-            _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
+          _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
           return last_ob_version
         for ob_child in self.getVersionItems( REQUEST, recursive=True):
           for ob_child_version in ob_child.getObjVersions():
@@ -980,17 +970,22 @@ class VersionItem:
     #  version is returned, else the live-version is returned.
     # --------------------------------------------------------------------------
     def getObjVersion(self, REQUEST={}):
+        ob = None
         id = REQUEST.get( 'ZMS_VERSION_%s'%self.id, None)
         if id is not None:
             return getattr( self, id)
         elif REQUEST.get('preview') == 'preview':
-            ob = getattr(self, self.version_work_id, None)
+            if self.version_work_id is not None:
+                ob = getattr(self, self.version_work_id, None)
         else:
-            ob = getattr(self, self.version_live_id, None)
+            if self.version_live_id is not None:
+                ob = getattr(self, self.version_live_id, None)
         if ob is None:
-            ob = getattr(self, self.version_work_id, None)
+            if self.version_work_id is not None:
+                ob = getattr(self, self.version_work_id, None)
         if ob is None:
-            ob = getattr(self, self.version_live_id, None)
+            if self.version_live_id is not None:
+                ob = getattr(self, self.version_live_id, None)
         return ob
 
 

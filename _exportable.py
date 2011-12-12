@@ -365,8 +365,7 @@ class Exportable(_filtermanager.FilterItem):
     #  (X)HTML
     # --------------------------------------------------------------------------
     def toXhtml(self, REQUEST, deep=True):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[toXhtml]')
+      _globals.writeLog( self, '[toXhtml]')
       level = 0
       html = ''
       if REQUEST.has_key( 'ZMS_PAGE_HTML_HEADER'):

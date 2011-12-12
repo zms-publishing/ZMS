@@ -338,8 +338,7 @@ def delFilterProcess(self, id, pid):
 #  Move filter-process specified by given Ids to specified position.
 # ------------------------------------------------------------------------------
 def moveFilterProcess(self, id, pid, pos):
-  if _globals.debug( self):
-    _globals.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id,str(pid),str(dir)))
+  _globals.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id,str(pid),str(dir)))
   # Set.
   obs = getRawFilters(self)
   pobs = obs[id].get('processes',[])
@@ -395,8 +394,7 @@ def processData(self, processId, data, trans=None):
 #  Process DTML method.
 # ------------------------------------------------------------------------------
 def processMethod(self, processId, filename, trans, REQUEST):
-  if _globals.debug( self):
-    _globals.writeLog( self, '[processMethod]: processId=%s'%processId)
+  _globals.writeLog( self, '[processMethod]: processId=%s'%processId)
   infilename = filename
   outfilename = filename
   REQUEST.set( 'ZMS_FILTER_IN', infilename)
@@ -418,8 +416,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
 #  Process file with command.
 # ------------------------------------------------------------------------------
 def processCommand(self, filename, command):
-  if _globals.debug( self):
-    _globals.writeLog( self, '[processCommand]: infilename=%s'%filename)
+  _globals.writeLog( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
   mZmsHome = '{zms_home}'
@@ -445,14 +442,12 @@ def processCommand(self, filename, command):
   command = command.replace( mCurDir,_fileutil.getFilePath(infilename))
   command = command.replace( mIn,infilename)
   command = command.replace( mOut,tmpoutfilename)
-  if _globals.debug( self):
-    _globals.writeLog( self, '[processCommand]: command=%s'%command)
+  _globals.writeLog( self, '[processCommand]: command=%s'%command)
   os.system(command)
   # Check if output file exists.
   try: 
     os.stat( _fileutil.getOSPath( tmpoutfilename)) 
-    if _globals.debug( self):
-      _globals.writeLog( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
+    _globals.writeLog( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
     try:
       os.remove( outfilename)
     except OSError:
@@ -464,8 +459,7 @@ def processCommand(self, filename, command):
   if outfilename != infilename:
     os.remove( infilename)
   # Return filename.
-  if _globals.debug( self):
-    _globals.writeLog( self, '[processCommand]: outfilename=%s'%( outfilename))
+  _globals.writeLog( self, '[processCommand]: outfilename=%s'%( outfilename))
   return outfilename
 
 
@@ -475,8 +469,7 @@ def processCommand(self, filename, command):
 #  Process file with custom transformation.
 # ------------------------------------------------------------------------------
 def processFile(self, processId, filename, trans=None):
-  if _globals.debug( self):
-    _globals.writeLog( self, '[processFile]: processId=%s'%processId)
+  _globals.writeLog( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
   processOb = self.getProcess(processId)
   command = processOb.get('command')
@@ -531,8 +524,7 @@ def exportFilter(self, id, REQUEST):
     data = _fileutil.buildZipArchive( outfilename, get_data=True)
   # Read File.
   else:
-    if _globals.debug( self):
-      _globals.writeLog( self, '[exportFilter]: Read %s'%outfilename)
+    _globals.writeLog( self, '[exportFilter]: Read %s'%outfilename)
     f = open(outfilename, 'rb')
     data = f.read()
     f.close()

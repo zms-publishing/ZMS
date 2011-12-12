@@ -261,8 +261,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def registerRefObj(self, ob, REQUEST):
     ref = self.getRefObjPath(ob)
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[registerRefObj]: %s(%s) - add %s"%(ob.id,ob.meta_type,ref))
+    _globals.writeLog( self, "[registerRefObj]: %s(%s) - add %s"%(ob.id,ob.meta_type,ref))
     ref_by = self.getRefByObjs(REQUEST)
     if not ref in ref_by:
       ref_by.append(ref)
@@ -276,8 +275,7 @@ class ZReferableItem:
   #  Unregisters referencing object.
   # ----------------------------------------------------------------------------
   def unregisterRefObj(self, ob, REQUEST):
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[unregisterRefObj]: %s(%s)"%(ob.id,ob.meta_type))
+    _globals.writeLog( self, "[unregisterRefObj]: %s(%s)"%(ob.id,ob.meta_type))
     ref_by = self.getRefByObjs(REQUEST)
     ref_by = filter( lambda x: x[2:-1].split('/')[-1]!=ob.id,ref_by)
     ##### Set Attribute ####
@@ -290,8 +288,7 @@ class ZReferableItem:
   #  Refreshs referencing object.
   # ----------------------------------------------------------------------------
   def refreshRefObj(self, ob, REQUEST):
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[refreshRefObj]: %s(%s) -> %s(%s)"%(self.id,self.meta_type,ob.id,ob.meta_type))
+    _globals.writeLog( self, "[refreshRefObj]: %s(%s) -> %s(%s)"%(self.id,self.meta_type,ob.id,ob.meta_type))
     self.unregisterRefObj(ob,REQUEST)
     self.registerRefObj(ob,REQUEST)
 
@@ -327,8 +324,7 @@ class ZReferableItem:
   #  Synchronizes references TO other objects.
   # ----------------------------------------------------------------------------
   def synchronizeRefToObjs(self):
-    if _globals.debug( self): 
-      _globals.writeLog( self, '[synchronizeRefToObjs]')
+    _globals.writeLog( self, '[synchronizeRefToObjs]')
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
@@ -347,8 +343,7 @@ class ZReferableItem:
   #  Refreshs reference TO given destination.
   # ----------------------------------------------------------------------------
   def refreshRefToObj(self, dest_obj, REQUEST):
-    if _globals.debug( self): 
-      _globals.writeLog( self, '[refreshRefToObj]: %s -> dest_obj=%s(%s)'%(self.id,dest_obj.absolute_url(),dest_obj.meta_type))
+    _globals.writeLog( self, '[refreshRefToObj]: %s -> dest_obj=%s(%s)'%(self.id,dest_obj.absolute_url(),dest_obj.meta_type))
     ref_to =  []
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
@@ -377,15 +372,14 @@ class ZReferableItem:
   #  This method is executed after an object has been moved.
   # ----------------------------------------------------------------------------
   def onMoveRefObj(self, REQUEST, deep=0):
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[onMoveRefObj]")
-
+    _globals.writeLog( self, "[onMoveRefObj]")
+    
     ##### Update references TO other objects ####
     for ref in self.getRefToObjs(REQUEST):
       ob = self.getLinkObj(ref)
       if ob is not None:
         ob.refreshRefObj(self,REQUEST)
-
+    
     ##### Update references FROM other objects ####
     for ref in self.getRefByObjs(REQUEST):
       ob = self.getLinkObj(ref)
@@ -399,15 +393,14 @@ class ZReferableItem:
   #  This method is executed after an object has been copied.
   # ----------------------------------------------------------------------------
   def onCopyRefObj(self, REQUEST, deep=0):
-    if _globals.debug( self): 
-      _globals.writeLog( self, "[onCopyRefObj]")
-
+    _globals.writeLog( self, "[onCopyRefObj]")
+    
     ##### Register copy in references TO other objects ####
     for ref in self.getRefToObjs(REQUEST):
       ob = self.getLinkObj(ref)
       if ob is not None:
         ob.registerRefObj(self,REQUEST)
-
+    
     ##### Clear references FROM other objects ####
     self.clearRegisteredRefObjs(REQUEST)
 

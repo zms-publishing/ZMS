@@ -115,15 +115,13 @@ class ObjChildren:
       if repetitive:
         if id in ids:
           new_id = self.getNewId(id)
-          if _globals.debug( self):
-            _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
+          _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
           if new_id not in self.objectIds():
             self.manage_renameObject(id=id,new_id=new_id)
       else:
         if not id in ids and len(ids)>0:
           old_id = ids[0]
-          if _globals.debug( self):
-            _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
+          _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
           if id not in self.objectIds():
             self.manage_renameObject(id=old_id,new_id=id)
 
@@ -132,8 +130,7 @@ class ObjChildren:
     #	ObjChildren.initObjChildren
     # --------------------------------------------------------------------------
     def initObjChildren(self, REQUEST):
-      if _globals.debug( self):
-        _globals.writeLog( self, "[initObjChildren]")
+      _globals.writeLog( self, "[initObjChildren]")
       self.getObjProperty( 'initObjChildren' ,REQUEST)
       metaObj = self.getMetaobj(self.meta_id)
       metaObjIds = self.getMetaobjIds(sort=0)+['*']

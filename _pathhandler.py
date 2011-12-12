@@ -74,8 +74,6 @@ def filterId(self, id, REQUEST):
 #  If the object has blob-fields find by filename and display data.
 # ------------------------------------------------------------------------------
 def handleBlobAttrs(self, name, REQUEST):
-  if _globals.debug( self):
-    _globals.writeLog( self, '[__bobo_traverse__]: If the object has blob-fields find by filename and display data.')
   langs = self.getLangIds()
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:

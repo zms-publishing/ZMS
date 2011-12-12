@@ -237,7 +237,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTitle
     # --------------------------------------------------------------------------
     def getTitle( self, REQUEST):
-      s = self.getObjProperty('title',REQUEST)
+      s = self.attr('title')
       if len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
@@ -264,11 +264,13 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTitlealt
     # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
-      s = self.getObjProperty('titlealt',REQUEST)
+      s = self.attr('titlealt')
+      if len(s) == 0: 
+        s = self.display_type(REQUEST)
       if len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
-          offs = 0
+          offs = 1
           c = 0
           for metaObjAttr in metaObjAttrs:
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:
@@ -278,8 +280,6 @@ class ZMSObject(ZMSItem.ZMSItem,
                   s = v
                   break
               c = c + 1
-      if len(s) == 0: 
-        s = self.display_type(REQUEST)
       if self.isPage():
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
@@ -666,8 +666,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Find object by ids given in object path.
     # --------------------------------------------------------------------------
     def findObjId(self, relative_obj_path, REQUEST):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[findObjId]: relative_obj_path=%s'%relative_obj_path)
+      _globals.writeLog( self, '[findObjId]: relative_obj_path=%s'%relative_obj_path)
       docElmnt = self.getDocumentElement()
       ob = docElmnt
       if len(relative_obj_path) > 0:
@@ -1377,8 +1376,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # handler for XML-Builder (_builder.py)
     ############################################################################
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
-        if _globals.debug( self):
-          _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
+        _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
         
         self.dTagStack    = _globals.MyStack()
         self.dValueStack  = _globals.MyStack()

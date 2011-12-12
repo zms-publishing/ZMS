@@ -732,8 +732,7 @@ class XmlAttrBuilder:
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
       
       #### parsing ####
-      if _globals.debug( self): 
-        _globals.writeLog( self, "#### parsing ####")
+      _globals.writeLog( self, "#### parsing ####")
       if type(input) is str:
         # input is a string!
         rv = p.Parse(input, 1)
@@ -772,8 +771,7 @@ class XmlAttrBuilder:
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlAttrBuilder.OnStartElement(" + str(sTagName) + "," + str(dTagAttrs) + ")]")
+      _globals.writeLog( self, "[XmlAttrBuilder.OnStartElement(" + str(sTagName) + "," + str(dTagAttrs) + ")]")
       
       #-- TAG-STACK
       tag = {'name':sTagName,'attrs':dTagAttrs,'cdata':''}
@@ -799,8 +797,7 @@ class XmlAttrBuilder:
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlAttrBuilder.OnEndElement(" + str(sTagName) + ")]")
+      _globals.writeLog( self, "[XmlAttrBuilder.OnEndElement(" + str(sTagName) + ")]")
       
       #-- TAG-STACK
       tag = self.dTagStack.pop()
@@ -862,8 +859,7 @@ class XmlAttrBuilder:
     ############################################################################
     def OnCharacterData(self, sData):
       """ XmlAttrBuilder.OnCharacterData """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlAttrBuilder.OnCharacterData(" + str(sData) + ")]")
+      _globals.writeLog( self, "[XmlAttrBuilder.OnCharacterData(" + str(sData) + ")]")
       
       #-- TAG-STACK
       if self.dTagStack.size() > 0:
@@ -1023,8 +1019,7 @@ class XmlBuilder:
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
         
         #### parsing ####
-        if _globals.debug( self): 
-          _globals.writeLog( self, "#### parsing ####")
+        _globals.writeLog( self, "#### parsing ####")
         if type(input) is str:
           # input is a string!
           rv = p.Parse(input, 1)
@@ -1063,8 +1058,7 @@ class XmlBuilder:
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlBuilder.OnStartElement(" + str(sTagName) + "," + str(dTagAttrs) + ")]")
+      _globals.writeLog( self, "[XmlBuilder.OnStartElement(" + str(sTagName) + "," + str(dTagAttrs) + ")]")
       
       tag = {'name':sTagName,'attrs':dTagAttrs,'cdata':'','tags':[]}
       self.dTagStack.push(tag)
@@ -1080,8 +1074,7 @@ class XmlBuilder:
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlBuilder.OnEndElement(" + str(sTagName) + ")]")
+      #--_globals.writeLog( self, "[XmlBuilder.OnEndElement(" + str(sTagName) + ")]")
       
       lTag = self.dTagStack.pop()
       name = _globals.unencode( lTag['name'])
@@ -1119,8 +1112,7 @@ class XmlBuilder:
     ############################################################################
     def OnCharacterData(self, sData):
       """ XmlBuilder.OnCharacterData """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[XmlBuilder.OnCharacterData(" + str(sData) + ")]")
+      #--_globals.writeLog( self, "[XmlBuilder.OnCharacterData(" + str(sData) + ")]")
       
       tag = self.dTagStack.pop()
       tag['cdata'] = tag['cdata'] + sData

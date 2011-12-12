@@ -369,8 +369,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def synchronizeSearch(self, REQUEST, forced=0):
       if self.getConfProperty('ZMS.CatalogAwareness.active',1) or forced:
-        if _globals.debug( self):
-          _globals.writeLog( self, '[synchronizeSearch]')
+        _globals.writeLog( self, '[synchronizeSearch]')
         for ref_by in self.getRefByObjs(REQUEST):
           ref_ob = self.getLinkObj(ref_by,REQUEST)
           if ref_ob is not None and \
@@ -688,11 +687,9 @@ class ZCatalogManager:
             d[zcindex] = search_query
           else:
             d[zcindex] = self.search_encode( search_query)
-          if _globals.debug( self):
-            _globals.writeLog( self, "[searchCatalog]: %s=%s"%(zcindex,d[zcindex]))
+          _globals.writeLog( self, "[searchCatalog]: %s=%s"%(zcindex,d[zcindex]))
           qr = zcatalog(d)
-          if _globals.debug( self):
-            _globals.writeLog( self, "[searchCatalog]: qr=%i"%len( qr))
+          _globals.writeLog( self, "[searchCatalog]: qr=%i"%len( qr))
           items.extend( qr)
       
       #-- Sort order.

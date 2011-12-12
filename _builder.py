@@ -134,8 +134,7 @@ class Builder:
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
         
         #### parsing ####
-        if _globals.debug( self):
-          _globals.writeLog( self, "#### parsing ####")
+        _globals.writeLog( self, "#### parsing ####")
         if type(input) is str:
           # input is a string!
           rv = p.Parse(input, 1)
@@ -175,9 +174,8 @@ class Builder:
     ############################################################################
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
-        if _globals.debug( self): 
-          _globals.writeLog( self, "[Builder.OnStartElement(" + str(name) + ")]")
-          
+        _globals.writeLog( self, "[Builder.OnStartElement(" + str(name) + ")]")
+        
         name = _globals.unencode( name)
         attrs = _globals.unencode( attrs)
         
@@ -192,8 +190,7 @@ class Builder:
             self.dGlobalAttrs.has_key(name) and \
             self.dGlobalAttrs[name]['obj_class'] is not None):
             
-            if _globals.debug( self):
-              _globals.writeLog( self, "[Builder.OnStartElement]: " + \
+            _globals.writeLog( self, "[Builder.OnStartElement]: " + \
                 "We are inside the XML root tag OR no root object is set" + \
                 "-> instanciate node object in any case")
             
@@ -249,8 +246,7 @@ class Builder:
                     newNode.setObjProperty('change_uid','xml',lang)
                     newNode.setObjProperty('change_dt',time.time(),lang)
                 
-                if _globals.debug( self):
-                  _globals.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
+                _globals.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
                 
                 if self.oRoot is None:   # root object set?
                     self.oRoot = newNode # -> set root node
@@ -270,13 +266,11 @@ class Builder:
                 if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
                     if self._unknownTagName == None:
                         self._unknownTagName = name
-                    if _globals.debug( self):
-                      _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
+                    _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
                     # raise ParseError("Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
           
         else:
-            if _globals.debug( self):
-              _globals.writeLog( self, "[Builder.OnStartElement]: " + 
+            _globals.writeLog( self, "[Builder.OnStartElement]: " + 
                 "we have encountered the XML root tag and a root object is predefined" + \
                 "-> simply notify root object")
             self.oRoot.xmlOnStartElement(name, attrs, None, self.oRoot)
@@ -300,8 +294,7 @@ class Builder:
     ############################################################################
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
-        if _globals.debug( self): 
-          _globals.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
+        _globals.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
         
         # do we have a current node?
         if self.oCurrNode==None:
@@ -351,8 +344,7 @@ class Builder:
     ############################################################################
     def OnCharacterData(self, data):
         """ Builder.OnCharacterData """
-        if _globals.debug( self):
-          _globals.writeLog( self, "[Builder.OnCharacterData]")
+        _globals.writeLog( self, "[Builder.OnCharacterData]")
         
         # do we have a current node?
         if self.oCurrNode==None:

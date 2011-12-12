@@ -29,35 +29,39 @@ class TextFormatObject:
   #  Returns section-number.
   # ----------------------------------------------------------------------------
   def getSecNo( self):
+    sec_no = ''
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()
+    if parentNode is None:
+      return sec_no
     reqBuffId = 'getSecNo'
     try:
-      sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId,self.id), self.REQUEST, forced=True)
+      levelnfc = parentNode.fetchReqBuff( '%s_levelnfc'%reqBuffId, self.REQUEST, forced=True)
+      if levelnfc > 0:
+        sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId,self.id), self.REQUEST, forced=True)
     except:
-      sec_no = ''
-      if parentNode is not None:
-        levelnfc = parentNode.getObjProperty('levelnfc',self.REQUEST)
-        if len(levelnfc) > 0:
-          parent_no = parentNode.getSecNo()
-          sectionizer = _globals.MySectionizer(levelnfc)
-          siblings = parentNode.filteredChildNodes( self.REQUEST)
-          for sibling in siblings:
-            curr_no = ''
-            level = 0
-            if sibling.isPageElement():
-              format = sibling.getObjProperty('format',self.REQUEST)
-              if format.find('headline') == 0:
-                level = int(format[len(_globals.id_prefix(format)):])-1
-            elif sibling.isPage():
-              level = 1
-            if level > 0:
-              sectionizer.processLevel(level)
-              curr_no = parent_no + str(sectionizer)
-              if self == sibling:
-                sec_no = curr_no
-            #-- [ReqBuff]: Store value in buffer of Http-Request.
-            parentNode.storeReqBuff( '%s_%s'%(reqBuffId,sibling.id), curr_no, self.REQUEST)
+      levelnfc = parentNode.attr('levelnfc')
+      parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)
+      if len(levelnfc) > 0:
+        parent_no = parentNode.getSecNo()
+        sectionizer = _globals.MySectionizer(levelnfc)
+        siblings = parentNode.filteredChildNodes( self.REQUEST)
+        for sibling in siblings:
+          curr_no = ''
+          level = 0
+          if sibling.isPageElement():
+            format = sibling.attr('format')
+            if format.find('headline') == 0:
+              level = int(format[len(_globals.id_prefix(format)):])-1
+          elif sibling.isPage():
+            level = 1
+          if level > 0:
+            sectionizer.processLevel(level)
+            curr_no = parent_no + str(sectionizer)
+            if self == sibling:
+              sec_no = curr_no
+          #-- [ReqBuff]: Store value in buffer of Http-Request.
+          parentNode.storeReqBuff( '%s_%s'%(reqBuffId,sibling.id), curr_no, self.REQUEST)
     #-- [ReqBuff]: Return value.
     return sec_no
 

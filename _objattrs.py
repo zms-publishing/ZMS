@@ -537,7 +537,7 @@ class ObjAttrs:
       attr = self.getObjAttrName(obj_attr,lang)
       
       #-- Return true if object has specified property, false else.
-      return attr in obj.__dict__.keys() and getattr(ob,attr,None) is not None
+      return ob.__dict__.get(attr,None) is not None
 
 
     """
@@ -575,12 +575,10 @@ class ObjAttrs:
               fmt_str = 'DATE_FMT'
             elif datatype == _globals.DT_TIME:
               fmt_str = 'TIME_FMT'
-            if _globals.debug( self):
-              _globals.writeLog( self, "[_getObjAttrValue]: type(value) is type(string) - parseLangFmtDate(%s)"%(str(value)))
+            _globals.writeLog( self, "[_getObjAttrValue]: type(value) is type(string) - parseLangFmtDate(%s)"%(str(value)))
             set, value = True, self.parseLangFmtDate(value)
           elif type(value) is not time.struct_time:
-            if _globals.debug( self):
-              _globals.writeLog( self, "[_getObjAttrValue]: type(value) is not time.struct_time - getDateTime(%s)"%(str(value)))
+            _globals.writeLog( self, "[_getObjAttrValue]: type(value) is not time.struct_time - getDateTime(%s)"%(str(value)))
             set, value = True, _globals.getDateTime(value)
       
       #-- List-Fields.
@@ -614,8 +612,7 @@ class ObjAttrs:
       #-- SET?
       if set: 
         attr = self.getObjAttrName( obj_attr, lang)
-        if _globals.debug( self):
-          _globals.writeLog( self, "[_getObjAttrValue]: setattr(%s,%s)"%(attr,str(value)))
+        _globals.writeLog( self, "[_getObjAttrValue]: setattr(%s,%s)"%(attr,str(value)))
         setattr(obj_vers,attr,value)
       
       # Return value.
@@ -1080,8 +1077,7 @@ class ObjAttrs:
       
       #-- SET?
       if set:
-        if _globals.debug( self):
-          _globals.writeLog( self, "[setReqProperty] %s=%s"%(key,str(value)))
+        _globals.writeLog( self, "[setReqProperty] %s=%s"%(key,str(value)))
         self.setObjProperty(key,value,lang)
 
 
@@ -1173,8 +1169,7 @@ class ObjAttrs:
       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
       
       #-- SET!
-      if _globals.debug( self):
-        _globals.writeLog( self, "[setObjProperty]: %s(%s)=%s"%(key,str(datatype),str(value)))
+      _globals.writeLog( self, "[setObjProperty]: %s(%s)=%s"%(key,str(datatype),str(value)))
       ob = self.getObjVersion({'preview':'preview'})
       setobjattr(self,ob,obj_attr,value,lang)
       if forced:
@@ -1488,8 +1483,7 @@ class ObjAttrsManager:
       """
       rtn = []
       rtn.append('[%s.synchronizeObjAttrs]: %s'%(self.absolute_url(),str(sync_id)))
-      if _globals.debug( self):
-        _globals.writeLog( self, '[synchronizeObjAttrs]')
+      _globals.writeLog( self, '[synchronizeObjAttrs]')
       
       # Prepare defaults.
       defaults_obj_attrs = {}

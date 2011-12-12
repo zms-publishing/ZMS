@@ -700,8 +700,7 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeLog(self, info):
-      if _globals.debug( self):
-        _globals.writeLog( self, info)
+      _globals.writeLog( self, info)
 
     """
     Log information.
@@ -1123,8 +1122,6 @@ class ZMSGlobals:
     @rtype: C{list}
     """
     def copy_list(self, l):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[copy_list]: %i records'%len(l))
       try:
         v = copy.deepcopy(l)
       except:
@@ -1255,8 +1252,7 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      if _globals.debug( self):
-        _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
+      _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)
@@ -1294,8 +1290,7 @@ class ZMSGlobals:
     Writes file to local file-system.
     """
     def localfs_write(self, filename, v, mode='b', REQUEST=None):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
+      _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)
@@ -1322,8 +1317,7 @@ class ZMSGlobals:
     Removes file from local file-system.
     """
     def localfs_remove(self, path, deep=0):
-      if _globals.debug( self):
-        _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
+      _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(path)
@@ -1359,8 +1353,7 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      if _globals.debug( self):
-        _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
+      _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)

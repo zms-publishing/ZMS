@@ -760,8 +760,7 @@ class ZMS(
       """
       Handler for XML-Builder (_builder.py)
       """
-      if _globals.debug( self):
-        _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
+      _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
       
       # remove all ZMS-objects.
       self.manage_delObjects(self.objectIds(self.dGlobalAttrs.keys()))

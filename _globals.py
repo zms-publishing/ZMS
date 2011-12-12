@@ -417,7 +417,7 @@ def getPageWithElements(self, REQUEST):
   obs = self.getChildNodes(REQUEST)
   for ob in obs:
     if ob.isVisible(REQUEST):
-      if ob.isPageElement() or ob.attr('getPageWithElements') in ['1','True',1,True]:
+      if ob.isPageElement():
         return self
       elif ob.isPage():
         return getPageWithElements(ob,REQUEST)

@@ -263,7 +263,7 @@
 <td class="zmiContainerColCenter zmiNeutralColorLight0">
 <div class="form-small" style="padding:2px">
 </dtml-if>
-<a href="<dtml-var clientId>/content/manage_main?lang=<dtml-var lang>" class="zmi"
+<a href="../<dtml-var clientId>/content/manage_main?lang=<dtml-var lang>" class="zmi"
 ><dtml-if "clientId in clientIds"
  ><img src="<dtml-var thisIcon>" class="zmiDisplayIcon"
 ><dtml-else

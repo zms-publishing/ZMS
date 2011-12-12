@@ -27,6 +27,12 @@ $(function(){
 		var i = href.indexOf(delimiter);
 		if (i > 0) {
 			var query_string = href.substr(i+1);
+			if (h < delimiter_list.length-1) {
+				i = query_string.indexOf(delimiter_list[h+1]);
+				if (i > 0) {
+					query_string = query_string.substr(0,i);
+				}
+			}
 			var l = query_string.split('&');
 			for ( var j = 0; j < l.length; j++) {
 				i = l[j].indexOf('=');

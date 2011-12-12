@@ -110,7 +110,7 @@ $(function() {
  */
 function zmiRichtextEditorMaximize(ta) {
 	var ta = $('div[id^=zmiStandardEditor] textarea');
-	if (ta.length==1 && ta.parents("form").attr("action").indexOf("manage_add")<0) {
+	if ((ta.length==1) && (typeof ta.parents("form").attr("action")!="undefined") && (ta.parents("form").attr("action").indexOf("manage_add")<0)) {
 		var id = ta.attr('name');
 		if ($("div#zmiStandardEditor"+id).css("display")=="none") {
 			ta = $("div#zmiRichtextEditor"+id);

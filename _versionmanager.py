@@ -970,23 +970,27 @@ class VersionItem:
     #  version is returned, else the live-version is returned.
     # --------------------------------------------------------------------------
     def getObjVersion(self, REQUEST={}):
-        ob = None
-        id = REQUEST.get( 'ZMS_VERSION_%s'%self.id, None)
-        if id is not None:
-            return getattr( self, id)
-        elif REQUEST.get('preview') == 'preview':
-            if self.version_work_id is not None:
-                ob = getattr(self, self.version_work_id, None)
-        else:
-            if self.version_live_id is not None:
-                ob = getattr(self, self.version_live_id, None)
-        if ob is None:
-            if self.version_work_id is not None:
-                ob = getattr(self, self.version_work_id, None)
-        if ob is None:
-            if self.version_live_id is not None:
-                ob = getattr(self, self.version_live_id, None)
-        return ob
+        try:
+            ob = None
+            id = REQUEST.get( 'ZMS_VERSION_%s'%self.id, None)
+            if id is not None:
+                return getattr( self, id)
+            elif REQUEST.get('preview') == 'preview':
+                if self.version_work_id is not None:
+                    ob = getattr(self, self.version_work_id, None)
+            else:
+                if self.version_live_id is not None:
+                    ob = getattr(self, self.version_live_id, None)
+            if ob is None:
+                if self.version_work_id is not None:
+                    ob = getattr(self, self.version_work_id, None)
+            if ob is None:
+                if self.version_live_id is not None:
+                    ob = getattr(self, self.version_live_id, None)
+            s = ob.id # Never delete this line!
+            return ob
+        except:
+            raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersion]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------

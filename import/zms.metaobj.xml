@@ -3152,6 +3152,12 @@ function actionBtnClick(el, fct) {
 	}
 }
 
+function onKeyUpZMSTableDivContenteditable(div) {
+	var id = $(div).attr("id");
+	var id_suffix = id.substr(id.indexOf("_"));
+	var textarea_id = "content"+id_suffix;
+	$("textarea#"+textarea_id).val($(div).html());
+}
 
 $(function(){
 	$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
@@ -3237,7 +3243,7 @@ $(function(){
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
-        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless>>
+        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)"<dtml-else>style="display:none;"</dtml-if>>
          <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
         </div>
        </<dtml-var tag>>
@@ -3536,14 +3542,6 @@ if key.startswith('table_'):
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -3558,7 +3556,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.4]]></item>
+          <item key="revision"><![CDATA[1.6.5]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

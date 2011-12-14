@@ -1,5 +1,5 @@
 <dtml-var manage_page_header>
-<dtml-let langId="getLangIds(sort=True)">
+<dtml-let langIds="getLangIds(sort=True)">
 
 <script language="JavaScript">
 <!--//

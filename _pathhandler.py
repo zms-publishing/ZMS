@@ -161,8 +161,10 @@ class PathHandler:
       # If the name is in the list of attributes, call it.
       ob = getattr( self, name, None)
       if ob is None or getattr(ob,'meta_type',None) == 'Folder':
-        ob = filterId( self, name, req)
-      if ob is not None and getattr(ob,'meta_type',None) != 'Folder':
+        obContext = filterId( self, name, req)
+        if obContext is not None:
+          ob = obContext
+      if ob is not None:
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
           lang = req.get( 'lang')
           if lang is None:

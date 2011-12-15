@@ -1093,11 +1093,13 @@ class VersionManagerContainer:
     # --------------------------------------------------------------------------
     def isVersionContainer(self):
       b = False
-      b = b or (self.isPage() and self.isPageContainer())
-      b = b or (self.isPage() and self.meta_id == 'ZMSLinkElement' and self.isEmbedded(self.REQUEST))
-      if not b:
-        parent = self.getParentNode()
-        b = parent is not None and parent.isPageContainer() and self.isPage()
+      if self.isPage():
+        b = self.isPageContainer()
+        if not b:
+          b = self.meta_id == 'ZMSLinkElement' and self.isEmbedded(self.REQUEST)
+        if not b:
+          parent = self.getParentNode()
+          b = parent is not None and parent.isPageContainer()
       return b
 
     # --------------------------------------------------------------------------

@@ -1575,6 +1575,12 @@ class ZMSGlobals:
     def compareDate(self, t0, t1): 
       return _globals.compareDate(t0, t1) 
 
+    # -------------------------------------------------------------------------- 
+    #  ZMSGlobals.daysBetween: 
+    # -------------------------------------------------------------------------- 
+    def daysBetween(self, t0, t1):
+      return _globals.daysBetween(t0, t1) 
+
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.

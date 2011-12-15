@@ -154,6 +154,7 @@ function initUI(context) {
 				showWeek: true
 			});
 		$('input.datetimepicker',context).datepicker({
+				constrainInput: false,
 				showWeek: true,
 				beforeShow: function(input, inst) {
 						var v = $(input).val();

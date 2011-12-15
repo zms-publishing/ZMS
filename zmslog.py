@@ -18,6 +18,7 @@
 
 # Imports.
 from App.special_dtml import HTMLFile
+import copy
 import logging
 import os
 import time
@@ -28,17 +29,12 @@ import _fileutil
 
 
 def severity_string(severity, mapping={
-    -300: 'TRACE',
-    -200: 'DEBUG',
-    -100: 'BLATHER',
-       0: 'INFO',
-     100: 'PROBLEM',
-     200: 'ERROR',
-     300: 'PANIC',
+    logging.DEBUG:   'DEBUG',
+    logging.INFO:    'INFO',
+    logging.ERROR:   'ERROR',
     }):
     """Convert a severity code to a string."""
-    s = mapping.get(int(severity), '')
-    return "%s(%s)" % (s, severity)
+    return mapping.get(int(severity), '')
 
 
 def log_time():
@@ -70,6 +66,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     manage_main = HTMLFile( 'dtml/ZMSLog/manage_main', globals())
     manage_remote = HTMLFile( 'dtml/ZMSLog/manage_remote', globals())
 
+    LOGGER = logging.getLogger("ZMS")
 
     ############################################################################
     #  ZMSLog.__init__: 
@@ -111,16 +108,23 @@ class ZMSLog(ZMSItem.ZMSItem):
       return ''.join( map( lambda x: x+'\n', self.entries))
 
     # --------------------------------------------------------------------------
+    #  ZMSLog.hasSeverity:
+    # --------------------------------------------------------------------------
+    def hasSeverity(self, severity):
+      return severity_string(severity) in self.logged_entries
+
+    # --------------------------------------------------------------------------
     #  ZMSLog.LOG:
     # --------------------------------------------------------------------------
     def LOG(self, severity, info):
       while len( self.entries) > self.keep_entries:
         self.entries.remove( self.entries[-1])
-      self.entries.insert( 0 ,log_time() + ' ' + severity_string( severity) + '\n' + info)
+      self.entries.insert( 0 ,log_time() + ' ' + '%s(%i)'%(severity_string(severity),int(severity)) + '\n' + info)
+      self.entries = copy.copy(self.entries)
       if getattr( self, 'copy_to_zlog', True):
-        logging.log( severity, info)
+        self.LOGGER.log( severity, info)
       if getattr( self, 'copy_to_stdout', True):
-        print log_time(), severity_string( severity), info
+        print log_time(), '%s(%i)'%(severity_string(severity),int(severity)), info
 
     ############################################################################
     ###

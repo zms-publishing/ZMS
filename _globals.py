@@ -609,32 +609,27 @@ def get_size(v):
 ################################################################################
 """
 
-LOG = logging.getLogger("ZMS")
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.debug:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def debug(self):
-  has_zms_log = False
+  b = False
   try:
-    zms_log = getattr( self, 'zms_log', None)
-    has_zms_log = \
-      zms_log is not None and \
-      zms_log.meta_type == 'ZMS Log' and \
-      'DEBUG' in zms_log.logged_entries
+    zms_log = self.zms_log
+    severity = logging.DEBUG
+    b = zms_log.hasSeverity(severity)
   except:
     pass
-  return has_zms_log
+  return b
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.writeLog:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeLog(self, info):
   try:
-    LOG.debug(info)
-    zms_log = getattr( self, 'zms_log', None)
-    if 'DEBUG' in zms_log.logged_entries:
-      severity = logging.DEBUG
+    zms_log = self.zms_log
+    severity = logging.DEBUG
+    if zms_log.hasSeverity(severity):
       info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
       zms_log.LOG( severity, info)
   except:
@@ -645,10 +640,9 @@ _globals.writeBlock:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeBlock(self, info):
   try:
-    LOG.info(info)
-    zms_log = getattr( self, 'zms_log', None)
-    if 'INFO' in zms_log.logged_entries:
-      severity = logging.INFO
+    zms_log = self.zms_log
+    severity = logging.INFO
+    if zms_log.hasSeverity(severity):
       info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
       zms_log.LOG( severity, info)
   except:
@@ -659,7 +653,6 @@ _globals.writeError:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeError(self, info):
   try:
-    LOG.error(info)
     t,v,tb = sys.exc_info()
     v = str(v)
     # Strip HTML tags from the error value
@@ -670,8 +663,8 @@ def writeError(self, info):
     severity = logging.ERROR
     info += ''.join(format_exception(t, v, tb))
     info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
-    zms_log = getattr( self, 'zms_log', None)
-    if 'ERROR' in zms_log.logged_entries:
+    zms_log = self.zms_log
+    if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
   except:
     pass

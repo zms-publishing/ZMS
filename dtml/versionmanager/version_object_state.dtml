@@ -15,7 +15,7 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
 <dtml-if "len(getLangIds())>1">
-<dtml-if "getObjProperty('change_uid',REQUEST)">
+<dtml-if "attr('change_uid')">
 <dtml-let coverage="getDCCoverage(REQUEST)"
           seq_lang="coverage[coverage.find('.')+1:]"
           seq_desc_langs="getDescendantLanguages(seq_lang)">
@@ -51,13 +51,13 @@
 </dtml-comment>
 <dtml-unless "getAutocommit()">
 <dtml-unless ZMS_VERSION>
-<dtml-let wfStates="getWfStates(REQUEST)"
-><dtml-if "getObjProperty('work_uid',REQUEST)"
-><dtml-if "getObjProperty('work_dt',REQUEST)"
+<dtml-let wfStates="getWfStates(REQUEST)" work_uid="attr('work_uid')" work_dt="attr('work_dt')"
+><dtml-if work_uid
+><dtml-if work_dt
 ><dtml-in wfStates
 ><dtml-let wfState=sequence-item itm="getWfActivity(wfState)"
 ><dtml-if "itm.get('icon')">
-<img src="<dtml-var "itm['icon']">" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var "getObjProperty('work_uid',REQUEST)"> (<dtml-var "getLangFmtDate(getObjProperty('work_dt',REQUEST))">)" border="0" align="absmiddle" />
+<img src="<dtml-var "itm['icon']">" title="<dtml-var "itm['name']"> <dtml-var "getZMILangStr('BY')"> <dtml-var work_uid> (<dtml-var "getLangFmtDate(work_dt)">)" border="0" align="absmiddle" />
 </dtml-if
 ></dtml-let
 ></dtml-in
@@ -88,7 +88,7 @@
 </dtml-comment>
 <dtml-if "getHistory()">
 <dtml-if "REQUEST.form.has_key('ZMS_VERSION_%s'%id)"><b><i></dtml-if>
-v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"><dtml-if "REQUEST.get('ZMS_VERSION_%s'%id,'').find(str(version_live_id))>=0"> - <dtml-var "getZMILangStr('TAB_LIVE')"><dtml-elif "REQUEST.get('ZMS_VERSION_%s'%id,'').find(str(version_work_id))>=0"> - <dtml-var "getZMILangStr('TAB_PREVIEW')"></dtml-if>
+v.<dtml-var "attr('master_version')">.<dtml-var "attr('major_version')">.<dtml-var "attr('minor_version')"><dtml-if "REQUEST.get('ZMS_VERSION_%s'%id,'').find(str(version_live_id))>=0"> - <dtml-var "getZMILangStr('TAB_LIVE')"><dtml-elif "REQUEST.get('ZMS_VERSION_%s'%id,'').find(str(version_work_id))>=0"> - <dtml-var "getZMILangStr('TAB_PREVIEW')"></dtml-if>
 <dtml-if "REQUEST.form.has_key('ZMS_VERSION_%s'%id)"></i></b></dtml-if>
 </dtml-if>
 
@@ -97,5 +97,5 @@ v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjPropert
 +- Custom
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </dtml-comment>
-<dtml-var "getObjProperty('version_object_state',REQUEST)">
+<dtml-var "attr('version_object_state')">
 <dtml-try><dtml-var my_version_object_state><dtml-except></dtml-try>

@@ -2,6 +2,7 @@
 ><dtml-call "RESPONSE.setHeader('Cache-Control', 'no-cache')"
 ><dtml-call "RESPONSE.setHeader('Pragma', 'no-cache')"
 
+><dtml-call "REQUEST.set( 'preview','preview')"
 ><dtml-call "REQUEST.set('ZMI_TIME',ZopeTime().timeTime())"
 ><dtml-call "REQUEST.set('ZMS_CHARSET',REQUEST.get('ZMS_CHARSET','utf-8'))"
 ><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%ZMS_CHARSET)"

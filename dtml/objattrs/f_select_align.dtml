@@ -1,28 +1,16 @@
 <script language="javascript">
-<!--//
 
-  function switchAlignBtns( fmName) {
-      var fm = document.forms[ fmName];
-      for (i=0; i<document.images.length; i++) {
-          sName = document.images[i].name;
-          iAlignBtn = sName.indexOf("AlignBtn")
-          if (iAlignBtn > 0) {
-              align= sName.substring(0,iAlignBtn).toLowerCase();
-              if (fm.textalign.value.toLowerCase()!=align)
-                  document.images[i].src = '<dtml-var MISC_ZMS>icon_align_' + align.toLowerCase() + '.gif';
-              else
-                  document.images[i].src = '<dtml-var MISC_ZMS>icon_align_' + align.toLowerCase() + '_on.gif';
-          }
-      }
-  }
+function alignBtnClick( sender, align) {
+	var fm = $($(sender).parents("form")[0]);
+	$("input[name=textalign]").val(align.toUpperCase());
+	$("img[name$=AlignBtn].button1")
+		.removeClass("button1")
+		.addClass("button0");
+	$("img[name="+align.toLowerCase()+"AlignBtn]")
+		.removeClass("button0")
+		.addClass("button1");
+}
 
-  function alignBtnClick( fmName, align) {
-      var fm = document.forms[ fmName];
-      fm.textalign.value = align.toUpperCase();
-      switchAlignBtns( fmName);
-  }
-
-//-->
 </script>
 
  <dtml-let textalign="nvl(getObjProperty('textalign',REQUEST),'LEFT',['',None])">
@@ -31,19 +19,16 @@
   <dtml-if "not isDisabledAttr(getObjAttr('textalign'),REQUEST)">
    <dtml-in "['left','right','center']">
     <td valign="middle"
-     ><a href="javascript:alignBtnClick('<dtml-var fmName>','<dtml-var sequence-item>')" class="button"
+     ><a href="javascript:alignBtnClick(this,'<dtml-var sequence-item>')" class="button"
       ><img name="<dtml-var sequence-item>AlignBtn" border="0" align="absmiddle"
-       <dtml-if "_.has_key('textalign') and _['textalign'].lower()==_['sequence-item'].lower()">
-        src="<dtml-var MISC_ZMS>icon_align_<dtml-var sequence-item>_on.gif"
-       <dtml-else>
-        src="<dtml-var MISC_ZMS>icon_align_<dtml-var sequence-item>.gif"
-       </dtml-if>
+       class="button<dtml-var "_.int(_.has_key('textalign') and _['textalign'].lower()==_['sequence-item'].lower())">"
+       src="<dtml-var MISC_ZMS>icon_align_<dtml-var sequence-item>.gif"
        title="<dtml-var "getZMILangStr('ALIGN%i'%(_['sequence-index']+1))">"
      ></a
     ></td>
    </dtml-in>
   <dtml-else>
-   <td valign="middle"><img border="0" src="<dtml-var MISC_ZMS>icon_align_<dtml-var "textalign.lower()">_on.gif"></td>
+   <td valign="middle"><img border="0" class="button1" src="<dtml-var MISC_ZMS>icon_align_<dtml-var "textalign.lower()">.gif"></td>
   </dtml-if>
   <td> &nbsp; </td>
   <td><img src="<dtml-var spacer_gif>" class="zmiVSep" border="0" align="absmiddle"></td>

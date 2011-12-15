@@ -380,40 +380,20 @@ a.button img {
 	border: none;
 }
 
-img.button, a.button:link img, a.button:visited img,
-img.vbutton, a.vbutton:link img, a.vbutton:visited img,
-img.hbutton, a.hbutton:link img, a.hbutton:visited img {
-	border-top: solid 1px #E6E4E6;
-	border-left: solid 1px #E6E4E6;
-	border-right: solid 1px #B6B4B6;
-	border-bottom: solid 1px #B6B4B6;
-}
 a.button:hover img, a.button:active img,
 a.vbutton:hover img, a.vbutton:active img,
 a.hbutton:hover img, a.hbutton:active img {
-	background-color: #E8E8E8;
-	border-top: solid 1px #FFF;
-	border-left: solid 1px #FFF;
-	border-right: solid 1px #000;
-	border-bottom: solid 1px #000;
+	background-color: #DFF1FF;
 }
 
-img.button0,
-a.button:link img.button0, a.button:visited img.button0 {
-	border-top: solid 1px #E6E4E6;
-	border-left: solid 1px #E6E4E6;
-	border-right: solid 1px #B6B4B6;
-	border-bottom: solid 1px #B6B4B6;
+img.button0, a.button img.button0 {
 }
-img.button1,
-a.button:hover img.button0, a.button:active img.button0,
-a.button:link img.button1, a.button:visited img.button1,
-a.button:hover img.button1, a.button:active img.button1 {
-	background-color: #F2F3EE;
-	border-top: solid 1px black;
-	border-left: solid 1px black;
-	border-right: solid 1px white;
-	border-bottom: solid 1px white;
+img.button1, a.button img.button1 {
+	background-color: #A3D7FF;
+}
+a.button:hover img.button0,
+a.button:hover img.button1 {
+	background-color: #DFF1FF;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

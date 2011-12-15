@@ -71,10 +71,10 @@ td div.zmi-headline,td>div.zmi-headline.ui-widget-header.ui-state-default{border
 img.vbutton,a.vbutton img{width:10px;height:20px}
 img.hbutton,a.hbutton img{width:20px;height:8px}
 a.button img{padding:2px;border:none}
-img.button,a.button:link img,a.button:visited img,img.vbutton,a.vbutton:link img,a.vbutton:visited img,img.hbutton,a.hbutton:link img,a.hbutton:visited img{border-top:solid 1px #E6E4E6;border-left:solid 1px #E6E4E6;border-right:solid 1px #B6B4B6;border-bottom:solid 1px #B6B4B6}
-a.button:hover img,a.button:active img,a.vbutton:hover img,a.vbutton:active img,a.hbutton:hover img,a.hbutton:active img{background-color:#E8E8E8;border-top:solid 1px #FFF;border-left:solid 1px #FFF;border-right:solid 1px #000;border-bottom:solid 1px #000}
-img.button0,a.button:link img.button0,a.button:visited img.button0{border-top:solid 1px #E6E4E6;border-left:solid 1px #E6E4E6;border-right:solid 1px #B6B4B6;border-bottom:solid 1px #B6B4B6}
-img.button1,a.button:hover img.button0,a.button:active img.button0,a.button:link img.button1,a.button:visited img.button1,a.button:hover img.button1,a.button:active img.button1{background-color:#F2F3EE;border-top:solid 1px black;border-left:solid 1px black;border-right:solid 1px white;border-bottom:solid 1px white}
+a.button:hover img,a.button:active img,a.vbutton:hover img,a.vbutton:active img,a.hbutton:hover img,a.hbutton:active img{background-color:#DFF1FF}
+img.button0,a.button img.button0{}
+img.button1,a.button img.button1{background-color:#A3D7FF}
+a.button:hover img.button0,a.button:hover img.button1{background-color:#DFF1FF}
 .zmiHSep{background-color:#B6B4B6;border-bottom:#E6E4E6 solid 1px}
 .zmiVSep{background-color:#B6B6B6;border-right:solid #E6E4E6 1px;height:22px;width:1px}
 #ZMIManageTabsBar{background:url(/misc_/zms/get_logo_gradient.png) top right repeat-y;height:30px}

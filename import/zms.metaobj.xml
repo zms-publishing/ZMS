@@ -2661,8 +2661,7 @@ zmscontext.commitObj(request)
 <script language="JavaScript">
 <!--//
 
-function onZMSTableFormSubmit()
-{
+function onZMSTableFormSubmit() {
   var xml = '';
   var type = parseInt($("input[name=\x22type:int\x22]:checked").val());
   xml += '<list>\n';
@@ -3071,6 +3070,10 @@ function actionBtnClick(el, fct) {
 					}
 					table_cell_uid++;
 				}
+				$("div[id^=preview]",new_td).each(function() {
+						$(this).html( "").attr("id","preview_"+table_cell_uid);
+						table_cell_uid++;
+					});
 				new_td.insertBefore( el_td);
 			}
 		}
@@ -3090,11 +3093,14 @@ function actionBtnClick(el, fct) {
 				$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
 			}
 			else if ( key.indexOf("content") == 0) {
-				$(el_inputs[k]).val( "");
-				$(el_inputs[k]).css( 'border', '2px solid #00FF00');
+				$(el_inputs[k]).val( "").css( 'border', '2px solid #00FF00');
 			}
 			table_cell_uid++;
 		}
+		$("div[id^=preview]",new_tr).each(function() {
+				$(this).html( "").attr("id","preview_"+table_cell_uid);
+				table_cell_uid++;
+			});
 		new_tr.insertBefore( el_tr);
 		$('#rows').val( parseInt($('#rows').val())-1);
 		table_cell_init();
@@ -3176,22 +3182,15 @@ $(function(){
   <td
    ><table cellspacing="0" cellpadding="0" border="0"
    ><tr
-    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td></dtml-if
     ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_left.gif" title="<dtml-var "getZMILangStr('ACTION_MOVELEFT')">" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td
     ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_right.gif" title="<dtml-var "getZMILangStr('ACTION_MOVERIGHT')">" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td
-    ><dtml-if "not _['sequence-start'] or table_type==1"><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_COL')">" onclick="actionBtnClick(this,'delete_col')" class="button"/></a></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==1"><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==1"><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_DELETE_COL')">"><span onclick="actionBtnClick(this,'delete_col')" class="ui-icon ui-icon-trash"></span></div></td></dtml-if
    ></tr
    ></table
   ></td>
  </dtml-in>
- <td
-   ><table cellspacing="0" cellpadding="0" border="0"
-   ><tr valign="middle"
-    ><td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">" onclick="actionBtnClick(this,'insert_col')" class="button"/></a></td
-    ><td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0"></td
-   ></tr
-   ></table
- ></td>
+ <td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
 </tr>
 
 <tr>
@@ -3218,9 +3217,9 @@ $(function(){
   <td class="zmiNeutralColorStrong0">
    <table cellspacing="0" cellpadding="0" border="0"
    ><tr valign="middle"
-    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td></dtml-if
     ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td
-    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_DELETE_ROW')">" onclick="actionBtnClick(this,'delete_row')" class="button"/></a></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td></dtml-if
+    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_DELETE_ROW')">"><span onclick="actionBtnClick(this,'delete_row')" class="ui-icon ui-icon-trash"></span></div></td></dtml-if
    ></tr
    ><tr valign="middle"
     ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0" onclick="actionBtnClick(this,'move_row_down')" class="hbutton"/></a></td
@@ -3263,7 +3262,8 @@ $(function(){
  <td class="zmiNeutralColorStrong0">
    <table cellspacing="0" cellpadding="0" border="0">
    <tr valign="middle">
-    <td><a href="#" class="button"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">" onclick="actionBtnClick(this,'insert_row')" class="button"/></a></td>
+    <td><img src="<dtml-var spacer_gif>" alt="" border="0" width="20"/></td>
+    <td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
    </tr>
    </table>
  </td>
@@ -3556,7 +3556,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.5]]></item>
+          <item key="revision"><![CDATA[1.6.6]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

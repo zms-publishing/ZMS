@@ -65,6 +65,11 @@ function zmiConfirmAction(fm, target, label) {
 		msg += zmiGetDescendantLanguages();
 		b = i > 0 && confirm(msg);
 	}
+	else if (target.indexOf("manage_undoObjs") >= 0) {
+		var msg = getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES');
+		msg = msg.replace("%i",""+i);
+		b = i > 0 && confirm(msg);
+	}
 	else if (target.indexOf("manage_executeMetacmd") >=0 ) {
 		var description = $.ajax({
 			url: 'getMetaCmdDescription',

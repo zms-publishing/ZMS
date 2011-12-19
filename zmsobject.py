@@ -237,7 +237,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTitle
     # --------------------------------------------------------------------------
     def getTitle( self, REQUEST):
-      s = self.attr('title')
+      s = self.getObjProperty('title',REQUEST)
       if len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
@@ -264,7 +264,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getTitlealt
     # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
-      s = self.attr('titlealt')
+      s = self.getObjProperty('titlealt',REQUEST)
       if len(s) == 0: 
         s = self.display_type(REQUEST)
       if len(s) == 0:

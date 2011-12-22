@@ -87,7 +87,7 @@
 <!-- ##### renderShort ##### -->
 </dtml-comment>
 <td class="zmiContainerColCenter zmiNeutralColorWhite">
- <div class="zmiRenderShort">
+ <div class="zmiRenderShort"><div class="contentEditable" id="contentEditable_<dtml-var id>_<dtml-var lang>">
   <dtml-let img="getObjProperty('titleimage',REQUEST)">
    <dtml-if img>
     <div class="form-small">
@@ -109,7 +109,7 @@
   <dtml-unless childNodes>
    <p class="form-element"><dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)" html_quote></em>!</p>
   </dtml-unless>
- </div>
+ </div><!-- .contentEditable --></div><!-- .zmiRenderShort -->
 </td>
 
 <dtml-comment>

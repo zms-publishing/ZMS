@@ -86,7 +86,12 @@ $(function(){
 						}
 					}
 				}
-				href += '/manage_main';
+				if (self.location.href.indexOf(href+'/manage_main')==0) {
+					href += '/manage_properties';
+				}
+				else {
+					href += '/manage_main';
+				}
 				if (self.location.href.indexOf('/manage_translate')>0) {
 					href += '_iframe';
 					href += '?lang='+lang;

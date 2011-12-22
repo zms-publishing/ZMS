@@ -81,16 +81,15 @@ def recurse_addMediaDb(self, mediadb):
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-            if v is not None:
+            if v is not None and getattr(v,'__class_name__',None) in [_blobfields.MyImage.__class_name__, _blobfields.MyFile.__class_name__]:
               mediadbfile = mediadb.storeFile(v)
               v.mediadbfile = mediadbfile
               v.data = ''
               _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
   
   # Process children.
-  if self.meta_id != 'ZMSLinkElement':
-    for ob in self.getChildNodes():
-      recurse_addMediaDb(ob,mediadb)
+  for ob in self.objectValues( self.dGlobalAttrs.keys()):
+    recurse_addMediaDb(ob,mediadb)
 
 
 ################################################################################

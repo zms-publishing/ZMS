@@ -270,7 +270,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
-          offs = 1
+          offs = 0
           c = 0
           for metaObjAttr in metaObjAttrs:
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:

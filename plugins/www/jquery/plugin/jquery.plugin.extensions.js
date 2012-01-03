@@ -99,6 +99,7 @@ $(function(){
 					zmiIframe(href,{},{});
 				}
 				else if (self.location.href.indexOf('/manage')>0) {
+					href += '?lang='+lang;
 					self.location.href = href;
 				}
 				else {

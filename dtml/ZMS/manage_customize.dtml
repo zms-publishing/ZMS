@@ -10,7 +10,13 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "REQUEST.get('key')=='Maintenance'">
-	<dtml-if "REQUEST.get('btn','').startswith('Reindex')">
+	<dtml-if "REQUEST.get('btn','').startswith('Purge')">
+		<div id="system_msg" class="ui-state-highlight ui-corner-all">
+			<b>UserFolder:</b>
+			Purge local users<br/><dtml-var "purgeLocalUsers()">
+			(<dtml-var "getLangFmtDate(ZopeTime())">)
+		</div>
+	<dtml-elif "REQUEST.get('btn','').startswith('Reindex')">
 		<div id="system_msg" class="ui-state-highlight ui-corner-all">
 			<b>Catalog:</b>
 			Reindex<br/><dtml-var "reindexCatalog(REQUEST,clients='catalog_portal_clients' in REQUEST.form.get('options',[]))">
@@ -417,6 +423,12 @@ $(function() {
  <td class="form-small"></td>
  <td class="form-small" align="center"><b>Options</b></td>
  <td class="form-small" align="center"><b>Actions</b></td>
+</tr>
+<tr valign="top" class="zmiNeutralColorLight0">
+ <td class="form-small"><b>UserFolder</b></td>
+ <td class="form-small"></td>
+ <td class="form-small"></td>
+ <td class="form-small"><input type="submit" value="Purge &raquo; " name="btn" style="width:60px" /></td>
 </tr>
 <tr valign="top" class="zmiNeutralColorLight0">
  <td class="form-small"><b>Catalog</b></td>

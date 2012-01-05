@@ -3065,13 +3065,12 @@ function actionBtnClick(el, fct) {
 						$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
 					}
 					else if ( key.indexOf("content") == 0) {
-						$(el_inputs[k]).val( "");
-						$(el_inputs[k]).css( 'border', '2px solid #00FF00');
+						$(el_inputs[k]).val( "").css( 'border', '2px solid #00FF00');
 					}
 					table_cell_uid++;
 				}
 				$("div[id^=preview]",new_td).each(function() {
-						$(this).html( "").attr("id","preview_"+table_cell_uid);
+						$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid);
 						table_cell_uid++;
 					});
 				new_td.insertBefore( el_td);
@@ -3098,7 +3097,7 @@ function actionBtnClick(el, fct) {
 			table_cell_uid++;
 		}
 		$("div[id^=preview]",new_tr).each(function() {
-				$(this).html( "").attr("id","preview_"+table_cell_uid);
+				$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid);
 				table_cell_uid++;
 			});
 		new_tr.insertBefore( el_tr);
@@ -3556,7 +3555,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.7]]></item>
+          <item key="revision"><![CDATA[1.6.8]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

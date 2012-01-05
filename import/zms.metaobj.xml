@@ -3070,7 +3070,7 @@ function actionBtnClick(el, fct) {
 					table_cell_uid++;
 				}
 				$("div[id^=preview]",new_td).each(function() {
-						$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid);
+						$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid).css( 'border', '2px solid #00FF00');
 						table_cell_uid++;
 					});
 				new_td.insertBefore( el_td);
@@ -3097,7 +3097,7 @@ function actionBtnClick(el, fct) {
 			table_cell_uid++;
 		}
 		$("div[id^=preview]",new_tr).each(function() {
-				$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid);
+				$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid).css( 'border', '2px solid #00FF00');
 				table_cell_uid++;
 			});
 		new_tr.insertBefore( el_tr);

@@ -111,7 +111,7 @@ def deleteUser(self, id):
   # Delete local roles in node.
   nodes = self.getUserAttr(id,'nodes',{})
   for node in nodes.keys():
-    ob = self.getLinkObj(node,REQUEST)
+    ob = self.getLinkObj(node)
     if ob is not None:
       ob.manage_delLocalRoles(userids=[id])
   

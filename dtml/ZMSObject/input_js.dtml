@@ -42,7 +42,7 @@ function onFormSubmitSubmit(fmName) {
 }
 
 function onFormSubmitCheckLock(fmName) {
-  $.get('ajaxGetNode',{lang:'<dtml-var lang>'},function (result) {
+  $.get('ajaxGetNode',{lang:'<dtml-var lang>',preview:'<dtml-var preview>'},function (result) {
     var change_dt = $('change_dt',result).text();
     var change_uid = $('change_uid',result).text();
     var form_dt = new Date(parseFloat($('input[name=form_id]').val())*1000);

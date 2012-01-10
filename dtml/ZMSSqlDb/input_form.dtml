@@ -616,8 +616,8 @@
      <dtml-elif "grid_col.get('blob')">
       <dtml-if "row.get(id,'')">
        <dtml-try>
-        <dtml-if "blob['type']=='image'">
-         <dtml-let filename="row.get(id,'')">
+        <dtml-let filename="row.get(id,'')">
+         <dtml-if "blob['type']=='image'">
           <table cellspacing="0" cellpadding="0" border="0" width="100%">
           <tr>
            <td valign="top">
@@ -625,9 +625,16 @@
              <div style="padding: 1px;" class="zmiNeutralColorMedium0">
               <div class="form-small">
               <dtml-try
-               ><dtml-let filename="row.get(id,'')" data="http_import(url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid}))" img="ImageFromData(data,filename)"
+               ><dtml-let ldata="[]"
+               ><dtml-if "blob.get('remote')"
+                ><dtml-call "ldata.append(http_import(url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid})))"
+               ><dtml-else
+                ><dtml-call "ldata.append(localfs_read(blob['path']+filename))"
+               ></dtml-if
+               ><dtml-let data="ldata[0]" img="ImageFromData(data,filename)"
                 ><b><dtml-var filename></b> (<dtml-var "img.getContentType()">, <dtml-var "img.getWidth()">x<dtml-var "img.getHeight()">px, <dtml-var "img.getDataSizeStr()">)
                </dtml-let
+               ></dtml-let
               ><dtml-except
                ><dtml-var error_type>: <dtml-var error_value
               ></dtml-try>
@@ -654,28 +661,35 @@
            </td>
           </tr>
           </table>
-         </dtml-let>
-        <dtml-else>
-         <dtml-try>
-          <dtml-let filename="row.get(id,'')" data="http_import(url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid}))" file="FileFromData(data,filename)">
-           <div style="padding: 1px;" class="zmiNeutralColorStrong0">
-            <div style="padding: 1px;" class="zmiNeutralColorMedium0">
-             <div class="form-small">
-              <a href="<dtml-var "url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid})">" class="zmi"><b><dtml-var filename></b></a> (<dtml-var "file.getContentType()">, <dtml-var "file.getDataSizeStr()">)
-             </div>
+         <dtml-else>
+          <div style="padding: 1px;" class="zmiNeutralColorStrong0">
+           <div style="padding: 1px;" class="zmiNeutralColorMedium0">
+            <div class="form-small">
+             <dtml-try
+              ><dtml-let filename="row.get(id,'')" ldata="[]"
+               ><dtml-if "blob.get('remote')"
+                ><dtml-call "ldata.append(http_import(url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid})))"
+               ><dtml-else
+                ><dtml-call "ldata.append(localfs_read(blob['path']+filename))"
+               ></dtml-if
+               ><dtml-let data="ldata[0]" file="FileFromData(data,filename)">
+                <a href="<dtml-var "url_append_params(blob.get('remote',absolute_url())+'/get_blob',{'tablename':entity,'id':id,'rowid':rowid})">" class="zmi"><b><dtml-var filename></b></a> (<dtml-var "file.getContentType()">, <dtml-var "file.getDataSizeStr()">)
+               </dtml-let
+              ></dtml-let
+             ><dtml-except>
+              <dtml-var error_type>: <dtml-var error_value>
+             </dtml-try>
             </div>
            </div>
-          </dtml-let>
-         <dtml-except>
-          <dtml-var error_type>: <dtml-var error_value>
-         </dtml-try>
+          </div>
           <div style="padding: 1px;">
            <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>
            <input class="<dtml-var css>" type="file" name="blob_<dtml-var id>" size="25" value=""/>
            <input type="hidden" id="delete_blob_<dtml-var id>" name="delete_blob_<dtml-var id>:int" value="0"/>
            <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_DELETE')">" onclick="$('#delete_blob_<dtml-var id>').val(1);"/>
           </div>
-        </dtml-if>
+         </dtml-if>
+        </dtml-let>
        <dtml-except>
         <div style="padding: 1px;">
          <span class="form-element"><dtml-var "getZMILangStr('ATTR_FILE')"></span>

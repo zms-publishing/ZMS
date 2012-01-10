@@ -643,7 +643,7 @@ class AccessManager(AccessableContainer):
               valid_userids.append(userid)
           if userid in valid_userids:
             nodes = self.getUserAttr(userid,'nodes',{})
-            if len(filter(lambda x: (x=="{$}" and ob.id=="content") or x.endswith("/%s}"%ob.id),nodes.keys()))==0:
+            if len(filter(lambda x: (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id),nodes.keys()))==0:
               delLocalRoles = True
           elif userid in invalid_userids:
             delLocalRoles = True

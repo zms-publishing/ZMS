@@ -155,6 +155,8 @@ CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', e
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
 				toolbar: 'ZMSCustomToolbar',
+			<dtml-elif "REQUEST.get('ZMS_INSERT')">
+				toolbar: 'ZMSBasicInsertToolbar',
 			<dtml-else>
 				toolbar: 'ZMSBasicToolbar',
 			</dtml-if>

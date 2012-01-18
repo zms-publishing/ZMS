@@ -4342,16 +4342,17 @@ function onZMSTextareaFormSubmit() {
 		var txt = '<xml>'+$('#text_'+getZMILang()).val().replace('&','')+'</xml>';
 		if ( txt.indexOf( '<'+'dtml-') < 0) {
 			try {
+				var xmlString = txt.replace(/\&(\w*)\;/g,'');
 				if (window.DOMParser) {
 					var parser=new DOMParser();
-					var doc=parser.parseFromString(txt,"text/xml");
+					var doc=parser.parseFromString(xmlString,"text/xml");
 					if ( doc.childNodes[0].nodeName == 'parsererror') {
 						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
 					}
 				} else if (window.ActiveXObject) {
 					var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 					xmlDoc.async="false";
-					xmlDoc.loadXML(txt);
+					xmlDoc.loadXML(xmlString);
 					if ( xmlDoc.childNodes.length == 0) {
 						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
 					}
@@ -4413,14 +4414,6 @@ $(function() {
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -4435,7 +4428,7 @@ $(function() {
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.1]]></item>
+          <item key="revision"><![CDATA[1.2.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

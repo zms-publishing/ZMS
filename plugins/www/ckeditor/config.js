@@ -30,7 +30,6 @@ CKEDITOR.editorConfig = function( config )
      ['Bold','Italic','Underline','NumberedList','BulletedList'],
      ['Undo','Redo'],
      ['Find'],
-     ['Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
   ];
 };

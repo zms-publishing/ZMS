@@ -53,6 +53,8 @@ function zmiRichtextOnSubmitEventHandler() {
 			try {
 				// Get value from editor.
 				var data = CKEDITOR.instances['editor_'+elName].getData();
+				// Relativate urls.
+				data = zmiRelativateUrls(data);
 				// Assign value to textarea.
 				$('#'+elName).val( data);
 			}

@@ -142,6 +142,97 @@ $(function(){
 	});
 });
 
+// #############################################################################
+// ### ZMI Pathcropping
+// #############################################################################
+
+
+function zmiRelativateUrl(path, url) {
+	var protocol = self.location.href;
+	protocol = protocol.substr(0,protocol.indexOf(":")+3);
+	var server_url = self.location.href;
+	server_url = server_url.substr(protocol.length);
+	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
+	var currntPath = path;
+	if (currntPath.indexOf(server_url)==0) {
+		currntPath = currntPath.substr(server_url.length+1);
+	}
+	else if (currntPath.indexOf('/')==0) {
+		currntPath = currntPath.substr(1);
+	}
+	var targetPath = url;
+	if (targetPath.indexOf(server_url)==0) {
+		targetPath = targetPath.substr(server_url.length+1);
+	}
+	else if (targetPath.indexOf('/')==0) {
+		targetPath = targetPath.substr(1);
+	}
+	while ( currntPath.length > 0 && targetPath.length > 0) {
+		var i = currntPath.indexOf( '/');
+		var j = targetPath.indexOf( '/');
+		if ( i < 0) {
+			currntElmnt = currntPath;
+		}
+		else {
+			currntElmnt = currntPath.substring( 0, i);
+		}
+		if ( j < 0) {
+			targetElmnt = targetPath;
+		}
+		else {
+			targetElmnt = targetPath.substring( 0, j);
+		}
+		if ( currntElmnt != targetElmnt) {
+			break;
+		}
+		if ( i < 0) {
+			currntPath = '';
+		}
+		else {
+			currntPath = currntPath.substring( i + 1);
+		}
+		if ( j < 0) {
+			targetPath = '';
+		}
+		else {
+			targetPath = targetPath.substring( j + 1);
+		}
+	}
+	while ( currntPath.length > 0) {
+		var i = currntPath.indexOf( '/');
+		if ( i < 0) {
+			currntElmnt = currntPath;
+			currntPath = '';
+		}
+		else {
+			currntElmnt = currntPath.substring( 0, i);
+			currntPath = currntPath.substring( i + 1);
+		}
+		targetPath = '../' + targetPath;
+	}
+	url = './' + targetPath;
+	return url;
+}
+
+function zmiRelativateUrls(s) {
+	var url0 = self.location.href;
+	url0 = url0.substr(0,url0.lastIndexOf("/"));
+	var splitTags = ['<a href="','<img src="'];
+	for ( var j = 0; j < splitTags.length; j++) {
+		var vSplit = s.split(splitTags[j]);
+		var v = vSplit[0];
+		for ( var i = 1; i < vSplit.length; i++) {
+			var j = vSplit[i].indexOf("\"");
+			var url = vSplit[i].substring(0,j);
+			if (url.indexOf('./')<0) {
+				url = zmiRelativateUrl(url0,url);
+			}
+			v += splitTag + url + vSplit[i].substring(j);
+		}
+		s = v;
+	}
+	return s;
+}
 
 // #############################################################################
 // ### ZMI Auto-Save

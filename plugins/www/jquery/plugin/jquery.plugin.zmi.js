@@ -214,18 +214,17 @@ function zmiRelativateUrl(path, url) {
 	return url;
 }
 
-function zmiRelativateUrls(s) {
-	var url0 = self.location.href;
-	url0 = url0.substr(0,url0.lastIndexOf("/"));
+function zmiRelativateUrls(s,page_url) {
 	var splitTags = ['<a href="','<img src="'];
-	for ( var j = 0; j < splitTags.length; j++) {
-		var vSplit = s.split(splitTags[j]);
+	for ( var h = 0; h < splitTags.length; h++) {
+	var splitTag = splitTags[h];
+		var vSplit = s.split(splitTag);
 		var v = vSplit[0];
 		for ( var i = 1; i < vSplit.length; i++) {
-			var j = vSplit[i].indexOf("\"");
+			var j = vSplit[i].indexOf('"');
 			var url = vSplit[i].substring(0,j);
 			if (url.indexOf('./')<0) {
-				url = zmiRelativateUrl(url0,url);
+				url = zmiRelativateUrl(page_url,url);
 			}
 			v += splitTag + url + vSplit[i].substring(j);
 		}

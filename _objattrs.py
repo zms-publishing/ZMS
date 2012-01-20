@@ -1124,15 +1124,17 @@ class ObjAttrs:
           href = value[ i + len( start) :j]
           if href.rfind( '#') > 0:
             if href.rfind( '/') > 0:
-              href = href[ :href.rfind( '/')] + '/' + href[ href.rfind( '#') + 1:]
+              if href[href.rfind( '/'):].find('.') > 0:
+                href = href[ :href.rfind( '/')] + '/' + href[ href.rfind( '#') + 1:]
             else:
               href = href[ href.rfind( '#') + 1:]
           else:
             if href.rfind( '/') > 0:
-              href = href[ :href.rfind( '/')]
+              if href[href.rfind( '/'):].find('.') > 0:
+                href = href[ :href.rfind( '/')]
             else:
               href = ''
-          ref_obj = self.getSelf( self.PAGES)
+          ref_obj = self.getVersionContainer()
           for el in href.split( '/'):
             if ref_obj is not None:
               if el == '..':

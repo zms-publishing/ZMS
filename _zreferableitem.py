@@ -123,7 +123,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def getRelObjPath(self, ob):
     ref = '.'
-    currntElmnts = self.getSelf( self.PAGES).getPhysicalPath()
+    currntElmnts = self.getVersionContainer().getPhysicalPath()
     targetElmnts = ob.getSelf( ).getPhysicalPath()
     i = 0
     while i < min(len( currntElmnts),len( targetElmnts)) and \

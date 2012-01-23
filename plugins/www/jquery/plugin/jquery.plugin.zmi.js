@@ -153,19 +153,22 @@ function zmiRelativateUrl(path, url) {
 	var server_url = self.location.href;
 	server_url = server_url.substr(protocol.length);
 	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
-	var currntPath = path;
-	if (currntPath.indexOf(server_url)==0) {
-		currntPath = currntPath.substr(server_url.length+1);
+	var currntPath = null;
+	if (path.indexOf(server_url)==0) {
+		currntPath = path.substr(server_url.length+1);
 	}
-	else if (currntPath.indexOf('/')==0) {
-		currntPath = currntPath.substr(1);
+	else if (path.indexOf('/')==0) {
+		currntPath = path.substr(1);
 	}
-	var targetPath = url;
-	if (targetPath.indexOf(server_url)==0) {
-		targetPath = targetPath.substr(server_url.length+1);
+	var targetPath = null;
+	if (url.indexOf(server_url)==0) {
+		targetPath = url.substr(server_url.length+1);
 	}
-	else if (targetPath.indexOf('/')==0) {
-		targetPath = targetPath.substr(1);
+	else if (url.indexOf('/')==0) {
+		targetPath = url.substr(1);
+	}
+	if (currntPath == null || targetPath == null) {
+		return url;
 	}
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');

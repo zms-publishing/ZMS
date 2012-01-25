@@ -1133,7 +1133,8 @@ class ObjAttrs:
               if href[href.rfind( '/'):].find('.') > 0:
                 href = href[ :href.rfind( '/')]
             else:
-              href = ''
+              if href.find('.') > 0:
+                href = ''
           ref_obj = self.getVersionContainer()
           for el in href.split( '/'):
             if ref_obj is not None:
@@ -1352,7 +1353,6 @@ class ObjAttrs:
         session_id = SESSION.getId()
         temp_folder = self.temp_folder
         id = session_id + '_' + form_id + '_' + key
-        print id, temp_folder.objectIds()
         if id in temp_folder.objectIds():
           temp_folder.manage_delObjects([id])
       # Return JSON.

@@ -329,3 +329,13 @@ function runPluginJSON(c) {
 		});
 	$.plugin('json').get('body',c);
 }
+
+/**
+ * ZMS jQuery Testsuite
+ */
+function runPluginTestsuite() {
+	$.plugin('testsuite',{
+		files: ['/++resource++zms_/jquery/tests/jquery.plugin.testsuite.js?ts='+escape(new Date())]
+		});
+	$.plugin('testsuite').get('body',function(){zmiTestRun()});
+}

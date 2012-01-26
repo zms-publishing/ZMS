@@ -3502,11 +3502,11 @@ if key.startswith('table_'):
                             format        python:column['format'];
                             content       python:column['content'];
                             col_text      python:zmscontext.dt_html(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request),request)">
-                        <td tal:condition="python:str(tag).lower()=='td'">
+                        <td tal:condition="python:str(tag).lower()=='td'" tal:attributes="colspan python:column.get('colspan',1)">
                             <span tal:omit-tag="" tal:condition="python:col_text" tal:content="structure col_text">The cell</span>
                             <span tal:omit-tag="" tal:condition="python:not (col_text)">&nbsp;</span>
                         </td>
-                        <th tal:condition="python:str(tag).lower()=='th'">
+                        <th tal:condition="python:str(tag).lower()=='th'" tal:attributes="colspan python:column.get('colspan',1)">
                             <span tal:omit-tag="" tal:condition="python:col_text" tal:content="structure col_text">The cell</span>
                             <span tal:omit-tag="" tal:condition="python:not (col_text)">&nbsp;</span>
                         </th>
@@ -3555,7 +3555,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.8]]></item>
+          <item key="revision"><![CDATA[1.6.9]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

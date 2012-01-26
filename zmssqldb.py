@@ -186,7 +186,11 @@ class ZMSSqlDb(ZMSObject):
     def getModel(self):
       container = self.getModelContainer()
       container_xml = container.raw
-      model_xml =  getattr(self,'model_xml','<list>\n</list>')
+      model_xml =  getattr(self,'model_xml',None)
+      if model_xml is None:
+        model_xml = '<list>\n</list>'
+        self.model_xml = model_xml
+        self.model = []
       if container_xml != model_xml:
         self.model_xml = container_xml
         self.model = self.parseXmlString(self.model_xml)
@@ -445,6 +449,7 @@ class ZMSSqlDb(ZMSObject):
         return self.fetchReqBuff( reqBuffId, REQUEST, True)
       except:
         pass
+      print "getEntities"
       
       entities = []
       da = self.getDA()
@@ -485,11 +490,18 @@ class ZMSSqlDb(ZMSObject):
                       l = l.strip()
                       if len(l) > 0:
                         c += l + ' '
-                    if c.startswith('"') and c.find(' ') > 0:
-                      col = {}
-                      col["id"] = str(c[1:c.find(' ')-1])
-                      col["description"] =str(c[c.find(' ')+1:])
-                      columnBrwsrs.append(col)
+                    cl = filter(lambda x: len(x.strip()) > 0, c.split(' '))
+                    if len(cl) >= 2:
+                      cid = cl[0]
+                      if cid.startswith('"') and cid.endswith('"'):
+                        cid = cid[1:-1]
+                      ucid = cid.upper() 
+                      uctype = cl[1].upper()
+                      if not ucid == 'CHECK' and not uctype=='KEY' and not uctype.startswith('('):
+                        col = {}
+                        col["id"] = cid
+                        col["description"] = ' '.join(cl[1:])
+                        columnBrwsrs.append(col)
               else:
                 for columnBrwsr in tableBrwsr.tpValues():
                   col = {}

@@ -121,7 +121,9 @@
 			fileId = url.replace(/\W/gi,''),
 			cached = cache[url],
 			caching = (defaults.cache === true || defaults.cache == 'true');
-	
+		if(extension.indexOf('?')>0) {
+			extension = extension.substr(0,extension.indexOf('?'));
+		}
 		if(extension != 'css' && extension != 'js') {
 			throw new Error( '$.plugin.getFile(url) - Invalid extension:'+ extension + '\n\t'+url); return this;}
 			

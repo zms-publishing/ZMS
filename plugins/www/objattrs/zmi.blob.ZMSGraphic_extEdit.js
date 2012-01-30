@@ -198,16 +198,19 @@ function changeJcropAvailability(available, cropping)
 	}
 	if (available) {
 		runPluginJcrop(function() {
-			$ZMSGraphic_cropapi = $.Jcrop($ZMSGraphic_img,{
+			$ZMSGraphic_img.Jcrop({
 					allowSelect	: false,
+					setSelect: [ 0, 0, 25, 25 ],
 					minSize		: [25, 25],
 					maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
 					handles		: true,
 					onChange	: ZMSGraphic_extEdit_changedSelection,
 					onSelect	: ZMSGraphic_extEdit_changedSelection
+				},function() {
+					$ZMSGraphic_cropapi = this;
+					$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
+					$ZMSGraphic_cropapi.focus();
 				});
-			$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
-			$ZMSGraphic_cropapi.focus();
 		});
 	}
 }

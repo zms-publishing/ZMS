@@ -3846,7 +3846,12 @@ if teaserElmnts:
     else:
       name = 'bodyContentZMSCustom_%s'%teaserElmnt.meta_id
     method = getattr(teaserElmnt,name)
-    print method(teaserElmnt,request)
+    method_result = method(teaserElmnt,request)
+    try:
+      method_result = unicode(method_result,'utf-8')
+    except:
+      pass
+    print method_result
     last_borderstyle = borderstyle
     last_bgcolor_border = bgcolor_border
   if last_borderstyle is not None and \
@@ -3935,7 +3940,7 @@ return printed
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.1]]></item>
+          <item key="revision"><![CDATA[1.2.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

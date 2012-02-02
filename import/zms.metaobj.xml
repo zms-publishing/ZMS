@@ -3860,7 +3860,7 @@ if teaserElmnts:
       print '</div>'
   print '</div>'
 
-return printed 
+return unicode(printed).encode('utf-8')
 
 # --// EO pageelement_Teaser //--
 ]]>
@@ -3940,7 +3940,7 @@ return printed
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.2]]></item>
+          <item key="revision"><![CDATA[1.2.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

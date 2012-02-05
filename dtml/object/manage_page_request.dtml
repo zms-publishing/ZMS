@@ -1,4 +1,7 @@
-<dtml-call "RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime()-10000).toZone('GMT+1').rfc822())"
+<dtml-unless HTTP_ACCEPT_CHARSET
+><dtml-call "REQUEST.set('HTTP_ACCEPT_CHARSET','%s;q=0.7,*;q=0.7'%REQUEST.get('ZMS_CHARSET','utf-8'))"
+></dtml-unless
+><dtml-call "RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime()-10000).toZone('GMT+1').rfc822())"
 ><dtml-call "RESPONSE.setHeader('Cache-Control', 'no-cache')"
 ><dtml-call "RESPONSE.setHeader('Pragma', 'no-cache')"
 

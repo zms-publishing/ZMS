@@ -24,8 +24,9 @@
 			<td class="form-label zmiNeutralColorWhite" colspan="2" nowrap="nowrap">
 				<dtml-var "getZMILangStr('ATTR_WIDTH')"> x 
 				<dtml-var "getZMILangStr('ATTR_HEIGHT')">
-				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_width:int',size=4,value=0,enabled=False)"> x
-				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_height:int',size=4,value=0,enabled=False)"> px
+				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_width:int',size=4,value=0)"> x
+				<dtml-var "getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_height:int',size=4,value=0)"> px
+				<input class="form-checkbox" type="checkbox" id="ZMSGraphic_extEdit_proportional" checked="checked"/><span class="form-small">Proportional</span>
 				<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_APPLY')">" onclick="return ZMSGraphic_extEdit_apply();">
 			</td>
 	 	</tr>

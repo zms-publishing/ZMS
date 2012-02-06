@@ -236,6 +236,26 @@ function ZMSGraphic_extEdit_changedSelection(c) {
 }
 
 $(function () {
+	$("#ZMSGraphic_extEdit_width").keyup(function(){
+			var w = parseInt($(this).val());
+			if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+				var v = w/ZMSGraphic_act_width;
+				var h = Math.round(v*ZMSGraphic_act_height);
+				$("#ZMSGraphic_extEdit_height").val(h);
+			}
+			var h = $("#ZMSGraphic_extEdit_height").val();
+			$ZMSGraphic_img.attr({'width':w,'height':h});
+		});
+	$("#ZMSGraphic_extEdit_height").keyup(function(){
+			var h = parseInt($(this).val());
+			if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+				var v = h/ZMSGraphic_act_height;
+				var w = Math.round(v*ZMSGraphic_act_width);
+				$("#ZMSGraphic_extEdit_width").val(w);
+			}
+			var w = $("#ZMSGraphic_extEdit_width").val();
+			$ZMSGraphic_img.attr({'width':w,'height':h});
+		});
 	$("#ZMSGraphic_extEdit_vslider").slider({
 		orientation: "vertical",
 		range: "min",

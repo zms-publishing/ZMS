@@ -22,7 +22,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 		ZMSGraphic_pil = pil;
 	}
 	ZMSGraphic_elName = elName;
-	ZMSGraphic_params = {};
+	ZMSGraphic_params = {preview:'preview'};
 	var elParamsSplit = elParams.split('&');
 	for (var i = 0; i < elParamsSplit.length; i++) {
 		var s = elParamsSplit[i];

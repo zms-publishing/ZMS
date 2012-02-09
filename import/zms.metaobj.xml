@@ -1182,7 +1182,6 @@ return ''
 		subclass      python:[zmscontext.meta_id];
 		text          python:unicode(zmscontext.getText(request),'utf-8');
 		format        python:unicode(zmscontext.attr('format'),'utf-8');
-		renderedtext  python:zmscontext.renderText(format,'text',text,request);
 		textclass     python:'text';
 		displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
 		align         python:zmscontext.attr('align');
@@ -1190,8 +1189,13 @@ return ''
 		imgclass      python:'img';
 		imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
 		imgthumb      python:request['URL'].find('/manage')>0;
-		imgspecial    python:zmscontext.attr('img_attrs_spec');
-		bodyContent   python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
+		imgspecial    python:zmscontext.attr('img_attrs_spec')">
+	<span tal:omit-tag="" tal:condition="imgurl">
+		<span tal:omit-tag="" tal:define="global text   python:text+'\n'+zmscontext.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042'%imgurl)"></span>
+		<span tal:omit-tag="" tal:define="global imgurl python:''"></span>
+	</span>
+	<span tal:omit-tag="" tal:define="global renderedtext python:zmscontext.renderText(format,'text',text,request)"></span>
+	<span tal:omit-tag="" tal:define="global bodyContent  python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)"></span>
 	<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
 		<span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
 	</span>
@@ -1227,14 +1231,6 @@ return ''
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -1249,7 +1245,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.2.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

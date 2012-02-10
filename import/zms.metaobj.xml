@@ -3066,8 +3066,8 @@ function actionBtnClick(el, fct) {
 					table_cell_uid++;
 				}
 				$("div[id^=preview]",new_td).each(function() {
-						$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid).css( 'border', '2px solid #00FF00');
-						table_cell_uid++;
+						$(this).html( "&nbsp;").css( 'border', '2px solid #00FF00')
+							.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
 					});
 				new_td.insertBefore( el_td);
 			}
@@ -3093,8 +3093,8 @@ function actionBtnClick(el, fct) {
 			table_cell_uid++;
 		}
 		$("div[id^=preview]",new_tr).each(function() {
-				$(this).html( "&nbsp;").attr("id","preview_"+table_cell_uid).css( 'border', '2px solid #00FF00');
-				table_cell_uid++;
+				$(this).html( "&nbsp;").css( 'border', '2px solid #00FF00')
+					.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
 			});
 		new_tr.insertBefore( el_tr);
 		$('#rows').val( parseInt($('#rows').val())-1);
@@ -3154,10 +3154,8 @@ function actionBtnClick(el, fct) {
 }
 
 function onKeyUpZMSTableDivContenteditable(div) {
-	var id = $(div).attr("id");
-	var id_suffix = id.substr(id.indexOf("_"));
-	var textarea_id = "content"+id_suffix;
-	$("textarea#"+textarea_id).val($(div).html());
+	var $textarea = $("textarea",$(div).prev());
+	$textarea.val($(div).html());
 }
 
 $(function(){
@@ -3185,7 +3183,13 @@ $(function(){
    ></table
   ></td>
  </dtml-in>
- <td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
+ <td
+  ><table cellspacing="0" cellpadding="0" border="0"
+  ><tr
+   ><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td
+  ></tr
+  ></table
+ ></td>
 </tr>
 
 <tr>
@@ -3237,9 +3241,9 @@ $(function(){
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
-        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)"<dtml-else>style="display:none;"</dtml-if>>
+        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless> contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
          <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
-        </div>
+        </div>             
        </<dtml-var tag>>
        </tr>
        </table>
@@ -3551,7 +3555,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.9]]></item>
+          <item key="revision"><![CDATA[1.6.10]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

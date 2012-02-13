@@ -281,7 +281,7 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 			tal:attributes="src python:'%s?framebottom=True&lang=%s'%(request.get('URL'),request.get('lang'))"></iframe>
 	</div>
 	<div id="tabs-2">
-		<h1>ZMS TAL Editor 1.0.4</h1>
+		<h1>ZMS TAL Editor 1.0.5</h1>
 		<p class="form-small">Der ZMS TAL Editor ist eine ZMS-System-Erweiterung speziell f&uuml;r Web-Designer: 
 		optimale Gestaltungskontrolle durch das Nebeneinander von Code- und Vorschau-Fenster. 
 		Alle Code-&Auml;nderungen in CSS- oder Template-Dateien sind sofort in der Web-Ansicht sichtbar.
@@ -615,13 +615,13 @@ div.ace_gutter {
 						</td>
 						<td>
 							<ul class="zmi-icons ui-widget ui-helper-clearfix">
-								<li id="refresh_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH')">
+								<li id="refresh_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_REFRESH'),'utf-8')">
 									<span class="ui-icon ui-icon-arrowrefresh-1-w" onclick="zmiRefreshBtnClick();"></span>
 								</li>
-								<li id="undo_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:here.getZMILangStr('BTN_UNDO')">
+								<li id="undo_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_UNDO'),'utf-8')">
 									<span class="ui-icon ui-icon-arrowreturn-1-w" onclick="zmiUndoBtnClick();"></span>
 								</li>
-								<li id="delete_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')">
+								<li id="delete_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_DELETE'),'utf-8')">
 									<span class="ui-icon ui-icon-trash" onclick="zmiDelBtnClick();"></span>
 								</li>
 							</ul>

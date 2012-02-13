@@ -533,6 +533,97 @@ class ZReferableItem:
   def synchronizeRefs( self, ob_id=None, clients=False, unify_ids=False):
     _globals.writeBlock(self,'[synchronizeRefs]')
     
+    # Extend object-tree.
+    def extendObjectTree(home):
+      if home not in homes:
+        homes.append( home)
+        home_ob = self
+        for home_id in home_path:
+          if home_ob is not None:
+            home_ob = getattr( home_ob, home_id, None)
+        if home_ob is not None:
+          t1 = time.time()
+          map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
+          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t1)*100.0)/100.0)+' secs.)<br/>'
+        else:
+          message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
+        _globals.writeBlock(self,'[synchronizeRefs]: '+message)
+    
+    # Handle internal references.
+    def handleInternalRefs(v):
+      sp = '{$'
+      l = v.split(sp)
+      if len(l) > 1:
+        m = [l[0]]
+        for i in l[1:]:
+          ref = i[:i.find('}')]
+          if ref.startswith('__') and ref.endswith('__'):
+            ref = ref[2:-2]
+          if len( ref.split('@')) == 1:
+            home_path = [ob.getHome().id]
+            home = home_path[-1]
+          else:
+            home_path = ref.split('@')[0].split('/')
+            home = home_path[-1]
+          id = ref.split('@')[-1].split('/')[-1]
+          if len( id) == 0:
+            id = 'content'
+          
+          # Extend object-tree.
+          extendObjectTree(home)
+          
+          f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
+          if len( f) == 0:
+            ref = '__%s__'%ref
+          else:
+            if len( f) > 1:
+              if ref.find('@') > 0:
+                ref = ref[ ref.find('@')+1:]
+              g = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%ref), obs.keys())
+              if len( g) == 1:
+                f = g
+              else:
+                message += '[WARNING] %s: Ambigous reference ref=%s in f=%s'%(ob.absolute_url(),ref,str(f))
+            else:
+              target = obs[f[0]]
+              ref = ob.getRefObjPath( target)[2:-1]
+              if ob.version_live_id == obj_vers.id:
+                target_ref = target.getRefObjPath( ob)
+                target_ref_by = getattr( target, 'ref_by', [])
+                if target_ref not in target_ref_by:
+                  setattr( target, 'ref_by', target_ref_by + [ target_ref])
+          if ref.startswith('__') and ref.endswith('__'):
+            message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
+          m.append(ref+i[i.find('}'):])
+        v = sp.join(m)
+      return v
+    
+    # Handle relative references.
+    def handleRelativeRefs(v):
+      for sp in ['href="./','src="./']:
+        l = v.split(sp)
+        if len(l) > 1:
+          m = [l[0]]
+          for i in l[1:]:
+            if i.find('"') > 0:
+              ref = i[:i.find('"')]
+              if ref.endswith('/'):
+                ref = ref[:-1]
+              decl_id = ref.split('/')[-1]
+              if getattr(ob.getHome(),decl_id,None) is None: # must not exist as Zope resource
+                filtered_did = filter(lambda x: x['decl_id']==decl_id,did)
+                if len(filtered_did) == 1: # simplest case: decl_id is unique!
+                  found = filtered_did[0]
+                  req = REQUEST={'lang':found['lang']}
+                  target_url = found['abs_url']
+                  target_ref = obs[target_url].getDeclUrl(REQUEST=req)
+                  ob_ref = ob.getSelf(ob.PAGES).getDeclUrl(REQUEST=req)
+                  ref = self.getRelativeUrl(ob_ref,target_ref)
+                  i = ref + i[i.find('"'):]
+            m.append(i)
+          v = sp.join(m)
+      return v
+
     # Initialize.
     message = ''
     t0 = time.time()
@@ -550,6 +641,13 @@ class ZReferableItem:
     
     abs_urls = obs.keys()
     abs_urls.sort()
+    
+    did = []
+    if self.getConfProperty('ZMS.pathhandler',0) != 0:
+      for x in obs.keys():
+        ob = obs[x]
+        for lang in self.getLangIds():
+          did.append({'decl_id':ob.getDeclId(REQUEST={'lang':lang}),'lang':lang,'abs_url':x})
     
     # Unify object-ids.
     if unify_ids:
@@ -604,64 +702,10 @@ class ZReferableItem:
                 v = r[k]
                 o = v
                 if type(v) is str:
-                  l = v.split('{$')
-                  if l > 1:
-                    m = [l[0]]
-                    for i in l[1:]:
-                      ref = i[:i.find('}')]
-                      if ref.startswith('__') and ref.endswith('__'):
-                        ref = ref[2:-2]
-                      if len( ref.split('@')) == 1:
-                        home_path = [ob.getHome().id]
-                        home = home_path[-1]
-                      else:
-                        home_path = ref.split('@')[0].split('/')
-                        home = home_path[-1]
-                      id = ref.split('@')[-1].split('/')[-1]
-                      if len( id) == 0:
-                        id = 'content'
-                      
-                      # Extend object-tree.
-                      if home not in homes:
-                        homes.append( home)
-                        home_ob = self
-                        for home_id in home_path:
-                          if home_ob is not None:
-                            home_ob = getattr( home_ob, home_id, None)
-                        if home_ob is not None:
-                          t1 = time.time()
-                          map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
-                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t1)*100.0)/100.0)+' secs.)<br/>'
-                        else:
-                          message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
-                        _globals.writeBlock(self,'[synchronizeRefs]: '+message)
-                      
-                      f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
-                      if len( f) == 0:
-                        ref = '__%s__'%ref
-                      else:
-                        if len( f) > 1:
-                          if ref.find('@') > 0:
-                            ref = ref[ ref.find('@')+1:]
-                          g = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%ref), obs.keys())
-                          if len( g) == 1:
-                            f = g
-                          else:
-                            message += '[WARNING] %s: Ambigous reference ref=%s in f=%s'%(ob.absolute_url(),ref,str(f))
-                        else:
-                          target = obs[f[0]]
-                          ref = ob.getRefObjPath( target)[2:-1]
-                          if ob.version_live_id == obj_vers.id:
-                            target_ref = target.getRefObjPath( ob)
-                            target_ref_by = getattr( target, 'ref_by', [])
-                            if target_ref not in target_ref_by:
-                              setattr( target, 'ref_by', target_ref_by + [ target_ref])
-                      if ref.startswith('__') and ref.endswith('__'):
-                        message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
-                      m.append(ref+i[i.find('}'):])
-                    v = '{$'.join(m)
-                    if v != o:
-                      r[k] = v
+                  v = handleInternalRefs(v)
+                  v = handleRelativeRefs(v)
+                  if v != o:
+                    r[k] = v
               c += 1
       
       # Process object.
@@ -675,64 +719,10 @@ class ZReferableItem:
                 v = _objattrs.getobjattr(ob,obj_vers,obj_attr,lang)
                 o = v
                 if type(v) is str:
-                  l = v.split('{$')
-                  if l > 1:
-                    m = [l[0]]
-                    for i in l[1:]:
-                      ref = i[:i.find('}')]
-                      if ref.startswith('__') and ref.endswith('__'):
-                        ref = ref[2:-2]
-                      if len( ref.split('@')) == 1:
-                        home_path = [ob.getHome().id]
-                        home = home_path[-1]
-                      else:
-                        home_path = ref.split('@')[0].split('/')
-                        home = home_path[-1]
-                      id = ref.split('@')[-1].split('/')[-1]
-                      if len( id) == 0:
-                        id = 'content'
-                      
-                      # Extend object-tree.
-                      if home not in homes:
-                        homes.append( home)
-                        home_ob = self
-                        for home_id in home_path:
-                          if home_ob is not None:
-                            home_ob = getattr( home_ob, home_id, None)
-                        if home_ob is not None:
-                          t1 = time.time()
-                          map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( home_ob))
-                          message += '[INFO] Load object-tree for '+home+' (in '+str(int((time.time()-t1)*100.0)/100.0)+' secs.)<br/>'
-                        else:
-                          message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
-                        _globals.writeBlock(self,'[synchronizeRefs]: '+message)
-                      
-                      f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
-                      if len( f) == 0:
-                        ref = '__%s__'%ref
-                      else:
-                        if len( f) > 1:
-                          if ref.find('@') > 0:
-                            ref = ref[ ref.find('@')+1:]
-                          g = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%ref), obs.keys())
-                          if len( g) == 1:
-                            f = g
-                          else:
-                            message += '[WARNING] %s: Ambigous reference ref=%s in f=%s'%(ob.absolute_url(),ref,str(f))
-                        else:
-                          target = obs[f[0]]
-                          ref = ob.getRefObjPath( target)[2:-1]
-                          if ob.version_live_id == obj_vers.id:
-                            target_ref = target.getRefObjPath( ob)
-                            target_ref_by = getattr( target, 'ref_by', [])
-                            if target_ref not in target_ref_by:
-                              setattr( target, 'ref_by', target_ref_by + [ target_ref])
-                      if ref.startswith('__') and ref.endswith('__'):
-                        message += '<a href="%s/manage_main" target="_blank">%s(%s).%s=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,key,ref)
-                      m.append(ref+i[i.find('}'):])
-                    v = '{$'.join(m)
-                    if v != o:
-                      _objattrs.setobjattr(ob,obj_vers,obj_attr,v,lang)
+                  v = handleInternalRefs(v)
+                  v = handleRelativeRefs(v)
+                  if v != o:
+                    _objattrs.setobjattr(ob,obj_vers,obj_attr,v,lang)
     
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
     _globals.writeBlock(self,'[synchronizeRefs]: '+message)

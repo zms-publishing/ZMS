@@ -941,39 +941,6 @@ class ObjAttrs:
             # Broken link.
             ref_url = '{$__' + ref_url[2:-1] + '__}'
             v = v[:i] + ref_url + v[j+1:]
-        # Inline-links: relative
-        i = -1
-        start = 'href="./'
-        end = '"'
-        while True:
-          i = v.find( start, i + 1)
-          j = v.find( end, i + len( start))
-          if i < 0 or j < 0:
-            break
-          href = v[ i + len( start) :j]
-          if href.rfind( '#') > 0:
-            if href.rfind( '/') > 0:
-              href = href[ :href.rfind( '/')] + '/' + href[ href.rfind( '#') + 1:]
-            else:
-              href = href[ href.rfind( '#') + 1:]
-          else:
-            if href.rfind( '/') > 0:
-              href = href[ :href.rfind( '/')]
-            else:
-              href = ''
-          ob = self.getSelf(self.PAGES)
-          for el in href.split( '/'):
-            if ob is not None:
-              if el == '..':
-                ob = ob.aq_parent
-              elif len( el) > 0:
-                obs = filter(lambda x: x.id==el or x.getDeclId(self.REQUEST)==el, ob.objectValues(self.dGlobalAttrs.keys()))
-                if len(obs) == 0:
-                  ob = None
-                  break
-                ob = obs[0]
-          if ob is None:
-            _globals.writeBlock( self, '[formatObjAttrValue]: invalid href=%s'%href)
       
       #-- Url-Fields
       if datatype == _globals.DT_URL and v.startswith('{$') and not v.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
@@ -1109,50 +1076,6 @@ class ObjAttrs:
       
       #-- VALUE
       value = self.formatObjAttrValue(obj_attr,value,lang)
-      
-      #-- Text-Fields
-      if datatype == _globals.DT_TEXT:
-        # Inline-links: relative
-        i = -1
-        start = 'href="./'
-        end = '"'
-        while True:
-          i = value.find( start, i + 1)
-          j = value.find( end, i + len( start))
-          if i < 0 or j < 0:
-            break
-          href = value[ i + len( start) :j]
-          if href.rfind( '#') > 0:
-            if href.rfind( '/') > 0:
-              if href[href.rfind( '/'):].find('.') > 0:
-                href = href[ :href.rfind( '/')] + '/' + href[ href.rfind( '#') + 1:]
-            else:
-              href = href[ href.rfind( '#') + 1:]
-          else:
-            if href.rfind( '/') > 0:
-              if href[href.rfind( '/'):].find('.') > 0:
-                href = href[ :href.rfind( '/')]
-            else:
-              if href.find('.') > 0:
-                href = ''
-          ref_obj = self.getVersionContainer()
-          for el in href.split( '/'):
-            if ref_obj is not None:
-              if el == '..':
-                ref_obj = ref_obj.aq_parent
-              elif len( el) > 0:
-                ref_obj = getattr( ref_obj, el, None)
-          if ref_obj is not None:
-            rel_url = self.getRelObjPath( ref_obj)
-            if ref_obj.isPage():
-              rel_url = rel_url + '/index_%s.html'%lang
-            else:
-              ref_obj_file = ref_obj.getObjProperty('file',self.REQUEST)
-              if isinstance(ref_obj_file,_blobfields.MyFile):
-                rel_url = rel_url[ : rel_url.rfind( '/')] + '/' + rel_url[ rel_url.rfind( '/') + 1: ] + '/' + ref_obj_file.getFilename()
-              else:
-                rel_url = rel_url[ : rel_url.rfind( '/')] + '/index_%s.html'%lang + '#' + rel_url[ rel_url.rfind( '/') + 1: ]
-            value = value[: i + 6] + rel_url + value[ j :]
       
       #-- Url-Fields
       if datatype == _globals.DT_URL:

@@ -3227,7 +3227,7 @@ $(function(){
   ></td
   ><td style="border-top: solid 1px #CCCCCC; border-right: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>;">&nbsp;</td
   ><dtml-in "table_table[row_index]" mapping
-   ><dtml-let col_index=sequence-index cell=sequence-item richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and format==REQUEST.get('richedit_fmt').getId()"
+   ><dtml-let col_index=sequence-index cell=sequence-item richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and cell.get('format')==REQUEST.get('richedit_fmt').getId()"
     ><dtml-if "table_type==4 and row_index==0 and col_index==0"
      ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
     ><dtml-else
@@ -3238,7 +3238,7 @@ $(function(){
        <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="table_cell_editable">
         <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
-         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var format>">
+         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var "cell.get('format')">">
          <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
         <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless> contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
@@ -3498,9 +3498,9 @@ if key.startswith('table_'):
                     <span tal:omit-tag="" tal:define="
                             row_index     repeat/row/index;
                             col_index     repeat/column/index;
-                            tag           python:column['tag'];
-                            format        python:column['format'];
-                            content       python:column['content'];
+                            tag           python:column.get('tag','');
+                            format        python:column.get('format','');
+                            content       python:column.get('content','');
                             col_text      python:zmscontext.dt_html(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request),request)">
                         <td tal:condition="python:str(tag).lower()=='td'" tal:attributes="colspan python:column.get('colspan',1)">
                             <span tal:omit-tag="" tal:condition="python:col_text" tal:content="structure col_text">The cell</span>
@@ -3555,7 +3555,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.10]]></item>
+          <item key="revision"><![CDATA[1.6.11]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

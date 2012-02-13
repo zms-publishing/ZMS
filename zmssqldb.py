@@ -647,6 +647,7 @@ class ZMSSqlDb(ZMSObject):
         selectClause.append( select)
       else:
         fk_tablename_counter = {}
+        table_AS = self.getConfProperty('ZMSSqlDb.table.AS','AS')
         for tablecol in tablecols:
           if tablecol.get('fk') and tablecol['fk'].get('tablename'):
             fk_tablename = tablecol['fk']['tablename']
@@ -662,10 +663,10 @@ class ZMSSqlDb(ZMSObject):
             fk_displayfield = self.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
             selectClause.append( '%s AS %s'%(fk_displayfield,tablecol['id']))
             if gadfly:
-              fromClause.append( ', %s AS %s'%(fk_tablename,fk_tablename_alias))
+              fromClause.append( ', %s %s %s'%(fk_tablename,table_AS,fk_tablename_alias))
               whereClause.append( '%s.%s=%s'%(tablename,tablecol['id'],fk_fieldname))
             else:
-              fromClause.append( 'LEFT JOIN %s AS %s ON %s.%s=%s'%(fk_tablename,fk_tablename_alias,tablename,tablecol['id'],fk_fieldname))
+              fromClause.append( 'LEFT JOIN %s %s %s ON %s.%s=%s'%(fk_tablename,table_AS,fk_tablename_alias,tablename,tablecol['id'],fk_fieldname))
           elif tablecol.get('type','?') != '?':
             selectClause.append( '%s.%s'%(tablename,tablecol['id']))
       sqlStatement = []

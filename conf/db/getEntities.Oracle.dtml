@@ -8,7 +8,7 @@
  <dtml-call "REQUEST.set('entities',[])">
  <dtml-call "REQUEST.set('entity',{})">
  <dtml-call "REQUEST.set('columns',[])">
- <dtml-in "query('select * from all_tab_columns where owner = \'CARSTENG\'')['records']" mapping>
+ <dtml-in "query('select * from all_tab_columns where owner = \'ORACLEUSER\'')['records']" mapping>
   <dtml-if "TABLE_NAME != tablename">
    <dtml-if tablename>
     <dtml-call "entities.append(entity)">
@@ -17,8 +17,9 @@
    <dtml-call "REQUEST.set('entity',{})">
    <dtml-call "REQUEST.set('columns',[])">
    <dtml-call "operator_setitem(entity,'id',TABLE_NAME)">
-   <dtml-call "operator_setitem(entity,'label',' '.join( _.map( lambda x: x.capitalize(), TABLE_NAME.split('_'))).strip())">
    <dtml-call "operator_setitem(entity,'type','table')">
+   <dtml-call "operator_setitem(entity,'label',' '.join( _.map( lambda x: x.capitalize(), TABLE_NAME.split('_'))).strip())">
+   <dtml-call "operator_setitem(entity,'sort_id',entity['label'].upper())">
    <dtml-call "operator_setitem(entity,'columns',columns)">
   </dtml-if>
   <dtml-call "REQUEST.set('column',{})">
@@ -34,6 +35,7 @@
   </dtml-if> 
   <dtml-call "operator_setitem(column,'key',COLUMN_NAME)">
   <dtml-call "operator_setitem(column,'id',column['key'])">
+  <dtml-call "operator_setitem(column,'index',int(column.get('index',len(columns))))">
   <dtml-call "operator_setitem(column,'label',' '.join( _.map( lambda x: x.capitalize(), COLUMN_NAME.split('_'))).strip())">
   <dtml-call "operator_setitem(column,'name',column['label'])">
   <dtml-call "operator_setitem(column,'mandatory',NULLABLE=='N')">

@@ -1177,7 +1177,7 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSGraphic -->
 
-<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
 		text          python:unicode(zmscontext.getText(request),'utf-8');
@@ -1188,14 +1188,19 @@ return ''
 		textalign     python:zmscontext.attr('textalign');
 		imgclass      python:'img';
 		imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
+		isimghires    python:zmscontext.attr('imghires');
 		imgthumb      python:request['URL'].find('/manage')>0;
 		imgspecial    python:zmscontext.attr('img_attrs_spec')">
-	<span tal:omit-tag="" tal:condition="imgurl">
-		<span tal:omit-tag="" tal:define="global text   python:text+'\n'+zmscontext.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042'%imgurl)"></span>
-		<span tal:omit-tag="" tal:define="global imgurl python:''"></span>
-	</span>
-	<span tal:omit-tag="" tal:define="global renderedtext python:zmscontext.renderText(format,'text',text,request)"></span>
-	<span tal:omit-tag="" tal:define="global bodyContent  python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)"></span>
+	<tal:block tal:condition="python:imgurl and isimghires">
+		<tal:block 
+			tal:define="global text python:text+'\n<span class=\042imgurl\042>'+zmscontext.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042'%imgurl)+'</span>';
+			            global imgurl python:''">
+		</tal:block>
+	</tal:block>
+	<tal:block 
+		tal:define="global renderedtext python:zmscontext.renderText(format,'text',text,request);
+		            global bodyContent python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
+	</tal:block>
 	<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
 		<span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
 	</span>
@@ -1206,7 +1211,7 @@ return ''
 		<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
 	</span>
 	<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)" tal:content="structure bodyContent">The graphic</div>
-</span>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSGraphic -->]]>
                   </item>
@@ -1245,7 +1250,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.1]]></item>
+          <item key="revision"><![CDATA[1.2.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

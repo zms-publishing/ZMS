@@ -881,7 +881,7 @@ class ZMSMetaobjManager:
         if oldId is None or oldId == newId:
           # Delete existing Zope-Object.
           if newObId in container.objectIds():
-            if newType == 'Page Template' or \
+            if newType in ['External Method', 'Page Template'] or \
                newType not in self.valid_zopetypes:
               container.manage_delObjects( ids=[ newObId])
             # Delete old Zope-Object if type is incompatible.

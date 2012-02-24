@@ -89,7 +89,7 @@
  <td class="<dtml-var css>">
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></div>
   <div class="<dtml-var css>">
-   <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')">
+   <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">
@@ -110,16 +110,16 @@
  <td>
   <div class="form-small"><br/></div>
   <div class="zmiNeutralColorMedium0">
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&gt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&lt;" onclick="return selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&gt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
   </div>
  </td>
  <td class="<dtml-var css>">
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_SELECTED')"></div>
   <div class="<dtml-var css>">
-   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect('<dtml-var fmName>','<dtml-var elName>','<dtml-var elSrcName>')">
+   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">

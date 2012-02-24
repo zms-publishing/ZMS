@@ -41,7 +41,7 @@ $().ready(function() {
 		},
 		select: function( event, ui ) {
 			if (ui.item) {
-				appendToMultiselect(document.getElementById('<dtml-var elName>'),ui.item.value);
+				appendToMultiselect(document.getElementById('<dtml-var elName>'),ui.item);
 				ui.item.value = '';
 			}
 			this.value = '';

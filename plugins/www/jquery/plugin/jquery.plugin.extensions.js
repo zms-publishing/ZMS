@@ -202,14 +202,22 @@ function pluginUIDatepicker(s, c) {
 
 function zmiAutocompleteDefaultFormatter(l, q) {
 	return $.map(l,function(x){
-		return {label: x.replace(
+		var label = x;
+		var value = x;
+		if (typeof x == "object") {
+			label = x.label;
+			value = x.value;
+		}
+		var orig = label;
+		return {label: label.replace(
 								new RegExp(
 										"(?![^&;]+;)(?!<[^<>]*)(" +
 										$.ui.autocomplete.escapeRegex(q) +
 										")(?![^<>]*>)(?![^&;]+;)", "gi"
 										), "<strong>$1</strong>" ),
-						value: x};
-						})
+				value: value,
+				orig: label};
+			})
 }
 
 function zmiAutocomplete(s, o) {

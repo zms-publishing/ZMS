@@ -249,7 +249,7 @@ function removeFromMultiselect(src) {
 //-------------------------------------------------------------------
 // appendToMultiselect
 //-------------------------------------------------------------------
-function appendToMultiselect(src,data) {
+function appendToMultiselect(src, data, defaultSelected) {
 		for ( var i = 0; i < src.options.length; i++) {
 			if ( src.options[i].value == data) {
 				return;
@@ -257,7 +257,16 @@ function appendToMultiselect(src,data) {
 		}
 		var label = data;
 		var value = data;
-		var defaultSelected = false;
+		if (typeof data == "object") {
+			label = data.label;
+			value = data.value;
+			if (data.orig) {
+				label = data.orig;
+			}
+		}
+		if (typeof defaultSelected == "undefined") {
+			defaultSelected = false;
+		}
 		var option = new Option( label, value, defaultSelected);
 		src.options[ src.length] = option;
 	}
@@ -265,8 +274,7 @@ function appendToMultiselect(src,data) {
 //-------------------------------------------------------------------
 // selectFromMultiselect
 //-------------------------------------------------------------------
-function selectFromMultiselect(fmName, srcElName, dstElName) {
-    var fm = document.forms[fmName];
+function selectFromMultiselect(fm, srcElName, dstElName) {
     var src = fm.elements[srcElName];
     var dst = fm.elements[dstElName];
     var selected = new Array();
@@ -296,8 +304,7 @@ function selectFromMultiselect(fmName, srcElName, dstElName) {
 //-------------------------------------------------------------------
 // selectAllFromMultiselect
 //-------------------------------------------------------------------
-function selectAllFromMultiselect(fmName, srcElName, dstElName) {
-    var fm = document.forms[fmName];
+function selectAllFromMultiselect(fm, srcElName, dstElName) {
     var src = fm.elements[srcElName];
     var dst = fm.elements[dstElName];
     var index = 0;
@@ -305,7 +312,7 @@ function selectAllFromMultiselect(fmName, srcElName, dstElName) {
       src.options[index].selected = true;
       index++;
     }
-    selectFromMultiselect(fmName,srcElName,dstElName);
+    selectFromMultiselect(fm,srcElName,dstElName);
     return false;
   }
 

@@ -2660,23 +2660,22 @@ zmscontext.commitObj(request)
 <input type="hidden" name="redirect_self:int" value="1"/>
 
 <script language="JavaScript">
-<!--//
 
 function onZMSTableFormSubmit() {
-  var xml = '';
-  var type = parseInt($("input[name=\x22type:int\x22]:checked").val());
-  xml += '<list>\n';
-  for ( var y = 0; y < parseInt($('#rows').val()); y++) {
-    xml += "<item type=\"list\"><list>\n";
-    if ( y==0 && type == 2) {
-      xml += '<item type="dictionary"><dictionary>\n';
-      xml += '<item key="colspan" type="int">'+parseInt($('#cols').val())+'</item>\n';
-      xml += '<item key="content"></item>\n';
-      xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
-      xml += '<item key="tag">th</item>\n';
-      xml += '</dictionary></item>\n';
-    }
-    else {
+	var xml = '';
+	var type = parseInt($("input[name=\x22type:int\x22]:checked").val());
+	xml += '<list>\n';
+	for ( var y = 0; y < parseInt($('#rows').val()); y++) {
+		xml += "<item type=\"list\"><list>\n";
+		if ( y==0 && type == 2) {
+			xml += '<item type="dictionary"><dictionary>\n';
+			xml += '<item key="colspan" type="int">'+parseInt($('#cols').val())+'</item>\n';
+			xml += '<item key="content"></item>\n';
+			xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
+			xml += '<item key="tag">th</item>\n';
+			xml += '</dictionary></item>\n';
+		}
+		else {
       for ( var x = 0; x < parseInt($('#cols').val()); x++) {
         xml += '<item type=\"dictionary\"><dictionary>\n';
         if ( y==0 && x == 0 && type == 4) {
@@ -2707,7 +2706,6 @@ function onZMSTableFormSubmit() {
 $("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
 $()
 
-//-->
 </script>
 
 <dtml-let
@@ -2881,7 +2879,6 @@ $()
 <dtml-let table_table="attr('table')" table_type="attr('type')" table_colgroup_cols="attr('cols')" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="attr('widths')">
 
 <script language="JavaScript">
-<!--//
 
 var table_cell_uid = <dtml-var "table_cols*table_rows">;
 var table_cell_id = '';
@@ -2889,8 +2886,7 @@ var table_cell_bgcolor = null;
 var table_cell_offs = 2;
 
 function onZMSTableFormSubmit() {
-	var xml;
-	xml = '';
+	var xml = '';
 	xml += '<list>\n';
 	var el_tbody = $($("#table_cell_editor").children()[0]);
 	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
@@ -3016,7 +3012,9 @@ function actionBtnClick(el, fct) {
 		el_tr = $(el_tr.prev()[0]);
 	}
 	var el_tbody = $($(el).parents("tbody")[1]);
-	el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
+	if (fct.indexOf('_col') > 0) {
+		el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
+	}
 	//////////////////////////////////////////////////////////////////////////////
 	/// DELETE
 	//////////////////////////////////////////////////////////////////////////////
@@ -3056,24 +3054,7 @@ function actionBtnClick(el, fct) {
 			else {
 				var el_tds = $(el_trs[i]).children();
 				var el_td = $(el_tds.filter(":eq("+x+")")[0]);
-				var new_td = $(el_tds[el_tds.length-2]).clone();
-				var el_inputs = $("textarea,input",new_td);
-				for ( var k = 0; k < el_inputs.length; k++) {
-					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-					$(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
-					$(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
-					if ( key.indexOf("format") == 0) {
-						$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
-					}
-					else if ( key.indexOf("content") == 0) {
-						$(el_inputs[k]).val( "").css( 'border', '2px solid #00FF00');
-					}
-					table_cell_uid++;
-				}
-				$("div[id^=preview]",new_td).each(function() {
-						$(this).html( "&nbsp;").css( 'border', '2px solid #00FF00')
-							.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
-					});
+				var new_td = insertCell(el_tds[el_tds.length-2]);
 				new_td.insertBefore( el_td);
 			}
 		}
@@ -3083,24 +3064,7 @@ function actionBtnClick(el, fct) {
 	else if (fct.indexOf('insert_row') == 0) {
 		var el_trs = el_tbody.children();
 		var el_tr = $(el_trs.filter(":eq("+y+")")[0]);
-		var new_tr = $(el_trs[el_trs.length-2]).clone();
-		var el_inputs = $("textarea,input",new_tr);
-		for ( var k = 0; k < el_inputs.length; k++) {
-			var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-			$(el_inputs[k]).attr( "id", key+"_" + table_cell_uid);
-			$(el_inputs[k]).attr( "name", key+"_" + table_cell_uid);
-			if ( key.indexOf("format") == 0) {
-				$(el_inputs[k]).val( "<dtml-var "getTextFormatDefault()">");
-			}
-			else if ( key.indexOf("content") == 0) {
-				$(el_inputs[k]).val( "").css( 'border', '2px solid #00FF00');
-			}
-			table_cell_uid++;
-		}
-		$("div[id^=preview]",new_tr).each(function() {
-				$(this).html( "&nbsp;").css( 'border', '2px solid #00FF00')
-					.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
-			});
+		var new_tr = insertCell(el_trs[el_trs.length-2]);
 		new_tr.insertBefore( el_tr);
 		$('#rows').val( parseInt($('#rows').val())-1);
 		table_cell_init();
@@ -3120,14 +3084,8 @@ function actionBtnClick(el, fct) {
 		var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
 		for ( var i = 0; i < el_trs.length; i++) {
 			var source_td = $($(el_trs[i]).children().filter(":eq("+source_x+")")[0]);
-			var source_inp = $("textarea,input",source_td);
 			var target_td = $($(el_trs[i]).children().filter(":eq("+target_x+")")[0]);
-			var target_inp = $("textarea,input",target_td);
-			for ( var j = 0; j < source_inp.length; j++) {
-				var v = $(source_inp[j]).val();
-				$(source_inp[j]).val( $(target_inp[j]).val());
-				$(target_inp[j]).val( v);
-			}
+			moveCell(source_td, target_td);
 		}
 	}
 	else if (fct.indexOf('move_row') == 0) {
@@ -3140,14 +3098,8 @@ function actionBtnClick(el, fct) {
 			target_y = target_y + 1;
 		}
 		var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
-		var source_inp = $("textarea,input",source_tr);
 		var target_tr = $(el_tbody.children().filter(":eq("+target_y+")")[0]);
-		var target_inp = $("textarea,input",target_tr);
-		for ( var j = 0; j < source_inp.length; j++) {
-			var v = $(source_inp[j]).val();
-			$(source_inp[j]).val( $(target_inp[j]).val());
-			$(target_inp[j]).val( v);
-		}
+		moveCell(source_tr, target_tr);
 	}
 	else {
 		var par = Math.max(x,y)-table_cell_offs;
@@ -3155,6 +3107,46 @@ function actionBtnClick(el, fct) {
 		fm.elements['function'].value = fct;
 		fm.elements['param'].value = par;
 		fm.submit();
+	}
+}
+
+function insertCell(source) {
+	var clone = $(source).clone();
+	$("td",clone).each(function() {
+			$("textarea,input",this).each(function() {
+					var key = this.id.substr(0,this.id.indexOf("_"));
+					$(this).attr( "id", key+"_" + table_cell_uid);
+					$(this).attr( "name", key+"_" + table_cell_uid);
+					if ( key.indexOf("format") == 0) {
+						$(this).val( "<dtml-var "getTextFormatDefault()">");
+					}
+					else if ( key.indexOf("content") == 0) {
+						$(this).val( "").css( 'border', '2px solid #00FF00');
+					}
+				});
+			$("div[id^=preview]",this).each(function() {
+					$(this).attr("id","preview_"+table_cell_uid).html( "&nbsp;").css( 'border', '2px solid #00FF00')
+						.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
+				});
+			table_cell_uid++;
+		});
+	return clone;
+}
+
+function moveCell(source, target) {
+	var source_inp = $("textarea,input",source);
+	var target_inp = $("textarea,input",target);
+	for ( var j = 0; j < source_inp.length; j++) {
+		var v = $(source_inp[j]).val();
+		$(source_inp[j]).val( $(target_inp[j]).val());
+		$(target_inp[j]).val( v);
+	}
+	var source_preview = $("div[id^=preview]",source);
+	var target_preview = $("div[id^=preview]",target);
+	for ( var j = 0; j < source_preview.length; j++) {
+		var v = $(source_preview[j]).html();
+		$(source_preview[j]).html( $(target_preview[j]).html());
+		$(target_preview[j]).html( v);
 	}
 }
 
@@ -3168,7 +3160,6 @@ $(function(){
 	table_cell_init();
 });
 
-//-->
 </script>
 
 <img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
@@ -3248,7 +3239,7 @@ $(function(){
         </div>
         <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless> contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
          <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
-        </div>             
+        </div>
        </<dtml-var tag>>
        </tr>
        </table>
@@ -3560,7 +3551,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.11]]></item>
+          <item key="revision"><![CDATA[1.6.12]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

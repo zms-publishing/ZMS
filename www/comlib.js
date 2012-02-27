@@ -2,31 +2,34 @@
  * Returns language.
  */
 function getZMILang() {
-	var lang = zmiParams['lang'];
-	if (typeof lang != 'undefined') {
-		return lang;
+	if (typeof zmiParams['lang'] == 'undefined') {
+		zmiParams['lang'] = $.ajax({
+			url: 'getPrimaryLanguage',
+			datatype:'text',
+			async: false
+			}).responseText;
 	}
-	return $.ajax({
-		url: 'getPrimaryLanguage',
-		datatype:'text',
-		async: false
-		}).responseText;
+	return zmiParams['lang'];
 }
 
 /**
  * Returns language-string.
  */
+var zmiLangStr = {}
 function getZMILangStr(key, data) {
 	if (typeof data == "undefined") {
 		data = {};
 	}
 	data['key'] = key;
-	return $.ajax({
-		url: 'getZMILangStr',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
+	if (typeof zmiLangStr[key] == 'undefined') {
+		zmiLangStr[key] = $.ajax({
+			url: 'getZMILangStr',
+			data: data,
+			datatype: 'text',
+			async: false
+			}).responseText;
+	}
+	return zmiLangStr[key];
 }
 
 /**

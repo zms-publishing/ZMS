@@ -134,8 +134,8 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-element'):
-    return self.getTextInput(fmName,elName,size,value,'password',enabled,REQUEST,css)
+  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-element', extra=''):
+    return self.getTextInput(fmName,elName,size,value,'password',enabled,REQUEST,css,extra)
 
 
   # ----------------------------------------------------------------------------

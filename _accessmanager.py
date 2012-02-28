@@ -306,6 +306,7 @@ class AccessableObject:
                 roles = userObj.getRoles()
                 domains = userObj.getDomains()
                 userFldr.userFolderEditUser(id, password, roles, domains)
+                message += self.getZMILangStr('ATTR_PASSWORD') + ': '
               except: 
                 message += _globals.writeError(self,'[manage_user]: can\'t change password')
               break
@@ -313,9 +314,11 @@ class AccessableObject:
         #-- Assemble message.
         message += self.getZMILangStr('MSG_CHANGED')
       
-      # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+      #-- Build json.
+      RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      return self.str_json(message)
 
 
 ################################################################################

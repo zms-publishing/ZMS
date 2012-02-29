@@ -172,10 +172,11 @@
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMS -->
 
-	<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext">
-	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
-</span>
+		tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">
+	The page-content
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMS -->]]>
                   </item>
@@ -397,10 +398,11 @@
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSDocument -->
 
-	<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext">
-	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
-</span>
+		tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">
+	The page-content
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSDocument -->]]>
                   </item>
@@ -705,7 +707,7 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFile -->
 
-<span tal:omit-tag="" tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
+<tal:block tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
 		title         python:zmscontext.attr('title');
@@ -714,19 +716,19 @@ return ''
 		align         python:zmscontext.attr('align');
 		displaytype   python:zmscontext.attr('displaytype');
 		abstract      python:zmscontext.attr('attr_abstract')">
-	<span tal:omit-tag="" tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0">
-		<span tal:omit-tag="" tal:condition="python:align in [ '', 'NONE']">
-			<span tal:omit-tag="" tal:define="global subclass python:subclass+['none']"></span>
-		</span>
-		<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
-			<span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
-		</span>
-		<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
-			<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
-		</span>
-		<span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
-			<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
-		</span>
+	<tal:block tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0">
+		<tal:block tal:condition="python:align in [ '', 'NONE']">
+			<tal:block tal:define="global subclass python:subclass+['none']"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+			<tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+		</tal:block>
 		<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
 			<span tal:omit-tag="" tal:condition="python:file">
 				<div class="title">
@@ -741,8 +743,8 @@ return ''
 				None
 			</span>
 		</div>
-	</span>
-</span>
+	</tal:block>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSFile -->]]>
                   </item>
@@ -965,10 +967,11 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFolder -->
 
-	<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext">
-	<span tal:omit-tag="" tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">The page-content</span>
-</span>
+		tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">
+	The page-content
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSFolder -->]]>
                   </item>
@@ -1201,16 +1204,18 @@ return ''
 		tal:define="global renderedtext python:zmscontext.renderText(format,'text',text,request);
 		            global bodyContent python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
 	</tal:block>
-	<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
-		<span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
-	</span>
-	<span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
-		<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
-	</span>
-	<span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
-		<span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
-	</span>
-	<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)" tal:content="structure bodyContent">The graphic</div>
+	<tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+		<tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+		<tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+		<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+	</tal:block>
+	<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)" tal:content="structure bodyContent">
+		The graphic
+	</div>
 </tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSGraphic -->]]>
@@ -1267,16 +1272,18 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSLib_page -->
 
-	<span tal:omit-tag="" tal:define="global 
+	<tal:block tal:define="global 
 		childNodes    python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
-		<span tal:omit-tag="" tal:condition="childNodes">
-			<span tal:omit-tag="" tal:content="structure here/bodyContent_PagePre">The page-pre-content</span>
-			<span tal:omit-tag="" tal:repeat="childNode childNodes">
-				<span tal:omit-tag="" tal:content="structure python:childNode.getBodyContent(request)">The page-element body-content</span>
-			</span>
-			<span tal:omit-tag="" tal:content="structure here/bodyContent_PagePost">The page-post-content</span>
-		</span>
-	</span>
+		<tal:block tal:condition="childNodes">
+			<tal:block tal:content="structure here/bodyContent_PagePre">The page-pre-content</tal:block>
+			<tal:block tal:repeat="childNode childNodes">
+				<tal:block tal:content="structure python:unicode(childNode.getBodyContent(request),'utf-8')">
+					The page-element body-content
+				</tal:block>
+			</tal:block>
+			<tal:block tal:content="structure here/bodyContent_PagePost">The page-post-content</tal:block>
+		</tal:block>
+	</tal:block>
 
 <!-- /bodyContentZMSLib_page -->]]>
                   </item>
@@ -1494,25 +1501,25 @@ if align:
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkContainer -->
 
-<span tal:omit-tag="" tal:define="global 
-    zmscontext options/zmscontext;
-    subclass      python:[];
-    align         python:zmscontext.attr('align')">
-  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
-  </span>
-  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
-  </span>
-  <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
-  </span>
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		subclass      python:[];
+		align         python:zmscontext.attr('align')">
+  <tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'LEFT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+  </tal:block>
   <div tal:condition="python:len(subclass)>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
-       tal:content="structure python:zmscontext.renderShort(request)">
+       tal:content="structure python:unicode(zmscontext.renderShort(request),'utf-8')">
     The content
   </div>
-</span>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSLinkContainer -->]]>
                   </item>
@@ -1896,23 +1903,23 @@ return zmscontext.attr('attr_dc_description')
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkElement -->
 
-<span tal:omit-tag="" tal:define="global 
-    zmscontext options/zmscontext;
-    subclass      python:[zmscontext.meta_id];
-    title         python:unicode(zmscontext.attr('title'),'utf-8');
-    titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
-    ref           python:zmscontext.attr('attr_url');
-    align         python:zmscontext.attr('align');
-    abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8')">
-  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+[align.lower()]"></span>
-  </span>
-  <span tal:omit-tag="" tal:condition="python:align in [ 'LEFT_FLOAT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatleft']"></span>
-  </span>
-  <span tal:omit-tag="" tal:condition="python:align in [ 'RIGHT_FLOAT']">
-    <span tal:omit-tag="" tal:define="global subclass python:subclass+['floatright']"></span>
-  </span>
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		subclass      python:[zmscontext.meta_id];
+		title         python:unicode(zmscontext.attr('title'),'utf-8');
+		titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
+		ref           python:zmscontext.attr('attr_url');
+		align         python:zmscontext.attr('align');
+		abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8')">
+  <tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'LEFT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+  </tal:block>
   <div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
     <div class="title" tal:condition="python:title.lower()!='medline' and title">
@@ -1920,13 +1927,17 @@ return zmscontext.attr('attr_dc_description')
       <a tal:condition="python:zmscontext.attr('attr_type')=='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt" target="_blank">The titlealt</a>
       <a tal:condition="python:zmscontext.attr('attr_type')!='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt">The titlealt</a>
     </div>
-    <div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
-    <div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
+    <div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">
+      The title
+    </div>
+    <div tal:condition="python:abstract" class="description" tal:content="structure abstract">
+      The abstract
+    </div>
     <a tal:condition="python:title.lower()=='medline'" 
       tal:attributes="href python:zmscontext.getLinkUrl(ref,request)"
       target="_blank"><img  tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="Medline" align="absmiddle" /></a>
   </div>
-</span>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSLinkElement -->]]>
                   </item>
@@ -3469,29 +3480,29 @@ if key.startswith('table_'):
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTable -->
 
-<span tal:omit-tag="" tal:define="global 
-        zmscontext options/zmscontext;
-        table         python:zmscontext.attr('table');
-        cols          python:zmscontext.attr('cols');
-        summary       python:unicode(zmscontext.attr('attr_dc_description'),'utf-8');
-        caption       python:unicode(zmscontext.attr('caption'),'utf-8');
-        align         python:zmscontext.attr('align').lower()">
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		table         python:zmscontext.attr('table');
+		cols          python:zmscontext.attr('cols');
+		summary       python:unicode(zmscontext.attr('attr_dc_description'),'utf-8');
+		caption       python:unicode(zmscontext.attr('caption'),'utf-8');
+		align         python:zmscontext.attr('align').lower()">
     <table tal:attributes="id python:zmscontext.id; class python:zmscontext.meta_id; summary python:summary">
         <caption tal:attributes="align align" tal:content="structure caption">The caption</caption>
         <colgroup tal:condition="python:zmscontext.attr('colgroup')">
-            <span tal:omit-tag="" tal:repeat="col python:zmscontext.attr('widths')">
-                <span tal:omit-tag="" tal:define="col_index repeat/col/index">
+            <tal:block tal:repeat="col python:zmscontext.attr('widths')">
+                <tal:block tal:define="col_index repeat/col/index">
                     <col tal:condition="python:col_index<len(cols) and cols[col_index]" tal:attributes="width python:str(cols[col_index])+'%'"/>
                     <col tal:condition="python:not (col_index<len(cols) and cols[col_index])" tal:attributes="width repeat/col"/>
-                </span>
-            </span>
+                </tal:block>
+            </tal:block>
         </colgroup>
         <tal:block tal:repeat="row table">
             <tal:block tal:condition="repeat/row/odd"><tal:block tal:define="global tr_class python:'odd'"></tal:block></tal:block>
             <tal:block tal:condition="repeat/row/even"><tal:block tal:define="global tr_class python:'even'"></tal:block></tal:block>
             <tr tal:attributes="class tr_class">
-                <span tal:omit-tag="" tal:repeat="column row">
-                    <span tal:omit-tag="" tal:define="
+                <tal:block tal:repeat="column row">
+                    <tal:block tal:define="
                             row_index     repeat/row/index;
                             col_index     repeat/column/index;
                             tag           python:column.get('tag','');
@@ -3499,20 +3510,20 @@ if key.startswith('table_'):
                             content       python:column.get('content','');
                             col_text      python:zmscontext.dt_html(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request),request)">
                         <td tal:condition="python:str(tag).lower()=='td'" tal:attributes="colspan python:column.get('colspan',1)">
-                            <span tal:omit-tag="" tal:condition="python:col_text" tal:content="structure col_text">The cell</span>
-                            <span tal:omit-tag="" tal:condition="python:not (col_text)">&nbsp;</span>
+                            <tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>
+                            <tal:block tal:condition="python:not (col_text)">&nbsp;</tal:block>
                         </td>
                         <th tal:condition="python:str(tag).lower()=='th'" tal:attributes="colspan python:column.get('colspan',1)">
-                            <span tal:omit-tag="" tal:condition="python:col_text" tal:content="structure col_text">The cell</span>
-                            <span tal:omit-tag="" tal:condition="python:not (col_text)">&nbsp;</span>
+                            <tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>
+                            <tal:block tal:condition="python:not (col_text)">&nbsp;</tal:block>
                         </th>
                         <td tal:condition="python:str(tag).lower() not in ['td','th']" style="background:transparent;"></td>
-                    </span>
-                </span>
+                    </tal:block>
+                </tal:block>
             </tr>
         </tal:block>
     </table>
-</span>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSTable -->]]>
                   </item>
@@ -3873,30 +3884,30 @@ return unicode(printed).encode('utf-8')
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSTeaserContainer.renderShort -->
 
-<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext">
 	<div class="form-small" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)">
 		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang'])">
 			<img tal:attributes="src python:'%sinternal_link.gif'%zmscontext.MISC_ZMS; title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)" width="16" height="16" border="0" align="absmiddle"/>
 		</a>
-		<span tal:omit-tag="" tal:define="global 
+		<tal:block tal:define="global 
 				url      python:zmscontext.getLinkUrl(teaserElmnt.attr('attr_url'));
 				img_src  python:teaserElmnt.attr('attr_img_src')+'?';
 				title    python:teaserElmnt.attr('title');
 				abstract python:zmscontext.search_quote(teaserElmnt.attr('attr_abstract'))">
-			<span tal:omit-tag="" tal:condition="python:title">
+			<tal:block tal:condition="python:title">
 				<a tal:condition="python:url" tal:attributes="href url" target="_blank" class="zmi" tal:content="title"><b>The title</b></a>
-				<span tal:omit-tag="" tal:condition="python:not url" tal:content="title">The title</span>
-			</span>
-			<span tal:omit-tag="" tal:condition="python:not title">
-				<span tal:omit-tag="" tal:condition="python:img_src">
+				<tal:block tal:condition="python:not url" tal:content="title">The title</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:not title">
+				<tal:block tal:condition="python:img_src">
 					<div><i>&laquo;<span tal:omit-tag="" tal:content="python:img_src[img_src.rfind('/')+1:img_src.find('?')]"></span>&raquo;</i></div>
-				</span>
-			</span>
+				</tal:block>
+			</tal:block>
 			<div tal:content="structure abstract">The abstract</div>
-		</span>
+		</tal:block>
 	</div>
-</span>
+</tal:block>
 
 
 <!-- /ZMSTeaserContainer.renderShort -->]]>
@@ -4203,7 +4214,7 @@ return zmscontext.attr('text')
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
 
-<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext;
 		teaserCntnr     python:zmscontext.getParentNode();
 		subclass        python:[teaserCntnr.meta_id];
@@ -4212,9 +4223,9 @@ return zmscontext.attr('text')
 		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
 		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
 	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
-		<span tal:omit-tag="" tal:condition="python:bgcolor_border">
-			<span tal:omit-tag="" tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></span>
-		</span>
+		<tal:block tal:condition="python:bgcolor_border">
+			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
+		</tal:block>
 		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
 			The teaser-element
 		</div>
@@ -4222,7 +4233,7 @@ return zmscontext.attr('text')
 	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
 		The teaser-element
 	</div>
-</span>
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
                   </item>
@@ -4384,13 +4395,14 @@ $(function() {
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTextarea -->
 
-<span tal:omit-tag="" tal:define="global 
+<tal:block tal:define="global 
 		zmscontext options/zmscontext;
 		text          python:unicode(zmscontext.getText(request),'utf-8');
 		format        python:unicode(zmscontext.attr('format'),'utf-8');
-		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)">
-	<span tal:omit-tag="" tal:content="structure renderedText">The text</span>
-</span>
+		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
+		tal:content="structure renderedText">
+	The text
+</tal:block>
 
 <!-- /bodyContentZMSCustom_ZMSTextarea -->]]>
                   </item>

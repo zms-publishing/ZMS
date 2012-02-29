@@ -198,6 +198,7 @@ a.zmi:hover, a.zmi:active {
 	text-align:right;
 	float:right;
 }
+.zmi_col_right span.ui-helper-clickable { text-decoration:none; }
 
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -213,7 +214,6 @@ body.zmi.maximized div.zmi {
 	width:13px;
 	height:11px;
 	cursor:pointer;
-	border-left: 1px solid white;
 	margin-left: 4px;
 	background:url(/++resource++zms_/img/maximize.png);
 }
@@ -222,9 +222,9 @@ body.zmi.maximized #zmi_maximize {
 	background:url(/++resource++zms_/img/minimize.png);
 }
 
-body.zmi.maximized  #zmi_header,
-body.zmi.maximized  #zmi_logo,
-body.zmi.maximized  #ZMIManageTabsBar {
+body.zmi.maximized #zmi_header,
+body.zmi.maximized #zmi_logo,
+body.zmi.maximized #ZMIManageTabsBar {
  background-color:#fff !important;
 }
 body.zmi.maximized div.zmiRenderShort {

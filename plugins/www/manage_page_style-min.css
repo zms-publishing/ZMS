@@ -43,8 +43,9 @@ a.zmi:hover,a.zmi:active{font-family:Arial,sans-serif;color:#f90}
 .zmiTeaserColor>.form-small{color:#222}
 .zmi_col_left{vertical-align:middle;text-align:left;float:left}
 .zmi_col_right{vertical-align:middle;text-align:right;float:right}
+.zmi_col_right span.ui-helper-clickable {text-decoration:none}
 body.zmi.maximized div.zmi{width:auto}
-#zmi_maximize{width:13px;height:11px;cursor:pointer;border-left:1px solid white;margin-left:4px;background:url(/++resource++zms_/img/maximize.png)}
+#zmi_maximize{width:13px;height:11px;cursor:pointer;margin-left:4px;background:url(/++resource++zms_/img/maximize.png)}
 body.zmi.maximized #zmi_maximize{background:url(/++resource++zms_/img/minimize.png)}
 body.zmi.maximized #zmi_header,body.zmi.maximized #zmi_logo,body.zmi.maximized #ZMIManageTabsBar{background-color:#fff !important}
 body.zmi.maximized div.zmiRenderShort{width:auto}

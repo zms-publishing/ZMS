@@ -497,7 +497,7 @@ class ZMSSqlDb(ZMSObject):
                         cid = cid[1:-1]
                       ucid = cid.upper() 
                       uctype = cl[1].upper()
-                      if not ucid in ['CHECK','FOREIGN','PRIMARY'] and not uctype.startswith('KEY') and not uctype.startswith('('):
+                      if not ucid in ['CHECK','FOREIGN','PRIMARY'] and not uctype.startswith('KEY') and not uctype.startswith('(') and not ucid.startswith('\''):
                         col = {}
                         col["id"] = cid
                         col["description"] = ' '.join(cl[1:])

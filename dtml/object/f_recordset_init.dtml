@@ -36,7 +36,11 @@
       ></dtml-try
      ></dtml-if
     ><dtml-except
-     ><dtml-call "l.extend([id,None])"
+     ><dtml-if "grid_col.get('type')=='checkbox' or grid_col.get('checkbox')"
+      ><dtml-call "l.extend([id,0])"
+     ><dtml-else
+      ><dtml-call "l.extend([id,None])"
+     ></dtml-if
     ></dtml-try
    ></dtml-if
   ></dtml-let

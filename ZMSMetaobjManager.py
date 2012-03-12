@@ -741,7 +741,7 @@ class ZMSMetaobjManager:
           newCustom += '##bind script=script\n'
           newCustom += '##bind subpath=traverse_subpath\n'
           newCustom += '##parameters='
-          if newType in ['py']: newCustom += 'zmscontext'
+          if newType in ['py']: newCustom += 'zmscontext=None'
           newCustom += '\n'
           newCustom += '##title='
           if newType in ['py']: newCustom += newType+': '

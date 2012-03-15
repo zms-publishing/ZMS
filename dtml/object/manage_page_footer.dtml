@@ -16,14 +16,14 @@
  </dtml-in>
  </select>
  <dtml-if ZMI_TIME>
-  <span class="ui-helper-clickable" title="<dtml-var "ZopeTime().timeTime()-ZMI_TIME" fmt="%.2f"> secs." onclick="$('#zmi-debug').show();">&bullet;</span>
+  <span class="ui-helper-clickable" title="<dtml-var "ZopeTime().timeTime()-ZMI_TIME" fmt="%.2f"> secs." onclick="$('#zmi-debug').show();">&nbsp;</span>
  </dtml-if>
  </form>
 </div><!-- .zmi_col_right -->
 </div><!-- .zmi-document-margin -->
 </div><!-- #zmi_footer -->
+<div id="zmi-debug" style="display:none;color:#00C;font-family:Courier;background-color:#fff;border:1px solid #000;"></div>
 </div><!-- [manage_page_header].zmi -->
-<div id="zmi-debug" style="display:none;color:#00F;font-family:Courier;background-color:#fff;border:1px solid #00F;"></div>
 <dtml-except>[manage_page_footer] <dtml-var error_type>: <dtml-var error_value></dtml-try>
 </body>
 </html>

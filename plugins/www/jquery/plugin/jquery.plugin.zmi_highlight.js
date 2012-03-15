@@ -81,7 +81,12 @@ function zmiInitHighlight(s) {
 
 
 $(function() {
-	zmiInitHighlight(zmiParams[zmiParams['ZMS_HIGHLIGHT']]);
+	try {
+		zmiInitHighlight(zmiParams[zmiParams['ZMS_HIGHLIGHT']]);
+	}
+	catch (e) {
+		// do nothing
+	}
 });
 
 // ############################################################################

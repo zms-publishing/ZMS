@@ -21,6 +21,7 @@ from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from OFS.Image import Image
 import Globals
+import codecs
 import copy
 import urllib
 import tempfile
@@ -546,15 +547,18 @@ class Exportable(_filtermanager.FilterItem):
           # @see http://bugs.php.net/bug.php?id=8974
           html = self.re_sub('^\s*', '', html)
           
-          f = open( filename, 'w')
+          # @see http://docs.python.org/howto/unicode.html (Reading and Writing Unicode Data)
+          encoding = REQUEST.get( 'ZMS_CHARSET', 'utf-8')
+          mode = 'w'
+          f = codecs.open( filename, mode=mode, encoding=encoding)
           f.write( html)
           f.close()
           
           # Root folder requires and defaults to "index.html" at most systems.
           if key == 'index' and lang == self.getPrimaryLanguage():
             filename = '%s/%s%s'%( path, key, obj.getPageExt( REQUEST))
-            f = open(filename,'w')
-            f.write(html)
+            f = codecs.open( filename, mode=mode, encoding=encoding)
+            f.write( html)
             f.close()
         
         except:

@@ -136,6 +136,23 @@ class ZMSGlobals:
 
 
     # --------------------------------------------------------------------------
+    #  ZMSGlobals.createBlobInContext:
+    # --------------------------------------------------------------------------
+    def createBlobInContext( self, id, blob, container):
+      """
+      Creates a new Zope native-representative (Image/File) of given blob in container.
+      """
+      filename = blob.getFilename()
+      data = blob.getData()
+      if blob.getContentType().startswith('image'):
+        container.manage_addImage( id=id, title=filename, file=data)
+      else:
+        container.manage_addImage( id=id, title=filename, file=data)
+      ob = getattr(container,id)
+      return ob
+
+
+    # --------------------------------------------------------------------------
     #  ZMSGlobals.FileFromData:
     # --------------------------------------------------------------------------
     def FileFromData( self, data, filename='', content_type=None):

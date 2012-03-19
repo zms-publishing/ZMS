@@ -1106,7 +1106,7 @@ class VersionManagerContainer:
     #  VersionManagerContainer.getVersionContainer
     # --------------------------------------------------------------------------
     def getVersionContainer(self):
-      if self.isVersionContainer():
+      if self.isVersionContainer() or self.getParentNode() is None:
         return self
       return self.getParentNode().getVersionContainer()
 
@@ -1201,7 +1201,9 @@ class VersionManagerContainer:
       lang = REQUEST['lang']
       # Enter Container.
       if not self.isVersionContainer():
-        return self.getVersionContainer().autoWfTransition(REQUEST)
+        versionContainer = self.getVersionContainer()
+        if versionContainer != self:
+          return versionContainer.autoWfTransition(REQUEST)
       
       # Enter Workflow.
       self.syncObjModifiedChildren(REQUEST)
@@ -1322,7 +1324,7 @@ class VersionManagerContainer:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### ZMS.Title ####
-      if self.meta_id=='ZMS':
+      if self.getLevel()==0:
         self.getHome().title = self.getTitle(REQUEST)
       
       ##### Version ####

@@ -414,13 +414,14 @@ def isPreviewRequest(REQUEST):
 _globals.getPageWithElements:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getPageWithElements(self, REQUEST):
-  obs = self.getChildNodes(REQUEST)
-  for ob in obs:
-    if ob.isVisible(REQUEST):
-      if ob.isPageElement():
-        return self
-      elif ob.isPage():
-        return getPageWithElements(ob,REQUEST)
+  if self.isPageContainer():
+    obs = self.getChildNodes(REQUEST)
+    for ob in obs:
+      if ob.isVisible(REQUEST):
+        if ob.isPageElement():
+          return self
+        elif ob.isPage():
+          return getPageWithElements(ob,REQUEST)
   return self
 
 

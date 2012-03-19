@@ -164,7 +164,6 @@ class ZMSCustom(ZMSContainerObject):
 
     # Templates.
     # ----------
-    manage_container = HTMLFile('dtml/ZMSContainerObject/manage_main', globals())
     manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
     manage_properties = HTMLFile('dtml/ZMSObject/manage_main', globals()) # -"-
     manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals())

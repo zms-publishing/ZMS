@@ -183,6 +183,10 @@ class Builder:
         if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.has_key(name):
           attrs['meta_id'] = name
           name = 'ZMSCustom'
+        # handle alias for zms2go
+        if name == 'ZMS' and self.oRootNode is not None:
+          attrs['meta_id'] = name
+          name = 'ZMSCustom'
         
         if self.bInRootTag or \
            self.oRoot == None or \

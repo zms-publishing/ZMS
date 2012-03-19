@@ -60,11 +60,13 @@ import zmslog
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, profile, REQUEST):
+  _globals.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
   files = self.getConfFiles()
   for filename in files.keys():
     label = files[filename]
     if label.startswith(profile + '.'):
+      _globals.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
         self.importConfPackage(filename,REQUEST,createIfNotExists)
       elif filename.find('.xml') > 0:

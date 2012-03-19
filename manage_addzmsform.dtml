@@ -219,6 +219,10 @@
  <td><input type="radio" name="initialization:int" value="1" checked="checked"></td>
 </tr>
 <tr valign="middle">
+ <td><div class="form-label"><em>with ZMS2Go content&nbsp;<sup style="background-color:#DCE204;color:#FFF;"><small>&nbsp;NEW&nbsp;</small></sup></em></div></td>
+ <td><input type="radio" name="initialization:int" value="3"></td>
+</tr>
+<tr valign="middle">
  <td><div class="form-label"><em>with eLearning components</em></div></td>
  <td><input type="radio" name="initialization:int" value="2"></td>
 </tr>

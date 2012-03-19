@@ -46,7 +46,7 @@
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr valign="middle">
 <td>
-<table cellspacing="0" cellpadding="0" border="0">
+<table cellspacing="0" cellpadding="0" border="0" class="zmiStandardEditorHeadline">
 <tr valign="middle">
  <dtml-comment> ***** Label ***** </dtml-comment>
  <dtml-if lang_str><td class="form-label" style="padding:4px;"><dtml-var lang_str></td></dtml-if>
@@ -124,7 +124,7 @@ function zmiRichtextEditorMaximize(ta) {
 			zmiRichtextResize(id);
 		}
 		catch (e) {
-			$("#ZMIManageTabsButtons").html(e);
+			zmiWriteDebug("[zmiRichtextEditorMaximize]: e="+e);
 		}
 	}
 }
@@ -153,7 +153,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
 </dtml-unless>
 <dtml-comment> ***** RichText-Editor (de-activate) ***** </dtml-comment>
 <dtml-if "REQUEST.get('htmledit_fmt')"
-><table cellspacing="0" cellpadding="0" border="0" width="100%"
+><table cellspacing="0" cellpadding="0" border="0" width="100%" class="zmiRichtextEditorHeadline"
 ><tr valign="middle"
  ><dtml-comment> ***** Label ***** </dtml-comment
  ><dtml-if lang_str><td class="form-label" style="padding:4px;"><dtml-var lang_str></td></dtml-if

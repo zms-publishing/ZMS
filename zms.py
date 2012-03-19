@@ -42,7 +42,6 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import zmscontainerobject
 import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from _versionmanager import getObjStates
 from zmscustom import ZMSCustom
@@ -251,7 +250,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.recreateCatalog(lang)
   
   ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'zms', REQUEST)
+  conf = 'zms'
+  if REQUEST.get('initialization',0) == 3:
+    conf = 'zms2go'
+  _confmanager.initConf(obj, conf, REQUEST)
   
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default', REQUEST)
@@ -275,9 +277,9 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 #  initContent:
 # ------------------------------------------------------------------------------
 def initContent(self, filename, REQUEST):
-  xmlfile = open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename),'rb')
-  _importable.importFile( self, xmlfile, REQUEST, _importable.importContent)
-  xmlfile.close()
+  file = open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename),'rb')
+  _importable.importFile( self, file, REQUEST, _importable.importContent)
+  file.close()
 
 
 ################################################################################
@@ -306,6 +308,8 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Default content ####
     if REQUEST.get('initialization',0)==1:
       initContent(obj,'content.default.zip',REQUEST)
+    elif REQUEST.get('initialization',0)==3:
+      initContent(obj,'zms2go.default.zip',REQUEST)
     
     ##### E-Learning components ####
     if REQUEST.get('initialization',0)==2:
@@ -383,7 +387,7 @@ def containerFilter(container):
 ################################################################################
 ################################################################################
 class ZMS(
-        zmscontainerobject.ZMSContainerObject,
+        ZMSCustom,
         _accessmanager.AccessManager,
         _builder.Builder,
         _confmanager.ConfManager,
@@ -403,18 +407,22 @@ class ZMS(
 
     # Management Options.
     # -------------------
-    manage_options = (
-    {'label': 'TAB_EDIT',         'action': 'manage_main'},
-    {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
-    {'label': 'TAB_ACCESS',       'action': 'manage_users'},
-    {'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'},
-    {'label': 'TAB_TASKS',        'action': 'manage_tasks'},
-    {'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'},
-    {'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'},
-    {'label': 'TAB_CONFIGURATION','action': 'manage_customize'},
-    {'label': 'TAB_SEARCH',       'action': 'manage_search'},
-    {'label': 'TAB_PREVIEW',      'action': 'preview_html'},
-    )
+    def manage_options(self):
+      pc = self.isPageContainer()
+      root = self.getLevel() == 0
+      opts = []
+      opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
+      if pc:
+        opts.append({'label': 'TAB_PROPERTIES',   'action': 'manage_properties'})
+      opts.append({'label': 'TAB_ACCESS',       'action': 'manage_users'})
+      opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
+      opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
+      opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
+      opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
+      opts.append({'label': 'TAB_CONFIGURATION','action': 'manage_customize'})
+      opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
+      opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'})
+      return tuple(opts)
 
     # Management Permissions.
     # -----------------------

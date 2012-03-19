@@ -4,7 +4,7 @@
  <dtml-call "REQUEST.set('id','')">
 </dtml-if>
 
-<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" meta_types="filter( lambda x: x not in ['ZMS'], metaObjIds)" valid_types="valid_datatypes+valid_zopetypes+meta_types+['*']"
+<dtml-let meta_attrs="getMetadictAttrs()" metaObjIds="getMetaobjIds()" metaObjMap="{}" valid_types="valid_datatypes+valid_zopetypes+metaObjIds+['*']"
 ><dtml-in metaObjIds
 ><dtml-let x=sequence-item
 ><dtml-call "operator_setitem(metaObjMap,x,getMetaobj(x))"
@@ -120,7 +120,7 @@ function populateType(el, datatypes, metaattrs, foreignkeys, objecttypes, zopety
       }
       if ( foreignkeys) {
         <dtml-call "REQUEST.set('count',0)"
-        ><dtml-in meta_types
+        ><dtml-in metaObjIds
          ><dtml-let x=sequence-item metaObj="metaObjMap[x]"
           ><dtml-if "metaObj['type']=='ZMSRecordSet'"
            ><dtml-if "count==0">addOption( el, '--- <dtml-var "getZMILangStr('ATTR_FK')"> ---', '', selectedValue);
@@ -133,7 +133,7 @@ function populateType(el, datatypes, metaattrs, foreignkeys, objecttypes, zopety
       }
       if ( objecttypes) {
         addOption( el, '--- <dtml-var "getZMILangStr('ATTR_OBJECTS')"> ---', '', selectedValue);
-        <dtml-in meta_types><dtml-let meta_type=sequence-item>
+        <dtml-in metaObjIds><dtml-let meta_type=sequence-item>
         addOption( el, '<dtml-var "display_type(REQUEST,meta_type)">', '<dtml-var meta_type>', selectedValue);
         </dtml-let></dtml-in>
         addOption( el, '--- <dtml-var "getZMILangStr('ATTR_SEQUENCE')"> ---', '', selectedValue);
@@ -673,7 +673,7 @@ function enabledCheckboxClickResponse(data) {
                ><option value="<dtml-var "oAttr['type']">" title="<dtml-var "metadictAttr['name']">" selected="selected"><dtml-var "metadictAttr['name']"></option
               ></dtml-if
              ></dtml-let
-            ><dtml-elif "oAttr['type'] in meta_types"
+            ><dtml-elif "oAttr['type'] in metaObjIds"
              ><option value="<dtml-var "oAttr['type']">" title="<dtml-var "display_type(REQUEST,oAttr['type'])">" selected="selected"><dtml-var "display_type(REQUEST,oAttr['type'])"></option
             ><dtml-elif "oAttr['type']=='*'"
              ><option value="<dtml-var "oAttr['type']">" selected="selected"><dtml-var "getZMILangStr('ATTR_CUSTOM')"> (*)</option
@@ -727,8 +727,8 @@ function enabledCheckboxClickResponse(data) {
               ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "bool(_['sequence-item'])"></option>
              ></dtml-in
             ></select
-           ><dtml-elif "(oAttr.get('mandatory',0) and oAttr['type'] in meta_types) or 
-                        (oAttr.get('repetitive',0) and oAttr['type'] in meta_types)"
+           ><dtml-elif "(oAttr.get('mandatory',0) and oAttr['type'] in metaObjIds) or 
+                        (oAttr.get('repetitive',0) and oAttr['type'] in metaObjIds)"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"/>
             <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
             <input class="form-small" type="file" name="attr_custom_<dtml-var "oAttr['id']">" size="10" onchange="changeCustom(this);"/>

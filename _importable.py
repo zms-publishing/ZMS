@@ -41,7 +41,6 @@ from _blobfields import recurse_uploadRessources, uploadRessources
 #  Process objects after import.
 # ------------------------------------------------------------------------------
 def recurse_importContent(self, folder):
-  _globals.writeBlock( self, '[recurse_importContent]')
   message = ''
   
   # Cleanup.
@@ -101,6 +100,7 @@ def importFile(self, file, REQUEST, handler):
     filename = file.filename
   else: 
     filename = file.name
+  _globals.writeBlock( self, '[importFile]: filename='+filename)
 
   # Create temporary folder.
   folder = tempfile.mktemp()
@@ -127,6 +127,7 @@ def importFile(self, file, REQUEST, handler):
     filename = _filtermanager.importFilter(self, filename, REQUEST.get('filter',''), REQUEST)
   
   # Import XML-file.
+  _globals.writeBlock( self, '[importFile]: filename='+filename)
   f = open(filename, 'r')
   message += handler(self, f)
   f.close()

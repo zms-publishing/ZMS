@@ -551,7 +551,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
         xml.append(toCdata(self,s_value,xhtml))
   
   # Return xml.
-  return ''.join(xml)
+  return ''.join(map(lambda x: str(x),xml))
 
 
 # ------------------------------------------------------------------------------

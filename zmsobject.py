@@ -464,9 +464,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       if obj_type in self.getMetaobjIds( sort=0):
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
-          value = metaObjAttr.get( 'custom', None)
-          if value is not None and type(value) is str:
-            value = self.dt_html( value, REQUEST)
+          if metaObjAttr is not None and metaObjAttr['type'] == 'method':
+            value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
+          elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
+            value = metaObjAttr['py'](zmscontext=self)
+          else:
+            value = metaObjAttr.get( 'custom', None)
           if value is not None and type(value) is not str:
             return value.absolute_url()
         metaObj = self.getMetaobj( obj_type)

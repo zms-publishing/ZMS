@@ -130,7 +130,8 @@ class ZMSMetaobjManager:
       id = item['key']
       meta_types = self.model.keys()
       ids = filter( lambda x: self.model[x].get('zms_system',0)==1, meta_types)
-      if (createIfNotExists == 1 or id in ids) and (createIdsFilter is None or id in createIdsFilter):
+      if (createIfNotExists == 1 or (id in ids and item.get('value').get('package')==self.model.get(id).get('package'))) and \
+         (createIdsFilter is None or (id in createIdsFilter)):
         # Register Meta Attributes.
         metadictAttrs = []
         if id in meta_types:

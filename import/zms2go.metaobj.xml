@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMS]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.icon"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Icon
+##
+# --// BO icon //--
+
+try:
+  if zmscontext.getLevel()==0:
+    key = 'icon_home'
+  else:
+    key = 'icon_document'
+  return getattr(zmscontext.metaobj_manager,'ZMS.%s'%key)
+except:
+  return None
+
+# --// EO icon //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[icon]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMS.icon>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.icon_disabled"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Icon (Disabled)
+##
+# --// BO icon_disabled //--
+
+try:
+  if zmscontext.getLevel()==0:
+    key = 'icon_home'
+  else:
+    key = 'icon_document'
+  return getattr(zmscontext.metaobj_manager,'ZMS.%s_disabled'%key)
+except:
+  return None
+
+# --// EO icon_disabled //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[icon_disabled]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMS.icon_disabled>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zms.gif" type="file">47494638396110001000b300008b5826dca7277484b0eec93ad4cbb9f7dc55d4b274ececdcfc02fc666d99e6bc3d8499c4e6f7fc7079a2f3cf47dfb12c21f90401000008002c000000001000100003046010c98908a19812a56ed64e5138deb78962672a28aa6a4ae8c4f25b3d4eae1c07ed3c17c263e0183c0e0cc6615804120203450099544207818b2130ad560f5cc384b0a80200d54449524e9ed39936e39d4cc4cde87a5cc06f341280761f831311003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_home]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon: Home]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zms_disabled.gif" type="file">47494638396110001000b30000fc02fc848684c4c6c4acaaaceceaec646264b4b6b4d4d6d47c7a7c9496946c6e6cb4b2b4f4f2f4cccaccbcbabc00000021f90401000000002c000000001000100003045f10c8095aa39836e76ed6c271589fb48962f79d68ea4d5b333a821cc34bdd1804d1d58b4b6350130c080c068128305a8886a332b96c0e2e8b8134c95d0e16b004b750e02a5e1271928c6428326a02d90c1f97936f4c22c04720148079258311003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_home_disabled]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon: Home (Disabled)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsdocument.gif" type="file">47494638396110001000b30000fc02fc8787aeb7c7e4d6ebfcb5d8faa0a6c4c6e1fbf7fbfcb8dffc547ab484baec8f98b9afb9d17496d4acd0fc7573a521f90401000000002c00000000100010000304691008c158592bbc02ba6747281e8db0781d3886cda024a8bab606f378c53a904d7f77391d6128f80116bac36060301891a2e5d2c03406a24aa981605566a74daee7faa51a100871e7aa1da0d36a40403a4513100ee343d97c0f1d791e0f744c6f697a0f898a8b891d11003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_document]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon: Document]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsdocument_disabled.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c6c4e4e6e4a4a6a4d4d2d47476749c9a9cbcbabcfcfafc949294acaeacdcdadccccacc7c7a7cd4d6d421f90401000000002c000000001000100003046e1008b110512a3802ba47492826817078dd220ea2322c060a8ea1fb207147d02c86399e1daf4014003b0a5e623060308e80c388c964347380c06a496514a05a16b5e92c60b5dc66f3f1f87ac2d501bb6d7e8fd7ed4703ea583a1f0c740d461e0e7781736e1d0e0e068c8e8d8f4711003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_document_disabled]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon: Document (Disabled)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[<script>
+$(function(){
+	$("tr#tr_titlealt").hide();
+	$("tr#tr_title").hide();
+	$("table.zmiRichtextEditorHeadline").hide();
+	var lang = '<dtml-var lang>';
+	var titlealt = '<div class="titlealt" style="border:1px solid #999;background-color:#DFF1FF;"><span class="skip">Titlealt</span>'+$("#titlealt_"+lang).val()+'</div>';
+	var title = '<div class="title" style="border:1px solid #999;background-color:#DFF1FF;"><span class="skip">Title</span>'+$("#title_"+lang).val()+'</div>';
+	var text = $("#text_"+lang).val();
+	$("#text_"+lang).val(titlealt+title+text);
+});
+</script>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[titlealt]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[DC.Title.Alt]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[titlealt]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[title]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[DC.Title]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[title]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[text]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Text]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[richtext]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[e]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[ZMS]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Objects]]></item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type"><![CDATA[*]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[_e]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Objects]]></item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type"><![CDATA[*]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMS -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext"
+		tal:content="structure python:zmscontext.attr('text')">
+	The page-content
+</tal:block>
+
+<!-- /bodyContentZMSCustom_ZMS -->]]>
+                  </item>
+                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMS]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: ZMS]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMS.bodyContentZMSCustom_ZMS>]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[ZMS]]></item>
+          <item key="name"><![CDATA[ZMSRichDocument]]></item>
+          <item key="package"><![CDATA[com.zms2go.foundation]]></item>
+          <item key="revision"><![CDATA[0.9.0]]></item>
+          <item key="type"><![CDATA[ZMSDocument]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSTeaserContainer]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsteasercontainer_16x16.gif" type="file">47494638396110001000b30000040284c48e0c848284fcee84fcfebcfc02fcfcd25cfcfe9c4c4e4c6c6e6cfcf274fcfeecfce26cfcfe84fcfed4fcfaac21f90401000005002c0000000010001000030470b084496b2858aecdfbba58e08c23408e5348ac00d102cf1a7cd273dc407edf62200483460eb018361a01422011381e8dcec061091c2800d701c0aa685219608636cce8229960433aac062e259680c13001bf256b867c694f64e2134c010802190502098989540985868f217790907711003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsteasercontainer_disabled_16x16.gif" type="file">47494638396110001000b300004c4e4c848284d4d6d4eceaece4e2e4f4f6f4fc02fcdcdedcf4f2f46c6e6c8c8e8cdcdadcfcfafceceeece4e6e40000ff21f90401000006002c000000001000100003046bd0a849ab3258b2cd3bbb98e225de14220c92a86cf17d1252206ab2a688a8040ad2d824204d97500c068801f098ec298a474742493d3a8b87c582b0486cb584ab62cb2d8317c6a7c4a210082684700213d0dadb4fae3ac47e4e000119060140367e0981828a7c738b8e7b11003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_disabled]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<dtml-let
+  teaserCntnr="this()"
+  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
+  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
+  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)"
+  element="[]">
+
+<dtml-call "element.append('<div class=\'ZMSTeaserElement\' style=\'width:30px;\'>')">
+<dtml-call "element.append('<div align=\'center\' class=\'title\'')">
+<dtml-if bgcolor_title><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_title,'transparent'))"></dtml-if>
+<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TITLE')))">
+<dtml-call "element.append('<div align=\'center\' class=\'text\'')">
+<dtml-if bgcolor_text><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_text,'transparent'))"></dtml-if>
+<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TEXT')))">
+<dtml-call "element.append('</div>')">
+<dtml-let element_icon="''.join(element)">
+
+<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BORDERSTYLE'))">
+
+<table cellspacing="2" cellpadding="1" border="0">
+<tr valign="top">
+
+<dtml-comment> ##### Border-Style 1=SOLID ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="1"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==1"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_SOLID')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+      <dtml-var element_icon>
+      <dtml-var element_icon>
+     </div>
+    </div>
+   </td>
+
+<dtml-comment> ##### Border-Style 2=SINGLE ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==2"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_SINGLE')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
+      <dtml-var element_icon>
+     </div>
+    </div>
+   </td>
+
+<dtml-comment> ##### Border-Style 3=NONE ##### </dtml-comment>
+   <td>
+    <div class="form-element">
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="3"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==3"> checked="checked"</dtml-if>/>
+     <dtml-var "getZMILangStr('OPT_AB_NONE')">&nbsp;
+    </div>
+   </td>
+   <td>
+    <div id="Teaser" style="width:30px;">
+     <dtml-var element_icon>
+     <dtml-var element_icon>
+     <dtml-var element_icon>
+    </div>
+   </td>
+
+</tr>
+</table>
+
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['attr_borderstyle'])">
+
+<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BGCOLORS'))">
+
+</dtml-let>
+</dtml-let>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"><![CDATA[1]]></item>
+                  <item key="id"><![CDATA[attr_borderstyle]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Border-Style]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[int]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"><![CDATA[primColorStrong0]]></item>
+                  <item key="id"><![CDATA[attr_bgcolor_border]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Background-Color (Border)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[color]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"><![CDATA[primColorLight0]]></item>
+                  <item key="id"><![CDATA[attr_bgcolor_title]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Background-Color (Title)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[color]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"><![CDATA[neutralColorWhite]]></item>
+                  <item key="id"><![CDATA[attr_bgcolor_text]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Background-Color (Text)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[color]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[e]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[ZMSNote]]></item>
+                      <item><![CDATA[ZMSFile]]></item>
+                      <item><![CDATA[ZMSLinkElement]]></item>
+                      <item><![CDATA[type(ZMSTeaserElement)]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Teaser-Elements]]></item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type"><![CDATA[*]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "getTeaserElements"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Function: Teaser-Elements
+##
+# --// BO getTeaserElements //--
+
+request = container.REQUEST
+teaserElmnts = []
+obs = context.breadcrumbs_obj_path(portalMaster=False)
+obs.reverse()
+this = context.getSelf()
+for ob in obs:
+  abort_penetrance = ob != this and ob.meta_type == 'ZMSLinkElement'
+  if abort_penetrance:
+    break
+  temp = []
+  subobs = ob.filteredChildNodes( request, ['ZMSCustom','ZMSTeaserContainer'])
+  for subob in subobs:
+    if subob.meta_id == 'ZMSTeaserContainer':
+      temp.extend( subob.filteredChildNodes( request))
+    elif subob.getType() == 'ZMSTeaserElement':
+      temp.append( subob)
+  for teaserElmnt in temp:
+    penetrance = teaserElmnt.getObjProperty('attr_penetrance',request)
+    if ( penetrance in [0,'this',''] and context == ob) or \
+       ( penetrance in [1,'sub_nav'] and context.meta_id in ['ZMS','ZMSFolder']) or \
+       ( penetrance in [2,'sub_all']):
+      teaserElmnts.insert( 0, teaserElmnt)
+  abort_penetrance = ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
+  if abort_penetrance:
+    break
+teaserElmnts.reverse()
+return teaserElmnts
+
+# --// EO getTeaserElements //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[getTeaserElements]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Function: Teaser-Elements]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[Script (Python)]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "pageelement_Teaser"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=here=None,request=None
+##title=Template: Teaser
+##
+# --// BO pageelement_Teaser //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+last_borderstyle = None
+last_bgcolor_border = None
+teaserElmnts = context.getTeaserElements()
+if teaserElmnts:
+  print '<div id="teaser">'
+  for teaserElmnt in teaserElmnts:
+    teaserCntnr = teaserElmnt.getParentNode()
+    borderstyle = teaserCntnr.attr('attr_borderstyle')
+    bgcolor_border = teaserCntnr.attr('attr_bgcolor_border')
+    request.set('bgcolor_title',teaserCntnr.attr('attr_bgcolor_title'))
+    request.set('bgcolor_text',teaserCntnr.attr('attr_bgcolor_text'))
+    if last_borderstyle != borderstyle or \
+       last_bgcolor_border != bgcolor_border or \
+       borderstyle == 2:
+      if last_borderstyle is not None and \
+         last_bgcolor_border is not None:
+        if last_borderstyle != 3:
+          print '</div>'
+      if borderstyle != 3:
+        print '<div class="%s"'%teaserCntnr.meta_id
+        if bgcolor_border:
+          print ' style="background-color:%s;"'%teaserElmnt.get_colormap().get(bgcolor_border,'transparent')
+        print '>'
+    if teaserElmnt.meta_id in ['ZMSLinkElement','ZMSFile','ZMSTeaserElement']:
+      name = 'pageelement_TeaserElement'
+    else:
+      name = 'bodyContentZMSCustom_%s'%teaserElmnt.meta_id
+    method = getattr(teaserElmnt,name)
+    method_result = method(teaserElmnt,request)
+    try:
+      method_result = unicode(method_result,'utf-8')
+    except:
+      pass
+    print method_result
+    last_borderstyle = borderstyle
+    last_bgcolor_border = bgcolor_border
+  if last_borderstyle is not None and \
+     last_bgcolor_border is not None:
+    if last_borderstyle != 3:
+      print '</div>'
+  print '</div>'
+
+return unicode(printed).encode('utf-8')
+
+# --// EO pageelement_Teaser //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[pageelement_Teaser]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Teaser]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[Script (Python)]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSTeaserContainer.renderShort -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+	<div class="form-small" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)">
+		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang'])">
+			<img tal:attributes="src python:'%sinternal_link.gif'%zmscontext.MISC_ZMS; title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)" width="16" height="16" border="0" align="absmiddle"/>
+		</a>
+		<tal:block tal:define="global 
+				url      python:zmscontext.getLinkUrl(teaserElmnt.attr('attr_url'));
+				img_src  python:teaserElmnt.attr('attr_img_src')+'?';
+				title    python:teaserElmnt.attr('title');
+				abstract python:zmscontext.search_quote(teaserElmnt.attr('attr_abstract'))">
+			<tal:block tal:condition="python:title">
+				<a tal:condition="python:url" tal:attributes="href url" target="_blank" class="zmi" tal:content="title"><b>The title</b></a>
+				<tal:block tal:condition="python:not url" tal:content="title">The title</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:not title">
+				<tal:block tal:condition="python:img_src">
+					<div><i>&laquo;<span tal:omit-tag="" tal:content="python:img_src[img_src.rfind('/')+1:img_src.find('?')]"></span>&raquo;</i></div>
+				</tal:block>
+			</tal:block>
+			<div tal:content="structure abstract">The abstract</div>
+		</tal:block>
+	</div>
+</tal:block>
+
+
+<!-- /ZMSTeaserContainer.renderShort -->]]>
+                  </item>
+                  <item key="id"><![CDATA[renderShort]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[ZMI: Render short]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserContainer.renderShort>]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
+          <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
+          <item key="package"><![CDATA[com.zms.foundation]]></item>
+          <item key="revision"><![CDATA[1.2.3]]></item>
+          <item key="type"><![CDATA[ZMSObject]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSTeaserElement]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsteaserelement_16x16.gif" type="file">47494638396110001000b30000040284c48e0cfcf88cfcfed5fcca54fcf173fcfaacfcfeedfce270fc02fcfcfe84fcee84fcfebdfcd664fcfe9cfcfefc21f90401000009002c000000001000100003045330c949eb0c38eb40c3f960787052309c27809e64123030c0c832dc0686a303bca23b378182073810158a2072d85bde168502404a8dde10588434abbd36b05f44b8d1726d020d72d95222acd9a537dc35af2722003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/gif" filename="zmsteaserelement_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8e8ccccecce4e6e4f4f2f4dcdadceceeecfcfafce4e2e4d4d6d4eceaecf4f6f4dcdedc0000ff0000ff0000ff21f90401000000002c000000001000100003045110c849eb0c38eb40c3f960787092179a200904c44178f0d2aa6cfb62eeb2d0c60d6384d745a130183284e2713850049c5084f3522820aa81ab1541b37ab5576e6713282430164b40a04a8fdde9363c1d01003b</data>
+                  </item>
+                  <item key="id"><![CDATA[icon_disabled]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[attr_penetrance]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[this]]></item>
+                      <item><![CDATA[sub_nav]]></item>
+                      <item><![CDATA[sub_all]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Penetrance]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[select]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"><![CDATA[2]]></item>
+                  <item key="id"><![CDATA[displaytype]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Display-Type]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[int]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[attr_url]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Url]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[url]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[attr_img]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Image]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[image]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[title]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Title]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[string]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[text]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Text]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[richtext]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSTeaserElement.attr_img_src"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Image
+##
+# --// BO attr_img_src //--
+
+img = zmscontext.attr('attr_img')
+if img:
+    return img.getHref(zmscontext.REQUEST)
+return ''
+
+# --// EO attr_img_src //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[attr_img_src]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Alias: Image]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_img_src>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSTeaserElement.attr_abstract"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Alias: Abstract
+##
+# --// BO attr_abstract //--
+
+return zmscontext.attr('text')
+
+# --// EO attr_abstract //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[attr_abstract]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Alias: Abstract]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_abstract>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- pageelement_TeaserElement -->
+
+	<span tal:omit-tag="" tal:define="global 
+		bgcolor_title python:request.get('bgcolor_title');
+		bgcolor_text  python:request.get('bgcolor_text');
+		url           python:here.getLinkUrl(here.attr('attr_url'),request);
+		img_src_attr  python:here.attr('attr_img_src');
+		img_src       python:img_src_attr+'?';
+		img_filename  python:img_src[img_src.rfind('/')+1:img_src.find('?')];
+		title_url     python:here.attr('title');
+		title_txt     python:title_url;
+		abstract      python:here.attr('attr_abstract')">
+		
+		<span tal:omit-tag="" tal:define="global styles python:[]">
+			<span tal:omit-tag="" tal:condition="bgcolor_title" tal:define="global styles python:styles+['background-color:'+here.get_colormap().get(bgcolor_title,'transparent')]">
+			</span>
+		</span>
+		<div class="ZMSTeaserElement" tal:attributes="style python:''.join(styles)">
+			
+			<span tal:omit-tag="" tal:condition="python:len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')">
+				<span tal:omit-tag="" tal:define="global title_url python:title_url[2:-2]; title_txt python:''"></span>
+			</span>
+			
+			<span tal:omit-tag="" tal:condition="python:title_txt or img_filename" tal:define="global 
+					displaytype python:here.dctDisplaytype.get(str(here.attr('displaytype')),'left');
+					img         python:'<img class=\042title\042 src=\042'+img_src_attr+'\042 alt=\042'+title_txt+'\042 border=\0420\042/>'">
+					
+				<span tal:omit-tag="" tal:condition="python:displaytype=='top'">
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+				</span>
+				
+				<span tal:omit-tag="" tal:condition="python:displaytype=='right'">
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+					<div class="clearfloating" style="clear:both">&nbsp;</div>
+				</span>
+				
+				<span tal:omit-tag="" tal:condition="python:displaytype=='bottom'">
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+				</span>
+				
+				<span tal:omit-tag="" tal:condition="python:displaytype=='left'">
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+					<div class="clearfloating" style="clear:both">&nbsp;</div>
+				</span>
+				
+				<span tal:omit-tag="" tal:define="global styles python:[]">
+					<span tal:omit-tag="" tal:condition="bgcolor_text" tal:define="global styles python:styles+['background-color:'+here.get_colormap().get(bgcolor_text,'transparent')]">
+					</span>
+				</span>
+				<div tal:condition="python:len(abstract)+len(url)>0" class="text" tal:attributes="style python:''.join(styles)">
+					<span tal:omit-tag="" tal:content="structure abstract">The abstract</span>
+					<span tal:omit-tag="" tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">The url</span>
+				</div>
+				
+			</span>
+			
+		</div>
+	</span>
+
+<!-- /pageelement_TeaserElement -->]]>
+                  </item>
+                  <item key="id"><![CDATA[pageelement_TeaserElement]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Teaser-Element]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[Page Template]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		teaserCntnr     python:zmscontext.getParentNode();
+		subclass        python:[teaserCntnr.meta_id];
+		style           python:[];
+		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
+		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
+		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
+	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
+		<tal:block tal:condition="python:bgcolor_border">
+			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
+		</tal:block>
+		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+			The teaser-element
+		</div>
+	</div>
+	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+		The teaser-element
+	</div>
+</tal:block>
+
+<!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
+                  </item>
+                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.bodyContentZMSCustom_ZMSTeaserElement>]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[ZMSTeaserElement]]></item>
+          <item key="name"><![CDATA[ZMSTeaserElement]]></item>
+          <item key="package"><![CDATA[com.zms.foundation]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="type"><![CDATA[ZMSTeaserElement]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[com.zms.foundation]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="insert_custom"></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[com.zms.foundation]]></item>
+          <item key="name"><![CDATA[com.zms.foundation]]></item>
+          <item key="package"></item>
+          <item key="revision"><![CDATA[0.0.0]]></item>
+          <item key="type"><![CDATA[ZMSPackage]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[com.zms2go.foundation]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[com.zms2go.foundation]]></item>
+          <item key="name"><![CDATA[com.zms2go.foundation]]></item>
+          <item key="package"></item>
+          <item key="revision"><![CDATA[0.0.0]]></item>
+          <item key="type"><![CDATA[ZMSPackage]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+</list>

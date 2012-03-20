@@ -130,21 +130,344 @@ except:
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="custom">
+                    <data content_type="image/png" filename="zms2go.png" type="file">89504e470d0a1a0a0000000d4948445200000050000000210802000000c10dbb9e0000000674524e5300ff00ff00ff37581b7d00000009704859730000176000001760013c7c65ec000008dd49444154789ced596b4c94d9197ebffb7c73036440145dc011ab5299517477a3acd5880622d11a63cca8b409c6a281c4d4c58dc6303166bdd0345917a331c6d618572d5a62bd34ab484a68228a069021e83a0195416690ebcc3097ef7efae36bc79901dbf48734b13e991fe77bdff79cf779ce9cf39ef3cd600821f87f02febf2630d5f824f863c727c11f3bc829cb8410922449108460308810a2695aa3d1d0344d10c494718029132c8a627b7bfbfdfbf75fbc7871edda359ee7172d5ab462c58a952b57ae59b326252505c3b0a96102e8c383e7f9baba3aabd53a317b727272454585cbe59a021a2aa64270535393c562494848282d2dbd72e5cac3870f5b5a5aeedfbf5f5555451004cbb29595958aa24c0113340582c7c6c64a4b4b01e0e8d1a3a15028da258ae2c58b174d26934ea76b6d6dfdd04c547c70c10e87233b3b1b00dc6ef744afcfe7b3d96c2449daedf60fcd44c5072f5ae9e9e935353500909a9a3ad16b301812131325496a6b6bfbd04c54c4089695615976c74510c44c451943281c792470130048b24b51bc0080610c45fe0c0010126465505146017092988de37a0062dab469858585ef4b2f0802cff314457df5d557712e51140381c0e0e020c7712ccb262727ebf57a8661260e82100a854263636323232300307dfa74a3d1c8b2eca4953f467020f4a7e1b1dfc64598924e8e072ef06287fa68d4ed31257d8761c4dbe1ed9cf008002832fbb319cf100af902e782e1bf70fc030ca3f4da5fe9d95fb29a351846bd4f2d000c0c0cf4f5f5d1345d5050106defefefbf74e9d2f3e7cf1b1a1adc6ef7ac59b3f2f3f3ad56eb8e1d3bd2d3d3a323398e6b6c6c6c686878f4e85173733300141616e6e6e6ae5fbf7ef9f2e52419bf84ffeb25cd8b4f14c50718f0a22326b1d0eaf5ff4e5686000021713cf80759eea7e9452491fe9e914010841b376e3c7efcb8a8a868e1c28511fbb367cfbefdf65b8fc7b37af5ead5ab57d334cdf3fcebd7af6fdfbeed743aed767b4646861a89103a7bf6ecf7df7f6fb158b66fdf5e5e5eae4ee29d3b776eddba65b7db6d365b7cd6e80d2d2b7e51ea15a55e8e6feb7fbbb6db45f6ba73c25c739f27afdb45aa1f972797177ee2f8f69e3ebd6ae9752f40080d8e9677bbe86e1739e2adea75e774bbc89e3e6d987ff4bee22149d28d1b370c06c3e2c58b5b5a5a22f681818192929292929257af5e711ca71e57b22c731cd7d6d6969f9f5f5d5dcdf33c42485194bb77ef5aadd6cb972f0f0d0d4992a48e200882dbed3e72e4c882050b1e3c781077e0c5dca571cc40129f91c46c591912a51e0082a197d1d4cfa363647958103b435c03202976e2c2000a00e0b841c7aed76bb7ead84d049ef4beeff6d6ad5b3b77eed4ebf55f7ffdf592254b22ae868686c6c6c6d2d2d2cccc4c8661d47d88e338c330b9b9b9fbf6ed33180c922401c0e8e8e8a143874a4b4bb76cd96232992257548aa266cc9851595999959575e2c409bfdf1fa371221b84b830df24c92e1cd3eab59b70dc1071d1d42259190cf37f0f713f52d482e85e1afa0b1cd303c078b056cb164d4ffe617af20f14396fe2f89224ddb97367dfbe7da2281e3f7e7cf3e6cd919d8610eae8e858b76edde2c58b2776240862c3860dbb76edd26ab500f0f2e5cbf1f1f1c2c2428a9aa44cb02cbb77efdec1c141b73ba60c4f225851bc61ae090070dca861628aa786fe120004a14d965d6a3b022d5b4c106900b820760c8d9685c2f700e48983cbb27ce5ca958a8a0a8fc773f2e4499bcda6d168a2522b172e5c484b4b33180cd1c6e0bfc0711ccff38aa200407d7dfd9b376fb2b2b2266651919d9ded70389e3c79f21f0487b8065e68018004c3feb83549d35600e08416517aadb623208999334c7fd56b6d386e14a5974363bf0984ea10bc5bf608a19191913367ce54545498cde69b376f969494d0341d977d78789820081c7f47cce974ea63d1d5d505007ebf5f10848975f81d25920c87c3c16030c61817a4a0903ff0470020f03496c98ff312b889a12cbcd841538b083cfe22415159c989c7a860b66ffc3b497607427f66995f10c474d5dbdbdb5b535373e9d2a5152b561c3c7870d23303c3308bc5c2719c244911afc9643a72e488daeeececbc7efdbada9e33678ed168e4382e7a8d4423180ca6a6a6ce9c39f3df091625a720750100cbaea5c849560b437fc18b1d0c9d876131efb15effef435c3d001874bf26897441f185f946497ea30af6783cdbb66d73381c454545478f1e9d3b776ef477182db8b8b8d8e572f9fdfe69d3a64504575555a9edab57af46047ffef9e7a9a9a92f5ebcb0582c930a763a9d73e7ce8d3ef0206e492310bdbee38a3286e37a2db306c7f5134721c94c0020898cb8bea2dc1be69bc27ca382c6d47954142f423c00bc7dfb76ebd6ad4f9f3e2d2b2b3b77eedcbc79f32655ab0a2e2828e8eaea6a6a6a124531ce8b10e2793ef2b870e1c29c9c9c9a9a1af5ed323a525194eeeeeef3e7cfe7e5e5656666c6f08f212d768b722f0010788a283df78d9f02009659f58e10aec5f14400c0f1041cd745f765e9e501fcaaa2f842dcdf646510004862368e1b0441b87efd7a6767a7d168341a8d172f5e9c546a5656d6c68d1b0160d9b2655bb66c3975ea545f5fdfa64d9bd2d2d2288a9224c9e7f3b5b6b6d6d6d6ce9f3f5fafd70300c330274e9cb0d96cfbf7ef2f2f2fcfcbcbd3e97400e0f57a1f3e7c78faf4694992bef9e69bb81a1e2398179e88e24f00204aafc6fcd5aad194743212406006842700008127e09831ba2fc37c89637a057ca1f0ed7f4e81a68024660f0c0cdfbb77cfebf502c0e1c38727550b00c5c5c5aa609d4eb773e74ead566bb7dbebeaea9292924892946539180cf6f7f72f5dbab4b2b23272bb349bcdd5d5d5870f1f2e2b2b339bcdea660e04024ea7332727e7d8b163b366cd8a4b14b7873182488bfb8909c7124872b682020080611a8acca04833456660988622cd0040929f01004566cc48f93118be19e2ee2aca6892d1ae61f2713cc1e3e9e9e9e9319bcdef93aa222d2d2dd24e4949d9b367cfdab56b1d0e477373737d7d7d7a7afac68d1b972c5962b55a59968dec080cc356ad5a555757d7dededed4d4545b5b0b00bb77ef3e70e080c562494c4c9c9808439ffe6af9b8f149f0c78e4f823f76fc0312e467833a1335f70000000049454e44ae426082</data>
+                  </item>
+                  <item key="id"><![CDATA[zms2go.png]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[zms2go.png]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="image/png" filename="media-button.png" type="file">89504e470d0a1a0a0000000d494844520000000f0000000f08060000003bd6954a00000a44694343504943432050726f66696c65000078019d96775414d717c7dfcc6c2fb45d962265e9bdb705a42ebd4895260acbee024b59d66517b0374405228a880856242862c06828122ba258080816ec0109224a0c46111595ccc61cf5f73b27f9fd4ede1f773ef37df79e77e7defbce190028012102610eac0040b650228ef4f766c6c52730f1bd0006448003360070b8b9a2d028bf6880ae405f3633177592f15f0b02e0f52d805a00ae5b048433997fe9ffef43912b124b0080c2d1003b1e3f978b7221ca59f912914c9f44999e922963182363319a20caaa324efbc4e67ffa7c624f19f3b2853cd44796b38897cd937117ca1bf3a47c949110948bf204fc7c946fa0ac9f25cd16a0fc06657a369f930b008622d3257c6e3acad62853c4d1916c94e70240a0a47dc5295fb1845f80e609003b47b4442c484b97308db9264c1b67671633809f9fc597482cc239dc4c8e98c764e7648b38c225007cfa6659145092d5968916d9d1c6d9d1d1c2d6122dffe7f58f9b9fbdfe1964bdfde4f132e2cf9e418c9e2fda97d82f5a4e2d00ac29b4365bbe68293b01685b0f80eadd2f9afe3e00e40b0168edfbea7b18b279499748442e5656f9f9f996023ed75256d0cfeb7f3a7cf6fc7bf8ea3c4bd9799f6bc7f4e1a772a45912a6aca8dc9cac1ca998992be270f94c8bff1ee27f1df8555a5fe5611ec94fe58bf942f4a81874ca04c234b4dd429e4022c8113205c2bfebf0bf0cfb2a07197e9a6b1468751f013dc91228f4d101f26b0fc0d0c80049dc83ee409ffb16428c01b29b17ab3df669ee5146f7ffb4ff61e032f415ce15a43165323b329ac9958af3648cde0999c10212900774a006b4801e300616c016380157e0097c41100803d1201e2c025c900eb28118e483e5600d280225600bd80eaac15e50071a40133806dac049700e5c0457c1357013dc034360143c0393e035988120080f51211aa4066943069019640bb12077c8170a8122a17828194a838490145a0ead834aa072a81ada0f3540df4327a073d065a81fba030d43e3d0efd03b188129301dd6840d612b98057bc1c17034bc104e8317c34be14278335c05d7c247e056f81c7c15be090fc1cfe0290420648481e82016080b6123614802928a88919548315289d4224d4807d28d5c47869009e42d0687a16198180b8c2b2600331fc3c52cc6acc49462aa318730ad982ecc75cc306612f3114bc56a60cdb02ed8406c1c360d9b8f2dc25662ebb12dd80bd89bd851ec6b1c0ec7c019e19c7001b8785c066e19ae14b71bd78c3b8bebc78de0a6f078bc1ade0cef860fc373f0127c117e27fe08fe0c7e003f8a7f432013b409b6043f42024148584ba8241c269c260c10c608334405a201d1851846e4119710cb8875c40e621f7194384352241991dc48d1a40cd21a5215a9897481749ff4924c26eb929dc91164017935b98a7c947c893c4c7e4b51a29852d894448a94b299729072967287f2924aa51a523da90954097533b5817a9efa90fa468e2667291728c7935b255723d72a3720f75c9e286f20ef25bf487ea97ca5fc71f93ef90905a282a1025b81a3b052a146e184c2a0c294224dd146314c315bb154f1b0e265c5274a782543255f259e52a1d201a5f34a233484a64763d3b8b475b43ada05da281d4737a207d233e825f4efe8bdf4496525657be518e502e51ae553ca430c8461c808646431ca18c718b718ef543455bc54f82a9b549a540654a655e7a87aaaf2558b559b556faabe5363aaf9aa65aa6d556b537ba08e5137558f50cf57dfa37e417d620e7d8eeb1cee9ce239c7e6dcd580354c35223596691cd0e8d198d2d4d2f4d71469eed43caf39a1c5d0f2d4cad0aad03aad35ae4dd376d7166857689fd17eca54667a31b39855cc2ee6a48e864e808e5467bf4eafce8cae91ee7cddb5bacdba0ff4487a2cbd54bd0abd4ebd497d6dfd50fde5fa8dfa770d88062c8374831d06dd06d3864686b1861b0cdb0c9f18a91a051a2d356a34ba6f4c35f6305e6c5c6b7cc30467c232c934d96d72cd143675304d37ad31ed3383cd1ccd0466bbcdfacdb1e6cee642f35af3410b8a8597459e45a3c5b025c332c472ad659be5732b7dab04abad56dd561fad1dacb3acebacefd928d904d9acb5e9b0f9ddd6d4966b5b637bc38e6ae767b7caaeddee85bd993ddf7e8ffd6d079a43a8c306874e870f8e4e8e62c726c771277da764a75d4e832c3a2b9c55cabae48c75f6765ee57cd2f9ad8ba38bc4e598cb6fae16ae99ae875d9fcc359acb9f5b3777c44dd78de3b6df6dc89de99eecbecf7dc843c783e351ebf1c853cf93e759ef39e665e295e175c4ebb9b7b5b7d8bbc57b9aedc25ec13eeb83f8f8fb14fbf4fa2af9cef7adf67de8a7eb97e6d7e837e9efe0bfccff6c00362038606bc060a0662037b0217032c829684550573025382ab83af85188698838a423140e0d0add167a7f9ec13ce1bcb630101618b62dec41b851f8e2f01f237011e11135118f236d2297477647d1a292a20e47bd8ef68e2e8bbe37df78be747e678c7c4c624c43cc74ac4f6c79ec509c55dc8ab8abf1eaf182f8f6047c424c427dc2d402df05db178c263a241625de5a68b4b060e1e545ea8bb2169d4a924fe2241d4fc626c7261f4e7ecf09e3d472a652025376a54c72d9dc1ddc673c4f5e056f9cefc62fe78fa5baa596a73e49734bdb96369eee915e993e21600baa052f320232f6664c6786651ecc9ccd8acd6ace266427679f102a0933855d395a390539fd223351916868b1cbe2ed8b27c5c1e2fa5c2877616ebb848efe4cf5488da5eba5c379ee7935796ff263f28f172816080b7a96982ed9b4646ca9dfd26f9761967197752ed759be66f9f00aaf15fb57422b535676aed25b55b86a74b5ffea436b486b32d7fcb4d67a6df9da57eb62d775146a16ae2e1c59efbfbeb148ae485c34b8c175c3de8d988d828dbd9bec36eddcf4b198577ca5c4baa4b2e47d29b7f4ca3736df547d33bb3975736f9963d99e2db82dc22db7b67a6c3d54ae58beb47c645be8b6d60a664571c5abed49db2f57da57eedd41da21dd31541552d5be537fe7969defabd3ab6fd678d734efd2d8b569d7f46edeee813d9e7b9af66aee2dd9fb6e9f60dfedfdfefb5b6b0d6b2b0fe00ee41d785c1753d7fd2debdb867af5fa92fa0f078507870e451eea6a706a6838ac71b8ac116e94368e1f493c72ed3b9fefda9b2c9af637339a4b8e82a3d2a34fbf4ffefed6b1e0639dc759c79b7e30f861570bada5b8156a5dd23ad996de36d41edfde7f22e84467876b47cb8f963f1e3ca973b2e694f2a9b2d3a4d385a767cf2c3d3375567476e25cdab991cea4ce7be7e3cedfe88ae8eabd107ce1d245bf8be7bbbdbacf5c72bb74f2b2cbe513575857daae3a5e6ded71e869f9c9e1a7965ec7ded63ea7bef66bced73afae7f69f1ef0183877dde7fac51b8137aede9c77b3ffd6fc5bb7071307876ef36e3fb99375e7c5ddbcbb33f756dfc7de2f7ea0f0a0f2a1c6c3da9f4d7e6e1e721c3a35ec33dcf328ead1bd11eec8b35f727f793f5af898fab8724c7bace189ed9393e37ee3d79e2e783afa4cf46c66a2e857c55f773d377efec36f9ebff54cc64d8ebe10bf98fdbdf4a5dacb83afec5f754e854f3d7c9dfd7a66baf88dda9b436f596fbbdfc5be1b9bc97f8f7f5ff5c1e443c7c7e08ff767b36767ff000398f3fc49b02998000000097048597300000b1300000b1301009a9c180000018f49444154281585523d6bc25014bd294e2242ec123a088e9d4a74705028344bd6fc062771d2cc891f634717ff42ff80da2501c155077f42a6a22008b6a828e93d4fdfa346a4176ececdc939f7f2de8d16c73121daedf6b9e0badbed6a82fce7a1799e17689af6061d9bd0e4ae850785bd5ecf5202dff7998be3cd6613074120107532a1b968894b9129d9e570388812b8dd6e891b51144594cfe7c9b22cca66b352aa5099f7fbbd328fc7632a97cb54abd5683e9fd37038a446a321bee36ef89862f2836c23cdbbdd8e56ab15158b45f109b85c2ea54c5c66a7d311177a33194d745da7e9744ad56a55602e9753e6bf5b51664c4400316d369bd1683422c330a8542a2933dff62364dce45b994dd3a4300c0988a8542a02930fbee93538ac34c52f9f5cd85234994c647983d026c9341338d4136781f399f3e592a80bcd66137f1f3469b963ec1c937f98445e45abd57ae595bc83cc643258cd1a9cebba8a5367be72f20b1b3feaf5ba017e30187c0193dc5d336b4fc7e3111ec4e90cd7dc5db36ddb8b7ebfafc3e438ce0298e47e01eb72e5954c4201160000000049454e44ae426082</data>
+                  </item>
+                  <item key="id"><![CDATA[media-button.png]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[media-button.png]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[<script>
-$(function(){
-	$("tr#tr_titlealt").hide();
-	$("tr#tr_title").hide();
-	$("table.zmiRichtextEditorHeadline").hide();
-	var lang = '<dtml-var lang>';
-	var titlealt = '<div class="titlealt" style="border:1px solid #999;background-color:#DFF1FF;"><span class="skip">Titlealt</span>'+$("#titlealt_"+lang).val()+'</div>';
-	var title = '<div class="title" style="border:1px solid #999;background-color:#DFF1FF;"><span class="skip">Title</span>'+$("#title_"+lang).val()+'</div>';
-	var text = $("#text_"+lang).val();
-	$("#text_"+lang).val(titlealt+title+text);
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<dtml-let meta_id="REQUEST.get('ZMS_INSERT',meta_id)"
+		objAttr="getObjAttr('text',meta_id)"
+		elName="'editor'"
+		session_id="SESSION.getId()"
+>
+
+<style>
+span.zms2goButton img {
+	background:url(metaobj_manager/<dtml-var meta_id>.zms2go.png) no-repeat top right;
+	width:80px;
+	height:33px;
+}
+span.mediaButton {
+	background:url(metaobj_manager/<dtml-var meta_id>.media-button.png) no-repeat top right;
+	padding-left:4px;
+	padding-right:20px;
+	cursor:pointer;
+	border: 1px solid #CCC;
+}
+span.active {
+	background-color:#FFF;
+	font-weight:bold;
+}
+span.mouseover {
+	border:1px solid #999;
+	background-color:#DFF1FF;
+}
+</style>
+
+<script>
+
+////////////////////////////////////////////////////////////////////////////////
+// Media
+////////////////////////////////////////////////////////////////////////////////
+
+var mediaCounter = 0;
+
+function showMediaDialog() {
+	var html = '';
+	if ($('div#mediaDialog').length==0) {
+		html = ''
+			+ '<div id="mediaDialog" class="ui-helper-hidden">'
+				+ '<iframe id="uploadMedia" name="uploadMedia" stc="" style="display:none" onload="uploadMediaDone()"></iframe>'
+				+ '<form action="metaobj_manager/<dtml-var meta_id>.uploadMedia" method="post" target="uploadMedia" enctype="multipart/form-data">'
+				  + '<input type="hidden" name="session_id" value="'+$("form#form0 input[name=session_id]").val()+'"/>'
+				  + '<input type="hidden" name="form_id" value="'+$("form#form0 input[name=form_id]").val()+'"/>'
+				  + '<input type="hidden" name="lang" value="<dtml-var lang>"/>'
+				  + '<input type="hidden" name="key" value="' + mediaCounter + '"/>'
+					+ '<table width="100%" cellspacing="0">'
+					+ '<colgroup>'
+						+ '<col width="20%"/>'
+						+ '<col width="80%"/>'
+					+ '</colgroup>'
+					+ '<tr id="tr_fileContainer"  valign="top">'
+						+ '<td nowrap="nowrap" class="form-label"><img src="/misc_/zms/upload.gif" border="0" style="vertical-align:middle" /></td>'
+						+ '<td id="fileContainer" class="form-element"></td>'
+					+ '</tr>'
+					+ '</table>'
+					+ '<div class="zmi-form-section ui-widget-content ui-corner-all">'
+						+ '<input class="ui-button ui-state-active ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_UPLOAD')">" onclick="return uploadMedia(this)"/>&nbsp;'
+						+ '<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="<dtml-var "getZMILangStr('BTN_CLOSE')">" onclick="return closeMediaDialog()"/>'
+					+ '</div>'
+				+ '</form>'
+			+ '</div>';
+		$('body').append(html);
+	}
+	var html = ''
+		+ '<input class="form-element" name="file" type="file" size="25">'
+		+ '<div class="form-small">'
+			+ '<input type="checkbox" id="thumbnail" name="thumbnail:int" value="1" checked="checked">'
+			+ getZMILangStr('ACTION_GENERATE_PREVIEW')
+		+'</div>';
+	$('div#mediaDialog #fileContainer').html(html);
+	$('div#mediaDialog').dialog({
+			title:getZMILangStr('BTN_INSERT')+' [ '+getZMILangStr('TYPE_ZMSGRAPHIC')+' / '+getZMILangStr('TYPE_ZMSFILE')+' ] ',
+			width:'auto',
+			height:'auto',
+			modal:true,
+			close: function(event, ui) {
+				}
+	});
+}
+
+function closeMediaDialog() {
+	$('div#mediaDialog').dialog('close');
+	return false;
+}
+
+
+function uploadMedia(sender) {
+	return true;
+}
+
+function uploadMediaDone() {
+	mediaCounter++;
+	var response = $('iframe#uploadMedia').contents().text();
+	if (response) {
+		var data = eval("("+response+")");
+		var instance = CKEDITOR.instances['<dtml-var elName>'];
+		var html = '';
+		if (typeof data["imghires"] != "undefined") {
+			html = '<a href="'+data["imghires"]["absolute_url"]+'" class="fancybox"><img src="'+data["image"]["absolute_url"]+'" alt="" class="image"/></a>';
+		}
+		else if (typeof data["image"] != "undefined") {
+			html = '<img src="'+data["image"]["absolute_url"]+'" alt="" class="image"/>';
+		}
+		else if (typeof data["file"] != "undefined") {
+			data = '<a href="'+data["file"]["absolute_url"]+'" target="_blank" class="file">'+data["file"]["filename"]+'</a>';
+		}
+		instance.insertHtml(html);
+		closeMediaDialog();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Richedit
+////////////////////////////////////////////////////////////////////////////////
+
+function extractString(s, start, end) {
+	var i = s.toLowerCase().indexOf(start.toLowerCase());
+	if (i < 0) {
+		return '';
+	}
+	s = s.substr(i+start.length);
+	s = s.substr(0,s.toLowerCase().indexOf(end.toLowerCase())).basicTrim();
+	start = '<span class="skip">';
+	end = '</span>';
+	i = s.toLowerCase().indexOf(start.toLowerCase());
+	if (i >= 0) {
+		s = s.substr(s.toLowerCase().indexOf(end.toLowerCase())+end.length).basicTrim();
+	}
+	return s;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// CKEDITOR Plugin
+////////////////////////////////////////////////////////////////////////////////
+
+var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
+var CKEDITOR_LOADED = {};
+
+function pluginCkeditor(s, c) {
+	$.plugin('ckeditor',{
+			cache: false,
+			files: ['/++resource++zms_/ckeditor/ckeditor.js']
+		});
+	$.plugin('ckeditor').get(s,c);
+}
+
+function loadCkeditor(id, opt) {
+	var instance = CKEDITOR.instances[id];
+	if(instance){
+		instance.destroy();
+	}
+	CKEDITOR.replace(id, opt);
+}
+
+function zmiRichtextResize(id) {
+	var instance = CKEDITOR.instances[id];
+	if(instance){
+		var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
+		zmiWriteDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
+		$(".cke_contents").css("height",newHeight);
+	}
+}
+
+function zmiRichtextInit(id) {
+	pluginCkeditor('#'+id,function() {
+		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
+		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
+
+////////////////////////////////////////////////////////////////////////////////
+// Contents-CSS
+////////////////////////////////////////////////////////////////////////////////
+CKEDITOR.config.contentsCss = [];
+$("link[rel=stylesheet]").each(function() {
+		CKEDITOR.config.contentsCss.push($(this).attr("href"));
+	});
+CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
+CKEDITOR.config.contentsCss.push('metaobj_manager/ZMS.contents.css');
+
+////////////////////////////////////////////////////////////////////////////////
+// Import XStandard styles
+////////////////////////////////////////////////////////////////////////////////
+<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds()">
+CKEDITOR.config.format_tags = '';
+<dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
+<dtml-in "xmlNodeSet(xml_styles,'style')">
+<dtml-let xml_style=sequence-item
+><dtml-call "REQUEST.set('style_id',None)"><dtml-in "xmlNodeSet(xml_style,'id')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_id',id_quote(node['cdata']))"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_name',None)"><dtml-in "xmlNodeSet(xml_style,'name')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_name',node['cdata'])"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_elt',None)"><dtml-in "xmlNodeSet(xml_style,'elt')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_element',node['cdata'])"></dtml-if></dtml-let></dtml-in
+><dtml-call "REQUEST.set('style_attrs',[])"
+><dtml-in "xmlNodeSet(xml_style,'attr')"
+	><dtml-let node=sequence-item
+		><dtml-in "xmlNodeSet(node,'name')"
+			><dtml-let nodeName=sequence-item
+				><dtml-call "REQUEST.set('style_attrs_nodeName',nodeName['cdata'])"
+			></dtml-let
+		></dtml-in
+		><dtml-in "xmlNodeSet(node,'value')"
+			><dtml-let nodeValue=sequence-item
+				><dtml-call "REQUEST.set('style_attrs_nodeValue',nodeValue['cdata'])"
+			></dtml-let
+		></dtml-in
+		><dtml-call "style_attrs.append((style_attrs_nodeName,style_attrs_nodeValue))"
+	></dtml-let
+></dtml-in
+>
+CKEDITOR.config.format_tags += (CKEDITOR.config.format_tags.length==0?'':';')+'<dtml-var style_id>';
+CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
+</dtml-let
+></dtml-in
+></dtml-let
+></dtml-if
+>
+////////////////////////////////////////////////////////////////////////////////
+
+		loadCkeditor( ''+id, {
+			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
+				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
+				toolbar: 'ZMSCustomToolbar',
+			<dtml-elif "REQUEST.get('ZMS_INSERT')">
+				toolbar: 'ZMSBasicInsertToolbar',
+			<dtml-else>
+				toolbar: 'ZMSBasicToolbar',
+			</dtml-if>
+			on:{
+				instanceReady: function(ev) {
+						zmiRichtextResize(id);
+					}
+				}
+			});
+		zmiRichtextSyncDataToView(id);
+	})
+}
+
+function zmiRichtextSyncDataToView(id) {
+	$( '#'+id).val( $('#'+id).val());
+	var instance = CKEDITOR.instances[id];
+	if(instance){
+		instance.setData($('#'+id).val());
+	}
+}
+
+$(function() {
+	if($("form#form0 input[name=session_id]").length==0) {
+		$("form#form0").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
+	}
+	zmiRichtextInit('<dtml-var elName>');
+	$("input#submitBtn0").click(function() {
+			var instance = CKEDITOR.instances['<dtml-var elName>'];
+			var body = instance.getData();
+			var subtitle = extractString(body,'<h2 id="subtitle">','</h2>');
+			if (subtitle.length == 0) {
+				alert("Missing subtitle!");
+				return false;
+			}
+			body = body.substr(body.toLowerCase().indexOf('</h2>')+'</h2>'.length).basicTrim();
+			var title = extractString(body,'<h1 id="title">','</h1>');
+			if (title.length == 0) {
+				alert("Missing title!");
+				return false;
+			}
+			body = body.substr(body.toLowerCase().indexOf('</h1>')+'</h1>'.length);
+			$("input#titlealt_<dtml-var lang>").val(subtitle);
+			$("input#title_<dtml-var lang>").val(title);
+			$("input#text_<dtml-var lang>").val(body);
+		});
 });
-</script>]]>
+
+</script>
+
+<div id="interface0">
+<input type="hidden" id="titlealt_<dtml-var lang>" name="titlealt_<dtml-var lang>" value=""/>
+<input type="hidden" id="title_<dtml-var lang>" name="title_<dtml-var lang>" value=""/>
+<input type="hidden" id="text_<dtml-var lang>" name="text_<dtml-var lang>" value=""/>
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<tr valign="bottom">
+	<td class="form-small">
+		<span class="mediaButton" onclick="showMediaDialog()" onmouseover="$(this).addClass('mouseover')" onmouseout="$(this).removeClass('mouseover')">
+			<dtml-var "getZMILangStr('BTN_UPLOAD')">/<dtml-var "getZMILangStr('BTN_INSERT')">
+		</span>
+	</td>
+	<td class="form-small" align="right">
+		<span class="zms2goButton">
+			<img src="<dtml-var spacer_gif>" alt="" border="0"/>
+		</span>
+	</td>
+</tr>
+</table>
+<textarea id="editor" name="editor" class="ui-helper-hidden">
+<dtml-if ZMS_INSERT>
+<h2 id="subtitle"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLEALT')"></span>&laquo; <dtml-var "getZMILangStr('ATTR_TITLEALT')"> &raquo;</h2>
+<h1 id="title"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLE')"></span>&laquo; <dtml-var "getZMILangStr('ATTR_TITLE')"> &raquo;</h1>
+<p>&laquo; <dtml-var "getZMILangStr('ATTR_TEXT')"> &raquo;</p>
+<dtml-else>
+<h2 id="subtitle"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLEALT')"></span><dtml-var "attr('titlealt')"></h2>
+<h1 id="title"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLE')"></span><dtml-var "attr('title')"></h1>
+<dtml-var "attr('text')">
+</dtml-if>
+</textarea>
+</div>
+<dtml-var f_submitBtn>
+
+</dtml-let>
+
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['titlealt','title','text'])">]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -207,6 +530,185 @@ $(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="custom"><![CDATA[span.skip {
+	font-size:9px!important;
+	color:#666;
+	padding:4px;
+}
+h1#title {
+	font-size:24px!important;
+	line-height:1em!important;
+	padding:4px;
+}
+h2#subtitle {
+	font-size:12x!important;
+	line-height:1em!important;
+	padding:4px;
+}
+h1#title, h2#subtitle, div#titleimage {
+	border:1px solid #999;
+	background-color:#DFF1FF;
+}]]>
+                  </item>
+                  <item key="id"><![CDATA[contents.css]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS (CKEDITOR.config.contentsCss)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[method]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.uploadMedia"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Upload: Media
+##
+# --// BO uploadMedia //--
+
+result = {}
+temp_folder = context.temp_folder
+request = context.REQUEST
+base_url = request.get('SERVER_URL')
+session_id = request.get('session_id')
+form_id = request.get('form_id')
+file = request.get('file')
+
+def resize_image(context, orig, maxdims):
+  pilutil = context.pilutil()
+  width = orig.getWidth()
+  height = orig.getHeight()
+  while width > maxdims or height > maxdims:
+    if width > maxdims:
+      height = int(height * maxdims / width)
+      width = maxdims
+    elif height > maxdims:
+      width = int(width * maxdims / height)
+      height = maxdims
+  size = (width,height)
+  blob = pilutil.resize( orig, size)
+  return blob
+
+def create_blob(container, blob):
+  filename = blob.getFilename()
+  data = blob.getData()
+  id = session_id + '_' + form_id + '_' + filename
+  if id in container.objectIds():
+    container.manage_delObjects(ids=[id])
+  if blob.getContentType().startswith('image'):
+    container.manage_addImage( id=id, title=filename, file=data)
+  else:
+    container.manage_addFile( id=id, title=filename, file=data)
+  ob = getattr(container,id)
+  d = {}
+  d['content_type'] = blob.getContentType()
+  d['filename'] = blob.getFilename()
+  d['absolute_url'] = ob.absolute_url()[len(base_url):]
+  return d
+
+if file and file.filename:
+  blobs = {}
+  blob = context.FileFromData(file,file.filename)
+  content_type = blob.getContentType()
+  if content_type.startswith('image'):
+    image = context.ImageFromData(file,file.filename)
+    maxdims = int(context.getConfProperty('InstalledProducts.pil.thumbnail.max',100))
+    if image.getWidth() > maxdims:
+      result['imghires'] = create_blob(temp_folder,image)
+      result['image'] = create_blob(temp_folder,resize_image(context, image, maxdims))
+    else:
+      result['image'] = create_blob(temp_folder,image)
+  else:
+    result['file'] = create_blob(temp_folder,blob)
+
+result['message'] = context.getZMILangStr( 'MSG_UPLOADED')
+return context.str_json(result)
+
+# --// EO uploadMedia //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[uploadMedia]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Upload: Media]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMS.uploadMedia>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: onChange-Object
+##
+# --// BO onChangeObjEvt //--
+
+temp_folder = context.temp_folder
+request = context.REQUEST
+
+# Find images/files.
+text = zmscontext.attr('text')
+l = []
+lt = []
+for sp in ['src="', 'href="' ]:
+  for s in text.split(sp):
+    ref = s[:s.find('"')]
+    if ref.find('/'+zmscontext.id+'/') >= 0:
+      idmedia = ref.split('/')[-1]
+      l.append(idmedia)
+    elif ref.find('/'+temp_folder.id+'/') >= 0:
+      lt.append(ref)
+
+# Remove unused images/files.
+ob_ids = zmscontext.objectIds(['File','Image'])
+for ref in l:
+  id = ref.split('/')[-1]
+  if id in ob_ids:
+    ob_ids.remove(id)
+if len(ob_ids) > 0:
+  zmscontext.manage_delObjects(ids=ob_ids)
+
+# Add new images/files from temp_folder.
+for ref in lt:
+  id = ref.split('/')[-1]
+  ob = getattr(temp_folder,id,None)
+  if ob is not None:
+    new_id = ob.title_or_id()
+    new_title = ''
+    new_data = ob.data
+    if ob.meta_type == 'Image':
+      zmscontext.manage_addImage( id=new_id, title=new_title, file=new_data)
+    else:
+      zmscontext.manage_addFile( id=new_id, title=new_title, file=new_data)
+    temp_folder.manage_delObjects(ids=[id])
+    text = text.replace('"'+ref+'"','"./'+zmscontext.id+'/'+new_id+'"')
+zmscontext.attr('text',text)
+
+# --// EO onChangeObjEvt //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[onChangeObjEvt]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: onChange-Object]]></item>
+                  <item key="py"><![CDATA[<PythonScript at ZMS.onChangeObjEvt>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMS -->
 
 <tal:block tal:define="global 
@@ -252,7 +754,7 @@ $(function(){
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMSRichDocument]]></item>
           <item key="package"><![CDATA[com.zms2go.foundation]]></item>
-          <item key="revision"><![CDATA[0.9.0]]></item>
+          <item key="revision"><![CDATA[0.9.1]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>

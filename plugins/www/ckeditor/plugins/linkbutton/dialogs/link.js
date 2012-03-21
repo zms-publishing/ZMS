@@ -120,7 +120,8 @@ function zmiSelectObject(id,abs_url,meta_id) {
 
 function zmiResizeObject() {
 	var $myDiv = $("#myDiv");
-	var $cke_dialog_footer = $(".cke_dialog_footer");
+	var $cke_dialog = $myDiv.parents(".cke_dialog");
+	var $cke_dialog_footer = $(".cke_dialog_footer",$cke_dialog);
 	var height = $cke_dialog_footer.offset().top-$myDiv.offset().top-10;
 	$myDiv.css("height",height);
 }

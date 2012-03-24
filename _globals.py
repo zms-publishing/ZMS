@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 ################################################################################
 # _globals.py
 #
@@ -94,23 +97,93 @@ dtMapping = [
 German umlaute.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 umlautMapping = {
-	unicode('\xe4','latin-1').encode('utf-8'):'ae',
-	unicode('\xf6','latin-1').encode('utf-8'):'oe',
-	unicode('\xfc','latin-1').encode('utf-8'):'ue',
-	unicode('\xc4','latin-1').encode('utf-8'):'Ae',
-	unicode('\xd6','latin-1').encode('utf-8'):'Oe',
-	unicode('\xdc','latin-1').encode('utf-8'):'Ue',
-	unicode('\xdf','latin-1').encode('utf-8'):'ss',
-}
+        # German
+        u'ä' : 'ae',
+        u'ö' : 'oe',
+        u'ü' : 'ue',
+        u'Ä' : 'Ae',
+        u'Ö' : 'Oe',
+        u'Ü' : 'Ue',
+        u'ß' : 'ss',
+        # Cyrillic
+        u'а' : 'a',
+        u'б' : 'b',
+        u'в' : 'v',
+        u'г' : 'g',
+        u'д' : 'd',
+        u'е' : 'e',
+        u'ё' : 'e',
+        u'ж' : 'zh',
+        u'з' : 'z',
+        u'и' : 'i',
+        u'й' : 'j',
+        u'к' : 'k',
+        u'л' : 'l',
+        u'м' : 'm',
+        u'н' : 'n',
+        u'о' : 'o',
+        u'п' : 'p',
+        u'р' : 'r',
+        u'с' : 's',
+        u'т' : 't',
+        u'у' : 'u',
+        u'ф' : 'f',
+        u'х' : 'h',
+        u'ц' : 'c',
+        u'ч' : 'ch',
+        u'ш' : 'sh',
+        u'щ' : 'sch',
+        u'ь' : "'",
+        u'ы' : 'y',
+        u'ь' : "'",
+        u'э' : 'e',
+        u'ю' : 'ju',
+        u'я' : 'ja',
+        u'А' : 'A',
+        u'Б' : 'B',
+        u'В' : 'V',
+        u'Г' : 'G',
+        u'Д' : 'D',
+        u'Е' : 'E',
+        u'Ё' : 'E',
+        u'Ж' : 'ZH',
+        u'З' : 'Z',
+        u'И' : 'I',
+        u'Й' : 'J',
+        u'К' : 'K',
+        u'Л' : 'L',
+        u'М' : 'M',
+        u'Н' : 'N',
+        u'О' : 'O',
+        u'П' : 'P',
+        u'Р' : 'R',
+        u'С' : 'S',
+        u'Т' : 'T',
+        u'У' : 'U',
+        u'Ф' : 'F',
+        u'Х' : 'H',
+        u'Ц' : 'C',
+        u'Ч' : 'CH',
+        u'Ш' : 'SH',
+        u'Щ' : 'SCH',
+        u'Ъ' : "'",
+        u'Ы' : 'Y',
+        u'Ь' : "'",
+        u'Э' : 'E',
+        u'Ю' : 'JU',
+        u'Я' : 'JA',}
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.umlaut_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def umlaut_quote(s, mapping={}):
+  if type(s) is not unicode:
+    s = unicode(s,'utf-8')
   map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
   for key in mapping.keys():
     s = s.replace(key,mapping[key])
+  s = str(s)
   return s
 
 

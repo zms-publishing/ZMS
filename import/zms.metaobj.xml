@@ -170,7 +170,7 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMS -->
+                  <item key="custom"><![CDATA[<!-- ZMS.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext"
@@ -178,15 +178,15 @@
 	The page-content
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMS -->]]>
+<!-- /ZMS.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMS]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMS]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMS.bodyContentZMSCustom_ZMS>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMS.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -201,14 +201,6 @@
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -223,7 +215,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -396,7 +388,7 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSDocument -->
+                  <item key="custom"><![CDATA[<!-- ZMSDocument.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext"
@@ -404,15 +396,15 @@
 	The page-content
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSDocument -->]]>
+<!-- /ZMSDocument.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSDocument]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSDocument]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSDocument.bodyContentZMSCustom_ZMSDocument>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSDocument.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -427,14 +419,6 @@
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -449,7 +433,7 @@
           <item key="id"><![CDATA[ZMSDocument]]></item>
           <item key="name"><![CDATA[ZMSDocument]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -705,7 +689,7 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFile -->
+                  <item key="custom"><![CDATA[<!-- ZMSFile.standard_html -->
 
 <tal:block tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
 		zmscontext options/zmscontext;
@@ -746,15 +730,15 @@ return ''
 	</tal:block>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSFile -->]]>
+<!-- /ZMSFile.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSFile]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFile]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFile.bodyContentZMSCustom_ZMSFile>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFile.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -769,14 +753,6 @@ return ''
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -791,7 +767,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.1.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -965,7 +941,7 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSFolder -->
+                  <item key="custom"><![CDATA[<!-- ZMSFolder.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext"
@@ -973,15 +949,15 @@ return ''
 	The page-content
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSFolder -->]]>
+<!-- /ZMSFolder.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSFolder]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFolder]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFolder.bodyContentZMSCustom_ZMSFolder>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSFolder.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -996,14 +972,6 @@ return ''
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -1018,7 +986,7 @@ return ''
           <item key="id"><![CDATA[ZMSFolder]]></item>
           <item key="name"><![CDATA[ZMSFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -1178,7 +1146,7 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSGraphic -->
+                  <item key="custom"><![CDATA[<!-- ZMSGraphic.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -1218,15 +1186,15 @@ return ''
 	</div>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSGraphic -->]]>
+<!-- /ZMSGraphic.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSGraphic]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSGraphic]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSGraphic.bodyContentZMSCustom_ZMSGraphic>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSGraphic.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -1255,7 +1223,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.2]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1499,7 +1467,7 @@ if align:
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkContainer -->
+                  <item key="custom"><![CDATA[<!-- ZMSLinkContainer.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -1521,15 +1489,15 @@ if align:
   </div>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSLinkContainer -->]]>
+<!-- /ZMSLinkContainer.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkContainer]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkContainer.bodyContentZMSCustom_ZMSLinkContainer>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkContainer.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -1544,14 +1512,6 @@ if align:
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -1566,7 +1526,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1901,7 +1861,7 @@ return zmscontext.attr('attr_dc_description')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSLinkElement -->
+                  <item key="custom"><![CDATA[<!-- ZMSLinkElement.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -1939,15 +1899,15 @@ return zmscontext.attr('attr_dc_description')
   </div>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSLinkElement -->]]>
+<!-- /ZMSLinkElement.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSLinkElement]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkElement.bodyContentZMSCustom_ZMSLinkElement>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSLinkElement.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -1962,14 +1922,6 @@ return zmscontext.attr('attr_dc_description')
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -1984,7 +1936,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.3]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2630,7 +2582,7 @@ zmscontext.attr('text',text)
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSRichtext -->
+                  <item key="custom"><![CDATA[<!-- ZMSRichtext.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -2641,15 +2593,15 @@ zmscontext.attr('text',text)
 	The text
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSRichtext -->]]>
+<!-- /ZMSRichtext.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSRichtext]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSRichtext]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSRichtext.bodyContentZMSCustom_ZMSRichtext>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSRichtext.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -2678,7 +2630,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSRichtext]]></item>
           <item key="name"><![CDATA[ZMSRichtext]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[0.9.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -3986,7 +3938,7 @@ if key.startswith('table_'):
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTable -->
+                  <item key="custom"><![CDATA[<!-- ZMSTable.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -4033,15 +3985,15 @@ if key.startswith('table_'):
     </table>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSTable -->]]>
+<!-- /ZMSTable.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTable]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTable]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTable.bodyContentZMSCustom_ZMSTable>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTable.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -4720,7 +4672,7 @@ return zmscontext.attr('text')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
+                  <item key="custom"><![CDATA[<!-- ZMSTeaserElement.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -4743,15 +4695,15 @@ return zmscontext.attr('text')
 	</div>
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
+<!-- /ZMSTeaserElement.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.bodyContentZMSCustom_ZMSTeaserElement>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -4766,14 +4718,6 @@ return zmscontext.attr('text')
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -4788,7 +4732,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>
@@ -4901,7 +4845,7 @@ $(function() {
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTextarea -->
+                  <item key="custom"><![CDATA[<!-- ZMSTextarea.standard_html -->
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
@@ -4912,15 +4856,15 @@ $(function() {
 	The text
 </tal:block>
 
-<!-- /bodyContentZMSCustom_ZMSTextarea -->]]>
+<!-- /ZMSTextarea.standard_html -->]]>
                   </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTextarea]]></item>
+                  <item key="id"><![CDATA[standard_html]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTextarwa]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTextarea.bodyContentZMSCustom_ZMSTextarea>]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTextarea.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -4949,7 +4893,7 @@ $(function() {
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.2]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4971,11 +4915,6 @@ $(function() {
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                 </list>
@@ -4987,7 +4926,7 @@ $(function() {
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

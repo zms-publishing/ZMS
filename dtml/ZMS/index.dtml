@@ -4,7 +4,10 @@
 ><dtml-call "REQUEST.set('lang',getLanguage(REQUEST))"
 ></dtml-unless
 
-><dtml-if standard_html
+><dtml-if "REQUEST.get('op','')=='mobile'"
+><dtml-call f_standard_html_request
+><dtml-var mobile_html
+><dtml-elif standard_html
 ><dtml-call f_standard_html_request
 ><dtml-var standard_html
 ><dtml-else

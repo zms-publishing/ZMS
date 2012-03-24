@@ -360,7 +360,7 @@ class AccessableContainer(AccessableObject):
     # --------------------------------------------------------------------------
     def restrictAccess(self):
       for lang in self.getLangIds():
-        for key in ['index_%s.html','index_print_%s.html','search_%s.html','sitemap_%s.html']:
+        for key in ['index_%s.html','mobile_%s.html','index_print_%s.html','search_%s.html','sitemap_%s.html']:
           id = key%lang
           if hasattr(self,id):
             ob = getattr(self,id)

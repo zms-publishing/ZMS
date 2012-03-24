@@ -189,9 +189,9 @@ class ZMSLinkContainer(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def _getBodyContent(self, REQUEST):
       # @see ZMSObject.getBodyContent
-      tmpltId = self.metaobj_manager.getTemplateId( self.meta_id)
-      if tmpltId in self.getMetaobjAttrIds(self.meta_id):
-        return self.attr(tmpltId)
+      v = self.metaobj_manager.renderTemplate( self)
+      if v:
+        return v
       # @deprecated after ZMS2 2.13.4.1569
       align = self.getObjProperty('align',REQUEST)
       css = []

@@ -527,6 +527,7 @@ class MultiLanguageManager:
           pageexts = obj_attr.get('keys')
       for pageext in pageexts:
         setLangMethod(self,'index_%s%s'%(lang,pageext),'<dtml-var index_html>')
+        setLangMethod(self,'mobile_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'mobile\')"><dtml-var index_html>')
         setLangMethod(self,'sitemap_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'sitemap\')"><dtml-var index_html>')
         setLangMethod(self,'index_print_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'print\')"><dtml-var index_html>')
         setLangMethod(self,'search_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'search\')"><dtml-var index_html>')
@@ -551,6 +552,7 @@ class MultiLanguageManager:
         pageexts = obj_attr.get('keys',pageexts)
       for pageext in pageexts:
         delLangMethod(self,'index_%s%s'%(lang,pageext))
+        delLangMethod(self,'mobile_%s%s'%(lang,pageext))
         delLangMethod(self,'sitemap_%s%s'%(lang,pageext))
         delLangMethod(self,'index_print_%s%s'%(lang,pageext))
         delLangMethod(self,'search_%s%s'%(lang,pageext))

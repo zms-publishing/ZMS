@@ -206,7 +206,7 @@ class ZMSMetaobjManager:
             attr_ids.append(attr_id)
         # Set Template (backwards compatibility).
         if newValue['type'] not in [ 'ZMSLibrary', 'ZMSModule', 'ZMSPackage'] and newDtml is not None:
-          tmpltId = self.getTemplateId( id)
+          tmpltId = 'standard_html'
           tmpltName = 'Template: %s'%newValue['name']
           tmpltCustom = newDtml
           newType = 'DTML Method'
@@ -378,12 +378,26 @@ class ZMSMetaobjManager:
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.getTemplateId
+    #  ZMSMetaobjManager.renderTemplate
     #
-    #  Returns template-id for meta-object specified by given Id.
+    #  Renders template for meta-object.
     # --------------------------------------------------------------------------
-    def getTemplateId(self, id):
-      return "bodyContentZMSCustom_%s"%id
+    def renderTemplate(self, obj):
+      v = ""
+      id = obj.meta_id
+      for tmpltId in ["standard_html","bodyContentZMSCustom_%s"%id]:
+        if tmpltId in obj.getMetaobjAttrIds(id):
+          if obj.getMetaobjAttr(id,tmpltId)['type'] in ['method','py','zpt']:
+            v = obj.attr(tmpltId)
+          elif tmpltId not in ["standard_html"]:
+            tmpltDtml = getattr(obj,tmpltId,None)
+            if tmpltDtml is not None:
+              v = tmpltDtml(obj,REQUEST)
+              try:
+                v = v.encode('utf-8')
+              except UnicodeDecodeError:
+                v = str(v)
+      return v
 
 
     # --------------------------------------------------------------------------
@@ -493,7 +507,7 @@ class ZMSMetaobjManager:
     #  Returns meta-object specified by id.
     # --------------------------------------------------------------------------
     def getMetaobj(self, id):
-      return _globals.nvl( self.__get_metaobj__(id), {})
+      return _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
 
 
     # --------------------------------------------------------------------------
@@ -666,6 +680,8 @@ class ZMSMetaobjManager:
       meta_obj = meta_objs.get(meta_id,{})
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))
       if attrs is None:
+        if meta_id == 'ZMSTrashcan':
+          return {}
         raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(meta_id),str(key)))
       for attr in attrs:
         if key == attr['type']:
@@ -1200,10 +1216,10 @@ class ZMSMetaobjManager:
                 message += self.setMetaobjAttr(id,None,'zexp','ZEXP',0,0,0,'resource')
               # Insert Template.
               if newValue['type'] not in [ 'ZMSModule', 'ZMSPackage']:
-                tmpltId = self.getTemplateId(id)
+                tmpltId = 'standard_html'
                 tmpltName = 'Template: %s'%newValue['name']
                 tmpltCustom = []
-                tmpltCustom.append('<!-- %s -->\n'%tmpltId)
+                tmpltCustom.append('<!-- %s.%s -->\n'%(id,tmpltId))
                 tmpltCustom.append('\n')
                 tmpltCustom.append('<span tal:omit-tag="" tal:define="global\n')
                 tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
@@ -1212,7 +1228,7 @@ class ZMSMetaobjManager:
                   tmpltCustom.append('\t<p class="description" tal:content="python:\'%i %s\'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)[\'attrs\'][0][\'id\'])),zmscontext.getLangStr(\'ATTR_RECORDS\',request[\'lang\']))">#N records</p>\n')
                 tmpltCustom.append('</span>\n')
                 tmpltCustom.append('\n')
-                tmpltCustom.append('<!-- /%s -->\n'%tmpltId)
+                tmpltCustom.append('<!-- /%s.%s -->\n'%(id,tmpltId))
                 tmpltCustom = ''.join(tmpltCustom)
                 message += self.setMetaobjAttr(id,None,tmpltId,tmpltName,0,0,0,'zpt',[],tmpltCustom)
               message += self.getZMILangStr('MSG_INSERTED')%id

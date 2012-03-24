@@ -825,7 +825,10 @@ class ZMSObject(ZMSItem.ZMSItem,
         
         #-- Get value.
         ob = self
-        if 'index_html' in self.objectIds():
+        fct = 'index'
+        if REQUEST.get('op') == 'mobile':
+          fct = 'mobile'
+        if fct == 'index' and 'index_html' in self.objectIds():
           value = self.absolute_url()
           if REQUEST.get('lang','') != '': 
             value = self.url_append_params(value,{'lang':REQUEST['lang']})
@@ -834,7 +837,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         else:
           if deep:
             ob = _globals.getPageWithElements( self, REQUEST)
-          value = ob.getHref2Html( 'index', ob.getPageExt(REQUEST), REQUEST)
+          value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff(reqBuffId,value,REQUEST)
@@ -1249,19 +1252,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def _getBodyContent2(self, REQUEST):
       l = []
-      v = ''
-      tmpltId = self.metaobj_manager.getTemplateId( self.meta_id)
-      if tmpltId in self.getMetaobjAttrIds(self.meta_id):
-        if self.getMetaobjAttr(self.meta_id,tmpltId)['type'] in ['method','py','zpt']:
-          v = self.attr(tmpltId)
-        else:
-          tmpltDtml = getattr(self,tmpltId,None)
-          if tmpltDtml is not None:
-            v = tmpltDtml(self,REQUEST)
-            try:
-              v = v.encode('utf-8')
-            except UnicodeDecodeError:
-              v = str(v)
+      v = self.metaobj_manager.renderTemplate( self)
       if self.getType()=='ZMSTeaserElement':
         l.append('<div ')
         l.append(' class="%s"'%self.getType())

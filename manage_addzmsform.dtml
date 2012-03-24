@@ -5,6 +5,7 @@
 <head>
 <title>Add ZMS-Object</title>
 <link rel="stylesheet" type="text/css" href="/++resource++zms_/manage_page_style-min.css">
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/jquery-all.min.js"></script>
 <script language="JavaScript">
 <!--//
 
@@ -176,14 +177,25 @@
  </td>
 </tr>
 <tr valign="top">
+ <td><div class="form-label">Add Default Mobile Theme&nbsp;<sup style="background-color:#DCE204;color:#FFF;"><small>&nbsp;NEW&nbsp;</small></sup></em></div></td>
+ <td><input type="checkbox" name="mobile:int" value="1" onchange="if($(this).prop('checked')){$('#mobile_preview').show('normal')}else{$('#mobile_preview').hide('normal')}"/></td>
+</tr>
+<tr valign="top">
  <td><div class="form-text"><em>Preview</em></div></td>
  <td>
   <table cellspacing="0" cellpadding="1" border="0" bgcolor="#000000">
   <tr>
-   <td>
+   <td id="preview">
     <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
     <tr>
      <td><img name="img_theme" src="<dtml-var MISC_ZMS><dtml-var default_img_theme>" border="0" width="250" height="160"></td>
+    </tr>
+    </table>
+   </td>
+   <td id="mobile_preview" class="ui-helper-hidden">
+    <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
+    <tr>
+     <td><img name="img_theme" src="<dtml-var MISC_ZMS>myZMSmobile.jpg" border="0" width="250" height="160"></td>
     </tr>
     </table>
    </td>

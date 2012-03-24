@@ -22,7 +22,7 @@ import urllib
 import zExceptions
 
 
-dct_op = {'index':'','sitemap':'sitemap','index_print':'print'}
+dct_op = {'index':'','mobile':'mobile','sitemap':'sitemap','index_print':'print'}
 
 
 # ------------------------------------------------------------------------------
@@ -219,9 +219,11 @@ class CacheableObject(ReqBuff):
         s_lang = REQUEST.get('lang',self.getPrimaryLanguage())
         if self.isPageElement():
           _clearCachePage(self,_getCacheId('index_%s'%s_lang))
+          _clearCachePage(self,_getCacheId('mobile_%s'%s_lang))
           _clearCachePage(self,_getCacheId('index_print_%s'%s_lang))
         elif self.isPage():
           _clearCachePage(self,_getCacheId('index_%s'%s_lang))
+          _clearCachePage(self,_getCacheId('mobile_%s'%s_lang))
           _clearCachePage(self,_getCacheId('index_print_%s'%s_lang))
           _clearCachePage(self,_getCacheId('sitemap_%s'%s_lang))
         else:

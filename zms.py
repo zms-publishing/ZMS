@@ -299,7 +299,13 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   
     ##### Add Theme ####
     homeElmnt = initTheme(self,REQUEST['theme'],REQUEST['folder_id'],REQUEST)
-      
+    if REQUEST.get('mobile',0)==1:
+      tempId = 'myZMSmobile'
+      tempMobile = initTheme(homeElmnt,'myZMSmobile.zexp',tempId,REQUEST)
+      cb_copy_data = tempMobile.manage_cutObjects(tempMobile.objectIds())
+      homeElmnt.manage_pasteObjects(cb_copy_data=cb_copy_data)
+      homeElmnt.manage_delObjects(ids=[tempId])
+    
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - ZOPE-based contentmanagement system for science, technology and medicine'

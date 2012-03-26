@@ -392,7 +392,7 @@ class ZMSMetaobjManager:
           elif tmpltId not in ["standard_html"]:
             tmpltDtml = getattr(obj,tmpltId,None)
             if tmpltDtml is not None:
-              v = tmpltDtml(obj,REQUEST)
+              v = tmpltDtml(obj,obj.REQUEST)
               try:
                 v = v.encode('utf-8')
               except UnicodeDecodeError:

@@ -214,7 +214,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.isPageContainer:
     # --------------------------------------------------------------------------
     def isPageContainer(self):
-      return self.metaobj_manager.__is_page_container__( self.meta_id)
+      metaobj_manager = getattr(self,'metaobj_manager',None)
+      if metaobj_manager is not None:
+        return metaobj_manager.__is_page_container__( self.meta_id)
+      return False
 
 
     # --------------------------------------------------------------------------

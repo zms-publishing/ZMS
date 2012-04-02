@@ -64,7 +64,7 @@
 </dtml-if>
 </dtml-let>
 </dtml-in>
-<dtml-in "['Sequence','ZCatalog','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']">
+<dtml-in "['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']">
 <dtml-let meta_type=sequence-item>
 <dtml-call "meta_types.append({'name':meta_type,'action':meta_type,})">
 </dtml-let>

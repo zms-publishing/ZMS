@@ -1,5 +1,6 @@
 <dtml-let breadcrumbs="breadcrumbs_obj_path()"
 
+><dtml-call "REQUEST.set('catalog_items',[])"
 ><dtml-call "REQUEST.set('pos',0)"
  ><dtml-in breadcrumbs
   ><dtml-let ob=sequence-item

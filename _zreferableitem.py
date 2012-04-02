@@ -534,7 +534,7 @@ class ZReferableItem:
     _globals.writeBlock(self,'[synchronizeRefs]')
     
     # Extend object-tree.
-    def extendObjectTree(home):
+    def extendObjectTree(home, home_path):
       if home not in homes:
         homes.append( home)
         home_ob = self
@@ -570,7 +570,7 @@ class ZReferableItem:
             id = 'content'
           
           # Extend object-tree.
-          extendObjectTree(home)
+          extendObjectTree(home, home_path)
           
           f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
           if len( f) == 0:

@@ -87,9 +87,11 @@ AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 # ------------------------------------------------------------------------------
 def sort_item( i):
   if type( i) is str:
+    i = unicode(i,'utf-8')
     mapping = _globals.umlautMapping
     for key in mapping.keys():
-      i = i.replace(key,mapping[key])
+      try: i = i.replace(key,mapping[key])
+      except: pass
   return i
 
 

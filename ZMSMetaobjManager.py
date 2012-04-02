@@ -394,10 +394,16 @@ class ZMSMetaobjManager:
     def renderTemplate(self, obj):
       v = ""
       id = obj.meta_id
-      for tmpltId in ["standard_html","bodyContentZMSCustom_%s"%id]:
+      tmpltIds = []
+      if obj.REQUEST.get("ZMS_SKIN") is not None and  obj.REQUEST.get("ZMS_EXT") is not None:
+        tmpltIds.append("%s_%s"%(obj.REQUEST.get("ZMS_SKIN"),obj.REQUEST.get("ZMS_EXT")))
+      tmpltIds.append("standard_html")
+      tmpltIds.append("bodyContentZMSCustom_%s"%id)
+      for tmpltId in tmpltIds:
         if tmpltId in obj.getMetaobjAttrIds(id):
           if obj.getMetaobjAttr(id,tmpltId)['type'] in ['method','py','zpt']:
             v = obj.attr(tmpltId)
+            break
           elif tmpltId not in ["standard_html"]:
             tmpltDtml = getattr(obj,tmpltId,None)
             if tmpltDtml is not None:
@@ -406,6 +412,7 @@ class ZMSMetaobjManager:
                 v = v.encode('utf-8')
               except UnicodeDecodeError:
                 v = str(v)
+              break
       return v
 
 

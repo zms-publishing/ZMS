@@ -828,9 +828,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         
         #-- Get value.
         ob = self
-        fct = 'index'
-        if REQUEST.get('op') == 'mobile':
-          fct = 'mobile'
+        fct = REQUEST.get('ZMS_SKIN','index')
         if fct == 'index' and 'index_html' in self.objectIds():
           value = self.absolute_url()
           if REQUEST.get('lang','') != '': 

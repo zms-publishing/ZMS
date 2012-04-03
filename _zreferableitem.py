@@ -533,6 +533,12 @@ class ZReferableItem:
   def synchronizeRefs( self, ob_id=None, clients=False, unify_ids=False):
     _globals.writeBlock(self,'[synchronizeRefs]')
     
+    # Initialize.
+    message = ''
+    t0 = time.time()
+    obs = {}
+    clients = clients or (not self.getPortalMaster() and not self.getPortalClients())
+    
     # Extend object-tree.
     def extendObjectTree(home, home_path):
       if home not in homes:
@@ -623,12 +629,6 @@ class ZReferableItem:
             m.append(i)
           v = sp.join(m)
       return v
-
-    # Initialize.
-    message = ''
-    t0 = time.time()
-    obs = {}
-    clients = clients or (not self.getPortalMaster() and not self.getPortalClients())
     
     # Initialize object-tree.
     map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( self, clients))

@@ -1,5 +1,4 @@
 var zmiDialog = null;
-var zmiSelectedText = null;
 
 function showPreviewZMSGraphic(el,src,icon,filename,size) {
 	var html= '';
@@ -114,7 +113,7 @@ function zmiExpandObject(id,abs_url,meta_id) {
 }
 
 function zmiSelectObject(id,abs_url,meta_id) {
-	zmiDialog.getContentElement('tab1', 'inp_url').setValue(abs_url);
+	zmiDialog.getContentElement('info', 'url').setValue(abs_url);
 	zmiDialog.click("ok");
 }
 
@@ -126,80 +125,151 @@ function zmiResizeObject() {
 	$myDiv.css("height",height);
 }
 
-CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor ) {
-	return { 
-		title:  getZMILangStr('CAPTION_CHOOSEOBJ'),
-		minWidth: 250,
-		minHeight: 180,
-		contents: [ 
+CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
+{
+	var plugin = CKEDITOR.plugins.link;
+
+	var parseLink = function( editor, element )
+	{
+		var href = ( element  && ( element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '',
+			retval = {};
+		// Record down the selected element in the dialog.
+		this._.selectedElement = element;
+		return retval;
+	};
+
+	var commonLang = editor.lang.common,
+		linkLang = editor.lang.link;
+
+	return {
+		title : getZMILangStr('CAPTION_CHOOSEOBJ'),
+		minWidth : 250,
+		minHeight : 180,
+		contents : [
 			{
-				id: 'tab1',
-				label: 'Tab1',
-				title: 'Tab1',
-				elements : [ 
+				id : 'info',
+				label : linkLang.info,
+				title : linkLang.info,
+				elements :
+				[
 					{
-						id: 'inp_url',
-						type: 'text',
-						label: "URL",
-						validate : function() {
-							// potentielle Validierungen
-							if (this.getValue() == "") {
-								alert("Das Feld darf nicht leer sein!");
-							}
-							return this.getValue() != "";
+						type : 'text',
+						id : 'url',
+						label : commonLang.url,
+						required: true,
+						onLoad : function ()
+						{
+							this.allowOnChange = true;
+							zmiDialog = this.getDialog();
+							zmiDialog.on("resize",function(event){zmiResizeObject()});
+							zmiResizeObject();
+							var href = self.location.href;
+							href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
+							$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
+							$.get(href,{lang:zmiParams["lang"]},function(result) {
+									var html = zmiAddPages(result,false);
+									$("#myDiv").html(html);
+									// Open siblings of current page-element.
+									var last_page_id = $("page[is_page=1]:last",result).attr("id");
+									$("div#div_"+last_page_id+" > span:first").click();
+								});
+						},
+						validate : function()
+						{
+							var dialog = this.getDialog();
+							var func = CKEDITOR.dialog.validate.notEmpty( linkLang.noUrl );
+							return func.apply( this );
+						},
+						setup : function( data )
+						{
+							this.allowOnChange = false;
+							if ( data.url )
+								this.setValue( data.url.url );
+							this.allowOnChange = true;
+						},
+						commit : function( data )
+						{
+							if ( !data.url )
+								data.url = {};
+							data.url.url = this.getValue();
+							this.allowOnChange = false;
 						}
 					},
 					{
 						type: 'html',
 						html : '<div id="myDiv" style="overflow:auto"></div>'
 					}
-				 ]
+				]
 			}
-		 ],
+		],
+		onShow : function()
+		{
+			var editor = this.getParentEditor(),
+				selection = editor.getSelection(),
+				element = null;
 
-			onShow: function() {
-					var selection = editor.getSelection();
-					if (CKEDITOR.env.ie) {
-						zmiSelectedText = selection.document.$.selection.createRange().text;
-					} else {
-						zmiSelectedText = selection.getNative();
-					}
-			},
+			// Fill in all the relevant fields if there's already one link selected.
+			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
+				selection.selectElement( element );
+			else
+				element = null;
 
-			onLoad: function() {
-					zmiDialog = this;
-					zmiDialog.on("resize",function(event){zmiResizeObject()});
-					zmiResizeObject();
-					var href = self.location.href;
-					href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
-					$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
-					$.get(href,{lang:zmiParams["lang"]},function(result) {
-							var html = zmiAddPages(result,false);
-							$("#myDiv").html(html);
-							// Open siblings of current page-element.
-							var last_page_id = $("page[is_page=1]:last",result).attr("id");
-							$("div#div_"+last_page_id+" > span:first").click();
-						});
-				},
+			this.setupContent( parseLink.apply( this, [ editor, element ] ) );
+		},
+		onOk : function()
+		{
+			var attributes = {},
+				removeAttributes = [],
+				data = {},
+				me = this,
+				editor = this.getParentEditor();
 
-			onOk: function() {
-					var selectedText = zmiSelectedText;
-					var url = this.getContentElement('tab1', 'inp_url').getValue();
-					var text = url;
-					if ((""+selectedText).length>0) {
-						text = selectedText;
-					}
-					var html = '';
-					if (url.indexOf("<")==0) {
-						html += url;
-					}
-					else {
-						html += '<a href="'+url+'">'+text+'</a>';
-					}
-					var element = CKEDITOR.dom.element.createFromHtml(html);
-					editor.insertElement(element);
-			 }
- 
+			this.commitContent( data );
+
+			// Compose the URL.
+			var url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
+			attributes[ 'data-cke-saved-href' ] = url;
+
+			// Browser need the "href" fro copy/paste link to work. (#6641)
+			attributes.href = attributes[ 'data-cke-saved-href' ];
+
+			if ( !this._.selectedElement )
+			{
+				// Create element if current selection is collapsed.
+				var selection = editor.getSelection(),
+					ranges = selection.getRanges( true );
+				if ( ranges.length == 1 && ranges[0].collapsed )
+				{
+					var text = new CKEDITOR.dom.text( attributes[ 'data-cke-saved-href' ], editor.document );
+					ranges[0].insertNode( text );
+					ranges[0].selectNodeContents( text );
+					selection.selectRanges( ranges );
+				}
+
+				// Apply style.
+				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
+				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
+				style.apply( editor.document );
+			}
+			else
+			{
+				// We're only editing an existing link, so just overwrite the attributes.
+				var element = this._.selectedElement,
+					href = element.data( 'cke-saved-href' ),
+					textView = element.getHtml();
+
+				element.setAttributes( attributes );
+				element.removeAttributes( removeAttributes );
+
+				// Update text view when user changes protocol (#4612).
+				if ( href == textView)
+				{
+					// Short mailto link text view (#5736).
+					element.setHtml( attributes[ 'data-cke-saved-href' ] );
+				}
+
+				delete this._.selectedElement;
+			}
+		}
 	};
- 
-} );
+});

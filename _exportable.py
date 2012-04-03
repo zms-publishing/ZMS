@@ -36,6 +36,18 @@ import _globals
 import _xmllib
 
 
+def writeFile(self, filename, data, mode='w', encoding='utf-8'):
+  try:
+    f = codecs.open( filename, mode=mode, encoding=encoding)
+    f.write( data)
+    f.close()
+  except:
+    _globals.writeError( self, "[writeFile]")
+    f = open( filename, mode=mode)
+    f.write( data)
+    f.close()
+
+
 # ------------------------------------------------------------------------------
 #  _exportable.exportFiles:
 # ------------------------------------------------------------------------------
@@ -69,7 +81,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
           try:
             html = ob.raw
             html = _globals.dt_html( self, html, REQUEST)
-            html = localHtml( self, ob, html, REQUEST)
+            html = localHtml( ob, html)
             html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html)
             ob = html
           except:
@@ -107,14 +119,13 @@ def rfindDelimiter(s, delimiters=['"',"'"]):
 #
 #  Process encoding.
 # ------------------------------------------------------------------------------
-def localHtml(self, obj, html, REQUEST):
+def localHtml(self, html):
   try:
     default_charset = 'utf-8'
-    charset = REQUEST.get('ZMS_CHARSET', default_charset)
-    if charset != default_charset:
-      html = unicode( html, default_charset).encode( charset)
+    charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
+    html = unicode( html, default_charset).encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
-    _globals.writeError( obj, "[localHtml]")
+    _globals.writeError( self, "[localHtml]")
     v = str(sys.exc_value)
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
@@ -384,7 +395,7 @@ class Exportable(_filtermanager.FilterItem):
       else:
         html += '</body>\n'
         html += '</html>\n'
-      html = localHtml( self, self, html, REQUEST)
+      html = localHtml( self, html)
       html = localIndexHtml( self, self, level, html, xhtml=True)
       return html
 
@@ -523,8 +534,12 @@ class Exportable(_filtermanager.FilterItem):
               except:
                 pass
           
+          # Blank lines in includes cause PHP session errors
+          # @see http://bugs.php.net/bug.php?id=8974
+          html = self.re_sub('^\s*', '', html)
+          
           # Localize html.
-          html = localHtml( self, obj, html, REQUEST)
+          html = localHtml( obj, html)
           
           # Save html to file.
           if key == 'index' and \
@@ -543,23 +558,15 @@ class Exportable(_filtermanager.FilterItem):
           
           html = self.exportExternalResources( obj, html, path, REQUEST)
           
-          # Blank lines in includes cause PHP session errors
-          # @see http://bugs.php.net/bug.php?id=8974
-          html = self.re_sub('^\s*', '', html)
-          
           # @see http://docs.python.org/howto/unicode.html (Reading and Writing Unicode Data)
           encoding = REQUEST.get( 'ZMS_CHARSET', 'utf-8')
           mode = 'w'
-          f = codecs.open( filename, mode=mode, encoding=encoding)
-          f.write( html)
-          f.close()
+          writeFile( obj, filename, html, mode, encoding)
           
           # Root folder requires and defaults to "index.html" at most systems.
           if key == 'index' and lang == self.getPrimaryLanguage():
             filename = '%s/%s%s'%( path, key, obj.getPageExt( REQUEST))
-            f = codecs.open( filename, mode=mode, encoding=encoding)
-            f.write( html)
-            f.close()
+            writeFile( obj, filename, html, mode, encoding)
         
         except:
           _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
@@ -575,7 +582,7 @@ class Exportable(_filtermanager.FilterItem):
                 for metaObjAttr in metaObj['attrs']:
                   if metaObjAttr['type'] in [ 'DTML Document', 'DTML Method']:
                     html = getattr( obj, metaObjAttr['id'])( obj, REQUEST)
-                    html = localHtml( self, obj, html, REQUEST)
+                    html = localHtml( obj, html)
                     filename = '%s/%s'%( path, metaObjAttr['id'])
                     f = open(filename,'w')
                     f.write(html)

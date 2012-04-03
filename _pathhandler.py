@@ -116,12 +116,9 @@ class PathHandler:
     #  PathHandler.base_url
     # --------------------------------------------------------------------------
     def base_url(self):
-      if self.getConfProperty( 'ZMS.pathcoherence', 1) == 1:
+      if  self.getConfProperty( 'ZMS.pathcoherence', 1) == 1:
         # return self.REQUEST.get('BASE0') + '/'.join( list( self.getPhysicalPath()))
-        base_url = ''
-        if self.getConfProperty( 'ZMS.pathcropping', 0) == 0:
-            base_url = self.REQUEST['BASE0']
-        return base_url + '/'.join( list( self.getPhysicalPath()))
+        return '/'.join( list( self.getPhysicalPath()))
       else:
         return self.absolute_url()
 
@@ -180,21 +177,6 @@ class PathHandler:
       # otherwise do some 'magic'
       else:
         _globals.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
-        
-        # Skins
-        l = TraversalRequest['path_to_handle'][-1]
-        i = l.rfind('_')
-        j = l.rfind('.')
-        if i > 0 and j > 0:
-          lang = l[i+1:j]
-          if lang in self.getLangIds():
-            auth_user = self.REQUEST.get('AUTHENTICATED_USER')
-            access = auth_user.has_permission( 'View', self) in [ 1, True]
-            if access:
-              self.REQUEST.set('ZMS_SKIN',l[:i])
-              self.REQUEST.set('ZMS_EXT',l[j+1:])
-              self.REQUEST.set('lang',lang)
-              return self
         
         # Package-Home.
         if name == '$ZMS_HOME':
@@ -319,6 +301,21 @@ class PathHandler:
         # If the object has blob-fields find by filename and display data.
         v = handleBlobAttrs( self, name, req)
         if v is not None: return v
+        
+        # Skins
+        l = TraversalRequest['path_to_handle'][-1]
+        i = l.rfind('_')
+        j = l.rfind('.')
+        if i > 0 and j > 0:
+          lang = l[i+1:j]
+          if lang in self.getLangIds():
+            auth_user = self.REQUEST.get('AUTHENTICATED_USER')
+            access = auth_user.has_permission( 'View', self) in [ 1, True]
+            if access:
+              self.REQUEST.set('ZMS_SKIN',l[:i])
+              self.REQUEST.set('ZMS_EXT',l[j+1:])
+              self.REQUEST.set('lang',lang)
+              return self
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next

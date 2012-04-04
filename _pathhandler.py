@@ -310,7 +310,8 @@ class PathHandler:
           lang = l[i+1:j]
           if lang in self.getLangIds():
             auth_user = self.REQUEST.get('AUTHENTICATED_USER')
-            access = auth_user.has_permission( 'View', self) in [ 1, True]
+            access = (auth_user is None and self.hasPublicAccess()) or \
+                     (auth_user is not Nona and auth_user.has_permission( 'View', self) in [ 1, True])
             if access:
               self.REQUEST.set('ZMS_SKIN',l[:i])
               self.REQUEST.set('ZMS_EXT',l[j+1:])

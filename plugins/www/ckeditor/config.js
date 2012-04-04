@@ -9,8 +9,10 @@ CKEDITOR.editorConfig = function( config )
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 
-  // Linkbutton: @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
-  config.extraPlugins = 'linkbutton,tableresize';
+  // Linkbutton
+  // Mediabutton
+  // @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
+  config.extraPlugins = 'linkbutton,mediabutton,tableresize';
 
   // skins
   config.skin = getZMIConfProperty("CKEDITOR.config.skin","kama");

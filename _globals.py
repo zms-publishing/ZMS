@@ -183,7 +183,7 @@ def umlaut_quote(s, mapping={}):
   map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
   for key in mapping.keys():
     s = s.replace(key,mapping[key])
-  s = str(s)
+  s = s.encode('utf-8')
   return s
 
 

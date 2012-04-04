@@ -35,7 +35,7 @@ function zmiAddPages(result, siblings) {
 			if ($(this).attr("meta_id")=='ZMSGraphic') {
 				var $img = $("img",this);
 				if ($img.length==1) {
-					link_url = '<img src=&quot;'+abs_url+'/'+$("filename",$img).text()+'&quot;/>';
+					link_url = '<img src=&quot;'+abs_url+'/'+$("filename",$img).text()+'&quot;>';
 					var src = abs_url+'/'+$("filename",$img).text();
 					var icon = $("icon",$img).text();
 					var filename = $("filename",$img).text();
@@ -131,7 +131,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 	var parseLink = function( editor, element )
 	{
-		var href = ( element  && ( element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '',
+		var href = '',
 			retval = {};
 		// Record down the selected element in the dialog.
 		this._.selectedElement = element;
@@ -228,47 +228,28 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 			// Compose the URL.
 			var url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
-			attributes[ 'data-cke-saved-href' ] = url;
 
-			// Browser need the "href" fro copy/paste link to work. (#6641)
-			attributes.href = attributes[ 'data-cke-saved-href' ];
-
-			if ( !this._.selectedElement )
-			{
+			if (url.indexOf("<") == 0) {
+				var element = CKEDITOR.dom.element.createFromHtml(url);
+				editor.insertElement(element);
+			}
+			else {
+				attributes[ 'data-cke-saved-href' ] = url;
+				// Browser need the "href" fro copy/paste link to work. (#6641)
+				attributes.href = attributes[ 'data-cke-saved-href' ];
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection(),
 					ranges = selection.getRanges( true );
-				if ( ranges.length == 1 && ranges[0].collapsed )
-				{
+				if ( ranges.length == 1 && ranges[0].collapsed ) {
 					var text = new CKEDITOR.dom.text( attributes[ 'data-cke-saved-href' ], editor.document );
 					ranges[0].insertNode( text );
 					ranges[0].selectNodeContents( text );
 					selection.selectRanges( ranges );
 				}
-
 				// Apply style.
 				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
 				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
 				style.apply( editor.document );
-			}
-			else
-			{
-				// We're only editing an existing link, so just overwrite the attributes.
-				var element = this._.selectedElement,
-					href = element.data( 'cke-saved-href' ),
-					textView = element.getHtml();
-
-				element.setAttributes( attributes );
-				element.removeAttributes( removeAttributes );
-
-				// Update text view when user changes protocol (#4612).
-				if ( href == textView)
-				{
-					// Short mailto link text view (#5736).
-					element.setHtml( attributes[ 'data-cke-saved-href' ] );
-				}
-
-				delete this._.selectedElement;
 			}
 		}
 	};

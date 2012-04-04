@@ -533,14 +533,9 @@ class ZReferableItem:
   def synchronizeRefs( self, ob_id=None, clients=False, unify_ids=False):
     _globals.writeBlock(self,'[synchronizeRefs]')
     
-    # Initialize.
-    message = ''
-    t0 = time.time()
-    obs = {}
-    clients = clients or (not self.getPortalMaster() and not self.getPortalClients())
-    
     # Extend object-tree.
     def extendObjectTree(home, home_path):
+      message = ''
       if home not in homes:
         homes.append( home)
         home_ob = self
@@ -554,9 +549,11 @@ class ZReferableItem:
         else:
           message += '[ERROR] Can\'t load object-tree for '+home+': not found!<br/>'
         _globals.writeBlock(self,'[synchronizeRefs]: '+message)
+      return message
     
     # Handle internal references.
     def handleInternalRefs(v):
+      message = ''
       sp = '{$'
       l = v.split(sp)
       if len(l) > 1:
@@ -576,7 +573,7 @@ class ZReferableItem:
             id = 'content'
           
           # Extend object-tree.
-          extendObjectTree(home, home_path)
+          message += extendObjectTree(home, home_path)
           
           f = filter( lambda x: x.find('/%s/content'%home) >= 0 and x.endswith('/%s'%id), obs.keys())
           if len( f) == 0:
@@ -602,10 +599,11 @@ class ZReferableItem:
             message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
           m.append(ref+i[i.find('}'):])
         v = sp.join(m)
-      return v
+      return v, message
     
     # Handle relative references.
     def handleRelativeRefs(v):
+      message = ''
       for sp in ['href="./','src="./']:
         l = v.split(sp)
         if len(l) > 1:
@@ -628,7 +626,13 @@ class ZReferableItem:
                   i = ref + i[i.find('"'):]
             m.append(i)
           v = sp.join(m)
-      return v
+      return v, message
+    
+    # Initialize.
+    message = ''
+    t0 = time.time()
+    obs = {}
+    clients = clients or (not self.getPortalMaster() and not self.getPortalClients())
     
     # Initialize object-tree.
     map( lambda x: operator.setitem(obs, x.base_url(), x), _globals.objectTree( self, clients))
@@ -702,8 +706,10 @@ class ZReferableItem:
                 v = r[k]
                 o = v
                 if type(v) is str:
-                  v = handleInternalRefs(v)
-                  v = handleRelativeRefs(v)
+                  v, m = handleInternalRefs(v)
+                  message += m
+                  v, m = handleRelativeRefs(v)
+                  message += m
                   if v != o:
                     r[k] = v
               c += 1
@@ -719,8 +725,10 @@ class ZReferableItem:
                 v = _objattrs.getobjattr(ob,obj_vers,obj_attr,lang)
                 o = v
                 if type(v) is str:
-                  v = handleInternalRefs(v)
-                  v = handleRelativeRefs(v)
+                  v, m = handleInternalRefs(v)
+                  message += m
+                  v, m = handleRelativeRefs(v)
+                  message += m
                   if v != o:
                     _objattrs.setobjattr(ob,obj_vers,obj_attr,v,lang)
     

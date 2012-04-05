@@ -63,12 +63,12 @@ def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
                 if c == 0:
                   key = 'key'
                 else:
-                  key = nData['cdata']
+                  key = nData.get('cdata','')
                 keys.append(key)
               else:
                 if c == 0:
                   value.append({})
-                value[-1][keys[c]] = nData['cdata']
+                value[-1][keys[c]] = nData.get('cdata','')
               c += 1
           r += 1
   if type(value) is list:

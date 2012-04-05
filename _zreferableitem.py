@@ -552,7 +552,7 @@ class ZReferableItem:
       return message
     
     # Handle internal references.
-    def handleInternalRefs(v):
+    def handleInternalRefs(k,v):
       message = ''
       sp = '{$'
       l = v.split(sp)
@@ -596,13 +596,13 @@ class ZReferableItem:
                 if target_ref not in target_ref_by:
                   setattr( target, 'ref_by', target_ref_by + [ target_ref])
           if ref.startswith('__') and ref.endswith('__'):
-            message += '<a href="%s/manage_main" target="_blank">%s(%s).%s[%i]=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,c,ref)
+            message += '<a href="%s/manage_main" target="_blank">%s(%s)%s=%s</a><br/>'%(ob.absolute_url(),ob.absolute_url(),ob.meta_type,k,ref)
           m.append(ref+i[i.find('}'):])
         v = sp.join(m)
       return v, message
     
     # Handle relative references.
-    def handleRelativeRefs(v):
+    def handleRelativeRefs(k,v):
       message = ''
       for sp in ['href="./','src="./']:
         l = v.split(sp)
@@ -706,9 +706,9 @@ class ZReferableItem:
                 v = r[k]
                 o = v
                 if type(v) is str:
-                  v, m = handleInternalRefs(v)
+                  v, m = handleInternalRefs('%s.%s[%i]'%(key,k,c),v)
                   message += m
-                  v, m = handleRelativeRefs(v)
+                  v, m = handleRelativeRefs('%s.%s[%i]'%(key,k,c),v)
                   message += m
                   if v != o:
                     r[k] = v
@@ -725,9 +725,9 @@ class ZReferableItem:
                 v = _objattrs.getobjattr(ob,obj_vers,obj_attr,lang)
                 o = v
                 if type(v) is str:
-                  v, m = handleInternalRefs(v)
+                  v, m = handleInternalRefs(key,v)
                   message += m
-                  v, m = handleRelativeRefs(v)
+                  v, m = handleRelativeRefs(key,v)
                   message += m
                   if v != o:
                     _objattrs.setobjattr(ob,obj_vers,obj_attr,v,lang)

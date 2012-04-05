@@ -1,3 +1,29 @@
+var CKEditor_mediaCounter = 0;
+var CKEditor_editor = null;
+
+function CKEditor_uploadMediaDone() {
+	CKEditor_mediaCounter++;
+	var response = $('iframe#CKEditor_uploadMedia').contents().text();
+	if (response) {
+		var data = eval("("+response+")");
+		var instance = CKEDITOR.instances['<dtml-var elName>'];
+		var html = '';
+		if (typeof data["imghires"] != "undefined") {
+			html = '<a href="'+data["imghires"]["absolute_url"]+'" class="fancybox"><img src="'+data["image"]["absolute_url"]+'" alt="" class="image"/></a>';
+		}
+		else if (typeof data["image"] != "undefined") {
+			html = '<img src="'+data["image"]["absolute_url"]+'" alt="" class="image"/>';
+		}
+		else if (typeof data["file"] != "undefined") {
+			html = '<a href="'+data["file"]["absolute_url"]+'" target="_blank" class="file">'+data["file"]["filename"]+'</a>';
+		}
+		zmiWriteDebug("[CKEditor_uploadMediaDone] html="+html);
+		var element = CKEDITOR.dom.element.createFromHtml(html);
+		CKEditor_editor.insertElement(element);
+		CKEditor_editor = null;
+	}
+}
+
 CKEDITOR.dialog.add( 'mediabuttonDlg', function( editor )
 {
 	var commonLang = editor.lang.common,
@@ -15,22 +41,48 @@ CKEDITOR.dialog.add( 'mediabuttonDlg', function( editor )
 				elements :
 				[
 					{
-						type : 'file',
-						id : 'file',
-						label : getZMILangStr('ATTR_FILE'),
-						required: true
-					},
-					{
-						type : 'checkbox',
-						id : 'thumbnail',
-						label : getZMILangStr('ACTION_GENERATE_PREVIEW'),
-						'default' : 'checked'
+						type : 'html',
+						html : ''
+							+ '<div id="mediaDialog">'
+								+ '<iframe id="CKEditor_uploadMedia" name="CKEditor_uploadMedia" stc="" style="display:none" onload="CKEditor_uploadMediaDone()"></iframe>'
+								+ '<form action="metaobj_manager/ZMSLib.uploadMedia" method="post" target="CKEditor_uploadMedia" enctype="multipart/form-data">'
+								  + '<input type="hidden" name="session_id" value="'+$("form#form0 input[name=session_id]").val()+'"/>'
+								  + '<input type="hidden" name="form_id" value="'+$("form#form0 input[name=form_id]").val()+'"/>'
+								  + '<input type="hidden" name="lang" value="'+$("form#form0 input[name=lang]").val()+'"/>'
+								  + '<input type="hidden" name="key" value="' + CKEditor_mediaCounter + '"/>'
+									+ '<table cellspacing="0">'
+									+ '<colgroup>'
+										+ '<col width="20%"/>'
+										+ '<col width="80%"/>'
+									+ '</colgroup>'
+									+ '<tr id="tr_fileContainer"  valign="top">'
+										+ '<td nowrap="nowrap" class="form-label"><img src="/misc_/zms/upload.gif" border="0" style="vertical-align:middle" /></td>'
+										+ '<td id="fileContainer" class="form-element"></td>'
+									+ '</tr>'
+									+ '</table>'
+								+ '</form>'
+							+ '</div>'
 					}
 				]
 			}
 		],
+		onShow : function()
+		{
+			CKEditor_editor = this.getParentEditor();
+			var html = ''
+				+ '<input class="form-element" name="file" type="file" size="25">'
+				+ '<div class="form-small">'
+					+ '<input type="checkbox" id="thumbnail" name="thumbnail:int" value="1" checked="checked">'
+					+ getZMILangStr('ACTION_GENERATE_PREVIEW')
+				+'</div>';
+			$('div#mediaDialog #fileContainer').html(html);
+		},
 		onOk : function()
 		{
+			if ($("div#mediaDialog input[name=file]").val()) {
+				zmiWriteDebug("[onOk] submit");
+				$("div#mediaDialog form").submit();
+			}
 		}
 	};
 });

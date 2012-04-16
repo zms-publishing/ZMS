@@ -30,7 +30,7 @@ function zmiAddPages(result, siblings) {
 	$("page",result).each(function() {
 			var titlealt = "";
 			var abs_url = $(this).attr("absolute_url");
-			var link_url = abs_url;
+			var link_url = $(this).attr("index_html");
 			var extra = null;
 			if ($(this).attr("meta_id")=='ZMSGraphic') {
 				var $img = $("img",this);

@@ -27,11 +27,4 @@ CKEDITOR.editorConfig = function( config )
      ['Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
   ];
-  config.toolbar_ZMSBasicInsertToolbar =[
-     ['Format'],
-     ['Bold','Italic','Underline','NumberedList','BulletedList'],
-     ['Undo','Redo'],
-     ['Find'],
-     ['Source','ShowBlocks','Maximize','About']
-  ];
 };

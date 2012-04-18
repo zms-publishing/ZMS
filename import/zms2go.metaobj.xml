@@ -168,6 +168,14 @@ span.mouseover {
 }
 </style>
 
+<!-- 
+Fix for can't edit fields of CKEditor in jQuery UI modal dialog
+@see http://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog 
+-->
+<style>
+.cke_skin_kama .cke_dialog_body { z-index: inherit; }
+</style>
+
 <script>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -289,8 +297,6 @@ CKEDITOR.config.toolbar_ZMSRichDocumentToolbar =[
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
 				toolbar: 'ZMSCustomToolbar',
-			<dtml-elif "REQUEST.get('ZMS_INSERT')">
-				toolbar: 'ZMSBasicInsertToolbar',
 			<dtml-else>
 				toolbar: 'ZMSRichDocumentToolbar',
 			</dtml-if>

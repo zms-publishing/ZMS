@@ -570,7 +570,7 @@ class ZMSMetaobjManager:
       obs = self.model
       ob = self.getMetaobj( id)
       if ob is not None and len( ob.keys()) > 0 and subobjects == 1:
-        if ob['type'] == 'ZMSPackage':
+        if ob.get('type','') == 'ZMSPackage':
           pk_obs = filter( lambda x: x.get('package') == id, obs.values())
           pk_ids = map( lambda x: x['id'], pk_obs)
           for pk_id in pk_ids:

@@ -124,6 +124,9 @@ $("link[rel=stylesheet]").each(function() {
 		CKEDITOR.config.contentsCss.push($(this).attr("href"));
 	});
 CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
+<dtml-in "REQUEST.get('CKEDITOR_config_contentsCss',[])">
+CKEDITOR.config.contentsCss.push('<dtml-var sequence-item>');
+</dtml-in>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Import XStandard styles
@@ -162,10 +165,17 @@ CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', e
 >
 ////////////////////////////////////////////////////////////////////////////////
 
+<dtml-if "REQUEST.get('CKEDITOR_config_toolbar')">
+// Toolbar
+CKEDITOR.config.toolbar_ZMSConfigToolbar = <dtml-var "str_json(REQUEST.get('CKEDITOR_config_toolbar'))">;
+</dtml-if>
+
 		loadCkeditor( 'editor_'+id, {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
 				toolbar: 'ZMSCustomToolbar',
+			<dtml-elif "REQUEST.get('CKEDITOR_config_toolbar')">
+				toolbar: 'ZMSConfigToolbar',
 			<dtml-else>
 				toolbar: 'ZMSBasicToolbar',
 			</dtml-if>

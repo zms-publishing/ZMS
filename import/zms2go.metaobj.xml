@@ -148,7 +148,6 @@ except:
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[<dtml-let meta_id="REQUEST.get('ZMS_INSERT',meta_id)"
 		objAttr="getObjAttr('text',meta_id)"
-		elName="'editor'"
 		session_id="SESSION.getId()"
 >
 
@@ -168,13 +167,41 @@ span.mouseover {
 }
 </style>
 
-<!-- 
-Fix for can't edit fields of CKEditor in jQuery UI modal dialog
-@see http://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog 
--->
-<style>
-.cke_skin_kama .cke_dialog_body { z-index: inherit; }
-</style>
+<dtml-comment>
+////////////////////////////////////////////////////////////////////////////////
+/// ZMS2GO Headline
+////////////////////////////////////////////////////////////////////////////////
+</dtml-comment>
+
+<div id="interface0">
+<input type="hidden" id="titlealt_<dtml-var lang>" name="titlealt_<dtml-var lang>" value=""/>
+<input type="hidden" id="title_<dtml-var lang>" name="title_<dtml-var lang>" value=""/>
+<input type="hidden" id="text_<dtml-var lang>" name="text_<dtml-var lang>" value=""/>
+<div style="width:100%;text-align:right">
+	<span class="zms2goButton">
+		<img src="<dtml-var spacer_gif>" alt="" border="0"/>
+	</span>
+</div>
+
+<dtml-comment>
+////////////////////////////////////////////////////////////////////////////////
+/// CKEDITOR Plugin
+////////////////////////////////////////////////////////////////////////////////
+</dtml-comment>
+
+<dtml-call "REQUEST.set('elName','editor')">
+<dtml-call "REQUEST.set('CKEDITOR_config_toolbar',[
+		['Format'],
+		['Bold','Italic','Underline','NumberedList','BulletedList'],
+		['Undo','Redo'],
+		['mediabutton'],
+		['Find','linkbutton','Link','Unlink'],
+		['Anchor','Table'],
+		['Source','ShowBlocks','Maximize','About']
+	])">
+<dtml-call "REQUEST.set('CKEDITOR_config_contentsCss',['metaobj_manager/ZMS.contents.css'])">
+<dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
+<dtml-var "getPlugin('rte/ckeditor/manage_form.dtml',REQUEST)">
 
 <script>
 
@@ -198,133 +225,12 @@ function extractString(s, start, end) {
 	return s;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// CKEDITOR Plugin
-////////////////////////////////////////////////////////////////////////////////
-
-var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
-var CKEDITOR_LOADED = {};
-
-function pluginCkeditor(s, c) {
-	$.plugin('ckeditor',{
-			cache: false,
-			files: ['/++resource++zms_/ckeditor/ckeditor.js']
-		});
-	$.plugin('ckeditor').get(s,c);
-}
-
-function loadCkeditor(id, opt) {
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		instance.destroy();
-	}
-	CKEDITOR.replace(id, opt);
-}
-
-function zmiRichtextResize(id) {
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
-		zmiWriteDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
-		$(".cke_contents").css("height",newHeight);
-	}
-}
-
-function zmiRichtextInit(id) {
-	pluginCkeditor('#'+id,function() {
-		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
-		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
-
-////////////////////////////////////////////////////////////////////////////////
-// Contents-CSS
-////////////////////////////////////////////////////////////////////////////////
-CKEDITOR.config.contentsCss = [];
-$("link[rel=stylesheet]").each(function() {
-		CKEDITOR.config.contentsCss.push($(this).attr("href"));
-	});
-CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
-CKEDITOR.config.contentsCss.push('metaobj_manager/ZMS.contents.css');
-
-////////////////////////////////////////////////////////////////////////////////
-// Import XStandard styles
-////////////////////////////////////////////////////////////////////////////////
-<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds()">
-CKEDITOR.config.format_tags = '';
-<dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
-<dtml-in "xmlNodeSet(xml_styles,'style')">
-<dtml-let xml_style=sequence-item
-><dtml-call "REQUEST.set('style_id',None)"><dtml-in "xmlNodeSet(xml_style,'id')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_id',id_quote(node['cdata']))"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_name',None)"><dtml-in "xmlNodeSet(xml_style,'name')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_name',node['cdata'])"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_elt',None)"><dtml-in "xmlNodeSet(xml_style,'elt')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_element',node['cdata'])"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_attrs',[])"
-><dtml-in "xmlNodeSet(xml_style,'attr')"
-	><dtml-let node=sequence-item
-		><dtml-in "xmlNodeSet(node,'name')"
-			><dtml-let nodeName=sequence-item
-				><dtml-call "REQUEST.set('style_attrs_nodeName',nodeName['cdata'])"
-			></dtml-let
-		></dtml-in
-		><dtml-in "xmlNodeSet(node,'value')"
-			><dtml-let nodeValue=sequence-item
-				><dtml-call "REQUEST.set('style_attrs_nodeValue',nodeValue['cdata'])"
-			></dtml-let
-		></dtml-in
-		><dtml-call "style_attrs.append((style_attrs_nodeName,style_attrs_nodeValue))"
-	></dtml-let
-></dtml-in
->
-CKEDITOR.config.format_tags += (CKEDITOR.config.format_tags.length==0?'':';')+'<dtml-var style_id>';
-CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
-</dtml-let
-></dtml-in
-></dtml-let
-></dtml-if
->
-////////////////////////////////////////////////////////////////////////////////
-
-CKEDITOR.config.toolbar_ZMSRichDocumentToolbar =[
-		['Format'],
-		['Bold','Italic','Underline','NumberedList','BulletedList'],
-		['Undo','Redo'],
-		['mediabutton'],
-		['Find','linkbutton','Link','Unlink'],
-		['Anchor','Table'],
-		['Source','ShowBlocks','Maximize','About']
-	];
-
-		loadCkeditor( ''+id, {
-			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
-				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
-				toolbar: 'ZMSCustomToolbar',
-			<dtml-else>
-				toolbar: 'ZMSRichDocumentToolbar',
-			</dtml-if>
-			on:{
-				instanceReady: function(ev) {
-						zmiRichtextResize(id);
-					}
-				}
-			});
-		zmiRichtextSyncDataToView(id);
-	})
-}
-
-function zmiRichtextSyncDataToView(id) {
-	$( '#'+id).val( $('#'+id).val());
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		instance.setData($('#'+id).val());
-	}
-}
-
 $(function() {
 	if($("form#form0 input[name=session_id]").length==0) {
 		$("form#form0").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
 	}
-	zmiRichtextInit('<dtml-var elName>');
 	$("input#submitBtn0").click(function() {
-			var instance = CKEDITOR.instances['<dtml-var elName>'];
+			var instance = CKEDITOR.instances['editor_<dtml-var elName>'];
 			var body = instance.getData();
 			var subtitle = extractString(body,'<h2 id="subtitle">','</h2>');
 			if (subtitle.length == 0) {
@@ -346,16 +252,7 @@ $(function() {
 
 </script>
 
-<div id="interface0">
-<input type="hidden" id="titlealt_<dtml-var lang>" name="titlealt_<dtml-var lang>" value=""/>
-<input type="hidden" id="title_<dtml-var lang>" name="title_<dtml-var lang>" value=""/>
-<input type="hidden" id="text_<dtml-var lang>" name="text_<dtml-var lang>" value=""/>
-<div style="width:100%;text-align:right">
-	<span class="zms2goButton">
-		<img src="<dtml-var spacer_gif>" alt="" border="0"/>
-	</span>
-</div>
-<textarea id="editor" name="editor" class="ui-helper-hidden">
+<textarea id="<dtml-var "REQUEST.get('elName')">" name="<dtml-var "REQUEST.get('elName')">" class="ui-helper-hidden">
 <dtml-if ZMS_INSERT>
 <h2 id="subtitle"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLEALT')"></span>&laquo; <dtml-var "getZMILangStr('ATTR_TITLEALT')"> &raquo;</h2>
 <h1 id="title"><span class="skip"><dtml-var "getZMILangStr('ATTR_TITLE')"></span>&laquo; <dtml-var "getZMILangStr('ATTR_TITLE')"> &raquo;</h1>
@@ -366,7 +263,7 @@ $(function() {
 <dtml-var "attr('text')">
 </dtml-if>
 </textarea>
-</div>
+
 <dtml-var f_submitBtn>
 
 </dtml-let>
@@ -575,7 +472,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMSRichDocument]]></item>
           <item key="package"><![CDATA[com.zms2go.foundation]]></item>
-          <item key="revision"><![CDATA[0.9.1]]></item>
+          <item key="revision"><![CDATA[0.9.2]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -718,7 +615,7 @@ return context.str_json(result)
           <item key="id"><![CDATA[ZMSLib]]></item>
           <item key="name"><![CDATA[ZMSLib]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.0.0]]></item>
+          <item key="revision"><![CDATA[1.1.0]]></item>
           <item key="type"><![CDATA[ZMSLibrary]]></item>
         </dictionary>
       </item>
@@ -1402,6 +1299,42 @@ return zmscontext.attr('text')
                   <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.bodyContentZMSCustom_ZMSTeaserElement>]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSTeaserElement.standard_html -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		teaserCntnr     python:zmscontext.getParentNode();
+		subclass        python:[teaserCntnr.meta_id];
+		style           python:[];
+		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
+		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
+		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
+	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
+		<tal:block tal:condition="python:bgcolor_border">
+			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
+		</tal:block>
+		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+			The teaser-element
+		</div>
+	</div>
+	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+		The teaser-element
+	</div>
+</tal:block>
+
+<!-- /ZMSTeaserElement.standard_html -->]]>
+                  </item>
+                  <item key="id"><![CDATA[standard_html]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.standard_html>]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -1428,7 +1361,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>
@@ -1461,7 +1394,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.0.0]]></item>
+          <item key="revision"><![CDATA[1.3.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

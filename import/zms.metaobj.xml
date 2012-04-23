@@ -2263,10 +2263,7 @@ zmscontext.commitObj(request)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-let meta_id="REQUEST.get('ZMS_INSERT',meta_id)"
-		objAttr="getObjAttr('text',meta_id)"
-		elName="getObjAttrName(objAttr,lang)"
-		session_id="SESSION.getId()"
+                  <item key="name"><![CDATA[<dtml-let session_id="SESSION.getId()"
 >
 
 <style>
@@ -2280,101 +2277,13 @@ span.mouseover {
 }
 </style>
 
-<!-- 
-Fix for can't edit fields of CKEditor in jQuery UI modal dialog
-@see http://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog 
--->
-<style>
-.cke_skin_kama .cke_dialog_body { z-index: inherit; }
-</style>
-
-<script>
-
+<dtml-comment>
 ////////////////////////////////////////////////////////////////////////////////
-// CKEDITOR Plugin
+/// CKEDITOR Plugin
 ////////////////////////////////////////////////////////////////////////////////
+</dtml-comment>
 
-var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
-var CKEDITOR_LOADED = {};
-
-function pluginCkeditor(s, c) {
-	$.plugin('ckeditor',{
-			cache: false,
-			files: ['/++resource++zms_/ckeditor/ckeditor.js']
-		});
-	$.plugin('ckeditor').get(s,c);
-}
-
-function loadCkeditor(id, opt) {
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		instance.destroy();
-	}
-	CKEDITOR.replace(id, opt);
-}
-
-function zmiRichtextResize(id) {
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
-		zmiWriteDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
-		$(".cke_contents").css("height",newHeight);
-	}
-}
-
-function zmiRichtextInit(id) {
-	pluginCkeditor('#'+id,function() {
-		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
-		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
-
-////////////////////////////////////////////////////////////////////////////////
-// Contents-CSS
-////////////////////////////////////////////////////////////////////////////////
-CKEDITOR.config.contentsCss = [];
-$("link[rel=stylesheet]").each(function() {
-		CKEDITOR.config.contentsCss.push($(this).attr("href"));
-	});
-CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
-
-////////////////////////////////////////////////////////////////////////////////
-// Import XStandard styles
-////////////////////////////////////////////////////////////////////////////////
-<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds()">
-CKEDITOR.config.format_tags = '';
-<dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
-<dtml-in "xmlNodeSet(xml_styles,'style')">
-<dtml-let xml_style=sequence-item
-><dtml-call "REQUEST.set('style_id',None)"><dtml-in "xmlNodeSet(xml_style,'id')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_id',id_quote(node['cdata']))"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_name',None)"><dtml-in "xmlNodeSet(xml_style,'name')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_name',node['cdata'])"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_elt',None)"><dtml-in "xmlNodeSet(xml_style,'elt')"><dtml-let node=sequence-item><dtml-if sequence-start><dtml-call "REQUEST.set('style_element',node['cdata'])"></dtml-if></dtml-let></dtml-in
-><dtml-call "REQUEST.set('style_attrs',[])"
-><dtml-in "xmlNodeSet(xml_style,'attr')"
-	><dtml-let node=sequence-item
-		><dtml-in "xmlNodeSet(node,'name')"
-			><dtml-let nodeName=sequence-item
-				><dtml-call "REQUEST.set('style_attrs_nodeName',nodeName['cdata'])"
-			></dtml-let
-		></dtml-in
-		><dtml-in "xmlNodeSet(node,'value')"
-			><dtml-let nodeValue=sequence-item
-				><dtml-call "REQUEST.set('style_attrs_nodeValue',nodeValue['cdata'])"
-			></dtml-let
-		></dtml-in
-		><dtml-call "style_attrs.append((style_attrs_nodeName,style_attrs_nodeValue))"
-	></dtml-let
-></dtml-in
->
-CKEDITOR.config.format_tags += (CKEDITOR.config.format_tags.length==0?'':';')+'<dtml-var style_id>';
-CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
-</dtml-let
-></dtml-in
-></dtml-let
-></dtml-if
->
-////////////////////////////////////////////////////////////////////////////////
-
-CKEDITOR.config.toolbar_ZMSRichDocumentToolbar =[
+<dtml-call "REQUEST.set('CKEDITOR_config_toolbar',[
 		['Format'],
 		['Bold','Italic','Underline','NumberedList','BulletedList'],
 		['Undo','Redo'],
@@ -2382,47 +2291,21 @@ CKEDITOR.config.toolbar_ZMSRichDocumentToolbar =[
 		['Find','linkbutton','Link','Unlink'],
 		['Anchor','Table'],
 		['Source','ShowBlocks','Maximize','About']
-	];
+	])">
 
-		loadCkeditor( ''+id, {
-			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">
-				customConfig : '<dtml-var "getHome().absolute_url()">/<dtml-var "getConfProperty('plugin.rte.ckeditor.Config','')">',
-				toolbar: 'ZMSCustomToolbar',
-			<dtml-else>
-				toolbar: 'ZMSRichDocumentToolbar',
-			</dtml-if>
-			on:{
-				instanceReady: function(ev) {
-						zmiRichtextResize(id);
-					}
-				}
-			});
-		zmiRichtextSyncDataToView(id);
-	})
-}
-
-function zmiRichtextSyncDataToView(id) {
-	$( '#'+id).val( $('#'+id).val());
-	var instance = CKEDITOR.instances[id];
-	if(instance){
-		instance.setData($('#'+id).val());
-	}
-}
+<script>
 
 $(function() {
 	if($("form#form0 input[name=session_id]").length==0) {
 		$("form#form0").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
 	}
-	zmiRichtextInit('<dtml-var elName>');
+	$(".zmiRichtextEditorHeadline").hide();
 });
 
 </script>
 
-<textarea id="<dtml-var elName>" name="<dtml-var elName>"><dtml-var "attr('text')"></textarea>
-
 </dtml-let>
-
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['text'])">]]>
+]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -2554,7 +2437,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSRichtext]]></item>
           <item key="name"><![CDATA[ZMSRichtext]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.4.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -3618,7 +3501,13 @@ $(function(){
   ></td
   ><td style="border-top: solid 1px #CCCCCC; border-right: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>;">&nbsp;</td
   ><dtml-in "table_table[row_index]" mapping
-   ><dtml-let col_index=sequence-index cell=sequence-item cell_format="['html',cell.get('format')][int(cell.get('content','').find('<dtml-')<0)]" richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and cell_format==REQUEST.get('richedit_fmt').getId()"
+   ><dtml-let col_index=sequence-index 
+              pattern="'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073'"
+              replacement="'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>'"
+              cell=sequence-item
+              cell_content="re_sub(pattern,replacement,cell.get('content',''))"
+              cell_format="['html',cell.get('format')][int(cell_content.find('dtml-')<0)]"
+              richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and cell_format==REQUEST.get('richedit_fmt').getId()"
     ><dtml-if "table_type==4 and row_index==0 and col_index==0"
      ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
     ><dtml-else
@@ -3630,10 +3519,10 @@ $(function(){
         <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>style="display:none;"</dtml-if>>
          <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
          <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var cell_format>">
-         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
+         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
         </div>
         <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless> contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
-         <dtml-if content><dtml-var content><dtml-else>&nbsp;</dtml-if>
+         <dtml-if content><dtml-var cell_content><dtml-else>&nbsp;</dtml-if>
         </div>
        </<dtml-var tag>>
        </tr>
@@ -3948,7 +3837,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.13]]></item>
+          <item key="revision"><![CDATA[1.6.14]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

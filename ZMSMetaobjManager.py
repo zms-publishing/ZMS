@@ -847,6 +847,9 @@ class ZMSMetaobjManager:
             if oldId is not None and id+'.'+oldId in self.objectIds():
               self.manage_delObjects(ids=[id+'.'+oldId])
             self.manage_addDTMLMethod( id+'.'+newId, newType+': '+newName, newCustom)
+            newOb = getattr( self, id+'.'+newId)
+            newOb.manage_acquiredPermissions([])
+            newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
           # Handle interfaces.
           elif newType == 'interface':
             if oldId is not None and id+'.'+oldId in self.objectIds():
@@ -859,6 +862,8 @@ class ZMSMetaobjManager:
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
         newOb = getattr(self,id+'.'+newId)
         newOb.write(newCustom)
+        newOb.manage_acquiredPermissions([])
+        newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
       # Handle zpt.
       elif newType == 'zpt':
         if oldId is not None and id+'.'+oldId in self.objectIds():
@@ -866,6 +871,8 @@ class ZMSMetaobjManager:
         ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType+': '+newName, text=newCustom)
         newOb = getattr(self,id+'.'+newId)
         newOb.output_encoding = 'utf-8'
+        newOb.manage_acquiredPermissions([])
+        newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
       
       # Replace
       ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)

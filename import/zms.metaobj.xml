@@ -3390,7 +3390,9 @@ function actionBtnClick(el, fct) {
 
 function insertCell(source) {
 	var clone = $(source).clone();
-	$("td",clone).each(function() {
+	$("table.ZMSTable td",clone).each(function() {
+			// Remove table with inline-links (if exists).
+			$("table").remove();
 			$("textarea,input",this).each(function() {
 					var key = this.id.substr(0,this.id.indexOf("_"));
 					$(this).attr( "id", key+"_" + table_cell_uid);
@@ -3837,7 +3839,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.14]]></item>
+          <item key="revision"><![CDATA[1.6.15]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

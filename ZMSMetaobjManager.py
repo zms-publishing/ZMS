@@ -830,6 +830,7 @@ class ZMSMetaobjManager:
       attr['default'] = newDefault
       
       # Parse Dtml for Errors.
+      newOb = None
       message = ''
       dtml = ''
       if newType in [ 'delimiter', 'hint', 'interface']:
@@ -848,8 +849,6 @@ class ZMSMetaobjManager:
               self.manage_delObjects(ids=[id+'.'+oldId])
             self.manage_addDTMLMethod( id+'.'+newId, newType+': '+newName, newCustom)
             newOb = getattr( self, id+'.'+newId)
-            newOb.manage_acquiredPermissions([])
-            newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
           # Handle interfaces.
           elif newType == 'interface':
             if oldId is not None and id+'.'+oldId in self.objectIds():
@@ -862,8 +861,6 @@ class ZMSMetaobjManager:
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
         newOb = getattr(self,id+'.'+newId)
         newOb.write(newCustom)
-        newOb.manage_acquiredPermissions([])
-        newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
       # Handle zpt.
       elif newType == 'zpt':
         if oldId is not None and id+'.'+oldId in self.objectIds():
@@ -871,8 +868,13 @@ class ZMSMetaobjManager:
         ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType+': '+newName, text=newCustom)
         newOb = getattr(self,id+'.'+newId)
         newOb.output_encoding = 'utf-8'
+      
+      # Restrict access. 
+      if newOb is not None:
         newOb.manage_acquiredPermissions([])
-        newOb.manage_role(role_to_manage='ZMSAuthor',permissions=map(lambda x: x['name'],newOb.permissionsOfRole('Manager')))
+        permissions = map(lambda x: x['name'],newOb.permissionsOfRole('Manager'))
+        for role_to_manage in [ 'ZMSAuthor', 'ZMSEditor', 'ZMSAdministrator']:
+          newOb.manage_role(role_to_manage=role_to_manage,permissions=permissions)
       
       # Replace
       ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)

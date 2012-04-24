@@ -45,10 +45,13 @@ def zmi_actions(container, context, attr_id='e'):
 
 def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   """
+  Returns sorted list of basic actions (undo, delete, cut, copy, paste, 
+  move up/down) and custom commands.
   """
   actions = []
   
   REQUEST = container.REQUEST
+  lang = REQUEST['lang']
   auth_user = REQUEST['AUTHENTICATED_USER']
   
   repetitive = objAttr.get('repetitive',0)==1
@@ -64,7 +67,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         if can_undo:
           actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
         #-- Action: Delete.
-        can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST)
+        can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_delete:
           ob_access = context.getObjProperty('manage_access',REQUEST)
           can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
@@ -73,8 +76,10 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         if can_delete:
           actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
         #-- Action: Cut.
-        actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects')) 
-        #-- Action: Copy.
+        can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
+        if can_cut:
+          actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects')) 
+      #-- Action: Copy.
       actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
       #-- Actions: Move.
       can_move = objChildren > 1
@@ -108,6 +113,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
 
 def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   """
+  Returns sorted list of insert actions. 
   """
   actions = []
   if container.meta_id == 'ZMSTrashcan':
@@ -192,6 +198,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
 
 def zmi_command_actions(context, insert_actions=False, objPath=''):
   """
+  Returns list of custom commands.
   """
   actions = []
   if context is None:

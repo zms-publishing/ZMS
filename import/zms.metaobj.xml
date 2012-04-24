@@ -2304,8 +2304,7 @@ $(function() {
 
 </script>
 
-</dtml-let>
-]]>
+</dtml-let>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -3218,16 +3217,16 @@ function table_cell_edit(el_td) {
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
 	$('#tag').val($('#tag_'+ table_cell_id).val());
 	$('#format').val($('#format_'+ table_cell_id).val());
+	<dtml-if "REQUEST.get('richedit_fmt')">
 	zmiRichtextSyncDataToView('<dtml-var elName>');
 	<dtml-let elName="'content_editor'">
-	<dtml-if "REQUEST.get('richedit_fmt')">
 	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
 		$('#zmiRichtextEditor<dtml-var elName>').show();
 		$('#zmiStandardEditor<dtml-var elName>').hide();
 		zmiStandardOnSubmitEventHandler();
 	}
-	</dtml-if>
 	</dtml-let>
+	</dtml-if>
 	// Open cell editor.
 	$('#div_table_cell_editor').dialog({
 			title:'<dtml-var "getZMILangStr('ATTR_COL')">: <dtml-var "getZMILangStr('BTN_EDIT')">',
@@ -3392,7 +3391,7 @@ function insertCell(source) {
 	var clone = $(source).clone();
 	$("table.ZMSTable td",clone).each(function() {
 			// Remove table with inline-links (if exists).
-			$("table").remove();
+			$("table",this).remove();
 			$("textarea,input",this).each(function() {
 					var key = this.id.substr(0,this.id.indexOf("_"));
 					$(this).attr( "id", key+"_" + table_cell_uid);
@@ -3839,7 +3838,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.15]]></item>
+          <item key="revision"><![CDATA[1.6.17]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

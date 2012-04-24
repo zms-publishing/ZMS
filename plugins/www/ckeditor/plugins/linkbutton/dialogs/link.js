@@ -35,8 +35,8 @@ function zmiAddPages(result, siblings) {
 			if ($(this).attr("meta_id")=='ZMSGraphic') {
 				var $img = $("img",this);
 				if ($img.length==1) {
-					link_url = '<img src=&quot;'+abs_url+'/'+$("filename",$img).text()+'&quot;>';
-					var src = abs_url+'/'+$("filename",$img).text();
+					link_url = '<img src=&quot;'+$("href",$img).text()+'&quot;>';
+					var src = $("href",$img).text();
 					var icon = $("icon",$img).text();
 					var filename = $("filename",$img).text();
 					var size = $("size",$img).text();
@@ -49,8 +49,8 @@ function zmiAddPages(result, siblings) {
 				if ($file.length==1) {
 					var $fname = $("filename",$file).text();
 					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
-					link_url = '<a href=&quot;'+abs_url+'/'+$("filename",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
-					var src = abs_url+'/'+$("filename",$file).text();
+					link_url = '<a href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
+					var src = $("href",$file).text();
 					var icon = $("icon",$file).text();
 					var filename = $("filename",$file).text();
 					var size = $("size",$file).text();

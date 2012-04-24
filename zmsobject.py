@@ -1046,6 +1046,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             v = self.getObjProperty(key,REQUEST)
             if v:
               xml += "<%s>"%key
+              xml += "<href>%s</href>"%_globals.html_quote(v.getHref(REQUEST))
               xml += "<filename>%s</filename>"%_globals.html_quote(v.getFilename())
               xml += "<content_type>%s</content_type>"%_globals.html_quote(v.getContentType())
               xml += "<size>%s</size>"%self.getDataSizeStr(v.get_size())

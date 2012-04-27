@@ -31,7 +31,7 @@
   <dtml-in "metaObjDetail['attrs']" mapping>
   <dtml-if custom>
   <dtml-unless sequence-start>
-  <dtml-unless "id==fk">
+  <dtml-unless "id==fk or type in ['method','py','zpt']">
   <th class="form-small" nowrap="nowrap"><dtml-var name></th>
   </dtml-unless>
   </dtml-unless>
@@ -69,7 +69,7 @@
     <dtml-let obj_attr="getObjAttr(id)">
     <dtml-if custom>
     <dtml-unless sequence-start>
-    <dtml-unless "id==fk">
+    <dtml-unless "id==fk or type in ['method','py','zpt']">
      <dtml-let v="formatObjAttrValue(obj_attr,row.get(id,None),lang)">
       <td class="form-small">
 

@@ -340,7 +340,7 @@ function enabledCheckboxClickResponse(data) {
        ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" align="absmiddle"
        ><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
        ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
-       ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+       ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
        ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
       </td>
       <td><div class="form-element"><dtml-if "metaObj['enabled']==1"><strong></dtml-if><dtml-var "metaObj['name']"><dtml-if "metaObj['enabled']==1"></strong></dtml-if></div></td>
@@ -687,7 +687,7 @@ function enabledCheckboxClickResponse(data) {
           ></td>
           <dtml-if "metaObj['type']=='ZMSRecordSet'">
            <td title="<dtml-var "getZMILangStr('ATTR_DISPLAY')"> (<dtml-var "getZMILangStr('ATTR_COL')">)" align="center"
-            ><dtml-if "oAttr['type'] not in ['constant']"
+            ><dtml-if "oAttr['type'] not in ['constant']+metaObjIds"
              ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s:int'%oAttr['id'],value=int(oAttr.get('custom',1)==1),enabled=not _['sequence-start'] and not oAttr['meta_type'],REQUEST=REQUEST)"
             ><dtml-else
              ><dtml-var "getCheckbox(fmName='form0',elName='attr_custom_%s_:int'%oAttr['id'],value=False,enabled=False,REQUEST=REQUEST)"
@@ -727,7 +727,8 @@ function enabledCheckboxClickResponse(data) {
               ><option value="<dtml-var sequence-item>" <dtml-if "str(_['sequence-item'])==oAttr.get('default','')">selected="selected"</dtml-if>><dtml-var "bool(_['sequence-item'])"></option>
              ></dtml-in
             ></select
-           ><dtml-elif "(oAttr.get('mandatory',0) and oAttr['type'] in metaObjIds) or 
+           ><dtml-elif "metaObj['type']!='ZMSRecordSet' and 
+                        (oAttr.get('mandatory',0) and oAttr['type'] in metaObjIds) or 
                         (oAttr.get('repetitive',0) and oAttr['type'] in metaObjIds)"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"/>
             <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
@@ -925,7 +926,7 @@ function enabledCheckboxClickResponse(data) {
              ><a href="manage_analyze?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank"><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']"> - Click for Content Analysis..." alt="Icon" border="0" style="vertical-align:middle" 
              /></a><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
              ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
-             ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
+             ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
              ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
               <a id="a_<dtml-var "metaObj['id']">" href="?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" class="zmi" <dtml-if "metaObj['type'] == 'ZMSPackage' or metaObj['enabled']==1">style="font-weight:bold;"</dtml-if>
                ><dtml-if "metaObj['type'] == 'ZMSPackage'"><code style="color:navy"><dtml-var "metaObj['name']"></code
@@ -1045,7 +1046,7 @@ function enabledCheckboxClickResponse(data) {
              ><img src="<dtml-var "display_icon(REQUEST,metaObj2['id'])">" title="<dtml-var "metaObj2['id']">" border="0" style="vertical-align:middle" 
              ><dtml-if "metaObj2.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
              ><dtml-if "metaObj2.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
-             ><dtml-if "metaObj2.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj2['id']">" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
+             ><dtml-if "metaObj2.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj2['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
              ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
               <a id="a_<dtml-var "metaObj2['id']">" href="?lang=<dtml-var lang>&id=<dtml-var "metaObj2['id']">" class="zmi" <dtml-if "metaObj2['type'] == 'ZMSPackage' or metaObj2['enabled']==1">style="font-weight:bold;"</dtml-if>
                ><dtml-if "metaObj2['type'] == 'ZMSPackage'"><code style="color:navy"><dtml-var "metaObj2['name']"></code

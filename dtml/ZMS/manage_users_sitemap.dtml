@@ -4,23 +4,25 @@
 <dtml-let valid_users="[]" users="getConfProperty('ZMS.security.users',{})" nodes="[]"
 
  ><dtml-in "getValidUserids()" mapping
-  ><dtml-call "valid_users.append(name)"
+ 	><dtml-call "valid_users.append(name)"
  ></dtml-in
  ><dtml-in "users.keys()"
-  ><dtml-let key=sequence-item user_value="users[key]" user_nodes="getUserAttr(key,'nodes',{})"
-   ><dtml-if "key in valid_users"
-    ><dtml-in "user_nodes.keys()"
-     ><dtml-let user_node=sequence-item
-      ><dtml-unless "user_node in nodes"
-       ><dtml-call "nodes.append(user_node)"
-      ></dtml-unless
-     ></dtml-let
-    ></dtml-in
-   ><dtml-else
-    ><dtml-call "operator_delitem(users,key)"
-   ></dtml-if
-  ></dtml-let
- ></dtml-in>
+ 	><dtml-let key=sequence-item user_value="users[key]" user_nodes="getUserAttr(key,'nodes',{})"
+		><dtml-if "key in valid_users"
+			><dtml-in "user_nodes.keys()"
+				><dtml-let user_node=sequence-item
+					><dtml-unless "user_node in nodes"
+						><dtml-call "nodes.append(user_node)"
+					></dtml-unless
+				></dtml-let
+			></dtml-in
+		><dtml-else
+			><dtml-comment
+				><dtml-call "operator_delitem(users,key)"
+			></dtml-comment
+		></dtml-if
+	></dtml-let
+></dtml-in>
 
 <script language="JavaScript">
 <!--//

@@ -567,10 +567,13 @@ class AccessManager(AccessableContainer):
       for userFldr in self.getUserFolders():
         userObj = None
         if userFldr.meta_type=='LDAPUserFolder':
-          ldapUsersObjs = userFldr.findUser(search_param=userFldr.getProperty('_login_attr'),search_term=name)
-          if len(ldapUsersObjs) == 1:
-            userObj = ldapUsersObjs[0]
-            userObj['__id__'] = userObj[userFldr.getProperty( '_login_attr' )]
+          if self.getConfProperty('LDAPUserFolder.login_attr','') == 'dn':
+            userObj = userFldr.getUserByDN(name)
+          else:
+            ldapUsersObjs = userFldr.findUser(search_param=userFldr.getProperty('_login_attr'),search_term=name)
+            if len(ldapUsersObjs) == 1:
+              userObj = ldapUsersObjs[0]
+              userObj['__id__'] = userObj[userFldr.getProperty( '_login_attr' )]
         else:
           userObj = userFldr.getUser(name)
         if userObj is not None:

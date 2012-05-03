@@ -64,7 +64,9 @@
     </tr>
    </dtml-unless>
    <dtml-let metaObj="getMetaobj(objAttr['type'])">
-    <dtml-var obj_input_fields>
+    <dtml-call "REQUEST.set('objAttrNamePrefix',id+'_')">
+     <dtml-var obj_input_fields>
+    <dtml-call "REQUEST.set('objAttrNamePrefix','')">
    </dtml-let>
   <dtml-else>
    <tr id="tr_<dtml-var key>">

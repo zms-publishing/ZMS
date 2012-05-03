@@ -635,7 +635,9 @@ class ZMSObject(ZMSItem.ZMSItem,
             if objAttr['type'] in metaObjIds and \
                self.getMetaobj(objAttr['type'])['type'] == 'ZMSResource':
               for ob in self.getObjChildren(key,REQUEST):
+                REQUEST.set('objAttrNamePrefix',ob.id+'_')
                 ob.manage_changeProperties( lang, REQUEST)
+                REQUEST.set('objAttrNamePrefix','')
           
           ##### VersionManager ####
           self.onChangeObj(REQUEST)

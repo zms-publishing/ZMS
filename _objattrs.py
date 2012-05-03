@@ -338,7 +338,8 @@ class ObjAttrs:
       
       #-- NAME
       lang = REQUEST['lang']
-      elName = self.getObjAttrName(obj_attr,lang)
+      attr = self.getObjAttrName(obj_attr,lang)
+      elName = self.REQUEST.get('objAttrNamePrefix','') + attr
       
       #-- INPUTTYPE
       inputtype = obj_attr.get('type','string')
@@ -966,6 +967,8 @@ class ObjAttrs:
       
       #-- DEFINTION
       obj_attr = self.getObjAttr(key)
+      attr = self.getObjAttrName(obj_attr,lang)
+      elName = self.REQUEST.get('objAttrNamePrefix','') + attr
       
       #-- ENABLED
       enabled = not self.isDisabledAttr(obj_attr,REQUEST)
@@ -976,16 +979,13 @@ class ObjAttrs:
       #-- RETURN
       if ( not enabled) or \
          ( not obj_attr['xml']) or \
-         ( obj_attr['id'].find('_') == 0 and not REQUEST.form.has_key( self.getObjAttrName( obj_attr, lang))) or \
+         ( obj_attr['id'].find('_') == 0 and not REQUEST.form.has_key(elName)) or \
          ( datatype == _globals.DT_UNKNOWN): 
         if not forced: 
           return
       
-      #-- ATTR
-      attr = self.getObjAttrName(obj_attr,lang)
-      
       #-- VALUE
-      set, value =False, REQUEST.get(attr,None)
+      set, value =False, REQUEST.get(elName,None)
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:

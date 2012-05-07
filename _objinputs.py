@@ -20,6 +20,7 @@
 from App.special_dtml import HTMLFile
 # Product Imports.
 import _globals
+import _zreferableitem
 
 
 class ObjInputs:
@@ -320,7 +321,7 @@ class ObjInputs:
         if ref_obj is None:
           ref_url = '{$__' + href.split( '/')[ -1] + '__}'
           inline_links.append( ref_url)
-        else:
+        elif isinstance( ref_obj, _zreferableitem.ZReferableItem):
           inline_links.append( self.getRefObjPath( ref_obj))
       if len( inline_links) > 0:
         html.append('<table cellspacing="0" cellpadding="1" border="0" align="left">')
@@ -337,7 +338,7 @@ class ObjInputs:
           ref_obj = self.getLinkObj(ref_url,REQUEST)
           if ref_obj is not None:
             html.append('<img src="%sinternal_link.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
-          else:
+          elif isinstance( ref_obj, _zreferableitem.ZReferableItem):
             html.append('<img src="%sinternal_link_broken.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_url))
           html.append('</div>')
           html.append('</div>')

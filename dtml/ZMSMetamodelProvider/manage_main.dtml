@@ -338,10 +338,10 @@ function enabledCheckboxClickResponse(data) {
      <tr valign="top" class="zmiNeutralColorMedium0">
       <td class="form-text"
        ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']">" border="0" align="absmiddle"
-       ><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
-       ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
-       ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
-       ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
+       /><dtml-if "metaObj.get('id') in dGlobalAttrs.keys()"><img src="<dtml-var MISC_ZMS>ico_zms.gif" title="native" style="margin-right:2;vertical-align:middle" /></dtml-if
+        ><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
+        ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" align="absmiddle"/></a></dtml-if
+        ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>
       </td>
       <td><div class="form-element"><dtml-if "metaObj['enabled']==1"><strong></dtml-if><dtml-var "metaObj['name']"><dtml-if "metaObj['enabled']==1"></strong></dtml-if></div></td>
       <td><div class="form-element">v<dtml-var "metaObj.get('revision','0.0.0')"></td>
@@ -708,7 +708,7 @@ function enabledCheckboxClickResponse(data) {
           <td class="form-small" nowrap="nowrap" width="150"
            ><nobr
            ><dtml-if "oAttr['type'] in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']"
-            ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0"
+            ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0" style="margin:0px 5px 0px 5px;"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
             ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
             ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_keys_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a

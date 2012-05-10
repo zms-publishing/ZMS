@@ -986,12 +986,9 @@ class ZMSMetaobjManager:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Z SQL Method':
-          valid_connection_ids = map( lambda x: x[0], self.SQLConnectionIDs())
           connection = newCustom
           connection = connection[connection.find('<connection>'):connection.find('</connection>')]
           connection = connection[connection.find('>')+1:]
-          if connection not in valid_connection_ids:
-            connection = valid_connection_ids[0]
           arguments = newCustom
           arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
           arguments = arguments[arguments.find('>')+1:]

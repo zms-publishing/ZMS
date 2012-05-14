@@ -11,7 +11,8 @@
 ></dtml-let
 ></dtml-in>
 
-<script language="JavaScript">
+<script type="text/javascript" charset="UTF-8" src="<dtml-var "REQUEST['BASE0']">/<dtml-var "getConfProperty('jquery.plugin.version').split('/')[1]">/objattrs/zmi.metaobj_manager.manage_main.js"></script>
+<script type="text/javascript">
 
 $(function() {
 	$('.zmiDblclickable')
@@ -467,12 +468,12 @@ function enabledCheckboxClickResponse(data) {
             ><input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">"
             ><dtml-if "oAttr['type'] in ['interface']"
              ><textarea class="form-fixed" name="attr_name_<dtml-var "oAttr['id']">" cols="80" rows="1" title="<dtml-var "oAttr['id']"> (<dtml-var "oAttr['type']">)" wrap="virtual" style="width:592px;height:20px;background-color:#FFF;"><dtml-var "oAttr.get('name','')" html_quote></textarea
-             ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_name_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['type']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></a>
+             ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></span>
             <dtml-elif "oAttr['type'] in ['delimiter']"
              ><input class="form-small" type="text" name="attr_name_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['name']" html_quote>" size="50" title="<dtml-var "oAttr['id']"> (<dtml-var "oAttr['type']">)" style="width:592px; background-color:#F4F4F4; color:#424242; font-weight:bold; border-color:1px solid #DDD;"
             ><dtml-elif "oAttr['type'] in ['hint']">
              <textarea class="form-small" name="attr_name_<dtml-var "oAttr['id']">" cols="80" rows="1" title="<dtml-var "oAttr['id']"> (<dtml-var "oAttr['type']">)" wrap="virtual" style="width:592px;height:20px;"><dtml-var "oAttr.get('name','')" html_quote></textarea
-             ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_id_<dtml-var "oAttr['id']">&inp_value_name=attr_name_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></a>
+             ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></span>
              </dtml-if>
            </td
           ><dtml-else
@@ -651,7 +652,7 @@ function enabledCheckboxClickResponse(data) {
            <input type="hidden" name="attr_type_<dtml-var "oAttr['id']">" value="<dtml-var "oAttr['type']">">
            <input type="hidden" name="attr_custom_<dtml-var "oAttr['id']">_modified" value="0"/>
            <textarea class="form-fixed" title="<dtml-var "oAttr['type']">" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:390px; height:20px;" onchange="changeCustom(this);"><dtml-var "oAttr.get('custom','')" html_quote></textarea
-           ><a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=attr_custom_<dtml-var "oAttr['id']">&headline=<dtml-var "getZMILangStr(meta_type)+': '+id+'.'+oAttr['id']" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></a>
+           ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom"></span>
           </td>
           <td><!-- @todo: remove --></td>
           <dtml-comment>
@@ -711,15 +712,15 @@ function enabledCheckboxClickResponse(data) {
             ><img src="<dtml-var MISC_ZMS>btn_key.gif" title="<dtml-var "getZMILangStr('ATTR_KEYS')">" alt="" border="0" style="margin:0px 5px 0px 5px;"
             /><textarea title="<dtml-var "getZMILangStr('ATTR_KEYS')">" class="form-small" name="attr_keys_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"
             ><dtml-in "oAttr.get('keys',[])"><dtml-var "'%s\n'%str(_['sequence-item'])"></dtml-in></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_keys_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a
+            ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></span
            ><dtml-elif "oAttr['type'] in ['constant']"
             ><img src="<dtml-var spacer_gif>" alt="" border="0" width="18" height="16"
             /><textarea title="Default" class="form-small" name="attr_custom_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px;"><dtml-var "oAttr.get('custom','')" html_quote></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a
+            ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></span
            ><dtml-elif "oAttr['type'] in ['amount','color','date','datetime','float','int','string','text','time','url']"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle" 
             /><textarea title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">" cols="80" rows="1" wrap="virtual" style="width:158px; height:20px; color:blue;"><dtml-var "oAttr.get('default','')" html_quote></textarea
-            ><a href="?lang=<dtml-var lang>&id=<dtml-var "REQUEST.get('id')">&inp_id_name=attr_id_<dtml-var "oAttr['id']">&inp_name_name=attr_name_<dtml-var "oAttr['id']">&inp_value_name=attr_custom_<dtml-var "oAttr['id']">#Edit"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a
+            ><span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></span
            ><dtml-elif "oAttr['type'] in ['boolean']"
             ><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default" style="margin:0px 6px 0px 6px;" style="vertical-align:middle"
             /><select title="Default" class="form-small" name="attr_default_<dtml-var "oAttr['id']">"
@@ -744,7 +745,15 @@ function enabledCheckboxClickResponse(data) {
            </dtml-if
            ></nobr
           ></td>
-          <td><!-- @todo: remove --></td>
+          <td>
+           <dtml-if "oAttr['type'] in valid_types">
+            <ul class="zmi-icons ui-widget ui-helper-clearfix">
+             <li class="ui-state-default ui-corner-all">
+              <span class="ui-icon ui-icon-gear" title="Code" onclick="zmiShowHint('<dtml-var "oAttr['id']">','<dtml-var "oAttr['type']">');"></span>
+             </li>
+            </ul>
+           </dtml-if>
+          </td>
           </dtml-if>
           </dtml-if>
         </tr>
@@ -781,50 +790,6 @@ function enabledCheckboxClickResponse(data) {
         </td>
        </tr>
        </table>
-
-       <!-- BO Edit -->
-       <dtml-if "REQUEST.has_key('inp_id_name')">
-       <br />
-       <a name="#Edit">
-       <input type="hidden" name="inp_id_name" value="<dtml-var inp_id_name>">
-       <input type="hidden" name="inp_name_name" value="<dtml-var inp_name_name>">
-       <input type="hidden" name="inp_value_name" value="<dtml-var inp_value_name>">
-       <table cellspacing="0" cellpadding="1" border="0" width="100%">
-       <tr class="zmiNeutralColorStrong0">
-        <td class="form-small">
-         <script language="JavaScript">
-         <!--//
-          document.write( '<b>' + document.forms[ 0].elements[ '<dtml-var inp_id_name>'].value + '</b>: ' +  document.forms[ 0].elements[ '<dtml-var inp_name_name>'].value);
-         //-->
-         </script>
-        </td>
-       </tr>
-       <tr>
-        <td align="center" class="form-fixed">
-         <script language="JavaScript">
-         <!--//
-           function inpValueChange(el)
-           {
-             document.forms[0].elements['<dtml-var inp_value_name>'].value = document.forms[0].elements[ 'inp_value'].value;
-           }
-         //-->
-         </script>
-         <dtml-var "getTextArea(fmName='form0',elName='inp_value',cols=55,rows=15,value='',enabled=1,REQUEST=REQUEST,css='form-fixed',wrap='off',extra='onChange='+QUOT+'inpValueChange(this);'+QUOT)">
-         <script language="JavaScript">
-         <!--//
-           document.forms[0].elements[ 'inp_value'].value = document.forms[0].elements['<dtml-var inp_value_name>'].value;
-         //-->
-         </script>
-        </td>
-       </tr>
-       <tr>
-        <td align="right" class="form-element">
-         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'all');">
-        </td>
-       </tr>
-       </table>
-       </dtml-if>
-       <!-- EO Edit -->
 
        <!-- BO Access -->
        <dtml-unless "metaObj['type'] in ['ZMSLibrary','ZMSPackage']"
@@ -863,7 +828,7 @@ function enabledCheckboxClickResponse(data) {
            <td align="center"><dtml-var "getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj['enabled']==1),enabled=True,REQUEST=REQUEST)"></td>
            <td class="form-small">
             <textarea class="form-small" name="access_<dtml-var action>_custom" cols="80" rows="1" wrap="virtual" style="width:200px;height:20px;background-color:white;"><dtml-var "metaObj.get('access',{}).get('%s_custom'%action,'{$}')" html_quote></textarea>
-            <a href="manage_editorForm?came_from=<dtml-var "URL+'?'+QUERY_STRING" url_quote>&lang=<dtml-var lang>&fmName=form0&elName=access_<dtml-var action>_custom&headline=<dtml-var "'%s - %s'%(getZMILangStr('TAB_ACCESS'),getZMILangStr('ATTR_NODE'))" url_quote>" onclick="javascript:return confirmChanges(this);"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></a>
+            <span class="ui-helper-clickable" onclick="zmiToggleTextarea(this)"><img src="<dtml-var MISC_ZMS>ico_plus.gif" border="0" align="bottom" /></span>
            </td>
           <dtml-else>
            <td>&nbsp;</td>

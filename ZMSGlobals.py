@@ -1552,7 +1552,11 @@ class ZMSGlobals:
         # Return name of month
         elif fmt_str == 'Month':
           return self.getLangStr('MONTH%i'%t[1],lang)
-        elif fmt_str == 'ISO-8601':
+        elif fmt_str.replace('-','').replace(' ','') in ['ISO8601','RFC2822']:
+          # DST is Daylight Saving Time, an adjustment of the timezone by 
+          # (usually) one hour during part of the year. DST rules are magic 
+          # (determined by local law) and can change from year to year.
+          # 
           # DST in t[8] ! -1 (unknown), 0 (off), 1 (on)
           if t[8] == 1:
             tz = time.altzone
@@ -1560,13 +1564,21 @@ class ZMSGlobals:
             tz = time.timezone
           else:
             tz = 0
-          tch = '+'
+          #  The offset of the local (non-DST) timezone, in seconds west of UTC
+          # (negative in most of Western Europe, positive in the US, zero in the
+          # UK).
+          #
+          # ==> quite the opposite to the usual definition as eg in RFC 822.
+          tch = '-'
           if tz < 0:
-            tch = '-'
+            tch = '+'
           tz = abs(tz)
           tzh = tz/60/60
           tzm = (tz-tzh*60*60)/60
-          return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
+          colon = ''
+          if fmt_str.replace('-','').replace(' ','') in ['ISO8601']:
+            colon = ':'
+          return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+colon+('00%d'%tzm)[-2:]
         # Return date/time
         fmt = self.getLangStr(fmt_str,lang)
         time_fmt = self.getLangStr('TIME_FMT',lang)

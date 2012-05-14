@@ -195,6 +195,14 @@ function zmiStandardOnSubmitEventHandler() {
   <param name="CMSImageLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseImages" />
   <param name="CMSAttachmentLibraryURL" value="<dtml-var "getDocumentElement().absolute_url().replace('https://','http://')">/f_xstandard_browseFiles<dtml-if lang>?lang=<dtml-var lang></dtml-if>" />
   <param name="Options" value="1" />
+  <!-- @see http://www.xstandard.com/en/documentation/xstandard-dev-guide/api/ -->
+  <dtml-in "[
+      'ProxySetting','ProxyServer','ProxyPort','ProxyUser','ProxyPassword',
+      ]">
+    <dtml-let si=sequence-item key="'xstandard.%s'%si">
+      <dtml-if "getConfProperty(key,'')"><param name="<dtml-var si>" value="<dtml-var "getConfProperty(key,'')">" /></dtml-if>
+    </dtml-let>
+  </dtml-in>
   <param id="editor_<dtml-var "REQUEST.get('elName')">_value" name="Value" value="" />
   <dtml-if "REQUEST.get('URL','').find('https://')==0">
    <div class="form-small">[<a href="?codebase_protocol=http" class="zmi">Install XStandard via HTTP</a>]</div>

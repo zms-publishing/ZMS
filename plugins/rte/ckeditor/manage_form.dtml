@@ -131,7 +131,7 @@ CKEDITOR.config.contentsCss.push('<dtml-var sequence-item>');
 ////////////////////////////////////////////////////////////////////////////////
 // Import XStandard styles
 ////////////////////////////////////////////////////////////////////////////////
-<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds()">
+<dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds() and REQUEST.get('ZMS_THIS').getParentNode() is not None">
 CKEDITOR.config.format_tags = '';
 <dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
 <dtml-in "xmlNodeSet(xml_styles,'style')">

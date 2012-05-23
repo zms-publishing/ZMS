@@ -7,10 +7,12 @@ function html_quote(s) {
 function zmiToggleTextarea(span) {
 	var textarea = $(span).prev("textarea");
 	var rows = 1;
+	var wrap = 'virtual';
 	if ($(textarea).prop("rows")==rows) {
 		rows = 10;
+		wrap = 'off';
 	}
-	$(textarea).prop({rows:rows,wrap:'off'}).css({height:rows*20});
+	$(textarea).prop({rows:rows,wrap:wrap}).css({height:rows*20});
 }
 
 function zmiShowHint(id, type) {

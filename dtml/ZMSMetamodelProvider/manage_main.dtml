@@ -436,7 +436,7 @@ function enabledCheckboxClickResponse(data) {
        <!-- Change / Delete Attributes -->
        <dtml-in "metaObj['attrs']"
        ><dtml-let oAttr="getMetaobjAttr(metaObj['id'],_['sequence-item']['id'])">
-        <tr valign="middle" 
+        <tr valign="top"
           <dtml-if "REQUEST.has_key('inp_id_name') and REQUEST.get('inp_id_name').find(oAttr['id'])>0">
            class="zmiTeaserColor"
           <dtml-elif "REQUEST.form.get('attr_id','')==oAttr['id']">

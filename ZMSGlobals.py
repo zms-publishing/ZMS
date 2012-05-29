@@ -1297,12 +1297,24 @@ class ZMSGlobals:
         fdata, mt, enc, fsize = _fileutil.readFile( filename, mode)
       if REQUEST is not None:
         RESPONSE = REQUEST.RESPONSE
-        RESPONSE.setHeader('Content-Type', mt)
+        self.set_response_headers( filename, mt)
         RESPONSE.setHeader('Content-Encoding', enc)
         RESPONSE.setHeader('Content-Length', fsize)
-        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(filename))
-        RESPONSE.setHeader('Accept-Ranges', 'bytes')
       return fdata
+
+
+    """
+    Set content-type and -disposition to response-headers.
+    """
+    def set_response_headers(self, fn, mt='application/octet-stream'):
+      REQUEST = self.REQUEST
+      RESPONSE = REQUEST.RESPONSE
+      RESPONSE.setHeader('Content-Type', mt)
+      if REQUEST.get('HTTP_USER_AGENT','').find('Android') < 0:
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(fn))
+      accept_ranges = self.getConfProperty('ZMS.blobfields.accept_ranges','bytes')
+      if len( accept_ranges) > 0:
+          RESPONSE.setHeader('Accept-Ranges', accept_ranges)
 
 
     """

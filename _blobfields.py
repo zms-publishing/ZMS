@@ -631,13 +631,9 @@ class MyBlob:
             # we served a chunk of content in response to a range request.
             return ''
 
-        RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
-        RESPONSE.setHeader('Content-Type', self.content_type)
+        parent.set_response_headers( self.getFilename(), self.getContentType())
         RESPONSE.setHeader('Content-Length', self.get_size())
-        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%self.getFilename())
-        accept_ranges = parent.getConfProperty('ZMS.blobfields.accept_ranges','bytes')
-        if len( accept_ranges) > 0:
-          RESPONSE.setHeader('Accept-Ranges', accept_ranges)
+        RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
           cacheable = parent.hasPublicAccess() or parent.isCachedPage( REQUEST)

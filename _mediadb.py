@@ -277,8 +277,7 @@ class MediaDb(
     # --------------------------------------------------------------------------
     def getFile(self, REQUEST,RESPONSE): 
       filename = _fileutil.extractFilename( self.getPath( REQUEST))
-      RESPONSE.setHeader('Content-Type','Unknown')
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+      parent.set_response_headers( filename)
       return self.retrieveFileStreamIterator( filename, REQUEST)
 
 

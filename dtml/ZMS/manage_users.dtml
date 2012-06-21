@@ -4,10 +4,9 @@
 <dtml-var "manage_tabs(_,_,p_languages=True)">
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_EDIT','action':'manage_users'},{'label':'TAB_SITEMAP','action':'manage_users_sitemap'}])">
 
-<dtml-let userFldr="getUserFolder()">
+<dtml-let userFldr="getUserFolder()" LDAPUserFolder_utf8="getConfProperty('LDAPUserFolder.utf8')">
   
 <script language="JavaScript">
-<!--//
 
 $(function() {
 	$('.zmiDblclickable')
@@ -23,19 +22,19 @@ $(function() {
 		.attr( "title", "Double-click to edit!");
 });
 
-    function btnClick(el, key) {
-      var fm = el.form;
-      fm.elements['key'].value = key;
-      processMultiselectsOnFormSubmit();
-      self.btnClicked = el.value;
-    }
-    
-    function form0Submit(fm) {
-      var b = true;
-      b = b && confirm(self.btnClicked+"?");
-      return b;
-    }
-    
+function btnClick(el, key) {
+	var fm = el.form;
+	fm.elements['key'].value = key;
+	processMultiselectsOnFormSubmit();
+	self.btnClicked = el.value;
+}
+
+function form0Submit(fm) {
+	var b = true;
+	b = b && confirm(self.btnClicked+"?");
+	return b;
+}
+
     function form1Submit(fm) {
       var b = true;
       var key = fm.elements['key'].value;
@@ -70,24 +69,23 @@ $(function() {
       }
       return b;
     }
-  
-    function form2Submit(fm) {
-      var b = true;
-      var key = fm.elements['key'].value;
-      if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") {
-        b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
-      } else
-      if (key=="attr" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
-        b = b && !disallowBlank(fm.elements['node'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_NODE')">",false);
-      } else 
-      if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
-        b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-      }
-      return b;
-    }
-  
-  //-->
-  </script>
+
+function form2Submit(fm) {
+	var b = true;
+	var key = fm.elements['key'].value;
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") {
+		b = b && confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
+	} else
+	if (key=="attr" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['node'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_NODE')">",false);
+	} else 
+	if (key=="obj" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
+		b = b && !disallowBlank(fm.elements['newId'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
+	}
+	return b;
+}
+
+</script>
 
 <dtml-comment>
 ################################################################################
@@ -184,14 +182,25 @@ $(function() {
          <td class="form-label">&nbsp;</td>
         </tr>
        </dtml-if>
-       <dtml-call "REQUEST.set('userId',unicode(_[login_attr],'latin-1').encode('utf-8'))">
+       <dtml-if LDAPUserFolder_utf8>
+         <dtml-call "REQUEST.set('userId', _[login_attr])">
+       <dtml-else>
+         <dtml-call "REQUEST.set('userId',unicode(_[login_attr],'latin-1').encode('utf-8'))"> 
+       </dtml-if>
        <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
         <td class="form-small" align="right"><b><dtml-var "_['sequence-index']+1">.</b></td>
         <td class="form-small"><a href="?lang=<dtml-var lang>&id=<dtml-var userId>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var userId></b></a></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><i></dtml-if><dtml-if cn><dtml-var "unicode(cn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></i></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><i></dtml-if><dtml-if dn><dtml-var "unicode(dn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></i></dtml-if></td>
-        <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><i></dtml-if><dtml-if ou><dtml-var "unicode(ou,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></i></dtml-if></td>
+        <dtml-if LDAPUserFolder_utf8>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var sn></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><i></dtml-if><dtml-if cn><dtml-var cn></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><i></dtml-if><dtml-if dn><dtml-var dn></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><i></dtml-if><dtml-if ou><dtml-var ou></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></i></dtml-if></td>          
+        <dtml-else>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='sn'"><i></dtml-if><dtml-if sn><dtml-var "unicode(sn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='sn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='cn'"><i></dtml-if><dtml-if cn><dtml-var "unicode(cn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='cn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='dn'"><i></dtml-if><dtml-if dn><dtml-var "unicode(dn,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='dn'"></i></dtml-if></td>
+          <td class="form-small"><dtml-if "getProperty( '_login_attr' )=='ou'"><i></dtml-if><dtml-if ou><dtml-var "unicode(ou,'latin-1').encode('utf-8')"></dtml-if><dtml-if "getProperty( '_login_attr' )=='ou'"></i></dtml-if></td>
+        </dtml-if>
         <td class="form-small">
          &nbsp;
          <!-- E-Mail -->
@@ -228,17 +237,33 @@ $(function() {
      <td align="right" class="form-small"><strong><dtml-var "_['sequence-index']+1">.</strong></td>
      <td>
       <div class="form-small">
-       <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
+      <dtml-if "getConfProperty('LDAPUserFolder.name_list')">
+       <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b>
+        <dtml-if userObj>
+         <dtml-in "[getUserDetails(encoded_dn=userObj.dn,format='dictionary')]" mapping>
+          <dtml-if sn>
+           <dtml-if sn><dtml-var "''.join(sn)">,</dtml-if>
+           <dtml-if givenName><dtml-var "''.join(givenName)"></dtml-if>
+          <dtml-else>
+           <dtml-var name>
+          </dtml-if>
+         </dtml-in>
+        </dtml-if>
+        </b></a>
+      <dtml-else>
+        <a href="?lang=<dtml-var lang>&id=<dtml-var sequence-item>" class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
         <dtml-if userObj>
          <dtml-in "[getUserDetails(encoded_dn=userObj.dn,format='dictionary')]" mapping>
           (<i>
+           <dtml-if sn><dtml-var "unicode(''.join(sn),'latin-1').encode('utf-8')">,</dtml-if>
            <dtml-if givenName><dtml-var "unicode(''.join(givenName),'latin-1').encode('utf-8')"></dtml-if>
-           <dtml-if sn><dtml-var "unicode(''.join(sn),'latin-1').encode('utf-8')"></dtml-if>
           </i>)
          </dtml-in>
-        <dtml-else>
-         <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
         </dtml-if>
+      </dtml-if>
+      <dtml-unless userObj>
+       <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
+      </dtml-unless>
       </div>
      </td>
     </tr>
@@ -340,7 +365,15 @@ $(function() {
            <dtml-if expr="si not in ['userPassword','userCertificate']">
             <tr valign="top">
              <td class="zmiNeutralColorMedium0" nowrap="nowrap" title="<dtml-var sk>"><div class="form-small"><b><dtml-var si></b></div></td>
-             <td class="zmiNeutralColorWhite"><div class="form-small"><dtml-var "unicode(cur_val and ';'.join(cur_val) or '','latin-1').encode('utf-8')"></div></td>
+             <dtml-if LDAPUserFolder_utf8>
+               <dtml-if "sk == 'dn'">
+                 <td class="zmiNeutralColorWhite"><div class="form-small"><dtml-var cur_val></div></td>
+               <dtml-else>
+                 <td class="zmiNeutralColorWhite"><div class="form-small"><dtml-var "cur_val and ';'.join(cur_val)"></div></td>
+               </dtml-if>
+             <dtml-else>
+               <td class="zmiNeutralColorWhite"><div class="form-small"><dtml-var "unicode(cur_val and ';'.join(cur_val) or '','latin-1').encode('utf-8')"></div></td>
+             </dtml-if>
             </tr>
             <dtml-call "REQUEST.set('count',REQUEST['count']+1)">
            </dtml-if>
@@ -382,7 +415,13 @@ $(function() {
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
-       <dtml-let multilang="len(getLangIds())>1" nodes="getUserAttr(userName,'nodes',{})" nodekeys="nodes.keys()">
+       <dtml-let multilang="len(getLangIds())>1">
+         <dtml-if LDAPUserFolder_utf8>
+           <dtml-call "REQUEST.set('nodes', getUserAttr(userName.decode('utf-8').encode('latin-1'),'nodes',{}))">
+         <dtml-else>
+           <dtml-call "REQUEST.set('nodes', getUserAttr(userName,'nodes',{}))">
+         </dtml-if>
+         <dtml-call "REQUEST.set('nodekeys', nodes.keys())">
         <dtml-call "nodekeys.sort()">
         <dtml-call "REQUEST.set('count',0)">
         <dtml-in nodekeys>
@@ -392,11 +431,17 @@ $(function() {
             <td class="form-label">
              <table cellspacing="0" cellpadding="0" border="0">
              <tr valign="middle">
-              <td class="zmiNeutralColorMedium0"
-               ><a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName,'key':'attr','nodekey':nodekey})">');" class="button"
-                 ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"
-               /></a
-              ></td>
+              <td class="zmiNeutralColorMedium0">
+               <dtml-if LDAPUserFolder_utf8>
+                 <a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName.decode('utf-8').encode('latin-1'),'key':'attr','nodekey':nodekey})">');" class="button">
+                   <img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"/>
+                 </a>
+               <dtml-else>
+                 <a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName,'key':'attr','nodekey':nodekey})">');" class="button">
+                   <img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"/>
+                 </a>
+               </dtml-if>
+              </td>
               <td>&nbsp;</td>
               <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_NODE')"> <dtml-var "count+1"></div></td>
               <td><input class="form-checkbox" type="checkbox" name="nodekeys:list" value="<dtml-var nodekey>"></td>

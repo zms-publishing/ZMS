@@ -4,7 +4,12 @@
 ><dtml-call "REQUEST.set('lang',getLanguage(REQUEST))"
 ></dtml-unless
 
-><dtml-if "REQUEST.get('ZMS_SKIN') is not None and REQUEST.get('ZMS_EXT') is not None and '%s_%s'%(REQUEST.get('ZMS_SKIN'),REQUEST.get('ZMS_EXT')) in getHome().objectIds()"
+><dtml-comment><!-------Avoid duplicate content under same url --></dtml-comment
+><dtml-if "getDeclId()!=id and (URL.endswith(getDeclId()+'/index_html') or URL.endswith(id+'/index_html'))">
+><dtml-call "REQUEST.set('ZMS_INDEX_HTML',1)"
+><dtml-return "RESPONSE.redirect(getHref2IndexHtml(REQUEST),301)"
+
+><dtml-elif "REQUEST.get('ZMS_SKIN') is not None and REQUEST.get('ZMS_EXT') is not None and '%s_%s'%(REQUEST.get('ZMS_SKIN'),REQUEST.get('ZMS_EXT')) in getHome().objectIds()"
 ><dtml-call f_standard_html_request
 ><dtml-var "_['%s_%s'%(REQUEST.get('ZMS_SKIN'),REQUEST.get('ZMS_EXT'))]"
 ><dtml-elif standard_html

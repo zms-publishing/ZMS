@@ -177,7 +177,7 @@ function initUI(context) {
 						if (dateText) {
 							var input = $(inst).data("inputfield");
 							var e = $(inst).data("extra");
-							if (e) {
+							if (e && !dateText.endsWith(" "+e)) {
 								$(input).val(dateText+" "+e);
 							}
 						}

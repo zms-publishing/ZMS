@@ -279,7 +279,7 @@ function previewImgBtnProcessResponse(data)
              <dtml-if "isActive(REQUEST)">
               <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
               <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
-              <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
+              <dtml-try><dtml-var "display_type(REQUEST)"><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
               v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
               <dtml-if "getObjProperty('change_dt',REQUEST) > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))"></dtml-if>
               <dtml-if "inObjStates(['STATE_NEW'],REQUEST)">
@@ -371,7 +371,7 @@ function previewImgBtnProcessResponse(data)
             <dtml-if "isActive(REQUEST)">
              <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
              <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
-             <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
+             <dtml-try><dtml-var "display_type(REQUEST)"><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
              v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
              <dtml-if "change_dt is not None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
              <br/>
@@ -441,7 +441,7 @@ function previewImgBtnProcessResponse(data)
               <dtml-if "isActive(REQUEST)">
                <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
                <a href="<dtml-var "aq_parent.absolute_url()">/manage_main?lang=<dtml-var lang>&ZMS_VERSION_<dtml-var "aq_parent.id">=<dtml-var id>"><dtml-var f_display_icon></a>
-               <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
+               <dtml-try><dtml-var "display_type(REQUEST)"><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
                v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)"> 
                <dtml-if "change_dt is not None and change_dt > last_version_dt"><dtml-var "getObjProperty('change_uid',REQUEST)"> <dtml-var "getLangFmtDate(change_dt)"></dtml-if>
                <br/>
@@ -515,7 +515,7 @@ function previewImgBtnProcessResponse(data)
              <dtml-if "isActive(REQUEST)">
               <img src="<dtml-var spacer_gif>" border="0" height="1" width="<dtml-var "(getLevel()-level)*8">" align="absmiddle"/> 
               <dtml-var f_display_icon>
-              <dtml-try><dtml-let parent="getParentNode()"><dtml-if "parent.meta_type == 'ZMSCustom'"><dtml-var "getMetaobjAttr(parent.meta_id,get_id_prefix(aq_parent.id))['name']"></dtml-if></dtml-let><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
+              <dtml-try><dtml-var "display_type(REQUEST)"><dtml-except><span style="color:red"><dtml-var error_type>: <dtml-var error_value></span></dtml-try>
               v.<dtml-var "getObjProperty('master_version',REQUEST)">.<dtml-var "getObjProperty('major_version',REQUEST)">.<dtml-var "getObjProperty('minor_version',REQUEST)">
               <dtml-if "getObjProperty('change_dt',REQUEST)"><dtml-var "getLangFmtDate(getObjProperty('change_dt',REQUEST))"></dtml-if>
               <br/>

@@ -857,6 +857,7 @@ class VersionItem:
              item.get( 'major_version', 0) <= major_version:
             version_dt = item[ 'version_dt']
             break
+      obj_history = self.getObjHistory( version_nr, REQUEST)
       
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
@@ -868,20 +869,39 @@ class VersionItem:
       RESPONSE.setHeader('Pragma', 'no-cache')
       self.f_standard_html_request( self, REQUEST)
       xml = self.getXmlHeader()
-      xml += "<BodyContentObjHistory version_nr=\""+version_nr+"\">\n"
-      if self.meta_type == 'ZMSCustom':
-        obj_version = self.getObjHistory( version_nr, REQUEST, False)
-        REQUEST.set( 'ZMS_VERSION_%s'%self.id, obj_version.id)
-        xml += '<ObjHistory id="' + obj_version.id + '">'
-        xml += '<![CDATA[' + obj_version.getBodyContent( REQUEST) + ']]>'
-        xml += '</ObjHistory>\n'
+      xml += '<BodyContentObjHistory version_nr="%s">\n'%version_nr
+      if REQUEST.get('revision'):
+        if self.meta_type == 'ZMSCustom':
+          obj_version = self.getObjHistory( version_nr, REQUEST, False)
+          xml += '<title><![CDATA[%s]]></title>'%_globals.html_quote(obj_version.getTitle(REQUEST))
+          xml += '<description><![CDATA[%s]]></description>'%_globals.html_quote(obj_version.getDCDescription(REQUEST))
+          for history_version in obj_history:
+            if history_version.isVisible(REQUEST):
+              xml += '<ObjHistory'
+              xml += ' id="%s"'%history_version.id
+              xml += ' change_uid="%s"'%history_version.getObjProperty('change_uid',REQUEST)
+              xml += ' change_dt="%s"'%self.getLangFmtDate(history_version.getObjProperty('change_dt',REQUEST),REQUEST['lang'],'SHORTDATETIME_FMT')
+              xml += ' version="%i.%i.%i"'%(history_version.getObjProperty('master_version',REQUEST),history_version.getObjProperty('major_version',REQUEST),history_version.getObjProperty('minor_version',REQUEST))
+              xml += '>'
+              xml += '<![CDATA[' + history_version.getBodyContent( REQUEST) + ']]>'
+              xml += '</ObjHistory>\n'
       else:
-        obj_history = self.getObjHistory( version_nr, REQUEST)
-        for history_version in obj_history:
-          if history_version.isActive(REQUEST):
-            xml += '<ObjHistory id="' + history_version.id + '">'
-            xml += '<![CDATA[' + history_version.renderShort( REQUEST) + ']]>'
-            xml += '</ObjHistory>\n'
+        if self.meta_type == 'ZMSCustom':
+          obj_version = self.getObjHistory( version_nr, REQUEST, False)
+          REQUEST.set( 'ZMS_VERSION_%s'%self.id, obj_version.id)
+          xml += '<ObjHistory'
+          xml += ' id="%s"'%obj_version.id
+          xml += ' title="%s"'%_globals.html_quote(obj_version.getTitle(REQUEST))
+          xml += ' description="%s"'%_globals.html_quote(obj_version.getDCDescription(REQUEST))
+          xml += '>'
+          xml += '<![CDATA[' + obj_version.getBodyContent( REQUEST) + ']]>'
+          xml += '</ObjHistory>\n'
+        else:
+          for history_version in obj_history:
+            if history_version.isActive(REQUEST):
+              xml += '<ObjHistory id="' + history_version.id + '">'
+              xml += '<![CDATA[' + history_version.renderShort( REQUEST) + ']]>'
+              xml += '</ObjHistory>\n'
       xml += "</BodyContentObjHistory>\n"
       return xml
 
@@ -924,7 +944,7 @@ class VersionItem:
         if ob_version_nr <= version_nr:
           if not children:
             _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
-            return last_ob_version
+            return last_ob_version                                            
           for ob_child in self.getVersionItems( REQUEST, recursive=True):
             for ob_child_version in ob_child.getObjVersions():
               REQUEST.set( 'ZMS_VERSION_%s'%ob_child.id, ob_child_version.id)

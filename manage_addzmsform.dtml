@@ -7,54 +7,51 @@
 <link rel="stylesheet" type="text/css" href="/++resource++zms_/manage_page_style-min.css">
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/jquery-all.min.js"></script>
 <script language="JavaScript">
-<!--//
 
-  function themeChange(el) {
-    var i = el.selectedIndex;
-    var v = el.options[i].value;
-    if (v.length == 0)
-      img_src = "<dtml-var MISC_ZMS>spacer.gif";
-    else if (v.indexOf('http://')==0) 
-      img_src = v.replace('.zexp','.jpg');
-    else
-      img_src = "<dtml-var MISC_ZMS>"+v.replace('.zexp','.jpg');
-    document.img_theme.src = img_src;
-    document.img_theme.alt = v;
-  }
+function themeChange(el) {
+  var i = el.selectedIndex;
+  var v = el.options[i].value;
+  if (v.length == 0)
+    img_src = "<dtml-var MISC_ZMS>spacer.gif";
+  else if (v.indexOf('http://')==0) 
+    img_src = v.replace('.zexp','.jpg');
+  else
+    img_src = "<dtml-var MISC_ZMS>"+v.replace('.zexp','.jpg');
+  document.img_theme.src = img_src;
+}
 
-  function isBlank(val) {
-    if (val == null) { return true; }
-      for (var i=0; i < val.length; i++) {
-        if ((val.charAt(i) != ' ') && (val.charAt(i) != "\t") && (val.charAt(i) != "\n")) { return false; }
+function isBlank(val) {
+  if (val == null) { return true; }
+    for (var i=0; i < val.length; i++) {
+      if ((val.charAt(i) != ' ') && (val.charAt(i) != "\t") && (val.charAt(i) != "\n")) { return false; }
+    }
+  return true;
+}
+
+function disallowBlank(obj) {
+  var msg;
+  var dofocus;
+  if (arguments.length>1) { msg = arguments[1]; }
+  if (arguments.length>2) { dofocus = arguments[2]; } else { dofocus=false; }
+    if (isBlank(obj.value)) {
+      if (!isBlank(msg)) {
+        alert(msg);
+      }
+      if (dofocus) {
+        obj.select();
+        obj.focus();
       }
     return true;
   }
+  return false;
+}
 
-  function disallowBlank(obj) {
-    var msg;
-    var dofocus;
-    if (arguments.length>1) { msg = arguments[1]; }
-    if (arguments.length>2) { dofocus = arguments[2]; } else { dofocus=false; }
-      if (isBlank(obj.value)) {
-        if (!isBlank(msg)) {
-          alert(msg);
-        }
-        if (dofocus) {
-          obj.select();
-          obj.focus();
-        }
-      return true;
-    }
-    return false;
-  }
+function formOnSubmit(fm) {
+  var b = true;
+  b = b && !disallowBlank(fm.elements['theme:required'],"Value for >Theme< is required!",false);
+  return b;
+}
 
-  function formOnSubmit(fm) {
-    var b = true;
-    b = b && !disallowBlank(fm.elements['theme:required'],"Value for >Theme< is required!",false);
-    return b;
-  }
-
-//-->
 </script>
 </head>
 
@@ -195,7 +192,7 @@
    <td id="mobile_preview" class="ui-helper-hidden">
     <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
     <tr>
-     <td><img name="img_theme" src="<dtml-var MISC_ZMS>myZMSmobile.jpg" border="0" width="250" height="160"></td>
+     <td><img name="mobile_theme" src="<dtml-var MISC_ZMS>myZMSmobile.jpg" border="0" width="250" height="160"></td>
     </tr>
     </table>
    </td>

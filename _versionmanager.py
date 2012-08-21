@@ -946,7 +946,6 @@ class VersionItem:
             _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
             return last_ob_version
           for ob_child in self.getVersionItems( REQUEST):
-            print ob_child.id, ob_child.meta_id
             for ob_child_version in ob_child.getObjVersions():
               REQUEST.set( 'ZMS_VERSION_%s'%ob_child.id, ob_child_version.id)
               ob_child_master_version = getattr( ob_child_version, 'master_version', 0)

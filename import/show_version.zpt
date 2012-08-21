@@ -1,0 +1,61 @@
+        <h1>
+          <tal:block tal:content="structure python:here.attr('title')">the title</tal:block>
+          <tal:block tal:condition="python:here.getHistory()">
+            <script>
+              function showHistory(el) {
+                var v = $(el).val();
+                var version_nr = v.substr(0,v.indexOf(" "));
+                var version_dt = v.substr(v.indexOf(" ")+1);
+                $(el).prop('selectedIndex',0);
+                $.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
+                    var $xml = $( data );
+                    var body = $xml.find( "ObjHistory" );
+                    var title = $xml.find("title").text();
+                    var description = $xml.find("description").text();
+                    if ($("div#revision").length==0) {
+                      $("body").append('<'+'div id="revision"><'+'/div>');
+                    }
+                    var html = ''
+                      + '<'+'div id="flow" class="hyphenate">'
+                      + '<'+'article>'
+                        + '<'+'header>'
+                          + '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
+                          + '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
+                        + '<'+'/header>'
+                        + '<'+'/section>';
+                    for (var i = 0; i < body.length; i++) {
+                      html += $(body[i]).text();
+                    }
+                    html += ''
+                          + '<'+'/section>';
+                        + '<'+'/article>';
+                      + '<'+'/div>';
+                    $("div#revision").html(html);
+                  	showFancybox({
+                  			'href':'#revision',
+                  			'title':'r'+v,
+                  			'autoDimensions':true,
+                  			'transitionIn':'fade',
+                  			'transitionOut':'fade',
+                  			onCleanup:function() {
+                  					$("div#revision").remove();
+                  				}
+                  		});
+                    $("div#revision>div").show();
+                  });
+              }
+            </script>
+            <input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
+            <select onchange="showHistory(this)">
+              <option value="" tal:content="python:'--- %s ---'%here.getLangStr('TAB_HISTORY',request['lang'])">the history</option>
+              <tal:block tal:define="global 
+                  change_history python:here.attr('change_history');
+                  rchange_history python:map(lambda x: change_history[len(change_history)-(x+1)], range(len(change_history)))"
+                tal:repeat="history rchange_history">
+                <option
+                  tal:attributes="value python:'%i.%i.%i %s'%(history['master_version'],history['major_version'],0,here.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))" 
+                  tal:content="python:'r%i.%i.%i (%s)'%(history['master_version'],history['major_version'],0,here.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))">version_nr version_dt</option>
+              </tal:block>
+            </select>
+          </tal:block>
+        </h1>

@@ -185,6 +185,7 @@
 <input type="hidden" name="lang" value="<dtml-var lang>">
 <dtml-var "f_headline(_,_,headline='Miscellaneous')">
 
+<!-- MK, 14.08.2012 , added line for EmailMandatory -->
 <dtml-let
   conf="getConfProperties()" 
   conf_keys="filter(lambda x: not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x=='ZMS.log' and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys())" 
@@ -201,6 +202,7 @@
    {'key':'ZMS.compactview.pagecount.min','title':'Compact-view','desc':'ZMS can display object-lists longer than specified parameter as compact-view.','datatype':'string'},
    {'key':'ZMS.locale.amount.unit','title':'Currency unit for amount-types','desc':'The currency unit used for amount-types.','datatype':'string','default':'EUR'},
    {'key':'ZMS.pathhandler','title':'Declarative URLs','desc':'ZMS can use declarative URLs based on DC.Identifier.Url.Node (or DC.Title.Alt).','datatype':'boolean'},
+   {'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0}, 
    {'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
    {'key':'ZMS.preview.contentEditable','title':'Content-Editable Preview','desc':'Make content in ZMS preview editable','datatype':'boolean','default':1},
    {'key':'ZMS.pathcoherence','title':'Coherent URLs','desc':'ZMS can use full path-coherent URLs. Disable this option if you have problems with your VirtualHost-configuration.','datatype':'boolean','default':1},

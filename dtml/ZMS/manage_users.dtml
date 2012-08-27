@@ -51,6 +51,9 @@ function form0Submit(fm) {
         if (fm.elements['newPassword'] && fm.elements['newConfirm']) {
           b = b && !disallowBlank(fm.elements['newPassword'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['newConfirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
+	  if ("<dtml-var "getConfProperty('EmailMandatory','')">") { // MK, 13.08.2012
+	  b = b && !disallowBlank(fm.elements['newEmail'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
+          } // MK, 13.08.2012
           if (fm.elements['newPassword'].value!=fm.elements['newConfirm'].value) {
             b = false;
             alert('<dtml-var "getZMILangStr('ATTR_PASSWORD')"><><dtml-var "getZMILangStr('ATTR_CONFIRM')">!');
@@ -61,6 +64,9 @@ function form0Submit(fm) {
         if (fm.elements['password'] && fm.elements['confirm']) {
           b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
+	  if ("<dtml-var "getConfProperty('EmailMandatory','')">") { // MK, 13.08.2012
+	  b = b && !disallowBlank(fm.elements['email'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
+	  } // MK, 13.08.2012
           if (fm.elements['password'].value!=fm.elements['confirm'].value) {
             b = false;
             alert('<dtml-var "getZMILangStr('ATTR_PASSWORD')"><><dtml-var "getZMILangStr('ATTR_CONFIRM')">!');
@@ -404,7 +410,9 @@ function form2Submit(fm) {
         <!-- E-Mail -->
         <dtml-unless "getLDAPUserAttr(userName,'email')">
          <tr valign="middle">
-          <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+          <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')">
+		<dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if>  <!-- MK, 13.08.2012 --> 
+		</td>
           <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=15,value=getUserAttr(name,'email',''))"></td>
          </tr>
         </dtml-unless>
@@ -701,7 +709,9 @@ function form2Submit(fm) {
      <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='newConfirm')"></td>
     </tr>
     <tr>
-     <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')">
+	<dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if>  <!-- MK, 13.08.2012 -->
+	</td>
      <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='newEmail',size=15,value='')"></td>
     </tr>
     </table>

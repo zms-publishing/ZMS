@@ -51,7 +51,7 @@ function form0Submit(fm) {
         if (fm.elements['newPassword'] && fm.elements['newConfirm']) {
           b = b && !disallowBlank(fm.elements['newPassword'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['newConfirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
-	  if ("<dtml-var "getConfProperty('EmailMandatory','')">") { // MK, 13.08.2012
+	  if ("<dtml-var "getConfProperty('EmailMandatory','')">"=="1") { // MK, 13.08.2012
 	  b = b && !disallowBlank(fm.elements['newEmail'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
           } // MK, 13.08.2012
           if (fm.elements['newPassword'].value!=fm.elements['newConfirm'].value) {
@@ -64,7 +64,7 @@ function form0Submit(fm) {
         if (fm.elements['password'] && fm.elements['confirm']) {
           b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
-	  if ("<dtml-var "getConfProperty('EmailMandatory','')">") { // MK, 13.08.2012
+	  if ("<dtml-var "getConfProperty('EmailMandatory','')">"=="1") { // MK, 13.08.2012
 	  b = b && !disallowBlank(fm.elements['email'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
 	  } // MK, 13.08.2012
           if (fm.elements['password'].value!=fm.elements['confirm'].value) {

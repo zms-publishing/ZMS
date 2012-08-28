@@ -602,6 +602,7 @@ class ZMSContainerObject(
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param opt: the dictionary of options
           - I{id} (C{string=''}) id of base ul-element
+          - I{cssclass} (C{string=''}) css class of base ul-element
           - I{add_self} (C{boolean=False}) add self to list
           - I{deep} (C{boolean=True}) process child nodes
           - I{complete} (C{boolean=False}) process complete subtree
@@ -622,6 +623,9 @@ class ZMSContainerObject(
             if opt.get('id',''):
               items.append( ' id="%s"'%opt.get('id',''))
               opt['id'] = ''
+            if opt.get('cssclass',''):
+              items.append( ' class="%s"'%opt.get('cssclass',''))
+              opt['cssclass'] = ''
             items.append('>\n')
           css = []
           if ob.id == current.id:

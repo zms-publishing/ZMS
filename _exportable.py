@@ -123,7 +123,9 @@ def localHtml(self, html):
   try:
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
-    html = unicode( html, default_charset).encode( charset)
+    if not type(html) is unicode:
+      html = unicode( html, default_charset)
+    html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     _globals.writeError( self, "[localHtml]")
     v = str(sys.exc_value)

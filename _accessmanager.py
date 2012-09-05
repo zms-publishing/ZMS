@@ -496,34 +496,37 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getUserAttr:
     # --------------------------------------------------------------------------
-    def getUserAttr(self, user, name, default, flag=0):
+    def getUserAttr(self, user, name=None, default=None, flag=0):
       user = getUserId(user)
       if name not in [ 'nodes']:
         v = self.getLDAPUserAttr( user, name)
         if v is not None:
           return v
       d = self.getConfProperty('ZMS.security.users',{})
-      i = d.get(user,{})
-      v = i.get(name,default)
-      # Process master.
-      if flag == 0:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          w = portalMaster.getUserAttr(user, name, default, 1)
-          if type(w) in StringTypes:
-            if type(v) in StringTypes:
-              if len(v) == 0:
-                v = w
-      # Process clients.
-      if flag == 0:
-        for portalClient in self.getPortalClients():
-          w = portalClient.getUserAttr(user, name, default)
-          if type(w) is dict:
-            v = v.copy()
-            for node in w.keys():
-              ob = portalClient.getLinkObj(node)
-              newNode = self.getRefObjPath(ob)
-              v[newNode] = w[node]
+      if name is None:
+        v = d.get(user,None)
+      else:
+        i = d.get(user,{})
+        v = i.get(name,default)
+        # Process master.
+        if flag == 0:
+          portalMaster = self.getPortalMaster()
+          if portalMaster is not None:
+            w = portalMaster.getUserAttr(user, name, default, 1)
+            if type(w) in StringTypes:
+              if type(v) in StringTypes:
+                if len(v) == 0:
+                  v = w
+        # Process clients.
+        if flag == 0:
+          for portalClient in self.getPortalClients():
+            w = portalClient.getUserAttr(user, name, default)
+            if type(w) is dict:
+              v = v.copy()
+              for node in w.keys():
+                ob = portalClient.getLinkObj(node)
+                newNode = self.getRefObjPath(ob)
+                v[newNode] = w[node]
       return v
 
     # --------------------------------------------------------------------------

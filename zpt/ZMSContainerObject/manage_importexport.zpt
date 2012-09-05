@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+
+function onImportFormSubmit(fm) {
+  var b = true;
+  b = b && !disallowBlank(fm.elements['file'],getZMILangStr('MSG_REQUIRED').replace(/%s/,getZMILangStr('ATTR_FILE')),false);
+  return b;
+}
+
+function onExportFormSubmit(fm) {
+  var b = true;
+  b = b && !disallowBlank(fm.elements['export_format'],getZMILangStr('MSG_REQUIRED').replace(/%s/,getZMILangStr('ATTR_FORMAT')),false);
+  return b;
+}
+
+function onExportFormatChange(el) {
+  var v = $(el).val();
+  if ( v == '1') {
+    $('#div_charset').show( 'normal');
+  }
+  else {
+    $('#div_charset').hide( 'normal');
+  }
+  if ( isNaN(v)) {
+    $('#div_debug').show( 'normal');
+  }
+  else {
+    $('#div_debug').hide( 'normal');
+  }
+}
+
+</script>
+
+<tal:block tal:define="global
+    filterIds python:here.getFilterIds();
+    filters python:map(lambda x: here.getFilter(x), filterIds);
+    importFilters python:filter(lambda x: len(here.intersection_list([x['format']],['import']))>0, filters);
+    exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0, filters)">
+
+<form class="form-horizontal" name="importForm" action="manage_import" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
+  <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+  <legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Last modified</legend>
+  <div class="control-group">
+    <label class="control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</label>
+    <div class="controls">
+      <input type="file" name="file">
+    </div><!-- .controls -->
+  </div><!-- .control-group -->
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+    </div>
+  </div>
+</form>
+
+<form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get" onsubmit="return onExportFormSubmit(this)">
+  <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+  <legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Last modified</legend>
+  <div class="control-group">
+    <label class="control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</label>
+    <div class="controls">
+      <select name="export_format" onchange="onExportFormatChange(this);">
+        <option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
+        <option value="2">XML</option>
+        <option value="4">XML (incl. embedded objects)</option>
+        <option value="0">ZEXP</option>
+        <option value="1">HTML (<tal:block tal:content="python:here.getZMILangStr('ATTR_STATIC')">static</tal:block>)</option>
+      </select>
+    </div><!-- .controls -->
+  </div><!-- .control-group -->
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
+    </div>
+  </div>
+</form>
+
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

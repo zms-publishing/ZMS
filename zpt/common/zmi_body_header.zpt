@@ -1,0 +1,9 @@
+<!-- common/zmi_body_header -->
+
+<div id="zmi-header">
+  <img id="zmi-banner" src="/misc_/zms/spacer.gif" tal:attributes="title python:'%s - ZOPE based contentmanagement system for science, technology and medicine'%here.zms_version()" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
+</div><!-- #zmi-header -->
+
+<tal:block tal:content="structure python:here.zmi_tabs(here,request)">zmi_tabs</tal:block>
+
+<!-- /common/zmi_body_header -->

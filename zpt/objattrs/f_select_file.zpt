@@ -1,0 +1,4 @@
+<tal:block tal:define="global
+		key options/key">
+	<tal:block tal:content="key">the key</tal:block>
+</tal:block>

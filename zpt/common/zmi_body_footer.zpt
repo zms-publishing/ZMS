@@ -1,0 +1,7 @@
+<!-- common/zmi_body_footer -->
+
+<div id="zmi-footer">
+   &copy;&nbsp;<tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block>&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+</div><!-- #zmi-footer -->
+
+<!-- /common/zmi_body_footer -->

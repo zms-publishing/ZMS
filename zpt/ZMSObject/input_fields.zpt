@@ -1,0 +1,46 @@
+<!-- ZMSObject/input_fields -->
+
+	<tal:block tal:define="global
+			meta_id options/meta_id;
+			metaObj python:here.getMetaobj(meta_id);
+			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
+		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
+			<tal:block tal:define="global 
+					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
+					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
+					elLabel python:here.getObjAttrLabel(metaObjAttr);
+					elValue python:here.attr(metaObjAttrId)">
+			<tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[]) and metaObjAttr['type'] not in here.metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']">
+
+				<tal:block tal:condition="python:metaObjAttr['type']=='delimiter'">
+					<legend class="zmi-delimiter"  tal:content="elLabel">the legend</legend>
+				</tal:block>
+
+				<tal:block tal:condition="python:metaObjAttr['type']=='hint'">
+					<div class="zmi-hint"  tal:content="elLabel">the legend</div>
+				</tal:block>
+
+				<tal:block tal:condition="python:metaObjAttr['type']=='interface'">
+					<div class="zmi-interface"  tal:content="structure python:here.dt_html(metaObjAttr['name'],request)">the legend</div>
+				</tal:block>
+
+				<tal:block tal:condition="python:metaObjAttr['type']=='richtext'">
+					<div class="zmi-richtext" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the legend</div>
+				</tal:block>
+
+				<tal:block tal:condition="python:metaObjAttr['type'] not in ['?','delimiter','hint','interface','richtext']
+						and not (metaObjAttr['id'] in ['displaytype','format'])
+						and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
+						and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
+					<div class="control-group">
+						<label class="control-label" tal:attributes="for elName" tal:content="elLabel">the label</label>
+						<div class="controls" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the legend</div><!-- .controls -->
+					</div><!-- .control-group -->
+				</tal:block>
+
+			</tal:block>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+
+<!-- /ZMSObject/input_fields -->

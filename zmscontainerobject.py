@@ -32,6 +32,7 @@ import time
 # Product Imports.
 from zmsobject import ZMSObject
 import _accessmanager
+import _confmanager
 import _fileutil
 import _globals
 import _importable
@@ -123,15 +124,15 @@ class ZMSContainerObject(
 
     # Management Interface.
     # ---------------------
-    manage_container = HTMLFile('dtml/ZMSContainerObject/manage_main', globals())
+    manage_container = _confmanager.ConfDict.template('ZMSContainerObject/manage_main')
     manage_main_btn = HTMLFile('dtml/ZMSContainerObject/manage_main_btn', globals())
     manage_main_change = HTMLFile('dtml/ZMSContainerObject/manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
     manage_search = HTMLFile('dtml/ZMSContainerObject/manage_search', globals())
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())
-    manage_properties = HTMLFile('dtml/ZMSObject/manage_main', globals())
+    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_system = HTMLFile('dtml/ZMSContainerObject/manage_system', globals())
-    manage_importexport = HTMLFile('dtml/ZMSContainerObject/manage_importexport', globals())
+    manage_importexport = _confmanager.ConfDict.template('ZMSContainerObject/manage_importexport')
     manage_importexportFtp = HTMLFile('dtml/ZMSContainerObject/manage_importexportftp', globals())
 
 

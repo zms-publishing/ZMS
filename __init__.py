@@ -40,6 +40,7 @@ import zmscustom
 import zmssqldb
 import zmslinkcontainer
 import zmslinkelement
+import _confmanager
 import _multilangmanager
 import _mediadb
 import _sequence
@@ -111,13 +112,7 @@ def initialize(context):
         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
         
         # automated registration of configuration
-        confdict = {'last_modified':long(DateTime().timeTime())}
-        PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
-        cfp = ConfigParser.ConfigParser()
-        cfp.readfp(open(os.path.join(PRODUCT_HOME,'etc','zms.conf')))
-        for section in cfp.sections():
-          for option in cfp.options(section):
-            confdict[section+'.'+option] = cfp.get( section, option)
+        confdict = _confmanager.ConfDict.get()
         OFS.misc_.misc_.zms['confdict']=confdict
         
         # automated registration for other resources

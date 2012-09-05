@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
 import ZPublisher.HTTPRequest
@@ -33,6 +34,7 @@ import ZMSWorkflowItem
 import _accessmanager
 import _blobfields
 import _cachemanager
+import _confmanager
 import _copysupport
 import _deprecatedapi
 import _exportable
@@ -99,6 +101,14 @@ class ZMSObject(ZMSItem.ZMSItem,
     FORM_LABEL_MANDATORY = '<sup style="color:red">*</sup>'
     spacer_gif = '/misc_/zms/spacer.gif'
 
+    # ZPT Templates.
+    # --------------
+    zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
+    zmi_body_footer = PageTemplateFile('zpt/common/zmi_body_footer', globals())
+    zmi_body_header = PageTemplateFile('zpt/common/zmi_body_header', globals())
+    zmi_html_head = PageTemplateFile('zpt/common/zmi_html_head', globals())
+    zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
+
     # Templates.
     # ----------
     f_display_icon = HTMLFile('dtml/object/f_display_icon', globals()) # ZMI Display-Icon
@@ -125,7 +135,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_api_html = HTMLFile('dtml/object/f_api', globals()) 
     f_api_top_html = HTMLFile('dtml/object/f_api_top', globals()) 
     obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals()) 
-    obj_input_fields = HTMLFile('dtml/ZMSObject/input_fields', globals()) 
+    obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields') 
     active_input_fields = '' # Deprecated
     version_input_fields = '' # Deprecated
 

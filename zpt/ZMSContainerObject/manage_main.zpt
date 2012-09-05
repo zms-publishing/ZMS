@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'main',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form onsubmit="return false;">
+	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
+	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
+<ul class="zmi-container">
+<li tal:define="global childNode python:here">
+  <div class="center">
+      <h1>
+        <tal:block tal:content="structure python:here.getTitle(request)">the title</tal:block><br/>
+        <small tal:content="structure python:here.getDCDescription(request)">the description</small>
+      </h1>
+  </div>
+  <div class="right">
+    <div class="btn-group zmi-action" tal:attributes="id python:''">
+      <span class="zmi-helper-hidden zmi-sort-id">0</span>
+      <button class="btn split-left">
+        <img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
+        <tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+      </button>
+      <button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+    </div><!-- .btn-group -->
+    <div>&nbsp;</div>
+    <div style="clear:both;" tal:content="structure python:childNode.manage_main_change(childNode,request)">the info child-node</div>
+  </div>
+</li>
+<li tal:repeat="childNode python:here.getChildNodes(request)">
+  <div class="center">
+    <tal:block tal:content="structure python:childNode.renderShort(request)">the rendered child-node</tal:block>
+  </div>
+  <div class="right">
+    <div class="btn-group zmi-action" tal:attributes="id python:childNode.id">
+      <span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
+      <button class="btn split-left">
+        <img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
+        <tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+      </button>
+      <button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+    </div><!-- .btn-group -->
+    <div>
+      <input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
+    </div>
+    <div style="clear:both;" tal:content="structure python:childNode.manage_main_change(childNode,request)">the info child-node</div>
+  </div>
+</li>
+</ul>
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

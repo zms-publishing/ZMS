@@ -19,9 +19,10 @@
 # Imports.
 from App.special_dtml import HTMLFile
 # Product Imports.
+import _confmanager
 import _fileutil
 import _globals
-import  _zreferableitem
+import _zreferableitem
 
 
 # ------------------------------------------------------------------------------
@@ -66,11 +67,11 @@ class ObjTypes:
 
     # File.
     # -----
-    f_selectFile = HTMLFile('dtml/objattrs/f_select_file', globals()) 
+    f_selectFile = _confmanager.ConfDict.template('objattrs/f_select_file') 
 
     # Image.
     # ------
-    f_selectImage = HTMLFile('dtml/objattrs/f_select_image', globals()) 
+    f_selectImage = _confmanager.ConfDict.template('objattrs/f_select_image') 
 
     # Alignment.
     # ----------

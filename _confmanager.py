@@ -24,8 +24,10 @@ from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from OFS.Image import Image
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
+import ConfigParser
 import Globals
 import OFS.misc_
 import os
@@ -46,6 +48,39 @@ import _metacmdmanager
 import _multilangmanager
 import _sequence
 import zmslog
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Read system-configuration from $ZMS_HOME/etc/zms.conf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class ConfDict:
+
+    __confdict__ = None
+
+    @classmethod
+    def get(cls):
+        if cls.__confdict__ is None:
+            cls.__confdict__ = {'last_modified':long(DateTime().timeTime())}
+            PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
+            cfp = ConfigParser.ConfigParser()
+            cfp.readfp(open(os.path.join(PRODUCT_HOME,'etc','zms.conf')))
+            for section in cfp.sections():
+                for option in cfp.options(section):
+                    cls.__confdict__[section+'.'+option] = cfp.get( section, option)
+        return cls.__confdict__
+
+
+    @classmethod
+    def template(cls, path):
+        if cls.get().get('zmi.theme','dtml')=='zpt':
+          if path.find('/') > 0:
+            path = 'zpt/%s'%path
+          f = PageTemplateFile(path, globals())
+        else:
+          if path.find('/') > 0:
+            path = 'dtml/%s'%path
+          f = HTMLFile(path, globals())
+        return f
 
 
 """

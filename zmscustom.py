@@ -26,6 +26,7 @@ import time
 import urllib
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
+import _confmanager
 import _fileutil
 import _globals
 import _importable
@@ -58,7 +59,7 @@ def parseXmlString(self, file):
 ###
 ################################################################################
 ################################################################################
-manage_addZMSCustomForm = HTMLFile('manage_addzmscustomform', globals()) 
+manage_addZMSCustomForm = _confmanager.ConfDict.template('manage_addzmscustomform') 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   
@@ -164,8 +165,8 @@ class ZMSCustom(ZMSContainerObject):
 
     # Templates.
     # ----------
-    manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
-    manage_properties = HTMLFile('dtml/ZMSObject/manage_main', globals()) # -"-
+    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
+    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main') # -"-
     manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals())
     metaobj_record_select = HTMLFile('dtml/ZMSRecordSet/record_select', globals())
     metaobj_record_update = HTMLFile('dtml/ZMSRecordSet/record_update', globals())

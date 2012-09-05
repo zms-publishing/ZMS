@@ -64,14 +64,14 @@ function form0Submit(fm) {
         if (fm.elements['password'] && fm.elements['confirm']) {
           b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
           b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
-	  if ("<dtml-var "getConfProperty('EmailMandatory','')">"=="1") { // MK, 13.08.2012
-	  b = b && !disallowBlank(fm.elements['email'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
-	  } // MK, 13.08.2012
           if (fm.elements['password'].value!=fm.elements['confirm'].value) {
             b = false;
             alert('<dtml-var "getZMILangStr('ATTR_PASSWORD')"><><dtml-var "getZMILangStr('ATTR_CONFIRM')">!');
           }
         }
+        if ("<dtml-var "getConfProperty('EmailMandatory','')">"=="1") { // MK, 13.08.2012
+          b = b && !disallowBlank(fm.elements['email'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false); // MK, 13.08.2012
+        } // MK, 13.08.2012
       }
       return b;
     }
@@ -333,7 +333,7 @@ function form2Submit(fm) {
       <td align="right" nowrap="nowrap">
        <dtml-if "localUserFldr==userFldr">
         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>" onclick="btnClick(this,'obj');">
-        <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');">
+        <dtml-if "getUserAttr(name)"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" onclick="btnClick(this,'obj');"></dtml-if>
         <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_BACK')" html_quote>" onclick="btnClick(this,'obj');">
        </dtml-if>
       </td>
@@ -423,6 +423,7 @@ function form2Submit(fm) {
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
+       <dtml-if "getUserAttr(name)">
        <dtml-let multilang="len(getLangIds())>1">
          <dtml-if LDAPUserFolder_utf8>
            <dtml-call "REQUEST.set('nodes', getUserAttr(userName.decode('utf-8').encode('latin-1'),'nodes',{}))">
@@ -566,6 +567,7 @@ function form2Submit(fm) {
         <td class="form-label">&nbsp;</td>
         <td class="form-small"><input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');"></td>
        </tr>
+       </dtml-if>
        </table>
       </td>
      </tr>

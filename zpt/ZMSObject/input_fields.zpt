@@ -33,7 +33,10 @@
 						and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
 						and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
 					<div class="control-group">
-						<label class="control-label" tal:attributes="for elName" tal:content="elLabel">the label</label>
+						<label class="control-label" tal:attributes="for elName">
+							<tal:block tal:content="elLabel">the label</tal:block>
+							<tal:block tal:condition="python:metaObjAttr.get('mandatory')" tal:content="structure python:here.FORM_LABEL_MANDATORY">the mandatory</tal:block>
+						</label>
 						<div class="controls" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the legend</div><!-- .controls -->
 					</div><!-- .control-group -->
 				</tal:block>

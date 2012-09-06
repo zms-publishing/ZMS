@@ -167,5 +167,5 @@ function zmiToggleSelectionButtonClick(sender)
 {
 	var fm = $(sender).parents('form');
 	selectCheckboxes(fm,!$('input[type=checkbox]',fm).attr('checked'));
-	zmiActionButtonsRefresh();
+	zmiActionButtonsRefresh(sender);
 }

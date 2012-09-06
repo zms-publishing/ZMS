@@ -130,12 +130,47 @@ $(function(){
 			}
 		});
 	// Action-Lists
+		$(".zmi-container .center")
+			.hover(function() {
+					var html = ''
+						+ '<div id="zmi-action-btn-group" class="btn-group zmi-helper-hidden">'
+							+ '<span id="zmi-action-btn-select" class="btn" title="'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-ok"></i></span>'
+							+ '<span id="zmi-action-btn-delete" class="btn" title="'+getZMILangStr('BTN_DELETE')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_deleteObjs\')"><i class="icon-trash"></i></span>'
+							+ '<span id="zmi-action-btn-cut" class="btn" title="'+getZMILangStr('BTN_CUT')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_cutObjects\')"><i class="icon-cut"></i></span>'
+							+ '<span id="zmi-action-btn-copy" class="btn" title="'+getZMILangStr('BTN_COPY')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_copyObjects\')"><i class="icon-copy"></i></span>'
+							+ '<span id="zmi-action-btn-paste" class="btn" title="'+getZMILangStr('BTN_PASTE')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_pasteObjs\')"><i class="icon-paste"></i></span>'
+						+ '</div><!-- .btn-group -->';
+					$(this).append(html);
+					var coords = getCoords(this);
+					$("#zmi-action-btn-group")
+							.css({position:"absolute",top:coords.y+2,left:coords.x+2})
+							.show()
+							;
+					zmiActionButtonsRefresh($("#zmi-action-btn-group"));
+				},function() {
+					$("#zmi-action-btn-group").remove();
+				})
+				;
+	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
 	$("div.btn-group.zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
 		.mouseover( function(evt) { zmiActionOver(this,"mouseover"); })
 		.mouseout( function(evt) { zmiActionOut(this,"mouseout"); })
 		;
 	// Inputs
+	$("div.zmi-image").each(function() {
+			var elName = $(this).attr("id").substr("zmi-image-".length);
+			zmiRegisterBlob(elName);
+			$("a#delete_btn_"+elName,this).click(function() {
+					var elName = $(this).attr("id").substr("delete_btn_".length);
+					zmiDelBlobBtnClick(elName);
+				});
+			$("a#undo_btn_"+elName,this).click(function() {
+					var elName = $(this).attr("id").substr("undo_btn_".length);
+					zmiUndoBlobBtnClick(elName);
+				});
+			zmiSwitchBlobButtons(elName);
+		});
 	$(".zmi-image-preview img")
 			.attr({title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT')})
 			.click(function() {
@@ -145,6 +180,20 @@ $(function(){
 			;
 });
 
+/**
+ * Un-/select checkboxes.
+ * @see jquery.plugin.zmi.js
+ */
+function selectCheckboxes(fm, v) {
+	if (typeof v == 'undefined') {
+		v = !$(':checkbox:not([name~=active])',fm).prop('checked');
+	}
+	$(':checkbox:not([name~=active])',fm).prop('checked',v)
+}
+
+/**
+ * @see jquery.plugin.zmi.js
+ */
 function zmiWriteDebug(s) {
 	var $div = $("div#zmi-debug");
 	if ($div.css("display")!="none") {
@@ -152,6 +201,9 @@ function zmiWriteDebug(s) {
 	}
 }
 
+/**
+ * @see jquery.plugin.zmi.js
+ */
 function zmiRelativateUrls(s,page_url) {
 	var splitTags = ['<a href="','<img src="'];
 	for ( var h = 0; h < splitTags.length; h++) {
@@ -240,7 +292,7 @@ function zmiActionOver(el, evt) {
 		action += "/manage_ajaxZMIActions";
 		var params = {};
 		params['lang'] = getZMILang();
-		params['context_id'] = typeof $(el).attr("id") == "undefined"?"":$(el).attr("id");
+		params['context_id'] = typeof $(el).parents("li.zmi-item").attr("id") == "undefined"?"":$(el).parents("li.zmi-item").attr("id");
 		// JQuery.AJAX.get
 		$.get( action, params, function(data) {
 			// Reset wait-cursor.
@@ -253,7 +305,7 @@ function zmiActionOver(el, evt) {
 			for (var i = 1; i < actions.length; i++) {
 				var optlabel = actions[i][0];
 				var optvalue = actions[i][1];
-				$("ul.dropdown-menu",el).append('<li><a href="javascript:zmiActionExecute(\'' + id + '\',\'' + optlabel + '\',\'' + optvalue + '\')">' + optlabel + '</a></li>');
+				$("ul.dropdown-menu",el).append('<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">' + optlabel + '</a></li>');
 			}
 		});
 	}
@@ -263,11 +315,11 @@ function zmiActionOut(el, evt) {
 	$(".split-left",el).css({visibility:"hidden"});
 }
 
-function zmiActionExecute(id, label, target) {
+function zmiActionExecute(sender, label, target) {
+	var $el = $(".zmi-action",sender);
+	var $fm = $el.parents("form");
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		// Parameters
-		var $el = $(".zmi-action" + (id==''?":first":"#"+id));
-		var $fm = $el.parents("form");
 		var inputs = $("input:hidden",$fm);
 		var data = {custom:label,_sort_id:$(".zmi-sort-id",$el).text()};
 		for ( var i = 0; i < inputs.length; i++) {
@@ -286,6 +338,31 @@ function zmiActionExecute(id, label, target) {
 		});
 	}
 	else {
-		self.location.href = target;
+		var $div = $el.parents("div.right");
+		$("input[name='ids:list']",$div).prop("checked",true);
+		if (zmiConfirmAction($fm,target,label)) {
+			$fm.attr("action",target);
+			$fm.attr("method","POST");
+			$fm.submit();
+		}
+		else {
+			$("input[name='ids:list']",$div).prop("checked",false);
+		}
 	}
+}
+
+/**
+ * @param sender
+ * @param evt
+ */
+function zmiActionButtonsRefresh(sender,evt) {
+	var fm = $(sender).parents('form');
+	$("li.zmi-item").each(function() {
+			if ($("input[name='ids:list']:checked",this).length > 0) {
+				$(this).addClass("zmi-selected");
+			}
+			else {
+				$(this).removeClass("zmi-selected");
+			}
+		});
 }

@@ -7,24 +7,38 @@
 		max_generate_preview	python:{
 			'imghires':'InstalledProducts.pil.thumbnail.max',
 			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
-	<div class="zmi-image" tal:attributes="id python:'zmi-image-%s'%key">
+	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
+		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
+		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
+	</tal:block>
+	<div class="zmi-image" tal:attributes="id python:'zmi-image-%s'%elName">
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']">
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0">
-		<tal:block tal:condition="value">
+		<tal:block tal:condition="python:value is not None">
 			<div class="zmi-image-info">
-				<a tal:attributes="href python:value.getHref(request)" target="_blank">
+				<a tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
 					<img tal:attributes="src python:here.getMimeTypeIconSrc(value.getContentType()); title python:value.getContentType()"/>
 					<span class="filename" tal:content="python:value.getFilename()">the filename</span>
 				</a>
-				<span class="dimensions" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
-				<span class="size" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
-				<a class="btn-small btn" href="#"><i class="icon-trash"></i></a>
-			</div>
-			<div class="zmi-image-preview" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
+				<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
+				<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
+			</div><!-- .zmi-image-info -->
+			<div class="btn-group">
+				<a tal:attributes="id python:'delete_btn_%s'%elName" class="btn zmi-helper-hidden" href="#"><i class="icon-trash"></i></a>
+				<a tal:attributes="id python:'undo_btn_%s'%elName" class="btn zmi-helper-hidden" href="#"><i class="icon-undo"></i></a>
+			</div><!-- .btn-group -->
+			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 				<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-				<a href="#" class="thumbnail"><img tal:attributes="src python:value.getHref(request)"/></a>
+				<a href="#" class="thumbnail"><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/></a>
 			</div>
+		</tal:block>
+		<tal:block tal:condition="python:value is None">
+			<div class="zmi-image-info">
+				<a tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
+				<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:''">the dimensions</span>
+				<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:''">the size</span>
+			</div><!-- .zmi-image-info -->
 		</tal:block>
 		<tal:block tal:condition="python:request['lang'] in here.getLanguages(request)">
 			<div class="zmi-input-file"

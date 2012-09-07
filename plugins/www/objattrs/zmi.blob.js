@@ -94,7 +94,7 @@ function zmiDelBlobBtnClick(elName) {
 		// Clear properties.
 		var l = ['filename','dimensions','size'];
 		for (var i=0; i < l.length; i++) {
-			$('#'+l[i]+'_'+elName).html('');
+			$('#'+l[i]+'_'+elName).html('<del>'+$('#'+l[i]+'_'+elName).html()+'</del>');
 		}
 		// Create transparent overlay.
 		var img = $('img#img_'+elName);

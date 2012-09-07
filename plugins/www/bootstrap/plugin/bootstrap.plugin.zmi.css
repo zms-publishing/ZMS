@@ -27,6 +27,11 @@
 	font-size:large;
 }
 
+.center .form-label {
+	padding-top:1.2em;
+	font-size:large;
+}
+
 .form-small {
 	font-size:smaller;
 }
@@ -57,7 +62,7 @@ ul.zmi-container li.zmi-item {
 	clear:both;
 }
 ul.zmi-container > li.zmi-item.zmi-selected > div,
-ul.zmi-container > li.zmi-item.zmi-selected > div a{
+ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	background-color:#08c;
 	color:#fff!important;
 }
@@ -96,15 +101,22 @@ ul.zmi-container > li > div.right {
 .split-right {
 	height:2.1em;
 }
-.zmi-image {
-	background-color:#FFF;
+
+.zmi-image,.zmi-file {
+	background-color:#fff;
 	padding:0.5em;
 }
-.zmi-image-info {
+.zmi-image del, .zmi-image del *,
+.zmi-file del, .zmi-file del * {
+	color:#ccc!important;
+}
+.zmi-image-info,
+.zmi-file-info {
 	padding-right:1em;
 	float:left;
 }
-.zmi-image-info .filename {
+.zmi-image-info .filename,
+.zmi-file-info .filename {
 	font-weight:bold;
 }
 .zmi-image-preview {
@@ -119,10 +131,6 @@ ul.zmi-container > li > div.right {
 	padding-left:0.5em;
 	padding-right:0.5em;
 	font-size:x-small;
-}
-
-div.hover {
-border:1px solid red!important;
 }
 
 /* #############################################################################

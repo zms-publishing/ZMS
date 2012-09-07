@@ -158,17 +158,12 @@ $(function(){
 		.mouseout( function(evt) { zmiActionOut(this,"mouseout"); })
 		;
 	// Inputs
-	$("div.zmi-image").each(function() {
-			var elName = $(this).attr("id").substr("zmi-image-".length);
+	$(".zmi-image,.zmi-file").each(function() {
+			var elName = $(this).attr("id");
+			elName = elName.substr(elName.lastIndexOf("-")+1);
 			zmiRegisterBlob(elName);
-			$("a#delete_btn_"+elName,this).click(function() {
-					var elName = $(this).attr("id").substr("delete_btn_".length);
-					zmiDelBlobBtnClick(elName);
-				});
-			$("a#undo_btn_"+elName,this).click(function() {
-					var elName = $(this).attr("id").substr("undo_btn_".length);
-					zmiUndoBlobBtnClick(elName);
-				});
+			$("a#delete_btn_"+elName,this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
+			$("a#undo_btn_"+elName,this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
 			zmiSwitchBlobButtons(elName);
 		});
 	$(".zmi-image-preview img")
@@ -223,6 +218,9 @@ function zmiRelativateUrls(s,page_url) {
 	return s;
 }
 
+/**
+ * Open link in iframe (jQuery UI Dialog).
+ */
 function zmiIframe(href, data, opt) {
 	if ($("#myModal").length==0) {
 		var html = ''
@@ -231,23 +229,33 @@ function zmiIframe(href, data, opt) {
 					+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
 					+ '<h3 id="myModalLabel"></h3>'
 				+ '</div>'
-				+ '<div class="modal-body">'
-				+ '</div>'
-				+ '<div class="modal-footer">'
-					+ '<button class="btn" data-dismiss="modal" aria-hidden="true">' + getZMILangStr('BTN_CLOSE') + '</button>'
-					+ '<button class="btn btn-primary">' + getZMILangStr('BTN_SAVE') + '</button>'
-				+ '</div>'
 			+ '</div>';
 		$('body').append(html);
+	}
+	else {
+		$("#myModal .modal-body, #myModal .modal-footer").remove();
 	}
 	if (typeof opt["title"] != "undefined") {
 		$("#myModal #myModalLabel").html(opt["title"]);
 	}
 	if (href.indexOf("<")==0) {
-		$("#myModal .modal-body").html(href);
+		var html = ''
+				+ '<div class="modal-body">'
+					+ href
+				+ '</div>'
+				+ '<div class="modal-footer">'
+					+ '<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="$(\'#myModal\').modal(\'hide\')">' + getZMILangStr('BTN_CLOSE') + '</button>'
+				+ '</div>';
+		$("#myModal").append(html);
 		$("#myModal").modal();
 	}
 	else {
+		var s = href + "?";
+		for (var k in data) {
+			s += k + "=" + data[k] + "&";
+		}
+		s = s.substr(0, s.length);
+		//confirm(s);
 		$.get( href, data, function(result) {
 				var $result = $(result);
 				if ($("div#system_msg",$result).length>0) {
@@ -258,7 +266,7 @@ function zmiIframe(href, data, opt) {
 					self.location.href = href;
 				}
 				else {
-					$("#myModal .modal-body").html(result);
+					$("#myModal").append(result);
 					$("#myModal").modal();
 				}
 			});
@@ -284,7 +292,7 @@ function zmiActionOver(el, evt) {
 		$("button.split-left",el).click(function() {
 				var btn_group = $(this).parents("div.btn-group.zmi-action");
 				var dropdown_menu = $("ul.dropdown-menu",btn_group);
-				self.location.href = $("li:first a",dropdown_menu).attr("href");
+				window.setTimeout($("li:first a",dropdown_menu).attr("href"),1);
 			});
 		// Build action and params.
 		var action = self.location.href;
@@ -318,10 +326,12 @@ function zmiActionOut(el, evt) {
 function zmiActionExecute(sender, label, target) {
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
+	$("input[name=custom]").val(label);
+	$("input[name=_sort_id]").val($(".zmi-sort-id",$el).text());
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		// Parameters
 		var inputs = $("input:hidden",$fm);
-		var data = {custom:label,_sort_id:$(".zmi-sort-id",$el).text()};
+		var data = {};
 		for ( var i = 0; i < inputs.length; i++) {
 			var $input = $(inputs[i]);
 			var id = $input.attr("id");
@@ -333,6 +343,7 @@ function zmiActionExecute(sender, label, target) {
 		zmiIframe(target,data,{
 				title:getZMILangStr('BTN_INSERT'),
 				close:function(event,ui) {
+					// @todo
 					$('tr#tr_manage_addProduct').remove();
 				}
 		});

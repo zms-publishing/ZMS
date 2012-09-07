@@ -7,10 +7,11 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <form>
-	<input type="hidden" id="custom" name="custom" value="">
-	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
+	<input type="hidden" id="_sort_id" name="_sort_id" value="">
+	<input type="hidden" id="custom" name="custom" value="">
+	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 <ul class="zmi-container">
 <li class="zmi-item" tal:define="global childNode python:here" tal:attributes="id python:''">
   <div class="center">

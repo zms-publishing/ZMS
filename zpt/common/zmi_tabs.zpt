@@ -1,9 +1,9 @@
 <!-- common/zmi_tabs -->
 
-<ul class="nav nav-tabs">
-  <tal:block tal:repeat="option python:here.filtered_manage_options()">
-    <li tal:attributes="class python:' '.join([['','active'][int(request['URL'].find(option['action'])>=0)]])"><a tal:attributes="href python:'%s?lang=%s'%(option['action'],request['lang'])" onclick="javascript:return confirmChanges(this);" tal:content="python:here.getZMILangStr(option['label'])">the label</a></li>
-  </tal:block>
-</ul>
+<ul class="main-nav nav nav-tabs">
+	<tal:block tal:repeat="option python:here.filtered_manage_options()">
+		<li tal:attributes="class python:' '.join([['','active'][int(request['URL'].find(option['action'])>=0)]])"><a tal:attributes="href python:'%s?lang=%s'%(option['action'],request['lang'])" onclick="javascript:return confirmChanges(this);" tal:content="python:here.getZMILangStr(option['label'])">the label</a></li>
+	</tal:block>
+</ul><!-- .nav.nav-tabs -->
 
 <!-- /common/zmi_tabs -->

@@ -130,8 +130,53 @@ $(function(){
 			}
 		});
 	// Action-Lists
+		var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+			ui.children().each(function() {
+				$(this).width($(this).width());
+			});
+			return ui;
+		};
+		$(".zmi-container.zmi-sortable").sortable({
+			helper:fixHelper,
+			forcePlaceholderSize:true,
+			placeholder: "ui-state-highlight",
+			revert: true,
+			start: function(event, ui) {
+					$("#zmi-action-btn-group").remove();
+					self.zmiSortableRownum = false;
+					var c = 1;
+					$(".zmi-sortable > li").each(function() {
+							if ($(this).attr("id") == ui.item.attr("id")) {
+								self.zmiSortableRownum = c;
+							}
+							c++;
+						});
+				},
+			stop: function(event, ui) {
+					var pos = $(this).position();
+					if (self.zmiSortableRownum) {
+						var c = 1;
+						$(".zmi-sortable > li").each(function() {
+								if ($(this).attr("id") == ui.item.attr("id")) {
+									if(self.zmiSortableRownum != c) {
+										var id = ui.item.attr("id");
+										var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+										$.get(href,function(result){
+												var message = eval('('+result+')');
+												zmiShowMessage(pos,message,"alert-success");
+											});
+									}
+								}
+								c++;
+							});
+					}
+					self.zmiSortableRownum = false;
+				}
+		});
+		$(".zmi-container.zmi-sortable").disableSelection();
 		$(".zmi-container .center")
 			.hover(function() {
+					if (self.zmiSortableRownum) return;
 					var html = ''
 						+ '<div id="zmi-action-btn-group" class="btn-group zmi-helper-hidden">'
 							+ '<span id="zmi-action-btn-select" class="btn" title="'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-ok"></i></span>'
@@ -174,6 +219,20 @@ $(function(){
 				})
 			;
 });
+
+/**
+ * Show message
+ */
+function zmiShowMessage(pos, message, context) {
+	$(".alert").remove();
+	var html = ''
+		+ '<div class="alert'+(typeof context=='undefined'?'':' '+context)+'" style="position:absolute;left:'+pos.left+'px;top:'+pos.top+'px;">'
+			+ '<button type="button" class="close" data-dismiss="alert">&times;</button>'
+			+ message
+		+ '</div>';
+	$('body').append(html);
+	window.setTimeout('$(".alert").hide("slow")',2000);
+}
 
 /**
  * Un-/select checkboxes.

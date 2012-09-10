@@ -56,10 +56,20 @@ div#zmi-tab {
 div.alert {
 	margin:1em;
 }
-ul.zmi-container li.zmi-item {
+ul.zmi-container {
+	padding-top:0;
+	padding-bottom:0;
+	margin-top:0;
+	margin-bottom:0;
+}
+ul.zmi-container li.zmi-item,
+ul.zmi-container li.ui-state-highlight {
 	list-style-type:none;
 	float:none;
 	clear:both;
+}
+ul.zmi-container.zmi-sortable li.ui-state-highlight {
+	height:1em;
 }
 ul.zmi-container > li.zmi-item.zmi-selected > div,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{

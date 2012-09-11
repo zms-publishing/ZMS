@@ -578,7 +578,7 @@ class ZMSContainerObject(
       RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
-      return self.str_json({'id':context_id,'actions':map(lambda x: [x[0],x[1]], actions)})
+      return self.str_json({'id':context_id,'actions':actions})
 
 
     ############################################################################

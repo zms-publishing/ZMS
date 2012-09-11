@@ -1,20 +1,32 @@
 .zmi-helper-hidden {
 	display:none;
 }
-#zmi-header,
-#zmi-footer {
-	background-color:#777;
+#zmi-header, #zmi_header a, #zmi_header select,
+#zmi-footer, #zmi-footer a, #zmi-footer select {
+	background-color:#777!important;
 	color:#eee!important;
+	font-size:small;
 }
-#zmi-header a,
-#zmi-footer a {
-	color:#eee!important;
+#zmi-header  .pull-right {
+margin-right:0.5em;
+}
+#zmi-footer  form {
+	padding:0;
+	margin:0;
+}
+#zmi-footer  form select {
+	height:1.5em;
+	padding:0;
 }
 #zmi-banner {
 	width:460px;
 	height:20px;
 	cursor:pointer;
 	background:url(/misc_/zms/zms_banner.png);
+}
+
+ul.breadcrumb li.active a {
+	color:black;
 }
 
 .center h1 {
@@ -78,6 +90,7 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 }
 ul.zmi-container > li > div.center {
 	width:550px;
+	overflow:hidden;
 	border:1px solid #ddd;
 	border-top:0px solid #ddd;
 	float:left;
@@ -110,6 +123,22 @@ ul.zmi-container > li > div.right {
 }
 .split-right {
 	height:2.1em;
+}
+
+form.form-horizontal {
+	background-color:white;
+	margin-left:2em;
+	margin-right:2em;
+	padding-bottom:0.5em;
+}
+div.accordion-heading a.accordion-toggle {
+	font-weight:bold;
+}
+div.accordion-heading div.pull-left {
+	padding-top:0.5em;
+}
+.accordion-body.in {
+	border: 1px #eee solid;
 }
 
 .zmi-image,.zmi-file {

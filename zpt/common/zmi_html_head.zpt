@@ -8,8 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css" />
-	<!--<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.8.16.custom.css" />-->
-	<link rel="stylesheet" type="text/css" href="/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" />
+	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.8.16.custom.css" />
+	<!--<link rel="stylesheet" type="text/css" href="/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" />-->
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/ui/js/jquery-ui-1.8.21.custom.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/plugin/jquery.plugin.js"></script>

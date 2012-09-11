@@ -1,7 +1,19 @@
 <!-- common/zmi_body_footer -->
 
 <div id="zmi-footer">
-	&copy;&nbsp;<tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block>&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+	<div class="pull-left">
+		&copy;&nbsp;<tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block>&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
+	</div><!-- .pull-left -->
+	<div class="pull-right">
+		<form tal:attributes="action request/URL" method="get">
+			<select name="manage_lang" onchange="this.form.submit();">
+				<tal:block tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
+					<option tal:attributes="selected python:['','selected'][int(manage_lang==request.get('manage_lang'))]; value manage_lang" tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">the language</option>
+				</tal:block>
+			</select>
+		</form>
+	</div><!-- .pull-right -->
+	<div class="clearfix"></div><!-- .clearfix -->
 </div><!-- #zmi-footer -->
 
 <!-- /common/zmi_body_footer -->

@@ -12,8 +12,24 @@ String.prototype.endsWith = function(str) {return (this.match(str+"$")==str)};
 Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=i;break;}}return idx;};
 Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
 Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
-var zmiParams = {};
 
+/*
+ * Plugins
+ */
+function pluginLanguage() {
+	return getZMILangStr('LOCALE',{'nocache':""+new Date()});
+}
+
+function pluginUIDatepicker(s, c) {
+	var lang = pluginLanguage();
+	$.plugin('ui_datepicker',{
+		files: [
+				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js'
+		]});
+	$.plugin('ui_datepicker').get(s,c);
+}
+
+var zmiParams = {};
 $(function(){
 	var href = self.location.href;
 	// Parse params (?) and pseudo-params (#).
@@ -114,6 +130,7 @@ $(function(){
 			})
 		.attr( "title", "Double-click to edit!");
 	}
+
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{
@@ -121,8 +138,55 @@ $(function(){
 			});
 		$.plugin('zmi_highlight').get('body',function(){});
 	}
-	// Form
+
+	// Accordion:
+	// highlight default collapse item
+	$("i",$(".accordion-body.collapse").prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
+	$("i",$(".accordion-body.collapse.in").prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
+	$(".accordion-body.collapse").on("hide", function() {
+			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-down").addClass("icon-caret-right");
+		}).on("show", function() {
+			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
+		});
+
+		// Form
 	$("form.form-horizontal").each(function() {
+			var context = this;
+			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
+				// Date-Picker
+				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
+				$('input.datepicker',context).datepicker({
+						showWeek: true
+					});
+				$('input.datetimepicker',context).datepicker({
+						constrainInput: false,
+						showWeek: true,
+						beforeShow: function(input, inst) {
+								var v = $(input).val();
+								var e = '';
+								var i = v.indexOf(' ');
+								if ( i > 0) {
+									e = v.substr(i+1);
+									v = v.substr(0,i);
+								}
+								$(inst).data("inputfield",input);
+								$(inst).data("extra",e);
+							},
+						onClose: function(dateText, inst) {
+								if (dateText) {
+									var input = $(inst).data("inputfield");
+									var e = $(inst).data("extra");
+									if (e && !dateText.endsWith(" "+e)) {
+										$(input).val(dateText+" "+e);
+									}
+								}
+							}
+					});
+			});
+			$("input.datepicker,input.datetimepicker",this).each(function() {
+					$($(this).parents("span")[0]).addClass("input-prepend");
+					$(this).before('<span class="add-on"><i class="icon-calendar"></i></span>');
+				});
 			if ($("div.zmi-richtext",this).length > 0) {
 				$(this).submit(function() {
 						zmiRichtextOnSubmitEventHandler();
@@ -130,72 +194,43 @@ $(function(){
 			}
 		});
 	// Action-Lists
-		var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
-			ui.children().each(function() {
-				$(this).width($(this).width());
-			});
-			return ui;
-		};
-		$(".zmi-container.zmi-sortable").sortable({
-			helper:fixHelper,
-			forcePlaceholderSize:true,
-			placeholder: "ui-state-highlight",
-			revert: true,
-			start: function(event, ui) {
-					$("#zmi-action-btn-group").remove();
-					self.zmiSortableRownum = false;
+	$(".zmi-container.zmi-sortable").sortable({
+		forcePlaceholderSize:true,
+		placeholder: "ui-state-highlight",
+		revert: true,
+		start: function(event, ui) {
+				$("#zmi-action-btn-group").remove();
+				self.zmiSortableRownum = false;
+				var c = 1;
+				$(".zmi-sortable > li").each(function() {
+						if ($(this).attr("id") == ui.item.attr("id")) {
+							self.zmiSortableRownum = c;
+						}
+						c++;
+					});
+			},
+		stop: function(event, ui) {
+				var pos = $(this).position();
+				if (self.zmiSortableRownum) {
 					var c = 1;
 					$(".zmi-sortable > li").each(function() {
 							if ($(this).attr("id") == ui.item.attr("id")) {
-								self.zmiSortableRownum = c;
+								if(self.zmiSortableRownum != c) {
+									var id = ui.item.attr("id");
+									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+									$.get(href,function(result){
+											var message = eval('('+result+')');
+											zmiShowMessage(pos,message,"alert-success");
+										});
+								}
 							}
 							c++;
 						});
-				},
-			stop: function(event, ui) {
-					var pos = $(this).position();
-					if (self.zmiSortableRownum) {
-						var c = 1;
-						$(".zmi-sortable > li").each(function() {
-								if ($(this).attr("id") == ui.item.attr("id")) {
-									if(self.zmiSortableRownum != c) {
-										var id = ui.item.attr("id");
-										var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
-										$.get(href,function(result){
-												var message = eval('('+result+')');
-												zmiShowMessage(pos,message,"alert-success");
-											});
-									}
-								}
-								c++;
-							});
-					}
-					self.zmiSortableRownum = false;
 				}
-		});
-		$(".zmi-container.zmi-sortable").disableSelection();
-		$(".zmi-container .center")
-			.hover(function() {
-					if (self.zmiSortableRownum) return;
-					var html = ''
-						+ '<div id="zmi-action-btn-group" class="btn-group zmi-helper-hidden">'
-							+ '<span id="zmi-action-btn-select" class="btn" title="'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-ok"></i></span>'
-							+ '<span id="zmi-action-btn-delete" class="btn" title="'+getZMILangStr('BTN_DELETE')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_deleteObjs\')"><i class="icon-trash"></i></span>'
-							+ '<span id="zmi-action-btn-cut" class="btn" title="'+getZMILangStr('BTN_CUT')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_cutObjects\')"><i class="icon-cut"></i></span>'
-							+ '<span id="zmi-action-btn-copy" class="btn" title="'+getZMILangStr('BTN_COPY')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_copyObjects\')"><i class="icon-copy"></i></span>'
-							+ '<span id="zmi-action-btn-paste" class="btn" title="'+getZMILangStr('BTN_PASTE')+'" onclick="zmiActionExecute($(this).parents(\'li.zmi-item\'),$(this).attr(\'title\'),\'manage_pasteObjs\')"><i class="icon-paste"></i></span>'
-						+ '</div><!-- .btn-group -->';
-					$(this).append(html);
-					var coords = getCoords(this);
-					$("#zmi-action-btn-group")
-							.css({position:"absolute",top:coords.y+2,left:coords.x+2})
-							.show()
-							;
-					zmiActionButtonsRefresh($("#zmi-action-btn-group"));
-				},function() {
-					$("#zmi-action-btn-group").remove();
-				})
-				;
+				self.zmiSortableRownum = false;
+			}
+	});
+	$(".zmi-container.zmi-sortable").disableSelection();
 	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
 	$("div.btn-group.zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
@@ -351,7 +386,7 @@ function zmiActionOver(el, evt) {
 		$("button.split-left",el).click(function() {
 				var btn_group = $(this).parents("div.btn-group.zmi-action");
 				var dropdown_menu = $("ul.dropdown-menu",btn_group);
-				window.setTimeout($("li:first a",dropdown_menu).attr("href"),1);
+				window.setTimeout($("li:eq(1) a",dropdown_menu).attr("href"),1);
 			});
 		// Build action and params.
 		var action = self.location.href;
@@ -369,10 +404,40 @@ function zmiActionOver(el, evt) {
 			var id = value['id'].replace(/\./,"_");
 			var actions = value['actions'];
 			$(el).append('<ul class="dropdown-menu"></ul>');
+			$("ul.dropdown-menu",el).append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 			for (var i = 1; i < actions.length; i++) {
 				var optlabel = actions[i][0];
 				var optvalue = actions[i][1];
-				$("ul.dropdown-menu",el).append('<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">' + optlabel + '</a></li>');
+				var opticon = '';
+				if (actions[i].length > 2) {
+					opticon = '<img src="' + actions[i][2] +'"/>';
+				}
+				else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
+					opticon = '<i class="icon-trash"></i>';
+				}
+				else if (optvalue.indexOf('manage_main') >= 0) {
+					opticon = '<i class="icon-edit"></i>';
+				}
+				else if (optvalue.indexOf('manage_cut') >= 0) {
+					opticon = '<i class="icon-cut"></i>';
+				}
+				else if (optvalue.indexOf('manage_copy') >= 0) {
+					opticon = '<i class="icon-copy"></i>';
+				}
+				else if (optvalue.indexOf('manage_paste') >= 0) {
+					opticon = '<i class="icon-paste"></i>';
+				}
+				else if (optvalue.indexOf('manage_moveObjUp') >= 0) {
+					opticon = '<i class=" icon-sort-up"></i>';
+				}
+				else if (optvalue.indexOf('manage_moveObjDown') >= 0) {
+					opticon = '<i class=" icon-sort-down"></i>';
+				}
+				var html = '';
+				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += opticon + optlabel;
+				html += '</a></li>';
+				$("ul.dropdown-menu",el).append(html);
 			}
 		});
 	}
@@ -410,6 +475,7 @@ function zmiActionExecute(sender, label, target) {
 	else {
 		var $div = $el.parents("div.right");
 		$("input[name='ids:list']",$div).prop("checked",true);
+		zmiActionButtonsRefresh(sender);
 		if (zmiConfirmAction($fm,target,label)) {
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
@@ -417,6 +483,7 @@ function zmiActionExecute(sender, label, target) {
 		}
 		else {
 			$("input[name='ids:list']",$div).prop("checked",false);
+			zmiActionButtonsRefresh(sender);
 		}
 	}
 }

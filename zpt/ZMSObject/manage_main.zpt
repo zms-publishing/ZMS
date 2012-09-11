@@ -23,7 +23,6 @@ manage_container
 	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
 	<input type="hidden" id="custom" name="custom" value="">
-	<legend tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</legend>
 	<tal:block tal:content="structure python:here.obj_input_fields(meta_id=request.get('ZMS_INSERT',here.meta_id))">
 		the input-fields
 	</tal:block>
@@ -31,8 +30,8 @@ manage_container
 		<div class="controls">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div>
-	</div>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
 </form>
 
 <div style="clear:both;">&nbsp;</div>

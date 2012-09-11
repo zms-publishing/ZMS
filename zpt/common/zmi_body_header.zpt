@@ -1,7 +1,13 @@
 <!-- common/zmi_body_header -->
 
 <div id="zmi-header">
-	<img id="zmi-banner" src="/misc_/zms/spacer.gif" tal:attributes="title python:'%s - ZOPE based contentmanagement system for science, technology and medicine'%here.zms_version()" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
+	<div class="pull-left">
+		<img id="zmi-banner" src="/misc_/zms/spacer.gif" tal:attributes="title python:'%s - ZOPE based contentmanagement system for science, technology and medicine'%here.zms_version()" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
+	</div><!-- .pull-left -->
+	<div class="pull-right">
+		<span tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>
+	</div><!-- .pull-right -->
+	<div class="clearfix"></div><!-- .clearfix -->
 </div><!-- #zmi-header -->
 <div id="zmi-logo" tal:condition="python:here.zmi_logo">
 	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)"></a>

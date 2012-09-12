@@ -1,8 +1,8 @@
 <tal:block tal:define="global
 		fmName					options/fmName;
 		elName					options/elName;
-		key						options/key;
-		value					options/value;
+		key							options/key;
+		value						options/value;
 		can_generate_preview	python:here.pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'));
 		max_generate_preview	python:{
 			'imghires':'InstalledProducts.pil.thumbnail.max',
@@ -11,28 +11,57 @@
 		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
 		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
 	</tal:block>
+
 	<div class="zmi-image" tal:attributes="id python:'zmi-image-%s'%elName">
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']">
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0">
+
+	<div class="pull-left">
+
 		<tal:block tal:condition="python:value">
-			<div class="zmi-image-info">
-				<a tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
+			<div class="btn-group">
+				<a class="btn" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
 					<img tal:attributes="src python:here.getMimeTypeIconSrc(value.getContentType()); title python:value.getContentType()"/>
 					<span class="filename" tal:content="python:value.getFilename()">the filename</span>
+					<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
+					<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
 				</a>
-				<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
-				<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
-			</div><!-- .zmi-image-info -->
-			<div class="btn-group">
-				<a tal:attributes="id python:'delete_btn_%s'%elName" class="btn zmi-helper-hidden"><i class="icon-trash"></i></a>
-				<a tal:attributes="id python:'undo_btn_%s'%elName" class="btn zmi-helper-hidden"><i class="icon-undo"></i></a>
+				<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li class="zmi-helper-hidden" tal:attributes="id python:'delete_btn_%s'%elName"><a><i class="icon-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a></li>
+					<li class="zmi-helper-hidden" tal:attributes="id python:'undo_btn_%s'%elName"><a><i class="icon-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a></li>
+				</ul><!-- .dropdown-menu -->
 			</div><!-- .btn-group -->
+		</tal:block>
+
+			<div class="zmi-input-file"
+					tal:condition="python:request['lang'] in here.getLanguages(request)"
+					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])"
+					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+				the input-file
+			</div>
+
+			<div class="zmi-image-generate-preview"
+					tal:condition="can_generate_preview">
+				<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
+				<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
+				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))">(max. %ix%ipx)</tal:block>
+			</div>
+
+	</div><!-- .pull-left -->
+
+	<div class="pull-right">
+
+		<tal:block tal:condition="python:value">
 			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 				<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
 				<a href="#" class="thumbnail"><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/></a>
 			</div>
 		</tal:block>
+
 		<tal:block tal:condition="python:not value">
 			<div class="zmi-image-info">
 				<a tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
@@ -40,19 +69,8 @@
 				<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:''">the size</span>
 			</div><!-- .zmi-image-info -->
 		</tal:block>
-		<tal:block tal:condition="python:request['lang'] in here.getLanguages(request)">
-			<div class="zmi-input-file"
-					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])"
-					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
-				the input-file
-			</div>
-		</tal:block>
-		<tal:block tal:condition="can_generate_preview">
-			<div class="zmi-image-generate-preview">
-				<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
-				<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
-				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))">(max. %ix%ipx)</tal:block>
-			</div>
-		</tal:block>
-	</div>
+
+	</div><!-- .pull-right -->
+
+	</div><!-- .zmi-image -->
 </tal:block>

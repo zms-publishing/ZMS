@@ -190,7 +190,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Headline.
   if len(actions) > 0:
-    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),''))
+    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),'','icon-plus-sign'))
   
   # Return action list.
   return actions

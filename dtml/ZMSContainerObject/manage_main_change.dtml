@@ -16,7 +16,7 @@
 <dtml-if lenChildNodes>
  <dtml-call "info.append('%i %s\n'%(lenChildNodes,getZMILangStr('ATTR_OBJECTS')))">
 </dtml-if>
-<div class="form-small"><dtml-var "''.join(info)" newline_to_br></div>
+<span class="form-small"><dtml-var "' , '.join(info)"></span>
 </dtml-let>
 
 <dtml-comment>#####  Custom  ####################################</dtml-comment>

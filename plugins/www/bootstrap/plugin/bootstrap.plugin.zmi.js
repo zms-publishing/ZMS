@@ -141,6 +141,7 @@ $(function(){
 
 	// Accordion:
 	// highlight default collapse item
+	$("a.accordion-toggle").click(function(){this.blur()});
 	$("i",$(".accordion-body.collapse").prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
 	$("i",$(".accordion-body.collapse.in").prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
 	$(".accordion-body.collapse").on("hide", function() {
@@ -239,20 +240,21 @@ $(function(){
 		;
 	// Inputs
 	$(".zmi-image,.zmi-file").each(function() {
+			$(this).addClass("span5");
 			var elName = $(this).attr("id");
 			elName = elName.substr(elName.lastIndexOf("-")+1);
 			zmiRegisterBlob(elName);
-			$("a#delete_btn_"+elName,this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
-			$("a#undo_btn_"+elName,this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
+			$("li#delete_btn_"+elName+" a",this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
+			$("li#undo_btn_"+elName+" a",this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
 			zmiSwitchBlobButtons(elName);
+			$(".zmi-image-preview img",this)
+					.attr({title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT')})
+					.click(function() {
+							var html = '<img src="' + $(this).attr("src") + '"/>';
+							zmiIframe(html,{},{title:$(this).attr("title")});
+						})
+					;
 		});
-	$(".zmi-image-preview img")
-			.attr({title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT')})
-			.click(function() {
-					var html = '<img src="' + $(this).attr("src") + '"/>';
-					zmiIframe(html,{},{title:$(this).attr("title")});
-				})
-			;
 });
 
 /**
@@ -404,40 +406,63 @@ function zmiActionOver(el, evt) {
 			var id = value['id'].replace(/\./,"_");
 			var actions = value['actions'];
 			$(el).append('<ul class="dropdown-menu"></ul>');
-			$("ul.dropdown-menu",el).append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+			var $baseul = $("ul.dropdown-menu",el);
+			var $ul = $baseul;
+			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 			for (var i = 1; i < actions.length; i++) {
 				var optlabel = actions[i][0];
 				var optvalue = actions[i][1];
-				var opticon = '';
-				if (actions[i].length > 2) {
-					opticon = '<img src="' + actions[i][2] +'"/>';
+				if (optlabel.indexOf("-----")==0 && optlabel.lastIndexOf("-----")>0) {
+					var opticon = '';
+					if (actions[i].length > 2) {
+						opticon = '<i class="' + actions[i][2] +'"></i>';
+					}
+					optlabel = optlabel.substr("-----".length);
+					optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+					optlabel = optlabel.trim();
+					var html = '';
+					html += '<li class="dropdown-submenu">';
+					html += '<a tabindex="-1" href="#">';
+					html += opticon + optlabel;
+					html += '</a>';
+					html += '<ul class="dropdown-menu">';
+					html += '</ul><!-- .dropdown-menu -->';
+					html += '</li><!-- .dropdown-submenu -->';
+					$baseul.append(html);
+					var $ul = $("ul.dropdown-menu:last",$baseul);
 				}
-				else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
-					opticon = '<i class="icon-trash"></i>';
+				else {
+					var opticon = '';
+					if (actions[i].length > 2) {
+						opticon = '<img src="' + actions[i][2] +'"/>';
+					}
+					else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
+						opticon = '<i class="icon-trash"></i>';
+					}
+					else if (optvalue.indexOf('manage_main') >= 0) {
+						opticon = '<i class="icon-edit"></i>';
+					}
+					else if (optvalue.indexOf('manage_cut') >= 0) {
+						opticon = '<i class="icon-cut"></i>';
+					}
+					else if (optvalue.indexOf('manage_copy') >= 0) {
+						opticon = '<i class="icon-copy"></i>';
+					}
+					else if (optvalue.indexOf('manage_paste') >= 0) {
+						opticon = '<i class="icon-paste"></i>';
+					}
+					else if (optvalue.indexOf('manage_moveObjUp') >= 0) {
+						opticon = '<i class=" icon-sort-up"></i>';
+					}
+					else if (optvalue.indexOf('manage_moveObjDown') >= 0) {
+						opticon = '<i class=" icon-sort-down"></i>';
+					}
+					var html = '';
+					html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+					html += opticon + optlabel;
+					html += '</a></li>';
+					$ul.append(html);
 				}
-				else if (optvalue.indexOf('manage_main') >= 0) {
-					opticon = '<i class="icon-edit"></i>';
-				}
-				else if (optvalue.indexOf('manage_cut') >= 0) {
-					opticon = '<i class="icon-cut"></i>';
-				}
-				else if (optvalue.indexOf('manage_copy') >= 0) {
-					opticon = '<i class="icon-copy"></i>';
-				}
-				else if (optvalue.indexOf('manage_paste') >= 0) {
-					opticon = '<i class="icon-paste"></i>';
-				}
-				else if (optvalue.indexOf('manage_moveObjUp') >= 0) {
-					opticon = '<i class=" icon-sort-up"></i>';
-				}
-				else if (optvalue.indexOf('manage_moveObjDown') >= 0) {
-					opticon = '<i class=" icon-sort-down"></i>';
-				}
-				var html = '';
-				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
-				html += opticon + optlabel;
-				html += '</a></li>';
-				$("ul.dropdown-menu",el).append(html);
 			}
 		});
 	}

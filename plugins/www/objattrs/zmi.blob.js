@@ -28,6 +28,29 @@ function zmiRegisterParams(elName, params) {
 }
 
 /**
+ * Toggle blob-button (undo & delete).
+ */
+function zmiToggleBlobButton(elName, b) {
+	var $el = $(elName);
+	if (b) {
+		if ($el.prop("nodeName").toLowerCase()=="li") {
+			$el.removeClass("zmi-helper-hidden");
+		}
+		else {
+			$el.show("normal");
+		}
+	}
+	else {
+		if ($el.prop("nodeName").toLowerCase()=="li") {
+			$el.addClass("zmi-helper-hidden");
+		}
+		else {
+			$el.hide("normal");
+		}
+	}
+}
+
+/**
  * Switch blob-buttons (undo & delete).
  */
 function zmiSwitchBlobButtons(elName) {
@@ -37,19 +60,9 @@ function zmiSwitchBlobButtons(elName) {
 		var v = d[k];
 		canUndo |= $('#'+k+'_'+elName).html() != v;
 	}
-	if (canUndo) {
-		$('#undo_btn_'+elName).show('normal');
-	}
-	else {
-		$('#undo_btn_'+elName).hide('normal');
-	}
+	zmiToggleBlobButton("#undo_btn_"+elName,canUndo);
 	var canDelete = $('input[name=del_'+elName+']').val()!=1;
-	if (canDelete) {
-		$('#delete_btn_'+elName).show('normal');
-	}
-	else {
-		$('#delete_btn_'+elName).hide('normal');
-	}
+	zmiToggleBlobButton("#delete_btn_"+elName,canDelete);
 }
 
 /**

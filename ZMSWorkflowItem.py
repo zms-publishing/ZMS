@@ -75,7 +75,7 @@ class ZMSWorkflowItem:
       
       #-- Headline,
       if len( actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),''))
+        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'','icon-share'))
       
       # Return action list.
       return actions

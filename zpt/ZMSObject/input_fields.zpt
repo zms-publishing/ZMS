@@ -92,10 +92,10 @@
 									<i></i>
 									<tal:block tal:content="elLabel">the label</tal:block>
 								</a>
-								<div class="pull-left" tal:content="python:'%i %s'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
+								<div class="pull-left" tal:content="python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
 								<div class="clearfix"></div>
 							</div><!-- .accordion-heading -->
-							<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
+							<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in container\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
 							<ul class="zmi-container zmi-sortable">
 								<tal:block tal:repeat="childNode objChildren">
 									<li class="zmi-item" tal:attributes="id python:childNode.id">

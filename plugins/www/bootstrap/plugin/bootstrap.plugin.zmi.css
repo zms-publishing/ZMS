@@ -1,7 +1,7 @@
 .zmi-helper-hidden {
 	display:none;
 }
-#zmi-header, #zmi_header a, #zmi_header select,
+#zmi-header, #zmi-header a, #zmi-header select,
 #zmi-footer, #zmi-footer a, #zmi-footer select {
 	background-color:#777!important;
 	color:#eee!important;
@@ -43,7 +43,7 @@ ul.breadcrumb li.active a {
 }
 
 .center .form-label {
-	padding-top:1.2em;
+	padding:.5em;
 	font-size:large;
 }
 
@@ -51,7 +51,7 @@ ul.breadcrumb li.active a {
 	font-size:smaller;
 }
 
-.nav-tabs{
+.nav-tabs {
 	margin-bottom:0;
 	margin-top:1em;
 }
@@ -88,22 +88,25 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	height:1em;
 }
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
+ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	background-color:#08c;
 	color:#fff!important;
 }
-ul.zmi-container > li > div.center {
-	overflow:hidden;
-	border:1px solid #ddd;
-	border-top:0px solid #ddd;
-	background-color:white;
-	clear:both;
+.zmi-container .zmi-item .center {
+	float:left;
 }
-ul.zmi-container > li > div.center .zmiRenderShort {
+.zmi-container .zmi-item .right {
+	float:left;
+}
+ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
 	padding:3px 6px;
-	min-height:5em;
+	width:600px;
+	overflow:hidden;
+	background-color:white;
 }
-ul.zmi-container > li > div.center .preview.highlight {
+ul.zmi-container > li.zmi-item.highlight > div.center .zmiRenderShort {
+	border-top:1px solid #CCC;
 	background-color:#EEE;
 }
 ul.zmi-container > li > div.right li [class^="icon-"], 
@@ -115,8 +118,9 @@ ul.zmi-container > li > div.right li [class*=" icon-"] {
 ul.zmi-container > li > div.right div input {
 	margin:8px;
 }
-.btn-group.zmi-action {
-	float:left;
+.zmi-container .zmi-item .zmi-action {
+	position:absolute;
+	display:none;
 }
 .split-left {
 	text-align:left;
@@ -124,7 +128,6 @@ ul.zmi-container > li > div.right div input {
 	overflow:hidden;
 	height:2.1em;
 	text-decoration:underline!important;
-	visibility:hidden;
 }
 .split-right {
 	height:2.1em;

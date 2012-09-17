@@ -100,13 +100,14 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	float:left;
 }
 ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
+	border:1px solid white;
 	padding:3px 6px;
 	width:600px;
 	overflow:hidden;
 	background-color:white;
 }
 ul.zmi-container > li.zmi-item.highlight > div.center .zmiRenderShort {
-	border-top:1px solid #CCC;
+	border:1px solid #039;
 	background-color:#EEE;
 }
 ul.zmi-container > li > div.right li [class^="icon-"], 
@@ -123,11 +124,11 @@ ul.zmi-container > li > div.right div input {
 	display:none;
 }
 .split-left {
-	text-align:left;
-	width:156px;
-	overflow:hidden;
-	height:2.1em;
+	font-weight:bold;
 	text-decoration:underline!important;
+}
+button.split-left {
+	height:2.1em;
 }
 .split-right {
 	height:2.1em;

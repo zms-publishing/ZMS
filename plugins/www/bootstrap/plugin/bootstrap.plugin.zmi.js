@@ -68,6 +68,11 @@ $(function(){
 			})
 			.dblclick( function(evt) {
 				evt.stopPropagation();
+				var btn = $(this).parents(".zmi-item").find(".zmi-action a.btn");
+				if (btn.length>0) {
+					self.window.location = btn.attr("href");
+					return;
+				}
 				var href = ""+self.location.href;
 				if (href.indexOf('?')>0) {
 					href = href.substr(0,href.indexOf('?'));
@@ -85,7 +90,7 @@ $(function(){
 					else {
 						pid = $(parents[parents.length-i-1]).attr('id');
 					}
-					if (pid.length > 0) {
+					if (typeof pid != "undefined" && pid.length > 0) {
 						if (lang == null) {
 							lang = pid.substr(pid.lastIndexOf('_')+1);
 						}
@@ -257,6 +262,7 @@ $(function(){
 			}
 		);
 	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
+	$(".zmi-container .zmi-item .zmi-action .btn").addClass("btn-primary");
 	$(".zmi-container .zmi-item .zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
 		.mouseover( function(evt) { zmiActionOver(this,"mouseover"); })
@@ -403,7 +409,7 @@ function zmiIframe(href, data, opt) {
  */
 function zmiActionOver(el, evt) {
 	// Exit.
-	if($("ul.dropdown-menu",el).length>0) return;
+	if($("button.split-left",el).length==0 || $("ul.dropdown-menu",el).length>0) return;
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
 	// Edit action

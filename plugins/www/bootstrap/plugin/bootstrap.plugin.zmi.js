@@ -61,10 +61,10 @@ $(function(){
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 		$('.contentEditable,.zmiRenderShort')
 			.mouseover( function(evt) {
-				//$(this).addClass('preview').addClass('highlight'); 
+				$(this).addClass('preview').addClass('highlight'); 
 			})
 			.mouseout( function(evt) {
-				//$(this).removeClass('preview').removeClass('highlight'); 
+				$(this).removeClass('preview').removeClass('highlight'); 
 			})
 			.dblclick( function(evt) {
 				evt.stopPropagation();
@@ -239,33 +239,11 @@ $(function(){
 			}
 	});
 	$(".zmi-container.zmi-sortable").disableSelection();
-	$(".zmi-container .zmi-item").hover(
-		function() {
-				if (!self.zmiSortableRownum) {
-					$(this).addClass("highlight");
-					var coords = getCoords(this);
-					var accordion = $(this).parents(".accordion-inner");
-					if (accordion.length > 0) {
-						var accordion_coords = getCoords(accordion[0]);
-						coords.x -= accordion_coords.x;
-						coords.y -= accordion_coords.y;
-					}
-					else {
-						coords.y -= 28;
-					}
-					$(".zmi-action",this).css({top:coords.y,left:coords.x}).show();
-				}
-			},
-		function() {
-				$(this).removeClass("highlight");
-				$(".zmi-action",this).hide();
-			}
-		);
 	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
-	$(".zmi-container .zmi-item .zmi-action .btn").addClass("btn-primary");
 	$(".zmi-container .zmi-item .zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
 		.mouseover( function(evt) { zmiActionOver(this,"mouseover"); })
+		.mouseout( function(evt) { zmiActionOut(this,"mouseout"); })
 		;
 	// Inputs
 	$(".zmi-image,.zmi-file").each(function() {
@@ -408,6 +386,7 @@ function zmiIframe(href, data, opt) {
  * @param el
  */
 function zmiActionOver(el, evt) {
+	$("button.split-left",el).css({visibility:"visible"});
 	// Exit.
 	if($("button.split-left",el).length==0 || $("ul.dropdown-menu",el).length>0) return;
 	// Set wait-cursor.
@@ -504,6 +483,16 @@ function zmiActionOver(el, evt) {
 		}
 	});
 }
+
+/**
+ * Populate action-list.
+ *
+ * @param el
+ */
+function zmiActionOut(el, evt) {
+	$("button.split-left",el).css({visibility:"hidden"});
+}
+
 
 function zmiActionExecute(sender, label, target) {
 	var $el = $(".zmi-action",sender);

@@ -7,7 +7,7 @@
 	color:#eee!important;
 	font-size:small;
 }
-#zmi-header  .pull-right {
+#zmi-header .pull-right {
 margin-right:0.5em;
 }
 #zmi-footer form {
@@ -106,10 +106,6 @@ ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
 	overflow:hidden;
 	background-color:white;
 }
-ul.zmi-container > li.zmi-item.highlight > div.center .zmiRenderShort {
-	border:1px solid #039;
-	background-color:#EEE;
-}
 ul.zmi-container > li > div.right li [class^="icon-"], 
 ul.zmi-container > li > div.right li [class*=" icon-"] {
 	width: 1.5em;
@@ -120,10 +116,15 @@ ul.zmi-container > li > div.right div input {
 	margin:8px;
 }
 .zmi-container .zmi-item .zmi-action {
-	position:absolute;
-	display:none;
+	margin-left:-156px;
+}
+.zmi-container .zmi-item .zmi-action .split-left {
+	width:160px;
+	visibility:hidden;
+	text-align:left;
 }
 .split-left {
+	color:#08c;
 	font-weight:bold;
 	text-decoration:underline!important;
 }

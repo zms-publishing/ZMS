@@ -100,28 +100,28 @@
 								<tal:block tal:repeat="childNode objChildren">
 									<li class="zmi-item" tal:attributes="id python:childNode.id">
 
-				<div class="btn-group zmi-action">
-					<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-					<button class="btn split-left">
-						<img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
-						<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
-					</button>
-					<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
-						<span class="caret"></span>
-					</button>
-				</div><!-- .btn-group -->
-				<div class="center" tal:content="structure python:childNode.renderShort(request)">
-					the rendered child-node
-				</div><!-- .center -->
-				<div class="right">
-					<span class="zmi-ids">
-						<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
-					</span>
-					<tal:block tal:content="structure python:childNode.manage_main_change(childNode,request)">
+					<div class="center" tal:content="structure python:childNode.renderShort(request)">
+						the rendered child-node
+					</div><!-- .center -->
+					<div class="right">
+						<div class="btn-group zmi-action">
+							<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
+							<button class="btn split-left">
+								<img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
+								<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+							</button>
+							<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+						</div><!-- .btn-group -->
+						<span class="zmi-ids">
+							<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
+						</span>
+						<tal:block tal:content="structure python:childNode.manage_main_change(childNode,request)">
 						the info child-node
-					</tal:block>
-				</div><!-- .right -->
-				<div class="clearboth"></div>
+						</tal:block>
+					</div><!-- .right -->
+					<div class="clearboth"></div>
 
 									</li>
 								</tal:block>

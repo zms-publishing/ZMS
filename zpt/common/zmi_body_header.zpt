@@ -1,14 +1,73 @@
 <!-- common/zmi_body_header -->
 
-<div id="zmi-header">
-	<div class="pull-left">
-		<img id="zmi-banner" src="/misc_/zms/spacer.gif" tal:attributes="title python:'%s - ZOPE based contentmanagement system for science, technology and medicine'%here.zms_version()" border="0" onclick="window.open('http://www.zms-publishing.com');"/>
-	</div><!-- .pull-left -->
-	<div class="pull-right">
-		<span tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>
-	</div><!-- .pull-right -->
-	<div class="clearfix"></div><!-- .clearfix -->
-</div><!-- #zmi-header -->
+	<div class="navbar navbar-inverse" style="position: static;">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');">
+					<img id="zmi-banner" src="/misc_/zms/spacer.gif" tal:attributes="title python:'%s - ZOPE based contentmanagement system for science, technology and medicine'%here.zms_version()" border="0">
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav pull-right">
+						<li class="dropdown">
+							<a tal:attributes="href python:'%s/manage_main?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-cog"></i>
+								Home
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+										<img src="/misc_/zms/zapidoc.gif" title="System" border="0" width="14" height="14" align="absmiddle"/>
+										<tal:block tal:content="python:'API'">API</tal:block>
+									</a>
+								</li>
+								<li>
+									<a tal:attributes="href python:'manage_system?lang=%s&key=dtpref_system'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+											<img src="/misc_/zms/zexpdoc.gif" title="System" border="0" width="14" height="14" align="absmiddle"/>
+										<tal:block tal:content="python:'System'">System</tal:block>
+									</a>
+								</li>
+								<li>
+									<a tal:attributes="href python:'manage_dtpref?lang=%s&key=dtpref_sitemap'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+										<i class="icon-sitemap"></i>
+										<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block>
+									</a>
+								</li>
+								<li tal:define="global trashcan python:here.getTrashcan()">
+									<a tal:attributes="href python:'%s/manage_main?lang=%s'%(trashcan.absolute_url(),request['lang'])">
+										<i class="icon-trash"></i>
+										<tal:block tal:content="python:trashcan.display_type(request)">Trashcan</tal:block>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a tal:attributes="href python:'%s/manage_customize?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])">
+										<i class="icon-wrench"></i>
+										<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">
+										<i class="icon-wrench"></i>
+										<tal:block tal:content="python:here.getZMILangStr('TAB_EDIT')">edit</tal:block>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- .nav-collapse -->
+			</div><!-- .container -->
+		</div><!-- .navbar-inner -->
+	</div><!-- .navbar -->
+
 <div id="zmi-logo" tal:condition="python:here.zmi_logo">
 	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)"></a>
 </div><!-- #zmi-logo -->

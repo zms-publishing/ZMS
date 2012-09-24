@@ -207,7 +207,6 @@ $(function(){
 		start: function(event, ui) {
 				var el = $(".zmi-container .zmi-item");
 				$(el).removeClass("highlight");
-				$(".zmi-action",el).hide();
 				self.zmiSortableRownum = false;
 				var c = 1;
 				$(".zmi-sortable > li").each(function() {
@@ -325,55 +324,30 @@ function zmiRelativateUrls(s,page_url) {
  * Open link in iframe (jQuery UI Dialog).
  */
 function zmiIframe(href, data, opt) {
-	if ($("#myModal").length==0) {
-		var html = ''
-			+ '<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
-				+ '<div class="modal-header">'
-					+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
-					+ '<h3 id="myModalLabel"></h3>'
-				+ '</div>'
-			+ '</div>';
-		$('body').append(html);
+	if ($('#zmiIframe').length==0) {
+		$('body').append('<div id="zmiIframe"></div>');
 	}
-	else {
-		$("#myModal .modal-body, #myModal .modal-footer").remove();
-	}
-	if (typeof opt["title"] != "undefined") {
-		$("#myModal #myModalLabel").html(opt["title"]);
-	}
-	if (href.indexOf("<")==0) {
-		var html = ''
-				+ '<div class="modal-body">'
-					+ href
-				+ '</div>'
-				+ '<div class="modal-footer">'
-					+ '<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="$(\'#myModal\').modal(\'hide\')">' + getZMILangStr('BTN_CLOSE') + '</button>'
-				+ '</div>';
-		$("#myModal").append(html);
-		$("#myModal").modal();
-	}
-	else {
-		var s = href + "?";
-		for (var k in data) {
-			s += k + "=" + data[k] + "&";
-		}
-		s = s.substr(0, s.length);
-		//confirm(s);
-		$.get( href, data, function(result) {
-				var $result = $(result);
-				if ($("div#system_msg",$result).length>0) {
-					var manage_tabs_message = $("div#system_msg",$result).text();
-					manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
-					var href = self.location.href;
-					href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
-					self.location.href = href;
+	$.get( href, data, function(result) {
+			var $result = $(result);
+			if ($("div#system_msg",$result).length>0) {
+				var manage_tabs_message = $("div#system_msg",$result).text();
+				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+				var href = self.location.href;
+				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
+				self.location.href = href;
+			}
+			else {
+				opt["modal"] = true;
+				opt["height"] = "auto";
+				opt["width"] = "auto";
+				$('#zmiIframe').html(result);
+				var title = $('#zmiIframe div.zmi').attr("title");
+				if (typeof title != "undefined" && title) {
+					opt["title"] = title;
 				}
-				else {
-					$("#myModal").append(result);
-					$("#myModal").modal();
-				}
-			});
-	}
+				$('#zmiIframe').dialog(opt);
+			}
+		});
 }
 
 // #############################################################################
@@ -510,12 +484,13 @@ function zmiActionExecute(sender, label, target) {
 				data[$input.attr('name')] = $input.val();
 			}
 		}
+		$('<li id="manage_addProduct" class="zmi-item zmi-selected"><div class="center"><div class="zmiRenderShort">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		zmiIframe(target,data,{
-				title:getZMILangStr('BTN_INSERT'),
+				title:getZMILangStr('BTN_INSERT')+': '+label,
 				close:function(event,ui) {
 					// @todo
-					$('tr#tr_manage_addProduct').remove();
+					$('#manage_addProduct').remove();
 				}
 		});
 	}

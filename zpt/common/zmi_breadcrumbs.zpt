@@ -1,5 +1,13 @@
 <!-- common/zmi_breadcrumbs -->
 
+<ul class="breadcrumb" tal:define="global childNodes python:here.breadcrumbs_obj_path()">
+	<li tal:repeat="childNode childNodes" tal:attributes="class python:' '.join([['','active'][int(childNode==childNodes[-1])]])">
+		<img class="icon" tal:condition="python:childNode==childNodes[-1]" tal:attributes="src python:childNode.display_icon(request)"/>
+		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" tal:content="python:childNode.getTitlealt(request)">the titlealt</a>
+		<tal:block tal:condition="python:childNode!=childNodes[-1]"><span class="divider">/</span></tal:block>
+	</li>
+</ul>
+
 <div class="alert alert-success" tal:condition="python:request.get('manage_tabs_message')">
 	<a class="close" data-dismiss="alert" href="#">&times;</a>
 	<tal:block tal:content="structure python:request.get('manage_tabs_message')">manage_tabs_message</tal:block>
@@ -11,13 +19,5 @@
 	<tal:block tal:content="structure python:request.get('manage_tabs_error_message')">manage_tabs_error_message</tal:block>
 	(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
 </div>
-
-<ul class="breadcrumb" tal:define="global childNodes python:here.breadcrumbs_obj_path()">
-	<li tal:repeat="childNode childNodes" tal:attributes="class python:' '.join([['','active'][int(childNode==childNodes[-1])]])">
-		<img class="icon" tal:condition="python:childNode==childNodes[-1]" tal:attributes="src python:childNode.display_icon(request)"/>
-		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" tal:content="python:childNode.getTitlealt(request)">the titlealt</a>
-		<tal:block tal:condition="python:childNode!=childNodes[-1]"><span class="divider">/</span></tal:block>
-	</li>
-</ul>
 
 <!-- /common/zmi_breadcrumbs -->

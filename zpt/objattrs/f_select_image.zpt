@@ -7,6 +7,41 @@
 		max_generate_preview	python:{
 			'imghires':'InstalledProducts.pil.thumbnail.max',
 			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
+
+	<tal:block tal:condition="python:request.get('f_zmiGraphicExtEdit',True)">
+		<div style="display:none">
+			<div id="ZMSGraphic_extEdit_actions">
+				<table cellspacing="0" cellpadding="3" border="0">
+				<tr valign="top">
+					<td class="form-label zmiNeutralColorWhite" colspan="2" nowrap="nowrap">
+						<tal:block tal:content="structure python:'%s x %s px'%(here.getZMILangStr('ATTR_WIDTH'),here.getZMILangStr('ATTR_HEIGHT'))">width x height px</tal:block>
+						<tal:block tal:content="structure python:here.getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_width:int',size=4,value=0)"></tal:block> x
+						<tal:block tal:content="structure python:here.getTextInput(fmName=fmName,elName='ZMSGraphic_extEdit_height:int',size=4,value=0)"></tal:block> px
+						<input class="form-checkbox" type="checkbox" id="ZMSGraphic_extEdit_proportional" checked="checked"/><span class="form-small">Proportional</span>
+						<input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_APPLY')" onclick="return ZMSGraphic_extEdit_apply();">
+					</td>
+			 	</tr>
+				<tr valign="top">
+					<td class="form-label zmiNeutralColorWhite" width="35">
+						<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_preview" src="/misc_/zms/arrow_in.png" tal:attributes="alt python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))"/></div>
+						<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_crop" src="/misc_/zms/image_crop.png" alt="Crop image"/></div>
+						<div id="ZMSGraphic_extEdit_vslider" style="height:100px;"></div><br/>
+						<div id="ZMSGraphic_extEdit_perc" class="form-small"></div>
+						<div><img src="<dtml-var spacer_gif>" alt="" border="0" width="30" height="1"/></div>
+					</td>
+					<td class="zmiNeutralColorMedium0">
+						<div id="ZMSGraphic_extEdit_image" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);">
+							<img src="/misc_/zms/spacer.gif" alt="" border="0">
+						</div>
+					</td>
+				</tr>
+				</table>
+			</div><!-- #ZMSGraphic_extEdit_actions -->
+		</div>
+		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
+		<tal:block tal:define="dummy0 python:request.set('f_zmiGraphicExtEdit',False)"></tal:block>
+	</tal:block>
+
 	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
 		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
 		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
@@ -58,7 +93,7 @@
 			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 				<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-				<a href="#" class="thumbnail"><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/></a>
+				<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(here.pilutil().enabled()))" class="thumbnail ZMSGraphic_extEdit_action"><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/></a>
 			</div>
 		</tal:block>
 

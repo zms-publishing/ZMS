@@ -19,7 +19,7 @@ manage_container
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-	<input type="hidden" name="form_id" tal:attributes="value python:DateTime().timeTime()">
+	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
 	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
 	<input type="hidden" id="custom" name="custom" value="">

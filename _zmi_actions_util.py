@@ -67,14 +67,17 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         if can_undo:
           actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
         #-- Action: Delete.
-        can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
-        if can_delete:
-          ob_access = context.getObjProperty('manage_access',REQUEST)
-          can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
-          metaObj = container.getMetaobj( context.meta_id)
-          can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
-        if can_delete:
-          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
+        if context.getParentByLevel(1).meta_id == 'ZMSTrashcan':
+          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs'))
+        else:
+          can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
+          if can_delete:
+            ob_access = context.getObjProperty('manage_access',REQUEST)
+            can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
+            metaObj = container.getMetaobj( context.meta_id)
+            can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
+          if can_delete:
+            actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
         #-- Action: Cut.
         can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_cut:

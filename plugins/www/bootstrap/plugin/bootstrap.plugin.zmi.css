@@ -1,9 +1,32 @@
 .zmi-helper-hidden {
 	display:none;
 }
+#zmi-header {
+	background-color:black;
+}
+#zmi-header .product {
+	font-weight:bold;
+}
+#zmi-header .slogan {
+	font-size:x-small;
+}
+#zmi-header .navbar {
+	margin:0;
+}
+#zmi-logo {
+	/*background: -moz-linear-gradient(45deg, rgb(2, 0, 49) 0%, rgb(109, 51, 83) 100%) repeat scroll 0% 0% transparent;*/
+}
+.zmi ul.main-nav {
+	margin-top:0.5em;
+	padding-left:1em;
+}
+.zmi .navbar-inner {
+	border-radius:0 !important;
+}
 #zmi-footer {
 	border-top:1px solid #ccc;
 	padding:0.5em;
+	font-size:11px !important;
 }
 #zmi-banner {
 	width:460px;
@@ -80,7 +103,7 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
-	background-color:#08c;
+	background-color:#08c !important;
 	color:#fff!important;
 }
 .zmi-container .zmi-item .center {
@@ -110,7 +133,7 @@ ul.zmi-container > li > div.right div input {
 	margin:8px;
 }
 .zmi-container .zmi-item .zmi-action {
-	margin-left:-156px;
+	margin-left:-158px;
 }
 .zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
@@ -120,7 +143,6 @@ ul.zmi-container > li > div.right div input {
 .split-left {
 	color:#08c;
 	font-weight:bold;
-	text-decoration:underline!important;
 }
 button.split-left {
 	height:2.1em;
@@ -128,12 +150,30 @@ button.split-left {
 .split-right {
 	height:2.1em;
 }
-
+.zmi.main form {
+	margin: 0 1em;
+}
 form.form-horizontal {
-	background-color:white;
+	background-color:#fff;
 	margin-left:2em;
 	margin-right:2em;
 	padding-bottom:0.5em;
+}
+.zmi.properties form.form-horizontal {
+	background-color:transparent;
+}
+.zmi.properties .accordion-group {
+	background-color: #fff;
+	width:800px;
+}
+.zmi.properties .form-horizontal .control-group {
+margin-top: 8px;
+}
+.zmi.properties .form-horizontal .control-group:last-child {
+margin-top: 12px;
+}
+.zmi.properties .form-horizontal > .control-group:last-child > .controls:last-child {
+margin-left:2px;
 }
 div.accordion-heading a.accordion-toggle {
 	font-weight:bold;
@@ -164,7 +204,14 @@ div.accordion-heading div.pull-left {
 	background-color:#F5F5F5;
 	padding:0.5em;
 	margin:0;
-	min-width:35em;
+	min-width:33em;
+	border:1px solid #ccc;
+	border-radius:4px;
+	width:79%;
+}
+.zmi-input-file input[type="file"] {
+	margin-top:0.6em;
+	height:auto !important;
 }
 .zmi-image del, .zmi-image del *,
 .zmi-file del, .zmi-file del * {
@@ -271,6 +318,40 @@ a.button:hover img.button1 {
 
 .zmiDivOpaque {background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;}
 
+li.dropdown-submenu ul.dropdown-menu li a img {
+margin-right:0.5em
+}
+
+div.zmi-action > ul.dropdown-menu  {
+margin-top:-1px;
+border-top-left-radius: 0;
+}
+div.zmi-action > ul.dropdown-menu li a {
+padding-left:10px;
+}
+div.right .zmi-ids input[type="checkbox"] {
+margin-left:8px !important;
+}
+div.right span.form-small {
+display: inline-block;
+color:#888;
+}
+ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
+border-left:none !important;
+border-right:none !important;
+border-bottom:none !important;
+border-top:1px dotted #ccc !important;
+}
+ul.zmi-container > li.zmi-item > div.center .zmiRenderShort div.form-label {
+min-height:35px;
+}
+ul.zmi-container:last-child li div.zmiRenderShort {
+background-color:#eee !important;
+}
+
+div.right .btn .caret {
+margin-top: 4px;
+}
 
 @media (max-width: 700px) {
 	body {

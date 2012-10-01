@@ -134,6 +134,7 @@ class ZMSContainerObject(
     manage_system = HTMLFile('dtml/ZMSContainerObject/manage_system', globals())
     manage_importexport = _confmanager.ConfDict.template('ZMSContainerObject/manage_importexport')
     manage_importexportFtp = HTMLFile('dtml/ZMSContainerObject/manage_importexportftp', globals())
+    manage_tasks = _confmanager.ConfDict.template('versionmanager/manage_tasks')
 
 
     # Sitemap.

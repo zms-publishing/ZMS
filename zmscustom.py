@@ -166,7 +166,7 @@ class ZMSCustom(ZMSContainerObject):
     # Templates.
     # ----------
     manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
-    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main') # -"-
+    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals())
     metaobj_record_select = HTMLFile('dtml/ZMSRecordSet/record_select', globals())
     metaobj_record_update = HTMLFile('dtml/ZMSRecordSet/record_update', globals())
@@ -175,7 +175,7 @@ class ZMSCustom(ZMSContainerObject):
     metaobj_recordset_details_grid = HTMLFile('dtml/ZMSRecordSet/details_grid', globals())
     metaobj_recordset_details = HTMLFile('dtml/ZMSRecordSet/details', globals())
     metaobj_recordset_main_grid = HTMLFile('dtml/ZMSRecordSet/main_grid', globals())
-    metaobj_recordset_main = HTMLFile('dtml/ZMSRecordSet/main', globals())
+    metaobj_recordset_main = _confmanager.ConfDict.template('ZMSRecordSet/main')
     metaobj_recordset_actions = HTMLFile('dtml/ZMSRecordSet/actions', globals())
     metaobj_recordset_input_fields = HTMLFile('dtml/ZMSRecordSet/input_fields', globals())
     metaobj_recordset_input_js = HTMLFile('dtml/ZMSRecordSet/input_js', globals())

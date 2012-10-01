@@ -28,13 +28,6 @@
 	padding:0.5em;
 	font-size:11px !important;
 }
-#zmi-banner {
-	width:460px;
-	height:20px;
-	cursor:pointer;
-	background:url(/misc_/zms/zms_banner.png);
-}
-
 ul.breadcrumb li.active a {
 	color:black;
 }
@@ -108,28 +101,34 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 }
 .zmi-container .zmi-item .center {
 	float:left;
+	width:600px!important;
+}
+.zmi-container {
+	background-color:#EEE;
+	width:800px!important;
 }
 .zmi-container .zmi-item .right {
 	float:left;
+	width:200px!important;
 }
 .zmi-container .zmi-item .clearboth {
 	float:none;
 	clear:both;
 }
-ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
+.zmi-container .zmi-item.pageelement .center .zmiRenderShort {
 	border:1px solid white;
 	padding:3px 6px;
-	width:600px;
 	overflow:hidden;
-	background-color:white;
+	background-color:white!important;
+	min-height:3.5em;
 }
-ul.zmi-container > li > div.right li [class^="icon-"], 
-ul.zmi-container > li > div.right li [class*=" icon-"] {
+.zmi-container .right li [class^="icon-"], 
+.zmi-container .right li [class*=" icon-"] {
 	width: 1.5em;
 	font-size: 17px;
 }
 
-ul.zmi-container > li > div.right div input {
+.zmi-container .right div input {
 	margin:8px;
 }
 .zmi-container .zmi-item .zmi-action {

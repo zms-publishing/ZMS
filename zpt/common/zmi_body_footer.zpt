@@ -5,17 +5,7 @@
 		&copy;&nbsp;<tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block>&nbsp;<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
 	</div><!-- .pull-left -->
 	<div class="pull-right">
-		<div class="btn-group dropup">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				<tal:block tal:content="python:here.getLocale().getLangStr('LANG',request['manage_lang'])">the current language</tal:block>
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu pull-right">
-				<li tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
-					<a tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)" tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">the language</a>
-				</li>
-			</ul><!-- .dropdown-menu -->
-		</div><!-- .btn-group.dropup -->
+		<a href="#top" tal:content="python:here.getZMILangStr('PAGETOP')">pagetop</a>
 	</div><!-- .pull-right -->
 	<div class="clearfix"></div><!-- .clearfix -->
 </div><!-- #zmi-footer -->

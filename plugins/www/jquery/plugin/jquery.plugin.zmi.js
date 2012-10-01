@@ -406,6 +406,19 @@ function zmiActionChoose(e, id, sort_id) {
 // ### Url-Input
 // ############################################################################
 
+$(function() {
+	$("input.url-input").each(function() {
+			var enabled = true; // @TODO
+			var fmName = $(this).parents("form").attr("name");
+			var elName = $(this).attr("name");
+			$(this).after(''
+					+ '<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" style="float:left">'
+						+ '<span class="ui-icon ui-icon-newwin" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())"></span>'
+					+ '</div>'
+				);
+		});
+});
+
 /**
  * zmiBrowseObjs
  */

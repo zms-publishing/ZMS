@@ -46,11 +46,7 @@ class ObjInputs:
       styles.append( 'width:%iem'%size)
     else:
       styles.append( 'width:80%')
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra=' style="%s"'%(';'.join(styles))))
-    if enabled:
-      html.append('<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" style="float:left">')
-      html.append('<span class="ui-icon ui-icon-newwin" onclick="return zmiBrowseObjs(\'%s\',\'%s\',\'%s\')"></span>'%(fmName,elName,lang))
-      html.append('</div>')
+    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input',extra=' style="%s"'%(';'.join(styles))))
     ref_obj = self.getLinkObj(value,REQUEST)
     if ref_obj is not None:
       html.append('<div class="form-small" style="clear:both">')

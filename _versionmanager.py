@@ -1322,7 +1322,6 @@ class VersionManagerContainer:
 
     # Management Interface.
     # ---------------------
-    manage_tasks = HTMLFile('dtml/versionmanager/manage_tasks', globals()) 
     task_wf = HTMLFile('dtml/versionmanager/tasklist0', globals()) 
     task_zmsnote = HTMLFile('dtml/versionmanager/tasklist1', globals()) 
     task_untranslated = HTMLFile('dtml/versionmanager/tasklist2', globals()) 

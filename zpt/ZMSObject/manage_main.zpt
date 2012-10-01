@@ -4,7 +4,7 @@
   bcontainer python:here.isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
 
 <tal:block tal:condition="python:bcontainer" tal:content="structure python:here.manage_container(here,request)">
-manage_container
+	manage_container
 </tal:block>
 
 <tal:block tal:condition="python:not bcontainer">
@@ -16,6 +16,11 @@ manage_container
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
+<tal:block tal:condition="python:here.getType()=='ZMSRecordSet'" tal:content="structure python:here.metaobj_recordset_main(meta_id=request.get('ZMS_INSERT',here.meta_id))">
+	metaobj_recordset_main
+</tal:block>
+
+<tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'">
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
@@ -33,6 +38,7 @@ manage_container
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 </form>
+</tal:block>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

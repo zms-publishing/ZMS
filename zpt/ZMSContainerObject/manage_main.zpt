@@ -6,18 +6,19 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form tal:define="global 
-			childNodes   python:here.getChildNodes(request);
+<form class="form-container" tal:define="global 
+			id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];
+			childNodes   python:here.getObjChildren(id_prefix,request);
 			pageelements python:filter(lambda x: not x.isPage(), childNodes);
 			pages        python:filter(lambda x: x.isPage(), childNodes);
-			nodelists    python:[pageelements,pages]">
+			nodelists    python:[['pageelements',pageelements],['pages',pages]]">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
 	<input type="hidden" id="_sort_id" name="_sort_id:int" value="">
 	<input type="hidden" id="custom" name="custom" value="">
-	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
+	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix">
 	<ul class="zmi-container">
-		<li class="zmi-item" tal:define="global childNode python:here" tal:attributes="id python:''">
+		<li class="zmi-item pageelement" tal:define="global childNode python:here" tal:attributes="id python:''">
 			<div class="center">
 				<div class="zmiRenderShort">
 					<h1>
@@ -45,9 +46,9 @@
 		</li>
 	</ul><!-- .zmi-container -->
 	<tal:block tal:repeat="nodelist nodelists">
-		<ul class="zmi-container zmi-sortable" tal:condition="python:len(nodelist)>0">
-			<tal:block tal:repeat="childNode nodelist">
-				<li class="zmi-item" tal:attributes="id python:childNode.id">
+		<ul tal:attributes="class python:' '.join(['zmi-container','zmi-sortable',nodelist[0]])" tal:condition="python:len(nodelist[1])>0">
+			<tal:block tal:repeat="childNode python:nodelist[1]">
+				<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item',nodelist[0][:-1]])">
 					<div class="center" tal:content="structure python:childNode.renderShort(request)">
 						the rendered child-node
 					</div><!-- .center -->
@@ -62,6 +63,7 @@
 								<span class="caret"></span>
 							</button>
 						</div><!-- .btn-group -->
+						<img class="grippy" src="/misc_/zms/spacer.gif">
 						<span class="zmi-ids">
 							<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
 						</span>

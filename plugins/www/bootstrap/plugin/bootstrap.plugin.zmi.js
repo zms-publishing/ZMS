@@ -155,8 +155,114 @@ $(function(){
 			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
 		});
 
-		// Form
-	$("form.form-horizontal").each(function() {
+	// Sortable
+	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+		ui.children().each(function() {
+			$(this).width($(this).width());
+		});
+		return ui;
+	};
+	$("table.zmi-sortable tbody").sortable({
+		delay:500,
+		forcePlaceholderSize:true,
+		handle:'img.grippy',
+		helper:fixHelper,
+		placeholder: "ui-state-highlight",
+		revert: true,
+		start: function(event, ui) {
+				self.zmiSortableRownum = false;
+				var c = 1;
+				$("table.zmi-sortable > tbody > tr").each(function() {
+						if ($(this).attr("id") == ui.item.attr("id")) {
+							self.zmiSortableRownum = c;
+						}
+						c++;
+					});
+			},
+		stop: function(event, ui) {
+				var pos = $(this).position();
+				if (self.zmiSortableRownum) {
+					var c = 1;
+					$("table.zmi-sortable > tbody > tr").each(function() {
+							if ($(this).attr("id") == ui.item.attr("id")) {
+								if(self.zmiSortableRownum != c) {
+									var id = ui.item.attr("id");
+									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+									confirm(href);
+								}
+							}
+							c++;
+						});
+				}
+				self.zmiSortableRownum = false;
+			}
+		});
+	// Sortable
+	$("ul.zmi-container.zmi-sortable").sortable({
+		delay:500,
+		forcePlaceholderSize:true,
+		handle:'img.grippy',
+		placeholder: "ui-state-highlight",
+		revert: true,
+		start: function(event, ui) {
+				var el = $(".zmi-container .zmi-item");
+				$(el).removeClass("highlight");
+				self.zmiSortableRownum = false;
+				var c = 1;
+				$(".zmi-sortable > li").each(function() {
+						if ($(this).attr("id") == ui.item.attr("id")) {
+							self.zmiSortableRownum = c;
+						}
+						c++;
+					});
+			},
+		stop: function(event, ui) {
+				var pos = $(this).position();
+				if (self.zmiSortableRownum) {
+					var c = 1;
+					$(".zmi-sortable > li").each(function() {
+							if ($(this).attr("id") == ui.item.attr("id")) {
+								if(self.zmiSortableRownum != c) {
+									var id = ui.item.attr("id");
+									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+									$.get(href,function(result){
+											var message = eval('('+result+')');
+											zmiShowMessage(pos,message,"alert-success");
+										});
+								}
+							}
+							c++;
+						});
+				}
+				self.zmiSortableRownum = false;
+			}
+		});
+	// Checkboxes
+	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
+	// Action-Lists
+	$(".zmi-container .zmi-item .zmi-action")
+		.focus( function(evt) { zmiActionOver(this,"focus"); })
+		.mouseover( function(evt) { zmiActionOver(this,"mouseover");$(this).parents(".accordion-body.collapse").css({overflow:"visible"});})
+		.mouseout( function(evt) { zmiActionOut(this,"mouseout");$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});})
+		;
+	// Inputs
+	zmiInitInputFields($("body"));
+	$(".zmi-image,.zmi-file").each(function() {
+			$(this).addClass("span5");
+			var elName = $(this).attr("id");
+			elName = elName.substr(elName.lastIndexOf("-")+1);
+			zmiRegisterBlob(elName);
+			$("li#delete_btn_"+elName+" a",this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
+			$("li#undo_btn_"+elName+" a",this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
+			zmiSwitchBlobButtons(elName);
+		});
+});
+
+/**
+ * Init input_fields
+ */ 
+function zmiInitInputFields(container) {
+	$("form.form-horizontal",container).each(function() {
 			var context = this;
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				// Date-Picker
@@ -199,69 +305,7 @@ $(function(){
 					});
 			}
 		});
-	// Action-Lists
-	$(".zmi-container.zmi-sortable").sortable({
-		forcePlaceholderSize:true,
-		placeholder: "ui-state-highlight",
-		revert: true,
-		start: function(event, ui) {
-				var el = $(".zmi-container .zmi-item");
-				$(el).removeClass("highlight");
-				self.zmiSortableRownum = false;
-				var c = 1;
-				$(".zmi-sortable > li").each(function() {
-						if ($(this).attr("id") == ui.item.attr("id")) {
-							self.zmiSortableRownum = c;
-						}
-						c++;
-					});
-			},
-		stop: function(event, ui) {
-				var pos = $(this).position();
-				if (self.zmiSortableRownum) {
-					var c = 1;
-					$(".zmi-sortable > li").each(function() {
-							if ($(this).attr("id") == ui.item.attr("id")) {
-								if(self.zmiSortableRownum != c) {
-									var id = ui.item.attr("id");
-									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
-									$.get(href,function(result){
-											var message = eval('('+result+')');
-											zmiShowMessage(pos,message,"alert-success");
-										});
-								}
-							}
-							c++;
-						});
-				}
-				self.zmiSortableRownum = false;
-			}
-	});
-	$(".zmi-container.zmi-sortable").disableSelection();
-	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
-	$(".zmi-container .zmi-item .zmi-action")
-		.focus( function(evt) { zmiActionOver(this,"focus"); })
-		.mouseover( function(evt) { zmiActionOver(this,"mouseover"); })
-		.mouseout( function(evt) { zmiActionOut(this,"mouseout"); })
-		;
-	// Inputs
-	$(".zmi-image,.zmi-file").each(function() {
-			$(this).addClass("span5");
-			var elName = $(this).attr("id");
-			elName = elName.substr(elName.lastIndexOf("-")+1);
-			zmiRegisterBlob(elName);
-			$("li#delete_btn_"+elName+" a",this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
-			$("li#undo_btn_"+elName+" a",this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
-			zmiSwitchBlobButtons(elName);
-			$(".zmi-image-preview img",this)
-					.attr({title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT')})
-					.click(function() {
-							var html = '<img src="' + $(this).attr("src") + '"/>';
-							zmiIframe(html,{},{title:$(this).attr("title")});
-						})
-					;
-		});
-});
+}
 
 /**
  * Show message
@@ -327,6 +371,11 @@ function zmiIframe(href, data, opt) {
 	if ($('#zmiIframe').length==0) {
 		$('body').append('<div id="zmiIframe"></div>');
 	}
+	// Debug
+	var url = href + "?";
+	for (var k in data) {
+		url += k + "=" + data[k] + "&";
+	}
 	$.get( href, data, function(result) {
 			var $result = $(result);
 			if ($("div#system_msg",$result).length>0) {
@@ -365,16 +414,6 @@ function zmiActionOver(el, evt) {
 	if($("button.split-left",el).length==0 || $("ul.dropdown-menu",el).length>0) return;
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
-	// Edit action
-	$("button.split-left",el).click(function() {
-			var context_id = $(this).parents("li.zmi-item").attr("id");
-			var action = self.location.href;
-			action = action.substr(0,action.lastIndexOf("/"));
-			action += typeof context_id == "undefined" || context_id == ""?"/manage_properties":"/"+context_id+"/manage_main";
-			action += "?lang=" + getZMILang();
-			self.location.href = action;
-			return false;
-		});
 	// Build action and params.
 	var context_id = $(el).parents("li.zmi-item").attr("id");
 	var action = self.location.href;
@@ -396,11 +435,39 @@ function zmiActionOver(el, evt) {
 		$(el).append('<ul class="dropdown-menu"></ul>');
 		var $baseul = $("ul.dropdown-menu",el);
 		var $ul = $baseul;
-		$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
+		if (startsWithSubmenu) {
+			var html = '';
+			var opticon = '';
+			if (actions[1].length > 2) {
+				opticon = '<i class="' + actions[1][2] +'"></i>';
+			}
+			var optlabel = actions[1][0];
+			optlabel = optlabel.substr("-----".length);
+			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+			optlabel = optlabel.trim();
+			$("button.split-left",el).html(opticon+optlabel).click(function(){
+					return false;
+				});
+		}
+		else {
+			// Edit action
+			$("button.split-left",el).click(function() {
+					var context_id = $(this).parents("li.zmi-item").attr("id");
+					var action = self.location.href;
+					action = action.substr(0,action.lastIndexOf("/"));
+					action += typeof context_id == "undefined" || context_id == ""?"/manage_properties":"/"+context_id+"/manage_main";
+					action += "?lang=" + getZMILang();
+					self.location.href = action;
+					return false;
+				});
+			//
+			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+		}
 		for (var i = 2; i < actions.length; i++) {
 			var optlabel = actions[i][0];
 			var optvalue = actions[i][1];
-			if (optlabel.indexOf("-----")==0 && optlabel.lastIndexOf("-----")>0) {
+			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				var opticon = '';
 				if (actions[i].length > 2) {
 					opticon = '<i class="' + actions[i][2] +'"></i>';
@@ -471,8 +538,8 @@ function zmiActionOut(el, evt) {
 function zmiActionExecute(sender, label, target) {
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
-	$("input[name=custom]").val(label);
-	$("input[name=_sort_id]").val($(".zmi-sort-id",$el).text());
+	$("input[name='custom']").val(label);      
+	$("input[name='_sort_id:int']").val($(".zmi-sort-id",$el).text());
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		// Parameters
 		var inputs = $("input:hidden",$fm);
@@ -488,8 +555,10 @@ function zmiActionExecute(sender, label, target) {
 		// Show add-dialog.
 		zmiIframe(target,data,{
 				title:getZMILangStr('BTN_INSERT')+': '+label,
+				open:function(event,ui) {
+					zmiInitInputFields($('#zmiIframe'));
+				},
 				close:function(event,ui) {
-					// @todo
 					$('#manage_addProduct').remove();
 				}
 		});
@@ -524,4 +593,59 @@ function zmiActionButtonsRefresh(sender,evt) {
 				$(this).removeClass("zmi-selected");
 			}
 		});
+}
+
+// ############################################################################
+// ### Url-Input
+// ############################################################################
+
+$(function() {
+	$("input.url-input").each(function() {
+			var enabled = true; // @TODO
+			var fmName = $(this).parents("form").attr("name");
+			var elName = $(this).attr("name");
+			$(this).after(''
+					+ '<a class="btn" href="#" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+						+ '<i class="icon-link"></i>'
+					+ '</a>'
+				);
+		});
+});
+
+/**
+ * zmiBrowseObjs
+ */
+function zmiBrowseObjs(fmName, elName, lang) {
+	var elValue = '';
+	if (fmName.length>0 && elName.length>0) {
+		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
+	}
+	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
+	var href = "manage_browse_iframe";
+	href += '?lang='+lang;
+	href += '&fmName='+fmName;
+	href += '&elName='+elName;
+	href += '&elValue='+escape(elValue);
+	if ( selectedText) {
+		href += '&selectedText=' + escape( selectedText);
+	}
+	if ($('#zmiDialog').length==0) {
+		$('body').append('<div id="zmiDialog"></div>');
+	}
+	$('#zmiDialog').dialog({
+			autoOpen: false,
+			title: title,
+			height: 'auto',
+			width: 'auto'
+		}).html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>').dialog('open');
+	return false;
+}
+
+function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
+	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
+}
+
+function zmiDialogClose(id) {
+	$('#'+id).dialog('close');
+	$('body').remove('#'+id);
 }

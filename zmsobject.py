@@ -128,14 +128,14 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_frame = HTMLFile('dtml/object/f_frame', globals()) 
     f_frame_top = HTMLFile('dtml/object/f_frame_top', globals()) 
     f_frame_bottom = HTMLFile('dtml/object/f_frame_bottom', globals()) 
-    f_xstandard_browseImages = HTMLFile('dtml/object/f_xstandard_browseimages', globals()) 
-    f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals()) 
-    preview_html = HTMLFile('dtml/object/preview', globals()) 
-    preview_top_html = HTMLFile('dtml/object/preview_top', globals()) 
-    f_api_html = HTMLFile('dtml/object/f_api', globals()) 
-    f_api_top_html = HTMLFile('dtml/object/f_api_top', globals()) 
-    obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals()) 
-    obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields') 
+    f_xstandard_browseImages = HTMLFile('dtml/object/f_xstandard_browseimages', globals())
+    f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals())
+    preview_html = _confmanager.ConfDict.template('object/preview')
+    preview_top_html = _confmanager.ConfDict.template('object/preview_top')
+    f_api_html = HTMLFile('dtml/object/f_api', globals())
+    f_api_top_html = HTMLFile('dtml/object/f_api_top', globals())
+    obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals())
+    obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields')
     active_input_fields = '' # Deprecated
     version_input_fields = '' # Deprecated
 

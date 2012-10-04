@@ -23,6 +23,7 @@ import operator
 import time
 import urllib
 # Product Imports.
+import _confmanager
 import _globals
 import _objattrs
 
@@ -82,7 +83,7 @@ class ZReferableItem:
 
   # Management Interface.
   # ---------------------
-  manage_RefForm = HTMLFile('dtml/ZMSLinkElement/manage_refform', globals())
+  manage_RefForm = _confmanager.ConfDict.template('ZMSLinkElement/manage_refform')
   manage_browse_iframe = HTMLFile('dtml/ZMSLinkElement/manage_browse_iframe', globals()) 
 
 

@@ -29,6 +29,7 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
+import _confmanager
 import _globals
 
 
@@ -712,7 +713,7 @@ class AccessManager(AccessableContainer):
 
     # Management Interface.
     # ---------------------
-    manage_users = HTMLFile('dtml/ZMS/manage_users', globals())
+    manage_users = _confmanager.ConfDict.template('ZMS/manage_users')
     manage_users_sitemap = HTMLFile('dtml/ZMS/manage_users_sitemap', globals())
 
     ############################################################################

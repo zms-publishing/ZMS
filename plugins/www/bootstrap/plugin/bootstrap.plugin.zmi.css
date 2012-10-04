@@ -13,6 +13,18 @@
 #zmi-header .navbar {
 	margin:0;
 }
+
+.zmi.preview_top #zmi-header .pull-right {
+	padding-top:0.8em;
+}
+.zmi.preview_top #zmi-header .pull-right * {
+	color:#BBB;
+}
+.zmi.preview_top #zmi-header .pull-right span.zmi-top-active {
+	color:#FFF;
+	font-weight:bold;
+}
+
 #zmi-logo {
 	/*background: -moz-linear-gradient(45deg, rgb(2, 0, 49) 0%, rgb(109, 51, 83) 100%) repeat scroll 0% 0% transparent;*/
 }
@@ -156,7 +168,7 @@ form.form-horizontal {
 	background-color:#fff;
 	margin-left:2em;
 	margin-right:2em;
-	padding-bottom:0.5em;
+	padding:0.5em;
 }
 .zmi.properties form.form-horizontal {
 	background-color:transparent;

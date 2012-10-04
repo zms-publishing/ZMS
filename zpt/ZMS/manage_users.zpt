@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+</script>
+
+<div class="pull-left">
+	<table class="table table-striped zmi-sortable">
+	<thead>
+	<tr>
+		<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr tal:condition="python:here.getUserFolder().meta_type=='LDAPUserFolder'" tal:repeat="userName python:here.getConfProperty('ZMS.security.users',{}).keys()">
+	<tal:block>
+		<td tal:content="userName">userName</td>
+	</tal:block>
+	</tr>
+	<tr tal:condition="python:here.getUserFolder().meta_type=='UserFolder'" tal:repeat="validUserId python:here.getValidUserids(search_term=request.get('id'))">
+	<tal:block tal:define="global
+			userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
+			userName python:unicode(validUserId['name'],'latin-1').encode('utf-8')">
+		<td tal:content="userName">userName</td>
+	</tal:block>
+	</tr>
+	</tbody>
+</div>
+<div class="pull-right">
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

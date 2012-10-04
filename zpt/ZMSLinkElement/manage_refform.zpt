@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<tal:block tal:define="global
+		dummy0 python:here.synchronizeRefByObjs();
+		refByObjs python:here.getRefByObjs(request)">
+
+<form class="form-horizontal" name="form0" method="get">
+<tal:block tal:condition="python:refByObjs">
+	<div class="form-element" tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</div>
+	<ul>
+		<li tal:repeat="refByObj refByObjs" tal:define="global target python:here.getLinkObj(refByObj,request)">
+			<tal:block tal:condition="python:target">
+				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+			</tal:block >
+			<tal:block tal:condition="python:not target">
+				<tal:block tal:content="refByObj">refByObj</tal:block>
+			</tal:block >
+		</li>
+	</ul>
+</tal:block>
+<tal:block tal:condition="python:not refByObjs">
+	<div class="form-element" tal:content="structure python:'%s!'%(here.getZMILangStr('MSG_NOREFERENCES')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</div>
+	<ul>
+		<li tal:repeat="refByObj refByObjs">
+		</li>
+	</ul>
+</tal:block>
+</form>
+
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

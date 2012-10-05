@@ -1,38 +1,154 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'users',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-</script>
+<tal:block tal:define="global userFolder python:here.getUserFolder()">
+
+<form tal:condition="python:request.get('action')=='edit' and request.get('type')=='user'" class="form-horizontal" name="userform" action="manage_userProperties" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="key" value="obj">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_USER'),request['rowid'])">User: Id</legend>
+	<tal:block tal:condition="python:userFolder.meta_type=='LDAPUserFolder'" tal:define="global userObj python:here.findUser(request['rowid'])">
+		<tal:block tal:condition="python:userObj" tal:define="global userDetails python:userFolder.getUserDetails(encoded_dn=userObj['dn'],format='dictionary')">
+			<div class="control-group" tal:repeat="schema python:userFolder.getLDAPSchema()">
+				<label tal:attributes="for python:schema[0]" class="control-label"><span tal:content="python:schema[1]">the label</span></label>
+				<div class="controls" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=unicode(userObj.get(schema[0],''),'latin-1').encode('utf-8'),enabled=False)">the value</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:userFolder.meta_type=='User Folder'">
+		<div class="control-group">
+			<label for="newPassword" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="controls" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<label for="newConfirm" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="controls" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<label for="newEmail" tal:attributes="class python:' '.join(['control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+			<div class="controls" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(request['rowid'],'email',''))">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</tal:block>
+</form>
+
+<tal:block tal:condition="python:request.get('action') is None">
+
+<div id="insertUser" class="ui-helper-hidden">
+	<div class="inner">
+	<form class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="key" value="obj">
+		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+		<div class="control-group">
+			<label for="newId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+			<div class="controls" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=15,value='')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<label for="newPassword" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="controls" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newPassword')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<label for="newConfirm" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="controls" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newConfirm')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<label for="newEmail" tal:attributes="class python:' '.join(['control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+			<div class="controls" tal:content="structure python:here.getTextInput(fmName='userform',elName='newEmail',size=15,value='')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</form>
+	</div><!-- .inner -->
+</div><!-- #insertUser -->
 
 <div class="pull-left">
-	<table class="table table-striped zmi-sortable">
+<form class="form-horizontal">
+	<input type="hidden" name="key" value="">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:here.getZMILangStr('ATTR_USERS')">Users</legend>
+	<table class="table table-striped table-bordered table-hover">
+	<tal:block tal:condition="python:userFolder.meta_type=='LDAPUserFolder'">
+		<tbody>
+		<tr tal:repeat="userName python:here.getConfProperty('ZMS.security.users',{}).keys()">
+			<td tal:define="global userObj python:here.findUser(userName)">
+				<a target="" tal:attributes="href python:'?lang=%s&action=edit&type=user&rowid=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a>
+				<tal:block tal:condition="python:userObj" tal:define="global userDetails python:userFolder.getUserDetails(encoded_dn=userObj['dn'],format='dictionary')">(
+					<tal:block tal:condition="python:userDetails.has_key('sn')" tal:content="python:unicode(''.join(userDetails['sn']),'latin-1').encode('utf-8')">sn</tal:block>
+					<tal:block tal:condition="python:userDetails.has_key('givenName')" tal:content="python:unicode(''.join(userDetails['givenName']),'latin-1').encode('utf-8')">givenName</tal:block>
+				)</tal:block>
+			</td>
+		</tr>
+		</tbody>
+	</tal:block>
+	<tal:block tal:condition="python:userFolder.meta_type=='User Folder'">
+		<thead>
+			<tr>
+				<th><a class="btn btn-primary" href="#" onclick="$('#insertUser').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-user icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr tal:repeat="validUserId python:here.getValidUserids()">
+			<tal:block tal:define="global
+					userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
+					userName python:unicode(validUserId['name'],'latin-1').encode('utf-8')">
+				<td><a target="" tal:attributes="href python:'?lang=%s&action=edit&type=user&rowid=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a></td>
+			</tal:block>
+			</tr>
+		</tbody>
+	</tal:block>
+	</table>
+</form>
+</div>
+
+<div id="insertRole" class="ui-helper-hidden">
+	<div class="inner">
+	<form class="form-horizontal" action="manage_roleProperties" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="key" value="obj">
+		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+		<div class="control-group">
+			<label for="newId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+			<div class="controls" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</div><!-- .inner -->
+</div><!-- #insertRole -->
+
+<div class="pull-right">
+<form class="form-horizontal">
+	<input type="hidden" name="key" value="">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</legend>
+	<table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+		<th><a class="btn btn-primary" href="#" onclick="$('#insertRole').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-group icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 	</tr>
 	</thead>
 	<tbody>
-	<tr tal:condition="python:here.getUserFolder().meta_type=='LDAPUserFolder'" tal:repeat="userName python:here.getConfProperty('ZMS.security.users',{}).keys()">
-	<tal:block>
-		<td tal:content="userName">userName</td>
-	</tal:block>
-	</tr>
-	<tr tal:condition="python:here.getUserFolder().meta_type=='UserFolder'" tal:repeat="validUserId python:here.getValidUserids(search_term=request.get('id'))">
-	<tal:block tal:define="global
-			userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
-			userName python:unicode(validUserId['name'],'latin-1').encode('utf-8')">
-		<td tal:content="userName">userName</td>
-	</tal:block>
-	</tr>
 	</tbody>
+	</table>
+</form>
 </div>
-<div class="pull-right">
-</div>
+
+</tal:block>
+
+</tal:block>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

@@ -155,6 +155,15 @@ $(function(){
 			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
 		});
 
+
+	// Double-Clickable
+	$('table.table-hover tbody tr')
+		.dblclick( function(evt) {
+			self.location.href = $('a[target=]',this).attr('href'); 
+		})
+		.attr( "title", "Double-click to edit!");
+
+
 	// Sortable
 	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
 		ui.children().each(function() {

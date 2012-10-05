@@ -186,6 +186,10 @@ margin-top: 12px;
 .zmi.properties .form-horizontal > .control-group:last-child > .controls:last-child {
 margin-left:2px;
 }
+.form-horizontal .control-label.mandatory span {
+	background:url(/misc_/zms/ico_attr.gif) top left no-repeat;
+	padding-left:20px;
+}
 div.accordion-heading a.accordion-toggle {
 	font-weight:bold;
 }
@@ -320,6 +324,16 @@ a.button:hover img.button1 {
 	border-right: solid #E6E4E6 1px;
 	height: 22px;
 	width: 1px;
+}
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] Users-Form
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+
+body.users #zmi-tab > .pull-left,
+body.users #zmi-tab > .pull-right {
+	width:50%;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

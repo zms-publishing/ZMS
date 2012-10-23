@@ -271,7 +271,18 @@ $(function(){
  * Init input_fields
  */ 
 function zmiInitInputFields(container) {
-	$("form.form-horizontal",container).each(function() {
+	$("form.form-horizontal",container)
+		.submit(function() {
+				// Multiple-Selects
+				$('select[multiple="multiple"]').each(function() {
+						var name = $(this).attr("name");
+						var form = $(this).parents("form");
+						if ($('select[name="zms_mms_src_'+name+'"]',form).length > 0) {
+							$("option",this).prop("selected","selected");
+						}
+					});
+			})
+		.each(function() {
 			var context = this;
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				// Date-Picker

@@ -273,14 +273,46 @@ $(function(){
 function zmiInitInputFields(container) {
 	$("form.form-horizontal",container)
 		.submit(function() {
+				var b = true;
 				// Multiple-Selects
-				$('select[multiple="multiple"]').each(function() {
+				$('select[multiple="multiple"]',this).each(function() {
 						var name = $(this).attr("name");
 						var form = $(this).parents("form");
 						if ($('select[name="zms_mms_src_'+name+'"]',form).length > 0) {
 							$("option",this).prop("selected","selected");
 						}
 					});
+				// Mandatory
+				$(".zmi-input-error",this).removeClass("zmi-input-error");
+				$(".control-group label.control-label.mandatory",this).each(function() {
+						var $label = $(this);
+						var labelText = $label.text().trim();
+						var $controlGroup = $label.parents(".control-group");
+						var $controls = $(".controls",$controlGroup);
+						var $control = $('input:text,select:not([name^="zms_mms_src_"])',$controls);
+						$label.attr("title","");
+						$control.attr("title","");
+						if ($control.length==1) {
+							var isBlank = false;
+							var nodeName = $control.prop("nodeName").toLowerCase();
+							if (nodeName=="input") {
+								isBlank = $control.val().trim().length==0;
+							}
+							else if (nodeName=="select") {
+								isBlank = $("option:selected",$control).length==0;
+							}
+							if (isBlank) {
+								$controlGroup.addClass("zmi-input-error");
+								$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
+								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
+								if (b) {
+									$control.focus();
+								}
+								b = false;
+							}
+						}
+					});
+				return b;
 			})
 		.each(function() {
 			var context = this;

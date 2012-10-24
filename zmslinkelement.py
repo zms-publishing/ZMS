@@ -26,6 +26,7 @@ import urllib
 from zmscontainerobject import ZMSContainerObject
 from zmsobject import ZMSObject
 from zmsproxyobject import ZMSProxyObject
+import _confmanager
 import _globals
 import _zreferableitem
 
@@ -137,7 +138,7 @@ class ConstraintViolation(Exception): pass
 ###
 ################################################################################
 ################################################################################
-manage_addZMSLinkElementForm = HTMLFile('manage_addzmslinkelementform', globals()) 
+manage_addZMSLinkElementForm = _confmanager.ConfDict.template('manage_addzmslinkelementform') 
 def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSLinkElement """
   meta_id = 'ZMSLinkElement'
@@ -221,7 +222,7 @@ class ZMSLinkElement(ZMSContainerObject):
 
     # Management Interface.
     # ---------------------
-    manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
+    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
 
 
     ############################################################################

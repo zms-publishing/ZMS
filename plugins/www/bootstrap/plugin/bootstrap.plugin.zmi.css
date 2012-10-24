@@ -224,6 +224,14 @@ div.accordion-heading div.pull-left {
 	border-radius:4px;
 	width:79%;
 }
+.control-group.zmi-input-error label {
+	font-weight:bold!important;
+}
+.control-group.zmi-input-error .controls input[type="text"],
+.control-group.zmi-input-error .controls select:not([name^="zms_mms_src_"]) {
+	background-color:#F66!important;
+	color:#FFF!important;
+}
 .zmi-input-file input[type="file"] {
 	margin-top:0.6em;
 	height:auto !important;

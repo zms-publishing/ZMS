@@ -33,7 +33,8 @@ function zmiRegisterParams(elName, params) {
 function zmiToggleBlobButton(elName, b) {
 	var $el = $(elName);
 	if (b) {
-		if ($el.prop("nodeName").toLowerCase()=="li") {
+		var nodeName = typeof $el.prop("nodeName")=="undefined"?"":$el.prop("nodeName").toLowerCase();
+		if (nodeName=="li") {
 			$el.removeClass("zmi-helper-hidden");
 		}
 		else {
@@ -41,7 +42,7 @@ function zmiToggleBlobButton(elName, b) {
 		}
 	}
 	else {
-		if ($el.prop("nodeName").toLowerCase()=="li") {
+		if (nodeName=="li") {
 			$el.addClass("zmi-helper-hidden");
 		}
 		else {

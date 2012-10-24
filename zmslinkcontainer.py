@@ -25,6 +25,7 @@ import urllib
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
 import zmslinkelement
+import _confmanager
 import _globals
 import _zreferableitem
 
@@ -110,7 +111,7 @@ class ZMSLinkContainer(ZMSContainerObject):
 
     # Management Interface.
     # ---------------------
-    manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
+    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
 
 
     ############################################################################

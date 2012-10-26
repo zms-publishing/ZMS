@@ -153,6 +153,17 @@ function initUI(context) {
 			}
 		}
 	);
+  // Url-Picker
+	$("input.url-input",context).each(function() {
+			var enabled = true; // @TODO
+			var fmName = $(this).parents("form").attr("name");
+			var elName = $(this).attr("name");
+			$(this).after(''
+					+ '<div class="zmi-icon ui-widget ui-helper-clearfix ui-corner-all ui-state-default" style="float:left">'
+						+ '<span class="ui-icon ui-icon-newwin" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())"></span>'
+					+ '</div>'
+				);
+		});
 	pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 		// Date-Picker
 		$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);

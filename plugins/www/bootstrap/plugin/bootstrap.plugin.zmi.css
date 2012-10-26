@@ -105,6 +105,14 @@ ul.zmi-container li.ui-state-highlight {
 ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	height:1em;
 }
+table.table tbody tr td {
+	white-space:nowrap;
+	overflow:hidden;
+}
+table.table.zmi-sortable select.zmi-sort {
+	direction:rtl;
+	width:4em;
+}
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{

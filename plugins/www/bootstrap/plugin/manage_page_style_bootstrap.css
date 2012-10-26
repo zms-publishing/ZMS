@@ -121,15 +121,6 @@ img#zmibg {
 	text-decoration:underline;
 }
 
-.zmi-document-margin select {
-	background: #777;
-	color: #fff;
-	font-size: 10px;
-	border: 1px solid #ccc;
-/* IE-Patch */
-	margin-top:-3px;
-}
-
 .zmi-document-margin div.zmi_col_left,
 .zmi-document-margin div.zmi_col_right {
 	margin:3px;

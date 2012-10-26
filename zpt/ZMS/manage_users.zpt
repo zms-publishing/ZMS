@@ -159,7 +159,50 @@
 
 <div id="insertUser" class="ui-helper-hidden">
 	<div class="inner">
-	<form class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
+	<form tal:condition="python:userFolder.meta_type=='LDAPUserFolder'" class="form-horizontal" method="get" enctype="multipart/form-data">
+		<input type="hidden" name="key" value="obj">
+		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+		<div class="control-group">
+				<select name="qsLdapKey">
+					<tal:block tal:repeat="schema python:userFolder.getLDAPSchema()">
+						<option tal:attributes="value python:schema[0]; selected python:['','selected'][int(request.get('qsLdapKey')==schema[0])]" tal:content="python:schema[1]">schema</option>
+					</tal:block>
+				</select>
+			<tal:block tal:content="structure python:here.getTextInput(fmName='userform',elName='qsLdapValue',size=15,value=request.get('qsLdapValue',''))">the control</tal:block>
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH')" tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</button>
+		</div><!-- .control-group -->
+		<tal:block tal:condition="python:request.get('qsLdapKey') and request.get('qsLdapValue')">
+		<table class="table table-striped table-bordered table-hover" tal:define="global
+				login_attr python:here.getConfProperty('LDAPUserFolder.login_attr',userFolder.getProperty( '_login_attr'));
+				users python:userFolder.findUser(search_param=request.get('qsLdapKey'),search_term=request.get('qsLdapValue'))">
+		<thead>
+		<tr>
+			<th>&nbsp;</th>
+			<th>Id</th>
+			<th>SN</th>
+			<th>CN</th>
+			<th>DN</th>
+			<th>OU</th>
+			<th>&nbsp;</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr tal:repeat="i python:range(len(users))">
+			<tal:block tal:define="global user python:users[i]">
+				<td tal:content="python:i+1">i+1</td>
+				<td tal:content="python:unicode(user[login_attr],'utf-8')">Id</td>
+				<td tal:content="python:unicode(user['sn'],'utf-8')">SN</td>
+				<td tal:content="python:unicode(user['cn'],'utf-8')">CN</td>
+				<td tal:content="python:unicode(user['dn'],'utf-8')">DN</td>
+				<td tal:content="python:unicode(user['ou'],'utf-8')">OU</td>
+				<td><a class="btn" href="#" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],unicode(user[login_attr],'utf-8')); title python:here.getZMILangStr('BTN_EDIT')"><i class="icon-edit"></i></a></td>
+			</tal:block>
+		</tr>
+		</tbody>
+		</table>
+		</tal:block>
+	</form>
+	<form tal:condition="python:userFolder.meta_type=='User Folder'" class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 		<div class="control-group">
@@ -193,15 +236,35 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<legend tal:content="python:here.getZMILangStr('ATTR_USERS')">Users</legend>
 	<table class="table table-striped table-bordered table-hover">
-	<tal:block tal:condition="python:userFolder.meta_type=='LDAPUserFolder'">
-		<tbody>
-		<tr tal:repeat="userName python:here.getConfProperty('ZMS.security.users',{}).keys()">
-			<td tal:define="global userObj python:here.findUser(userName)">
-				<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a>
-				<tal:block tal:condition="python:userObj" tal:define="global userDetails python:userFolder.getUserDetails(encoded_dn=userObj['dn'],format='dictionary')">(
-					<tal:block tal:condition="python:userDetails.has_key('sn')" tal:content="python:unicode(''.join(userDetails['sn']),'latin-1').encode('utf-8')">sn</tal:block>
-					<tal:block tal:condition="python:userDetails.has_key('givenName')" tal:content="python:unicode(''.join(userDetails['givenName']),'latin-1').encode('utf-8')">givenName</tal:block>
+	<thead>
+		<tr>
+			<th><a class="btn btn-primary" href="#" onclick="$('#insertUser').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-user icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+		</tr>
+	</thead>
+	<tbody tal:condition="python:userFolder.meta_type=='LDAPUserFolder'">
+	<tr tal:repeat="userName python:here.getConfProperty('ZMS.security.users',{}).keys()">
+		<td tal:define="global userObj python:here.findUser(userName)">
+			<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a>
+			<tal:block tal:condition="python:userObj" tal:define="global userDetails python:userFolder.getUserDetails(encoded_dn=userObj['dn'],format='dictionary')">(
+				<tal:block tal:condition="python:userDetails.has_key('sn')" tal:content="python:unicode(''.join(userDetails['sn']),'latin-1').encode('utf-8')">sn</tal:block>
+				<tal:block tal:condition="python:userDetails.has_key('givenName')" tal:content="python:unicode(''.join(userDetails['givenName']),'latin-1').encode('utf-8')">givenName</tal:block>
+			)</tal:block>
+			<tal:block tal:define="global nodes python:here.getUserAttr(userName,'nodes',{})">
+				<tal:block tal:condition="python:len(nodes)>0">(
+					<tal:block tal:content="python:' , '.join(here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0))">roles</tal:block>,
+					<tal:block tal:content="python:'%i %s'%(len(nodes),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>
 				)</tal:block>
+			</tal:block>
+		</td>
+	</tr>
+	</tbody>
+	<tbody tal:condition="python:userFolder.meta_type=='User Folder'">
+		<tr tal:repeat="validUserId python:here.getValidUserids()">
+		<tal:block tal:define="global
+				userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
+				userName python:unicode(validUserId['name'],'latin-1').encode('utf-8')">
+			<td>
+				<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a>
 				<tal:block tal:define="global nodes python:here.getUserAttr(userName,'nodes',{})">
 					<tal:block tal:condition="python:len(nodes)>0">(
 						<tal:block tal:content="python:' , '.join(here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0))">roles</tal:block>,
@@ -209,33 +272,9 @@
 					)</tal:block>
 				</tal:block>
 			</td>
+		</tal:block>
 		</tr>
-		</tbody>
-	</tal:block>
-	<tal:block tal:condition="python:userFolder.meta_type=='User Folder'">
-		<thead>
-			<tr>
-				<th><a class="btn btn-primary" href="#" onclick="$('#insertUser').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-user icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr tal:repeat="validUserId python:here.getValidUserids()">
-			<tal:block tal:define="global
-					userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
-					userName python:unicode(validUserId['name'],'latin-1').encode('utf-8')">
-				<td>
-					<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"><i class="icon-user"></i> <tal:block tal:content="userName">userName</tal:block></a>
-					<tal:block tal:define="global nodes python:here.getUserAttr(userName,'nodes',{})">
-						<tal:block tal:condition="python:len(nodes)>0">(
-							<tal:block tal:content="python:' , '.join(here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0))">roles</tal:block>,
-							<tal:block tal:content="python:'%i %s'%(len(nodes),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>
-						)</tal:block>
-					</tal:block>
-				</td>
-			</tal:block>
-			</tr>
-		</tbody>
-	</tal:block>
+	</tbody>
 	</table>
 </form>
 </div>
@@ -291,5 +330,14 @@
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+
+<script>
+$(function() {
+		if (typeof zmiParams['qsLdapKey'] != "undefined" && typeof zmiParams['qsLdapValue'] != "undefined") {
+			$('#insertUser').dialog({modal:true,title:getZMILangStr('BTN_INSERT'),height:'auto',width:'auto'});
+		}
+	});
+</script>
+
 </body>
 </html>

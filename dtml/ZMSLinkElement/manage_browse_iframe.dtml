@@ -523,7 +523,7 @@ function followHref( href, extra) {
  ><dtml-call "REQUEST.set( 'last_level', -1)"
  ><dtml-in catalog_items2 mapping
   ><dtml-with ob
-   ><dtml-let index=sequence-index has_children="len(getChildNodes(REQUEST))>0"
+   ><dtml-let index=sequence-index has_children="(len(getChildNodes(REQUEST))>0) or (meta_id=='ZMS' and len(getPortalClients())>0)"
     ><dtml-call "REQUEST.set( 'ob_id', '%s_%s'%(ob.getHome().id.replace('.','_').replace('-','_'),ob.id))"
     ><dtml-in "range( ob_level, last_level + 1)"></div></dtml-in
     ><div id="div_<dtml-var ob_id>" class="form-small" style="margin: 0px 1px 0px 1px"

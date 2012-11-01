@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form class="form-horizontal" method="get">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<input type="hidden" name="preview" tal:attributes="value python:request['preview']">
+	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<div class="control-group">
+		<label class="control-label" for="raw" tal:content="python:here.getZMILangStr('ATTR_SEARCHTERM')">searchterm</label>
+		<div class="controls" tal:content="structure python:here.getTextInput(fmName='searchform',elName='raw',size=30,value=request.get('raw',''))">the value</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group" tal:define="global optpl python:map(lambda x: [x,here.getZMILangStr(x)], ['AND','OR'])">
+		<label class="control-label" for="option" tal:content="python:here.getZMILangStr('ATTR_OPTION')">option</label>
+		<div class="controls" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='option',value=request.get('search_meta_types',[]),type='select',lang_str='ATTR_OPTION',required=True,enabled=True,css='form-element',optpl=optpl,REQUEST=request)">the control</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group" tal:define="global optpl python:map(lambda x: [x,here.display_type(request,x)], here.getMetaobjIds(excl_ids=['ZMS']))">
+		<label class="control-label" for="search_meta_types:list" tal:content="python:here.getZMILangStr('ATTR_TYPE')">type</label>
+		<div class="controls" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',required=False,enabled=True,css='form-element',optpl=optpl,REQUEST=request)">the control</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</button>
+		</div>
+	</div>
+</form>
+
+<tal:block tal:condition="python:request.has_key('raw') or request.get('search_meta_types')" tal:define="global
+			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
+			qres python:[]">
+	<tal:block tal:condition="python:request.get('raw') and not request.get('search_meta_types')">
+		<tal:block tal:define="global dummy0 python:qres.extend(here.getTreeNodes(request,request.get('search_meta_types')))"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
+		<tal:block tal:define="global dummy0 python:qres.extend(map(lambda x: {
+				'ob':x,
+				'title':x.getTitle(request),
+				'raw':x.renderShort(request),
+				'score':1,
+				'time':x.attr('change_dt'),
+				'url':'%s/manage_main'%x.absolute_url(),
+				},here.getTreeNodes(request,request.get('search_meta_types'))))"></tal:block>
+	</tal:block>
+	<form class="form-horizontal" method="get">
+		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+		<p tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"></p>
+		<p tal:condition="python:len(qres)==0" tal:content="python:here.getZMILangStr('SEARCH_NORESULTS')">No results</p>
+		<tal:block tal:condition="python:len(qres)>0" tal:define="global
+				size python:len(qres);
+				pageSize python:10;
+				pageIndex python:request.get('pageIndex',0);
+				pageStart python:pageIndex*pageSize;
+				pageEnd python:min(pageStart+pageSize,size)">
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+			<table>
+			<tr tal:repeat="node python:qres[pageStart:pageEnd]">
+				<td>
+					<tal:block tal:content="structure python:node['ob'].zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+					<tal:block tal:content="structure python:node['ob'].renderShort(request)">renderShort</tal:block>
+				</td>
+			</tr>
+			</table>
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		</tal:block>
+	</form>
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

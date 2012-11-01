@@ -1,5 +1,7 @@
 <dtml-call "RESPONSE.setHeader('Last-Modified',DateTime(getConfProperty('last_modified')-10000).toZone('GMT+1').rfc822())"
+><dtml-if "not REQUEST.RESPONSE.headers.has_key('cache-control')"
 ><dtml-call "REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')"
+></dtml-if
 ><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/css')">
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

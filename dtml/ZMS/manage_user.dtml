@@ -3,6 +3,9 @@
 function form0Submit(fm) {
 	var b = true;
 	if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_SAVE')" html_quote>") {
+		if ("<dtml-var "getConfProperty('EmailMandatory','')">"=="1") {
+			b = b && !disallowBlank(fm.elements['email'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_EMAIL')">",false);
+		}
 		if (fm.elements['password'] && fm.elements['confirm']) {
 			b = b && !disallowBlank(fm.elements['password'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_PASSWORD')">",false);
 			b = b && !disallowBlank(fm.elements['confirm'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_CONFIRM')">",false);
@@ -39,7 +42,7 @@ function iframe0Load(sender) {
  <table cellspacing="1" cellpadding="2" border="0">
  <!-- E-Mail -->
  <tr valign="middle">
-  <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"></td>
+  <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"><dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if></td>
   <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=25,value=getUserAttr(AUTHENTICATED_USER,'email',''))"></td>
  </tr>
  <dtml-unless "getUserFolder().meta_type=='LDAPUserFolder' and AUTHENTICATED_USER.getId() in getUserFolder().getUserNames()">

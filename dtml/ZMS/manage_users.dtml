@@ -267,9 +267,19 @@ function form2Submit(fm) {
          </dtml-in>
         </dtml-if>
       </dtml-if>
-      <dtml-unless userObj>
-       <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
-      </dtml-unless>
+       <dtml-unless userObj>
+         <dtml-with "getPortalMaster()">
+           <dtml-let user="findUser(name)">
+             <dtml-if user>
+               <a href="<dtml-var "aq_parent.content.absolute_url()">/manage_users?lang=<dtml-var lang>&id=<dtml-var name>"
+                  class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
+               &nbsp;@<a href="<dtml-var "aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "aq_parent.id"></a>
+             <dtml-else>
+               <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
+             </dtml-if>
+           </dtml-let>
+         </dtml-with>
+       </dtml-unless>
       </div>
      </td>
     </tr>

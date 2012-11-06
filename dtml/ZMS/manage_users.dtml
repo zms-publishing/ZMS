@@ -597,7 +597,7 @@ function form2Submit(fm) {
     </dtml-if>
     <!-- Apply filter to user-ids. -->
     <dtml-call "SESSION.set('ZMS_MANAGE_USERS_ID_FILTER',REQUEST.get('ZMS_MANAGE_USERS_ID_FILTER',SESSION.get('ZMS_MANAGE_USERS_ID_FILTER','')))">
-    <dtml-call "REQUEST.set('valid_userids',getValidUserids())">
+    <dtml-call "REQUEST.set('valid_userids',getValidUserids(without_node_check=False))">
     <dtml-call "REQUEST.set('filtered_userids',[])">
     <dtml-in valid_userids mapping>
      <dtml-let valid_userid=sequence-item>

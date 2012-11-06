@@ -434,7 +434,8 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_term=''):
+    def getValidUserids(self, search_term='', without_node_check=True):
+      local_userFldr = self.getUserFolder()
       valid_userids = []
       c = 0
       for userFldr in self.getUserFolders():
@@ -456,14 +457,16 @@ class AccessManager(AccessableContainer):
               return valid_userids
           elif userFldr.meta_type != 'LDAPUserFolder':
             for userName in userFldr.getUserNames():
-              if search_term == '' or search_term == userName:
-                d = {}
-                d['localUserFldr'] = userFldr
-                d['name'] = userName
-                valid_userids.append(d)
+              if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
+                if search_term == '' or search_term == userName:
+                  d = {}
+                  d['localUserFldr'] = userFldr
+                  d['name'] = userName
+                  valid_userids.append(d)
         c += 1
       return valid_userids
-
+  
+  
     # --------------------------------------------------------------------------
     #  AccessManager.setUserAttr:
     # --------------------------------------------------------------------------

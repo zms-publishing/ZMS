@@ -1763,60 +1763,75 @@ var remoteHrefResponseWaiting = false;
 var remoteHrefResponseTimeout = 5000;
 
 function zmiOnSubmitEventHandler(el) {
-  btn = el;
-  if ($("#attr_type").val() == "remote") {
-    var href = $("#attr_ref").val();
-    if ( !remoteHrefValid || remoteHref != href) {
-      remoteHref = href;
-      remoteHrefValid = false;
-      remoteHrefResponseWaiting = true;
-      self.btnClicked = 'break';
-      // Set wait-cursor.
-      $(document.body).css( "cursor", "wait");
-      // JQuery.AJAX.get
-      $.get( remoteHref+"/getBodyContent", remoteResponse);
-      // Set time-out.
-      setTimeout("remoteResponseTimedout()",remoteHrefResponseTimeout);
-    }
-    return remoteHrefValid;
-  }
-  return true;
+	btn = el;
+	if ($("#attr_type").val() == "remote") {
+		var href = $("#attr_ref").val();
+		if ( !remoteHrefValid || remoteHref != href) {
+			remoteHref = href;
+			remoteHrefValid = false;
+			remoteHrefResponseWaiting = true;
+			self.btnClicked = 'break';
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// JQuery.AJAX.get
+			$.get( remoteHref+"/getBodyContent", remoteResponse);
+			// Set time-out.
+			setTimeout("remoteResponseTimedout()",remoteHrefResponseTimeout);
+		}
+		return remoteHrefValid;
+	}
+	return true;
 }
 
 function remoteResponse(data) {
-  if (remoteHrefResponseWaiting) {
-    remoteHrefResponseWaiting = false;
-    // Reset wait-cursor.
-    $(document.body).css( "cursor", "auto");
-    //
-    $("#attr_ref").removeClass("form-error");
-    remoteHrefValid = true;
-    btn.click();
-  }
+	if (remoteHrefResponseWaiting) {
+		remoteHrefResponseWaiting = false;
+		// Reset wait-cursor.
+		$(document.body).css( "cursor", "auto");
+		//
+		$("#attr_ref").removeClass("form-error");
+		remoteHrefValid = true;
+		btn.click();
+	}
 }
 
 function remoteResponseTimedout() {
-  if (remoteHrefResponseWaiting) {
-    remoteHrefResponseWaiting = false;
-    // Reset wait-cursor.
-    $(document.body).css( "cursor", "auto");
-    //
-    $("#attr_ref").addClass("form-error");
-    remoteHrefValid = false;
-    if (confirm( "Time-Out <dtml-var "getZMILangStr('ATTR_URL')">: " + remoteHref)) {
-      remoteHrefValid = true;
-      btn.click();
-    }
-  }
+	if (remoteHrefResponseWaiting) {
+		remoteHrefResponseWaiting = false;
+		// Reset wait-cursor.
+		$(document.body).css( "cursor", "auto");
+		//
+		$("#attr_ref").addClass("form-error");
+		remoteHrefValid = false;
+		if (confirm( "Time-Out <dtml-var "getZMILangStr('ATTR_URL')">: " + remoteHref)) {
+			remoteHrefValid = true;
+			btn.click();
+		}
+	}
 }
+
+initAttrRef = function() {
+		var v = $(this).val();
+		var $select = $("select#attr_type");
+		$("option",$select).each(function() {
+			$(this).prop("disabled","");
+			if (v.indexOf("{$")!=0 && $.inArray($(this).prop("value"),["embed","recursive","remote"])>=0) {
+				$(this).prop("disabled","disable");
+			}
+		});
+	};
+
+$(function() {
+	$("input#attr_ref").change(initAttrRef).change();
+});
 
 //-->
 </script>
 
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
 <colgroup>
- <col width="20%" />
- <col width="80%" />
+	<col width="20%" />
+	<col width="80%" />
 </colgroup>
 <dtml-comment>
 ################################################################################
@@ -1824,12 +1839,12 @@ function remoteResponseTimedout() {
 ################################################################################
 </dtml-comment>
 <tr valign="middle">
- <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <dtml-var FORM_LABEL_MANDATORY></div></td>
- <td>
-  <div style="float:left"><dtml-var "getObjInput('attr_ref',REQUEST)"></div>
-  <div style="float:left">&nbsp;</div>
-  <div style="float:left"><dtml-var "getObjInput('attr_type',REQUEST)"></div>
- </td>
+	<td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <dtml-var FORM_LABEL_MANDATORY></div></td>
+	<td>
+		<div style="float:left"><dtml-var "getObjInput('attr_ref',REQUEST)"></div>
+		<div style="float:left">&nbsp;</div>
+		<div style="float:left"><dtml-var "getObjInput('attr_type',REQUEST)"></div>
+	</td>
 </tr>
 <dtml-comment>
 ################################################################################
@@ -1838,10 +1853,10 @@ function remoteResponseTimedout() {
 </dtml-comment>
 <dtml-unless ZMS_INSERT>
 <tr valign="middle">
- <td>&nbsp;</td>
- <td <dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if> style="border: 1px dashed black;">
-  <dtml-var "renderShort(REQUEST)">
- </td>
+	<td>&nbsp;</td>
+	<td <dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if> style="border: 1px dashed black;">
+		<dtml-var "renderShort(REQUEST)">
+	</td>
 </tr>
 </dtml-unless>
 
@@ -2093,7 +2108,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.3.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -3815,12 +3830,12 @@ if key.startswith('table_'):
 		caption       python:unicode(zmscontext.attr('caption'),'utf-8');
 		align         python:zmscontext.attr('align').lower()">
     <table tal:attributes="id python:zmscontext.id; class python:zmscontext.meta_id; summary python:summary">
-        <caption tal:attributes="align align" tal:content="structure caption">The caption</caption>
+        <caption tal:condition="python:caption" tal:attributes="align align" tal:content="structure caption">The caption</caption>
         <colgroup tal:condition="python:zmscontext.attr('colgroup')">
             <tal:block tal:repeat="col python:zmscontext.attr('widths')">
                 <tal:block tal:define="col_index repeat/col/index">
                     <col tal:condition="python:col_index<len(cols) and cols[col_index]" tal:attributes="width python:str(cols[col_index])+'%'"/>
-                    <col tal:condition="python:not (col_index<len(cols) and cols[col_index])" tal:attributes="width repeat/col"/>
+                    <col tal:condition="python:not (col_index<len(cols) and cols[col_index])"/>
                 </tal:block>
             </tal:block>
         </colgroup>
@@ -3890,7 +3905,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.6.17]]></item>
+          <item key="revision"><![CDATA[1.6.18]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4117,7 +4132,7 @@ for ob in obs:
   for teaserElmnt in temp:
     penetrance = teaserElmnt.getObjProperty('attr_penetrance',request)
     if ( penetrance in [0,'this',''] and context == ob) or \
-       ( penetrance in [1,'sub_nav'] and context.meta_id in ['ZMS','ZMSFolder']) or \
+       ( penetrance in [1,'sub_nav'] and context.isMetaType(['ZMS','ZMSFolder'])) or \
        ( penetrance in [2,'sub_all']):
       teaserElmnts.insert( 0, teaserElmnt)
   abort_penetrance = ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
@@ -4274,7 +4289,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.3]]></item>
+          <item key="revision"><![CDATA[1.2.4]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4477,7 +4492,7 @@ return zmscontext.attr('text')
 				</span>
 				
 				<span tal:omit-tag="" tal:condition="python:displaytype=='right'">
-					<div class="graphic" tal:condition="python:img_filename">
+					<div class="graphic alignright" tal:condition="python:img_filename">
 						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
@@ -4500,7 +4515,7 @@ return zmscontext.attr('text')
 				</span>
 				
 				<span tal:omit-tag="" tal:condition="python:displaytype=='left'">
-					<div class="graphic" tal:condition="python:img_filename">
+					<div class="graphic alignleft" tal:condition="python:img_filename">
 						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
@@ -4570,41 +4585,6 @@ return zmscontext.attr('text')
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
-
-<tal:block tal:define="global 
-		zmscontext options/zmscontext;
-		teaserCntnr     python:zmscontext.getParentNode();
-		subclass        python:[teaserCntnr.meta_id];
-		style           python:[];
-		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
-		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
-		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
-	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
-		<tal:block tal:condition="python:bgcolor_border">
-			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
-		</tal:block>
-		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-			The teaser-element
-		</div>
-	</div>
-	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-		The teaser-element
-	</div>
-</tal:block>
-
-<!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
-                  </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[zpt]]></item>
-                </dictionary>
-              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -4631,7 +4611,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.3.1]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>

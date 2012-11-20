@@ -89,6 +89,13 @@ div#zmi-tab {
 div.alert {
 	margin:1em;
 }
+img.grippy {
+	width:6px!important;
+	height:14px!important;
+	background:url(/misc_/zms/grippy.png);
+	vertical-align:middle;
+	cursor:move;
+}
 ul.zmi-container {
 	width:75%;
 	padding-top:0;
@@ -113,6 +120,7 @@ table.table.zmi-sortable select.zmi-sort {
 	direction:rtl;
 	width:4em;
 }
+tr.zmi-selected td, 
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{

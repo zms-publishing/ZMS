@@ -1,0 +1,92 @@
+<!-- ZMSRecordSet/main_grid -->
+
+	<tal:block tal:define="global
+			meta_id options/meta_id;
+			metaObj python:here.getMetaobj(meta_id);
+			metaObjIds python:here.getMetaobjIds();
+			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+			objAttrs python:here.getObjAttrs(metaObj['id'])">
+
+<tal:block tal:define="global
+			records python:here.attr(metaObjAttrIds[0]);
+			metaObjAttrs python:[]">
+
+<tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
+	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id'] and metaObjAttr['type'] in here.metaobj_manager.valid_types and not metaObjAttr['type'] in ['password']">
+		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
+	</tal:block>
+</tal:block>
+
+<form method="post">
+<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+<table class="table table-striped table-bordered table-hover zmi-sortable">
+<colgroup>
+	<col width="1%"/>
+	<col width="1%"/>
+	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+		<tal:block tal:define="global 
+				elType python:metaObjAttr['type']">
+			<col tal:condition="python:elType in ['int']" width="3em"/>
+			<col tal:condition="python:elType not in ['int']"/>
+		</tal:block>
+	</tal:block>
+</colgroup>
+<thead>
+<tr>
+	<th>
+		<input type="checkbox" onchange="$('input[name^=qindices]').prop('checked',$(this).prop('checked')).change()">
+	</th>
+	<th>
+		<div class="btn-group">
+			<a class="btn" href="#" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=insertForm'%(request['lang']); title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus-sign"></i></a>
+		</div>
+	</th>
+	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+		<tal:block tal:define="global 
+				elLabel python:metaObjAttr['name']">
+		<th>
+			<tal:block tal:content="elLabel">elLabel</tal:block>
+		</th>
+		</tal:block>
+	</tal:block>
+</tr>
+</thead>
+<tbody>
+<tr tal:repeat="record records" tal:attributes="id python:'tr_%i'%records.index(record)">
+	<td>
+		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
+		<input type="checkbox" name="qindices:list" tal:attributes="value python:records.index(record)" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
+		<select class="zmi-sort" tal:condition="python:'sort_id' in metaObjAttrIds">
+			<option tal:repeat="i python:range(0,len(records))" tal:attributes="selected python:['','selected'][int(int(record.get('sort_id',0))==i+1)]" tal:content="python:i+1">i+1</option>
+		</select>
+	</td>
+	<td>
+		<div class="btn-group">
+			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=delete&amp;qindex:int=%i'%(request['lang'],records.index(record)); title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=editForm&amp;qindex:int=%i'%(request['lang'],records.index(record)); title python:here.getZMILangStr('BTN_EDIT')"><i class="icon-edit"></i></a>
+		</div>
+	</td>
+	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+		<tal:block tal:define="global 
+				elValue python:record.get(metaObjAttr['id'])">
+		<td>
+			<tal:block tal:condition="python:metaObjAttr['type']=='url'" tal:define="global target python:here.getLinkObj(elValue)">
+				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type']!='url'">
+				<tal:block tal:content="elValue">elValue</tal:block>
+			</tal:block>
+		</td>
+		</tal:block>
+	</tal:block>
+</tr>
+</tbody>
+</table>
+</form>
+
+</tal:block>
+
+	</tal:block>
+
+<!-- /ZMSRecordSet/main_grid -->

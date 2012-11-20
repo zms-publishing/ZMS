@@ -174,10 +174,10 @@ class ZMSCustom(ZMSContainerObject):
     metaobj_record_summary = HTMLFile('dtml/ZMSRecordSet/record_summary', globals())
     metaobj_recordset_details_grid = HTMLFile('dtml/ZMSRecordSet/details_grid', globals())
     metaobj_recordset_details = HTMLFile('dtml/ZMSRecordSet/details', globals())
-    metaobj_recordset_main_grid = HTMLFile('dtml/ZMSRecordSet/main_grid', globals())
+    metaobj_recordset_main_grid = _confmanager.ConfDict.template('ZMSRecordSet/main_grid')
     metaobj_recordset_main = _confmanager.ConfDict.template('ZMSRecordSet/main')
-    metaobj_recordset_actions = HTMLFile('dtml/ZMSRecordSet/actions', globals())
-    metaobj_recordset_input_fields = HTMLFile('dtml/ZMSRecordSet/input_fields', globals())
+    metaobj_recordset_actions = _confmanager.ConfDict.template('ZMSRecordSet/actions')
+    metaobj_recordset_input_fields = _confmanager.ConfDict.template('ZMSRecordSet/input_fields')
     metaobj_recordset_input_js = HTMLFile('dtml/ZMSRecordSet/input_js', globals())
 
 

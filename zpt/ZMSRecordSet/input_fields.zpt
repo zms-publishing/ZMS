@@ -1,0 +1,56 @@
+<!-- ZMSRecordSet/input_fields -->
+
+	<tal:block tal:define="global
+			meta_id options/meta_id;
+			action options/action;
+			row options/row;
+			metaObj python:here.getMetaobj(meta_id);
+			metaObjIds python:here.getMetaobjIds();
+			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+			objAttrs python:here.getObjAttrs(metaObj['id'])">
+
+
+<tal:block tal:define="global
+			records python:here.attr(metaObjAttrIds[0]);
+			metaObjAttrs python:[]">
+
+<tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
+	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id'] and metaObjAttr['type'] in here.metaobj_manager.valid_types and not metaObjAttr['type'] in ['password']">
+		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
+	</tal:block>
+</tal:block>
+
+<form class="form-horizontal" name="form0" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
+	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
+	<input type="hidden" id="action" name="action" tal:attributes="value action">
+	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
+	<div class="accordion-group">
+		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
+			<tal:block tal:define="global 
+					elName python:metaObjAttr['id'];
+					elLabel python:metaObjAttr['name']">
+			<div class="control-group">
+				<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+					<span tal:content="elLabel">the label</span>
+				</label>
+				<div class="controls" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName),REQUEST=request)">
+					the control
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+		</tal:block>
+	</div><!-- .accordion-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+</form>
+
+</tal:block>
+
+	</tal:block>
+
+<!-- /ZMSRecordSet/input_fields -->

@@ -33,7 +33,7 @@
 			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
 			qres python:[]">
 	<tal:block tal:condition="python:request.get('raw') and not request.get('search_meta_types')">
-		<tal:block tal:define="global dummy0 python:qres.extend(here.getTreeNodes(request,request.get('search_meta_types')))"></tal:block>
+		<tal:block tal:define="global dummy0 python:qres.extend(here.submitCatalogQuery(qs,request.get('search_order_by',1),request.get('search_meta_types',[]),request.get('search_clients',1),request))"></tal:block>
 	</tal:block>
 	<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
 		<tal:block tal:define="global dummy0 python:qres.extend(map(lambda x: {

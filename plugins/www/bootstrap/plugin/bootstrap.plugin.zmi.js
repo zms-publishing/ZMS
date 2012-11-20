@@ -271,9 +271,14 @@ $(function(){
  * Init input_fields
  */ 
 function zmiInitInputFields(container) {
-	$("form.form-horizontal",container)
+	$('form.form-horizontal',container)
 		.submit(function() {
 				var b = true;
+				// Button
+				if(self.btnClicked==getZMILangStr("BTN_BACK") ||
+						self.btnClicked==getZMILangStr("BTN_CANCEL")) {
+					return b;
+				}
 				// Multiple-Selects
 				$('select[multiple="multiple"]',this).each(function() {
 						var name = $(this).attr("name");
@@ -316,6 +321,10 @@ function zmiInitInputFields(container) {
 			})
 		.each(function() {
 			var context = this;
+			$('input[type="submit"],button[type="submit"]',context)
+				.click(function() {
+						self.btnClicked = $(this).attr("value");
+					});
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				// Date-Picker
 				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);

@@ -1,0 +1,33 @@
+<!-- ZMSRecordSet/actions -->
+
+	<tal:block tal:condition="python:request.get('btn') not in [here.getZMILangStr('BTN_BACK'),here.getZMILangStr('BTN_CANCEL')]" tal:define="global
+			meta_id options/meta_id;
+			action options/action">
+
+		<tal:block tal:condition="python:action=='insert'">
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#">&times;</a>
+				<tal:block tal:content="structure python:here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD')">record inserted</tal:block>
+				(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
+			</div>
+		</tal:block>
+
+		<tal:block tal:condition="python:action=='edit'">
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#">&times;</a>
+				<tal:block tal:content="structure python:here.getZMILangStr('MSG_CHANGED')">record changed</tal:block>
+				(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
+			</div>
+		</tal:block>
+
+		<tal:block tal:condition="python:action=='delete'">
+			<div class="alert alert-success">
+				<a class="close" data-dismiss="alert" href="#">&times;</a>
+				<tal:block tal:content="structure python:here.getZMILangStr('MSG_DELETED')%int(1)">record deleted</tal:block>
+				(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
+			</div>
+		</tal:block>
+
+	</tal:block>
+
+<!-- /ZMSRecordSet/actions -->

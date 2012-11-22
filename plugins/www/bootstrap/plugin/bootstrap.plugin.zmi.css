@@ -120,11 +120,17 @@ table.table.zmi-sortable select.zmi-sort {
 	direction:rtl;
 	width:4em;
 }
+table.table.zmi-sortable input {
+	margin-bottom:10px;
+}
+table.table.zmi-sortable img.grippy {
+	margin-bottom:8px;
+}
 tr.zmi-selected td, 
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
-	background-color:#08c !important;
+	background-color:#08c!important;
 	color:#fff!important;
 }
 .zmi-container .zmi-item .center {
@@ -149,6 +155,9 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	overflow:hidden;
 	background-color:white!important;
 	min-height:3.5em;
+}
+ul.breadcrumb li {
+	white-space:nowrap;
 }
 .zmi-container .right li [class^="icon-"], 
 .zmi-container .right li [class*=" icon-"] {
@@ -192,6 +201,9 @@ form.form-horizontal {
 .zmi.properties .accordion-group {
 	background-color: #fff;
 	width:800px;
+}
+.perc100 {
+	width:100%!important;
 }
 .zmi.properties .form-horizontal .control-group {
 margin-top: 8px;

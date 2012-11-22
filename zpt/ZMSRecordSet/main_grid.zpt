@@ -12,13 +12,20 @@
 			metaObjAttrs python:[]">
 
 <tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
-	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id'] and metaObjAttr['type'] in here.metaobj_manager.valid_types and not metaObjAttr['type'] in ['password']">
+	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
+			and not metaObjAttr['id'].startswith('_')
+			and metaObjAttr['type'] in here.metaobj_manager.valid_types
+			and not metaObjAttr['type'] in ['password']">
 		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
 	</tal:block>
 </tal:block>
 
-<form method="post">
+<form name="form0" action="manage_changeRecordSet" method="post">
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
+<input type="hidden" name="action" value=""/>
+<input type="hidden" name="btn" value=""/>
+<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
 <table class="table table-striped table-bordered table-hover zmi-sortable">
 <colgroup>
 	<col width="1%"/>
@@ -38,7 +45,7 @@
 	</th>
 	<th>
 		<div class="btn-group">
-			<a class="btn" href="#" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+			<a class="btn" tal:attributes="href python:'#'; onclick python:'zmiRecordSetDeleteRow(\'form0\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
 			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=insertForm'%(request['lang']); title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus-sign"></i></a>
 		</div>
 	</th>
@@ -53,18 +60,19 @@
 </tr>
 </thead>
 <tbody>
-<tr tal:repeat="record records" tal:attributes="id python:'tr_%i'%records.index(record)">
+<tal:block tal:repeat="record records">
+<tr tal:define="global qindex python:records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
 	<td>
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
-		<input type="checkbox" name="qindices:list" tal:attributes="value python:records.index(record)" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
-		<select class="zmi-sort" tal:condition="python:'sort_id' in metaObjAttrIds">
+		<input type="checkbox" name="qindices:list" tal:attributes="value qindex" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
+		<select class="zmi-sort" tal:condition="python:'sort_id' in metaObjAttrIds" tal:attributes="name python:'sort_id_%i'%qindex; onchange python:'zmiRecordSetMoveRow(this,%i)'%qindex">
 			<option tal:repeat="i python:range(0,len(records))" tal:attributes="selected python:['','selected'][int(int(record.get('sort_id',0))==i+1)]" tal:content="python:i+1">i+1</option>
 		</select>
 	</td>
 	<td>
 		<div class="btn-group">
-			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=delete&amp;qindex:int=%i'%(request['lang'],records.index(record)); title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
-			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=editForm&amp;qindex:int=%i'%(request['lang'],records.index(record)); title python:here.getZMILangStr('BTN_EDIT')"><i class="icon-edit"></i></a>
+			<a class="btn" tal:attributes="href python:'#'; onclick python:'zmiRecordSetDeleteRow(\'form0\',%i)'%qindex; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=updateForm&amp;qindex:int=%i'%(request['lang'],qindex); title python:here.getZMILangStr('BTN_EDIT')"><i class="icon-edit"></i></a>
 		</div>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -81,6 +89,7 @@
 		</tal:block>
 	</tal:block>
 </tr>
+</tal:block>
 </tbody>
 </table>
 </form>

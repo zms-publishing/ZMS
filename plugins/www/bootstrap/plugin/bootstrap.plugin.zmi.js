@@ -196,8 +196,9 @@ $(function(){
 							if ($(this).attr("id") == ui.item.attr("id")) {
 								if(self.zmiSortableRownum != c) {
 									var id = ui.item.attr("id");
-									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
-									confirm(href);
+									var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
+									var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
+									self.location.href = href;
 								}
 							}
 							c++;
@@ -599,7 +600,7 @@ function zmiActionOut(el, evt) {
 function zmiActionExecute(sender, label, target) {
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
-	$("input[name='custom']").val(label);      
+	$("input[name='custom']").val(label);
 	$("input[name='_sort_id:int']").val($(".zmi-sort-id",$el).text());
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		// Parameters
@@ -709,4 +710,29 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
 function zmiDialogClose(id) {
 	$('#'+id).dialog('close');
 	$('body').remove('#'+id);
+}
+
+function zmiRecordSetMoveRow(el, qIndex) {
+	var $form = $($(el).parents('form:first'));
+	$form.append('<input type="hidden" name="pos:int" value="' + (qIndex+1) + '">');
+	$form.append('<input type="hidden" name="newpos:int" value="' + $(el).val() + '">');
+	$('input[name="action"]',$form).val('move');
+	$form.submit();
+}
+
+function zmiRecordSetDeleteRow(fmName, qIndex) {
+	var $form = $('form[name="'+fmName+'"]');
+	if (typeof qIndex != "undefined") {
+		var $input = $('input[value="'+qIndex+'"]',$form);
+		$input.prop('checked',true).change();
+	}
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		$('input[name="action"]',$form).val('delete');
+		$form.submit();
+	}
+	else if (typeof qIndex != "undefined") {
+		var $input = $('input[value="'+qIndex+'"]',$form);
+		$input.prop('checked',false).change();
+	}
+	return false;
 }

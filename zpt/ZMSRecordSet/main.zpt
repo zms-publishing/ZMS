@@ -6,11 +6,7 @@
 			metaObjIds python:here.getMetaobjIds();
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
 
-<tal:block tal:condition="python:request.get('action') is not None" tal:content="structure python:here.metaobj_recordset_actions(meta_id=meta_id,action=request['action'])">
-	metaobj_recordset_actions
-</tal:block>
-
-	<div class="accordion-group">
+	<div class="accordion-group perc100">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
 				<i></i>
@@ -32,13 +28,13 @@
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
 
-<tal:block tal:condition="python:request.get('action') not in ['editForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(meta_id=meta_id)">
+<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(meta_id=meta_id)">
 	metaobj_recordset_main
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='editForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='edit',row=here.attr(metaObjAttrIds[0])[int(request['qindex'])])">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='update',qindex=request['qindex'],row=here.attr(metaObjAttrIds[0])[int(request['qindex'])])">
 	metaobj_recordset_input_fields
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',row={})">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',qindex=-1,row={})">
 	metaobj_recordset_input_fields
 </tal:block>
 

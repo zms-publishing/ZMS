@@ -148,6 +148,7 @@ class ZMSCustom(ZMSContainerObject):
     __authorPermissions__ = (
         'manage','manage_main','manage_main_iframe','manage_container','manage_workspace',
         'manage_addZMSModule',
+        'manage_changeRecordSet',
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
         'manage_deleteObjs','manage_undoObjs','manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
@@ -176,7 +177,7 @@ class ZMSCustom(ZMSContainerObject):
     metaobj_recordset_details = HTMLFile('dtml/ZMSRecordSet/details', globals())
     metaobj_recordset_main_grid = _confmanager.ConfDict.template('ZMSRecordSet/main_grid')
     metaobj_recordset_main = _confmanager.ConfDict.template('ZMSRecordSet/main')
-    metaobj_recordset_actions = _confmanager.ConfDict.template('ZMSRecordSet/actions')
+    metaobj_recordset_actions = HTMLFile('dtml/ZMSRecordSet/actions', globals())
     metaobj_recordset_input_fields = _confmanager.ConfDict.template('ZMSRecordSet/input_fields')
     metaobj_recordset_input_js = HTMLFile('dtml/ZMSRecordSet/input_js', globals())
 
@@ -394,6 +395,102 @@ class ZMSCustom(ZMSContainerObject):
       RESPONSE.setHeader('Content-Disposition','attachment;filename="recordSet_Export.xml"')
       export = self.getXmlHeader() + self.toXmlString(value,True)
       return export
+
+
+    ############################################################################
+    #  ZMSCustom.manage_changeRecordSet:
+    #
+    #  Change record-set.
+    ############################################################################
+    def manage_changeRecordSet(self, lang, btn, action, REQUEST, RESPONSE):
+      """ ZMSCustom.manage_changeRecordSet """
+      message = ''
+      messagekey = 'manage_tabs_message'
+      t0 = time.time()
+      
+      if btn not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+        try:
+          ##### Object State #####
+          self.setObjStateModified(REQUEST)
+          
+          metaObj = self.getMetaobj(self.meta_id)
+          res_abs = self.recordSet_Init(REQUEST)
+          if action == 'insert':
+            row = {}
+            row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_created_dt'] = _globals.getDateTime( time.time())
+            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_change_dt'] = _globals.getDateTime( time.time())
+            for metaObjAttr in metaObj['attrs'][1:]:
+              objAttr = self.getObjAttr(metaObjAttr['id'])
+              objAttrName = self.getObjAttrName(objAttr,lang)
+              if metaObjAttr['type'] in self.metaobj_manager.valid_types or \
+                 metaObjAttr['type'] not in self.metaobj_manager.valid_xtypes+self.metaobj_manager.valid_zopetypes:
+                value = self.formatObjAttrValue(objAttr,REQUEST.get(objAttrName),lang)
+                try: del value['aq_parent']
+                except: pass
+                if metaObjAttr['id'] == 'sort_id' and value is None:
+                  value = len(res_abs)
+                row[metaObjAttr['id']] = value
+            res_abs.append(row)
+            message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_RECORD')
+          elif action == 'update':
+            row = res_abs[REQUEST['qindex']]
+            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_change_dt'] = _globals.getDateTime( time.time())
+            for metaObjAttr in metaObj['attrs'][1:]:
+              objAttr = self.getObjAttr(metaObjAttr['id'])
+              objAttrName = self.getObjAttrName(objAttr,lang)
+              if metaObjAttr['type'] in self.metaobj_manager.valid_types or \
+                 metaObjAttr['type'] not in self.metaobj_manager.valid_xtypes+self.metaobj_manager.valid_zopetypes:
+                value = self.formatObjAttrValue(objAttr,REQUEST.get(objAttrName),lang)
+                try: del value['aq_parent']
+                except: pass
+                if metaObjAttr['id'] == 'sort_id' and value is None:
+                  value = len(res_abs)
+                row[metaObjAttr['id']] = value
+            res_abs[REQUEST['qindex']] = row
+            message = self.getZMILangStr('MSG_CHANGED')
+          elif action == 'delete':
+            rows = map(lambda x: res_abs[int(x)], REQUEST.get('qindices',[]))
+            for row in rows:
+              del res_abs[res_abs.index(row)]
+            message = self.getZMILangStr('MSG_DELETED')%len(rows)
+          elif action == 'move':
+            pos = REQUEST['pos']
+            newpos = REQUEST['newpos']
+            sibling_sort_ids = map(lambda x: (x+1)*10, range(len(res_abs)))
+            sibling_sort_ids.remove(pos*10)
+            if newpos-1 < len(sibling_sort_ids):
+              new_sort_id = sibling_sort_ids[newpos-1]-1
+            else:
+              new_sort_id = sibling_sort_ids[-1]+1
+            res_abs = self.sort_list(res_abs,'sort_id')
+            for i in range(len(res_abs)):
+              row = res_abs[i]
+              if i == pos - 1:
+                row['sort_id'] = new_sort_id
+              else:
+                row['sort_id'] = row['sort_id']*10
+            # Normalize sort-ids.
+            res_abs = self.sort_list(res_abs,'sort_id')
+            for i in range(len(res_abs)):
+              row = res_abs[i]
+              row['sort_id'] = i+1
+            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
+          self.setObjProperty(metaObj['attrs'][0]['id'],res_abs,lang)
+          
+          ##### VersionManager ####
+          self.onChangeObj(REQUEST)
+        except:
+          message = _globals.writeError(self,"[manage_changeProperties]")
+          messagekey = 'manage_tabs_error_message'
+        
+        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+      
+      # Return with message.
+      message = urllib.quote(message)
+      return REQUEST.RESPONSE.redirect('manage_main?lang=%s&%s=%s'%(lang,messagekey,message))
 
 
     ############################################################################

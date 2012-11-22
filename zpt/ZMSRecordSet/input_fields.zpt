@@ -3,6 +3,7 @@
 	<tal:block tal:define="global
 			meta_id options/meta_id;
 			action options/action;
+			qindex options/qindex;
 			row options/row;
 			metaObj python:here.getMetaobj(meta_id);
 			metaObjIds python:here.getMetaobjIds();
@@ -15,17 +16,23 @@
 			metaObjAttrs python:[]">
 
 <tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
-	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id'] and metaObjAttr['type'] in here.metaobj_manager.valid_types and not metaObjAttr['type'] in ['password']">
+	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
+			and not metaObjAttr['id'].startswith('_')
+			and metaObjAttr['type'] in here.metaobj_manager.valid_types">
 		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
 	</tal:block>
 </tal:block>
 
-<form class="form-horizontal" name="form0" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
 	<input type="hidden" id="action" name="action" tal:attributes="value action">
+	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
 	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+		</div><!-- accordion-heading -->
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 			<tal:block tal:define="global 
 					elName python:metaObjAttr['id'];

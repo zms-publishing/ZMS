@@ -433,7 +433,7 @@ function form2Submit(fm) {
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
-       <dtml-if "getUserAttr(userName,'email','') or not getConfProperty('EmailMandatory','')">
+       <dtml-if "getUserAttr(name,'email','') or not getConfProperty('EmailMandatory','')"> 
        <dtml-let multilang="len(getLangIds())>1">
          <dtml-if LDAPUserFolder_utf8>
            <dtml-call "REQUEST.set('nodes', getUserAttr(userName.decode('utf-8').encode('latin-1'),'nodes',{}))">

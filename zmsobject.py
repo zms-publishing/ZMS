@@ -109,6 +109,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_html_head = PageTemplateFile('zpt/common/zmi_html_head', globals())
     zmi_pagination = PageTemplateFile('zpt/common/zmi_pagination', globals())
     zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
+    zmi_tabs_sub = PageTemplateFile('zpt/common/zmi_tabs_sub', globals())
 
     # Templates.
     # ----------

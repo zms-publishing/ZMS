@@ -143,7 +143,7 @@ class ConfManager(
 
     # Management Interface.
     # ---------------------
-    manage_customize = HTMLFile('dtml/ZMS/manage_customize', globals()) 
+    manage_customize = ConfDict.template('ZMS/manage_customize') 
     manage_customizeSvnForm = HTMLFile('dtml/ZMS/manage_customizesvnform', globals()) 
     manage_customizeDesignForm = HTMLFile('dtml/ZMS/manage_customizedesignform', globals()) 
 

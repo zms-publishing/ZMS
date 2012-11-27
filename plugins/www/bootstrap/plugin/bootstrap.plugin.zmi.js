@@ -155,58 +155,22 @@ $(function(){
 			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
 		});
 
-
 	// Double-Clickable
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
-			self.location.href = $('a[target=]',this).attr('href'); 
+			var href = null;
+			if ((href==null || typeof href=="undefined") && $('a i.icon-edit',this).length > 0) {
+				href = $('a i.icon-edit',this).parents("a:first").attr('href');
+			}
+			else if ((href==null || typeof href=="undefined")) {
+				href = $('a[target=]',this).attr('href');
+			}
+			if (!(href==null || typeof href=="undefined")) {
+				self.location.href = href;
+			} 
 		})
 		.attr( "title", "Double-click to edit!");
 
-
-	// Sortable
-	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
-		ui.children().each(function() {
-			$(this).width($(this).width());
-		});
-		return ui;
-	};
-	$("table.zmi-sortable tbody").sortable({
-		delay:500,
-		forcePlaceholderSize:true,
-		handle:'img.grippy',
-		helper:fixHelper,
-		placeholder: "ui-state-highlight",
-		revert: true,
-		start: function(event, ui) {
-				self.zmiSortableRownum = false;
-				var c = 1;
-				$("table.zmi-sortable > tbody > tr").each(function() {
-						if ($(this).attr("id") == ui.item.attr("id")) {
-							self.zmiSortableRownum = c;
-						}
-						c++;
-					});
-			},
-		stop: function(event, ui) {
-				var pos = $(this).position();
-				if (self.zmiSortableRownum) {
-					var c = 1;
-					$("table.zmi-sortable > tbody > tr").each(function() {
-							if ($(this).attr("id") == ui.item.attr("id")) {
-								if(self.zmiSortableRownum != c) {
-									var id = ui.item.attr("id");
-									var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
-									var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
-									self.location.href = href;
-								}
-							}
-							c++;
-						});
-				}
-				self.zmiSortableRownum = false;
-			}
-		});
 	// Sortable
 	$("ul.zmi-container.zmi-sortable").sortable({
 		delay:500,
@@ -712,6 +676,10 @@ function zmiDialogClose(id) {
 	$('body').remove('#'+id);
 }
 
+// ############################################################################
+// ### Record-Sets
+// ############################################################################
+
 function zmiRecordSetMoveRow(el, qIndex) {
 	var $form = $($(el).parents('form:first'));
 	$form.append('<input type="hidden" name="pos:int" value="' + (qIndex+1) + '">');
@@ -735,4 +703,90 @@ function zmiRecordSetDeleteRow(fmName, qIndex) {
 		$input.prop('checked',false).change();
 	}
 	return false;
+}
+
+$(function() {
+	// Sortable
+	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+		ui.children().each(function() {
+			$(this).width($(this).width());
+		});
+		return ui;
+	};
+	$("table.zmi-sortable tbody").sortable({
+		delay:500,
+		forcePlaceholderSize:true,
+		handle:'img.grippy',
+		helper:fixHelper,
+		placeholder: "ui-state-highlight",
+		revert: true,
+		start: function(event, ui) {
+				self.zmiSortableRownum = false;
+				var c = 1;
+				$("table.zmi-sortable > tbody > tr").each(function() {
+						if ($(this).attr("id") == ui.item.attr("id")) {
+							self.zmiSortableRownum = c;
+						}
+						c++;
+					});
+			},
+		stop: function(event, ui) {
+				var pos = $(this).position();
+				if (self.zmiSortableRownum) {
+					var c = 1;
+					$("table.zmi-sortable > tbody > tr").each(function() {
+							if ($(this).attr("id") == ui.item.attr("id")) {
+								if(self.zmiSortableRownum != c) {
+									var id = ui.item.attr("id");
+									var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
+									var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
+									self.location.href = href;
+								}
+							}
+							c++;
+						});
+				}
+				self.zmiSortableRownum = false;
+			}
+		});
+	});
+
+// ############################################################################
+// ### zmiDisableInteractions
+// ############################################################################
+
+var zmiDisableInteractionsAllowed = true;
+
+$(function() {
+	// preload image
+	new Image().src = "/misc_/zms/loading_16x16.gif";
+	// Disable
+	$(window).unload(function() {zmiDisableInteractions(true)});
+});
+
+function zmiEnableInteractions(b) {
+	// Set wait-cursor.
+	$(document.body).css( 'cursor', 'auto');
+	// Create semi-transparent overlay
+	$("div#overlay").remove();
+	// Create progress-box.
+	$("div#progressbox").remove();
+}
+  
+function zmiDisableInteractions(b) {
+	if (!b || !zmiDisableInteractionsAllowed) {
+		zmiDisableInteractionsAllowed = true;
+		return;
+	}
+	// Set wait-cursor.
+	$(document.body).css( 'cursor', 'wait');
+	// Create semi-transparent overlay
+	$(document.body).append('<div id="zmi-overlay"></div>');
+	// Create progress-box.
+	$(document.body).append('<div id="zmi-progressbox">'
+			+ '<img src="/misc_/zms/loading_16x16.gif" border="0" align="absmiddle"> ' + getZMILangStr('MSG_LOADING')
+		+ '</div>');
+	var dims = getInnerDimensions();
+	var $div = $("#zmi-progressbox");
+	$div.css({top:(dims.height-$div.prop('offsetHeight'))/2,left:(dims.width-$div.prop('offsetWidth'))/2});
 }

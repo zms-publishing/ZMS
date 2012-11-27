@@ -1,0 +1,15 @@
+<!-- common/zmi_tabs_sub -->
+
+<ul class="sub-nav nav nav-pills" tal:define="global
+			current python:request['URL'].split('/')[-1];
+			all_options options/options;
+			special_options python:[];
+			current_options python:filter(lambda x: current.startswith(x['action']),all_options);
+			filtered_options python:filter(lambda x: len(filter(lambda y: x['action'].startswith(y),special_options))==0,all_options);
+			options python:[filtered_options,current_options][int(len(filter(lambda x: current.startswith(x),special_options))>0)]">
+	<tal:block tal:repeat="option options">
+		<li tal:attributes="class python:' '.join([['','active'][int(current.startswith(option['action']))]])"><a tal:attributes="href python:'%s?lang=%s'%(option['action'],request['lang'])" onclick="javascript:return confirmChanges(this);" tal:content="python:here.getZMILangStr(option['label'])">the label</a></li>
+	</tal:block>
+</ul><!-- .nav.nav-pills -->
+
+<!-- /common/zmi_tabs_sub -->

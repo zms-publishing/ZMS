@@ -639,7 +639,7 @@ class AccessManager(AccessableContainer):
     # ------------------------------------------------------------------------------
     #  AccessManager.purgeLocalUsers
     # ------------------------------------------------------------------------------
-    def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[]):
+    def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[], request=None):    
       rtn = ""
       if ob is None: ob = self
       
@@ -663,12 +663,19 @@ class AccessManager(AccessableContainer):
         if delLocalRoles:
           rtn += ob.absolute_url()+ " " + userid + " " + str(userroles) + "<br/>"
           ob.manage_delLocalRoles(userids=[userid])
+        
+        # delete nonexistent nodes
+        if request is not None:
+          userNodes = self.getUserAttr(userid, 'nodes', {})
+          for node in userNodes.keys():
+            if not self.getLinkObj(node,request):
+              self.delLocalUser(userid, node)
       
       # Process subtree.
       for subob in ob.objectValues(ob.dGlobalAttrs.keys()):
         rtn += self.purgeLocalUsers(subob, valid_userids, invalid_userids)
       
-      return rtn
+      return rtn 
 
 
     # --------------------------------------------------------------------------

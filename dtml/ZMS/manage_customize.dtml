@@ -13,7 +13,7 @@
 	<dtml-if "REQUEST.get('btn','').startswith('Purge')">
 		<div id="system_msg" class="ui-state-highlight ui-corner-all">
 			<b>UserFolder:</b>
-			Purge local users<br/><dtml-var "purgeLocalUsers()">
+			Purge local users<br/><dtml-var "purgeLocalUsers(request=REQUEST)">
 			(<dtml-var "getLangFmtDate(ZopeTime())">)
 		</div>
 	<dtml-elif "REQUEST.get('btn','').startswith('Reindex')">

@@ -1,76 +1,116 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
-<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'customize',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
-<tal:block tal:content="structure python:here.zmi_tabs_sub(here,request,options=here.customize_manage_options)">zmi_tabs</tal:block>
 
 <script>
 </script>
 
-<div class="clearfix">
 
-<div class="pull-left perc50">
-<form class="form-horizontal" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="Manager">
-	<legend>Manager</legend>
-</form>
-</div><!-- .pull-left.perc50 -->
+<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#Manager" data-toggle="tab">Manager</a></li>
+		<li><a href="#Portal" data-toggle="tab">Portal</a></li>
+		<li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
+		<li><a href="#Miscellaneous" data-toggle="tab">Miscellaneous</a></li>
+		<li><a href="#Maintenance" data-toggle="tab">Maintenance</a></li>
+		<li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
+		<li><a href="#History" data-toggle="tab">History</a></li>
+		<li><a href="#Subversion" data-toggle="tab">Subversion</a></li>
+		<li><a href="#InstalledLibraries" data-toggle="tab">Installed Libraries</a></li>
+		<li><a href="#System" data-toggle="tab">System</a></li>
+	</ul>
+	<div class="tab-content">
 
-<div class="pull-left perc50">
-<form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="Clients">
-	<legend>Portal</legend>
-	<p class="well well-small">Register the folder-ids of this site's master- and client-sites.</p>
-	<div class="control-group">
-		<label class="control-label" for="portal_master">Master</label>
-		<div class="controls">
-			<input type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-	<label class="control-label" for="portal_master">Clients</label>
-		<div class="controls">
-			<textarea name="portal_clients" cols="40" rows="5" wrap="off"  tal:content="python:'\n'.join(here.getConfProperty('Portal.Clients',[]))"></textarea>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_CHANGE')">Change</button>
+		<div class="tab-pane active" id="Manager">
+		<form class="form-horizontal" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="Manager">
+			<legend>Manager</legend>
+			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
+					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
+			<div class="control-group">
+				<label class="control-label" for="portal_master">ZMS base-components</label>
+				<div class="controls">
+					<select name="meta_type" onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+						<option value="">Select type to add...</option>
+						<tal:block tal:repeat="meta_type meta_types">
+							<option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value python:meta_type['action']" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
+						</tal:block>
+					</select>
+					<button name="btn" type="submit" class="btn" value="Add">Add</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<tal:block tal:repeat="si python:here.objectValues(['ZCatalog']+map(lambda x: x['name'],meta_types))">
+			<div class="control-group">
+				<div class="controls">
+					<input class="form-checkbox" type="checkbox" name="ids:list" tal:attributes="value python:si.id">
+					<a tal:attributes="href python:'%s/manage_main'%si.id">
+						<img tal:attributes="src python:si.icon"/>
+						<tal:block tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</tal:block>
+					</a>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn" value="Remove">Remove</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+		</form>
 		</div>
-	</div>
-</form>
-</div><!-- .pull-left.perc50 -->
 
-</div><!-- .clearfix -->
-
-<div class="clearfix">
-
-<div class="pull-left perc50">
-<form class="form-horizontal" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="Import">
-	<legend>Configuration</legend>
-	<p class="well well-small">Import complete configuration packages with language-dictionaries, metadata-, special-object-, action- and filter-definitions contained in one single zip-archive.</p>
-	<div class="control-group">
-		<label class="control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
-		<div class="controls">
-			<input name="file" type="file">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+		<div class="tab-pane" id="Portal">
+		<form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="Clients">
+			<legend>Portal</legend>
+			<p class="well well-small">Register the folder-ids of this site's master- and client-sites.</p>
+			<div class="control-group">
+				<label class="control-label" for="portal_master">Master</label>
+				<div class="controls">
+					<input type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+			<label class="control-label" for="portal_master">Clients</label>
+				<div class="controls">
+					<textarea name="portal_clients" cols="40" rows="5" wrap="off"  tal:content="python:'\n'.join(here.getConfProperty('Portal.Clients',[]))"></textarea>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
 		</div>
-	</div>
-</form>
-</div><!-- .pull-left.perc50 -->
 
-<div class="pull-left perc50">
+		<div class="tab-pane" id="Configuration">
+		<form class="form-horizontal" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="Import">
+			<legend>Configuration</legend>
+			<p class="well well-small">Import complete configuration packages with language-dictionaries, metadata-, special-object-, action- and filter-definitions contained in one single zip-archive.</p>
+			<div class="control-group">
+				<label class="control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
+				<div class="controls">
+					<input name="file" type="file">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
+				</div>
+			</div>
+		</form>
+		</div>
+
+		<div class="tab-pane" id="Miscellaneous">
 <form class="form-horizontal" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="key" value="Custom">
@@ -136,70 +176,157 @@
 	</div><!-- .control-group -->
 	</tal:block>
 </form>
-</div><!-- .pull-left.perc50 -->
+		</div>
 
-</div><!-- .clearfix -->
+		<div class="tab-pane" id="Maintenance">
+		<form class="form-horizontal" name="CatalogForm" action="manage_customize#_Maintenance" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="Maintenance">
+			<legend>Maintenance</legend>
+		</form>
+		</div>
 
-<div class="clearfix">
+		<div class="tab-pane" id="MediaFolder">
+		<form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="MediaDb">
+			<legend>Media-Folder</legend>
+			<p class="well well-small">Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB.</p>
+			<tal:block tal:condition="python:here.getMediaDb() is None">
+			<div class="control-group">
+				<label class="control-label" for="mediadb_location">Location</label>
+				<div class="controls">
+					<input type="text" name="mediadb_location">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn btn-primary" value="Create">Create</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+			<tal:block tal:condition="python:here.getMediaDb() is not None">
+			<div class="control-group">
+				<label class="control-label" for="mediadb_location">Location</label>
+				<div class="controls">
+					<input type="text" name="mediadb_location" tal:attributes="value python:here.getMediaDb().location" disabled="disabled">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn" value="Remove">Remove</button>
+					<button name="btn" type="submit" class="btn" value="Pack" tal:condition="python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)>=0">Pack</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+		</form>
+		</div>
 
-<div class="pull-left perc50">
-<form class="form-horizontal" name="CatalogForm" action="manage_customize#_Maintenance" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="Maintenance">
-	<legend>Maintenance</legend>
-</form>
-</div><!-- .pull-left.perc50 -->
-
-<div class="pull-left perc50">
-<form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="MediaDb">
-	<legend>Media-Folder</legend>
-	<p class="well well-small">Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB.</p>
-</form>
-</div><!-- .pull-left.perc50 -->
-
-</div><!-- .clearfix -->
-
-<div class="clearfix">
-
-<div class="pull-left perc50">
+		<div class="tab-pane" id="History">
 <form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="key" value="History">
 	<legend>History</legend>
 	<p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
+	<div class="control-group">
+	<label class="control-label" for="history_active">Active</label>
+		<div class="controls">
+			<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
+			<div class="input-append zmi-nodes">
+				<textarea name="nodes" cols="40" rows="1" wrap="off" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+				<span class="add-on">...</span>
+			</div>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
 </form>
-</div><!-- .pull-left.perc50 -->
+		</div>
 
-<div class="pull-left perc50">
-<form class="form-horizontal" name="SVNForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="SVN">
-	<legend>Subversion</legend>
-	<p class="well well-small">Use the subversion-folder to sync home-folder from ZODB with the file-system of your server.</p>
-</form>
-</div><!-- .pull-left.perc50 -->
+		<div class="tab-pane" id="Subversion">
+		<form class="form-horizontal" name="SVNForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="SVN">
+			<legend>Subversion</legend>
+			<p class="well well-small">Use the subversion-folder to sync home-folder from ZODB with the file-system of your server.</p>
+			<div class="control-group">
+				<label class="control-label" for="conf_value">Location</label>
+				<div class="controls">
+					<input type="hidden" name="conf_key" value="SVN.path"/>
+					<input type="text" name="conf_value" tal:attributes="value python:here.getConfProperty('SVN.path','')">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+					&nbsp;
+					<button name="btn" type="submit" class="btn" value="Copy to Location">Copy to Location</button>
+					<button name="btn" type="submit" class="btn" value="Update from Location">Update from Location</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
+		</div>
 
-<div class="clearfix">
+		<div class="tab-pane" id="InstalledLibraries">
+		<form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" name="key" value="InstalledProducts">
+			<legend>Installed Libraries</legend>
+		</form>
+		</div>
 
-<div class="pull-left perc50">
+		<div class="tab-pane" id="System">
 <form class="form-horizontal" name="SystemForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="key" value="System">
 	<legend>System</legend>
+	<div class="control-group">
+		<label class="control-label">ZMS:</label><div class="controls" tal:content="python:'%s (Build #%s%s)'%(here.zms_version(),here.zms_build,here.zms_patch)">zms_version_txt</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">ZOPE:</label><div class="controls" tal:content="python:here.Control_Panel.version_txt()">version_txt</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">PYTHON:</label><div class="controls" tal:content="python:here.Control_Panel.sys_version()">sys_version</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">System Platform:</label><div class="controls" tal:content="python:here.Control_Panel.sys_platform()">sys_platform</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">SOFTWARE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getSOFTWARE_HOME()">getSOFTWARE_HOME</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">ZOPE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getZOPE_HOME()">getZOPE_HOME</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">INSTANCE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getINSTANCE_HOME()">getINSTANCE_HOME</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">PRODUCT_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getPRODUCT_HOME()">getPRODUCT_HOME</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">CLIENT_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getCLIENT_HOME()">getCLIENT_HOME</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">System Time:</label><div class="controls" tal:content="python:here.ZopeTime()">ZopeTime</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">Running For:</label><div class="controls" tal:content="python:here.Control_Panel.process_time()">process_time</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">ZODB Location:</label><div class="controls" tal:content="python:here.Control_Panel.Database.db_name()">db_name</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label">Database Size:</label><div class="controls" tal:content="python:here.Control_Panel.Database.db_size()">db_size</div><!-- .controls -->
+	</div><!-- .control-group -->
 </form>
-</div><!-- .pull-left.perc50 -->
+		</div>
 
-<div class="pull-left perc50">
-<form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="InstalledProducts">
-	<legend>Installed Libraries</legend>
-</form>
-</div><!-- .pull-left.perc50 -->
-
-</div><!-- .clearfix -->
+	</div>
+</div>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

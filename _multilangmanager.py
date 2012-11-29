@@ -243,11 +243,6 @@ class MultiLanguageManager:
     zope.interface.implements(
         IZMSLocale.IZMSLocale)
 
-    # Management Interface.
-    # ---------------------
-    manage_customizeLanguagesForm = HTMLFile('dtml/ZMS/manage_customizelanguagesform', globals()) 
-
-    
     def get_manage_langs(self):
       """
       Returns list of manage-languages.

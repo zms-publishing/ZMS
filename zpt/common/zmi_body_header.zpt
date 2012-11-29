@@ -101,6 +101,7 @@
 	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)"></a>
 </div><!-- #zmi-logo -->
 
-<tal:block tal:content="structure python:here.zmi_tabs(here,request)">zmi_tabs</tal:block>
+<tal:block tal:condition="options/options" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>
+<tal:block tal:condition="not:options/options" tal:content="structure python:here.zmi_tabs(here,request,options=here.filtered_manage_options(),special_options=['manage_users','manage_customize'])">zmi_tabs</tal:block>
 
 <!-- /common/zmi_body_header -->

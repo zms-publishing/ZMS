@@ -34,7 +34,11 @@ class pilutil:
       from PIL import Image
       return True
     except:
-      return False
+      try:
+        import Image
+        return True
+      except:
+        return False
 
 
   thumbnail__roles__ = None
@@ -56,7 +60,7 @@ class pilutil:
     try:
       from PIL import Image
     except:
-      pass
+      import Image
     
     # Save image in temp-folder
     tempfolder = tempfile.mktemp()
@@ -129,7 +133,7 @@ class pilutil:
     try:
       from PIL import Image
     except:
-      pass
+      import Image
     
     # Save image in temp-folder
     tempfolder = tempfile.mktemp()
@@ -164,7 +168,7 @@ class pilutil:
     try:
       from PIL import Image
     except:
-      pass
+      import Image
     
     # Save image in temp-folder
     tempfolder = tempfile.mktemp()

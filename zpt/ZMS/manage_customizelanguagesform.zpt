@@ -29,10 +29,49 @@
 	</tr>
 	</thead>
 	<tbody>
-	<tr>
-	</tr>
+	<tal:block tal:define="global langStack python:[]">
+		<tal:block tal:repeat="langNode python:here.getLangTree()">
+			<tal:block tal:define="global sk python:langNode[0]; si python:langNode[1]; langId sk; langObj python:here.getLang(langId)">
+				<tal:block tal:condition="python:si['parent'] in langStack and not langStack[-1]==si['parent']">
+					<tal:block tal:repeat="i python:range(len(langStack)-langStack.index(si['parent'])-1)">
+						<tal:block tal:define="dummy python:langStack.remove(langStack[-1])"></tal:block>
+					</tal:block>
+				</tal:block>
+				<tal:block tal:condition="not:python:si['parent'] in langStack and not langStack[-1]==si['parent']">
+					<tal:block tal:define="dummy python:langStack.append(si['parent'])"></tal:block>
+				</tal:block>
+				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
+					<td><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
+					<td><tal:block tal:content="langId">langId</tal:block></td>
+					<td><input type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
+					<td>
+						<select tal:attributes="name python:'%s_parent'%langId">
+							<option tal:repeat="langId langIds"></option>
+						</select>
+					</td>
+					<td>
+						<select tal:attributes="name python:'%s_manage'%langId">
+							<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="selected python:['','selected'][int(langObj.get('manage')==manage_lang)]" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
+						</select>
+					</td>
+				</tr>
+			</tal:block>
+		</tal:block>
+	</tal:block>
 	<tr>
 		<td><i class="icon-plus"></i></td>
+		<td><input type="text" name="languaged_id"></td>
+		<td><input type="text" name="languaged_label"></td>
+		<td>
+			<select name="language_parent">
+				<option tal:repeat="langId langIds"></option>
+			</select>
+		</td>
+		<td>
+			<select name="language_manage">
+				<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
+			</select>
+		</td>
 	</tr>
 	</tbody>
 	</table>

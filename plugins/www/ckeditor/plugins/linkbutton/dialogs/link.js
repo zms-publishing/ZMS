@@ -96,7 +96,7 @@ function zmiExpandObject(id,abs_url,meta_id) {
 			$div.html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING')).show("normal");
 			$img.attr({src:"/misc_/zms/mi.gif",title:"-"});
 			var href = abs_url + "/ajaxGetChildNodes";
-			$.get(href,{lang:zmiParams["lang"]},function(result) {
+			$.get(href,{lang:getZMILang()},function(result) {
 					var html = zmiAddPages(result,true);
 					if (html.length==0) {
 						$img.attr({src:"/misc_/zms/spacer.gif",title:""}).css({width:"16px",height:"16px"});
@@ -166,7 +166,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 							var href = self.location.href;
 							href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
 							$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
-							$.get(href,{lang:zmiParams["lang"]},function(result) {
+							$.get(href,{lang:getZMILang()},function(result) {
 									var html = zmiAddPages(result,false);
 									$("#myDiv").html(html);
 									// Open siblings of current page-element.

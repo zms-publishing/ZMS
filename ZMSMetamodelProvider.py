@@ -22,6 +22,7 @@ from App.special_dtml import HTMLFile
 import copy
 import zope.interface
 # Product Imports.
+import _confmanager
 import IZMSConfigurationProvider
 import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager
 import ZMSItem
@@ -65,7 +66,7 @@ class ZMSMetamodelProvider(
     manage_main = HTMLFile('dtml/ZMSMetamodelProvider/manage_main', globals()) # -"-
     manage_bigpicture = HTMLFile('dtml/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = HTMLFile('dtml/ZMSMetamodelProvider/manage_analyze', globals())
-    manage_metas = HTMLFile('dtml/ZMSMetamodelProvider/manage_metas', globals())
+    manage_metas = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_metas')
 
     # Management Permissions.
     # -----------------------

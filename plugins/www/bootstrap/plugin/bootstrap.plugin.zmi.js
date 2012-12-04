@@ -1,5 +1,15 @@
 $(function(){
 
+	// Textarea:
+	// single-line
+	$('div.single-line').each(function() {
+			$('textarea',this).prop({rows:1,wrap:'off'});
+			if ($("span.add-on",this).length==0) {
+				$(this).addClass("input-append");
+				$(this).append('<span class="add-on">...</span>');
+			}
+		});
+
 	// Accordion:
 	// highlight default collapse item
 	$("a.accordion-toggle").click(function(){this.blur()});

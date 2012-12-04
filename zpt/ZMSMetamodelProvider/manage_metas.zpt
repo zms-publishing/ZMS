@@ -39,9 +39,9 @@
 	</tr>
 	</thead>
 	<tbody>
-	<tal:block tal:define="global metadictAttrIds python:here.metaobj_manager.getMetadictAttrs()">
+	<tal:block tal:define="global metadictAttrIds python:here.getMetadictAttrs()">
 	<tr tal:repeat="metadictAttrId metadictAttrIds">
-		<tal:block tal:define="global metadictAttr python:here.metaobj_manager.getMetadictAttr(metadictAttrId)">
+		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td>
 			<img class="grippy" src="/misc_/zms/spacer.gif">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']">
@@ -63,15 +63,20 @@
 		<td>
 			<select tal:attributes="name python:'attr_type_%s'%metadictAttr['id']">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
-				<option tal:repeat="datatype python:here.metaobj_manager.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
+				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
 				<option tal:repeat="meta_type python:here.getMetaobjIds(excl_ids=['ZMS'])" tal:attributes="value meta_type; selected python:['','selected'][int(metadictAttr['type']==meta_type)]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
 			</select>
 		</td>
-		<td align="center"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1"></td>
-		<td align="center"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1"></td>
-		<td align="center"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1"></td>
-		<td><textarea tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']" tal:attributes="name python:'attr_keys_%s:int'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea></td>
+		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
+			<td colspan="4"><div class="single-line"><textarea tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']" tal:content="python:metadictAttr['custom']"></textarea></div></td>
+		</tal:block>
+		<tal:block tal:condition="not:python:metadictAttr['type'] in ['method']">
+			<td align="center"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1"></td>
+			<td align="center"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1"></td>
+			<td align="center"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1"></td>
+			<td><div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']"><textarea tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea></div></td>
+		</tal:block>
 		</tal:block>
 	</tr>
 	</tal:block>
@@ -83,7 +88,7 @@
 		<td>
 			<select name="_type">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
-				<option tal:repeat="datatype python:here.metaobj_manager.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
+				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
 				<option tal:repeat="meta_type python:here.getMetaobjIds(excl_ids=['ZMS'])" tal:attributes="value meta_type" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
 			</select>
@@ -91,6 +96,9 @@
 		<td align="center"><input type="checkbox" name="_mandatory:int" value="1"></td>
 		<td align="center"><input type="checkbox" name="_multilang:int" value="1"></td>
 		<td align="center"><input type="checkbox" name="_repetitive:int" value="1"></td>
+		<td>
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+		</td>
 	</tr>
 	</tbody>
 	</table>

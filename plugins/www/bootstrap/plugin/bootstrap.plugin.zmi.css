@@ -262,8 +262,13 @@ div.accordion-heading div.pull-left {
 	padding:0;
 	margin:0;
 }
-div.zmi-nodes textarea {
+div.single-line {
+	width:98%;
+}
+div.single-line textarea {
 	height:20px;
+	overflow:hidden;
+	width:90%;
 }
 div.zmi-nodes span {
 	cursor:pointer;

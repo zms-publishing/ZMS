@@ -62,8 +62,8 @@ class ZMSMetamodelProvider(
 
     # Management Interface.
     # ---------------------
-    manage = HTMLFile('dtml/ZMSMetamodelProvider/manage_main', globals())
-    manage_main = HTMLFile('dtml/ZMSMetamodelProvider/manage_main', globals()) # -"-
+    manage = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main')
+    manage_main = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main') # -"-
     manage_bigpicture = HTMLFile('dtml/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = HTMLFile('dtml/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_metas')

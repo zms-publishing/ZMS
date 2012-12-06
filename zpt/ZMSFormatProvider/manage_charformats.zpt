@@ -1,0 +1,63 @@
+                                              <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+</script>
+
+<tal:block tal:define="global
+		formats python:here.getCharFormats()">
+
+<form class="form-horizontal" action="manage_changeCharformat" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<table class="table table-striped table-bordered">
+	<colgroup>
+		<col width="50"/>
+	</colgroup>
+	<thead>
+		<tr>
+			<td></td>
+			<td tal:content="python:here.getZMILangStr('ATTR_ID')">Id</td>
+			<td tal:content="python:here.getZMILangStr('TAB_PREVIEW')">Preview</td>
+		</tr>
+	</thead>
+	<tbody>
+	<tal:block tal:repeat="format formats">
+		<tr>
+			<td>
+				<div class="btn-group">
+					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+				</div>
+			</td>
+			<td>
+				<tal:block tal:condition="python:format.get('btn')">
+					<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
+					<strong tal:content="python:format['id']">Id</strong>
+				</tal:block>
+				<tal:block tal:condition="not:python:format.get('btn')">
+					<img src="/misc_/zms/spacer.gif" title="vertical separator" class="zmiVSep"/>
+				</tal:block>
+			</td>
+			<td>
+				<tal:block tal:condition="python:format.get('tag')" tal:content="structure python:'<%s %s>%s</%s>'%(format['tag'],format['attrs'],format['display'],format['tag'])">preview</tal:block>
+			</td>
+		</tr>
+	</tal:block>
+	</tbody>
+	</table>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+</form>
+
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

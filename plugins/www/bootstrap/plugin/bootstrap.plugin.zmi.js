@@ -3,10 +3,34 @@ $(function(){
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {
-			$('textarea',this).prop({rows:1,wrap:'off'});
+			var $textarea = $('textarea',this);
+			$textarea.prop({rows:1,wrap:'off'});
 			if ($("span.add-on",this).length==0) {
 				$(this).addClass("input-append");
 				$(this).append('<span class="add-on">...</span>');
+				$('span.add-on',this).click(function() {
+						var html = ''
+							+ '<div id="zmi-single-line-edit">'
+								+ '<form class="form-horizontal">'
+									+ '<textarea style="width:98%" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
+								+ '</form>'
+							+ '</div>';
+						$('#zmi-single-line-edit').remove();
+						$('body').append(html);
+						$('#zmi-single-line-edit').dialog({
+							modal:true,
+							resizable:true,
+							title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
+							resize: function( event, ui ) {
+								var $container = $('#zmi-single-line-edit');
+								var $ta = $('textarea',$container);
+								var taCoords = zmiGetCoords($ta[0],"relative");
+								$ta.css({height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
+							},
+							close: function( event, ui ) {
+								$textarea.val($('#zmi-single-line-edit textarea').val());
+							}});
+					});
 			}
 		});
 

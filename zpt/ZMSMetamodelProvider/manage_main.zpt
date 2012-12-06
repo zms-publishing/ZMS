@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+</script>
+
+<tal:block tal:define="global
+		metaObjIds python:here.getMetaobjIds();
+		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
+		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
+
+<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<legend tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</legend>
+	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METAOBJ')">well</p>
+	<table class="table table-striped table-bordered">
+	<colgroup>
+		<col width="50"/>
+		<col width="50"/>
+	</colgroup>
+	<tbody>
+	<tal:block tal:repeat="metaObjPackage metaObjPackages">
+		<tr>
+			<td>
+				<div class="btn-group">
+					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+				</div>
+			</td>
+			<td colspan="2">
+				<strong tal:content="python:['[default package]',metaObjPackage][int(len(metaObjPackage)>0)]">metaObjPackage</strong>
+			</td>
+		</tr>
+		<tal:block tal:repeat="metaObj metaObjs">
+			<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+				<td>
+					<div class="btn-group">
+						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+					</div>
+				</td>
+				<td></td>
+				<td>
+					<span tal:attributes="title python:metaObj['id']">
+						<img tal:attributes="src python:here.display_icon(request,metaObj['id'])"/>
+						<tal:block tal:content="python:'%s (%s)'%(metaObj['name'],here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper()))">metaObj</tal:block>
+					</span>
+				</td>
+			</tr>
+		</tal:block>
+	</tal:block>
+	</tbody>
+	</table>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+</form>
+
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

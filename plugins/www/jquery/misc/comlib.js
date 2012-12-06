@@ -516,6 +516,23 @@ function storeCaret( textEl)
 /**
  * Returns coordinates of given element
  */
+function zmiGetCoords(theElement, thePosition) {
+	var coords = {x: 0, y: 0};
+	var element = theElement;
+	while (element) {
+		if (thePosition=="relative" && $(element).css("position")=="absolute") {
+			break;
+		}
+		coords.x += element.offsetLeft;
+		coords.y += element.offsetTop;
+		element = element.offsetParent;
+	}
+	return coords;
+}
+
+/**
+ * Returns coordinates of given element
+ */
 function getCoords(theElement) {
   var coords = {x: 0, y: 0};
   var element = theElement;

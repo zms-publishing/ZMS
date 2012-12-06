@@ -920,10 +920,12 @@ class ZMSGlobals:
     @type l: C{list}
     @rtype: C{list}
     """
-    def distinct_list(self, l, i):
+    def distinct_list(self, l, i=None):
       k = []
       for x in l:
-        if type(i) is str:
+        if i is None:
+          v = x
+        elif type(i) is str:
           v = x.get(i,None)
         else:
           v = x[i]
@@ -937,8 +939,10 @@ class ZMSGlobals:
     @return: Sorted list.
     @rtype: C{list}
     """
-    def sort_list(self, l, qorder, qorderdir='asc', ignorecase=1):
-      if type(qorder) is str:
+    def sort_list(self, l, qorder=None, qorderdir='asc', ignorecase=1):
+      if qorder is None:
+        sorted = map(lambda x: (x, x), l)
+      elif type(qorder) is str:
         sorted = map(lambda x: (sort_item(x.get(qorder,None)),x),l)
       elif type(qorder) is list:
         sorted = map(lambda x: (','.join(map(lambda y: sort_item(x[y]), qorder)),x),l)

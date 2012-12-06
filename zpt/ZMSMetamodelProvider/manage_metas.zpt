@@ -69,7 +69,7 @@
 			</select>
 		</td>
 		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
-			<td colspan="4"><div class="single-line"><textarea tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']" tal:content="python:metadictAttr['custom']"></textarea></div></td>
+			<td colspan="4"><div class="single-line"><textarea tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']; title python:'%s (%s)'%(metadictAttr['id'],metadictAttr['type'])" tal:content="python:metadictAttr['custom']"></textarea></div></td>
 		</tal:block>
 		<tal:block tal:condition="not:python:metadictAttr['type'] in ['method']">
 			<td align="center"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1"></td>

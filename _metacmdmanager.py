@@ -316,10 +316,6 @@ class MetacmdObject:
 ################################################################################
 class MetacmdManager:
 
-    # Management Interface.
-    # ---------------------
-    manage_customizeMetacmdForm = HTMLFile('dtml/metacmd/manage_customizeform', globals()) 
-
 
     def getMetaCmdDescription(self, id=None, name=None):
       """

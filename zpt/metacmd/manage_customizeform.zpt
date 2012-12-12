@@ -7,6 +7,15 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
+function zmiDeleteRow(id) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		$('form.form-horizontal:first').append(''
+			+ '<input type="hidden" name="id" value="' + id +'">'
+			+ '<input type="hidden" name="btn" value="' + getZMILangStr('BTN_DELETE') +'">'
+			)
+			.submit();
+	}
+}
 </script>
 
 <tal:block tal:define="global
@@ -31,6 +40,117 @@
 		<label for="el_description" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_DC_DESCRIPTION')">Description</span></label>
 		<div class="controls"><input type="text" name="el_description" tal:attributes="value python:metaCmd['description']"/></div><!-- .controls -->
 	</div><!-- .control-group -->
+	<tal:block tal:define="global ob python:getattr(here,request['id'],None)">
+		<div class="control-group" style="height:20em;" tal:condition="python:ob is not None">
+			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
+				<div class="ui-helper-hidden">
+					<span id="action">manage_edit</span>
+					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
+				</div>
+				<textarea id="text" name="data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='File' and (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
+				<div class="ui-helper-hidden">
+					<span id="action">manage_edit</span>
+					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
+				</div>
+				<textarea id="text" name="filedata:text" class="ui-helper-hidden form-element" tal:content="python:unicode(str(ob.data),'utf-8')" style="width:100%">The object</textarea>
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='Page Template'">
+				<div class="ui-helper-hidden">
+					<span id="action">pt_editAction</span>
+					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
+					<label for="expand">Expand</label><input id="expand" name="expand:int" class="form-element" tal:attributes="value ob/expand">
+				</div>
+				<textarea id="text" name="text:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
+				<div class="ui-helper-hidden">
+					<span id="action">ZPythonScriptHTML_editAction</span>
+					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
+					<label for="params">Parameter List</label><input id="params" name="params" class="form-element" tal:attributes="value ob/params">
+					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" value="python">
+				</div>
+				<textarea id="text" name="body:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+			</tal:block>
+
+<!--
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++ Ajax.org Cloud9 Editor
++++ http://ace.ajax.org
++++ @see $ZMS_HOME/plugins/www/ace.ajax.org
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-->
+<div id="editor" class="zmiNeutralColorWhite" style="height: 92%; width: 92%;">some text</div>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-css.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-javascript.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
+<script type="text/javascript">
+$(function() {
+	if ($("textarea#text").length == 0) {
+		$("#editor").hide();
+	}
+	else {
+		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
+		var editor = ace.edit("editor");
+		var content_type = null;
+		if ($("input#content_type")) {
+			content_type = $("input#content_type").val();
+		}
+		if (content_type == null) {
+			var absolute_url = $("span#absolute_url").text();
+			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
+			if (id.endsWith(".css")) {
+				content_type = "text/css";
+			}
+			else if (id.endsWith(".js")) {
+				content_type = "text/javascript";
+			}
+			else {
+				content_type = "text/html";
+			}
+		}
+		var Mode = null;
+		if (content_type == "text/html") {
+			Mode = require("ace/mode/html").Mode;
+		}
+		else if (content_type == "text/css" || content_type == "application/x-css") {
+			Mode = require("ace/mode/css").Mode;
+		}
+		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
+			Mode = require("ace/mode/javascript").Mode;
+		}
+		else if (content_type == "text/xml") {
+			Mode = require("ace/mode/xml").Mode;
+		}
+		else if (content_type == "python") {
+			Mode = require("ace/mode/python").Mode;
+		}
+		if (Mode != null) {
+			editor.getSession().setMode(new Mode());
+		}
+		editor.setTheme("ace/theme/eclipse");
+		editor.getSession().setValue($("textarea#text").val());
+		editor.getSession().on("change",function() {
+				custAutoChange($("textarea#text").val(editor.getSession().getValue()));
+			});
+		var $container = $('#editor').parents('div.control-group:first');
+		var $ta = $('#editor',$container);
+		var taCoords = zmiGetCoords($ta[0],"relative");
+		$ta.css({border:"1px solid black",height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
+		editor.resize();
+	}
+});
+</script>
+
+		</div><!-- .control-group -->
+	</tal:block>
 	<div class="control-group">
 		<div class="controls">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
@@ -61,7 +181,7 @@
 			<td>
 				<div class="btn-group">
 					<a class="btn" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
-					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+					<span class="btn" tal:attributes="onclick python:'javascript:zmiDeleteRow(\'%s\')'%metaCmd['id']; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></span>
 				</div>
 			</td>
 			<td>

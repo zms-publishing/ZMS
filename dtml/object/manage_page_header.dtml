@@ -16,6 +16,7 @@
 ################################################################################
 </dtml-comment>
 <meta http-equiv="content-type" content="text/html; charset=<dtml-var ZMS_CHARSET>"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9"/>
 
 <dtml-comment>
 ################################################################################

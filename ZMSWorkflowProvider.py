@@ -26,8 +26,36 @@ import zope.interface
 import IZMSConfigurationProvider
 import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 import ZMSItem
+import _confmanager
 import _fileutil
-import _versionmanager
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+ZMSWorkflowProvider.doAutocommit:
+Commit pending changes of all objects.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def doAutocommit(self, REQUEST): 
+  
+  ##### Auto-Commit ####
+  if len( getObjStates( self)) > 0:
+    
+    if self.inObjStates(['STATE_DELETED'],REQUEST):
+       parent = self.getParentNode()
+       parent.moveObjsToTrashcan([self.id], REQUEST)
+       return
+    
+    if self.version_work_id is not None:
+      if self.version_live_id is not None and \
+         self.version_live_id in self.objectIds( self.dGlobalAttrs.keys()):
+        ids = [ self.version_live_id]
+        self.manage_delObjects( ids=ids)
+      self.version_live_id = self.version_work_id
+      self.version_work_id = None
+    self.initializeWorkVersion()
+  
+  ##### Process child-objects ####
+  for ob in self.getChildNodes():
+    doAutocommit( ob, REQUEST)
 
 
 """
@@ -134,8 +162,8 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = HTMLFile('dtml/ZMSWorkflowProvider/manage_main', globals())
-    manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main', globals()) # -"-
+    manage = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main')
+    manage_main = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main') # -"-
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions
@@ -231,7 +259,7 @@ class ZMSWorkflowProvider(
     Auto-Commit ZMS-tree.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
-      _versionmanager.doAutocommit(self,REQUEST)
+      doAutocommit(self,REQUEST)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -286,3 +314,5 @@ class ZMSWorkflowProvider(
       return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
 
 ################################################################################
+
+_confmanager.ConfDict.set_constructor('ZMSWorkflowProvider',ZMSWorkflowProvider)

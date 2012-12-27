@@ -28,7 +28,8 @@ import urllib
 import zExceptions
 # Product Imports.
 import _globals 
-import _blobfields 
+import _blobfields
+import _confmanager 
 import _zmsattributecontainer
 
 
@@ -112,35 +113,6 @@ def getObjStateName(obj_state, lang):
   if lang is not None:
     obj_state_name += '_'+lang.upper()
   return obj_state_name
-
-
-# ------------------------------------------------------------------------------
-#  _versionmanager.doAutocommit:
-#
-#  Commit pending changes of all objects.
-# ------------------------------------------------------------------------------
-def doAutocommit(self, REQUEST): 
-  
-  ##### Auto-Commit ####
-  if len( getObjStates( self)) > 0:
-    
-    if self.inObjStates(['STATE_DELETED'],REQUEST):
-       parent = self.getParentNode()
-       parent.moveObjsToTrashcan([self.id], REQUEST)
-       return
-    
-    if self.version_work_id is not None:
-      if self.version_live_id is not None and \
-         self.version_live_id in self.objectIds( self.dGlobalAttrs.keys()):
-        ids = [ self.version_live_id]
-        self.manage_delObjects( ids=ids)
-      self.version_live_id = self.version_work_id
-      self.version_work_id = None
-    self.initializeWorkVersion()
-  
-  ##### Process child-objects ####
-  for ob in self.getChildNodes():
-    doAutocommit( ob, REQUEST)
 
 
 ################################################################################
@@ -911,7 +883,6 @@ class VersionItem:
     #  Returns object-history for given version-nr.
     # --------------------------------------------------------------------------
     def getObjHistory(self, version_nr, REQUEST, children=True, deleted=True):
-      print self.id, '[getObjHistory]: version_nr=%s'%str(version_nr),children,deleted
       _globals.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
       obs = []
       ZMS_VERSION = REQUEST.get( 'ZMS_VERSION_%s'%self.id)
@@ -968,7 +939,6 @@ class VersionItem:
           _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
           return last_ob_version
         for ob_child in self.getVersionItems( REQUEST):
-          print ob_child.id
           for ob_child_version in ob_child.getObjVersions():
             REQUEST.set( 'ZMS_VERSION_%s'%ob_child.id, ob_child_version.id)
             ob_child_master_version = getattr( ob_child_version, 'master_version', 0)
@@ -981,7 +951,6 @@ class VersionItem:
               obs.append( ob_child_version)
               break
       REQUEST.set( 'ZMS_VERSION_%s'%self.id, ZMS_VERSION)
-      print len(obs)
       return obs
 
     # --------------------------------------------------------------------------
@@ -1076,7 +1045,8 @@ class VersionItem:
     #  Undo version changes.
     ############################################################################
     manage_VersionLangModified = HTMLFile('dtml/versionmanager/manage_versionlangmodified', globals())
-    manage_UndoVersionForm = HTMLFile('dtml/versionmanager/manage_undoversionform', globals())
+    manage_UndoVersionForm = _confmanager.ConfDict.template('versionmanager/manage_undoversionform')
+    manage_UndoVersionFormDTML = HTMLFile('dtml/versionmanager/manage_undoversionform_dtml', globals())
     def manage_UndoVersion(self, lang, REQUEST):
       """ VersionItem.manage_UndoVersion """
       message = ''

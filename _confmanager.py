@@ -39,7 +39,6 @@ import zope.interface
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 from IZMSNotificationService import IZMSNotificationService
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
-import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 import _globals
 import _fileutil
 import _filtermanager
@@ -56,6 +55,7 @@ Read system-configuration from $ZMS_HOME/etc/zms.conf
 class ConfDict:
 
     __confdict__ = None
+    __clazzes__ = {}
 
     @classmethod
     def get(cls):
@@ -69,7 +69,6 @@ class ConfDict:
                     cls.__confdict__[section+'.'+option] = cfp.get( section, option)
         return cls.__confdict__
 
-
     @classmethod
     def template(cls, path):
         if cls.get().get('zmi.theme','dtml')=='zpt':
@@ -81,6 +80,14 @@ class ConfDict:
             path = 'dtml/%s'%path
           f = HTMLFile(path, globals())
         return f
+
+    @classmethod
+    def set_constructor(cls, key, clazz):
+      cls.__clazzes__[key] = clazz
+
+    @classmethod
+    def get_constructor(cls, key):
+      return cls.__clazzes__[key]
 
 
 """
@@ -780,12 +787,8 @@ class ConfManager(
             obj = zmslog.ZMSLog()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
-          elif meta_type == 'ZMSWorkflowProvider':
-            obj = ZMSWorkflowProvider.ZMSWorkflowProvider()
-            self._setObject(obj.id, obj)
-            message = 'Added '+meta_type
-          elif meta_type == 'ZMSWorkflowProviderAcquired':
-            obj = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired()
+          elif meta_type in ['ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']:
+            obj = ConfDict.get_constructor(meta_type)()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
         elif btn == 'Remove':

@@ -1,5 +1,5 @@
-.zmi-helper-hidden {
-	display:none;
+.zmi-helper-hidden, .ui-helper-hidden {
+	display:none!important;
 }
 #zmi-header {
 	background-color:black;
@@ -78,7 +78,15 @@ ul.breadcrumb li.active a {
 	padding:.5em;
 	font-size:large;
 }
-
+.form-help {
+	min-height:20px;
+	background-color:rgb(245,245,245);
+	border:1px solid rgb(227,227,227);
+	border-radius:3px;
+	margin-bottom:20px;
+	box-shadow:0px 1px 1px rgba(0, 0, 0, 0.05) inset;
+	padding:9px;
+}
 .form-small {
 	font-size:smaller;
 }

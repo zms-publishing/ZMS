@@ -23,9 +23,9 @@ import urllib
 import zope.interface
 # Product Imports.
 import IZMSConfigurationProvider
-import IZMSWorkflowProvider
+import IZMSWorkflowProvider, ZMSWorkflowProvider
 import ZMSItem
-import _versionmanager
+import _confmanager
 
 
 class ZMSWorkflowProviderAcquired(
@@ -55,8 +55,8 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals())
-    manage_main = HTMLFile('dtml/ZMSWorkflowProvider/manage_main_acquired', globals()) # -"-
+    manage = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main_acquired')
+    manage_main = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main_acquired') # -"-
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -90,7 +90,7 @@ class ZMSWorkflowProviderAcquired(
     Auto-Commit ZMS-tree.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
-      _versionmanager.doAutocommit(self,REQUEST)
+      ZMSWorkflowProvider.doAutocommit(self,REQUEST)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -149,3 +149,5 @@ class ZMSWorkflowProviderAcquired(
       return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
 
 ################################################################################
+
+_confmanager.ConfDict.set_constructor('ZMSWorkflowProviderAcquired',ZMSWorkflowProviderAcquired)

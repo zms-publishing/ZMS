@@ -5,7 +5,9 @@
 <dtml-var "manage_tabs_sub(_,_,manage_sub_options=[{'label':'TAB_EDIT','action':'manage_users'},{'label':'TAB_SITEMAP','action':'manage_users_sitemap'}])">
 
 <dtml-let userFldr="getUserFolder()" LDAPUserFolder_utf8="getConfProperty('LDAPUserFolder.utf8')">
-  
+
+Dummy
+
 <script language="JavaScript">
 
 $(function() {
@@ -22,11 +24,28 @@ $(function() {
 		.attr( "title", "Double-click to edit!");
 });
 
+function deleteNodeBtnClick(fm, nodekey) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		$(fm).append('<input type="hidden" name="btn"/>');
+		$(fm).append('<input type="hidden" name="nodekey"/>');
+		$("input[name=key]",fm).val('attr');
+		$("input[name=btn]",fm).val('delete');
+		$("input[name=nodekey]",fm).val(nodekey);
+		$(fm).submit();
+		
+	}
+}
+
 function btnClick(el, key) {
 	var fm = el.form;
 	fm.elements['key'].value = key;
 	processMultiselectsOnFormSubmit();
-	self.btnClicked = el.value;
+	if (typeof el == "string") {
+		self.btnClicked = el;
+	}
+	else {
+		self.btnClicked = el.value;
+	}
 }
 
 function form0Submit(fm) {
@@ -268,17 +287,18 @@ function form2Submit(fm) {
         </dtml-if>
       </dtml-if>
        <dtml-unless userObj>
+         <dtml-if "getPortalMaster()">
          <dtml-with "getPortalMaster()">
            <dtml-let user="findUser(name)">
              <dtml-if user>
-               <a href="<dtml-var "aq_parent.content.absolute_url()">/manage_users?lang=<dtml-var lang>&id=<dtml-var name>"
-                  class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var name></b></a>
-               &nbsp;@<a href="<dtml-var "aq_parent.content.absolute_url()">/manage_users" class="zmi"><dtml-var "aq_parent.id"></a>
+               @<a href="<dtml-var "aq_parent.content.absolute_url()">/manage_users?lang=<dtml-var lang>&id=<dtml-var name>"
+                  class="zmi" title="<dtml-var "getZMILangStr('TAB_EDIT')">"><b><dtml-var "getHome().id"></b></a>
              <dtml-else>
                <img src="<dtml-var MISC_ZMS>ico_warning.gif" title="Not found!" alt="" border="0" align="absmiddle"/>
              </dtml-if>
            </dtml-let>
          </dtml-with>
+         </dtml-if>
        </dtml-unless>
       </div>
      </td>
@@ -323,7 +343,7 @@ function form2Submit(fm) {
        <td rowspan="2"><img src="p_/User_icon" border="0" align="absmiddle" /></td>
        <td class="form-label"><dtml-var "REQUEST.get('id')"></td>
       </tr>
-      <dtml-in "getValidUserids(search_term=REQUEST.get('id'))" mapping>
+      <dtml-in "filter(lambda x:x['name']==REQUEST.get('id'),getValidUserids(search_term=REQUEST.get('id')))" mapping>
        <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
        <dtml-call "REQUEST.set('userName',unicode(name,'latin-1').encode('utf-8'))">
        <tr valign="top">
@@ -420,9 +440,7 @@ function form2Submit(fm) {
         <!-- E-Mail -->
         <dtml-unless "getLDAPUserAttr(userName,'email')">
          <tr valign="middle">
-          <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')">
-		<dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if>  <!-- MK, 13.08.2012 --> 
-		</td>
+          <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"><dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if></td>
           <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='email',size=15,value=getUserAttr(name,'email',''))"></td>
          </tr>
         </dtml-unless>
@@ -433,9 +451,9 @@ function form2Submit(fm) {
         </tr>
        </dtml-if>
        <!-- Display/Edit Node(s) -->
-       <dtml-if "getUserAttr(name,'email','') or not getConfProperty('EmailMandatory','')"> 
+       <dtml-if "getUserAttr(name,'email','') or getLDAPUserAttr(name,'email') or getUserAttr(userName,'email','') or getLDAPUserAttr(userName,'email') or not getConfProperty('EmailMandatory','')">
        <dtml-let multilang="len(getLangIds())>1">
-         <dtml-if LDAPUserFolder_utf8>
+         <dtml-if "localUserFldr.content.getConfProperty('LDAPUserFolder.utf8')">
            <dtml-call "REQUEST.set('nodes', getUserAttr(userName.decode('utf-8').encode('latin-1'),'nodes',{}))">
          <dtml-else>
            <dtml-call "REQUEST.set('nodes', getUserAttr(userName,'nodes',{}))">
@@ -451,15 +469,9 @@ function form2Submit(fm) {
              <table cellspacing="0" cellpadding="0" border="0">
              <tr valign="middle">
               <td class="zmiNeutralColorMedium0">
-               <dtml-if LDAPUserFolder_utf8>
-                 <a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName.decode('utf-8').encode('latin-1'),'key':'attr','nodekey':nodekey})">');" class="button">
-                   <img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"/>
-                 </a>
-               <dtml-else>
-                 <a href="javascript:collectionDeleteBtnOnClick('<dtml-var "url_append_params('manage_userProperties',{'id':userName,'key':'attr','nodekey':nodekey})">');" class="button">
-                   <img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"/>
-                 </a>
-               </dtml-if>
+                <a href="javascript:deleteNodeBtnClick($('form[name=form1]'),'<dtml-var nodekey>')" class="button">
+                  <img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"/>
+                </a>
               </td>
               <td>&nbsp;</td>
               <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_NODE')"> <dtml-var "count+1"></div></td>
@@ -629,7 +641,17 @@ function form2Submit(fm) {
      <td class="form-label">&nbsp;</td>
     </tr>
     <dtml-in filtered_userids size=qsize start=qstart mapping>
-      <dtml-let userObj="localUserFldr.getUser(name)">
+      <dtml-if "localUserFldr.meta_type=='LDAPUserFolder'">
+       <dtml-let login_attr="localUserFldr.content.getConfProperty('LDAPUserFolder.login_attr',localUserFldr.getProperty( '_login_attr'))">
+        <dtml-if "login_attr=='dn'">
+         <dtml-call "REQUEST.set('userObj',localUserFldr.getUserByDN(name))">
+        <dtml-else>
+         <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
+        </dtml-if>
+       </dtml-let>
+      <dtml-else>
+       <dtml-call "REQUEST.set('userObj',localUserFldr.getUser(name))">
+      </dtml-if>
        <dtml-if userObj>
         <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
          <td class="form-small" align="right"><dtml-var "_['sequence-index']+1">.</td>
@@ -672,13 +694,14 @@ function form2Submit(fm) {
          </td>
         </tr>
        <dtml-else>
+       <dtml-comment>
         <tr valign="top" class="zmiDblclickable zmiTableRow<dtml-if sequence-even>Even<dtml-else>Odd</dtml-if>">
          <td class="zmiNeutralColorStrong0" align="right"><div class="form-small"><b><dtml-var "_['sequence-index']+1">.</b></div></td>
          <td class="form-small"><input type="radio" disabled="disabled" checked="checked"/></td>
          <td class="form-small" colspan="3"><dtml-var name></td>
         </tr>
+       </dtml-comment>
        </dtml-if>
-      </dtml-let>
     <dtml-else>
      <tr class="zmiNeutralColorLight0">
       <td colspan="4"><div class="form-small">None</div></td>
@@ -721,9 +744,7 @@ function form2Submit(fm) {
      <td class="form-element"><dtml-var "getPasswordInput(fmName='form1',elName='newConfirm')"></td>
     </tr>
     <tr>
-     <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')">
-	<dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if>  <!-- MK, 13.08.2012 -->
-	</td>
+     <td class="form-label"><dtml-var "getZMILangStr('ATTR_EMAIL')"><dtml-if "getConfProperty('EmailMandatory','')"><dtml-var FORM_LABEL_MANDATORY></dtml-if></td>
      <td class="form-element"><dtml-var "getTextInput(fmName='form1',elName='newEmail',size=15,value='')"></td>
     </tr>
     </table>

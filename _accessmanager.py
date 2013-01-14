@@ -439,11 +439,13 @@ class AccessManager(AccessableContainer):
       valid_userids = []
       c = 0
       for userFldr in self.getUserFolders():
-        if userFldr.aq_parent.objectValues(['ZMS']):
-          if c == 0 and userFldr.meta_type == 'LDAPUserFolder':
-            search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-            users = userFldr.findUser(search_param=search_param,search_term=search_term)
-            try:
+        doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
+        if doc_elmnts:
+          doc_elmnt = doc_elmnts[0]
+          if userFldr.meta_type == 'LDAPUserFolder':
+            if c == 0:
+              search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+              users = userFldr.findUser(search_param=search_param,search_term=search_term)
               for user in users:
                 d = {}
                 d['localUserFldr'] = userFldr
@@ -452,9 +454,16 @@ class AccessManager(AccessableContainer):
                   try: d[extra] = user[extra]
                   except: pass
                 valid_userids.append(d)
-            except:
-              _globals.writeError( self, '[getValidUserids]')
-              return valid_userids
+            else:
+              node_prefix = '{$%s@'%self.getHome().id
+              sec_users = doc_elmnt.getConfProperty('ZMS.security.users')
+              for sec_user in sec_users:
+                nodes = doc_elmnt.getUserAttr(sec_user,'nodes')
+                if str(nodes).find(node_prefix) >= 0:
+                  d = {}
+                  d['localUserFldr'] = userFldr
+                  d['name'] = sec_user
+                  valid_userids.append(d)
           elif userFldr.meta_type != 'LDAPUserFolder':
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
@@ -463,7 +472,7 @@ class AccessManager(AccessableContainer):
                   d['localUserFldr'] = userFldr
                   d['name'] = userName
                   valid_userids.append(d)
-        c += 1
+          c += 1
       return valid_userids
   
   
@@ -526,11 +535,14 @@ class AccessManager(AccessableContainer):
           for portalClient in self.getPortalClients():
             w = portalClient.getUserAttr(user, name, default)
             if type(w) is dict:
-              v = v.copy()
-              for node in w.keys():
-                ob = portalClient.getLinkObj(node)
-                newNode = self.getRefObjPath(ob)
-                v[newNode] = w[node]
+              if v is None:
+                v = w
+              elif type(v) is dict:
+                v = v.copy()
+                for node in w.keys():
+                  ob = portalClient.getLinkObj(node)
+                  newNode = self.getRefObjPath(ob)
+                  v[newNode] = w[node]
       return v
 
     # --------------------------------------------------------------------------
@@ -639,7 +651,7 @@ class AccessManager(AccessableContainer):
     # ------------------------------------------------------------------------------
     #  AccessManager.purgeLocalUsers
     # ------------------------------------------------------------------------------
-    def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[], request=None):    
+    def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[]):
       rtn = ""
       if ob is None: ob = self
       
@@ -663,19 +675,12 @@ class AccessManager(AccessableContainer):
         if delLocalRoles:
           rtn += ob.absolute_url()+ " " + userid + " " + str(userroles) + "<br/>"
           ob.manage_delLocalRoles(userids=[userid])
-        
-        # delete nonexistent nodes
-        if request is not None:
-          userNodes = self.getUserAttr(userid, 'nodes', {})
-          for node in userNodes.keys():
-            if not self.getLinkObj(node,request):
-              self.delLocalUser(userid, node)
       
       # Process subtree.
       for subob in ob.objectValues(ob.dGlobalAttrs.keys()):
         rtn += self.purgeLocalUsers(subob, valid_userids, invalid_userids)
       
-      return rtn 
+      return rtn
 
 
     # --------------------------------------------------------------------------

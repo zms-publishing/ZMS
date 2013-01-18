@@ -6,8 +6,6 @@
 
 <dtml-let userFldr="getUserFolder()" LDAPUserFolder_utf8="getConfProperty('LDAPUserFolder.utf8')">
 
-Dummy
-
 <script language="JavaScript">
 
 $(function() {

@@ -114,7 +114,7 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
-				<th><a class="btn" href="#" onclick="$('#insertNode').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus"></i></a></th>
+				<th><a class="btn" href="#" onclick="$('#insertNode .inner').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus"></i></a></th>
 				<th tal:attributes="colspan python:[2,3][int(multilang)]" tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</th>
 			</tr>
 		</thead>
@@ -238,7 +238,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th><a class="btn btn-primary" href="#" onclick="$('#insertUser').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-user icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+			<th><a class="btn btn-primary" href="#" onclick="$('#insertUser .inner').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-user icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 		</tr>
 	</thead>
 	<tbody tal:condition="python:userFolder.meta_type=='LDAPUserFolder'">
@@ -304,7 +304,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th><a class="btn btn-primary" href="#" onclick="$('#insertRole').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-group icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+		<th><a class="btn btn-primary" href="#" onclick="$('#insertRole .inner').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});"><i class="icon-group icon-white"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -334,7 +334,7 @@
 <script>
 $(function() {
 		if (typeof zmiParams['qsLdapKey'] != "undefined" && typeof zmiParams['qsLdapValue'] != "undefined") {
-			$('#insertUser').dialog({modal:true,title:getZMILangStr('BTN_INSERT'),height:'auto',width:'auto'});
+			$('#insertUser .inner').dialog({modal:true,title:getZMILangStr('BTN_INSERT'),height:'auto',width:'auto'});
 		}
 	});
 </script>

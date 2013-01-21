@@ -43,7 +43,6 @@ import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
 import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
-from _versionmanager import getObjStates
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement

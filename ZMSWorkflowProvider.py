@@ -37,7 +37,7 @@ Commit pending changes of all objects.
 def doAutocommit(self, REQUEST): 
   
   ##### Auto-Commit ####
-  if len( getObjStates( self)) > 0:
+  if len( self.getObjStates()) > 0:
     
     if self.inObjStates(['STATE_DELETED'],REQUEST):
        parent = self.getParentNode()

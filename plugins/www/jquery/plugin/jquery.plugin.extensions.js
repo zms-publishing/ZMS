@@ -71,7 +71,13 @@ $(function(){
 						pid = $(this).attr('id');
 					}
 					else {
-						pid = $(parents[parents.length-i-1]).attr('id');
+						var $el = $(parents[parents.length-i-1]);
+						if ($el.hasClass("portalClient")) {
+							if (href.lastIndexOf('/')>0) {
+								href = href.substr(0,href.lastIndexOf('/'));
+							}
+						}
+						pid = $el.attr('id');
 					}
 					if (pid.length > 0) {
 						if (lang == null) {

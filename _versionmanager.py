@@ -34,24 +34,6 @@ import _zmsattributecontainer
 
 
 # ------------------------------------------------------------------------------
-#  _versionmanager.getObjStates:
-#
-#  Returns a list of object-states (including language suffixes).
-# ------------------------------------------------------------------------------
-def getObjStates(self):
-  # Get object-states.
-  if not hasattr(self,'__work_state__'):
-    self.__work_state__ = _globals.MyClass()
-  states = getattr(self.__work_state__,'states',[])
-  # Make object-states unique.
-  d = {}
-  map(lambda x: operator.setitem(d, x, None), states)
-  states = d.keys()
-  # Return object-states.
-  return states
-
-
-# ------------------------------------------------------------------------------
 #  _versionmanager.setChangedBy:
 #
 #  Applies information about user-id and date of change.
@@ -190,10 +172,28 @@ class VersionItem:
     """
 
     # --------------------------------------------------------------------------
+    #  VersionItem.getObjStates:
+    #
+    #  Returns a list of object-states (including language suffixes).
+    # --------------------------------------------------------------------------
+    def getObjStates(self):
+      # Get object-states.
+      if not hasattr(self,'__work_state__'):
+        self.__work_state__ = _globals.MyClass()
+      states = getattr(self.__work_state__,'states',[])
+      # Make object-states unique.
+      d = {}
+      map(lambda x: operator.setitem(d, x, None), states)
+      states = d.keys()
+      # Return object-states.
+      return states
+
+
+    # --------------------------------------------------------------------------
     #  VersionItem.getWfStates
     # --------------------------------------------------------------------------
     def getWfStates(self, REQUEST):
-      states = getObjStates(self)
+      states = self.getObjStates()
       lang = REQUEST.get('lang',None)
       obj_states = []
       wfActivitiesIds = self.getWfActivitiesIds()
@@ -327,7 +327,7 @@ class VersionItem:
     # --------------------------------------------------------------------------
     def setObjState(self, obj_state, lang):
       state = getObjStateName(obj_state,lang)
-      states = getObjStates(self)
+      states = self.getObjStates()
       if not state in states:
         states.append(state)
       self.__work_state__.states = copy.deepcopy(states)
@@ -341,7 +341,7 @@ class VersionItem:
     def delObjStates(self, obj_states=[], REQUEST={}):
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
-      states = getObjStates(self)
+      states = self.getObjStates()
       for obj_state in obj_states:
         while obj_state in states:
           del states[states.index(obj_state)]
@@ -372,7 +372,7 @@ class VersionItem:
     #  Checks if given states are in object-states of this object.
     # --------------------------------------------------------------------------
     def inObjStates(self, obj_states, REQUEST):
-      states = getObjStates(self)
+      states = self.getObjStates()
       states.extend(self.getObjStateNames(REQUEST))
       if len(states) > 0:
         prim_lang = self.getPrimaryLanguage()
@@ -391,7 +391,7 @@ class VersionItem:
     # --------------------------------------------------------------------------
     def filteredObjStates(self, REQUEST):
       obj_states = []
-      states = getObjStates(self)
+      states = self.getObjStates()
       if len(states) > 0:
         lang = REQUEST.get('lang',self.getPrimaryLanguage())
         for obj_state in [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED']:
@@ -410,7 +410,7 @@ class VersionItem:
       lang = REQUEST.get('lang')
       
       # Current Object.
-      states = getObjStates(self)
+      states = self.getObjStates()
       obj_states = []
       for obj_state in [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED']:
         obj_state_name = getObjStateName(obj_state,lang)
@@ -592,7 +592,7 @@ class VersionItem:
       self.resetObjStates(REQUEST)
       # Remove work-version.
       attrCntnrIds = self.objectIds(['ZMSAttributeContainer'])
-      if (self.getAutocommit() or len( filter( lambda x: x.find( 'STATE_') == 0, getObjStates( self))) == 0) and getattr( self, 'version_live_id', None) is not None:
+      if (self.getAutocommit() or len( filter( lambda x: x.startswith( 'STATE_'), self.getObjStates())) == 0) and getattr( self, 'version_live_id', None) is not None:
         if self.version_live_id in attrCntnrIds:
           ids = []
           if self.version_live_id != self.version_work_id and self.version_work_id in attrCntnrIds:
@@ -702,7 +702,7 @@ class VersionItem:
       self.resetObjStates(REQUEST)
       # Remove work-version.
       attrCntnrIds = self.objectIds(['ZMSAttributeContainer'])
-      if (self.getAutocommit() or len( filter( lambda x: x.find( 'STATE_') == 0, getObjStates( self))) == 0) and getattr( self, 'version_live_id', None) is not None:
+      if (self.getAutocommit() or len( filter( lambda x: x.startswith( 'STATE_'), self.getObjStates())) == 0) and getattr( self, 'version_live_id', None) is not None:
         if self.version_live_id in attrCntnrIds:
           ids = []
           if self.version_live_id != self.version_work_id and self.version_work_id in attrCntnrIds:

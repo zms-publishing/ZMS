@@ -169,6 +169,7 @@ class ZMSCustom(ZMSContainerObject):
     manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals())
+    manage_menu = _confmanager.ConfDict.template('object/manage_menu')
     metaobj_record_select = HTMLFile('dtml/ZMSRecordSet/record_select', globals())
     metaobj_record_update = HTMLFile('dtml/ZMSRecordSet/record_update', globals())
     metaobj_record_insert = HTMLFile('dtml/ZMSRecordSet/record_insert', globals())

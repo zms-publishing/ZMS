@@ -1138,6 +1138,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " level=\"%i\""%self.getLevel()
       xml += ">\n"
       
+      if type(meta_types) is str and meta_types.find(',') > 0:
+        meta_types = meta_types.split(',')
       if type(meta_types) is list:
         new_meta_types = []
         for meta_type in meta_types:

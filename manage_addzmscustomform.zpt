@@ -12,14 +12,8 @@
 		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']">
 		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']">
 		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']">
-		<tal:block tal:content="structure python:here.obj_input_fields(meta_id=meta_id)">
+		<tal:block tal:content="structure python:here.obj_input_fields(action='insert',meta_id=meta_id)">
 			the input-fields
 		</tal:block>
-	<div class="control-group">
-		<div class="controls">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
 	</form><!-- .form-horizontal -->
 </tal:block>

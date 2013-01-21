@@ -63,7 +63,6 @@ class ZMSItem(
     manage = HTMLFile('dtml/object/manage', globals())
     manage_workspace = HTMLFile('dtml/object/manage', globals()) # ZMI Manage
     manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
-    manage_menu = HTMLFile('dtml/object/manage_menu', globals()) # ZMI Menu
     manage_tabs = HTMLFile('dtml/object/manage_tabs', globals()) # ZMI Tabulators
     manage_tabs_sub = HTMLFile('dtml/object/manage_tabs_sub', globals()) # ZMI Tabulators (Sub)
     manage_bodyTop = HTMLFile('dtml/object/manage_bodytop', globals()) # ZMI bodyTop

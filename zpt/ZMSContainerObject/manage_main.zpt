@@ -80,8 +80,10 @@
 	<ul class="zmi-container" tal:condition="python:len(here.getPortalClients())>0">
 		<tal:block tal:repeat="childNode python:here.getPortalClients()">
 			<li class="zmi-item" tal:attributes="id python:childNode.id">
-				<div class="center" tal:content="structure python:childNode.renderShort(request)">
-					the rendered child-node
+				<div class="center">
+					<div class="contentEditable portalClient" tal:attributes="id python:'contentEditable_%s_%s'%(childNode.getHome().id,request['lang'])" tal:content="structure python:childNode.renderShort(request)">
+						the rendered child-node
+					</div><!-- .contentEditable -->
 				</div><!-- .center -->
 					<div class="right">
 						<div class="zmi-action">

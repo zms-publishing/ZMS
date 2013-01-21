@@ -3,6 +3,7 @@
 }
 #zmi-header {
 	background-color:black;
+	min-height:45px;
 }
 #zmi-header .product {
 	font-weight:bold;
@@ -443,9 +444,6 @@ border-top:1px dotted #ccc !important;
 }
 ul.zmi-container > li.zmi-item > div.center .zmiRenderShort div.form-label {
 min-height:35px;
-}
-ul.zmi-container:last-child li div.zmiRenderShort {
-background-color:#eee !important;
 }
 
 div.right .btn .caret {

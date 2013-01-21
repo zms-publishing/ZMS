@@ -52,8 +52,8 @@ def syncType( self, meta_id, attr):
       if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Folder']:
-        zexp = ob.aq_parent.manage_exportObject( id=ob.id, download=1)
-        blob = _blobfields.createBlobField( self,_globals.DT_FILE, zexp, mediadbStorable=False)
+        zip = _ziputil.exportZodb2Zip(ob)
+        blob = _blobfields.createBlobField( self,_globals.DT_FILE, zip, mediadbStorable=False)
         attr['custom'] = blob
       elif ob.meta_type in [ 'Page Template']:
         attr['custom'] = unicode(ob.read()).encode('utf-8')
@@ -974,7 +974,7 @@ class ZMSMetaobjManager:
             newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
             newOb.manage_acquiredPermissions([])
         elif newType == 'Folder':
-          if isinstance( newCustom, _blobfields.MyFile) and len(newCustom.filename) > 0:
+          if isinstance( newCustom, _blobfields.MyFile) and len(newCustom.getData()) > 0:
             newOb.manage_delObjects(ids=newOb.objectIds())
             _ziputil.importZip2Zodb( newOb, newCustom.getData())
           attr['custom'] = ''

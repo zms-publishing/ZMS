@@ -19,9 +19,55 @@
 # Imports.
 from cStringIO import StringIO
 from types import StringTypes
+import os
+import tempfile
 import zipfile
 # Product Imports.
 import _globals
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_ziputil.exportZodb2Zip:
+
+Extracts and imports zip-file to zodb.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def _exportZodb2Zip(zf, root, container):
+  for ob in container.objectValues():
+    if ob.meta_type in ['Folder']:
+      _exportZodb2Zip(zf,root,ob)
+    elif ob.meta_type in ['Image','File']:
+      arcname = ob.absolute_url()[len(root.absolute_url())+1:]
+      print "_exportZodb2Zip",arcname
+      try:
+        bytes = ob.data
+        if len(bytes) == 0:
+          bytes = ob.getData()
+        try:
+          bytes = bytes.read()
+        except:
+          bytes = str(bytes)
+        zf.writestr(arcname,bytes)
+      except:
+        _globals.writeError(root.content,"_exportZodb2Zip")
+
+def exportZodb2Zip(root):
+  # Create temporary zip-file.
+  zipfilename = tempfile.mktemp() + '.zip'
+  zf = zipfile.ZipFile( zipfilename, 'w')
+  _exportZodb2Zip(zf,root,root)
+  zf.close()
+  
+  # Read data from zip-file as return value.
+  f = open( zipfilename, 'rb')
+  data = f.read()
+  f.close()
+  
+  # Remove temporary zip-file.
+  os.remove( zipfilename)
+  
+  # Returns data of zip-file.
+  print len(data)
+  return data
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

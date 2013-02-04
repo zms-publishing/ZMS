@@ -152,11 +152,6 @@ except:
 >
 
 <style>
-span.zms2goButton img {
-	background:url(metaobj_manager/<dtml-var meta_id>.zms2go.png) no-repeat top right;
-	width:80px;
-	height:33px;
-}
 span.active {
 	background-color:#FFF;
 	font-weight:bold;
@@ -177,11 +172,6 @@ span.mouseover {
 <input type="hidden" id="titlealt_<dtml-var lang>" name="titlealt_<dtml-var lang>" value=""/>
 <input type="hidden" id="title_<dtml-var lang>" name="title_<dtml-var lang>" value=""/>
 <input type="hidden" id="text_<dtml-var lang>" name="text_<dtml-var lang>" value=""/>
-<div style="width:100%;text-align:right">
-	<span class="zms2goButton">
-		<img src="<dtml-var spacer_gif>" alt="" border="0"/>
-	</span>
-</div>
 
 <dtml-comment>
 ////////////////////////////////////////////////////////////////////////////////

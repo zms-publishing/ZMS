@@ -7,6 +7,11 @@
 	white-space:nowrap;
 	overflow:hidden;
 }
+.zmi-sitemap ul, 
+.zmi-sitemap ol {
+	margin-top: 0.3em;
+	margin-left: 12px;
+}
 .brand {
 	font-size:small!important;
 }
@@ -64,7 +69,7 @@ function zmiToggleClick(toggle) {
 						html += '<ol id="'+page_id+'" class="zmi-page">';
 						html += '<div>';
 						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">';
-						html += '<img class="grippy" src="/misc_/zms/spacer.gif">';
+						html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
 						html += '<img src="'+page_display_icon+'"> ';
 						html += page_titlealt;
@@ -105,7 +110,7 @@ function zmiFollowHref(anchor) {
 		<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
 		<div>
 			<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
-			<img class="grippy" src="/misc_/zms/spacer.gif">
+			<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
 				<img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
 				<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>

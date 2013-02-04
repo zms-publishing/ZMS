@@ -381,7 +381,12 @@ function zmiActionOver(el, evt) {
 			var html = '';
 			var opticon = '';
 			if (actions[1].length > 2) {
-				opticon = '<i class="' + actions[1][2] +'"></i>';
+				if (actions[1][2].indexOf('<i')==0) {
+					opticon = actions[1][2];
+				}
+				else {
+					opticon = '<i class="' + actions[1][2] +'"></i>';
+				}
 			}
 			var optlabel = actions[1][0];
 			optlabel = optlabel.substr("-----".length);
@@ -411,7 +416,12 @@ function zmiActionOver(el, evt) {
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				var opticon = '';
 				if (actions[i].length > 2) {
-					opticon = '<i class="' + actions[i][2] +'"></i>';
+					if (actions[i][2].indexOf('<i')==0) {
+						opticon = actions[i][2];
+					}
+					else {
+						opticon = '<i class="' + actions[i][2] +'"></i>';
+					}
 				}
 				optlabel = optlabel.substr("-----".length);
 				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
@@ -430,7 +440,12 @@ function zmiActionOver(el, evt) {
 			else {
 				var opticon = '';
 				if (actions[i].length > 2) {
-					opticon = '<img src="' + actions[i][2] +'"/>';
+					if (actions[i][2].indexOf('<i')==0) {
+						opticon = actions[i][2];
+					}
+					else {
+						opticon = '<i class="' + actions[i][2] +'"></i>';
+					}
 				}
 				else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
 					opticon = '<i class="icon-trash"></i>';

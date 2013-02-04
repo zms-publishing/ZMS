@@ -71,7 +71,7 @@ function zmiToggleClick(toggle) {
 						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">';
 						html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
-						html += '<img src="'+page_display_icon+'"> ';
+						html += page_display_icon+' ';
 						html += page_titlealt;
 						html += '<'+'/a>';
 						html += '<'+'/div>';
@@ -112,7 +112,7 @@ function zmiFollowHref(anchor) {
 			<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
 			<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
-				<img class="icon" tal:attributes="src python:childNode.display_icon(request)"/>
+				<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 				<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 			</a>
 		</div>

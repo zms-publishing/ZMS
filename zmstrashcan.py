@@ -24,6 +24,7 @@ import time
 import urllib
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
+import _confmanager
 import _globals
 
 
@@ -92,12 +93,18 @@ class ZMSTrashcan(ZMSContainerObject):
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon'):
+      zpt = _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+      pattern = '%s'
+      if zpt:
+        pattern = '<img src="%s"/>'
       obj_type = meta_type
       if obj_type is None:
         if not self.isActive(REQUEST):
           key = 'icon_disabled'
         obj_type = self.meta_id
-      return getattr(self,key)
+      if zpt:
+        return '<i class="icon-trash"></i>'
+      return pattern%getattr(self,key)
 
 
     """

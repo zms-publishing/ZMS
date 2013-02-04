@@ -357,7 +357,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         req = {'lang':parent, 'preview':REQUEST.get('preview','') }
         change_dt_parent = self.getObjProperty('change_dt',req)
         try:
-          rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) > 0
+          if change_dt_lang is not None and change_dt_parent is not None:
+            rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) > 0
         except:
           _globals.writeError(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
       return rtnVal
@@ -471,12 +472,21 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon'):
+      zpt = _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+      pattern = '%s'
+      if zpt:
+        pattern = '<img src="%s"/>'
       obj_type = meta_type
       if obj_type is None:
         if not self.isActive(REQUEST):
           key = 'icon_disabled'
         obj_type = self.meta_id
       if obj_type in self.getMetaobjIds( sort=0):
+        if zpt:
+          metaObjAttr = self.getMetaobjAttr( obj_type, 'icon_clazz')
+          if metaObjAttr is not None and metaObjAttr['type'] == 'constant':
+            clazz = metaObjAttr.get('custom','')
+            return '<i class="%s"></i>'%clazz
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':
@@ -486,21 +496,21 @@ class ZMSObject(ZMSItem.ZMSItem,
           else:
             value = metaObjAttr.get( 'custom', None)
           if value is not None and type(value) is not str:
-            return value.absolute_url()
+            return pattern%value.absolute_url()
         metaObj = self.getMetaobj( obj_type)
         if metaObj:
           if metaObj[ 'type'] == 'ZMSResource':
-            return '%sico_class.gif'%self.MISC_ZMS
+            return pattern%'%sico_class.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSLibrary':
-            return '%sico_library.gif'%self.MISC_ZMS
+            return pattern%'%sico_library.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSPackage':
-            return '%sico_package.gif'%self.MISC_ZMS
+            return pattern%'%sico_package.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSRecordSet':
-            return '%sico_sqldb.gif'%self.MISC_ZMS
+            return pattern%'%sico_sqldb.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSReference':
-            return '%sico_linkcontainer.gif'%self.MISC_ZMS
-          return '%sico_document.gif'%self.MISC_ZMS
-      return '/p_/broken'
+            return pattern%'%sico_linkcontainer.gif'%self.MISC_ZMS
+          return pattern%'%sico_document.gif'%self.MISC_ZMS
+      return pattern%'%s/p_/broken'
 
 
     # --------------------------------------------------------------------------
@@ -1024,11 +1034,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       restricted = None
       if REQUEST.form.get('get_restricted'):
         restricted = self.hasRestrictedAccess()
-      xml += "<page"
+      xml += '<page'
       xml += " absolute_url=\"%s\""%str(self.absolute_url())
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
-      xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST))
+      xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST)).replace('"','&quot;').replace('<','&lt;')
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST,deep=0))

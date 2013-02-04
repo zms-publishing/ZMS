@@ -188,6 +188,17 @@
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-home]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -214,7 +225,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -405,6 +416,17 @@
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-file]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -431,7 +453,7 @@
           <item key="id"><![CDATA[ZMSDocument]]></item>
           <item key="name"><![CDATA[ZMSDocument]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -734,6 +756,17 @@ return ''
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-download-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -760,7 +793,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -952,6 +985,17 @@ return ''
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-folder-close-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -978,7 +1022,7 @@ return ''
           <item key="id"><![CDATA[ZMSFolder]]></item>
           <item key="name"><![CDATA[ZMSFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -1188,6 +1232,17 @@ return ''
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-picture]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -1214,7 +1269,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1474,6 +1529,17 @@ return context.str_json(result)
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="custom"><![CDATA[icon-link]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
@@ -1688,7 +1754,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1725,6 +1791,17 @@ if align:
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-link]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2109,7 +2186,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.1]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2260,6 +2337,17 @@ zmscontext.commitObj(request)
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-comment-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -2272,14 +2360,6 @@ zmscontext.commitObj(request)
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -2294,7 +2374,7 @@ zmscontext.commitObj(request)
           <item key="id"><![CDATA[ZMSNote]]></item>
           <item key="name"><![CDATA[ZMSNote]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2331,6 +2411,17 @@ zmscontext.commitObj(request)
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-file-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2509,7 +2600,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSRichtext]]></item>
           <item key="name"><![CDATA[ZMSRichtext]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.1]]></item>
+          <item key="revision"><![CDATA[1.4.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2895,6 +2986,17 @@ zmscontext.attr('text',text)
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-folder-close-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -2907,14 +3009,6 @@ zmscontext.attr('text',text)
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -2929,7 +3023,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSysFolder]]></item>
           <item key="name"><![CDATA[ZMSSysFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.0.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -3880,6 +3974,17 @@ if key.startswith('table_'):
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-table]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -3943,6 +4048,17 @@ if key.startswith('table_'):
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-paper-clip]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4290,7 +4406,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.4]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4327,6 +4443,17 @@ return unicode(printed).encode('utf-8')
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-paper-clip]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4612,7 +4739,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.1]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>
@@ -4649,6 +4776,17 @@ return zmscontext.attr('text')
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-font]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4772,7 +4910,7 @@ $(function() {
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4805,7 +4943,7 @@ $(function() {
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

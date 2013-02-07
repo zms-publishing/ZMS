@@ -156,6 +156,7 @@
 								</li><!-- .zmi-item -->
 								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
 									<li tal:attributes="class python:' '.join(['zmi-item']+[[],['pageelement']][int(childNode.isPageElement())])">
+										<img class="grippy" src="/misc_/zms/spacer.gif" style="position:absolute"/>
 										<div class="center" tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->
@@ -170,7 +171,6 @@
 													<span class="caret"></span>
 												</button>
 											</div><!-- .btn-group -->
-											<img class="grippy" src="/misc_/zms/spacer.gif">
 											<span class="zmi-ids">
 												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
 											</span>

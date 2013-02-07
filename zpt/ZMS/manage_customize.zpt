@@ -9,7 +9,6 @@
 <script>
 </script>
 
-
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#Manager" data-toggle="tab">Manager</a></li>
@@ -21,7 +20,6 @@
 		<li><a href="#History" data-toggle="tab">History</a></li>
 		<li><a href="#Subversion" data-toggle="tab">Subversion</a></li>
 		<li><a href="#InstalledLibraries" data-toggle="tab">Installed Libraries</a></li>
-		<li><a href="#System" data-toggle="tab">System</a></li>
 	</ul>
 	<div class="tab-content">
 
@@ -276,53 +274,6 @@
 			<input type="hidden" name="key" value="InstalledProducts">
 			<legend>Installed Libraries</legend>
 		</form>
-		</div>
-
-		<div class="tab-pane" id="System">
-<form class="form-horizontal" name="SystemForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="System">
-	<legend>System</legend>
-	<div class="control-group">
-		<label class="control-label">ZMS:</label><div class="controls" tal:content="python:'%s (Build #%s%s)'%(here.zms_version(),here.zms_build,here.zms_patch)">zms_version_txt</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">ZOPE:</label><div class="controls" tal:content="python:here.Control_Panel.version_txt()">version_txt</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">PYTHON:</label><div class="controls" tal:content="python:here.Control_Panel.sys_version()">sys_version</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">System Platform:</label><div class="controls" tal:content="python:here.Control_Panel.sys_platform()">sys_platform</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">SOFTWARE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getSOFTWARE_HOME()">getSOFTWARE_HOME</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">ZOPE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getZOPE_HOME()">getZOPE_HOME</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">INSTANCE_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getINSTANCE_HOME()">getINSTANCE_HOME</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">PRODUCT_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getPRODUCT_HOME()">getPRODUCT_HOME</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">CLIENT_HOME:</label><div class="controls" tal:content="python:here.Control_Panel.getCLIENT_HOME()">getCLIENT_HOME</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">System Time:</label><div class="controls" tal:content="python:here.ZopeTime()">ZopeTime</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">Running For:</label><div class="controls" tal:content="python:here.Control_Panel.process_time()">process_time</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">ZODB Location:</label><div class="controls" tal:content="python:here.Control_Panel.Database.db_name()">db_name</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label">Database Size:</label><div class="controls" tal:content="python:here.Control_Panel.Database.db_size()">db_size</div><!-- .controls -->
-	</div><!-- .control-group -->
-</form>
 		</div>
 
 	</div>

@@ -10,7 +10,8 @@
 		userFolder python:here.getUserFolder();
 		valid_roles python:here.difference_list(here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
-		roles_optpl python:[['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
+		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
+												['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
 												['ZMSAuthor',here.getZMILangStr('ROLE_ZMSAUTHOR')],
 												['ZMSSubscriber',here.getZMILangStr('ROLE_ZMSSUBSCRIBER')],
 												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],

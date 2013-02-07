@@ -7,6 +7,20 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
+
+/**
+ * Export xml.
+ */
+function zmiExportBtnClick(sender) {
+	var fm = sender.form;
+	var href = fm.action+'?lang='+getZMILang()+'&btn='+$(sender).val();
+	$('input[name="ids:list"]:checked',fm).each(function(){
+			href += $(this).attr("name")+'='+$(this).val();
+		});
+	confirm(href);
+	//window.open(href);
+	return false;
+}
 </script>
 
 <tal:block tal:define="global
@@ -14,12 +28,106 @@
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
 		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
 
-<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+<form tal:condition="python:request.get('id')" class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+<tal:block tal:define="global metaObj python:here.getMetaobj(request['id'])">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<legend>
+		<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block> 
+		<tal:block tal:content="python:metaObj['name']">Name</tal:block>
+	</legend>
+	<div class="control-group">
+		<label for="obj_name" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+		<div class="controls"><input type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj['name']"></div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label for="obj_revision" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
+		<div class="controls"><input type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:metaObj.get('revision','0.0.0')"></div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label for="obj_type" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
+		<div class="controls">
+			<select id="obj_type" name="obj_type">
+				<tal:block tal:repeat="objtype python:here.valid_objtypes">
+					<option tal:attributes="value objtype; selected python:['','selected'][int(metaObj['type']==objtype)]" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
+				</tal:block>
+			</select>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label for="obj_package" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
+		<div class="controls">
+			<select id="obj_package" name="obj_package">
+				<tal:block tal:repeat="metaObjPackage metaObjPackages">
+					<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
+				</tal:block>
+			</select>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+
+	<table class="table table-striped table-bordered table-hover">
+		<colgroup>
+			<col width="1em"/>
+			<col width="1em"/>
+			<col/>
+			<col/>
+			<col/>
+			<col width="1em"/>
+			<col width="1em"/>
+			<col width="1em"/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
+				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
+				<th align="center" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')" class="control-label mandatory" style="width:2em!important">(<span></span>)</th>
+				<th align="center" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><img src="/misc_/zms/btn_multilang1.gif"></th>
+				<th align="center" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')">0..n</th>
+				<th></th>
+				<th></th>
+			<tr>
+		</thead>
+		<tbody>
+			<tr tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
+				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
+					<td></td>
+					<td></td>
+					<td><input type="text" tal:attributes="name python:'attr_id_%s'%metaObjAttrId; value python:metaObjAttr['id']"></td>
+					<td><input type="text" tal:attributes="name python:'attr_name_%s'%metaObjAttrId; value python:metaObjAttr['name']"></td>
+					<td>
+						<select tal:attributes="name python:'attr_type_%s'%metaObjAttrId">
+							<option tal:attributes="value python:metaObjAttr['type']" selected="selected">
+								<tal:block tal:condition="python:metaObjAttr['type'] in here.valid_datatypes" tal:content="python:metaObjAttr['type']">type</tal:block>
+							</option>
+						</select>
+					</td>
+					<td align="center"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metaObjAttr['id']; checked python:['','checked'][int(metaObjAttr.get('mandatory',0)==1)]" value="1"></td>
+					<td align="center"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metaObjAttr['id']; checked python:['','checked'][int(metaObjAttr.get('multilang',0)==1)]" value="1"></td>
+					<td align="center"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metaObjAttr['id']; checked python:['','checked'][int(metaObjAttr.get('repetitive',0)==1)]" value="1"></td>
+					<td><div class="single-line" tal:condition="python:metaObjAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']"><textarea tal:attributes="name python:'attr_keys_%s'%metaObjAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metaObjAttr['keys'])">keys</textarea></div></td>
+				</tal:block>
+			</tr>
+		<tbody>
+	<table>
+
+</tal:block>
+</form>
+
+<form tal:condition="python:not request.get('id')" class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METAOBJ')">well</p>
 	<table class="table table-striped table-bordered">
 	<colgroup>
+		<col width="20"/>
 		<col width="50"/>
 		<col width="50"/>
 	</colgroup>
@@ -27,8 +135,11 @@
 	<tal:block tal:repeat="metaObjPackage metaObjPackages">
 		<tr>
 			<td>
-				<div class="btn-group">
-					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+				<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage">
+			</td>
+			<td>
+				<div tal:condition="python:metaObjPackage" class="btn-group">
+					<a class="btn" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
 					<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
 				</div>
 			</td>
@@ -39,15 +150,18 @@
 		<tal:block tal:repeat="metaObj metaObjs">
 			<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td>
+					<input tal:condition="python:not metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value python:metaObj['id']">
+				</td>
+				<td>
 					<div class="btn-group">
-						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+						<a class="btn" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
 						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
 					</div>
 				</td>
 				<td></td>
 				<td>
 					<span tal:attributes="title python:metaObj['id']">
-						<img tal:attributes="src python:here.display_icon(request,metaObj['id'])"/>
+						<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block>
 						<tal:block tal:content="python:'%s (%s)'%(metaObj['name'],here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper()))">metaObj</tal:block>
 					</span>
 				</td>
@@ -57,7 +171,10 @@
 	</tbody>
 	</table>
 	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+	&nbsp;&nbsp;
 	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this); return false;">Export...</button>
 </form>
 
 </tal:block>

@@ -23,7 +23,7 @@
 	</tal:block>
 </tal:block>
 
-<form class="form-horizontal" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
 	<input type="hidden" id="action" name="action" tal:attributes="value action">

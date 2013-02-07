@@ -452,7 +452,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def icon(self):
       try:
-        icon = self.display_icon( self.REQUEST)
+        icon = self.display_icon( self.REQUEST, zpt=False)
         if icon.find( '://') > 0:
           icon = icon[ icon.find( '://')+3:]
           icon = icon[ icon.find( '/'):]
@@ -471,8 +471,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon'):
-      zpt = _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
+      zpt = zpt and _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s"/>'
@@ -484,9 +484,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       if obj_type in self.getMetaobjIds( sort=0):
         if zpt:
           metaObjAttr = self.getMetaobjAttr( obj_type, 'icon_clazz')
-          if metaObjAttr is not None and metaObjAttr['type'] == 'constant':
-            clazz = metaObjAttr.get('custom','')
-            return '<i class="%s"></i>'%clazz
+          icon_clazz = None
+          if metaObjAttr is not None and metaObjAttr['type'] == 'py':
+            icon_clazz = metaObjAttr['py'](zmscontext=self)
+          elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
+            icon_clazz = metaObjAttr.get('custom',None)
+          if icon_clazz:
+            return '<i class="%s"></i>'%icon_clazz
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':

@@ -37,7 +37,6 @@ except:
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMS.icon>]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
@@ -71,7 +70,39 @@ except:
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMS.icon_disabled>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.icon_clazz"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Icon (Class)
+##
+# --// BO icon_clazz //--
+
+try:
+  if zmscontext.getLevel()==0:
+    icon_clazz = 'icon-home'
+  else:
+    icon_clazz = 'icon-file'
+  return icon_clazz
+except:
+  return None
+
+# --// EO icon_clazz //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
@@ -149,6 +180,9 @@ except:
                   <item key="name"><![CDATA[<dtml-let meta_id="REQUEST.get('ZMS_INSERT',meta_id)"
 		objAttr="getObjAttr('text',meta_id)"
 		session_id="SESSION.getId()"
+		is_zpt="getConfProperty('zmi.theme')=='zpt'"
+		is_insert="int(is_zpt and REQUEST.get('ZMS_INSERT') is not None)"
+		jquery_context="['form#form0','div#zmiIframe form#form0'][is_insert]"
 >
 
 <style>
@@ -168,7 +202,6 @@ span.mouseover {
 ////////////////////////////////////////////////////////////////////////////////
 </dtml-comment>
 
-<div id="interface0">
 <input type="hidden" id="titlealt_<dtml-var lang>" name="titlealt_<dtml-var lang>" value=""/>
 <input type="hidden" id="title_<dtml-var lang>" name="title_<dtml-var lang>" value=""/>
 <input type="hidden" id="text_<dtml-var lang>" name="text_<dtml-var lang>" value=""/>
@@ -179,7 +212,7 @@ span.mouseover {
 ////////////////////////////////////////////////////////////////////////////////
 </dtml-comment>
 
-<dtml-call "REQUEST.set('elName','editor')">
+<dtml-call "REQUEST.set('elName',['editor','editor2'][is_insert])">
 <dtml-call "REQUEST.set('CKEDITOR_config_toolbar',[
 		['Format'],
 		['Bold','Italic','Underline','NumberedList','BulletedList'],
@@ -191,7 +224,9 @@ span.mouseover {
 	])">
 <dtml-call "REQUEST.set('CKEDITOR_config_contentsCss',['metaobj_manager/ZMS.contents.css'])">
 <dtml-call "REQUEST.set('f_zmiRichtextOnSubmitEventHandler',True)">
+<div id="zmiRichtextEditor<dtml-var "REQUEST.get('elName')">">
 <dtml-var "getPlugin('rte/ckeditor/manage_form.dtml',REQUEST)">
+</div>
 
 <script>
 
@@ -216,10 +251,10 @@ function extractString(s, start, end) {
 }
 
 $(function() {
-	if($("form#form0 input[name=session_id]").length==0) {
-		$("form#form0").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
+	if($("<dtml-var jquery_context> input[name=session_id]").length==0) {
+		$("<dtml-var jquery_context>").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
 	}
-	$("input#submitBtn0").click(function() {
+	$("<dtml-var jquery_context> input#submitBtn0,<dtml-var jquery_context> button.btn-primary:first").click(function() {
 			var instance = CKEDITOR.instances['editor_<dtml-var elName>'];
 			var body = instance.getData();
 			var subtitle = extractString(body,'<h2 id="subtitle">','</h2>');
@@ -234,9 +269,9 @@ $(function() {
 				return false;
 			}
 			body = body.substr(body.toLowerCase().indexOf('</h1>')+'</h1>'.length);
-			$("input#titlealt_<dtml-var lang>").val(subtitle);
-			$("input#title_<dtml-var lang>").val(title);
-			$("input#text_<dtml-var lang>").val(body);
+			$("<dtml-var jquery_context> input#titlealt_<dtml-var lang>").val(subtitle);
+			$("<dtml-var jquery_context> input#title_<dtml-var lang>").val(title);
+			$("<dtml-var jquery_context> input#text_<dtml-var lang>").val(body);
 		});
 });
 
@@ -254,7 +289,7 @@ $(function() {
 </dtml-if>
 </textarea>
 
-<dtml-var f_submitBtn>
+<dtml-unless is_zpt><dtml-var f_submitBtn></dtml-unless>
 
 </dtml-let>
 
@@ -410,7 +445,6 @@ zmscontext.attr('text',text)
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChange-Object]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMS.onChangeObjEvt>]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
@@ -433,7 +467,6 @@ zmscontext.attr('text',text)
                   <item key="name"><![CDATA[Template: ZMS]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMS.bodyContentZMSCustom_ZMS>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -462,7 +495,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMSRichDocument]]></item>
           <item key="package"><![CDATA[com.zms2go.foundation]]></item>
-          <item key="revision"><![CDATA[0.9.2]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -479,18 +512,19 @@ zmscontext.attr('text',text)
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSLib_page -->
 
-	<tal:block tal:define="global 
-		childNodes    python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
-		<tal:block tal:condition="childNodes">
-			<tal:block tal:content="structure here/bodyContent_PagePre">The page-pre-content</tal:block>
-			<tal:block tal:repeat="childNode childNodes">
-				<tal:block tal:content="structure python:unicode(childNode.getBodyContent(request),'utf-8')">
-					The page-element body-content
-				</tal:block>
+	<tal:block tal:content="structure here/bodyContent_PagePre">The page-pre-content</tal:block>
+	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
+		childNodes python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
+			<tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
+				The page-element body-content
 			</tal:block>
-			<tal:block tal:content="structure here/bodyContent_PagePost">The page-post-content</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument']">
+		<tal:block tal:content="structure python:here.getBodyContent(request)">
+			The body-content
 		</tal:block>
 	</tal:block>
+	<tal:block tal:content="structure here/bodyContent_PagePost">The page-post-content</tal:block>
 
 <!-- /bodyContentZMSLib_page -->]]>
                   </item>
@@ -580,9 +614,84 @@ return context.str_json(result)
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Upload: Media]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMSLib.uploadMedia>]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSLib.show_version -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+	<tal:block tal:condition="python:zmscontext.getHistory()">
+		<script>
+              function showHistory(el) {
+                var v = $(el).val();
+                var version_nr = v.substr(0,v.indexOf(" "));
+                var version_dt = v.substr(v.indexOf(" ")+1);
+                $(el).prop('selectedIndex',0);
+                $.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
+                    var $xml = $( data );
+                    var body = $xml.find( "ObjHistory" );
+                    var title = $xml.find("title").text();
+                    var description = $xml.find("description").text();
+                    if ($("div#revision").length==0) {
+                      $("body").append('<'+'div id="revision"><'+'/div>');
+                    }
+                    var html = ''
+                      + '<'+'div id="flow" class="hyphenate">'
+                      + '<'+'article>'
+                        + '<'+'header>'
+                          + '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
+                          + '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
+                        + '<'+'/header>'
+                        + '<'+'/section>';
+                    for (var i = 0; i < body.length; i++) {
+                      html += $(body[i]).text();
+                    }
+                    html += ''
+                          + '<'+'/section>';
+                        + '<'+'/article>';
+                      + '<'+'/div>';
+                    $("div#revision").html(html);
+                  	showFancybox({
+                  			'href':'#revision',
+                  			'title':'r'+v,
+                  			'autoDimensions':true,
+                  			'transitionIn':'fade',
+                  			'transitionOut':'fade',
+                  			onCleanup:function() {
+                  					$("div#revision").remove();
+                  				}
+                  		});
+                    $("div#revision>div").show();
+                  });
+              }
+		</script>
+		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
+		<select onchange="showHistory(this)">
+			<option value="" tal:content="python:'--- %s ---'%zmscontext.getLangStr('TAB_HISTORY',request['lang'])">the history</option>
+			<tal:block tal:define="global 
+					change_history python:zmscontext.attr('change_history');
+					rchange_history python:map(lambda x: change_history[len(change_history)-(x+1)], range(len(change_history)))"
+					tal:repeat="history rchange_history">
+				<option
+						tal:attributes="value python:'%i.%i.%i %s'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))" 
+						tal:content="python:'r%i.%i.%i (%s)'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))">version_nr version_dt</option>
+			</tal:block>
+		</select>
+	</tal:block>
+</tal:block>
+
+<!-- /ZMSLib.show_version -->]]>
+                  </item>
+                  <item key="id"><![CDATA[show_version]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Show version]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
             </list>
@@ -605,7 +714,7 @@ return context.str_json(result)
           <item key="id"><![CDATA[ZMSLib]]></item>
           <item key="name"><![CDATA[ZMSLib]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.1.0]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
           <item key="type"><![CDATA[ZMSLibrary]]></item>
         </dictionary>
       </item>
@@ -642,6 +751,17 @@ return context.str_json(result)
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-paper-clip]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -961,7 +1081,6 @@ return unicode(printed).encode('utf-8')
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserContainer.renderShort>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -990,7 +1109,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.3]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1027,6 +1146,17 @@ return unicode(printed).encode('utf-8')
                   <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-paper-clip]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1122,7 +1252,6 @@ return ''
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Image]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_img_src>]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
@@ -1149,7 +1278,6 @@ return zmscontext.attr('text')
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Abstract]]></item>
-                  <item key="py"><![CDATA[<PythonScript at ZMSTeaserElement.attr_abstract>]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
@@ -1255,42 +1383,6 @@ return zmscontext.attr('text')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- bodyContentZMSCustom_ZMSTeaserElement -->
-
-<tal:block tal:define="global 
-		zmscontext options/zmscontext;
-		teaserCntnr     python:zmscontext.getParentNode();
-		subclass        python:[teaserCntnr.meta_id];
-		style           python:[];
-		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
-		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
-		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
-	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
-		<tal:block tal:condition="python:bgcolor_border">
-			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
-		</tal:block>
-		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-			The teaser-element
-		</div>
-	</div>
-	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-		The teaser-element
-	</div>
-</tal:block>
-
-<!-- /bodyContentZMSCustom_ZMSTeaserElement -->]]>
-                  </item>
-                  <item key="id"><![CDATA[bodyContentZMSCustom_ZMSTeaserElement]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.bodyContentZMSCustom_ZMSTeaserElement>]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSTeaserElement.standard_html -->
 
 <tal:block tal:define="global 
@@ -1322,7 +1414,6 @@ return zmscontext.attr('text')
                   <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
-                  <item key="zpt"><![CDATA[<ZopePageTemplate at ZMSTeaserElement.standard_html>]]></item>
                 </dictionary>
               </item>
             </list>
@@ -1351,7 +1442,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>
@@ -1384,7 +1475,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[1.3.0]]></item>
+          <item key="revision"><![CDATA[1.4.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

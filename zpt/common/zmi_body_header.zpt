@@ -1,6 +1,6 @@
 <!-- common/zmi_body_header -->
 
-<div id="zmi-header">
+<div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.filtered_manage_options())">
 	<div class="navbar navbar-inverse" style="position: static;">
 		<div class="navbar-inner">
 			<div class="container">
@@ -22,7 +22,7 @@
 										<tal:block tal:content="python:'API'">API</tal:block>
 									</a>
 								</li>
-								<li>
+								<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
 									<a tal:attributes="href python:'manage_system?lang=%s&key=dtpref_system'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
 											<img src="/misc_/zms/zexpdoc.gif" title="System" border="0" width="14" height="14" align="absmiddle"/>
 										<tal:block tal:content="python:'System'">System</tal:block>
@@ -52,14 +52,14 @@
 										</li>
 									</ul>
 								</li>
-								<li class="divider"></li>
-								<li>
+								<li tal:condition="python:'manage_users' in actions or 'manage_customize' in actions" class="divider"></li>
+								<li tal:condition="python:'manage_users' in actions">
 									<a tal:attributes="href python:'%s/manage_users?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])">
 										<i class="icon-group"></i>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_ACCESS')">configuration</tal:block>
 									</a>
 								</li>
-								<li>
+								<li tal:condition="python:'manage_customize' in actions">
 									<a tal:attributes="href python:'%s/manage_customize?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])">
 										<i class="icon-wrench"></i>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>

@@ -126,6 +126,7 @@ class ZMSContainerObject(
     # ---------------------
     manage_container = _confmanager.ConfDict.template('ZMSContainerObject/manage_main')
     manage_main_btn = HTMLFile('dtml/ZMSContainerObject/manage_main_btn', globals())
+    manage_main_change__roles__ = None
     manage_main_change = HTMLFile('dtml/ZMSContainerObject/manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
     manage_search = _confmanager.ConfDict.template('ZMSContainerObject/manage_search')

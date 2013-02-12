@@ -562,6 +562,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.customize_manage_options:
     # --------------------------------------------------------------------------
+    customize_manage_options__roles__ = None
     def customize_manage_options(self):
       l = []
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})

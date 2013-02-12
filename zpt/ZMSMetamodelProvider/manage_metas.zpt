@@ -2,7 +2,7 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas',here.meta_id])">
-<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options)">zmi_body_header</tal:block>
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
@@ -50,9 +50,9 @@
 			</select>
 		</td>
 		<td>
-		<div class="btn-group">
-			<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
-		</div>
+			<div class="btn-group">
+				<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+			</div>
 		</td>
 		<td>
 			<input type="text" tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; value python:metadictAttr['id']">

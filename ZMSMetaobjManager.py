@@ -852,6 +852,8 @@ class ZMSMetaobjManager:
               self.manage_delObjects(ids=[id+'.'+oldId])
             self.manage_addDTMLMethod( id+'.'+newId, newType+': '+newName, newCustom)
             newOb = getattr( self, id+'.'+newId)
+            roles=[ 'Manager']
+            newOb._proxy_roles=tuple(roles)
           # Handle interfaces.
           elif newType == 'interface':
             if oldId is not None and id+'.'+oldId in self.objectIds():
@@ -862,8 +864,10 @@ class ZMSMetaobjManager:
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
-        newOb = getattr(self,id+'.'+newId)
+        newOb = getattr( self, id+'.'+newId)
         newOb.write(newCustom)
+        roles=[ 'Manager']
+        newOb._proxy_roles=tuple(roles)
       # Handle zpt.
       elif newType == 'zpt':
         if oldId is not None and id+'.'+oldId in self.objectIds():

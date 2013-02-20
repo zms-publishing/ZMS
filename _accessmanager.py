@@ -871,8 +871,8 @@ class AccessManager(AccessableContainer):
               userFldr.userFolderEditUser(id, password, roles, domains)
             except: 
               _globals.writeError(self,'[manage_user]: can\'t change password')
-          self.setUserAttr(userObj,'email',REQUEST.get('email','').strip())
-          self.setUserAttr(userObj,'profile',REQUEST.get('profile','').strip())
+          self.setUserAttr(id,'email',REQUEST.get('email','').strip())
+          self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
         elif key=='attr':
           pass
         #-- Assemble message.

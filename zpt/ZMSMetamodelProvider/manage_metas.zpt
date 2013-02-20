@@ -9,6 +9,34 @@
 <script>
 </script>
 
+<div class="ui-helper-hidden">
+	<div id="importConf" class="inner">
+		<form class="form-horizontal" name="importConfForm" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang">
+			<div class="control-group">
+				<label for="file" class="control-label">
+					<i class="icon-folder-open-alt"></i>
+					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
+				</label>
+				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+				<div class="controls">
+					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
+						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+					</select>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #importConf -->
+
 <form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_METADATA')">Metadata</legend>
@@ -104,7 +132,7 @@
 	</table>
 	<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	&nbsp;
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
 </form>
 
 <div style="clear:both;">&nbsp;</div>

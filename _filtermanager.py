@@ -618,7 +618,6 @@ class FilterManager:
 
     # Management Interface.
     # ---------------------
-    manage_customizeFilterForm = HTMLFile('dtml/ZMS/manage_customizefilterform', globals())
     manage_importexportDebugFilter = HTMLFile('dtml/ZMSContainerObject/manage_importexportdebugfilter', globals())
 
 

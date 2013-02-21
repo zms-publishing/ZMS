@@ -154,7 +154,8 @@ class ConfManager(
     manage_customizeLanguagesForm = ConfDict.template('ZMS/manage_customizelanguagesform') 
     manage_customizeMetacmdForm = ConfDict.template('metacmd/manage_customizeform') 
     manage_customizeSvnForm = HTMLFile('dtml/ZMS/manage_customizesvnform', globals()) 
-    manage_customizeDesignForm = HTMLFile('dtml/ZMS/manage_customizedesignform', globals()) 
+    manage_customizeFilterForm = ConfDict.template('ZMS/manage_customizefilterform')
+    manage_customizeDesignForm = ConfDict.template('ZMS/manage_customizedesignform') 
 
 
     # --------------------------------------------------------------------------

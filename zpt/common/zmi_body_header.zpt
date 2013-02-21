@@ -1,7 +1,7 @@
 <!-- common/zmi_body_header -->
 
 <div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.filtered_manage_options())">
-	<div class="navbar navbar-inverse" style="position: static;">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
 				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">

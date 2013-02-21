@@ -163,6 +163,14 @@ $(function() {
 </tal:block>
 
 <tal:block tal:condition="python:request.get('id','') not in metaCmdIds">
+	<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insert').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">
+		<i class="icon-cog"></i>
+		<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')+'...'">Insert...</tal:block>
+	</button>
+	&nbsp;&nbsp;
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#import').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="alert('@todo');return false;">Export...</button>
+	<br/><br/>
 	<table class="table table-striped table-bordered table-hover">
 	<colgroup>
 		<col width="50"/>
@@ -199,8 +207,6 @@ $(function() {
 	</tal:block>
 	</tbody>
 	</table>
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')+'...'" tal:content="python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insert').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Insert...</button>
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#import').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
 </tal:block>
 
 </form>

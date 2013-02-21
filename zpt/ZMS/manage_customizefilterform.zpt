@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" tal:define="Std modules/Products/PythonScripts/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'filter',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<style>
+.filterName {
+	font-weight:bold;
+}
+.filterDelimiter {
+	background-color:white;
+	border:1px #EEE solid;
+	margin:.1em;
+	max-width:20em;
+	text-align:center;
+}
+.filterProcess {
+	background-color:white;
+	border:1px #CCC solid;
+	font-weight:normal;
+	margin:.1em;
+	max-width:20em;
+	text-align:center;
+}
+</style>
+
+<script>
+</script>
+
+<tal:block tal:define="global
+		filterIds python:here.getFilterIds();
+		filters python:map(lambda x: here.getFilter(x), filterIds);
+		processIds python:here.getProcessIds();
+		processes python:map(lambda x: here.getProcess(x), processIds)">
+
+<form class="form-horizontal" action="manage_changeFilter" method="post" enctype="multipart/form-data">
+	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_FILTER')">well</p>
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<legend tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</legend>
+	<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')"><i class="icon-filter"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></button>
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:condition="python:here.getPortalMaster() is not None" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')" onclick="$('#acquireObj').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Acquire</button>
+	&nbsp;&nbsp;
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this); return false;">Export...</button>
+	<br/><br/>
+	<table class="table table-striped table-bordered zmi-sortable">
+		<colgroup>
+			<col width="1em"/>
+			<col width="10em"/>
+		</colgroup>
+		<tbody>
+			<tr tal:repeat="filterId filterIds">
+			<tal:block tal:define="global filter python:here.getFilter(filterId)">
+				<td>
+					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
+				</td>
+				<td>
+					<div class="btn-group">
+						<a class="btn" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+						<a class="btn" tal:attributes="href python:'javascript:zmiDeleteObjBtnClick({btn:getZMILangStr(\'BTN_DELETE\'),id:\'%s\'})'%filterId; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+					</div>
+				</td>
+				<td>
+					<div class="filterName">
+						<i class="icon-filter"></i>
+						<tal:block tal:content="filter/name">the filter-name</tal:block>
+					</div>
+					<div class="filterProcesses">
+						<div class="filterDelimiter">
+							<tal:block tal:condition="python:filter['format']=='import'">
+								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
+								<i class="icon-arrow-up" title="Import"></i>
+							</tal:block>
+							<tal:block tal:condition="python:filter['format']!='import'">
+								<tal:block tal:content="filter/format">the format</tal:block>
+							</tal:block>
+						</div>
+						<tal:block tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
+							<tal:block tal:define="global process python:here.getProcess(filterProcess['id'])">
+								<div class="filterProcess" tal:content="process/name">the process-name</div>
+							</tal:block>
+						</tal:block>
+						<div class="filterDelimiter">
+							<tal:block tal:condition="python:filter['format']=='import'">
+								<img tal:attributes="src python:here.getMimeTypeIconSrc('text/xml')"/>
+							</tal:block>
+							<tal:block tal:condition="python:filter['format']!='import'">
+								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
+								<i class="icon-arrow-down" title="Export"></i>
+							</tal:block>
+						</div>
+					</div><!-- .filterProcesses -->
+				</td>
+			</tal:block>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
+	<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')">
+		<i class="icon-cog"></i>
+		<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
+	</button>
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:condition="python:here.getPortalMaster() is not None" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')" onclick="$('#acquireObj').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Acquire</button>
+	&nbsp;&nbsp;
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<button name="btn" class="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this); return false;">Export...</button>
+	<br/><br/>
+	<table class="table table-striped table-bordered zmi-sortable">
+		<colgroup>
+			<col width="1em"/>
+		</colgroup>
+		<thead>
+		<tr>
+			<th></th>
+			<th></th>
+			<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+			<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
+			<th tal:content="python:here.getZMILangStr('ATTR_COMMANDLINE')">Commandline</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr tal:repeat="processId processIds">
+			<tal:block tal:define="global process python:here.getProcess(processId)">
+				<td>
+					<input type="checkbox" name="ids:list" tal:attributes="value processId">
+				</td>
+				<td>
+					<div class="btn-group">
+						<a class="btn" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'"><i class="icon-edit"></i></a>
+						<a class="btn" tal:attributes="href python:'javascript:zmiDeleteObjBtnClick({btn:getZMILangStr(\'BTN_DELETE\'),id:\'%s\'})'%processId; title python:here.getZMILangStr('BTN_DELETE')+'...'"><i class="icon-remove"></i></a>
+					</div>
+				</td>
+				<td>
+					<tal:block tal:condition="python:getattr(here,process['id'],None) is not None"><img tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
+					<tal:block tal:condition="python:getattr(here,process['id'],None) is None"><i class="icon-cog"></i></tal:block>
+					<tal:block tal:content="process/id">the id</tal:block>
+				</td>
+				<td tal:content="process/name">the name</td>
+				<td><code tal:content="python:here.string_maxlen(Std.html_quote(process['command']),50)">the command</code></td>
+			</tal:block>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

@@ -188,10 +188,14 @@ class ZMSTextformatManager:
       # Delete.
       # -------
       elif REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
-        id = REQUEST['id']
-        self.delTextformat( id) 
+        if id:
+          ids = [id]
+        else:
+          ids = REQUEST.get('ids',[])
+        for id in ids:
+          self.delTextformat(id) 
         id = ''
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+        message = self.getZMILangStr('MSG_DELETED')%len(ids)
       
       # Insert.
       # -------

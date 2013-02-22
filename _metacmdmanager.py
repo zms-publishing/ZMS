@@ -422,8 +422,14 @@ class MetacmdManager:
         # Delete.
         # -------
         elif btn == self.getZMILangStr('BTN_DELETE'):
-          id = delMetacmd(self,id)
-          message = self.getZMILangStr('MSG_DELETED')%int(1)
+          if id:
+            ids = [id]
+          else:
+            ids = REQUEST.get('ids',[])
+          for id in ids:
+            delMetacmd(self,id)
+          id = ''
+          message = self.getZMILangStr('MSG_DELETED')%len(ids)
         
         # Export.
         # -------

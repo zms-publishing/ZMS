@@ -83,19 +83,6 @@ def syncType( self, meta_id, attr):
     value = _globals.writeError(self,'[syncType]')
 
 
-# ------------------------------------------------------------------------------
-#  Search tree for instance of object with given meta-ids.
-# ------------------------------------------------------------------------------
-def findMetaobj(self, ids):
-  if self.meta_id in ids:
-    return self
-  for child in self.getChildNodes():
-    ob = findMetaobj(child, ids)
-    if ob is not None:
-      return ob
-  return None
-
-
 ################################################################################
 ################################################################################
 ###
@@ -1128,21 +1115,21 @@ class ZMSMetaobjManager:
           # -------
           # Delete Object.
           if key == 'obj' and btn == self.getZMILangStr('BTN_DELETE'):
-            ids = [id]
-            metaObj = self.getMetaobj( id)
-            if metaObj['type'] == 'ZMSPackage':
-              for pkgMetaObjId in self.getMetaobjIds():
-                pkgMetaObj = self.getMetaobj( pkgMetaObjId)
-                if pkgMetaObj[ 'package'] == metaObj[ 'id']:
-                    ids.insert( 0, pkgMetaObjId)
-            metaobj = findMetaobj( self, ids)
-            if metaobj is None:
-              for id in ids:
-                self.delMetaobj( id)
-              id = ''
-              message = self.getZMILangStr('MSG_CHANGED')
+            if id:
+              meta_ids = [id]
             else:
-              raise zExceptions.Forbidden('All instances of "%s" must be deleted before definition can be deleted: <a href="%s/manage_main#_%s">%s</a>!'%(id,metaobj.getParentNode().absolute_url(),metaobj.id,metaobj.absolute_url()))
+              meta_ids = REQUEST.get('ids',[])
+            for meta_id in meta_ids:
+              metaObj = self.getMetaobj( meta_id)
+              if metaObj['type'] == 'ZMSPackage':
+                for pkgMetaObjId in self.getMetaobjIds():
+                  pkgMetaObj = self.getMetaobj( pkgMetaObjId)
+                  if pkgMetaObj[ 'package'] == metaObj[ 'id']:
+                      meta_ids.insert( 0, pkgMetaObjId)
+            for meta_id in meta_ids:
+              self.delMetaobj(meta_id)
+            id = ''
+            message = self.getZMILangStr('MSG_DELETED')%len(meta_ids)
           # Delete Attribute.
           elif key == 'attr' and btn == 'delete':
             attr_id = REQUEST['attr_id']

@@ -166,8 +166,14 @@ class ZMSCharformatManager:
       # Delete.
       # -------
       elif REQUEST['btn'] in [ self.getZMILangStr('BTN_DELETE'), 'delete']:
-        id = self.delCharformat(id)
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+        if id:
+          ids = [id]
+        else:
+          ids = REQUEST.get('ids',[])
+        for id in ids:
+          self.delCharformat(id) 
+        id = ''
+        message = self.getZMILangStr('MSG_DELETED')%len(ids)
       
       # Insert.
       # -------

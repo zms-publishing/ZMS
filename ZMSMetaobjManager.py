@@ -826,6 +826,7 @@ class ZMSMetaobjManager:
       if newType in [ 'delimiter', 'hint', 'interface']:
         dtml = newName
       elif newType in [ 'method', 'DTML Method', 'DTML Document']:
+        newCustom = newCustom.replace('\r','')
         dtml = newCustom
       if len(dtml) > 0:
         message = _globals.dt_parse( self, dtml)

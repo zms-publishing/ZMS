@@ -65,7 +65,9 @@ function zmiPopulateTypeSelect(sender) {
 }
 
 $(function() {
-		$("select[name^=attr_type]").hover(function(){zmiPopulateTypeSelect(this)});
+		$("select[name^=_type]")
+			.focus(function(){zmiPopulateTypeSelect(this)})
+			.hover(function(){zmiPopulateTypeSelect(this)});
 	});
 
 </script>
@@ -268,7 +270,7 @@ $(function() {
 					</td>
 					<td>
 						<div class="btn-group">
-							<a class="btn" tal:attributes="href python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+							<span class="btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 						</div>
 					</td>
 					<tal:block tal:condition="python:objAttr['type'] in ['interface']">
@@ -339,14 +341,15 @@ $(function() {
 				<td><input type="text" name="attr_id"></td>
 				<td><input type="text" name="attr_name"></td>
 				<td>
-					<select name="attr_type">
+					<select name="_type">
 						<option tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')">type</option>
 					</select>
 				</td>
-				<td align="center"><input type="checkbox" name="attr_mandatory" value="1"></td>
-				<td align="center"><input type="checkbox" name="attr_multilang" value="1" checked="checked"></td>
-				<td align="center"><input type="checkbox" name="attr_repetitive" value="1"></td>
+				<td align="center"><input type="checkbox" name="_mandatory:int" value="1"></td>
+				<td align="center"><input type="checkbox" name="_multilang:int" value="1" checked="checked"></td>
+				<td align="center"><input type="checkbox" name="_repetitive:int" value="1"></td>
 				<td colspan="2">
+					<input type="hidden" name="key" value="attr">
 					<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</td>
 			</tr>

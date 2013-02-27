@@ -20,6 +20,14 @@
 	</tal:block>
 </tal:block>
 
+		<tal:block tal:condition="python:len(records)>0" tal:define="global
+				size python:len(records);
+				pageSize python:request.get('qsize',10);
+				pageIndex python:request.get('pageIndex',0);
+				pageStart python:pageIndex*pageSize;
+				pageEnd python:min(pageStart+pageSize,size)">
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+
 <form id="form0" name="form0" action="manage_changeRecordSet" method="post">
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 <input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
@@ -28,8 +36,7 @@
 <input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
 <table class="table table-striped table-bordered table-hover zmi-sortable">
 <colgroup>
-	<col width="1%"/>
-	<col width="1%"/>
+	<col/>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
 				elType python:metaObjAttr['type']">
@@ -41,12 +48,15 @@
 <thead>
 <tr>
 	<th>
-		<input type="checkbox" onchange="$('input[name^=qindices]').prop('checked',$(this).prop('checked')).change()">
-	</th>
-	<th>
 		<div class="btn-group">
-			<a class="btn" tal:attributes="href python:'#'; onclick python:'zmiRecordSetDeleteRow(\'form0\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
-			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=insertForm'%(request['lang']); title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus-sign"></i></a>
+			<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-check"></i> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
+				<li><a tal:attributes="href python:'?lang=%s&amp;action=insertForm'%(request['lang'])"><i class="icon-plus-sign"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></li>
+				<li><a href="#" onclick="zmiRecordSetDeleteRow('form0')"><i class="icon-remove"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
+			</ul>
 		</div>
 	</th>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -60,25 +70,32 @@
 </tr>
 </thead>
 <tbody>
-<tal:block tal:repeat="record records">
+<tal:block tal:repeat="record python:records[pageStart:pageEnd]">
 <tr tal:define="global qindex python:records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
 	<td>
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
-		<input type="checkbox" name="qindices:list" tal:attributes="value qindex" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
-		<select class="zmi-sort" tal:condition="python:'sort_id' in metaObjAttrIds" tal:attributes="name python:'sort_id_%i'%qindex; onchange python:'zmiRecordSetMoveRow(this,%i)'%qindex">
-			<option tal:repeat="i python:range(0,len(records))" tal:attributes="selected python:['','selected'][int(int(record.get('sort_id',0))==i+1)]" tal:content="python:i+1">i+1</option>
-		</select>
-	</td>
-	<td>
 		<div class="btn-group">
-			<a class="btn" tal:attributes="href python:'#'; onclick python:'zmiRecordSetDeleteRow(\'form0\',%i)'%qindex; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
-			<a class="btn" tal:attributes="href python:'?lang=%s&amp;action=updateForm&amp;qindex:int=%i'%(request['lang'],qindex); title python:here.getZMILangStr('BTN_EDIT')"><i class="icon-edit"></i></a>
+			<span class="checkbox split-left btn">
+				<input type="checkbox" name="qindices:list" tal:attributes="value qindex" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
+				<tal:block tal:content="python:qindex+1">qindex</tal:block>.
+			</span>
+			<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a tal:attributes="href python:'?lang=%s&amp;action=updateForm&amp;qindex:int=%i'%(request['lang'],qindex)"><i class="icon-edit"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block></a></li>
+				<li><a href="#" tal:attributes="onclick python:'zmiRecordSetDeleteRow(\'form0\',%i)'%qindex"><i class="icon-remove"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
+				<tal:block tal:condition="python:'sort_id' in metaObjAttrIds">
+					<li><a href="#"><i class="icon-sort-up"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
+					<li><a href="#"><i class="icon-sort-down"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
+				</tal:block>
+			</ul>
 		</div>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
 				elValue python:record.get(metaObjAttr['id'])">
-		<td>
+		<td class="data">
 			<tal:block tal:condition="python:metaObjAttr['type']=='url'" tal:define="global target python:here.getLinkObj(elValue)">
 				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
 			</tal:block>
@@ -93,6 +110,9 @@
 </tbody>
 </table>
 </form>
+
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		</tal:block>
 
 </tal:block>
 

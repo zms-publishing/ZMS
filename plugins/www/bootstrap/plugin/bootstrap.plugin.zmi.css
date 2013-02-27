@@ -138,7 +138,7 @@ ul.zmi-container li.ui-state-highlight {
 ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	height:1em;
 }
-table.table tbody tr td {
+table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;
 }
@@ -208,6 +208,12 @@ ul.breadcrumb li {
 }
 button.split-left {
 	height:2.1em;
+}
+.checkbox.split-left {
+	height:1em;
+}
+.checkbox.split-left input {
+	margin:.2em .5em 0 0;
 }
 .split-right {
 	height:2.1em;

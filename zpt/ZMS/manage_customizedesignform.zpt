@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en" tal:define="Std modules/Products/PythonScripts/standard">
+<html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'design',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -7,11 +7,73 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
+.colorMap td {
+	border:1px solid #CCC;
+}
 </style>
 
-<script>
-</script>
+<form class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
 
+	<legend tal:content="python:here.getZMILangStr('ATTR_STYLESHEET')">Stylesheet</legend>
+	<tal:block tal:define="global stylesheets python:here.getStylesheets()">
+	<div class="control-group">
+		<label for="cssId" class="control-label"><span>CSS</span></label>
+		<div class="controls">
+			<select name="cssId" onchange="location.href='?cssId='+this.options[this.selectedIndex].value+'&lang='+getZMILang()">
+				<tal:block tal:repeat="stylesheet stylesheets">
+					<option tal:attributes="value python:stylesheet.id(); selected python:['','selected'][int(request.get('cssId')==stylesheet.id())]" tal:content="python:stylesheet.id()">id</option>
+				</tal:block>
+			</select>
+		</div><!-- .controls -->
+	<div class="control-group">
+		<label for="stylesheet:text" class="control-label">
+			<table class="colorMap" tal:define="global colormap python:here.get_colormap()">
+				<tr tal:repeat="key python:colormap.keys()">
+					<td tal:attributes="bgcolor python:colormap[key]">&nbsp;&nbsp;&nbsp;</td>
+					<td><small>.<tal:block tal:content="key">key</tal:block></small></td>
+				</tr>
+			</table>
+		</label>
+		<div class="controls">
+			<textarea class="input-xxlarge" name="stylesheet:text" wrap="off" rows="15" tal:content="python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	</tal:block>
+
+	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
+	<div class="control-group">
+		<label for="export_format" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</span></label>
+		<div class="controls">
+			<select name="export_format">
+				<option value="ZEXP">ZEXP</option>
+			</select>
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Export</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label for="theme" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</span></label>
+		<div class="controls">
+			<input type="file" name="theme">
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+
+	<legend>Logo (ZMI)</legend>
+	<div class="control-group">
+		<label for="file" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span></label>
+		<div class="controls">
+			<input type="file" name="file">
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_UPLOAD')" tal:content="python:here.getZMILangStr('BTN_UPLOAD')">Upload</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+
+</form>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

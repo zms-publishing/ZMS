@@ -270,7 +270,7 @@ function selectCheckboxes(fm, v) {
 	if (typeof v == 'undefined') {
 		v = !$(':checkbox:not([name~=active])',fm).prop('checked');
 	}
-	$(':checkbox:not([name~=active])',fm).prop('checked',v)
+	$(':checkbox:not([name~=active])',fm).prop('checked',v).change();
 }
 
 /**

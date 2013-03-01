@@ -149,7 +149,7 @@ function zmiInitInputFields(container) {
 						var labelText = $label.text().trim();
 						var $controlGroup = $label.parents(".control-group");
 						var $controls = $(".controls",$controlGroup);
-						var $control = $('input:text,select:not([name^="zms_mms_src_"])',$controls);
+						var $control = $('input:text,input:file,select:not([name^="zms_mms_src_"])',$controls);
 						$label.attr("title","");
 						$control.attr("title","");
 						if ($control.length==1) {
@@ -159,7 +159,8 @@ function zmiInitInputFields(container) {
 								isBlank = $control.val().trim().length==0;
 							}
 							else if (nodeName=="select") {
-								isBlank = $("option:selected",$control).length==0;
+								isBlank = ($("option:selected",$control).length==0) 
+									|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")=="");
 							}
 							if (isBlank) {
 								$controlGroup.addClass("zmi-input-error");

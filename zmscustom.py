@@ -323,7 +323,7 @@ class ZMSCustom(ZMSContainerObject):
           if REQUEST.get('btn','')==self.getZMILangStr('BTN_RESET'):
             SESSION.set(sessionattr,'')
             SESSION.set(sessionvalue,'')
-          elif REQUEST.get('btn','')==self.getZMILangStr('BTN_REFRESH'):
+          elif REQUEST.get('btn','') in [self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_SEARCH')]:
             SESSION.set(sessionattr,REQUEST.form.get(filterattr,''))
             SESSION.set(sessionvalue,REQUEST.form.get(filtervalue,''))
         

@@ -1,3 +1,9 @@
+.navbar .container {
+	width:auto!important;
+}
+.navbar .brand {
+	padding-left:1.5em!important;
+}
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
 }
@@ -148,6 +154,10 @@ table.table.zmi-sortable select.zmi-sort {
 }
 table.table.zmi-sortable input {
 	margin-bottom:10px;
+}
+.zmi-item img.grippy {
+	position:absolute;
+	display:block;
 }
 table.table.zmi-sortable img.grippy {
 	margin-bottom:8px;
@@ -301,6 +311,7 @@ div.zmi-nodes span {
 	font-weight:bold!important;
 }
 .control-group.zmi-input-error .controls input[type="text"],
+.control-group.zmi-input-error .controls input[type="file"],
 .control-group.zmi-input-error .controls select:not([name^="zms_mms_src_"]) {
 	background-color:#F66!important;
 	color:#FFF!important;

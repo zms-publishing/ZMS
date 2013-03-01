@@ -156,7 +156,6 @@
 								</li><!-- .zmi-item -->
 								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
 									<li tal:attributes="class python:' '.join(['zmi-item']+[[],['pageelement']][int(childNode.isPageElement())])">
-										<img class="grippy" src="/misc_/zms/spacer.gif" style="position:absolute"/>
 										<div class="center" tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->
@@ -177,7 +176,8 @@
 											<tal:block tal:content="structure python:childNode.manage_main_change(childNode,request)">
 												the info child-node
 											</tal:block>
-									</div><!-- .right -->
+										</div><!-- .right -->
+										<img class="grippy" src="/misc_/zms/spacer.gif"/>
 										<div class="clearboth"></div><!-- .clearboth -->
 									</li><!-- .zmi-item -->
 								</tal:block>

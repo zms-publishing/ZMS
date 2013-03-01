@@ -30,6 +30,7 @@ import time
 import zExceptions
 # Product Imports.
 from zmsobject import ZMSObject
+import _confmanager
 import _fileutil
 import _globals
 import _objattrs
@@ -128,7 +129,7 @@ class ZMSSqlDb(ZMSObject):
     browse_db = HTMLFile('dtml/ZMSSqlDb/browse_db', globals())
     intersection_sql = HTMLFile('dtml/ZMSSqlDb/intersection_sql', globals())
     manage_main = HTMLFile('dtml/ZMSSqlDb/manage_main', globals())
-    manage_importexport = HTMLFile('dtml/ZMSSqlDb/manage_importexport', globals())
+    manage_importexport = _confmanager.ConfDict.template('ZMSSqlDb/manage_importexport')
     manage_properties = HTMLFile('dtml/ZMSSqlDb/manage_properties', globals())
     manage_sql = HTMLFile('dtml/ZMSSqlDb/manage_sql', globals())
     manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
@@ -449,7 +450,6 @@ class ZMSSqlDb(ZMSObject):
         return self.fetchReqBuff( reqBuffId, REQUEST, True)
       except:
         pass
-      print "getEntities"
       
       entities = []
       da = self.getDA()

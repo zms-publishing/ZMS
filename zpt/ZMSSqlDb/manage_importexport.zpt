@@ -7,32 +7,9 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
-
-function onExportFormatChange(el) {
-  var v = $(el).val();
-  if ( v == '1') {
-    $('#div_charset').show( 'normal');
-  }
-  else {
-    $('#div_charset').hide( 'normal');
-  }
-  if ( isNaN(v)) {
-    $('#div_debug').show( 'normal');
-  }
-  else {
-    $('#div_debug').hide( 'normal');
-  }
-}
-
 </script>
 
-<tal:block tal:define="global
-    filterIds python:here.getFilterIds();
-    filters python:map(lambda x: here.getFilter(x), filterIds);
-    importFilters python:filter(lambda x: len(here.intersection_list([x['format']],['import']))>0, filters);
-    exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0, filters)">
-
-<form class="form-horizontal" name="importForm" action="manage_import" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" name="importForm" action="manage_import" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
   <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
   <legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
   <div class="control-group">
@@ -48,19 +25,12 @@ function onExportFormatChange(el) {
   </div>
 </form>
 
-<form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get">
+<form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get" onsubmit="return onExportFormSubmit(this)">
   <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
   <legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
   <div class="control-group">
-    <label class="control-label mandatory" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
+    <label class="control-label mandatory" for="ids:list"><span tal:content="python:here.getZMILangStr('ATTR_TABLE')">table</span></label>
     <div class="controls">
-      <select name="export_format" onchange="onExportFormatChange(this);">
-        <option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
-        <option value="2">XML</option>
-        <option value="4">XML (incl. embedded objects)</option>
-        <option value="0">ZEXP</option>
-        <option value="1">HTML (<tal:block tal:content="python:here.getZMILangStr('ATTR_STATIC')">static</tal:block>)</option>
-      </select>
     </div><!-- .controls -->
   </div><!-- .control-group -->
   <div class="control-group">
@@ -69,8 +39,6 @@ function onExportFormatChange(el) {
     </div>
   </div>
 </form>
-
-</tal:block>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

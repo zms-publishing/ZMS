@@ -1,32 +1,20 @@
 <!-- ZMSRecordSet/main_grid -->
 
-	<tal:block tal:define="global
-			meta_id options/meta_id;
-			metaObj python:here.getMetaobj(meta_id);
-			metaObjIds python:here.getMetaobjIds();
-			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-			objAttrs python:here.getObjAttrs(metaObj['id'])">
-
 <tal:block tal:define="global
-			records python:here.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:[]">
+		meta_id options/meta_id;
+		metaObjAttrs options/metaObjAttrs;
+		filtered_records options/filtered_records;
+		records options/records;
+		metaObjAttrIds python:here.getMetaobjAttrIds(meta_id)">
 
-<tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
-	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
-			and not metaObjAttr['id'].startswith('_')
-			and metaObjAttr['type'] in here.metaobj_manager.valid_types
-			and not metaObjAttr['type'] in ['password']">
-		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
-	</tal:block>
-</tal:block>
+	<tal:block tal:condition="python:len(filtered_records)>0" tal:define="global
+			size python:len(filtered_records);
+			pageSize python:request.get('qsize',10);
+			pageIndex python:request.get('pageIndex',0);
+			pageStart python:pageIndex*pageSize;
+			pageEnd python:min(pageStart+pageSize,size)">
 
-		<tal:block tal:condition="python:len(records)>0" tal:define="global
-				size python:len(records);
-				pageSize python:request.get('qsize',10);
-				pageIndex python:request.get('pageIndex',0);
-				pageStart python:pageIndex*pageSize;
-				pageEnd python:min(pageStart+pageSize,size)">
-			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
 <form id="form0" name="form0" action="manage_changeRecordSet" method="post">
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
@@ -49,6 +37,9 @@
 <tr>
 	<th>
 		<div class="btn-group">
+			<span class="checkbox split-left btn">
+				<tal:block tal:content="python:len(filtered_records)">len(filtered_records)</tal:block> / <tal:block tal:content="python:len(records)">len(records)</tal:block>
+			</span>
 			<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
 				<span class="caret"></span>
 			</button>
@@ -70,8 +61,8 @@
 </tr>
 </thead>
 <tbody>
-<tal:block tal:repeat="record python:records[pageStart:pageEnd]">
-<tr tal:define="global qindex python:records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
+<tal:block tal:repeat="record python:filtered_records[pageStart:pageEnd]">
+<tr tal:define="global qindex python:filtered_records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
 	<td>
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
 		<div class="btn-group">
@@ -111,11 +102,9 @@
 </table>
 </form>
 
-			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
-		</tal:block>
-
-</tal:block>
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
 	</tal:block>
+</tal:block>
 
 <!-- /ZMSRecordSet/main_grid -->

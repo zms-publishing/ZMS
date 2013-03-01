@@ -132,14 +132,6 @@ img#zmibg {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-img.grippy {
-	width:6px!important;
-	height:14px!important;
-	background:url(/misc_/zms/grippy.png);
-	vertical-align:middle;
-	cursor:move;
-}
-
 .zmiContainerColLeft {
 	border-bottom: 1px solid #CCC; /* zmiNeutralColorMedium0 */
 	background: filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80;

@@ -10,34 +10,42 @@
 </script>
 
 <form class="form-horizontal" name="importForm" action="manage_import" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
-  <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-  <legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
-  <div class="control-group">
-    <label class="control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
-    <div class="controls">
-      <input type="file" name="file">
-    </div><!-- .controls -->
-  </div><!-- .control-group -->
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-    </div>
-  </div>
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
+	<div class="control-group">
+		<label class="control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
+		<div class="controls">
+			<input type="file" name="file">
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+		</div>
+	</div>
 </form>
 
 <form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get" onsubmit="return onExportFormSubmit(this)">
-  <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-  <legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
-  <div class="control-group">
-    <label class="control-label mandatory" for="ids:list"><span tal:content="python:here.getZMILangStr('ATTR_TABLE')">table</span></label>
-    <div class="controls">
-    </div><!-- .controls -->
-  </div><!-- .control-group -->
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
-    </div>
-  </div>
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
+	<div class="control-group">
+		<label class="control-label mandatory" for="ids:list"><span tal:content="python:here.getZMILangStr('ATTR_TABLE')">table</span></label>
+		<div class="controls">
+			<tal:block tal:define="global 
+					entities python:here.getEntities();
+					value python:map(lambda x:x['id'],entities);
+					optpl python:map(lambda x:(x['id'],x['id']),entities)">
+				<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ids:list',value=value,inputtype='multiselect',lang_str=here.getZMILangStr('ATTR_TABLE'),required=0,optpl=optpl,enabled=1,REQUEST=request)">
+					multiselect
+				</tal:block>
+			</tal:block>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
+		</div>
+	</div>
 </form>
 
 <div style="clear:both;">&nbsp;</div>

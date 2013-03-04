@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+</script>
+
+<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
+	<div class="control-group">
+		<label class="control-label mandatory" for="connection_id"><span>Connection Id</span></label>
+		<div class="controls">
+			<select name="connection_id" class="input-xxlarge">
+				<option value="">--- Select Connection Id ---</option>
+				<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
+					<option tal:attributes="value python:SQLConnectionID[0]; selected python:['','selected'][int(here.connection_id==SQLConnectionID[0])]">
+						<tal:block tal:content="python:SQLConnectionID[0]">SQLConnectionID</tal:block>
+						(<tal:block tal:content="python:getattr(here,SQLConnectionID[0]).meta_type">meta_type</tal:block>)
+					</option>
+				</tal:block>
+			</select>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label mandatory" for="max_rows"><span>Max. Rows</span></label>
+		<div class="controls">
+			<input type="text" class="input-mini" name="max_rows:int" tal:attributes="value python:getattr(here,'max_rows',999)">
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label mandatory" for="charset"><span>Charset</span></label>
+		<div class="controls">
+			<tal:block tal:content="structure python:here.getSelect(fmName='form0',elName='charset',value=getattr(here,'charset',''),inputtype='select',lang_str='Charset',required=1,optpl=here.enumManager.getValues('charset'),enabled=1,REQUEST=request)">select</tal:block>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<label class="control-label mandatory" for="model"><span>Model</span></label>
+		<div class="controls">
+			<textarea name="model" class="input-xxlarge" tal:content="python:here.getModelContainer().raw">raw</textarea>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		</div>
+	</div>
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

@@ -130,7 +130,7 @@ class ZMSSqlDb(ZMSObject):
     intersection_sql = HTMLFile('dtml/ZMSSqlDb/intersection_sql', globals())
     manage_main = HTMLFile('dtml/ZMSSqlDb/manage_main', globals())
     manage_importexport = _confmanager.ConfDict.template('ZMSSqlDb/manage_importexport')
-    manage_properties = HTMLFile('dtml/ZMSSqlDb/manage_properties', globals())
+    manage_properties = _confmanager.ConfDict.template('ZMSSqlDb/manage_properties')
     manage_sql = HTMLFile('dtml/ZMSSqlDb/manage_sql', globals())
     manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())

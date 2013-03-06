@@ -1107,7 +1107,7 @@ class ZMSMetaobjManager:
         extra = {}
         t0 = time.time()
         id = REQUEST.get('id','').strip()
-        target = 'manage_main'
+        target = REQUEST.get('target','manage_main')
         REQUEST.set( '__get_metaobjs__', True)
         
         try:

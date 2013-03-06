@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'import',here.meta_id])">
+
+<tal:block tal:define="global
+		metaObjIds python:here.getMetaobjIds();
+		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
+		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
+
+<tal:block tal:condition="python:request.get('section')=='import'">
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<tal:block tal:condition="python:request.get('temp_import_file_id')">
+		<tal:block tal:define="global
+				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
+				xml python:here.parseXmlString(str(f.data),mediadbStorable=False);
+				packages python:[];
+				importObjs python:[]">
+			<tal:block tal:repeat="item xml">
+				<tal:block tal:define="global
+						importObj python:{'id':item['key'],'name':item['value']['name'],'type':item['value']['type'],'package':item['value'].get('package',None),'revision':item['value'].get('revision','0.0.0'),'zms_system':request.get('temp_import_zms_system')}">
+					<tal:block tal:condition="python:importObj['type']=='ZMSPackage' and not importObj['id'] in packages">
+						<tal:block tal:define="global dummy0 python:packages.append(importObj['id'])"></tal:block>
+					</tal:block>
+					<tal:block tal:condition="python:importObj['type']!='ZMSPackage'">
+						<tal:block tal:condition="python:not importObj['package'] in packages">
+							<tal:block tal:define="global dummy0 python:packages.append(importObj['package'])"></tal:block>
+						</tal:block>
+						<tal:block tal:define="global dummy0 python:importObjs.append(importObj)"></tal:block>
+					</tal:block>
+				</tal:block>
+			</tal:block>
+			<tal:block tal:define="global dummy0 python:packages.sort()"></tal:block>
+			<input type="hidden" name="zms_system:int" tal:attributes="value request/temp_import_zms_system">
+			<legend tal:content="f/title_or_id">title_or_id</legend>
+			<tal:block tal:repeat="package packages">
+				<tal:block tal:define="global package_id python:here.id_quote(package)">
+					<div class="control-group">
+						<input type="checkbox" name="createIdsFilter:list" tal:attributes="value package; title package" checked="checked">
+						<i tal:condition="python:package not in metaObjPackages" class="icon-plus"></i>
+						<i class="icon-briefcase"></i>
+						<strong tal:content="package">the id</strong>
+					</div><!-- .control-group -->
+					<tal:block tal:repeat="importObj importObjs">
+						<tal:block tal:condition="python:importObj['package']==package">
+							<div class="control-group">
+								<input type="checkbox" name="createIdsFilter:list" tal:attributes="value importObj/id; title importObj/id" checked="checked">
+								<i tal:condition="python:importObj['id'] not in metaObjIds" class="icon-plus"></i>
+								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'])">the icon</tal:block>
+								<tal:block tal:content="importObj/name">the name</tal:block>
+								<tal:block tal:content="importObj/revision">the revision</tal:block>
+								(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%importObj['type'].upper())">the type</tal:block>)
+							</div><!-- .control-group -->
+						</tal:block>
+					</tal:block>
+				</tal:block>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</form>
+</tal:block>
+
+<tal:block tal:condition="python:request.get('section')!='import'">
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
+			<div class="control-group">
+				<label for="file" class="control-label">
+					<i class="icon-folder-open-alt"></i>
+					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
+				</label>
+				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+				<div class="controls">
+					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metaobj.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
+						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+					</select>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</form>
+</tal:block>
+
+</tal:block>
+
+</body>
+</html>

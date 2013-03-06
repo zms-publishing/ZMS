@@ -104,6 +104,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # ZPT Templates.
     # --------------
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
+    zmi_manage_tabs_message = PageTemplateFile('zpt/common/zmi_manage_tabs_message', globals())
     zmi_body_footer = PageTemplateFile('zpt/common/zmi_body_footer', globals())
     zmi_body_header = PageTemplateFile('zpt/common/zmi_body_header', globals())
     zmi_html_head = PageTemplateFile('zpt/common/zmi_html_head', globals())

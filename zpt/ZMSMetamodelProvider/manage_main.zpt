@@ -79,7 +79,7 @@ $(function() {
 
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
-		<form class="form-horizontal" name="importConfForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" name="insertObjForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<input type="hidden" name="key" value="obj">
 			<div class="control-group">
@@ -109,66 +109,10 @@ $(function() {
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
 
-<tal:block tal:condition="python:here.getPortalMaster() is not None">
-<div class="ui-helper-hidden" tal:define="global
-		master python:here.getPortalMaster();
-		masterMetaObjIds python:master.getMetaobjIds();
-		masterMetaObjs python:map(lambda x: master.getMetaobj(x), masterMetaObjIds);
-		masterMetaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)))">
-	<div id="acquireObj" class="inner">
-		<form class="form-horizontal" name="importConfForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<input type="hidden" name="key" value="obj">
-			<div class="control-group">
-				<select id="_meta_type" name="obj_type" multiple="multiple">
-					<tal:block tal:repeat="metaObjId python:filter(lambda x: x not in metaObjIds,masterMetaObjIds)">
-						<tal:block tal:define="global masterMetaObj python:master.getMetaobj(metaObjId)">
-							<option tal:attributes="value metaObjId" tal:content="python:'%s (%s)'%(masterMetaObj['id'],masterMetaObj['name'])">masterMetaObj</option>
-						</tal:block>
-					</tal:block>
-				</select>
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
-			</div><!-- .control-group -->
-		</form>
-	</div><!-- .inner -->
-</div><!-- #acquireObj -->
-</tal:block>
-
-<div class="ui-helper-hidden">
-	<div id="importConf" class="inner">
-		<form class="form-horizontal" name="importConfForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="control-group">
-				<label for="file" class="control-label">
-					<i class="icon-folder-open-alt"></i>
-					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-				</label>
-				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="controls">
-					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metaobj.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
-						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
-					</select>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-		</form>
-	</div><!-- .inner -->
-</div><!-- #importConf -->
-
 <form tal:condition="python:request.get('id')" class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 <tal:block tal:define="global metaObj python:here.getMetaobj(request['id'])">
 	<input type="hidden" name="id" tal:attributes="value request/id">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-
 
 	<select id="populate_type" class="ui-helper-hidden">
 		<option id="type_primitive" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')"></option>
@@ -191,7 +135,6 @@ $(function() {
 			<option tal:attributes="value type" tal:content="type">type</option>
 		</tal:block>
 	</select>
-
 
 	<legend>
 		<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block> 
@@ -385,7 +328,8 @@ $(function() {
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="icon-remove"></i></span>
-					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-upload-alt"></i></span>
+					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiIframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,width:'480',height:'640',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="icon-share"></i></span>
+					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiIframe('manage_main_import',{lang:getZMILang()},{iframe:true,width:'480',height:'640',title:$(this).attr('title')})"><i class="icon-upload-alt"></i></span>
 					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="icon-download-alt"></i></span>
 				</div>
 			</th>
@@ -417,6 +361,7 @@ $(function() {
 				<td></td>
 				<td>
 					<span tal:attributes="title python:metaObj['id']">
+						<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
 						<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" tal:content="metaObj/name">the name</a>
 						<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block>

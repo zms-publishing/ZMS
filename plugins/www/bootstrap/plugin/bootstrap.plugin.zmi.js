@@ -318,27 +318,37 @@ function zmiIframe(href, data, opt) {
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
-	$.get( href, data, function(result) {
-			var $result = $(result);
-			if ($("div#system_msg",$result).length>0) {
-				var manage_tabs_message = $("div#system_msg",$result).text();
-				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
-				var href = self.location.href;
-				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
-				self.location.href = href;
-			}
-			else {
-				opt["modal"] = true;
-				opt["height"] = "auto";
-				opt["width"] = "auto";
-				$('#zmiIframe').html(result);
-				var title = $('#zmiIframe div.zmi').attr("title");
-				if (typeof title != "undefined" && title) {
-					opt["title"] = title;
+	// Iframe
+	if (typeof opt['iframe'] != 'undefined') {
+		$('#zmiIframe').append('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
+		opt["modal"] = true;
+		opt["height"] = "auto";
+		opt["width"] = "auto";
+		$('#zmiIframe').dialog(opt);
+	}
+	else {
+		$.get( href, data, function(result) {
+				var $result = $(result);
+				if ($("div#system_msg",$result).length>0) {
+					var manage_tabs_message = $("div#system_msg",$result).text();
+					manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+					var href = self.location.href;
+					href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
+					self.location.href = href;
 				}
-				$('#zmiIframe').dialog(opt);
-			}
-		});
+				else {
+					opt["modal"] = true;
+					opt["height"] = "auto";
+					opt["width"] = "auto";
+					$('#zmiIframe').html(result);
+					var title = $('#zmiIframe div.zmi').attr("title");
+					if (typeof title != "undefined" && title) {
+						opt["title"] = title;
+					}
+					$('#zmiIframe').dialog(opt);
+				}
+			});
+	}
 }
 
 // #############################################################################

@@ -64,6 +64,8 @@ class ZMSMetamodelProvider(
     # ---------------------
     manage = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main')
     manage_main = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main') # -"-
+    manage_main_import = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main_import') # -"-
+    manage_main_acquire = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main_acquire') # -"-
     manage_bigpicture = HTMLFile('dtml/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = HTMLFile('dtml/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_metas')
@@ -71,7 +73,7 @@ class ZMSMetamodelProvider(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_bigpicture',
+		'manage_changeProperties', 'manage_ajaxChangeProperties', 'manage_main', 'manage_main_import', 'manage_bigpicture',
 		'manage_changeMetaProperties', 'manage_metas',
 		)
     __ac_permissions__=(

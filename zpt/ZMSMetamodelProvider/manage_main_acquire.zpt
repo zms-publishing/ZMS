@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'import',here.meta_id])">
+
+<tal:block tal:define="global
+		metaObjIds python:here.getMetaobjIds();
+		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
+		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)));
+		master python:here.getPortalMaster();
+		masterMetaObjIds python:master.getMetaobjIds();
+		masterMetaObjs python:map(lambda x: master.getMetaobj(x), masterMetaObjIds);
+		masterMetaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)));
+		acquireObjs python:[]">
+
+<tal:block tal:repeat="metaObjId python:filter(lambda x: x not in metaObjIds or not here.getMetaobj(x).get('acquired'),masterMetaObjIds)">
+	<tal:block tal:define="global metaObj python:master.getMetaobj(metaObjId)">
+		<tal:block tal:define="global dummy0 python:acquireObjs.append(
+				(['',metaObj['package']+'.'][int(len(metaObj['package'])>0)]+metaObj['id']
+				,metaObj['id']
+				,[['','-&quot;- '][int(len(metaObj['package'])>0)]+metaObj['id']+' ('+metaObj['name']+')',metaObj['id']][int(metaObj['type']=='ZMSPackage')]
+				))"></tal:block>
+	</tal:block>
+</tal:block>
+<tal:block tal:define="global dummy0 python:acquireObjs.sort()"></tal:block>
+
+<tal:block tal:condition="python:request.get('section')=='acquire'">
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="lang" tal:attributes="value request/lang">
+		<input type="hidden" name="immediately:int" value="1">
+		<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')">
+			<tal:block tal:repeat="acquireObj acquireObjs">
+				<div class="control-group" tal:condition="python:acquireObj[1] in temp_ids" tal:define="global masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
+					<input type="checkbox" name="aq_ids:list" tal:attributes="value masterMetaObj/id; title masterMetaObj/id" checked="checked">
+					<i tal:condition="python:masterMetaObj['id'] not in metaObjIds" class="icon-plus"></i>
+					<i tal:condition="python:masterMetaObj['type']=='ZMSPackage'" class="icon-briefcase"></i>
+					<tal:block tal:condition="python:masterMetaObj['type']!='ZMSPackage'" tal:content="structure python:master.display_icon(request,masterMetaObj['id'])">the icon</tal:block>
+					<tal:block tal:content="masterMetaObj/name">the name</tal:block>
+					<tal:block tal:condition="python:masterMetaObj['id'] in metaObjIds">
+						<tal:block tal:content="metaObj/revision">the revision</tal:block> &rarr;
+					</tal:block>
+					<tal:block tal:content="masterMetaObj/revision">the revision</tal:block>
+					(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%masterMetaObj['type'].upper())">the type</tal:block>)
+				</div><!-- .control-group -->
+			</tal:block>
+		</tal:block>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</form>
+</tal:block>
+
+<tal:block tal:condition="python:request.get('section')!='acquire'">
+	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="lang" tal:attributes="value request/lang">
+		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
+		<div class="control-group">
+			<select id="aq_ids" name="aq_ids:list" multiple="multiple">
+				<tal:block tal:repeat="acquireObj acquireObjs">
+					<option tal:attributes="value python:acquireObj[1]" tal:content="python:acquireObj[2]">acquireObj</option>
+				</tal:block>
+			</select>
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</form>
+</tal:block>
+
+</tal:block>
+
+</body>
+</html>

@@ -1,11 +1,10 @@
 <!-- ZMSRecordSet/main_grid -->
 
 <tal:block tal:define="global
-		meta_id options/meta_id;
+		metaObjAttrIds options/metaObjAttrIds;
 		metaObjAttrs options/metaObjAttrs;
 		filtered_records options/filtered_records;
-		records options/records;
-		metaObjAttrIds python:here.getMetaobjAttrIds(meta_id)">
+		records options/records">
 
 	<tal:block tal:condition="python:len(filtered_records)>0" tal:define="global
 			size python:len(filtered_records);
@@ -91,7 +90,7 @@
 				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
 			</tal:block>
 			<tal:block tal:condition="python:metaObjAttr['type']!='url'">
-				<tal:block tal:content="elValue">elValue</tal:block>
+				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 			</tal:block>
 		</td>
 		</tal:block>

@@ -24,9 +24,12 @@
 </tal:block>
 <tal:block tal:define="global dummy0 python:acquireObjs.sort()"></tal:block>
 
-<tal:block tal:condition="python:request.get('section')=='acquire'">
+	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
+		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
+
+<tal:block tal:condition="python:request.get('section')=='acquire'">
 		<input type="hidden" name="immediately:int" value="1">
 		<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')">
 			<tal:block tal:repeat="acquireObj acquireObjs">
@@ -49,14 +52,9 @@
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
 			</div><!-- .controls -->
 		</div><!-- .control-group -->
-	</form>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('section')!='acquire'">
-	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
-	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="lang" tal:attributes="value request/lang">
-		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
 		<div class="control-group">
 			<select id="aq_ids" name="aq_ids:list" multiple="multiple">
 				<tal:block tal:repeat="acquireObj acquireObjs">
@@ -69,8 +67,9 @@
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
 			</div><!-- .controls -->
 		</div><!-- .control-group -->
-	</form>
 </tal:block>
+
+	</form>
 
 </tal:block>
 

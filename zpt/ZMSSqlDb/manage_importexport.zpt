@@ -34,7 +34,7 @@
 			<tal:block tal:define="global 
 					entities python:here.getEntities();
 					value python:map(lambda x:x['id'],entities);
-					optpl python:map(lambda x:(x['id'],x['id']),entities)">
+					optpl python:map(lambda x:[x['id'],x['id']],entities)">
 				<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ids:list',value=value,inputtype='multiselect',lang_str=here.getZMILangStr('ATTR_TABLE'),required=0,optpl=optpl,enabled=1,REQUEST=request)">
 					multiselect
 				</tal:block>

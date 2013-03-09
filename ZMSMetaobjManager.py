@@ -1126,7 +1126,8 @@ class ZMSMetaobjManager:
                 for pkgMetaObjId in self.getMetaobjIds():
                   pkgMetaObj = self.getMetaobj( pkgMetaObjId)
                   if pkgMetaObj[ 'package'] == metaObj[ 'id']:
-                      meta_ids.insert( 0, pkgMetaObjId)
+                    if pkgMetaObjId not in meta_ids:
+                      meta_ids.append( pkgMetaObjId)
             for meta_id in meta_ids:
               self.delMetaobj(meta_id)
             id = ''

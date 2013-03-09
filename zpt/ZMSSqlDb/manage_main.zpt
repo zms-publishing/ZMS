@@ -1,10 +1,17 @@
-<!-- ZMSRecordSet/main -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<tal:block tal:define="global 
-			meta_id options/meta_id;
-			metaObj python:here.getMetaobj(meta_id);
-			metaObjIds python:here.getMetaobjIds();
-			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+<script>
+</script>
+
+<tal:block tal:define="global
+			entities python:here.getEntities();
+			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
 			dummy0 python:request.set('qstart',request.get('qstart',request.SESSION.get('qstart_%s'%id,0)));
 			dummy0 python:request.set('qbatch',request.get('qbatch',request.SESSION.get('qbatch_%s'%id,3)));
 			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,10)));
@@ -16,23 +23,32 @@
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
 			dummy0 python:here.recordSet_Sort(request)">
-
+<tal:block tal:condition="tables">
 <tal:block tal:define="global
-			records python:here.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:[]">
+			encoding python:getattr(here,'charset','utf-8');
+			row_max python:getattr(here,'max_rows',999);
+			metaObjAttrIds python:[];
+			metaObjAttrs python:[];
+			res python:[];
+			resSlctStmnt python:''.join(request.get('sqlStatement',[]));
+			cntSlctStmnt python:here.re_sub('SELECT (.*?) FROM','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
+			row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
 
-<tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
-	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
-			and not metaObjAttr['id'].startswith('_')
-			and metaObjAttr['type'] in here.metaobj_manager.valid_types
-			and not metaObjAttr['type'] in ['password']">
-		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
+<tal:block tal:condition="python:row_count<=row_max">
+	<tal:block tal:define="global
+			query python:here.query(resSlctStmnt,encoding=encoding);
+			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],query['columns']));
+			dummy0 python:metaObjAttrs.extend(query['columns']);
+			dummy0 python:res.extend(query['records'])">
 	</tal:block>
 </tal:block>
 
 <form method="get">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="preview" tal:attributes="value python:request['preview']">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="preview" tal:attributes="value request/preview">
+	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
+	<input type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
+	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<div class="accordion-group perc100">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
@@ -57,6 +73,12 @@
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
 				<i></i>
 			</a>
+			<tal:block tal:content="python:here.getZMILangStr('ATTR_TABLE')" tal:define="global dummy0 python:request.set('qentity',request.get('qentity',tables[0]['id']))">Table</tal:block>
+			<select name="qentity">
+				<tal:block tal:repeat="entity tables">
+					<option tal:attributes="value entity/id; selected python:['','selected'][int(entity['id'].upper()==request.get('qentity','').upper())]" tal:content="entity/label">entity</option>
+				</tal:block>
+			</select>
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</tal:block>
 			<input class="input-mini" type="text" name="qsize:int" tal:attributes="value request/qsize">
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_FILTER')" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))">Filter</tal:block>
@@ -67,12 +89,8 @@
 			<div class="accordion-inner">
 				<div class="control-group" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<select tal:attributes="name python:'filterattr%i'%filterIndex">
-						<option value="" tal:content="python:'--- %s ---'%(here.getZMILangStr('ACTION_SELECT')%('%s%i'%(here.getZMILangStr('ATTR_FILTER'),filterIndex+1)))">--- Select filter ---</option>
-						<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-							<tal:block tal:define="global 
-									elLabel python:metaObjAttr['name']">
-								<option tal:attributes="value python:metaObjAttr['id']; selected python:['','selected'][int(request.SESSION.get('filterattr%i_%s'%(filterIndex,here.id))==metaObjAttr['id'])]" tal:content="elLabel">elLabel</option>
-							</tal:block>
+						<tal:block tal:repeat="column python:filter(lambda x:x['id']==request['qentity'],tables)[0]['columns']">
+							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].upper()==request.get('filterattr%i'%filterIndex,'').upper())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
 					<input class="input-xxlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')">
@@ -93,18 +111,19 @@
 	</div><!-- .accordion-group -->
 </form>
 
-<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=here.getMetaobjAttrIds(meta_id),metaObjAttrs=metaObjAttrs,filtered_records=request['res'],records=request['res_abs'])">
-	metaobj_recordset_main
-</tal:block>
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='update',qindex=request['qindex'],row=here.attr(metaObjAttrIds[0])[int(request['qindex'])])">
-	metaobj_recordset_input_fields
-</tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',qindex=-1,row={})">
-	metaobj_recordset_input_fields
+<div class="form-label"><a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code" class="zmi">&middot;&middot;&middot;</a></div>
+<div id="manage_main_div_sql" class="well" style="display:none" tal:content="structure python:cntSlctStmnt.replace('\n','<br>')">cntSlctStmnt</div>
+
+<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res)">
+	metaobj_recordset_main_grid
 </tal:block>
 
 </tal:block>
+</tal:block>
+</tal:block>
 
-	</tal:block>
-
-<!-- /ZMSRecordSet/main -->
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

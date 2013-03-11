@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<script>
+</script>
+
+<tal:block tal:define="global
+			entities python:here.getEntities();
+			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities)">
+<tal:block tal:condition="tables">
+
+<form class="form-horizontal" method="get">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="preview" tal:attributes="value request/preview">
+	<div class="accordion-group" tal:repeat="table tables">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" tal:attributes="href python:'#%s'%table['id']">
+				<i></i>
+				<i class="icon-table">
+				<tal:block tal:content="table/id">table-id</tal:block>
+			</a>
+		</div><!-- .accordion-heading -->
+		<div tal:attributes="id table/id" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<tal:block tal:repeat="column table/columns">
+					<div class="control-group">
+						<div class="controls">
+							<tal:block tal:content="column/id">column-id</tal:block>
+							<tal:block tal:content="column/type">column-type</tal:block>
+						</div><!-- .controls -->
+					</div><!-- .control-group -->
+				</tal:block>
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+	</div><!-- .accordion-group -->
+
+</form>
+
+</tal:block>
+</tal:block>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

@@ -131,7 +131,7 @@ class ZMSSqlDb(ZMSObject):
     manage_main = _confmanager.ConfDict.template('ZMSSqlDb/manage_main')
     manage_importexport = _confmanager.ConfDict.template('ZMSSqlDb/manage_importexport')
     manage_properties = _confmanager.ConfDict.template('ZMSSqlDb/manage_properties')
-    manage_sql = HTMLFile('dtml/ZMSSqlDb/manage_sql', globals())
+    manage_sql = _confmanager.ConfDict.template('ZMSSqlDb/manage_sql')
     manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 

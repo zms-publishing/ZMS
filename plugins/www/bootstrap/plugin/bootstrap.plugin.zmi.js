@@ -37,12 +37,12 @@ $(function(){
 	// Accordion:
 	// highlight default collapse item
 	$("a.accordion-toggle").click(function(){this.blur()});
-	$("i",$(".accordion-body.collapse").prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
-	$("i",$(".accordion-body.collapse.in").prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
+	$("i:first",$(".accordion-body.collapse").prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
+	$("i:first",$(".accordion-body.collapse.in").prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
 	$(".accordion-body.collapse").on("hide", function() {
-			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-down").addClass("icon-caret-right");
+			$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-down").addClass("icon-caret-right");
 		}).on("show", function() {
-			$("i",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
+			$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
 		});
 
 	// Double-Clickable

@@ -124,7 +124,7 @@ class ZMSSqlDb(ZMSObject):
     # Management Interface.
     # ---------------------
     actions = HTMLFile('dtml/ZMSSqlDb/actions', globals())
-    input_form = HTMLFile('dtml/ZMSSqlDb/input_form', globals())
+    input_form = _confmanager.ConfDict.template('ZMSSqlDb/input_form')
     input_details = HTMLFile('dtml/ZMSSqlDb/input_details', globals())
     browse_db = HTMLFile('dtml/ZMSSqlDb/browse_db', globals())
     intersection_sql = HTMLFile('dtml/ZMSSqlDb/intersection_sql', globals())
@@ -423,6 +423,18 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSSqlDb.getEntityPK:
+    #
+    #  Returns primary key.
+    # --------------------------------------------------------------------------
+    def getEntityPK(self, tableName):
+      columns = self.getEntity( tableName)['columns']
+      # @todo
+      pk = columns[0]['id']
+      return pk
+
+
+    # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntityColumn:
     # --------------------------------------------------------------------------
     def getEntityColumn(self, tableName, columnName):
@@ -518,15 +530,17 @@ class ZMSSqlDb(ZMSObject):
                 elif colDescr.find('DATE') >= 0 or \
                      colDescr.find('TIME') >= 0:
                   colType = 'datetime'
+                elif colDescr.find('CLOB') >= 0:
+                  colType = 'text'
                 elif colDescr.find('CHAR') >= 0 or \
                      colDescr.find('STRING') >= 0:
-                  colSize = 128
+                  colSize = 255
                   i = colDescr.find('(')
                   if i >= 0:
                     j = colDescr.find(')')
                     if j >= 0:
                       colSize = int(colDescr[i+1:j])
-                  if colSize > 128:
+                  if colSize > 255:
                     colType = 'text'
                   else:
                     colType = 'string'
@@ -615,6 +629,14 @@ class ZMSSqlDb(ZMSObject):
           # Add Table.
           entity['not_found'] = 1
           s.append((entity['label'],entity))
+      
+      #-- Defaults
+      for entity in entities:
+        for column in entity['columns']:
+          column['id'] = column['id'].lower()
+          column['multilang'] = False
+          column['datatype'] = column['type']
+          column['datatype_key'] = _globals.datatype_key(column['datatype'])
       
       #-- Sort entities
       s.sort()

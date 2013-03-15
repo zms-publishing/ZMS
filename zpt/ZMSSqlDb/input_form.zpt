@@ -1,0 +1,42 @@
+<tal:block tal:define="global
+			action options/action;
+			qindex options/qindex;
+			row options/row;
+			entity options/entity">
+
+<form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
+	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
+	<input type="hidden" id="action" name="action" tal:attributes="value action">
+	<input type="hidden" id="qindex" name="qentity" tal:attributes="value entity/id">
+	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
+	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
+	<legend tal:content="entity/label">the label</legend>
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+		</div><!-- accordion-heading -->
+		<tal:block tal:repeat="metaObjAttr entity/columns">
+			<tal:block tal:define="global 
+					elName python:metaObjAttr['id'];
+					elLabel python:metaObjAttr['label']">
+			<div class="control-group">
+				<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+					<span tal:content="elLabel">the label</span>
+				</label>
+				<div class="controls" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=row.get(elName),REQUEST=request)">
+					the control
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			</tal:block>
+		</tal:block>
+	</div><!-- .accordion-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+</form><!-- .form-horizontal -->
+
+</tal:block>

@@ -22,8 +22,13 @@
 			dummy0 python:request.SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
-			dummy0 python:here.recordSet_Sort(request)">
+			dummy0 python:here.recordSet_Sort(request);
+			sessqentitykey python:'qentity_%s'%here.id;
+			sessqfilterskey python:'qfilters_%s'%id;
+			sessqentity python:filter(lambda x:x['id']==request.SESSION[sessqentitykey],tables)[0]">
+
 <tal:block tal:condition="tables">
+
 <tal:block tal:define="global
 			encoding python:getattr(here,'charset','utf-8');
 			row_max python:getattr(here,'max_rows',999);
@@ -43,7 +48,37 @@
 	</tal:block>
 </tal:block>
 
-<form method="get">
+<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
+	<tal:block tal:define="global 
+				primary_key python:here.getEntityPK(sessqentity['id']);
+				row python:res[int(request['qindex'])];
+				rowid python:row[primary_key];
+				message python:[];
+				values python:{}">
+		<tal:block tal:repeat="column python:sessqentity['columns']">
+			<tal:block tal:define="global python:here.operator_setitem(values,column['id'],request.get(column['id'],None))"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:request.get('action') in ['insert']">
+			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=sessqentity['id'],values=values)"
+					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:request.get('action') in ['update']">
+			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=sessqentity['id'],rowid=rowid,values=values)"
+					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:request.get('action') in ['delete']">
+			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=sessqentity['id'],rowid=rowid)"
+					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
+		</tal:block>
+		<tal:block tal:define="global dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
+					'lang':request['lang'],
+					'manage_tabs_message':'<br>'.join(message),
+				}))">
+		</tal:block>
+	</tal:block>
+</tal:block>
+
+<form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
@@ -73,10 +108,10 @@
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
 				<i></i>
 			</a>
-			<tal:block tal:content="python:here.getZMILangStr('ATTR_TABLE')" tal:define="global dummy0 python:request.set('qentity',request.get('qentity',tables[0]['id']))">Table</tal:block>
+			<tal:block tal:content="python:here.getZMILangStr('ATTR_TABLE')">Table</tal:block>
 			<select name="qentity">
-				<tal:block tal:repeat="entity tables">
-					<option tal:attributes="value entity/id; selected python:['','selected'][int(entity['id'].upper()==request.get('qentity','').upper())]" tal:content="entity/label">entity</option>
+				<tal:block tal:repeat="table tables">
+					<option tal:attributes="value table/id; selected python:['','selected'][int(table['id'].upper()==sessqentity['id'].upper())]" tal:content="table/label">table</option>
 				</tal:block>
 			</select>
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</tal:block>
@@ -89,7 +124,7 @@
 			<div class="accordion-inner">
 				<div class="control-group" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<select tal:attributes="name python:'filterattr%i'%filterIndex">
-						<tal:block tal:repeat="column python:filter(lambda x:x['id']==request['qentity'],tables)[0]['columns']">
+						<tal:block tal:repeat="column sessqentity/columns">
 							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].upper()==request.get('filterattr%i'%filterIndex,'').upper())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
@@ -117,9 +152,17 @@
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res)">
 	metaobj_recordset_main_grid
 </tal:block>
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.metaobj_recordset_input_fields(entity=sessqentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
+	metaobj_recordset_input_fields
+</tal:block>
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(entity=sessqentity,action='insert',qindex=-1,row={})">
+	metaobj_recordset_input_fields
+</tal:block>
 
 </tal:block>
+
 </tal:block>
+
 </tal:block>
 
 <div style="clear:both;">&nbsp;</div>

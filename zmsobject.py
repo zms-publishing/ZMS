@@ -1130,6 +1130,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.ajaxGetChildNodes:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetChildNodes')
+    def manage_ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
+      """ ZMSObject.manage_ajaxGetChildNodes """
+      return self.ajaxGetChildNodes(lang, xml_header, meta_types, REQUEST)
     def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetChildNodes """
       

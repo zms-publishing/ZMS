@@ -147,6 +147,7 @@ class ZMSCustom(ZMSContainerObject):
     # -----------------------
     __authorPermissions__ = (
         'manage','manage_main','manage_main_iframe','manage_container','manage_workspace',
+        'manage_menu','manage_ajaxGetChildNodes',
         'manage_addZMSModule',
         'manage_changeRecordSet',
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',

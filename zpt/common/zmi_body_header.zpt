@@ -10,8 +10,30 @@
 				</a>
 				<div class="nav-collapse subnav-collapse">
 					<ul class="nav pull-right">
+						<li class="dropdown" tal:condition="python:len(here.getLangIds())>1">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-flag"></i>
+								<tal:block tal:content="python:here.getLanguageLabel(request['lang'])">the language</tal:block>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu" tal:define="global coverage python:here.getDCCoverage(request); languages python:[]">
+								<tal:block tal:condition="python:coverage.startswith('global.')">
+									<tal:block tal:define="dummy0 python:languages.extend(here.getDescendantLanguages(coverage[len('global.'):],request))"></tal:block>
+								</tal:block>
+								<tal:block tal:condition="python:not coverage.startswith('global.')">
+									<tal:block tal:define="dummy0 python:languages.append(coverage[len('local.'):])"></tal:block>
+								</tal:block>
+								<li tal:repeat="language languages">
+									<a tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language})">
+										<i tal:attributes="class python:['icon-check-empty','icon-check'][int(language==request['lang'])]"></i>
+										<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
+										<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>
+									</a>
+								</li>
+							</ul>
+						</li><!-- .dropdown -->
 						<li class="dropdown">
-							<a tal:attributes="href python:'%s/manage_main?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])" class="dropdown-toggle" data-toggle="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<i class="icon-cog"></i>
 								<b class="caret"></b>
 							</a>
@@ -48,7 +70,10 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
-											<a tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)" tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">the language</a>
+											<a tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
+												<i tal:attributes="class python:['icon-check-empty','icon-check'][int(manage_lang==request['manage_lang'])]"></i>
+												<tal:block tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">the language</tal:block>
+											</a>
 										</li>
 									</ul>
 								</li>
@@ -66,9 +91,10 @@
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li><!-- .dropdown -->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-user"></i>
 								<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>
 								<b class="caret"></b>
 							</a>
@@ -89,7 +115,7 @@
 									</li>
 								</tal:block>
 							</ul>
-						</li>
+						</li><!-- .dropdown -->
 					</ul>
 				</div><!-- .nav-collapse -->
 			</div><!-- .container -->

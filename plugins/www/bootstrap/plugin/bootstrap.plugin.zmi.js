@@ -123,6 +123,17 @@ $(function(){
 });
 
 /**
+ * Unlock form
+ */
+function zmiUnlockForm(form_id) {
+	var $form = $('input[name="form_id"][value="'+form_id+'"]').parents("form");
+	if ($('input[name="form_unlock"]',$form).length==0) {
+		$form.append('<input type="hidden" name="form_unlock" value="1">');
+	}
+	$form.submit();
+}
+
+/**
  * Init input_fields
  */ 
 function zmiInitInputFields(container) {
@@ -173,6 +184,42 @@ function zmiInitInputFields(container) {
 							}
 						}
 					});
+				// Lock
+				if (b && $('input[name="form_unlock"]',this).length==0) {
+					var result = $.ajax({
+						url: 'ajaxGetNode',
+						data:{lang:getZMILang()},
+						datatype:'text',
+						async: false
+						}).responseText;
+					var xmlDoc = $.parseXML(result);
+					var $xml = $(xmlDoc);
+					var change_dt = $('change_dt',$xml).text();
+					var change_uid = $('change_uid',$xml).text();
+					var form_id = $('input[name=form_id]').val();
+					var form_dt = new Date(parseFloat(form_id)*1000);
+					var checkLock = new Date(change_dt).getTime() > form_dt.getTime();
+					if (checkLock) {
+						if ($('#zmiDialog').length==0) {
+							$('body').append('<div id="zmiDialog"></div>');
+						}
+						$('#zmiDialog').dialog({
+								autoOpen: false,
+								title: getZMILangStr('CAPTION_WARNING'),
+								height: 'auto',
+								width: 'auto'
+							}).html(''
+								+ '<div class="alert alert-error">'
+									+ '<h4><i class="icon-warning-sign"></i> '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
+									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
+								+ '</div>'
+								+ '<div class="control-group">'
+									+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
+									+ '<button class="btn" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
+								+ '</div>'
+							).dialog('open');
+					}
+				}
 				return b;
 			})
 		.each(function() {

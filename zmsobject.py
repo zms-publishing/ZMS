@@ -1063,7 +1063,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         xml += "<users>%s</users>"%self.toXmlString(users)
       if REQUEST.form.get('get_attrs', 1):
         obj_attrs = self.getObjAttrs()
-        for key in filter(lambda x: x not in ['title','titlealt','created_dt','created_uid','change_uid','attr_dc_coverage','attr_cacheable'],obj_attrs.keys()):
+        for key in filter(lambda x: x not in ['title','titlealt','created_dt','created_uid','attr_dc_coverage','attr_cacheable'],obj_attrs.keys()):
           obj_attr = obj_attrs[ key]
           if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
              obj_attr['datatype_key'] in _globals.DT_NUMBERS or \

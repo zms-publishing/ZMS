@@ -26,6 +26,9 @@ img.toggle.pl {
 img.toggle.mi {
 	background:url(/misc_/zms/mi.gif) top left no-repeat;
 }
+div.restricted a {
+	color:#CCC;
+}
 </style>
 
 <script>
@@ -46,7 +49,7 @@ function zmiToggleClick(toggle) {
 		$container.append( '<div id="loading" class="zmi-page"><img src="/misc_/zms/loading_16x16.gif" alt="'+getZMILangStr('MSG_LOADING')+'" title="'+getZMILangStr('MSG_LOADING')+'" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		$(document.body).css( "cursor", "wait");
 		// JQuery.AJAX.get
-		$.get(href+'/ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),meta_types:'0,ZMSTrashcan'},function(data){
+		$.get(href+'/manage_ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				$(document.body).css( "cursor", "auto");
@@ -67,7 +70,11 @@ function zmiToggleClick(toggle) {
 						var page_display_icon = $(page).attr("display_icon");
 						var html = '';
 						html += '<ol id="'+page_id+'" class="zmi-page">';
-						html += '<div>';
+						html += '<div class="';
+						if (!page.getAttribute("permissions")) {
+							html += 'restricted ';
+						}
+						html += '">';
 						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">';
 						html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';

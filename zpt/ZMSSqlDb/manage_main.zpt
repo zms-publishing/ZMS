@@ -22,14 +22,14 @@
 			dummy0 python:request.SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
-			dummy0 python:here.recordSet_Sort(request);
-			sessqentitykey python:'qentity_%s'%here.id;
-			sessqfilterskey python:'qfilters_%s'%id;
-			sessqentity python:filter(lambda x:x['id']==request.SESSION[sessqentitykey],tables)[0]">
+			dummy0 python:here.recordSet_Sort(request)">
 
 <tal:block tal:condition="tables">
 
 <tal:block tal:define="global
+			sessqentitykey python:'qentity_%s'%here.id;
+			sessqfilterskey python:'qfilters_%s'%id;
+			sessqentity python:filter(lambda x:x['id']==request.SESSION[sessqentitykey],tables)[0];
 			encoding python:getattr(here,'charset','utf-8');
 			row_max python:getattr(here,'max_rows',999);
 			metaObjAttrIds python:[];
@@ -152,10 +152,10 @@
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res)">
 	metaobj_recordset_main_grid
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.metaobj_recordset_input_fields(entity=sessqentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.input_form(entity=sessqentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
 	metaobj_recordset_input_fields
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(entity=sessqentity,action='insert',qindex=-1,row={})">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.input_form(entity=sessqentity,action='insert',qindex=-1,row={})">
 	metaobj_recordset_input_fields
 </tal:block>
 

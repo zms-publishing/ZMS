@@ -33,7 +33,7 @@ div.zmi-form-section.ui-widget-content.ui-corner-all {
 	background:transparent!important;
 }
 </style>
-<tal:block tal:content="structure python:here.manage_UndoVersionFormDTML(here,request)">manage_UndoVersionFormDTML</tal:block>
+<tal:block tal:content="structure python:unicode(here.manage_UndoVersionFormDTML(here,request)).encode('latin-1')">manage_UndoVersionFormDTML</tal:block>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

@@ -114,7 +114,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # Templates.
     # ----------
-    f_display_icon = HTMLFile('dtml/object/f_display_icon', globals()) # ZMI Display-Icon
+    f_display_icon = _confmanager.ConfDict.template('object/f_display_icon') # ZMI Display-Icon
     f_recordset_init = HTMLFile('dtml/object/f_recordset_init', globals()) # ZMI RecordSet::Init
     f_recordset_grid = HTMLFile('dtml/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
@@ -472,8 +472,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
-      zpt = zpt and _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+    def display_icon(self, REQUEST, meta_type=None, key='icon'):
+      zpt = _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s"/>'

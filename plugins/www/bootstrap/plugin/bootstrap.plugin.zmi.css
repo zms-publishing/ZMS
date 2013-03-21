@@ -1,8 +1,14 @@
+body.zmi {
+	padding-left:0 !important;
+	padding-right:0 !important;
+}
 .navbar .container {
 	width:auto!important;
 }
 .navbar .brand {
 	padding-left:1.5em!important;
+	overflow:hidden;
+	white-space:nowrap;
 }
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
@@ -19,6 +25,10 @@
 }
 #zmi-header .navbar {
 	margin:0;
+}
+#zmi-header .navbar-fixed-top .navbar-inner, 
+#zmi-header .navbar-fixed-bottom .navbar-inner {
+	padding: 0px !important;
 }
 
 .zmi.preview_top #zmi-header .pull-right {

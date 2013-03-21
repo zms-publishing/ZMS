@@ -24,6 +24,7 @@
 <tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
 	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
 			and not metaObjAttr['id'].startswith('_')
+			and metaObjAttr['custom']
 			and metaObjAttr['type'] in here.metaobj_manager.valid_types
 			and not metaObjAttr['type'] in ['password']">
 		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>

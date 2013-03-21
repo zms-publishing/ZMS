@@ -472,8 +472,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon'):
-      zpt = _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
+      zpt = zpt and _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s"/>'

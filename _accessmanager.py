@@ -442,21 +442,30 @@ class AccessManager(AccessableContainer):
         doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
         if doc_elmnts:
           doc_elmnt = doc_elmnts[0]
+          sec_users = doc_elmnt.getConfProperty('ZMS.security.users')
           if userFldr.meta_type == 'LDAPUserFolder':
             if c == 0:
               search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              users = userFldr.findUser(search_param=search_param,search_term=search_term)
-              for user in users:
-                d = {}
-                d['localUserFldr'] = userFldr
-                d['name'] = user[search_param]
-                for extra in ['givenName','sn']:
-                  try: d[extra] = user[extra]
-                  except: pass
-                valid_userids.append(d)
+              exact = False
+              if search_term == '':
+                search_terms = sec_users.keys()
+                exact = True
+              else:
+                search_terms = [search_term]
+              for st in search_terms:
+                users = userFldr.findUser(search_param=search_param,search_term=st)
+                for user in users:
+                  name = user[search_param]
+                  if not exact or name == st:
+                    d = {}
+                    d['localUserFldr'] = userFldr
+                    d['name'] = name
+                    for extra in ['givenName','sn']:
+                      try: d[extra] = user[extra]
+                      except: pass
+                    valid_userids.append(d)
             else:
               node_prefix = '{$%s@'%self.getHome().id
-              sec_users = doc_elmnt.getConfProperty('ZMS.security.users')
               for sec_user in sec_users:
                 nodes = doc_elmnt.getUserAttr(sec_user,'nodes')
                 if str(nodes).find(node_prefix) >= 0:

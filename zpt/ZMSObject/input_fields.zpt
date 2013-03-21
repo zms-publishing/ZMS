@@ -155,7 +155,7 @@
 									<div class="clearboth"></div><!-- .clearboth -->
 								</li><!-- .zmi-item -->
 								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
-									<li tal:attributes="class python:' '.join(['zmi-item']+[[],['pageelement']][int(childNode.isPageElement())])">
+									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item']+[[],['pageelement']][int(childNode.isPageElement())])">
 										<div class="center" tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->

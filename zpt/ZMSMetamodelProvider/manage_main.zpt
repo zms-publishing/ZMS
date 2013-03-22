@@ -11,8 +11,8 @@
 	background:#EEE!important;
 }
 .zmi-element-key {
-	background:url(/misc_/zms/btn_key.gif) top left no-repeat;
-	padding-left:16px;
+	position:absolute;
+	margin:4px;
 }
 </style>
 
@@ -241,7 +241,7 @@ $(function() {
 						<tal:block tal:condition="python:objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
 							<td colspan="5">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']">
-								<div class="single-line zmi-element-key"><textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type'])" tal:content="python:objAttr['custom']">custom</textarea></div>
+								<div class="single-line"><img class="zmi-element-key" src="/misc_/zms/btn_key.gif"><textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type'])" tal:content="python:objAttr['custom']">custom</textarea></div>
 							</td>
 						</tal:block>
 						<tal:block tal:condition="python:objAttr['type'] in ['resource']">
@@ -250,11 +250,10 @@ $(function() {
 								<input type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']">
 								<tal:block tal:condition="python:objAttr.get('custom')">
 									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked">
-									<a tal:attributes="href python:objAttr['custom'].absolute_url()" target="_blank">
+									<a tal:attributes="href python:objAttr['custom'].absolute_url(); title python:here.getDataSizeStr(objAttr['custom'].get_size())" target="_blank">
 										<img tal:attributes="src python:here.getMimeTypeIconSrc(objAttr['custom'].content_type); title python:objAttr['custom'].content_type">
 										<tal:block tal:content="python:objAttr['custom'].title">title</tal:block>
 									</a>
-									(<tal:block tal:content="python:here.getDataSizeStr(objAttr['custom'].get_size())">size</tal:block>)
 								</tal:block>
 							</td>
 						</tal:block>
@@ -273,7 +272,8 @@ $(function() {
 							<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"></td>
 							<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"></td>
 							<td>
-								<div class="single-line zmi-element-key" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
+								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
+									<img class="zmi-element-key" src="/misc_/zms/btn_key.gif">
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:['','zmi-element-disabled'][isMetaDictAttr]" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
 								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] in ['boolean']">
@@ -283,7 +283,7 @@ $(function() {
 										</tal:block>
 									</select>
 								</div>
-								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean'] and objAttr['type'] in here.valid_types+['constant']">
+								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types+['constant']">
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:'Default'; class python:['','zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
 								</div>
 							</td>

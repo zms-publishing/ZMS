@@ -440,6 +440,14 @@ body.users #zmi-tab > .pull-left,
 body.users #zmi-tab > .pull-right {
 	width:50%;
 }
+}
+body.metas table.zmi-sortable td {
+	white-space:nowrap;
+}
+body.metas table.table.zmi-sortable td img.grippy,
+body.metas table.table.zmi-sortable input {
+	margin-bottom:0px;
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Image

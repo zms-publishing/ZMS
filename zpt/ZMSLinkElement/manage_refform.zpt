@@ -14,12 +14,14 @@
 <tal:block tal:condition="python:refByObjs">
 	<div class="form-element" tal:content="structure python:'%s:'%(here.getZMILangStr('MSG_REFERENCEDBY')%('<em>%s</em>'%here.getTitlealt(request)))">titlealt referenced by:</div>
 	<ul>
-		<li tal:repeat="refByObj refByObjs" tal:define="global target python:here.getLinkObj(refByObj,request)">
-			<tal:block tal:condition="python:target">
-				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
-			</tal:block >
-			<tal:block tal:condition="python:not target">
-				<tal:block tal:content="refByObj">refByObj</tal:block>
+		<li tal:repeat="refByObj refByObjs">
+			<tal:block tal:define="global target python:here.getLinkObj(refByObj,request)">
+				<tal:block tal:condition="python:target">
+					<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+				</tal:block >
+				<tal:block tal:condition="python:not target">
+					<tal:block tal:content="refByObj">refByObj</tal:block>
+				</tal:block >
 			</tal:block >
 		</li>
 	</ul>

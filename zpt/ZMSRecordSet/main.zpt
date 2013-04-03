@@ -31,7 +31,7 @@
 	</tal:block>
 </tal:block>
 
-<form method="get">
+<form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']">
 	<div class="accordion-group perc100">

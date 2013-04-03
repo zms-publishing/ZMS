@@ -504,7 +504,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def getObjInput(self, key, REQUEST):
       id = self.id
-      fmName = REQUEST.get( 'fmName' ,'form0_%s'%id)
+      fmName = REQUEST.get( 'fmName' ,REQUEST.get('fmName','form0_%s'%id))
       meta_id = REQUEST.get( 'ZMS_INSERT', None)
       obj_attr = self.getObjAttr( key, _globals.nvl( meta_id, self.meta_id))
       if meta_id is None:

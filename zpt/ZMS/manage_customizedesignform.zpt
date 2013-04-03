@@ -36,7 +36,7 @@
 			</table>
 		</label>
 		<div class="controls">
-			<textarea class="input-xxlarge" name="stylesheet:text" wrap="off" rows="15" tal:content="python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
+			<textarea class="input-xxlarge" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">

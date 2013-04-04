@@ -39,19 +39,19 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+									<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
 										<img src="/misc_/zms/zapidoc.gif" title="System" border="0" width="14" height="14" align="absmiddle"/>
 										<tal:block tal:content="python:'API'">API</tal:block>
 									</a>
 								</li>
 								<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
-									<a tal:attributes="href python:'manage_system?lang=%s&key=dtpref_system'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+									<a tal:attributes="href python:'manage_system?lang=%s'%(request['lang'])">
 											<img src="/misc_/zms/zexpdoc.gif" title="System" border="0" width="14" height="14" align="absmiddle"/>
 										<tal:block tal:content="python:'System'">System</tal:block>
 									</a>
 								</li>
-								<li>
-									<a tal:attributes="href python:'manage_dtpref?lang=%s&key=dtpref_sitemap'%(request['lang']); target python:['','_parent'][int(request.get('dtpref_sitemap','0')=='1')]">
+								<li tal:define="global sitemap python:int(request.get('dtpref_sitemap','0')=='1')">
+									<a tal:attributes="href python:'manage?lang=%s'%request['lang']+['&dtpref_sitemap=1',''][sitemap]; target python:['','_parent'][sitemap]">
 										<i class="icon-sitemap"></i>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block>
 									</a>

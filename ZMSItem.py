@@ -47,7 +47,7 @@ class ZMSItem(
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_dtpref', 'manage_page_request', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 'manage_main_iframe' 
+		'manage_page_request', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_tabs_sub', 'manage_bodyTop', 'manage_main_iframe' 
 		)
     __viewPermissions__ = (
 		'manage_menu',
@@ -95,26 +95,5 @@ class ZMSItem(
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
       return self.aq_parent.breadcrumbs_obj_path(portalMaster)
-
-
-    ############################################################################
-    ###
-    ###  Sitemap
-    ###
-    ############################################################################
-
-    ############################################################################
-    #  ZMSObject.manage_dtpref: 
-    #
-    #  De-/Activate Document-Template preference.
-    ############################################################################
-    def manage_dtpref(self, key, lang, REQUEST, RESPONSE):
-      """ ZMSObject.manage_dtpref """
-      v = 1
-      if REQUEST.has_key(key):
-        v = int(not string.atoi(REQUEST[key]))
-      e=(DateTime('GMT')+365).rfc822()
-      RESPONSE.setCookie(key,str(v),path='/',expires=e)
-      return RESPONSE.redirect('manage?lang=%s'%lang)
 
 ################################################################################

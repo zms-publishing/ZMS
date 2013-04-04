@@ -62,11 +62,14 @@ class ConfDict:
         if cls.__confdict__ is None:
             cls.__confdict__ = {'last_modified':long(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
-            cfp = ConfigParser.ConfigParser()
-            cfp.readfp(open(os.path.join(PRODUCT_HOME,'etc','zms.conf')))
-            for section in cfp.sections():
-                for option in cfp.options(section):
-                    cls.__confdict__[section+'.'+option] = cfp.get( section, option)
+            for home in [PRODUCT_HOME,INSTANCE_HOME]:
+              fp = os.path.join(home,'etc','zms.conf')
+              if os.path.exists(fp):
+                cfp = ConfigParser.ConfigParser()
+                cfp.readfp(open(fp))
+                for section in cfp.sections():
+                    for option in cfp.options(section):
+                        cls.__confdict__[section+'.'+option] = cfp.get( section, option)
         return cls.__confdict__
 
     @classmethod

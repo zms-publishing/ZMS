@@ -48,13 +48,11 @@
 ><dtml-try>
 <div id="ZMIManageTabsContainer">
 <ul id="ZMIManageTabsButtons">
-<dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)"
-><dtml-if "REQUEST.get('dtpref_system','0')=='1' and REQUEST['URL'].split('/')[-1] not in ['manage','manage_workspace','manage_system']"
-><dtml-call "RESPONSE.redirect('%s/manage_system?lang=%s'%(absolute_url(),lang))"
-></dtml-if
-><li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>
-<li<dtml-if "REQUEST.get('dtpref_system','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_system&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li></dtml-if>
-<li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>><a href="manage_dtpref?key=dtpref_sitemap&lang=<dtml-var lang>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "content.getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
+<dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
+<li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>
+<li><a href="manage_system?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li>
+</dtml-if>
+<li<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'"> class="on"</dtml-if>><a href="manage?lang=<dtml-var lang>&dtpref_sitemap=<dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">0<dtml-else>1</dtml-if>" <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">target="_parent"</dtml-if>><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "content.getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
 <li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "content.getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14" /></a></li>
 </ul>
 </div>

@@ -1,12 +1,7 @@
 <dtml-if "len(getLangIds())>1">
   <table cellspacing="0" cellpadding="2" border="0">
   <tr valign="middle">
-  <form name="langSelectForm" method="get" 
-   <dtml-if "REQUEST.get('dtpref_sitemap','0')=='1'">
-    action="<dtml-var "URL1[len(BASE0):]">/manage" target="_parent"
-   <dtml-else>
-    action="<dtml-var "URL[len(BASE0):]">"
-   </dtml-if>>
+  <form name="langSelectForm" method="get" action="<dtml-var "URL[len(BASE0):]">">
    <input type="hidden" name="reset_manage_lang" value="reset_manage_lang"/>
    <td class="form-small">
     <select class="form-small" name="lang" onchange="document.forms['langSelectForm'].submit();">

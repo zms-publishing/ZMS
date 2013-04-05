@@ -303,6 +303,9 @@ div.accordion-heading div.pull-left {
 div.single-line {
 	width:98%;
 }
+div.single-line.input-append {
+	width:80%;
+}
 div.single-line textarea {
 	height:20px;
 	overflow:hidden;

@@ -436,7 +436,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 }
 
 function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
-	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
+	$('form[name='+fmName+'] input[name='+elName+']').val(elValue).change();
 }
 
 function zmiDialogClose(id) {

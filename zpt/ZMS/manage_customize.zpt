@@ -7,11 +7,20 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
+$(function() {
+		// Select tab.
+		var $tabs_left = $("div.tabs-left");
+		var anchor = $("a:first",$tabs_left).attr("href");
+		if (self.location.href.indexOf("#")>0) {
+			anchor = self.location.href.substr(self.location.href.indexOf("#"));
+		}
+		$("a[href='"+anchor+"']",$tabs_left).tab("show");
+	});
 </script>
 
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="#Manager" data-toggle="tab">Manager</a></li>
+		<li><a href="#Manager" data-toggle="tab">Manager</a></li>
 		<li><a href="#Portal" data-toggle="tab">Portal</a></li>
 		<li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
 		<li><a href="#Miscellaneous" data-toggle="tab">Miscellaneous</a></li>
@@ -177,10 +186,87 @@
 		</div>
 
 		<div class="tab-pane" id="Maintenance">
-		<form class="form-horizontal" name="CatalogForm" action="manage_customize#_Maintenance" method="post" enctype="multipart/form-data">
+		<tal:block tal:condition="python:request.get('key')=='Maintenance'">
+			<div class="alert alert-success">
+				<tal:block tal:condition="python:request.get('btn')=='Purge'">
+					<strong>UserFolder</strong>
+					Purge local users<br/>
+					<tal:block tal:content="structure python:here.purgeLocalUsers(request=request)">purgeLocalUsers</tal:block>
+				</tal:block>
+				<tal:block tal:condition="python:request.get('btn')=='Reindex'">
+					<strong>Catalog</strong>
+					<tal:block tal:content="structure python:here.reindexCatalog(request,clients='catalog_portal_clients' in request.form.get('options',[]))">reindexCatalog</tal:block>
+				</tal:block>
+				<tal:block tal:condition="python:request.get('btn')=='Correct'">
+					<strong>Internal links</strong>
+					<tal:block tal:content="structure python:here.synchronizeRefs(clients='internal_links_portal_clients' in request.form.get('options',[]),unify_ids='internal_links_unify_ids' in request.form.get('options',[]))">synchronizeRefs</tal:block>
+				</tal:block>
+				<tal:block tal:condition="python:request.get('btn')=='Clear'">
+					<strong>Static cache</strong>
+					Clear <tal:block tal:content="structure python:here.clearCachePages()">clearCachePages</tal:block>
+				</tal:block>
+				<tal:block tal:condition="python:request.get('btn')=='Change'">
+					<strong>Properties</strong>
+					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.CatalogAwareness.active',request.get('catalog_awareness_active')==1)" tal:content="python:request.get('catalog_awareness_active')">setConfProperty</tal:block>,
+					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.autocorrection',request.get('ZMS_InternalLinks_autocorrection')==1)" tal:content="python:request.get('ZMS_InternalLinks_autocorrection')">setConfProperty</tal:block>,
+					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.keepsynchron',request.get('ZMS_InternalLinks_keepsynchron')==1)" tal:content="python:request.get('ZMS_InternalLinks_keepsynchron')">setConfProperty</tal:block>,
+					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.cache.active',request.get('cache_active')==1)" tal:content="python:request.get('cache_active')">setConfProperty</tal:block>,
+				</tal:block>
+				(<tal:block tal:content="python:here.getLangFmtDate(DateTime())"></tal:block>)
+			</div><!-- .alert -->
+		</tal:block>
+		<form class="form-horizontal" name="MaintenanceForm" action="#Maintenance" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 			<input type="hidden" name="key" value="Maintenance">
 			<legend>Maintenance</legend>
+			<table class="table table-striped" tal:define="global has_master python:here.getPortalMaster(); has_clients python:here.getPortalClients()">
+			<thead>
+			<tr>
+				<th>Category</th>
+				<th>Properties</th>
+				<th>Options</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td><label class="control-label">UserFolder</label></td>
+				<td></td>
+				<td></td>
+				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Purge">&nbsp;Purge&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
+			</tr>
+			<tr>
+				<td><label class="control-label">Catalog</label></td>
+				<td class="controls"><input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>&nbsp;Awareness</td>
+				<td><tal:block tal:condition="has_clients"><input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>&nbsp;Clients</tal:block></td>
+				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Reindex">&nbsp;Reindex&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
+			</tr>
+			<tr>
+				<td><label class="control-label">Internal links</label></td>
+				<td class="controls">
+					<div><input type="checkbox" value="1" id="ZMS_InternalLinks_autocorrection" name="ZMS_InternalLinks_autocorrection:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1)]"/>&nbsp;Auto-Correct</div>
+					<div><input type="checkbox" value="1" id="ZMS_InternalLinks_keepsynchron" name="ZMS_InternalLinks_keepsynchron:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1)]"/>&nbsp;Keep-Synchron</div>
+				</td>
+				<td class="controls">
+					<div tal:condition="has_clients"><input type="checkbox" value="internal_links_portal_clients" id="internal_links_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('internal_links_portal_clients' in request.form.get('options',[]))]"/>&nbsp;Clients</div>
+					<div tal:condition="has_master"><input type="checkbox" value="internal_links_unify_ids" id="internal_links_unify_ids" name="options:list" tal:attributes="checked python:['','checked'][int('internal_links_unify_ids' in request.form.get('options',[]))]"/>&nbsp;Unify Ids</div>
+				</td>
+				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Correct" title="Report and fix broken links">&nbsp;Correct&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
+			</tr>
+			<tr>
+				<td><label class="control-label">Static cache</label></td>
+				<td class="controls"><input type="checkbox" value="1" id="cache_active" name="cache_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>&nbsp;Active</td>
+				<td></td>
+				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Clear">&nbsp;Clear&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
+			</tr>
+			<tr>
+				<td></td>
+				<td class="controls"><button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button></td><!-- .controls -->
+				<td></td>
+				<td></td>
+			</tr>
+			</tbody>
+			</table>
 		</form>
 		</div>
 
@@ -230,9 +316,8 @@
 	<label class="control-label" for="history_active">Active</label>
 		<div class="controls">
 			<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
-			<div class="input-append zmi-nodes">
-				<textarea name="nodes" cols="40" rows="1" wrap="off" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-				<span class="add-on">...</span>
+			<div class="single-line input-append zmi-nodes">
+				<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 			</div>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->

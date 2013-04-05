@@ -5,16 +5,30 @@ $(function(){
 	$('div.single-line').each(function() {
 			var $textarea = $('textarea',this);
 			$textarea.prop({rows:1,wrap:'off'});
+			if ($(this).hasClass("zmi-nodes")) {
+				$textarea.prop({title:getZMILangStr('ATTR_NODE')});
+			}
 			if ($("span.add-on",this).length==0) {
 				$(this).addClass("input-append");
 				$(this).append('<span class="add-on">...</span>');
 				$('span.add-on',this).click(function() {
-						var html = ''
+						var html = '';
+						html = html
 							+ '<div id="zmi-single-line-edit">'
-								+ '<form class="form-horizontal">'
+								+ '<form class="form-horizontal" name="zmi-single-line-form">';
+						if ($(this).closest("div.single-line").hasClass("zmi-nodes")) {
+							html = html
+									+ '<div class="conrols">'
+										+ '<div class="input-append">'
+											+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
+											+ '<span class="add-on" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
+										+ '</div><!-- .input-append -->'
+									+ '</div><!-- .controls -->';
+						}
+						html = html
 									+ '<textarea style="width:98%" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
 								+ '</form>'
-							+ '</div>';
+							+ '</div><!-- #zmi-single-line-edit -->';
 						$('#zmi-single-line-edit').remove();
 						$('body').append(html);
 						$('#zmi-single-line-edit').dialog({
@@ -228,31 +242,6 @@ function zmiInitInputFields(container) {
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
 					});
-			// Nodes-Picker
-			$('div.zmi-nodes span').click(function() {
-					var $textarea = $(this).prev('textarea');
-					var html = ''
-						+ '<div id="zmi-nodespicker">'
-							+ '<form class="form-horizontal" name="zmi-nodespicker-form">'
-								+ '<div class="conrols">'
-									+ '<div class="input-append">'
-									+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
-									+ '<span class="add-on" onclick="zmiBrowseObjs(\'zmi-nodespicker-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
-									+ '</div><!-- .input-append -->'
-								+ '</div><!-- .controls -->'
-								+ '<textarea style="width:98%" rows="10" wrap="off">' + $textarea.val() + '</textarea>'
-							+ '</form>'
-						+ '</div>';
-					$('#zmi-nodespicker').remove();
-					$('body').append(html);
-					$('#zmi-nodespicker').dialog({
-						modal:true,
-						resizable:false,
-						title:getZMILangStr('BTN_EDIT')+': '+getZMILangStr('ATTR_NODE'),
-						close: function( event, ui ) {
-							$textarea.val($('#zmi-nodespicker textarea').val());
-						}});
-				});
 			// Date-Picker
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);

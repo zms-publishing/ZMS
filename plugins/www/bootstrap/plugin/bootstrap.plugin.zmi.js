@@ -18,7 +18,7 @@ $(function(){
 								+ '<form class="form-horizontal" name="zmi-single-line-form">';
 						if ($(this).closest("div.single-line").hasClass("zmi-nodes")) {
 							html = html
-									+ '<div class="conrols">'
+									+ '<div class="controls">'
 										+ '<div class="input-append">'
 											+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
 											+ '<span class="add-on" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'

@@ -84,7 +84,7 @@ class ZReferableItem:
   # Management Interface.
   # ---------------------
   manage_RefForm = _confmanager.ConfDict.template('ZMSLinkElement/manage_refform')
-  manage_browse_iframe = HTMLFile('dtml/ZMSLinkElement/manage_browse_iframe', globals()) 
+  manage_browse_iframe = _confmanager.ConfDict.template('ZMSLinkElement/manage_browse_iframe') 
 
 
   # ----------------------------------------------------------------------------

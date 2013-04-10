@@ -13,6 +13,9 @@ body.zmi {
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
 }
+.zmi-helper-clickable, .ui-helper-clickable {
+	cursor:pointer!important;
+}
 #zmi-header {
 	background-color:black;
 	min-height:45px;

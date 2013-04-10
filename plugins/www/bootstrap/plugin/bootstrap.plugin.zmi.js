@@ -607,10 +607,12 @@ $(function() {
 			var enabled = true; // @TODO
 			var fmName = $(this).parents("form").attr("name");
 			var elName = $(this).attr("name");
+			$(this).closest('span.url-input').addClass("input-append");
+			$(this).next('div.zmi-icon').remove();
 			$(this).after(''
-					+ '<a class="btn" href="#" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+					+ '<span class="add-on ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
 						+ '<i class="icon-link"></i>'
-					+ '</a>'
+					+ '</span>'
 				);
 		});
 });

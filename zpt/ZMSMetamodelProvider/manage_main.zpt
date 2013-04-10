@@ -167,7 +167,7 @@ $(function() {
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
-		<label for="obj_package" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
+		<label for="obj_package" class="control-label"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
 		<div class="controls">
 			<select class="input-xxlarge" id="obj_package" name="obj_package">
 				<tal:block tal:repeat="metaObjPackage metaObjPackages">

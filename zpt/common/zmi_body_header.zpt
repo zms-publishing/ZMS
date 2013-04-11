@@ -8,7 +8,7 @@
 					<span class="product">ZMS2</span>
 					<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
 				</a>
-				<div class="nav-collapse subnav-collapse">
+				<div title="Configuration">
 					<ul class="nav pull-right">
 						<li class="dropdown" tal:condition="python:len(here.getLangIds())>1">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">

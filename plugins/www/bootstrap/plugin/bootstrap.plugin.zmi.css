@@ -519,4 +519,7 @@ margin-top: 4px;
 	div.right .dropdown-menu {
 	left:auto !important;
 	}
+	.brand .slogan {
+		display:none;
+	}
 }

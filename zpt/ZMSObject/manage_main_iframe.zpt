@@ -1,5 +1,6 @@
 <tal:block tal:define="global
-  standard_html_request python:here.f_standard_html_request(here,request);
+  manage_lang python:request.set('manage_lang',here.get_manage_lang());
+  dummy0 python:here.f_standard_html_request(here,request);
   lurl python:request['URL'].replace('?','/').split('/');
   bcontainer python:here.isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
 
@@ -11,6 +12,23 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<script>
+	$(function() {
+			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
+				if (parent.$.fancybox) {
+					parent.$.fancybox.close();
+				}
+				parent.location.reload();
+			}
+		});
+</script>
+<style type="text/css">
+	.accordion-heading, #attrLastModified, #tabProperties .control-group { display:none; }
+	.form-horizontal, .form-horizontal .controls { margin: 0 !important; padding: 0 !important; }
+	.zmi.properties .form-horizontal .control-group:last-child { margin: 6px 0px 4px; display:block;}
+	.zmi-richtext textarea.form-element { height:18em !important; }
+</style>
+
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'properties',here.meta_id])">
 <!--<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>-->
 <!--<div id="zmi-tab">-->
@@ -22,9 +40,10 @@
 
 <tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
 <form class="form-horizontal" id="form0" tal:attributes="name request/fmName" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
+	<input type="hidden" id="manage_target" name="manage_target" tal:attributes="value request/URL">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview">
+	<input type="hidden" name="form_id" tal:attributes="value request/ZMI_TIME">
 	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
 	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
 	<input type="hidden" id="custom" name="custom" value="">

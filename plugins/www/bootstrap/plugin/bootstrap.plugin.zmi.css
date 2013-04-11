@@ -68,6 +68,8 @@ body.zmi {
 .zmi ul.main-nav {
 	margin-top:0.5em;
 	padding-left:1em;
+	overflow: hidden;
+	max-height: 2.65em;
 }
 .zmi .navbar-inner {
 	border-radius:0 !important;
@@ -503,21 +505,61 @@ margin-top: 4px;
 	ul.zmi-container > li > div.center { 
 		width:100%
 	}
+/*
 	ul.zmi-container > li > div.right {
 		position: absolute;
 		width: 100%;
 		margin-top:-2.76em;
 	}
+	ul.zmi-container > li.zmi-item  {
+		margin-top:2.1em !important;
+	}
 	ul.zmi-container > li > div.right div {
 		display:inline !important;
 		float:none !important
 	}
-	ul.zmi-container > li.zmi-item  {
-		margin-top:2.1em !important;
-	}
-
 	div.right .dropdown-menu {
 	left:auto !important;
+	}
+*/
+	.zmi.main form {
+		margin:0px;
+	}
+	ul.zmi-container > li > div.right {
+		position: absolute;
+	}
+	.zmi-container .zmi-item .zmi-action {
+		margin-left:0px;
+	}
+	.zmi-container .zmi-item .zmi-action .split-left	{
+		display:none !important;
+	}
+	ul.zmi-container > li.zmi-item .dropdown-submenu > .dropdown-menu {
+	}
+	ul.dropdown-menu {
+		margin-left:0px;
+	}	
+	.zmi-container {
+		width: 100% !important;
+	}
+	.zmi-container .zmi-item .center {
+		width: 100% !important;
+	}
+	.zmi-item {
+	border-left:0px solid #ddd;
+	}
+	.right span.form-small,
+	.right span.zmi-ids {
+		display:none !important;
+	}
+	.zmi-container .center .zmiRenderShort {
+		padding-left:36px !important
+	}
+	.zmi-container .pages .contentEditable.form-label {
+		padding-left:0px !important
+	}
+	img.grippy {
+			visibility:hidden;
 	}
 	.brand .slogan {
 		display:none;

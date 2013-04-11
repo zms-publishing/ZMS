@@ -207,7 +207,7 @@ $(function() {
 				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 				<th tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="icon-exclamation-sign"></i></th>
 				<th tal:condition="metaObjRecordSet" colspan="2" align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
-				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-flag"></i></th>
+				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
 				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
 				<th></th>
 				<th></th>

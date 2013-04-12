@@ -49,6 +49,31 @@ import _sequence
 import zmslog
 
 
+class TemplateWrapper(object):
+
+    __name__ = 'TemplateWrapper'
+
+    def __init__(self, cls, path):
+        self.cls = cls
+        self.path = path
+
+    def __get__(self, instance, owner):
+        cls = self.cls
+        path = self.path
+        theme = cls.get().get('zmi.theme','dtml')
+        if instance is not None:
+          theme = instance.getConfProperty('zmi.theme',theme)
+        if theme == 'zpt':
+          if path.find('/') > 0:
+            path = 'zpt/%s'%path
+          f = PageTemplateFile(path, globals())
+        else:
+          if path.find('/') > 0:
+            path = 'dtml/%s'%path
+          f = HTMLFile(path, globals())
+        return f
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Read system-configuration from $ZMS_HOME/etc/zms.conf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -74,15 +99,7 @@ class ConfDict:
 
     @classmethod
     def template(cls, path):
-        if cls.get().get('zmi.theme','dtml')=='zpt':
-          if path.find('/') > 0:
-            path = 'zpt/%s'%path
-          f = PageTemplateFile(path, globals())
-        else:
-          if path.find('/') > 0:
-            path = 'dtml/%s'%path
-          f = HTMLFile(path, globals())
-        return f
+        return TemplateWrapper(cls,path)
 
     @classmethod
     def set_constructor(cls, key, clazz):

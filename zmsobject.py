@@ -473,10 +473,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
-      zpt = zpt and _confmanager.ConfDict.get().get('zmi.theme','dtml')=='zpt'
+      icon_title = self.display_type(REQUEST,meta_type)
+      zpt = zpt and self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
-        pattern = '<img src="%s"/>'
+        pattern = '<img src="%s" title="'+icon_title+'"/>'
       obj_type = meta_type
       if obj_type is None:
         if not self.isActive(REQUEST):
@@ -485,13 +486,14 @@ class ZMSObject(ZMSItem.ZMSItem,
       if obj_type in self.getMetaobjIds( sort=0):
         if zpt:
           metaObjAttr = self.getMetaobjAttr( obj_type, 'icon_clazz')
-          icon_clazz = None
-          if metaObjAttr is not None and metaObjAttr['type'] == 'py':
-            icon_clazz = metaObjAttr['py'](zmscontext=self)
-          elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
-            icon_clazz = metaObjAttr.get('custom',None)
-          if icon_clazz:
-            return '<i class="%s"></i>'%icon_clazz
+          if metaObjAttr is not None:
+            icon_clazz = None
+            if metaObjAttr['type'] == 'py':
+              icon_clazz = metaObjAttr['py'](zmscontext=self)
+            elif metaObjAttr['type'] == 'constant':
+              icon_clazz = metaObjAttr.get('custom',None)
+            if icon_clazz:
+              return '<i class="%s" title="%s"></i>'%(icon_clazz,icon_title)
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':
@@ -1304,7 +1306,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def _getBodyContent(self, REQUEST):
       html = self._getBodyContent2( REQUEST)
       if _globals.isPreviewRequest(REQUEST) and \
-         self.getConfProperty('ZMS.preview.contentEditable',1)==1 and \
+         (REQUEST.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1) and \
          not self.isPage():
         ids = ['contentEditable',self.id,REQUEST.get('lang')]
         css = ['contentEditable']

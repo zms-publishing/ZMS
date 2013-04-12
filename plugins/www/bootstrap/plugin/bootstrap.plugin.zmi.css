@@ -68,7 +68,6 @@ body.zmi {
 .zmi ul.main-nav {
 	margin-top:0.5em;
 	padding-left:1em;
-	overflow: hidden;
 	max-height: 2.65em;
 }
 .zmi .navbar-inner {
@@ -78,6 +77,9 @@ body.zmi {
 	border-top:1px solid #ccc;
 	padding:0.5em;
 	font-size:11px !important;
+}
+ul.breadcrumb {
+	clear:left;
 }
 ul.breadcrumb li.active a {
 	color:black;

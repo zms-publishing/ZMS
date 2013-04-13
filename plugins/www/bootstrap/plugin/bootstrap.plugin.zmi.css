@@ -585,7 +585,7 @@ margin-top: 4px;
 	}
 	.zmi .main-nav li a:hover {
 		border-radius:4px;
-		background-color: rgb(0, 129, 194);
+		background-color: #0088cc;
 		border:0px;
 		color:#fff;
 	}

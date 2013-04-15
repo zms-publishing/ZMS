@@ -13,6 +13,9 @@ $(function() {
 		var anchor = $("a:first",$tabs_left).attr("href");
 		if (self.location.href.indexOf("#")>0) {
 			anchor = self.location.href.substr(self.location.href.indexOf("#"));
+			if (anchor.indexOf('_')==0) {
+				anchor = anchor.substr(1);
+			}
 		}
 		$("a[href='"+anchor+"']",$tabs_left).tab("show");
 	});
@@ -23,7 +26,7 @@ $(function() {
 		<li><a href="#Manager" data-toggle="tab">Manager</a></li>
 		<li><a href="#Portal" data-toggle="tab">Portal</a></li>
 		<li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
-		<li><a href="#Miscellaneous" data-toggle="tab">Miscellaneous</a></li>
+		<li><a href="#Custom" data-toggle="tab">Miscellaneous</a></li>
 		<li><a href="#Maintenance" data-toggle="tab">Maintenance</a></li>
 		<li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
 		<li><a href="#History" data-toggle="tab">History</a></li>
@@ -112,12 +115,12 @@ $(function() {
 			<div class="control-group">
 				<div class="controls">
 					<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
-				</div>
-			</div>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
 		</form>
 		</div>
 
-		<div class="tab-pane" id="Miscellaneous">
+		<div class="tab-pane" id="Custom">
 <form class="form-horizontal" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="key" value="Custom">
@@ -164,27 +167,52 @@ $(function() {
 				{'key':'zmi.theme','title':'ZMI Theme','desc':'Classic DTML-Jquery-UI or new ZPT-bootstrap theme','datatype':'string','options':['dtml','zpt']},
 				];
 			res_keys python:map(lambda x: x['key'],here.sort_list(res,'title','asc'))">
-	<div class="control-group">
-		<label class="control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
-		<div class="controls">
-			<select id="conf_opt" name="conf_opt">
-				<tal:block tal:repeat="res_key res_keys">
-				<tal:block tal:define="global res_item python:filter(lambda x: x['key']==res_key,res)[0]">
-					<option tal:attributes="value python:res_item['key']; title python:res_item['desc']" tal:content="python:res_item['title']">the title</option>
-				</tal:block>
-				</tal:block>
-			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label" for="conf_key" tal:content="python:here.getZMILangStr('ATTR_KEY')">Key</label>
-		<div class="controls">
-			<input type="text" id="conf_key" name="conf_key">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	</tal:block>
-</form>
-		</div>
+			<div class="control-group">
+				<label class="control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
+				<div class="controls">
+					<select id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
+						<option></option>
+						<tal:block tal:repeat="res_key res_keys">
+							<tal:block tal:define="global res_item python:filter(lambda x: x['key']==res_key,res)[0]">
+								<option tal:attributes="value python:res_item['key']; title python:res_item['desc']; selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" tal:content="python:res_item['title']">the title</option>
+							</tal:block>
+						</tal:block>
+					</select>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label class="control-label" for="conf_key">Key</label>
+				<div class="controls">
+					<input type="text" id="conf_key" name="conf_key" tal:attributes="value python:request.get('conf_key')">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label class="control-label" for="conf_value">Value</label>
+				<div class="controls">
+					<input type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),'')">
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+					<button name="btn" type="submit" class="btn" value="Delete">Delete</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<table class="table table-striped">
+			<thead>
+				<tr>
+				</tr>
+			</thead>
+			<tbody>
+				<tr tal:repeat="conf_key conf_keys">
+					<td><span class="ui-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s?lang=%s&amp;conf_key=%s#Custom\''%(request['URL'],request['lang'],conf_key)" tal:content="conf_key">the conf_key</span></td>
+					<td><span tal:content="python:here.getConfProperty(conf_key)">the conf_value</span></td>
+				</tr>
+			</tbody>
+			</table>
+			</tal:block>
+		</form>
+		</div><!-- #Miscellaneous -->
 
 		<div class="tab-pane" id="Maintenance">
 		<tal:block tal:condition="python:request.get('key')=='Maintenance'">

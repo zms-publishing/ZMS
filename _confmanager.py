@@ -58,11 +58,21 @@ class TemplateWrapper(object):
         self.path = path
 
     def __get__(self, instance, owner):
+        f = None
         cls = self.cls
         path = self.path
         theme = cls.get().get('zmi.theme','dtml')
-        if instance is not None:
-          theme = instance.getConfProperty('zmi.theme',theme)
+        try:
+            if instance is not None:
+              theme = instance.getConfProperty('zmi.theme',theme)
+        except:
+            print "### self=",self
+            print "### instance=",instance
+            print "### owner=",owner
+            import sys, traceback, string
+            type, val, tb = sys.exc_info()
+            sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+            del type, val, tb
         if theme == 'zpt':
           if path.find('/') > 0:
             path = 'zpt/%s'%path

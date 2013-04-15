@@ -90,6 +90,16 @@ class ZMSMetamodelProvider(
       self.model = model.copy()
       self.metas = copy.deepcopy(metas)
 
+    # @see _confmanager:TemplateWrapper.__get__
+    def getConfProperty(self, key, default=None):
+      v = default
+      try:
+        if self.content is not None:
+          v = self.content.getConfProperty(key,default)
+      except:
+        pass
+      return v
+
     # --------------------------------------------------------------------------
     #  ZMSMetamodelProvider.__bobo_traverse__
     # --------------------------------------------------------------------------

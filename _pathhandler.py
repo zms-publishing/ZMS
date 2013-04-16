@@ -165,6 +165,12 @@ class PathHandler:
         if obContext is not None:
           ob = obContext
       if ob is not None:
+        if getattr(ob,'meta_type','?').startswith('ZMS'):
+          instance_zmi_theme = getattr(ob,'zmi_theme',None)
+          zmi_theme = ob.getConfProperty('zmi.theme',None)
+          if (zmi_theme is not None or instance_zmi_theme is not None) and instance_zmi_theme != zmi_theme:
+            setattr(ob,'zmi_theme',zmi_theme)
+          
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
           lang = req.get( 'lang')
           if lang is None:

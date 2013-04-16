@@ -1,6 +1,6 @@
 <!-- common/zmi_body_header -->
 
-<div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.filtered_manage_options())">
+<div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.getDocumentElement().filtered_manage_options())">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">

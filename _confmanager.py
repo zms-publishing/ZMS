@@ -64,7 +64,11 @@ class TemplateWrapper(object):
         theme = cls.get().get('zmi.theme','dtml')
         try:
             if instance is not None:
-              theme = instance.getConfProperty('zmi.theme',theme)
+              instance_zmi_theme = getattr(instance,'zmi_theme',None)
+              if instance_zmi_theme is not None:
+                theme = instance_zmi_theme
+              elif getattr(instance,'meta_type',None) == 'ZMS':
+                theme = instance.getConfProperty('zmi.theme','dtml')
         except:
             print "### self=",self
             print "### instance=",instance

@@ -170,7 +170,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
 				<div class="controls">
-					<select id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
+					<select class="input-xxlarge" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
 						<option></option>
 						<tal:block tal:repeat="res_key res_keys">
 							<tal:block tal:define="global res_item python:filter(lambda x: x['key']==res_key,res)[0]">
@@ -189,7 +189,27 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="conf_value">Value</label>
 				<div class="controls">
-					<input type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),'')">
+					<tal:block tal:condition="python:request.get('conf_key') not in res_keys">
+						<input type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),'')">
+					</tal:block>
+					<tal:block tal:condition="python:request.get('conf_key') in res_keys">
+						<tal:block tal:define="global res_item python:filter(lambda x: x['key']==request.get('conf_key'),res)[0]">
+							<tal:block tal:condition="python:not (res_item['datatype']=='boolean' or res_item.has_key('options'))">
+								<input type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
+							</tal:block>
+							<tal:block tal:condition="python:res_item['datatype']=='boolean'">
+								<input type="checkbox" id="conf_value" name="conf_value" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',0)) in [1,True])]">
+							</tal:block>
+							<tal:block tal:condition="python:res_item.has_key('options')">
+								<select id="conf_value" name="conf_value">
+									<option></option>
+									<tal:block tal:repeat="option res_item/options">
+										<option tal:attributes="value option; selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),'')==option)]" tal:content="option">option</option>
+									</tal:block>
+								</select>
+							</tal:block>
+						</tal:block>
+					</tal:block>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">

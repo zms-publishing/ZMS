@@ -59,7 +59,7 @@ def parseXmlString(self, file):
 ###
 ################################################################################
 ################################################################################
-manage_addZMSCustomForm = _confmanager.ConfDict.template('manage_addzmscustomform') 
+manage_addZMSCustomForm = _confmanager.ConfDict.addtemplate('manage_addzmscustomform') 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   

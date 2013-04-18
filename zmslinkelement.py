@@ -138,7 +138,7 @@ class ConstraintViolation(Exception): pass
 ###
 ################################################################################
 ################################################################################
-manage_addZMSLinkElementForm = _confmanager.ConfDict.template('manage_addzmslinkelementform') 
+manage_addZMSLinkElementForm = _confmanager.ConfDict.addtemplate('manage_addzmslinkelementform') 
 def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSLinkElement """
   meta_id = 'ZMSLinkElement'

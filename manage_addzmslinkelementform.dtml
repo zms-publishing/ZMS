@@ -1,20 +1,3 @@
-<dtml-let meta_id="'ZMSLinkElement'" metaObj="getMetaobj(meta_id)" metaobjIds="getMetaobjIds()">
-	<dtml-call "REQUEST.set('ZMS_INSERT',meta_id)">
-	<dtml-call manage_page_request>
-		<div class="zmi" title="<dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)">">
-			<div class="ZMIManageBody ui-widget-content">
-				<!-- ### Meta-Object: Default -->
-				<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'insert_form')"></dtml-unless>
-				<form name="<dtml-var fmName>" action="<dtml-var "URL1[len(BASE0):]">/manage_addZMSLinkElement" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit('<dtml-var fmName>')">
-					<input type="hidden" name="id_prefix" value="<dtml-var id_prefix>">
-					<input type="hidden" name="_sort_id:int" value="<dtml-var _sort_id>">
-					<input type="hidden" name="ZMS_INSERT" value="<dtml-var ZMS_INSERT>">
-					<dtml-let f_submitInputFieldsInactive="len(filter_list(metaObj['attrs'],'id','active','=='))>0"><dtml-var f_submitInputFields></dtml-let>
-					<dtml-var obj_input_js>
-					<dtml-var obj_input_fields>
-					<dtml-var zmi_form_section_end>
-					<dtml-var f_submitBtn>
-				</form>
-			</div>
-		</div><!-- .zmi -->
-</dtml-let>
+<dtml-with "getSelf()">
+	<dtml-var addZMSLinkElementForm>
+</dtml-with>

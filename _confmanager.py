@@ -116,6 +116,11 @@ class ConfDict:
         return TemplateWrapper(cls,path)
 
     @classmethod
+    def addtemplate(cls, path):
+        f = HTMLFile(path, globals())
+        return f
+
+    @classmethod
     def set_constructor(cls, key, clazz):
       cls.__clazzes__[key] = clazz
 
@@ -184,6 +189,8 @@ class ConfManager(
 
     # Management Interface.
     # ---------------------
+    addZMSCustomForm = ConfDict.template('addzmscustomform') 
+    addZMSLinkElementForm = ConfDict.template('addzmslinkelementform') 
     manage_customize = ConfDict.template('ZMS/manage_customize') 
     manage_customizeLanguagesForm = ConfDict.template('ZMS/manage_customizelanguagesform') 
     manage_customizeMetacmdForm = ConfDict.template('metacmd/manage_customizeform') 

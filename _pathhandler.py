@@ -166,7 +166,9 @@ class PathHandler:
           ob = obContext
       if ob is not None:
         if getattr(ob,'meta_type','?').startswith('ZMS'):
-          instance_zmi_theme = getattr(ob,'zmi_theme',None)
+          instance_zmi_theme = None
+          if 'zmi_theme' in ob.__dict__.keys():
+            instance_zmi_theme = getattr(ob,'zmi_theme')
           zmi_theme = ob.getConfProperty('zmi.theme',None)
           if (zmi_theme is not None or instance_zmi_theme is not None) and instance_zmi_theme != zmi_theme:
             setattr(ob,'zmi_theme',zmi_theme)

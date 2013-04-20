@@ -84,11 +84,18 @@
 										<tal:block tal:content="python:here.getZMILangStr('TAB_ACCESS')">configuration</tal:block>
 									</a>
 								</li>
-								<li tal:condition="python:'manage_customize' in actions">
-									<a tal:attributes="href python:'%s/manage_customize?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])">
+								<li class="dropdown-submenu" tal:condition="python:'manage_customize' in actions">
+									<a tabindex="-1" href="#">
 										<i class="icon-wrench"></i>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>
 									</a>
+									<ul class="dropdown-menu">
+										<li tal:repeat="option python:here.getDocumentElement().customize_manage_options()">
+											<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getDocumentElement().absolute_url(),option['action'],request['lang'])">
+												<tal:block tal:content="python:here.getZMILangStr(option['label'])">label</tal:block>
+											</a>
+										</li>
+									</ul><!-- .dropdown-menu -->
 								</li>
 							</ul>
 						</li><!-- .dropdown -->

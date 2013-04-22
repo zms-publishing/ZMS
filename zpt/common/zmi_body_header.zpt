@@ -50,8 +50,8 @@
 										<tal:block tal:content="python:'System'">System</tal:block>
 									</a>
 								</li>
-								<li tal:define="global sitemap python:int(request.get('dtpref_sitemap','0')=='1')">
-									<a tal:attributes="href python:'manage?lang=%s'%request['lang']+['&dtpref_sitemap=1',''][sitemap]; target python:['','_parent'][sitemap]">
+								<li>
+									<a tal:attributes="href python:'manage?lang=%s'%request['lang']">
 										<i class="icon-sitemap"></i>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block>
 									</a>

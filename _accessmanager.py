@@ -46,11 +46,11 @@ user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder','G
 #  Role Definitions.
 # ------------------------------------------------------------------------------
 role_defs = {
-   'ZMSAdministrator':{}
-  ,'ZMSEditor':{'revoke':['Change DTML Methods','ZMS Administrator','ZMS UserAdministrator']}
-  ,'ZMSAuthor':{'revoke':['Change DTML Methods','Import/Export objects','ZMS Administrator','ZMS UserAdministrator']}
-  ,'ZMSSubscriber':{'grant':['Access contents information','View']}
-  ,'ZMSUserAdministrator':{'revoke':['Change DTML Methods','Import/Export objects','ZMS Administrator','ZMS Author']}
+   'ZMSAdministrator':['*']
+  ,'ZMSEditor':['Access contents information','View','ZMS Author']
+  ,'ZMSAuthor':['Access contents information','View','ZMS Author']
+  ,'ZMSSubscriber':['Access contents information','View']
+  ,'ZMSUserAdministrator':['Access contents information','View','ZMS UserAdministrator']
 }
 
 # ------------------------------------------------------------------------------
@@ -72,12 +72,8 @@ def role_permissions(self, role):
   permissions = map(lambda x: x['name'],self.permissionsOfRole('Manager'))
   if role_defs.has_key(role):
     role_def = role_defs[role]
-    if role_def.has_key('revoke'):
-      for revoke in role_def['revoke']:
-        if revoke in permissions:
-          permissions.remove(revoke)
-    elif role_def.has_key('grant'):
-      permissions = role_def['grant']
+    if '*' not in role_def:
+      permissions = role_def
   return permissions
 
 # ------------------------------------------------------------------------------

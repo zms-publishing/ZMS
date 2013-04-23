@@ -319,13 +319,16 @@ class PathHandler:
             lang = l[i+1:j]
             if lang in self.getLangIds():
               auth_user = self.REQUEST.get('AUTHENTICATED_USER')
-              access = (auth_user is None and self.hasPublicAccess()) or \
-                       (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])
-              if access:
-                self.REQUEST.set('ZMS_SKIN',l[:i])
-                self.REQUEST.set('ZMS_EXT',l[j+1:])
-                self.REQUEST.set('lang',lang)
-                return self
+              zms_skin = l[:i]
+              zms_ext = l[j+1:]
+              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,sitemap,mobile').split(',')):
+                access = (auth_user is None and self.hasPublicAccess()) or \
+                         (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])
+                if access:
+                  self.REQUEST.set('ZMS_SKIN',zms_skin)
+                  self.REQUEST.set('ZMS_EXT',zms_ext)
+                  self.REQUEST.set('lang',lang)
+                  return self
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next

@@ -49,6 +49,16 @@ import _sequence
 import zmslog
 
 
+def set_zmi_theme(self):
+    if getattr(self,'meta_type','?').startswith('ZMS'):
+        instance_zmi_theme = None
+        if 'zmi_theme' in self.__dict__.keys():
+            instance_zmi_theme = getattr(self,'zmi_theme')
+        zmi_theme = self.getConfProperty('zmi.theme',None)
+        if (zmi_theme is not None or instance_zmi_theme is not None) and instance_zmi_theme != zmi_theme:
+            setattr(self,'zmi_theme',zmi_theme)
+
+
 class TemplateWrapper(object):
 
     __name__ = 'TemplateWrapper'

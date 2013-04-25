@@ -109,10 +109,6 @@ class ZMSLinkContainer(ZMSContainerObject):
 		('ZMS Author', __authorPermissions__),
 		)
 
-    # Management Interface.
-    # ---------------------
-    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
-
 
     ############################################################################
     ###

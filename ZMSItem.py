@@ -76,11 +76,11 @@ class ZMSItem(
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon'):
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
       if meta_type is None:
         return self.icon
       else:
-        return self.aq_parent.display_icon( REQUEST, meta_type, key)
+        return self.aq_parent.display_icon( REQUEST, meta_type, key, zpt)
 
 
     # --------------------------------------------------------------------------

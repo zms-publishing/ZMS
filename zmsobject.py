@@ -473,6 +473,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
+      _confmanager.set_zmi_theme(self)
       icon_title = self.display_type(REQUEST,meta_type)
       zpt = zpt and self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'

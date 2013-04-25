@@ -21,6 +21,7 @@ from OFS.CopySupport import absattr
 import copy
 # Product Imports.
 import _blobfields
+import _confmanager
 import _fileutil
 import _globals
 
@@ -165,14 +166,9 @@ class PathHandler:
         if obContext is not None:
           ob = obContext
       if ob is not None:
-        if getattr(ob,'meta_type','?').startswith('ZMS'):
-          instance_zmi_theme = None
-          if 'zmi_theme' in ob.__dict__.keys():
-            instance_zmi_theme = getattr(ob,'zmi_theme')
-          zmi_theme = ob.getConfProperty('zmi.theme',None)
-          if (zmi_theme is not None or instance_zmi_theme is not None) and instance_zmi_theme != zmi_theme:
-            setattr(ob,'zmi_theme',zmi_theme)
-          
+        if zmi:
+          _confmanager.set_zmi_theme(self)
+          _confmanager.set_zmi_theme(ob)
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
           lang = req.get( 'lang')
           if lang is None:

@@ -404,10 +404,10 @@ class ZMSProxyObject(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSProxyObject.display_icon:
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon'): 
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True): 
       proxy = self.proxy
       req = self.__request__( REQUEST)
-      rtn = proxy.display_icon( req, meta_type, key)
+      rtn = proxy.display_icon( req, meta_type, key, zpt)
       return rtn
 
 

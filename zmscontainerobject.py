@@ -124,11 +124,12 @@ class ZMSContainerObject(
 
     # Management Interface.
     # ---------------------
-    manage_container = _confmanager.ConfDict.template('ZMSContainerObject/manage_main')
+    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_main_btn = HTMLFile('dtml/ZMSContainerObject/manage_main_btn', globals())
     manage_main_change__roles__ = None
     manage_main_change = HTMLFile('dtml/ZMSContainerObject/manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
+    manage_container = _confmanager.ConfDict.template('ZMSContainerObject/manage_main')
     manage_search = _confmanager.ConfDict.template('ZMSContainerObject/manage_search')
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())
     manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')

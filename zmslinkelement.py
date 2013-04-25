@@ -220,10 +220,6 @@ class ZMSLinkElement(ZMSContainerObject):
         ('ZMS Author', __authorPermissions__),
         )
 
-    # Management Interface.
-    # ---------------------
-    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
-
 
     ############################################################################
     #
@@ -488,7 +484,8 @@ class ZMSLinkElement(ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.display_icon:
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon'): 
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True): 
+      _confmanager.set_zmi_theme(self)
       ref_obj = self.getRefObj()
       if ref_obj is None or not self.isEmbedded(REQUEST):
         ref_obj = self

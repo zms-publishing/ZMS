@@ -171,7 +171,6 @@ class ZMSCustom(ZMSContainerObject):
 
     # Templates.
     # ----------
-    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
     manage_main_iframe = _confmanager.ConfDict.template('ZMSObject/manage_main_iframe')
     manage_menu = _confmanager.ConfDict.template('object/manage_menu')

@@ -147,10 +147,14 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-element', extra=''):
+    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+    elId = elName
+    if elId.endswith('_%s'%lang):
+      elId = elId[:-len('_%s'%lang)]
     html = []
     html.append('<span class="%s">'%css)
     html.append('<input ')
-    html.append(' class="%s"'%css)
+    html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' type="%s"'%type)
     html.append(' id="%s"'%elName.replace(':int',''))
     html.append(' name="%s"'%elName)
@@ -208,6 +212,10 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-checkbox', extra=''):
+    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+    elId = elName
+    if elId.endswith('_%s'%lang):
+      elId = elId[:-len('_%s'%lang)]
     html = []
     checked = str(value) == '1'
     if elName.find(':int') > 0 and value in [True, False]:
@@ -220,7 +228,7 @@ class ObjInputs:
     html.append('<input ')
     if type(elId) is str:
       html.append(' id="%s"'%elId)
-    html.append(' class="%s"'%css)
+    html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' type="checkbox"')
     if not enabled:
       html.append(' disabled="disabled"')
@@ -247,10 +255,13 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-element', wrap='virtual', extra=''):
-    lang = REQUEST.get('lang')
+    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+    elId = elName
+    if elId.endswith('_%s'%lang):
+      elId = elId[:-len('_%s'%lang)]
     html = []
     html.append('<textarea ')
-    html.append(' class="%s"'%css)
+    html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' id="%s"'%elName)
     html.append(' name="%s"'%elName)
     if cols:

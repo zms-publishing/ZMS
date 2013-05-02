@@ -332,6 +332,84 @@ function zmiWriteDebug(s) {
 	}
 }
 
+
+// #############################################################################
+// ### ZMI Pathcropping
+// #############################################################################
+
+/**
+ * @see jquery.plugin.zmi.js
+ */
+function zmiRelativateUrl(path, url) {
+	var protocol = self.location.href;
+	protocol = protocol.substr(0,protocol.indexOf(":")+3);
+	var server_url = self.location.href;
+	server_url = server_url.substr(protocol.length);
+	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
+	var currntPath = null;
+	if (path.indexOf(server_url)==0) {
+		currntPath = path.substr(server_url.length+1);
+	}
+	else if (path.indexOf('/')==0) {
+		currntPath = path.substr(1);
+	}
+	var targetPath = null;
+	if (url.indexOf(server_url)==0) {
+		targetPath = url.substr(server_url.length+1);
+	}
+	else if (url.indexOf('/')==0) {
+		targetPath = url.substr(1);
+	}
+	if (currntPath == null || targetPath == null) {
+		return url;
+	}
+	while ( currntPath.length > 0 && targetPath.length > 0) {
+		var i = currntPath.indexOf( '/');
+		var j = targetPath.indexOf( '/');
+		if ( i < 0) {
+			currntElmnt = currntPath;
+		}
+		else {
+			currntElmnt = currntPath.substring( 0, i);
+		}
+		if ( j < 0) {
+			targetElmnt = targetPath;
+		}
+		else {
+			targetElmnt = targetPath.substring( 0, j);
+		}
+		if ( currntElmnt != targetElmnt) {
+			break;
+		}
+		if ( i < 0) {
+			currntPath = '';
+		}
+		else {
+			currntPath = currntPath.substring( i + 1);
+		}
+		if ( j < 0) {
+			targetPath = '';
+		}
+		else {
+			targetPath = targetPath.substring( j + 1);
+		}
+	}
+	while ( currntPath.length > 0) {
+		var i = currntPath.indexOf( '/');
+		if ( i < 0) {
+			currntElmnt = currntPath;
+			currntPath = '';
+		}
+		else {
+			currntElmnt = currntPath.substring( 0, i);
+			currntPath = currntPath.substring( i + 1);
+		}
+		targetPath = '../' + targetPath;
+	}
+	url = './' + targetPath;
+	return url;
+}
+
 /**
  * @see jquery.plugin.zmi.js
  */

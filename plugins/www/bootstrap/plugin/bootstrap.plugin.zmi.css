@@ -114,7 +114,9 @@ ul.breadcrumb li.active a {
 .form-small {
 	font-size:smaller;
 }
-
+select..form-small {
+	width:auto;
+}
 .nav-tabs {
 	margin-bottom:0;
 	margin-top:1em;
@@ -232,6 +234,7 @@ ul.breadcrumb li {
 }
 .zmi-container .zmi-item .zmi-action {
 	margin-left:-158px;
+	display:block;
 }
 .zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
@@ -487,6 +490,7 @@ padding-left:10px;
 }
 div.right .zmi-ids input[type="checkbox"] {
 margin-left:8px !important;
+margin-top:0px;
 }
 div.right span.form-small {
 display: inline-block;

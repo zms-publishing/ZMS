@@ -54,7 +54,7 @@ $(function(){
 			.mouseout( function(evt) {
 				$(this).removeClass('preview').removeClass('highlight'); 
 			})
-			.dblclick( function(evt) {
+			.click( function(evt) {
 				evt.stopPropagation();
 				var href = ""+self.location.href;
 				if (href.indexOf('?')>0) {
@@ -122,7 +122,7 @@ $(function(){
 					});
 				}
 			})
-		.attr( "title", "Double-click to edit!");
+		.attr( "title", "Click to edit!");
 	}
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {

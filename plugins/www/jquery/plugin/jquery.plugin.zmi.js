@@ -140,6 +140,22 @@ $(function(){
 			toggleCookie(zmi_form_section_id+'_collapsed');
 		}
 	});
+
+	// Sitemap Button
+	var $btn_sitemap = $('#ZMIManageTabsBar li.icon-sitemap');
+	if ($btn_sitemap.length > 0) {
+		var $a = $('#ZMIManageTabsBar li.icon-sitemap a');
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+			$a.attr('target','_parent');
+			$a.attr('href',$a.attr('href')+'&dtpref_sitemap=0');
+			$btn_sitemap.addClass('on');
+		}
+		else {
+			$a.attr('href',$a.attr('href')+'&dtpref_sitemap=1');
+			$btn_sitemap.removeClass('on');
+		}
+	}
+
 });
 
 // #############################################################################

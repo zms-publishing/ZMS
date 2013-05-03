@@ -503,7 +503,7 @@ min-height:35px;
 }
 
 div.right .btn .caret {
-margin-top: 4px;
+ /* margin-top: 4px; */
 }
 
 @media (max-width: 700px) {

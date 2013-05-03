@@ -28,6 +28,7 @@ function hidePreview() {
 function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
+			var theme = getZMIConfProperty('zmi.theme');
 			var titlealt = "";
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = $(this).attr("index_html");
@@ -64,7 +65,12 @@ function zmiAddPages(result, siblings) {
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
 			html += '<span onclick="zmiSelectObject(\''+id+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
-			html += $(this).attr("display_icon");
+			if (theme == 'dtml') {
+				html += '<img src="'+$(this).attr("display_icon")+'" title="'+$(this).attr("display_type")+'" align="absmiddle"/>';
+			}
+			else {
+				html += $(this).attr("display_icon");
+			}
 			if (extra != null) {
 				html += '<span class="ui-helper-clickable" onmouseover="'+extra+'" onmouseout="hidePreview();">&dArr;</span>';
 			}

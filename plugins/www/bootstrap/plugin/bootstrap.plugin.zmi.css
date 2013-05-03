@@ -212,6 +212,15 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 ul.breadcrumb li {
 	white-space:nowrap;
 }
+
+/*  Font Awesome styles: prevent resetting by CK Editor
+    ------------------------------------------------------- */
+.cke_reset_all [class^="icon-"],
+.cke_reset_all [class*=" icon-"] {
+	font-family: FontAwesome !important;
+	margin-right:3px !important;
+}
+
 .zmi-container .right li [class^="icon-"], 
 .zmi-container .right li [class*=" icon-"] {
 	width: 1.5em;

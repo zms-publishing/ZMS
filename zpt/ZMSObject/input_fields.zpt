@@ -33,21 +33,21 @@
 		<div id="tabProperties" class="accordion-body">
 			<div class="accordion-inner">
 
-	<div class="control-group">
+	<div class="control-group activity">
 		<label class="control-label" for="attrActive">
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</tal:block>
 		</label>
 		<div class="controls">
 			<tal:block tal:condition="python:'active' in objAttrs.keys()">
-				<tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block>
-				<tal:block tal:condition="python:'attr_active_start' in objAttrs.keys()">
-					<tal:block tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</tal:block>
+				<span class="active" tal:content="structure python:here.getObjInput('active',request)">the control</span>
+				<span class="attr_active_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
+					<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span>
 					<tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block>
-				</tal:block>
-				<tal:block tal:condition="python:'attr_active_end' in objAttrs.keys()">
-					<tal:block tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</tal:block>
+				</span>
+				<span class="attr_active_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
+					<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span>
 					<tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block>
-				</tal:block>
+				</span>
 			</tal:block>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->

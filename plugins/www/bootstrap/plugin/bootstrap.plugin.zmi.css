@@ -273,6 +273,9 @@ form.form-horizontal {
 	background-color: #fff;
 	width:800px;
 }
+.control-group.activity input.form-checkbox {
+	margin: 0 4px;
+}
 .perc50 {
 	width:50%!important;
 }
@@ -616,5 +619,46 @@ div.right .btn .caret {
 	.zmi .main-nav li.active a:hover {
 		background-color: #888 !important;
 		color:#fff;
+	}
+	.zmi.properties .accordion-group {
+		width:100%;
+	}
+	.zmi.properties .zmi-richtext .zmiNeutralColorMedium0 {
+		min-width:100% !important;
+	}
+	.zmi.properties .form-horizontal label.control-label,
+	.zmi.properties .form-horizontal .controls {
+		margin-left: 0px;
+		width:auto;
+	}
+	.zmi.properties .control-group.activity label.control-label {
+		position: absolute;
+		display: block;
+		margin-bottom: 3em;
+	}
+	.zmi.properties .control-group.activity .active {
+		margin: 0.6em 0 1em 1.35em;
+	}
+	.zmi.properties span.attr_active_start, 
+	.zmi.properties span.attr_active_end {
+		position: relative;
+		display: block;
+		text-align: left;
+		clear: both;
+	}
+	.zmi.properties span.attr_active_start {
+		margin-bottom:1em;
+	}
+	.zmi.properties span.attr_active_start .form-label, 
+	.zmi.properties span.attr_active_end .form-label {
+		display: inline-block;
+		width: 2em;
+	}
+	.zmi.properties .form-horizontal .control-label {
+		float: none;
+		text-align: left;
+	}
+	.zmi-image,.zmi-file {
+		min-width:95%;
 	}
 }

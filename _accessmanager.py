@@ -47,8 +47,8 @@ user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder','G
 # ------------------------------------------------------------------------------
 role_defs = {
    'ZMSAdministrator':['*']
-  ,'ZMSEditor':['Access contents information','View','ZMS Author']
-  ,'ZMSAuthor':['Access contents information','View','ZMS Author']
+  ,'ZMSEditor':['Access contents information','Add ZMSs','Add Documents, Images, and Files','Copy or Move','Delete objects','Manage properties','View','ZMS Author']
+  ,'ZMSAuthor':['Access contents information','Add ZMSs','Copy or Move','Delete objects','View','ZMS Author']
   ,'ZMSSubscriber':['Access contents information','View']
   ,'ZMSUserAdministrator':['Access contents information','View','ZMS UserAdministrator']
 }

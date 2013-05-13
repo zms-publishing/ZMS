@@ -442,6 +442,9 @@ def processCommand(self, filename, command):
   command = command.replace( mCurDir,_fileutil.getFilePath(infilename))
   command = command.replace( mIn,infilename)
   command = command.replace( mOut,tmpoutfilename)
+  path = _fileutil.getFilePath(filename)
+  _globals.writeLog( self, '[processCommand]: path=%s'%path)
+  os.chdir(path)
   _globals.writeLog( self, '[processCommand]: command=%s'%command)
   os.system(command)
   # Check if output file exists.

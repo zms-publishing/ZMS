@@ -155,6 +155,7 @@ class ZMSCustom(ZMSContainerObject):
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_search','manage_search_attrs','manage_tasks',
+        'manage_UndoVersionForm','manage_UndoVersionFormDTML','manage_UndoVersion',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',

@@ -50,7 +50,7 @@
 <ul id="ZMIManageTabsButtons">
 <dtml-if "'Manager' in AUTHENTICATED_USER.getRolesInContext(this)">
 <li><a href="f_api_html?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zapidoc.gif" title="API" border="0" width="14" height="14" /></a></li>
-<li><a href="manage_system?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li>
+<li class="icon-system<dtml-if "URL.find('manage_system')>0"> on"><a href="manage<dtml-else>"><a href="manage_system</dtml-if>?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>zexpdoc.gif" title="System" border="0" width="14" height="14" /></a></li>
 </dtml-if>
 <li class="icon-sitemap"><a href="manage?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="<dtml-var "content.getZMILangStr('TAB_SITEMAP')">" border="0" width="14" height="14" /></a></li>
 <li<dtml-if "URL.find(getTrashcan().id+'/')>0"> class="on"</dtml-if>><a href="<dtml-var "getTrashcan().absolute_url()">/manage_main?lang=<dtml-var lang>"><img src="<dtml-var MISC_ZMS>op_trashcan<dtml-var "_.int(getTrashcan().isActive(REQUEST))">.gif" title="<dtml-var "content.getZMILangStr('TYPE_ZMSTRASHCAN')">" border="0" width="14" height="14" /></a></li>

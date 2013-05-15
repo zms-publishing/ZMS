@@ -12,15 +12,9 @@
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/font-awesome.css" />
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css" />
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.8.16.custom.css" />
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty('jquery.version')"></script>
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty('jquery.ui')"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/plugin/jquery.plugin.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/misc/comlib.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/misc/main.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/misc/formlib.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.js"></script>
+		<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
+			<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty(key)"></script>
+		</tal:block>
 	</head>
 
 <!--

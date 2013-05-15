@@ -265,8 +265,8 @@ function formOnSubmit(fm) {
 
 	<div class="control-group">
 		<div class="controls">
-			<button type="submit" class="btn btn-primary">Add</button>
-			<button type="submit" class="btn">Cancel</button>
+			<button type="submit" name="btn" value="Add" class="btn btn-primary">Add</button>
+			<button type="submit" name="btn" value="Cancel" class="btn">Cancel</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 

@@ -163,43 +163,47 @@ def initialize(context):
           fileobj.close()
         
         # automated combination of external JavaScript
-        gen = confdict.get('jquery.libs.gen','').split(',')
-        if gen[0] != '':
-          print "automated combination of external JavaScript:",gen
-          fileobj = open(translate_path(confdict.get('jquery.all')),'w')
-          for key in gen:
-            fn = translate_path(confdict.get('jquery.%s'%key))
-            fh = open(fn,'r')
-            fc = fh.read()
-            fh.close()
-            s0 = len(fc)
-            # Pack
-            fc = fc.strip()
-            fc = re.sub( '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', '', fc)
-            fc = re.sub( '//( |-|\$)((.|\r|\t)*?)\n', '', fc)
-            while True:
-              done = False
-              for k in ['=','+','-','(',')',';',',',':','&','|']:
-                for sk in [' ','\n']:
-                  while fc.find(sk+k)>=0:
-                    fc=fc.replace(sk+k,k)
-                    done = True
-                  while fc.find(k+sk)>=0:
-                    fc=fc.replace(k+sk,k)
-                    done = True
-              d = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
-              for i in range(len(d)/2):
-                k = d[i*2]
-                v = d[i*2+1]
-                while fc.find(k) >= 0:
-                  fc = fc.replace(k,v)
-                  done = True
-              if not done:
-                break
-            s1 = len(fc)
-            print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
-            fileobj.write(fc)
-          fileobj.close()
+        for category in ['jquery','bootstrap']:
+          gen = confdict.get('%s.libs.gen'%category,'').split(',')
+          if gen[0] != '':
+            print "%s automated combination of external JavaScript:"%category,gen
+            fileobj = open(translate_path(confdict.get('%s.all'%category)),'w')
+            for key in gen:
+              fn = translate_path(confdict.get(key))
+              fh = open(fn,'r')
+              fc = fh.read()
+              fh.close()
+              s0 = len(fc)
+              if fn.endswith('.min.js'):
+                print "add",fn,"(",s0,"Bytes)"
+              else:
+                # Pack
+                fc = fc.strip()
+                fc = re.sub( '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', '', fc)
+                fc = re.sub( '//( |-|\$)((.|\r|\t)*?)\n', '', fc)
+                while True:
+                  done = False
+                  for k in ['=','+','-','(',')',';',',',':','&','|']:
+                    for sk in [' ','\n']:
+                      while fc.find(sk+k)>=0:
+                        fc=fc.replace(sk+k,k)
+                        done = True
+                      while fc.find(k+sk)>=0:
+                        fc=fc.replace(k+sk,k)
+                        done = True
+                  d = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
+                  for i in range(len(d)/2):
+                    k = d[i*2]
+                    v = d[i*2+1]
+                    while fc.find(k) >= 0:
+                      fc = fc.replace(k,v)
+                      done = True
+                  if not done:
+                    break
+                s1 = len(fc)
+                print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
+              fileobj.write(fc)
+            fileobj.close()
     
     except:
         """If you can't register the product, dump error. 

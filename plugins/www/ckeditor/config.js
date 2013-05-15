@@ -7,6 +7,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here.
 	// For the complete reference:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
+	config.emailProtection = 'encode';
+	config.forcePasteAsPlainText = true
 
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
@@ -53,6 +55,5 @@ CKEDITOR.editorConfig = function( config ) {
      ['Find','linkbutton','Link','Unlink'],
      ['Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
-  ];
-
+  ];      
 };

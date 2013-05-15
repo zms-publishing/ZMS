@@ -257,7 +257,7 @@ function zmiToggleClick(toggle) {
 						html += '">';
 						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)"> ';
 						html += '<input type="radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"> ';
-						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)"> ';
+						html += '<a target="_blank" href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)"> ';
 						html += page_display_icon+' ';
 						html += page_titlealt+' ';
 						html += '<'+'/a>';
@@ -300,7 +300,7 @@ function zmiFollowHref(anchor) {
 		<div>
 			<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
 			<input type="radio" tal:attributes="checked python:['','checked'][int(request.get('elValue') not in ['',None] and childNode==childNodes[-1])]; onchange python:'selectObject(\'%s\',%i,\'%s\')'%(childNode.absolute_url(),int(childNode.isPage()),childNode.getTitlealt(request))">
-			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
+			<a target="_blank" tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
 				<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 				<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 			</a>
@@ -308,7 +308,7 @@ function zmiFollowHref(anchor) {
 				<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(subChildNode.getHome().id,subChildNode.id)"></tal:block>
 				<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
 				<input type="radio" tal:attributes="onchange python:'selectObject(\'%s\',%i,\'%s\')'%(subChildNode.absolute_url(),int(subChildNode.isPage()),subChildNode.getTitlealt(request))">
-				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(subChildNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
+				<a target="_blank" tal:attributes="href python:'%s/manage_main?lang=%s'%(subChildNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
 					<tal:block tal:content="structure python:subChildNode.display_icon(request)">the icon</tal:block>
 					<span tal:content="python:subChildNode.getTitlealt(request)">the titlealt</span>
 				</a>

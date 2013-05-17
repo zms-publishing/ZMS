@@ -127,7 +127,7 @@ class PathHandler:
     # --------------------------------------------------------------------------
     #  PathHandler.__bobo_traverse__
     # --------------------------------------------------------------------------
-    def __bobo_traverse__(self, TraversalRequest, name):
+    def __bobo_traverse__(self, TraversalRequest, name):        
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
       req = self.REQUEST
@@ -166,7 +166,8 @@ class PathHandler:
         if obContext is not None:
           ob = obContext
       if ob is not None:
-        if zmi:
+        meta_type = getattr(ob,'meta_type','?')
+        if zmi or (meta_type.startswith('ZMS') and meta_type not in self.dGlobalAttrs.keys()):
           _confmanager.set_zmi_theme(self)
           _confmanager.set_zmi_theme(ob)
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:

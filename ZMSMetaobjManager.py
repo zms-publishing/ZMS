@@ -40,8 +40,11 @@ import IZMSSvnInterface
 # ------------------------------------------------------------------------------
 #  Synchronize type.
 # ------------------------------------------------------------------------------
-def syncType( self, meta_id, attr):
+syncTypes = ['method','py','zpt','interface','resource']
+def syncType( self, id, attr, forced=False):
   try:
+    if attr['type'] not in self.valid_zopetypes+syncTypes:
+      return
     attr_id = attr['id']
     if attr['type'] in self.valid_zopetypes:
       container = self.getHome()
@@ -64,21 +67,20 @@ def syncType( self, meta_id, attr):
         params = ob.arguments_src
         attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
     else:
-      ob = getattr( self, meta_id+'.'+attr_id, None)
-      if ob is None:
-        return
-      if attr['type'] == 'method':
-        attr['custom'] = ob.raw
-      elif attr['type'] == 'py':
-        attr['py'] = ob
-        attr['custom'] = ob.read()
-      elif attr['type'] == 'zpt':
-        attr['zpt'] = ob
-        attr['custom'] = unicode(ob.read()).encode('utf-8')
-      elif attr['type'] == 'interface':
-        attr['name'] = ob.raw
-      else:
-        attr['custom'] = ob
+      ob = getattr(self,id+'.'+attr_id,None)
+      if ob is not None:
+        if attr['type'] == 'method':
+          attr['custom'] = ob.raw
+        elif attr['type'] == 'py':
+          attr['py'] = ob
+          attr['custom'] = ob.read()
+        elif attr['type'] == 'zpt':
+          attr['zpt'] = ob
+          attr['custom'] = unicode(ob.read()).encode('utf-8')
+        elif attr['type'] == 'interface':
+          attr['name'] = ob.raw
+        elif attr['type'] == 'resource':
+          attr['custom'] = ob
   except:
     value = _globals.writeError(self,'[syncType]')
 
@@ -238,7 +240,7 @@ class ZMSMetaobjManager:
             for key in ['keys','custom','default']:
               if attr.has_key(key) and not attr[key]:
                 del attr[key]
-            for key in ['py','zpt']:
+            for key in ['sync','py','zpt']:
               if attr.has_key(key):
                 del attr[key]
             attrs.append( attr)
@@ -650,8 +652,8 @@ class ZMSMetaobjManager:
     #
     #  Returns list of attribute-ids for meta-object specified by meta-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttrIds(self, meta_id, types=[]):
-      return map(lambda x: x['id'], self.getMetaobjAttrs( meta_id, types))
+    def getMetaobjAttrIds(self, id, types=[]):
+      return map(lambda x: x['id'], self.getMetaobjAttrs( id, types))
 
 
     # --------------------------------------------------------------------------
@@ -659,13 +661,13 @@ class ZMSMetaobjManager:
     #
     #  Returns list of attribute-ids for meta-object specified by meta-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttrs(self, meta_id, types=[]):
+    def getMetaobjAttrs(self, id, types=[]):
       attrs = []
-      ob = self.__get_metaobj__(meta_id)
+      ob = self.__get_metaobj__(id)
       if ob is not None:
         attrs = ob.get('attrs',ob.get('__obj_attrs__'))
         if attrs is None:
-          raise zExceptions.InternalError('Can\'t getMetaobjAttrIds: %s'%(str(meta_id)))
+          raise zExceptions.InternalError('Can\'t getMetaobjAttrIds: %s'%(str(id)))
         if len( types) > 0:
           attrs = filter( lambda x: x['type'] in types, attrs)
       return attrs
@@ -676,42 +678,36 @@ class ZMSMetaobjManager:
     # 
     #  Get attribute for meta-object specified by attribute-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttr(self, meta_id, key, sync=True):
+    def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']):
       meta_objs = self.__get_metaobjs__()
-      if meta_objs.get(meta_id,{}).get('acquired',0) == 1:
+      if meta_objs.get(id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          attr = portalMaster.getMetaobjAttr( meta_id, key)
+          attr = portalMaster.getMetaobjAttr( id, attr_id)
           return attr
-      meta_obj = meta_objs.get(meta_id,{})
+      meta_obj = meta_objs.get(id,{})
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))
       if attrs is None:
-        if meta_id == 'ZMSTrashcan':
+        if id == 'ZMSTrashcan':
           return {}
-        raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(meta_id),str(key)))
+        raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(id),str(attr_id)))
       for attr in attrs:
-        if key == attr['type']:
+        if attr_id == attr['type']:
           meta_attrs = self.getMetadictAttrs()
-          if key in meta_attrs:
-            attr_meta_type = attr['type']
-            attr = self.getMetadictAttr( attr_meta_type).copy()
-            attr['meta_type'] = attr_meta_type
+          if attr['type'] in meta_attrs:
+            attr_type = attr['type']
+            attr = self.getMetadictAttr(attr['type'])
+            attr = attr.copy()
+            attr['meta_type'] = attr_type
             return attr
-        if key == attr['id']:
+        if attr_id == attr['id']:
           attr = attr.copy()
           attr['datatype_key'] = _globals.datatype_key(attr['type'])
           attr['mandatory'] = attr.get('mandatory',0)
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
-          meta_types = meta_objs.keys()
-          valid_types = self.valid_datatypes+self.valid_zopetypes+meta_types+['*']
-          # type is valid: sync type (copy might have been edited directly in ZODB via FTP!)
-          if sync and attr['type'] in valid_types:
-            attr['meta_type'] = ''
-            syncType( self, meta_id, attr)
-          # type not found: may be meta-attribute (must be '?' to display error on customize-form!)
-          else:
-            attr['meta_type'] = '?'
+          attr['meta_type'] = ['','?'][int(attr['type']==attr['id'])]
+          if '*' in syncTypes or attr['type'] in syncTypes: syncType( self, id, attr)
           return attr
       return None
 
@@ -809,6 +805,7 @@ class ZMSMetaobjManager:
         newCustom = ''
       
       attr = {}
+      attr['sync'] = False
       attr['id'] = newId
       attr['name'] = newName
       attr['mandatory'] = newMandatory
@@ -1141,7 +1138,7 @@ class ZMSMetaobjManager:
           # -------
           elif key == 'all' and btn == self.getZMILangStr('BTN_SAVE'):
             savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
-            # Change Object.
+            # Change object.
             newValue = {}
             newValue['id'] = id
             newValue['name'] = REQUEST.get('obj_name').strip()
@@ -1157,7 +1154,7 @@ class ZMSMetaobjManager:
              'delete_custom': REQUEST.get( 'access_delete_custom', ''),
             }
             self.setMetaobj( newValue)
-            # Change Attributes.
+            # Change attributes.
             for old_id in REQUEST.get('old_ids',[]):
               attr_id = REQUEST['attr_id_%s'%old_id].strip()
               newName = REQUEST['attr_name_%s'%old_id].strip()
@@ -1165,23 +1162,22 @@ class ZMSMetaobjManager:
               newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)
               newRepetitive = REQUEST.get( 'attr_repetitive_%s'%old_id, 0)
               newType = REQUEST.get( 'attr_type_%s'%old_id)
-              newMetaType = REQUEST.get( 'attr_meta_type_%s'%old_id, '')
               newKeys = self.string_list(REQUEST.get('attr_keys_%s'%old_id,''),'\n')
               newCustom = REQUEST.get('attr_custom_%s'%old_id,'')
               newDefault = REQUEST.get('attr_default_%s'%old_id,'')
+              # Upload resource.
               if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
                   if len(getattr(newCustom,'filename','')) > 0:
                       newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom, mediadbStorable=False)
                   else:
                       REQUEST.set('attr_custom_%s_modified'%old_id,'0')
+              # Restore resource.
               if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0' and \
                  REQUEST.get('attr_custom_%s_active'%old_id,'0') == '1':
                   savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
                   syncType( self, id, savedAttr)
                   newCustom = savedAttr['custom']
-              if len( newMetaType) > 0:
-                  attr_id = old_id
-                  newType = newMetaType
+              # Change attribute.
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')

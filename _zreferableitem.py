@@ -511,7 +511,7 @@ class ZReferableItem:
     while ob is not None:
       if html in ob.getMetaobjIds( sort=0):
         metaObj = ob.getMetaobj( html)
-        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml')
+        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*'])
         if type(metaObjAttr) is dict:
           REQUEST.set( 'ref_id', url)
           return self.dt_html( metaObjAttr['custom'], REQUEST)

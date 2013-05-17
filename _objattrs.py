@@ -665,7 +665,7 @@ class ObjAttrs:
         metaObjAttr = None
         try:
           if key not in objAttrs.keys():
-            metaObjAttr = self.getMetaobjAttr( self.meta_id, key)
+            metaObjAttr = self.getMetaobjAttr( self.meta_id, key, syncTypes=['*'])
         except:
           _globals.writeError( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))
           
@@ -696,7 +696,7 @@ class ObjAttrs:
           objAttr = objAttrs[key]
           datatype = objAttr['datatype_key']
           value = self.getObjAttrValue( objAttr, REQUEST)
-          if datatype == _globals.DT_TEXT and  type(value) in StringTypes:
+          if datatype == _globals.DT_TEXT and  type(value) in StringTypes and value.find('<dtml-') >= 0:
             try:
               value = _globals.re_sub(self,'<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
               value = _globals.dt_html(self,value,REQUEST)

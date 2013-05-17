@@ -1011,8 +1011,8 @@ class ConfManager(
     def getMetaobjAttrs(self, meta_id,  types=[]):
       return self.getMetaobjManager().getMetaobjAttrs( meta_id)
 
-    def getMetaobjAttr(self, meta_id, key):
-      return self.getMetaobjManager().getMetaobjAttr( meta_id, key)
+    def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']):
+      return self.getMetaobjManager().getMetaobjAttr(id,attr_id,syncTypes)
 
     def getMetaobjAttrIdentifierId(self, meta_id):
       return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)

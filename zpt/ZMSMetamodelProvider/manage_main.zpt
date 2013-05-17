@@ -215,7 +215,7 @@ $(function() {
 		</thead>
 		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
 			<tr tal:repeat="objAttrId objAttrIds">
-				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
+				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId,syncTypes=['*']); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
 					<td>
 						<img class="grippy" src="/misc_/zms/spacer.gif" />
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id" />

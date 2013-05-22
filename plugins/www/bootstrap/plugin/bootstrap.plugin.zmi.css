@@ -97,7 +97,9 @@ body.zmi {
 	font-weight:normal;
 }
 .center h1 small {
-	line-height:1.6em;
+	display:inline-block;
+	margin-top:0.5em;
+	line-height:1.75em;
 	font-size:small;
 	color:#666666;
 	font-style:italic;
@@ -169,6 +171,9 @@ ul.zmi-container li.ui-state-highlight {
 ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	height:1em;
 }
+ul.zmi-container li.zmi-item .inactive .contentEditable {
+	opacity:0.5;
+}
 table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;
@@ -194,7 +199,7 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	background-color:#08c!important;
 	color:#fff!important;
 }
-.zmi-container .zmi-item .center {
+.zmi-container > .zmi-item > .center {
 	float:left;
 	width:600px!important;
 }
@@ -202,7 +207,7 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	background-color:#EEE;
 	width:800px!important;
 }
-.zmi-container .zmi-item .right {
+.zmi-container > .zmi-item > .right {
 	float:left;
 	width:200px!important;
 }
@@ -218,6 +223,9 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
 	min-height:3.5em;
 }
 
+.zmi-sitemap .inactive a { 
+	color:#999; 
+}
 
 /*  Font Awesome styles: prevent resetting by CK Editor
     ------------------------------------------------------- */

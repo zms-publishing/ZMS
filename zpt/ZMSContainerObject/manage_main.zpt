@@ -49,7 +49,8 @@
 		<ul tal:attributes="class python:' '.join(['zmi-container','zmi-sortable',nodelist[0]])" tal:condition="python:len(nodelist[1])>0">
 			<tal:block tal:repeat="childNode python:nodelist[1]">
 									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item',nodelist[0][:-1]])">
-										<div class="center" tal:content="structure python:childNode.renderShort(request)">
+										<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+											tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->
 										<div class="right">

@@ -14,9 +14,45 @@
 	position:absolute;
 	margin:4px;
 }
+.enabled a {
+	font-weight:bold;
+}
+.ui-helper-clickable.icon-check {
+	margin-right:0.2em
+}
+.ui-helper-clickable.icon-check-empty {
+	margin-right:0.3em
+}
+
 </style>
 
 <script>
+
+/**
+ *
+ */
+function zmiEnableBtnClick(sender) {
+	var $container = $(sender).closest("span");
+	var id = $container.attr("id");
+	var enabled = $container.hasClass("enabled")?0:1;
+		// Set wait-cursor.
+		$(document.body).css( "cursor", "wait");
+		// JQuery.AJAX.get
+		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+enabled,function(data) {
+			// Reset wait-cursor.
+			$(document.body).css( "cursor", "auto");
+			// Get object-id.
+			var enabled = $("result",data).attr("enabled");
+			if (enabled=="1") {
+				$container.addClass("enabled");
+				$('.enabled-toggle',$container).removeClass("icon-check-empty").addClass("icon-check");
+			}
+			else {
+				$container.removeClass("enabled");
+				$('.enabled-toggle',$container).removeClass("icon-check").addClass("icon-check-empty");
+			}
+		});
+}
 
 /**
  * Export xml.
@@ -111,6 +147,7 @@ $(function() {
 
 <form tal:condition="python:request.get('id')" class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 <tal:block tal:define="global metaObj python:here.getMetaobj(request['id']); metaObjRecordSet python:int(metaObj['type']=='ZMSRecordSet')">
+	<input type="hidden" name="key" value="all">
 	<input type="hidden" name="id" tal:attributes="value request/id">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 
@@ -206,7 +243,7 @@ $(function() {
 				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 				<th tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="icon-exclamation-sign"></i></th>
-				<th tal:condition="metaObjRecordSet" colspan="2" align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
+				<th tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
 				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
 				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
 				<th></th>
@@ -267,10 +304,10 @@ $(function() {
 									</option>
 								</select>
 							</td>
-							<td align="center"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"></td>
-							<td tal:condition="metaObjRecordSet" colspan="2" align="center"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"></td>
-							<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"></td>
-							<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"></td>
+							<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"></td>
+							<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"></td>
+							<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"></td>
+							<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"></td>
 							<td>
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
 									<img class="zmi-element-key" src="/misc_/zms/btn_key.gif" />
@@ -302,13 +339,12 @@ $(function() {
 						<option tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')">type</option>
 					</select>
 				</td>
-				<td align="center"><input type="checkbox" name="_mandatory:int" value="1"></td>
-				<td tal:condition="metaObjRecordSet" colspan="2" align="center"><input type="checkbox" name="_custom:int" value="1"></td>
-				<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" name="_multilang:int" value="1" checked="checked"></td>
-				<td tal:condition="not:metaObjRecordSet" align="center"><input type="checkbox" name="_repetitive:int" value="1"></td>
+				<td style="text-align:center;"><input type="checkbox" name="_mandatory:int" value="1"></td>
+				<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" name="_custom:int" value="1"></td>
+				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_multilang:int" value="1" checked="checked"></td>
+				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_repetitive:int" value="1"></td>
 				<td colspan="2">
-					<input type="hidden" name="key" value="attr">
-					<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="$('input[name=key]',this.form).val('attr')">Insert</button>
 				</td>
 			</tr>
 		</tbody>
@@ -355,7 +391,7 @@ $(function() {
 	<tbody>
 	<tal:block tal:repeat="metaObjPackage metaObjPackages">
 		<tr tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
-			<td>
+			<td style="text-align:center;">
 				<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage">
 			</td>
 			<td colspan="2">
@@ -372,13 +408,14 @@ $(function() {
 		</tr>
 		<tal:block tal:repeat="metaObj metaObjs">
 			<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-				<td>
+				<td style="text-align:center;">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:metaObj['id']">
 				</td>
 				<td></td>
 				<td>
-					<span tal:attributes="title python:metaObj['id']">
+					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][int(metaObj['enabled'])])">
 						<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
+						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][int(metaObj['enabled'])])" onclick="zmiEnableBtnClick(this)"></i>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank" tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" tal:content="metaObj/name">the name</a>
 						<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block>

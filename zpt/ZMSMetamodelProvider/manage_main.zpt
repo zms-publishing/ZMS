@@ -18,10 +18,12 @@
 	font-weight:bold;
 }
 .ui-helper-clickable.icon-check {
-	margin-right:0.2em
+	margin-right:0.2em;
+	color:#08c;
 }
 .ui-helper-clickable.icon-check-empty {
-	margin-right:0.3em
+	margin-right:0.3em;
+	color:#08c;
 }
 
 </style>

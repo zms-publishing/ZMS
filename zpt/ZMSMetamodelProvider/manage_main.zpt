@@ -208,7 +208,7 @@ $(function() {
 	<div class="control-group">
 		<label for="obj_package" class="control-label"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
 		<div class="controls">
-			<select class="input-xxlarge" id="obj_package" name="obj_package">
+			<select id="obj_package" name="obj_package">
 				<tal:block tal:repeat="metaObjPackage metaObjPackages">
 					<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
 				</tal:block>

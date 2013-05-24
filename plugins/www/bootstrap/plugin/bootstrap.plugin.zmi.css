@@ -346,6 +346,10 @@ div.single-line textarea {
 	height:20px;
 	overflow:hidden;
 	width:90%;
+	font-family:"Courier New", Courier, monospace;
+}
+#zmi-single-line-edit textarea {
+	font-family:"Courier New", Courier, monospace;
 }
 div.zmi-nodes span {
 	cursor:pointer;

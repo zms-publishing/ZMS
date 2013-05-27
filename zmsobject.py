@@ -139,6 +139,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_api_top_html = HTMLFile('dtml/object/f_api_top', globals())
     obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals())
     obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields')
+    obj_input_elements = _confmanager.ConfDict.template('ZMSObject/input_elements')
     active_input_fields = '' # Deprecated
     version_input_fields = '' # Deprecated
 
@@ -473,7 +474,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
-      _confmanager.set_zmi_theme(self)
       icon_title = self.display_type(REQUEST,meta_type)
       zpt = zpt and self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'

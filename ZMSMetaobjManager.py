@@ -683,7 +683,7 @@ class ZMSMetaobjManager:
       if meta_objs.get(id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          attr = portalMaster.getMetaobjAttr( id, attr_id)
+          attr = portalMaster.getMetaobjAttr( id, attr_id, syncTypes)
           return attr
       meta_obj = meta_objs.get(id,{})
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))

@@ -1,0 +1,87 @@
+<!-- ZMSObject/input_elements -->
+
+	<tal:block tal:define="global
+			action options/action;
+			meta_id options/meta_id;
+			metaObj python:here.getMetaobj(meta_id);
+			metaObjIds python:here.getMetaobjIds();
+			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+			objAttrs python:here.getObjAttrs(metaObj['id'])">
+
+		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
+			<tal:block tal:define="global 
+					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
+					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
+					elLabel python:here.getObjAttrLabel(metaObjAttr);
+					elValue python:here.attr(metaObjAttrId)">
+				<tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[]) and metaObjAttr['type'] not in here.metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']">
+
+					<tal:block tal:condition="python:metaObjAttr['type']=='delimiter'">
+						<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
+						<div class="accordion-heading">
+							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+								<i></i>
+								<tal:block tal:content="elLabel">the label</tal:block>
+							</a>
+							<div class="clearfix"></div>
+						</div><!-- .accordion-heading -->
+						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
+					</tal:block>
+
+					<tal:block tal:condition="python:metaObjAttr['type']=='hint'">
+						<div class="zmi-hint" tal:content="elLabel">the hint</div>
+					</tal:block>
+
+					<tal:block tal:condition="python:metaObjAttr['type']=='interface'">
+						<div class="zmi-interface" tal:content="structure python:here.dt_html(metaObjAttr['name'],request)">the interface</div>
+					</tal:block>
+
+					<tal:block tal:condition="python:metaObjAttr['type']=='richtext'">
+						<div class="zmi-richtext" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the richtext</div>
+					</tal:block>
+
+					<tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds and here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource' and action.lower()!='insert'">
+						<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
+						<div class="accordion-heading">
+							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+								<i></i>
+								<tal:block tal:content="elLabel">the label</tal:block>
+							</a>
+							<div class="btn-group pull-right" tal:condition="python:not metaObjAttr.get('mandatory',False)">
+								<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))==0"><a tal:attributes="href python:'manage_initObjChild?id=%s&type=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],metaObjAttr['type'],request['lang'],request['URL'])"><i class="icon-plus"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></li>
+									<li tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))>0"><a tal:attributes="href python:'manage_deleteObjs?ids:list=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],request['lang'],request['URL'])"><i class="icon-trash"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
+								</ul><!-- .dropdown-menu -->
+							</div>
+							<div class="clearfix"></div>
+						</div><!-- .accordion-heading -->
+						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
+						<tal:block tal:repeat="childNode python:here.getObjChildren(metaObjAttr['id'],request)">
+							<tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','%s_'%metaObjAttr['id'])"></tal:block>
+							<tal:block tal:content="structure python:childNode.obj_input_elements(action=action,meta_id=childNode.meta_id)">obj_input_elements</tal:block>
+							<tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','')"></tal:block>
+						</tal:block>
+					</tal:block>
+
+					<tal:block tal:condition="python:metaObjAttr['type'] not in ['?','delimiter','hint','interface','richtext']+metaObjIds+['*']
+							and not (metaObjAttr['id'] in ['displaytype','format'])
+							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
+							and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
+						<div class="control-group">
+							<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+								<span tal:content="elLabel">the label</span>
+							</label>
+							<div class="controls" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .controls -->
+						</div><!-- .control-group -->
+					</tal:block>
+
+				</tal:block>
+			</tal:block>
+		</tal:block>
+
+	</tal:block>
+
+<!-- /ZMSObject/input_elements -->

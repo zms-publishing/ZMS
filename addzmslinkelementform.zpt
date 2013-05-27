@@ -12,7 +12,7 @@
 		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']">
 		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']">
 		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']">
-		<tal:block tal:content="structure python:here.obj_input_fields(meta_id=meta_id)">
+		<tal:block tal:content="structure python:here.obj_input_fields(action='insert',meta_id=meta_id)">
 			the input-fields
 		</tal:block>
 	<div class="control-group">

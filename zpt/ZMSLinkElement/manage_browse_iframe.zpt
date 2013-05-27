@@ -33,8 +33,8 @@ div.restricted a {
 </style>
 
 <script>
-function selectObject(absolute_url,is_page,titlealt) {
-	//--confirm('selectObject('+absolute_url+';'+is_page+';'+titlealt+')');
+function selectObject(absolute_url,anchor,is_page,titlealt) {
+	//--confirm('selectObject('+absolute_url+';'+anchor+';'+is_page+';'+titlealt+')');
 	var url = absolute_url;
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != '') {
@@ -50,7 +50,7 @@ function selectObject(absolute_url,is_page,titlealt) {
 		}
 	}
 	else {
-		if ($('#type').val().indexOf('dtml')==0) {
+		if ((''+$('#type').val()).indexOf('dtml')==0) {
 			url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
 		}
 		else {
@@ -128,31 +128,42 @@ function getInternalUrl(url) {
 		while ( currntHome.length > 0 && targetHome.length > 0) {
 			var i = currntHome.indexOf( "/");
 			var j = targetHome.indexOf( "/");
-			if ( i < 0)
+			if ( i < 0) {
 				currntElmnt = currntHome;
-			else
+			}
+			else {
 				currntElmnt = currntHome.substring( 0, i);
-			if ( j < 0)
+			}
+			if ( j < 0) {
 				targetElmnt = targetHome;
-			else
+			}
+			else {
 				targetElmnt = targetHome.substring( 0, j);
-			if ( currntElmnt != targetElmnt)
+			}
+			if ( currntElmnt != targetElmnt) {
 				break;
-			if ( i < 0)
+			}
+			if ( i < 0) {
 				currntHome = '';
-			else
+			}
+			else {
 				currntHome = currntHome.substring( i+1);
-			if ( j < 0)
+			}
+			if ( j < 0) {
 				targetHome = '';
-			else
+			}
+			else {
 				targetHome = targetHome.substring( j+1);
+			}
 		}
 	}
 	var path = targetPath.substring( targetPath.indexOf( content) + content.length);
-	if (path.indexOf("/")==0)
+	if (path.indexOf("/")==0) {
 		path = path.substring(1);
-	if ( currntHome != targetHome)
+	}
+	if ( currntHome != targetHome) {
 		path = targetHome + "@" + path;
+	}
 	path = "{$" + path + "}";
 	return path;
 }
@@ -168,27 +179,37 @@ function getRelativeUrl(url, anchor) {
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		var j = targetPath.indexOf( '/');
-		if ( i < 0)
+		if ( i < 0) {
 			currntElmnt = currntPath;
-		else
-			currntElmnt = currntPath.substring( 0, i);
-		if ( j < 0)
-			targetElmnt = targetPath;
-		else 
-			targetElmnt = targetPath.substring( 0, j);
-		if ( currntElmnt != targetElmnt)
-			break;
-		if ( i < 0)
-			currntPath = '';
-		else
-			currntPath = currntPath.substring( i + 1);
-		if ( j < 0)
-			targetPath = '';
-		else
-			targetPath = targetPath.substring( j + 1);
 	}
-	if ( targetPath.length > 0)
+		else {
+			currntElmnt = currntPath.substring( 0, i);
+	}
+		if ( j < 0) {
+			targetElmnt = targetPath;
+		}
+		else {
+			targetElmnt = targetPath.substring( 0, j);
+		}
+		if ( currntElmnt != targetElmnt) {
+			break;
+		}
+		if ( i < 0) {
+			currntPath = '';
+		}
+		else {
+			currntPath = currntPath.substring( i + 1);
+		}
+		if ( j < 0) {
+			targetPath = '';
+		}
+		else {
+			targetPath = targetPath.substring( j + 1);
+		}
+	}
+	if ( targetPath.length > 0) {
 		targetPath = targetPath + '/';
+	}
 	while ( currntPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		if ( i < 0) {
@@ -202,12 +223,15 @@ function getRelativeUrl(url, anchor) {
 		targetPath = '../' + targetPath;
 	}
 	url = './' + targetPath;
-	if ( anchor.length > 0 && anchor.indexOf('#') == 0)
+	if ( anchor.length > 1 && anchor.indexOf('#') == 0) {
 		url = url.substring(0,url.substring(0,url.length-2).lastIndexOf( '/')+1);
-	if ( anchor.indexOf( '/') == 0)
+	}
+	if ( anchor.indexOf( '/') == 0) {
 		url += anchor.substring( 1);
-	else
+	}
+	else {
 		url += 'index_'+getZMILang()+'.html' + anchor;
+	}
 	return url;
 }
 
@@ -245,9 +269,20 @@ function zmiToggleClick(toggle) {
 						var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
 						var page_absolute_url = $(page).attr("absolute_url");
 						var page_is_page = $(page).attr("is_page");
+						var page_is_pageelement = $(page).attr("is_pageelement");
 						var page_meta_type = $(page).attr("meta_type");
 						var page_titlealt = $(page).attr("titlealt");
 						var page_display_icon = $(page).attr("display_icon");
+						var anchor = "";
+						if ( page_is_pageelement) {
+							var file_filename = $("file>filename",page);
+							if (file_filename.length) {
+								anchor = "/" + file_filename.text();
+							}
+							else {
+								anchor = "#" + id.substring(page_id.indexOf("_")+1);
+							}
+						}
 						var html = '';
 						html += '<ol id="'+page_id+'" class="zmi-page">';
 						html += '<div class="';
@@ -261,7 +296,7 @@ function zmiToggleClick(toggle) {
 						}
 						html += '">';
 						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)"> ';
-						html += '<input type="radio" onclick="selectObject(\''+page_absolute_url+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"> ';
+						html += '<input type="radio" onclick="selectObject(\''+page_absolute_url+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"> ';
 						html += '<a target="_blank" href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)"> ';
 						html += page_display_icon+' ';
 						html += page_titlealt+' ';
@@ -304,7 +339,7 @@ function zmiFollowHref(anchor) {
 		<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
 		<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]">
 			<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
-			<input type="radio" tal:attributes="checked python:['','checked'][int(request.get('elValue') not in ['',None] and childNode==childNodes[-1])]; onchange python:'selectObject(\'%s\',%i,\'%s\')'%(childNode.absolute_url(),int(childNode.isPage()),childNode.getTitlealt(request))">
+			<input type="radio" tal:attributes="checked python:['','checked'][int(request.get('elValue') not in ['',None] and childNode==childNodes[-1])]; onchange python:'selectObject(\'%s\',\'\',%i,\'%s\')'%(childNode.absolute_url(),int(childNode.isPage()),childNode.getTitlealt(request))">
 			<a target="_blank" tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
 				<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 				<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
@@ -312,7 +347,7 @@ function zmiFollowHref(anchor) {
 			<tal:block tal:condition="python:childNode==childNodes[-1]" tal:repeat="subChildNode python:childNode.getChildNodes(request,here.PAGES)">
 				<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(subChildNode.getHome().id,subChildNode.id)"></tal:block>
 				<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
-				<input type="radio" tal:attributes="onchange python:'selectObject(\'%s\',%i,\'%s\')'%(subChildNode.absolute_url(),int(subChildNode.isPage()),subChildNode.getTitlealt(request))">
+				<input type="radio" tal:attributes="onchange python:'selectObject(\'%s\',\'\',%i,\'%s\')'%(subChildNode.absolute_url(),int(subChildNode.isPage()),subChildNode.getTitlealt(request))">
 				<a target="_blank" tal:attributes="href python:'%s/manage_main?lang=%s'%(subChildNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
 					<tal:block tal:content="structure python:subChildNode.display_icon(request)">the icon</tal:block>
 					<span tal:content="python:subChildNode.getTitlealt(request)">the titlealt</span>

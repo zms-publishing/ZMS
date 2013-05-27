@@ -10,6 +10,9 @@
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/font-awesome.min.css" />
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css" />
 	<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.8.16.custom.min.css" />
+	<tal:block tal:repeat="href python:here.getConfProperty('etc.manage_page_style.css','').split(',')">
+		<link tal:condition="href" rel="stylesheet" type="text/css" tal:attributes="href href" />
+	</tal:block>
 	<!--<link rel="stylesheet" type="text/css" href="/++resource++zms_/jquery/ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" />-->
 	<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty(key)"></script>

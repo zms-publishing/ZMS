@@ -3,16 +3,16 @@
 ><dtml-else
 ><dtml-in "getMetaobjIds(sort=0)"
 ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
-><dtml-in "filter(lambda x: x['type']=='method' and x['id']=='standard_html_footer', metaObj['attrs'])" mapping
-><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
+><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='standard_html_footer', metaObj['attrs'])" mapping
+><dtml-var "_.dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
 ></dtml-in
 ></dtml-let
 ></dtml-in
 ><dtml-var standard_html_footer
 ><dtml-in "getMetaobjIds(sort=0)"
 ><dtml-let metaObjId=sequence-item metaObj="getMetaobj(metaObjId)"
-><dtml-in "filter(lambda x: x['type']=='method' and x['id']=='after_standard_html_footer', metaObj['attrs'])" mapping
-><dtml-var "dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
+><dtml-in "_.filter(lambda x: x['type']=='method' and x['id']=='after_standard_html_footer', metaObj['attrs'])" mapping
+><dtml-var "_.dt_html(getMetaobjAttr(metaObjId,id).get('custom',''),REQUEST)"
 ></dtml-in
 ></dtml-let
 ></dtml-in

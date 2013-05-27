@@ -692,7 +692,8 @@ class ZMSMetaobjManager:
           return {}
         raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(id),str(attr_id)))
       for attr in attrs:
-        if attr_id == attr['type']:
+        valid_datatype = attr['type'] in self.valid_datatypes
+        if attr_id == attr['type'] and not valid_datatype:
           meta_attrs = self.getMetadictAttrs()
           if attr['type'] in meta_attrs:
             attr_type = attr['type']
@@ -706,7 +707,7 @@ class ZMSMetaobjManager:
           attr['mandatory'] = attr.get('mandatory',0)
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
-          attr['meta_type'] = ['','?'][int(attr['type']==attr['id'])]
+          attr['meta_type'] = ['','?'][int(attr['type']==attr['id'] and not valid_datatype)]
           if '*' in syncTypes or attr['type'] in syncTypes: syncType( self, id, attr)
           return attr
       return None

@@ -195,10 +195,15 @@ table.table.zmi-sortable img.grippy {
 tr.zmi-selected td, 
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
-ul.zmi-container > li.zmi-item.zmi-selected > div.center a{
+ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 	background-color:#08c!important;
 	color:#fff!important;
 }
+
+#manage_addProduct .zmiRenderShort {
+	padding: 0.1em 0.5em;
+}
+
 .zmi-container > .zmi-item > .center {
 	float:left;
 	width:600px!important;
@@ -502,12 +507,16 @@ li.dropdown-submenu ul.dropdown-menu li a img {
 margin-right:0.5em
 }
 
-div.zmi-action > ul.dropdown-menu  {
+div.zmi-action > ul.dropdown-menu {
 margin-top:-1px;
 border-top-left-radius: 0;
 }
+div.zmi-action > ul.dropdown-menu .icon-sort-up,
+div.zmi-action > ul.dropdown-menu .icon-sort-down {
+	margin: 0px -2px 0px 2px;
+}
 div.zmi-action > ul.dropdown-menu li a {
-padding-left:10px;
+padding-left:13px;
 }
 div.right .zmi-ids input[type="checkbox"] {
 margin-left:8px !important;
@@ -679,4 +688,16 @@ div.right .btn .caret {
 	.zmi-image,.zmi-file {
 		min-width:95%;
 	}
+
+}
+
+@media (min-width: 700px) {
+
+	div.zmi-action .dropdown-submenu>.dropdown-menu {
+		left: -160px;
+	}
+	div.zmi-action .dropdown-submenu>a:after {
+		display: none;
+	}
+
 }

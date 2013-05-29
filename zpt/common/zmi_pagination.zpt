@@ -2,7 +2,7 @@
 		size options/size;
 		pageSize options/pageSize;
 		pageIndex options/pageIndex;
-		url python:here.url_inherit_params(request['URL'],request,exclude=['pageIndex'],sep='&')">
+		url python:here.url_inherit_params(options.get('url',request['URL']),request,exclude=['pageIndex'],sep='&')">
 
 <div class="pagination pagination-centered" tal:condition="python:size>pageSize">
 	<ul>

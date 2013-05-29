@@ -28,7 +28,7 @@ function hidePreview() {
 function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
-			var theme = getZMIConfProperty('zmi.theme');
+			var theme = getZMIConfProperty('zmi.theme','dtml');
 			var titlealt = "";
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = $(this).attr("index_html");

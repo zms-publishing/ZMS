@@ -7,6 +7,9 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
+option.deprecated {
+	color:#CCC;
+}
 .zmi-element-disabled {
 	background:#EEE!important;
 }
@@ -99,7 +102,9 @@ function zmiPopulateTypeSelect(sender) {
 		}
 		sender.options.length = 0;
 		$("select#populate_type option").each(function() {
-				addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
+					addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				}
 			});
 	}
 }
@@ -158,12 +163,12 @@ $(function() {
 	<select id="populate_type" class="ui-helper-hidden">
 		<option id="type_primitive" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')"></option>
 		<tal:block tal:repeat="type python:here.valid_datatypes">
-			<option tal:attributes="value type" tal:content="type">type</option>
+			<option tal:attributes="value type; class python:' '.join([['','deprecated'][int(type in here.deprecated_types)]])" tal:content="type">type</option>
 		</tal:block>
 		<tal:block tal:condition="metaObjRecordSet">
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_FK')"></option>
 			<tal:block tal:repeat="metaObj python:filter(lambda x: x['type']=='ZMSRecordSet' and x['package']==metaObj['package'],metaObjs)">
-				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
+				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
 			</tal:block>
 		</tal:block>
 		<tal:block tal:condition="not:metaObjRecordSet">
@@ -180,7 +185,7 @@ $(function() {
 		</tal:block>
 		<option id="type_zope" value="" tal:content="python:'--- %s ---'%'Zope'"></option>
 		<tal:block tal:repeat="type python:here.valid_zopetypes">
-			<option tal:attributes="value type" tal:content="type">type</option>
+			<option tal:attributes="value type; class python:' '.join([['','deprecated'][int(type in here.deprecated_types)]])" tal:content="type">type</option>
 		</tal:block>
 	</select>
 
@@ -233,7 +238,6 @@ $(function() {
 	<table class="table table-striped table-bordered zmi-sortable">
 		<colgroup>
 			<col width="6em"/>
-			<col width="1em"/>
 			<col/>
 			<col/>
 			<col/>
@@ -244,7 +248,6 @@ $(function() {
 		<thead>
 			<tr>
 				<th><img src="/misc_/zms/spacer.gif" style="width:6em;height:1em;"/></th>
-				<th><img src="/misc_/zms/spacer.gif" style="width:1em;height:1em;"/></th>
 				<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
@@ -262,13 +265,11 @@ $(function() {
 					<td>
 						<img class="grippy" src="/misc_/zms/spacer.gif" />
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
-						<select class="zmi-sort">
-							<option tal:repeat="i python:range(0,len(objAttrIds))" tal:attributes="selected python:['','selected'][int(i==objAttrIds.index(objAttrId))]" tal:content="python:i+1">i+1</option>
-						</select>
-					</td>
-					<td>
-						<div class="btn-group">
-							<span class="btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
+						<div class="input-append">
+							<select class="zmi-sort">
+								<option tal:repeat="i python:range(0,len(objAttrIds))" tal:attributes="selected python:['','selected'][int(i==objAttrIds.index(objAttrId))]" tal:content="python:i+1">i+1</option>
+							</select>
+							<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 						</div>
 					</td>
 					<tal:block tal:condition="python:objAttr['type'] in ['interface']">
@@ -350,7 +351,6 @@ $(function() {
 				</tal:block>
 			</tr>
 			<tr>
-				<td></td>
 				<td><i class="icon-plus"></i></td>
 				<td><input type="text" name="attr_id"/></td>
 				<td><input type="text" name="attr_name"/></td>

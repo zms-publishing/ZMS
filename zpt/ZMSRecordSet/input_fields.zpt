@@ -13,15 +13,11 @@
 
 <tal:block tal:define="global
 			records python:here.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:[]">
-
-<tal:block tal:repeat="metaObjAttr python:metaObj['attrs'][1:]">
-	<tal:block tal:condition="python:metaObjAttr['id'] not in ['sort_id']
-			and not metaObjAttr['id'].startswith('_')
-			and metaObjAttr['type'] in here.metaobj_manager.valid_types+metaObjIds">
-		<tal:block tal:define="dummy0 python:metaObjAttrs.append(metaObjAttr)"></tal:block>
-	</tal:block>
-</tal:block>
+			metaObjAttrs python:filter(lambda x:
+					x['id'] not in ['sort_id']
+					and not x['id'].startswith('_')
+					and x['type'] in here.metaobj_manager.valid_types+metaObjIds
+					,metaObj['attrs'][1:])">
 
 <form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
@@ -29,10 +25,20 @@
 	<input type="hidden" id="action" name="action" tal:attributes="value action">
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
-	<div class="accordion-group">
+	<div class="accordion-group perc100">
+
 		<div class="accordion-heading">
-			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
+				<i></i>
+				<i class="icon-pencil"></i>
+				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the label</tal:block>
+			</a>
+			<div class="clearfix"></div>
 		</div><!-- accordion-heading -->
+
+		<div class="accordion-body collapse in" tal:attributes="id python:'input_fields'">
+			<div class="accordion-inner"> 
+
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 			<tal:block tal:define="global 
 					elName python:metaObjAttr['id'];
@@ -42,9 +48,11 @@
 					<span tal:content="elLabel">the label</span>
 				</label>
 				<div class="controls">
+
 					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName),REQUEST=request)">
 						the control
 					</tal:block>
+
 					<tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds" tal:repeat="fkContainer python:here.getParentNode().getChildNodes(request,metaObjAttr['type'])">
 						<tal:block tal:define="global
 								options python:[];
@@ -58,25 +66,68 @@
 								</tal:block>
 							</tal:block>
 							<tal:block tal:define="global dummy0 python:options.sort()"></tal:block>
-							<select class="input-xxlarge" tal:attributes="name python:metaObjAttr['id']">
-								<option tal:condition="python:not metaObjAttr.get('mandatory',0)" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%metaObjAttr['name']"></option>
-								<tal:block tal:repeat="option options">
-									<option tal:attributes="value python:option[1]; selected python:['','selected'][int(str(option[1])==str(row.get(metaObjAttr['id'])))]" tal:content="python:option[0]"></option>
-								</tal:block>
-							</select>
+							<div class="input-append">
+								<select class="input-xlarge" tal:attributes="name python:metaObjAttr['id']">
+									<option tal:condition="python:not metaObjAttr.get('mandatory',0)" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%metaObjAttr['name']"></option>
+									<tal:block tal:repeat="option options">
+										<option tal:attributes="value python:option[1]; selected python:['','selected'][int(str(option[1])==str(row.get(metaObjAttr['id'])))]" tal:content="python:option[0]"></option>
+									</tal:block>
+								</select>
+								<a class="add-on btn zmi-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val()'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'])"><i class="icon-eject"></i></a>
+							</div><!-- .input-append -->
 						</tal:block>
 					</tal:block>
+
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			</tal:block>
 		</tal:block>
-	</div><!-- .accordion-group -->
+
 	<div class="control-group">
 		<div class="controls">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
+
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+
+		<tal:block tal:repeat="identifier python:map(lambda x: x['id'],filter(lambda x:x['type']=='identifier',metaObjAttrs))">
+			<tal:block tal:repeat="metaObj python:filter(lambda x:x['type']=='ZMSRecordSet',map(lambda x:here.getMetaobj(x),here.getMetaobjIds()))">
+				<tal:block tal:repeat="metaObjAttr python:filter(lambda x:x['type']==meta_id,metaObj['attrs'])">
+					<tal:block tal:repeat="node python:filter(lambda x:x.meta_id==metaObj['id'],here.getParentNode().objectValues(['ZMSCustom']))" tal:define="global
+								elName python:metaObjAttr['id'];
+								elLabel python:metaObj['name']">
+						<div class="accordion-heading">
+							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
+								<i></i>
+								<i class="icon-table"></i>
+								<tal:block tal:content="elLabel">the label</tal:block>
+							</a>
+							<div class="clearfix"></div>
+						</div><!-- accordion-heading -->
+						<div class="accordion-body collapse in" tal:attributes="id python:'%s_grid'%metaObjAttr['id']">
+							<div class="accordion-inner" tal:define="global 
+									records python:node.attr(metaObj['attrs'][0]['id']);
+									filtered_records python:filter(lambda x:x[metaObjAttr['id']]==row[identifier],records);
+									metaObjAttrs python:filter(lambda x:
+											x['id'] not in ['sort_id']
+											and x['custom']
+											and x['type'] in here.metaobj_manager.valid_types
+											and not x['type'] in ['password']
+											,metaObj['attrs'][1:])">
+								<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=here.getMetaobjAttrIds(metaObj['type']),metaObjAttrs=metaObjAttrs,filtered_records=filtered_records,records=records,url='%s/manage_main'%node.absolute_url())">
+									metaobj_recordset_main
+								</tal:block>
+							</div><!-- .accordion-inner -->
+						</div><!-- .accordion-body -->
+					</tal:block>
+				</tal:block>
+			</tal:block>
+		</tal:block>
+
+	</div><!-- .accordion-group.perc100 -->
 </form>
 
 </tal:block>

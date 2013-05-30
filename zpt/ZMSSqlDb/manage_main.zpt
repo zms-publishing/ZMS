@@ -140,14 +140,14 @@
 							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 						</button>
 					</div>
+					<div class="form-label" style="height:0.2em;"><a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code" class="zmi">&middot;&middot;&middot;</a></div>
+					<div id="manage_main_div_sql" class="well" style="display:none;background-color:#f5f5e5;padding:10px;margin: 12px 0;font-family:'Courier New', Courier;" tal:content="structure python:cntSlctStmnt.replace('\n','<br>')">cntSlctStmnt</div>
 				</div>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
 </form>
 
-<div class="form-label"><a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code" class="zmi">&middot;&middot;&middot;</a></div>
-<div id="manage_main_div_sql" class="well" style="display:none" tal:content="structure python:cntSlctStmnt.replace('\n','<br>')">cntSlctStmnt</div>
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res)">
 	metaobj_recordset_main_grid

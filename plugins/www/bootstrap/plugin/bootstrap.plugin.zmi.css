@@ -496,6 +496,33 @@ body.metas table.table.zmi-sortable input {
 	margin-bottom:0px;
 }
 
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * +- [ZMI] ZMSSQLDB
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+.ZMSSqlDb .pagination {
+	white-space:nowrap;
+}
+.ZMSSqlDb .table tr td:first-child {
+	width:84px;
+}
+.ZMSSqlDb .table tr th,
+.ZMSSqlDb .table tr td {
+	padding:6px;
+	font-size:11px;
+	overflow:hidden;
+}
+.ZMSSqlDb .table tr th:first-child .checkbox,
+.ZMSSqlDb .table tr td:first-child .checkbox  {
+	padding:4px 4px 4px 8px;
+	font-size:11px;
+}
+.ZMSSqlDb .table tr th:first-child .split-right,
+.ZMSSqlDb .table tr td:first-child .split-right {
+	height:auto;
+}
+
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Image
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

@@ -14,7 +14,7 @@
 			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
 			dummy0 python:request.set('qstart',request.get('qstart',request.SESSION.get('qstart_%s'%id,0)));
 			dummy0 python:request.set('qbatch',request.get('qbatch',request.SESSION.get('qbatch_%s'%id,3)));
-			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,10)));
+			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,20)));
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
@@ -128,7 +128,13 @@
 							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].upper()==request.get('filterattr%i'%filterIndex,'').upper())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
-					<input class="input-xxlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')">
+					<!-- CAVE: UNFINISHED / FILTER STILL NOT WORKING -->
+					<select tal:attributes="name python:'filterop%i'%filterIndex">
+						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
+							<option tal:attributes="value python:op; selected python:['','selected'][op.upper()==request.get('filterop%i'%filterIndex,'').upper()]" tal:content="python:op">op</option>
+						</tal:block>
+					</select>
+					<input class="input-xlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
 				</div><!-- .control-group -->
 				<div class="control-group">
 					<div class="controls">

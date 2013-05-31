@@ -630,17 +630,17 @@ class ZMSSqlDb(ZMSObject):
           entity['not_found'] = 1
           s.append((entity['label'],entity))
       
-      #-- Defaults
-      for entity in entities:
-        for column in entity['columns']:
-          column['id'] = column['id'].lower()
-          column['multilang'] = False
-          column['datatype'] = column['type']
-          column['datatype_key'] = _globals.datatype_key(column['datatype'])
-      
       #-- Sort entities
       s.sort()
       entities = map(lambda x: x[1], s)
+      
+      #-- Defaults
+      for entity in entities:
+        for column in entity['columns']:
+          #column['id'] = column['id'].lower()
+          column['multilang'] = False
+          column['datatype'] = column.get('type','?')
+          column['datatype_key'] = _globals.datatype_key(column['datatype'])
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, entities, REQUEST)

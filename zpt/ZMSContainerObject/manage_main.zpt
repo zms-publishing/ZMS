@@ -35,7 +35,7 @@
 											<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 										</button>
 										<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
-											<span class="caret"></span>
+											<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 										</button>
 									</div><!-- .btn-group -->
 									<tal:block tal:content="structure python:here.manage_main_change(childNode,request)">
@@ -61,7 +61,7 @@
 													<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 												</button>
 												<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
-													<span class="caret"></span>
+													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 												</button>
 											</div><!-- .btn-group -->
 											<span class="zmi-ids">

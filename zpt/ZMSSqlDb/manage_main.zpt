@@ -50,13 +50,13 @@
 
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
 	<tal:block tal:define="global 
-				primary_key python:here.getEntityPK(sessqentity['id']);
+				primary_key python:here.getEntityPK(sessqentity['id']).lower();
 				row python:res[int(request['qindex'])];
 				rowid python:row[primary_key];
 				message python:[];
 				values python:{}">
 		<tal:block tal:repeat="column python:sessqentity['columns']">
-			<tal:block tal:define="global python:here.operator_setitem(values,column['id'],request.get(column['id'],None))"></tal:block>
+			<tal:block tal:define="global python:here.operator_setitem(values,column['id'],request.get(column['id'].lower(),None))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
 			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=sessqentity['id'],values=values)"
@@ -109,7 +109,7 @@
 				<i></i>
 			</a>
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_TABLE')">Table</tal:block>
-			<select name="qentity">
+			<select name="qentity" onchange="this.form.submit()">
 				<tal:block tal:repeat="table tables">
 					<option tal:attributes="value table/id; selected python:['','selected'][int(table['id'].upper()==sessqentity['id'].upper())]" tal:content="table/label">table</option>
 				</tal:block>
@@ -125,13 +125,13 @@
 				<div class="control-group" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<select tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column sessqentity/columns">
-							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].upper()==request.get('filterattr%i'%filterIndex,'').upper())]" tal:content="column/label">column</option>
+							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
 					<!-- CAVE: UNFINISHED / FILTER STILL NOT WORKING -->
 					<select tal:attributes="name python:'filterop%i'%filterIndex">
 						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-							<option tal:attributes="value python:op; selected python:['','selected'][op.upper()==request.get('filterop%i'%filterIndex,'').upper()]" tal:content="python:op">op</option>
+							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex,'').lower()]" tal:content="python:op">op</option>
 						</tal:block>
 					</select>
 					<input class="input-xlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />

@@ -1,5 +1,5 @@
 <dtml-comment>#####  Object State  ##############################</dtml-comment>
-<span class="form-small"><dtml-var version_object_state></span>
+<span class="form-small version_object_state"><dtml-var version_object_state></span>
 
 <dtml-comment>#####  Author & Date  #############################</dtml-comment>
 <dtml-let info="[]" change_uid="attr('change_uid')" change_dt="attr('change_dt')">

@@ -17,11 +17,12 @@
 			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
 		</div><!-- accordion-heading -->
 		<tal:block tal:repeat="metaObjAttr entity/columns">
-			<tal:block tal:define="global 
+			<tal:block tal:define="global
+					dummy0 python:here.operator_setitem(metaObjAttr,'id',metaObjAttr['id'].lower());
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label']">
 			<div class="control-group">
-				<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+				<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
 					<span tal:content="elLabel">the label</span>
 				</label>
 				<div class="controls" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=row.get(elName),REQUEST=request)">

@@ -31,7 +31,7 @@
 </dtml-comment>
 <dtml-elif "objAttr['type']=='interface'">
 <tr id="tr_<dtml-var key>" valign="middle">
- <td colspan="2" class="form-text"><dtml-var "dt_html(objAttr['name'],REQUEST)"></td>
+ <td colspan="2" class="form-text"><dtml-var "attr(objAttr['id'])"></td>
 </tr>
 
 <dtml-comment>

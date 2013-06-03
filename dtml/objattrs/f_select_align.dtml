@@ -22,14 +22,14 @@ function alignBtnClick( sender, align) {
      ><a href="javascript:alignBtnClick(this,'<dtml-var sequence-item>')" class="button"
       ><img name="<dtml-var sequence-item>AlignBtn" border="0" align="absmiddle"
        class="button<dtml-var "_.int(_.has_key('textalign') and _['textalign'].lower()==_['sequence-item'].lower())">"
-       src="<dtml-var MISC_ZMS>icon_align_<dtml-var sequence-item>.gif"
-       title="<dtml-var "getZMILangStr('ALIGN%i'%(_['sequence-index']+1))">"
+       src="/misc_/zms/icon_align_<dtml-var sequence-item>.gif"
+       title="<dtml-var "ob.getZMILangStr('ALIGN%i'%(_['sequence-index']+1))">"
      ></a
     ></td>
    </dtml-in>
   <dtml-else>
-   <td valign="middle"><img border="0" class="button1" src="<dtml-var MISC_ZMS>icon_align_<dtml-var "textalign.lower()">.gif"></td>
+   <td valign="middle"><img border="0" class="button1" src="/misc_/zms/icon_align_<dtml-var "textalign.lower()">.gif"></td>
   </dtml-if>
   <td> &nbsp; </td>
-  <td><img src="<dtml-var spacer_gif>" class="zmiVSep" border="0" align="absmiddle"></td>
+  <td><img src="/misc_/zms/spacer.gif" class="zmiVSep" border="0" align="absmiddle"></td>
  </dtml-let>

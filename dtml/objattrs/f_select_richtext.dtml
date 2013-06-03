@@ -21,7 +21,7 @@
 <dtml-call "REQUEST.set('richedit_fmt',None)"
 ><dtml-call "REQUEST.set('htmledit_fmt',None)"
 ><dtml-if "REQUEST.get('data').find('<dtml-')<0"
-><dtml-in "getTextFormats(REQUEST)"
+><dtml-in "ob.getTextFormats(REQUEST)"
  ><dtml-let fmt=sequence-item
   ><dtml-if "fmt.getRichedit()"
    ><dtml-unless "REQUEST.get('richedit_fmt')"
@@ -55,11 +55,11 @@
  <dtml-comment> ***** Paragraph-Format ***** </dtml-comment>
  <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id','format','=='))>0"><td class="form-small" nowrap="nowrap"><dtml-var f_selectTextformat></td></dtml-if></dtml-if>
  <dtml-comment> ***** Character-Format (Bold, Italic, Underline, etc.) ***** </dtml-comment>
- <td><dtml-var "f_selectCharformat(_,_,fmName=fmName,elName=elName)"></td>
+ <td><dtml-var "ob.f_selectCharformat(_,_,ob=ob,fmName=fmName,elName=elName)"></td>
  <dtml-comment> ***** Align ***** </dtml-comment>
- <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id',key+'align','=='))>0"><dtml-var f_selectAlign></dtml-if></dtml-if>
+ <dtml-if metaObj><dtml-if "len(filter_list(metaObj['attrs'],'id',key+'align','=='))>0"><dtml-var "ob.f_selectAlign(_,_,ob=ob,fmName=fmName,elName=elName)"></dtml-if></dtml-if>
  <dtml-comment> ***** Displaytype ***** </dtml-comment>
- <dtml-if b_f_selectDisplaytype><dtml-var f_selectDisplaytype></dtml-if>
+ <dtml-if b_f_selectDisplaytype><dtml-var "ob.f_selectDisplaytype(_,_,ob=ob,fmName=fmName,elName=elName)"></dtml-if>
 </tr>
 </table>
 </td>
@@ -68,9 +68,9 @@
  <dtml-if "REQUEST.get('richedit_fmt')">
    <div class="zmi-button ui-widget-content ui-corner-all"
       onclick="zmiStandardOnSubmitEventHandler(); zmiRichtextEditorShow('zmiRichtextEditor<dtml-var elName>','zmiStandardEditor<dtml-var elName>','<dtml-var "REQUEST.get('richedit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
-      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_hover.gif');"
-      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_off.gif');"
-    ><img src="<dtml-var MISC_ZMS>wysiwyg_off.gif" title="<dtml-var "REQUEST.get('richedit_fmt').getDisplay()">" border="0" align="absmiddle"
+      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','/misc_/zms/wysiwyg_hover.gif');"
+      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','/misc_/zms/wysiwyg_off.gif');"
+    ><img src="/misc_/zms/wysiwyg_off.gif" title="<dtml-var "REQUEST.get('richedit_fmt').getDisplay()">" border="0" align="absmiddle"
    ></div>
  <dtml-else>
   &nbsp;
@@ -78,7 +78,7 @@
 </td>
 </tr>
 <tr>
- <td colspan="2" align="center"><dtml-var "getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap=wrap,extra=' onselect=\042storeCaret(this)\042 style=\042width:99%;\042')"></td>
+ <td colspan="2" align="center"><dtml-var "ob.getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap=wrap,extra=' onselect=\042storeCaret(this)\042 style=\042width:99%;\042')"></td>
 </tr>
 </table>
 </div>
@@ -160,9 +160,9 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
  ><td align="right"
   ><div class="zmi-button ui-widget-content ui-corner-all"
       onclick="zmiRichtextOnSubmitEventHandler(); zmiRichtextEditorShow('zmiStandardEditor<dtml-var elName>','zmiRichtextEditor<dtml-var elName>','<dtml-var "REQUEST.get('htmledit_fmt').getId()">'<dtml-var "REQUEST.get('richeditshow_callback','')">);"
-      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_off.gif');"
-      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','<dtml-var MISC_ZMS>wysiwyg_hover.gif');"
-    ><img src="<dtml-var MISC_ZMS>wysiwyg_hover.gif" title="<dtml-var "REQUEST.get('htmledit_fmt').getDisplay()">" border="0" align="absmiddle"
+      onmouseover="$(this).addClass('ui-state-active');$('img',this).attr('src','/misc_/zms/wysiwyg_off.gif');"
+      onmouseout="$(this).removeClass('ui-state-active');$('img',this).attr('src','/misc_/zms/wysiwyg_hover.gif');"
+    ><img src="/misc_/zms/wysiwyg_hover.gif" title="<dtml-var "REQUEST.get('htmledit_fmt').getDisplay()">" border="0" align="absmiddle"
   ></div
  ></td
 ></tr
@@ -170,7 +170,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
 ></dtml-if>
 <dtml-comment> ***** RichText-Editor (custom) ***** </dtml-comment>
 <dtml-try>
-	<dtml-var "getPlugin('rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml',REQUEST)">
+	<dtml-var "ob.getPlugin('rte/'+REQUEST.get('richedit_fmt').getRichedit()+'/manage_form.dtml',REQUEST)">
 <dtml-except>
 	<!-- ERROR: 
 		<dtml-var error_type>: <dtml-var error_value>
@@ -186,8 +186,8 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
 ################################################################################
 </dtml-comment>
 <dtml-unless ZMS_INSERT>
- <dtml-if "'resources' in getMetaobjAttrIds(meta_id)">
-  <span class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="<dtml-var "getZMILangStr('BTN_UPLOAD')">" border="0" align="absmiddle"/> <dtml-var "getZMILangStr('CAPTION_INSERT')%('%s/%s'%(getZMILangStr('ATTR_IMAGE'),getZMILangStr('ATTR_FILE')))"></span>
+ <dtml-if "'resources' in ob.getMetaobjAttrIds(ob.meta_id)">
+  <span class="form-label"><img src="/misc_/zms/upload.gif" title="<dtml-var "ob.getZMILangStr('BTN_UPLOAD')">" border="0" align="absmiddle"/> <dtml-var "ob.getZMILangStr('CAPTION_INSERT')%('%s/%s'%(ob.getZMILangStr('ATTR_IMAGE'),ob.getZMILangStr('ATTR_FILE')))"></span>
   <span class="form-element"><input class="form-element" type="file" name="resource_<dtml-var elName>"/></span>
   <hr size="1"/>
  </dtml-if>

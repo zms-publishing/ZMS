@@ -726,7 +726,7 @@
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      </dtml-comment>
      <dtml-elif "grid_col.get('type')=='richtext' or grid_col.get('richtext')">
-      <dtml-var "f_selectRichtext(_,_,fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
+      <dtml-var "f_selectRichtext(_,_,ob=this(),fmName='form0', elName=elName, cols=50, rows=15, value=row.get(id,''), key=id, metaObj=None, enabled=1, lang=lang, lang_str=getLangStr(label,lang), REQUEST=REQUEST, css=css, wrap='virtual')">
      <dtml-comment>
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      +- URL

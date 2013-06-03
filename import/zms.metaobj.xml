@@ -3144,273 +3144,291 @@ zmscontext.attr('text',text)
 ##### Table(Type,Cols,Rows): INSERT
 ################################################################################
 -->
-<dtml-if ZMS_INSERT>
+<tal:block tal:condition="python:request.get('ZMS_INSERT')">
 <input type="hidden" name="redirect_self:int" value="1"/>
 
-<script language="JavaScript">
+<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
+<style>
+div.ZMSTable table.ZMSTable tr th,
+div.ZMSTable table.ZMSTable tr td {
+	border:1px solid black;
+	width:5em!important;
+	height:.2em!important;
+	overflow:hidden!important;
+}
+</style>
+<script>
+
+var fmName = $('#fmName').text();
+var textFormatDefault = $("#textFormatDefault").text();
 
 function onZMSTableFormSubmit() {
 	var xml = '';
 	var type = parseInt($("input[name=\x22type:int\x22]:checked").val());
-	xml += '<list>\n';
+	xml += '<'+'list>\n';
 	for ( var y = 0; y < parseInt($('#rows').val()); y++) {
-		xml += "<item type=\"list\"><list>\n";
+		xml += '<'+'item type="list"><list>\n';
 		if ( y==0 && type == 2) {
-			xml += '<item type="dictionary"><dictionary>\n';
-			xml += '<item key="colspan" type="int">'+parseInt($('#cols').val())+'</item>\n';
-			xml += '<item key="content"></item>\n';
-			xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
-			xml += '<item key="tag">th</item>\n';
-			xml += '</dictionary></item>\n';
+			xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+			xml += '<'+'item key="colspan" type="int">'+parseInt($('#cols').val())+'<'+'/item>\n';
+			xml += '<'+'item key="content"><'+'/item>\n';
+			xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
+			xml += '<'+'item key="tag">th<'+'/item>\n';
+			xml += '<'+'/dictionary><'+'/item>\n';
 		}
 		else {
-      for ( var x = 0; x < parseInt($('#cols').val()); x++) {
-        xml += '<item type=\"dictionary\"><dictionary>\n';
-        if ( y==0 && x == 0 && type == 4) {
-          xml += '<item key="colspan" type="int">1</item>\n';
-        }
-        else {
-          var tag = "td";
-          if ( (type == 1 && y == 0) ||
-               (type == 3 && x == 0) ||
-               (type == 4 && (x == 0 || y == 0))) {
-            tag = "th";
-          }
-          xml += '<item key="colspan" type="int">1</item>\n';
-          xml += '<item key="content"></item>\n';
-          xml += '<item key="format"><dtml-var "getTextFormatDefault()"></item>\n';
-          xml += '<item key="tag">'+tag+'</item>\n';
-        }
-        xml += '</dictionary></item>\n';
-      }
-    }
-    xml += "</list></item>\n";
-  }
-  xml += '</list>\n';
-  $("#table_table").val( xml);
-  return onFormSubmit('<dtml-var fmName>');
+			for ( var x = 0; x < parseInt($('#cols').val()); x++) {
+				xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+				if ( y==0 && x == 0 && type == 4) {
+					xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
+				}
+				else {
+					var tag = "td";
+					if ( (type == 1 && y == 0) ||
+						(type == 3 && x == 0) ||
+						(type == 4 && (x == 0 || y == 0))) {
+						tag = "th";
+					}
+					xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
+					xml += '<'+'item key="content"><'+'/item>\n';
+					xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
+					xml += '<'+'item key="tag">'+tag+'<'+'/item>\n';
+				}
+				xml += '<'+'/dictionary><'+'/item>\n';
+			}
+		}
+		xml += '<'+'/list><'+'/item>\n';
+	}
+	xml += '<'+'/list>\n';
+	$("#table_table").val( xml);
+	return onFormSubmit(fmName);
 }
 
-$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
 $()
 
 </script>
 
-<dtml-let
-  table_th="'<th style=\042border: solid 1px #999999;\042><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></th>'"
-  table_td="'<td style=\042border: solid 1px #999999;\042><img src='+QUOT+spacer_gif+QUOT+' width=30 height=4 border=0/></td>'"
->
-<img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
+<img src="/misc_/zms/spacer.gif" alt="" border="0" height="2"/>
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
 <colgroup>
- <col width="20%" />
- <col width="80%" />
+	<col width="20%" />
+	<col width="80%" />
 </colgroup>
 <tr valign="top">
- <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_COLS')"> &times; <dtml-var "getZMILangStr('ATTR_ROWS')"><dtml-var FORM_LABEL_MANDATORY></div></td>
- <td><div class="form-label"><dtml-var "getTextInput(fmName=fmName,elName='cols',value='3',size=2)"> &times; <dtml-var "getTextInput(fmName=fmName,elName='rows',value='3',size=2)"></div></td>
+	<td class="form-label" tal:content="structure python:'%s &times; %s%s'%(here.getZMILangStr('ATTR_COLS'),here.getZMILangStr('ATTR_ROWS'),here.FORM_LABEL_MANDATORY)">Cols x Rows*</td>
+	<td class="form-element"><tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)"></tal:block> &times; <tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='rows',value='3',size=2)"></tal:block></td>
 </tr>
 <tr valign="top">
- <td rowspan="5"><div class="form-label"><dtml-var "getZMILangStr('ATTR_TYPE')"></div></td>
- <td>
-  <table cellspacing="2" cellpadding="0" border="0">
-  <tr>
-   <td></td>
-   <td align="center" class="form-small">3 <dtml-var "getZMILangStr('ATTR_COLS')"></td>
-  </tr>
-  <tr>
-   <td></td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
-  </tr>
-  <tr>
-   <td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="type:int" value="1" checked="checked"></td>
-   <td>
-    <div class="ZMSTable">
-    <table class="ZMSTable">
-    <tr><dtml-var table_th><dtml-var table_th><dtml-var table_th></tr>
-    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
-    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
-    </table>
-    </div>
-   </td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="4" border="0"></td>
-   <td valign="middle" class="form-small">3 <dtml-var "getZMILangStr('ATTR_ROWS')"></td>
-  </tr>
-  </table>
- </td>
+	<td rowspan="5" class="form-label" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</td>
+	<td>
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td></td>
+			<td align="center" class="form-small" tal:content="python:'%i %s'%(3,here.getZMILangStr('ATTR_COLS'))">n cols</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="zmiNeutralColorStrong0"><img src="/misc_/zms/spacer.gif" width="1" height="1" border="0" /></td>
+		</tr>
+		<tr>
+			<td valign="middle" rowspan="3"><input class="form-radio" type="radio" name="type:int" value="1" checked="checked"></td>
+			<td>
+				<div class="ZMSTable">
+					<table class="ZMSTable">
+					<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					</table>
+				</div>
+			</td>
+			<td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="4" border="0"></td>
+			<td valign="middle" class="form-small" tal:content="python:'%i %s'%(3,here.getZMILangStr('ATTR_ROWS'))">n rows</td>
+		</tr>
+		</table>
+	</td>
 </tr>
 <tr>
- <td>
-  <table cellspacing="2" cellpadding="0" border="0">
-  <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="2"></td>
-   <td>
-    <div class="ZMSTable">
-    <table class="ZMSTable">
-    <tr><th colspan="3" style="border: solid 1px #999999;"><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></th></tr>
-    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
-    <tr><dtml-var table_td><dtml-var table_td><dtml-var table_td></tr>
-    </table>
-    </div>
-   </td>
-  </tr>
-  </table>
- </td>
+	<td>
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td valign="middle"><input class="form-radio" type="radio" name="type:int" value="2"></td>
+			<td>
+				<div class="ZMSTable">
+					<table class="ZMSTable">
+					<tr><th colspan="3">&nbsp;</th></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
 </tr>
 <tr>
- <td>
-  <table cellspacing="2" cellpadding="0" border="0">
-  <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="3"></td>
-   <td>
-    <div class="ZMSTable">
-    <table class="ZMSTable">
-    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
-    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
-    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
-    </table>
-    </div>
-   </td>
-  </tr>
-  </table>
- </td>
+	<td>
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td valign="middle"><input class="form-radio" type="radio" name="type:int" value="3"></td>
+			<td>
+				<div class="ZMSTable">
+					<table class="ZMSTable">
+					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
 </tr>
 <tr>
- <td>
-  <table cellspacing="2" cellpadding="0" border="0">
-  <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="4"></td>
-   <td>
-    <div class="ZMSTable">
-    <table class="ZMSTable">
-    <tr><td><img src="<dtml-var spacer_gif>" width="30" height="4" border="0"></td><dtml-var table_th><dtml-var table_th></tr>
-    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
-    <tr><dtml-var table_th><dtml-var table_td><dtml-var table_td></tr>
-    </table>
-    </div>
-   </td>
-  </tr>
-  </table>
- </td>
+	<td>
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td valign="middle"><input class="form-radio" type="radio" name="type:int" value="4"></td>
+			<td>
+				<div class="ZMSTable">
+					<table class="ZMSTable">
+					<tr><td>&nbsp;</td><th>&nbsp;</th><th>&nbsp;</th></tr>
+					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
 </tr>
 <tr>
- <td>
-  <table cellspacing="2" cellpadding="0" border="0">
-  <tr>
-   <td></td>
-   <td align="center" class="form-small"><dtml-var "getZMILangStr('ATTR_CUSTOM')"></td>
-  </tr>
-  <tr>
-   <td></td>
-   <td class="zmiNeutralColorStrong0"><img src="<dtml-var spacer_gif>" width="1" height="1" border="0" /></td>
-  </tr>
-  <tr>
-   <td valign="middle"><input class="form-radio" type="radio" name="type:int" value="5"></td>
-   <td>
-    <div class="ZMSTable">
-    <table class="ZMSTable">
-    <tr>
-     <dtml-var table_th>
-     <dtml-var table_th>
-     <dtml-var table_th>
-    </tr>
-    <tr>
-     <dtml-var table_td>
-     <dtml-var table_td>
-     <dtml-var table_td>
-    </tr>
-    <tr>
-     <dtml-var table_td>
-     <dtml-var table_td>
-     <dtml-var table_td>
-    </tr>
-    </table>
-    </div>
-   </td></tr>
-  </table>
- </td>
+	<td>
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td></td>
+			<td align="center" class="form-small" tal:content="python:here.getZMILangStr('ATTR_CUSTOM')">custom</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="zmiNeutralColorStrong0"><img src="/misc_/zms/spacer.gif" width="1" height="1" border="0" /></td>
+		</tr>
+		<tr>
+			<td valign="middle"><input class="form-radio" type="radio" name="type:int" value="5"></td>
+			<td>
+				<div class="ZMSTable">
+					<table class="ZMSTable">
+					<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
 </tr>
 </table>
-</dtml-let>
+
+</tal:block>
 
 <!--
 ################################################################################
 ##### Table(Type,Cols,Rows): EDIT
 ################################################################################
 -->
-<dtml-else>
+<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+<tal:block tal:define="global
+		zmscontext options/zmscontext;
+		table_table python:zmscontext.attr('table');
+		table_type python:zmscontext.attr('type');
+		table_colgroup_cols python:zmscontext.attr('cols');
+		table_cols python:len(table_table[-1]);
+		table_rows python:len(table_table);
+		table_widths python:zmscontext.attr('widths');">
 
 <!--
 --------------------------------------------------------------------------------
 --- Table-Cell Editor
 --------------------------------------------------------------------------------
 -->
-<dtml-let custom="[]"
-><dtml-call "custom.append('<td class=\042form-text\042>'+getZMILangStr('ATTR_FORMAT')+'</td>')"
-><dtml-call "custom.append('<td>'+f_selectInput(_,_,fmName=fmName,elName='tag',value='',type='select',lang_str=getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=REQUEST)+'</td>')"
-><dtml-call "custom.append('<td class=\042form-text\042>'+getZMILangStr('ATTR_PARAGRAPH')+'</td>')"
-><dtml-call "custom.append('<td>'+f_selectTextformat(_,_)+'</td>')"
-><div style="display:none;"
-><div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;"
-><dtml-var "f_selectRichtext(_,_,ob=this(),fmName=fmName,elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=lang,lang_str=getZMILangStr('ACTION_EDIT_CELL'),custom_str=''.join(custom),REQUEST=REQUEST,css='form-small',wrap='virtual')"
-><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CHANGE')">" onclick="return table_cell_change();"
-><input class="ui-button ui-state-default ui-corner-all" type="submit" value="<dtml-var "getZMILangStr('BTN_CANCEL')">" onclick="return table_cell_cancel();"
-></div
-></div
-></dtml-let>
+<tal:block tal:define="global custom python:''
+		+'<td class=\042form-text\042>'+here.getZMILangStr('ATTR_FORMAT')+'</td>'
+		+'<td>'+here.f_selectInput(fmName=request.get('fmName'),elName='tag',value='',type='select',lang_str=here.getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=request)+'</td>'
+		+'<td class=\042form-text\042>'+here.getZMILangStr('ATTR_PARAGRAPH')+'</td>'
+		+'<td>'+here.f_selectTextformat(here,REQUEST=request)+'</td>'">
+	<div class="ui-helper-hidden">
+		<div id="div_table_cell_editor" class="zmiNeutralColorMedium0" style="width:699px;">
+			<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,css='form-small',wrap='virtual')"></tal:block>
+			<input class="ui-button ui-state-default ui-corner-all" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_CHANGE')" onclick="return table_cell_change();"/>
+			<input class="ui-button ui-state-default ui-corner-all" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" onclick="return table_cell_cancel();"/>
+		</div>
+	</div>
+</tal:block>
 
 <!--
 --------------------------------------------------------------------------------
 --- Table-Cell Grid
 --------------------------------------------------------------------------------
 -->
-<dtml-let table_table="attr('table')" table_type="attr('type')" table_colgroup_cols="attr('cols')" table_cols="len(table_table[-1])" table_rows="len(table_table)" table_widths="attr('widths')">
 
-<script language="JavaScript">
+<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="ui-helper-hidden" id="fmName" tal:content="request/elName"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
+<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="ui-helper-hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
+<span class="ui-helper-hidden" id="table_type" tal:content="table_type"></span>
+<span class="ui-helper-hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
+<script>
 
-var table_cell_uid = <dtml-var "table_cols*table_rows">;
+var fmName = $('#fmName').text();
+var fmName = $('#elName').text();
+var textFormatDefault = $("#textFormatDefault").text();
+var richedit_fmt = $('#richedit_fmt').text();
+var table_type = parseInt($('#table_type').text());
+var table_cell_uid = $('#table_cell_uid').text();
 var table_cell_id = '';
 var table_cell_bgcolor = null;
 var table_cell_offs = 2;
 
 function onZMSTableFormSubmit() {
 	var xml = '';
-	xml += '<list>\n';
+	xml += '<'+'list>\n';
 	var el_tbody = $($("#table_cell_editor").children()[0]);
 	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
 	for ( var i=0; i < el_trs.length; i++) {
-		xml += "<item type=\"list\"><list>\n";
+		xml += '<'+'item type="list"><'+'list>\n';
 		var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
 		for ( var j=0; j < el_tds.length; j++) {
-			xml += "<item type=\"dictionary\"><dictionary>\n";
+			xml += '<'+'item type="dictionary"><'+'dictionary>\n';
 			var colspan = $(el_tds[j]).prop("colspan");
 			if (typeof colspan=="undefined") {
 				colspan = 1;
 			}
-			xml += '<item key="colspan" type="int">'+colspan+'</item>\n';
+			xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
 			var el_inputs = $("textarea,input",el_tds[j]);
 			for ( var k=0; k < el_inputs.length; k++) {
 				var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-				xml += '<item key="'+key+'"><![CDATA'+'['+$(el_inputs[k]).val()+']'+']></item>\n';
+				xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
 			}
-			xml += '</dictionary></item>\n';
+			xml += '<'+'/dictionary><'+'/item>\n';
 		}
-		xml += '</list></item>\n';
+		xml += '<'+'/list><'+'/item>\n';
 	}
-	xml += '</list>\n';
+	xml += '<'+'/list>\n';
 	$("#table_table").val( xml);
 	xml = '';
-	xml += '<list>\n';
+	xml += '<'+'list>\n';
 	var el_trs = el_tbody.children().filter(":eq(1)");
 	for ( var i=0; i < el_trs.length; i++) {
 		var el_inputs = $("input:text",el_trs[i]);
 		for ( var j = 0; j < el_inputs.length; j++) {
-			xml += '<item type="string">'+$(el_inputs[j]).val()+'</item>\n';
+			xml += '<'+'item type="string">'+$(el_inputs[j]).val()+'<'+'/item>\n';
 		}
 	}
-	xml += '</list>\n';
+	xml += '<'+'/list>\n';
 	$("#table_colgroup_cols").val( xml);
-	return onFormSubmit('<dtml-var fmName>');
+	return onFormSubmit(fmName);
 }
 
 function table_cell_edit(el_td) {
@@ -3423,24 +3441,22 @@ function table_cell_edit(el_td) {
 	}
 	el_td.css( "backgroundColor", "red");
 	// Apply values.
-	$('#zmiRichtextEditor<dtml-var elName>').hide();
-	$('#zmiStandardEditor<dtml-var elName>').show();
+	$('#zmiRichtextEditor'+elName).hide();
+	$('#zmiStandardEditor'+elName).show();
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
 	$('#tag').val($('#tag_'+ table_cell_id).val());
 	$('#format').val($('#format_'+ table_cell_id).val());
-	<dtml-if "REQUEST.get('richedit_fmt')">
-	zmiRichtextSyncDataToView('<dtml-var elName>');
-	<dtml-let elName="'content_editor'">
-	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
-		$('#zmiRichtextEditor<dtml-var elName>').show();
-		$('#zmiStandardEditor<dtml-var elName>').hide();
-		zmiStandardOnSubmitEventHandler();
+	if (typeof richedit_fmt != 'undefined') {
+		zmiRichtextSyncDataToView(elName);
+		if ( $('#format').val()==richedit_fmt) {
+			$('#zmiRichtextEditor'+'content_editor').show();
+			$('#zmiStandardEditor'+'content_editor').hide();
+			zmiStandardOnSubmitEventHandler();
+		}
 	}
-	</dtml-let>
-	</dtml-if>
 	// Open cell editor.
 	$('#div_table_cell_editor').dialog({
-			title:'<dtml-var "getZMILangStr('ATTR_COL')">: <dtml-var "getZMILangStr('BTN_EDIT')">',
+			title:getZMILangStr('ATTR_COL')+': '+getZMILangStr('BTN_EDIT'),
 			width:'auto',
 			height:'auto',
 			modal:true,
@@ -3451,17 +3467,17 @@ function table_cell_edit(el_td) {
 }
 
 function table_cell_change() {
-	<dtml-if "REQUEST.get('richedit_fmt')">
-	if ( $('#format').val()=='<dtml-var "REQUEST.get('richedit_fmt').getId()">') {
-		zmiRichtextOnSubmitEventHandler();
-		$('#input_'+ table_cell_id).hide();
-		$('#preview_'+ table_cell_id).show();
+	if (typeof richedit_fmt != 'undefined') {
+		if ( $('#format').val()==richedit_fmt) {
+			zmiRichtextOnSubmitEventHandler();
+			$('#input_'+ table_cell_id).hide();
+			$('#preview_'+ table_cell_id).show();
+		}
+		else {
+			$('#input_'+ table_cell_id).show();
+			$('#preview_'+ table_cell_id).hide();
+		}
 	}
-	else {
-		$('#input_'+ table_cell_id).show();
-		$('#preview_'+ table_cell_id).hide();
-	}
-	</dtml-if>
 	$('#format_'+ table_cell_id).val($('#format').val());
 	$('#tag_'+ table_cell_id).val($('#tag').val());
 	$('#content_'+ table_cell_id).val($('#content_editor').val());
@@ -3482,8 +3498,8 @@ function table_cell_cancel(event) {
 }
 
 function table_cell_init() {
-	$("form[name=<dtml-var fmName>] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").css( 'backgroundColor', '#FFFFE8');});
-	$("form[name=<dtml-var fmName>] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
+	$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").css( 'backgroundColor', '#FFFFE8');});
+	$("form[name="+fmName+"] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
 }
 
 function actionBtnClick(el, fct) {
@@ -3507,11 +3523,11 @@ function actionBtnClick(el, fct) {
 	/// DELETE
 	//////////////////////////////////////////////////////////////////////////////
 	if (fct.indexOf('delete') == 0) {
-		if (confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">")) {
+		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 			if (fct.indexOf('delete_col') == 0) {
 				var el_trs = el_tbody.children();
 				for ( var i = 0; i < el_trs.length; i++) {
-					if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+					if ( i == table_cell_offs && table_type == 2) {
 						var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
 						el_td.prop("colspan",parseInt(el_td.prop("colspan"))-1);
 					}
@@ -3535,7 +3551,7 @@ function actionBtnClick(el, fct) {
 	else if (fct.indexOf('insert_col') == 0) {
 		var el_trs = el_tbody.children();
 		for ( var i = 0; i < el_trs.length; i++) {
-			if ( i == table_cell_offs && <dtml-var table_type> == 2) {
+			if ( i == table_cell_offs && table_type == 2) {
 				var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
 				el_td.attr("colspan",parseInt(el_td.attr("colspan"))+1);
 			}
@@ -3591,7 +3607,7 @@ function actionBtnClick(el, fct) {
 	}
 	else {
 		var par = Math.max(x,y)-table_cell_offs;
-		var fm = document.forms['<dtml-var fmName>'];
+		var fm = document.forms[fmName];
 		fm.elements['function'].value = fct;
 		fm.elements['param'].value = par;
 		fm.submit();
@@ -3608,7 +3624,7 @@ function insertCell(source) {
 					$(this).attr( "id", key+"_" + table_cell_uid);
 					$(this).attr( "name", key+"_" + table_cell_uid);
 					if ( key.indexOf("format") == 0) {
-						$(this).val( "<dtml-var "getTextFormatDefault()">");
+						$(this).val( textFormatDefault);
 					}
 					else if ( key.indexOf("content") == 0) {
 						$(this).val( "").css( 'border', '2px solid #00FF00');
@@ -3646,137 +3662,129 @@ function onKeyUpZMSTableDivContenteditable(div) {
 }
 
 $(function(){
-	$("form[name=<dtml-var fmName>]").submit( onZMSTableFormSubmit);
+	$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
 	table_cell_init();
 });
 
 </script>
 
-<img src="<dtml-var spacer_gif>" alt="" border="0" height="2"/>
+<img src="/misc_/zms/spacer.gif" alt="" border="0" height="2"/>
+
 <table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
+
 <tr valign="middle" class="zmiNeutralColorStrong0">
- <td>&nbsp;</td>
- <td><img src="<dtml-var spacer_gif>" width="8" height="1" border="0"></td>
- <dtml-in "range(table_cols)">
-  <td
-   ><table cellspacing="0" cellpadding="0" border="0"
-   ><tr
-    ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_left.gif" title="<dtml-var "getZMILangStr('ACTION_MOVELEFT')">" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td
-    ><td><a href="#" class="vbutton"><img src="<dtml-var MISC_ZMS>btn_arr_right.gif" title="<dtml-var "getZMILangStr('ACTION_MOVERIGHT')">" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td
-    ><dtml-if "not _['sequence-start'] or table_type==1"><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td></dtml-if
-    ><dtml-if "not _['sequence-start'] or table_type==1"><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_DELETE_COL')">"><span onclick="actionBtnClick(this,'delete_col')" class="ui-icon ui-icon-trash"></span></div></td></dtml-if
-   ></tr
-   ></table
-  ></td>
- </dtml-in>
- <td
-  ><table cellspacing="0" cellpadding="0" border="0"
-  ><tr
-   ><td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_COL')">"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td
-  ></tr
-  ></table
- ></td>
+	<td>&nbsp;</td>
+	<td><img src="/misc_/zms/spacer.gif" width="8" height="1" border="0"></td>
+	<td tal:repeat="col_index python:range(table_cols)">
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td><a href="#" class="vbutton"><img src="/misc_/zms/btn_arr_left.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVELEFT')" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td>
+			<td><a href="#" class="vbutton"><img src="/misc_/zms/btn_arr_right.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVERIGHT')" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td>
+			<td tal:condition="python:col_index>0 or table_type==1"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
+			<td tal:condition="python:col_index>0 or table_type==1"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_COL')"><span onclick="actionBtnClick(this,'delete_col')" class="ui-icon ui-icon-trash"></span></div></td>
+		</tr>
+		</table>
+	</td>
+	<td>
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
+		</tr>
+		</table>
+	</td>
 </tr>
 
 <tr>
- <td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
- <td style="border-right: solid 1px #CCCCCC;"><dtml-var "getCheckbox(fmName=fmName,elName='colgroup',value=attr('colgroup'),enabled=True,REQUEST=REQUEST)"></td>
- <dtml-in "range(table_cols)">
-  <dtml-let col_index=sequence-index>
-   <td class="form-small" align="center" style="border-right: solid 1px #CCCCCC; border-bottom: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>">
-    <dtml-if "attr('colgroup')">
-     <input class="form-small" type="text" name="col<dtml-var col_index>" size="3" value="<dtml-if "col_index<len(table_colgroup_cols)"><dtml-var "table_colgroup_cols[col_index]"></dtml-if>" style="text-align:right;"/>
-     (&Oslash;=<dtml-var "table_widths[col_index]">)%
-    <dtml-else>
-     &nbsp;
-    </dtml-if>
-   </td>
-  </dtml-let>
-</dtml-in>
- <td>&nbsp;</td>
+	<td class="zmiNeutralColorStrong0" align="right"><div class="form-label">Colgroup</div></td>
+	<td style="border-right: solid 1px #CCCCCC;" tal:content="structure python:here.getCheckbox(fmName=request['fmName'],elName='colgroup',value=zmscontext.attr('colgroup'),enabled=True,REQUEST=request)"></td>
+	<td tal:repeat="col_index python:range(table_cols)" class="form-small" align="center" tal:attributes="style python:'border-right:solid 1px #CCC\073border-bottom: solid 1px '+['#000','#CCC'][int(col_index==0 and table_type==4)]">
+		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
+			<input class="form-small" type="text" name="col<dtml-var col_index>" size="3" tal:attributes="value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
+			(&Oslash;=<tal:block tal:content="python:table_widths[col_index]"></tal:block>)%
+		</tal:block>
+		<tal:block tal:condition="not:python:zmscontext.attr('colgroup')">
+			&nbsp;
+		</tal:block>
+	</td>
+	<td>&nbsp;</td>
 </tr>
 
-<dtml-in "range(table_rows)"
- ><dtml-let row_index=sequence-index
- ><tr valign="middle">
-  <td class="zmiNeutralColorStrong0">
-   <table cellspacing="0" cellpadding="0" border="0"
-   ><tr valign="middle"
-    ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_up.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEUP')">" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td
-    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td></dtml-if
-    ><dtml-if "not _['sequence-start'] or table_type==3"><td rowspan="2"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_DELETE_ROW')">"><span onclick="actionBtnClick(this,'delete_row')" class="ui-icon ui-icon-trash"></span></div></td></dtml-if
-   ></tr
-   ><tr valign="middle"
-    ><td><a href="#" class="hbutton"><img src="<dtml-var MISC_ZMS>btn_arr_down.gif" title="<dtml-var "getZMILangStr('ACTION_MOVEDOWN')">" border="0" onclick="actionBtnClick(this,'move_row_down')" class="hbutton"/></a></td
-   ></tr
-   ></table
-  ></td
-  ><td style="border-top: solid 1px #CCCCCC; border-right: solid 1px <dtml-if "table_type==4 and _['sequence-start']">#CCCCCC;<dtml-else>black;</dtml-if>;">&nbsp;</td
-  ><dtml-in "table_table[row_index]" mapping
-   ><dtml-let col_index=sequence-index 
-              pattern="'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073'"
-              replacement="'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>'"
-              cell=sequence-item
-              cell_content="re_sub(pattern,replacement,cell.get('content',''))"
-              cell_format="['html',cell.get('format')][int(cell_content.find('dtml-')<0)]"
-              richedit_preview="getConfProperty('ZMSTable.richedit_preview',1)==1 and REQUEST.get('richedit_fmt') is not None and cell_format==REQUEST.get('richedit_fmt').getId()"
-    ><dtml-if "table_type==4 and row_index==0 and col_index==0"
-     ><td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td
-    ><dtml-else
-     ><td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;border-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" colspan="<dtml-var colspan>">
-      <div class="ZMSTable">
-       <table style="width:100%" class="ZMSTable">
-       <tr>
-       <<dtml-var tag> title="onDblClick: <dtml-var "getZMILangStr('ACTION_EDIT_CELL')">" class="table_cell_editable">
-        <div id="input_<dtml-var col_index>_<dtml-var row_index>" <dtml-if richedit_preview>style="display:none;"</dtml-if>>
-         <input type="hidden" id="tag_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var tag>">
-         <input type="hidden" id="format_<dtml-var col_index>_<dtml-var row_index>" value="<dtml-var cell_format>">
-         <dtml-var "getTextArea(fmName,'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=REQUEST,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;'+QUOT)">
-        </div>
-        <div id="preview_<dtml-var col_index>_<dtml-var row_index>" <dtml-unless richedit_preview>style="display:none;"</dtml-unless> contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
-         <dtml-if content><dtml-var cell_content><dtml-else>&nbsp;</dtml-if>
-        </div>
-       </<dtml-var tag>>
-       </tr>
-       </table>
-      </div>
-     </td
-    ></dtml-if
-   ></dtml-let
-  ></dtml-in
-  ><td style="border-left: solid 1px black; border-top: solid 1px #CCCCCC; border-right: solid 1px #CCCCCC;">&nbsp;</td
- ></tr
- ></dtml-let
-></dtml-in>
+<tr tal:repeat="row_index python:range(table_rows)" valign="middle">
+	<td class="zmiNeutralColorStrong0">
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr valign="middle">
+			<td><a href="#" class="hbutton"><img src="/misc_/zms/btn_arr_up.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEUP')" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td>
+			<td rowspan="2" tal:condition="python:row_index>0 or table_type==3"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
+			<td rowspan="2" tal:condition="python:row_index>0 or table_type==3"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_ROW')"><span onclick="actionBtnClick(this,'delete_row')" class="ui-icon ui-icon-trash"></span></div></td>
+		</tr>
+		<tr valign="middle">
+			<td><a href="#" class="hbutton"><img src="/misc_/zms/btn_arr_down.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEDOWN')" border="0" onclick="actionBtnClick(this,'move_row_down')" class="hbutton"/></a></td>
+		</tr>
+		</table>
+	</td>
+	<td tal:attributes="style python:'border-top:solid 1px #CCCCCC\073border-right:solid 1px '+['#000','#CCC'][int(row_index==0 and table_type==4)]">&nbsp;</td>
+	<tal:block tal:repeat="cell python:table_table[row_index]">
+		<tal:block tal:define="global 
+				col_index python:table_table[row_index].index(cell);
+				pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
+				replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
+				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
+				cell_format python:['html',cell.get('format')][int(cell_content.find('dtml-')<0)];
+				richedit_preview python:int(here.getConfProperty('ZMSTable.richedit_preview',1)==1 and request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
+			<tal:block tal:condition="python:table_type==4 and row_index==0 and col_index==0">
+				<td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td>
+			</tal:block>
+			<tal:block tal:condition="not:python:table_type==4 and row_index==0 and col_index==0">
+				<td style="border-top: solid 1px #CCCCCC;border-right: solid 1px white;border-bottom: solid 1px white;border-left: solid 1px #CCCCCC;" tal:attributes="colspan cell/colspan">
+				<div class="ZMSTable">
+					<table style="width:100%" class="ZMSTable">
+					<tr>
+						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(cell['tag'],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
+						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
+							<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag"/>
+							<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">
+							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
+						</div>
+						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]" contenteditable="true" onkeyup="onKeyUpZMSTableDivContenteditable(this)" onblur="onKeyUpZMSTableDivContenteditable(this)">
+							<tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block>
+							<tal:block tal:condition="not:cell/content">&nbsp;</tal:block>
+						</div>
+						<tal:block tal:content="structure python:'</%s><!-- .table_cell_editable -->'%cell['tag']">end-tag</tal:block>
+					</tr>
+					</table><!-- .ZMSTable -->
+				</div><!-- .ZMSTable -->
+				</td>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+	<td style="border-left: solid 1px black; border-top: solid 1px #CCCCCC; border-right: solid 1px #CCCCCC;">&nbsp;</td>
+</tr>
 
 <tr valign="middle">
- <td class="zmiNeutralColorStrong0">
-   <table cellspacing="0" cellpadding="0" border="0">
-   <tr valign="middle">
-    <td><img src="<dtml-var spacer_gif>" alt="" border="0" width="20"/></td>
-    <td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" title="<dtml-var "getZMILangStr('ACTION_INSERT_ROW')">"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
-   </tr>
-   </table>
- </td>
- <td style="border-top: solid 1px #CCCCCC;">&nbsp;</td>
- <dtml-in "range(table_cols)">
-  <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px black; border-bottom: solid 1px #CCCCCC;">&nbsp;</td>
- </dtml-in>
- <td style="border-left: solid 1px #CCCCCC; border-top: solid 1px #CCCCCC;">&nbsp;</td>
+	<td class="zmiNeutralColorStrong0">
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr valign="middle">
+			<td><img src="/misc_/zms/spacer.gif" alt="" border="0" width="20"/></td>
+			<td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
+		</tr>
+		</table>
+	</td>
+	<td style="border-top: solid 1px #CCCCCC;">&nbsp;</td>
+	<td tal:repeat="col_index python:range(table_cols)" style="border-left: solid 1px #CCCCCC; border-top: solid 1px black; border-bottom: solid 1px #CCCCCC;">&nbsp;</td>
+	<td style="border-left: solid 1px #CCCCCC; border-top: solid 1px #CCCCCC;">&nbsp;</td>
 </tr>
 
-</table>
+</table><!-- #table_cell_editor -->
 
-<input type="hidden" id="cols" value="<dtml-var table_cols>"/>
-<input type="hidden" id="rows" value="<dtml-var table_rows>"/>
+<input type="hidden" id="cols" tal:attributes="value table_cols"/>
+<input type="hidden" id="rows" tal:attributes="value table_rows"/>
 
-</dtml-let>
+</tal:block>
+</tal:block>
 
-</dtml-if>
-
-<input type="hidden" id="table_table" name="table_<dtml-var lang>" value="<list></list>"/>
-<input type="hidden" id="table_colgroup_cols" name="cols_<dtml-var lang>" value="<list></list>"/>
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols'])">]]>
+<input type="hidden" id="table_table" tal:attributes="name python:'table_%s'%request['lang']" value="<list></list>"/>
+<input type="hidden" id="table_colgroup_cols" name="name python:'cols_%s'%request['lang']" value="<list></list>"/>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols'])"></tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -4125,7 +4133,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.7.0]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

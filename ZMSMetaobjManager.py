@@ -78,7 +78,14 @@ def syncType( self, id, attr, forced=False):
           attr['zpt'] = ob
           attr['custom'] = unicode(ob.read()).encode('utf-8')
         elif attr['type'] == 'interface':
-          attr['name'] = ob.raw
+          if ob.meta_type in ['Page Template']:
+            attr['zpt'] = ob
+            attr['name'] = unicode(ob.read()).encode('utf-8')
+          elif ob.meta_type in [ 'Script (Python)']:
+            attr['py'] = ob
+            attr['name'] = ob.read()
+          else:
+            attr['name'] = ob.raw
         elif attr['type'] == 'resource':
           attr['custom'] = ob
   except:
@@ -741,9 +748,9 @@ class ZMSMetaobjManager:
          (newCustom == '' or type(newCustom) is not str):
         if newType in [ 'method', 'DTML Method', 'DTML Document']:
           newCustom = ''
-          newCustom += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
+          newCustom += '<!-- '+ newId + ' -->\n'
           newCustom += '\n'
-          newCustom += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
+          newCustom += '<!-- /'+ newId + ' -->\n'
         elif newType in [ 'External Method']:
           newCustom = ''
           newCustom += '# Example code:\n'
@@ -769,7 +776,7 @@ class ZMSMetaobjManager:
           newCustom += newName
           newCustom += '\n'
           newCustom += '##\n'
-          newCustom += '# --// BO '+ newId + ' //--\n'
+          newCustom += '# --// '+ newId + ' //--\n'
           newCustom += '# Example code:\n'
           newCustom += '\n'
           newCustom += '# Import a standard function, and get the HTML request and response objects.\n'
@@ -784,7 +791,7 @@ class ZMSMetaobjManager:
           newCustom += 'print "in", container.absolute_url()\n'
           newCustom += 'return printed\n'
           newCustom += '\n'
-          newCustom += '# --// EO '+ newId + ' //--\n'
+          newCustom += '# --// /'+ newId + ' //--\n'
         elif newType in [ 'Z SQL Method']:
           newCustom = ''
           newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][0]
@@ -821,33 +828,29 @@ class ZMSMetaobjManager:
       # Parse Dtml for Errors.
       newOb = None
       message = ''
-      dtml = ''
       if newType in [ 'delimiter', 'hint', 'interface']:
-        dtml = newName
-      elif newType in [ 'method', 'DTML Method', 'DTML Document']:
+        newCustom = newName
+        if newCustom.find('<tal:') >= 0:
+          newType = 'zpt'
+        else:
+          newType = 'method'
+      if newType in [ 'method', 'DTML Method', 'DTML Document']:
         newCustom = newCustom.replace('\r','')
-        dtml = newCustom
-      if len(dtml) > 0:
-        message = _globals.dt_parse( self, dtml)
+      if len(newCustom) > 0:
+        message = _globals.dt_parse( self, newCustom)
         if len( message) > 0:
           attr['errors'] = message
           message = '<div class="ui-state-error ui-corner-all">DTML-Error in '+newId+'<br>'+message+'</div>'
-        else:
-          # Handle methods.
-          if newType == 'method':
-            if oldId is not None and id+'.'+oldId in self.objectIds():
-              self.manage_delObjects(ids=[id+'.'+oldId])
-            self.manage_addDTMLMethod( id+'.'+newId, newType+': '+newName, newCustom)
-            newOb = getattr( self, id+'.'+newId)
-            roles=[ 'Manager']
-            newOb._proxy_roles=tuple(roles)
-          # Handle interfaces.
-          elif newType == 'interface':
-            if oldId is not None and id+'.'+oldId in self.objectIds():
-              self.manage_delObjects(ids=[id+'.'+oldId])
-            self.manage_addDTMLMethod( id+'.'+newId, newType, newName)
+      # Handle methods and interfaces.
+      if newType in ['method']:
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        self.manage_addDTMLMethod( id+'.'+newId, newType, newCustom)
+        newOb = getattr( self, id+'.'+newId)
+        roles=[ 'Manager']
+        newOb._proxy_roles=tuple(roles)
       # Handle py.
-      if newType == 'py':
+      if newType in ['py']:
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
         PythonScript.manage_addPythonScript( self, id+'.'+newId)
@@ -856,10 +859,10 @@ class ZMSMetaobjManager:
         roles=[ 'Manager']
         newOb._proxy_roles=tuple(roles)
       # Handle zpt.
-      elif newType == 'zpt':
+      elif newType in ['zpt']:
         if oldId is not None and id+'.'+oldId in self.objectIds():
           self.manage_delObjects(ids=[id+'.'+oldId])
-        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType+': '+newName, text=newCustom)
+        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType, text=newCustom)
         newOb = getattr(self,id+'.'+newId)
         newOb.output_encoding = 'utf-8'
       

@@ -661,16 +661,28 @@ class ObjAttrs:
         value = self.fetchReqBuff( reqBuffId, REQUEST, forced)
         return value
       except:
+        meta_id = REQUEST.get('ZMS_INSERT',self.meta_id)
         objAttrs = self.getObjAttrs()
         metaObjAttr = None
         try:
           if key not in objAttrs.keys():
-            metaObjAttr = self.getMetaobjAttr( self.meta_id, key, syncTypes=['*'])
+            metaObjAttr = self.getMetaobjAttr( meta_id, key, syncTypes=['*'])
         except:
           _globals.writeError( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))
           
         #-- Special attributes.
-        if metaObjAttr is not None and metaObjAttr['type'] == 'method':
+        if metaObjAttr is not None and metaObjAttr['type'] == 'interface':
+          try:
+            if metaObjAttr.get('py') is not None:
+              value = metaObjAttr['py'](zmscontext=self)
+            elif metaObjAttr.get('zpt') is not None:
+              value = metaObjAttr['zpt'](zmscontext=self)
+              value = unicode(value).encode('utf-8')
+            else:
+              value = _globals.dt_html(self,metaObjAttr.get('name',''),REQUEST)
+          except:
+            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
+        elif metaObjAttr is not None and metaObjAttr['type'] == 'method':
           try:
             value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
           except:

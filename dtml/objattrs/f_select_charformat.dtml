@@ -16,18 +16,18 @@
  ><dtml-in "_.range(len(tags)/2)"
   ><dtml-let i=sequence-index name="tags[i*2]" tag="tags[i*2+1]"
    ><dtml-if "len(name)==0">
-    <img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">
+    <img src="/misc_/zms/spacer.gif" class="zmiVSep" alt="" border="0" align="absmiddle">
    <dtml-else
-    ><a href="javascript:setTextFormatInput('<dtml-var "tag.replace(QUOT,'\'+unescape(\'\%'+'22\')+\'')">','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');" class="button"><img src="<dtml-var MISC_ZMS>icon_<dtml-var name>.gif" title="<dtml-var "getZMILangStr('OPT_S_%s'%name.upper())">" border="0" align="absmiddle"/></a
+    ><a href="javascript:setTextFormatInput('<dtml-var "tag.replace('\042','\'+unescape(\'\%'+'22\')+\'')">','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');" class="button"><img src="/misc_/zms/icon_<dtml-var name>.gif" title="<dtml-var "ob.getZMILangStr('OPT_S_%s'%name.upper())">" border="0" align="absmiddle"/></a
    ></dtml-if
   ></dtml-let
  ></dtml-in
 ></dtml-let>
-<a href="javascript:zmiRicheditInsertTab('<dtml-var fmName>','<dtml-var elName>');" class="button"><img src="<dtml-var MISC_ZMS>icon_tab.gif" title="<dtml-var "getZMILangStr('BTN_INSERT')">: Tab" border="0" align="absmiddle"/></a>
-<img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">
-<dtml-let fmts="getCharFormats()"
+<a href="javascript:zmiRicheditInsertTab('<dtml-var fmName>','<dtml-var elName>');" class="button"><img src="/misc_/zms/icon_tab.gif" title="<dtml-var "ob.getZMILangStr('BTN_INSERT')">: Tab" border="0" align="absmiddle"/></a>
+<img src="/misc_/zms/spacer.gif" class="zmiVSep" alt="" border="0" align="absmiddle">
+<dtml-let fmts="ob.getCharFormats()"
  ><dtml-in fmts mapping
-  ><dtml-let fmt_id=sequence-index fmt=sequence-item fmt_js="dt_html(fmt.get('js',''),REQUEST)" fmt_attrs="dt_html(fmt['attrs'],REQUEST)"
+  ><dtml-let fmt_id=sequence-index fmt=sequence-item fmt_js="ob.dt_html(fmt.get('js',''),REQUEST)" fmt_attrs="ob.dt_html(fmt['attrs'],REQUEST)"
    ><dtml-if fmt_js
     ><script language="JavaScript"
     ><!--//
@@ -36,10 +36,10 @@
    ></dtml-if
    ><dtml-if "fmt.get('btn')"
     ><dtml-if "fmt_js!='' or fmt['tag']!=''"
-     ><a href="javascript:<dtml-if fmt_js><dtml-var "fmt_js[fmt_js.lower().find('function')+len('function'):fmt_js.lower().find('{')].strip()"><dtml-else>setTextFormatInput('<dtml-var "fmt['tag']"><dtml-if fmt_attrs> <dtml-var "fmt_attrs.replace(QUOT,'\'+unescape(\'%'+'22\')+\'')"></dtml-if>','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');</dtml-if>" class="button"><img src="<dtml-var "getDocumentElement().absolute_url()">/format_manager/<dtml-var "fmt['btn']">" title="<dtml-var "fmt['display']">" border="0" align="absmiddle"/></a
+     ><a href="javascript:<dtml-if fmt_js><dtml-var "fmt_js[fmt_js.lower().find('function')+len('function'):fmt_js.lower().find('{')].strip()"><dtml-else>setTextFormatInput('<dtml-var "fmt['tag']"><dtml-if fmt_attrs> <dtml-var "fmt_attrs.replace('\042','\'+unescape(\'%'+'22\')+\'')"></dtml-if>','<dtml-var fmName>','<dtml-var elName>','<dtml-var lang>');</dtml-if>" class="button"><img src="<dtml-var "ob.getDocumentElement().absolute_url()">/format_manager/<dtml-var "fmt['btn']">" title="<dtml-var "fmt['display']">" border="0" align="absmiddle"/></a
     ></dtml-if
    ><dtml-else>
-    <img src="<dtml-var spacer_gif>" class="zmiVSep" alt="" border="0" align="absmiddle">
+    <img src="/misc_/zms/spacer.gif" class="zmiVSep" alt="" border="0" align="absmiddle">
    </dtml-if
   ></dtml-let
  ></dtml-in

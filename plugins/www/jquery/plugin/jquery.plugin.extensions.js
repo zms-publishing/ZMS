@@ -180,8 +180,8 @@ function initUI(context) {
 				constrainInput: false,
 				showWeek: true,
 				beforeShow: function(input, inst) {
-						var v = $(input).val();
 						var e = '';
+						var v = $(input).val();
 						var i = v.indexOf(' ');
 						if ( i > 0) {
 							e = v.substr(i+1);
@@ -192,10 +192,12 @@ function initUI(context) {
 					},
 				onClose: function(dateText, inst) {
 						if (dateText) {
-							var input = $(inst).data("inputfield");
 							var e = $(inst).data("extra");
-							if (e && !dateText.endsWith(" "+e)) {
-								$(input).val(dateText+" "+e);
+							var input = $(inst).data("inputfield");
+							var v = $(input).val();
+							var i = v.indexOf(' ');
+							if ( i < 0 && e) {
+								$(input).val(v+' '+e);
 							}
 						}
 					}

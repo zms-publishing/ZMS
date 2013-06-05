@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'customize',here.meta_id])">
@@ -31,7 +31,6 @@ $(function() {
 		<li><a href="#Maintenance" data-toggle="tab">Maintenance</a></li>
 		<li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
 		<li><a href="#History" data-toggle="tab">History</a></li>
-		<li><a href="#Subversion" data-toggle="tab">Subversion</a></li>
 		<li><a href="#InstalledLibraries" data-toggle="tab">Installed Libraries</a></li>
 	</ul>
 	<div class="tab-content">
@@ -251,16 +250,11 @@ $(function() {
 					<strong>Internal links</strong>
 					<tal:block tal:content="structure python:here.synchronizeRefs(clients='internal_links_portal_clients' in request.form.get('options',[]),unify_ids='internal_links_unify_ids' in request.form.get('options',[]))">synchronizeRefs</tal:block>
 				</tal:block>
-				<tal:block tal:condition="python:request.get('btn')=='Clear'">
-					<strong>Static cache</strong>
-					Clear <tal:block tal:content="structure python:here.clearCachePages()">clearCachePages</tal:block>
-				</tal:block>
 				<tal:block tal:condition="python:request.get('btn')=='Change'">
 					<strong>Properties</strong>
 					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.CatalogAwareness.active',request.get('catalog_awareness_active')==1)" tal:content="python:request.get('catalog_awareness_active')">setConfProperty</tal:block>,
 					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.autocorrection',request.get('ZMS_InternalLinks_autocorrection')==1)" tal:content="python:request.get('ZMS_InternalLinks_autocorrection')">setConfProperty</tal:block>,
 					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.keepsynchron',request.get('ZMS_InternalLinks_keepsynchron')==1)" tal:content="python:request.get('ZMS_InternalLinks_keepsynchron')">setConfProperty</tal:block>,
-					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.cache.active',request.get('cache_active')==1)" tal:content="python:request.get('cache_active')">setConfProperty</tal:block>,
 				</tal:block>
 				(<tal:block tal:content="python:here.getLangFmtDate(DateTime())"></tal:block>)
 			</div><!-- .alert -->
@@ -302,12 +296,6 @@ $(function() {
 					<div tal:condition="has_master"><input type="checkbox" value="internal_links_unify_ids" id="internal_links_unify_ids" name="options:list" tal:attributes="checked python:['','checked'][int('internal_links_unify_ids' in request.form.get('options',[]))]"/>&nbsp;Unify Ids</div>
 				</td>
 				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Correct" title="Report and fix broken links">&nbsp;Correct&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
-			</tr>
-			<tr>
-				<td><label class="control-label">Static cache</label></td>
-				<td class="controls"><input type="checkbox" value="1" id="cache_active" name="cache_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>&nbsp;Active</td>
-				<td></td>
-				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Clear">&nbsp;Clear&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
 			</tr>
 			<tr>
 				<td></td>
@@ -377,30 +365,6 @@ $(function() {
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 </form>
-		</div>
-
-		<div class="tab-pane" id="Subversion">
-		<form class="form-horizontal" name="SVNForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-			<input type="hidden" name="key" value="SVN">
-			<legend>Subversion</legend>
-			<p class="well well-small">Use the subversion-folder to sync home-folder from ZODB with the file-system of your server.</p>
-			<div class="control-group">
-				<label class="control-label" for="conf_value">Location</label>
-				<div class="controls">
-					<input type="hidden" name="conf_key" value="SVN.path"/>
-					<input type="text" name="conf_value" tal:attributes="value python:here.getConfProperty('SVN.path','')">
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<div class="controls">
-					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-					&nbsp;
-					<button name="btn" type="submit" class="btn" value="Copy to Location">Copy to Location</button>
-					<button name="btn" type="submit" class="btn" value="Update from Location">Update from Location</button>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-		</form>
 		</div>
 
 		<div class="tab-pane" id="InstalledLibraries">

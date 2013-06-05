@@ -31,15 +31,8 @@
 ></dtml-if
 ></dtml-unless
 
-><dtml-comment><!------- STATIC CACHE ---------------------------></dtml-comment
-><dtml-if "isCachedPage(REQUEST)"
-><dtml-try
-><dtml-var standard_cache_header
-><dtml-except></dtml-try
-><dtml-var "getCachedPage(REQUEST)"
-
 ><dtml-comment><!------- DISPLAY ONLY ACTIVE --------------------></dtml-comment
-><dtml-elif "isPreviewRequest(REQUEST) or getDocumentElement().isActive(REQUEST)"
+><dtml-if "isPreviewRequest(REQUEST) or getDocumentElement().isActive(REQUEST)"
 
 ><dtml-comment><!------- STANDARD_HTML_REQUEST ------------------></dtml-comment
 ><dtml-var f_standard_html_request
@@ -82,11 +75,7 @@
 ><dtml-comment>--------- FLOAT -----------------------------------</dtml-comment
 ><dtml-else
 ><dtml-if "isPreviewRequest(REQUEST) or isActive(REQUEST)"
-><dtml-if "isPreviewRequest(REQUEST) or getObjProperty( 'attr_cacheable', REQUEST) not in [ 2, '2']"
 ><dtml-var f_bodyContent
-><dtml-else
-><dtml-var "'<dtml-var f_bodyContent>'"
-></dtml-if
 ><dtml-else
 ><dtml-call "RESPONSE.setStatus(503)"
 ><p class="standard"><dtml-var "getLangStr('MSG_INACTIVE',lang)"></p

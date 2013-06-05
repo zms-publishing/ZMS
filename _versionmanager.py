@@ -503,8 +503,6 @@ class VersionItem:
           REQUEST.set('ZMS_SYNCHRONIZE_CATALOG',obs)
         except:
           REQUEST['ZMS_SYNCHRONIZE_CATALOG'] = obs
-      #-- Cache
-      self.synchronizeCachePage(REQUEST)
       #-- Access
       self.synchronizePublicAccess()
       #-- References

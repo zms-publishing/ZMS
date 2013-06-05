@@ -38,7 +38,7 @@ import zope.interface
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 from IZMSNotificationService import IZMSNotificationService
-import IZMSMetamodelProvider, IZMSFormatProvider, IZMSSvnInterface
+import IZMSMetamodelProvider, IZMSFormatProvider
 import _globals
 import _fileutil
 import _filtermanager
@@ -189,8 +189,7 @@ class ConfManager(
     ):
     zope.interface.implements(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
-      IZMSFormatProvider.IZMSFormatProvider,
-      IZMSSvnInterface.IZMSSvnInterface)
+      IZMSFormatProvider.IZMSFormatProvider)
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -204,7 +203,6 @@ class ConfManager(
     manage_customize = ConfDict.template('ZMS/manage_customize') 
     manage_customizeLanguagesForm = ConfDict.template('ZMS/manage_customizelanguagesform') 
     manage_customizeMetacmdForm = ConfDict.template('metacmd/manage_customizeform') 
-    manage_customizeSvnForm = HTMLFile('dtml/ZMS/manage_customizesvnform', globals()) 
     manage_customizeFilterForm = ConfDict.template('ZMS/manage_customizefilterform')
     manage_customizeDesignForm = ConfDict.template('ZMS/manage_customizedesignform') 
 
@@ -333,172 +331,6 @@ class ConfManager(
         return self.getXmlHeader() + self.toXmlString( filenames)
       else:
         return filenames
-
-
-    """
-    ############################################################################
-    ###
-    ###   SVN
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ConfManager.svnCopy:
-    # --------------------------------------------------------------------------
-    def svnCopy(self, node, path, ids=[], excl_ids=[]):
-      l = []
-      for ob in node.objectValues(['ZMS']):
-        # Add content-object artefacts to exclude-ids.
-        for metaObjId in ob.getMetaobjIds():
-          for metaObjAttrId in ob.getMetaobjAttrIds( metaObjId):
-            metaObjAttr = ob.getMetaobjAttr(metaObjId,metaObjAttrId)
-            if metaObjAttr['type'] in ob.metaobj_manager.valid_zopetypes:
-              excl_ids.append( metaObjAttrId)
-      obs = map( lambda x: (absattr(x.id), x), node.objectValues())
-      obs.sort()
-      for x in obs:
-        id = x[0]
-        ob = x[1]
-        if id not in excl_ids and not id.startswith('A_'):
-          action = None
-          filepath = path+'/'+id
-          filemtime = None
-          mtime = long(ob.bobobase_modification_time().timeTime())
-          meta_type = ob.meta_type
-          if node.meta_type == 'Folder' and ob.meta_type in ['DTML Method','DTML Document','File','Image','Page Template','Script (Python)']:
-            if ob.meta_type in ['DTML Method','DTML Document']:
-              filepath += '.dtml'
-            elif ob.meta_type in ['Page Template']:
-              filepath += '.zpt'
-            elif ob.meta_type in ['Script (Python)']:
-              filepath += '.py'
-            if os.path.exists( filepath):
-              filestat = os.stat(filepath)
-              filemtime = long(filestat[stat.ST_MTIME])
-              if mtime > filemtime:
-                action = 'refresh'
-              elif mtime < filemtime:
-                action = 'conflict'
-            else: 
-              action = 'add'
-            if action:
-              l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-              if filepath in ids or '*' in ids:
-                _fileutil.exportObj(ob,filepath)
-                atime = mtime
-                times = (atime,mtime)
-                os.utime(filepath,times)
-          elif ob.meta_type == 'ZMS':
-            l.extend( ob.metaobj_manager.svnCopy( node, path, ids))
-          elif ob.meta_type == 'Folder':
-            if not os.path.exists( filepath):
-              action = 'add'
-              l.append({'action':action,'filepath':filepath,'meta_type':meta_type})
-              if filepath in ids or '*' in ids:
-                _fileutil.mkDir(filepath)
-            l.extend( self.svnCopy(ob,filepath,ids))
-      return l
-
-
-    # --------------------------------------------------------------------------
-    #  ConfManager.svnUpdate:
-    # --------------------------------------------------------------------------
-    def svnUpdate(self, node, path, ids=[], excl_ids=[]):
-      l = []
-      path_ids = []
-      for filename in os.listdir(path):
-        action = None
-        id = filename
-        filepath = path+'/'+id
-        filestat = os.stat(filepath)
-        mode = filestat[stat.ST_MODE]
-        filemtime = long(filestat[stat.ST_MTIME])
-        if id.endswith('.dtml'):
-          id = id[:id.rfind('.')]
-        elif id.endswith('.zpt'):
-          id = id[:id.rfind('.')]
-        elif id.endswith('.py'):
-          id = id[:id.rfind('.')]
-        path_ids.append( id)
-        ob = getattr( node, id, None)
-        if stat.S_ISDIR(mode):
-          if filename == 'metaobj_manager':
-            for ob in node.objectValues(['ZMS']):
-              l.extend( ob.metaobj_manager.svnUpdate( node, filepath, ids))
-          elif filename != '.svn':
-            if ob is None:
-              if filepath in ids or '*' in ids:
-                node.manage_addFolder( id, 'New Folder')
-              ob = getattr( node, id, None)
-              meta_type = 'Folder'
-              mtime = 0
-              action = 'add'
-            if action:
-              l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-            l.extend( self.svnUpdate(ob,filepath,ids))
-        else:
-          if ob is None:
-            if filename.endswith('.dtml'):
-              meta_type = 'DTML Method'
-              if filepath in ids or '*' in ids:
-                node.manage_addDTMLMethod( id=id, title='New DTML Method')
-            elif filename.endswith('.zpt'):
-              meta_type = 'Page Template'
-              if filepath in ids or '*' in ids:
-                node.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=id,title='New Page Template')
-            elif filename.endswith('.py'):
-              meta_type = 'Script (Python)'
-              if filepath in ids or '*' in ids:
-                PythonScript.manage_addPythonScript( node, id)
-            elif filename.lower().endswith('.gif') or \
-                 filename.lower().endswith('.jpg') or \
-                 filename.lower().endswith('.png'):
-              meta_type = 'Image'
-              if filepath in ids or '*' in ids:
-                node.manage_addImage( id=id, file='', title='')
-            else:
-              meta_type = 'File'
-              if filepath in ids or '*' in ids:
-                node.manage_addFile( id=id, file='', title='')
-            ob = getattr( node, id, None)
-            mtime = 0
-            action = 'add'
-          else:
-            meta_type = ob.meta_type
-            # modification-time
-            mtime = long(ob.bobobase_modification_time().timeTime())
-            if mtime < filemtime:
-              action = 'refresh'
-          if action:
-            l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-            if filepath in ids or '*' in ids:
-              file = open(filepath)
-              data = file.read()
-              if ob.meta_type == 'Page Template':
-                ob.pt_edit(data,content_type='text/html')
-              else:
-                ob.manage_upload(data)
-              file.close()
-      if node is not None and node.meta_type != 'ZMS':
-        for ob in node.objectValues(['ZMS']):
-          # Add content-object artefacts to exclude-ids.
-          for metaObjId in ob.getMetaobjIds():
-            for metaObjAttrId in ob.getMetaobjAttrIds( metaObjId):
-              metaObjAttr = ob.getMetaobjAttr(metaObjId,metaObjAttrId)
-              if metaObjAttr['type'] in ob.metaobj_manager.valid_zopetypes:
-                excl_ids.append( metaObjAttrId)
-        for id in filter( lambda x: x not in path_ids and x not in excl_ids and not x.startswith('A_'), node.objectIds(['DTML Method','File','Folder','Image'])):
-          ob = getattr( node, id)
-          action = 'delete'
-          filepath = path+'/'+id
-          mtime = long(ob.bobobase_modification_time().timeTime())
-          filemtime = 0
-          meta_type = ob.meta_type
-          l.append({'action':action,'filepath':filepath,'mtime':mtime,'filemtime':filemtime,'meta_type':meta_type})
-          if filepath in ids or '*' in ids:
-            node.manage_delObjects( ids=[id])
-      return l
 
 
     """
@@ -778,30 +610,6 @@ class ConfManager(
           message = _mediadb.manage_packMediaDb(self)
         elif btn == 'Remove':
           message = _mediadb.manage_delMediaDb(self)
-      
-      ##### SVN ####
-      elif key == 'SVN':
-        k = REQUEST.get( 'conf_key')
-        v = REQUEST.get( 'conf_value', '')
-        self.setConfProperty( k, v)
-        if btn == 'Change':
-          message = self.getZMILangStr('MSG_CHANGED')
-        elif btn == 'Copy to Location':
-          execute = REQUEST.get('execute')
-          if execute:
-            ids = REQUEST.get('ids',[])
-            l = self.svnCopy(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id,ids)
-            message = self.getZMILangStr('MSG_EXPORTED')%str(len(ids))
-          else:
-            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v, 'action': 'outgoing'}))
-        elif btn == 'Update from Location':
-          execute = REQUEST.get('execute')
-          if execute:
-            ids = REQUEST.get('ids',[])
-            l = self.svnUpdate(self.getHome(),self.getConfProperty(k,v)+'/'+self.getHome().id,ids)
-            message = self.getZMILangStr('MSG_INSERTED')%str(len(ids))
-          else:
-            return RESPONSE.redirect( self.url_append_params( 'manage_customizeSvnForm', { 'lang': lang, 'conf_key': k, 'conf_value': v, 'action': 'incoming'}))
       
       ##### Custom ####
       elif key == 'Custom':

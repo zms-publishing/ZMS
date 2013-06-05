@@ -636,7 +636,7 @@ class MyBlob:
         RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
-          cacheable = parent.hasPublicAccess() or parent.isCachedPage( REQUEST)
+          cacheable = parent.hasPublicAccess()
         # Hook for custom cacheable rules: return True/False
         if cacheable:
           try:

@@ -94,23 +94,6 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[attr_cacheable]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[0]]></item>
-                      <item><![CDATA[1]]></item>
-                      <item><![CDATA[2]]></item>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Cacheable]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
@@ -225,7 +208,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.4.1]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -318,23 +301,6 @@
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Level]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[attr_cacheable]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[0]]></item>
-                      <item><![CDATA[1]]></item>
-                      <item><![CDATA[2]]></item>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Cacheable]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
@@ -453,7 +419,7 @@
           <item key="id"><![CDATA[ZMSDocument]]></item>
           <item key="name"><![CDATA[ZMSDocument]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.4.1]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -557,7 +523,10 @@
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script type="text/javascript">
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		zmscontext options/zmscontext">
+
+<script type="text/javascript">
 
 function elFileChange(el) {
 	var filename = $(el).val();
@@ -579,7 +548,9 @@ $(function() {
 	$("#file_"+getZMILang()).change( function() { elFileChange(this); } );
 });
 
-</script>]]>
+</script>
+
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -892,23 +863,6 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[attr_cacheable]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[0]]></item>
-                      <item><![CDATA[1]]></item>
-                      <item><![CDATA[2]]></item>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Cacheable]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
@@ -1022,7 +976,7 @@ return ''
           <item key="id"><![CDATA[ZMSFolder]]></item>
           <item key="name"><![CDATA[ZMSFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.4.1]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -1554,93 +1508,92 @@ return context.str_json(result)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-comment>
+                  <item key="name"><![CDATA[<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+
+<!--
 ################################################################################
 ##### Align: EDIT
 ################################################################################
-</dtml-comment>
-<dtml-if "getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<colgroup>
- <col width="20%" />
- <col width="80%" />
-</colgroup>
-<tr valign="middle">
- <td><div class="form-label"><dtml-var "getZMILangStr('ALIGN')"></div></td>
- <td><dtml-var "getObjInput('align',REQUEST)"></td>
-</tr>
-</table>
-</dtml-if>
+-->
+<tal:block tal:condition="python:zmscontext.getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
+	<table cellspacing="0" cellpadding="1" border="0" width="100%">
+	<colgroup>
+		<col width="20%" />
+		<col width="80%" />
+	</colgroup>
+	<tr valign="middle">
+		<td class="form-label" tal:content="structure python:here.getZMILangStr('ALIGN')">Align</td>
+		<td class="form-element" tal:content="structure python:zmscontext.getObjInput('align',request)">the align-input</td>
+	</tr>
+	</table>
+</tal:block>
 
 <table cellspacing="1" cellpadding="2" border="0" class="zmiNeutralColorStrong0">
 <tr class="zmiNeutralColorMedium0">
- <td colspan="5"><dtml-var "f_headline(_,_,headline=getZMILangStr('BTN_ADD'))"></td>
+	<td colspan="5" tal:content="structure python:here.f_headline(headline=here.getZMILangStr('BTN_ADD'))">Add</td>
 </tr>
 <tr valign="top" class="zmiNeutralColorStrong0">
- <td> &nbsp; </td>
- <td>
-  <span class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"><dtml-var FORM_LABEL_MANDATORY></span>
-  <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> PMID)</span>
- </td>
- <td>
-  <span class="form-label"><dtml-var "getZMILangStr('ATTR_TITLE')"><dtml-var FORM_LABEL_MANDATORY></span>
-  <span class="form-small">(<dtml-var "getZMILangStr('OR').lower()"> &quot;Medline&quot;)</span>
- </td>
- <td colspan="2">
-  <span class="form-label"><dtml-var "getZMILangStr('ATTR_DESCRIPTION')"></span>
- </td>
+	<td> &nbsp; </td>
+	<td>
+		<span class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</span>
+		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> PMID)</span>
+	</td>
+	<td>
+		<span class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_TITLE'),here.FORM_LABEL_MANDATORY)">Title*</span>
+		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> &quot;Medline&quot;)</span>
+	</td>
+	<td colspan="2">
+		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span>
+	</td>
 </tr>
 
-<dtml-comment>
+<!--
 ################################################################################
 ##### Link-Elements: INSERT
 ################################################################################
-</dtml-comment>
-<dtml-call "REQUEST.set( 'ZMS_INSERT', 'ZMSLinkElement')">
+-->
+<tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
 <tr valign="top" class="zmiNeutralColorMedium0">
- <td align="right"><img src="<dtml-var MISC_ZMS>btn_add.gif" border="0" class="button"/></td>
- <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
- <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
- <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=REQUEST,css='form-small')"></td>
- <td width="100">
-   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" accesskey="<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" title="ALT+Shift+<dtml-var "getZMILangStr('BTN_INSERT')[0]" html_quote>" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
-   &nbsp;&nbsp;
- </td>
+	<td align="right"><img src="/misc/zms/btn_add.gif" border="0" class="button"/></td>
+	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
+	<td width="100">
+		<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
+		&nbsp;&nbsp;
+	</td>
 </tr>
 
-<dtml-comment>
+<!--
 ################################################################################
 ##### Link-Elements: EDIT
 ################################################################################
-</dtml-comment>
-<dtml-call "REQUEST.set( 'ZMS_INSERT', None)">
-<dtml-let childNodes="getObjChildren('e',REQUEST)">
-<dtml-in childNodes>
-<dtml-let seqindex=sequence-index ob=sequence-item>
-<tr valign="top" class="zmiNeutralColorLight0">
- <td align="center" class="zmiNeutralColorMedium0"
-  ><nobr
-   ><select class="form-small" onchange="location.href='<dtml-var id>/manage_moveObjToPos?lang=<dtml-var lang>&pos:int='+(this.selectedIndex+1)"
-    ><dtml-in "_.range(len(childNodes))"
-     ><option <dtml-if "_['sequence-index']==seqindex">selected="selected"</dtml-if>><dtml-var "_['sequence-index']+1"></option
-    ></dtml-in
-   ></select
-    ><a href="javascript:confirmDeleteBtnOnClick('manage_deleteObjs?ids:list=<dtml-var id>&preview=preview');" class="button"
-     ><img src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0"></a
-  ></nobr
- </td>
- <td class="form-small"><dtml-var "getUrlInput(fmName='form0',elName='url%s'%id,elTextName='title%s'%id,size=15,value=getObjAttrValue(getObjAttr('attr_ref'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')">&nbsp;</td>
- <td class="form-small"><dtml-var "getTextInput(fmName='form0',elName='title%s'%id,size=15,value=getObjAttrValue(getObjAttr('title'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')"></td>
- <td class="form-small"><dtml-var "getTextArea(fmName='form0',elName='description%s'%id,cols=20,rows=3,value=getObjAttrValue(getObjAttr('attr_dc_description'),REQUEST),enabled=1,REQUEST=REQUEST,css='form-small')"></td>
- <td width="100" class="zmiNeutralColorMedium0"><dtml-var "manage_main_change(_,_,ob=ob,REQUEST=REQUEST)"></td>
+-->
+<tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', None)"></tal:block>
+<tal:block tal:define="global childNodes python:zmscontext.getObjChildren('e',request)">
+<tr valign="top" class="zmiNeutralColorLight0" tal:repeat="childNode childNodes">
+	<td align="center" class="zmiNeutralColorMedium0">
+		<nobr>
+			<select class="form-small" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
+				<tal:block tal:repeat="seqindex python:range(len(childNodes))">
+					<option tal:attributes="selected python:['','selected'][int(seqindex==childNodes.index(childNode))]" tal:content="python:seqindex+1">seqindex+1</option>
+				</tal:block>
+			</select>
+			<a tal:attributes="href python:'javascript:confirmDeleteBtnOnClick(\'manage_deleteObjs?ids:list=%s&preview=preview\')'%childNode.id" class="button"><img src="/misc_/zms/btn_trashcan1.gif" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')" border="0"></a>
+		</nobr>
+	</td>
+	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='url%s'%id,elTextName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='description%s'%id,cols=20,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
+	<td width="100" class="zmiNeutralColorMedium0" tal:content="structure python:childNode.manage_main_change(childNode,request)">manage_main_change</td>
 </tr>
-</dtml-let>
-</dtml-in>
-</dtml-let>
+</tal:block>
 
 </table>
 
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])">]]>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])"></tal:block>
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -1765,7 +1718,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.1]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1840,8 +1793,10 @@ if align:
                   <item key="id"><![CDATA[inferface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-call "REQUEST.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ')">
-<dtml-call "REQUEST.set('afterSubmitBtnClick',' } ')">
+                  <item key="name"><![CDATA[<tal:block tal:define="global 
+		zmscontext options/zmscontext; 
+		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
+		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
 <script type="text/javascript">
 <!--//
 
@@ -1892,7 +1847,7 @@ function remoteResponseTimedout() {
 		//
 		$("#attr_ref").addClass("form-error");
 		remoteHrefValid = false;
-		if (confirm( "Time-Out <dtml-var "getZMILangStr('ATTR_URL')">: " + remoteHref)) {
+		if (confirm( "Time-Out "+getZMILangStr('ATTR_URL')+": "+remoteHref)) {
 			remoteHrefValid = true;
 			btn.click();
 		}
@@ -1922,36 +1877,36 @@ $(function() {
 	<col width="20%" />
 	<col width="80%" />
 </colgroup>
-<dtml-comment>
+<!--
 ################################################################################
 ##### Ref & Type: EDIT
 ################################################################################
-</dtml-comment>
+-->
 <tr valign="middle">
-	<td><div class="form-label"><dtml-var "getZMILangStr('ATTR_URL')"> <dtml-var FORM_LABEL_MANDATORY></div></td>
+	<td class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</td>
 	<td>
-		<div style="float:left"><dtml-var "getObjInput('attr_ref',REQUEST)"></div>
+		<div style="float:left" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
 		<div style="float:left">&nbsp;</div>
-		<div style="float:left"><dtml-var "getObjInput('attr_type',REQUEST)"></div>
+		<div style="float:left" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
 	</td>
 </tr>
-<dtml-comment>
+<!--
 ################################################################################
 ##### Embedded Object: PREVIEW
 ################################################################################
-</dtml-comment>
-<dtml-unless ZMS_INSERT>
+-->
+<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 <tr valign="middle">
 	<td>&nbsp;</td>
-	<td <dtml-if "isPage()">class="zmiNeutralColorLight0"<dtml-else>class="zmiNeutralColorWhite"</dtml-if> style="border: 1px dashed black;">
-		<dtml-var "renderShort(REQUEST)">
+	<td tal:attributes="class python:['zmiNeutralColorWhite','zmiNeutralColorLight0'][int(zmscontext.isPage())]" style="border: 1px dashed black;" tal:content="structure python:zmscontext.renderShort(request)">
+		renderShort
 	</td>
 </tr>
-</dtml-unless>
-
+</tal:block>
 </table>
 
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])">]]>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])"></tal:block>
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -2197,7 +2152,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.3.2]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2440,8 +2395,18 @@ zmscontext.commitObj(request)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-let session_id="SESSION.getId()"
->
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		zmscontext options/zmscontext;
+		session_id python:request.SESSION.getId();
+		dummy0 python:request.set('CKEDITOR_config_toolbar',[
+				['Format'],
+				['Bold','Italic','Underline','NumberedList','BulletedList'],
+				['Undo','Redo'],
+				['mediabutton'],
+				['Find','linkbutton','Link','Unlink'],
+				['Anchor','Table'],
+				['Source','ShowBlocks','Maximize','About']
+			])">
 
 <style>
 span.active {
@@ -2454,34 +2419,24 @@ span.mouseover {
 }
 </style>
 
-<dtml-comment>
+<!--
 ////////////////////////////////////////////////////////////////////////////////
 /// CKEDITOR Plugin
 ////////////////////////////////////////////////////////////////////////////////
-</dtml-comment>
-
-<dtml-call "REQUEST.set('CKEDITOR_config_toolbar',[
-		['Format'],
-		['Bold','Italic','Underline','NumberedList','BulletedList'],
-		['Undo','Redo'],
-		['mediabutton'],
-		['Find','linkbutton','Link','Unlink'],
-		['Anchor','Table'],
-		['Source','ShowBlocks','Maximize','About']
-	])">
+-->
 
 <script>
 
 $(function() {
 	if($("form#form0 input[name=session_id]").length==0) {
-		$("form#form0").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
+		$("form#form0").append('<input type="hidden" name="session_id" tal:attributes="value session_id"/>');
 	}
 	$(".zmiRichtextEditorHeadline").hide();
 });
 
 </script>
 
-</dtml-let>]]>
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -2611,7 +2566,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSRichtext]]></item>
           <item key="name"><![CDATA[ZMSRichtext]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.2]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -3019,6 +2974,20 @@ zmscontext.attr('text',text)
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		zmscontext options/zmscontext">
+
+</tal:block>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
             </list>
           </item>
           <item key="access" type="dictionary">
@@ -3045,7 +3014,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSysFolder]]></item>
           <item key="name"><![CDATA[ZMSSysFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.1]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -4185,93 +4154,68 @@ if key.startswith('table_'):
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface]]></item>
+                  <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-let
-  teaserCntnr="this()"
-  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
-  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
-  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)"
-  element="[]">
-
-<dtml-call "element.append('<div class=\'ZMSTeaserElement\' style=\'width:30px;\'>')">
-<dtml-call "element.append('<div align=\'center\' class=\'title\'')">
-<dtml-if bgcolor_title><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_title,'transparent'))"></dtml-if>
-<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TITLE')))">
-<dtml-call "element.append('<div align=\'center\' class=\'text\'')">
-<dtml-if bgcolor_text><dtml-call "element.append(' style=\'background-color:%s\''%get_colormap().get(bgcolor_text,'transparent'))"></dtml-if>
-<dtml-call "element.append('><img src=\'%s\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'></div>'%(spacer_gif,getZMILangStr('ATTR_TEXT')))">
-<dtml-call "element.append('</div>')">
-<dtml-let element_icon="''.join(element)">
-
-<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BORDERSTYLE'))">
-
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		zmscontext options/zmscontext;
+		attr_borderstyle python:zmscontext.attr('attr_borderstyle');
+		bgcolor_border python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_border'),'transparent');
+		bgcolor_title python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_title'),'transparent');
+		bgcolor_text python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_text'),'transparent');
+		element_icon python:'' \
+				+'<div class=\'ZMSTeaserElement\' style=\'width:30px\'>' \
+				+'<div align=\'center\' class=\'title\' style=\'background-color:%s\'>'%bgcolor_title \
+				+'<img src=\'/misc_/zms/spacer.gif\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'/></div>'%here.getZMILangStr('ATTR_TITLE') \
+				+'<div align=\'center\' class=\'text\' style=\'background-color:%s\'>'%bgcolor_text \
+				+'<img src=\'/misc_/zms/spacer.gif\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'/></div>'%here.getZMILangStr('ATTR_TEXT') \
+				+'</div>'">
+<tal:block tal:content="structure python:here.f_headline(headline=here.getZMILangStr('ATTR_BORDERSTYLE'))">Border-Style</tal:block>
 <table cellspacing="2" cellpadding="1" border="0">
 <tr valign="top">
-
-<dtml-comment> ##### Border-Style 1=SOLID ##### </dtml-comment>
-   <td>
-    <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="1"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==1"> checked="checked"</dtml-if>/>
-     <dtml-var "getZMILangStr('OPT_AB_SOLID')">&nbsp;
-    </div>
-   </td>
-   <td>
-    <div id="Teaser" style="width:30px;">
-     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
-      <dtml-var element_icon>
-      <dtml-var element_icon>
-      <dtml-var element_icon>
-     </div>
-    </div>
-   </td>
-
-<dtml-comment> ##### Border-Style 2=SINGLE ##### </dtml-comment>
-   <td>
-    <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==2"> checked="checked"</dtml-if>/>
-     <dtml-var "getZMILangStr('OPT_AB_SINGLE')">&nbsp;
-    </div>
-   </td>
-   <td>
-    <div id="Teaser" style="width:30px;">
-     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
-      <dtml-var element_icon>
-     </div>
-     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
-      <dtml-var element_icon>
-     </div>
-     <div class="ZMSTeaserContainer" style="width:30px;margin-bottom:4px;<dtml-if bgcolor_border>background-color: <dtml-var "get_colormap().get(bgcolor_border,'black')">;</dtml-if>">
-      <dtml-var element_icon>
-     </div>
-    </div>
-   </td>
-
-<dtml-comment> ##### Border-Style 3=NONE ##### </dtml-comment>
-   <td>
-    <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="3"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==3"> checked="checked"</dtml-if>/>
-     <dtml-var "getZMILangStr('OPT_AB_NONE')">&nbsp;
-    </div>
-   </td>
-   <td>
-    <div id="Teaser" style="width:30px;">
-     <dtml-var element_icon>
-     <dtml-var element_icon>
-     <dtml-var element_icon>
-    </div>
-   </td>
-
+<!-- ##### Border-Style 1=SOLID ##### -->
+	<td class="form-element">
+		<input class="form-radio" type="radio" name="attr_borderstyle:int" value="1" tal:attributes="checked python:['','checked'][int(attr_borderstyle==1)]"/>
+		<tal:block tal:content="python:here.getZMILangStr('OPT_AB_SOLID')">Solid</tal:block>&nbsp;
+	</td>
+	<td>
+		<div id="Teaser" style="width:30px;">
+			<div class="ZMSTeaserContainer" tal:attributes="style python:'width:30px\073margin-bottom:4px\073background-color:%s'%bgcolor_border">
+				<tal:block tal:content="structure python:element_icon"></tal:block>
+				<tal:block tal:content="structure python:element_icon"></tal:block>
+				<tal:block tal:content="structure python:element_icon"></tal:block>
+			</div>
+		</div>
+	</td>
+<!-- ##### Border-Style 2=SINGLE ##### -->
+	<td class="form-element">
+		<input class="form-radio" type="radio" name="attr_borderstyle:int" value="2" tal:attributes="checked python:['','checked'][int(attr_borderstyle==2)]"/>
+		<tal:block tal:content="python:here.getZMILangStr('OPT_AB_SINGLE')">Single</tal:block>&nbsp;
+	</td>
+	<td>
+		<div id="Teaser" style="width:30px;">
+			<div class="ZMSTeaserContainer" tal:attributes="style python:'width:30px\073margin-bottom:4px\073background-color:%s'%bgcolor_border" tal:content="structure python:element_icon"></div>
+			<div class="ZMSTeaserContainer" tal:attributes="style python:'width:30px\073margin-bottom:4px\073background-color:%s'%bgcolor_border" tal:content="structure python:element_icon"></div>
+			<div class="ZMSTeaserContainer" tal:attributes="style python:'width:30px\073margin-bottom:4px\073background-color:%s'%bgcolor_border" tal:content="structure python:element_icon"></div>
+		</div>
+	</td>
+<!-- ##### Border-Style 3=NONE ##### -->
+	<td class="form-element">
+		<input class="form-radio" type="radio" name="attr_borderstyle:int" value="3" tal:attributes="checked python:['','checked'][int(attr_borderstyle==3)]"/>
+		<tal:block tal:content="python:here.getZMILangStr('OPT_AB_NONE')">None</tal:block>&nbsp;
+	</td>
+	<td>
+		<div id="Teaser" style="width:30px;">
+			<tal:block tal:content="structure python:element_icon"></tal:block>
+			<tal:block tal:content="structure python:element_icon"></tal:block>
+			<tal:block tal:content="structure python:element_icon"></tal:block>
+		</div>
+	</td>
 </tr>
 </table>
 
-<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',REQUEST.get('ZMS_HIDE_ELEMENTS',[])+['attr_borderstyle'])">
-
-<dtml-var "f_headline(_,_,headline=getZMILangStr('ATTR_BGCOLORS'))">
-
-</dtml-let>
-</dtml-let>]]>
+</tal:block>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_borderstyle'])"></tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -4528,7 +4472,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.8.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4937,13 +4881,16 @@ return zmscontext.attr('text')
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script type="text/javascript">
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		zmscontext options/zmscontext">
+
+<script type="text/javascript">
 
 function onZMSTextareaFormSubmit() {
 	var b = true;
 	if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
 			self.btnClicked != getZMILangStr('BTN_BACK')) {
-		var txt = '<xml>'+$('#text_'+getZMILang()).val().replace('&','')+'</xml>';
+		var txt = '<'+'xml>'+$('#text_'+getZMILang()).val().replace('&','')+'<'+'/xml>';
 		if ( txt.indexOf( '<'+'dtml-') < 0) {
 			try {
 				var xmlString = txt.replace(/\&(\w*)\;/g,'');
@@ -4970,14 +4917,16 @@ function onZMSTextareaFormSubmit() {
 	if (!b) {
 		return b;
 	}
-	return onFormSubmit('<dtml-var fmName>');
+	return onFormSubmit($('#text_'+getZMILang()).parent('form').attr('name'));
 }
 
 $(function() {
-	$("form[name=<dtml-var fmName>]").submit( onZMSTextareaFormSubmit);
+	$('#text_'+getZMILang()).parent('form').submit(onZMSTextareaFormSubmit);
 });
 
-</script>]]>
+</script>
+
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>

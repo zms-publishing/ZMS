@@ -68,7 +68,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 	_versionmanager.VersionItem,		# Version Item.
 	ZMSWorkflowItem.ZMSWorkflowItem,
 	_copysupport.CopySupport,		# Copy Support (Paste Objects).
-	_cachemanager.CacheableObject,		# Cacheable object.
+	_cachemanager.ReqBuff,		# Request Buffer (Cache).
 	_deprecatedapi.DeprecatedAPI,		# Deprecated API.
 	_metacmdmanager.MetacmdObject,		# Meta-Commands.
 	_multilangmanager.MultiLanguageObject,	# Multi-Language.

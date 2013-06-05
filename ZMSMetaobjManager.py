@@ -34,7 +34,6 @@ import _blobfields
 import _fileutil
 import _globals
 import _ziputil
-import IZMSSvnInterface
 
 
 # ------------------------------------------------------------------------------
@@ -100,7 +99,6 @@ def syncType( self, id, attr, forced=False):
 ################################################################################
 ################################################################################
 class ZMSMetaobjManager:
-    implements(IZMSSvnInterface.IZMSSvnInterface)
 
     # Globals.
     # --------
@@ -271,104 +269,6 @@ class ZMSMetaobjManager:
         RESPONSE.setHeader('Content-Type',content_type)
         RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
       return export
-
-
-    ############################################################################
-    #
-    #  IZMSSvnInterface
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.svnCopy
-    # --------------------------------------------------------------------------
-    def svnCopy(self, node, path, ids=[], excl_ids=[]):
-      l = []
-      for id in self.getMetaobjIds():
-        metaObj = self.getMetaobj(id)
-        if not metaObj.get('acquired'):
-          if metaObj.get('package') == '' or metaObj.get('type') == 'ZMSPackage':
-            action = None
-            path_id = id+'.metaobj.xml'
-            filepath = path+'/'+self.id+'/'+path_id
-            filemrevision = None
-            mrevision = metaObj.get('revision','0.0.0')
-            if os.path.exists( filepath):
-              filexml = self.parseXmlString( open(filepath), mediadbStorable=False)
-              if type(filexml) is list:
-                filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
-              filemrevision = filexml['value'].get('revision','0.0.0')
-              if mrevision > filemrevision:
-                action = 'refresh'
-              elif mrevision < filemrevision:
-                action = 'conflict'
-            else: 
-              action = 'add'
-            if action:
-              l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
-              if filepath in ids or '*' in ids:
-                xml = self.exportMetaobjXml([id])
-                _fileutil.exportObj(xml,filepath)
-      return l
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.svnUpdate
-    # --------------------------------------------------------------------------
-    def svnUpdate(self, node, path, ids=[], excl_ids=[]):
-      l = []
-      suffix = '.metaobj.xml'
-      # Changed resources.
-      for filename in filter( lambda x: x!='.svn', os.listdir(path)):
-        action = None
-        error_message = None
-        filepath = path+'/'+filename
-        file = open(filepath)
-        # Execute action.
-        if filepath in ids or '*' in ids:
-          self.metaobj_manager.importMetaobjXml( file)
-        elif filepath.endswith(suffix):
-          try:
-            filexml = self.parseXmlString( file, mediadbStorable=False)
-          except:
-            filexml = None
-            error_message = _globals.writeError(self,'')
-          if filexml is None:
-            action = 'error'
-          else:
-            if type(filexml) is list:
-              filexml = filter(lambda x: x['value']['type']=='ZMSPackage',filexml)[0]
-            mrevision = None
-            filemrevision = filexml['value'].get('revision','0.0.0')
-            metaObjId = filename[:-len(suffix)]
-            if metaObjId in self.getMetaobjIds():
-              metaObj = self.getMetaobj(metaObjId)
-              mrevision = metaObj.get('revision','0.0.0')
-              if mrevision < filemrevision:
-                action = 'refresh'
-              elif mrevision > filemrevision:
-                action = 'conflict'
-            else:
-              action = 'add'
-          if action:
-            l.append({'action':action,'error_message':error_message,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
-      # Deleted resources.
-      for id in self.getMetaobjIds():
-        metaObj = self.getMetaobj(id)
-        if not metaObj.get('acquired'):
-          if metaObj.get('package') == '' or metaObj.get('type') == 'ZMSPackage':
-            filename = id+suffix
-            filepath = path+'/'+filename
-            # Execute action.
-            if filepath in ids or '*' in ids:
-              self.delMetaobj(id)
-            elif not os.path.exists( filepath):
-              action = 'delete'
-              mrevision = metaObj['revision']
-              filemrevision = None
-              l.append({'action':action,'filepath':filepath,'mrevision':mrevision,'filemrevision':filemrevision,'meta_type':self.meta_type})
-      
-      return l
 
 
     ############################################################################

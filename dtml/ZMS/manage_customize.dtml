@@ -28,17 +28,10 @@
 			Correct<br/><dtml-var "synchronizeRefs(clients='internal_links_portal_clients' in REQUEST.form.get('options',[]),unify_ids='internal_links_unify_ids' in REQUEST.form.get('options',[]))">
 			(<dtml-var "getLangFmtDate(ZopeTime())">)
 		</div>
-	<dtml-elif "REQUEST.get('btn','').startswith('Clear')">
-		<div id="system_msg" class="ui-state-highlight ui-corner-all">
-			<b>Static cache:</b>
-			Clear<br/><dtml-var "clearCachePages()">
-			(<dtml-var "getLangFmtDate(ZopeTime())">)
-		</div>
 	<dtml-elif "REQUEST.get('btn')=='Change'">
 		<dtml-call "setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)">
 		<dtml-call "setConfProperty('ZMS.InternalLinks.autocorrection',REQUEST.get('ZMS_InternalLinks_autocorrection')==1)">
 		<dtml-call "setConfProperty('ZMS.InternalLinks.keepsynchron',REQUEST.get('ZMS_InternalLinks_keepsynchron')==1)">
-		<dtml-call "setConfProperty('ZMS.cache.active',REQUEST.get('cache_active')==1)">
 	</dtml-if>
 </dtml-if>
 
@@ -453,12 +446,6 @@ $(function() {
  </td>
  <td class="form-small"><input type="submit" value="Correct &raquo; " name="btn" style="width:60px" title="Report and fix broken links" /></td>
 </tr>
-<tr valign="top" class="zmiNeutralColorLight0">
- <td class="form-small"><b>Static cache</b></td>
- <td class="form-small"><input type="checkbox" value="1" id="cache_active" name="cache_active:int" class="form-checkbox" <dtml-if "getConfProperty('ZMS.cache.active')==1">checked="checked"</dtml-if>/>&nbsp;<label for="cache_active">Active</label></td>
- <td class="form-small"></td>
- <td class="form-small"><input type="submit" value="Clear &raquo; " name="btn" style="width:60px" /></td>
-</tr>
 <tr class="zmiNeutralColorLight0">
  <td>&nbsp;</td>
  <td><input type="submit" onclick="self.btnClicked=this.value;" value="Change" name="btn" class="ui-button ui-state-default ui-corner-all"/></td>
@@ -579,32 +566,40 @@ $(function() {
 
 <dtml-comment>
 ################################################################################
-###  SVN
+###  Installed Libraries
 ################################################################################
 </dtml-comment>
-<td id="_SVN">
-<form action="manage_customizeSystem" method="post">
-<input type="hidden" name="key" value="SVN">
+<td id="_InstalledProducts">
+<form name="InstalledProductsForm" action="manage_customizeSystem" method="post">
+<input type="hidden" name="key" value="InstalledProducts">
 <input type="hidden" name="lang" value="<dtml-var lang>">
-<dtml-var "f_headline(_,_,headline='Subversion')">
-<div class="form-small">Use the subversion-folder to sync home-folder from ZODB with the file-system of your server.</div>
+<dtml-var "f_headline(_,_,headline='Installed Libraries')">
 <table cellspacing="0" cellpadding="1" border="0">
-<tr valign="middle">
- <td class="form-small"><b>Location</b></td>
- <td class="form-small">
-  <input type="hidden" name="conf_key" value="SVN.path"/>
-  <input class="form-small" type="text" name="conf_value" value="<dtml-var "getConfProperty('SVN.path','')">" size="40"/>
- </td>
-</tr>
-<tr valign="middle">
- <td>&nbsp;</td>
- <td>
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change">
-  &nbsp;&nbsp;
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Copy to Location">
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Update from Location">
- </td>
-</tr>
+  <tr valign="top">
+    <td class="form-small"><input class="form-checkbox" type="checkbox" disabled="disabled" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
+    <td class="form-small">
+      <strong><label for="pil">Python Imaging Library (PIL)</label></strong>
+      <a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>external_link.gif" alt="" border="0" align="absmiddle"/></a>
+      <dtml-if "pilutil().enabled()">
+      <table cellspacing="0" cellpadding="0" border="0">
+      <tr valign="middle">
+       <td class="form-small">HighRes with Auto-Thumbnail max.</td>
+       <td class="form-small"><input class="form-small" type="text" name="pil_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">" size="4" style="text-align:right">px</td>
+      </tr>
+      <tr valign="middle">
+       <td class="form-small">SuperRes with Auto-HighRes max.</td>
+       <td class="form-small"><input class="form-small" type="text" name="pil_hires_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)">" size="4" style="text-align:right">px</td>
+      </tr>
+      </table>
+      </dtml-if>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+      <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change">
+    </td>
+  </tr>
 </table>
 </form>
 <br/></td>
@@ -644,45 +639,7 @@ $(function() {
 </div>
 <br/></td>
 
-<dtml-comment>
-################################################################################
-###  Installed Libraries
-################################################################################
-</dtml-comment>
-<td id="_InstalledProducts">
-<form name="InstalledProductsForm" action="manage_customizeSystem" method="post">
-<input type="hidden" name="key" value="InstalledProducts">
-<input type="hidden" name="lang" value="<dtml-var lang>">
-<dtml-var "f_headline(_,_,headline='Installed Libraries')">
-<table cellspacing="0" cellpadding="1" border="0">
-  <tr valign="top">
-    <td class="form-small"><input class="form-checkbox" type="checkbox" disabled="disabled" <dtml-if "pilutil().enabled()">checked="checked"</dtml-if>></td>
-    <td class="form-small">
-      <strong><label for="pil">Python Imaging Library (PIL)</label></strong>
-      <a href="http://www.pythonware.com/products/pil/" target="_blank" class="zmi"><img src="<dtml-var MISC_ZMS>external_link.gif" alt="" border="0" align="absmiddle"/></a>
-      <dtml-if "pilutil().enabled()">
-      <table cellspacing="0" cellpadding="0" border="0">
-      <tr valign="middle">
-       <td class="form-small">HighRes with Auto-Thumbnail max.</td>
-       <td class="form-small"><input class="form-small" type="text" name="pil_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.thumbnail.max',100)">" size="4" style="text-align:right">px</td>
-      </tr>
-      <tr valign="middle">
-       <td class="form-small">SuperRes with Auto-HighRes max.</td>
-       <td class="form-small"><input class="form-small" type="text" name="pil_hires_thumbnail_max:int" value="<dtml-var "getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)">" size="4" style="text-align:right">px</td>
-      </tr>
-      </table>
-      </dtml-if>
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>
-      <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value="Change">
-    </td>
-  </tr>
-</table>
-</form>
-<br/></td>
+<td><br/></td>
 
 </tr>
 </table>

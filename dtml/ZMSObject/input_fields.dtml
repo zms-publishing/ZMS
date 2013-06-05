@@ -1,3 +1,4 @@
+<dtml-call "REQUEST.set('ZMS_HIDE_ELEMENTS',['attr_cacheable'])">
 <dtml-let metaobjAttrIds="getMetaobjAttrIds(metaObj['id'])"
 ><dtml-in metaobjAttrIds
 ><dtml-let sx=sequence-index
@@ -5,7 +6,7 @@
            objAttr="getMetaobjAttr(metaObj['id'],_['sequence-item'])"
            key="objAttr['id']"
            required="objAttr.get('mandatory',0)==1 and objAttr['id'] not in REQUEST.get('ZMS_OPTIONAL_ELEMENTS',[])"
-           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS',[]) and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']"
+           visible="objAttr['id'].find('_')!=0 and objAttr['id'] not in REQUEST.get('ZMS_HIDE_ELEMENTS') and objAttr['type'] not in metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']"
            fmName="'form0'"
            elName="getObjAttrName(objAttr,lang)"
            elLabel="getObjAttrLabel(objAttr)"
@@ -116,39 +117,6 @@
  </td>
 </tr>
 <dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
-
-<dtml-comment>
-##### Cacheable #####
-</dtml-comment>
-<dtml-elif "objAttr['id']=='attr_cacheable' and getConfProperty('ZMS.cache.active')==1">
-<dtml-if "REQUEST['AUTHENTICATED_USER'].has_permission('ZMS Administrator',this())">
-<tr id="tr_<dtml-var key>" valign="top">
- <td><div class="form-label<dtml-if disabled>-disabled</dtml-if>"><dtml-var elLabel><dtml-if required><dtml-var FORM_LABEL_MANDATORY></dtml-if></div></td>
- <td>
-  <table cellspacing="0" cellpadding="0" border="0">
-  <tr valign="middle">
-   <td><dtml-var "getObjInput(key,REQUEST)"></td>
-   <td>&nbsp;&nbsp;</td>
-   <td class="zmiNeutralColorMedium0" style="padding:2px"
-    ><a href="javascript:location.href='manage_clearCachePages?lang=<dtml-var lang>&attr_cacheable_levels:int='+document.forms['<dtml-var fmName>'].elements['attr_cacheable_levels:int'].value;" class="button"><img class="button" src="<dtml-var MISC_ZMS>btn_trashcan1.gif" title="<dtml-var "getZMILangStr('BTN_DELETE')">" border="0" align="absmiddle"/></a
-    ><a href="javascript:location.href='manage_getCachedPages?lang=<dtml-var lang>&attr_cacheable_levels:int='+document.forms['<dtml-var fmName>'].elements['attr_cacheable_levels:int'].value;" class="button"><img class="button" src="<dtml-var MISC_ZMS>btn_refresh.gif" title="<dtml-var "getZMILangStr('BTN_REFRESH')">" border="0" align="absmiddle"/></a
-    >&nbsp;<img src="<dtml-var MISC_ZMS>op_sitemap.gif" title="#Levels" border="0" align="absmiddle"/>
-    <input class="form-small" type="text" name="attr_cacheable_levels:int" value="2" size="2"/>
-   </td>
-   <td>&nbsp;&nbsp;</td>
-   <td
-    ><dtml-in "objectValues(['DTML Document'])"
-     ><dtml-if "id().startswith('cache_')"
-      ><a href="<dtml-var absolute_url>/manage_main" target="_blank"><img src="<dtml-var icon>" title="<dtml-var id> (<dtml-var meta_type>)" border="1" align="absmiddle"/></a
-     ></dtml-if
-    ></dtml-in
-   ></td>
-  </tr>
-  </table>
- </td>
-</tr>
-<dtml-call "REQUEST.set('ZMS_LAST_OBJECT_WAS_PRIMITIVE',True)">
-</dtml-if>
 
 <dtml-comment>
 #####  Primitive #####

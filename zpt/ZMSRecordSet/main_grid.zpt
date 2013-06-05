@@ -88,7 +88,12 @@
 				elValue python:record.get(metaObjAttr['id'])">
 		<td class="data">
 			<tal:block tal:condition="python:metaObjAttr['type']=='url'" tal:define="global target python:here.getLinkObj(elValue)">
-				<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+				<tal:block tal:condition="python:target is not None">
+					<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+				</tal:block>
+				<tal:block tal:condition="not:python:target is not None">
+					<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
+				</tal:block>
 			</tal:block>
 			<tal:block tal:condition="python:metaObjAttr['type']!='url'">
 				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>

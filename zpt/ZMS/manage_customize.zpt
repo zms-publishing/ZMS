@@ -218,14 +218,23 @@ $(function() {
 					<button name="btn" type="submit" class="btn" value="Delete">Delete</button>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
-			<table class="table table-striped">
+			<table class="table table-striped table-hover">
 			<thead>
 				<tr>
+					<th></th>
+					<th>Key</th>
+					<th>Value</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr tal:repeat="conf_key conf_keys">
-					<td><span class="ui-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s?lang=%s&amp;conf_key=%s#Custom\''%(request['URL'],request['lang'],conf_key)" tal:content="conf_key">the conf_key</span></td>
+				<tr tal:repeat="conf_key conf_keys" tal:attributes="class python:['','zmi-selected'][int(conf_key==request.get('conf_key'))]">
+					<td>
+						<div class="btn-group">
+							<a class="btn" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'"><i class="icon-edit"></i></a>
+							<a class="btn" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s&btn=Delete#Custom'%(request['URL'],request['lang'],conf_key); title python:'Delete'"><i class="icon-remove"></i></a>
+						</div>
+					</td>
+					<td><span  tal:content="conf_key">the conf_key</span></td>
 					<td><span tal:content="python:here.getConfProperty(conf_key)">the conf_value</span></td>
 				</tr>
 			</tbody>

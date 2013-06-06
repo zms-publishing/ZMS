@@ -128,12 +128,37 @@ $(function(){
 			}
 		});
 	// Checkboxes
-	$(".zmi-container .right input[name='ids:list']").change(zmiActionButtonsRefresh);
+	$(".zmi-container .right input[name='ids:list']")
+		.change(zmiActionButtonsRefresh)
+		;
 	// Action-Lists
+	$(".zmi-container .zmi-item .zmi-action .btn.split-right")
+		.each( function() {
+				var $div = $(this).parent("div").siblings("div.zmi-manage-main-change:first");
+				var title = $div.html().replace(/<span(.*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
+				$(this).attr("title",title).tooltip({html:true,placement:"right",trigger:"manual"});
+			})
+		.mouseover( function(evt) {
+				$(this).tooltip("show");
+			})
+		.mouseout( function(evt) {
+				$(this).tooltip("hide");
+			})
+		;
 	$(".zmi-container .zmi-item .zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
-		.mouseover( function(evt) { zmiActionOver(this,"mouseover");$(this).parents(".accordion-body.collapse").css({overflow:"visible"});})
-		.mouseout( function(evt) { zmiActionOut(this,"mouseout");$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});})
+		.mouseover( function(evt) {
+				zmiActionOver(this,"mouseover");
+				var $button = $('button.btn.split-right.dropdown-toggle i',this);
+				$button.data("clazz",$button.prop("class")).removeClass($button.prop("class")).addClass("icon-chevron-down");
+				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});
+			})
+		.mouseout( function(evt) {
+				zmiActionOut(this,"mouseout");
+				var $button = $('button.btn.split-right.dropdown-toggle i',this);
+				$button.removeClass($button.prop("class")).addClass($button.data("clazz"));
+				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
+			})
 		;
 	// Inputs
 	zmiInitInputFields($("body"));

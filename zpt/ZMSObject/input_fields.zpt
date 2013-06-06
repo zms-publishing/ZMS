@@ -128,9 +128,9 @@
 											<span class="zmi-ids">
 												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
 											</span>
-											<tal:block tal:content="structure python:childNode.manage_main_change(childNode,request)">
+											<div class="zmi-manage-main-change" tal:content="structure python:childNode.manage_main_change(childNode,request)">
 												the info child-node
-											</tal:block>
+											</div>
 										</div><!-- .right -->
 										<img class="grippy" src="/misc_/zms/spacer.gif"/>
 										<div class="clearboth"></div><!-- .clearboth -->

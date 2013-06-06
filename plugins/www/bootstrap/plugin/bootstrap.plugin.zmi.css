@@ -10,6 +10,9 @@ body.zmi {
 	overflow:hidden;
 	white-space:nowrap;
 }
+.zmi-manage-main-change {
+	display:none;
+}}
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
 }
@@ -750,4 +753,14 @@ div.right .btn .caret {
 		display: none;
 	}
 
+}
+
+.tooltip-inner {
+	text-align:left;
+	min-width: 150px;
+	border:1px solid #ccc;
+	background-color:#fff;
+}
+.tooltip-inner * {
+	color: #000!important;
 }

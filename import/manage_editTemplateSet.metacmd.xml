@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/font-awesome.css" />
 		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css" />
-		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.8.16.custom.css" />
+		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.10.0.custom.css" />
 		<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
 			<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty(key)"></script>
 		</tal:block>

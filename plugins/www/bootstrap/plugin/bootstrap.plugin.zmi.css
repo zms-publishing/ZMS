@@ -207,6 +207,27 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 	padding: 0.1em 0.5em;
 }
 
+.accordion-group.zmi-container {
+	width:1000px!important;
+	background-color:#f4f4f4!important;
+	border-top:transparent;
+	border-right:transparent;
+	border-bottom:transparent;
+}
+.accordion-group.zmi-container .accordion-heading {
+	width:800px!important;
+	background-color:#fff!important;
+}
+.accordion-group.zmi-container .accordion-inner {
+	border-top:transparent;
+}
+.accordion-group.zmi-container .zmi-container > .zmi-item > .center {
+	width:800px!important;
+}
+.accordion-group.zmi-container .zmi-container {
+	width:1000px!important;
+}
+
 .zmi-container > .zmi-item > .center {
 	float:left;
 	width:600px!important;

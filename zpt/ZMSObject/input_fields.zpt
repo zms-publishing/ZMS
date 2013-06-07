@@ -70,7 +70,7 @@
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
 
-	<div class="accordion-group" tal:condition="python:action.lower()!='insert'">
+	<div class="accordion-group zmi-container" tal:condition="python:action.lower()!='insert'">
 		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
 			<tal:block tal:define="global 
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);

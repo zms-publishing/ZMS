@@ -135,8 +135,11 @@ $(function(){
 	$(".zmi-container .zmi-item .zmi-action .btn.split-right")
 		.each( function() {
 				var $div = $(this).parent("div").siblings("div.zmi-manage-main-change:first");
-				var title = $div.html().replace(/<span(.*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
-				$(this).attr("title",title).tooltip({html:true,placement:"right",trigger:"manual"});
+				var title = $div.html();
+				if (typeof title != "undefined") {
+					title = title.replace(/<span(.*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
+					$(this).attr("title",title).tooltip({html:true,placement:"right",trigger:"manual"});
+				}
 			})
 		.mouseover( function(evt) {
 				$(this).tooltip("show");
@@ -668,6 +671,10 @@ function zmiActionExecute(sender, label, target) {
 			if (jQuery.inArray(id,['form_id','id_prefix','_sort_id','custom','lang','preview'])>=0) {
 				data[$input.attr('name')] = $input.val();
 			}
+		}
+		var id_prefix = $(sender).attr("id");
+		if (typeof id_prefix != 'undefined' && id_prefix != '') {
+			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
 		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-selected"><div class="center"><div class="zmiRenderShort">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.

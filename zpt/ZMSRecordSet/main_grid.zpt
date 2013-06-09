@@ -1,6 +1,6 @@
 <!-- ZMSRecordSet/main_grid -->
 
-<tal:block tal:define="global
+<div class="ZMSRecordSet main_grid" tal:define="global
 		metaObjAttrIds options/metaObjAttrIds;
 		metaObjAttrs options/metaObjAttrs;
 		url python:options.get('url',request['URL']);
@@ -110,6 +110,6 @@
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
 	</tal:block>
-</tal:block>
+</div>
 
 <!-- /ZMSRecordSet/main_grid -->

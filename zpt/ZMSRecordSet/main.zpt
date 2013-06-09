@@ -1,13 +1,13 @@
 <!-- ZMSRecordSet/main -->
 
-<tal:block tal:define="global 
+<div class="ZMSRecordSet main"  tal:define="global
 			meta_id options/meta_id;
 			metaObj python:here.getMetaobj(meta_id);
 			metaObjIds python:here.getMetaobjIds();
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			dummy0 python:request.set('qstart',request.get('qstart',request.SESSION.get('qstart_%s'%id,0)));
 			dummy0 python:request.set('qbatch',request.get('qbatch',request.SESSION.get('qbatch_%s'%id,3)));
-			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,10)));
+			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,20)));
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
@@ -111,6 +111,6 @@
 
 </tal:block>
 
-	</tal:block>
+</div>
 
 <!-- /ZMSRecordSet/main -->

@@ -195,7 +195,7 @@ table.table.zmi-sortable input {
 table.table.zmi-sortable img.grippy {
 	margin-bottom:8px;
 }
-tr.zmi-selected td, 
+tr.zmi-selected td, tr.zmi-selected td *,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a {

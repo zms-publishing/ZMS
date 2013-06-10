@@ -18,7 +18,7 @@
 	<input type="hidden" id="custom" name="custom" value="">
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix">
 	<ul class="zmi-container">
-							<li class="zmi-item pageelement" tal:define="global childNode python:here" tal:attributes="id python:''">
+							<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:''">
 								<div class="center">
 									<div class="zmiRenderShort">
 										<h1>
@@ -48,7 +48,7 @@
 	<tal:block tal:repeat="nodelist nodelists">
 		<ul tal:attributes="class python:' '.join(['zmi-container','zmi-sortable',nodelist[0]])" tal:condition="python:len(nodelist[1])>0">
 			<tal:block tal:repeat="childNode python:nodelist[1]">
-									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item',nodelist[0][:-1]])">
+									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable',nodelist[0][:-1]])">
 										<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 											tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
@@ -80,7 +80,7 @@
 
 	<ul class="zmi-container" tal:condition="python:len(here.getPortalClients())>0">
 		<tal:block tal:repeat="childNode python:here.getPortalClients()">
-			<li class="zmi-item" tal:attributes="id python:childNode.id">
+			<li class="zmi-item zmi-selectable" tal:attributes="id python:childNode.id">
 				<div class="center">
 					<div class="contentEditable portalClient" tal:attributes="id python:'contentEditable_%s_%s'%(childNode.getHome().id,request['lang'])" tal:content="structure python:childNode.renderShort(request)">
 						the rendered child-node

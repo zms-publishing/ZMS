@@ -1,3 +1,7 @@
+function onFormSubmit() {
+	return true;
+}
+
 $(function(){
 
 	// Sitemap
@@ -137,15 +141,9 @@ $(function(){
 				var $div = $(this).parent("div").siblings("div.zmi-manage-main-change:first");
 				var title = $div.html();
 				if (typeof title != "undefined") {
-					title = title.replace(/<span(.*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
-					$(this).attr("title",title).tooltip({html:true,placement:"right",trigger:"manual"});
+					title = title.replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
+					$(this).attr("title",title).tooltip({html:true,placement:"right",delay:{show:0,hide:1000}});
 				}
-			})
-		.mouseover( function(evt) {
-				$(this).tooltip("show");
-			})
-		.mouseout( function(evt) {
-				$(this).tooltip("hide");
 			})
 		;
 	$(".zmi-container .zmi-item .zmi-action")
@@ -709,8 +707,7 @@ function zmiActionExecute(sender, label, target) {
  * @param evt
  */
 function zmiActionButtonsRefresh(sender,evt) {
-	var fm = $(sender).parents('form');
-	$("li.zmi-item").each(function() {
+	$(".zmi-selectable").each(function() {
 			if ($("input[name='ids:list']:checked",this).length > 0) {
 				$(this).addClass("zmi-selected");
 			}

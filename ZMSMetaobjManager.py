@@ -736,7 +736,7 @@ class ZMSMetaobjManager:
           newType = 'method'
       if newType in [ 'method', 'DTML Method', 'DTML Document']:
         newCustom = newCustom.replace('\r','')
-      if len(newCustom) > 0:
+      if type(newCustom) is str and len(newCustom) > 0:
         message = _globals.dt_parse( self, newCustom)
         if len( message) > 0:
           attr['errors'] = message

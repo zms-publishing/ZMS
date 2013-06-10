@@ -53,7 +53,6 @@ function zmiStandardOnSubmitEventHandler() {
 	}
 }
 
-<dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
 function zmiRichtextOnSubmitEventHandler() {
 	for (e in zmiRichtextElNames) {
 		var elName = zmiRichtextElNames[e];
@@ -112,6 +111,10 @@ function zmiRichtextResize(id) {
 
 function zmiRichtextInit(id) {
 	pluginCkeditor('#editor_'+id,function() {
+		$('#editor_'+id).parents("form").submit(function() {
+				zmiRichtextOnSubmitEventHandler();
+				return true;
+			});
 		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
 		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';

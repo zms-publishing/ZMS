@@ -4914,10 +4914,7 @@ function onZMSTextareaFormSubmit() {
 			}
 		}
 	}
-	if (!b) {
-		return b;
-	}
-	return onFormSubmit($('#text_'+getZMILang()).parent('form').attr('name'));
+	return b;
 }
 
 $(function() {

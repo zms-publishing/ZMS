@@ -218,7 +218,7 @@ $(function() {
 					<button name="btn" type="submit" class="btn" value="Delete">Delete</button>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
-			<table class="table table-striped table-hover">
+			<table class="table table-striped table-hover table-bordered">
 			<thead>
 				<tr>
 					<th></th>

@@ -110,6 +110,9 @@ function zmiPopulateTypeSelect(sender) {
 }
 
 $(function() {
+		$("table input[name='ids:list']")
+			.change(zmiActionButtonsRefresh)
+			;
 		$("select[name=_type],select[name^=attr_type_]")
 			.focus(function(){zmiPopulateTypeSelect(this)})
 			.hover(function(){zmiPopulateTypeSelect(this)});
@@ -160,7 +163,7 @@ $(function() {
 	<input type="hidden" name="id" tal:attributes="value request/id"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 
-	<select id="populate_type" class="ui-helper-hidden">
+	<select id="populate_type" class="ui-helper-hidden" style="display:none">
 		<option id="type_primitive" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')"></option>
 		<tal:block tal:repeat="type python:here.valid_datatypes">
 			<option tal:attributes="value type; class python:' '.join([['','deprecated'][int(type in here.deprecated_types)]])" tal:content="type">type</option>
@@ -386,7 +389,7 @@ $(function() {
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METAOBJ')">well</p>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-hover table-bordered">
 	<colgroup>
 		<col width="40"/>
 	</colgroup>
@@ -410,7 +413,7 @@ $(function() {
 	</thead>
 	<tbody>
 	<tal:block tal:repeat="metaObjPackage metaObjPackages">
-		<tr tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
+		<tr class="zmi-selectable" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 			<td style="text-align:center;">
 				<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
 			</td>
@@ -427,7 +430,7 @@ $(function() {
 			</td>
 		</tr>
 		<tal:block tal:repeat="metaObj metaObjs">
-			<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+			<tr class="zmi-selectable"  tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td style="text-align:center;">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:metaObj['id']"/>
 				</td>

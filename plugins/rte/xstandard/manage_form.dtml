@@ -93,6 +93,7 @@ function zmiRichtextResize(id) {
 }
 
 function zmiRichtextInit(id) {
+	$('#editor_'+id).parent("form").submit(zmiRichtextOnSubmitEventHandler);
 	var txt = $('#'+id).val();
 	if ( txt.length > 0) {
 		var zmiStandardEditorShow = false;
@@ -125,7 +126,6 @@ function zmiStandardOnSubmitEventHandler() {
 	}
 }
 
-  <dtml-call "REQUEST.set('beforeSubmitBtnClick','zmiRichtextOnSubmitEventHandler(); ')">
   function zmiRichtextOnSubmitEventHandler() {
     for (var e=0; e < zmiRichtextElNames.length; e++) {
       var elName = zmiRichtextElNames[e];

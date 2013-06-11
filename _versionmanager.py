@@ -114,7 +114,7 @@ class VersionItem:
 
     # Management Interface.
     # ---------------------
-    version_object_state = HTMLFile('dtml/versionmanager/version_object_state', globals())
+    version_object_state = _confmanager.ConfDict.template('versionmanager/version_object_state')
 
 
     # --------------------------------------------------------------------------
@@ -442,6 +442,8 @@ class VersionItem:
         master_version = parent.getObjProperty( 'master_version', REQUEST)
       self.setObjProperty( 'master_version', master_version)
       self.setObjState(obj_state,REQUEST['lang'])
+      #-- Set Theme.
+      _confmanager.set_zmi_theme(self)
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified

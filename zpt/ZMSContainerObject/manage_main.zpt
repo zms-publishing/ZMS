@@ -38,6 +38,9 @@
 											<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 										</button>
 									</div><!-- .btn-group -->
+									<span class="zmi-ids">
+										<input type="checkbox" name="active" tal:attributes="title python:here.getZMILangStr('BTN_SLCTALL')+'/'+here.getZMILangStr('BTN_SLCTNONE')"/>
+									</span>
 									<div class="zmi-manage-main-change" tal:content="structure python:here.manage_main_change(childNode,request)">
 										the info child-node
 									</div>

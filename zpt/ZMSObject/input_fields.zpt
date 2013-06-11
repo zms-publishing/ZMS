@@ -21,6 +21,7 @@
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
+				<tal:block tal:content="structure python:here.version_object_state(here,request)">version_object_state</tal:block>
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,

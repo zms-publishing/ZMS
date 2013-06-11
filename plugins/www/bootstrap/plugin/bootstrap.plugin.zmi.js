@@ -132,32 +132,41 @@ $(function(){
 			}
 		});
 	// Checkboxes
+	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
+		.change(function() {
+				selectCheckboxes($(this).attr("form"),$(this).prop("checked"));
+				zmiActionButtonsRefresh($(this));
+			});
 	$(".zmi-container .right input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
 		;
 	// Action-Lists
-	$(".zmi-container .zmi-item .zmi-action .btn.split-right")
-		.each( function() {
-				var $div = $(this).parent("div").siblings("div.zmi-manage-main-change:first");
-				var title = $div.html();
-				if (typeof title != "undefined") {
-					title = title.replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,'');
-					$(this).attr("title",title).tooltip({html:true,placement:"right",delay:{show:0,hide:1000}});
+	$(".zmi-container .zmi-item")
+		.mouseover( function(evt) {
+				$(".right",this).show();
+			})
+		.mouseout( function(evt) {
+				if ($(".right input:checked",this).length == 0) {
+					$(".right",this).hide();
 				}
+			});
+	$(".zmi-container .zmi-item .zmi-manage-main-change")
+		.each( function() {
+				$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
 			})
 		;
 	$(".zmi-container .zmi-item .zmi-action")
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
 		.mouseover( function(evt) {
 				zmiActionOver(this,"mouseover");
-				var $button = $('button.btn.split-right.dropdown-toggle i',this);
-				$button.data("clazz",$button.prop("class")).removeClass($button.prop("class")).addClass("icon-chevron-down");
+				var $button = $('button.btn.split-right.dropdown-toggle',this);
+				$button.data("content",$button.html()).html('<i class="icon-chevron-down"></i>');
 				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});
 			})
 		.mouseout( function(evt) {
 				zmiActionOut(this,"mouseout");
-				var $button = $('button.btn.split-right.dropdown-toggle i',this);
-				$button.removeClass($button.prop("class")).addClass($button.data("clazz"));
+				var $button = $('button.btn.split-right.dropdown-toggle',this);
+				$button.html($button.data("content"));
 				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
 			})
 		;
@@ -555,7 +564,7 @@ function zmiActionOver(el, evt) {
 			optlabel = optlabel.substr("-----".length);
 			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
 			optlabel = optlabel.trim();
-			$("button.split-left",el).html(opticon+optlabel).click(function(){
+			$("button.split-left",el).html(opticon+' '+optlabel).click(function(){
 					return false;
 				});
 		}
@@ -571,7 +580,7 @@ function zmiActionOver(el, evt) {
 					return false;
 				});
 			//
-			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i>'+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))"><i class="icon-check"></i> '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 		}
 		for (var i = 2; i < actions.length; i++) {
 			var optlabel = actions[i][0];
@@ -592,7 +601,7 @@ function zmiActionOver(el, evt) {
 				var html = '';
 				html += '<li class="dropdown-submenu">';
 				html += '<a tabindex="-1" href="#">';
-				html += opticon + optlabel;
+				html += opticon+' '+optlabel;
 				html += '</a>';
 				html += '<ul class="dropdown-menu">';
 				html += '</ul><!-- .dropdown-menu -->';
@@ -636,7 +645,7 @@ function zmiActionOver(el, evt) {
 				}
 				var html = '';
 				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
-				html += opticon + optlabel;
+				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);
 			}
@@ -708,11 +717,13 @@ function zmiActionExecute(sender, label, target) {
  */
 function zmiActionButtonsRefresh(sender,evt) {
 	$(".zmi-selectable").each(function() {
-			if ($("input[name='ids:list']:checked",this).length > 0) {
+			if ($(".right input:checked",this).length > 0) {
 				$(this).addClass("zmi-selected");
+				$(".right",this).show();
 			}
 			else {
 				$(this).removeClass("zmi-selected");
+				$(".right",this).hide();
 			}
 		});
 }

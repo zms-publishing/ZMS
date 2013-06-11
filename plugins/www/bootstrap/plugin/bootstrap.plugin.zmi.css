@@ -11,8 +11,14 @@ body.zmi {
 	white-space:nowrap;
 }
 .zmi-manage-main-change {
-	display:none;
-}}
+	background-color:#fefefe;
+	border-radius:8px;
+	-moz-border-radius:8px;
+	margin:2px;
+}
+.zmi-state {
+	padding:2px;
+}
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
 }
@@ -236,6 +242,7 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 	width:800px!important;
 }
 .zmi-container > .zmi-item > .right {
+	display:none;
 	float:left;
 	width:200px!important;
 }

@@ -1,151 +1,147 @@
 <!-- ZMSObject/input_fields -->
 
-	<tal:block tal:define="global
-			action options/action;
-			meta_id options/meta_id;
-			dummy0 python:request.set('ZMS_HIDE_ELEMENTS',['attr_cacheable']);
-			metaObj python:here.getMetaobj(meta_id);
-			metaObjIds python:here.getMetaobjIds();
-			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-			objAttrs python:here.getObjAttrs(metaObj['id'])">
+<div class="input_fields accordion-group" tal:define="global
+		action options/action;
+		meta_id options/meta_id;
+		dummy0 python:request.set('ZMS_HIDE_ELEMENTS',['attr_cacheable']);
+		metaObj python:here.getMetaobj(meta_id);
+		metaObjIds python:here.getMetaobjIds();
+		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+		objAttrs python:here.getObjAttrs(metaObj['id'])">
 
-	<div class="accordion-group">
+	<div class="accordion-heading">
+		<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
+			<i></i>
+			<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
+		</a>
+		<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+		<div class="clearfix"></div>
+	</div><!-- .accordion-heading -->
+	<div id="attrLastModified" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<tal:block tal:content="structure python:here.version_object_state(here,request)">version_object_state</tal:block>
+			(
+			<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
+				<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+			</tal:block>
+			<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
+			<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
+			)
+		</div><!-- .accordion-inner -->
+	</div><!-- .accordion-body -->
 
-		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
-				<i></i>
-				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
-			</a>
-			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
-			<div class="clearfix"></div>
-		</div><!-- .accordion-heading -->
-		<div id="attrLastModified" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<tal:block tal:content="structure python:here.version_object_state(here,request)">version_object_state</tal:block>
-				(
-				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
-					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
-				</tal:block>
-				<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
-				<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-				)
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
+	<div id="tabProperties" class="accordion-body">
+		<div class="accordion-inner">
 
-		<div id="tabProperties" class="accordion-body">
-			<div class="accordion-inner">
+			<div class="control-group activity">
+				<label class="control-label" for="attrActive">
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</tal:block>
+				</label>
+				<div class="controls">
+					<tal:block tal:condition="python:'active' in objAttrs.keys()">
+						<span class="active" tal:content="structure python:here.getObjInput('active',request)">the control</span>
+						<span class="attr_active_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
+							<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span>
+							<tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block>
+						</span>
+						<span class="attr_active_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
+							<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span>
+							<tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block>
+						</span>
+					</tal:block>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
 
-				<div class="control-group activity">
-					<label class="control-label" for="attrActive">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</tal:block>
-					</label>
-					<div class="controls">
-						<tal:block tal:condition="python:'active' in objAttrs.keys()">
-							<span class="active" tal:content="structure python:here.getObjInput('active',request)">the control</span>
-							<span class="attr_active_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
-								<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span>
-								<tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block>
-							</span>
-							<span class="attr_active_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
-								<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span>
-								<tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block>
-							</span>
-						</tal:block>
-					</div><!-- .controls -->
-				</div><!-- .control-group -->
+			<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>
 
-				<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>
+		</div><!-- .accordion-inner -->
+	</div><!-- .accordion-body -->
 
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
+	<div class="accordion-body">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_%s'%action.upper())" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
+					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</div><!-- .accordion-inner -->
+	</div><!-- .accordion-body -->
+</div><!-- .accordion-group -->
 
-		<div class="accordion-body">
-			<div class="accordion-inner">
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_%s'%action.upper())" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
-						<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-					</div><!-- .controls -->
-				</div><!-- .control-group -->
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
-	</div><!-- .accordion-group -->
-
-	<div class="accordion-group zmi-container" tal:condition="python:action.lower()!='insert'">
-		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
-			<tal:block tal:define="global 
-					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
-					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
-					elLabel python:here.getObjAttrLabel(metaObjAttr);
-					elValue python:here.attr(metaObjAttrId)">
-				<tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])">
-					<tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')">
-						<tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)">
-							<div class="accordion-heading">
-								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
-									<i></i>
-									<tal:block tal:content="elLabel">the label</tal:block>
-								</a>
-								<div class="pull-left" tal:content="python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
-								<div class="clearfix"></div>
-							</div><!-- .accordion-heading -->
-							<tal:block tal:content="structure python:''
-								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','collapse','container']+[[],['in']][int(len(objChildren)>0)]))
-								+'<div class=\042accordion-inner\042>'"></tal:block>
-							<ul class="zmi-container zmi-sortable">
-								<li tal:condition="python:len(objChildren)==0" class="zmi-item zmi-selectable" tal:attributes="id python:metaObjAttr['id']">
-									<div class="center">
-										<div class="zmiRenderShort">&nbsp;</div>
+<div class="accordion-group zmi-container" tal:condition="python:action.lower()!='insert'">
+	<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
+		<tal:block tal:define="global 
+				metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
+				elName python:here.getObjAttrName(metaObjAttr,request['lang']);
+				elLabel python:here.getObjAttrLabel(metaObjAttr);
+				elValue python:here.attr(metaObjAttrId)">
+			<tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])">
+				<tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')">
+					<tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)">
+						<div class="accordion-heading">
+							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+								<i></i>
+								<tal:block tal:content="elLabel">the label</tal:block>
+							</a>
+							<div class="pull-left" tal:content="python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
+							<div class="clearfix"></div>
+						</div><!-- .accordion-heading -->
+						<tal:block tal:content="structure python:''
+							+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','collapse','container']+[[],['in']][int(len(objChildren)>0)]))
+							+'<div class=\042accordion-inner\042>'"></tal:block>
+						<ul class="zmi-container zmi-sortable">
+							<li tal:condition="python:len(objChildren)==0" class="zmi-item zmi-selectable" tal:attributes="id python:metaObjAttr['id']">
+								<div class="center">
+									<div class="zmiRenderShort">&nbsp;</div>
+								</div><!-- .center -->
+								<div class="right">
+									<div class="btn-group zmi-action">
+										<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:9990">the sort-id</span>
+										<button class="btn split-left">
+											&nbsp;
+										</button>
+										<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+									</div><!-- .btn-group -->
+								</div><!-- .right -->
+								<div class="clearboth"></div><!-- .clearboth -->
+							</li><!-- .zmi-item -->
+							<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
+								<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
+									<div class="center" tal:content="structure python:childNode.renderShort(request)">
+										the rendered child-node
 									</div><!-- .center -->
 									<div class="right">
 										<div class="btn-group zmi-action">
-											<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:9990">the sort-id</span>
+											<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
 											<button class="btn split-left">
-												&nbsp;
+												<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+												<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 											</button>
 											<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
-												<span class="caret"></span>
+												<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 											</button>
 										</div><!-- .btn-group -->
+										<span class="zmi-ids">
+											<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
+										</span>
+										<div class="zmi-manage-main-change" tal:content="structure python:childNode.manage_main_change(childNode,request)">
+											the info child-node
+										</div>
 									</div><!-- .right -->
+									<img class="grippy" src="/misc_/zms/spacer.gif"/>
 									<div class="clearboth"></div><!-- .clearboth -->
 								</li><!-- .zmi-item -->
-								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
-									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
-										<div class="center" tal:content="structure python:childNode.renderShort(request)">
-											the rendered child-node
-										</div><!-- .center -->
-										<div class="right">
-											<div class="btn-group zmi-action">
-												<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-												<button class="btn split-left">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-													<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
-												</button>
-												<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-												</button>
-											</div><!-- .btn-group -->
-											<span class="zmi-ids">
-												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
-											</span>
-											<div class="zmi-manage-main-change" tal:content="structure python:childNode.manage_main_change(childNode,request)">
-												the info child-node
-											</div>
-										</div><!-- .right -->
-										<img class="grippy" src="/misc_/zms/spacer.gif"/>
-										<div class="clearboth"></div><!-- .clearboth -->
-									</li><!-- .zmi-item -->
-								</tal:block>
-							</ul><!-- .zmi-container.zmi-sortable -->
-							<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
-						</tal:block>
+							</tal:block>
+						</ul><!-- .zmi-container.zmi-sortable -->
+						<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
 					</tal:block>
 				</tal:block>
 			</tal:block>
 		</tal:block>
-	</div><!-- .accordion-group -->
-
 	</tal:block>
+</div><!-- .accordion-group -->
 
 <!-- /ZMSObject/input_fields -->

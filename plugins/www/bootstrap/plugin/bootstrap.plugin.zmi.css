@@ -10,15 +10,7 @@ body.zmi {
 	overflow:hidden;
 	white-space:nowrap;
 }
-.zmi-manage-main-change {
-	background-color:#fefefe;
-	border-radius:8px;
-	-moz-border-radius:8px;
-	margin:2px;
-}
-.zmi-state {
-	padding:2px;
-}
+
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none!important;
 }
@@ -607,7 +599,6 @@ div.right .zmi-ids input[type="checkbox"] {
 	opacity: 0.5;
 }
 div.right span.form-small {
-	display: block;
 	color:#888;
 	margin-left: 8px;
 }

@@ -4,7 +4,7 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:comment>
 <tal:block tal:define="global refByObjs python:here.getRefByObjs()">
-	<a class="zmi-state btn-success" tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])">
+	<a class="zmi-state" tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])">
 		<i class="icon-link" tal:attributes="title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'))"></i>
 	</a>
 </tal:block>
@@ -22,21 +22,21 @@
 		<tal:block tal:condition="python:len(seq_desc_langs)>1 and coverage.find('global')>=0">
 			<tal:block tal:condition="python:seq_lang!=request['lang']">
 				<tal:block tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)">
-					<span class="zmi-state btn-warning" tal:attributes="onclick python:['','open_frame(\'%s: %s (%s)\',\'%s/manage_VersionLangModified\',\'lang=%s\',440,320,\',resizable=yes,scrollbars=yes\')'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'),here.absolute_url(),request['lang'])][int(here.getHistory())]">
+					<span class="zmi-state" tal:attributes="onclick python:['','open_frame(\'%s: %s (%s)\',\'%s/manage_VersionLangModified\',\'lang=%s\',440,320,\',resizable=yes,scrollbars=yes\')'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'),here.absolute_url(),request['lang'])][int(here.getHistory())]">
 						<i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i>
 					</span>
 				</tal:block>
 				<tal:block tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)">
-					<span class="zmi-state btn-info"><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i></span>
+					<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i></span>
 				</tal:block>
 			</tal:block>
 			<tal:block tal:condition="not:python:seq_lang!=request['lang']">
-				<span class="zmi-state btn-primary"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span>
+				<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span>
 			</tal:block>
 		</tal:block>
 	</tal:block>
 	<tal:block tal:condition="not:python:here.attr('change_uid')">
-		<span class="zmi-state btn-danger"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span>
+		<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span>
 	</tal:block>
 </tal:block>
 
@@ -54,10 +54,10 @@
 				</tal:block>
 			</tal:block>
 		</tal:block>
-		<span class="zmi-state btn-info" tal:condition="python:'STATE_NEW' in objStates"><i class="icon-plus-sign" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></i></span>
-		<span class="zmi-state btn-info" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="icon-pencil" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
-		<span class="zmi-state btn-info" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="icon-edit" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
-		<span class="zmi-state btn-info" tal:condition="python:'STATE_DELETED' in objStates"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></i></span>
+		<span class="zmi-state" tal:condition="python:'STATE_NEW' in objStates"><i class="icon-plus-sign" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></i></span>
+		<span class="zmi-state" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="icon-pencil" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
+		<span class="zmi-state" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="icon-edit" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
+		<span class="zmi-state" tal:condition="python:'STATE_DELETED' in objStates"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></i></span>
 	</tal:block>
 </tal:block>
 

@@ -134,6 +134,7 @@ $(function(){
 	// Checkboxes
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
+				// $(".zmi-manage-main-change").toggle();
 				selectCheckboxes($(this).attr("form"),$(this).prop("checked"));
 				zmiActionButtonsRefresh($(this));
 			});

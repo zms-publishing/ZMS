@@ -134,7 +134,6 @@ $(function(){
 	// Checkboxes
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
-				// $(".zmi-manage-main-change").toggle();
 				selectCheckboxes($(this).attr("form"),$(this).prop("checked"));
 				zmiActionButtonsRefresh($(this));
 			});
@@ -142,14 +141,12 @@ $(function(){
 		.change(zmiActionButtonsRefresh)
 		;
 	// Action-Lists
-	$(".zmi-container .zmi-item")
+	$(".btn-group")
 		.mouseover( function(evt) {
-				$(".right",this).show();
+				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});
 			})
 		.mouseout( function(evt) {
-				if ($(".right input:checked",this).length == 0) {
-					$(".right",this).hide();
-				}
+				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
 			});
 	$(".zmi-container .zmi-item .zmi-manage-main-change")
 		.each( function() {
@@ -162,13 +159,11 @@ $(function(){
 				zmiActionOver(this,"mouseover");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$button.data("content",$button.html()).html('<i class="icon-chevron-down"></i>');
-				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});
 			})
 		.mouseout( function(evt) {
 				zmiActionOut(this,"mouseout");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$button.html($button.data("content"));
-				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
 			})
 		;
 	// Inputs
@@ -720,11 +715,11 @@ function zmiActionButtonsRefresh(sender,evt) {
 	$(".zmi-selectable").each(function() {
 			if ($(".right input:checked",this).length > 0) {
 				$(this).addClass("zmi-selected");
-				$(".right",this).show();
+				$(".zmi-manage-main-change",this).show();
 			}
 			else {
 				$(this).removeClass("zmi-selected");
-				$(".right",this).hide();
+				$(".zmi-manage-main-change",this).hide();
 			}
 		});
 }

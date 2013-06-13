@@ -6,13 +6,14 @@
 	<title>Add ZMS-Object</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
-	<tal:block tal:repeat="href python:[
+	<dtml-in "[
 			'/++resource++zms_/bootstrap/css/bootstrap.min.css',
 			'/++resource++zms_/bootstrap/css/font-awesome.min.css',
 			'/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css',
 			'/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.10.0.custom.css']">
-		<link tal:condition="href" rel="stylesheet" type="text/css" tal:attributes="href href" />
-	</tal:block>
+		<link rel="stylesheet" type="text/css" href="<dtml-var sequence-item>"/>
+	</dtml-in>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/jquery-all.min.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/js/bootstrap.js"></script>
 </head>
 
@@ -26,7 +27,7 @@ function themeChange(el) {
 	else if (v.indexOf('http://')==0) 
 		img_src = v.replace('.zexp','.jpg');
 	else
-		img_src = "<dtml-var MISC_ZMS>"+v.replace('.zexp','.jpg');
+		img_src = "/misc_/zms/"+v.replace('.zexp','.jpg');
 	document.img_theme.src = img_src;
 }
 
@@ -157,32 +158,24 @@ function formOnSubmit(fm) {
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
-		<label class="control-label" for="mobile">Add Default Mobile Theme&nbsp;<sup style="background-color:silver;color:white;"><small>&nbsp;NEW&nbsp;</small></sup></label>
+		<label class="control-label" for="mobile">Mobile</label>
 		<div class="controls">
-			<input type="checkbox" name="mobile:int" value="1" onchange="if($(this).prop('checked')){$('#mobile_preview').show('normal')}else{$('#mobile_preview').hide('normal')}"/>
+			<input type="checkbox" name="mobile:int" value="1" onchange="if($(this).prop('checked')){$('#mobile_preview').css('display','block')}else{$('#mobile_preview').css('display','none')}"/>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<label class="control-label" for="preview">Preview</sup></label>
 		<div class="controls">
-  <table cellspacing="0" cellpadding="1" border="0" bgcolor="#000000">
-  <tr>
-   <td id="preview">
-    <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
-    <tr>
-     <td><img name="img_theme" src="<dtml-var MISC_ZMS><dtml-var default_img_theme>" border="0" width="250" height="160"></td>
-    </tr>
-    </table>
-   </td>
-   <td id="mobile_preview" class="ui-helper-hidden">
-    <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff">
-    <tr>
-     <td><img name="mobile_theme" src="<dtml-var MISC_ZMS>myZMSmobile.jpg" border="0" width="250" height="160"></td>
-    </tr>
-    </table>
-   </td>
-  </tr>
-  </table>
+			<table>
+			<tr>
+				<td>
+					<div id="preview"><img class="img-polaroid" name="img_theme" src="/misc_/zms/<dtml-var default_img_theme>" border="0" width="250" height="160"></div>
+				</td>
+				<td>
+					<div id="mobile_preview" style="display:none"><img class="img-polaroid" name="mobile_theme" src="/misc_/zms/myZMSmobile.jpg" border="0" width="250" height="160"></div>
+				</td>
+			</tr>
+			</table>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
@@ -212,7 +205,7 @@ function formOnSubmit(fm) {
 	<div class="control-group">
 		<div class="controls">
 			<input type="radio" name="initialization:int" value="3"/>
-			<span>with ZMS2Go content&nbsp;<sup style="background-color:silver;color:white;"><small>&nbsp;NEW&nbsp;</small></sup></span>
+			<span>with ZMS2Go content</span>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
@@ -265,6 +258,8 @@ function formOnSubmit(fm) {
 			<span>Add Calendar</span>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
+
+	<hr size="1"/>
 
 	<div class="control-group">
 		<div class="controls">

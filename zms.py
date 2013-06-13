@@ -244,6 +244,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
   obj.setConfProperty('ZMS.autocommit',1)
   obj.setConfProperty('ZMS.Version.autopack',2)
+  obj.setConfProperty('zmi.theme','zpt')
   
   ### Init zcatalog.
   obj.recreateCatalog(lang)

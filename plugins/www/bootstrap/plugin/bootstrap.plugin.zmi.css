@@ -784,12 +784,10 @@ div.right .btn .caret {
 
 }
 
-.tooltip-inner {
-	text-align:left;
-	min-width: 150px;
-	border:1px solid #ccc;
-	background-color:#fff;
-}
-.tooltip-inner * {
-	color: #000!important;
+button.ui-dialog-titlebar-close {
+	color: #FFF!important;
+	background-color: #999!important;
+	background-image: url(/++resource++zms_/bootstrap/img/glyphicons-halflings.png)!important;
+	background-position: -309px 2px!important;
+	background-repeat:no-repeat!important;
 }

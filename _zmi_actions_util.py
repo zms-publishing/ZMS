@@ -217,9 +217,6 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
        (not insert_actions and not metaCmd['id'].startswith('manage_add')):
       canExecute = True
       if canExecute:
-        hasCustomPermission = _globals.dt_html(context,metaCmd.get('custom',''),REQUEST) != False
-        canExecute = canExecute and hasCustomPermission
-      if canExecute:
         hasMetaType = context.meta_id in metaCmd['meta_types'] or 'type(%s)'%context.getType() in metaCmd['meta_types']
         canExecute = canExecute and hasMetaType
       if canExecute:

@@ -39,7 +39,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 }
 
 $(function(){
-	$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),height:'auto',width:'auto'})
+	$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',minWidth:800})
 });
 
 </script>
@@ -51,6 +51,7 @@ $(function(){
 <div class="ui-helper-hidden" tal:condition="python:request.get('id','') in metaCmdIds">
 	<div id="editObj" class="inner" tal:define="global metaCmd python:here.getMetaCmd(request['id'])">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id" tal:attributes="value request/id">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="control-group">
 				<label for="el_id" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
@@ -64,6 +65,14 @@ $(function(){
 				<label for="el_description" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_DC_DESCRIPTION')">Description</span></label>
 				<div class="controls"><input type="text" name="el_description" tal:attributes="value python:metaCmd['description']"/></div><!-- .controls -->
 			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="el_exec:int" class="control-label"><span>Exec.</span></label>
+				<div class="controls"><input type="checkbox" name="el_exec:int" tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="el_icon_clazz" class="control-label"><span>Icon (Class)</span></label>
+				<div class="controls"><input type="text" name="el_icon_clazz" tal:attributes="value python:metaCmd.get('icon_clazz','')"/></div><!-- .controls -->
+			</div><!-- .control-group -->
 			<tal:block tal:define="global ob python:getattr(here,request['id'],None)">
 				<div class="control-group" style="height:20em;" tal:condition="python:ob is not None">
 					<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
@@ -71,15 +80,7 @@ $(function(){
 							<span id="action">manage_edit</span>
 							<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
 						</div>
-						<textarea id="text" name="data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
-					</tal:block>
-					<tal:block tal:condition="python:ob.meta_type=='File' and (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
-						<div class="ui-helper-hidden">
-							<span id="action">manage_edit</span>
-							<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-							<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
-						</div>
-						<textarea id="text" name="filedata:text" class="ui-helper-hidden form-element" tal:content="python:unicode(str(ob.data),'utf-8')" style="width:100%">The object</textarea>
+						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
 					</tal:block>
 					<tal:block tal:condition="python:ob.meta_type=='Page Template'">
 						<div class="ui-helper-hidden">
@@ -88,7 +89,7 @@ $(function(){
 							<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
 							<label for="expand">Expand</label><input id="expand" name="expand:int" class="form-element" tal:attributes="value ob/expand">
 						</div>
-						<textarea id="text" name="text:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
 					</tal:block>
 					<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
 						<div class="ui-helper-hidden">
@@ -97,7 +98,7 @@ $(function(){
 							<label for="params">Parameter List</label><input id="params" name="params" class="form-element" tal:attributes="value ob/params">
 							<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" value="python">
 						</div>
-						<textarea id="text" name="body:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
 					</tal:block>
 
 <!--
@@ -107,7 +108,7 @@ $(function(){
 +++ @see $ZMS_HOME/plugins/www/ace.ajax.org
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -->
-<div id="editor" class="zmiNeutralColorWhite" style="height: 92%; width: 92%;">some text</div>
+<div id="editor" class="zmiNeutralColorWhite" style="height: 92%; width: 100%;">some text</div>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
@@ -122,7 +123,7 @@ $(function() {
 	}
 	else {
 		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
-		var editor = ace.edit("editor");
+		editor = ace.edit("editor");
 		var content_type = null;
 		if ($("input#content_type")) {
 			content_type = $("input#content_type").val();
@@ -162,13 +163,8 @@ $(function() {
 		editor.setTheme("ace/theme/eclipse");
 		editor.getSession().setValue($("textarea#text").val());
 		editor.getSession().on("change",function() {
-				custAutoChange($("textarea#text").val(editor.getSession().getValue()));
+				$("textarea#text").val(editor.getSession().getValue());
 			});
-		var $container = $('#editor').parents('div.control-group:first');
-		var $ta = $('#editor',$container);
-		var taCoords = zmiGetCoords($ta[0],"relative");
-		$ta.css({border:"1px solid black",height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
-		editor.resize();
 	}
 });
 </script>
@@ -176,8 +172,52 @@ $(function() {
 				</div><!-- .control-group -->
 			</tal:block>
 			<div class="control-group">
+				<table>
+				<thead>
+				<tr>
+					<th tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</th>
+					<th tal:content="python:here.getZMILangStr('ATTR_NODE')">Node</th>
+					<th tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</th>
+					<th tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr valign="top">
+					<td tal:content="python:here.getZMILangStr('BTN_EXECUTE')">Execute</td>
+					<td>
+						<div class="single-line input-append zmi-nodes">
+							<textarea tal:attributes="title python:here.getZMILangStr('ATTR_NODE')" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
+						</div>
+					</td>
+					<td>
+						<select name="el_roles:list" multiple="multiple" tal:attributes="size python:min(10,len(here.userdefined_roles()))">
+							<tal:block tal:repeat="role python:here.userdefined_roles()">
+								<tal:block tal:define="global role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)">
+									<option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:[role,role_lang_str][int(role_str!=role_lang_str)]">role</option>
+								</tal:block>
+							</tal:block>
+						</select>
+					</td>
+					<td>
+						<select name="el_meta_types:list" multiple="multiple" tal:attributes="size python:min(10,len(here.getMetaobjIds()+here.metaobj_manager.valid_objtypes))">
+							<tal:block tal:repeat="meta_type python:here.getMetaobjIds()">
+								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+							</tal:block>
+							<tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes">
+								<tal:block tal:define="global meta_type python:'type(%s)'%objtype">
+									<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+								</tal:block>
+							</tal:block>
+						</select>
+					</td>
+				</tr>
+				</tbody>
+				</table>
+			</div><!-- .control-group -->
+			<div class="control-group">
 				<div class="controls">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 		</form>
@@ -189,30 +229,28 @@ $(function() {
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="control-group">
-				<label class="control-label mandatory" for="_id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</label>
+				<label class="control-label mandatory" for="_id"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="controls">
 					<input type="text" name="_id">
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<label class="control-label mandatory" for="_name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</label>
+				<label class="control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="controls">
 					<input type="text" name="_name">
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<label class="control-label mandatory" for="_type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</label>
+				<label class="control-label mandatory" for="_type"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 						<div class="controls">
 					<select name="_type">
 						<option value="Script (Python)">Script (Python)</option>
 						<option value="Page Template">Page Template</option>
-						<option value="DTML Method">DTML Method (@deprecated)</option>
-						<option value="DTML Document">DTML Document (@deprecated)</option>
 					</select>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<label class="control-label mandatory" for="_exec">Exec.</label>
+				<label class="control-label" for="_exec"><span>Exec.</span></label>
 				<div class="controls">
 					<input type="checkbox" name="_exec:int" value="1" checked="checked">
 				</div><!-- .controls -->

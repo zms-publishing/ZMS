@@ -796,6 +796,10 @@ div.right .btn .caret {
 
 }
 
+.ui-dialog .ui-dialog-title {
+	padding:0!important;
+}
+
 button.ui-dialog-titlebar-close {
 	color: #FFF!important;
 	background-color: #999!important;

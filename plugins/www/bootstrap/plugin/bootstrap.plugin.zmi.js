@@ -140,6 +140,29 @@ $(function(){
 	$(".zmi-container .right input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
 		;
+	// Detail-Info
+	$(".zmi-container .zmi-item .zmi-manage-main-change")
+		.each( function() {
+				$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
+			});
+	runPluginCookies(function() {
+			var key = 'zmi-manage-main-change';
+			var value = $.cookies.get(key);
+			$(".zmi-container .zmi-item .zmi-manage-main-change:first")
+				.each( function() {
+						$('<span class="zmi-manage-main-toggle"><i class="icon-info-sign"></i></span>').insertBefore($(this));
+					});
+			$('.zmi-manage-main-toggle .icon-info-sign').on('click',function(event,programmatically,speed) {
+					if (!programmatically) {
+						toggleCookie(key);
+					}
+					$(this).toggleClass('active');
+					$('.zmi-manage-main-change').toggle(typeof speed=='undefined'?'normal':speed);
+				});
+			if (value=='1') {
+				$('.zmi-manage-main-toggle .icon-info-sign').trigger('click',[true,'fast']);
+			}
+		});
 	// Action-Lists
 	$(".btn-group")
 		.mouseover( function(evt) {
@@ -148,22 +171,24 @@ $(function(){
 		.mouseout( function(evt) {
 				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
 			});
-	$(".zmi-container .zmi-item .zmi-manage-main-change")
-		.each( function() {
-				$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
-			})
-		;
 	$(".zmi-container .zmi-item .zmi-action")
+		.each( function(evt) {
+				var $button = $('button.btn.split-right.dropdown-toggle',this);
+				$button.append('<i class="icon-chevron-down"></i>');
+				$('.icon-chevron-down',$button).hide();
+			})
 		.focus( function(evt) { zmiActionOver(this,"focus"); })
-		.mouseover( function(evt) {
+		.hover( function(evt) {
 				zmiActionOver(this,"mouseover");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
-				$button.data("content",$button.html()).html('<i class="icon-chevron-down"></i>');
-			})
-		.mouseout( function(evt) {
+				$(':not(.icon-chevron-down)',$button).hide();
+				$('.icon-chevron-down',$button).show();
+			},
+			function(evt) {
 				zmiActionOut(this,"mouseout");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
-				$button.html($button.data("content"));
+				$('.icon-chevron-down',$button).hide();
+				$(':not(.icon-chevron-down)',$button).show();
 			})
 		;
 	// Inputs
@@ -263,6 +288,7 @@ function zmiInitInputFields(container) {
 						$('#zmiDialog').dialog({
 								autoOpen: false,
 								title: getZMILangStr('CAPTION_WARNING'),
+								closeText: getZMILangStr('BTN_CLOSE'),
 								height: 'auto',
 								width: 'auto'
 							}).html(''
@@ -475,10 +501,12 @@ function zmiIframe(href, data, opt) {
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
+	var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
 		$('#zmiIframe').append('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
 		opt["modal"] = true;
+		opt['maxHeight'] = maxHeight;
 		opt["height"] = "auto";
 		opt["width"] = "auto";
 		$('#zmiIframe').dialog(opt);
@@ -495,6 +523,7 @@ function zmiIframe(href, data, opt) {
 				}
 				else {
 					opt["modal"] = true;
+					opt['maxHeight'] = maxHeight;
 					opt["height"] = "auto";
 					opt["width"] = "auto";
 					$('#zmiIframe').html(result);
@@ -688,7 +717,11 @@ function zmiActionExecute(sender, label, target) {
 				},
 				close:function(event,ui) {
 					$('#manage_addProduct').remove();
-				}
+				},
+				buttons:[
+					{text:getZMILangStr('BTN_INSERT'), name:'btn', class:'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
+					{text:getZMILangStr('BTN_CANCEL'), name:'btn', class:'btn', click: function() { $(this).dialog("close");}}
+				]
 		});
 	}
 	else {
@@ -766,6 +799,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	$('#zmiDialog').dialog({
 			autoOpen: false,
 			title: title,
+			closeText: getZMILangStr('BTN_CLOSE'),
 			height: 'auto',
 			width: 'auto'
 		}).html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>').dialog('open');

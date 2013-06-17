@@ -11,6 +11,7 @@
 
 	<div class="accordion-group">
 
+	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
 				<i></i>
@@ -31,6 +32,7 @@
 				)
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
+	</tal:block>
 
 		<div id="tabProperties" class="accordion-body">
 			<div class="accordion-inner">
@@ -59,7 +61,7 @@
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 
-		<div class="accordion-body">
+		<div class="accordion-body" tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="accordion-inner">
 				<div class="control-group">
 					<div class="controls">
@@ -69,6 +71,7 @@
 				</div><!-- .control-group -->
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
+
 	</div><!-- .accordion-group -->
 
 	<div class="accordion-group zmi-container" tal:condition="python:action.lower()!='insert'">

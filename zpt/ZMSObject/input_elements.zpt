@@ -29,7 +29,7 @@
 					</tal:block>
 
 					<tal:block tal:condition="python:metaObjAttr['type']=='hint'">
-						<div class="zmi-hint" tal:content="elLabel">the hint</div>
+						<div class="zmi-hint" tal:content="structure elLabel">the hint</div>
 					</tal:block>
 
 					<tal:block tal:condition="python:metaObjAttr['type']=='interface'">

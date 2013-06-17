@@ -10,6 +10,17 @@ body.zmi {
 	overflow:hidden;
 	white-space:nowrap;
 }
+.zmi-manage-main-toggle {
+	display: block;
+	margin: 6px 0 0 9px;
+	cursor:pointer;
+}
+.zmi-manage-main-toggle .icon-info-sign {
+	color:#888;
+}
+.zmi-manage-main-toggle .icon-info-sign.active {
+	color:#08c;
+}
 .zmi-manage-main-change {
 	display:none;
 }
@@ -601,7 +612,8 @@ div.right span.form-small {
 	margin-left: 8px;
 }
 div.right .version_object_state {
-	display: inline !important;
+	float: left;
+	margin: 1px 9px;
 }
 div.right a:hover, 
 div.right a:focus {

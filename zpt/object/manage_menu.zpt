@@ -7,6 +7,7 @@
 	white-space:nowrap;
 	overflow:hidden;
 }
+.zmi-sitemap > div,
 .zmi-sitemap ul, 
 .zmi-sitemap ol {
 	margin-top: 0.3em;
@@ -32,7 +33,7 @@ div.restricted a {
 </style>
 
 <script>
-function zmiToggleClick(toggle) {
+function zmiToggleClick(toggle, callback) {
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass("pl")) {
@@ -91,6 +92,9 @@ function zmiToggleClick(toggle) {
 						$container.append(html);
 					}
 				}
+				if (typeof callback == 'function') {
+					callback();
+				}
 			});
 	}
 	else if ($(toggle).hasClass("mi")) {
@@ -101,6 +105,32 @@ function zmiFollowHref(anchor) {
 	self.window.parent.manage_main.location.href=$(anchor).attr("href");
 	return false;
 }
+function zmiRefresh() {
+	var href = self.window.parent.manage_main.location.href;
+	var homeId = $("a.brand").text();
+	if (href.indexOf(homeId)<0) {
+		href = self.window.location.href;
+	}
+	href = href.substr(href.indexOf(homeId)+homeId.length+1);
+	if (href.indexOf('?')>0) {
+		href = href.substr(0,href.indexOf('?'));
+	}
+	href = href.substr(0,href.lastIndexOf('/'));
+	$("ol:not(:first)").remove();
+	var ids = href.split('/');
+	ids = ids.slice(1,ids.length);
+	var fn = function() {
+			if (ids.length > 0) {
+				var id = ids[0];
+				ids = ids.slice(1,ids.length);
+				zmiToggleClick($('#'+homeId+'_'+id+' img.toggle'),arguments.callee());
+			}
+		};
+	zmiToggleClick($('img.toggle').removeClass('mi').addClass("pl"),fn);
+}
+$(function() {
+		zmiRefresh();
+	});
 </script>
 
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
@@ -117,21 +147,20 @@ function zmiFollowHref(anchor) {
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
 
-<div class="zmi-sitemap" tal:define="global childNodes python:here.breadcrumbs_obj_path(); rchildNodes python:here.breadcrumbs_obj_path(); dummy0 python:rchildNodes.reverse()">
-	<tal:block tal:repeat="childNode childNodes">
-		<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
-		<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]">
-			<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
-			<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
-			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
-				<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-				<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
-			</a>
-		</div>
-	</tal:block>
-	<tal:block tal:repeat="childNode rchildNodes">
-		<tal:block tal:content="structure python:'</ol><!-- #%s_%s -->'%(childNode.getHome().id,childNode.id)"></tal:block>
-	</tal:block>
+<div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]">
+	<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
+	<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]">
+		<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
+		<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
+		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
+			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
+		</a>
+	</div>
+	<tal:block tal:content="structure python:'</ol><!-- #%s_%s -->'%(childNode.getHome().id,childNode.id)"></tal:block>
+	<div>
+ 		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+	</div>
 </div>
 
 </body>

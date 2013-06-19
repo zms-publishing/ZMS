@@ -5,10 +5,10 @@
 function zmiToggleClick(toggle, callback) {
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
-	if ($(toggle).hasClass("pl")) {
-		$(toggle).removeClass("pl").addClass("mi").attr({title:'-'});
+	if ($(toggle).hasClass("icon-caret-right")) {
+		$(toggle).removeClass("icon-caret-right").addClass("icon-caret-down").attr({title:'-'});
 		var href= '';
-		var homeId = $("a.brand").text();
+		var homeId = $("a.brand span").text();
 		$(toggle).parents(".zmi-page").each(function(){
 				var id = $(this).attr("id");
 				id = id.substr(homeId.length+1);
@@ -16,7 +16,7 @@ function zmiToggleClick(toggle, callback) {
 			});
 		href = homeId+href;
 		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><img src="/misc_/zms/loading_16x16.gif" alt="'+getZMILangStr('MSG_LOADING')+'" title="'+getZMILangStr('MSG_LOADING')+'" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner" title="'+getZMILangStr('MSG_LOADING')+'"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		$(document.body).css( "cursor", "wait");
 		// JQuery.AJAX.get
 		$.get(href+'/manage_ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
@@ -28,18 +28,18 @@ function zmiToggleClick(toggle, callback) {
 				// Get and iterate pages.
 				var pages = $("pages",data).children("page");
 				if ( pages.length == 0) {
-					$(toggle).removeClass("mi").attr({title:''});
+					$(toggle).removeClass("icon-caret-down").attr({title:''});
 				}
 				else {
 					for (var i = 0; i < pages.length; i++) {
 						var page = pages[i];
 						var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
 						var page_absolute_url = $(page).attr("absolute_url");
-						var page_meta_type = $(page).attr("meta_type");
+						var page_meta_type = $(page).attr("meta_id");
 						var page_titlealt = $(page).attr("titlealt");
 						var page_display_icon = $(page).attr("display_icon");
 						var html = '';
-						html += '<ol id="'+page_id+'" class="zmi-page">';
+						html += '<ol id="'+page_id+'" class="zmi-page '+page_meta_type+'">';
 						html += '<div class="';
 						if (!page.getAttribute("permissions")) {
 							html += 'restricted ';
@@ -50,7 +50,7 @@ function zmiToggleClick(toggle, callback) {
 							html += 'active ';
 						}
 						html += '">';
-						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">';
+						html += '<i class="toggle icon-caret-right" title="+" onclick="zmiToggleClick(this)"></i>';
 						html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
 						html += page_display_icon+' ';
@@ -66,8 +66,8 @@ function zmiToggleClick(toggle, callback) {
 				}
 			});
 	}
-	else if ($(toggle).hasClass("mi")) {
-		$(toggle).removeClass("mi").addClass("pl").attr({title:'+'});
+	else if ($(toggle).hasClass("icon-caret-down")) {
+		$(toggle).removeClass("icon-caret-down").addClass("icon-caret-right").attr({title:'+'});
 	}
 }
 function zmiFollowHref(anchor) {
@@ -92,10 +92,10 @@ function zmiRefresh() {
 			if (ids.length > 0) {
 				var id = ids[0];
 				ids = ids.slice(1,ids.length);
-				zmiToggleClick($('#'+homeId+'_'+id+' img.toggle'),arguments.callee());
+				zmiToggleClick($('#'+homeId+'_'+id+' i.toggle'),arguments.callee());
 			}
 		};
-	zmiToggleClick($('img.toggle').removeClass('mi').addClass("pl"),fn);
+	zmiToggleClick($('i.toggle').removeClass('icon-caret-down').addClass("icon-caret-right"),fn);
 }
 $(function() {
 		zmiRefresh();
@@ -108,8 +108,9 @@ $(function() {
 	<div class="navbar navbar-inverse" style="position: static;">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" tal:attributes="href python:'%s/manage'%here.getHome().id" target="_blank" tal:content="python:here.getHome().id">
-					Home-Id
+				<a class="brand" target="_blank" tal:attributes="href python:'%s/manage'%here.getHome().id">
+					<i class="icon-cogs"></i>
+					<span tal:content="python:here.getHome().id">Home-Id</span>
 				</a>
 			</div><!-- .container -->
 		</div><!-- .navbar-inner -->
@@ -118,11 +119,10 @@ $(function() {
 
 <div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]">
 	<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
-	<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]">
-		<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)">
-		<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
-		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" onclick="return zmiFollowHref(this)">
-			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+	<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"><!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->
+		<i class="toggle icon-caret-right" title="+" onclick="zmiToggleClick(this)"></i><a 
+			tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
+			onclick="return zmiFollowHref(this)"><tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>
 	</div>

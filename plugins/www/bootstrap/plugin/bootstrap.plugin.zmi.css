@@ -263,8 +263,51 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 .zmi-container .zmi-item.pageelement .center > * {
 	padding-left:1.5em;
 }
-.zmi-sitemap .inactive a { 
-	color:#999; 
+body.manage-menu .zmi-page {
+	white-space:nowrap;
+	overflow:hidden;
+}
+body.manage-menu .zmi-sitemap > div,
+body.manage-menu .zmi-sitemap ul, 
+body.manage-menu .zmi-sitemap ol {
+	margin-top: 0.3em;
+	margin-left: 12px;
+}
+body.manage-menu .brand {
+	font-size:small!important;
+}
+body.manage-menu img.toggle {
+	cursor:pointer;
+	width:16px;
+	height:16px;
+}
+body.manage-menu img.toggle.pl {
+	background:url(/misc_/zms/pl.gif) top left no-repeat;
+}
+body.manage-menu img.toggle.mi {
+	background:url(/misc_/zms/mi.gif) top left no-repeat;
+}
+body.manage-menu {
+	background-color:#404040;
+}
+body.manage-menu #zmi-header {
+	background-color: transparent !important;
+}
+body.manage-menu .navbar-inverse .navbar-inner {
+	background-color: transparent !important;
+	background-image:none !important;
+	background-repeat:none !important;
+	border:none !important;
+	border-radius:none !important;
+	border-shadow:none !important;
+}
+body.manage-menu a {
+	color:#FFFFFF
+}
+body.manage-menu div.restricted a,
+body.manage-menu .zmi-sitemap .inactive a,
+body.manage-menu .zmi-helper-clickable {
+	color:#999999;
 }
 
 /*  Font Awesome styles: prevent resetting by CK Editor

@@ -4,10 +4,6 @@
 ></dtml-if
 ><dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/css')">
 
-frame[name="manage_menu"] {
-	border-right:1px solid #CCC;
-}
-
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- Search Form
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

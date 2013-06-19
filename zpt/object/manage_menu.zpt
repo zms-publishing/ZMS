@@ -1,37 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-
-<style>
-.zmi-page {
-	white-space:nowrap;
-	overflow:hidden;
-}
-.zmi-sitemap > div,
-.zmi-sitemap ul, 
-.zmi-sitemap ol {
-	margin-top: 0.3em;
-	margin-left: 12px;
-}
-.brand {
-	font-size:small!important;
-}
-img.toggle {
-	cursor:pointer;
-	width:16px;
-	height:16px;
-}
-img.toggle.pl {
-	background:url(/misc_/zms/pl.gif) top left no-repeat;
-}
-img.toggle.mi {
-	background:url(/misc_/zms/mi.gif) top left no-repeat;
-}
-div.restricted a {
-	color:#CCC;
-}
-</style>
-
 <script>
 function zmiToggleClick(toggle, callback) {
 	var $container = $(toggle).parents("ol:first");
@@ -133,7 +102,7 @@ $(function() {
 	});
 </script>
 
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'manage-menu',here.meta_id])">
 
 <div id="zmi-header">
 	<div class="navbar navbar-inverse" style="position: static;">

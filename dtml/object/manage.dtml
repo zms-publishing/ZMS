@@ -3,7 +3,7 @@
 <dtml-var manage_page_header>
 </head>
 <frameset cols="<dtml-var "REQUEST.get('manage_menu_width',192)">,*" border="0" frameborder="0" framespacing="1">
-<frame name="manage_menu" style="marginWidth="1" marginHeight="1" src="manage_menu?lang=<dtml-var lang>&preview=preview">
+<frame name="manage_menu" marginWidth="1" marginHeight="1" src="manage_menu?lang=<dtml-var lang>&preview=preview">
 <dtml-if "REQUEST.get('dtpref_system','0')=='1'">
 <frame name="manage_main" marginWidth="1" marginHeight="1" src="manage_system?lang=<dtml-var lang>&preview=preview">
 <dtml-else>

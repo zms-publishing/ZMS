@@ -1,8 +1,8 @@
 <dtml-var manage_page_header>
 </head>
 
-<dtml-comment>***** Init parameters *****</dtml-comment
-><dtml-call "SESSION.set('qsize_%s'%id,REQUEST.form.get('qsize',SESSION.get('qsize_%s'%id,20)))"
+<dtml-comment>***** Init parameters *****</dtml-comment>
+<dtml-call "SESSION.set('qsize_%s'%id,REQUEST.form.get('qsize',SESSION.get('qsize_%s'%id,20)))"
 ><dtml-call "REQUEST.set('qsize',SESSION.get('qsize_%s'%id))"
 ><dtml-call "REQUEST.set('qcharset',getattr(this(),'charset','utf-8'))"
 ><dtml-call "REQUEST.set('qstart',REQUEST.get('qstart',0))"
@@ -84,7 +84,13 @@
   <dtml-if "SESSION[sessqentitykey]==id">
    <dtml-call "REQUEST.set('selected','selected=selected')">
   </dtml-if>
-  <dtml-call "headline.append('<option value=%s %s>%s</option>'%(id,selected,label))">
+  <dtml-let roles="getUserRoles(AUTHENTICATED_USER)" access="_['sequence-item'].get('access',{})">
+    <dtml-if "(access.get('select') is None or len(intersection_list(access.get('select'),roles))>0)">
+      <dtml-call "headline.append('<option value=%s %s>%s</option>'%(id,selected,label))">
+    <dtml-else>
+      <dtml-call "headline.append('<option value=%s %s disabled=disabled>%s</option>'%(id,selected,label))">
+    </dtml-if>
+  </dtml-let>
  </dtml-if>
 </dtml-in>
 <dtml-call "headline.append('</select> ')">
@@ -193,4 +199,3 @@
 </dtml-let>
 
 <dtml-var manage_page_footer>
-

@@ -1379,6 +1379,7 @@ class ZMSSqlDb(ZMSObject):
          'insert': REQUEST.get( 'access_insert', []),
          'update': REQUEST.get( 'access_update', []),
          'delete': REQUEST.get( 'access_delete', []),
+         'select': REQUEST.get( 'access_select', []),
         }
         cols = []
         for attr_id in REQUEST.get('attr_ids',[]):

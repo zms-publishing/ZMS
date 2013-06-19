@@ -3312,6 +3312,21 @@
     <Cell><Data ss:Type="String">מצא</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">BTN_SELECT</Data></Cell>
+    <Cell><Data ss:Type="String">Auswählen</Data></Cell>
+    <Cell><Data ss:Type="String">Select</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Choisir</Data></Cell>
+    <Cell><Data ss:Type="String">Selezionare</Data></Cell>
+    <Cell><Data ss:Type="String">Seleccione</Data></Cell>
+    <Cell><Data ss:Type="String">选忖</Data></Cell>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">انتخاب</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">выбрать</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">कृपया सयन करे</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">رجاء الاختيار</Data></Cell>
+    <Cell><Data ss:Type="String">Hãy lựa chọn</Data></Cell>
+    <Cell><Data ss:Type="String">אנא בחר</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">BTN_SEND</Data></Cell>
     <Cell><Data ss:Type="String">Abschicken</Data></Cell>
     <Cell><Data ss:Type="String">Send</Data></Cell>

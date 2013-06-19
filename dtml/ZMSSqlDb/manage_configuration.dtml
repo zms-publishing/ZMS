@@ -256,7 +256,7 @@ function mms_normalize_rows(el_tbody) {
        <dtml-if "entity.get('access') is None">
         <dtml-call "operator_setitem(entity,'access',{})">
        </dtml-if>
-       <dtml-in "['insert','update','delete']">
+       <dtml-in "['insert','update','delete','select']">
         <dtml-let action=sequence-item>
          <tr valign="middle" class="zmiTableRowEven">
           <td><div class="form-small"><b><dtml-var "getZMILangStr('BTN_%s'%action.upper())"></b></div></td>

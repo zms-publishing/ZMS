@@ -58,8 +58,12 @@ class ZMSTrashcan(ZMSContainerObject):
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_userForm','manage_user',
         )
+    __viewPermissions__ = (
+        'manage_ajaxGetChildNodes',
+        )
     __ac_permissions__=(
         ('ZMS Author', __authorPermissions__),
+        ('View', __viewPermissions__),
         )
 
     # Management Interface.
@@ -172,7 +176,6 @@ class ZMSTrashcan(ZMSContainerObject):
         #-- Update time-stamp.
         setattr(self,'last_garbage_collection',now)
 
-
     # --------------------------------------------------------------------------
     #  ZMSTrashcan._verifyObjectPaste:
     #
@@ -201,13 +204,11 @@ class ZMSTrashcan(ZMSContainerObject):
     def isPage(self):
       return False
 
-
     # --------------------------------------------------------------------------
     #  ZMSObject.isPageContainer:
     # --------------------------------------------------------------------------
     def isPageContainer(self):
       return True
-
 
     # --------------------------------------------------------------------------
     #  ZMSTrashcan.getObjProperty

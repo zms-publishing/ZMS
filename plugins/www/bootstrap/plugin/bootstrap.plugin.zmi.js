@@ -239,7 +239,7 @@ function zmiInitInputFields(container) {
 				$(".zmi-input-error",this).removeClass("zmi-input-error");
 				$(".control-group label.control-label.mandatory",this).each(function() {
 						var $label = $(this);
-						var labelText = $label.text().trim();
+						var labelText = $label.text().basicTrim();
 						var $controlGroup = $label.parents(".control-group");
 						var $controls = $(".controls",$controlGroup);
 						var $control = $('input:text,input:file,select:not([name^="zms_mms_src_"])',$controls);
@@ -249,7 +249,7 @@ function zmiInitInputFields(container) {
 							var isBlank = false;
 							var nodeName = $control.prop("nodeName").toLowerCase();
 							if (nodeName=="input") {
-								isBlank = $control.val().trim().length==0;
+								isBlank = $control.val().basicTrim().length==0;
 							}
 							else if (nodeName=="select") {
 								isBlank = ($("option:selected",$control).length==0) 
@@ -588,7 +588,7 @@ function zmiActionOver(el, evt) {
 			var optlabel = actions[1][0];
 			optlabel = optlabel.substr("-----".length);
 			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
-			optlabel = optlabel.trim();
+			optlabel = optlabel.basicTrim();
 			$("button.split-left",el).html(opticon+' '+optlabel).click(function(){
 					return false;
 				});
@@ -622,7 +622,7 @@ function zmiActionOver(el, evt) {
 				}
 				optlabel = optlabel.substr("-----".length);
 				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
-				optlabel = optlabel.trim();
+				optlabel = optlabel.basicTrim();
 				var html = '';
 				html += '<li class="dropdown-submenu">';
 				html += '<a tabindex="-1" href="#">';
@@ -719,10 +719,10 @@ function zmiActionExecute(sender, label, target) {
 					$('#manage_addProduct').remove();
 				},
 				buttons:[
-					{text:getZMILangStr('BTN_INSERT'), name:'btn', class:'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
-					{text:getZMILangStr('BTN_CANCEL'), name:'btn', class:'btn', click: function() { $(this).dialog("close");}}
+						{text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
+						{text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn', click: function() { $(this).dialog("close");}}
 				]
-		});
+			});
 	}
 	else {
 		var $div = $el.parents("div.right");

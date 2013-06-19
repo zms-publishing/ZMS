@@ -27,7 +27,7 @@
 						<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_crop" src="/misc_/zms/image_crop.png" alt="Crop image"/></div>
 						<div id="ZMSGraphic_extEdit_vslider" style="height:100px;"></div><br/>
 						<div id="ZMSGraphic_extEdit_perc" class="form-small"></div>
-						<div><img src="<dtml-var spacer_gif>" alt="" border="0" width="30" height="1"/></div>
+						<div><img src="/misc_/zms/spacer.gif" alt="" border="0" width="30" height="1"/></div>
 					</td>
 					<td class="zmiNeutralColorMedium0">
 						<div id="ZMSGraphic_extEdit_image" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);">

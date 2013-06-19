@@ -263,6 +263,13 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 .zmi-container .zmi-item.pageelement .center > * {
 	padding-left:1.5em;
 }
+.properties .control-group.activity input.form-element.datetimepicker {
+	width:12.7em !important;
+}
+#zmiIframe .control-group.activity input.form-element.datetimepicker {
+	width:8.4em !important;
+}
+
 /*  Sitemap Menu 
     ------------------------------------------------------- */
 body.manage-menu .zmi-page {
@@ -804,26 +811,29 @@ div.right .btn .caret {
 		margin-left: 0px;
 		width:auto;
 	}
-	.zmi.properties .control-group.activity label.control-label {
+	.control-group.activity label.control-label {
 		position: absolute;
 		display: block;
 		margin-bottom: 3em;
 	}
-	.zmi.properties .control-group.activity .active {
-		margin: 0.6em 0 1em 1.35em;
+	.control-group.activity .active {
+		margin: 0.6em 0 1em 1.35em !important;
 	}
-	.zmi.properties span.attr_active_start, 
-	.zmi.properties span.attr_active_end {
+	#zmiIframe.control-group.activity .active {
+		margin: 0 !important;
+	}
+	.control-group.activity span.attr_active_start,
+	.control-group.activity span.attr_active_end {
 		position: relative;
 		display: block;
 		text-align: left;
 		clear: both;
 	}
-	.zmi.properties span.attr_active_start {
+	.control-group.activity span.attr_active_start {
 		margin-bottom:1em;
 	}
-	.zmi.properties span.attr_active_start .form-label, 
-	.zmi.properties span.attr_active_end .form-label {
+	.control-group.activity span.attr_active_start .form-label, 
+	.control-group.activity  span.attr_active_end .form-label {
 		display: inline-block;
 		width: 2em;
 	}

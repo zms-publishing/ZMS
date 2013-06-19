@@ -91,7 +91,7 @@ try:
   if zmscontext.getLevel()==0:
     icon_clazz = 'icon-home'
   else:
-    icon_clazz = 'icon-file'
+    icon_clazz = 'icon-file-alt'
   return icon_clazz
 except:
   return None

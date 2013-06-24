@@ -50,8 +50,9 @@ function zmiToggleClick(toggle, callback) {
 							html += 'active ';
 						}
 						html += '">';
-						html += '<i class="toggle icon-caret-right" title="+" onclick="zmiToggleClick(this)"></i>';
-						html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
+						html += '<i class="toggle icon-caret-right" title="+" onclick="zmiToggleClick(this)">';
+						html += '<' +'/i>';
+						// html += '<!-- img class="grippy" src="/misc_/zms/spacer.gif" / -->';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
 						html += page_display_icon+' ';
 						html += page_titlealt;

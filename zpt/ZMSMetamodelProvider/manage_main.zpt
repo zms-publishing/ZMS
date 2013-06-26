@@ -385,14 +385,14 @@ $(function() {
 		tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
 		tal:define="global roleOptpl python:[]">
 		<tal:block tal:repeat="role python:here.userdefined_roles()">
-			<tal:block tal:define="role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)">
-				<tal:block tal:condition="python: role not in ['ZMSSubscriber','ZMSUserAdministrator']">
-					<tal:block tal:condition="python:role_str==role_lang_str">
-						<tal:block tal:define="roleappend0 python:roleOptpl.append([role,role])"></tal:block>
-					</tal:block>
-					<tal:block tal:condition="python:role_str!=role_lang_str">
-						<tal:block tal:define="roleappend1 python:roleOptpl.append([role,role_lang_str])"></tal:block>
-					</tal:block>
+			<tal:block 
+				tal:define="role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)"
+				tal:condition="python: role not in ['ZMSSubscriber','ZMSUserAdministrator']">
+				<tal:block tal:condition="python:role_str==role_lang_str">
+					<tal:block tal:define="roleappend0 python:roleOptpl.append([role,role])"></tal:block>
+				</tal:block>
+				<tal:block tal:condition="python:role_str!=role_lang_str">
+					<tal:block tal:define="roleappend1 python:roleOptpl.append([role,role_lang_str])"></tal:block>
 				</tal:block>
 			</tal:block>
 		</tal:block>
@@ -401,8 +401,7 @@ $(function() {
 			<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')" style="text-align:left">TAB_ACCESS</th>
 			<td tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</td>
 			<td tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</td>
-			<td 
-				tal:repeat="role roleOptpl"
+			<td tal:repeat="role roleOptpl"
 				tal:content="structure python:role[1]">
 				ROLENAME
 			</td>
@@ -417,21 +416,21 @@ $(function() {
 				</tal:block>&nbsp;
 			</td>
 			<td>
-				<tal:block tal:condition="python:action=='insert'">
-					<textarea cols="80" rows="1" wrap="virtual"
-						tal:attributes="name python:'access_%s_custom'%(action)" 
-						tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
-						NODES
-					</textarea>
-				</tal:block>&nbsp;
+				<textarea cols="80" rows="1" wrap="virtual"
+					tal:condition="python:action=='insert'"
+					tal:attributes="name python:'access_%s_custom'%(action)" 
+					tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
+					NODES
+				</textarea>&nbsp;
 			</td>
 			<td tal:repeat="role roleOptpl">
 				<input type="checkbox" 
-						tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
+					tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
 			</td>
 		</tr>
 
 	</table>
+
 	<!-- EO Access -->
 
 </tal:block>

@@ -4163,15 +4163,9 @@ if key.startswith('table_'):
 		bgcolor_border python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_border'),'transparent');
 		bgcolor_title python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_title'),'transparent');
 		bgcolor_text python:here.get_colormap().get(zmscontext.attr('attr_bgcolor_text'),'transparent');
-		element_icon python:'' \
-				+'<div class=\'ZMSTeaserElement\' style=\'width:30px\'>' \
-				+'<div align=\'center\' class=\'title\' style=\'background-color:%s\'>'%bgcolor_title \
-				+'<img src=\'/misc_/zms/spacer.gif\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'/></div>'%here.getZMILangStr('ATTR_TITLE') \
-				+'<div align=\'center\' class=\'text\' style=\'background-color:%s\'>'%bgcolor_text \
-				+'<img src=\'/misc_/zms/spacer.gif\' title=\'%s\' border=\'0\' width=\'24\' height=\'4\'/></div>'%here.getZMILangStr('ATTR_TEXT') \
-				+'</div>'">
-<tal:block tal:content="structure python:here.f_headline(headline=here.getZMILangStr('ATTR_BORDERSTYLE'))">Border-Style</tal:block>
-<table cellspacing="2" cellpadding="1" border="0">
+		element_icon python: '<div class=\042ZMSTeaserElement\042 style=\042width:30px\042>' + '<div align=\042center\042 class=\042title\042 style=\042background-color:%s\042>'%bgcolor_title + '<img src=\042/misc_/zms/spacer.gif\042 title=\042%s\042 border=\0420\042 width=\04224\042 height=\0424\042 /></div>'%(here.getZMILangStr('ATTR_TITLE')) + '<div align=\042center\042 class=\042text\042 style=\042background-color:%s\042>'%(bgcolor_text) + '<img src=\042/misc_/zms/spacer.gif\042 title=\042%s\042 border=\0420\042 width=\04224\042 height=\0424\042/></div>'%(here.getZMILangStr('ATTR_TEXT')) + '</div>'">
+<p style="font-weight:bold;border-bottom: 1px solid #ddd;" tal:content="python:here.getZMILangStr('ATTR_BORDERSTYLE')">Border-Style</p>
+<table cellspacing="2" cellpadding="1" border="0" title="JAVASCRIPT IS AT WORK" style="display:none">
 <tr valign="top">
 <!-- ##### Border-Style 1=SOLID ##### -->
 	<td class="form-element">
@@ -4472,7 +4466,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.0]]></item>
+          <item key="revision"><![CDATA[1.8.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

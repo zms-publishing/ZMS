@@ -60,7 +60,7 @@
 		</tal:block>
 	</tal:block>
 	<tr>
-		<td><i class="icon-plus"></i></td>
+		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
 		<td><input type="text" name="language_id"></td>
 		<td><input type="text" name="language_label"></td>
 		<td>
@@ -102,7 +102,7 @@
 		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
 	</tr>
 	<tr>
-		<td><i class="icon-plus"></i></td>
+		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
 		<td><input type="text" name="_key"></td>
 		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
 	</tr>

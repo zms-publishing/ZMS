@@ -110,7 +110,7 @@
 	</tal:block>
 	<tr>
 		<td></td>
-		<td><i class="icon-plus"></i></td>
+		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
 		<td><input type="text" name="_id"></td>
 		<td><input type="text" name="_name"></td>
 		<td>
@@ -125,7 +125,7 @@
 		<td align="center"><input type="checkbox" name="_multilang:int" value="1"></td>
 		<td align="center"><input type="checkbox" name="_repetitive:int" value="1"></td>
 		<td>
-			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+			<button name="btn" type="submit" class="btn btn-inverse" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 		</td>
 	</tr>
 	</tbody>

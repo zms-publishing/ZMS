@@ -247,6 +247,7 @@ $(function() {
 			<col width="1em"/>
 			<col width="1em"/>
 			<col width="1em"/>
+			<col width="100%"/>
 		</colgroup>
 		<thead>
 			<tr>
@@ -259,13 +260,12 @@ $(function() {
 				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
 				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
 				<th></th>
-				<th></th>
 			<tr>
 		</thead>
 		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
 			<tr tal:repeat="objAttrId objAttrIds">
 				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId,syncTypes=['*']); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
-					<td>
+					<td class="meta-sort">
 						<img class="grippy" src="/misc_/zms/spacer.gif" />
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
 						<div class="input-append">
@@ -276,35 +276,32 @@ $(function() {
 						</div>
 					</td>
 					<tal:block tal:condition="python:objAttr['type'] in ['interface']">
-						<td colspan="7">
+						<td colspan="7" class="meta-interface">
 							<input type="hidden" tal:attributes="name python:'attr_id_%s'%objAttr['id']; value python:objAttr['id']"/>
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
 							<div class="single-line"><textarea tal:attributes="name python:'attr_name_%s'%objAttr['id']" tal:content="objAttr/name">name</textarea></div>
 						</td>
 					</tal:block>
 					<tal:block tal:condition="python:objAttr['type'] not in ['interface']">
-						<td><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['','zmi-element-disabled'][isMetaDictAttr]"/></td>
-						<td><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['','zmi-element-disabled'][isMetaDictAttr]"/></td>
+						<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['','zmi-element-disabled'][isMetaDictAttr]"/></td>
+						<td class="meta-name"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['','zmi-element-disabled'][isMetaDictAttr]"/></td>
 						<tal:block tal:condition="python:objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
-							<td colspan="5">
+							<td colspan="5" class="meta-code">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<div class="single-line">
-									<tal:block tal:condition="python:objAttr['type'] in ['method','py','zpt']" tal:define="ob python:getattr(here,'%s.%s'%(metaObj['id'],objAttr['id']),None)">
-										<tal:block tal:condition="python:ob is not None">
-											<a tal:attributes="href python:'%s/manage'%ob.absolute_url()" target="_blank"><img tal:attributes="src ob/icon; title ob/meta_type"/></a>
-										</tal:block>
-									</tal:block>
-									<tal:block tal:condition="python:objAttr['type'] in here.valid_zopetypes" tal:define="ob python:getattr(here.getHome(),objAttr['id'],None)">
-										<tal:block tal:condition="python:ob is not None">
-											<a tal:attributes="href python:'%s/manage'%ob.absolute_url()" target="_blank"><img tal:attributes="src ob/icon; title ob/meta_type"/></a>
-										</tal:block>
-									</tal:block>
-									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type'])" tal:content="python:objAttr['custom']">custom</textarea>
+								<div class="single-line" 
+									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
+										ob python:[getattr(here,'%s.%s'%(metaObj['id'],objAttr['id']),None), getattr(here.getHome(),objAttr['id'],None)][zopetype]">
+									<textarea 
+										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+											class python:''.join(objAttr['type'].lower().split(' '));
+											data-style python:'background: #eee url(%s) 3px 6px no-repeat no-repeat'%(ob.icon);
+											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+										tal:content="python:objAttr['custom']">custom</textarea>
 								</div>
 							</td>
 						</tal:block>
 						<tal:block tal:condition="python:objAttr['type'] in ['resource']">
-							<td colspan="5">
+							<td colspan="5" class="meta-resource">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 								<input type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']">
 								<tal:block tal:condition="python:objAttr.get('custom')">
@@ -317,7 +314,7 @@ $(function() {
 							</td>
 						</tal:block>
 						<tal:block tal:condition="python:objAttr['type'] not in ['method','py','resource','zpt']+here.valid_zopetypes">
-							<td>
+							<td class="meta-type">
 								<select tal:attributes="name python:'attr_type_%s'%objAttrId; class python:['','zmi-element-disabled'][isMetaDictAttr]">
 									<option tal:attributes="value python:objAttr['type']" selected="selected">
 										<tal:block tal:condition="python:objAttr['type'] in here.valid_datatypes" tal:content="python:objAttr['type']">type</tal:block>
@@ -326,11 +323,11 @@ $(function() {
 									</option>
 								</select>
 							</td>
-							<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
+							<td class="meta-mandatory" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
 							<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
-							<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
-							<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
-							<td>
+							<td class="meta-multilang" tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
+							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
+							<td class="meta-default">
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join(['zmi-element-key']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
@@ -349,15 +346,14 @@ $(function() {
 								</div>
 							</td>
 						</tal:block>
-						<td></td>
 					</tal:block>
 				</tal:block>
 			</tr>
 			<tr>
-				<td style="text-align: right; padding: 12px 16px;"><i class="icon-plus"></i></td>
-				<td><input type="text" name="attr_id"/></td>
-				<td><input type="text" name="attr_name"/></td>
-				<td>
+				<td style="text-align: right; padding: 0.9em 1.8em;"><i class="icon-plus"></i></td>
+				<td class="meta-id"><input type="text" name="attr_id"/></td>
+				<td class="meta-name"><input type="text" name="attr_name"/></td>
+				<td class="meta-type">
 					<select name="_type">
 						<option tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')">type</option>
 					</select>
@@ -366,7 +362,7 @@ $(function() {
 				<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" name="_custom:int" value="1"/></td>
 				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
 				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_repetitive:int" value="1"/></td>
-				<td colspan="2">
+				<td>
 					<button name="btn" type="submit" class="btn btn-inverse" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="$('input[name=key]',this.form).val('attr')">Insert</button>
 				</td>
 			</tr>
@@ -381,7 +377,7 @@ $(function() {
 	</div><!-- .control-group -->
 
 	<!-- BO Access -->
-	<table class="table table-striped table-bordered" style="margin:4em 0 0;"
+	<table class="table table-striped table-bordered meta-access"
 		tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
 		tal:define="global roleOptpl python:[]"
 		><tal:block tal:repeat="role python:here.userdefined_roles()"
@@ -403,6 +399,7 @@ $(function() {
 			<td tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</td>
 			<td tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</td>
 			<td tal:repeat="role roleOptpl" tal:content="structure python:role[1]">ROLENAME</td>
+			<td style="width:100%;">&nbsp;</td>
 		</tr>
 		<tr tal:repeat="action python:['insert','delete']">
 			<td tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())" style="text-align:left">ACTION</td>
@@ -418,12 +415,13 @@ $(function() {
 					tal:attributes="name python:'access_%s_custom'%(action)" 
 					tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
 					NODES
-				</textarea>&nbsp;
+				</textarea>
 			</td>
 			<td tal:repeat="role roleOptpl">
 				<input type="checkbox" 
 					tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
 			</td>
+			<td>&nbsp;</td>
 		</tr>
 	</table>
 	<!-- EO Access -->

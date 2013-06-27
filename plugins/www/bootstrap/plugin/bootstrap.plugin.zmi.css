@@ -444,17 +444,35 @@ div.accordion-heading div.pull-left {
 	margin:0;
 }
 div.single-line {
-	width:98%;
+	width:100%;
 }
 div.single-line.input-append {
-	width:80%;
+	width:100%;
 }
 div.single-line textarea {
 	height:20px;
 	overflow:hidden;
-	width:90%;
 	font-family:"Courier New", Courier, monospace;
+	width:100%;
 }
+.zmi.metas table.table-striped td.meta-sort {
+	padding-right:1.25em
+}
+.zmi.metas table.table-striped td.meta-interface,
+.zmi.metas table.table-striped td.meta-default,
+.zmi.metas table.table-striped td.meta-code {
+	padding-right:50px
+}
+.zmi.metas table.table-striped td.meta-id input,
+.zmi.metas table.table-striped td.meta-name input,
+.zmi.metas table.table-striped td.meta-type select,
+.zmi.metas table.meta-access textarea  {
+	width:160px;
+}
+.zmi.metas table.meta-access {
+	margin:4em 0 0;
+}
+
 #zmi-single-line-edit textarea {
 	font-family:"Courier New", Courier, monospace;
 }

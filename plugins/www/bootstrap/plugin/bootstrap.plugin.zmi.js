@@ -26,41 +26,58 @@ $(function(){
 			}
 			if ($("span.add-on",this).length==0) {
 				$(this).addClass("input-append");
-				$(this).append('<span class="add-on">...</span>');
-				$('span.add-on',this).click(function() {
-						var html = '';
-						html = html
-							+ '<div id="zmi-single-line-edit">'
-								+ '<form class="form-horizontal" name="zmi-single-line-form">';
-						if ($(this).closest("div.single-line").hasClass("zmi-nodes")) {
-							html = html
-									+ '<div class="controls">'
-										+ '<div class="input-append">'
-											+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
-											+ '<span class="add-on" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
-										+ '</div><!-- .input-append -->'
-									+ '</div><!-- .controls -->';
+				if ($textarea.attr('data-style')) {
+					$(this).append('<span class="add-on" title="Click for Code Popup or Dbl-Click for Zope Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
+				} else {
+					$(this).append('<span class="add-on">...</span>');
+				};
+				var clicks, timer, delay;
+				clicks=0;delay=500;timer=null;
+				$('span.add-on',this).on('click', function(){
+					clicks++;
+					timer = setTimeout(function() {
+						switch(clicks){
+							case 1:
+								var html = '';
+								html = html
+									+ '<div id="zmi-single-line-edit">'
+										+ '<form class="form-horizontal" name="zmi-single-line-form">';
+								if ($(this).closest("div.single-line").hasClass("zmi-nodes")) {
+									html = html
+											+ '<div class="controls">'
+												+ '<div class="input-append">'
+													+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
+													+ '<span class="add-on" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
+												+ '</div><!-- .input-append -->'
+											+ '</div><!-- .controls -->';
+								}
+								html = html
+											+ '<textarea style="width:98%" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
+										+ '</form>'
+									+ '</div><!-- #zmi-single-line-edit -->';
+								$('#zmi-single-line-edit').remove();
+								$('body').append(html);
+								$('#zmi-single-line-edit').dialog({
+									modal:true,
+									resizable:true,
+									title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
+									resize: function( event, ui ) {
+										var $container = $('#zmi-single-line-edit');
+										var $ta = $('textarea',$container);
+										var taCoords = zmiGetCoords($ta[0],"relative");
+										$ta.css({height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
+									},
+									close: function( event, ui ) {
+										$textarea.val($('#zmi-single-line-edit textarea').val());
+									}});
+							break;
+							case 2:
+								eval($textarea.attr('data-dblclickhandler'));
+							break;
 						}
-						html = html
-									+ '<textarea style="width:98%" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
-								+ '</form>'
-							+ '</div><!-- #zmi-single-line-edit -->';
-						$('#zmi-single-line-edit').remove();
-						$('body').append(html);
-						$('#zmi-single-line-edit').dialog({
-							modal:true,
-							resizable:true,
-							title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
-							resize: function( event, ui ) {
-								var $container = $('#zmi-single-line-edit');
-								var $ta = $('textarea',$container);
-								var taCoords = zmiGetCoords($ta[0],"relative");
-								$ta.css({height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
-							},
-							close: function( event, ui ) {
-								$textarea.val($('#zmi-single-line-edit textarea').val());
-							}});
-					});
+					clicks=0;
+					}, delay);
+				});
 			}
 		});
 

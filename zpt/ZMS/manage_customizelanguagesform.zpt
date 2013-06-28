@@ -76,8 +76,12 @@
 	</tr>
 	</tbody>
 	</table>
-	<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+	<div class="control-group">
+		<div class="controls save">
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		</div>
+	</div>
 </form>
 
 <form class="form-horizontal" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
@@ -108,11 +112,15 @@
 	</tr>
 	</tbody>
 	</table>
-	<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
-	&nbsp;&nbsp;
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="alert('@todo');return false;">Export...</button>
+	<div class="control-group">
+		<div class="controls save">
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+			&nbsp;&nbsp;
+			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="alert('@todo');return false;">Export...</button>
+		</div>
+	</div>
 </form>
 
 <div id="importLangDict" class="ui-helper-hidden">

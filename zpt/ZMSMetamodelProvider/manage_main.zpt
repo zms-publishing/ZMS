@@ -229,7 +229,7 @@ $(function() {
 	</div><!-- .control-group -->
 
 	<div class="control-group">
-		<div class="controls">
+		<div class="controls save">
 			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
 			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
@@ -306,9 +306,9 @@ $(function() {
 								<input type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']">
 								<tal:block tal:condition="python:objAttr.get('custom')">
 									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
-									<a tal:attributes="href python:objAttr['custom'].absolute_url(); title python:here.getDataSizeStr(objAttr['custom'].get_size())" target="_blank">
+									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank">
 										<img tal:attributes="src python:here.getMimeTypeIconSrc(objAttr['custom'].content_type); title python:objAttr['custom'].content_type" />
-										<tal:block tal:content="python:objAttr['custom'].title">title</tal:block>
+										<tal:block tal:content="python:(fname[:11] + '...') if len(fname) > 11 else fname">FILE NAME</tal:block>
 									</a>
 								</tal:block>
 							</td>
@@ -370,7 +370,7 @@ $(function() {
 	</table>
 
 	<div class="control-group">
-		<div class="controls">
+		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
 		</div><!-- .controls -->

@@ -92,12 +92,12 @@
 			<div class="controls" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(request['id'],'profile',''),enabled=True,REQUEST=request)">the control</div><!-- .controls -->
 		</div><!-- .control-group -->
 		<div class="control-group">
-			<div class="controls">
+			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')"><i class="icon-ok"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
 				<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><i class="icon-trash"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 				&nbsp;&nbsp;
 				<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-			</div><!-- .controls -->
+			</div>
 		</div><!-- .control-group -->
 	</tal:block>
 </tal:block>

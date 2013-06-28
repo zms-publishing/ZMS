@@ -33,7 +33,7 @@
 		</tal:block>
 	</div><!-- .accordion-group -->
 	<div class="control-group">
-		<div class="controls">
+		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .controls -->

@@ -36,11 +36,11 @@
 			</table>
 		</label>
 		<div class="controls">
-			<textarea class="input-xxlarge" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
+			<textarea class="input-xxlarge" style="width:99%" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
-		<div class="controls">
+		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->

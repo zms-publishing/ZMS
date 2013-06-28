@@ -64,7 +64,7 @@
 		<div class="accordion-body" tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="accordion-inner">
 				<div class="control-group">
-					<div class="controls">
+					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_%s'%action.upper())" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
 						<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 					</div><!-- .controls -->
@@ -75,16 +75,16 @@
 	</div><!-- .accordion-group -->
 
 	<div class="accordion-group zmi-container" tal:condition="python:action.lower()!='insert'">
-		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds">
-			<tal:block tal:define="global 
+		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds"
+			><tal:block tal:define="global 
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
 					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 					elLabel python:here.getObjAttrLabel(metaObjAttr);
-					elValue python:here.attr(metaObjAttrId)">
-				<tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])">
-					<tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')">
-						<tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)">
-							<div class="accordion-heading">
+					elValue python:here.attr(metaObjAttrId)"
+				><tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])"
+					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')">
+						><tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)"
+							><div class="accordion-heading">
 								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
 									<i></i>
 									<tal:block tal:content="elLabel">the label</tal:block>
@@ -113,8 +113,8 @@
 									</div><!-- .right -->
 									<div class="clearboth"></div><!-- .clearboth -->
 								</li><!-- .zmi-item -->
-								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
-									<li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
+								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id"
+									><li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
 										<div class="center" tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->

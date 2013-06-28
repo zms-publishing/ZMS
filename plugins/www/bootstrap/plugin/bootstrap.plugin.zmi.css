@@ -439,6 +439,9 @@ div.accordion-heading div.pull-left {
 	border:none;
 	background-color:#F5F5F5;
 }
+.control-group .save {
+	text-align:right;
+}
 .accordion-body.container .zmi-container {
 	padding:0;
 	margin:0;
@@ -580,6 +583,10 @@ img.button1, a.button img.button1 {
 a.button:hover img.button0,
 a.button:hover img.button1 {
 	background-color: #DFF1FF;
+}
+
+#loading {
+	color:#08c;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -862,7 +869,6 @@ div.right .btn .caret {
 	.zmi-image,.zmi-file {
 		min-width:95%;
 	}
-
 }
 
 @media (min-width: 700px) {

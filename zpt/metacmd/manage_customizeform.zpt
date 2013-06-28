@@ -215,7 +215,7 @@ $(function() {
 				</table>
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<div class="controls">
+				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
@@ -257,7 +257,7 @@ $(function() {
 			</div><!-- .control-group -->
 			<div class="control-group">
 				<div class="controls">
-						<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div>
 			</div><!-- .control-group -->
 		</form>

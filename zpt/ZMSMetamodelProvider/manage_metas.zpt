@@ -115,9 +115,13 @@
 	</tr>
 	</tbody>
 	</table>
-	<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-	&nbsp;
-	<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+	<div class="control-group">
+		<div class="controls save">
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			&nbsp;
+			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+		</div>
+	</div>
 </form>
 
 <div style="clear:both;">&nbsp;</div>

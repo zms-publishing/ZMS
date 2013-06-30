@@ -17,7 +17,10 @@
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANG')">well</p>
 	<table class="table table-striped table-bordered">
 	<colgroup>
-		<col width="1em"/>
+		<col class="col_min sel"/>
+		<col class="col lang"/>
+		<col class="col parent"/>
+		<col class="col interface"/>
 	</colgroup>
 	<thead>
 	<tr>
@@ -59,11 +62,11 @@
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<tr>
+	<tr class="row_insert">
 		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
-		<td><input type="text" name="language_id"></td>
-		<td><input type="text" name="language_label"></td>
-		<td>
+		<td class="language_id"><input type="text" name="language_id"></td>
+		<td class="language_label"><input type="text" name="language_label"></td>
+		<td class="language_parent">
 			<select name="language_parent">
 				<option tal:repeat="lang langIds" tal:attributes="value lang" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 			</select>
@@ -90,7 +93,10 @@
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANGDICT')">well</p>
 	<table class="table table-striped table-bordered">
 	<colgroup>
-		<col width="1em"/>
+		<col class="col_min sel" />
+		<col class="col key" />
+		<col tal:repeat="langId langIds" 
+			tal:attributes="class python:['col %s'%(langId),'col_max %s'%(langId)][langId==langIds[-1]] " />
 	</colgroup>
 	<thead>
 	<tr>

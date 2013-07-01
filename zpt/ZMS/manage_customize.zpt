@@ -164,7 +164,7 @@ $(function() {
 				{'key':'ZCatalog.portalClients','title':'Search portal-clients','desc':'Allow search in portal-clients','datatype':'boolean','default':1},
 				{'key':'ZCatalog.TextIndexNG','title':'Search binaries with TextIndexNG','desc':'Use TextIndexNG for catalog-indexing of binaries.','datatype':'boolean'},
 				{'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
-				{'key':'zmi.theme','title':'ZMI Theme','desc':'Classic DTML-Jquery-UI or new ZPT-bootstrap theme','datatype':'string','options':['dtml','zpt']},
+				{'key':'zmi.theme','title':'ZMI Theme','desc':'Classic DTML-Jquery-UI or new ZPT-bootstrap theme','datatype':'string','options':['dtml','zpt'],'default':'zpt'},
 				];
 			res_keys python:map(lambda x: x['key'],here.sort_list(res,'title','asc'))">
 			<div class="control-group">

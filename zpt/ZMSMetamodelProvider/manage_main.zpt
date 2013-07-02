@@ -30,6 +30,19 @@ option.deprecated {
 	margin-right:0.3em;
 	color:#08c;
 }
+tr.row_insert td {
+	background-color:#EDF5FE !important;
+}
+tr.row_insert td.meta-sort {
+	color:#888;
+	text-align: right;
+	padding: 0.9em 1.8em !important;
+}
+td.meta-mandatory,
+td.meta-multilang,
+td.meta-repetitive {
+	text-align:center;
+}
 
 </style>
 
@@ -251,14 +264,14 @@ $(function() {
 		</colgroup>
 		<thead>
 			<tr>
-				<th><img src="/misc_/zms/spacer.gif" style="width:6em;height:1em;"/></th>
-				<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
-				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
-				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
-				<th tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="icon-exclamation-sign"></i></th>
-				<th tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
-				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
-				<th tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
+				<th class="meta-sort"><img src="/misc_/zms/spacer.gif" style="width:6em;height:1em;"/></th>
+				<th class="meta-id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+				<th class="meta-name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
+				<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
+				<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="icon-exclamation-sign"></i></th>
+				<th class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
+				<th class="meta-multilang" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
+				<th class="meta-repetitive" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
 				<th></th>
 			<tr>
 		</thead>
@@ -308,7 +321,7 @@ $(function() {
 									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
 									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank">
 										<img tal:attributes="src python:here.getMimeTypeIconSrc(objAttr['custom'].content_type); title python:objAttr['custom'].content_type" />
-										<tal:block tal:content="python:(fname[:11] + '...') if len(fname) > 11 else fname">FILE NAME</tal:block>
+										<tal:block tal:content="python:[fname,fname[:11]+'...'][int(len(fname)>11)]">FILE NAME</tal:block>
 									</a>
 								</tal:block>
 							</td>
@@ -323,10 +336,10 @@ $(function() {
 									</option>
 								</select>
 							</td>
-							<td class="meta-mandatory" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
-							<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
-							<td class="meta-multilang" tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
-							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
+							<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
+							<td  class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
+							<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
+							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
 							<td class="meta-default">
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join(['zmi-element-key']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
@@ -349,8 +362,8 @@ $(function() {
 					</tal:block>
 				</tal:block>
 			</tr>
-			<tr>
-				<td style="text-align: right; padding: 0.9em 1.8em;"><i class="icon-plus"></i></td>
+			<tr class="row_insert">
+				<td class="meta-sort"><i class="icon-plus"></i></td>
 				<td class="meta-id"><input type="text" name="attr_id"/></td>
 				<td class="meta-name"><input type="text" name="attr_name"/></td>
 				<td class="meta-type">
@@ -358,13 +371,11 @@ $(function() {
 						<option tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')">type</option>
 					</select>
 				</td>
-				<td style="text-align:center;"><input type="checkbox" name="_mandatory:int" value="1"/></td>
-				<td tal:condition="metaObjRecordSet" colspan="2" style="text-align:center;"><input type="checkbox" name="_custom:int" value="1"/></td>
-				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
-				<td tal:condition="not:metaObjRecordSet" style="text-align:center;"><input type="checkbox" name="_repetitive:int" value="1"/></td>
-				<td>
-					<button name="btn" type="submit" class="btn btn-inverse" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="$('input[name=key]',this.form).val('attr')">Insert</button>
-				</td>
+				<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1"/></td>
+				<td  class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="_custom:int" value="1"/></td>
+				<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
+				<td class="repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_repetitive:int" value="1"/></td>
+				<td>&nbsp;</td>
 			</tr>
 		</tbody>
 	</table>

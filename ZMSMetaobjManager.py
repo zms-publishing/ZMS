@@ -1086,6 +1086,19 @@ class ZMSMetaobjManager:
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')
+            # Insert attribute.
+            attr_id = REQUEST['attr_id'].strip()
+            newName = REQUEST['attr_name'].strip()
+            newMandatory = REQUEST.get('_mandatory',0)
+            newMultilang = REQUEST.get('_multilang',0)
+            newRepetitive = REQUEST.get('_repetitive',0)
+            newType = REQUEST.get('_type','string')
+            newKeys = REQUEST.get('_keys',[])
+            newCustom = REQUEST.get('_custom','')
+            newDefault = REQUEST.get('_default','')
+            if len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0:
+              message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+              message += self.getZMILangStr('MSG_INSERTED')%attr_id
           elif key == 'obj' and btn == self.getZMILangStr('BTN_SAVE'):
             # Change Acquired-Object.
             subobjects = REQUEST.get('obj_subobjects',0)
@@ -1151,19 +1164,6 @@ class ZMSMetaobjManager:
                 tmpltCustom = ''.join(tmpltCustom)
                 message += self.setMetaobjAttr(id,None,tmpltId,tmpltName,0,0,0,'zpt',[],tmpltCustom)
               message += self.getZMILangStr('MSG_INSERTED')%id
-            # Insert Attribute.
-            if key == 'attr':
-              attr_id = REQUEST['attr_id'].strip()
-              newName = REQUEST['attr_name'].strip()
-              newMandatory = REQUEST.get('_mandatory',0)
-              newMultilang = REQUEST.get('_multilang',0)
-              newRepetitive = REQUEST.get('_repetitive',0)
-              newType = REQUEST.get('_type','string')
-              newKeys = REQUEST.get('_keys',[])
-              newCustom = REQUEST.get('_custom','')
-              newDefault = REQUEST.get('_default','')
-              message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
-              message += self.getZMILangStr('MSG_INSERTED')%attr_id
           
           # Acquire.
           # --------

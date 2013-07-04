@@ -231,7 +231,7 @@ $(function() {
 					<td>
 						<div class="btn-group">
 							<a class="btn" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'"><i class="icon-edit"></i></a>
-							<a class="btn" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s&btn=Delete#Custom'%(request['URL'],request['lang'],conf_key); title python:'Delete'"><i class="icon-remove"></i></a>
+							<a class="btn" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><i class="icon-remove"></i></a>
 						</div>
 					</td>
 					<td><span  tal:content="conf_key">the conf_key</span></td>

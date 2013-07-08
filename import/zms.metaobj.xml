@@ -3499,6 +3499,7 @@ function table_cell_change() {
 
 function table_cell_cancel(event) {
 	// Reset cell background.
+	var el_td = $("td.active");
 	el_td.removeClass("active");
 	// Close cell editor.
 	if (!event) {
@@ -3734,9 +3735,9 @@ $(function(){
 		</table>
 	</td>
 	<td tal:attributes="class python:' '.join(['ZMSTable-cell']+[['right'],[]][int(row_index==0 and table_type==4)])">&nbsp;</td>
-	<tal:block tal:repeat="cell python:table_table[row_index]">
+	<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
 		<tal:block tal:define="global 
-				col_index python:table_table[row_index].index(cell);
+				cell python:table_table[row_index][col_index];
 				pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 				replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
@@ -4149,7 +4150,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.1]]></item>
+          <item key="revision"><![CDATA[1.8.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

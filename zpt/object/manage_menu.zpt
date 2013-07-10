@@ -77,7 +77,7 @@ function zmiFollowHref(anchor) {
 }
 function zmiRefresh() {
 	var href = self.window.parent.manage_main.location.href;
-	var homeId = $("a.brand").text();
+	var homeId = $("a.brand").text().basicTrim();
 	if (href.indexOf(homeId)<0) {
 		href = self.window.location.href;
 	}

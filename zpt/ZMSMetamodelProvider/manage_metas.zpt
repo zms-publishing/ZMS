@@ -7,6 +7,22 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
+/**
+ * Delete object.
+ */
+function zmiDeleteObjBtnClick(sender,d) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+}
 </script>
 
 <div class="ui-helper-hidden">
@@ -65,7 +81,7 @@
 				<select class="zmi-sort">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
-				<a class="add-on btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 			</div>
 		</td>
 		<td class="meta-id">
@@ -109,9 +125,7 @@
 		<td><input type="checkbox" name="_mandatory:int" value="1"></td>
 		<td><input type="checkbox" name="_multilang:int" value="1"></td>
 		<td><input type="checkbox" name="_repetitive:int" value="1"></td>
-		<td>
-			<button name="btn" type="submit" class="btn btn-inverse" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-		</td>
+		<td>&nbsp;</td>
 	</tr>
 	</tbody>
 	</table>

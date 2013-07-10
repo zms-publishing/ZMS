@@ -18,12 +18,6 @@
     {
       b = b && !disallowBlank(fm.elements['aq_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('BTN_ACQUIRE')">",false);
     }
-    if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") 
-    {
-      b = b && !disallowBlank(fm.elements['_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-      b = b && !disallowBlank(fm.elements['_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
-      b = b && !disallowBlank(fm.elements['_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-    }
     if (self.btnClicked=="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>") 
     {
       b = confirm("<dtml-var "getZMILangStr('MSG_CONFIRM_DELOBJ')">");
@@ -289,9 +283,7 @@ function showDstMetaTypesBtnClick( id) {
   <td class="form-small" align="center" title="<dtml-var "getZMILangStr('ATTR_REPETITIVE')">">
    <input class="form-checkbox" type="checkbox" name="_repetitive:int" value="1"/>
   </td>
-  <td colspan="2">
-   <input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this);">
-  </td>
+  <td colspan="2">&nbsp;</td>
 </tr>
 
 <!-- Footer -->

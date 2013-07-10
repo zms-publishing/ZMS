@@ -174,11 +174,6 @@ function onFormSubmit(fm) {
 		b = b && !disallowBlank(fm.elements['_meta_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
 		b = b && !disallowBlank(fm.elements['_meta_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
 	}
-	if (key=="attr" && self.btnClicked=="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>") {
-		b = b && !disallowBlank(fm.elements['attr_id'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_ID')">",false);
-		b = b && !disallowBlank(fm.elements['attr_name'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
-		b = b && !disallowBlank(fm.elements['_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_TYPE')">",false);
-	}
 	return b;
 }
 
@@ -784,9 +779,7 @@ function enabledCheckboxClickResponse(data) {
           <input class="form-checkbox" type="checkbox" name="_repetitive:int" value="1">
          </td>
         </dtml-if>
-        <td class="form-small" colspan="2">
-         <input class="form-small" name="btn" type="submit" value="<dtml-var "getZMILangStr('BTN_INSERT')" html_quote>" onclick="btnClick(this,'attr');">
-        </td>
+        <td colspan="2">&nbsp;</td>
        </tr>
        </table>
 

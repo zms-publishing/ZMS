@@ -292,7 +292,16 @@ $(function() {
 						<td colspan="7" class="meta-interface">
 							<input type="hidden" tal:attributes="name python:'attr_id_%s'%objAttr['id']; value python:objAttr['id']"/>
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
-							<div class="single-line"><textarea tal:attributes="name python:'attr_name_%s'%objAttr['id']" tal:content="objAttr/name">name</textarea></div>
+							<div class="single-line" 
+								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
+									ob python:[getattr(here,'%s.%s'%(metaObj['id'],objAttr['id']),None), getattr(here.getHome(),objAttr['id'],None)][zopetype]">
+								<textarea
+									tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+											class python:''.join(objAttr['type'].lower().split(' '));
+											data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 3px 6px no-repeat no-repeat';
+											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+									tal:content="objAttr/name">name</textarea>
+							</div>
 						</td>
 					</tal:block>
 					<tal:block tal:condition="python:objAttr['type'] not in ['interface']">
@@ -309,7 +318,7 @@ $(function() {
 											class python:''.join(objAttr['type'].lower().split(' '));
 											data-style python:'background: #eee url(%s) 3px 6px no-repeat no-repeat'%(ob.icon);
 											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
-										tal:content="python:objAttr['custom']">custom</textarea>
+										tal:content="objAttr/custom">custom</textarea>
 								</div>
 							</td>
 						</tal:block>

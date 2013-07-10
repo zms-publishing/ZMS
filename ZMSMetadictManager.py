@@ -258,7 +258,22 @@ class ZMSMetadictManager:
                 newKeys = self.string_list(REQUEST.get('attr_keys_%s'%oldId,''), '\n')
                 newCustom = REQUEST.get('attr_custom_%s'%oldId, '')
                 self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys)
-            message = self.getZMILangStr('MSG_CHANGED')
+            message += self.getZMILangStr('MSG_CHANGED')
+            newId = REQUEST['_id'].strip()
+            newAcquired = 0
+            newName = REQUEST['_name'].strip()
+            newType = REQUEST['_type'].strip()
+            newMandatory = REQUEST.get('_mandatory',0)
+            newMultilang = REQUEST.get('_multilang',0)
+            newRepetitive = REQUEST.get('_repetitive',0)
+            newCustom = ''
+            if len(newId) > 0 and len(newName) > 0 and len(newType) > 0:
+              if newType == 'method':
+                newCustom += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
+                newCustom += '\n'
+                newCustom += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
+              self.setMetadictAttr( None, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom)
+              message += self.getZMILangStr('MSG_INSERTED')%newId
           
           # Copy.
           # -----
@@ -322,24 +337,6 @@ class ZMSMetadictManager:
               createIfNotExists = 1
               self.importConf(filename, REQUEST, createIfNotExists)
             message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
-          
-          # Insert.
-          # -------
-          elif btn == self.getZMILangStr('BTN_INSERT'):
-            newId = REQUEST['_id'].strip()
-            newAcquired = 0
-            newName = REQUEST['_name'].strip()
-            newType = REQUEST['_type'].strip()
-            newMandatory = REQUEST.get('_mandatory',0)
-            newMultilang = REQUEST.get('_multilang',0)
-            newRepetitive = REQUEST.get('_repetitive',0)
-            newCustom = ''
-            if newType == 'method':
-              newCustom += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
-              newCustom += '\n'
-              newCustom += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
-            id = self.setMetadictAttr( None, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom)
-            message = self.getZMILangStr('MSG_INSERTED')%id
           
           # Move to.
           # --------

@@ -33,7 +33,7 @@
 					</tal:block>
 
 					<tal:block tal:condition="python:metaObjAttr['type']=='interface'">
-						<div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttr['id'])">the interface</div>
+						<div class="zmi-interface" tal:content="structure elValue">the interface</div>
 					</tal:block>
 
 					<tal:block tal:condition="python:metaObjAttr['type']=='richtext'">

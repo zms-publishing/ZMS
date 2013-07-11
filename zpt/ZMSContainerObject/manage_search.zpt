@@ -24,7 +24,10 @@
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
-			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</button>
+			<button type="submit" class="btn btn-primary">
+				<i class="icon-search"></i>
+				<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
+			</button>
 		</div>
 	</div>
 </form>
@@ -56,13 +59,23 @@
 				pageStart python:pageIndex*pageSize;
 				pageEnd python:min(pageStart+pageSize,size)">
 			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
-			<table>
-			<tr tal:repeat="node python:qres[pageStart:pageEnd]">
-				<td>
-					<tal:block tal:content="structure python:node['ob'].zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
-					<tal:block tal:content="structure python:node['ob'].renderShort(request)">renderShort</tal:block>
-				</td>
+			<table width="100%">
+			<tal:block tal:repeat="pageIndex python:range(pageEnd-pageStart)">
+			<tal:block tal:define="global node python:qres[pageStart+pageIndex]; id python:node['ob'].id; renderShort python:len(request.get('raw',''))>0">
+			<tr valign="top">
+				<td><input type="checkbox" name="ids:list" tal:attributes="value id; checked python:['','checked'][int(renderShort)]; onclick python:'javascript:$(\'#renderShort_%s\').toggle(\'normal\')'%id"></td>
+				<td><tal:block tal:content="python:pageStart+pageIndex+1">the page-index</tal:block>.</td>
+				<td><tal:block tal:content="structure python:node['ob'].zmi_breadcrumbs()">zmi_breadcrumbs</tal:block></td>
+				<td><tal:block tal:content="structure python:node['ob'].manage_main_change(node['ob'],request)">the info child-node</tal:block></td>
 			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td><div tal:attributes="id python:'renderShort_%s'%id; class python:['ui-helper-hidden',''][int(renderShort)]" tal:content="structure python:node['ob'].renderShort(request)">renderShort</div></td>
+				<td></td>
+			</tr>
+			</tal:block>
+			</tal:block>
 			</table>
 			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 		</tal:block>

@@ -484,8 +484,10 @@ $(function() {
 				<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
 			</td>
 			<td colspan="2">
-				<a tal:condition="python:metaObjPackage" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage)">
+				<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
 					<i class="icon-briefcase"></i>
+				</a>
+				<a tal:condition="python:metaObjPackage" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage)">
 					<strong tal:content="metaObjPackage">the id</strong>
 				</a>
 				<tal:block tal:condition="python:not metaObjPackage">

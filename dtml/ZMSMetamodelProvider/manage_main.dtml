@@ -879,8 +879,10 @@ function enabledCheckboxClickResponse(data) {
               ></dtml-unless
              ></dtml-if
              ><dtml-unless "metaObj['type'] == 'ZMSPackage'"><input type="checkbox" name="enabled_<dtml-var "metaObj['id']">" title="<dtml-var "getZMILangStr('ATTR_ACTIVE')">" value="1"<dtml-if "metaObj['enabled']==1"> checked="checked"</dtml-if><dtml-if "metaObj.get('acquired',0) == 1"> disabled="disabled"</dtml-if> onclick="enabledCheckboxClick(this)" onchange="enabledCheckboxClick(this)"/></dtml-unless
-             ><dtml-if "metaObj['type'] == 'ZMSPackage'"><a href="manage_bigpicture?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank" class="zmi" style="text-decoration:none;" title="BigPicture::Logical View"></dtml-if
-             ><a href="manage_analyze?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank"><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" title="<dtml-var "metaObj['id']"> - Click for Content Analysis..." alt="Icon" border="0" style="vertical-align:middle" 
+             ><dtml-if "metaObj['type'] == 'ZMSPackage'"><a href="manage_bigpicture?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank" title="BigPicture::Logical View"
+             ><dtml-else><a href="manage_analyze?lang=<dtml-var lang>&id=<dtml-var "metaObj['id']">" target="_blank" title="<dtml-var "metaObj['id']"> - Click for Content Analysis..."
+             ></dtml-if
+             ><img src="<dtml-var "display_icon(REQUEST,metaObj['id'])">" alt="Icon" border="0" style="vertical-align:middle" 
              /></a><dtml-if "metaObj.get('zms_system',0) == 1"><img src="<dtml-var MISC_ZMS>ico_default.gif" title="default / unmodified" style="margin-right:2;vertical-align:middle" /></dtml-if
              ><dtml-if "metaObj.get('acquired',0) == 1"><a href="<dtml-var "getPortalMaster().absolute_url()+'/'+'/'.join(URL.split('/')[-2:])">?id=<dtml-var "metaObj['id']">" class="zmi"><img src="<dtml-var MISC_ZMS>ico_is_acquired.gif" title="is acquired: <dtml-var "getConfProperty('Portal.Master')">" border="0" style="vertical-align:middle" /></a></dtml-if
              ><dtml-if has_acquisition><img src="<dtml-var MISC_ZMS>ico_has_acquisition.gif" title="has acquisitions" border="0" style="vertical-align:middle" /></dtml-if>

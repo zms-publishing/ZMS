@@ -25,7 +25,7 @@ body.zmi {
 	display:none;
 }
 .zmi-helper-hidden, .ui-helper-hidden {
-	display:none!important;
+	display:none;
 }
 .zmi-helper-clickable, .ui-helper-clickable {
 	cursor:pointer!important;

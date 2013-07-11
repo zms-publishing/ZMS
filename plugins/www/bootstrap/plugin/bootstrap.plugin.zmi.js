@@ -181,6 +181,11 @@ $(function(){
 			}
 		});
 	// Action-Lists
+	$(document).on("contextmenu", ".btn.split-right.dropdown-toggle", function(e){
+			e.preventDefault();
+			$(e.target).parents('div.btn-group').addClass('open');
+			$(e.target).parent().find('li.dropdown-submenu').addClass('open').addClass('active');
+		});
 	$(".btn-group")
 		.mouseover( function(evt) {
 				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});

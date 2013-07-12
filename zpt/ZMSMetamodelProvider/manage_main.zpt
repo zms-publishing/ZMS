@@ -79,8 +79,8 @@ function zmiEnableBtnClick(sender) {
  */
 function zmiExportBtnClick(sender) {
 	var $fm = $(sender).closest("form");
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="ids:list"]:checked',fm).each(function(){
+	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	$('input[name="ids:list"]:checked',$fm).each(function(){
 			href += '&'+$(this).attr("name")+'='+$(this).val();
 		});
 	window.open(href);

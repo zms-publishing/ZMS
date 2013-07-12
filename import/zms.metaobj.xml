@@ -3108,7 +3108,13 @@ zmscontext.attr('text',text)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<!--
+                  <item key="name"><![CDATA[<!-- Page Template Diagnostics
+ Compilation failed
+ zope.tal.taldefs.TALError: Python expression error:
+invalid syntax (PythonExpr, line 2) in expression u"python:''\r\n\t\t+'<td class=\\042form-text\\042>'+here.getZMILangStr('ATTR_FORMAT')+'</td>'\r\n\t\t+'<td>'+here.f_selectInput(fmName=request.get('fmName'),elName='tag',value='',type='select',lang_str=here.getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=request)+'</td>'\r\n\t\t+'<td class=\\042form-text\\042>'+here.getZMILangStr('ATTR_PARAGRAPH')+'</td>'\r\n\t\t+'<td>'+here.f_selectTextformat(here,REQUEST=request)+'</td>'", at line 207, column 1
+-->
+
+<!--
 ################################################################################
 ##### Table(Type,Cols,Rows): INSERT
 ################################################################################
@@ -3701,13 +3707,9 @@ function moveCell(source, target) {
 	}
 }
 
-function onKeyUpZMSTableDivContenteditable(div) {
-	var $textarea = $("textarea",$(div).prev());
-	$textarea.val($(div).html());
-	zmiWriteDebug(CKEDITOR.instances+" "+CKEDITOR.instances.length);
-	for(var instance in CKEDITOR.instances) {
-		zmiWriteDebug(instance);
-	}
+function onKeyUpZMSTableDivContenteditable() {
+	var $textarea = $("textarea",$(this).prev());
+	$textarea.val($(this).html());
 }
 
 $(function(){
@@ -3841,7 +3843,6 @@ $(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="default"><![CDATA[1]]></item>
                   <item key="id"><![CDATA[type]]></item>
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">0</item>
@@ -4187,7 +4188,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.5]]></item>
+          <item key="revision"><![CDATA[1.8.7]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -17,7 +17,7 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import urllib
 # Product Imports.
 import ZMSItem
@@ -36,6 +36,7 @@ class Sequence(ZMSItem.ZMSItem):
     # -----------
     meta_type = 'Sequence'
     icon = "misc_/zms/Sequence.gif"
+    icon_clazz = "icon-sort-by-order"
 
     # Management Options.
     # -------------------
@@ -54,7 +55,7 @@ class Sequence(ZMSItem.ZMSItem):
 
     # Management Interface.
     # ---------------------
-    manage_main = HTMLFile('dtml/Sequence/manage_main', globals())
+    manage_main = PageTemplateFile('zpt/Sequence/manage_main', globals())
 
 
     """

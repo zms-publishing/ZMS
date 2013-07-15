@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'main',here.meta_id])">
+<form class="form-horizontal" action="setProperties" method="post">
+
+<legend>
+	<a href="manage_main">
+		<i tal:attributes="class python:here.icon_clazz"></i>
+		<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+	</a>
+</legend>
+
+<p class="well">
+This page lists the entries that have been logged in this ZMS instance
+recently.  You can configure how many entries should be kept
+and whether the entries should be copied to Zope's event log
+file(s).
+</p>
+
+<div class="control-group">
+	<label class="control-label" for="keep_entries:int"><span>Number of entries to keep</span></label>
+	<div class="controls"><input type="text" name="keep_entries:int" size="8" tal:attributes="value python:here.keep_entries"/></div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<label class="control-label" for="copy_to_zlog"><span>Copy entries to the event log</span></label>
+	<div class="controls"><input type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<label class="control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
+	<div class="controls"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<label class="control-label" for="logged_entries:list"><span>Logged entry types</span></label>
+	<div class="controls">
+		<select name="logged_entries:list" multiple="multiple" size="3">
+		<tal:block tal:repeat="item python:['DEBUG','INFO','ERROR']">
+			<option tal:attributes="value item; selected python:['','selected'][int(item in here.logged_entries)]" tal:content="item">the item</option>
+		</tal:block>
+		</select>
+	</div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<div class="controls">
+		<button name="submit" type="submit" class="btn btn-primary" value=" Save Changes "> Save Changes </button>
+	</div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="accordion-group perc100">
+	<div class="accordion-heading">
+		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><i class="icon-download-alt"></i></a>
+		<a class="pull-left accordion-toggle" href="#">Log (most recent first)</a>
+	</div><!-- .accordion-heading -->
+	<div class="accordion-body">
+		<div class="accordion-inner" tal:define="global
+				size python:len(here.entries); 
+				pageSize python:request.get('qsize',20);
+				pageIndex python:request.get('pageIndex',0);
+				pageStart python:pageIndex*pageSize;
+				pageEnd python:min(pageStart+pageSize,size)">
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=20,pageIndex=pageIndex)">zmi_pagination</tal:block>
+			<div tal:repeat="i python:range(pageEnd-pageStart)">
+				<tal:block tal:define="global index python:i+pageStart; entry python:here.entries[index]">
+					<span class="pull-left" tal:content="python:index+1">the index</span>. <code tal:content="entry">the entry</code>
+				</tal:block>
+			</div>
+			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=20,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		</div><!-- accordion-inner -->
+	</div><!-- accordion-body -->
+</div><!-- accordion-group -->
+
+</form>
+</body>
+</html>

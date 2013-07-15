@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'remote',here.meta_id])">
+<form class="form-horizontal" action="manage_remote" method="get" enctype = "multipart/form-data" tal:define="global path python:here.getPath(request)">
+
+<script language="JavaScript">
+
+function uploadBtnClick() {
+	fm = document.forms[0];
+	fm.action = "manage_submit";
+	fm.enctype = "multipart/form-data";
+	fm.method = "post";
+}
+
+</script>
+
+<legend>
+	<a href="manage_main">
+		<i tal:attributes="class python:here.icon_clazz"></i>
+		<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+	</a>
+</legend>
+
+<div class="control-group">
+	<label class="control-label" for="path"><span>Path</span></label>
+	<div class="controls">
+		<input type="text" name="path" size="50" tal:attributes="value path"/>
+		<button class="btn" name="btn" value="Chdir">Chdir</button>
+	</div><!-- .controls -->
+</div><!-- .control-group -->
+
+<table class="table table-striped">
+<thead>
+<tr>
+	<th colspan="3" tal:content="path">the path</th>
+</tr>
+</thead>
+<tr>
+	<td colspan="3">
+		<a tal:attributes="href python:'?path='+here.url_quote(here.getParentDir(path))">\.. Parent Directory</a>
+	</td>
+</tr>
+<tr tal:repeat="file python:here.readDir(path)">
+	<tal:block tal:condition="python:file['type']=='d'">
+		<td>
+			<img src="misc_/OFSP/Folder_icon.gif" border="0">
+			<a tal:attributes="href python:'?path='+here.url_quote(file['path']+file['file'])" tal:content="file/file">the file</a>
+		</td>
+		<td tal:content="python:here.getLangFmtDate(file['mtime'])">the modification-time</td>
+		<td>&nbsp;</td>
+	</tal:block>
+	<tal:block tal:condition="python:file['type']!='d'">
+		<td>
+			<img src="misc_/OFSP/File_icon.gif" border="0">
+			<a tal:attributes="href python:'manage_index_html?path='+here.url_quote(file['path']+file['file'])" target="_blank" tal:content="file/file">the file</a>
+		</td>
+		<td tal:content="python:here.getLangFmtDate(file['mtime'])">the modification-time</td>
+		<td tal:content="python:here.getDataSizeStr(file['size'])">the size</td>
+	</tal:block>
+</tr>
+</table>
+
+<div class="control-group">
+	<label class="control-label" for="command"><span>Command</span></label>
+	<div class="controls">
+		<input type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
+		<button class="btn btn-inverse" name="btn" value="Execute">Execute</button>
+	</div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<label class="control-label" for="file"><span>Upload file</span></label>
+	<div class="controls">
+		<input type="file" name="file" size="50"/>
+		<button class="btn btn-inverse" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
+	</div><!-- .controls -->
+</div><!-- .control-group -->
+
+</form>
+</body>
+</html>

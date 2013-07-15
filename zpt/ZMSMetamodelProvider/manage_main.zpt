@@ -6,46 +6,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<style>
-option.deprecated {
-	color:#CCC;
-}
-.zmi-element-disabled {
-	background:#EEE!important;
-}
-.zmi-element-key {
-	background:url(/misc_/zms/btn_key.gif) 3px 3px no-repeat;
-}
-.zmi-element-default {
-	background:url(/misc_/zms/ico_default.gif) 3px 3px no-repeat;
-}
-.enabled a {
-	font-weight:bold;
-}
-.ui-helper-clickable.icon-check {
-	margin-right:0.2em;
-	color:#08c;
-}
-.ui-helper-clickable.icon-check-empty {
-	margin-right:0.3em;
-	color:#08c;
-}
-tr.row_insert td {
-	background-color:#EDF5FE !important;
-}
-tr.row_insert td.meta-sort {
-	color:#888;
-	text-align: right;
-	padding: 0.9em 1.8em !important;
-}
-td.meta-mandatory,
-td.meta-multilang,
-td.meta-repetitive {
-	text-align:center;
-}
-
-</style>
-
 <script>
 
 /**
@@ -346,7 +306,7 @@ $(function() {
 								</select>
 							</td>
 							<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
-							<td  class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
+							<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
 							<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
 							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
 							<td class="meta-default">
@@ -381,7 +341,7 @@ $(function() {
 					</select>
 				</td>
 				<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1"/></td>
-				<td  class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="_custom:int" value="1"/></td>
+				<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="_custom:int" value="1"/></td>
 				<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
 				<td class="repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_repetitive:int" value="1"/></td>
 				<td>&nbsp;</td>

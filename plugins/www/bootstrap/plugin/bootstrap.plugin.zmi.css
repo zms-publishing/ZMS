@@ -445,7 +445,7 @@ div.accordion-heading div.pull-left {
 	background-color:#F5F5F5;
 }
 .control-group .save {
-	text-align:right;
+	text-align:right !important;
 }
 .accordion-body.container .zmi-container {
 	padding:0;
@@ -480,7 +480,42 @@ div.single-line textarea {
 .zmi.metas table.meta-access {
 	margin:4em 0 0;
 }
-
+.zmi.metas option.deprecated {
+	color:#CCC;
+}
+.zmi.metas .zmi-element-disabled {
+	background:#EEE!important;
+}
+.zmi.metas .zmi-element-key {
+	background:url(/misc_/zms/btn_key.gif) 3px 3px no-repeat;
+}
+.zmi.metas .zmi-element-default {
+	background:url(/misc_/zms/ico_default.gif) 3px 3px no-repeat;
+}
+.zmi.metas .enabled a {
+	font-weight:bold;
+}
+.zmi.metas .ui-helper-clickable.icon-check {
+	margin-right:0.2em;
+	color:#08c;
+}
+.zmi.metas .ui-helper-clickable.icon-check-empty {
+	margin-right:0.3em;
+	color:#08c;
+}
+.zmi.metas tr.row_insert td {
+	background-color:#EDF5FE !important;
+}
+.zmi.metas tr.row_insert td.meta-sort {
+	color:#999;
+	text-align: right;
+	padding: 0.9em 1.8em !important;
+}
+.zmi.metas td.meta-mandatory,
+.zmi.metas td.meta-multilang,
+.zmi.metas td.meta-repetitive {
+	text-align:center;
+}
 #zmi-single-line-edit textarea {
 	font-family:"Courier New", Courier, monospace;
 }

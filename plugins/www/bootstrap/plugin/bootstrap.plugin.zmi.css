@@ -463,6 +463,56 @@ div.single-line textarea {
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
 }
+.zmi.metas .horizontal-group .mandatory span {
+	background: none !important;
+	padding-left: 0 !important;
+}
+.zmi.metas .horizontal-group .controls {
+	margin-left: 0px;
+}
+.zmi.metas .horizontal-group label {
+	width: auto;
+	float:none;
+	text-align:left;
+}
+@media (min-width: 700px) {
+	.zmi.metas .horizontal-group,
+	.zmi.metas .horizontal-group .controls {
+		white-space:nowrap;
+		margin-left:0;
+	}
+	.zmi.metas .horizontal-group .meta_name,
+	.zmi.metas .horizontal-group .meta_revision,
+	.zmi.metas .horizontal-group .meta_type,
+	.zmi.metas .horizontal-group .meta_package {
+		float:left;
+		margin-right:0.5em;
+	}
+	.zmi.metas .horizontal-group .controls.save {
+		margin-top:2.1em;
+		
+	}
+	.zmi.metas .horizontal-group .meta_name input,
+	.zmi.metas .horizontal-group .meta_revision input,
+	.zmi.metas .horizontal-group .meta_type select,
+	.zmi.metas .horizontal-group .meta_package select {
+		background-color: #f9f9f9 !important;
+	}
+	.zmi.metas .horizontal-group .meta_name input {
+		width:8.1em;
+	}
+	.zmi.metas .horizontal-group .meta_revision input {
+		width:13.2em
+	}
+	.zmi.metas .horizontal-group .meta_type select {
+		width:12.9em
+	}
+	.zmi.metas .horizontal-group .meta_package select {
+		width:12.2em;
+	
+	}	
+}
+
 .zmi.metas table.table-striped td.meta-sort {
 	padding-right:1.25em
 }

@@ -103,15 +103,15 @@ $(function() {
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="key" value="obj"/>
-			<div class="control-group">
+			<div class="control-group meta_id">
 				<label for="_meta_id" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="controls"><input type="text" id="_meta_id" name="_meta_id"/></div><!-- .controls -->
 			</div><!-- .control-group -->
-			<div class="control-group">
+			<div class="control-group meta_name">
 				<label for="_meta_name" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="controls"><input type="text" id="_meta_name" name="_meta_name"/></div><!-- .controls -->
 			</div><!-- .control-group -->
-			<div class="control-group">
+			<div class="control-group meta_type">
 				<label for="_meta_type" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="controls">
 					<select id="_meta_type" name="_meta_type">
@@ -172,42 +172,43 @@ $(function() {
 			<tal:block tal:content="python:metaObj['name']">Name</tal:block>
 		</a>
 	</legend>
-	<div class="control-group">
-		<label for="obj_name" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-		<div class="controls"><input type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj['name']"/></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label for="obj_revision" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
-		<div class="controls"><input type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:metaObj.get('revision','0.0.0')"/></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label for="obj_type" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
-		<div class="controls">
-			<select id="obj_type" name="obj_type">
-				<tal:block tal:repeat="objtype python:here.valid_objtypes">
-					<option tal:attributes="value objtype; selected python:['','selected'][int(metaObj['type']==objtype)]" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
-				</tal:block>
-			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label for="obj_package" class="control-label"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
-		<div class="controls">
-			<select id="obj_package" name="obj_package">
-				<tal:block tal:repeat="metaObjPackage metaObjPackages">
-					<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
-				</tal:block>
-			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-
-	<div class="control-group">
-		<div class="controls save">
-			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
-			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+	<div class="horizontal-group">
+		<div class="control-group meta_name">
+			<label for="obj_name" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+			<div class="controls"><input type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj['name']"/></div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group meta_revision">
+			<label for="obj_revision" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
+			<div class="controls"><input type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:metaObj.get('revision','0.0.0')"/></div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group meta_type">
+			<label for="obj_type" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
+			<div class="controls">
+				<select id="obj_type" name="obj_type">
+					<tal:block tal:repeat="objtype python:here.valid_objtypes">
+						<option tal:attributes="value objtype; selected python:['','selected'][int(metaObj['type']==objtype)]" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
+					</tal:block>
+				</select>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group meta_package">
+			<label for="obj_package" class="control-label"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
+			<div class="controls">
+				<select id="obj_package" name="obj_package">
+					<tal:block tal:repeat="metaObjPackage metaObjPackages">
+						<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
+					</tal:block>
+				</select>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+		<div class="control-group">
+			<div class="controls save">
+				<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
+				<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+			</div><!-- .controls -->
+		</div><!-- .control-group -->
+	</div>
 
 <tal:block tal:condition="python:not metaObj['acquired']">
 

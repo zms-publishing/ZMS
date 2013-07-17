@@ -52,6 +52,8 @@ div.transition {
 	padding-top:0px;
 	padding-bottom:0px;
 	text-align:center;
+	width: 170px;
+
 }
 div.activity a,
 div.transition a {
@@ -62,6 +64,8 @@ div.transition a {
 }
 .smaller {
 	font-size:smaller;
+	width: 160px;
+	overflow:hidden;
 }
 .layoutTable th, .layoutTable td {
 	padding:0;
@@ -307,7 +311,7 @@ $(function() {
 	</colgroup>
 	<thead>
 	<tr>
-		<th tal:attributes="colspan python:2+len(activityIds)">
+		<th tal:attributes="colspan python:2+len(activityIds)" style="vertical-align:middle;">
 			<div class="btn-group">
 				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertActivity').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 			</div>
@@ -328,26 +332,22 @@ $(function() {
 				</td>
 				<tal:block tal:repeat="activityId2 activityIds">
 					<tal:block tal:define="i2 python:activityIds.index(activityId2); activity2 python:here.getActivity(activityId2); activityDetails2 python:here.getActivityDetails(activityId2)">
-						<td align="center" tal:attributes="style python:['','padding:0'][int(i!=i2)]">
-							<div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
+						<td align="center" tal:attributes="style python:['','padding:0'][int(i!=i2)]"
+							><div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],activity['id'])">
 									<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
 									<tal:block tal:content="python:activity['name']">name</tal:block>
 								</a>
-							</div>
-							<tal:block tal:condition="not:python:activityId==activityId2">
-								<nobr tal:condition="python:i>i2" tal:define="global maxTos2 python:max(activityDetails2['tos']+[-1]); minFroms python:min(activityDetails['froms']+[len(activityIds)])">
-									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i2>minFroms)],'50%')">
-									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-bottom:%ipx'%(['transparent','maroon'][int(i<=maxTos2)],[50,25][int(i==maxTos2)],[0,25][int(i==maxTos2)])">
-									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(len(activityDetails['froms'])>0 and i2>=min(activityDetails['froms']))],'50%')">
-								</nobr>
-								<nobr tal:condition="python:i<i2" tal:define="global maxFroms python:max(activityDetails['froms']+[-1]); minTos2 python:min(activityDetails2['tos']+[len(activityIds)])">
-									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')">
-									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-top:%ipx'%(['transparent','maroon'][int(i2<=maxFroms)],[50,25][int(i2==maxFroms)],[0,25][int(i2==maxFroms)])">
-									<img tal:condition="python:i<minTos2" src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')">
-								</nobr>
-							</tal:block>
-						</td>
+							</div><tal:block tal:condition="not:python:activityId==activityId2"
+								><nobr tal:condition="python:i>i2" tal:define="global maxTos2 python:max(activityDetails2['tos']+[-1]); minFroms python:min(activityDetails['froms']+[len(activityIds)])"
+									 ><img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i2>minFroms)],'50%')"
+									/><img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-bottom:%ipx'%(['transparent','maroon'][int(i<=maxTos2)],[50,25][int(i==maxTos2)],[0,25][int(i==maxTos2)])"
+									/><img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(len(activityDetails['froms'])>0 and i2>=min(activityDetails['froms']))],'50%')"
+									/></nobr><nobr tal:condition="python:i<i2" tal:define="global maxFroms python:max(activityDetails['froms']+[-1]); minTos2 python:min(activityDetails2['tos']+[len(activityIds)])"
+									 ><img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')"
+									/><img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-top:%ipx'%(['transparent','maroon'][int(i2<=maxFroms)],[50,25][int(i2==maxFroms)],[0,25][int(i2==maxFroms)])"
+									/><img tal:condition="python:i<minTos2" src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')"
+									></nobr></tal:block></td>
 					</tal:block>
 				</tal:block>
 			</tr>
@@ -358,7 +358,7 @@ $(function() {
 
 <form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
 		transitions python:here.getTransitions()">
-	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<table class="table zmi-sortable">
 	<colgroup>
 		<col width="40"/>
@@ -366,7 +366,7 @@ $(function() {
 	</colgroup>
 	<thead>
 	<tr>
-		<th colspan="3">
+		<th colspan="3" style="vertical-align:middle;">
 			<div class="btn-group">
 				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertTransition').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 			</div>
@@ -387,33 +387,33 @@ $(function() {
 				<td>
 					<table class="layoutTable">
 					<tr>
-						<td>
+						<td style="min-width:166px;">
 							<tal:block tal:repeat="activityId python:transition['from']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity smaller" tal:attributes="title python:activity['id']">
-										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
+										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>
 							</tal:block>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:50px;height:1px;"/></td>
+						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:50px;height:1px;" /></td>
 						<td>
 							<div class="transition">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])" tal:content="python:transition['name']">name</a>
-								<ul class="performer smaller">
+								<ul class="performer smaller" tal:condition="python:transition['performer']">
 									<li tal:repeat="performer python:transition['performer']" tal:content="python:performer">performer</li>
 								</ul>
 							</div>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;"/></td>
-						<td tal:condition="python:transition['to']"><img src="/misc_/OFSP/dtmlmethod.gif" alt="DTML Method"/></td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;"/></td>
+						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;" /></td>
+						<td tal:condition="python:transition['to']"><img src="/misc_/OFSP/dtmlmethod.gif" alt="DTML Method" /></td>
+						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;" /></td>
 						<td>
 							<tal:block tal:repeat="activityId python:transition['to']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity smaller" tal:attributes="title python:activity['id']">
-										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
+										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>

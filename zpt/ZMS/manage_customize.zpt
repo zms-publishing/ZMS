@@ -362,9 +362,13 @@ $(function() {
 	<div class="control-group">
 	<label class="control-label" for="history_active">Active</label>
 		<div class="controls">
-			<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
-			<div class="single-line input-append zmi-nodes">
-				<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+			<div class="pull-left">
+				<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
+			</div>
+			<div class="pull-left">
+				<div class="single-line input-append zmi-nodes">
+					<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+				</div>
 			</div>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->

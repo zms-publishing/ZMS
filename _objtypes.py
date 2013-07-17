@@ -204,8 +204,10 @@ class ObjTypes:
         
         # Assemble img-tag.
         imgsrc = img.getHref(REQUEST)
+        imgalt = img.getFilename()
         imgtag = '<img'
         imgtag += ' src="%s"'%imgsrc
+        imgtag += ' alt="%s"'%imgalt
         imgtag += ' style="'
         if displaytype != 'export_format':
           if width != '': 

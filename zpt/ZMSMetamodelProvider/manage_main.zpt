@@ -52,16 +52,23 @@ function zmiExportBtnClick(sender) {
  */
 function zmiDeleteObjBtnClick(sender,d) {
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		var $fm = $(sender).closest("form");
-		var html = '';
-		for (var i in d) {
-			$('input[name="' + i + '"]',$fm).remove();
-			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-		}
-		$fm
-			.append(html)
-			.submit();
+		zmiFormSubmit(sender,d);
 	}
+}
+
+/**
+ * Submit form with given parameters.
+ */
+function zmiFormSubmit(sender,d) {
+	var $fm = $(sender).closest("form");
+	var html = '';
+	for (var i in d) {
+		$('input[name="' + i + '"]',$fm).remove();
+		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	}
+	$fm
+		.append(html)
+		.submit();
 }
 
 /**
@@ -243,7 +250,7 @@ $(function() {
 						<img class="grippy" src="/misc_/zms/spacer.gif" />
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
 						<div class="input-append">
-							<select class="zmi-sort">
+							<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',key:\'attr\',attr_id:\'%s\',\'pos:int\':this.selectedIndex})'%objAttrId">
 								<option tal:repeat="i python:range(0,len(objAttrIds))" tal:attributes="selected python:['','selected'][int(i==objAttrIds.index(objAttrId))]" tal:content="python:i+1">i+1</option>
 							</select>
 							<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>

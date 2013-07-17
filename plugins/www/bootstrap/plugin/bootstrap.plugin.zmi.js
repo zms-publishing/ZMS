@@ -563,6 +563,11 @@ function zmiIframe(href, data, opt) {
 // ### ZMI Action-Lists
 // #############################################################################
 
+function getZMIActionContextId(el) {
+	var context_id = $(el).parents("li.zmi-item").attr("id");
+	return typeof context_id == "undefined" || context_id == ""?"":context_id.replace(/zmi_item_/gi,"");
+}
+
 /**
  * Populate action-list.
  *
@@ -575,13 +580,13 @@ function zmiActionOver(el, evt) {
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
 	// Build action and params.
-	var context_id = $(el).parents("li.zmi-item").attr("id");
+	var context_id = getZMIActionContextId(el);
 	var action = self.location.href;
 	action = action.substr(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
 	params['lang'] = getZMILang();
-	params['context_id'] = typeof context_id == "undefined" || context_id == ""?"":context_id;
+	params['context_id'] = context_id;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
 		// Reset wait-cursor.
@@ -618,10 +623,10 @@ function zmiActionOver(el, evt) {
 		else {
 			// Edit action
 			$("button.split-left",el).click(function() {
-					var context_id = $(this).parents("li.zmi-item").attr("id");
+					var context_id = getZMIActionContextId(this);
 					var action = self.location.href;
 					action = action.substr(0,action.lastIndexOf("/"));
-					action += typeof context_id == "undefined" || context_id == ""?"/manage_properties":"/"+context_id+"/manage_main";
+					action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
 					action += "?lang=" + getZMILang();
 					self.location.href = action;
 					return false;

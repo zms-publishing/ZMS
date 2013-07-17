@@ -463,6 +463,9 @@ div.single-line textarea {
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
 }
+div.pull-left div.single-line.input-append.zmi-nodes textarea {
+	margin-left:1em;
+}
 .zmi.metas .horizontal-group .mandatory span {
 	background: none !important;
 	padding-left: 0 !important;
@@ -508,7 +511,7 @@ div.single-line textarea {
 		width:12.9em
 	}
 	.zmi.metas .horizontal-group .meta_package select {
-		width:12.2em;
+		width:19.2em;
 	
 	}	
 }

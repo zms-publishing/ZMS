@@ -15,7 +15,9 @@
 		<link tal:condition="href" rel="stylesheet" type="text/css" tal:attributes="href href" />
 	</tal:block>
 	<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty(key)"></script>
+		<script 
+			tal:condition="python:here.getConfProperty(key)!=None"
+			tal:attributes="src python:here.getConfProperty(key)"></script>
 	</tal:block>
 </head>
 

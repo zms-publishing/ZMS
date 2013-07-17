@@ -2,32 +2,60 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'workflow_manager_main',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
+
+.horizontal-group .control-group {
+	float:left;
+	margin-right:0.5em;
+}
+.horizontal-group .mandatory span {
+	background: none !important;
+	padding-left: 0 !important;
+}
+.horizontal-group .controls {
+	margin-left: 0px;
+}
+.horizontal-group .control-group label {
+	float:none;
+	width:auto;
+	text-align:left;
+}
+.horizontal-group .controls.save {
+	margin-top:2.1em;
+}
+
+.zmi-image-preview {
+	margin-left:1em;
+	border:1px solid black;
+}
 div.activity {
 	white-space: nowrap;
 	border: 1px solid maroon;
+	border-radius:5px;
 	background-color: #FFFFE0;
-	padding-left:2px;
-	padding-right:2px;
-	padding-top:0px;
-	padding-bottom:0px;
+	padding:2px;
 	text-align:center;
 	margin-top:1px;
 	margin-bottom:1px;
 }
 div.transition {
 	border: 1px solid navy;
+	border-radius:5px;
 	background-color:#D0FFD0;
 	padding-left:2px;
 	padding-right:2px;
 	padding-top:0px;
 	padding-bottom:0px;
 	text-align:center;
+}
+div.activity a,
+div.transition a {
+	color:black;
 }
 .center {
 	text-align:center;
@@ -49,12 +77,228 @@ ul.performer {
 }
 </style>
 
-<form class="form-horizontal" action="manage_changeAcvtivities" method="post" enctype="multipart/form-data">
+<script>
+$(function() {
+		$('#updateActivity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Activity',height:'auto',width:'auto'});
+		$('#updateTransition').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Transition',height:'auto',width:'auto'});
+	});
+</script>
+
+<div class="ui-helper-hidden">
+	<div id="importConf" class="inner">
+		<form class="form-horizontal" name="importConfForm" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="key" value="import"/>
+			<div class="control-group">
+				<label for="file" class="control-label">
+					<i class="icon-folder-open-alt"></i>
+					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
+				</label>
+				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+				<div class="controls">
+					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.workflow.')">
+						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
+					</select>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #importConf -->
+
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in here.getActivityIds()">
+	<div id="updateActivity" class="inner" tal:define="global activity python:here.getActivity(request['id'])">
+		<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="control-group inpId">
+				<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+				<div class="controls"><input type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group inpName">
+				<label for="inpName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+				<div class="controls"><input type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group inpIcon">
+				<label for="inpIcon" class="control-label mandatory"><span>Icon</span></label>
+				<div class="controls">
+					<div class="pull-left">
+						<input type="file" id="inpIcon" name="inpIcon"/>
+					</div>
+					<div class="pull-right" tal:condition="python:activity.get('icon')">
+						<div class="zmi-image-preview">
+							<img tal:attributes="src activity/icon"/>
+						</div>
+					</div>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				</div><!-- .controls.save -->
+			</div><!-- .control-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #updateActivity -->
+
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in map(lambda x:x['id'],here.getTransitions())">
+	<div id="updateTransition" class="inner" tal:define="global transition python:filter(lambda x:x['id']==request['id'],here.getTransitions())[0]">
+		<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="horizontal-group">
+				<div class="control-group inpId">
+					<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+					<div class="controls"><input type="text" id="inpId" name="inpId" tal:attributes="value transition/id"/></div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group inpName">
+					<label for="inpName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+					<div class="controls"><input type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group">
+					<div class="controls save">
+						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					</div><!-- .controls.save -->
+				</div><!-- .control-group -->
+			</div><!-- .horizontal-group -->
+			<div style="clear:both;">&nbsp;</div>
+			<div class="horizontal-group">
+				<div class="control-group inpFrom">
+					<label for="inpFrom" class="control-label mandatory"><span>From</span></label>
+					<div class="controls">
+						<select name="inpFrom" multiple="multiple">
+							<tal:block tal:repeat="activity python:here.getActivities()">
+								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('from',[]))]" tal:content="activity/name">the activity</option>
+							</tal:block>
+						</select>
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group inpPerformer">
+					<label for="inpPerformer" class="control-label mandatory"><span>Performer</span></label>
+					<div class="controls">
+						<select name="inpPerformer" multiple="multiple">
+							<tal:block tal:repeat="performer python:here.userdefined_roles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
+								<option tal:attributes="value performer; selected python:['','selected'][int(performer in transition.get('performer',[]))]" tal:content="python:[lang_str,performer][int(lang_key==lang_str)]">the performer</option>
+							</tal:block></tal:block>
+						</select>
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group inpTo">
+					<label for="inpTo" class="control-label mandatory"><span>To</span></label>
+					<div class="controls">
+						<select name="inpTo">
+							<tal:block tal:repeat="activity python:here.getActivities()">
+								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('to',[]))]" tal:content="activity/name">the activity</option>
+							</tal:block>
+						</select>
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+			</div><!-- .horizontal-group -->
+			<div style="clear:both;">&nbsp;</div>
+			<div class="horizontal-group">
+				<div class="control-group">
+					<tal:block tal:define="global ob python:getattr(here,transition['id'])">
+						<label for="inpTo" class="control-label mandatory"><span>
+							<a tal:attributes="href ob/absolute_url" target="_blank">
+								<img tal:attributes="src ob/icon"/>
+								<tal:block tal:content="ob/id">the id</tal:block>
+							</a>
+							(<tal:block tal:content="ob/meta_type">the meta_type</tal:block>)
+							<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">the id</tal:block>
+						</span></label>
+						<div class="controls">
+							<textarea name="inpDtml" class="perc100" tal:content="python:ob.raw" cols="80" rows="25" wrap="virtual"></textarea>
+						</div><!-- .controls -->
+					</tal:block>
+				</div>
+			</div><!-- .horizontal-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #updateTransition -->
+
+<div class="ui-helper-hidden">
+	<div id="insertActivity" class="inner">
+		<form class="form-horizontal" name="insertObjForm" action="manage_changeActivities" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="control-group newId">
+				<label for="newId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+				<div class="controls"><input type="text" id="newId" name="newId" value="AC_"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group newName">
+				<label for="newName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+				<div class="controls"><input type="text" id="newName" name="newName"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group newIcon">
+				<label for="newIcon" class="control-label mandatory"><span>Icon</span></label>
+				<div class="controls"><input type="file" id="newIcon" name="newIcon"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #insertActivity -->
+
+<div class="ui-helper-hidden">
+	<div id="insertTransition" class="inner">
+		<form class="form-horizontal" name="insertObjForm" action="manage_changeTransitions" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="control-group newId">
+				<label for="newId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+				<div class="controls"><input type="text" id="newId" name="newId" value="TR_"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group newName">
+				<label for="newName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+				<div class="controls"><input type="text" id="newName" name="newName"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #insertTransition -->
+
+<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+	<input type="hidden" name="key" value="custom"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_WORKFLOW')">well</p>
+			<div class="control-group workflow">
+				<label for="workflow" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
+				<div class="controls">
+					<div class="pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></div>
+					<div class="pull-left">
+						<div class="single-line input-append zmi-nodes">
+							<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+						</div>
+					</div>
+					<div class="pull-left" style="padding-left:5em;">
+						<div class="btn-group">
+							<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;"><i class="icon-upload-alt"></i></span>
+							<a class="btn" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="icon-download-alt"></i></a>
+						</div>
+					</div>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				</div><!-- .controls -->
+			</div><!-- .control-group -->
+</form>
 
-<tal:block tal:define="global
+<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
 		activityIds python:here.getActivityIds()">
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<table class="table zmi-sortable">
 	<colgroup>
 		<col width="40"/>
@@ -63,41 +307,45 @@ ul.performer {
 	</colgroup>
 	<thead>
 	<tr>
-		<th tal:attributes="colspan python:2+len(activityIds)">&#8594;&nbsp;Activities</th>
+		<th tal:attributes="colspan python:2+len(activityIds)">
+			<div class="btn-group">
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertActivity').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+			</div>
+			&nbsp;<i class="icon-tag"></i> Activities
+		</th>
 	</tr>
 	</thead>
 	<tal:block tal:repeat="activityId activityIds">
 		<tal:block tal:define="i python:activityIds.index(activityId); activity python:here.getActivity(activityId); activityDetails python:here.getActivityDetails(activityId)">
 			<tr>
 				<td>
-					<img class="grippy" src="/misc_/zms/spacer.gif">
-					<select class="zmi-sort">
-						<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
-					</select>
-				</td>
-				<td>
-					<div class="btn-group">
-						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+					<div class="input-append">
+						<select class="zmi-sort">
+							<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
+						</select>
+						<span class="add-on btn" tal:attributes="onclick python:'confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 					</div>
 				</td>
 				<tal:block tal:repeat="activityId2 activityIds">
 					<tal:block tal:define="i2 python:activityIds.index(activityId2); activity2 python:here.getActivity(activityId2); activityDetails2 python:here.getActivityDetails(activityId2)">
 						<td align="center" tal:attributes="style python:['','padding:0'][int(i!=i2)]">
 							<div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
-								<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
-								<tal:block tal:content="python:activity['name']">name</tal:block>
+								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],activity['id'])">
+									<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
+									<tal:block tal:content="python:activity['name']">name</tal:block>
+								</a>
 							</div>
 							<tal:block tal:condition="not:python:activityId==activityId2">
-								<tal:block tal:condition="python:i>i2" tal:define="global maxTos2 python:max(activityDetails2['tos']+[-1]); minFroms python:min(activityDetails['froms']+[len(activityIds)])">
+								<nobr tal:condition="python:i>i2" tal:define="global maxTos2 python:max(activityDetails2['tos']+[-1]); minFroms python:min(activityDetails['froms']+[len(activityIds)])">
 									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i2>minFroms)],'50%')">
 									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-bottom:%ipx'%(['transparent','maroon'][int(i<=maxTos2)],[50,25][int(i==maxTos2)],[0,25][int(i==maxTos2)])">
-									<img tal:condition="python:len(activityDetails['froms'])>0 and i2>=min(activityDetails['froms'])" src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:maroon\073width:%s\073height:1px'%('50%')">
-								</tal:block>
-								<tal:block tal:condition="python:i<i2" tal:define="global maxFroms python:max(activityDetails['froms']+[-1]); minTos2 python:min(activityDetails2['tos']+[len(activityIds)])">
+									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(len(activityDetails['froms'])>0 and i2>=min(activityDetails['froms']))],'50%')">
+								</nobr>
+								<nobr tal:condition="python:i<i2" tal:define="global maxFroms python:max(activityDetails['froms']+[-1]); minTos2 python:min(activityDetails2['tos']+[len(activityIds)])">
 									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')">
 									<img src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:1px\073height:%ipx\073margin-top:%ipx'%(['transparent','maroon'][int(i2<=maxFroms)],[50,25][int(i2==maxFroms)],[0,25][int(i2==maxFroms)])">
 									<img tal:condition="python:i<minTos2" src="/misc_/zms/spacer.gif" tal:attributes="style python:'padding:0\073background-color:%s\073width:%s\073height:1px'%(['transparent','maroon'][int(i>=minTos2)],'50%')">
-								</tal:block>
+								</nobr>
 							</tal:block>
 						</td>
 					</tal:block>
@@ -105,20 +353,12 @@ ul.performer {
 			</tr>
 		</tal:block>
 	</tal:block>
-	<tr>
-		<td></td>
-		<td>
-			<div class="btn-group">
-				<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus"></i></a>
-			</div>
-		</td>
-		<td tal:attributes="colspan python:len(activityIds)"></td>
-	</tr>
 	</table>
-</tal:block>
+</form>
 
-<tal:block tal:define="global
+<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
 		transitions python:here.getTransitions()">
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<table class="table zmi-sortable">
 	<colgroup>
 		<col width="40"/>
@@ -126,20 +366,22 @@ ul.performer {
 	</colgroup>
 	<thead>
 	<tr>
-		<th colspan="3">&#8594;&nbsp;Transitions</th>
+		<th colspan="3">
+			<div class="btn-group">
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertTransition').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+			</div>
+			&nbsp;<i class="icon-random"></i> Transitions
+		</th>
 	</tr>
 	</thead>
 	<tal:block tal:repeat="transition transitions">
 			<tr>
 				<td>
-					<img class="grippy" src="/misc_/zms/spacer.gif">
-					<select class="zmi-sort">
-						<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==transitions.index(transition))]" tal:content="python:i+1">i+1</option>
-					</select>
-				</td>
-				<td>
-					<div class="btn-group">
-						<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></a>
+					<div class="input-append">
+						<select class="zmi-sort">
+							<option tal:repeat="i python:range(0,len(transitions))" tal:attributes="selected python:['','selected'][int(i==transitions.index(transition))]" tal:content="python:i+1">i+1</option>
+						</select>
+						<span class="add-on btn" tal:attributes="onclick python:'confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 					</div>
 				</td>
 				<td>
@@ -158,7 +400,7 @@ ul.performer {
 						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:50px;height:1px;"/></td>
 						<td>
 							<div class="transition">
-								<tal:block tal:content="python:transition['name']">name</tal:block>
+								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])" tal:content="python:transition['name']">name</a>
 								<ul class="performer smaller">
 									<li tal:repeat="performer python:transition['performer']" tal:content="python:performer">performer</li>
 								</ul>
@@ -182,18 +424,7 @@ ul.performer {
 				</td>
 			</tr>
 	</tal:block>
-	<tr>
-		<td></td>
-		<td>
-			<div class="btn-group">
-				<a class="btn" tal:attributes="href python:'#'; title python:here.getZMILangStr('BTN_INSERT')"><i class="icon-plus"></i></a>
-			</div>
-		</td>
-		<td></td>
-	</tr>
 	</table>
-</tal:block>
-
 </form>
 
 <div style="clear:both;">&nbsp;</div>

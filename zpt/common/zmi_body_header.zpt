@@ -131,7 +131,7 @@
 </div><!-- #zmi-header -->
 
 <div id="zmi-logo" tal:condition="python:here.zmi_logo">
-	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)"></a>
+	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)" alt="ZMI Logo"/></a>
 </div><!-- #zmi-logo -->
 
 <tal:block tal:condition="python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>

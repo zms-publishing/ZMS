@@ -96,7 +96,7 @@
 								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','collapse','container']+[[],['in']][int(len(objChildren)>0)]))
 								+'<div class=\042accordion-inner\042>'"></tal:block>
 							<ul class="zmi-container zmi-sortable">
-								<li tal:condition="python:len(objChildren)==0" class="zmi-item zmi-selectable" tal:attributes="id python:metaObjAttr['id']">
+								<li tal:condition="python:len(objChildren)==0" class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
 									<div class="center">
 										<div class="zmiRenderShort">&nbsp;</div>
 									</div><!-- .center -->

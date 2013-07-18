@@ -8,7 +8,15 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
-
+table.table.zmi-sortable tr.zmi-sortable .ui-toggle {
+	visibility:hidden;
+}
+table.table.zmi-sortable tr.zmi-sortable.active {
+	background-color:#ffc!important;
+}
+table.table.zmi-sortable tr.zmi-sortable.active .ui-toggle {
+	visibility:visible;
+}
 .horizontal-group .control-group {
 	float:left;
 	margin-right:0.5em;
@@ -53,7 +61,12 @@ div.transition {
 	padding-bottom:0px;
 	text-align:center;
 	width: 170px;
-
+}
+div.transition.state {
+	background-color:#D0D0FF;
+}
+div.transition.action {
+	background-color:#FFD0D0;
 }
 div.activity a,
 div.transition a {
@@ -74,18 +87,51 @@ div.transition a {
 }
 ul.performer {
 	list-style:none;
-	border:1px dotted navy;
 	padding:2px;
 	margin:2px;
-	background-color:#E8FFE8;
+	background-color:#FFF;
+	background: filter:Alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;
 }
 </style>
 
 <script>
+
+/**
+ * Delete object.
+ */
+function zmiDeleteObjBtnClick(sender,d) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		zmiFormSubmit(sender,d);
+	}
+}
+
+/**
+ * Submit form with given parameters.
+ */
+function zmiFormSubmit(sender,d) {
+	var $fm = $(sender).closest("form");
+	var html = '';
+	for (var i in d) {
+		$('input[name="' + i + '"]',$fm).remove();
+		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	}
+	$fm
+		.append(html)
+		.submit();
+}
+
 $(function() {
+		$('table.zmi-sortable tr').hover(
+			function() {
+					$(this).addClass('active');
+				},
+			function() {
+					$(this).removeClass('active');
+				});
 		$('#updateActivity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Activity',height:'auto',width:'auto'});
 		$('#updateTransition').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Transition',height:'auto',width:'auto'});
 	});
+
 </script>
 
 <div class="ui-helper-hidden">
@@ -121,6 +167,7 @@ $(function() {
 	<div id="updateActivity" class="inner" tal:define="global activity python:here.getActivity(request['id'])">
 		<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="control-group inpId">
 				<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="controls"><input type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .controls -->
@@ -130,7 +177,7 @@ $(function() {
 				<div class="controls"><input type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group inpIcon">
-				<label for="inpIcon" class="control-label mandatory"><span>Icon</span></label>
+				<label for="inpIcon" class="control-label"><span>Icon</span></label>
 				<div class="controls">
 					<div class="pull-left">
 						<input type="file" id="inpIcon" name="inpIcon"/>
@@ -151,10 +198,11 @@ $(function() {
 	</div><!-- .inner -->
 </div><!-- #updateActivity -->
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id') in map(lambda x:x['id'],here.getTransitions())">
-	<div id="updateTransition" class="inner" tal:define="global transition python:filter(lambda x:x['id']==request['id'],here.getTransitions())[0]">
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in here.getTransitionIds()">
+	<div id="updateTransition" class="inner" tal:define="global transition python:here.getTransition(request['id'])">
 		<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="horizontal-group">
 				<div class="control-group inpId">
 					<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
@@ -173,9 +221,9 @@ $(function() {
 			<div style="clear:both;">&nbsp;</div>
 			<div class="horizontal-group">
 				<div class="control-group inpFrom">
-					<label for="inpFrom" class="control-label mandatory"><span>From</span></label>
+					<label for="inpFrom" class="control-label"><span>From</span></label>
 					<div class="controls">
-						<select name="inpFrom" multiple="multiple">
+						<select name="inpFrom:list" multiple="multiple">
 							<tal:block tal:repeat="activity python:here.getActivities()">
 								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('from',[]))]" tal:content="activity/name">the activity</option>
 							</tal:block>
@@ -183,9 +231,9 @@ $(function() {
 					</div><!-- .controls -->
 				</div><!-- .control-group -->
 				<div class="control-group inpPerformer">
-					<label for="inpPerformer" class="control-label mandatory"><span>Performer</span></label>
+					<label for="inpPerformer" class="control-label"><span>Performer</span></label>
 					<div class="controls">
-						<select name="inpPerformer" multiple="multiple">
+						<select name="inpPerformer:list" multiple="multiple">
 							<tal:block tal:repeat="performer python:here.userdefined_roles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
 								<option tal:attributes="value performer; selected python:['','selected'][int(performer in transition.get('performer',[]))]" tal:content="python:[lang_str,performer][int(lang_key==lang_str)]">the performer</option>
 							</tal:block></tal:block>
@@ -193,9 +241,10 @@ $(function() {
 					</div><!-- .controls -->
 				</div><!-- .control-group -->
 				<div class="control-group inpTo">
-					<label for="inpTo" class="control-label mandatory"><span>To</span></label>
+					<label for="inpTo" class="control-label"><span>To</span></label>
 					<div class="controls">
 						<select name="inpTo">
+							<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%'To'">--- Select to ---</option>
 							<tal:block tal:repeat="activity python:here.getActivities()">
 								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('to',[]))]" tal:content="activity/name">the activity</option>
 							</tal:block>
@@ -206,18 +255,24 @@ $(function() {
 			<div style="clear:both;">&nbsp;</div>
 			<div class="horizontal-group">
 				<div class="control-group">
-					<tal:block tal:define="global ob python:getattr(here,transition['id'])">
-						<label for="inpTo" class="control-label mandatory"><span>
-							<a tal:attributes="href ob/absolute_url" target="_blank">
-								<img tal:attributes="src ob/icon"/>
-								<tal:block tal:content="ob/id">the id</tal:block>
-							</a>
-							(<tal:block tal:content="ob/meta_type">the meta_type</tal:block>)
-							<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">the id</tal:block>
-						</span></label>
-						<div class="controls">
-							<textarea name="inpDtml" class="perc100" tal:content="python:ob.raw" cols="80" rows="25" wrap="virtual"></textarea>
-						</div><!-- .controls -->
+					<tal:block tal:define="global ob python:getattr(here,transition['id'],None)">
+						<tal:block tal:condition="python:ob is None">
+							<input type="hidden" name="inpType" value=""/>
+						</tal:block>
+						<tal:block tal:condition="python:ob is not None">
+							<label for="inpDtml" class="control-label mandatory"><span>
+								<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url()" target="_blank">
+									<img tal:attributes="src ob/icon"/>
+									<tal:block tal:content="ob/id">the id</tal:block>
+								</a>
+								(<tal:block tal:content="ob/meta_type">the meta_type</tal:block>)
+								<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">the id</tal:block>
+							</span></label>
+							<div class="controls">
+								<input type="hidden" name="inpType" tal:attributes="value ob/meta_type"/>
+								<textarea name="inpDtml" class="perc100" tal:content="transition/dtml" cols="80" rows="25" wrap="off"></textarea>
+							</div><!-- .controls -->
+						</tal:block>
 					</tal:block>
 				</div>
 			</div><!-- .horizontal-group -->
@@ -238,7 +293,7 @@ $(function() {
 				<div class="controls"><input type="text" id="newName" name="newName"/></div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group newIcon">
-				<label for="newIcon" class="control-label mandatory"><span>Icon</span></label>
+				<label for="newIcon" class="control-label"><span>Icon</span></label>
 				<div class="controls"><input type="file" id="newIcon" name="newIcon"/></div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">
@@ -261,6 +316,17 @@ $(function() {
 			<div class="control-group newName">
 				<label for="newName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="controls"><input type="text" id="newName" name="newName"/></div><!-- .controls -->
+			</div><!-- .control-group -->
+			<div class="control-group newType">
+				<label for="newType" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
+				<div class="controls">
+					<select name="newType">
+						<tal:block tal:repeat="meta_type python:['Page Template','Script (Python)']">
+							<option tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
+						</tal:block>
+						<option value="" tal:content="python:here.getZMILangStr('ATTR_NONE')">the meta_type</option>
+					</select>
+				</div><!-- .controls -->
 			</div><!-- .control-group -->
 			<div class="control-group">
 				<div class="controls">
@@ -289,6 +355,7 @@ $(function() {
 						<div class="btn-group">
 							<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;"><i class="icon-upload-alt"></i></span>
 							<a class="btn" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="icon-download-alt"></i></a>
+							<a class="btn btn-inverse" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><i class="icon-remove"></i></a>
 						</div>
 					</div>
 				</div><!-- .controls -->
@@ -304,11 +371,6 @@ $(function() {
 		activityIds python:here.getActivityIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<table class="table zmi-sortable">
-	<colgroup>
-		<col width="40"/>
-		<col width="40"/>
-		<col tal:repeat="activityId activityIds" tal:attributes="width python:'%i'%int(100/len(activityIds))+'%'"/>
-	</colgroup>
 	<thead>
 	<tr>
 		<th tal:attributes="colspan python:2+len(activityIds)" style="vertical-align:middle;">
@@ -321,13 +383,13 @@ $(function() {
 	</thead>
 	<tal:block tal:repeat="activityId activityIds">
 		<tal:block tal:define="i python:activityIds.index(activityId); activity python:here.getActivity(activityId); activityDetails python:here.getActivityDetails(activityId)">
-			<tr>
+			<tr class="zmi-sortable">
 				<td>
 					<div class="input-append">
-						<select class="zmi-sort">
+						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%activityId">
 							<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
 						</select>
-						<span class="add-on btn" tal:attributes="onclick python:'confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
+						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%activityId; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 					</div>
 				</td>
 				<tal:block tal:repeat="activityId2 activityIds">
@@ -357,13 +419,9 @@ $(function() {
 </form>
 
 <form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
-		transitions python:here.getTransitions()">
+		transitionIds python:here.getTransitionIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<table class="table zmi-sortable">
-	<colgroup>
-		<col width="40"/>
-		<col width="40"/>
-	</colgroup>
 	<thead>
 	<tr>
 		<th colspan="3" style="vertical-align:middle;">
@@ -374,14 +432,15 @@ $(function() {
 		</th>
 	</tr>
 	</thead>
-	<tal:block tal:repeat="transition transitions">
-			<tr>
+	<tal:block tal:repeat="transitionId transitionIds">
+		<tal:block tal:define="i python:transitionIds.index(transitionId); transition python:here.getTransition(transitionId); ob python:getattr(here,transition['id'],None)">
+			<tr class="zmi-sortable">
 				<td>
 					<div class="input-append">
-						<select class="zmi-sort">
-							<option tal:repeat="i python:range(0,len(transitions))" tal:attributes="selected python:['','selected'][int(i==transitions.index(transition))]" tal:content="python:i+1">i+1</option>
+						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%transition['id']">
+							<option tal:repeat="i python:range(0,len(transitionIds))" tal:attributes="selected python:['','selected'][int(i==transitionIds.index(transitionId))]" tal:content="python:i+1">i+1</option>
 						</select>
-						<span class="add-on btn" tal:attributes="onclick python:'confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
+						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%transition['id']; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
 					</div>
 				</td>
 				<td>
@@ -397,18 +456,19 @@ $(function() {
 								</tal:block>
 							</tal:block>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:50px;height:1px;" /></td>
+						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['from'])>0)]"/></td>
 						<td>
-							<div class="transition">
+							<div tal:attributes="class python:' '.join(['transition']+[[],['state']][int(ob is None)]+[[],['action']][int(len(transition['from'])+len(transition['to'])==0)])">
+								<tal:block tal:condition="python:ob is not None">
+									<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title python:'%s (%s)'%(ob.meta_type,here.getDataSizeStr(ob.get_size()))" target="_blank"><img tal:attributes="src ob/icon"/></a>
+								</tal:block>
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])" tal:content="python:transition['name']">name</a>
 								<ul class="performer smaller" tal:condition="python:transition['performer']">
 									<li tal:repeat="performer python:transition['performer']" tal:content="python:performer">performer</li>
 								</ul>
 							</div>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;" /></td>
-						<td tal:condition="python:transition['to']"><img src="/misc_/OFSP/dtmlmethod.gif" alt="DTML Method" /></td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" style="background-color:maroon;width:25px;height:1px;" /></td>
+						<td><img src="/misc_/zms/spacer.gif" alt="" border="0"  tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['to'])>0)]"/></td>
 						<td>
 							<tal:block tal:repeat="activityId python:transition['to']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
@@ -423,6 +483,7 @@ $(function() {
 					</table>
 				</td>
 			</tr>
+		</tal:block>
 	</tal:block>
 	</table>
 </form>

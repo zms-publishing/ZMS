@@ -95,7 +95,7 @@ def importXml(self, xml, REQUEST):
   for li in range(len(l)/2):
     id = l[li*2]
     i = l[li*2+1]
-    self.setTransition(id=None,newId=id,newName=i['name'],newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
+    self.setTransition(id=None,newId=id,newName=i['name'],newType=i.get('type','DTML Method'),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
   # Roles.
   roles = []
   for transition in self.getTransitions():
@@ -199,7 +199,7 @@ class ZMSWorkflowProvider(
       for li in range(len(l)/2):
         id = l[li*2]
         i = l[li*2+1]
-        self.setTransition(id=None,newId=id,newName=i['name'],newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=i.get('type','DTML Method'),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -292,6 +292,15 @@ class ZMSWorkflowProvider(
           self.doAutocommit(lang,REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')
       
+      # Clear.
+      # ------
+      elif key == 'clear' and btn == self.getZMILangStr('BTN_CLEAR'):
+        self.doAutocommit(lang,REQUEST)
+        self.autocommit = 1
+        self.activities = []
+        self.transitions = []
+        message = self.getZMILangStr('MSG_CHANGED')
+     
       # Export.
       # -------
       elif key == 'export' and btn == self.getZMILangStr('BTN_EXPORT'):

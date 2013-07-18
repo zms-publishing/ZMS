@@ -1239,9 +1239,16 @@ class VersionManagerContainer:
       _globals.writeBlock( self, "[manage_wfTransition]")
       wfTransitions = self.getWfTransitions()
       for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
-        dtml = wfTransition.get('dtml','')
-        if len(dtml) > 0:
-          return _globals.dt_html(self, dtml, REQUEST) 
+        transition = self.getWfTransition(wfTransition['id'])
+        tType = transition.get('type','DTML Method')
+        tDtml = transition.get('dtml','')
+        if len(tDtml) > 0:
+          if tType == 'DTML Method':
+            return _globals.dt_html(self, tDtml, REQUEST) 
+          if tType == 'Page Template':
+            return transition['ob'](zmscontext=self) 
+          elif tType == 'Script (Python)':
+            return transition['ob'](zmscontext=self) 
         else:
           return self.manage_wfTransitionFinalize(lang, custom, REQUEST, RESPONSE)
 

@@ -794,6 +794,12 @@ class ConfManager(
         return []
       return workflow_manager.getTransitions()
 
+    def getWfTransition(self, id):
+      workflow_manager = getattr(self,'workflow_manager',None)
+      if workflow_manager is None:
+        return None
+      return workflow_manager.getTransition(id)
+
 
     ############################################################################
     ###

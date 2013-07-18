@@ -17,6 +17,8 @@
 ################################################################################
 
 # Imports.
+from Products.PageTemplates import ZopePageTemplate
+from Products.PythonScripts import PythonScript
 import copy
 import sys
 import time
@@ -37,7 +39,7 @@ class ZMSWorkflowTransitionsManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.setTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def setTransition(self, id, newId, newName, newFrom, newTo, newPerformer=[], newDtml=''):
+  def setTransition(self, id, newId, newName, newType, newFrom=[], newTo='', newPerformer=[], newDtml=''):
     message = ''
     obs = self.transitions
     # Remove exisiting entry.
@@ -65,7 +67,16 @@ class ZMSWorkflowTransitionsManager:
     for obj_id in [str(id),str(newId)]:
       if obj_id in self.objectIds():
         self.manage_delObjects([obj_id])
-    self.manage_addDTMLMethod(newId,newName,newDtml)
+    if newType == 'DTML Method':
+      self.manage_addDTMLMethod( newId, newName, newDtml)
+    elif newType == 'Page Template':
+      ZopePageTemplate.manage_addPageTemplate( self, newId, title=newName, text=newDtml)
+      newOb = getattr( self, newId)
+      newOb.output_encoding = 'utf-8'
+    elif newType == 'Script (Python)':
+      PythonScript.manage_addPythonScript( self, newId)
+      newOb = getattr( self, newId)
+      newOb.write( newDtml)
     # Update attribute.
     obs.insert(i,newValues)
     obs.insert(i,newId)
@@ -102,7 +113,16 @@ class ZMSWorkflowTransitionsManager:
   def getTransition(self, id, for_export=False):
     transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
     transition = copy.deepcopy(transition)
-    transition['dtml'] = getattr(self,transition['id']).raw
+    ob = getattr(self,transition['id'],None)
+    if ob is not None:
+      transition['ob'] = ob
+      transition['type'] = ob.meta_type
+      if transition['type'] == 'DTML Method':
+        transition['dtml'] = ob.raw
+      elif transition['type'] == 'Page Template':
+        transition['dtml'] = unicode(ob.read()).encode('utf-8')
+      elif transition['type'] == 'Script (Python)':
+        transition['dtml'] = ob.read()
     return transition
 
 
@@ -125,11 +145,12 @@ class ZMSWorkflowTransitionsManager:
       item = self.getTransition(id)
       newId = REQUEST.get('inpId').strip()
       newName = REQUEST.get('inpName').strip()
-      newFrom = REQUEST.get('inpFrom')
-      newTo = REQUEST.get('inpTo')
+      newType = REQUEST.get('inpType','DTML Method').strip()
+      newFrom = REQUEST.get('inpFrom',[])
+      newTo = REQUEST.get('inpTo',[])
       newPerformer = REQUEST.get('inpPerformer',[])
       newDtml = REQUEST.get('inpDtml','').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
+      message += self.setTransition( item.get('id',None), newId, newName, newType, newFrom, newTo, newPerformer, newDtml)
       message += self.getZMILangStr('MSG_CHANGED')
       id = newId
     
@@ -145,11 +166,8 @@ class ZMSWorkflowTransitionsManager:
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()
-      newFrom = REQUEST.get('newFrom',[])
-      newTo = REQUEST.get('newTo',[])
-      newPerformer = REQUEST.get('newPerformer',[])
-      newDtml = REQUEST.get('newDtml','').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newFrom, newTo, newPerformer, newDtml)
+      newType = REQUEST.get('newType','DTML Method').strip()
+      message += self.setTransition( item.get('id',None), newId, newName, newType)
       message += self.getZMILangStr('MSG_INSERTED')%id
       id = newId
     

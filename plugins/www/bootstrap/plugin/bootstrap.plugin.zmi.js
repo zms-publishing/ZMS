@@ -696,7 +696,7 @@ function zmiActionOver(el, evt) {
 					opticon = '<i class=" icon-sort-down"></i>';
 				}
 				var html = '';
-				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);

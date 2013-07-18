@@ -1,60 +1,92 @@
-<?xml version="1.0" encoding="ISO-8859-1"?><dictionary>
-<item key="activities" type="dictionary"><list>
-<item type="string"><![CDATA[AC_CHANGED]]></item>
-<item type="dictionary"><dictionary>
-<item key="icon" type="image">
-<data width="41" height="12" content_type="image/gif" filename="state_modified.gif" type="image">47494638396129000c00f7ff00be0000dfdfdfb2b2b2a5a4a4ffffffdedfdabdbdbae1e2dde0d4b8b1988999ae8be1d4aea7b49de49c8f9a9a9ad6d1cbcdcecdcecdd0cccccca16753c2d2b1c9d8b1b0b0afe2d0a7e1cba8dcdcd7f6bbb3d5d5d3a7c385a79290d3a391ad6058d5ac84d7d8d3c6dea6a0473ba1bb8a96ae88d9cab2f2988ab7b2b0b4b5b3e2b989cfc4c4e7ba88bfd3a0e6bd8dcaaeaa856f70987263d29c8fc09b96c0c2b9c7c6c8422e2eabb9a35b3635a8c08ee29182abc68cdcddd8999596504d4ce5c5974e4140d5baa1e3b786cac8c3e7b385cf9f93e2d1a896a98daac58bbdd59bc1c2b692998e8b4d43e2cfa8c7aba9b0c894b0c98ecfa694a4c184a8a7a896554de0e1dcc7dea5acbc9cd6cbc6e2cea6e2cda5c3dda0ea9284dee0dbdeded9dec4a9a1be87c6958f9897986c6d6bbfd89ec2c5bfbeaea1aeaeaec6c5c0b6766d9590904d4f4fe3cda3e5c294b0a7a2e7b786b3b3b3d5a491becfafbbceadbfbdbcb3a9a8bfbfbebbbdbabbbeb8d48272e4c69b864844e6ba8ca7c388585654e4bf92992e26cfcec87f7f7fe1d1a9e1d1b29db68be4a69b9c9a99d9d6d1d6d3d3c5dca4c7ad94b1b2b2c6d8aac6dea4b2cc90df826ee2c69c686969b6cf94868888c0c3b4c5abaae4be91cecfcee7b9879d9c9da1be864a4949bea8a0b3b3b2d59282adc492a4a3a1cfafa6dca990494a4a97312cc0d99cdfe0dbc7958fb5ce92a49d9d96312b912c28bed79cba9c94c3c3c4c3dba2c0c0bde3cfaaa4c084dfc4a9e1e1dd363838e5bf90c1c0bea49d9ca8c4898f2422deb9a78e998aaf998c9f4542a99493b7d095cdcdcbe5b488bfbfbdbabcb9e2c59bbcbfbbe5b98f5b5a59c2b7b2c2bab1838686ee9487ee96853d3837383d3eb0cb8ea4c185b6cf93cececfd7cac6e6b887ea9385dfded9acc88d9e9d9da1af9acec5bbd3c0aae99081cde0b4ed9184582321b7c9a8979f94a6a4a7e1b992ed9588ddded9dfddd8dc907e9ab887e7b783b0baab97b389cececd9ca791c6dfa2b6928e802f2cdad8d3d3d4d0a39795d1a294dbaf83e1d1aae7b883daccb7a8adaf939193ee542bc0c0c000000021f904010000fe002c0000000029000c000008ff00fd091c48b0a0c1830811861044ca07a7359462194c2120d7215502041428780ece006d0e34093050909e245b3d1211a8930cda9081078aa971b322408417f518791958e08c9a01d402bc1ac08fe44066cff6a4fb2443c7071b634e0944142a9e281318f4f19a010cd7403b62de89934361ce9525e408fa91b70b40bf7e0000b102c24360a00e4588ac7b936f983d579e065a38a24e9a140eb336b51b4710c72ab76fe102089741209630a358f0b9f4c75a260f96064e29d107c9a360507481e945f017642ede20c12d854e603554c86ee9d19225928b384e06b223f1681219454952ed50401086db6bcdc09973d68f0936810fa2946383efc2a0266da2287a1b78a7d034588eb68868956d1b416254de6a2070a2df0814070476a103e2c782000818a18219100ce40e03d1c0f34d00569892c33105a111431a0d1892c7046e1454c532f71843882c422c224c4112dcf0442315b4000a1eb51cd44902beec330f42dc04f1052ddd6072d006652851090d352424e490440e1410003b</data></item>
-<item key="name" type="string"><![CDATA[Changed]]></item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[AC_REQUESTED]]></item>
-<item type="dictionary"><dictionary>
-<item key="icon" type="image">
-<data width="41" height="12" content_type="image/gif" filename="state_requested.gif" type="image">47494638396129000c00f7ff00d27b7bdfdfdfa5a4a4868888d5d5d3bdbdbae1e2ddffffffb2b2b2dedfdac8bebac0c2b99b9c9cc2c5bfb0baabc9d8b1bcaaa3d0cece9ab887fde092bd9e9ac7c6c8979f94c7c7c6c8aaa6a7b49dacbc9ca6a4a7cbb9a599ae8b9e97978486868a8988f99d46ffbb5bfbab4cb0b0afd9bcb7a7c385c1a59cd1b9bab17a46d1d3d0bf5b43c3dba2de8226dcdcd7c6dfa28c5f559f5c4bf9cb82bfbfbea8a9a8bfd3a0c56446d4b4ada2a1a1823730b7c9a8929091949194605d59a1af9a4b4645a8c08eb9b7b7abc68cadc492ddded9e077429a9a9aca6640bcbfbbd3d5d2c0c3b4b27874d7af81cfcec8b3b3b3663937c5836fdfb5aeff9a2da4c084e1b6affc8f30a4c184be8d8ca6a7a7b6cf93b5ce92c7dea5d6cbc659413bdfb3addbb4adfdda99dee0db9e9c9cdeded9ffa8448e998ac6a19ec5dca4c6dea696a98dacc88db3a9a9ccccccad998bfce4a8d4d1cd969595949797a1a09fbec0c1fd9b36daaea49c7a5fcac8c3b0b2b2ffda85becfafabb9a3f49832bbbeb8d7d8d3c3bebcc4bfbffcd781fcd27fa8c489c29792b4b5b3c5c3c2fcd5839ca791f79236e1e1dd90503fdfb4aecececfddb4adf7bc64fca140a4c185b1cb90bdd59bc18d8ab0c89492998ec3b9b2afafaff0b9809c9d9da1be87a8a5a3a7c388bc8079d3d0d6e8c796c3dda09b4e44fdac4a5e4f4e5e4e4dfcda89c1c2b6a84336d9d6d1a1be86c19695fcbd64c08f8ccde0b4bbbdbae9cca0f1ba80fed588dfb5add07b27d7cac69e9d9dc6dea49d9c9dffa038f39e39c6d8aaa59393d79d6abed79ce0c4c0372e2da8a7a8ff9d36fe9a33d5aea6cacac7bbceadbabcb9b0cb8e989798fcd07daac58bce6741d3d4d0af7876cfcfcadeb4aeb0c98ed8b3abff9c2ebf8f8ce0e1dcaeaeaea94134deb3acdfe0dbdfded9c4b8b1b2cc90b6cf94b7d095ec9f78bfd89ed3b9b3afada9c16c46fcda87f29e4db99b96b68f8d9db68bdcddd8dfddd8a58b8a9c9b9bc0c0bdc2d2b197b389b79997c3c3c4fed179a1bb8acececd9a9090bd8a89ffb555fbad4fdab8b2c0d99cfbc06861353296ae88e49b88c0c0c021f904010000ff002c0000000029000c000008ff00ff091c48b0a0c1830811fac1c4400c3b4d08da192c34a0d40f520306242848c489005b4670212850b0199638412204008423ce9d81068e018381e2c0274f5d3e8c1998c0da0e018d02c413c083e4403c70e049bb11ee8b997a34b2094cd52307145032607d13f544dcc019c910e9d0e3ce98064b1b08ca39670f803f7f00285df1904e60137e2baa4819362d918d452006924823219215135354bdb340901735b76fe10258e7422017544572411a818f8eb023ce0606ebd76999246fd1066d2a4370156468d8eac06da54e60ad6b2146b15226681f19664b063a98c7ad1bb83393b408e940708d5b478cbc4499e5cf9c36816f629493672a10b943f7c6b57b19f80a5d1616b742a1f1a5c607c10b14defe0a40c51f2143060486e1444bc484036ee4a18b1d2a0c444f06c8bce04a005be80304120515030106f99440cc097f14544d1b2d3c02862c7ca4f04c416cec51c92e0fd430441f8a18448002db5c3247040871d04b26b13091c4410434708a120b5490d0904416395040003b</data></item>
-<item key="name" type="string"><![CDATA[Commit requested]]></item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[AC_REJECTED]]></item>
-<item type="dictionary"><dictionary>
-<item key="icon" type="image">
-<data width="41" height="12" content_type="image/gif" filename="state_rejected.gif" type="image">47494638396129000c00f7ff00d27b7bdfdfdfa5a4a4868888d5d5d3bdbdbae1e2ddffffffb2b2b2dedfdac8bebac0c2b99b9c9cc2c5bfb0baabc9d8b1bcaaa3d0cece9ab887fde092bd9e9ac7c6c8979f94c7c7c6c8aaa6a7b49dacbc9ca6a4a7cbb9a599ae8b9e97978486868a8988f99d46ffbb5bfbab4cb0b0afd9bcb7a7c385c1a59cd1b9bab17a46d1d3d0bf5b43c3dba2de8226dcdcd7c6dfa28c5f559f5c4bf9cb82bfbfbea8a9a8bfd3a0c56446d4b4ada2a1a1823730b7c9a8929091949194605d59a1af9a4b4645a8c08eb9b7b7abc68cadc492ddded9e077429a9a9aca6640bcbfbbd3d5d2c0c3b4b27874d7af81cfcec8b3b3b3663937c5836fdfb5aeff9a2da4c084e1b6affc8f30a4c184be8d8ca6a7a7b6cf93b5ce92c7dea5d6cbc659413bdfb3addbb4adfdda99dee0db9e9c9cdeded9ffa8448e998ac6a19ec5dca4c6dea696a98dacc88db3a9a9ccccccad998bfce4a8d4d1cd969595949797a1a09fbec0c1fd9b36daaea49c7a5fcac8c3b0b2b2ffda85becfafabb9a3f49832bbbeb8d7d8d3c3bebcc4bfbffcd781fcd27fa8c489c29792b4b5b3c5c3c2fcd5839ca791f79236e1e1dd90503fdfb4aecececfddb4adf7bc64fca140a4c185b1cb90bdd59bc18d8ab0c89492998ec3b9b2afafaff0b9809c9d9da1be87a8a5a3a7c388bc8079d3d0d6e8c796c3dda09b4e44fdac4a5e4f4e5e4e4dfcda89c1c2b6a84336d9d6d1a1be86c19695fcbd64c08f8ccde0b4bbbdbae9cca0f1ba80fed588dfb5add07b27d7cac69e9d9dc6dea49d9c9dffa038f39e39c6d8aaa59393d79d6abed79ce0c4c0372e2da8a7a8ff9d36fe9a33d5aea6cacac7bbceadbabcb9b0cb8e989798fcd07daac58bce6741d3d4d0af7876cfcfcadeb4aeb0c98ed8b3abff9c2ebf8f8ce0e1dcaeaeaea94134deb3acdfe0dbdfded9c4b8b1b2cc90b6cf94b7d095ec9f78bfd89ed3b9b3afada9c16c46fcda87f29e4db99b96b68f8d9db68bdcddd8dfddd8a58b8a9c9b9bc0c0bdc2d2b197b389b79997c3c3c4fed179a1bb8acececd9a9090bd8a89ffb555fbad4fdab8b2c0d99cfbc06861353296ae88e49b88c0c0c021ff0b4e45545343415045322e30030100000021f904053200ff002c0000000029000c000008ff00ff091c48b0a0c1830811fac1c4400c3b4d08da192c34a0d40f520306242848c489005b4670212850b0199638412204008423ce9d81068e018381e2c0274f5d3e8c1998c0da0e018d02c413c083e4403c70e049bb11ee8b997a34b2094cd52307145032607d13f544dcc019c910e9d0e3ce98064b1b08ca39670f803f7f00285df1904e60137e2baa4819362d918d452006924823219215135354bdb340901735b76fe10258e7422017544572411a818f8eb023ce0606ebd76999246fd1066d2a4370156468d8eac06da54e60ad6b2146b15226681f19664b063a98c7ad1bb83393b408e940708d5b478cbc4499e5cf9c36816f629493672a10b943f7c6b57b19f80a5d1616b742a1f1a5c607c10b14defe0a40c51f2143060486e1444bc484036ee4a18b1d2a0c444f06c8bce04a005be80304120515030106f99440cc097f14544d1b2d3c02862c7ca4f04c416cec51c92e0fd430441f8a18448002db5c3247040871d04b26b13091c4410434708a120b5490d09044163950400021f904053200ff002c100001000a000a0000086200fffd4320c7881c040804fedb41e14e8046183c2414708ed82f585c6651e0d58e97994c4c32893463ce09a1909940810a690603a13a2a61c152e90fc347990f64823a71e9151350b014bd81950902bd7f979860240aa189c23b1c40fde270f45f40003b</data></item>
-<item key="name" type="string"><![CDATA[Commit rejected]]></item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[AC_COMMITTED]]></item>
-<item type="dictionary"><dictionary>
-<item key="icon" type="image">
-<data width="41" height="12" content_type="image/gif" filename="state_committed.gif" type="image">47494638396129000c00f7ff00b0fb5dd27b7b7ae900dfdfdfb2b2b2ffffff646262e1e2dddedfdabdbdbacdcdcbade065bd8a89afafafc0a098e0c4c0d6d1cb9e97974b772db3a9a975ae339b9c9ce1cba8c7ad947b9b5ae7b385a4a3a1ddded9d0cecee3b786c3bebccfafa6aed96e7eae466a676ae0e1dc578b32c2f577bcaaa3e7ba88d1d1cfdfc4a987ba4dd6cbc6deded9dfe0dbdfb5aedeb4aed7d8d3e2d1a8c29792e2cfa8e1d1a998be78e1d1aacfa694dec4a9e5c597e4c69bc4bfbfdaaea4e2d0a7d5aea6cac8c3e3cfaacfcec8d5ac84ddb4adb7a29de6bd8dc7958fc08f8ce2c59b9ea29bcfc4c4d3b9b3d1a294e6b887a5cb88dcddd8504f4f86bc41a8a9a834422be3cda3dfb3adaeb197c1a59c353035e7b783d5a491a49d9ce2c69ca1a09fb9b7b7d3c0aaa58b8ad7cac6b1b2b2b3b9adc6958f69a526c5abaac19695deb3ac447627abae9ca792906561673f3e3fb0b2b2c7c7c6949595a0a6999497974f8d276aa628bd9e9ad8b3abcf9f93d9cab2b3b3b6c0e685a59393959090bec0c170aa2ac8beba70ab2fd5d5d341513ad3d4d0e5c294cec5bbd5baa1b4b5b3adb293e4bf92c7e7954e4d4edfb5ad7cb53ba9a9a779b037e7b987daccb7c1c0bec7aba9b6928ee4be91dbaf83c5c3c2cecdd0478029e2cda5e2cea6d2d1cedee0dbe5bf90bf8f8cbe8d8cc3b9b2cecfce9c9a99dfb4ae718c5fcdcecd619e28b99b969e9c9c898989ba9c949c9d9d868888c2bab1c18d8ab3b3b2a99493dfded9e6ba8ce5b98fbabcb9c0bec1464647deb9a7619f2ba6a7a7c6a19ec2b7b2d9d6d18ec447dfddd8dca990c0c0bdc4b8b1b79997dbb4adcaaeaae1b992b68f8de7b883beaea19c9b9bdab8b2cacac7a49d9d839778e2b98981807fa2a8a16aa627d4b4add3a391e1d4ae4e6537d9bcb77d7d7cc09b96e1d1b2e1e1ddc8aaa6e0d4b89794949a9090a3979542693086c03fbfbdbc72a53b6b875860962fe1b6afe5b4885d7b4e322e30c5f67fe7b786b2e867293f21dcdcd7a2a1a1e49b88c0c0c000000000000000000000000000000000000000000000000000000000000000000000000000000021f904010000f2002c0000000029000c000008ff00e5091c48b0a0c1830811c26850219532560482193c4460cba86604082028b841950128b716b54a5070902e385e380cd8014fce8f81076af121a26400a662e0c4b01888009b3a03050ae4318085e44037de86d999b684d8ae6f525a08eca581d2073c1622e1ca164bd240476dacd50000c00986296c087639c62040bc78015e818af04460903577326461870c1d9355b006420b37878e343f654e65124470cf27b76fe10600f34ee00a32c04eccaa94a809246a66068a4803e89100015128e47247f00ce4176878c03df24b601823b43ce9d0b4894b112d93063a33e74b00d9d38d24109ce07608a92a2e18c543254b200407c6a8d8e8416306a11bbc06267421619c2c800502d2117c53e7ed8301e7e2c9b8744060a7714272541bd02dc6b364a60c844239e29410d43aed90134d41cc98c0cd32d7f8708507058de08a2548680344071728509002a5a8a08722208410c7360605f28730a1f4c10942851882430a5f8882d0185620a2862d09f5e8e38f030504003b</data></item>
-<item key="name" type="string"><![CDATA[Committed]]></item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[AC_ROLLEDBACK]]></item>
-<item type="dictionary"><dictionary>
-<item key="icon" type="image">
-<data width="41" height="12" content_type="image/gif" filename="state_rolledback.gif" type="image">47494638396129000c00f70000be0000dfdfdfb2b2b2a5a4a4ffffffdedfdabdbdbae1e2dde0d4b8b1988999ae8be1d4aea7b49de49c8f9a9a9ad6d1cbcdcecdcecdd0cccccca16753c2d2b1c9d8b1b0b0afe2d0a7e1cba8dcdcd7f6bbb3d5d5d3a7c385a79290d3a391ad6058d5ac84d7d8d3c6dea6a0473ba1bb8a96ae88d9cab2f2988ab7b2b0b4b5b3e2b989cfc4c4e7ba88bfd3a0e6bd8dcaaeaa856f70987263d29c8fc09b96c0c2b9c7c6c8422e2eabb9a35b3635a8c08ee29182abc68cdcddd8999596504d4ce5c5974e4140d5baa1e3b786cac8c3e7b385cf9f93e2d1a896a98daac58bbdd59bc1c2b692998e8b4d43e2cfa8c7aba9b0c894b0c98ecfa694a4c184a8a7a896554de0e1dcc7dea5acbc9cd6cbc6e2cea6e2cda5c3dda0ea9284dee0dbdeded9dec4a9a1be87c6958f9897986c6d6bbfd89ec2c5bfbeaea1aeaeaec6c5c0b6766d9590904d4f4fe3cda3e5c294b0a7a2e7b786b3b3b3d5a491becfafbbceadbfbdbcb3a9a8bfbfbebbbdbabbbeb8d48272e4c69b864844e6ba8ca7c388585654e4bf92992e26cfcec87f7f7fe1d1a9e1d1b29db68be4a69b9c9a99d9d6d1d6d3d3c5dca4c7ad94b1b2b2c6d8aac6dea4b2cc90df826ee2c69c686969b6cf94868888c0c3b4c5abaae4be91cecfcee7b9879d9c9da1be864a4949bea8a0b3b3b2d59282adc492a4a3a1cfafa6dca990494a4a97312cc0d99cdfe0dbc7958fb5ce92a49d9d96312b912c28bed79cba9c94c3c3c4c3dba2c0c0bde3cfaaa4c084dfc4a9e1e1dd363838e5bf90c1c0bea49d9ca8c4898f2422deb9a78e998aaf998c9f4542a99493b7d095cdcdcbe5b488bfbfbdbabcb9e2c59bbcbfbbe5b98f5b5a59c2b7b2c2bab1838686ee9487ee96853d3837383d3eb0cb8ea4c185b6cf93cececfd7cac6e6b887ea9385dfded9acc88d9e9d9da1af9acec5bbd3c0aae99081cde0b4ed9184582321b7c9a8979f94a6a4a7e1b992ed9588ddded9dfddd8dc907e9ab887e7b783b0baab97b389cececd9ca791c6dfa2b6928e802f2cdad8d3d3d4d0a39795d1a294dbaf83e1d1aae7b883daccb7a8adaf939193ee542bc0c0c000000021f904010000fe002c0000000029000c000008fe00fd091c48b0a0c183081186b0a049d3214d0262194c2120d7215502041428780ece006d0e201a28486f8a98629802e00a2566c8c003c5d4b8591120c28b7a8cbc0c2c7086df006a015e0de0377220a31eae7889eac6ab939a29a704220a154f94090cfa78cd00866ba01d31efc4c9a130e7ca127204a9c6cbd3a0419e30f10ef11018a8431122ebdee41b66cf95a781168ea8932685c3ac4dedc611ec10866d5bb7793a64108825cc28167c2efdb196c983a581534af441f22818145d607a119ce1989752b761d009ac860ad92d3d5ab2447211c7c94076241e4d22a32849aa1d0a08d661ebba790357d8043e88528e0dbe0b839ab489a26ce09d42d3607439da22a255b66d046bcc685b2d00af06615e1d10d8850e881f0b022030a2c20c8481ee30100d3cdf04608529391c53d0109d38c10b37a274d21541552c738f3184c822c422c21424c10d4f3452410ba0e0518b411be0a2cc32fe60821037417c414b372ea258861295d05043423cf6e8e3400101003b</data></item>
-<item key="name" type="string"><![CDATA[Rolled back]]></item>
-</dictionary>
-</item>
-</list>
-</item>
-<item key="transitions" type="dictionary"><list>
-<item type="string"><![CDATA[TR_ENTER]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"></item>
-<item key="from" type="string"></item>
-<item key="name" type="string"><![CDATA[Enter Workflow]]></item>
-<item key="performer" type="dictionary"><list>
-</list>
-</item>
-<item key="to" type="dictionary"><list>
-<item type="string"><![CDATA[AC_CHANGED]]></item>
-</list>
-</item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[TR_REQUEST]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"><![CDATA[<!-- ##### Notification #### -->
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="activities" type="list">
+    <list>
+      <item><![CDATA[AC_CHANGED]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="icon" type="image">
+            
+<data width="41" height="12" content_type="image/gif" filename="state_modified.gif" type="image">47494638396129000c00f7ff00be0000dfdfdfb2b2b2a5a4a4ffffffdedfdabdbdbae1e2dde0d4b8b1988999ae8be1d4aea7b49de49c8f9a9a9ad6d1cbcdcecdcecdd0cccccca16753c2d2b1c9d8b1b0b0afe2d0a7e1cba8dcdcd7f6bbb3d5d5d3a7c385a79290d3a391ad6058d5ac84d7d8d3c6dea6a0473ba1bb8a96ae88d9cab2f2988ab7b2b0b4b5b3e2b989cfc4c4e7ba88bfd3a0e6bd8dcaaeaa856f70987263d29c8fc09b96c0c2b9c7c6c8422e2eabb9a35b3635a8c08ee29182abc68cdcddd8999596504d4ce5c5974e4140d5baa1e3b786cac8c3e7b385cf9f93e2d1a896a98daac58bbdd59bc1c2b692998e8b4d43e2cfa8c7aba9b0c894b0c98ecfa694a4c184a8a7a896554de0e1dcc7dea5acbc9cd6cbc6e2cea6e2cda5c3dda0ea9284dee0dbdeded9dec4a9a1be87c6958f9897986c6d6bbfd89ec2c5bfbeaea1aeaeaec6c5c0b6766d9590904d4f4fe3cda3e5c294b0a7a2e7b786b3b3b3d5a491becfafbbceadbfbdbcb3a9a8bfbfbebbbdbabbbeb8d48272e4c69b864844e6ba8ca7c388585654e4bf92992e26cfcec87f7f7fe1d1a9e1d1b29db68be4a69b9c9a99d9d6d1d6d3d3c5dca4c7ad94b1b2b2c6d8aac6dea4b2cc90df826ee2c69c686969b6cf94868888c0c3b4c5abaae4be91cecfcee7b9879d9c9da1be864a4949bea8a0b3b3b2d59282adc492a4a3a1cfafa6dca990494a4a97312cc0d99cdfe0dbc7958fb5ce92a49d9d96312b912c28bed79cba9c94c3c3c4c3dba2c0c0bde3cfaaa4c084dfc4a9e1e1dd363838e5bf90c1c0bea49d9ca8c4898f2422deb9a78e998aaf998c9f4542a99493b7d095cdcdcbe5b488bfbfbdbabcb9e2c59bbcbfbbe5b98f5b5a59c2b7b2c2bab1838686ee9487ee96853d3837383d3eb0cb8ea4c185b6cf93cececfd7cac6e6b887ea9385dfded9acc88d9e9d9da1af9acec5bbd3c0aae99081cde0b4ed9184582321b7c9a8979f94a6a4a7e1b992ed9588ddded9dfddd8dc907e9ab887e7b783b0baab97b389cececd9ca791c6dfa2b6928e802f2cdad8d3d3d4d0a39795d1a294dbaf83e1d1aae7b883daccb7a8adaf939193ee542bc0c0c000000021f904010000fe002c0000000029000c000008ff00fd091c48b0a0c1830811861044ca07a7359462194c2120d7215502041428780ece006d0e34093050909e245b3d1211a8930cda9081078aa971b322408417f518791958e08c9a01d402bc1ac08fe44066cff6a4fb2443c7071b634e0944142a9e281318f4f19a010cd7403b62de89934361ce9525e408fa91b70b40bf7e0000b102c24360a00e4588ac7b936f983d579e065a38a24e9a140eb336b51b4710c72ab76fe102089741209630a358f0b9f4c75a260f96064e29d107c9a360507481e945f017642ede20c12d854e603554c86ee9d19225928b384e06b223f1681219454952ed50401086db6bcdc09973d68f0936810fa2946383efc2a0266da2287a1b78a7d034588eb68868956d1b416254de6a2070a2df0814070476a103e2c782000818a18219100ce40e03d1c0f34d00569892c33105a111431a0d1892c7046e1454c532f71843882c422c224c4112dcf0442315b4000a1eb51cd44902beec330f42dc04f1052ddd6072d006652851090d352424e490440e1410003b</data>
+          </item>
+          <item key="id"><![CDATA[AC_CHANGED]]></item>
+          <item key="name"><![CDATA[Changed]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[AC_REQUESTED]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="icon" type="image">
+            
+<data width="41" height="12" content_type="image/gif" filename="state_requested.gif" type="image">47494638396129000c00f7ff00d27b7bdfdfdfa5a4a4868888d5d5d3bdbdbae1e2ddffffffb2b2b2dedfdac8bebac0c2b99b9c9cc2c5bfb0baabc9d8b1bcaaa3d0cece9ab887fde092bd9e9ac7c6c8979f94c7c7c6c8aaa6a7b49dacbc9ca6a4a7cbb9a599ae8b9e97978486868a8988f99d46ffbb5bfbab4cb0b0afd9bcb7a7c385c1a59cd1b9bab17a46d1d3d0bf5b43c3dba2de8226dcdcd7c6dfa28c5f559f5c4bf9cb82bfbfbea8a9a8bfd3a0c56446d4b4ada2a1a1823730b7c9a8929091949194605d59a1af9a4b4645a8c08eb9b7b7abc68cadc492ddded9e077429a9a9aca6640bcbfbbd3d5d2c0c3b4b27874d7af81cfcec8b3b3b3663937c5836fdfb5aeff9a2da4c084e1b6affc8f30a4c184be8d8ca6a7a7b6cf93b5ce92c7dea5d6cbc659413bdfb3addbb4adfdda99dee0db9e9c9cdeded9ffa8448e998ac6a19ec5dca4c6dea696a98dacc88db3a9a9ccccccad998bfce4a8d4d1cd969595949797a1a09fbec0c1fd9b36daaea49c7a5fcac8c3b0b2b2ffda85becfafabb9a3f49832bbbeb8d7d8d3c3bebcc4bfbffcd781fcd27fa8c489c29792b4b5b3c5c3c2fcd5839ca791f79236e1e1dd90503fdfb4aecececfddb4adf7bc64fca140a4c185b1cb90bdd59bc18d8ab0c89492998ec3b9b2afafaff0b9809c9d9da1be87a8a5a3a7c388bc8079d3d0d6e8c796c3dda09b4e44fdac4a5e4f4e5e4e4dfcda89c1c2b6a84336d9d6d1a1be86c19695fcbd64c08f8ccde0b4bbbdbae9cca0f1ba80fed588dfb5add07b27d7cac69e9d9dc6dea49d9c9dffa038f39e39c6d8aaa59393d79d6abed79ce0c4c0372e2da8a7a8ff9d36fe9a33d5aea6cacac7bbceadbabcb9b0cb8e989798fcd07daac58bce6741d3d4d0af7876cfcfcadeb4aeb0c98ed8b3abff9c2ebf8f8ce0e1dcaeaeaea94134deb3acdfe0dbdfded9c4b8b1b2cc90b6cf94b7d095ec9f78bfd89ed3b9b3afada9c16c46fcda87f29e4db99b96b68f8d9db68bdcddd8dfddd8a58b8a9c9b9bc0c0bdc2d2b197b389b79997c3c3c4fed179a1bb8acececd9a9090bd8a89ffb555fbad4fdab8b2c0d99cfbc06861353296ae88e49b88c0c0c021f904010000ff002c0000000029000c000008ff00ff091c48b0a0c1830811fac1c4400c3b4d08da192c34a0d40f520306242848c489005b4670212850b0199638412204008423ce9d81068e018381e2c0274f5d3e8c1998c0da0e018d02c413c083e4403c70e049bb11ee8b997a34b2094cd52307145032607d13f544dcc019c910e9d0e3ce98064b1b08ca39670f803f7f00285df1904e60137e2baa4819362d918d452006924823219215135354bdb340901735b76fe10258e7422017544572411a818f8eb023ce0606ebd76999246fd1066d2a4370156468d8eac06da54e60ad6b2146b15226681f19664b063a98c7ad1bb83393b408e940708d5b478cbc4499e5cf9c36816f629493672a10b943f7c6b57b19f80a5d1616b742a1f1a5c607c10b14defe0a40c51f2143060486e1444bc484036ee4a18b1d2a0c444f06c8bce04a005be80304120515030106f99440cc097f14544d1b2d3c02862c7ca4f04c416cec51c92e0fd430441f8a18448002db5c3247040871d04b26b13091c4410434708a120b5490d0904416395040003b</data>
+          </item>
+          <item key="id"><![CDATA[AC_REQUESTED]]></item>
+          <item key="name"><![CDATA[Commit requested]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[AC_REJECTED]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="icon" type="image">
+            
+<data width="41" height="12" content_type="image/gif" filename="state_rejected.gif" type="image">47494638396129000c00f7ff00d27b7bdfdfdfa5a4a4868888d5d5d3bdbdbae1e2ddffffffb2b2b2dedfdac8bebac0c2b99b9c9cc2c5bfb0baabc9d8b1bcaaa3d0cece9ab887fde092bd9e9ac7c6c8979f94c7c7c6c8aaa6a7b49dacbc9ca6a4a7cbb9a599ae8b9e97978486868a8988f99d46ffbb5bfbab4cb0b0afd9bcb7a7c385c1a59cd1b9bab17a46d1d3d0bf5b43c3dba2de8226dcdcd7c6dfa28c5f559f5c4bf9cb82bfbfbea8a9a8bfd3a0c56446d4b4ada2a1a1823730b7c9a8929091949194605d59a1af9a4b4645a8c08eb9b7b7abc68cadc492ddded9e077429a9a9aca6640bcbfbbd3d5d2c0c3b4b27874d7af81cfcec8b3b3b3663937c5836fdfb5aeff9a2da4c084e1b6affc8f30a4c184be8d8ca6a7a7b6cf93b5ce92c7dea5d6cbc659413bdfb3addbb4adfdda99dee0db9e9c9cdeded9ffa8448e998ac6a19ec5dca4c6dea696a98dacc88db3a9a9ccccccad998bfce4a8d4d1cd969595949797a1a09fbec0c1fd9b36daaea49c7a5fcac8c3b0b2b2ffda85becfafabb9a3f49832bbbeb8d7d8d3c3bebcc4bfbffcd781fcd27fa8c489c29792b4b5b3c5c3c2fcd5839ca791f79236e1e1dd90503fdfb4aecececfddb4adf7bc64fca140a4c185b1cb90bdd59bc18d8ab0c89492998ec3b9b2afafaff0b9809c9d9da1be87a8a5a3a7c388bc8079d3d0d6e8c796c3dda09b4e44fdac4a5e4f4e5e4e4dfcda89c1c2b6a84336d9d6d1a1be86c19695fcbd64c08f8ccde0b4bbbdbae9cca0f1ba80fed588dfb5add07b27d7cac69e9d9dc6dea49d9c9dffa038f39e39c6d8aaa59393d79d6abed79ce0c4c0372e2da8a7a8ff9d36fe9a33d5aea6cacac7bbceadbabcb9b0cb8e989798fcd07daac58bce6741d3d4d0af7876cfcfcadeb4aeb0c98ed8b3abff9c2ebf8f8ce0e1dcaeaeaea94134deb3acdfe0dbdfded9c4b8b1b2cc90b6cf94b7d095ec9f78bfd89ed3b9b3afada9c16c46fcda87f29e4db99b96b68f8d9db68bdcddd8dfddd8a58b8a9c9b9bc0c0bdc2d2b197b389b79997c3c3c4fed179a1bb8acececd9a9090bd8a89ffb555fbad4fdab8b2c0d99cfbc06861353296ae88e49b88c0c0c021ff0b4e45545343415045322e30030100000021f904053200ff002c0000000029000c000008ff00ff091c48b0a0c1830811fac1c4400c3b4d08da192c34a0d40f520306242848c489005b4670212850b0199638412204008423ce9d81068e018381e2c0274f5d3e8c1998c0da0e018d02c413c083e4403c70e049bb11ee8b997a34b2094cd52307145032607d13f544dcc019c910e9d0e3ce98064b1b08ca39670f803f7f00285df1904e60137e2baa4819362d918d452006924823219215135354bdb340901735b76fe10258e7422017544572411a818f8eb023ce0606ebd76999246fd1066d2a4370156468d8eac06da54e60ad6b2146b15226681f19664b063a98c7ad1bb83393b408e940708d5b478cbc4499e5cf9c36816f629493672a10b943f7c6b57b19f80a5d1616b742a1f1a5c607c10b14defe0a40c51f2143060486e1444bc484036ee4a18b1d2a0c444f06c8bce04a005be80304120515030106f99440cc097f14544d1b2d3c02862c7ca4f04c416cec51c92e0fd430441f8a18448002db5c3247040871d04b26b13091c4410434708a120b5490d09044163950400021f904053200ff002c100001000a000a0000086200fffd4320c7881c040804fedb41e14e8046183c2414708ed82f585c6651e0d58e97994c4c32893463ce09a1909940810a690603a13a2a61c152e90fc347990f64823a71e9151350b014bd81950902bd7f979860240aa189c23b1c40fde270f45f40003b</data>
+          </item>
+          <item key="id"><![CDATA[AC_REJECTED]]></item>
+          <item key="name"><![CDATA[Commit rejected]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[AC_COMMITTED]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="icon" type="image">
+            
+<data width="41" height="12" content_type="image/gif" filename="state_committed.gif" type="image">47494638396129000c00f7ff00b0fb5dd27b7b7ae900dfdfdfb2b2b2ffffff646262e1e2dddedfdabdbdbacdcdcbade065bd8a89afafafc0a098e0c4c0d6d1cb9e97974b772db3a9a975ae339b9c9ce1cba8c7ad947b9b5ae7b385a4a3a1ddded9d0cecee3b786c3bebccfafa6aed96e7eae466a676ae0e1dc578b32c2f577bcaaa3e7ba88d1d1cfdfc4a987ba4dd6cbc6deded9dfe0dbdfb5aedeb4aed7d8d3e2d1a8c29792e2cfa8e1d1a998be78e1d1aacfa694dec4a9e5c597e4c69bc4bfbfdaaea4e2d0a7d5aea6cac8c3e3cfaacfcec8d5ac84ddb4adb7a29de6bd8dc7958fc08f8ce2c59b9ea29bcfc4c4d3b9b3d1a294e6b887a5cb88dcddd8504f4f86bc41a8a9a834422be3cda3dfb3adaeb197c1a59c353035e7b783d5a491a49d9ce2c69ca1a09fb9b7b7d3c0aaa58b8ad7cac6b1b2b2b3b9adc6958f69a526c5abaac19695deb3ac447627abae9ca792906561673f3e3fb0b2b2c7c7c6949595a0a6999497974f8d276aa628bd9e9ad8b3abcf9f93d9cab2b3b3b6c0e685a59393959090bec0c170aa2ac8beba70ab2fd5d5d341513ad3d4d0e5c294cec5bbd5baa1b4b5b3adb293e4bf92c7e7954e4d4edfb5ad7cb53ba9a9a779b037e7b987daccb7c1c0bec7aba9b6928ee4be91dbaf83c5c3c2cecdd0478029e2cda5e2cea6d2d1cedee0dbe5bf90bf8f8cbe8d8cc3b9b2cecfce9c9a99dfb4ae718c5fcdcecd619e28b99b969e9c9c898989ba9c949c9d9d868888c2bab1c18d8ab3b3b2a99493dfded9e6ba8ce5b98fbabcb9c0bec1464647deb9a7619f2ba6a7a7c6a19ec2b7b2d9d6d18ec447dfddd8dca990c0c0bdc4b8b1b79997dbb4adcaaeaae1b992b68f8de7b883beaea19c9b9bdab8b2cacac7a49d9d839778e2b98981807fa2a8a16aa627d4b4add3a391e1d4ae4e6537d9bcb77d7d7cc09b96e1d1b2e1e1ddc8aaa6e0d4b89794949a9090a3979542693086c03fbfbdbc72a53b6b875860962fe1b6afe5b4885d7b4e322e30c5f67fe7b786b2e867293f21dcdcd7a2a1a1e49b88c0c0c000000000000000000000000000000000000000000000000000000000000000000000000000000021f904010000f2002c0000000029000c000008ff00e5091c48b0a0c1830811c26850219532560482193c4460cba86604082028b841950128b716b54a5070902e385e380cd8014fce8f81076af121a26400a662e0c4b01888009b3a03050ae4318085e44037de86d999b684d8ae6f525a08eca581d2073c1622e1ca164bd240476dacd50000c00986296c087639c62040bc78015e818af04460903577326461870c1d9355b006420b37878e343f654e65124470cf27b76fe10600f34ee00a32c04eccaa94a809246a66068a4803e89100015128e47247f00ce4176878c03df24b601823b43ce9d0b4894b112d93063a33e74b00d9d38d24109ce07608a92a2e18c543254b200407c6a8d8e8416306a11bbc06267421619c2c800502d2117c53e7ed8301e7e2c9b8744060a7714272541bd02dc6b364a60c844239e29410d43aed90134d41cc98c0cd32d7f8708507058de08a2548680344071728509002a5a8a08722208410c7360605f28730a1f4c10942851882430a5f8882d0185620a2862d09f5e8e38f030504003b</data>
+          </item>
+          <item key="id"><![CDATA[AC_COMMITTED]]></item>
+          <item key="name"><![CDATA[Committed]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[AC_ROLLEDBACK]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="icon" type="image">
+            
+<data width="41" height="12" content_type="image/gif" filename="state_rolledback.gif" type="image">47494638396129000c00f70000be0000dfdfdfb2b2b2a5a4a4ffffffdedfdabdbdbae1e2dde0d4b8b1988999ae8be1d4aea7b49de49c8f9a9a9ad6d1cbcdcecdcecdd0cccccca16753c2d2b1c9d8b1b0b0afe2d0a7e1cba8dcdcd7f6bbb3d5d5d3a7c385a79290d3a391ad6058d5ac84d7d8d3c6dea6a0473ba1bb8a96ae88d9cab2f2988ab7b2b0b4b5b3e2b989cfc4c4e7ba88bfd3a0e6bd8dcaaeaa856f70987263d29c8fc09b96c0c2b9c7c6c8422e2eabb9a35b3635a8c08ee29182abc68cdcddd8999596504d4ce5c5974e4140d5baa1e3b786cac8c3e7b385cf9f93e2d1a896a98daac58bbdd59bc1c2b692998e8b4d43e2cfa8c7aba9b0c894b0c98ecfa694a4c184a8a7a896554de0e1dcc7dea5acbc9cd6cbc6e2cea6e2cda5c3dda0ea9284dee0dbdeded9dec4a9a1be87c6958f9897986c6d6bbfd89ec2c5bfbeaea1aeaeaec6c5c0b6766d9590904d4f4fe3cda3e5c294b0a7a2e7b786b3b3b3d5a491becfafbbceadbfbdbcb3a9a8bfbfbebbbdbabbbeb8d48272e4c69b864844e6ba8ca7c388585654e4bf92992e26cfcec87f7f7fe1d1a9e1d1b29db68be4a69b9c9a99d9d6d1d6d3d3c5dca4c7ad94b1b2b2c6d8aac6dea4b2cc90df826ee2c69c686969b6cf94868888c0c3b4c5abaae4be91cecfcee7b9879d9c9da1be864a4949bea8a0b3b3b2d59282adc492a4a3a1cfafa6dca990494a4a97312cc0d99cdfe0dbc7958fb5ce92a49d9d96312b912c28bed79cba9c94c3c3c4c3dba2c0c0bde3cfaaa4c084dfc4a9e1e1dd363838e5bf90c1c0bea49d9ca8c4898f2422deb9a78e998aaf998c9f4542a99493b7d095cdcdcbe5b488bfbfbdbabcb9e2c59bbcbfbbe5b98f5b5a59c2b7b2c2bab1838686ee9487ee96853d3837383d3eb0cb8ea4c185b6cf93cececfd7cac6e6b887ea9385dfded9acc88d9e9d9da1af9acec5bbd3c0aae99081cde0b4ed9184582321b7c9a8979f94a6a4a7e1b992ed9588ddded9dfddd8dc907e9ab887e7b783b0baab97b389cececd9ca791c6dfa2b6928e802f2cdad8d3d3d4d0a39795d1a294dbaf83e1d1aae7b883daccb7a8adaf939193ee542bc0c0c000000021f904010000fe002c0000000029000c000008fe00fd091c48b0a0c183081186b0a049d3214d0262194c2120d7215502041428780ece006d0e201a28486f8a98629802e00a2566c8c003c5d4b8591120c28b7a8cbc0c2c7086df006a015e0de0377220a31eae7889eac6ab939a29a704220a154f94090cfa78cd00866ba01d31efc4c9a130e7ca127204a9c6cbd3a0419e30f10ef11018a8431122ebdee41b66cf95a781168ea8932685c3ac4dedc611ec10866d5bb7793a64108825cc28167c2efdb196c983a581534af441f22818145d607a119ce1989752b761d009ac860ad92d3d5ab2447211c7c94076241e4d22a32849aa1d0a08d661ebba790357d8043e88528e0dbe0b839ab489a26ce09d42d3607439da22a255b66d046bcc685b2d00af06615e1d10d8850e881f0b022030a2c20c8481ee30100d3cdf04608529391c53d0109d38c10b37a274d21541552c738f3184c822c422c21424c10d4f3452410ba0e0518b411be0a2cc32fe60821037417c414b372ea258861295d05043423cf6e8e3400101003b</data>
+          </item>
+          <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
+          <item key="name"><![CDATA[Rolled back]]></item>
+        </dictionary>
+      </item>
+    </list>
+  </item>
+  <item key="transitions" type="list">
+    <list>
+      <item><![CDATA[TR_ENTER]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"></item>
+          <item key="from" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_ENTER]]></item>
+          <item key="name"><![CDATA[Enter Workflow]]></item>
+          <item key="performer" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+              <item><![CDATA[AC_CHANGED]]></item>
+            </list>
+          </item>
+        </dictionary>
+      </item>
+      <item><![CDATA[TR_REQUEST]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"><![CDATA[<!-- ##### Notification #### -->
 <!-- Recipients -->
 <dtml-call "REQUEST.set('l_roles',['ZMSEditor'])">
 <dtml-if "len(intersection_list(l_roles, getUserRoles(AUTHENTICATED_USER))) > 0">
@@ -95,27 +127,77 @@
 
 <!-- Return with message -->
 <dtml-call "REQUEST.set('s_message','Sent request for committing your changes.')">
-<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]></item>
-<item key="from" type="dictionary"><list>
-<item type="string"><![CDATA[AC_CHANGED]]></item>
-</list>
-</item>
-<item key="name" type="string"><![CDATA[Request commit]]></item>
-<item key="performer" type="dictionary"><list>
-<item type="string"><![CDATA[ZMSEditor]]></item>
-<item type="string"><![CDATA[ZMSAuthor]]></item>
-<item type="string"><![CDATA[ZMSAdministrator]]></item>
-</list>
-</item>
-<item key="to" type="dictionary"><list>
-<item type="string"><![CDATA[AC_REQUESTED]]></item>
-</list>
-</item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[TR_REJECT]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"><![CDATA[<!-- ##### Notification #### -->
+<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]>
+          </item>
+          <item key="from" type="list">
+            <list>
+              <item><![CDATA[AC_CHANGED]]></item>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_REQUEST]]></item>
+          <item key="name"><![CDATA[Request commit]]></item>
+          <item key="ob"><![CDATA[&lt;!-- ##### Notification #### --&gt;
+&lt;!-- Recipients --&gt;
+&lt;dtml-call &quot;REQUEST.set('l_roles',['ZMSEditor'])&quot;&gt;
+&lt;dtml-if &quot;len(intersection_list(l_roles, getUserRoles(AUTHENTICATED_USER))) &gt; 0&quot;&gt;
+ &lt;dtml-call &quot;REQUEST.set('l_roles',['ZMSAdministrator'])&quot;&gt;
+&lt;/dtml-if&gt;
+&lt;dtml-call &quot;REQUEST.set('s_mto',getRecipientsByRole(l_roles,REQUEST))&quot;&gt;
+&lt;!-- Subject --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_msubject','[ZMS::%s]: Request for committing my changes'%getDocumentElement().getTitle(REQUEST))&quot;&gt;
+&lt;!-- Body --&gt;
+&lt;dtml-call &quot;REQUEST.set('l_mbody',[])&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Request for committing my changes.\n')&quot;&gt;
+&lt;dtml-call &quot;REQUEST.set('res',[this()])&quot;&gt;
+&lt;dtml-call &quot;res.extend(getChildNodes(REQUEST))&quot;&gt;
+&lt;dtml-in res&gt;
+ &lt;dtml-if &quot;isObjModified(REQUEST)&quot;&gt;
+  &lt;dtml-call &quot;REQUEST.set('s_mbody',[])&quot;&gt;
+  &lt;dtml-call &quot;s_mbody.append('\t- %s'%(display_type(REQUEST)))&quot;&gt;
+  &lt;dtml-call &quot;s_mbody.append(' [')&quot;&gt;
+  &lt;dtml-in &quot;['STATE_NEW','STATE_MODIFIED','STATE_DELETED']&quot;&gt;
+   &lt;dtml-let state=sequence-item&gt;
+    &lt;dtml-if &quot;inObjStates([state],REQUEST)&quot;&gt;
+     &lt;dtml-call &quot;s_mbody.append(getZMILangStr(state))&quot;&gt;
+    &lt;/dtml-if&gt;
+   &lt;/dtml-let&gt;
+  &lt;/dtml-in&gt;
+  &lt;dtml-call &quot;s_mbody.append('] ')&quot;&gt;
+  &lt;dtml-call &quot;s_mbody.append('%s '%(getLangFmtDate(getObjProperty('change_dt',REQUEST))))&quot;&gt;
+  &lt;dtml-call &quot;s_mbody.append('%s %s '%(getZMILangStr('BY'),getObjProperty('change_uid',REQUEST)))&quot;&gt;
+  &lt;dtml-call &quot;l_mbody.append(''.join(s_mbody)+'\n')&quot;&gt;
+ &lt;/dtml-if&gt;
+&lt;/dtml-in&gt;
+&lt;dtml-call &quot;l_mbody.append('\nWith best regards\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('%s\n'%AUTHENTICATED_USER.getId())&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('------------------------\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Message generated by ZMS\n')&quot;&gt;
+&lt;!-- Send notification via MailHost --&gt;
+&lt;dtml-call &quot;sendMail(s_mto, s_msubject, ''.join(l_mbody), REQUEST)&quot;&gt;
+
+&lt;!-- Return with message --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_message','Sent request for committing your changes.')&quot;&gt;
+&lt;dtml-return &quot;RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))&quot;&gt;]]>
+          </item>
+          <item key="performer" type="list">
+            <list>
+              <item><![CDATA[ZMSEditor]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+              <item><![CDATA[AC_REQUESTED]]></item>
+            </list>
+          </item>
+          <item key="type"><![CDATA[DTML Method]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[TR_REJECT]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"><![CDATA[<!-- ##### Notification #### -->
 <!-- Recipient -->
 <dtml-call "REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))">
 <dtml-call "REQUEST.set('s_mto',getRecipientWf(REQUEST))">
@@ -133,26 +215,53 @@
 
 <!-- Return with message -->
 <dtml-call "REQUEST.set('s_message','Changes have been rejected.')">
-<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]></item>
-<item key="from" type="dictionary"><list>
-<item type="string"><![CDATA[AC_REQUESTED]]></item>
-</list>
-</item>
-<item key="name" type="string"><![CDATA[Reject commit]]></item>
-<item key="performer" type="dictionary"><list>
-<item type="string"><![CDATA[ZMSEditor]]></item>
-<item type="string"><![CDATA[ZMSAdministrator]]></item>
-</list>
-</item>
-<item key="to" type="dictionary"><list>
-<item type="string"><![CDATA[AC_REJECTED]]></item>
-</list>
-</item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[TR_COMMIT]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"><![CDATA[<!-- ##### Notification #### -->
+<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]>
+          </item>
+          <item key="from" type="list">
+            <list>
+              <item><![CDATA[AC_REQUESTED]]></item>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_REJECT]]></item>
+          <item key="name"><![CDATA[Reject commit]]></item>
+          <item key="ob"><![CDATA[&lt;!-- ##### Notification #### --&gt;
+&lt;!-- Recipient --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))&quot;&gt;
+&lt;dtml-call &quot;REQUEST.set('s_mto',getRecipientWf(REQUEST))&quot;&gt;
+&lt;!-- Subject --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_msubject','[ZMS::%s]: Committing your changes was rejected'%getDocumentElement().getTitle(REQUEST))&quot;&gt;
+&lt;!-- Body --&gt;
+&lt;dtml-call &quot;REQUEST.set('l_mbody',[])&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Committing your changes was rejected.\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('\nWith best regards\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('%s\n'%AUTHENTICATED_USER.getId())&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('------------------------\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Message generated by ZMS\n')&quot;&gt;
+&lt;!-- Send notification via MailHost --&gt;
+&lt;dtml-call &quot;sendMail(s_mto, s_msubject, ''.join(l_mbody), REQUEST)&quot;&gt;
+
+&lt;!-- Return with message --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_message','Changes have been rejected.')&quot;&gt;
+&lt;dtml-return &quot;RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))&quot;&gt;]]>
+          </item>
+          <item key="performer" type="list">
+            <list>
+              <item><![CDATA[ZMSEditor]]></item>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+              <item><![CDATA[AC_REJECTED]]></item>
+            </list>
+          </item>
+          <item key="type"><![CDATA[DTML Method]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[TR_COMMIT]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"><![CDATA[<!-- ##### Notification #### -->
 <!-- Recipient -->
 <dtml-call "REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))">
 <dtml-call "REQUEST.set('s_mto',getRecipientWf(REQUEST))">
@@ -173,26 +282,56 @@
 
 <!-- Return with message -->
 <dtml-call "REQUEST.set('s_message','Changes were committed.')">
-<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]></item>
-<item key="from" type="dictionary"><list>
-<item type="string"><![CDATA[AC_REQUESTED]]></item>
-</list>
-</item>
-<item key="name" type="string"><![CDATA[Commit]]></item>
-<item key="performer" type="dictionary"><list>
-<item type="string"><![CDATA[ZMSEditor]]></item>
-<item type="string"><![CDATA[ZMSAdministrator]]></item>
-</list>
-</item>
-<item key="to" type="dictionary"><list>
-<item type="string"><![CDATA[AC_COMMITTED]]></item>
-</list>
-</item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[TR_ROLLBACK]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"><![CDATA[<!-- ##### Notification #### -->
+<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]>
+          </item>
+          <item key="from" type="list">
+            <list>
+              <item><![CDATA[AC_REQUESTED]]></item>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_COMMIT]]></item>
+          <item key="name"><![CDATA[Commit]]></item>
+          <item key="ob"><![CDATA[&lt;!-- ##### Notification #### --&gt;
+&lt;!-- Recipient --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))&quot;&gt;
+&lt;dtml-call &quot;REQUEST.set('s_mto',getRecipientWf(REQUEST))&quot;&gt;
+&lt;!-- Subject --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_msubject','[ZMS::%s]: Your changes were committed'%getDocumentElement().getTitle(REQUEST))&quot;&gt;
+&lt;!-- Body --&gt;
+&lt;dtml-call &quot;REQUEST.set('l_mbody',[])&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Your changes were committed.\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('\nWith best regards\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('%s\n'%AUTHENTICATED_USER.getId())&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('------------------------\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Message generated by ZMS\n')&quot;&gt;
+&lt;!-- Send notification via MailHost --&gt;
+&lt;dtml-call &quot;sendMail(s_mto, s_msubject, ''.join(l_mbody), REQUEST)&quot;&gt;
+
+&lt;!-- ##### Commit #### --&gt;
+&lt;dtml-call &quot;commitObj(REQUEST)&quot;&gt;
+
+&lt;!-- Return with message --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_message','Changes were committed.')&quot;&gt;
+&lt;dtml-return &quot;RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))&quot;&gt;]]>
+          </item>
+          <item key="performer" type="list">
+            <list>
+              <item><![CDATA[ZMSEditor]]></item>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+              <item><![CDATA[AC_COMMITTED]]></item>
+            </list>
+          </item>
+          <item key="type"><![CDATA[DTML Method]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[TR_ROLLBACK]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"><![CDATA[<!-- ##### Notification #### -->
 <!-- Recipient -->
 <dtml-call "REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))">
 <dtml-call "REQUEST.set('s_mto',getRecipientWf(REQUEST))">
@@ -213,40 +352,74 @@
 
 <!-- Return with message -->
 <dtml-call "REQUEST.set('s_message','Changes were back.')">
-<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]></item>
-<item key="from" type="dictionary"><list>
-<item type="string"><![CDATA[AC_CHANGED]]></item>
-<item type="string"><![CDATA[AC_REJECTED]]></item>
-</list>
-</item>
-<item key="name" type="string"><![CDATA[Rollback]]></item>
-<item key="performer" type="dictionary"><list>
-<item type="string"><![CDATA[ZMSEditor]]></item>
-<item type="string"><![CDATA[ZMSAuthor]]></item>
-<item type="string"><![CDATA[ZMSAdministrator]]></item>
-</list>
-</item>
-<item key="to" type="dictionary"><list>
-<item type="string"><![CDATA[AC_ROLLEDBACK]]></item>
-</list>
-</item>
-</dictionary>
-</item>
-<item type="string"><![CDATA[TR_LEAVE]]></item>
-<item type="dictionary"><dictionary>
-<item key="dtml" type="string"></item>
-<item key="from" type="dictionary"><list>
-<item type="string"><![CDATA[AC_COMMITTED]]></item>
-<item type="string"><![CDATA[AC_ROLLEDBACK]]></item>
-</list>
-</item>
-<item key="name" type="string"><![CDATA[Leave Workflow]]></item>
-<item key="performer" type="dictionary"><list>
-</list>
-</item>
-<item key="to" type="string"></item>
-</dictionary>
-</item>
-</list>
-</item>
+<dtml-return "RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))">]]>
+          </item>
+          <item key="from" type="list">
+            <list>
+              <item><![CDATA[AC_CHANGED]]></item>
+              <item><![CDATA[AC_REJECTED]]></item>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_ROLLBACK]]></item>
+          <item key="name"><![CDATA[Rollback]]></item>
+          <item key="ob"><![CDATA[&lt;!-- ##### Notification #### --&gt;
+&lt;!-- Recipient --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_name',getObjProperty('work_uid',REQUEST))&quot;&gt;
+&lt;dtml-call &quot;REQUEST.set('s_mto',getRecipientWf(REQUEST))&quot;&gt;
+&lt;!-- Subject --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_msubject','[ZMS::%s]: Your changes were rolled back'%getDocumentElement().getTitle(REQUEST))&quot;&gt;
+&lt;!-- Body --&gt;
+&lt;dtml-call &quot;REQUEST.set('l_mbody',[])&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Your changes were rolled back.\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('\nWith best regards\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('%s\n'%AUTHENTICATED_USER.getId())&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('------------------------\n')&quot;&gt;
+&lt;dtml-call &quot;l_mbody.append('Message generated by ZMS\n')&quot;&gt;
+&lt;!-- Send notification via MailHost --&gt;
+&lt;dtml-call &quot;sendMail(s_mto, s_msubject, ''.join(l_mbody), REQUEST)&quot;&gt;
+
+&lt;!-- ##### Rollback #### --&gt;
+&lt;dtml-call &quot;rollbackObj(REQUEST)&quot;&gt;
+
+&lt;!-- Return with message --&gt;
+&lt;dtml-call &quot;REQUEST.set('s_message','Changes were back.')&quot;&gt;
+&lt;dtml-return &quot;RESPONSE.redirect(url_append_params('manage_wfTransitionFinalize',{'lang':lang, 'custom': custom, 'manage_tabs_message':s_message}))&quot;&gt;]]>
+          </item>
+          <item key="performer" type="list">
+            <list>
+              <item><![CDATA[ZMSEditor]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSAdministrator]]></item>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+              <item><![CDATA[AC_ROLLEDBACK]]></item>
+            </list>
+          </item>
+          <item key="type"><![CDATA[DTML Method]]></item>
+        </dictionary>
+      </item>
+      <item><![CDATA[TR_LEAVE]]></item>
+      <item type="dictionary">
+        <dictionary>
+          <item key="dtml"></item>
+          <item key="from" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="id"><![CDATA[TR_LEAVE]]></item>
+          <item key="name"><![CDATA[Leave Workflow]]></item>
+          <item key="performer" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="to" type="list">
+            <list>
+            </list>
+          </item>
+        </dictionary>
+      </item>
+    </list>
+  </item>
 </dictionary>

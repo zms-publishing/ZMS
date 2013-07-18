@@ -734,7 +734,7 @@ class ZMSMetaobjManager:
           newType = 'zpt'
         else:
           newType = 'method'
-      if newType in [ 'method', 'DTML Method', 'DTML Document']:
+      if newType in [ 'DTML Method', 'DTML Document', 'method', 'py', 'zpt']:
         newCustom = newCustom.replace('\r','')
       if type(newCustom) is str and len(newCustom) > 0:
         message = _globals.dt_parse( self, newCustom)

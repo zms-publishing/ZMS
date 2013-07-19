@@ -3,10 +3,10 @@
 +- Links
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:comment>
-<tal:block tal:define="global refByObjs python:here.getRefByObjs()">
-	<a class="zmi-state" tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])">
-		<i class="icon-link" tal:attributes="title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'))"></i>
-	</a>
+<tal:block tal:define="global refByObjs python:here.getRefByObjs()"
+	><a class="zmi-state" 
+		tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])"
+		><i class="icon-link" tal:attributes="title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'))"></i></a>
 </tal:block>
 
 <tal:comment tal:replace="nothing">
@@ -14,68 +14,66 @@
 +- Language
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:comment>
-<tal:block tal:condition="python:len(here.getLangIds())>1">
-	<tal:block tal:condition="python:here.attr('change_uid')" tal:define="global
+<tal:block tal:condition="python:len(here.getLangIds())>1"
+	><tal:block tal:condition="python:here.attr('change_uid')" tal:define="global
 			coverage python:here.getDCCoverage(request);
 			seq_lang python:coverage[coverage.find('.')+1:];
-			seq_desc_langs python:here.getDescendantLanguages(seq_lang)">
-		<tal:block tal:condition="python:len(seq_desc_langs)>1 and coverage.find('global')>=0">
-			<tal:block tal:condition="python:seq_lang!=request['lang']">
-				<tal:block tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)">
-					<span class="zmi-state" tal:attributes="onclick python:['','open_frame(\'%s: %s (%s)\',\'%s/manage_VersionLangModified\',\'lang=%s\',440,320,\',resizable=yes,scrollbars=yes\')'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'),here.absolute_url(),request['lang'])][int(here.getHistory())]">
-						<i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i>
-					</span>
-				</tal:block>
-				<tal:block tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)">
-					<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i></span>
-				</tal:block>
-			</tal:block>
-			<tal:block tal:condition="not:python:seq_lang!=request['lang']">
-				<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span>
-			</tal:block>
-		</tal:block>
-	</tal:block>
-	<tal:block tal:condition="not:python:here.attr('change_uid')">
-		<span class="zmi-state"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span>
-	</tal:block>
-</tal:block>
-
-<tal:comment tal:replace="nothing">
+			seq_desc_langs python:here.getDescendantLanguages(seq_lang)"
+		><tal:block tal:condition="python:len(seq_desc_langs)>1 and coverage.find('global')>=0"
+			><tal:block tal:condition="python:seq_lang!=request['lang']"
+				><tal:block tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)"
+					><span class="zmi-state" 
+						tal:attributes="onclick python:['','open_frame(\'%s: %s (%s)\',\'%s/manage_VersionLangModified\',\'lang=%s\',440,320,\',resizable=yes,scrollbars=yes\')'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'),here.absolute_url(),request['lang'])][int(here.getHistory())]"
+						><i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i></span
+				></tal:block
+				><tal:block tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)"
+					><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i></span
+				></tal:block
+			></tal:block
+			><tal:block tal:condition="not:python:seq_lang!=request['lang']"
+				><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span
+			></tal:block
+		></tal:block
+	></tal:block
+	><tal:block tal:condition="not:python:here.attr('change_uid')"
+		><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span
+	></tal:block
+></tal:block
+><tal:comment tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Workflow
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment>
-<tal:block tal:condition="python:not here.getAutocommit() and not request.get('ZMS_VERSION')">
-	<tal:block tal:define="global wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)">
-		<tal:block tal:condition="python:work_uid and work_dt" tal:repeat="wfState wfStates">
-			<tal:block tal:define="global wfActivity python:here.getWfActivity(wfState)">
-				<tal:block tal:condition="python:wfActivity.get('icon')">
-					<img tal:attributes="src wfActivity/icon; title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))" border="0" align="absmiddle"/>
-				</tal:block>
-			</tal:block>
-		</tal:block>
-		<span class="zmi-state" tal:condition="python:'STATE_NEW' in objStates"><i class="icon-plus-sign" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></i></span>
-		<span class="zmi-state" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="icon-pencil" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
-		<span class="zmi-state" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="icon-edit" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span>
-		<span class="zmi-state" tal:condition="python:'STATE_DELETED' in objStates"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></i></span>
-	</tal:block>
-</tal:block>
-
-<tal:comment tal:replace="nothing">
+</tal:comment
+><tal:block tal:condition="python:not here.getAutocommit() and not request.get('ZMS_VERSION')"
+	><tal:block tal:define="global wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)"
+		><img src="/misc_/zms/spacer.gif" alt="" style="border:0;" />
+		<tal:block tal:condition="python:work_uid and work_dt" tal:repeat="wfState wfStates"
+			><tal:block tal:define="global wfActivity python:here.getWfActivity(wfState)"
+				><tal:block tal:condition="python:wfActivity.get('icon') not in ['',None]"
+					><img tal:attributes="src wfActivity/icon; title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))" style="border:0;vertical-align:middle;" 
+				/></tal:block
+			></tal:block
+		></tal:block
+		><span class="zmi-state" tal:condition="python:'STATE_NEW' in objStates"><i class="icon-plus-sign" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></i></span
+		><span class="zmi-state" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="icon-pencil" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span
+		><span class="zmi-state" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="icon-edit" tal:attributes="title python:here.getZMILangStr('STATE_MODIFIED')"></i></span
+		><span class="zmi-state" tal:condition="python:'STATE_DELETED' in objStates"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></i></span
+	></tal:block
+></tal:block
+><tal:comment tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Version Info
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment>
-<tal:block tal:condition="python:here.getHistory()">
-	<tal:block tal:content="python:'v.%i.%i.%i'%(here.attr('master_version'),here.attr('major_version'),here.attr('minor_version'))">v.#.#.#</tal:block>
-	<tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_live_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_LIVE')"></tal:block>
-	<tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_work_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_PREVIEW')"></tal:block>
-</tal:block>
-
-<tal:comment tal:replace="nothing">
+</tal:comment
+><tal:block tal:condition="python:here.getHistory()"
+	><tal:block tal:content="python:'v.%i.%i.%i'%(here.attr('master_version'),here.attr('major_version'),here.attr('minor_version'))">v.#.#.#</tal:block
+	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_live_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_LIVE')"></tal:block
+	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_work_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_PREVIEW')"></tal:block
+></tal:block
+><tal:comment tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Custom
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment>
-<tal:block tal:content="structure python:here.attr('version_object_state')">attr(version_object_state)</tal:block>
-<tal:block tal:on-error="python:''" tal:content="structure python:here.my_version_object_state(here,request)">my_version_object_state</tal:block>
+</tal:comment
+><tal:block tal:content="structure python:here.attr('version_object_state')">attr(version_object_state)</tal:block
+><tal:block tal:on-error="python:''" tal:content="structure python:here.my_version_object_state(here,request)">my_version_object_state</tal:block>

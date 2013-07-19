@@ -111,6 +111,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_pagination = PageTemplateFile('zpt/common/zmi_pagination', globals())
     zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
     zmi_tabs_sub = PageTemplateFile('zpt/common/zmi_tabs_sub', globals())
+    zmi_ace_editor = _confmanager.ConfDict.template('common/zmi_ace_editor')
 
     # Templates.
     # ----------

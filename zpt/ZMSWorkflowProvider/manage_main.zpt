@@ -121,6 +121,10 @@ function zmiFormSubmit(sender,d) {
 }
 
 $(function() {
+		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+				$(this).parents('.inner').dialog('close');
+				return false;
+			});
 		$('table.zmi-sortable tr').hover(
 			function() {
 					$(this).addClass('active');
@@ -128,8 +132,8 @@ $(function() {
 			function() {
 					$(this).removeClass('active');
 				});
-		$('#updateActivity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Activity',height:'auto',width:'auto'});
-		$('#updateTransition').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Transition',height:'auto',width:'auto'});
+		$('#updateActivity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
+		$('#updateTransition').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
 	});
 
 </script>
@@ -192,6 +196,7 @@ $(function() {
 			<div class="control-group">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
 			</div><!-- .control-group -->
 		</form>
@@ -215,6 +220,7 @@ $(function() {
 				<div class="control-group">
 					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+						<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 					</div><!-- .controls.save -->
 				</div><!-- .control-group -->
 			</div><!-- .horizontal-group -->
@@ -253,29 +259,17 @@ $(function() {
 				</div><!-- .control-group -->
 			</div><!-- .horizontal-group -->
 			<div style="clear:both;">&nbsp;</div>
-			<div class="horizontal-group">
-				<div class="control-group">
-					<tal:block tal:define="global ob python:getattr(here,transition['id'],None)">
-						<tal:block tal:condition="python:ob is None">
-							<input type="hidden" name="inpType" value=""/>
-						</tal:block>
-						<tal:block tal:condition="python:ob is not None">
-							<label for="inpDtml" class="control-label mandatory"><span>
-								<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url()" target="_blank">
-									<img tal:attributes="src ob/icon"/>
-									<tal:block tal:content="ob/id">the id</tal:block>
-								</a>
-								(<tal:block tal:content="ob/meta_type">the meta_type</tal:block>)
-								<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">the id</tal:block>
-							</span></label>
-							<div class="controls">
-								<input type="hidden" name="inpType" tal:attributes="value ob/meta_type"/>
-								<textarea name="inpDtml" class="perc100" tal:content="transition/dtml" cols="80" rows="25" wrap="off"></textarea>
-							</div><!-- .controls -->
-						</tal:block>
+			<tal:block tal:define="global ob python:getattr(here,transition['id'],None)">
+				<tal:block tal:condition="python:ob is None">
+					<input type="hidden" name="inpType" value=""/>
+				</tal:block>
+				<tal:block tal:condition="python:ob is not None">
+					<input type="hidden" name="inpType" tal:attributes="value ob/meta_type"/>
+					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpDtml',ob=ob)">
+						ACE Editor
 					</tal:block>
-				</div>
-			</div><!-- .horizontal-group -->
+				</tal:block>
+			</tal:block>
 		</form>
 	</div><!-- .inner -->
 </div><!-- #updateTransition -->
@@ -299,6 +293,7 @@ $(function() {
 			<div class="control-group">
 				<div class="controls">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 		</form>
@@ -331,6 +326,7 @@ $(function() {
 			<div class="control-group">
 				<div class="controls">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
 			</div><!-- .control-group -->
 		</form>
@@ -342,29 +338,27 @@ $(function() {
 	<input type="hidden" name="key" value="custom"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_WORKFLOW')">well</p>
-			<div class="control-group workflow">
-				<label for="workflow" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
-				<div class="controls">
-					<div class="pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></div>
-					<div class="pull-left">
-						<div class="single-line input-append zmi-nodes">
-							<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-						</div>
-					</div>
-					<div class="pull-left" style="padding-left:5em;">
-						<div class="btn-group">
-							<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;"><i class="icon-upload-alt"></i></span>
-							<a class="btn" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="icon-download-alt"></i></a>
-							<a class="btn btn-inverse" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><i class="icon-remove"></i></a>
-						</div>
-					</div>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
+	<div class="control-group workflow">
+		<label for="workflow" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
+		<div class="controls">
+			<div class="pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></div>
+			<div class="pull-left">
+				<div class="single-line input-append zmi-nodes">
+					<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+				</div>
+			</div>
+			<div class="pull-left" style="padding-left:5em;">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			</div>
+			<div class="pull-left" style="padding-left:5em;">
+				<div class="btn-group">
+					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});return false;"><i class="icon-upload-alt"></i></span>
+					<a class="btn" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="icon-download-alt"></i></a>
+					<a class="btn btn-inverse" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><i class="icon-remove"></i></a>
+				</div>
+			</div>
+		</div><!-- .controls -->
+	</div><!-- .control-group.workflow -->
 </form>
 
 <form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
@@ -375,7 +369,7 @@ $(function() {
 	<tr>
 		<th tal:attributes="colspan python:2+len(activityIds)" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertActivity').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertActivity').dialog({modal:true,title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 			</div>
 			&nbsp;<i class="icon-tag"></i> Activities
 		</th>
@@ -384,7 +378,7 @@ $(function() {
 	<tal:block tal:repeat="activityId activityIds">
 		<tal:block tal:define="i python:activityIds.index(activityId); activity python:here.getActivity(activityId); activityDetails python:here.getActivityDetails(activityId)">
 			<tr class="zmi-sortable">
-				<td>
+				<td class="ui-toggle">
 					<div class="input-append">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%activityId">
 							<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
@@ -426,7 +420,7 @@ $(function() {
 	<tr>
 		<th colspan="3" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertTransition').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertTransition').dialog({modal:true,title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 			</div>
 			&nbsp;<i class="icon-random"></i> Transitions
 		</th>
@@ -435,7 +429,7 @@ $(function() {
 	<tal:block tal:repeat="transitionId transitionIds">
 		<tal:block tal:define="i python:transitionIds.index(transitionId); transition python:here.getTransition(transitionId); ob python:getattr(here,transition['id'],None)">
 			<tr class="zmi-sortable">
-				<td>
+				<td class="ui-toggle">
 					<div class="input-append">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%transition['id']">
 							<option tal:repeat="i python:range(0,len(transitionIds))" tal:attributes="selected python:['','selected'][int(i==transitionIds.index(transitionId))]" tal:content="python:i+1">i+1</option>

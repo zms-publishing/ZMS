@@ -27,6 +27,9 @@ body.zmi {
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none;
 }
+textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
+	display:none!important;
+}
 .zmi-helper-clickable, .ui-helper-clickable {
 	cursor:pointer!important;
 }
@@ -419,6 +422,11 @@ margin-top: 12px;
 }
 .zmi.properties .form-horizontal > .control-group:last-child > .controls:last-child {
 margin-left:2px;
+}
+.control-label-ace-editor {
+	background-color:#EEE;
+	border-bottom:1px solid #CCC;
+	padding:2px;
 }
 .form-horizontal .control-label.mandatory span {
 	background:url(/misc_/zms/ico_attr.gif) top left no-repeat;

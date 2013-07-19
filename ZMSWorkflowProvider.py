@@ -95,7 +95,9 @@ def importXml(self, xml, REQUEST):
   for li in range(len(l)/2):
     id = l[li*2]
     i = l[li*2+1]
-    self.setTransition(id=None,newId=id,newName=i['name'],newType=i.get('type','DTML Method'),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
+    newDtml = i.get('dtml','')
+    newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
+    self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
   # Roles.
   roles = []
   for transition in self.getTransitions():
@@ -199,7 +201,9 @@ class ZMSWorkflowProvider(
       for li in range(len(l)/2):
         id = l[li*2]
         i = l[li*2+1]
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=i.get('type','DTML Method'),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=i.get('dtml',''))
+        newDtml = i.get('dtml','')
+        newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -1,0 +1,88 @@
+<tal:block tal:define="global name python:options['name']; ob python:options['ob']">
+	<div tal:condition="python:ob is not None" class="control-group" style="height:20em;">
+		<div class="control-label-ace-editor">
+			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
+				<img tal:attributes="src ob/icon; alt ob/meta_type"/>
+				<tal:block tal:content="ob/id">the id</tal:block>
+			</a>
+			(<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">the size</tal:block>)
+		</div>
+		<div class="controls">
+			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
+				<textarea id="text" tal:attributes="name name" class="ui-helper-hidden" tal:content="ob/raw" style="width:100%">The object</textarea>
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type in ['Page Template','Script (Python)']">
+				<textarea id="text" tal:attributes="name name" class="ui-helper-hidden" tal:content="ob/read" style="width:100%">The object</textarea>
+			</tal:block>
+		</div><!-- .controls -->
+
+<!--
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++ Ajax.org Cloud9 Editor
++++ http://ace.ajax.org
++++ @see $ZMS_HOME/plugins/www/ace.ajax.org
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-->
+<div id="editor" class="zmiNeutralColorWhite" style="height: 92%; width: 100%;">some text</div>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-css.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-javascript.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
+<script type="text/javascript">
+$(function() {
+	if ($("textarea#text").length == 0) {
+		$("#editor").hide();
+	}
+	else {
+		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
+		editor = ace.edit("editor");
+		var content_type = null;
+		if ($("input#content_type")) {
+			content_type = $("input#content_type").val();
+		}
+		if (content_type == null) {
+			var absolute_url = $("span#absolute_url").text();
+			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
+			if (id.endsWith(".css")) {
+				content_type = "text/css";
+			}
+			else if (id.endsWith(".js")) {
+				content_type = "text/javascript";
+			}
+			else {
+				content_type = "text/html";
+			}
+		}
+		var Mode = null;
+		if (content_type == "text/html") {
+			Mode = require("ace/mode/html").Mode;
+		}
+		else if (content_type == "text/css" || content_type == "application/x-css") {
+			Mode = require("ace/mode/css").Mode;
+		}
+		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
+			Mode = require("ace/mode/javascript").Mode;
+		}
+		else if (content_type == "text/xml") {
+			Mode = require("ace/mode/xml").Mode;
+		}
+		else if (content_type == "python") {
+			Mode = require("ace/mode/python").Mode;
+		}
+		if (Mode != null) {
+			editor.getSession().setMode(new Mode());
+		}
+		editor.setTheme("ace/theme/eclipse");
+		editor.getSession().setValue($("textarea#text").val());
+		editor.getSession().on("change",function() {
+				$("textarea#text").val(editor.getSession().getValue());
+			});
+	}
+});
+</script>
+
+	</div><!-- .control-group -->
+</tal:block>

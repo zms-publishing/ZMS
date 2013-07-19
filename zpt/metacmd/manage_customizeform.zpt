@@ -38,8 +38,12 @@ function zmiDeleteObjBtnClick(sender,d) {
 	}
 }
 
-$(function(){
-	$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',minWidth:800})
+$(function() {
+		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+				$(this).parents('.inner').dialog('close');
+				return false;
+			});
+		$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',minWidth:800});
 });
 
 </script>
@@ -73,103 +77,8 @@ $(function(){
 				<label for="el_icon_clazz" class="control-label"><span>Icon (Class)</span></label>
 				<div class="controls"><input type="text" name="el_icon_clazz" tal:attributes="value python:metaCmd.get('icon_clazz','')"/></div><!-- .controls -->
 			</div><!-- .control-group -->
-			<tal:block tal:define="global ob python:getattr(here,request['id'],None)">
-				<div class="control-group" style="height:20em;" tal:condition="python:ob is not None">
-					<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
-						<div class="ui-helper-hidden">
-							<span id="action">manage_edit</span>
-							<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-						</div>
-						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
-					</tal:block>
-					<tal:block tal:condition="python:ob.meta_type=='Page Template'">
-						<div class="ui-helper-hidden">
-							<span id="action">pt_editAction</span>
-							<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-							<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
-							<label for="expand">Expand</label><input id="expand" name="expand:int" class="form-element" tal:attributes="value ob/expand">
-						</div>
-						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
-					</tal:block>
-					<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
-						<div class="ui-helper-hidden">
-							<span id="action">ZPythonScriptHTML_editAction</span>
-							<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-							<label for="params">Parameter List</label><input id="params" name="params" class="form-element" tal:attributes="value ob/params">
-							<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" value="python">
-						</div>
-						<textarea id="text" name="el_data:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
-					</tal:block>
-
-<!--
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+++ Ajax.org Cloud9 Editor
-+++ http://ace.ajax.org
-+++ @see $ZMS_HOME/plugins/www/ace.ajax.org
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
--->
-<div id="editor" class="zmiNeutralColorWhite" style="height: 92%; width: 100%;">some text</div>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-css.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-javascript.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
-<script type="text/javascript">
-$(function() {
-	if ($("textarea#text").length == 0) {
-		$("#editor").hide();
-	}
-	else {
-		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
-		editor = ace.edit("editor");
-		var content_type = null;
-		if ($("input#content_type")) {
-			content_type = $("input#content_type").val();
-		}
-		if (content_type == null) {
-			var absolute_url = $("span#absolute_url").text();
-			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
-			if (id.endsWith(".css")) {
-				content_type = "text/css";
-			}
-			else if (id.endsWith(".js")) {
-				content_type = "text/javascript";
-			}
-			else {
-				content_type = "text/html";
-			}
-		}
-		var Mode = null;
-		if (content_type == "text/html") {
-			Mode = require("ace/mode/html").Mode;
-		}
-		else if (content_type == "text/css" || content_type == "application/x-css") {
-			Mode = require("ace/mode/css").Mode;
-		}
-		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
-			Mode = require("ace/mode/javascript").Mode;
-		}
-		else if (content_type == "text/xml") {
-			Mode = require("ace/mode/xml").Mode;
-		}
-		else if (content_type == "python") {
-			Mode = require("ace/mode/python").Mode;
-		}
-		if (Mode != null) {
-			editor.getSession().setMode(new Mode());
-		}
-		editor.setTheme("ace/theme/eclipse");
-		editor.getSession().setValue($("textarea#text").val());
-		editor.getSession().on("change",function() {
-				$("textarea#text").val(editor.getSession().getValue());
-			});
-	}
-});
-</script>
-
-				</div><!-- .control-group -->
+			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=getattr(here,request['id'],None))">
+				ACE Editor
 			</tal:block>
 			<div class="control-group">
 				<table>

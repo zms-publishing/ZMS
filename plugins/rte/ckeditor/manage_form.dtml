@@ -45,7 +45,12 @@ function zmiStandardOnSubmitEventHandler() {
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
 			try {
 				var data = $('#'+elName).val();
-				CKEDITOR.instances['editor_'+elName].setData( data);
+				var instance = CKEDITOR.instances['editor_'+elName];
+				if (instance) {
+					instance.setData(data,function() {
+							instance.focus();
+						});
+				}
 			}
 			catch(er) {
 			}
@@ -195,9 +200,12 @@ CKEDITOR.config.toolbar_ZMSConfigToolbar = <dtml-var "str_json(REQUEST.get('CKED
 function zmiRichtextSyncDataToView(id) {
 	$( '#editor_'+id).val( $('#'+id).val());
 	$( '#editor_'+id).prop('defaultValue',$( '#editor_'+id).val());
+	var data = $('#'+id).val();
 	var instance = CKEDITOR.instances['editor_'+id];
-	if(instance){
-		instance.setData($('#'+id).val());
+	if (instance){
+		instance.setData(data,function() {
+				instance.focus();
+			});
 	}
 }
 

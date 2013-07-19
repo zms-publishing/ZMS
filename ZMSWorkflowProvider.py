@@ -96,7 +96,7 @@ def importXml(self, xml, REQUEST):
     id = l[li*2]
     i = l[li*2+1]
     newDtml = i.get('dtml','')
-    newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
+    newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
     self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
   # Roles.
   roles = []
@@ -202,7 +202,7 @@ class ZMSWorkflowProvider(
         id = l[li*2]
         i = l[li*2+1]
         newDtml = i.get('dtml','')
-        newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
+        newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
         self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
 
 

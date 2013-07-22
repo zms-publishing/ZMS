@@ -17,7 +17,7 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib
 import zope.interface
@@ -55,8 +55,8 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main_acquired')
-    manage_main = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main_acquired') # -"-
+    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired',globals())
+    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired',globals())
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -118,10 +118,28 @@ class ZMSWorkflowProviderAcquired(
       return self.getPortalMaster().workflow_manager.getActivity(id)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    @see IZMSWorkflowProvider.getActivityDetails()
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def getActivityDetails(self, id):
+      return self.getPortalMaster().workflow_manager.getActivityDetails(id)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getTransitions()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitions(self):
       return self.getPortalMaster().workflow_manager.getTransitions()
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    @see IZMSWorkflowProvider.getTransitionIds()
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def getTransitionIds(self):
+      return self.getPortalMaster().workflow_manager.getTransitionIds()
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    @see IZMSWorkflowProvider.getTransition()
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def getTransition(self, id, for_export=False):
+      return self.getPortalMaster().workflow_manager.getTransition(id,for_export)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.manage_changeWorkflow:

@@ -715,12 +715,20 @@ class FilterManager:
     # --------------------------------------------------------------------------
     def getFilterProcesses(self, id):
       obs = []
+      c = 0
       for process in self.getFilter( id).get( 'processes', []):
         ob = process.copy()
         ob[ 'type'] = ob.get( 'type', 'process')
+        if ob.get('file') not in ['',None]:
+          f = ob['file']
+          ob['file_href'] = 'get_conf_blob?path=ZMS.filter.filters/%s/processes/%i:int/file'%(id,c)
+          ob['file_filename'] = f.getFilename()
+          ob['file_content_type'] = f.getContentType()
+          ob['file_size'] = f.get_size()
         process = self.getProcess( ob[ 'id'])
         if process is not None:
           obs.append( ob)
+        c += 1
       return obs
 
 
@@ -761,7 +769,7 @@ class FilterManager:
         # Filter Processes.
         c = 0
         for filterProcess in cp.get('processes',[]):
-          newProcessId = REQUEST.get('newFilterProcessId_%i'%c)
+          newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
           newProcessFile = REQUEST.get('newFilterProcessFile_%i'%c)
           if isinstance(newProcessFile,ZPublisher.HTTPRequest.FileUpload):
             if len(getattr(newProcessFile, 'filename',''))==0:
@@ -770,6 +778,10 @@ class FilterManager:
               newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
+        newProcessId = REQUEST.get('newFilterProcessId_%i'%(c+1),'').strip()
+        newProcessFile = REQUEST.get('newFilterProcessFile_%i'%(c+1))
+        if newProcessId:
+          setFilterProcess(self, id, newProcessId, newProcessFile)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.

@@ -111,7 +111,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_pagination = PageTemplateFile('zpt/common/zmi_pagination', globals())
     zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
     zmi_tabs_sub = PageTemplateFile('zpt/common/zmi_tabs_sub', globals())
-    zmi_ace_editor = _confmanager.ConfDict.template('common/zmi_ace_editor')
+    zmi_ace_editor = PageTemplateFile('zpt/common/zmi_ace_editor',globals())
 
     # Templates.
     # ----------
@@ -474,9 +474,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None):
       icon_title = self.display_type(REQUEST,meta_type)
-      zpt = zpt and self.getConfProperty('zmi.theme','dtml')=='zpt'
+      if zpt is None:
+        zpt = self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s" title="'+icon_title+'"/>'

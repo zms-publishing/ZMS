@@ -17,7 +17,7 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
 import urllib
@@ -96,7 +96,7 @@ def importXml(self, xml, REQUEST):
     id = l[li*2]
     i = l[li*2+1]
     newDtml = i.get('dtml','')
-    newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
+    newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
     self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
   # Roles.
   roles = []
@@ -164,8 +164,8 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main')
-    manage_main = _confmanager.ConfDict.template('ZMSWorkflowProvider/manage_main') # -"-
+    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main',globals())
+    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main',globals())
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions
@@ -202,7 +202,7 @@ class ZMSWorkflowProvider(
         id = l[li*2]
         i = l[li*2+1]
         newDtml = i.get('dtml','')
-        newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
+        newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
         self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
 
 

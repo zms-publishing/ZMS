@@ -62,13 +62,13 @@ class ZMSMetamodelProvider(
 
     # Management Interface.
     # ---------------------
-    manage = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main')
-    manage_main = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main') # -"-
-    manage_main_import = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main_import') # -"-
-    manage_main_acquire = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_main_acquire') # -"-
+    manage = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main',globals())
+    manage_main = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main',globals())
+    manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import',globals())
+    manage_main_acquire = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_acquire',globals())
     manage_bigpicture = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_analyze', globals())
-    manage_metas = _confmanager.ConfDict.template('ZMSMetamodelProvider/manage_metas')
+    manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas',globals())
 
     # Management Permissions.
     # -----------------------

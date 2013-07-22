@@ -556,18 +556,18 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas .enabled a {
 	font-weight:bold;
 }
-.zmi.metas .ui-helper-clickable.icon-check {
+.ui-helper-clickable.icon-check {
 	margin-right:0.2em;
 	color:#08c;
 }
-.zmi.metas .ui-helper-clickable.icon-check-empty {
+.ui-helper-clickable.icon-check-empty {
 	margin-right:0.3em;
 	color:#08c;
 }
-.zmi.metas tr.row_insert td {
+tr.row_insert td {
 	background-color:#EDF5FE !important;
 }
-.zmi.metas tr.row_insert td.meta-sort {
+tr.row_insert td.meta-sort {
 	color:#999;
 	text-align: right;
 	padding: 0.9em 1.8em !important;

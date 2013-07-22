@@ -4079,7 +4079,12 @@ if key.startswith('table_'):
 		<script type="text/javascript" tal:attributes="src python:'%sjquery.tablesorter.min.js'%resourceurl"></script>
 		<script type="text/javascript">
 			$(function() {
-				$(".ZMSTable.sortable").tablesorter(); 
+				$(".ZMSTable.sortable").tablesorter({ 
+					widgets: ["zebra"],
+					widgetOptions : {
+						zebra   : ["even", "odd"]
+					}
+				});
 			});
 		</script>
 		<tal:block tal:content="structure python:'<style>'"></tal:block>

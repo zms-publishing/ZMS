@@ -6,11 +6,16 @@
 			special_options options/special_options;
 			current_options python:filter(lambda x: current.startswith(x['action']),all_options);
 			filtered_options python:filter(lambda x: len(filter(lambda y: x['action'].startswith(y),special_options))==0,all_options);
-			options python:[filtered_options,current_options][int(len(filter(lambda x: current.startswith(x),special_options))>0)]">
-	<tal:block tal:repeat="option options">
-		<li tal:attributes="class python:' '.join([['','active'][int(option['action']==current or option['action'].endswith(here.id+'/'+current) or (current not in map(lambda x: x['action'], options) and current.startswith(option['action'])))]])">
-			<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getSelf().absolute_url(),option['action'],request['lang'])" onclick="javascript:return confirmChanges(this);" tal:content="python:here.getZMILangStr(option['label'])">the label</a>
-		</li>
+			options python:[filtered_options,current_options][int(len(filter(lambda x: current.startswith(x),special_options))>0)];
+			actions python:map(lambda x: x['action'], options);
+			active python:map(lambda x: int(x['action']==current or x['action'].endswith(here.id+'/'+current) or (current not in actions and current.startswith(x['action']))), options);
+			noactive python:len(filter(lambda x: x==1, active))<1">
+	<tal:block tal:repeat="i python:range(len(options))">
+		<tal:block tal:define="global option python:options[i]">
+			<li tal:attributes="class python:' '.join([['','active'][int(active[i] or (i==0 and noactive))]])">
+				<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getSelf().absolute_url(),option['action'],request['lang'])" onclick="javascript:return confirmChanges(this);" tal:content="python:here.getZMILangStr(option['label'])">the label</a>
+			</li>
+		</tal:block>
 	</tal:block>
 </ul><!-- .nav.nav-tabs -->
 

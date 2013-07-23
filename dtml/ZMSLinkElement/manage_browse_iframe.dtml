@@ -10,20 +10,33 @@
 <script language="JavaScript">
 <!--//
 
-  /**
-   * Direct-Edit: Expand It
-   */
-  var directEditAutoClose = false;
-  function directEditExpandIt( div_id, poser_id, autoClose)
-  {
-    directEditAutoClose = autoClose;
-    var coords = getCoords(document.images[ poser_id]);
-    var el = document.getElementById( div_id);
-    el.style.left = coords.x + "px";
-    el.style.top = coords.y + "px";
-    el.style.position = "absolute";
-    $(el).show('normal');
+/**
+ * Returns coordinates of given element
+ */
+function getCoords(theElement) {
+  var coords = {x: 0, y: 0};
+  var element = theElement;
+  while (element) {
+    coords.x += element.offsetLeft;
+    coords.y += element.offsetTop;
+    element = element.offsetParent;
   }
+  return coords;
+}
+
+/**
+ * Direct-Edit: Expand It
+ */
+var directEditAutoClose = false;
+function directEditExpandIt( div_id, poser_id, autoClose) {
+  directEditAutoClose = autoClose;
+  var coords = getCoords(document.images[ poser_id]);
+  var el = document.getElementById( div_id);
+  el.style.left = coords.x + "px";
+  el.style.top = coords.y + "px";
+  el.style.position = "absolute";
+  $(el).show('normal');
+}
 
   /**
    *

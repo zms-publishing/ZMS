@@ -87,7 +87,7 @@ $(function() {
 function initIframe() {
 	var ta = $("iframe");
 	if (ta.length > 0) {
-		var innerDims = getInnerDimensions();
+		var innerHeight = $(document).height();
 		var pos = ta.offset();
 		var newHeight =innerDims.height-pos.top-25;
 		ta.css('height',newHeight);

@@ -952,7 +952,7 @@ function zmiDisableInteractions(b) {
 	$(document.body).append('<div id="zmi-progressbox">'
 			+ '<img src="/misc_/zms/loading_16x16.gif" border="0" align="absmiddle"> ' + getZMILangStr('MSG_LOADING')
 		+ '</div>');
-	var dims = getInnerDimensions();
+	var $doc = $(document);
 	var $div = $("#zmi-progressbox");
-	$div.css({top:(dims.height-$div.prop('offsetHeight'))/2,left:(dims.width-$div.prop('offsetWidth'))/2});
+	$div.css({top:($(document).height()-$div.prop('offsetHeight'))/2,left:($doc.width()-$div.prop('offsetWidth'))/2});
 }

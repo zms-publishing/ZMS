@@ -17,7 +17,8 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
+from AccessControl import ClassSecurityInfo
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
 import OFS.SimpleItem
@@ -195,22 +196,27 @@ class MediaDb(
       Persistent,
       Acquisition.Implicit):
 
+    # Create a SecurityInfo for this class. We will use this
+    # in the rest of our class definition to make security
+    # assertions.
+    security = ClassSecurityInfo()
+
     # Properties.
     # -----------
     meta_type = 'MediaDb'
+    icon_clazz = "icon-stackexchange"
 
     # Management Options.
     # -------------------
     manage_options = (
-      {'label': 'Edit','action': 'manage_browse'},
-      {'label': 'Properties','action': 'manage_properties'},
+      {'label': 'Edit','action': 'acl_mediadb/manage_browse'},
+      {'label': 'Properties','action': 'acl_mediadb/manage_properties'},
       )
 
     # Management Interface.
     # ---------------------
-    manage_index_html = HTMLFile('dtml/acl_mediadb/manage_index', globals())
-    manage_browse = HTMLFile('dtml/acl_mediadb/manage_browse', globals())
-    manage_properties = HTMLFile('dtml/acl_mediadb/manage_properties', globals())
+    manage_browse = PageTemplateFile('zpt/MediaDb/manage_browse', globals())
+    manage_properties = PageTemplateFile('zpt/MediaDb/manage_properties', globals())
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -295,13 +301,31 @@ class MediaDb(
 
 
     # --------------------------------------------------------------------------
-    #	MediaDb.retrieveFileStreamIterator
+    # MediaDb.manage_index_html
+    # --------------------------------------------------------------------------
+    security.declareProtected('ZMS Administrator', 'manage_index_html')
+    def manage_index_html(self, filename, REQUEST=None):
+      """ MediaDb.manage_index_html """
+      return self.retrieveFileStreamIterator(filename,REQUEST)
+
+
+    # --------------------------------------------------------------------------
+    # MediaDb.retrieveFileStreamIterator
     # --------------------------------------------------------------------------
     def retrieveFileStreamIterator(self, filename, REQUEST=None):
+      filename = filename.replace('..','')
       threshold = 2 << 16 # 128 kb
       local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
       fsize = os.path.getsize( local_filename)
-      REQUEST.RESPONSE.setHeader( 'content-length' ,fsize)
+      try:
+        mt, enc = _globals.guess_contenttype( local_filename)
+      except:
+        mt, enc = 'content/unknown', ''
+      REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
+      REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
+      REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+      REQUEST.RESPONSE.setHeader('Cache-Control', 'no-cache')
+      REQUEST.RESPONSE.setHeader('Pragma', 'no-cache')
       if fsize < threshold or REQUEST.RESPONSE is None:
         try:
           f = open( local_filename, 'rb')
@@ -314,9 +338,10 @@ class MediaDb(
 
 
     # --------------------------------------------------------------------------
-    #	MediaDb.retrieveFile
+    # MediaDb.retrieveFile
     # --------------------------------------------------------------------------
     def retrieveFile(self, filename):
+      filename = filename.replace('..','')
       try:
         local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
         f = open( local_filename, 'rb')

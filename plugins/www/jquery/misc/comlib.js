@@ -531,48 +531,6 @@ function zmiGetCoords(theElement, thePosition) {
 }
 
 /**
- * Returns coordinates of given element
- */
-function getCoords(theElement) {
-  var coords = {x: 0, y: 0};
-  var element = theElement;
-  while (element) {
-    coords.x += element.offsetLeft;
-    coords.y += element.offsetTop;
-    element = element.offsetParent;
-  }
-  return coords;
-}
-
-/**
- * Returns body dimensions
- */
-function getBodyDimensions() {
-  if (document.body && document.body.offsetWidth) {
-    var div = $('body>div');
-    return {width: div.prop('offsetWidth'), height: div.prop('offsetHeight')};
-  } else {
-    return {width: 0, height: 0};
-  }
-}
-
-/**
- * Returns inner dimensions
- */
-function getInnerDimensions() {
-  if (window.innerWidth) { // Mozilla/Firefox
-    return {width: window.innerWidth, height: window.innerHeight};
-  } else if (document.documentElement && document.documentElement.clientWidth) { // IE6/IE8
-    return {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight};
-  } else if (document.body && document.body.clientWidth) {
-    return {width: document.body.clientWidth, height: document.body.clientHeight};
-  } else {
-    return {width: 0, height: 0};
-  }
-}
-
-
-/**
  * Opens url in new frame-window
  */
 function open_frame(title,url,params,width,height,options) {

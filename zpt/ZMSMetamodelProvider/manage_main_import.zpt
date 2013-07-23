@@ -47,7 +47,7 @@
 							<div class="control-group">
 								<input type="checkbox" name="createIdsFilter:list" tal:attributes="value importObj/id; title importObj/id" checked="checked">
 								<i tal:condition="python:importObj['id'] not in metaObjIds" class="icon-plus"></i>
-								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'])">the icon</tal:block>
+								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'],zpt=True)">the icon</tal:block>
 								<tal:block tal:content="importObj/name">the name</tal:block>
 								<tal:block tal:content="importObj/revision">the revision</tal:block>
 								(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%importObj['type'].upper())">the type</tal:block>)

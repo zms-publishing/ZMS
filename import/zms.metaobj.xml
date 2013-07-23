@@ -2718,7 +2718,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2728,7 +2728,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2759,219 +2759,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[interface]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<dtml-var f_submitBtn>
-</form>
-<dtml-call "REQUEST.set('omit_submitBtn',True)">
-
-<dtml-unless ZMS_INSERT>
-
-<dtml-unless skey><dtml-call expr="REQUEST.set('skey', 'id')"></dtml-unless>
-<dtml-unless rkey><dtml-call expr="REQUEST.set('rkey', '')"></dtml-unless>
-
-<dtml-comment> ### Action_List ################################# </dtml-comment>
-<form action="&dtml-URL1;/" method="get">
-<input type="hidden" name="lang" value="<dtml-var lang>">
-<div align="right" class="form-small" width="100%">
-  <dtml-if filtered_meta_types>
-    <select class="form-small" name=":action"
-         onChange="location.href='&dtml-URL1;/'+this.options[this.selectedIndex].value">
-      <option value="manage_workspace">----- <dtml-var "getZMILangStr('ACTION_INSERT')%display_type(REQUEST)"> -----</option>
-      <dtml-in filtered_meta_types mapping sort=name>
-        <dtml-unless "name.find('ZMS')==0">
-          <option value="&dtml.url_quote-action;"><dtml-var name></option>
-        </dtml-unless>
-      </dtml-in>
-    </select>
-  </dtml-if>
-</div>
-</form>
-
-<dtml-comment> ### Object_List ################################# </dtml-comment>
-<table cellspacing="0" cellpadding="2" border="0" width="100%" class="zmiNeutralColorStrong0">
-<form name="form1" action="&dtml-URL1;/" name="objectItems" method="post">
-<tr>
-<td valign="top">
-<dtml-if objectItems>
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
-<tr class="list-header">
-  <td width="5%" valign="middle"
-    ><a href="javascript:var btn=$('#slctBtn');var slct=btn.attr('src').indexOf('btn_slctall.gif')>0;if(slct){btn.attr('src','<dtml-var MISC_ZMS>btn_slctnone.gif');} else {btn.attr('src','<dtml-var MISC_ZMS>btn_slctall.gif');};selectCheckboxes($(btn.parents('form')[0]),slct);" class="button"
-     ><img id="slctBtn" src="<dtml-var MISC_ZMS>btn_slctall.gif" border="0"
-    ></a
-  ></td>
-  <td width="5%" align="right"><div
-   class="list-item"><a href="./manage_main?skey=meta_type<dtml-if
-   "rkey == ''">&rkey=meta_type</dtml-if>"
-   onMouseOver="window.status='Sort objects by type'; return true"
-   onMouseOut="window.status=''; return true"><dtml-if
-   "skey == 'meta_type' or rkey == 'meta_type'"
-   ><strong><dtml-var "getZMILangStr('ATTR_TYPE')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_TYPE')"></dtml-if></a></div>
-  </td>
-  <td width="50%"><div class="list-item"><a
-   href="./manage_main?skey=id<dtml-if
-   "rkey == ''">&rkey=id</dtml-if>"
-   onMouseOver="window.status='Sort objects by name'; return true"
-   onMouseOut="window.status=''; return true"><dtml-if
-   "skey == 'id' or rkey == 'id'"
-   ><strong><dtml-var "getZMILangStr('ATTR_NAME')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_NAME')"></dtml-if></a></div>
-  </td>
-  <td width="15%"><div class="list-item"><a
-   href="./manage_main?skey=get_size<dtml-if
-   "rkey == ''">&rkey=get_size</dtml-if>"
-   onMouseOver="window.status='Sort objects by size'; return true"
-   onMouseOut="window.status=''; return true"><dtml-if
-   "skey == 'get_size' or rkey == 'get_size'"
-   ><strong><dtml-var "getZMILangStr('ATTR_SIZE')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_SIZE')"></dtml-if></a></div>
-  </td>
-  <td width="29%"><div class="list-item"><a
-   href="./manage_main?skey=bobobase_modification_time<dtml-if
-   "rkey == ''">&rkey=bobobase_modification_time</dtml-if
-   >"
-   onMouseOver="window.status='Sort objects by modification time'; return true"
-   onMouseOut="window.status=''; return true"><dtml-if
-   "skey == 'bobobase_modification_time' or rkey == 'bobobase_modification_time'"
-   ><strong><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></strong><dtml-else><dtml-var "getZMILangStr('ATTR_LAST_MODIFIED')"></dtml-if></a></div>
-  </td>
-</tr>
-<dtml-in objectItems sort_expr="skey" reverse_expr="rkey">
-<dtml-unless "meta_type=='ZMSAttributeContainer'">
-<dtml-if sequence-odd>
-<tr class="zmiNeutralColorLight0">
-<dtml-else>
-<tr class="zmiNeutralColorMedium0">
-</dtml-if>
-  <td align="center" valign="top"
-    ><input type="checkbox" name="ids:list" value="&dtml-sequence-key;" /></td>
-  <td valign="top">
-  <dtml-if icon>
-  <a href="&dtml.url_quote-sequence-key;/manage_workspace">
-  <img src="&dtml-BASEPATH1;/&dtml-icon;" title="&dtml-meta_type;"
-   title="&dtml-meta_type;" border="0" /></a>
-  <dtml-else>
-  &nbsp;
-  </dtml-if>
-  </td>
-  <td valign="top">
-  <div class="list-item">
-  <a href="&dtml.url_quote-sequence-key;/manage_workspace">
-  &dtml-sequence-key; <dtml-if title>(&dtml-title;)</dtml-if>
-  </a>
-  <dtml-if locked_in_version>
-    <dtml-if modified_in_version>
-      <img src="&dtml-BASEPATH1;/p_/locked"
-       title="This item has been modified in this version" />
-    <dtml-else>
-      <img src="&dtml-BASEPATH1;/p_/lockedo"
-       title="This item has been modified in another version" />
-       (<em>&dtml-locked_in_version;</em>)
-    </dtml-if>
-  </dtml-if>
-  </div>
-  </td>
-
-  <dtml-with sequence-key>
-  <td>
-  <div class="list-item">
-  <dtml-try>
-  <dtml-if get_size>
-  <dtml-let ob_size=get_size>
-  <dtml-if "ob_size < 1024">
-  1 Kb
-  <dtml-elif "ob_size > 1048576">
-  <dtml-var "ob_size / 1048576.0" fmt="%0.02f"> Mb
-  <dtml-else>
-  <dtml-var "int(ob_size / 1024)"> Kb
-  </dtml-if>
-  </dtml-let>
-  <dtml-else>
-  &nbsp;
-  </dtml-if>
-  <dtml-except>
-  &nbsp;
-  </dtml-try>
-  </div>
-  </td>
-
-  <td>
-   <div class="list-item"><dtml-var "getLangFmtDate(bobobase_modification_time())"></div>
-  </td>
-  </dtml-with>
-</tr>
-</dtml-unless>
-</dtml-in>
-</table>
-
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<tr>
-  <td valign="top" width="16"></td>
-  <td valign="top" nowrap="nowrap">
-  <div class="form-element">
-  <dtml-unless dontAllowCopyAndPaste>
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_renameForm:method"
-   value="<dtml-var "getZMILangStr('BTN_RENAME')" html_quote>" />
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_cutObjects:method"
-   value="<dtml-var "getZMILangStr('BTN_CUT')" html_quote>" />
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_copyObjects:method"
-   value="<dtml-var "getZMILangStr('BTN_COPY')" html_quote>" />
-  <dtml-if cb_dataValid>
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
-   value="<dtml-var "getZMILangStr('BTN_PASTE')" html_quote>" />
-  </dtml-if>
-  </dtml-unless>
-  <dtml-if "_.SecurityCheckPermission('Delete objects',this())">
-  <input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_delObjects:method"
-   value="<dtml-var "getZMILangStr('BTN_DELETE')" html_quote>" />
-  </dtml-if>
-  <dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-  <input class="ui-button ui-state-default ui-corner-all" type="submit"
-   name="manage_importExportForm:method"
-   value="Import/Export" />
-  </dtml-if>
-  </div>
-  </td>
-</tr>
-</table>
-
-<dtml-else>
-<table cellspacing="0" cellpadding="2" border="0">
-<tr>
-<td>
-<div class="std-text">
-<dtml-var "getZMILangStr('MSG_EMPTYCONTAINER')"> <dtml-var "display_type(REQUEST)"> <em><dtml-var "getTitlealt(REQUEST)">
-<br /><br />
-</div>
-<dtml-unless dontAllowCopyAndPaste>
-<dtml-if cb_dataValid>
-<div class="form-element">
-<input class="ui-button ui-state-default ui-corner-all" type="submit" name="manage_pasteObjects:method"
- value="Paste" />
-</div>
-</dtml-if>
-</dtml-unless>
-<dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-<input class="ui-button ui-state-default ui-corner-all" type="submit"
-  name="manage_importExportForm:method" value="Import/Export" />
-</dtml-if>
-</td>
-</tr>
-</table>
-</dtml-if>
-</td>
-</tr>
-</table>
-
-</dtml-unless>]]>
-                  </item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[interface]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2979,9 +2767,82 @@ zmscontext.attr('text',text)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global
-		zmscontext options/zmscontext">
+                  <item key="name"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+<tal:block tal:define="global
+		zmscontext options/zmscontext;
+		SecurityManager modules/AccessControl/getSecurityManager;
+		skey python:request.get('skey', 'id');
+		rkey python:request.get('rkey', '')">
 
+<!--
+################################################################################
+##### Action-List
+################################################################################
+-->
+<div align="right" class="form-small" width="100%">
+	<select name=":action"	tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
+		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,zmscontext.sort_list(zmscontext.filtered_meta_types(),'name'))">
+			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
+		</tal:block>
+	</select>
+</div>
+
+<!--
+################################################################################
+##### Object-List
+################################################################################
+-->
+
+<tal:block tal:define="global items python:filter(lambda x:x[1].meta_type.find('ZMS')<>0,zmscontext.objectItems())">
+<tal:block tal:condition="python:len(items)>0">
+<table class="table table-striped">
+<thead>
+<tr>
+	<th>&nbsp;</th>
+	<tal:block define="global
+			columns python:['meta_type','id','get_size','bobobase_modification_time'];
+			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
+		<tal:block tal:repeat="column columns">
+			<th tal:define="global label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())">
+				<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:['icon-caret-down','icon-caret-up'][int(rkey==column)]"></i>
+				<a tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"><tal:block tal:content="label">the label</tal:block></a>
+			</th>
+		</tal:block>
+	</tal:block>
+</tr>
+</thead>
+<tbody>
+<tr tal:repeat="item items">
+	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
+	<td>
+		<tal:block tal:condition="python:item[1].icon">
+			<img tal:attributes="src python:item[1].icon; title python:item[1].meta_type"/>
+		</tal:block>
+	</td>
+	<td>
+		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
+			<tal:block tal:content="python:item[0]">the id</tal:block>
+			<tal:block tal:condition="python:item[1].title">(<tal:block tal:content="python:item[1].title">the title</tal:block>)</tal:block>
+		</a>
+	</td>
+	<td><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())">the size</tal:block></td>
+	<td><tal:block tal:content="python:zmscontext.getLangFmtDate(item[1].bobobase_modification_time())">the timestamp</tal:block></td>
+</tr>
+</tbody>
+</table>
+<tal:block tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
+	<input class="btn" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
+	<input class="btn" type="submit" name="manage_cutForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
+	<input class="btn" type="submit" name="manage_copyForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
+	<input class="btn" type="submit" name="manage_pasteForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:request.get('cb_dataValid')"/>
+	<input class="btn" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
+	<input class="btn" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
+</tal:block>
+</tal:block>
+</tal:block>
+
+</tal:block>
 </tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
@@ -3010,11 +2871,11 @@ zmscontext.attr('text',text)
               <item key="insert_custom"><![CDATA[{$}]]></item>
             </dictionary>
           </item>
-          <item key="enabled" type="int">1</item>
+          <item key="enabled" type="int">0</item>
           <item key="id"><![CDATA[ZMSSysFolder]]></item>
           <item key="name"><![CDATA[ZMSSysFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.2]]></item>
+          <item key="revision"><![CDATA[1.8.3]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -4079,12 +3940,7 @@ if key.startswith('table_'):
 		<script type="text/javascript" tal:attributes="src python:'%sjquery.tablesorter.min.js'%resourceurl"></script>
 		<script type="text/javascript">
 			$(function() {
-				$(".ZMSTable.sortable").tablesorter({ 
-					widgets: ["zebra"],
-					widgetOptions : {
-						zebra   : ["even", "odd"]
-					}
-				});
+				$(".ZMSTable.sortable").tablesorter(); 
 			});
 		</script>
 		<tal:block tal:content="structure python:'<style>'"></tal:block>

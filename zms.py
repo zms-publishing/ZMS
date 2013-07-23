@@ -501,7 +501,6 @@ class ZMS(
     headCStyleSheet = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Reference
     headCSS = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Referenz
     search_nav_html = HTMLFile('dtml/ZMS/search_nav', globals()) # search_nav_html
-    manage_editorForm = HTMLFile('dtml/ZMS/manage_editorform', globals()) # Editor (Frameset)
 
     # Enumerations.
     # -------------

@@ -50,6 +50,24 @@ function selectCheckboxes(fm, v) {
 	$(':checkbox:not([name~=active])',fm).prop('checked',v)
 }
 
+// ############################################################################
+// ### Debug
+// ############################################################################
+
+function zmiToggleDebug(b) {
+	var $div = $("div#zmi-debug");
+	if ($div.length==0) {
+		$("body").append('<div id="zmi-debug"></div>');
+		$div = $("div#zmi-debug");
+	}
+	if (b) {
+		$div.css("display","block");
+	}
+	else {
+		$div.css("display","none");
+	}
+}
+
 function zmiWriteDebug(s) {
 	var $div = $("div#zmi-debug");
 	if ($div.css("display")!="none") {

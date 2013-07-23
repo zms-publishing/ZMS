@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form class="form-horizontal" method="get">
+
+<legend>
+	<a href="manage_main">
+		<i tal:attributes="class python:here.icon_clazz"></i>
+		<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+	</a>
+</legend>
+
+<div class="control-group">
+	<label class="control-label mandatory" for="location"><span>Location</span></label>
+	<div class="controls"><input name="location" tal:attributes="value here/location"></div><!-- .controls -->
+</div><!-- .control-group -->
+
+<div class="control-group">
+	<div class="controls"><button class="btn btn-primary" name="submit" value="Change">Change</button></div><!-- .controls -->
+</div><!-- .control-group -->
+
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

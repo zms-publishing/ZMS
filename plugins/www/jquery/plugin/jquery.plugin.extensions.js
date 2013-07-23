@@ -342,7 +342,7 @@ function runPluginJcrop(c) {
  */
 function runPluginCookies(c) {
 	$.plugin('cookies',{
-		files: ['/++resource++zms_/jquery/jquery.cookies.2.1.0.min.js']
+		files: ['/++resource++zms_/jquery/jquery.cookies.2.2.0.min.js']
 		});
 	$.plugin('cookies').get('body',c);
 }

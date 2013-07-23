@@ -23,6 +23,7 @@ try: # Zope >= 2.13.0
   from OFS.role import RoleManager
 except: 
   from AccessControl.Role import RoleManager
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import re
 import string
@@ -133,7 +134,7 @@ class ZMSContainerObject(
     manage_search = _confmanager.ConfDict.template('ZMSContainerObject/manage_search')
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())
     manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
-    manage_system = HTMLFile('dtml/ZMSContainerObject/manage_system', globals())
+    manage_system = PageTemplateFile('zpt/ZMSContainerObject/manage_system', globals())
     manage_importexport = _confmanager.ConfDict.template('ZMSContainerObject/manage_importexport')
     manage_importexportFtp = HTMLFile('dtml/ZMSContainerObject/manage_importexportftp', globals())
     manage_tasks = _confmanager.ConfDict.template('versionmanager/manage_tasks')

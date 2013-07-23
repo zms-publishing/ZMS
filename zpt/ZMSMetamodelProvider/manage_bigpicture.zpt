@@ -57,7 +57,7 @@
 		<div class="box">
 			<div class="type">&laquo;<tal:block tal:content="metaObj/type">the type</tal:block>&raquo;</div>
 			<div class="id">
-				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block>
+				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block>
 				<tal:block tal:content="metaObj/id">the id</tal:block>
 			</div>
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">

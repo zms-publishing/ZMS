@@ -22,6 +22,7 @@ from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
+from OFS.CopySupport import absattr
 from cStringIO import StringIO
 from types import StringTypes
 from binascii import b2a_base64, a2b_base64
@@ -607,6 +608,15 @@ class ZMSGlobals:
     #( Operators
     #
     ############################################################################
+
+    """
+    Returns absolute-attribute of given value.
+    @param v: Value
+    @type v: C{any}
+    @rtype: C{type}
+    """
+    def operator_absattr(self, v):
+      return absattr(v)
 
     """
     Returns python-type of given value.

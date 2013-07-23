@@ -115,10 +115,10 @@ function zmiRichtextEditorMaximize(ta) {
 		if ($("div#zmiStandardEditor"+id).css("display")=="none") {
 			ta = $("div#zmiRichtextEditor"+id);
 		}
-		var innerDims = getInnerDimensions();
-		var bodyDims = getBodyDimensions();
+		var innerHeight = $(document).height();
+		var bodyHeight = $('body>div').prop('offsetHeight');
 		var minHeight = 200;
-		var newHeight = Math.max($(ta).prop('offsetHeight')+(innerDims.height-bodyDims.height)-10,minHeight);
+		var newHeight = Math.max($(ta).prop('offsetHeight')+(innerHeight-bodyHeight)-10,minHeight);
 		ta.css('height',newHeight);
 		try {
 			zmiRichtextResize(id);

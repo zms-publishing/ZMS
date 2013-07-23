@@ -175,7 +175,7 @@ $(function() {
 	<legend>
 		<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
 			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
-			<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</tal:block> 
+			<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block> 
 			<tal:block tal:content="python:metaObj['name']">Name</tal:block>
 		</a>
 	</legend>
@@ -475,7 +475,7 @@ $(function() {
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj['enabled']==True])">
 						<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
 						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][metaObj['enabled']==True])" onclick="zmiEnableBtnClick(this)"></i>
-						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank" tal:content="structure python:here.display_icon(request,metaObj['id'])">the icon</a>
+						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank" tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" tal:content="metaObj/name">the name</a>
 						<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)

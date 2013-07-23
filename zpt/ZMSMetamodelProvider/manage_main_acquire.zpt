@@ -37,7 +37,7 @@
 					<input type="checkbox" name="aq_ids:list" tal:attributes="value masterMetaObj/id; title masterMetaObj/id" checked="checked">
 					<i tal:condition="python:masterMetaObj['id'] not in metaObjIds" class="icon-plus"></i>
 					<i tal:condition="python:masterMetaObj['type']=='ZMSPackage'" class="icon-briefcase"></i>
-					<tal:block tal:condition="python:masterMetaObj['type']!='ZMSPackage'" tal:content="structure python:master.display_icon(request,masterMetaObj['id'])">the icon</tal:block>
+					<tal:block tal:condition="python:masterMetaObj['type']!='ZMSPackage'" tal:content="structure python:master.display_icon(request,masterMetaObj['id'],zpt=True)">the icon</tal:block>
 					<tal:block tal:content="masterMetaObj/name">the name</tal:block>
 					<tal:block tal:condition="python:masterMetaObj['id'] in metaObjIds">
 						<tal:block tal:content="metaObj/revision">the revision</tal:block> &rarr;

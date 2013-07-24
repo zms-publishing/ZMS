@@ -38,6 +38,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Make dialogs simpler.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
+
   // Linkbutton
   // Mediabutton
   // @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
@@ -55,5 +56,5 @@ CKEDITOR.editorConfig = function( config ) {
      ['Find','linkbutton','Link','Unlink'],
      ['Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
-  ];      
+  ];
 };

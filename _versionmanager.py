@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import copy
 import operator
@@ -114,7 +115,8 @@ class VersionItem:
 
     # Management Interface.
     # ---------------------
-    version_object_state = _confmanager.ConfDict.template('versionmanager/version_object_state')
+    version_object_state = HTMLFile('dtml/versionmanager/version_object_state',globals())
+    zmi_version_object_state = PageTemplateFile('zpt/versionmanager/zmi_version_object_state',globals())
 
 
     # --------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+<tal:block tal:replace="nothing">
+#####  Object State  ###########################################################
+</tal:block
+><span class="version_object_state" tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</span
+
+><tal:block tal:condition="python:here.attr('change_uid') is not None"
+	><tal:block tal:content="structure python:here.string_maxlen(here.attr('change_uid'),20)">the change-uid</tal:block
+></tal:block>
+<tal:block tal:condition="python:here.attr('change_dt') is not None"
+	><tal:block tal:content="structure python:here.getLangFmtDate(here.attr('change_dt'),request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">the change-dt</tal:block
+></tal:block
+
+><tal:block tal:replace="nothing">
+##### Custom ###################################################################
+</tal:block
+><tal:block tal:content="structure python:here.attr('manage_main_change')"></tal:block
+><tal:block tal:content="structure python:here.my_manage_main_change(here,request)" tal:on-error="nothing"></tal:block>

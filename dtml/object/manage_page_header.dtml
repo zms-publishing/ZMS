@@ -33,6 +33,7 @@
 ### JavaScript
 ################################################################################
 </dtml-comment>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/<dtml-var manage_lang>.js"></script>
 <dtml-in "getConfProperty('jquery.libs').split(',')"><dtml-let key=sequence-item sv="getConfProperty(key)"><script type="text/javascript" charset="UTF-8" src="<dtml-var sv>"></script>
 </dtml-let></dtml-in>
 <dtml-if "getConfProperty('manage_page_script.js')"><script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('manage_page_script.js')">"></script></dtml-if>

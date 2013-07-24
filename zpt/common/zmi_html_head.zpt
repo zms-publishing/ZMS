@@ -1,7 +1,6 @@
 <!-- common/zmi_html_head -->
 
-<tal:block tal:define="dummy python:here.manage_page_request(here,request)"></tal:block>
-<head>
+<head tal:define="dummy python:here.manage_page_request(here,request)">
 	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
@@ -14,8 +13,9 @@
 			here.getConfProperty('etc.manage_page_style.css','').split(',')">
 		<link tal:condition="href" rel="stylesheet" type="text/css" tal:attributes="href href" />
 	</tal:block>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
 	<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
-		<script 
+		<script type="text/javascript" charset="UTF-8"
 			tal:condition="python:here.getConfProperty(key)!=None"
 			tal:attributes="src python:here.getConfProperty(key)"></script>
 	</tal:block>

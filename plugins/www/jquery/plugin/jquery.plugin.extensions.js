@@ -45,6 +45,12 @@ $(function(){
 			}
 		}
 	}
+	if (typeof zmiParams['zmi-debug'] != "undefined") {
+		zmiToggleDebug(true);
+	}
+
+	zmiWriteDebug("BO jquery.plugin.extensions");
+
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 		$('.contentEditable,.zmiRenderShort')
@@ -131,8 +137,35 @@ $(function(){
 			});
 		$.plugin('zmi_highlight').get('body',function(){});
 	}
+
+	zmiWriteDebug("EO jquery.plugin.extensions");
+
 });
 
+
+/**
+ * Debug
+ */
+function zmiToggleDebug(b) {
+	var $div = $("div#zmi-debug");
+	if ($div.length==0) {
+		$("body").append('<div id="zmi-debug"></div>');
+		$div = $("div#zmi-debug");
+	}
+	if (b) {
+		$div.css("display","block");
+	}
+	else {
+		$div.css("display","none");
+	}
+}
+function zmiWriteDebug(s) {
+	var $div = $("div#zmi-debug");
+	if ($div.css("display")!="none") {
+		var d = new Date();
+		$div.html("<code>["+(d)+'...'+(d.getMilliseconds())+"] "+s+'</code><br/>'+$div.html());
+	}
+}
 
 /**
  * jQuery UI

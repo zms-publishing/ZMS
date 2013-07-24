@@ -162,6 +162,49 @@ def initialize(context):
             fileobj.write(fc)
           fileobj.close()
         
+        # automated generation of language JavaScript
+        from xml.dom import minidom
+        filename = os.sep.join([package_home(globals())]+['import','_language.xml'])
+        print "automated generation of language JavaScript:",filename
+        xmldoc = minidom.parse(filename)
+        langs = None
+        d = {}
+        for row in xmldoc.getElementsByTagName('Row'):
+          cells = row.getElementsByTagName('Cell')
+          if langs is None:
+            langs = []
+            for cell in cells:
+              data = getData(cell)
+              if data is not None:
+                langs.append(data)
+          else:
+            l = []
+            for cell in cells:
+              data = getData(cell)
+              if cell.attributes.get('ss:Index') is not None:
+                while len(l) < int(cell.attributes['ss:Index'].value) - 1:
+                  l.append(None)
+              l.append(data)
+            if len(l) > 1:
+              k = l[0]
+              d[k] = {}
+              for i in range(len(l)-1):
+                d[k][langs[i]] = l[i+1]
+        for lang in langs:
+          filename = os.sep.join([package_home(globals())]+['plugins','www','i18n','%s.js'%lang])
+          print "generate:",filename
+          fileobj = open(filename,'w')
+          fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)
+          for k in d.keys():
+            v = d[k].get(lang)
+            if v is not None:
+              v = v.replace('\'','\\\'').replace('\n','\\n')
+              fileobj.write(',\'%s\':\''%k)
+              fileobj.write(unicode(v).encode('utf-8'))
+              fileobj.write('\'')
+          fileobj.write('};')
+          fileobj.close()
+        
         # automated combination of external JavaScript
         for category in ['jquery','bootstrap']:
           gen = confdict.get('%s.libs.gen'%category,'').split(',')
@@ -219,6 +262,21 @@ def initialize(context):
         type, val, tb = sys.exc_info()
         sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
         del type, val, tb
+
+def getData(cell):
+    rc = None
+    datas = cell.getElementsByTagName('Data')
+    if len(datas) > 0:
+        data = datas[0]
+        rc = getText(data.childNodes)
+    return rc
+
+def getText(nodelist):
+    rc = []
+    for node in nodelist:
+        if node.nodeType == node.TEXT_NODE:
+            rc.append(node.data)
+    return ''.join(rc)
 
 def translate_path(s):
   """

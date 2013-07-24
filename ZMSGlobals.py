@@ -1567,6 +1567,13 @@ class ZMSGlobals:
           lang = self.get_manage_lang()
         # Convert to struct_time
         t = _globals.getDateTime(t)
+        # Return ModificationTime
+        if fmt_str == 'BOBOBASE_MODIFICATION_FMT':
+          sdtf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
+          if self.daysBetween(t,DateTime()) > self.getConfProperty('ZMS.shortDateFormat.daysBetween',5):
+            sdf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATE_FMT')
+            return '<span title="%s">%s</span>'%(sdtf,sdf)
+          return sdtf
         # Return DateTime
         if fmt_str == 'DateTime':
           dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))

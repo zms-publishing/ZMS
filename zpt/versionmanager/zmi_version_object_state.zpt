@@ -1,19 +1,18 @@
-<tal:comment tal:replace="nothing">
+<tal:block tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Links
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment>
+</tal:block>
 <tal:block tal:define="global refByObjs python:here.getRefByObjs()"
 	><a class="zmi-state" 
 		tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])"
 		><i class="icon-link" tal:attributes="title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'))"></i></a>
-</tal:block>
-
-<tal:comment tal:replace="nothing">
+</tal:block
+><tal:block tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Language
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment>
+</tal:block>
 <tal:block tal:condition="python:len(here.getLangIds())>1"
 	><tal:block tal:condition="python:here.attr('change_uid')" tal:define="global
 			coverage python:here.getDCCoverage(request);
@@ -39,11 +38,11 @@
 		><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span
 	></tal:block
 ></tal:block
-><tal:comment tal:replace="nothing">
+><tal:block tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Workflow
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment
+</tal:block
 ><tal:block tal:condition="python:not here.getAutocommit() and not request.get('ZMS_VERSION')"
 	><tal:block tal:define="global wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)"
 		><img src="/misc_/zms/spacer.gif" alt="" style="border:0;" />
@@ -60,20 +59,20 @@
 		><span class="zmi-state" tal:condition="python:'STATE_DELETED' in objStates"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('STATE_DELETED')"></i></span
 	></tal:block
 ></tal:block
-><tal:comment tal:replace="nothing">
+><tal:block tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Version Info
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment
+</tal:block
 ><tal:block tal:condition="python:here.getHistory()"
 	><tal:block tal:content="python:'v.%i.%i.%i'%(here.attr('master_version'),here.attr('major_version'),here.attr('minor_version'))">v.#.#.#</tal:block
 	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_live_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_LIVE')"></tal:block
 	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_work_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_PREVIEW')"></tal:block
 ></tal:block
-><tal:comment tal:replace="nothing">
+><tal:block tal:replace="nothing">
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 +- Custom
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-</tal:comment
+</tal:block
 ><tal:block tal:content="structure python:here.attr('version_object_state')">attr(version_object_state)</tal:block
 ><tal:block tal:on-error="python:''" tal:content="structure python:here.my_version_object_state(here,request)">my_version_object_state</tal:block>

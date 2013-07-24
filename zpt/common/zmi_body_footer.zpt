@@ -6,7 +6,7 @@
 		<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
 	</div><!-- .pull-left -->
 	<div class="pull-right">
-		<a href="#top" tal:content="python:here.getZMILangStr('PAGETOP')">pagetop</a>
+		<a href="#top" tal:attributes="title python:'%.2fsecs.'%(int((DateTime().timeTime()-request['ZMI_TIME'])*100.0)/100.0)" tal:content="python:here.getZMILangStr('PAGETOP')">pagetop</a>
 	</div><!-- .pull-right -->
 	<div class="clearfix"></div><!-- .clearfix -->
 </div><!-- #zmi-footer -->

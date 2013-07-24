@@ -115,7 +115,7 @@ function zmiRichtextEditorMaximize(ta) {
 		if ($("div#zmiStandardEditor"+id).css("display")=="none") {
 			ta = $("div#zmiRichtextEditor"+id);
 		}
-		var innerHeight = $(document).height();
+		var innerHeight = $(window).height();
 		var bodyHeight = $('body>div').prop('offsetHeight');
 		var minHeight = 200;
 		var newHeight = Math.max($(ta).prop('offsetHeight')+(innerHeight-bodyHeight)-10,minHeight);

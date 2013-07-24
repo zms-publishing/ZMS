@@ -3,11 +3,7 @@
  */
 function getZMILang() {
 	if (typeof zmiParams['lang'] == 'undefined') {
-		zmiParams['lang'] = $.ajax({
-			url: 'getPrimaryLanguage',
-			datatype:'text',
-			async: false
-			}).responseText;
+		zmiParams['lang'] = zmiLangDict['lang'];
 	}
 	return zmiParams['lang'];
 }
@@ -15,19 +11,13 @@ function getZMILang() {
 /**
  * Returns language-string.
  */
-var zmiLangStr = {}
 function getZMILangStr(key, data) {
 	if (typeof data == "undefined") {
 		data = {};
 	}
-	data['key'] = key;
+	data['key'] = key; // @TODO
 	if (typeof zmiLangStr[key] == 'undefined') {
-		zmiLangStr[key] = $.ajax({
-			url: 'getZMILangStr',
-			data: data,
-			datatype: 'text',
-			async: false
-			}).responseText;
+		zmiLangStr[key] = key
 	}
 	return zmiLangStr[key];
 }
@@ -165,32 +155,6 @@ function toggleCookie( key) {
 		catch(e) {
 		}
 	});
-}
-
-/**
- * Fire event.
- *
- * @see http://www.rakshith.net/blog/?p=35
- */
-function fireEvent( el, evtName) {
-  //On IE
-  if( el.fireEvent)
-  {
-    el.fireEvent('on'+evtName);
-  }
-  //On Gecko based browsers
-  if(document.createEvent)
-  {
-    var evt = document.createEvent('HTMLEvents');
-    if(evt.initEvent)
-    {
-      evt.initEvent(evtName, true, true);
-    }
-    if ( el.dispatchEvent)
-    {
-      el.dispatchEvent(evt);
-    }
-  }
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

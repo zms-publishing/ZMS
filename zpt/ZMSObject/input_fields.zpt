@@ -22,7 +22,7 @@
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<tal:block tal:content="structure python:here.version_object_state(here,request)">version_object_state</tal:block>
+				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
@@ -132,7 +132,7 @@
 											<span class="zmi-ids">
 												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
 											</span>
-											<div class="zmi-manage-main-change" tal:content="structure python:childNode.manage_main_change(childNode,request)">
+											<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
 												the info child-node
 											</div>
 										</div><!-- .right -->

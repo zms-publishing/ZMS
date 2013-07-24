@@ -4,6 +4,8 @@ function onFormSubmit() {
 
 $(function(){
 
+	zmiWriteDebug("BO bootstrap.plugin.zmi");
+
 	// Sitemap
 	var $icon_sitemap = $('#zmi-header a i.icon-sitemap');
 	if ($icon_sitemap.length > 0) {
@@ -224,6 +226,9 @@ $(function(){
 			$("li#undo_btn_"+elName+" a",this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
 			zmiSwitchBlobButtons(elName);
 		});
+
+	zmiWriteDebug("EO bootstrap.plugin.zmi");
+
 });
 
 /**
@@ -401,16 +406,6 @@ function selectCheckboxes(fm, v) {
 	$(':checkbox:not([name~=active])',fm).prop('checked',v).change();
 }
 
-/**
- * @see jquery.plugin.zmi.js
- */
-function zmiWriteDebug(s) {
-	var $div = $("div#zmi-debug");
-	if ($div.css("display")!="none") {
-		$div.html("["+(new Date())+"] "+s+'<br/>'+$div.html());
-	}
-}
-
 
 // #############################################################################
 // ### ZMI Pathcropping
@@ -569,7 +564,7 @@ function getZMIActionContextId(el) {
 }
 
 /**
- * Populate action-list.
+ * Populate and show action-list.
  *
  * @param el
  */
@@ -706,7 +701,7 @@ function zmiActionOver(el, evt) {
 }
 
 /**
- * Populate action-list.
+ * Hide action-list.
  *
  * @param el
  */
@@ -714,7 +709,9 @@ function zmiActionOut(el, evt) {
 	$("button.split-left",el).css({visibility:"hidden"});
 }
 
-
+/**
+ *  Execute action.
+ */
 function zmiActionExecute(sender, label, target) {
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
@@ -765,6 +762,91 @@ function zmiActionExecute(sender, label, target) {
 			zmiActionButtonsRefresh(sender);
 		}
 	}
+}
+
+/**
+ * Get descendant languages.
+ */
+function zmiGetDescendantLanguages() {
+	var base = self.location.href;
+	base = base.substr(0,base.lastIndexOf('/'));
+	var langs = eval('('+$.ajax({
+		url: base+'/getDescendantLanguages',
+		data:{id:getZMILang()},
+		datatype:'text',
+		async: false
+		}).responseText+')');
+	if (langs.length > 1) {
+		var labels = '';
+		for ( var i = 0; i < langs.length; i++) {
+			if (labels.length>0) {
+				labels += ', ';
+			}
+			labels += $.ajax({
+				url: 'getLanguageLabel',
+				data:{id:langs[i]},
+				datatype:'text',
+				async: false
+				}).responseText;
+		}
+		return ' '+getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS').replace("%s",langs);
+	}
+	return '';
+}
+
+/**
+ * Confirm execution of action from select.
+ *
+ * @param fm
+ * @param target
+ * @param label
+ */
+function zmiConfirmAction(fm, target, label) {
+	var b = true;
+	var i = $("input[name='ids:list']:checkbox").length;
+	if (target.indexOf("../") == 0) {
+		i = 1;
+	}
+	if (target.indexOf("manage_rollbackObjChanges") >= 0) {
+		b = confirm(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'));
+	}
+	else if (target.indexOf("manage_cutObjects") >= 0) {
+		var msg = getZMILangStr('MSG_CONFIRM_CUTOBJS');
+		msg = msg.replace("%i",""+i);
+		msg += zmiGetDescendantLanguages();
+		b = i > 0 && confirm(msg);
+	}
+	else if (target.indexOf("manage_eraseObjs") >= 0) {
+		var msg = getZMILangStr('MSG_CONFIRM_DELOBJS');
+		msg = msg.replace("%i",""+i);
+		b = i > 0 && confirm(msg);
+	}
+	else if (target.indexOf("manage_deleteObjs") >= 0) {
+		var msg = getZMILangStr('MSG_CONFIRM_TRASHOBJS');
+		msg = msg.replace("%i",""+i);
+		msg += zmiGetDescendantLanguages();
+		b = i > 0 && confirm(msg);
+	}
+	else if (target.indexOf("manage_undoObjs") >= 0) {
+		var msg = getZMILangStr('MSG_CONFIRM_DISCARD_CHANGES');
+		msg = msg.replace("%i",""+i);
+		b = i > 0 && confirm(msg);
+	}
+	else if (target.indexOf("manage_executeMetacmd") >=0 ) {
+		var description = $.ajax({
+			url: 'getMetaCmdDescription',
+			data:{name:label},
+			datatype:'text',
+			async: false
+			}).responseText;
+		if (typeof description != 'undefined' && description.length > 0) {
+			b = confirm(description);
+		}
+	}
+	else if (target == "") {
+		b = false;
+	}
+	return b;
 }
 
 /**
@@ -954,5 +1036,5 @@ function zmiDisableInteractions(b) {
 		+ '</div>');
 	var $doc = $(document);
 	var $div = $("#zmi-progressbox");
-	$div.css({top:($(document).height()-$div.prop('offsetHeight'))/2,left:($doc.width()-$div.prop('offsetWidth'))/2});
+	$div.css({top:($(window).height()-$div.prop('offsetHeight'))/2,left:($doc.width()-$div.prop('offsetWidth'))/2});
 }

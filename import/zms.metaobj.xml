@@ -1586,7 +1586,11 @@ return context.str_json(result)
 	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='url%s'%id,elTextName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
 	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
 	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='description%s'%id,cols=20,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
-	<td width="100" class="zmiNeutralColorMedium0" tal:content="structure python:childNode.manage_main_change(childNode,request)">manage_main_change</td>
+	<td width="100" class="zmiNeutralColorMedium0">
+		<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
+			the info child-node
+		</div>
+	</td>
 </tr>
 </tal:block>
 

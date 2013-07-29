@@ -20,7 +20,6 @@
 				<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
 					<option tal:attributes="value python:SQLConnectionID[0]; selected python:['','selected'][int(here.connection_id==SQLConnectionID[0])]">
 						<tal:block tal:content="python:SQLConnectionID[0]">SQLConnectionID</tal:block>
-						(<tal:block tal:content="python:getattr(here,SQLConnectionID[0]).meta_type">meta_type</tal:block>)
 					</option>
 				</tal:block>
 			</select>

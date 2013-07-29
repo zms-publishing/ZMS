@@ -567,9 +567,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 tr.row_insert td {
 	background-color:#EDF5FE !important;
 }
-tr.row_insert td.meta-sort {
-	color:#999;
+tr.row_insert td:first-child {
 	text-align: right;
+	color:#999;
+}
+tr.row_insert td.meta-sort {
 	padding: 0.9em 1.8em !important;
 }
 .zmi.metas td.meta-mandatory,
@@ -730,19 +732,34 @@ body.metas table.table.zmi-sortable input {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-.ZMSRecordSet .pagination,
-.ZMSSqlDb .pagination {
+.pagination {
 	white-space:nowrap;
 }
+.pagination ul > .active > a {
+	font-weight:bold;
+}
+
 .ZMSRecordSet .table tr td:first-child,
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;
 }
+.ZMSRecordSet .table input,
+.ZMSRecordSet .table select,
+.ZMSRecordSet .table textarea,
+.ZMSSqlDb .table input,
+.ZMSSqlDb .table select,
+.ZMSSqlDb .table textarea {
+	font-size:11px;
+	padding:0 2px 0 2px;
+	margin:0;
+	height:20px;
+}
+
 .ZMSRecordSet .table tr th,
 .ZMSRecordSet .table tr td,
 .ZMSSqlDb .table tr th,
 .ZMSSqlDb .table tr td {
-	padding:6px;
+	padding:4px;
 	font-size:11px;
 }
 .ZMSRecordSet .table tr th:first-child .checkbox,

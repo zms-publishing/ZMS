@@ -39,14 +39,12 @@
 			cntSlctStmnt python:here.re_sub('SELECT (.*?) FROM','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
 			row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
 
-<tal:block tal:condition="python:row_count<=row_max">
 	<tal:block tal:define="global
 			query python:here.query(resSlctStmnt,encoding=encoding);
 			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],query['columns']));
 			dummy0 python:metaObjAttrs.extend(query['columns']);
 			dummy0 python:res.extend(query['records'])">
 	</tal:block>
-</tal:block>
 
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
 	<tal:block tal:define="global 

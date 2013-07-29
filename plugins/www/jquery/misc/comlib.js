@@ -2,24 +2,12 @@
  * Returns language.
  */
 function getZMILang() {
-	try {
-		if (typeof zmiParams['lang'] == 'undefined') {
-			zmiParams['lang'] = zmiLangDict['lang'];
-		}
-		return zmiParams['lang'];
+	if (typeof zmiParams['lang'] == 'undefined') {
+		zmiParams['lang'] = zmiLangStr['lang'];
 	}
-	catch(err) {
-		var browserlang = window.navigator.userLanguage || window.navigator.language;
-		var langmap = {'de':'ger','en':'eng'}
-		if (typeof langmap[browserlang] == 'undefined') {
-			// console.log('ERROR: No Browser Language Mapping')
-			return 'ger'
-		} else {
-			// console.log('ERROR: Set Browser Language as Default')
-			return langmap[browserlang]
-		}
-	}
+	return zmiParams['lang'];
 }
+
 /**
  * Returns language-string.
  */

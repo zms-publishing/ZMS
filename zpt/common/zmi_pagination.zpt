@@ -2,6 +2,7 @@
 		size options/size;
 		pageSize options/pageSize;
 		pageIndex options/pageIndex;
+		pageCount python:int(((size-1)/pageSize)+1);
 		url python:here.url_inherit_params(options.get('url',request['URL']),request,exclude=['pageIndex'],sep='&')">
 
 <div class="pagination pagination-centered" tal:condition="python:size>pageSize">
@@ -9,9 +10,17 @@
 		<li tal:attributes="class python:['','disabled'][int(pageIndex==0)]">
 			<a tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':pageIndex-1},sep='&')">&laquo;</a>
 		</li>
-		<li tal:repeat="page python:range(((size-1)/pageSize)+1)" tal:attributes="class python:['','active'][int(pageIndex==page)]">
+		<tal:block tal:repeat="page python:range(pageCount)">
+		<li class="disabled" tal:condition="python:pageCount>=10 and page==pageCount-1 and pageIndex<pageCount-(3+1)-1">
+			<span>...</span>
+		</li>
+		<li tal:attributes="class python:['','active'][int(pageIndex==page)]" tal:condition="python:pageCount<10 or (page==0) or (page>=pageIndex-3 and page<=pageIndex+3) or (page==pageCount-1)">
 			<a tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':page},sep='&')" tal:content="python:page+1">page</a>
 		</li>
+		<li class="disabled" tal:condition="python:pageCount>=10 and page==0 and pageIndex>(3+1)">
+			<span>...</span>
+		</li>
+		</tal:block>
 		<li tal:attributes="class python:['','disabled'][int(pageIndex==(size-1)/pageSize)]">
 			<a tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':pageIndex+1},sep='&')">&raquo;</a>
 		</li>

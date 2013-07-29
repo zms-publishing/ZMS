@@ -44,7 +44,7 @@ import _xmllib
 ###
 ################################################################################
 ################################################################################
-manage_addZMSSqlDbForm = HTMLFile('manage_addzmssqldbform', globals()) 
+manage_addZMSSqlDbForm = _confmanager.ConfDict.addtemplate('manage_addzmssqldbform') 
 def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSSqlDb """
   
@@ -80,7 +80,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
 ################################################################################
 
 class ZMSSqlDb(ZMSObject):
-
+                                                           
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
     # assertions.
@@ -132,7 +132,7 @@ class ZMSSqlDb(ZMSObject):
     manage_importexport = _confmanager.ConfDict.template('ZMSSqlDb/manage_importexport')
     manage_properties = _confmanager.ConfDict.template('ZMSSqlDb/manage_properties')
     manage_sql = _confmanager.ConfDict.template('ZMSSqlDb/manage_sql')
-    manage_configuration = HTMLFile('dtml/ZMSSqlDb/manage_configuration', globals())
+    manage_configuration = _confmanager.ConfDict.template('ZMSSqlDb/manage_configuration')
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
 
@@ -831,7 +831,8 @@ class ZMSSqlDb(ZMSObject):
               if col.get('type','') in ['date','datetime','time']:
                 qorderdir = 'desc'
               break
-        sqlStatement.append('ORDER BY ' + qorder + ' ' + qorderdir + ' ')
+        if qorder:
+          sqlStatement.append('ORDER BY ' + qorder + ' ' + qorderdir + ' ')
       REQUEST.set('sqlStatement',sqlStatement)
       REQUEST.set('qorder',qorder)
       REQUEST.set('qorderdir',qorderdir)
@@ -1456,6 +1457,17 @@ class ZMSSqlDb(ZMSObject):
           cols.append( ( col['index'], col))
         cols.sort()
         cols = map( lambda x: x[1], cols)
+        # Insert
+        attr_id = REQUEST.get('attr_id','').strip()
+        attr_label = REQUEST.get('attr_label','').strip()
+        attr_type = REQUEST.get('attr_type','').strip()
+        if attr_id and attr_label and attr_type:
+          newValue = {}
+          newValue['id'] = attr_id
+          newValue['label'] = attr_label
+          newValue['hide'] = int(not REQUEST.get('attr_display',0)==1)
+          newValue[attr_type] = {}
+          cols.append(newValue)
         entity['columns'] = cols
         f = self.toXmlString( model)
         self.setModel(f)

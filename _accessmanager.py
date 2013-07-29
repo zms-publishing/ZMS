@@ -428,6 +428,16 @@ class AccessableContainer(AccessableObject):
 class AccessManager(AccessableContainer): 
 
     # --------------------------------------------------------------------------
+    #  AccessManager.getRoleName
+    # --------------------------------------------------------------------------
+    def getRoleName(self, role):
+      langKey = 'ROLE_%s'%role.upper()
+      langStr = self.getZMILangStr(langKey)
+      if langKey == langStr:
+        return role
+      return langStr
+
+    # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
     def getValidUserids(self, search_term='', without_node_check=True):

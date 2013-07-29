@@ -11,7 +11,10 @@
 	<input type="hidden" id="qindex" name="qentity" tal:attributes="value entity/id">
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
-	<legend tal:content="entity/label">the label</legend>
+	<legend>
+		<i class="icon-table" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE')"></i>
+		<span tal:attributes="title entity/id" tal:content="entity/label">the label</span>
+	</legend>
 	<div class="accordion-group">
 		<div class="accordion-heading">
 			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>

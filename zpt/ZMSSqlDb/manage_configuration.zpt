@@ -6,7 +6,153 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
+<style>
+.horizontal-group .control-group {
+	float:left;
+	margin-right:0.5em;
+}
+.horizontal-group .mandatory span {
+	background: none !important;
+	padding-left: 0 !important;
+}
+.horizontal-group .controls {
+	margin-left: 0px;
+}
+.horizontal-group .control-group label {
+	float:none;
+	width:auto;
+	text-align:left;
+}
+.horizontal-group .controls.save {
+	margin-top:2.1em;
+}
+select.zmi-sort {
+	font-size:14px;
+}
+.form-horizontal .control-group {
+	margin-bottom:0px;
+}
+.form-horizontal .control-group .control-label {
+	padding-top: 0px;
+	text-align: left;
+}
+.form-horizontal .control-group .control-label.mandatory span {
+	padding: 0px 3px;
+	border: 1px solid silver;
+	background:none !important;
+}
+.column-description,
+.column-datatype {
+	color:#999;
+}
+
+</style>
+
 <script>
+
+/**
+ * Submit form with given parameters.
+ */
+function zmiFormSubmit(sender,d) {
+	var $fm = $(sender).closest("form");
+	var html = '';
+	for (var i in d) {
+		$('input[name="' + i + '"]',$fm).remove();
+		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	}
+	$fm
+		.append(html)
+		.submit();
+}
+
+function onAttrTypeChange( el) {
+	var column_id = $(el).attr('name').substr( "attr_type_".length);
+	var column_type = $(el).val();
+	$("tr[id^=tr_][id$=_"+column_id+"]").addClass('ui-helper-hidden');
+	$("tr[id=tr_"+column_type+"_"+column_id+"]").removeClass('ui-helper-hidden');
+}
+
+$(function() {
+		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+				$(this).parents('.inner').dialog('close');
+				return false;
+			});
+		var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
+		$('#updateEntity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',maxHeight:maxHeight});
+	});
+
+// #############################################################################
+// ### MULTIMULTISELECT
+// #############################################################################
+var mms_uid = 0;
+
+function mms_add_row(el) {
+	var el_tbody = $($(el).parents("tbody")[0]);
+	var sender_tr = $($(el).parents("tr")[0]);
+	var el_trs = el_tbody.children();
+	var el_tr = $(el_trs[el_trs.length-2]);
+	var new_tr = el_tr.clone();
+	var el_inputs = $("textarea,input,select",new_tr);
+	var sender_inputs = $("textarea,input,select",sender_tr);
+	for ( var k = 0; k < el_inputs.length; k++) {
+		var key = $(el_inputs[k]).attr( "name");
+		var new_key = key.substring( 0, key.lastIndexOf('_')) + (mms_uid+el_trs.length) + key.substring( key.lastIndexOf('_'));
+		$(el_inputs[k]).attr( "id", new_key);
+		$(el_inputs[k]).attr( "name", new_key);
+		if ( $(el_inputs[k]).attr( "type") == "checkbox") {
+			$(el_inputs[k]).attr( "checked", $(sender_inputs[k]).attr( "checked"));
+			$(sender_inputs[k]).attr( "checked", "checked");
+		}
+		else {
+			$(el_inputs[k]).val( $(sender_inputs[k]).val( ));
+			$(sender_inputs[k]).val( "");
+		}
+	}
+	mms_uid += 1;
+	new_tr.insertBefore( el_tr);
+	new_tr.css('display','');
+	mms_normalize_rows(el_tbody);
+}
+
+function mms_delete_row(el) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		var el_tbody = $($(el).parents("tbody")[0]);
+		var el_tr = $($(el).parents("tr")[0]);
+		el_tr.remove();
+		mms_normalize_rows(el_tbody);
+	}
+}
+
+function mms_move_row(el) {
+	var el_tbody = $($(el).parents("tbody")[0]);
+	var sender_tr = $($(el).parents("tr")[0]);
+	var el_trs = el_tbody.children();
+	var si = el.selectedIndex+1;
+	if ( si > 1) {
+		si += 1;
+	}
+	var el_tr = $(el_trs[si]);
+	if ( sender_tr != el_tr) {
+		sender_tr.insertBefore( el_tr);
+	}
+	mms_normalize_rows(el_tbody);
+}
+
+function mms_normalize_rows(el_tbody) {
+	var el_selects = $("select.collectionBtn",el_tbody);
+	for ( var k = 0; k < el_selects.length; k++) {
+		for ( var l = 0; l < el_selects[k].length-1; l++) {
+			el_selects[k].options[l] = null;
+		}
+		for ( var l = 0; l < el_selects.length-1; l++) {
+			el_selects[k].options[l] = new Option( l+1, l+1);
+		}
+		if ( k < el_selects.length-1) {
+			el_selects[k].selectedIndex = k;
+		}
+	}
+}
+
 </script>
 
 <tal:block tal:define="global
@@ -14,32 +160,45 @@
 			tables entities">
 <tal:block tal:condition="tables">
 
-<form class="form-horizontal" method="get" action="manage_changeConfiguration">
-	<input type="hidden" name="key" value="">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<input type="hidden" name="preview" tal:attributes="value request/preview">
-
 <tal:block tal:repeat="table python:filter(lambda x:request.get('id')==x['id'],tables)">
-	<legend>
-		<i class="icon-table" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE')"></i>
-		<tal:block tal:content="table/id">table-id</tal:block>
-	</legend>
-	<div class="control-group">
-		<label class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-		<div class="controls">
-			<input type="text" name="display" tal:attributes="value python:table.get('display','')">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
-		<div class="controls">
-			<select name="type">
-				<tal:block tal:repeat="type python:['','table','intersection','hidden']">
-					<option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">type</option>
-				</tal:block>
-			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+<div class="ui-helper-hidden">
+	<div id="updateEntity" class="inner">
+		<form class="form-horizontal" action="manage_changeConfiguration" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<div class="horizontal-group">
+				<div class="control-group">
+					<label class="control-label"><span>
+						<input type="hidden" name="id" tal:attributes="value request/id"/>
+						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id'])">
+							<i class="icon-table" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE')"></i>
+							<tal:block tal:content="table/id">table-id</tal:block>
+						</a>
+					</span></label>
+				</div><!-- .control-group -->
+				<div class="control-group">
+					<label for="label" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+					<div class="controls">
+						<input type="text" name="label" tal:attributes="value python:table.get('label','')">
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group">
+					<label class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
+					<div class="controls">
+						<select name="type">
+							<tal:block tal:repeat="type python:['','table','intersection','hidden']">
+								<option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">the type</option>
+							</tal:block>
+						</select>
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+				<div class="control-group">
+					<div class="controls save">
+						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+						<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					</div><!-- .controls -->
+				</div><!-- .control-group -->
+			</div><!-- .horizontal-group -->
+			<div style="clear:both;">&nbsp;</div>
 	<div class="control-group">
 		<label class="control-label"><span>Interface</span></label>
 		<div class="controls">
@@ -52,38 +211,263 @@
 			<div class="single-line"><textarea name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
-	<table class="table table-striped table-bordered zmi-sortable">
-	<colgroup>
-	</colgroup>
-	<thead>
-		<th>&nbsp;</th>
-		<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
-		<th tal:content="python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</th>
-		<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
-		<th><i class="icon-columns"></i></th>
-	</thead>
-	<tbody>
+	<div class="control-group">
+		<label class="control-label"><span tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</span></label>
+		<div class="controls">
+			<table class="table table-striped table-bordered meta-access" tal:define="global access python:table.get('access',{})">
+			<tr>
+				<td style="width:6.8em"><strong tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">Access</strong></td>
+				<td tal:repeat="role python:filter(lambda x: x not in ['ZMSSubscriber','ZMSUserAdministrator'],here.getDocumentElement().userdefined_roles())">
+					<tal:block tal:content="python:here.getRoleName(role)">the role</tal:block>
+				</td>
+			</tr>
+			<tr tal:repeat="action python:['insert','update','delete','select']">
+				<td style="width:6.8em"><strong tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">the action</strong></td>
+				<td tal:repeat="role python:filter(lambda x: x not in ['ZMSSubscriber','ZMSUserAdministrator'],here.getDocumentElement().userdefined_roles())">
+					<input tal:attributes="name python:'access_%s:list'%action; value role; checked python:['','checked'][int(role in access.get(action,[role]))]" type="checkbox"/>
+				</td>
+			</tr>
+			</table>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+			<table class="table table-striped table-bordered zmi-sortable">
+			<thead>
+				<th>&nbsp;</th>
+				<th tal:content="python:'%s / %s'%(here.getZMILangStr('ATTR_ID'),here.getZMILangStr('ATTR_DESCRIPTION'))">Id / Description</th>
+				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
+				<th><i class="icon-columns"></i></th>
+				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
+			</thead>
+			<tbody>
 				<tr tal:repeat="column table/columns">
 					<td>
-						<img class="grippy" src="/misc_/zms/spacer.gif">
-						<select class="zmi-sort">
+						<select class="zmi-sort"  tal:attributes="name python:'attr_index_%s:int'%column['id']; onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':%s,key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
 							<option tal:repeat="i python:range(0,len(table['columns']))" tal:attributes="selected python:['','selected'][int(i==table['columns'].index(column))]" tal:content="python:i+1">i+1</option>
 						</select>
 					</td>
-					<td><tal:block tal:content="column/id">column-id</tal:block></td>
-					<td><tal:block tal:content="python:column.get('description')">column-description</tal:block></td>
-					<td><input type="text" tal:attributes="value column/label"></td>
-					<td><input type="checkbox"></td>
+					<td>
+						<input type="hidden" name="attr_ids:list" tal:attributes="value column/id"/>
+						<i class="icon-columns"></i>
+						<span class="column-id" tal:content="column/id">column-id</span>
+						<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
+						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
+					</td>
+					<td><input tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
+					<td><input tal:attributes="name python:'attr_display_%s:int'%column['id']" value="1" type="checkbox"/></td>
+					<td>
+						<select tal:attributes="name python:'attr_type_%s'%column['id']" onchange="onAttrTypeChange(this)">
+							<option value=""></option>
+							<tal:block tal:repeat="type python:here.sort_list(here.valid_types.keys())">
+								<option tal:attributes="value type; selected python:['','selected'][int(column.has_key(type))]" tal:content="type">the type</option>)
+							</tal:block>
+						</select>
+						<table>
+						<tal:block tal:replace="nothing">
+						##### Blob #########################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+							<td>Type</td>
+							<td>
+								<select tal:attributes="name python:'attr_blob_type_%s'%column['id']">
+									<tal:block tal:repeat="value python:['','file','image']">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('blob',{}).get('type','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+							<td>Path</td>
+							<td><input type="text" tal:attributes="name python:'attr_blob_path_%s'%column['id']; value python:column.get('blob',{}).get('path','')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+							<td>Remote [URL]</td>
+							<td><input type="text" tal:attributes="name python:'attr_blob_remote_%s'%column['id']; value python:column.get('blob',{}).get('remote','')"/></td>
+						</tr>
+						<tal:block tal:replace="nothing">
+						##### Details ######################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('details'))]">
+							<td>Tablename</td>
+							<td>
+								<select tal:attributes="name python:'attr_details_tablename_%s'%column['id']">
+									<option value=""></option>
+									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('details',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('details'))]">
+							<td>Foreign Key</td>
+							<td><input type="text" tal:attributes="name python:'attr_details_fk_%s'%column['id']; value python:column.get('details',{}).get('fk','')"/></td>
+						</tr>
+						<tal:block tal:replace="nothing">
+						##### Fk ###########################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Tablename</td>
+							<td>
+								<select tal:attributes="name python:'attr_fk_tablename_%s'%column['id']">
+									<option value=""></option>
+									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('fk',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Fieldname</td>
+							<td><input type="text" tal:attributes="name python:'attr_fk_fieldname_%s'%column['id']; value python:column.get('fk',{}).get('fieldname','')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Displayfield</td>
+							<td><input type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Maxlen</td>
+							<td><input type="text" tal:attributes="name python:'attr_fk_maxlen_%s'%column['id']; value python:column.get('fk',{}).get('maxlen','25')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Editable</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_editable_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('editable')==1)]" value="1"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Lazy</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy')==1)]" value="1"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>B.MySQL-Set</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset')==1)]" value="1"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>C.Options</td>
+							<td><div class="zmi-single-line-edit"><textarea tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:column.get('fk',{}).get('options','')"></textarea></div></td>
+						</tr>
+						<tal:block tal:replace="nothing">
+						##### Multiselect ###########################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+							<td>A.Tablename</td>
+							<td>
+								<select tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']">
+									<option value=""></option>
+									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('multiselect',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+							<td>A.Foreign Key</td>
+							<td><input type="text" tal:attributes="name python:'attr_multiselect_fk_%s'%column['id']; value python:column.get('multiselect',{}).get('fk','')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+							<td>A.Lazy</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy')==1)]" value="1"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+							<td>B.MySQL-Set</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset')==1)]" value="1"/></td>
+						</tr>
+						<tal:block tal:replace="nothing">
+						##### Multimultiselect ###########################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+							<td>Foreign Key</td>
+							<td><input type="text" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+							<td>Tablename</td>
+							<td>
+								<select tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']">
+									<option value=""></option>
+									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('multimultiselect',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+							<td colspan="2">Tables
+								<table>
+								<tr>
+									<th>&nbsp;</th>
+									<th>FK</th>
+									<th>Tablename</th>
+									<th>Fieldname</th>
+									<th>Displayfield</th>
+									<th>Label</th>
+									<th>Lazy</th>
+									<th align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><i class="icon-columns"></i></th>
+								</tr>
+								<tal:block tal:define="global ts python:column.get('multimultiselect',{}).get('tables',[])">
+									<tal:block tal:repeat="ti python:range(len(ts))">
+										<tr tal:define="global t python:ts[i]">
+											<td></td>
+											<td><input class="input-mini" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
+											<td><input class="input-mini" type="text" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); value python:t.get('tablename','')">" size="5"/></td>
+											<td><input class="input-mini" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')">" size="5"/></td >
+											<td><input class="input-mini" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')">" size="5"/></td>
+											<td><input class="input-mini" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')">" size="5"/></td>
+											<td align="center"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1"/></td>
+											<td align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_display_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('display')==1)]" value="1"/></td>
+										</tr>
+									</tal:block>
+								</tal:block>
+								<tr class="row_insert">
+									<td><i class="icon-plus"></i></td>
+									<td><input class="input-mini" type="text" name="mms_new_fk"/></td>
+									<td><input class="input-mini" type="text" name="mms_new_tablename"/></td>
+									<td><input class="input-mini" type="text" name="mms_new_fieldname"/></td>
+									<td><input class="input-mini" type="text" name="mms_new_displayfield"/></td>
+									<td><input class="input-mini" type="text" name="mms_new_label"/></td>
+									<td align="center"><input type="checkbox" name="mms_new_lazy:int" value="1"/></td>
+									<td align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><input type="checkbox" name="mms_new_display:int" value="1" checked="checked"/></td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tal:block tal:replace="nothing">
+						##### Pk ###########################################################
+						</tal:block>
+						<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('pk'))]">
+							<td>Auto</td>
+							<td>
+								<select tal:attributes="name python:'attr_auto_%s'%column['id']">
+									<tal:block tal:repeat="value python:['','db','insert','update']">
+										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('auto','')).upper()==value.upper())]" tal:content="value">the value</option>
+									</tal:block>
+								</select>
+							</td>
+						</tr>
+						</table>
+					</td>
 				</tr>
-	</tbody>
-	</table>
-	<div class="control-group">
-		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+				<tr class="row_insert">
+					<td><i class="icon-plus"></i></td>
+					<td><input name="attr_id" type="text"/></td>
+					<td><input name="attr_label" type="text"/></td>
+					<td><input name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
+					<td>
+						<select name="attr_type">
+							<option value=""></option>
+							<tal:block tal:repeat="type python:here.sort_list(here.valid_types.keys())">
+								<option tal:attributes="value type" tal:content="type">the type</option>)
+							</tal:block>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+		</form>
+	</div><!-- .inner -->
+</div><!-- #updateEntity -->
 </tal:block>
+
+<form class="form-horizontal" method="get" action="manage_changeConfiguration">
+	<input type="hidden" name="key" value="">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="preview" tal:attributes="value request/preview">
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
@@ -102,7 +486,6 @@
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-<tal:block tal:condition="python:not filter(lambda x:request.get('id')==x['id'],tables)">
 	<div class="btn-group">
 		<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'});return false;"><i class="icon-upload-alt"></i></span>
 	</div>
@@ -124,21 +507,20 @@
 			<div class="accordion-inner">
 				<tal:block tal:repeat="column table/columns">
 					<div class="control-group">
-						<label tal:attributes="class python:' '.join(['control-label']+[[],['mandatory']][int(column.get('mandatory'))])">
-							<span tal:content="column/label">column-label</span>
+						<label tal:attributes="class python:' '.join(['control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
+							<span><tal:block tal:content="repeat/column/number">number</tal:block>. <tal:block tal:content="column/label">column-label</tal:block></span>
 						</label>
 						<div class="controls">
 							<i class="icon-columns"></i>
-							<tal:block tal:content="column/id">column-id</tal:block>
-							<tal:block tal:content="python: column.get('description','')">column-description</tal:block>
-							(<tal:block tal:content="column/type">column-type</tal:block>)
+							<span class="column-id" tal:content="column/id">column-id</span>
+							<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
+							(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 						</div><!-- .controls -->
 					</div><!-- .control-group -->
 				</tal:block>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
-</tal:block>
 
 </form>
 

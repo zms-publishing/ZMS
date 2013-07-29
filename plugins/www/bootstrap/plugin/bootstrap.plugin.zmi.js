@@ -559,7 +559,8 @@ function zmiIframe(href, data, opt) {
 // #############################################################################
 
 function getZMIActionContextId(el) {
-	var context_id = $(el).parents("li.zmi-item").attr("id");
+	var context = $(el).hasClass("zmi-item")?$(el):$(el).parents("li.zmi-item");
+	var context_id = $(context).attr("id");
 	return typeof context_id == "undefined" || context_id == ""?"":context_id.replace(/zmi_item_/gi,"");
 }
 
@@ -728,7 +729,7 @@ function zmiActionExecute(sender, label, target) {
 				data[$input.attr('name')] = $input.val();
 			}
 		}
-		var id_prefix = $(sender).attr("id");
+		var id_prefix = getZMIActionContextId(sender);
 		if (typeof id_prefix != 'undefined' && id_prefix != '') {
 			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
 		}

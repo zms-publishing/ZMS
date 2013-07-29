@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
-  <item key="custom"><![CDATA[<dtml-return "len(getLangIds())>1">]]></item>
-  <item key="data"><![CDATA[<dtml-comment>
+  <item key="data"><![CDATA[<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:replace="nothing">
 ################################################################################
+2013-07-29 [zmsdev] zpt reimplementation 
 2011-09-19 [zmsdev] applied fix 
 2011-09-16 [zmsdev] applied fix 
 2011-07-06 [fhoffmann] SESSION based lang settings
@@ -15,9 +16,12 @@
 2011-01-17 [zmsdev] Revised table-structure: one row per object
 2010-12-02 [zmsdev] Initial revision
 ################################################################################
-</dtml-comment>
-
-<dtml-var manage_page_header>
+</tal:block>
+<tal:block tal:define="global zmscontext here" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
+<tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>
 
 <style type="text/css">
 .zmi-translate-left {
@@ -54,11 +58,12 @@ body.maximized .zmiRenderShort {
 	width:auto !important;
 }
 .ui-widget-overlay {
-  opacity: 0.2;
+	opacity: 0.2;
 }
 </style>
 
 <script>
+
 function save(sender) {
 	var $container_div = $($(sender).parents("div")[0]);
 	var $rendershort_div = $("div.zmiRenderShort div.contentEditable",$container_div);
@@ -109,80 +114,79 @@ function save(sender) {
 }
 </script>
 
-</head>
-<dtml-var manage_tabs>
-<dtml-unless fmName><dtml-call "REQUEST.set('fmName', 'form0')"></dtml-unless>
+<tal:block tal:define="global
+		lang_options python:{'left':here.getLangTree(here.getDCCoverage(request)[len('global.'):]),'right':here.getLangTree(here.getDCCoverage(request)[len('global.'):])}">
+	<tal:block tal:condition="python:request.SESSION.get('lang1','')==''">
+		<tal:block tal:define="global
+				dummy0 python:request.SESSION.set('lang1',request.get('lang1',lang_options['left'][0][0]));
+				dummy0 python:request.set('lang1',request.SESSION.get('lang1'))">
+		</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:request.get('lang1','')==''">
+		<tal:block tal:define="global dummy0 python:request.set('lang1',request.get('lang1',lang_options['left'][0][0]))"></tal:block>
+	</tal:block>
+	<tal:block tal:define="global dummy0 python:request.SESSION.set('lang1',request.SESSION.get('lang1'))"></tal:block>
+	<tal:block tal:condition="python:request.SESSION.get('lang2','')==''">
+		<tal:block tal:define="global
+				dummy0 python:request.SESSION.set('lang2',request.get('lang2',lang_options['right'][0][0]));
+				dummy0 python:request.set('lang2',request.SESSION.get('lang2'))">
+		</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:request.get('lang2','')==''">
+		<tal:block tal:define="global dummy0 python:request.set('lang2',request.SESSION.get('lang2',lang_options['right'][0][0]))"></tal:block>
+	</tal:block>
+	<tal:block tal:define="global dummy0 python:request.SESSION.set('lang2',request.get('lang2'))"></tal:block>
+	<tal:block tal:define="global 
+		dummy0 python:request.set('lang1_bk',request['lang1']);
+		dummy0 python:request.set('lang2_bk',request['lang2'])"></tal:block>
+</tal:block>
 
-<dtml-call "REQUEST.set('lang1_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):]))">
-<dtml-if "SESSION.get('lang1','')==''"
-	><dtml-call "SESSION.set('lang1',REQUEST.get('lang1',lang1_options[0][0]))"
-	><dtml-call "REQUEST.set('lang1',SESSION.get('lang1'))"  
-><dtml-elif "REQUEST.get('lang1','')==''"
-	><dtml-call "REQUEST.set('lang1',SESSION.get('lang1',lang1_options[0][0]))"
-><dtml-else
-	><dtml-call "SESSION.set('lang1',REQUEST.get('lang1'))"
-></dtml-if>
-<dtml-call "REQUEST.set('lang1_bk',lang1)"> 
-
-<dtml-call "REQUEST.set('lang2_options',getLangTree(getDCCoverage(REQUEST)[len('global.'):])[1:])">
-<dtml-if "SESSION.get('lang2','')==''"
-	><dtml-call "SESSION.set('lang2',REQUEST.get('lang2',lang2_options[0][0]))"
-	><dtml-call "REQUEST.set('lang2',SESSION.get('lang2'))"  
-><dtml-elif "REQUEST.get('lang2','')==''"
-	><dtml-call "REQUEST.set('lang2',SESSION.get('lang2',lang2_options[0][0]))"
-><dtml-else
-	><dtml-call "SESSION.set('lang2',REQUEST.get('lang2'))"
-></dtml-if>
-<dtml-call "REQUEST.set('lang2_bk',lang2)">
-
-<form id="<dtml-var fmName>" method="get">
+<form name="form0" method="get">
+<legend class="well"><a tal:attributes="href python:'%s?lang=%s'%(request['URL'],request['lang'])">Translate</a></legend>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr valign="top">
-<dtml-let childNodes="filter(lambda x: x.isPageElement(),getObjChildren('e',REQUEST))" exclude_langs="[]">
-<dtml-in "['left','right']">
-<dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
-<td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">" width="50%">
-    <select class="form-small notranslate" name="<dtml-var lang_req_key>" onchange="document.getElementById('<dtml-var fmName>').submit();">
-     <dtml-in "REQUEST.get('%s_options'%lang_req_key)" mapping>
-      <option value="<dtml-var sequence-key>" <dtml-if "_['sequence-key']==REQUEST[lang_req_key]">selected="selected"</dtml-if>><dtml-var label></option>
-     </dtml-in>
-    </select>
-    <dtml-call "REQUEST.set(lang_req_key+'_bk',REQUEST.get(lang_req_key))">
-    <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key))">
-   <div id="<dtml-var id>" class="zmi-translate-element">
-    <span class="zmi-translate-element-id notranslate"><dtml-var id></span>
-    <div class="zmiRenderShort" id="contentEditable_<dtml-var id>_<dtml-var lang>">
-     <dtml-if "meta_id not in ['ZMSDocument','ZMSFolder','ZMS']">
-      <dtml-var "getBodyContent(REQUEST)">
-     <dtml-else>
-      <h1><dtml-var "getTitle(REQUEST)"></h1>
-      <p class="description"><dtml-var "getDCDescription(REQUEST)" newline_to_br></p>
-     </dtml-if>
-    </div>
-   </div>
-</td>
-</dtml-let>
-</dtml-in>
-<dtml-in childNodes>
- <tr valign="top">
-  <dtml-in "['left','right']">
-   <dtml-let si=sequence-item lang_req_key="{'left':'lang1','right':'lang2'}[si]">
-    <td class="zmi-translate-<dtml-var si> <dtml-var "['translate','notranslate'][si=='left']">">
-    <dtml-call "REQUEST.set('lang',REQUEST.get(lang_req_key+'_bk'))">
-    <div id="<dtml-var id>" class="zmi-translate-element">
-     <span class="zmi-translate-element-id notranslate" <dtml-if "isActive(REQUEST)!=True"
-      >title="Inactive" style="background-color:#999"</dtml-if>><dtml-var id><dtml-if "si!='left'"><span title="<dtml-var lang>: Save Automatic Pre-Translation" style="cursor:pointer;" onclick="save(this)"> ▼ </span></dtml-if></span>
-      <dtml-var "renderShort(REQUEST)">
-    </div>
-    </td>
-   </dtml-let>
-  </dtml-in>
- </tr>
-</dtml-in>
-</dtml-let>
+	<tal:block tal:repeat="si python:['left','right']">
+		<tal:block tal:define="global lang_req_key python:{'left':'lang1','right':'lang2'}[si]">
+			<td tal:attributes="class python:'zmi-translate-%s'%si; translate python:['','translate'][int(si!='left')]; notranslate python:['','notranslate'][int(si=='left')]" width="50%">
+				<select class="notranslate" tal:attributes="name lang_req_key" onchange="$(this.form).submit();">
+				<tal:block tal:repeat="option python:lang_options[si]">
+					<option tal:attributes="value python:option[0]; selected python:['','selected'][int(request[lang_req_key]==option[0])]" tal:content="python:option[1]['label']">the label</option>
+				</tal:block>
+				</select>
+				<div tal:attributes="id python:here.id" class="zmi-translate-element center" tal:define="global 
+						dummy0 python:request.set(lang_req_key+'_bk',request.get(lang_req_key));
+						dummy0 python:request.set('lang',request.get(lang_req_key))">
+					<span class="zmi-translate-element-id notranslate" tal:content="python:here.id">the id</span>
+					<div class="zmiRenderShort" tal:attributes="id python:'contentEditable_%s_%s'%(here.id,request.get('lang'))">
+						<h1 tal:content="python:here.getTitle(request)">the title</h1>
+						<small tal:content="python:here.getDCDescription(request)">the description</small>
+					</div><!-- .zmiRenderShort -->
+				</div>
+			</td>
+		</tal:block>
+	</tal:block>
+</tr>
+<tr valign="top" tal:repeat="childNode python:filter(lambda x: x.isPageElement(),here.getObjChildren('e',request))">
+	<tal:block tal:repeat="si python:['left','right']">
+		<tal:block tal:define="global lang_req_key python:{'left':'lang1','right':'lang2'}[si]">
+			<td tal:attributes="class python:'zmi-translate-%s'%si; translate python:['','translate'][int(si!='left')]; notranslate python:['','notranslate'][int(si=='left')]" width="50%">
+				<div tal:attributes="id python:childNode.id" class="zmi-translate-element center" tal:define="global
+						dummy0 python:request.set(lang_req_key+'_bk',request.get(lang_req_key));
+						dummy0 python:request.set('lang',request.get(lang_req_key))">
+					<span class="zmi-translate-element-id notranslate" tal:content="python:childNode.id">the id</span>
+					<div class="zmiRenderShort" tal:attributes="id python:'contentEditable_%s_%s'%(childNode.id,request.get('lang'))">
+						<tal:block tal:content="structure python:childNode.renderShort(request)">the body-content</tal:block>
+					</div><!-- .zmiRenderShort -->
+				</div>
+			</td>
+		</tal:block>
+	</tal:block>
 </tr>
 </table>
 </form>
+
+
+
 <!-- Google Translate Element -->
 <div id="google_translate_element" style="display:block"></div><script>
 function googleTranslateElementInit() {
@@ -190,20 +194,18 @@ function googleTranslateElementInit() {
 };</script>
 <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- /Google Translate Element -->
-<dtml-comment>
-<pre title="DEBUG CODE">
-REQUEST lang1: <dtml-var "REQUEST.get('lang1','')">
-REQUEST lang2: <dtml-var "REQUEST.get('lang2','')">
-SESSION lang1: <dtml-var "SESSION.get('lang1','')">
-SESSION lang2: <dtml-var "SESSION.get('lang2','')">
-</pre>
-</dtml-comment>
-<dtml-var manage_page_footer>]]>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:zmscontext.zmi_body_footer(zmscontext,request)">zmi_body_footer</tal:block>
+</body>
+</html>]]>
   </item>
-  <item key="description"></item>
+  <item key="description"/>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"/>
   <item key="id"><![CDATA[manage_translate]]></item>
-  <item key="meta_type"><![CDATA[DTML Method]]></item>
+  <item key="meta_type"><![CDATA[Page Template]]></item>
   <item key="meta_types" type="list">
     <list>
       <item><![CDATA[ZMSDocument]]></item>
@@ -214,9 +216,9 @@ SESSION lang2: <dtml-var "SESSION.get('lang2','')">
   <item key="name"><![CDATA[Translate...]]></item>
   <item key="roles" type="list">
     <list>
-      <item><![CDATA[ZMSEditor]]></item>
-      <item><![CDATA[ZMSAuthor]]></item>
       <item><![CDATA[ZMSAdministrator]]></item>
+      <item><![CDATA[ZMSAuthor]]></item>
+      <item><![CDATA[ZMSEditor]]></item>
     </list>
   </item>
 </dictionary>

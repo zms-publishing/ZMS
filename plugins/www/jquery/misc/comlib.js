@@ -2,12 +2,16 @@
  * Returns language.
  */
 function getZMILang() {
-	if (typeof zmiParams['lang'] == 'undefined') {
-		zmiParams['lang'] = zmiLangDict['lang'];
+	try {
+		if (typeof zmiParams['lang'] == 'undefined') {
+			zmiParams['lang'] = zmiLangDict['lang'];
+		}
+		return zmiParams['lang'];
 	}
-	return zmiParams['lang'];
+	catch(err) {
+		return 'ger'
+	}
 }
-
 /**
  * Returns language-string.
  */

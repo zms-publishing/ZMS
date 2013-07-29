@@ -111,6 +111,8 @@ function zmiRichtextResize(id) {
 		var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
 		zmiWriteDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
 		$(".cke_contents").css("height",newHeight);
+		// Ticket #132: hide image-button
+		$('.cke_button__image').hide();
 	}
 }
 

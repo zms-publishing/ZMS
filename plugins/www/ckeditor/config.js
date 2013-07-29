@@ -30,14 +30,13 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
-	config.removeButtons = 'Underline,Subscript,Superscript';
+	config.removeButtons = 'Subscript,Superscript';
 
 	// Se the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
+	config.format_tags = 'p;h2;h6';
 
 	// Make dialogs simpler.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
-
 
   // Linkbutton
   // Mediabutton
@@ -51,10 +50,25 @@ CKEDITOR.editorConfig = function( config ) {
   config.toolbar = 'ZMSBasicToolbar';
   config.toolbar_ZMSBasicToolbar =[
      ['Format'],
-     ['Bold','Italic','Underline','NumberedList','BulletedList'],
+     ['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
      ['Undo','Redo'],
      ['Find','linkbutton','Link','Unlink'],
-     ['Anchor','Table'],
+     ['Image','Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
   ];
 };
+
+CKEDITOR.on( 'dialogDefinition', function( event ) {
+    var dialogDefinition = event.data.definition,
+        genericOnShow = dialogDefinition.onShow;
+      dialogDefinition.onShow = function() {
+          genericOnShow.apply( this );
+            var dialog = CKEDITOR.dialog.getCurrent();
+            if (dialog.getName() == 'link') {
+              subject = dialog.getContentElement('info','emailSubject');
+              if (subject.getValue() == '') {
+                subject.setValue(' ');
+              }
+            }
+      }
+});

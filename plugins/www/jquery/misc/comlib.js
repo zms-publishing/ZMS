@@ -9,7 +9,15 @@ function getZMILang() {
 		return zmiParams['lang'];
 	}
 	catch(err) {
-		return 'ger'
+		var browserlang = window.navigator.userLanguage || window.navigator.language;
+		var langmap = {'de':'ger','en':'eng'}
+		if (typeof langmap[browserlang] == 'undefined') {
+			// console.log('ERROR: No Browser Language Mapping')
+			return 'ger'
+		} else {
+			// console.log('ERROR: Set Browser Language as Default')
+			return langmap[browserlang]
+		}
 	}
 }
 /**

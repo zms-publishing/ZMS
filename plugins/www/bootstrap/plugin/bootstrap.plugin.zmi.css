@@ -62,9 +62,6 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	font-weight:bold;
 }
 
-#zmi-logo {
-	/*background: -moz-linear-gradient(45deg, rgb(2, 0, 49) 0%, rgb(109, 51, 83) 100%) repeat scroll 0% 0% transparent;*/
-}
 #zmi-overlay {
 	background-color:black;
 	display:block;
@@ -189,7 +186,7 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	height:1em;
 }
 ul.zmi-container li.zmi-item .inactive .contentEditable {
-	opacity:0.5;
+	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
 }
 table.table tbody tr td.data {
 	white-space:nowrap;
@@ -220,6 +217,13 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 	background-color:#ffc!important;
 }
+tr.zmi-highlighted td, tr.zmi-highlighted td *,
+ul.zmi-container > li.zmi-item.zmi-highlighted > div.center,
+ul.zmi-container > li.zmi-item.zmi-highlighted > div.center .zmiRenderShort,
+ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a {
+	background-color:#08c!important;
+	color:#fff!important;
+}
 
 #manage_addProduct .zmiRenderShort {
 	padding: 0.1em 0.5em;
@@ -244,6 +248,9 @@ ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 }
 .accordion-group.zmi-container .zmi-container {
 	width:1000px!important;
+}
+form.form-insert a.accordion-toggle {
+	color:#08c;
 }
 
 .zmi-container > .zmi-item > .center {
@@ -395,6 +402,9 @@ form.form-horizontal {
 	margin-right:2em;
 	padding:0.5em;
 }
+form.form-horizontal.form-insert {
+	margin:0;
+}
 .zmi.properties form.form-horizontal {
 	background-color:transparent;
 }
@@ -428,9 +438,8 @@ margin-left:2px;
 	border-bottom:1px solid #CCC;
 	padding:2px;
 }
-.form-horizontal .control-label.mandatory span {
-	background:url(/misc_/zms/ico_attr.gif) top left no-repeat;
-	padding-left:20px;
+.form-horizontal .control-label.mandatory i.icon-exclamation {
+	color:red;
 }
 div.accordion-heading a.accordion-toggle {
 	font-weight:bold;
@@ -587,9 +596,10 @@ div.zmi-nodes span {
 }
 .zmi-image,.zmi-file {
 	background-color:#F5F5F5;
-	padding:0.5em;
-	margin:0;
+	padding:.2em .5em;
+	margin:0 1em 0 0;
 	min-width:33em;
+	min-height:3em;
 	border:1px solid #ccc;
 	border-radius:4px;
 	width:79%;
@@ -718,11 +728,11 @@ body.users #zmi-tab > .pull-left,
 body.users #zmi-tab > .pull-right {
 	width:50%;
 }
-body.metas table.zmi-sortable td {
+table.zmi-sortable td {
 	white-space:nowrap;
 }
-body.metas table.table.zmi-sortable td img.grippy,
-body.metas table.table.zmi-sortable input {
+table.table.zmi-sortable td img.grippy,
+table.table.zmi-sortable input {
 	margin-bottom:0px;
 }
 

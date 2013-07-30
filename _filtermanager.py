@@ -144,11 +144,7 @@ def getRawProcesses(self):
 def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCommand=None, zms_system=0):
   if newCommand is None:
     newCommand = ''
-    if newType in [ 'DTML Method']:
-      newCommand += '<dtml-comment>--// BO '+ newId + ' //--</dtml-comment>\n'
-      newCommand += '\n'
-      newCommand += '<dtml-comment>--// EO '+ newId + ' //--</dtml-comment>\n'
-    elif newType in [ 'Script (Python)']:
+    if newType in [ 'Script (Python)']:
       newCommand += '# --// BO '+ newId + ' //--\n'
       newCommand += '# Example code:\n'
       newCommand += '\n'

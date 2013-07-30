@@ -2228,67 +2228,78 @@ return zmscontext.attr('attr_dc_description')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- ZMSNote.renderShort -->
 
-<dtml-unless "REQUEST.get('ZMSNOTE_JS')">
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
 
-<style>
+<tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
+
+<tal:block tal:content="structure python:'<style>'"></tal:block>
 div.note {
 	border-left: 1px solid #FCCD64;
 	border-bottom: 1px solid #FCCD64;
 	margin: 8px;
 	padding: 4px;
-	background: #FCFECC url(<dtml-var "getMetaobjAttr(meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">) top right no-repeat;
+	background: #FCFECC url(<tal:block tal:content="python:zmscontext.getMetaobjAttr(zmscontext.meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">zmsnote_bg.gif</tal:block>) top right no-repeat;
 }
-</style>
+<tal:block tal:content="structure python:'</style>'"></tal:block>
 
 <script language="JavaScript">
+
 var firedZMSNoteDiv = false;
 var repeatZMSNoteDiv = false;
 
 function onKeyUpZMSNoteDiv(el) {
-    if (!firedZMSNoteDiv) {
-      firedZMSNoteDiv = true;
-      setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
-    }
-    else  {
-      repeatZMSNoteDiv = true;
-    }
+	if (!firedZMSNoteDiv) {
+		firedZMSNoteDiv = true;
+		setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
+	}
+	else {
+		repeatZMSNoteDiv = true;
+	}
 }
 
 function onChangeZMSNoteDiv(id) {
-    if (repeatZMSNoteDiv) {
-      repeatZMSNoteDiv = false;
-      setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
-    }
-    else {
-      firedZMSNoteDiv = false;
-      repeatZMSNoteDiv = false;
-      var el = $('div#'+id);
-      var v = el.text();
-      el.addClass('zmiTeaserColor');
-      $.post(id+'/manage_changeProperties',{'lang':'<dtml-var lang>','text_<dtml-var lang>':v},function(data){
-        el.removeClass('zmiTeaserColor');
-      },'html');
-    }
+	if (repeatZMSNoteDiv) {
+		repeatZMSNoteDiv = false;
+		setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
+	}
+	else {
+		firedZMSNoteDiv = false;
+		repeatZMSNoteDiv = false;
+		var el = $('div#'+id);
+		var v = el.text();
+		el.addClass('zmiTeaserColor');
+		var lang = getZMILang();
+		var params = {};
+		params['lang'] = lang;
+		params['text_'+lang] = v;
+		$.post(id+'/manage_changeProperties',params,function(data){
+			el.removeClass('zmiTeaserColor');
+		},'html');
+	}
 }
 
 </script>
-<dtml-call "REQUEST.set('ZMSNOTE_JS',True)">
-</dtml-unless>
+
+<tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
+</tal:block>
 
 <div class="note">
-	<div id="<dtml-var id>" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)"><dtml-var "getText(REQUEST)" newline_to_br></div>
+	<div tal:attributes="id python:zmscontext.id" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)" tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
 </div>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
+</tal:block>
+
+<!-- /ZMSNote.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2609,26 +2620,30 @@ zmscontext.attr('text',text)
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- ZMSSqlDb.renderShort -->
 
-<dtml-try>
-	<dtml-in "getEntities()" mapping>
-		<dtml-if "type=='table'">
-			<div class="form-small"><a href="<dtml-var absolute_url>/manage_main?qentity=<dtml-var id>" class="zmi"><dtml-var label></div>
-		</dtml-if>
-	</dtml-in>
-<dtml-except>
-	<pre>DATABASE CONNECTION ERROR <a href="&dtml-id;/manage_properties">...</a></pre>
-</dtml-try>
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+	<h4>
+		<i class="icon-table"></i>
+		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
+	</h4>
+	<ul>
+		<li tal:repeat="table python:filter(lambda x:x['type']=='table',zmscontext.getEntities())">
+			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
+		</li>
+	</ul>
+	<br/>
+</tal:block>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
+<!-- /ZMSSqlDb.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
             </list>
@@ -2643,14 +2658,6 @@ zmscontext.attr('text',text)
                 </list>
               </item>
               <item key="delete_custom"></item>
-              <item key="edit" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
-              <item key="edit_custom"></item>
               <item key="insert" type="list">
                 <list>
                   <item><![CDATA[ZMSAdministrator]]></item>
@@ -2665,7 +2672,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSqlDb]]></item>
           <item key="name"><![CDATA[ZMSSqlDb]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.1.1]]></item>
+          <item key="revision"><![CDATA[1.2.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2973,7 +2980,12 @@ zmscontext.attr('text',text)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<!--
+                  <item key="name"><![CDATA[<!-- Page Template Diagnostics
+ Compilation failed
+ zope.tal.taldefs.TALError: Python expression error:
+invalid syntax (PythonExpr, line 1) in expression u"python:'col%i'col_index", at line 637, column 4
+-->
+<!--
 ################################################################################
 ##### Table(Type,Cols,Rows): INSERT
 ################################################################################
@@ -3609,7 +3621,7 @@ $(function(){
 	<td tal:content="structure python:here.getCheckbox(fmName=request['fmName'],elName='colgroup',value=zmscontext.attr('colgroup'),enabled=True,REQUEST=request)"></td>
 	<td tal:repeat="col_index python:range(table_cols)" align="center" nowrap="nowrap" tal:attributes="class python:' '.join(['ZMSTable-cell']+[['bottom'],[]][int(col_index==0 and table_type==4)])">
 		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
-			<input style="width:3em" type="text" name="col<dtml-var col_index>" size="3" tal:attributes="value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
+			<input style="width:3em" type="text" size="3" tal:attributes="name python:'col%i'col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
 			(&Oslash;=<tal:block tal:content="python:table_widths[col_index]"></tal:block>)%
 		</tal:block>
 		<tal:block tal:condition="not:python:zmscontext.attr('colgroup')">
@@ -3944,7 +3956,12 @@ if key.startswith('table_'):
 		<script type="text/javascript" tal:attributes="src python:'%sjquery.tablesorter.min.js'%resourceurl"></script>
 		<script type="text/javascript">
 			$(function() {
-				$(".ZMSTable.sortable").tablesorter(); 
+				$(".ZMSTable.sortable").tablesorter({ 
+						widgets: ["zebra"],
+						widgetOptions:{
+								zebra:["even", "odd"]
+						}
+				});
 			});
 		</script>
 		<tal:block tal:content="structure python:'<style>'"></tal:block>
@@ -4047,7 +4064,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.7]]></item>
+          <item key="revision"><![CDATA[1.8.9]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4950,7 +4967,7 @@ $(function() {
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

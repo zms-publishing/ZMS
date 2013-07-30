@@ -83,17 +83,6 @@ $(function(){
 			}
 		});
 
-	// Accordion:
-	// highlight default collapse item
-	$("a.accordion-toggle").click(function(){this.blur()});
-	$("i:first",$(".accordion-body.collapse").prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
-	$("i:first",$(".accordion-body.collapse.in").prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
-	$(".accordion-body.collapse").on("hide", function() {
-			$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-down").addClass("icon-caret-right");
-		}).on("show", function() {
-			$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
-		});
-
 	// Double-Clickable
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
@@ -338,6 +327,56 @@ function zmiInitInputFields(container) {
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
 					});
+			// Accordion:
+			// highlight default collapse item
+			runPluginCookies(function() {
+					$(".accordion-body").each(function() {
+							var id = $(this).attr('id');
+							if (typeof id != "undefined") {
+								var $toggle = $('a.accordion-toggle[href=\'#'+id+'\']');
+								if ($toggle.length > 0) {
+									var key = 'accordion-body-'+id;
+									var value = $.cookies.get(key);
+									if (value != null) {
+										if ($(this).hasClass('in')) {
+											if (value == '0') {
+												$(this).removeClass('in');
+											}
+										}
+										else {
+											if (value == '1') {
+												$(this).addClass('in');
+											}
+										}
+									}
+								}
+							}
+						});
+					$("i:first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass("icon-caret-down").addClass("icon-caret-right");
+					$("i:first",$(".accordion-body.collapse.in",context).prev('.accordion-heading')).removeClass("icon-caret-right").addClass("icon-caret-down");
+				});
+			$("a.accordion-toggle",this).click(function(){
+					this.blur();
+				});
+			var accordionSetCookie = function(sender,value) {
+					var id = $(sender).attr('id');
+					var key = 'accordion-body-'+id;
+					$.cookies.set(key,value);
+				};
+			$(".accordion-body.collapse",this).on("hide", function() {
+					$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-down").addClass("icon-caret-right");
+					accordionSetCookie(this,'0');
+				}).on("show", function() {
+					$("i:first",$(this).prev(".accordion-heading")).removeClass("icon-caret-right").addClass("icon-caret-down");
+					accordionSetCookie(this,'1');
+				});
+			// Mandatory
+			if ($(this).hasClass('form-insert')) {
+				$(".control-group label.control-label.mandatory",this).each(function() {
+						var $label = $(this);
+						$label.prepend('<i class="icon-exclamation"></i>');
+					});
+			}
 			// Date-Picker
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
@@ -527,6 +566,7 @@ function zmiIframe(href, data, opt) {
 		opt["height"] = "auto";
 		opt["width"] = "auto";
 		$('#zmiIframe').dialog(opt);
+		$('.ui-widget-overlay').height($(document).height());
 	}
 	else {
 		$.get( href, data, function(result) {
@@ -549,6 +589,7 @@ function zmiIframe(href, data, opt) {
 						opt["title"] = title;
 					}
 					$('#zmiIframe').dialog(opt);
+					$('.ui-widget-overlay').height($(document).height());
 				}
 			});
 	}
@@ -733,7 +774,7 @@ function zmiActionExecute(sender, label, target) {
 		if (typeof id_prefix != 'undefined' && id_prefix != '') {
 			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
 		}
-		$('<li id="manage_addProduct" class="zmi-item zmi-selected"><div class="center"><div class="zmiRenderShort">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></li>').insertAfter($el.parents(".zmi-item"));
+		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center"><div class="zmiRenderShort"><div class="form-label">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		zmiIframe(target,data,{
 				title:getZMILangStr('BTN_INSERT')+': '+label,
@@ -804,7 +845,7 @@ function zmiGetDescendantLanguages() {
  */
 function zmiConfirmAction(fm, target, label) {
 	var b = true;
-	var i = $("input[name='ids:list']:checkbox").length;
+	var i = $("input[name='ids:list']:checkbox:checked").length;
 	if (target.indexOf("../") == 0) {
 		i = 1;
 	}
@@ -1027,15 +1068,16 @@ function zmiDisableInteractions(b) {
 		zmiDisableInteractionsAllowed = true;
 		return;
 	}
+	var $doc = $(document);
 	// Set wait-cursor.
 	$(document.body).css( 'cursor', 'wait');
 	// Create semi-transparent overlay
 	$(document.body).append('<div id="zmi-overlay"></div>');
+	$('#zmi-overlay').height($doc.height());
 	// Create progress-box.
 	$(document.body).append('<div id="zmi-progressbox">'
 			+ '<img src="/misc_/zms/loading_16x16.gif" border="0" align="absmiddle"> ' + getZMILangStr('MSG_LOADING')
 		+ '</div>');
-	var $doc = $(document);
 	var $div = $("#zmi-progressbox");
 	$div.css({top:($(window).height()-$div.prop('offsetHeight'))/2,left:($doc.width()-$div.prop('offsetWidth'))/2});
 }

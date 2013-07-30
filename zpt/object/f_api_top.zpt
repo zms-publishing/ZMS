@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'preview_top',here.meta_id])">
+<script>
+	function open_partner(sender,href) {
+		$(".zmi-top-active").removeClass("zmi-top-active");
+		$(sender).addClass("zmi-top-active");
+		self.parent.partner.location.href = href;
+	}
+</script>
+<div id="zmi-header">
+	<div class="navbar navbar-inverse" style="position: static;">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
+					<span class="product">ZMS2</span>
+					<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
+				</a>
+				<div class="pull-right">
+					&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
+						<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
+						<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="python:': %s'%here.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
+					</a>
+					&nbsp;|&nbsp;<span class="ui-helper-clickable zmi-top-active" tal:attributes="onclick python:'open_partner(this,\'%s/$ZMS_HOME/doc/index.html\')'%here.getDocumentElement().absolute_url()">
+						ZMS API Documentation
+					</span>
+					&nbsp;|&nbsp;<span class="ui-helper-clickable" tal:attributes="onclick python:'open_partner(this,\'http://docs.jquery.com\')'">
+						jQuery API Documentation
+					</span>
+				</div><!-- .pull-right -->
+			</div><!-- .container -->
+		</div><!-- .navbar-inner -->
+	</div><!-- .navbar -->
+</div><!-- #zmi-header -->
+</body>
+</html>

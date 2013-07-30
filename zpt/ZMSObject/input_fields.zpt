@@ -22,6 +22,7 @@
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
+
 				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
@@ -30,12 +31,6 @@
 				<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 				<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
 				)
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
-	</tal:block>
-
-		<div id="tabProperties" class="accordion-body">
-			<div class="accordion-inner">
 
 				<div class="control-group activity">
 					<label class="control-label" for="attrActive">
@@ -56,8 +51,13 @@
 					</div><!-- .controls -->
 				</div><!-- .control-group -->
 
-				<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+	</tal:block>
 
+		<div id="tabProperties" class="accordion-body">
+			<div class="accordion-inner">
+				<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 
@@ -114,7 +114,7 @@
 									<div class="clearboth"></div><!-- .clearboth -->
 								</li><!-- .zmi-item -->
 								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id"
-									><li tal:attributes="id python:childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
+									><li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['pageelement']][int(childNode.isPageElement())])">
 										<div class="center" tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
 										</div><!-- .center -->

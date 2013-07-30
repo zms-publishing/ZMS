@@ -116,13 +116,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     # Templates.
     # ----------
     f_display_icon = _confmanager.ConfDict.template('object/f_display_icon') # ZMI Display-Icon
+    f_recordset_grid = _confmanager.ConfDict.template('object/f_recordset_grid') # ZMI RecordSet::Grid
     f_recordset_init = HTMLFile('dtml/object/f_recordset_init', globals()) # ZMI RecordSet::Init
-    f_recordset_grid = HTMLFile('dtml/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
     f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
     f_css_defaults = HTMLFile('dtml/object/f_css_defaults', globals()) # CSS: Default StyleSheet (WAI)
-    f_css_printhtml = HTMLFile('dtml/object/f_css_printhtml', globals()) # CSS: Fixed PrintHTML StyleSheet
     f_submitInputFields = HTMLFile('dtml/object/f_submitinputfields', globals())
     f_submitBtn = HTMLFile('dtml/object/f_submitbtn', globals())
     zmi_form_section_begin = HTMLFile('dtml/object/zmi_form_section_begin', globals())
@@ -136,13 +135,15 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals())
     preview_html = _confmanager.ConfDict.template('object/preview')
     preview_top_html = _confmanager.ConfDict.template('object/preview_top')
-    f_api_html = HTMLFile('dtml/object/f_api', globals())
-    f_api_top_html = HTMLFile('dtml/object/f_api_top', globals())
+    f_api_html = _confmanager.ConfDict.template('object/f_api')
+    f_api_top_html = _confmanager.ConfDict.template('object/f_api_top')
     obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals())
     obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields')
     obj_input_elements = _confmanager.ConfDict.template('ZMSObject/input_elements')
-    active_input_fields = '' # Deprecated
-    version_input_fields = '' # Deprecated
+    # Deprecated
+    f_css_printhtml = ''
+    active_input_fields = ''
+    version_input_fields = ''
 
 
     ############################################################################

@@ -294,6 +294,13 @@ $(function() {
 				</div><!-- .control-group -->
 			</div><!-- .horizontal-group -->
 			<div style="clear:both;">&nbsp;</div>
+			<div class="horizontal-group">
+				<div class="control-group inpCommand">
+					<label for="inpCommand" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_COMMANDLINE')">Commandline</span></label>
+					<div class="controls"><textarea id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div><!-- .controls -->
+				</div><!-- .control-group -->
+			</div><!-- .horizontal-group -->
+			<div style="clear:both;">&nbsp;</div>
 		</form>
 	</div><!-- .inner -->
 </div><!-- #updateProcess -->
@@ -336,8 +343,8 @@ $(function() {
 				<label for="newType" class="control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="controls">
 					<select name="newType">
-						<tal:block tal:repeat="meta_type python:['Page Template','Script (Python)']">
-							<option tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
+						<tal:block tal:repeat="meta_type python:['External Method','process','Script (Python)']">
+							<option tal:attributes="value meta_type" tal:content="python:meta_type.capitalize()">the meta_type</option>
 						</tal:block>
 						<option value="" tal:content="python:here.getZMILangStr('ATTR_NONE')">the meta_type</option>
 					</select>
@@ -370,7 +377,7 @@ $(function() {
 				</th>
 				<th>
 					<div class="btn-group">
-						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertFilter').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 						<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="icon-remove"></i></span>
 						<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$('#acquireObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})" tal:condition="python:here.getPortalMaster() is not None"><i class="icon-upload"></i></span>
 						<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-upload-alt"></i></span>
@@ -449,7 +456,7 @@ $(function() {
 			</th>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
+					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertProcess').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-plus"></i></span>
 					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="icon-remove"></i></span>
 					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$('#acquireObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})" tal:condition="python:here.getPortalMaster() is not None"><i class="icon-upload"></i></span>
 					<span class="btn" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><i class="icon-upload-alt"></i></span>

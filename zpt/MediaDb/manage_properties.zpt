@@ -6,7 +6,7 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" method="get">
+<form class="form-horizontal" action="manage_changeProperties" method="get">
 
 <legend>
 	<a href="manage_main">
@@ -15,14 +15,15 @@
 	</a>
 </legend>
 
-<div class="control-group">
-	<label class="control-label mandatory" for="location"><span>Location</span></label>
-	<div class="controls"><input name="location" tal:attributes="value here/location"></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<label class="col-lg-2 control-label mandatory" for="location"><span>Location</span></label>
+	<div class="col-lg-10"><input class="form-control" name="location" tal:attributes="value here/location"></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<div class="controls"><button class="btn btn-primary" name="submit" value="Change">Change</button></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<div class="col-lg-2">&nbsp;</div>
+	<div class="col-lg-10"><button class="btn btn-primary" name="submit" value="Change">Change</button></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
 </form>
 

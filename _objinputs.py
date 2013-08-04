@@ -38,7 +38,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element'):
+  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element form-control'):
     lang = self.REQUEST.get('lang')
     html = []
     styles = ['float:left']
@@ -87,14 +87,14 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-element', extra=''):
+  def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-element form-control', extra=''):
     manage_lang = self.get_manage_lang()
     html = []
     if not type(value) is str:
       value = self.getLangFmtDate(value,manage_lang,fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
-    html.append('<span class="%s" title="%s">'%(css,self.getZMILangStr(fmt_str)))
+    html.append('<span class="%s" title="%s">'%(css.replace('form-control',''),self.getZMILangStr(fmt_str)))
     if enabled:
       if fmt_str == 'DATE_FMT':
         css += ' datepicker'
@@ -116,7 +116,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-element', extra=''):
+  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-element form-control', extra=''):
     return self.getDateTimeInput(fmName=fmName,elName=elName,size=8,value=value,enabled=enabled,fmt_str='DATE_FMT',REQUEST=REQUEST,css=css, extra=extra)
 
 
@@ -131,7 +131,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-element', extra=''):
+  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-element form-control', extra=''):
     return self.getTextInput(fmName,elName,size,value,'password',enabled,REQUEST,css,extra)
 
 
@@ -146,13 +146,13 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-element', extra=''):
+  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-element form-control', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
-    html.append('<span class="%s">'%css)
+    html.append('<span class="%s">'%css.replace('form-control',''))
     html.append('<input ')
     html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' type="%s"'%type)
@@ -193,7 +193,7 @@ class ObjInputs:
   #	@param css		CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-element', maxlen=30):
+  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-element form-control', maxlen=30):
     return self.f_selectInput(self,fmName=fmName,elName=elName,value=value,type=inputtype,lang_str=lang_str,required=required,optpl=optpl,maxlen=maxlen,enabled=enabled,css=css,REQUEST=REQUEST)
 
 
@@ -211,7 +211,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-checkbox', extra=''):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-checkbox form-control', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -254,7 +254,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-element', wrap='virtual', extra=''):
+  def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-element form-control', wrap='virtual', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):

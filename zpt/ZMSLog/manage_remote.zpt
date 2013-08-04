@@ -22,13 +22,13 @@ function uploadBtnClick() {
 	</a>
 </legend>
 
-<div class="control-group">
-	<label class="control-label" for="path"><span>Path</span></label>
-	<div class="controls">
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="path"><span>Path</span></label>
+	<div class="col-lg-10">
 		<input type="text" name="path" size="50" tal:attributes="value path"/>
-		<button class="btn" name="btn" value="Chdir">Chdir</button>
-	</div><!-- .controls -->
-</div><!-- .control-group -->
+		<button class="btn btn-default" name="btn" value="Chdir">Chdir</button>
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
 <table class="table table-striped">
 <thead>
@@ -61,21 +61,21 @@ function uploadBtnClick() {
 </tr>
 </table>
 
-<div class="control-group">
-	<label class="control-label" for="command"><span>Command</span></label>
-	<div class="controls">
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="command"><span>Command</span></label>
+	<div class="col-lg-10">
 		<input type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
 		<button class="btn btn-inverse" name="btn" value="Execute">Execute</button>
-	</div><!-- .controls -->
-</div><!-- .control-group -->
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<label class="control-label" for="file"><span>Upload file</span></label>
-	<div class="controls">
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="file"><span>Upload file</span></label>
+	<div class="col-lg-10">
 		<input type="file" name="file" size="50"/>
 		<button class="btn btn-inverse" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
-	</div><!-- .controls -->
-</div><!-- .control-group -->
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
 </form>
 </body>

@@ -85,7 +85,7 @@
 	<div class="accordion-group perc100">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
-				<i></i>
+				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
 			</a>
 			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
@@ -104,7 +104,7 @@
 		</div><!-- .accordion-body -->
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
-				<i></i>
+				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 			</a>
 			<tal:block tal:content="python:here.getZMILangStr('ATTR_TABLE')">Table</tal:block>
 			<select name="qentity" onchange="this.form.submit()">
@@ -120,7 +120,7 @@
 		</div><!-- .accordion-heading -->
 		<div id="attrProperties" class="accordion-body collapse in">
 			<div class="accordion-inner">
-				<div class="control-group" tal:repeat="filterIndex python:range(request['qfilters'])">
+				<div class="form-group" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<select tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column sessqentity/columns">
 							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
@@ -133,14 +133,14 @@
 						</tal:block>
 					</select>
 					<input class="input-xlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
-				</div><!-- .control-group -->
-				<div class="control-group">
-					<div class="controls">
+				</div><!-- .form-group -->
+				<div class="form-group">
+					<div class="col-lg-10">
 						<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH')">
-							<i class="icon-search"></i>
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 						</button>
-						<button type="submit" class="btn" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+						<button type="submit" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
 							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 						</button>
 					</div>

@@ -29,8 +29,8 @@
 
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
-				<i></i>
-				<i class="icon-pencil"></i>
+				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the label</tal:block>
 			</a>
 			<div class="clearfix"></div>
@@ -43,11 +43,11 @@
 			<tal:block tal:define="global 
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['name']">
-			<div class="control-group">
-				<label tal:attributes="for elName; class python:' '.join(['control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+			<div class="form-group">
+				<label tal:attributes="for elName; class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 					<span tal:content="elLabel">the label</span>
 				</label>
-				<div class="controls">
+				<div class="col-lg-10">
 
 					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName),REQUEST=request)">
 						the control
@@ -73,22 +73,22 @@
 										<option tal:attributes="value python:option[1]; selected python:['','selected'][int(str(option[1])==str(row.get(metaObjAttr['id'])))]" tal:content="python:option[0]"></option>
 									</tal:block>
 								</select>
-								<a class="add-on btn zmi-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val()'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'])"><i class="icon-eject"></i></a>
+								<a class="add-on btn zmi-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val()'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'])"><tal:block tal:content="structure python:here.zmi_icon(name='icon-eject')"></tal:block></a>
 							</div><!-- .input-append -->
 						</tal:block>
 					</tal:block>
 
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
 			</tal:block>
 		</tal:block>
 
-	<div class="control-group">
+	<div class="form-group">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
@@ -101,8 +101,8 @@
 								elLabel python:metaObj['name']">
 						<div class="accordion-heading">
 							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
-								<i></i>
-								<i class="icon-table"></i>
+								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-table')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
 							<div class="clearfix"></div>

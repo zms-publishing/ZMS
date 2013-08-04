@@ -36,33 +36,33 @@
 			<legend tal:content="f/title_or_id">title_or_id</legend>
 			<tal:block tal:repeat="package packages">
 				<tal:block tal:define="global package_id python:here.id_quote(package)">
-					<div class="control-group">
+					<div class="form-group">
 						<input type="checkbox" name="createIdsFilter:list" tal:attributes="value package; title package" checked="checked">
 						<i tal:condition="python:package not in metaObjPackages" class="icon-plus"></i>
-						<i class="icon-briefcase"></i>
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong tal:content="package">the id</strong>
-					</div><!-- .control-group -->
+					</div><!-- .form-group -->
 					<tal:block tal:repeat="importObj importObjs">
 						<tal:block tal:condition="python:importObj['package']==package">
-							<div class="control-group">
+							<div class="form-group">
 								<input type="checkbox" name="createIdsFilter:list" tal:attributes="value importObj/id; title importObj/id" checked="checked">
 								<i tal:condition="python:importObj['id'] not in metaObjIds" class="icon-plus"></i>
 								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'],zpt=True)">the icon</tal:block>
 								<tal:block tal:content="importObj/name">the name</tal:block>
 								<tal:block tal:content="importObj/revision">the revision</tal:block>
 								(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%importObj['type'].upper())">the type</tal:block>)
-							</div><!-- .control-group -->
+							</div><!-- .form-group -->
 						</tal:block>
 					</tal:block>
 				</tal:block>
 			</tal:block>
 		</tal:block>
 	</tal:block>
-		<div class="control-group">
-			<div class="controls">
+		<div class="form-group">
+			<div class="col-lg-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
 	</form>
 </tal:block>
 
@@ -70,26 +70,26 @@
 	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
-			<div class="control-group">
-				<label for="file" class="control-label">
-					<i class="icon-folder-open-alt"></i>
+			<div class="form-group">
+				<label for="file" class="col-lg-2 control-label">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
-				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="controls">
+				<div class="col-lg-10"><input type="file" name="file"></div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+				<div class="col-lg-10">
 					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metaobj.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 					</select>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-		<div class="control-group">
-			<div class="controls">
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+		<div class="form-group">
+			<div class="col-lg-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
 	</form>
 </tal:block>
 

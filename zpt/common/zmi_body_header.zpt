@@ -2,17 +2,14 @@
 
 <div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.getDocumentElement().filtered_manage_options())">
 	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
+				<a class="navbar-brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
 					<span class="product">ZMS2</span>
 					<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
 				</a>
-				<div title="Configuration">
-					<ul class="nav pull-right">
+				<ul class="nav navbar-nav pull-right">
 						<li class="dropdown" tal:condition="python:len(here.getLangIds())>1">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="icon-flag"></i>
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-flag')"></tal:block>
 								<tal:block tal:content="python:here.getLanguageLabel(request['lang'])">the language</tal:block>
 								<b class="caret"></b>
 							</a>
@@ -25,7 +22,7 @@
 								</tal:block>
 								<li tal:repeat="language languages">
 									<a tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language})">
-										<i tal:attributes="class python:['icon-check-empty','icon-check'][int(language==request['lang'])]"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(language==request['lang'])])"></tal:block>
 										<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
 										<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>
 									</a>
@@ -34,44 +31,44 @@
 						</li><!-- .dropdown -->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="icon-cog"></i>
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
 									<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
-										<i class="icon-question-sign"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-question-sign')"></tal:block>
 										<tal:block tal:content="python:'API'">API</tal:block>
 									</a>
 								</li>
 								<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
 									<a tal:attributes="href python:'manage_system?lang=%s'%(request['lang'])">
-										<i class="icon-bolt"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-bolt')"></tal:block>
 										<tal:block tal:content="python:'System'">System</tal:block>
 									</a>
 								</li>
 								<li>
 									<a tal:attributes="href python:'manage?lang=%s'%request['lang']">
-										<i class="icon-sitemap"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap')"></tal:block>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block>
 									</a>
 								</li>
 								<li tal:define="global trashcan python:here.getTrashcan()">
 									<a tal:attributes="href python:'%s/manage_main?lang=%s'%(trashcan.absolute_url(),request['lang'])">
-										<i class="icon-trash"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block>
 										<tal:block tal:content="python:trashcan.display_type(request)">Trashcan</tal:block>
 									</a>
 								</li>
 								<li class="divider"></li>
 								<li class="dropdown-submenu">
 									<a tabindex="-1" href="#">
-										<i class="icon-globe"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block>
 										<tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getLocale().getLangStr('LANG',request['manage_lang']))">the current language</tal:block>
 									</a>
 									<ul class="dropdown-menu">
 										<li tal:repeat="manage_lang python:here.getLocale().get_manage_langs()">
 											<a tal:attributes="href python:'?lang=%s&manage_lang=%s'%(request['lang'],manage_lang)">
-												<i tal:attributes="class python:['icon-check-empty','icon-check'][int(manage_lang==request['manage_lang'])]"></i>
+												<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(manage_lang==request['manage_lang'])])"></tal:block>
 												<tal:block tal:content="python:here.getLocale().getLangStr('LANG',manage_lang)">the language</tal:block>
 											</a>
 										</li>
@@ -80,35 +77,34 @@
 								<li tal:condition="python:'manage_users' in actions or 'manage_customize' in actions" class="divider"></li>
 								<li tal:condition="python:'manage_users' in actions">
 									<a tal:attributes="href python:'%s/manage_users?lang=%s'%(here.getDocumentElement().absolute_url(),request['lang'])">
-										<i class="icon-group"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_ACCESS')">configuration</tal:block>
 									</a>
 								</li>
-								<li class="dropdown-submenu" tal:condition="python:'manage_customize' in actions">
-									<a tabindex="-1" href="#">
-										<i class="icon-wrench"></i>
+								<tal:block tal:condition="python:'manage_customize' in actions">
+									<li class="divider"></li>
+									<li class="dropdown-header">
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-wrench')"></tal:block>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>
-									</a>
-									<ul class="dropdown-menu">
-										<li tal:repeat="option python:here.getDocumentElement().customize_manage_options()">
-											<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getDocumentElement().absolute_url(),option['action'],request['lang'])">
-												<tal:block tal:content="python:here.getZMILangStr(option['label'])">label</tal:block>
-											</a>
-										</li>
-									</ul><!-- .dropdown-menu -->
-								</li>
+									</li>
+									<li tal:repeat="option python:here.getDocumentElement().customize_manage_options()">
+										<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getDocumentElement().absolute_url(),option['action'],request['lang'])">
+											<tal:block tal:content="python:here.getZMILangStr(option['label'])">label</tal:block>
+										</a>
+									</li>
+								</tal:block>
 							</ul>
 						</li><!-- .dropdown -->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="icon-user"></i>
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block>
 								<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
 									<a href="#" onclick="zmiIframe('manage_userForm',{lang:getZMILang()},{'title':$(this).text()})">
-										<i class="icon-wrench"></i>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-wrench')"></tal:block>
 										<tal:block tal:content="python:here.getZMILangStr('TAB_EDIT')">edit</tal:block>
 									</a>
 								</li>
@@ -116,17 +112,14 @@
 									<li class="divider"></li>
 									<li>
 										<a tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')">
-											<i class="icon-off"></i>
+											<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
 											Logout
 										</a>
 									</li>
 								</tal:block>
 							</ul>
 						</li><!-- .dropdown -->
-					</ul>
-				</div><!-- .nav-collapse -->
-			</div><!-- .container -->
-		</div><!-- .navbar-inner -->
+				</ul><!-- .navbar-nav -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
 

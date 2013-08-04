@@ -2980,12 +2980,7 @@ zmscontext.attr('text',text)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<!-- Page Template Diagnostics
- Compilation failed
- zope.tal.taldefs.TALError: Python expression error:
-invalid syntax (PythonExpr, line 1) in expression u"python:'col%i'col_index", at line 637, column 4
--->
-<!--
+                  <item key="name"><![CDATA[<!--
 ################################################################################
 ##### Table(Type,Cols,Rows): INSERT
 ################################################################################
@@ -3621,7 +3616,7 @@ $(function(){
 	<td tal:content="structure python:here.getCheckbox(fmName=request['fmName'],elName='colgroup',value=zmscontext.attr('colgroup'),enabled=True,REQUEST=request)"></td>
 	<td tal:repeat="col_index python:range(table_cols)" align="center" nowrap="nowrap" tal:attributes="class python:' '.join(['ZMSTable-cell']+[['bottom'],[]][int(col_index==0 and table_type==4)])">
 		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
-			<input style="width:3em" type="text" size="3" tal:attributes="name python:'col%i'col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
+			<input style="width:3em" type="text" size="3" tal:attributes="name python:'col%i'%col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
 			(&Oslash;=<tal:block tal:content="python:table_widths[col_index]"></tal:block>)%
 		</tal:block>
 		<tal:block tal:condition="not:python:zmscontext.attr('colgroup')">
@@ -4064,7 +4059,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.9]]></item>
+          <item key="revision"><![CDATA[1.8.10]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

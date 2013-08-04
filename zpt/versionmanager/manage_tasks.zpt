@@ -17,17 +17,17 @@ function onFormSubmit(fm) {
 <tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">
 
 <form class="form-horizontal" name="form0" method="get" onsubmit="return onFormSubmit(this)">
-	<div class="control-group">
-		<label class="control-label" for="task_type" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">display</label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="task_type" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">display</label>
+		<div class="col-lg-10">
 			<select class="form-element" id="task_type" name="task_type">
 				<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
 				<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
 				<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
 			</select>
 			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 </form>
 
 <tal:block tal:condition="python:request.form.has_key('task_type')">

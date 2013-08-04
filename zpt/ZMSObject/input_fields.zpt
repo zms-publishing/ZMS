@@ -14,7 +14,7 @@
 	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
-				<i></i>
+				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
 			</a>
 			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
@@ -23,33 +23,37 @@
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
 
-				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-				(
-				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
-					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
-				</tal:block>
-				<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
-				<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-				)
+				<div class="form-group">
+					<div class="col-lg-12">
+					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+					(
+					<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
+						<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+					</tal:block>
+					<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
+					<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
+					)
+					</div><!-- .col-lg-12 -->
+				</div><!-- .form-group -->
 
-				<div class="control-group activity">
-					<label class="control-label" for="attrActive">
+				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">
+					<label class="col-lg-2 control-label" for="attrActive">
 						<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</tal:block>
 					</label>
-					<div class="controls">
-						<tal:block tal:condition="python:'active' in objAttrs.keys()">
-							<span class="active" tal:content="structure python:here.getObjInput('active',request)">the control</span>
-							<span class="attr_active_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
-								<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span>
-								<tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block>
-							</span>
-							<span class="attr_active_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
-								<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span>
-								<tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block>
-							</span>
+					<div class="col-lg-10">
+						<div class="pull-left">
+							<tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block>
+						</div><!-- .pull-left -->
+						<tal:block tal:condition="python:'attr_active_start' in objAttrs.keys()">
+							<div class="pull-left"><label class="control-label" for="attr_active_start" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</label></div>
+							<div class="pull-left"><tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block></div>
 						</tal:block>
-					</div><!-- .controls -->
-				</div><!-- .control-group -->
+						<tal:block tal:condition="python:'attr_active_end' in objAttrs.keys()">
+							<div class="pull-left"><label class="control-label" for="attr_active_end" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</label></div>
+							<div class="pull-left"><tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block></div>
+						</tal:block>
+					</div><!-- .col-lg-10 -->
+				</div><!-- .form-group -->
 
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
@@ -63,12 +67,12 @@
 
 		<div class="accordion-body" tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="accordion-inner">
-				<div class="control-group">
+				<div class="form-group">
 					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_%s'%action.upper())" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
-						<button type="submit" name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-					</div><!-- .controls -->
-				</div><!-- .control-group -->
+						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+					</div><!-- .col-lg-10 -->
+				</div><!-- .form-group -->
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 
@@ -86,7 +90,7 @@
 						><tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)"
 							><div class="accordion-heading">
 								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
-									<i></i>
+									<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 									<tal:block tal:content="elLabel">the label</tal:block>
 								</a>
 								<div class="pull-left" tal:content="python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
@@ -103,10 +107,10 @@
 									<div class="right">
 										<div class="btn-group zmi-action">
 											<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:9990">the sort-id</span>
-											<button class="btn split-left">
+											<button class="btn btn-default split-left">
 												&nbsp;
 											</button>
-											<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+											<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
 												<span class="caret"></span>
 											</button>
 										</div><!-- .btn-group -->
@@ -121,11 +125,11 @@
 										<div class="right">
 											<div class="btn-group zmi-action">
 												<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-												<button class="btn split-left">
+												<button class="btn btn-default split-left">
 													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 													<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 												</button>
-												<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+												<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
 													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 												</button>
 											</div><!-- .btn-group -->

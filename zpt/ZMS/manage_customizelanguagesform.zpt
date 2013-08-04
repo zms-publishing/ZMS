@@ -63,7 +63,7 @@
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert">
-		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
+		<td style="text-align:center;padding-top:1em;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td class="language_id"><input type="text" name="language_id"></td>
 		<td class="language_label"><input type="text" name="language_label"></td>
 		<td class="language_parent">
@@ -79,10 +79,10 @@
 	</tr>
 	</tbody>
 	</table>
-	<div class="control-group">
+	<div class="form-group">
 		<div class="controls save">
 			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 		</div>
 	</div>
 </form>
@@ -112,19 +112,19 @@
 		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
 	</tr>
 	<tr>
-		<td style="text-align:center;padding-top:1em;"><i class="icon-plus"></i></td>
+		<td style="text-align:center;padding-top:1em;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td><input type="text" name="_key"></td>
 		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
 	</tr>
 	</tbody>
 	</table>
-	<div class="control-group">
+	<div class="form-group">
 		<div class="controls save">
 			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 			&nbsp;&nbsp;
-			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
-			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="alert('@todo');return false;">Export...</button>
+			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importLangDict').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="alert('@todo');return false;">Export...</button>
 		</div>
 	</div>
 </form>
@@ -132,24 +132,24 @@
 <div id="importLangDict" class="ui-helper-hidden">
 <form class="form-horizontal" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<div class="control-group">
-		<label class="control-label" for="file"><i class="icon-folder-open"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="file"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
+		<div class="col-lg-10">
 			<input name="file" type="file">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
+		<div class="col-lg-10">
 			<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
 			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 				<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')" onclick="$('#importLangDict').dialog('close');return false;">Close</button>
+				<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')" onclick="$('#importLangDict').dialog('close');return false;">Close</button>
 		</div>
 	</div>
 </form>

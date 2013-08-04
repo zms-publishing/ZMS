@@ -38,26 +38,26 @@ function zmiFormSubmit(sender,d) {
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" name="importConfForm" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="control-group">
-				<label for="file" class="control-label">
-					<i class="icon-folder-open-alt"></i>
+			<div class="form-group">
+				<label for="file" class="col-lg-2 control-label">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
-				<div class="controls"><input type="file" name="file"></div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<label for="or" class="control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
-				<div class="controls">
+				<div class="col-lg-10"><input type="file" name="file"></div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+				<div class="col-lg-10">
 					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 					</select>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
-			<div class="control-group">
-				<div class="controls">
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<div class="col-lg-10">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-				</div><!-- .controls -->
-			</div><!-- .control-group -->
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #importConf -->
@@ -84,9 +84,9 @@ function zmiFormSubmit(sender,d) {
 		<th class="meta-id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 		<th class="meta-name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 		<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
-		<th class="meta-mandatory"  tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="icon-exclamation-sign"></i></th>
-		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="icon-globe"></i></th>
-		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="icon-list-ol"></i></th>
+		<th class="meta-mandatory"  tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
+		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
+		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block>></th>
 		<th></th>
 	</tr>
 	</thead>
@@ -101,7 +101,7 @@ function zmiFormSubmit(sender,d) {
 				<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
-				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><i class="icon-remove"></i></span>
+				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 			</div>
 		</td>
 		<td class="meta-id">
@@ -131,7 +131,7 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="meta-sort"><i class="icon-plus"></i></td>
+		<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td class="meta-id"><input type="text" name="_id"></td>
 		<td class="meta-name"><input type="text" name="_name"></td>
 		<td class="meta-type">
@@ -149,11 +149,11 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tbody>
 	</table>
-	<div class="control-group">
+	<div class="form-group">
 		<div class="controls save">
 			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			&nbsp;
-			<button name="btn" type="submit" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
+			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),height:'auto',width:'auto'});return false;">Import...</button>
 		</div>
 	</div>
 </form>

@@ -14,17 +14,17 @@
 
 		<tal:block tal:condition="python:value">
 			<div class="btn-group">
-				<a class="btn" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
+				<a class="btn btn-default" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
 					<img tal:attributes="src python:here.getMimeTypeIconSrc(value.getContentType()); title python:value.getContentType()"/>
 					<span class="filename" tal:content="python:value.getFilename()">the filename</span>
 					<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
 				</a>
-				<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
+				<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
-					<li class="zmi-helper-hidden" tal:attributes="id python:'delete_btn_%s'%elName"><a><i class="icon-trash"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a></li>
-					<li class="zmi-helper-hidden" tal:attributes="id python:'undo_btn_%s'%elName"><a><i class="icon-undo"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a></li>
+					<li class="zmi-helper-hidden" tal:attributes="id python:'delete_btn_%s'%elName"><a><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a></li>
+					<li class="zmi-helper-hidden" tal:attributes="id python:'undo_btn_%s'%elName"><a><tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a></li>
 				</ul><!-- .dropdown-menu -->
 			</div><!-- .btn-group -->
 		</tal:block>
@@ -32,7 +32,7 @@
 			<div class="zmi-input-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',[])"
-					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
+					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','ajax_upload')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
 				the input-file
 			</div>
 

@@ -44,9 +44,9 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-check"></i> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
-				<li><a tal:attributes="href python:'%s?lang=%s&amp;action=insertForm'%(url,request['lang'])"><i class="icon-plus-sign"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></li>
-				<li><a href="#" onclick="zmiRecordSetDeleteRow('form0')"><i class="icon-remove"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
+				<li><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
+				<li><a tal:attributes="href python:'%s?lang=%s&amp;action=insertForm'%(url,request['lang'])"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></li>
+				<li><a href="#" onclick="zmiRecordSetDeleteRow('form0')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
 			</ul>
 		</div>
 	</th>
@@ -74,11 +74,11 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a tal:attributes="href python:'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i'%(url,request['lang'],qindex)"><i class="icon-edit"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block></a></li>
-				<li><a href="#" tal:attributes="onclick python:'zmiRecordSetDeleteRow(\'form0\',%i)'%qindex"><i class="icon-remove"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
+				<li><a tal:attributes="href python:'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i'%(url,request['lang'],qindex)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block></a></li>
+				<li><a href="#" tal:attributes="onclick python:'zmiRecordSetDeleteRow(\'form0\',%i)'%qindex"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a></li>
 				<tal:block tal:condition="python:'sort_id' in metaObjAttrIds">
-					<li><a href="#"><i class="icon-sort-up"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
-					<li><a href="#"><i class="icon-sort-down"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
+					<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
+					<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
 				</tal:block>
 			</ul>
 		</div>

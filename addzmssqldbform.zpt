@@ -9,46 +9,46 @@
 		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']">
 		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']">
 		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']">
-		<div class="control-group"  id="tr_connection_id">
-			<label for="connection_id" class="control-label mandatory">
+		<div class="form-group"  id="tr_connection_id">
+			<label for="connection_id" class="col-lg-2 control-label mandatory">
 				<span>Connection Id</span>
 			</label>
-			<div class="controls">
+			<div class="col-lg-10">
 				<select name="connection_id">
 					<option value="">--- Select Connection Id ---</option>
 					<tal:block tal:repeat="connection_id python:here.SQLConnectionIDs()">
 						<option tal:attributes="value python:connection_id[0]" tal:content="python:connection_id[1]">the connection-id</option>
 					</tal:block>
 				</select>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
-		<div class="control-group"  id="tr_max_rows">
-			<label for="max_rows:int" class="control-label mandatory">
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group"  id="tr_max_rows">
+			<label for="max_rows:int" class="col-lg-2 control-label mandatory">
 				<span>Max. Rows</span>
 			</label>
-			<div class="controls">
+			<div class="col-lg-10">
 				<input type="text" name="max_rows:int" value="999"/>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
-		<div class="control-group"  id="tr_charset">
-			<label for="charset" class="control-label mandatory">
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group"  id="tr_charset">
+			<label for="charset" class="col-lg-2 control-label mandatory">
 				<span>Charset</span>
 			</label>
-			<div class="controls">
+			<div class="col-lg-10">
 				<select name="charset">
 					<tal:block tal:repeat="charset python:here.enumManager.getValues('charset')">
 						<option tal:attributes="value python:charset[0]; selected python:['','selected'][int(charset[0]=='utf-8')]" tal:content="python:charset[1]">the charset</option>
 					</tal:block>
 				</select>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
-		<div class="control-group"  id="tr_model">
-			<label for="model" class="control-label mandatory">
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group"  id="tr_model">
+			<label for="model" class="col-lg-2 control-label mandatory">
 				<span>Model</span>
 			</label>
-			<div class="controls">
+			<div class="col-lg-10">
 				<textarea name="model" tal:content="python:here.toXmlString([])">the model</textarea>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
 	</form><!-- .form-horizontal -->
 </tal:block>

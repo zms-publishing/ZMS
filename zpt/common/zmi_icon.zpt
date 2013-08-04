@@ -1,0 +1,1 @@
+<tal:block tal:content="structure python:'<i class=\042%s\042 %s></i>'%(options['name'],options.get('extra',''))"></tal:block>

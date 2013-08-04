@@ -10,10 +10,8 @@
 	}
 </script>
 <div id="zmi-header">
-	<div class="navbar navbar-inverse" style="position: static;">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+				<a class="navbar-brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
 					<span class="product">ZMS2</span>
 					<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
 				</a>
@@ -29,8 +27,6 @@
 						jQuery API Documentation
 					</span>
 				</div><!-- .pull-right -->
-			</div><!-- .container -->
-		</div><!-- .navbar-inner -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
 </body>

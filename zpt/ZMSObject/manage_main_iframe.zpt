@@ -2,6 +2,7 @@
   manage_lang python:request.set('manage_lang',here.get_manage_lang());
   dummy0 python:here.f_standard_html_request(here,request);
   lurl python:request['URL'].replace('?','/').split('/');
+  bnobody python:int(request.get('ZMS_NO_BODY','')!='');
   bcontainer python:here.isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)">
 
 <tal:block tal:condition="python:bcontainer" tal:content="structure python:here.manage_container(here,request)">
@@ -12,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<script>
+<script tal:condition="python:not bnobody">
 	$(function() {
 			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
 				if (parent.$.fancybox) {
@@ -23,9 +24,9 @@
 		});
 </script>
 <style type="text/css">
-	.accordion-heading, #attrLastModified, #tabProperties .control-group { display:none; }
+	.accordion-heading, #attrLastModified, #tabProperties .form-group { display:none; }
 	.form-horizontal, .form-horizontal .controls { margin: 0 !important; padding: 0 !important; }
-	.zmi.properties .form-horizontal .control-group:last-child { margin: 6px 0px 4px; display:block;}
+	.zmi.properties .form-horizontal .form-group:last-child { margin: 6px 0px 4px; display:block;}
 	.zmi-richtext textarea.form-element { height:18em !important; }
 </style>
 
@@ -39,8 +40,8 @@
 </tal:block>
 
 <tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
-<form class="form-horizontal" id="form0" tal:attributes="name request/fmName" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-	<input type="hidden" id="manage_target" name="manage_target" tal:attributes="value request/URL">
+<form class="form-horizontal" id="form0" tal:attributes="name request/fmName; action python:['',here.absolute_url()+'/'][bnobody]+'manage_changeProperties'" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="manage_target" name="manage_target" tal:attributes="value python:[request['URL'],(request['HTTP_REFERER']+'?')[:(request['HTTP_REFERER']+'?').find('?')]][bnobody]">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="form_id" tal:attributes="value request/ZMI_TIME">

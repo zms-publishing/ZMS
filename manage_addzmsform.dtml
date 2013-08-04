@@ -84,23 +84,23 @@ function formOnSubmit(fm) {
 	<input type="hidden" name="preview" value="preview">
 	<legend>Add ZMS-Instance</legend>
 
-	<div class="control-group">
-		<label class="control-label mandatory" for="folder_id"><span>Folder-Id</span></label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="col-lg-2 control-label mandatory" for="folder_id"><span>Folder-Id</span></label>
+		<div class="col-lg-10">
 			<input name="folder_id:required" value="myzmsx">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
-	<div class="control-group">
-		<label class="control-label mandatory" for="folder_id"><span>Language</span></label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="col-lg-2 control-label mandatory" for="folder_id"><span>Language</span></label>
+		<div class="col-lg-10">
 			<input class="input-small" name="lang:required" value="ger">
 			<input class="input-medium" name="lang_label:required" value="Deutsch">
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label mandatory" for="manage_lang"><span>ZMI</span></label>
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label mandatory" for="manage_lang"><span>ZMI</span></label>
+		<div class="col-lg-10">
 			<select name="manage_lang:required">
 				<option value="ger">Deutsch</option>
 				<option value="eng">English</option>
@@ -109,13 +109,13 @@ function formOnSubmit(fm) {
 				<option value="ita">Italiano</option>
 				<option value="chi">Chinese</option>
 			</select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 	<p class="lead">Templateset</p><!-- .lead -->
-	<div class="control-group">
-		<label class="control-label mandatory" for="theme"><span>Theme</span></label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="col-lg-2 control-label mandatory" for="theme"><span>Theme</span></label>
+		<div class="col-lg-10">
   <dtml-call "REQUEST.set('themes',None)">
   <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].import_instance_home(this(),'www/themes.zcml'))"></dtml-if>
   <dtml-if "REQUEST.get('themes') is None"><dtml-call "REQUEST.set('themes',misc_.zms['initutil'].http_import('%s/misc_/zms/themes.zcml'%BASE0.replace('https','http')))"></dtml-if>
@@ -155,17 +155,17 @@ function formOnSubmit(fm) {
      </dtml-let>
     </dtml-in>
   </select>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label" for="mobile">Mobile</label>
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="mobile">Mobile</label>
+		<div class="col-lg-10">
 			<input type="checkbox" name="mobile:int" value="1" onchange="if($(this).prop('checked')){$('#mobile_preview').css('display','block')}else{$('#mobile_preview').css('display','none')}"/>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label" for="preview">Preview</sup></label>
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="preview">Preview</sup></label>
+		<div class="col-lg-10">
 			<table>
 			<tr>
 				<td>
@@ -176,11 +176,11 @@ function formOnSubmit(fm) {
 				</td>
 			</tr>
 			</table>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<label class="control-label" for="proxy"><span>Proxy</span></label>
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="proxy"><span>Proxy</span></label>
+		<div class="col-lg-10">
   <table cellspacing="0" cellpadding="1" border="0">
   <tr valign="top">
    <td>
@@ -192,81 +192,81 @@ function formOnSubmit(fm) {
    </td>
   </tr>
   </table>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 	<p class="lead">Initialization</p><!-- .lead -->
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="radio" name="initialization:int" value="1" checked="checked"/>
 			<span>with default content</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="radio" name="initialization:int" value="3"/>
 			<span>with ZMS2Go content</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="radio" name="initialization:int" value="2"/>
 			<span>with eLearning components</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="radio" name="initialization:int" value="0"/>
 			<span>None</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 	<p class="lead">Configuration</p><!-- .lead -->
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="zmslog:int" value="1" checked="checked"/>
 			<span>Add ZMS Log</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/>
 			<span>Add Galleria</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="specobj_exampledb:int" value="1"/>
 			<span>Add Example Database</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="specobj_discussions:int" value="1"/>
 			<span>Add Bulletin Board</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="specobj_newsletter:int" value="1"/>
 			<span>Add Newsletter</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<input type="checkbox" name="specobj_calendar:int" value="1"/>
 			<span>Add Calendar</span>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 	<hr size="1"/>
 
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="col-lg-10">
 			<button type="submit" name="btn" value="Add" class="btn btn-primary">Add</button>
 			<button type="submit" name="btn" value="Cancel" class="btn">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
 
 </form>
 

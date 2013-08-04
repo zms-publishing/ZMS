@@ -47,7 +47,6 @@
 ################################################################################
 </dtml-comment>
 <dtml-elif "type in ['select', 'multiline']">
- <div class="<dtml-var css>">
   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
    <dtml-if "type=='multiline'">
     multiple="multiple" size="<dtml-var "min(5,len(REQUEST['optpl']))">"
@@ -70,7 +69,6 @@
     </dtml-let>
    </dtml-in>
   </select>
- </div>
 
 <dtml-comment>
 ################################################################################
@@ -86,10 +84,9 @@
   <col />
  </colgroup>
  <tr valign="top">
- <td class="<dtml-var css>">
+ <td>
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></div>
-  <div class="<dtml-var css>">
-   <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')">
+  <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">
@@ -104,8 +101,7 @@
       </dtml-try>
      </dtml-let>
     </dtml-in>
-   </select>
-  </div>
+  </select>
  </td>
  <td>
   <div class="form-small"><br/></div>
@@ -116,10 +112,9 @@
    <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
   </div>
  </td>
- <td class="<dtml-var css>">
+ <td>
   <div class="form-small"><dtml-var "getZMILangStr('ATTR_SELECTED')"></div>
-  <div class="<dtml-var css>">
-   <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')">
+  <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">
@@ -134,8 +129,7 @@
       </dtml-if>
      </dtml-let>
     </dtml-in>
-   </select>
-  </div>
+  </select>
  </td>
  </tr>
  </table>

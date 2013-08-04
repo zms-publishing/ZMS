@@ -16,10 +16,10 @@
 	</a>
 </legend>
 
-<div class="control-group">
-	<label class="control-label" for="path"><span>Path</span></label>
-	<div class="controls"><code tal:content="path">the path</code></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="path"><span>Path</span></label>
+	<div class="col-lg-10"><code tal:content="path">the path</code></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
 <tal:block tal:condition="python:len(items)>0">
 <table class="table table-striped">

@@ -103,6 +103,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # ZPT Templates.
     # --------------
+    zmi_icon = PageTemplateFile('zpt/common/zmi_icon', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_manage_tabs_message = PageTemplateFile('zpt/common/zmi_manage_tabs_message', globals())
     zmi_body_footer = PageTemplateFile('zpt/common/zmi_body_footer', globals())
@@ -497,7 +498,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             elif metaObjAttr['type'] == 'constant':
               icon_clazz = metaObjAttr.get('custom',None)
             if icon_clazz:
-              return '<i class="%s" title="%s"></i>'%(icon_clazz,icon_title)
+              return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':

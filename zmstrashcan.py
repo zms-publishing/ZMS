@@ -109,7 +109,8 @@ class ZMSTrashcan(ZMSContainerObject):
           key = 'icon_disabled'
         obj_type = self.meta_id
       if zpt:
-        return '<i class="icon-trash"></i>'
+        icon_clazz = 'icon-trash'
+        return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
       return pattern%getattr(self,key)
 
 

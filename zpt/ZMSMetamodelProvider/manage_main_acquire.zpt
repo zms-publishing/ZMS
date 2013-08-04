@@ -33,7 +33,7 @@
 		<input type="hidden" name="immediately:int" value="1">
 		<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')">
 			<tal:block tal:repeat="acquireObj acquireObjs">
-				<div class="control-group" tal:condition="python:acquireObj[1] in temp_ids" tal:define="global masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
+				<div class="form-group" tal:condition="python:acquireObj[1] in temp_ids" tal:define="global masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
 					<input type="checkbox" name="aq_ids:list" tal:attributes="value masterMetaObj/id; title masterMetaObj/id" checked="checked">
 					<i tal:condition="python:masterMetaObj['id'] not in metaObjIds" class="icon-plus"></i>
 					<i tal:condition="python:masterMetaObj['type']=='ZMSPackage'" class="icon-briefcase"></i>
@@ -44,29 +44,29 @@
 					</tal:block>
 					<tal:block tal:content="masterMetaObj/revision">the revision</tal:block>
 					(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%masterMetaObj['type'].upper())">the type</tal:block>)
-				</div><!-- .control-group -->
+				</div><!-- .form-group -->
 			</tal:block>
 		</tal:block>
-		<div class="control-group">
-			<div class="controls">
+		<div class="form-group">
+			<div class="col-lg-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
 </tal:block>
 
 <tal:block tal:condition="python:request.get('section')!='acquire'">
-		<div class="control-group">
+		<div class="form-group">
 			<select id="aq_ids" name="aq_ids:list" multiple="multiple">
 				<tal:block tal:repeat="acquireObj acquireObjs">
 					<option tal:attributes="value python:acquireObj[1]" tal:content="python:acquireObj[2]">acquireObj</option>
 				</tal:block>
 			</select>
-		</div><!-- .control-group -->
-		<div class="control-group">
-			<div class="controls">
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<div class="col-lg-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
-			</div><!-- .controls -->
-		</div><!-- .control-group -->
+			</div><!-- .col-lg-10 -->
+		</div><!-- .form-group -->
 </tal:block>
 
 	</form>

@@ -18,41 +18,41 @@ and whether the entries should be copied to Zope's event log
 file(s).
 </p>
 
-<div class="control-group">
-	<label class="control-label" for="keep_entries:int"><span>Number of entries to keep</span></label>
-	<div class="controls"><input type="text" name="keep_entries:int" size="8" tal:attributes="value python:here.keep_entries"/></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="keep_entries:int"><span>Number of entries to keep</span></label>
+	<div class="col-lg-10"><input type="text" name="keep_entries:int" size="8" tal:attributes="value python:here.keep_entries"/></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<label class="control-label" for="copy_to_zlog"><span>Copy entries to the event log</span></label>
-	<div class="controls"><input type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="copy_to_zlog"><span>Copy entries to the event log</span></label>
+	<div class="col-lg-10"><input type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<label class="control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
-	<div class="controls"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div><!-- .controls -->
-</div><!-- .control-group -->
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
+	<div class="col-lg-10"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<label class="control-label" for="logged_entries:list"><span>Logged entry types</span></label>
-	<div class="controls">
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="logged_entries:list"><span>Logged entry types</span></label>
+	<div class="col-lg-10">
 		<select name="logged_entries:list" multiple="multiple" size="3">
 		<tal:block tal:repeat="item python:['DEBUG','INFO','ERROR']">
 			<option tal:attributes="value item; selected python:['','selected'][int(item in here.logged_entries)]" tal:content="item">the item</option>
 		</tal:block>
 		</select>
-	</div><!-- .controls -->
-</div><!-- .control-group -->
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
-<div class="control-group">
-	<div class="controls">
+<div class="form-group">
+	<div class="col-lg-10">
 		<button name="submit" type="submit" class="btn btn-primary" value=" Save Changes "> Save Changes </button>
-	</div><!-- .controls -->
-</div><!-- .control-group -->
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
 
 <div class="accordion-group perc100">
 	<div class="accordion-heading">
-		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><i class="icon-download-alt"></i></a>
+		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></a>
 		<a class="pull-left accordion-toggle" href="#">Log (most recent first)</a>
 	</div><!-- .accordion-heading -->
 	<div class="accordion-body">

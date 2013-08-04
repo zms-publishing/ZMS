@@ -9,15 +9,15 @@
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="col-lg-10">
 			<textarea class="input-xxlarge perc90" name="el_data:text" cols="50" rows="25" tal:content="python:request.get('el_data','<Enter SQL here...>')">Enter SQL here...</textarea>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="col-lg-10">
 			<button type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_EXECUTE')" tal:content="python:here.getZMILangStr('BTN_EXECUTE')">Execute</button>
-			<button type="reset" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')" tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</button>
+			<button type="reset" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET')" tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</button>
 		</div>
 	</div>
 </form>

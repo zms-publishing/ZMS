@@ -86,7 +86,7 @@ function zmiFormSubmit(sender,d) {
 		<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 		<th class="meta-mandatory"  tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
 		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
-		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block>></th>
+		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block></th>
 		<th></th>
 	</tr>
 	</thead>

@@ -556,6 +556,18 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas table.meta-access textarea  {
 	width:160px;
 }
+.zmi.metas select.form-control {
+	padding: 4px 8px 4px 4px !important;
+	height:auto  !important;
+}
+.zmi.metas .form-group.meta_id div,
+.zmi.metas .form-group.meta_name div,
+.zmi.metas .form-group.meta_type div,
+.zmi.metas .form-group.meta_revision div,
+.zmi.metas .form-group.meta_package div {
+	padding-left:1em;
+}
+
 .zmi.metas table.meta-access {
 	margin:4em 0 0;
 }
@@ -590,7 +602,7 @@ tr.row_insert td:first-child {
 	color:#999;
 }
 tr.row_insert td.meta-sort {
-	padding: 0.9em 1.8em !important;
+	padding: 0.9em 1.2em !important;
 }
 .zmi.metas td.meta-mandatory,
 .zmi.metas td.meta-multilang,
@@ -600,6 +612,10 @@ tr.row_insert td.meta-sort {
 #zmi-single-line-edit textarea {
 	font-family:"Courier New", Courier, monospace;
 }
+.zmi.metas span.input-group-addon {
+	width:29px !important;
+}
+
 div.zmi-nodes span {
 	cursor:pointer;
 }

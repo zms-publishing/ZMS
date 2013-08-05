@@ -111,7 +111,7 @@ function zmiFormSubmit(sender,d) {
 			<input type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']">
 		</td>
 		<td class="meta-type">
-			<select tal:attributes="name python:'attr_type_%s'%metadictAttr['id']">
+			<select class="form-control" tal:attributes="name python:'attr_type_%s'%metadictAttr['id']">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>

@@ -1110,3 +1110,21 @@ body.zmi.metas .meta-sort .add-on.btn:hover {
 	color: #A03F3F !important;
 
 }
+.tabbable .nav-tabs {
+	padding: 0 2em;
+	margin: 0 2em;
+}
+.tabbable .nav-tabs li.active a {
+	background-color: #fff !important;
+	font-weight:normal;
+}
+.tabbable legend {
+	display:none;
+}
+.tabbable .tab-pane form {
+	padding:2em;
+	border-radius:4px;
+	border-bottom:1px solid #ccc;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+}

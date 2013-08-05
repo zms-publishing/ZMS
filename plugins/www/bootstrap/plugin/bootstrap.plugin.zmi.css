@@ -567,7 +567,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas .form-group.meta_package div {
 	padding-left:1em;
 }
-
+.zmi.metas input[type="file"] {
+	display: inline-block;
+}
 .zmi.metas table.meta-access {
 	margin:4em 0 0;
 }

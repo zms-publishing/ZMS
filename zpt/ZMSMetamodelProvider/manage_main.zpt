@@ -266,7 +266,7 @@ $(function() {
 								<textarea
 									tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
 											class python:''.join(objAttr['type'].lower().split(' '));
-											data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 3px 6px no-repeat no-repeat';
+											data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 6px 6px no-repeat no-repeat';
 											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
 									tal:content="objAttr/name">name</textarea>
 							</div>
@@ -284,7 +284,7 @@ $(function() {
 									<textarea 
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
 											class python:''.join(objAttr['type'].lower().split(' '));
-											data-style python:'background: #eee url(%s) 3px 6px no-repeat no-repeat'%(ob.icon);
+											data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
 											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
 										tal:content="objAttr/custom">custom</textarea>
 								</div>

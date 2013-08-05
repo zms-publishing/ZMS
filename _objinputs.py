@@ -44,8 +44,6 @@ class ObjInputs:
     styles = ['float:left']
     if size:
       styles.append( 'width:%iem'%size)
-    else:
-      styles.append( 'width:80%')
     html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input',extra=' style="%s"'%(';'.join(styles))))
     ref_obj = self.getLinkObj(value,REQUEST)
     if ref_obj is not None:
@@ -166,8 +164,6 @@ class ObjInputs:
       styles = []
       if size:
         styles.append( 'width:%iem'%size)
-      else:
-        styles.append( 'width:80%')
       if elName.endswith(':int'):
         styles.append( 'text-align:right')
       html.append(' style="%s"'%(';'.join(styles)))
@@ -273,8 +269,6 @@ class ObjInputs:
       styles = []
       if cols:
         styles.append( 'width:%iem'%cols)
-      else:
-        styles.append( 'width:80%')
       html.append(' style="%s"'%(';'.join(styles)))
     if not enabled:
       html.append(' disabled="disabled"')

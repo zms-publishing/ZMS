@@ -11,15 +11,6 @@
 <dtml-unless "REQUEST.get('f_zmiFileUpload')">
 <link rel="stylesheet" type="text/css" href="/++resource++zms_/fileupload/ajax_upload/fileuploader.css" />
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/fileupload/ajax_upload/fileuploader.js"></script>
-<style>
-.qq-upload-button {
-	display:block; /* or inline-block */
-	text-align:center;
-	padding: 1px 3px;
-	margin:2px;
-	font-size: 10px;
-}
-</style>
 <dtml-call "REQUEST.set('f_zmiFileUpload',True)">
 </dtml-unless>
 <script>
@@ -83,7 +74,13 @@ $(function() {
 					alert(message);
 				}
 			});
-	$('.qq-upload-button').addClass('ui-button').addClass('ui-state-default').addClass('ui-corner-all');
+	var theme = getZMIConfProperty('zmi.theme','zpt');
+	if (theme == '') { theme = 'zpt'; }
+	if ( theme == '' || theme == 'zpt' ) {
+		$('.qq-upload-button').addClass('btn')
+	} else {
+		$('.qq-upload-button').addClass('ui-button').addClass('ui-state-default').addClass('ui-corner-all');
+	};
 });
 </script>
 <input type="text" name="file-uploader-modified-<dtml-var key>" value="" style="display:none;visibility:hidden;">

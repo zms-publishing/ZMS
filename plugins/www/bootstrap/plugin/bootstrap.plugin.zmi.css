@@ -5,6 +5,9 @@ body.zmi {
 .navbar-brand {
 	max-width:500px;
 	text-align:left;
+	margin:0;
+	float:left;
+	padding:12px 15px;
 }
 .zmi-manage-main-toggle {
 	display: block;
@@ -41,6 +44,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 #zmi-header .navbar {
 	margin:0;
+	min-height:42px;
 }
 #zmi-header .navbar-fixed-top .navbar-inner, 
 #zmi-header .navbar-fixed-bottom .navbar-inner {
@@ -281,6 +285,36 @@ form.form-insert a.accordion-toggle {
 	width:8.4em !important;
 }
 
+.zmi.properties .form-horizontal label.col-lg-2.control-label {
+	font-weight: normal;
+	color: #75A7C0;
+}
+.zmi.properties .form-horizontal .col-lg-10 .form-control {
+/* overwrite jquery-ui with bootstrap-defaults */
+	display: block;
+	width: 100%;
+	padding: 8px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555;
+}
+.zmi.properties .form-horizontal .col-lg-10 input[type="checkbox"] {
+	width:auto;
+	margin:0;
+}
+.zmi.properties .form-horizontal .form-group.activity .col-lg-10 {
+	padding-left: 2em;
+}
+.zmi.properties .form-horizontal .form-group.activity {
+	margin-bottom: 7px !important;    
+}
+.zmi.properties .form-horizontal .attr_last_modified {
+	white-space:nowrap;
+	overflow:hidden;
+	color:#888;
+}
+
+
 /*  Sitemap Menu 
     ------------------------------------------------------- */
 body.manage-menu .zmi-page {
@@ -294,7 +328,7 @@ body.manage-menu .zmi-sitemap ol {
 	margin-left:0;
 	padding-left:1em;
 }
-body.manage-menu .brand {
+body.manage-menu .navbar-brand {
 	font-size:100% !important;
 }
 
@@ -402,13 +436,14 @@ form.form-horizontal.form-insert {
 .perc100 {
 	width:100%!important;
 }
-.col-lg-2 control-label-ace-editor {
+.col-lg-2.control-label-ace-editor {
 	background-color:#EEE;
 	border-bottom:1px solid #CCC;
 	padding:2px;
 }
-.form-horizontal .col-lg-2 control-label.mandatory span.glyphicon-exclamation,
-.form-horizontal .col-lg-2 control-label.mandatory i.icon-exclamation {
+
+.form-horizontal .col-lg-2.control-label.mandatory span.glyphicon-exclamation,
+.form-horizontal .col-lg-2.control-label.mandatory i.icon-exclamation {
 	color:red;
 }
 .form-horizontal .col-lg-10 .pull-left {
@@ -449,7 +484,7 @@ div.single-line.input-append {
 	width:100%;
 }
 div.single-line textarea {
-	height:20px;
+	height:28px;
 	overflow:hidden;
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
@@ -469,7 +504,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	float:none;
 	text-align:left;
 }
-@media (min-width: 700px) {
+@media (min-width: 768px) {
 	.zmi.metas .horizontal-group,
 	.zmi.metas .horizontal-group .controls {
 		white-space:nowrap;
@@ -782,7 +817,7 @@ div.right span.form-small {
 }
 div.right .version_object_state {
 	float: left;
-	margin: 1px 9px;
+	margin: 1px 4px 0px 0px;
 }
 div.right a:hover, 
 div.right a:focus {
@@ -802,7 +837,7 @@ div.right .btn .caret {
  /* margin-top: 4px; */
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
 	body {
 		padding:0em !important
 	}
@@ -869,8 +904,11 @@ div.right .btn .caret {
 	img.grippy {
 		visibility:hidden;
 	}
-	.brand .slogan {
+	.navbar-brand .slogan {
 		display:none;
+	}
+	.navbar-nav>li {
+		float: left;
 	}
 	#zmi-logo {
 		display: none;
@@ -910,53 +948,37 @@ div.right .btn .caret {
 		background-color: #888 !important;
 		color:#fff;
 	}
+	.zmi.properties .form-horizontal {
+		margin-left:0;
+		margin-right:0;
+	}
 	.zmi.properties .accordion-group {
 		width:100%;
 	}
 	.zmi.properties .zmi-richtext .zmiNeutralColorMedium0 {
 		min-width:100% !important;
 	}
-	.zmi.properties .form-horizontal label.col-lg-2 control-label,
+	.zmi.properties .form-horizontal label.col-lg-2.control-label,
 	.zmi.properties .form-horizontal .controls {
 		margin-left: 0px;
 		width:auto;
 	}
-	.form-group.activity label.col-lg-2 control-label {
-		position: absolute;
-		display: block;
-		margin-bottom: 3em;
-	}
-	.form-group.activity .active {
-		margin: 0.6em 0 1em 1.35em !important;
-	}
-	#zmiIframe.form-group.activity .active {
-		margin: 0 !important;
-	}
-	.form-group.activity span.attr_active_start,
-	.form-group.activity span.attr_active_end {
-		position: relative;
-		display: block;
-		text-align: left;
-		clear: both;
-	}
-	.form-group.activity span.attr_active_start {
-		margin-bottom:1em;
-	}
-	.form-group.activity span.attr_active_start .form-label, 
-	.form-group.activity  span.attr_active_end .form-label {
-		display: inline-block;
-		width: 2em;
-	}
-	.zmi.properties .form-horizontal .col-lg-2 control-label {
+	.zmi.properties .form-horizontal .col-lg-2.control-label {
 		float: none;
 		text-align: left;
+	}
+	.zmi.properties .form-horizontal .form-group.activity .col-lg-2.control-label {
+		float: left;
+	}
+	.zmi.properties .form-horizontal .form-group.activity .col-lg-10 {
+		padding-left:4em;
 	}
 	.zmi-image,.zmi-file {
 		min-width:95%;
 	}
 }
 
-@media (min-width: 700px) {
+@media (min-width: 768px) {
 
 	div.zmi-action .dropdown-submenu>.dropdown-menu {
 		left: -160px;
@@ -977,4 +999,96 @@ button.ui-dialog-titlebar-close {
 	background-image: url(/++resource++zms_/bootstrap/img/glyphicons-halflings.png)!important;
 	background-position: -309px 2px!important;
 	background-repeat:no-repeat!important;
+}
+
+
+
+
+
+.dropdown-header {
+	padding: 3px 13px;
+	font-size: inherit;
+	color: #fff;
+	background-color: #818EA2;
+}
+li.zmi-item .btn.split-left,
+li.zmi-item .btn.split-right.dropdown-toggle {
+	width: 30px;
+	height: 30px;
+	padding: 3px 0px 0px 0px;
+	background-color: #eee;
+	border-color: rgba(0,0,0,0.1);
+}
+li.zmi-item .btn.split-left {
+	padding: 2px 0px 0px 10px;
+	color:#08c
+}
+li.zmi-item .btn.split-left:hover {
+	color:#222;
+}
+li.zmi-item span.zmi-ids {
+	position: absolute;
+	margin: 6px;
+}
+.zmi-manage-main-change {
+	color:#888;
+	font-size:11px;
+	margin-left:8px;
+}
+
+ul.zmi-container li.zmi-item div.zmiRenderShort {
+	min-height:54px;
+}
+.zmi ul.main-nav {
+	max-height: auto;
+}
+.nav>li>a {
+	padding: 8px 10px 7px 10px;
+	font-size:14px;
+}
+#zmi-header .navbar-nav.pull-right {
+	width:auto;
+	margin-top:4px;
+	margin-bottom:0px !important;
+}
+body.zmi.metas .input-group-addon {
+	padding: 0px 8px;
+}
+/* ##### METAS ##### */
+body.zmi.metas .grippy {
+	margin:6px 3px 0px 0px;
+	float:left;
+}
+body.zmi.metas select.zmi-sort {
+/* = BS30 form-control */
+	direction:rtl;
+	width: 3.8em;
+	height: 28px !important;
+	padding:4px 2px 4px 6px;
+	color: #555555;
+	vertical-align: middle;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+	float:left
+}
+
+body.zmi.metas .meta-sort .add-on.btn {
+	color: #888;
+	background: #eee;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border: 1px solid #ccc;
+	padding: 3px 6px;
+}
+body.zmi.metas .meta-sort .add-on.btn:hover {
+	background: #ddd;
+	color: #A03F3F !important;
+
 }

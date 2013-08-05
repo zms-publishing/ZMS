@@ -12,7 +12,7 @@
 	<div class="accordion-group">
 
 	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-		<div class="accordion-heading">
+		<div class="accordion-heading attr_last_modified">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
@@ -26,35 +26,25 @@
 				<div class="form-group">
 					<div class="col-lg-12">
 					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-					(
 					<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 						<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 					</tal:block>
 					<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 					<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-					)
 					</div><!-- .col-lg-12 -->
 				</div><!-- .form-group -->
-
 				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">
-					<label class="col-lg-2 control-label" for="attrActive">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</tal:block>
-					</label>
-					<div class="col-lg-10">
-						<div class="pull-left">
-							<tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block>
-						</div><!-- .pull-left -->
-						<tal:block tal:condition="python:'attr_active_start' in objAttrs.keys()">
-							<div class="pull-left"><label class="control-label" for="attr_active_start" tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</label></div>
-							<div class="pull-left"><tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block></div>
-						</tal:block>
-						<tal:block tal:condition="python:'attr_active_end' in objAttrs.keys()">
-							<div class="pull-left"><label class="control-label" for="attr_active_end" tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</label></div>
-							<div class="pull-left"><tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block></div>
-						</tal:block>
-					</div><!-- .col-lg-10 -->
-				</div><!-- .form-group -->
-
+					<label class="col-lg-2 control-label" for="attrActive"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>
+					<div class="col-lg-10"><tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block></div>
+				</div>
+				<div class="form-group activity_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
+					<label class="col-lg-2 control-label" for="attr_active_start"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
+					<div class="col-lg-10"><tal:block tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</tal:block></div>
+				</div>
+				<div class="form-group activity_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
+					<label class="col-lg-2 control-label" for="attr_active_end"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
+					<div class="col-lg-10"><tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block></div>
+				</div>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 	</tal:block>

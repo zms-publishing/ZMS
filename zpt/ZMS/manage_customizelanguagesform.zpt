@@ -48,13 +48,13 @@
 					<td><tal:block tal:content="langId">langId</tal:block></td>
 					<td><input type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>
-						<select tal:attributes="name python:'%s_parent'%langId">
+						<select class="form-control" tal:attributes="name python:'%s_parent'%langId">
 							<option value="" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_PRIMARY')">primary (*)</option>
 							<option tal:repeat="lang langIds" tal:attributes="value lang; selected python:['','selected'][int(langObj.get('parent')==lang)]" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 						</select>
 					</td>
 					<td>
-						<select tal:attributes="name python:'%s_manage'%langId">
+						<select class="form-control" tal:attributes="name python:'%s_manage'%langId">
 							<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang; selected python:['','selected'][int(langObj.get('manage')==manage_lang)]" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 						</select>
 					</td>
@@ -67,12 +67,12 @@
 		<td class="language_id"><input type="text" name="language_id"></td>
 		<td class="language_label"><input type="text" name="language_label"></td>
 		<td class="language_parent">
-			<select name="language_parent">
+			<select class="form-control" name="language_parent">
 				<option tal:repeat="lang langIds" tal:attributes="value lang" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 			</select>
 		</td>
 		<td>
-			<select name="language_manage">
+			<select class="form-control" name="language_manage">
 				<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 			</select>
 		</td>
@@ -141,7 +141,7 @@
 	<div class="form-group">
 		<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
 		<div class="col-lg-10">
-			<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
+			<select class="form-control" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
 			</select>
 		</div><!-- .col-lg-10 -->

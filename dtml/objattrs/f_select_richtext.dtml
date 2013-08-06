@@ -188,7 +188,7 @@ function zmiRichtextEditorShow( show_id, hide_id, format, callback) {
 <dtml-unless ZMS_INSERT>
  <dtml-if "'resources' in ob.getMetaobjAttrIds(ob.meta_id)">
   <span class="form-label"><img src="/misc_/zms/upload.gif" title="<dtml-var "ob.getZMILangStr('BTN_UPLOAD')">" border="0" align="absmiddle"/> <dtml-var "ob.getZMILangStr('CAPTION_INSERT')%('%s/%s'%(ob.getZMILangStr('ATTR_IMAGE'),ob.getZMILangStr('ATTR_FILE')))"></span>
-  <span class="form-element"><input class="form-element" type="file" name="resource_<dtml-var elName>"/></span>
+  <span class="form-element"><input class="form-element btn btn-file" type="file" name="resource_<dtml-var elName>"/></span>
   <hr size="1"/>
  </dtml-if>
 </dtml-unless>

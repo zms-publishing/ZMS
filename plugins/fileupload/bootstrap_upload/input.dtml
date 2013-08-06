@@ -1,0 +1,32 @@
+<!-- BO plugins/fileupload/bootstrap_upload/input.dtml -->
+
+<dtml-comment>
+################################################################################
+### Bootstrap Fileupload // AT WORK
+###  please refer to http://jasny.github.io/bootstrap/javascript.html#fileupload
+################################################################################
+</dtml-comment>
+
+<dtml-unless "REQUEST.get('f_zmiFileUpload')">
+<link rel="stylesheet" type="text/css" href="/++resource++zms_/fileupload/bootstrap_upload/bootstrap-fileupload.min.css" />
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/fileupload/bootstrap_upload/bootstrap-fileupload.min.css"></script>
+<dtml-call "REQUEST.set('f_zmiFileUpload',True)">
+</dtml-unless>
+
+<div title="WARNING: PROTOTYPE DOES NOT WORK"
+	class="fileupload fileupload-new" data-provides="fileupload">
+	<div class="input-append">
+		<div class="form-control uneditable-input" style="width:180px;float:left;">
+			<i class="icon-file fileupload-exists"></i>
+			<span class="fileupload-preview"></span>
+		</div>
+		<span class="btn btn-primary btn-file">
+			<span class="fileupload-new">Select file</span>
+			<span class="fileupload-exists">Change</span>
+			<input id="<dtml-var elName>" name="<dtml-var elName>" type="file" />
+		</span>
+		<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+	</div>
+</div>
+
+<!-- EO plugins/fileupload/bootstrap_upload/input.dtml -->

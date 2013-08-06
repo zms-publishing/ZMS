@@ -45,7 +45,7 @@
   </tr>
   <tr valign="middle">
    <td><div class="form-label"><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
-   <td><input class="form-element" name="file" type="file" size="25"></td>
+   <td><input class="form-element btn btn-file" name="file" type="file" size="25"></td>
   </tr>
   <tr valign="middle">
    <td>&nbsp;</td>

@@ -148,7 +148,7 @@ $(function() {
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
-				<div class="col-lg-10"><input type="file" name="file"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
@@ -184,7 +184,7 @@ $(function() {
 				<label for="inpIcon" class="col-lg-2 control-label"><span>Icon</span></label>
 				<div class="col-lg-10">
 					<div class="pull-left">
-						<input type="file" id="inpIcon" name="inpIcon"/>
+						<input class="btn btn-file" type="file" id="inpIcon" name="inpIcon" />
 					</div>
 					<div class="pull-right" tal:condition="python:activity.get('icon')">
 						<div class="zmi-image-preview">
@@ -288,7 +288,7 @@ $(function() {
 			</div><!-- .form-group -->
 			<div class="form-group newIcon">
 				<label for="newIcon" class="col-lg-2 control-label"><span>Icon</span></label>
-				<div class="col-lg-10"><input type="file" id="newIcon" name="newIcon"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="btn btn-file" type="file" id="newIcon" name="newIcon" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-lg-10">

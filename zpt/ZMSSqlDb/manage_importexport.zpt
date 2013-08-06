@@ -15,7 +15,7 @@
 	<div class="form-group">
 		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
 		<div class="col-lg-10">
-			<input type="file" name="file">
+			<input class="btn btn-file" name="file" type="file" />
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">

@@ -63,7 +63,7 @@ $(function(){
 			<div class="form-group">
 				<label for="new_btn" class="col-lg-2 control-label"><span>Button</span></label>
 				<div class="col-lg-10">
-					<input type="file" id="new_btn" name="new_btn">
+					<input class="btn btn-file" type="file" id="new_btn" name="new_btn" />
 					<tal:block tal:condition="python:format.get('btn')">
 						<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
 					</tal:block>
@@ -132,7 +132,7 @@ $(function(){
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
-				<div class="col-lg-10"><input type="file" name="file"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>

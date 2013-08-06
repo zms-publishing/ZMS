@@ -478,7 +478,7 @@ function followHref( href, extra) {
     <input class="form-small" type="text" name="url" size="25" value="<dtml-var "REQUEST.get('url','')">">
    </div>
    <div id="input_localfs" class="form-small ui-helper-hidden">
-    <input class="form-small" type="file" name="localfs" size="25" onchange="btnClick(this)"><br/>
+    <input class="form-small btn btn-file" type="file" name="localfs" size="25" onchange="btnClick(this)"><br/>
     <dtml-var "getZMILangStr('ACTION_SELECT')%getZMILangStr('ATTR_FILE')">
    </div>
   </td>

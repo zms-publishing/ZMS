@@ -572,7 +572,7 @@ function mms_normalize_rows(el_tbody) {
     <table cellspacing="0" cellpadding="2" border="0">
     <tr valign="middle">
      <td align="right"><div class="form-label"><img src="<dtml-var MISC_ZMS>upload.gif" title="XML" border="0" style="vertical-align:middle" /><dtml-var "getZMILangStr('ATTR_FILE')"></div></td>
-     <td><input class="form-element" name="file" type="file" size="25" accept="text/xml"></td>
+     <td><input class="form-element btn btn-file" name="file" type="file" size="25" accept="text/xml"></td>
     </tr>
     <tr>
      <td>&nbsp;</td>

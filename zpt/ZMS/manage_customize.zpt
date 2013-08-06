@@ -43,37 +43,34 @@ $(function() {
 			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
 					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
 			<div class="form-group">
-				<label class="col-lg-3 control-label" for="portal_master">ZMS base-components</label>
-				<div class="col-lg-5">
+				<label class="col-12" style="padding-left:15px;" for="portal_master">ZMS base-components</label>
+				<div class="col-5">
 					<select class="form-control" name="meta_type" onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 						<option value="">Select type to add...</option>
 						<tal:block tal:repeat="meta_type meta_types">
 							<option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value python:meta_type['action']" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
 						</tal:block>
 					</select>
-				</div><!-- .col-lg-9 -->
-				<div class="col-lg-1">
-					<button name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
-				</div><!-- .col-lg-1 -->
+				</div>
+				<button name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
 			</div><!-- .form-group -->
 			<tal:block tal:repeat="si python:here.objectValues(['ZCatalog','MediaDb']+map(lambda x: x['name'],meta_types))">
 			<div class="form-group">
-				<div class="col-lg-1" style="text-align:right">
+				<div class="col-1" style="text-align:right">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:si.id">
-				</div><!-- .col-lg-1 -->
-				<div class="col-lg-11">
+				</div><!-- .col-1 -->
+				<div class="col-11">
 					<a tal:attributes="href python:'%s/manage_main'%si.id">
 						<img tal:attributes="src python:si.icon"/>
 						<tal:block tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</tal:block>
 					</a>
-				</div><!-- .col-lg-11 -->
+				</div><!-- .col-11 -->
 			</div><!-- .form-group -->
 			</tal:block>
 			<div class="form-group">
-				<div class="col-lg-1">&nbsp;</div>
-				<div class="col-lg-11">
+				<div class="col-12">
 					<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
-				</div><!-- .col-lg-11 -->
+				</div><!-- .col-12 -->
 			</div><!-- .form-group -->
 			</tal:block>
 		</form>
@@ -115,7 +112,7 @@ $(function() {
 			<div class="form-group">
 				<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
 				<div class="col-lg-10">
-					<input name="file" type="file">
+					<input class="btn btn-file" name="file" type="file" />
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
@@ -162,7 +159,7 @@ $(function() {
 				{'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (semicolon separated).','datatype':'string','default':''},
 				{'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
 				{'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
-				{'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','ajax_upload','rad_upload']},
+				{'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','ajax_upload','rad_upload','bootstrap_upload']},
 				{'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
 				{'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
 				{'key':'ZMSGraphic.zmi_max_width','title':'Image.max_width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},
@@ -376,7 +373,7 @@ $(function() {
 				<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
 			</div>
 			<div class="pull-left">
-				<div class="single-line input-append zmi-nodes">
+				<div class="input-append zmi-nodes">
 					<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 				</div>
 			</div>

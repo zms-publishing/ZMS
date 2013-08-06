@@ -72,7 +72,7 @@ function uploadBtnClick() {
 <div class="form-group">
 	<label class="col-lg-2 control-label" for="file"><span>Upload file</span></label>
 	<div class="col-lg-10">
-		<input type="file" name="file" size="50"/>
+		<input class="btn btn-file" type="file" name="file" size="50" />
 		<button class="btn btn-inverse" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->

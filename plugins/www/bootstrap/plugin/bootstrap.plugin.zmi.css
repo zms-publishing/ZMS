@@ -94,6 +94,8 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 .zmi ul.breadcrumb {
 	clear:left;
+	padding: 1em 0 1em 1.8em;
+	margin-bottom: 0px !important;
 }
 .zmi ul.breadcrumb li {
 	white-space:nowrap;
@@ -101,8 +103,9 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi ul.breadcrumb li.active a {
 	color:black;
 }
-.zmi .breadcrumb > li > .divider {
-	color: #BBBBBB;
+.breadcrumb>li+li:before {
+	padding: 0 0 0 6px;
+	color:#888;
 }
 .center h1 {
 	padding:0.2em;
@@ -243,39 +246,39 @@ ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a {
 .accordion-group.zmi-container .accordion-inner {
 	border-top:transparent;
 }
-.accordion-group.zmi-container .zmi-container > .zmi-item > .center {
+.accordion-group.zmi-container ul.zmi-container > .zmi-item > .center {
 	width:800px!important;
 }
-.accordion-group.zmi-container .zmi-container {
+.accordion-group.zmi-container ul.zmi-container {
 	width:1000px!important;
 }
 form.form-insert a.accordion-toggle {
 	color:#08c;
 }
 
-.zmi-container > .zmi-item > .center {
+ul.zmi-container > .zmi-item > .center {
 	float:left;
 	width:600px!important;
 }
-.zmi-container {
+ul.zmi-container {
 	width:800px!important;
 }
-.zmi-container > .zmi-item > .right {
+ul.zmi-container > .zmi-item > .right {
 	float:left;
 	width:200px!important;
 }
-.zmi-container .zmi-item .clearboth {
+ul.zmi-container .zmi-item .clearboth {
 	float:none;
 	clear:both;
 }
-.zmi-container .zmi-item.pageelement .center .zmiRenderShort {
+ul.zmi-container .zmi-item.pageelement .center .zmiRenderShort {
 	border:1px solid white;
 	padding:3px 6px 3px 1.5em;
 	overflow:hidden;
 	background-color:white!important;
 	min-height:3.5em;
 }
-.zmi-container .zmi-item.pageelement .center > * {
+ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:1.5em;
 }
 .properties .form-group.activity input.form-element.datetimepicker {
@@ -285,11 +288,11 @@ form.form-insert a.accordion-toggle {
 	width:8.4em !important;
 }
 
-.zmi.properties .form-horizontal label.col-lg-2.control-label {
+.form-horizontal label.col-lg-2.control-label {
 	font-weight: normal;
 	color: #75A7C0;
 }
-.zmi.properties .form-horizontal .col-lg-10 .form-control {
+.form-horizontal .col-lg-10 .form-control {
 /* overwrite jquery-ui with bootstrap-defaults */
 	display: block;
 	width: 100%;
@@ -298,17 +301,17 @@ form.form-insert a.accordion-toggle {
 	line-height: 1.428571429;
 	color: #555;
 }
-.zmi.properties .form-horizontal .col-lg-10 input[type="checkbox"] {
+.form-horizontal .col-lg-10 input[type="checkbox"] {
 	width:auto;
 	margin:0;
 }
-.zmi.properties .form-horizontal .form-group.activity .col-lg-10 {
+.form-horizontal .form-group.activity .col-lg-10 {
 	padding-left: 2em;
 }
-.zmi.properties .form-horizontal .form-group.activity {
+.form-horizontal .form-group.activity {
 	margin-bottom: 7px !important;    
 }
-.zmi.properties .form-horizontal .attr_last_modified {
+.form-horizontal .attr_last_modified {
 	white-space:nowrap;
 	overflow:hidden;
 	color:#888;
@@ -380,13 +383,13 @@ body.manage-menu .zmi-helper-clickable:hover {
 	font-size: 14px;
 }
 
-.zmi-container .right div input {
+ul.zmi-container .right div input {
 	margin:8px;
 }
-.zmi-container .zmi-item .zmi-action {
+ul.zmi-container .zmi-item .zmi-action {
 	margin-left:-159px;
 }
-.zmi-container .zmi-item .zmi-action .split-left {
+ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
 	visibility:hidden;
 	text-align:left;
@@ -405,7 +408,7 @@ body.manage-menu .zmi-helper-clickable:hover {
 	font-weight:bold;
 	height:2.7em;
 }
-.zmi-container.pages .zmi-item .zmiRenderShort {
+ul.zmi-container.pages .zmi-item .zmiRenderShort {
 	padding-left:1.0em !important
 }
 form.form-horizontal {
@@ -631,6 +634,9 @@ div.zmi-nodes span {
 	background-color:#f5f5f5;
 	border-color:#ccc;
 }
+.btn-file {
+	background-color:#eee;
+}
 .zmi-image .filename,
 .zmi-file .filename {
 	color:#08c;
@@ -755,7 +761,7 @@ table.table.zmi-sortable input {
 .pagination {
 	white-space:nowrap;
 }
-.pagination ul > .active > a {
+.pagination > .active > a {
 	font-weight:bold;
 }
 
@@ -809,12 +815,12 @@ table.table.zmi-sortable input {
 .zmiDivOpaque {background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;}
 
 li.dropdown-submenu ul.dropdown-menu li a img {
-margin-right:0.5em
+	margin-right:0.5em
 }
 
 div.zmi-action > ul.dropdown-menu {
-margin-top:-1px;
-border-top-left-radius: 0;
+	margin-top:-1px;
+	border-top-left-radius: 0;
 }
 div.zmi-action > ul.dropdown-menu .icon-sort-up,
 div.zmi-action > ul.dropdown-menu .icon-sort-down {
@@ -888,21 +894,19 @@ div.right .btn .caret {
 	ul.zmi-container > li > div.right {
 		position: absolute;
 	}
-	.zmi-container .zmi-item .zmi-action {
+	ul.zmi-container .zmi-item .zmi-action {
 		margin-left:0px;
 	}
-	.zmi-container .zmi-item .zmi-action .split-left	{
+	ul.zmi-container .zmi-item .zmi-action .split-left	{
 		display:none !important;
 	}
-	ul.zmi-container > li.zmi-item .dropdown-submenu > .dropdown-menu {
-	}
 	ul.dropdown-menu {
-		margin-left:0px;
+		margin-left:2em;
 	}	
-	.zmi-container {
+	ul.zmi-container {
 		width: 100% !important;
 	}
-	.zmi-container .zmi-item .center {
+	ul.zmi-container .zmi-item .center {
 		width: 100% !important;
 	}
 	.zmi-item {
@@ -913,10 +917,10 @@ div.right .btn .caret {
 	.right span.zmi-ids {
 		display:none !important;
 	}
-	.zmi-container .center .zmiRenderShort {
+	ul.zmi-container .center .zmiRenderShort {
 		padding-left:3em !important
 	}
-	.zmi-container.pages .center .zmiRenderShort {
+	ul.zmi-container.pages .center .zmiRenderShort {
 		padding-left:2.5em !important
 	}
 	img.grippy {
@@ -1127,4 +1131,25 @@ body.zmi.metas .meta-sort .add-on.btn:hover {
 	border-bottom:1px solid #ccc;
 	border-left:1px solid #ccc;
 	border-right:1px solid #ccc;
+}
+body.tasks .form-horizontal,
+body.tasks table.table tbody tr td.data {
+	background-color:transparent;
+	white-space:normal;
+}
+body.tasks table.table {
+	background-color:#fff;
+	font-size: smaller;
+}
+body.tasks table.table ul.breadcrumb {
+	margin-left: 0;
+	padding: 0 0 1em 0;
+	background: transparent;
+}
+body.tasks .zmi-container .center .zmiRenderShort {
+	padding-left: 0 !important;
+}
+
+body.search .col-lg-10 .form-control {
+	max-width:30em;
 }

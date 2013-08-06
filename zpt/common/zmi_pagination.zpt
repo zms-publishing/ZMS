@@ -5,8 +5,7 @@
 		pageCount python:int(((size-1)/pageSize)+1);
 		url python:here.url_inherit_params(options.get('url',request['URL']),request,exclude=['pageIndex'],sep='&')">
 
-<div class="pagination pagination-centered" tal:condition="python:size>pageSize">
-	<ul>
+	<ul class="pagination pagination-centered" tal:condition="python:size>pageSize">
 		<li tal:attributes="class python:['','disabled'][int(pageIndex==0)]">
 			<a tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':pageIndex-1},sep='&')">&laquo;</a>
 		</li>
@@ -25,6 +24,5 @@
 			<a tal:attributes="href python:here.url_append_params(url,{'pageIndex:int':pageIndex+1},sep='&')">&raquo;</a>
 		</li>
 	</ul>
-</div>
 
 </tal:block>

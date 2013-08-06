@@ -105,11 +105,10 @@
  </td>
  <td>
   <div class="form-small"><br/></div>
-  <div class="zmiNeutralColorMedium0">
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&gt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
-   <div padding="1"><input class="ui-button ui-state-default ui-corner-all" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="width:20px;text-align:center;"/></div>
+   <input class="btn btn-default btn-xs" type="submit" value="&gt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
+   <input class="btn btn-default btn-xs" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
+   <input class="btn btn-default btn-xs" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
+   <input class="btn btn-default btn-xs" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
   </div>
  </td>
  <td>

@@ -120,7 +120,7 @@ $(function() {
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
-				<div class="col-lg-10"><input type="file" name="file"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
@@ -241,7 +241,7 @@ $(function() {
 					<tal:block tal:condition="python:process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or process.get('command','').find('{trans}')>=0">
 						<div class="pull-left">
 							<code>{trans}</code>
-							<input type="file" tal:attributes="name python:'newFilterProcessFile_%i'%pid"/>
+							<input class="btn btn-file" type="file" tal:attributes="name python:'newFilterProcessFile_%i'%pid" />
 						</div>
 						<div class="pull-left filterProcessFile" tal:condition="python:filterProcess.get('file_filename')">
 							<input type="checkbox" checked="checked"/>

@@ -20,13 +20,15 @@
 	<div class="form-group">
 		<label for="cssId" class="col-lg-2 control-label"><span>CSS</span></label>
 		<div class="col-lg-10">
-			<select name="cssId" onchange="location.href='?cssId='+this.options[this.selectedIndex].value+'&lang='+getZMILang()">
+			<select style="max-width:21em;" class="form-control" name="cssId" onchange="location.href='?cssId='+this.options[this.selectedIndex].value+'&lang='+getZMILang()">
 				<tal:block tal:repeat="stylesheet stylesheets">
 					<option tal:attributes="value python:stylesheet.id(); selected python:['','selected'][int(request.get('cssId')==stylesheet.id())]" tal:content="python:stylesheet.id()">id</option>
 				</tal:block>
 			</select>
 		</div><!-- .col-lg-10 -->
-	<div class="form-group">
+	</div>
+	<div class="form-group" style="margin-top:1em;">
+		<!--  
 		<label for="stylesheet:text" class="col-lg-2 control-label">
 			<table class="colorMap" tal:define="global colormap python:here.get_colormap()">
 				<tr tal:repeat="key python:colormap.keys()">
@@ -35,14 +37,15 @@
 				</tr>
 			</table>
 		</label>
-		<div class="col-lg-10">
-			<textarea class="input-xxlarge" style="width:99%" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
-		</div><!-- .col-lg-10 -->
+		 -->
+		<div class="col-lg-12">
+			<textarea class="form-control" style="font-family:courier" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
+		</div><!-- .col-lg-12 -->
 	</div><!-- .form-group -->
-	<div class="form-group">
+	<div class="form-group col-lg-12">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-lg-12 -->
 	</div><!-- .form-group -->
 	</tal:block>
 
@@ -50,7 +53,7 @@
 	<div class="form-group">
 		<label for="export_format" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</span></label>
 		<div class="col-lg-10">
-			<select name="export_format">
+			<select class="form-control" name="export_format" style="max-width:21em;margin-bottom:0.5em;">
 				<option value="ZEXP">ZEXP</option>
 			</select>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_EXPORT')" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Export</button>
@@ -59,7 +62,7 @@
 	<div class="form-group">
 		<label for="theme" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</span></label>
 		<div class="col-lg-10">
-			<input type="file" name="theme">
+			<input class="btn btn-file" name="theme" type="file" style="max-width:21em;margin-bottom:0.5em;" />
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
@@ -68,7 +71,7 @@
 	<div class="form-group">
 		<label for="file" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span></label>
 		<div class="col-lg-10">
-			<input type="file" name="file">
+			<input class="btn btn-file" name="file" type="file" style="max-width:21em;margin-bottom:0.5em;" />
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_UPLOAD')" tal:content="python:here.getZMILangStr('BTN_UPLOAD')">Upload</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->

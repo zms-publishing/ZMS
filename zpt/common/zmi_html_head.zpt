@@ -7,7 +7,6 @@
 	<tal:block tal:repeat="href python:[
 			'%s/f_css_defaults'%here.getDocumentElement().absolute_url(),
 			'/++resource++zms_/bootstrap/css/bootstrap.min.css',
-			'/++resource++zms_/bootstrap/css/bootstrap-glyphicons.css',
 			'/++resource++zms_/bootstrap/css/font-awesome.min.css',
 			'/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css',
 			here.getConfProperty('zmi.ui-bootstrap-addyosmani')]+

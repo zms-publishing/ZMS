@@ -32,7 +32,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// need to have in the Standard(s) toolbar.
 	config.removeButtons = 'Subscript,Superscript';
 
-	// Se the most common block elements.
+	// Set the most common block elements.
 	config.format_tags = 'p;h2;h3';
 
 

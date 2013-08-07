@@ -2,11 +2,12 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <script>
+//<!--
 function zmiToggleClick(toggle, callback) {
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
-	if ($(toggle).hasClass(zmi_icon_clazz("icon-chevron-right"))) {
-		$(toggle).removeClass(zmi_icon_clazz("icon-chevron-right")).addClass(zmi_icon_clazz("icon-chevron-down")).attr({title:'-'});
+	if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-right"))) {
+		$(toggle).removeClass(zmi_icon_clazz("icon-caret-right")).addClass(zmi_icon_clazz("icon-caret-down")).attr({title:'-'});
 		var href= '';
 		var homeId = $("a.navbar-brand span.zmi-home-id").text();
 		$(toggle).parents(".zmi-page").each(function(){
@@ -28,7 +29,7 @@ function zmiToggleClick(toggle, callback) {
 				// Get and iterate pages.
 				var pages = $("pages",data).children("page");
 				if ( pages.length == 0) {
-					$(toggle).removeClass(zmi_icon_clazz("icon-chevron-down")).attr({title:''});
+					$(toggle).removeClass(zmi_icon_clazz("icon-caret-down")).attr({title:''});
 				}
 				else {
 					for (var i = 0; i < pages.length; i++) {
@@ -50,7 +51,7 @@ function zmiToggleClick(toggle, callback) {
 							html += 'active ';
 						}
 						html += '">';
-						html += zmi_icon("icon-chevron-right",'title="+" onclick="zmiToggleClick(this)"')+' ';
+						html += zmi_icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
 						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
 						html += page_display_icon+' ';
 						html += page_titlealt;
@@ -65,8 +66,8 @@ function zmiToggleClick(toggle, callback) {
 				}
 			});
 	}
-	else if ($(toggle).hasClass(zmi_icon_class("icon-chevron-down"))) {
-		$(toggle).removeClass(zmi_icon_clazz("icon-chevron-down")).addClass(zmi_icon_clazz("icon-chevron-right")).attr({title:'+'});
+	else if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-down"))) {
+		$(toggle).removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")).attr({title:'+'});
 	}
 }
 function zmiFollowHref(anchor) {
@@ -94,7 +95,7 @@ function zmiRefresh() {
 				zmiToggleClick($('#'+homeId+'_'+id+' .toggle'),arguments.callee());
 			}
 		};
-	zmiToggleClick($('.toggle').removeClass(zmi_icon_clazz("icon-chevron-down")).addClass(zmi_icon_clazz("icon-chevron-right")),fn);
+	zmiToggleClick($('.toggle').removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")),fn);
 }
 $(function() {
 		zmiRefresh();
@@ -106,25 +107,26 @@ $(function() {
 <div id="zmi-header">
 	<div class="navbar navbar-inverse" style="position: static;">
 				<a class="navbar-brand" target="_blank" tal:attributes="href python:'%s/manage'%here.getHome().id">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block>
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
 					<span class="zmi-home-id" tal:content="python:here.getHome().id">Home-Id</span>
 				</a>
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
 
-<div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]">
-	<tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block>
-	<div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-chevron-right',extra='title=\"+\" onclick=\"zmiToggleClick(this)\"')"></tal:block><a 
-			tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
-			onclick="return zmiFollowHref(this)">
+<div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]"
+	><tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
+	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
+		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"
+			></tal:block><a 
+				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
+				onclick="return zmiFollowHref(this)">
 			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>
 	</div>
 	<tal:block tal:content="structure python:'</ol><!-- #%s_%s -->'%(childNode.getHome().id,childNode.id)"></tal:block>
 	<div>
- 		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
 	</div>
 </div>
 

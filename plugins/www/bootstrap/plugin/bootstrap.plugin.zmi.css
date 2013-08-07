@@ -7,7 +7,7 @@ body.zmi {
 	text-align:left;
 	margin:0;
 	float:left;
-	padding:12px 15px;
+	padding:10px 0px 0px 0px;
 }
 .zmi-manage-main-toggle {
 	display: block;
@@ -34,7 +34,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 #zmi-header {
 	background-color:black;
-	min-height:45px;
+	height:42px;
 }
 #zmi-header .product {
 	font-weight:bold;
@@ -44,6 +44,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 #zmi-header .navbar {
 	margin:0;
+	height:42px;
 	min-height:42px;
 }
 #zmi-header .navbar-fixed-top .navbar-inner, 
@@ -52,7 +53,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 
 .zmi.preview_top #zmi-header .pull-right {
-	padding-top:0.8em;
+	padding-top:0.7em;
 }
 .zmi.preview_top #zmi-header .pull-right * {
 	color:#BBB;
@@ -334,11 +335,13 @@ body.manage-menu .zmi-sitemap ol {
 body.manage-menu .navbar-brand {
 	font-size:100% !important;
 }
-
 body.manage-menu .toggle {
-	color:#888;
+	color:#CCCCCC;
+	font-size:120%;
 	vertical-align:bottom;
+	width:12px;
 	margin-right:2px;
+	text-align:center;
 	display:inline-block;
 	cursor:pointer;
 }

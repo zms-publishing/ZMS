@@ -27,7 +27,7 @@ $(function(){
 	zmiWriteDebug("BO bootstrap.plugin.zmi");
 
 	// Sitemap
-	var $icon_sitemap = $('#zmi-header a '+zmi_icon_selector("sitemap"));
+	var $icon_sitemap = $('#zmi-header a '+zmi_icon_selector("icon-sitemap"));
 	if ($icon_sitemap.length > 0) {
 		var $a = $icon_sitemap.closest("a");
 		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {

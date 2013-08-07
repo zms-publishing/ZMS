@@ -1077,6 +1077,14 @@ ul.zmi-container li.zmi-item div.zmiRenderShort {
 	margin-top:4px;
 	margin-bottom:0px !important;
 }
+@media (max-width: 420px) {
+	#zmi-header .navbar-brand {
+		display:none;
+	}
+	#zmi-header .navbar-nav.pull-right {
+		float:left;
+	}
+}
 body.zmi.metas .input-group-addon {
 	padding: 0px 8px;
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'textformats',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -178,8 +178,8 @@ $(function(){
 	<tbody>
 	<tal:block tal:repeat="format formats">
 		<tr>
-			<td>
-				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()">
+			<td style="text-align:center;">
+				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
 			<td>
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())" target="">
@@ -187,7 +187,7 @@ $(function(){
 					<tal:block tal:content="python:format.getId()">Id</tal:block>
 				</a>
 				<tal:block tal:condition="python:format.getId()==here.getTextFormatDefault()">(Default)</tal:block>
-				<div style="background-color:white;margin:.5em;border:1px dotted black;" tal:content="structure python:format.renderText(format.getDisplay(),request)">Render</div>
+				<div style="background-color:white;margin:.5em 0;border:1px dotted #888" tal:content="structure python:format.renderText(format.getDisplay(),request)">Render</div>
 			</td>
 		</tr>
 	</tal:block>

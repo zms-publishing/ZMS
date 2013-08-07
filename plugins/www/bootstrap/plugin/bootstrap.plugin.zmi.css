@@ -545,8 +545,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	}
 	.zmi.metas .horizontal-group .meta_package select {
 		width:19.2em;
-	
-	}	
+	}
+	.zmi.ZMSSqlDb .filters label,
+	.zmi.ZMSSqlDb .filters input,
+	.zmi.ZMSSqlDb .filters select {
+		display: block;
+	}
 }
 
 .zmi.metas table.table-striped td.meta-sort {
@@ -641,6 +645,8 @@ div.zmi-nodes span {
 }
 .btn-file {
 	background-color:#eee;
+	max-width:21em;
+	margin-bottom: 0.5em;
 }
 .zmi-image .filename,
 .zmi-file .filename {
@@ -766,10 +772,12 @@ table.table.zmi-sortable input {
 .pagination {
 	white-space:nowrap;
 }
+.pagination-centered {
+	margin:1em 2em;
+}
 .pagination > .active > a {
 	font-weight:bold;
 }
-
 .ZMSRecordSet .table tr td:first-child,
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;
@@ -807,9 +815,39 @@ table.table.zmi-sortable input {
 	height:auto;
 }
 
-.ZMSSqlDb #attrProperties .form-group select,
-.ZMSSqlDb #attrProperties .form-group input {
+.zmi.ZMSSqlDb #attrProperties .form-group select,
+.zmi.ZMSSqlDb #attrProperties .form-group input {
 	width:167px;
+	float:left;
+}
+.zmi.ZMSSqlDb .accordion-group {
+	border:0;
+}
+.zmi.ZMSSqlDb .form-horizontal {
+	border: 1px solid #e5e5e5;
+	border-radius: 4px;
+}
+.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
+	padding: 8px 3px 8px 15px;
+}
+.zmi.ZMSSqlDb .accordion-heading.filters {
+	margin:1em 0;
+}
+.zmi.ZMSSqlDb .filters label,
+.zmi.ZMSSqlDb .filters input,
+.zmi.ZMSSqlDb .filters select {
+	display: inline-block !important;
+	width: auto !important;
+}
+.zmi.ZMSSqlDb #qentity,
+.zmi.ZMSSqlDb #qsize {
+	margin-right:0.5em;
+}
+.zmi.ZMSSqlDb #attrProperties {
+	border:0;
+}
+.zmi.ZMSSqlDb #attrProperties .accordion-inner {
+	padding-top: 1.5em;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1084,6 +1122,9 @@ ul.zmi-container li.zmi-item div.zmiRenderShort {
 @media (max-width: 420px) {
 	#zmi-header .navbar-brand {
 		display:none;
+	}
+	body.manage-menu #zmi-header .navbar-brand {
+		display:block !important;
 	}
 	#zmi-header .navbar-nav.pull-right {
 		float:left;

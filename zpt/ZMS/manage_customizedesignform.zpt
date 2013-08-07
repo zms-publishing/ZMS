@@ -62,7 +62,7 @@
 	<div class="form-group">
 		<label for="theme" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</span></label>
 		<div class="col-lg-10">
-			<input class="btn btn-file" name="theme" type="file" style="max-width:21em;margin-bottom:0.5em;" />
+			<input class="btn btn-file" name="theme" type="file" />
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
@@ -71,7 +71,7 @@
 	<div class="form-group">
 		<label for="file" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span></label>
 		<div class="col-lg-10">
-			<input class="btn btn-file" name="file" type="file" style="max-width:21em;margin-bottom:0.5em;" />
+			<input class="btn btn-file" name="file" type="file" />
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_UPLOAD')" tal:content="python:here.getZMILangStr('BTN_UPLOAD')">Upload</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->

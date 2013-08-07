@@ -32,11 +32,11 @@ select.zmi-sort {
 .form-horizontal .form-group {
 	margin-bottom:0px;
 }
-.form-horizontal .form-group .col-lg-2 control-label {
+.form-horizontal .form-group .col-lg-2.control-label {
 	padding-top: 0px;
 	text-align: left;
 }
-.form-horizontal .form-group .col-lg-2 control-label.mandatory span {
+.form-horizontal .form-group .col-lg-2.control-label.mandatory span {
 	padding: 0px 3px;
 	border: 1px solid silver;
 	background:none !important;
@@ -479,14 +479,14 @@ function mms_normalize_rows(el_tbody) {
 			<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<div class="col-lg-10">
+			<div class="col-lg-12">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-			</div><!-- .col-lg-10 -->
+			</div><!-- .col-lg-12-->
 		</div><!-- .form-group -->
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-	<div class="btn-group">
+	<div class="btn-group" style="padding:1em;">
 		<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 	</div>
 	<br/>

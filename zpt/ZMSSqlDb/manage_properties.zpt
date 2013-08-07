@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'importexport',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas importexport',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -10,12 +10,12 @@
 </script>
 
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
 	<div class="form-group">
 		<label class="col-lg-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
 		<div class="col-lg-10">
-			<select name="connection_id" class="input-xxlarge">
+			<select class="form-control" name="connection_id">
 				<option value="">--- Select Connection Id ---</option>
 				<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
 					<option tal:attributes="value python:SQLConnectionID[0]; selected python:['','selected'][int(here.connection_id==SQLConnectionID[0])]">
@@ -28,7 +28,7 @@
 	<div class="form-group">
 		<label class="col-lg-2 control-label mandatory" for="max_rows"><span>Max. Rows</span></label>
 		<div class="col-lg-10">
-			<input type="text" class="input-mini" name="max_rows:int" tal:attributes="value python:getattr(here,'max_rows',999)">
+			<input class="form-control" type="text" class="input-mini" name="max_rows:int" tal:attributes="value python:getattr(here,'max_rows',999)" />
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
@@ -40,7 +40,7 @@
 	<div class="form-group">
 		<label class="col-lg-2 control-label mandatory" for="model"><span>Model</span></label>
 		<div class="col-lg-10">
-			<textarea name="model" class="input-xxlarge" tal:content="python:here.getModelContainer().raw">raw</textarea>
+			<textarea class="form-control" rows="20" name="model" tal:content="python:here.getModelContainer().raw">raw</textarea>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">

@@ -1797,7 +1797,7 @@ if align:
                   <item key="id"><![CDATA[inferface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global 
+                  <item key="name"><![CDATA[<div id="inferface0" tal:define="global 
 		zmscontext options/zmscontext; 
 		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
 		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
@@ -1875,42 +1875,29 @@ $(function() {
 
 //-->
 </script>
-
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<colgroup>
-	<col width="20%" />
-	<col width="80%" />
-</colgroup>
 <!--
 ################################################################################
 ##### Ref & Type: EDIT
 ################################################################################
 -->
-<tr valign="middle">
-	<td class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</td>
-	<td>
-		<div style="float:left" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
-		<div style="float:left">&nbsp;</div>
-		<div style="float:left" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
-	</td>
-</tr>
+<div class="form-group" id="tr_attr_ref">
+	<label class="col-lg-2 control-label" for="title_ger"><span tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</span></label>
+	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
+	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+</div>
 <!--
 ################################################################################
 ##### Embedded Object: PREVIEW
 ################################################################################
 -->
-<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-<tr valign="middle">
-	<td>&nbsp;</td>
-	<td tal:attributes="class python:['zmiNeutralColorWhite','zmiNeutralColorLight0'][int(zmscontext.isPage())]" style="border: 1px dashed black;" tal:content="structure python:zmscontext.renderShort(request)">
+<div class="attr_ref_preview" 
+	tal:condition="not:python:request.get('ZMS_INSERT')"
+	tal:attributes="style python:['background-color:#fff','background-color:#eee'][int(zmscontext.isPage())]"
+	tal:content="structure python:zmscontext.renderShort(request)">
 		renderShort
-	</td>
-</tr>
-</tal:block>
-</table>
-
+</div>
 <tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])"></tal:block>
-</tal:block>]]>
+</div>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -2156,7 +2143,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.0]]></item>
+          <item key="revision"><![CDATA[1.8.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

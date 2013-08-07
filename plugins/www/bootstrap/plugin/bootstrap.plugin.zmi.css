@@ -904,6 +904,9 @@ div.right .btn .caret {
 	ul.zmi-container .zmi-item .zmi-action .split-left	{
 		display:none !important;
 	}
+	.zmi-manage-main-change {
+		display:none !important;
+	}
 	ul.dropdown-menu {
 		margin-left:2em;
 	}	

@@ -122,6 +122,7 @@
 
 		<div id="attrProperties" class="accordion-body collapse in">
 			<div class="accordion-inner">
+				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<select class="form-control" tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column sessqentity/columns">

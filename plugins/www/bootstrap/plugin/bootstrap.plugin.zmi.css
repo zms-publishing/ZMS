@@ -778,6 +778,10 @@ table.table.zmi-sortable input {
 .pagination > .active > a {
 	font-weight:bold;
 }
+.ZMSRecordSet form {
+	margin-left:2em;
+	margin-rightt:2em;
+}
 .ZMSRecordSet .table tr td:first-child,
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;
@@ -801,18 +805,56 @@ table.table.zmi-sortable input {
 	padding:4px;
 	font-size:11px;
 }
-.ZMSRecordSet .table tr th:first-child .checkbox,
-.ZMSRecordSet .table tr td:first-child .checkbox,
+.ZMSRecordSet .table tr th:first-child input,
+.ZMSRecordSet .table tr td:first-child input,
 .ZMSSqlDb .table tr th:first-child .checkbox,
 .ZMSSqlDb .table tr td:first-child .checkbox {
-	padding:4px 4px 4px 8px;
 	font-size:11px;
+	border:1px solid #ccc;
+	height:28px;
+	width:5em;
+	margin:0px;
+	background:#DCE3F0;
+	text-align:left;
+	padding:0px;
+}
+.ZMSRecordSet .table tr th:first-child span:hover ,
+.ZMSRecordSet .table tr td:first-child span:hover ,
+.ZMSSqlDb .table tr th:first-child span:hover ,
+.ZMSSqlDb .table tr td:first-child span:hover {
+    color:#000 !important
+}
+.ZMSSqlDb .table tr td:first-child .checkbox input {
+	position:absolute;
+	margin-bottom:1em;
+	box-shadow:none !important;
+	display:block !important;
+	opacity:0.5;
+	float:left;
+	margin-top:-6px;
 }
 .ZMSRecordSet .table tr th:first-child .split-right,
 .ZMSRecordSet .table tr td:first-child .split-right,
 .ZMSSqlDb .table tr th:first-child .split-right,
 .ZMSSqlDb .table tr td:first-child .split-right {
-	height:auto;
+	height:28px;
+	margin:0px;
+	padding:0 0.5em;
+	background-color:#919EB3;
+}
+.ZMSRecordSet .table tr th:first-child .split-left,
+.ZMSRecordSet .table tr td:first-child .split-left,
+.ZMSSqlDb .table tr th:first-child .split-left,
+.ZMSSqlDb .table tr td:first-child .split-left {
+	height:28px;
+	padding:6px 0px 0px 6px;
+}
+
+.ZMSSqlDb .table ul.dropdown-menu {
+	font-size:14px;
+}
+.ZMSSqlDb .table ul.dropdown-menu i {
+	padding-right:0.5em;
 }
 
 .zmi.ZMSSqlDb #attrProperties .form-group select,
@@ -847,7 +889,10 @@ table.table.zmi-sortable input {
 	border:0;
 }
 .zmi.ZMSSqlDb #attrProperties .accordion-inner {
-	padding-top: 1.5em;
+	padding-top: 0.5em;
+}
+.zmi.ZMSSqlDb #attrProperties .accordion-inner label {
+	color:#999;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

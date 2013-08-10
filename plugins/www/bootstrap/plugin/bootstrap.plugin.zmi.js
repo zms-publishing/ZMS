@@ -576,7 +576,7 @@ function zmiIframe(href, data, opt) {
 	}
 	var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 	// Iframe
-	if (typeof opt['iframe'] != 'undefined') {
+	if (typeof opt['iframe'] != 'undefined' && $('#zmiIframe').length==0) {
 		$('#zmiIframe').append('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
 		opt["modal"] = true;
 		opt['maxHeight'] = maxHeight;

@@ -805,33 +805,36 @@ table.table.zmi-sortable input {
 	padding:4px;
 	font-size:11px;
 }
-.ZMSRecordSet .table tr th:first-child input,
-.ZMSRecordSet .table tr td:first-child input,
-.ZMSSqlDb .table tr th:first-child .checkbox,
-.ZMSSqlDb .table tr td:first-child .checkbox {
+.ZMSRecordSet .table tr th:first-child,
+.ZMSRecordSet .table tr td:first-child,
+.ZMSRecordSet .table tr th .btn-group,
+.ZMSRecordSet .table tr td .btn-group {
+	white-space:nowrap !important;
+	min-width:72px;
+}
+.ZMSRecordSet .table tr th .split-left,
+.ZMSRecordSet .table tr td .split-left,
+.ZMSSqlDb .table tr th .split-left,
+.ZMSSqlDb .table tr td .split-left {
 	font-size:11px;
 	border:1px solid #ccc;
-	height:28px;
-	width:5em;
 	margin:0px;
 	background:#DCE3F0;
-	text-align:left;
-	padding:0px;
+	padding:6px;
+	min-width:52px;
+	overflow:hidden;
+	height:28px;
+	}
+.ZMSSqlDb .table tr td:first-child .checkbox input {
+	opacity:0.5;
+	width:auto;
+	margin:-2px 0px 0px 0px
 }
 .ZMSRecordSet .table tr th:first-child span:hover ,
 .ZMSRecordSet .table tr td:first-child span:hover ,
-.ZMSSqlDb .table tr th:first-child span:hover ,
-.ZMSSqlDb .table tr td:first-child span:hover {
-    color:#000 !important
-}
-.ZMSSqlDb .table tr td:first-child .checkbox input {
-	position:absolute;
-	margin-bottom:1em;
-	box-shadow:none !important;
-	display:block !important;
-	opacity:0.5;
-	float:left;
-	margin-top:-6px;
+.ZMSSqlDb .table tr td span:hover ,
+.ZMSSqlDb .table tr td span:hover {
+	color:#000 !important
 }
 .ZMSRecordSet .table tr th:first-child .split-right,
 .ZMSRecordSet .table tr td:first-child .split-right,
@@ -842,21 +845,12 @@ table.table.zmi-sortable input {
 	padding:0 0.5em;
 	background-color:#919EB3;
 }
-.ZMSRecordSet .table tr th:first-child .split-left,
-.ZMSRecordSet .table tr td:first-child .split-left,
-.ZMSSqlDb .table tr th:first-child .split-left,
-.ZMSSqlDb .table tr td:first-child .split-left {
-	height:28px;
-	padding:6px 0px 0px 6px;
-}
-
 .ZMSSqlDb .table ul.dropdown-menu {
 	font-size:14px;
 }
 .ZMSSqlDb .table ul.dropdown-menu i {
 	padding-right:0.5em;
 }
-
 .zmi.ZMSSqlDb #attrProperties .form-group select,
 .zmi.ZMSSqlDb #attrProperties .form-group input {
 	width:167px;

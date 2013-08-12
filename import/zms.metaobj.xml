@@ -1508,9 +1508,7 @@ return context.str_json(result)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global 
-		zmscontext options/zmscontext">
-
+                  <item key="name"><![CDATA[<tal:block tal:define="global zmscontext options/zmscontext">
 <!--
 ################################################################################
 ##### Align: EDIT
@@ -1529,11 +1527,8 @@ return context.str_json(result)
 	</table>
 </tal:block>
 
-<table cellspacing="1" cellpadding="2" border="0" class="zmiNeutralColorStrong0">
-<tr class="zmiNeutralColorMedium0">
-	<td colspan="5" tal:content="structure python:here.f_headline(headline=here.getZMILangStr('BTN_ADD'))">Add</td>
-</tr>
-<tr valign="top" class="zmiNeutralColorStrong0">
+<table cellspacing="1" cellpadding="2" border="0"  style="margin-top:1em;">
+<tr>
 	<td> &nbsp; </td>
 	<td>
 		<span class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</span>
@@ -1554,13 +1549,13 @@ return context.str_json(result)
 ################################################################################
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
-<tr valign="top" class="zmiNeutralColorMedium0">
-	<td align="right"><img src="/misc/zms/btn_add.gif" border="0" class="button"/></td>
+<tr style="vertical-align:top;">
+	<td style="text-align:right;"><img src="/misc_/zms/btn_add.gif" border="0" class="btn" /></td>
 	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
 	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
 	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
-	<td width="100">
-		<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
+	<td style="width:100px;">
+		<input class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
 		&nbsp;&nbsp;
 	</td>
 </tr>
@@ -1572,8 +1567,8 @@ return context.str_json(result)
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', None)"></tal:block>
 <tal:block tal:define="global childNodes python:zmscontext.getObjChildren('e',request)">
-<tr valign="top" class="zmiNeutralColorLight0" tal:repeat="childNode childNodes">
-	<td align="center" class="zmiNeutralColorMedium0">
+<tr tal:repeat="childNode childNodes" style="vertical-align:top;">
+	<td>
 		<nobr>
 			<select class="form-small" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
 				<tal:block tal:repeat="seqindex python:range(len(childNodes))">
@@ -1583,10 +1578,10 @@ return context.str_json(result)
 			<a tal:attributes="href python:'javascript:confirmDeleteBtnOnClick(\'manage_deleteObjs?ids:list=%s&preview=preview\')'%childNode.id" class="button"><img src="/misc_/zms/btn_trashcan1.gif" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')" border="0"></a>
 		</nobr>
 	</td>
-	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='url%s'%id,elTextName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='title%s'%id,size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='description%s'%id,cols=20,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
-	<td width="100" class="zmiNeutralColorMedium0">
+	<td class="form-small" tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
+	<td class="form-small" tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=20,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
+	<td style="width:100px;">
 		<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
 			the info child-node
 		</div>
@@ -1722,7 +1717,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.0]]></item>
+          <item key="revision"><![CDATA[1.8.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

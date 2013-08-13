@@ -164,7 +164,7 @@ $(function() {
 				{'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
 				{'key':'ZMSGraphic.zmi_max_width','title':'Image.max_width in ZMI','desc':'Maximum width for display of standard image-objects in ZMS Management Interface (ZMI).','datatype':'int','default':400},
 				{'key':'ZMSGraphic.px2em','title':'Image.px to em conversion','desc':'Scale-factor for px to em conversion in ZMS barrier-free standard image-objects depending on the CSS used for this instance.(1em in px, e.g. 16)','datatype':'string'},
-				{'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean'},
+				{'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
 				{'key':'ZCatalog.portalClients','title':'Search portal-clients','desc':'Allow search in portal-clients','datatype':'boolean','default':1},
 				{'key':'ZCatalog.TextIndexNG','title':'Search binaries with TextIndexNG','desc':'Use TextIndexNG for catalog-indexing of binaries.','datatype':'boolean'},
 				{'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
@@ -201,8 +201,8 @@ $(function() {
 							<tal:block tal:condition="python:not (res_item['datatype']=='boolean' or res_item.has_key('options'))">
 								<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
 							</tal:block>
-							<tal:block tal:condition="python:res_item['datatype']=='boolean'">
-								<input type="checkbox" id="conf_value" name="conf_value" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',0)) in [1,True])]">
+							<tal:block tal:condition="python:res_item['datatype']=='boolean' and not res_item.has_key('options')">
+								<input type="checkbox" id="conf_value" name="conf_value:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',0)) in [1,True])]">
 							</tal:block>
 							<tal:block tal:condition="python:res_item.has_key('options')">
 								<select class="form-control" id="conf_value" name="conf_value">

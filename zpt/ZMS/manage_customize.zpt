@@ -31,47 +31,40 @@ $(function() {
 		<li><a href="#Maintenance" data-toggle="tab">Maintenance</a></li>
 		<li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
 		<li><a href="#History" data-toggle="tab">History</a></li>
-		<li><a href="#InstalledLibraries" data-toggle="tab">Installed Libraries</a></li>
+		<li><a href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
 	</ul>
 	<div class="tab-content">
 
 		<div class="tab-pane active" id="Manager">
 		<form class="form-horizontal" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-			<input type="hidden" name="key" value="Manager">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+			<input type="hidden" name="key" value="Manager" />
 			<legend>Manager</legend>
 			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
 					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
 			<div class="form-group">
-				<label class="col-12" style="padding-left:15px;" for="portal_master">ZMS base-components</label>
-				<div class="col-5">
-					<select class="form-control" name="meta_type" onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+				<label style="padding-left:15px;" for="meta_type">ZMS base-components</label>
+				<div class="form-group">
+					<select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
+						onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 						<option value="">Select type to add...</option>
 						<tal:block tal:repeat="meta_type meta_types">
 							<option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value python:meta_type['action']" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
 						</tal:block>
 					</select>
+					<button style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
 				</div>
-				<button name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
 			</div><!-- .form-group -->
 			<tal:block tal:repeat="si python:here.objectValues(['ZCatalog','MediaDb']+map(lambda x: x['name'],meta_types))">
-			<div class="form-group">
-				<div class="col-1" style="text-align:right">
-					<input type="checkbox" name="ids:list" tal:attributes="value python:si.id">
-				</div><!-- .col-1 -->
-				<div class="col-11">
+			<div class="form-group" style="padding-left:1em;">
+					<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
 					<a tal:attributes="href python:'%s/manage_main'%si.id">
 						<img tal:attributes="src python:si.icon"/>
 						<tal:block tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</tal:block>
 					</a>
-				</div><!-- .col-11 -->
 			</div><!-- .form-group -->
 			</tal:block>
-			<div class="form-group">
-				<div class="col-12">
-					<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
-				</div><!-- .col-12 -->
-			</div><!-- .form-group -->
+			<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
 			</tal:block>
 		</form>
 		</div>
@@ -361,38 +354,65 @@ $(function() {
 		</div>
 
 		<div class="tab-pane" id="History">
-<form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" name="key" value="History">
-	<legend>History</legend>
-	<p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
-	<div class="form-group">
-	<label class="col-lg-2 control-label" for="history_active">Active</label>
-		<div class="col-lg-10">
-			<div class="pull-left">
-				<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]">
-			</div>
-			<div class="pull-left">
-				<div class="input-append zmi-nodes">
-					<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-				</div>
-			</div>
-		</div><!-- .col-lg-10 -->
-	</div><!-- .form-group -->
-	<div class="form-group">
-		<div class="col-lg-2">&nbsp;</div>
-		<div class="col-lg-10">
-			<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-		</div><!-- .col-lg-10 -->
-	</div><!-- .form-group -->
-</form>
+		<form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+			<input type="hidden" name="key" value="History" />
+			<legend>History</legend>
+			<p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
+			<div class="form-group">
+			<label class="col-lg-2 control-label" for="history_active">Active</label>
+				<div class="col-lg-10">
+					<div class="pull-left">
+						<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" />
+					</div>
+					<div class="pull-left">
+						<div class="input-append zmi-nodes">
+							<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+						</div>
+					</div>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<div class="col-lg-2">&nbsp;</div>
+				<div class="col-lg-10">
+					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+		</form>
 		</div>
 
-		<div class="tab-pane" id="InstalledLibraries">
+		<div class="tab-pane" id="InstalledProducts">
 		<form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-			<input type="hidden" name="key" value="InstalledProducts">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+			<input type="hidden" name="key" value="InstalledProducts" />
 			<legend>Installed Libraries</legend>
+			<p class="well well-small">Further python libraries and products extending ZMS.</p>
+			<div class="form-group">
+			<label class="col-lg-2 control-label" for="pil">
+				<input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(here.pilutil().enabled())]" />
+				Python Imaging Library (PIL)
+			</label>
+				<div class="col-lg-10">
+					<div class="pull-left" tal:condition="python: here.pilutil().enabled()">
+						<table class="input-append">
+							<tr>
+								<td>HighRes with Auto-Thumbnail max.</td>
+								<td><input type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max',100)" size="4" style="text-align:right" />px</td>
+							</tr>
+							<tr>
+								<td>SuperRes with Auto-HighRes max.</td>
+								<td><input type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)" size="4" style="text-align:right" />px</td>
+							</tr>
+						</table>
+					</div>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<div class="col-lg-2">&nbsp;</div>
+				<div class="col-lg-10">
+					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
 		</form>
 		</div>
 

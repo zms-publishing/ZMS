@@ -7,7 +7,7 @@ body.zmi {
 	text-align:left;
 	margin:0;
 	float:left;
-	padding:10px 0px 0px 0px;
+	padding:10px 0px 0px 15px;
 	position:absolute;
 }
 .zmi-manage-main-toggle {
@@ -311,14 +311,17 @@ ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left: 2em;
 }
 .form-horizontal .form-group.activity {
-	margin-bottom: 7px !important;    
+	margin-bottom: 7px !important;
 }
 .form-horizontal .attr_last_modified {
 	white-space:nowrap;
 	overflow:hidden;
 	color:#888;
 }
-
+.form-horizontal .attr_last_modified div.pull-left {
+	padding:0 0 0 1em !important;
+	margin:0 !important;
+}
 
 /*  Sitemap Menu 
     ------------------------------------------------------- */
@@ -419,20 +422,29 @@ form.form-horizontal {
 	background-color:#fff;
 	margin-left:2em;
 	margin-right:2em;
-	padding:0.5em;
+	padding:0.5em
 }
 form.form-horizontal.form-insert {
 	margin:0;
 }
 .zmi.properties form.form-horizontal {
 	background-color:transparent;
+	padding:0;
 }
 .zmi.properties .accordion-group {
 	background-color: #fff;
 	width:800px;
 }
-.form-group.activity input.form-checkbox {
-	margin: 0 4px;
+.zmi.properties .accordion-group .accordion-heading {
+	padding:0.5em
+}
+.zmi.properties .accordion-group .accordion-inner {
+	padding:0.5em 0;
+	margin:0.5em 0;
+}
+
+.form-group.activity input.form-checkbox { 
+
 }
 .perc50 {
 	width:50%!important;
@@ -645,7 +657,6 @@ div.zmi-nodes span {
 }
 .btn-file {
 	background-color:#eee;
-	max-width:21em;
 	margin-bottom: 0.5em;
 }
 .zmi-image .filename,
@@ -1140,7 +1151,7 @@ li.zmi-item span.zmi-ids {
 .zmi-manage-main-change {
 	color:#888;
 	font-size:11px;
-	margin-left:8px;
+	margin:5px 0 0 8px;
 }
 
 ul.zmi-container li.zmi-item div.zmiRenderShort {

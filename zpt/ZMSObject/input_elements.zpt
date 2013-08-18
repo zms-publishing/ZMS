@@ -63,10 +63,10 @@
 							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
 							and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
 						<div class="form-group"  tal:attributes="id python:'tr_%s'%(elName)">
-							<label tal:attributes="for elName; class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 col-md-2 col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 								<span tal:content="elLabel">the label</span>
 							</label>
-							<div class="col-lg-10" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->
+							<div class="col-sm-10 col-md-10 col-lg-10" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->
 						</div><!-- .form-group -->
 					</tal:block>
 				</tal:block>

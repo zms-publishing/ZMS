@@ -105,10 +105,10 @@
  </td>
  <td>
   <div class="form-small"><br/></div>
-   <input class="btn btn-default btn-xs" type="submit" value="&gt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
-   <input class="btn btn-default btn-xs" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
-   <input class="btn btn-default btn-xs" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
-   <input class="btn btn-default btn-xs" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" style="padding: 3px 8px;margin-bottom: 2px;" />
+   <input class="btn btn-default btn-sm" type="submit" value="&gt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" />
+   <input class="btn btn-default btn-sm" type="submit" value="&raquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')" />
+   <input class="btn btn-default btn-sm" type="submit" value="&laquo;" onclick="return selectAllFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" />
+   <input class="btn btn-default btn-sm" type="submit" value="&lt;" onclick="return selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')" />
   </div>
  </td>
  <td>

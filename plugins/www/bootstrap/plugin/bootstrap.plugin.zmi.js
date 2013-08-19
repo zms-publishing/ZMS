@@ -395,6 +395,23 @@ function zmiInitInputFields(container) {
 					});
 			}
 			// Date-Picker
+			$("input.url-input",this).each(function() {
+					var clone = $(this).clone();
+					clone.addClass('form-control');
+					var html = $("<div/>").append(clone).html();
+					var fmName = $(this).parents("form").attr("name");
+					var elName = $(this).attr("name");
+					$(this).html();
+					$(this).closest('span.url-input').replaceWith(''
+							+ '<div class="input-group">'
+								+ html
+								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+									+ zmi_icon("icon-link")
+								+ '</span>'
+							+ '</div>'
+						);
+				});
+			// Date-Picker
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
 				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
 				$('input.datepicker',context).datepicker({
@@ -580,10 +597,10 @@ function zmiIframe(href, data, opt) {
 		$('#zmiIframe').append('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
 		opt["modal"] = true;
 		opt['maxHeight'] = maxHeight;
-		opt["height"] = "auto";
-		opt["width"] = "auto";
+		opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
+		opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
 		$('#zmiIframe').dialog(opt);
-		$('.ui-widget-overlay').height($(document).height());
+		$('.ui-widget-overlay').height($(document).height()).width($(document).width());
 	}
 	else {
 		$.get( href, data, function(result) {
@@ -598,15 +615,15 @@ function zmiIframe(href, data, opt) {
 				else {
 					opt["modal"] = true;
 					opt['maxHeight'] = maxHeight;
-					opt["height"] = "auto";
-					opt["width"] = "auto";
+					opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
+					opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
 					$('#zmiIframe').html(result);
 					var title = $('#zmiIframe div.zmi').attr("title");
 					if (typeof title != "undefined" && title) {
 						opt["title"] = title;
 					}
 					$('#zmiIframe').dialog(opt);
-					$('.ui-widget-overlay').height($(document).height());
+					$('.ui-widget-overlay').height($(document).height()).width($(document).width());
 				}
 			});
 	}
@@ -786,6 +803,7 @@ function zmiActionExecute(sender, label, target) {
 		// Show add-dialog.
 		zmiIframe(target,data,{
 				title:getZMILangStr('BTN_INSERT')+': '+label,
+				width:800,
 				open:function(event,ui) {
 					zmiInitInputFields($('#zmiIframe'));
 				},
@@ -927,26 +945,6 @@ function zmiToggleSelectionButtonClick(sender)
 	var fm = $(sender).parents('form');
 	selectCheckboxes(fm,!$('input[type=checkbox]',fm).attr('checked'));
 }
-
-// ############################################################################
-// ### Url-Input
-// ############################################################################
-
-$(function() {
-	$("input.url-input").each(function() {
-			var fmName = $(this).parents("form").attr("name");
-			var elName = $(this).attr("name");
-			$(this).html();
-			$(this).closest('span.url-input').replaceWith(''
-					+'<div class="input-group">'
-						+'<input class="form-control" name="'+elName+'"/>'
-						+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-							+ zmi_icon("icon-link")
-						+ '</span>'
-					+'</div>'
-				);
-		});
-});
 
 /**
  * zmiBrowseObjs

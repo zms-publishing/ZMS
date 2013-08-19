@@ -1514,28 +1514,20 @@ return context.str_json(result)
 ##### Align: EDIT
 ################################################################################
 -->
-<tal:block tal:condition="python:zmscontext.getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
-	<table cellspacing="0" cellpadding="1" border="0" width="100%">
-	<colgroup>
-		<col width="20%" />
-		<col width="80%" />
-	</colgroup>
-	<tr valign="middle">
-		<td class="form-label" tal:content="structure python:here.getZMILangStr('ALIGN')">Align</td>
-		<td class="form-element" tal:content="structure python:zmscontext.getObjInput('align',request)">the align-input</td>
-	</tr>
-	</table>
-</tal:block>
+<div class="form-group" id="tr_align" tal:condition="python:zmscontext.getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
+	<label class="col-lg-2 control-label" for="title_ger"><span tal:content="structure python:here.getZMILangStr('ALIGN')">Align</span></label>
+	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('align',request)">the align-input</div>
+</div>
 
-<table cellspacing="1" cellpadding="2" border="0"  style="margin-top:1em;">
+<table class="table table-striped table-bordered">
 <tr>
 	<td> &nbsp; </td>
 	<td>
-		<span class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</span>
+		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</span>
 		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> PMID)</span>
 	</td>
 	<td>
-		<span class="form-label" tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_TITLE'),here.FORM_LABEL_MANDATORY)">Title*</span>
+		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_TITLE')">Title*</span>
 		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> &quot;Medline&quot;)</span>
 	</td>
 	<td colspan="2">
@@ -1549,15 +1541,12 @@ return context.str_json(result)
 ################################################################################
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
-<tr style="vertical-align:top;">
-	<td style="text-align:right;"><img src="/misc_/zms/btn_add.gif" border="0" class="btn" /></td>
-	<td class="form-small" tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=20,rows=3,value='',enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
-	<td style="width:100px;">
-		<input class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
-		&nbsp;&nbsp;
-	</td>
+<tr class="row_insert">
+	<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
+	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
+	<td tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=12,rows=3,value='',enabled=1,REQUEST=request)"><textarea/></td>
+	<td><button class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></button></td>
 </tr>
 
 <!--
@@ -1567,22 +1556,22 @@ return context.str_json(result)
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', None)"></tal:block>
 <tal:block tal:define="global childNodes python:zmscontext.getObjChildren('e',request)">
-<tr tal:repeat="childNode childNodes" style="vertical-align:top;">
+<tr tal:repeat="childNode childNodes">
 	<td>
-		<nobr>
+		<div class="input-append">
 			<select class="form-small" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
 				<tal:block tal:repeat="seqindex python:range(len(childNodes))">
 					<option tal:attributes="selected python:['','selected'][int(seqindex==childNodes.index(childNode))]" tal:content="python:seqindex+1">seqindex+1</option>
 				</tal:block>
 			</select>
-			<a tal:attributes="href python:'javascript:confirmDeleteBtnOnClick(\'manage_deleteObjs?ids:list=%s&preview=preview\')'%childNode.id" class="button"><img src="/misc_/zms/btn_trashcan1.gif" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')" border="0"></a>
-		</nobr>
+			<span class="add-on btn" tal:attributes="onclick python:'confirmDeleteBtnOnClick(\'manage_deleteObjs?ids:list=%s&preview=preview\')'%childNode.id; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+		</div><!-- .input-append -->
 	</td>
-	<td class="form-small" tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request,css='form-small')"><input/></td>
-	<td class="form-small" tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=20,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request,css='form-small')"><textarea/></td>
-	<td style="width:100px;">
-		<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
+	<td tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request)"><input/></td>
+	<td tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request)"><input/></td>
+	<td tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=12,rows=3,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request)"><textarea/></td>
+	<td>
+		<div class="zmi-manage-main-change" style="display:block;visibility:visible" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
 			the info child-node
 		</div>
 	</td>
@@ -1717,7 +1706,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.1]]></item>
+          <item key="revision"><![CDATA[1.8.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1876,7 +1865,7 @@ $(function() {
 ################################################################################
 -->
 <div class="form-group" id="tr_attr_ref">
-	<label class="col-lg-2 control-label" for="title_ger"><span tal:content="structure python:'%s %s'%(here.getZMILangStr('ATTR_URL'),here.FORM_LABEL_MANDATORY)">Url*</span></label>
+	<label class="col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
 	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
 	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
 </div>
@@ -1885,12 +1874,13 @@ $(function() {
 ##### Embedded Object: PREVIEW
 ################################################################################
 -->
-<div class="attr_ref_preview" 
-	tal:condition="not:python:request.get('ZMS_INSERT')"
-	tal:attributes="style python:['background-color:#fff','background-color:#eee'][int(zmscontext.isPage())]"
-	tal:content="structure python:zmscontext.renderShort(request)">
-		renderShort
-</div>
+<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+	<div class="attr_ref_preview" 
+		tal:attributes="style python:['background-color:#fff','background-color:#eee'][int(zmscontext.isPage())]"
+		tal:content="structure python:zmscontext.renderShort(request)">
+			renderShort
+	</div>
+</tal:block>
 <tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])"></tal:block>
 </div>]]>
                   </item>
@@ -1963,7 +1953,7 @@ $(function() {
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2138,7 +2128,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.1]]></item>
+          <item key="revision"><![CDATA[1.8.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

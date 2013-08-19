@@ -167,14 +167,6 @@ class PathHandler:
           ob = obContext
       if ob is not None:
         meta_type = getattr(ob,'meta_type','?')
-        if zmi or (meta_type.startswith('ZMS') and meta_type not in self.dGlobalAttrs.keys()):
-          _confmanager.set_zmi_theme(self)
-          _confmanager.set_zmi_theme(ob)
-          try:
-            for child in self.objectValues(self.dGlobalAttrs.keys()):
-              _confmanager.set_zmi_theme(child)
-          except:
-            pass
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
           lang = req.get( 'lang')
           if lang is None:

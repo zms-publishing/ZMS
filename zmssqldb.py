@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
 import copy
@@ -44,7 +45,7 @@ import _xmllib
 ###
 ################################################################################
 ################################################################################
-manage_addZMSSqlDbForm = _confmanager.ConfDict.addtemplate('manage_addzmssqldbform') 
+manage_addZMSSqlDbForm = HTMLFile('manage_addzmssqldbform', globals()) 
 def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSSqlDb """
   
@@ -124,15 +125,15 @@ class ZMSSqlDb(ZMSObject):
     # Management Interface.
     # ---------------------
     actions = HTMLFile('dtml/ZMSSqlDb/actions', globals())
-    input_form = _confmanager.ConfDict.template('ZMSSqlDb/input_form')
+    input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
     input_details = HTMLFile('dtml/ZMSSqlDb/input_details', globals())
     browse_db = HTMLFile('dtml/ZMSSqlDb/browse_db', globals())
     intersection_sql = HTMLFile('dtml/ZMSSqlDb/intersection_sql', globals())
-    manage_main = _confmanager.ConfDict.template('ZMSSqlDb/manage_main')
-    manage_importexport = _confmanager.ConfDict.template('ZMSSqlDb/manage_importexport')
-    manage_properties = _confmanager.ConfDict.template('ZMSSqlDb/manage_properties')
-    manage_sql = _confmanager.ConfDict.template('ZMSSqlDb/manage_sql')
-    manage_configuration = _confmanager.ConfDict.template('ZMSSqlDb/manage_configuration')
+    manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
+    manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
+    manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
+    manage_sql = PageTemplateFile('zpt/ZMSSqlDb/manage_sql', globals())
+    manage_configuration = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration', globals())
     manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
 

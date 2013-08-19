@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
 import sys
@@ -59,7 +60,7 @@ def parseXmlString(self, file):
 ###
 ################################################################################
 ################################################################################
-manage_addZMSCustomForm = _confmanager.ConfDict.addtemplate('manage_addzmscustomform') 
+manage_addZMSCustomForm = HTMLFile('manage_addzmscustomform', globals()) 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   
@@ -172,19 +173,19 @@ class ZMSCustom(ZMSContainerObject):
 
     # Templates.
     # ----------
-    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
-    manage_main_iframe = _confmanager.ConfDict.template('ZMSObject/manage_main_iframe')
-    manage_menu = _confmanager.ConfDict.template('object/manage_menu')
+    manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
+    manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
+    manage_menu = PageTemplateFile('zpt/object/manage_menu', globals())
     metaobj_record_select = HTMLFile('dtml/ZMSRecordSet/record_select', globals())
     metaobj_record_update = HTMLFile('dtml/ZMSRecordSet/record_update', globals())
     metaobj_record_insert = HTMLFile('dtml/ZMSRecordSet/record_insert', globals())
     metaobj_record_summary = HTMLFile('dtml/ZMSRecordSet/record_summary', globals())
     metaobj_recordset_details_grid = HTMLFile('dtml/ZMSRecordSet/details_grid', globals())
     metaobj_recordset_details = HTMLFile('dtml/ZMSRecordSet/details', globals())
-    metaobj_recordset_main_grid = _confmanager.ConfDict.template('ZMSRecordSet/main_grid')
-    metaobj_recordset_main = _confmanager.ConfDict.template('ZMSRecordSet/main')
+    metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
+    metaobj_recordset_main = PageTemplateFile('zpt/ZMSRecordSet/main', globals())
     metaobj_recordset_actions = HTMLFile('dtml/ZMSRecordSet/actions', globals())
-    metaobj_recordset_input_fields = _confmanager.ConfDict.template('ZMSRecordSet/input_fields')
+    metaobj_recordset_input_fields = PageTemplateFile('zpt/ZMSRecordSet/input_fields', globals())
     metaobj_recordset_input_js = HTMLFile('dtml/ZMSRecordSet/input_js', globals())
 
 

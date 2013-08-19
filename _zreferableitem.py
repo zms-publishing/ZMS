@@ -18,6 +18,7 @@
 
 # Imports.
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
 import time
@@ -83,8 +84,8 @@ class ZReferableItem:
 
   # Management Interface.
   # ---------------------
-  manage_RefForm = _confmanager.ConfDict.template('ZMSLinkElement/manage_refform')
-  manage_browse_iframe = _confmanager.ConfDict.template('ZMSLinkElement/manage_browse_iframe') 
+  manage_RefForm = PageTemplateFile('zpt/ZMSLinkElement/manage_refform',globals())
+  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe',globals()) 
 
 
   # ----------------------------------------------------------------------------

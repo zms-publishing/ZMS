@@ -49,55 +49,6 @@ import _sequence
 import zmslog
 
 
-def set_zmi_theme(self):
-    if getattr(self,'meta_type','?').startswith('ZMS'):
-        instance_zmi_theme = None
-        if 'zmi_theme' in self.__dict__.keys():
-            instance_zmi_theme = getattr(self,'zmi_theme')
-        zmi_theme = self.getConfProperty('zmi.theme',None)
-        if (zmi_theme is not None or instance_zmi_theme is not None) and instance_zmi_theme != zmi_theme:
-            setattr(self,'zmi_theme',zmi_theme)
-
-
-class TemplateWrapper(object):
-
-    __name__ = 'TemplateWrapper'
-
-    def __init__(self, cls, path):
-        self.cls = cls
-        self.path = path
-
-    def __get__(self, instance, owner):
-        f = None
-        cls = self.cls
-        path = self.path
-        theme = cls.get().get('zmi.theme','dtml')
-        try:
-            if instance is not None:
-              instance_zmi_theme = getattr(instance,'zmi_theme',None)
-              if instance_zmi_theme is not None:
-                theme = instance_zmi_theme
-              elif getattr(instance,'meta_type',None) == 'ZMS':
-                theme = instance.getConfProperty('zmi.theme','dtml')
-        except:
-            print "### self=",self
-            print "### instance=",instance
-            print "### owner=",owner
-            import sys, traceback, string
-            type, val, tb = sys.exc_info()
-            sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
-            del type, val, tb
-        if theme == 'zpt':
-          if path.find('/') > 0:
-            path = 'zpt/%s'%path
-          f = PageTemplateFile(path, globals())
-        else:
-          if path.find('/') > 0:
-            path = 'dtml/%s'%path
-          f = HTMLFile(path, globals())
-        return f
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Read system-configuration from $ZMS_HOME/etc/zms.conf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,15 +71,6 @@ class ConfDict:
                     for option in cfp.options(section):
                         cls.__confdict__[section+'.'+option] = cfp.get( section, option)
         return cls.__confdict__
-
-    @classmethod
-    def template(cls, path):
-        return TemplateWrapper(cls,path)
-
-    @classmethod
-    def addtemplate(cls, path):
-        f = HTMLFile(path, globals())
-        return f
 
     @classmethod
     def set_constructor(cls, key, clazz):
@@ -198,9 +140,9 @@ class ConfManager(
 
     # Management Interface.
     # ---------------------
-    addZMSCustomForm = ConfDict.template('addzmscustomform') 
-    addZMSLinkElementForm = ConfDict.template('addzmslinkelementform') 
-    addZMSSqlDbForm = ConfDict.template('addzmssqldbform') 
+    addZMSCustomForm = PageTemplateFile('addzmscustomform',globals()) 
+    addZMSLinkElementForm = PageTemplateFile('addzmslinkelementform',globals()) 
+    addZMSSqlDbForm = PageTemplateFile('addzmssqldbform',globals()) 
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize',globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform',globals())
     manage_customizeMetacmdForm = PageTemplateFile('zpt/metacmd/manage_customizeform',globals()) 

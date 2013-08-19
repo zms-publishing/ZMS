@@ -125,19 +125,19 @@ class ZMSContainerObject(
 
     # Management Interface.
     # ---------------------
-    manage_main = _confmanager.ConfDict.template('ZMSObject/manage_main')
+    manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_main_btn = HTMLFile('dtml/ZMSContainerObject/manage_main_btn', globals())
     manage_main_change = HTMLFile('dtml/ZMSContainerObject/manage_main_change', globals())
     zmi_manage_main_change = PageTemplateFile('zpt/ZMSContainerObject/zmi_manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
-    manage_container = _confmanager.ConfDict.template('ZMSContainerObject/manage_main')
-    manage_search = _confmanager.ConfDict.template('ZMSContainerObject/manage_search')
+    manage_container = PageTemplateFile('zpt/ZMSContainerObject/manage_main', globals())
+    manage_search = PageTemplateFile('ZMSContainerObject/manage_search', globals())
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())
-    manage_properties = _confmanager.ConfDict.template('ZMSObject/manage_main')
+    manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_system = PageTemplateFile('zpt/ZMSContainerObject/manage_system', globals())
-    manage_importexport = _confmanager.ConfDict.template('ZMSContainerObject/manage_importexport')
+    manage_importexport = PageTemplateFile('zpt/ZMSContainerObject/manage_importexport', globals())
     manage_importexportFtp = HTMLFile('dtml/ZMSContainerObject/manage_importexportftp', globals())
-    manage_tasks = _confmanager.ConfDict.template('versionmanager/manage_tasks')
+    manage_tasks = PageTemplateFile('zpt/versionmanager/manage_tasks', globals())
 
 
     # Sitemap.

@@ -96,10 +96,8 @@ class ZMSTrashcan(ZMSContainerObject):
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None):
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
       icon_title = self.display_type(REQUEST,meta_type)
-      if zpt is None:
-        zpt = self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s" title="'+icon_title+'"/>'

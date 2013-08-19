@@ -18,6 +18,7 @@
 
 # Imports.
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 try: # Zope >= 2.13.0
   from OFS.userfolder import UserFolder
 except:
@@ -743,7 +744,7 @@ class AccessManager(AccessableContainer):
 
     # Management Interface.
     # ---------------------
-    manage_users = _confmanager.ConfDict.template('ZMS/manage_users')
+    manage_users = PageTemplateFile('zpt/ZMS/manage_users', globals())
     manage_users_sitemap = HTMLFile('dtml/ZMS/manage_users_sitemap', globals())
 
     ############################################################################

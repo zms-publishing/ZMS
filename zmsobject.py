@@ -116,8 +116,8 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # Templates.
     # ----------
-    f_display_icon = _confmanager.ConfDict.template('object/f_display_icon') # ZMI Display-Icon
-    f_recordset_grid = _confmanager.ConfDict.template('object/f_recordset_grid') # ZMI RecordSet::Grid
+    f_display_icon = PageTemplateFile('zpt/object/f_display_icon', globals()) # ZMI Display-Icon
+    f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     f_recordset_init = HTMLFile('dtml/object/f_recordset_init', globals()) # ZMI RecordSet::Init
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
@@ -134,17 +134,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_frame_bottom = HTMLFile('dtml/object/f_frame_bottom', globals()) 
     f_xstandard_browseImages = HTMLFile('dtml/object/f_xstandard_browseimages', globals())
     f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals())
-    preview_html = _confmanager.ConfDict.template('object/preview')
-    preview_top_html = _confmanager.ConfDict.template('object/preview_top')
-    f_api_html = _confmanager.ConfDict.template('object/f_api')
-    f_api_top_html = _confmanager.ConfDict.template('object/f_api_top')
-    obj_input_js = HTMLFile('dtml/ZMSObject/input_js', globals())
-    obj_input_fields = _confmanager.ConfDict.template('ZMSObject/input_fields')
-    obj_input_elements = _confmanager.ConfDict.template('ZMSObject/input_elements')
-    # Deprecated
-    f_css_printhtml = ''
-    active_input_fields = ''
-    version_input_fields = ''
+    preview_html = PageTemplateFile('zpt/object/preview', globals())
+    preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())
+    f_api_html = PageTemplateFile('zpt/object/f_api', globals())
+    f_api_top_html = PageTemplateFile('zpt/object/f_api_top', globals())
+    obj_input_fields = PageTemplateFile('zpt/ZMSObject/input_fields', globals())
+    obj_input_elements = PageTemplateFile('zpt/ZMSObject/input_elements', globals())
 
 
     ############################################################################
@@ -476,10 +471,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None):
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
       icon_title = self.display_type(REQUEST,meta_type)
-      if zpt is None:
-        zpt = self.getConfProperty('zmi.theme','dtml')=='zpt'
       pattern = '%s'
       if zpt:
         pattern = '<img src="%s" title="'+icon_title+'"/>'

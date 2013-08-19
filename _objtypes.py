@@ -18,6 +18,7 @@
 
 # Imports.
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
 import _confmanager
 import _fileutil
@@ -67,11 +68,11 @@ class ObjTypes:
 
     # File.
     # -----
-    f_selectFile = _confmanager.ConfDict.template('objattrs/f_select_file') 
+    f_selectFile = PageTemplateFile('zpt/objattrs/f_select_file', globals()) 
 
     # Image.
     # ------
-    f_selectImage = _confmanager.ConfDict.template('objattrs/f_select_image') 
+    f_selectImage = PageTemplateFile('zpt/objattrs/f_select_image', globals()) 
 
     # Alignment.
     # ----------

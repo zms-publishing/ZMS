@@ -444,8 +444,6 @@ class VersionItem:
         master_version = parent.getObjProperty( 'master_version', REQUEST)
       self.setObjProperty( 'master_version', master_version)
       self.setObjState(obj_state,REQUEST['lang'])
-      #-- Set Theme.
-      _confmanager.set_zmi_theme(self)
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified
@@ -1047,7 +1045,7 @@ class VersionItem:
     #  Undo version changes.
     ############################################################################
     manage_VersionLangModified = HTMLFile('dtml/versionmanager/manage_versionlangmodified', globals())
-    manage_UndoVersionForm = _confmanager.ConfDict.template('versionmanager/manage_undoversionform')
+    manage_UndoVersionForm = PageTemplateFile('zpt/versionmanager/manage_undoversionform', globals())
     manage_UndoVersionFormDTML = HTMLFile('dtml/versionmanager/manage_undoversionform_dtml', globals())
     def manage_UndoVersion(self, lang, REQUEST):
       """ VersionItem.manage_UndoVersion """

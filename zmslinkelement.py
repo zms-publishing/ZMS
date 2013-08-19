@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import sys
 import urllib
@@ -138,7 +139,7 @@ class ConstraintViolation(Exception): pass
 ###
 ################################################################################
 ################################################################################
-manage_addZMSLinkElementForm = _confmanager.ConfDict.addtemplate('manage_addzmslinkelementform') 
+manage_addZMSLinkElementForm = HTMLFile('manage_addzmslinkelementform', globals()) 
 def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSLinkElement """
   meta_id = 'ZMSLinkElement'

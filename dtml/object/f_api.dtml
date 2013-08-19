@@ -1,7 +1,0 @@
-<dtml-var "manage_page_header(_,_,ZMS_TITLE='API Documentation')">
-</head>
-<frameset rows="20,*" border="0" frameborder="0" framespacing="0">
- <frame name="navigate" marginheight="1" scrolling="no" noresize="noresize" src="f_api_top_html?lang=<dtml-var lang>">
- <frame name="partner" marginheight="1" src="<dtml-var "getDocumentElement().absolute_url()">/$ZMS_HOME/doc/index.html">
-</frameset>
-</html>

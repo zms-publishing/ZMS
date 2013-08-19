@@ -42,8 +42,8 @@ $(function() {
 			<legend>Manager</legend>
 			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
 					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
-			<div class="form-group">
-				<label style="padding-left:15px;" for="meta_type">ZMS base-components</label>
+			<div class="form-group col-sm-12">
+				<label for="meta_type">ZMS base-components</label>
 				<div class="form-group">
 					<select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
 						onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
@@ -56,15 +56,18 @@ $(function() {
 				</div>
 			</div><!-- .form-group -->
 			<tal:block tal:repeat="si python:here.objectValues(['ZCatalog','MediaDb']+map(lambda x: x['name'],meta_types))">
-			<div class="form-group" style="padding-left:1em;">
-					<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
-					<a tal:attributes="href python:'%s/manage_main'%si.id">
-						<img tal:attributes="src python:si.icon"/>
-						<tal:block tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</tal:block>
-					</a>
+			<div class="form-group col-sm-12">
+				<label>
+					<span class="btn btn-default">
+						<img tal:attributes="src python:si.icon"/>&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
+					</span>
+					&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
+				</label>
 			</div><!-- .form-group -->
 			</tal:block>
-			<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
+			<div class="form-group col-sm-12">
+				<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
+			</div>
 			</tal:block>
 		</form>
 		</div>
@@ -76,22 +79,22 @@ $(function() {
 			<legend>Portal</legend>
 			<p class="well well-small">Register the folder-ids of this site's master- and client-sites.</p>
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="portal_master">Master</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="portal_master">Master</label>
+				<div class="col-sm-10">
 					<input class="form-control" type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-			<label class="col-lg-2 control-label" for="portal_master">Clients</label>
-				<div class="col-lg-10">
+			<label class="col-sm-2 control-label" for="portal_master">Clients</label>
+				<div class="col-sm-10">
 					<textarea class="form-control" name="portal_clients" cols="40" rows="5" wrap="off"  tal:content="python:'\n'.join(here.getConfProperty('Portal.Clients',[]))"></textarea>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 		</form>
 		</div>
@@ -103,16 +106,16 @@ $(function() {
 			<legend>Configuration</legend>
 			<p class="well well-small">Import complete configuration packages with language-dictionaries, metadata-, special-object-, action- and filter-definitions contained in one single zip-archive.</p>
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
+				<div class="col-sm-10">
 					<input class="btn btn-file" name="file" type="file" />
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 		</form>
 		</div>
@@ -165,8 +168,8 @@ $(function() {
 				];
 			res_keys python:map(lambda x: x['key'],here.sort_list(res,'title','asc'))">
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
+				<div class="col-sm-10">
 					<select class="form-control" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
 						<option></option>
 						<tal:block tal:repeat="res_key res_keys">
@@ -175,17 +178,17 @@ $(function() {
 							</tal:block>
 						</tal:block>
 					</select>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="conf_key">Key</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="conf_key">Key</label>
+				<div class="col-sm-10">
 					<input class="form-control" type="text" id="conf_key" name="conf_key" tal:attributes="value python:request.get('conf_key')">
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="conf_value">Value</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="conf_value">Value</label>
+				<div class="col-sm-10">
 					<tal:block tal:condition="python:request.get('conf_key') not in res_keys">
 						<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),'')">
 					</tal:block>
@@ -207,14 +210,14 @@ $(function() {
 							</tal:block>
 						</tal:block>
 					</tal:block>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
 					<button name="btn" type="submit" class="btn btn-default" value="Delete">Delete</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<table class="table table-striped table-hover table-bordered">
 			<thead>
@@ -281,19 +284,19 @@ $(function() {
 			</thead>
 			<tbody>
 			<tr>
-				<td><label class="col-lg-2 control-label">UserFolder</label></td>
+				<td><label class="col-sm-2 control-label">UserFolder</label></td>
 				<td></td>
 				<td></td>
 				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Purge">&nbsp;Purge&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
 			</tr>
 			<tr>
-				<td><label class="col-lg-2 control-label">Catalog</label></td>
+				<td><label class="col-sm-2 control-label">Catalog</label></td>
 				<td class="controls"><input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>&nbsp;Awareness</td>
 				<td><tal:block tal:condition="has_clients"><input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>&nbsp;Clients</tal:block></td>
 				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Reindex">&nbsp;Reindex&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
 			</tr>
 			<tr>
-				<td><label class="col-lg-2 control-label">Internal links</label></td>
+				<td><label class="col-sm-2 control-label">Internal links</label></td>
 				<td class="controls">
 					<div><input type="checkbox" value="1" id="ZMS_InternalLinks_autocorrection" name="ZMS_InternalLinks_autocorrection:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1)]"/>&nbsp;Auto-Correct</div>
 					<div><input type="checkbox" value="1" id="ZMS_InternalLinks_keepsynchron" name="ZMS_InternalLinks_keepsynchron:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.InternalLinks.keepsynchron',0)==1)]"/>&nbsp;Keep-Synchron</div>
@@ -323,31 +326,31 @@ $(function() {
 			<p class="well well-small">Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB.</p>
 			<tal:block tal:condition="python:here.getMediaDb() is None">
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="mediadb_location">Location</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="mediadb_location">Location</label>
+				<div class="col-sm-10">
 					<input class="form-control" type="text" name="mediadb_location">
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Create">Create</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			</tal:block>
 			<tal:block tal:condition="python:here.getMediaDb() is not None">
 			<div class="form-group">
-				<label class="col-lg-2 control-label" for="mediadb_location">Location</label>
-				<div class="col-lg-10">
+				<label class="col-sm-2 control-label" for="mediadb_location">Location</label>
+				<div class="col-sm-10">
 					<input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:here.getMediaDb().location" disabled="disabled">
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-danger" value="Remove">Remove</button>
 					<button name="btn" type="submit" class="btn btn-warning" value="Pack" tal:condition="python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)>=0">Pack</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			</tal:block>
 		</form>
@@ -360,8 +363,8 @@ $(function() {
 			<legend>History</legend>
 			<p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
 			<div class="form-group">
-			<label class="col-lg-2 control-label" for="history_active">Active</label>
-				<div class="col-lg-10">
+			<label class="col-sm-2 control-label" for="history_active">Active</label>
+				<div class="col-sm-10">
 					<div class="pull-left">
 						<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" />
 					</div>
@@ -370,13 +373,13 @@ $(function() {
 							<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 						</div>
 					</div>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 		</form>
 		</div>
@@ -388,11 +391,11 @@ $(function() {
 			<legend>Installed Libraries</legend>
 			<p class="well well-small">Further python libraries and products extending ZMS.</p>
 			<div class="form-group">
-			<label class="col-lg-2 control-label" for="pil">
+			<label class="col-sm-2 control-label" for="pil">
 				<input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(here.pilutil().enabled())]" />
 				Python Imaging Library (PIL)
 			</label>
-				<div class="col-lg-10">
+				<div class="col-sm-10">
 					<div class="pull-left" tal:condition="python: here.pilutil().enabled()">
 						<table class="input-append">
 							<tr>
@@ -405,13 +408,13 @@ $(function() {
 							</tr>
 						</table>
 					</div>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-2">&nbsp;</div>
-				<div class="col-lg-10">
+				<div class="col-sm-2">&nbsp;</div>
+				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-				</div><!-- .col-lg-10 -->
+				</div>
 			</div><!-- .form-group -->
 		</form>
 		</div>

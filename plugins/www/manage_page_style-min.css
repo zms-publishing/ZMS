@@ -490,5 +490,3 @@ body .ui-tooltip{border-width:2px}
 .ui-widget-overlay{background:#666666 url(/++resource++zms_/jquery/ui/css/ui-lightness/images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat;opacity:.5;filter:Alpha(Opacity=50)}
 .ui-widget-shadow{margin:-5px 0 0 -5px;padding:5px;background:#000000 url(/++resource++zms_/jquery/ui/css/ui-lightness/images/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x;opacity:.2;filter:Alpha(Opacity=20);border-radius:5px}
 .attr_ref_preview {background-color:transparent !important}
-#tr_attr_ref .col-lg-2 {width:20%;float:left;font-size:12px;color:#555;}
-#tr_attr_ref .col-lg-5 {width:304px;float:left;}

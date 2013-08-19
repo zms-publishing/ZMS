@@ -1864,10 +1864,14 @@ $(function() {
 ##### Ref & Type: EDIT
 ################################################################################
 -->
-<div class="form-group" id="tr_attr_ref">
-	<label class="col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
-	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
-	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+<div class="form-group controls-row" id="tr_attr_ref">
+	<label class="col-sm-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
+	<div class="form-inline col-sm-10">
+		<div class="input-group">
+			<talblock tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
+			<talblock tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</tal:block>
+		</div>
+	</div>
 </div>
 <!--
 ################################################################################

@@ -1,7 +1,7 @@
 <dtml-unless objectPathElements><dtml-call "REQUEST.set('objectPathElements',breadcrumbs_obj_path())"></dtml-unless>
 <span class="form-small">
 <dtml-in objectPathElements
- ><dtml-if "len(objectPathElements)>1">&raquo;</dtml-if
+ ><dtml-if "len(objectPathElements)>1"> / </dtml-if
  ><dtml-unless no_icon
   ><dtml-if "_['sequence-index']==len(objectPathElements)-1"
    ><dtml-unless ZMS_INSERT
@@ -21,7 +21,7 @@
 </dtml-in>
 
 <dtml-if ZMS_INSERT> 
- &raquo;
+ /
  <img src="<dtml-var "display_icon(REQUEST,ZMS_INSERT)">" title="<dtml-var "display_type(REQUEST,ZMS_INSERT)">" border="0" align="absmiddle" />
  <em><dtml-var "getZMILangStr('CAPTION_INSERT')%display_type(REQUEST,ZMS_INSERT)"></em>
 <dtml-elif "REQUEST.get('AUTHENTICATED_USER').has_permission('ZMS Administrator',REQUEST.get('ZMS_THIS')) and ('manage_main' in REQUEST['URL'].split('/') or 'manage_properties' in REQUEST['URL'].split('/'))"
@@ -33,7 +33,7 @@
 ></dtml-if
 ><dtml-if additionalObjectPathElements
 ><dtml-in additionalObjectPathElements mapping
-> &raquo; <a href="<dtml-var "url_append_params(href,{'lang':lang})">" class="zmi"><dtml-var title></a>
+> / <a href="<dtml-var "url_append_params(href,{'lang':lang})">" class="zmi"><dtml-var title></a>
 </dtml-in
 ></dtml-if
 ></span>

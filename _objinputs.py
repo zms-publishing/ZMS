@@ -319,9 +319,9 @@ class ObjInputs:
           ref_url = inline_links[c]
           ref_obj = self.getLinkObj(ref_url,REQUEST)
           if ref_obj is not None:
-            html.append('<img src="%sinternal_link.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
+            html.append('<i class="icon-link" /> %s'%(ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST)))
           elif isinstance( ref_obj, _zreferableitem.ZReferableItem):
-            html.append('<img src="%sinternal_link_broken.gif" border="0" align="absmiddle"/> %s'%(self.MISC_ZMS,ref_url))
+            html.append('<i class="icon-unlink" />  %s'%(ref_url))
           html.append('</div>')
           html.append('</div>')
         html.append('</td>')

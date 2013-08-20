@@ -45,7 +45,7 @@ import _xmllib
 ###
 ################################################################################
 ################################################################################
-manage_addZMSSqlDbForm = HTMLFile('manage_addzmssqldbform', globals()) 
+manage_addZMSSqlDbForm = PageTemplateFile('manage_addzmssqldbform', globals()) 
 def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSSqlDb """
   

@@ -16,8 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-# Imports.
-from App.special_dtml import HTMLFile
 # Product Imports.
 import _globals
 import _zreferableitem
@@ -38,19 +36,17 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-element form-control'):
-    lang = self.REQUEST.get('lang')
+  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-control'):
+    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     html = []
-    styles = ['float:left']
-    if size:
-      styles.append( 'width:%iem'%size)
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input',extra=' style="%s"'%(';'.join(styles))))
+    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input'))
     ref_obj = self.getLinkObj(value,REQUEST)
     if ref_obj is not None:
-      html.append('<div class="form-small" style="clear:both">')
-      html.append('<span class="ui-icon ui-icon-extlink" style="float:left"></span>')
+      # html.append('<div style="clear:both">')
+      # html.append('<span class="ui-icon ui-icon-extlink" style="float:left"></span>')
+      html.append('<i class="icon-link"></i>')
       html.append(ref_obj.f_breadcrumbs(objectPathElements=ref_obj.breadcrumbs_obj_path(),no_icon=1,lang=lang,REQUEST=REQUEST))
-      html.append('</div>')
+      # html.append('</div>')
     return ''.join(html)
 
 
@@ -85,21 +81,20 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-element form-control', extra=''):
+  def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-control', extra=''):
     manage_lang = self.get_manage_lang()
     html = []
     if not type(value) is str:
       value = self.getLangFmtDate(value,manage_lang,fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
-    html.append('<span class="%s" title="%s">'%(css.replace('form-control',''),self.getZMILangStr(fmt_str)))
+    extra += ' title="%s"'%self.getZMILangStr(fmt_str)
     if enabled:
       if fmt_str == 'DATE_FMT':
         css += ' datepicker'
       elif fmt_str == 'DATETIME_FMT':
         css += ' datetimepicker'
     html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra))
-    html.append('</span>')
     return ''.join(html)
 
 
@@ -114,7 +109,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-element form-control', extra=''):
+  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-control', extra=''):
     return self.getDateTimeInput(fmName=fmName,elName=elName,size=8,value=value,enabled=enabled,fmt_str='DATE_FMT',REQUEST=REQUEST,css=css, extra=extra)
 
 
@@ -129,7 +124,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-element form-control', extra=''):
+  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-control', extra=''):
     return self.getTextInput(fmName,elName,size,value,'password',enabled,REQUEST,css,extra)
 
 
@@ -144,13 +139,12 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-element form-control', extra=''):
+  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-control', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
-    html.append('<span class="%s">'%css.replace('form-control',''))
     html.append('<input ')
     html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' type="%s"'%type)
@@ -160,17 +154,9 @@ class ObjInputs:
       html.append(' size="%i"'%size)
     if value is not None:
       html.append(' value="%s"'%_globals.html_quote(value))
-    if extra.find('style=') < 0:
-      styles = []
-      if size:
-        styles.append( 'width:%iem'%size)
-      if elName.endswith(':int'):
-        styles.append( 'text-align:right')
-      html.append(' style="%s"'%(';'.join(styles)))
     if not enabled:
       html.append(' disabled="disabled"')
     html.append(' %s/>'%extra)
-    html.append('</span>')
     return ''.join(html)
 
 
@@ -189,7 +175,7 @@ class ObjInputs:
   #	@param css		CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-element form-control', maxlen=30):
+  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-control', maxlen=30):
     return self.f_selectInput(self,fmName=fmName,elName=elName,value=value,type=inputtype,lang_str=lang_str,required=required,optpl=optpl,maxlen=maxlen,enabled=enabled,css=css,REQUEST=REQUEST)
 
 
@@ -250,7 +236,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-element form-control', wrap='virtual', extra=''):
+  def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-control', wrap='virtual', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -265,11 +251,6 @@ class ObjInputs:
     if rows:
       html.append(' rows="%i"'%rows)
     html.append(' wrap="%s"'%wrap)
-    if extra.find('style=') < 0:
-      styles = []
-      if cols:
-        styles.append( 'width:%iem'%cols)
-      html.append(' style="%s"'%(';'.join(styles)))
     if not enabled:
       html.append(' disabled="disabled"')
     html.append('%s>'%extra)

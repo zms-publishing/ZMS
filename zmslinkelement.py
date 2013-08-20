@@ -139,7 +139,7 @@ class ConstraintViolation(Exception): pass
 ###
 ################################################################################
 ################################################################################
-manage_addZMSLinkElementForm = HTMLFile('manage_addzmslinkelementform', globals()) 
+manage_addZMSLinkElementForm = PageTemplateFile('manage_addzmslinkelementform', globals()) 
 def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSLinkElement """
   meta_id = 'ZMSLinkElement'

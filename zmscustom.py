@@ -60,7 +60,7 @@ def parseXmlString(self, file):
 ###
 ################################################################################
 ################################################################################
-manage_addZMSCustomForm = HTMLFile('manage_addzmscustomform', globals()) 
+manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   

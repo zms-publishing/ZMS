@@ -1,4 +1,8 @@
+function initUI(context) {
+	// do nothing
+}
 function onFormSubmit() {
+	// do nothing
 	return true;
 }
 
@@ -401,14 +405,11 @@ function zmiInitInputFields(container) {
 					var html = $("<div/>").append(clone).html();
 					var fmName = $(this).parents("form").attr("name");
 					var elName = $(this).attr("name");
-					$(this).html();
-					$(this).closest('span.url-input').replaceWith(''
-							+ '<div class="input-group">'
-								+ html
-								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-									+ zmi_icon("icon-link")
-								+ '</span>'
-							+ '</div>'
+					$(this).replaceWith(''
+						+ html
+						+ '<span class="input-group-addon" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+							+ zmi_icon("icon-link")
+						+ '</span>'
 						);
 				});
 			// Date-Picker
@@ -443,7 +444,7 @@ function zmiInitInputFields(container) {
 					});
 			});
 			$("input.datepicker,input.datetimepicker",this).each(function() {
-					$($(this).parents("span")[0]).addClass("input-group");
+					$(this).closest("div").addClass("input-group");
 					$(this).before('<span class="input-group-addon">'+zmi_icon("icon-calendar")+'</span>');
 				});
 			if ($("div.zmi-richtext",this).length > 0) {

@@ -90,7 +90,12 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	border-radius:0 !important;
 }
 #zmi-footer {
-	border-top:1px solid #ccc;
+	/* position:fixed; */
+	left:0px;
+	bottom:0px;
+	height:26px;
+	width:100%;
+	background:#fff;
 	padding:0.5em;
 	font-size:11px !important;
 }
@@ -163,6 +168,7 @@ ul.zmi-container {
 }
 div#zmi-tab {
 	background-color:#f5f5f5!important;
+	border-bottom: 1px solid #ddd;
 }
 div.alert {
 	margin:1em;
@@ -415,6 +421,7 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	color:#333;
 	font-weight:bold;
 	height:2.7em;
+	margin-left:0;
 }
 ul.zmi-container.pages .zmi-item .zmiRenderShort {
 	padding-left:1.0em !important
@@ -435,9 +442,7 @@ form.form-horizontal.form-insert {
 .zmi.properties .accordion-group {
 	background-color: #fff;
 	width:800px;
-}
-.zmi.properties .accordion-group .accordion-heading {
-	padding:0.5em
+	padding:1em;
 }
 .zmi.properties .accordion-group .accordion-inner {
 	padding:0.5em 0;
@@ -472,11 +477,17 @@ form.form-horizontal.form-insert {
 div.accordion-heading a.accordion-toggle {
 	font-weight:bold;
 }
+div.accordion-heading a.accordion-toggle:hover, 
+div.accordion-heading a.accordion-toggle:focus {
+	text-decoration:none;
+}
+div.accordion-heading a.accordion-toggle .icon-caret-right,
+div.accordion-heading a.accordion-toggle .icon-caret-down {
+	margin-right:0.3em;
+}
+
 div.accordion-heading div.pull-left {
 	padding-top:0.5em;
-}
-.accordion-body.in {
-	border: 1px #eee solid;
 }
 .accordion-body.container .accordion-inner {
 	padding:0;
@@ -568,11 +579,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 
 .zmi.metas table.table-striped td.meta-sort {
 	padding-right:1.25em
-}
-.zmi.metas table.table-striped td.meta-interface,
-.zmi.metas table.table-striped td.meta-default,
-.zmi.metas table.table-striped td.meta-code {
-	padding-right:50px
 }
 .zmi.metas table.table-striped td.meta-id input,
 .zmi.metas table.table-striped td.meta-name input,

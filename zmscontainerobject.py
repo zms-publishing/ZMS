@@ -131,7 +131,7 @@ class ZMSContainerObject(
     zmi_manage_main_change = PageTemplateFile('zpt/ZMSContainerObject/zmi_manage_main_change', globals())
     manage_main_actions = HTMLFile('dtml/ZMSContainerObject/manage_main_actions', globals())
     manage_container = PageTemplateFile('zpt/ZMSContainerObject/manage_main', globals())
-    manage_search = PageTemplateFile('ZMSContainerObject/manage_search', globals())
+    manage_search = PageTemplateFile('zpt/ZMSContainerObject/manage_search', globals())
     manage_search_attrs = HTMLFile('dtml/ZMSContainerObject/manage_search_attrs', globals())
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_system = PageTemplateFile('zpt/ZMSContainerObject/manage_system', globals())

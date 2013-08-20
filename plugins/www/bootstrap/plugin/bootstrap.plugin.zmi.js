@@ -398,20 +398,37 @@ function zmiInitInputFields(container) {
 						$label.prepend(zmi_icon("icon-exclamation"));
 					});
 			}
-			// Date-Picker
+			// Url-Picker
 			$("input.url-input",this).each(function() {
-				$(this).closest("div").addClass("input-group");
-				var clone = $(this).clone();
-				clone.addClass('form-control');
-				var html = $("<div/>").append(clone).html();
-				var fmName = $(this).parents("form").attr("name");
-				var elName = $(this).attr("name");
-				$(this).replaceWith(''
-					+ html
-					+ '<span class="input-group-addon" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-						+ zmi_icon("icon-link")
-					+ '</span>'
-					);
+					var $clone = $(this).clone();
+					var id = $clone.attr('id');
+					$clone.addClass('form-control');
+					var html = $("<div/>").append($clone).html();
+					var fmName = $(this).parents("form").attr("name");
+					var elName = $(this).attr("name");
+					var $breadcrumb = $(this).siblings("ul.breadcrumb");
+					var content = '';
+					if ($breadcrumb.length > 0) {
+						content = $("<div/>").append($breadcrumb).html();
+						$breadcrumb.hide();
+					}
+					$(this).replaceWith(''
+							+ '<div class="input-group">'
+								+ html
+								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+									+ zmi_icon("icon-link")
+								+ '</span>'
+							+ '</div>'
+						);
+					if (content.length > 0) {
+						$('#'+id).popover({
+								container:'body',
+								html:true,
+								placement:'bottom',
+								trigger:'click|hover|focus',
+								content:content
+							});
+					}
 				});
 			// Date-Picker
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){

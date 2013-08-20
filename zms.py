@@ -35,7 +35,6 @@ import _builder
 import _confmanager
 import _enummanager
 import _fileutil
-import _ftpmanager
 import _globals
 import _importable
 import _objattrs
@@ -396,7 +395,6 @@ class ZMS(
         _accessmanager.AccessManager,
         _builder.Builder,
         _confmanager.ConfManager,
-        _ftpmanager.FtpManager,
         _objattrs.ObjAttrsManager,
         _zcatalogmanager.ZCatalogManager,
         ):
@@ -432,7 +430,6 @@ class ZMS(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-        'manage_importexportFtp',
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
         'manage_changeMetacmds', 'manage_customizeMetacmdForm',
@@ -446,7 +443,7 @@ class ZMS(
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
-        'manage_search','manage_search_attrs','manage_tasks',
+        'manage_search','manage_tasks',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',

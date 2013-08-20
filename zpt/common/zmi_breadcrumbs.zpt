@@ -1,12 +1,6 @@
 <!-- common/zmi_breadcrumbs -->
 
-<ul class="breadcrumb" tal:define="global childNodes python:here.breadcrumbs_obj_path()">
-	<li tal:repeat="childNode childNodes" tal:attributes="class python:' '.join([['','active'][int(childNode==childNodes[-1])]])">
-		<tal:block tal:condition="python:childNode==childNodes[-1]" tal:content="structure python:childNode.display_icon(request,zpt=True)">the icon</tal:block>
-		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" tal:content="python:childNode.getTitlealt(request)">the titlealt</a>
-	</li>
-</ul>
-
+<tal:block tal:content="structure python:here.zmi_breadcrumbs_obj_path(here,request)">zmi_breadcrumbs_obj_path</tal:block>
 <tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
 <!-- /common/zmi_breadcrumbs -->

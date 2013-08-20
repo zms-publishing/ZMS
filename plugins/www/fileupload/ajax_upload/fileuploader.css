@@ -1,12 +1,17 @@
 .qq-uploader { position:relative; width: 100%;}
 
 .qq-upload-button {
+    margin:2px;
     display:block; /* or inline-block */
-    width: 105px; padding: 7px 0; text-align:center;
-    background:#428BCA; border-bottom:1px solid #ddd;color:#fff;
+    width: 105px;
+    padding: 7px 0; 
+    text-align:center;
+    font-weight:normal;
+    border:1px solid #ccc;
 }
 .qq-upload-button-hover {
-    background:#357EBD;
+    background:#ebebeb;
+    border:1px solid #adadad;
 }
 .qq-upload-button-focus {
     outline:1px dotted black;

@@ -1706,7 +1706,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.2]]></item>
+          <item key="revision"><![CDATA[1.8.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1868,8 +1868,8 @@ $(function() {
 	<label class="col-sm-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
 	<div class="form-inline col-sm-10">
 		<div class="input-group">
-			<talblock tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
-			<talblock tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</tal:block>
+			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
+			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</tal:block>
 		</div>
 	</div>
 </div>
@@ -2132,7 +2132,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.2]]></item>
+          <item key="revision"><![CDATA[1.8.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

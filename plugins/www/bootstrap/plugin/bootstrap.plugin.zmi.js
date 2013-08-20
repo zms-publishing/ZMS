@@ -400,17 +400,18 @@ function zmiInitInputFields(container) {
 			}
 			// Date-Picker
 			$("input.url-input",this).each(function() {
-					var clone = $(this).clone();
-					clone.addClass('form-control');
-					var html = $("<div/>").append(clone).html();
-					var fmName = $(this).parents("form").attr("name");
-					var elName = $(this).attr("name");
-					$(this).replaceWith(''
-						+ html
-						+ '<span class="input-group-addon" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-							+ zmi_icon("icon-link")
-						+ '</span>'
-						);
+				$(this).closest("div").addClass("input-group");
+				var clone = $(this).clone();
+				clone.addClass('form-control');
+				var html = $("<div/>").append(clone).html();
+				var fmName = $(this).parents("form").attr("name");
+				var elName = $(this).attr("name");
+				$(this).replaceWith(''
+					+ html
+					+ '<span class="input-group-addon" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+						+ zmi_icon("icon-link")
+					+ '</span>'
+					);
 				});
 			// Date-Picker
 			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){

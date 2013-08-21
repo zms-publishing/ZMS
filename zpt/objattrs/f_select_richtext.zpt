@@ -1,0 +1,54 @@
+<!-- BO objattrs/f_select_richtext -->
+
+<tal:block tal:define="global
+				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
+				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));
+				dummy0 python:request.set('fmName',options['fmName']);
+				dummy0 python:request.set('elName',options['elName']);">
+
+<style>
+.form-richtext div:first-child {
+	background-color:#f8f8f8;
+}
+.form-richtext .pull-left {
+	margin-right:.5em;
+	margin-bottom:.1em;
+}
+.form-richtext span.btn {
+	padding-left:0.2em;
+	padding-right:0.2em;
+}
+</style>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+
+/** 
+ * Switch Richtext-Editor.
+ */
+function zmiRichtextEditorShow( elName, newFormat, callback) {
+	if (newFormat) {
+		$('#format').val(newFormat);
+	}
+	$('#zmiStandardEditor'+elName).toggle();
+	$('#zmiRichtextEditor'+elName).toggle();
+}
+
+$(function() {
+	var key = '<tal:block tal:content="options/key"></tal:block>';
+	var wysiwyg = $('#format').val()=='<tal:block tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
+	if(wysiwyg) {
+		$('div[id^="zmiStandardEditor"]').hide();
+	}
+	else {
+		$('div[id^="zmiRichtextEditor"]').hide();
+	}
+});
+
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+
+<div tal:attributes="id python:'zmiStandardEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_standard(here,request,options)">zmi_select_richtext_standard</div>
+<div tal:attributes="id python:'zmiRichtextEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_wysiwyg(here,request,options)">zmi_select_richtext_wysiwyg</div>
+
+</tal:block>
+
+<!-- EO objattrs/f_select_richtext -->

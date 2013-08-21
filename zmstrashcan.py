@@ -17,7 +17,7 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import string
 import time
@@ -68,7 +68,7 @@ class ZMSTrashcan(ZMSContainerObject):
 
     # Management Interface.
     # ---------------------
-    manage_properties = HTMLFile('dtml/ZMSTrashcan/manage_properties', globals())
+    manage_properties = PageTemplateFile('zpt/ZMSTrashcan/manage_properties', globals())
 
 
     """

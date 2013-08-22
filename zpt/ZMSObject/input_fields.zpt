@@ -80,8 +80,7 @@
 									<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 									<tal:block tal:content="elLabel">the label</tal:block>
 								</a>
-								<div class="pull-left" tal:content="python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
-								<div class="clearfix"></div>
+								<span tal:content="python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
 							</div><!-- .accordion-heading -->
 							<tal:block tal:content="structure python:''
 								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','collapse','container']+[[],['in']][int(len(objChildren)>0)]))

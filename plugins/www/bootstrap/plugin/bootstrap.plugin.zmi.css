@@ -235,21 +235,25 @@ ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a {
 	background-color:#08c!important;
 	color:#fff!important;
 }
-
 #manage_addProduct .zmiRenderShort {
 	padding: 0.1em 0.5em;
 }
-
 .accordion-group.zmi-container {
 	width:1000px!important;
 	background-color:#f4f4f4!important;
 	border-top:transparent;
 	border-right:transparent;
 	border-bottom:transparent;
+	padding: 0 !important;
 }
 .accordion-group.zmi-container .accordion-heading {
 	width:800px!important;
 	background-color:#fff!important;
+	padding: 0 0 1em 1em;
+}
+.accordion-group.zmi-container .accordion-body.container.in .accordion-inner {
+	padding: 0;
+	margin:0;
 }
 .accordion-group.zmi-container .accordion-inner {
 	border-top:transparent;
@@ -263,7 +267,6 @@ ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a {
 form.form-insert a.accordion-toggle {
 	color:#08c;
 }
-
 ul.zmi-container > .zmi-item > .center {
 	float:left;
 	width:600px!important;

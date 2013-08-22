@@ -106,9 +106,9 @@ $(function() {
 
 <div id="zmi-header">
 	<div class="navbar" style="position: static;">
-				<a class="navbar-brand" target="_blank" tal:attributes="href python:'%s/manage'%here.getHome().id">
+				<a class="navbar-brand zmi-helper-clickable" target="_blank" tal:attributes="href python:'%s/manage'%here.getHome().id">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
-					<span class="zmi-home-id zmi-helper-clickable" tal:content="python:here.getHome().id">Home-Id</span>
+					<span class="zmi-home-id" tal:content="python:here.getHome().id">Home-Id</span>
 				</a>
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->

@@ -103,7 +103,7 @@ $(function() {
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
-		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
+		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)))">
 
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
@@ -465,7 +465,7 @@ $(function() {
 			</td>
 		</tr>
 		<tal:block tal:repeat="metaObj metaObjs">
-			<tr class="zmi-selectable"  tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
+			<tr class="zmi-selectable" tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td style="text-align:center;">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:metaObj['id']"/>
 				</td>

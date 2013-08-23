@@ -52,13 +52,11 @@ class ObjTypes:
     # --------------------------------------
     f_selectInput = HTMLFile('dtml/objattrs/f_select_input', globals())
 
-    # Textformat.
-    # -----------
-    f_selectTextformat = HTMLFile('dtml/objattrs/f_select_textformat', globals())
-
     # Richtext.
     # ---------
-    f_selectRichtext = HTMLFile('dtml/objattrs/f_select_richtext', globals())
+    f_selectRichtext = PageTemplateFile('zpt/objattrs/f_select_richtext', globals())
+    zmi_select_richtext_standard = PageTemplateFile('zpt/objattrs/zmi_select_richtext_standard', globals())
+    zmi_select_richtext_wysiwyg = PageTemplateFile('zpt/objattrs/zmi_select_richtext_wysiwyg', globals())
     f_xstandard_styles = HTMLFile('dtml/objattrs/f_xstandard_styles', globals())
     f_xstandard_css = HTMLFile('dtml/objattrs/f_xstandard_css', globals())
 
@@ -74,21 +72,9 @@ class ObjTypes:
     # ------
     f_selectImage = PageTemplateFile('zpt/objattrs/f_select_image', globals()) 
 
-    # Alignment.
-    # ----------
-    f_selectAlign = HTMLFile('dtml/objattrs/f_select_align', globals())
-
     # Colors.
     # -------
     f_selectColor = HTMLFile('dtml/objattrs/f_select_color', globals())
-
-    # Character-Format.
-    # -----------------
-    f_selectCharformat = HTMLFile('dtml/objattrs/f_select_charformat', globals())
-
-    # Displaytype.
-    # ------------
-    f_selectDisplaytype = HTMLFile('dtml/objattrs/f_select_displaytype', globals())
 
     ############################################################################
     #  dctDisplaytype :

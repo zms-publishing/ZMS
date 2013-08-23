@@ -1,6 +1,3 @@
-function initUI(context) {
-	// do nothing
-}
 function onFormSubmit() {
 	// do nothing
 	return true;
@@ -346,6 +343,32 @@ function zmiInitInputFields(container) {
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
 					});
+			// Button-Radiogroup
+			$('.btn-radiogroup',context).each(function() {
+					var key = $(this).attr('data-value');
+					var $input = $('input#'+key);
+					var val = $input.val();
+					$(this).children('span')
+						.addClass("btn")
+						.click(function() {
+								var item = $(this).attr('data-value');
+								$input.val(item);
+								$(this).siblings('.btn-info').removeClass('btn-info').addClass('btn-default');
+								$(this).removeClass('btn-default').addClass('btn-info');
+							})
+						.each(function() {
+								var item = $(this).attr('data-value');
+								if (val == "") {
+									val = item;
+								}
+								if (item==val) {
+									$(this).addClass("btn-info");
+								}
+								else {
+									$(this).addClass("btn-default");
+								}
+							});
+				});
 			// Accordion:
 			// highlight default collapse item
 			runPluginCookies(function() {
@@ -612,8 +635,8 @@ function zmiIframe(href, data, opt) {
 	}
 	var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 	// Iframe
-	if (typeof opt['iframe'] != 'undefined' && $('#zmiIframe').length==0) {
-		$('#zmiIframe').append('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
+	if (typeof opt['iframe'] != 'undefined') {
+		$('#zmiIframe').html('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
 		opt["modal"] = true;
 		opt['maxHeight'] = maxHeight;
 		opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];

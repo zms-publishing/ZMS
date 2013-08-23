@@ -1,10 +1,4 @@
-<tal:block tal:define="global
-				options python:options['args'][2];
-				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
-				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));">
-<tal:block tal:condition="python:len(rteTextFormats)>0">
-
-<div class="form-group form-richtext form-richtext-wysiwyg">
+<div class="form-group form-richtext form-richtext-wysiwyg" tal:define="global options python:options['args'][2]">
 
 	<div class="col-sm-12 col-md-12 col-lg-12">
 
@@ -15,18 +9,15 @@
 		<tal:block tal:replace="nothing">
 		### Richedit
 		</tal:block>
-		<div class="btn-group pull-right" tal:condition="python:len(rteTextFormats)>0 and len(htmlTextFormats)>0">
-			<span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],htmlTextFormats[0].getId())"
-				><img src="/misc_/zms/wysiwyg_hover.gif" tal:attributes="title python:htmlTextFormats[0].getDisplay()"/></span>
+		<div class="btn-group pull-right">
+			<span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
+				><img src="/misc_/zms/wysiwyg_hover.gif" tal:attributes="title python:request['htmledit_fmt'].getDisplay()"/></span>
 		</div><!-- .pull-left -->
 
 		<div class="clearfix"></div>
 
 	</div>
 	<div class="col-sm-12 col-md-12 col-lg-12">
-		<tal:block tal:content="structure python:here.getPlugin('rte/'+rteTextFormats[0].getRichedit()+'/manage_form.dtml',request)">the richtedit</tal:block>
+		<tal:block tal:content="structure python:here.getPlugin('rte/'+request['richedit_fmt'].getRichedit()+'/manage_form.dtml',request)">the richtedit</tal:block>
 	</div>
 </div>
-
-</tal:block>
-</tal:block>

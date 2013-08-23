@@ -1,7 +1,4 @@
-<tal:block tal:define="global
-				options python:options['args'][2];
-				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
-				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));">
+<tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)">
 
 <script language="javascript">
 
@@ -56,85 +53,87 @@ function taggedStart( s1, s2) {
  * Tag selected text.
  */
 function tagSelectedText( aTag, eTag, bMayHaveChanged) {
-  var input = self.el;
-  /* internet explorer */
-  if( typeof document.selection != 'undefined') {
-    if (bMayHaveChanged) {
-      /* Selected range may have changed */
-      while (selectedRange.text.indexOf(selectedText)!=0) {
-        selectedRange.moveStart('character',1);
-      }
-      while (selectedRange.text!=selectedText) {
-        selectedRange.moveEnd('character',-1);
-      }
-    }
-    else {
-      selectedRange = document.selection.createRange();
-    }
-    var selText = selectedRange.text;
-    // Strip trailing blanks
-    var trailingBlanks = '';
-    while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
-      selText = selText.substr( 0, selText.length - 1);
-      trailingBlanks += ' ';
-    }
-    if ( selText.length > 0) {
-      // Apply value
-      var newText;
-      if ( aTag.length > 0 && typeof eTag == 'undefined') {
-        newText = aTag + trailingBlanks;
-      }
-      else {
-        newText = aTag + selText + eTag + trailingBlanks;
-      }
-      if (bMayHaveChanged && input.value.indexOf(selText)==0) {
-        zmiWriteDebug("input.value='"+input.value+"'");
-        zmiWriteDebug("selText='"+selText+"'");
-        if (input.value==selText) {
-          input.value = newText;
-        }
-        else if (input.value.substr(selText.length).indexOf(selText)<0) {
-          input.value = input.value.replace(selText+trailingBlanks,newText);
-        }
-        else {
-          alert("can't tag selected text");
-        }
-      }
-      else {
-        selectedRange.text = newText;
-        // Set cursor-position
-        selectedRange = document.selection.createRange();
-        selectedRange.moveStart('character', newText.length);
-        selectedRange.select();
-      }
-    }
-  }
-  /* newer gecko-based browsers */
-  else if( typeof input.selectionStart != 'undefined') {
-    var start = self.selectionStart;
-    var end = self.selectionEnd;
-    var inpValue = input.value;
-    var selText = inpValue.substring( start, end);
-    // Strip trailing blanks
-    var trailingBlanks = '';
-    while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
-      selText = selText.substr( 0, selText.length - 1);
-      trailingBlanks += ' ';
-    }
-    if ( selText.length > 0) {
-      /* Apply value */
-      var newText;
-      if ( aTag.length > 0 && typeof eTag == 'undefined')
-        newText = aTag + trailingBlanks;
-      else
-        newText = aTag + selText + eTag + trailingBlanks;
-      input.value = input.value.substr( 0, start) + newText + input.value.substr( end);
-      /* Anpassen der Cursorposition */
-      var pos = start + newText.length;
-      input.selectionStart = pos;
-      input.selectionEnd = pos;
-    }
-  }
+	var input = self.el;
+	/* internet explorer */
+	if( typeof document.selection != 'undefined') {
+		if (bMayHaveChanged) {
+			/* Selected range may have changed */
+			while (selectedRange.text.indexOf(selectedText)!=0) {
+				selectedRange.moveStart('character',1);
+			}
+			while (selectedRange.text!=selectedText) {
+				selectedRange.moveEnd('character',-1);
+			}
+		}
+		else {
+			selectedRange = document.selection.createRange();
+		}
+		var selText = selectedRange.text;
+		// Strip trailing blanks
+		var trailingBlanks = '';
+		while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
+			selText = selText.substr( 0, selText.length - 1);
+			trailingBlanks += ' ';
+		}
+		if ( selText.length > 0) {
+			// Apply value
+			var newText;
+			if ( aTag.length > 0 && typeof eTag == 'undefined') {
+				newText = aTag + trailingBlanks;
+			}
+			else {
+				newText = aTag + selText + eTag + trailingBlanks;
+			}
+			if (bMayHaveChanged && input.value.indexOf(selText)==0) {
+				zmiWriteDebug("input.value='"+input.value+"'");
+				zmiWriteDebug("selText='"+selText+"'");
+				if (input.value==selText) {
+					input.value = newText;
+				}
+				else if (input.value.substr(selText.length).indexOf(selText)<0) {
+					input.value = input.value.replace(selText+trailingBlanks,newText);
+				}
+				else {
+					alert("can't tag selected text");
+				}
+			}
+			else {
+				selectedRange.text = newText;
+				// Set cursor-position
+				selectedRange = document.selection.createRange();
+				selectedRange.moveStart('character', newText.length);
+				selectedRange.select();
+			}
+		}
+	}
+	/* newer gecko-based browsers */
+	else if( typeof input.selectionStart != 'undefined') {
+		var start = self.selectionStart;
+		var end = self.selectionEnd;
+		var inpValue = input.value;
+		var selText = inpValue.substring( start, end);
+		// Strip trailing blanks
+		var trailingBlanks = '';
+		while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
+			selText = selText.substr( 0, selText.length - 1);
+			trailingBlanks += ' ';
+		}
+		if ( selText.length > 0) {
+			// Apply value
+			var newText;
+			if ( aTag.length > 0 && typeof eTag == 'undefined') {
+				newText = aTag + trailingBlanks;
+			}
+			else {
+				newText = aTag + selText + eTag + trailingBlanks;
+			}
+			input.value = input.value.substr( 0, start) + newText + input.value.substr( end);
+			// Set cursor-position
+			var pos = start + newText.length;
+			input.selectionStart = pos;
+			input.selectionEnd = pos;
+		}
+	}
 }
 
 /**
@@ -317,29 +316,36 @@ function storeCaret( textEl) {
 	}
 }
 
-function zmiAlignBtnClick( sender, align) {
-	var fm = $($(sender).parents("form")[0]);
-	$("input[name=textalign]").val(align.toUpperCase());
-	$("span.btn-textalign.btn-info").removeClass('btn-info').addClass('btn-default');
-	$("span.btn-textalign-"+align).removeClass('btn-default').addClass('btn-info');
-}
-
 </script>
 
-<div class="form-group form-richtext form-richtext-standard">
+</tal:block>
+
+<div class="form-group form-richtext form-richtext-standard" tal:define="global options python:options['args'][2]">
 	<div class="col-sm-12 col-md-12 col-lg-12">
 
+		<tal:block tal:replace="nothing">
+		### Label
+		</tal:block>
 		<div class="pull-left">
 			<label class="control-label" tal:attributes="for options/elName"><span tal:content="options/lang_str">the label</span></label>
 		</div><!-- .pull-left -->
 
 		<tal:block tal:replace="nothing">
+		### Custom
+		</tal:block>
+		<div class="pull-left" tal:condition="python:options.has_key('custom_str')">
+			<tal:block tal:content="structure python:options.get('custom_str')">the custom-string</tal:block>
+		</div><!-- .pull-left -->
+
+		<tal:block tal:replace="nothing">
 		### Paragraph-Format
 		</tal:block>
-		<div class="pull-left" tal:condition="python:options.has_key('metaObj') and len(here.filter_list(options['metaObj']['attrs'],'id','format','=='))>0">
+		<div class="pull-left" tal:condition="python:options.has_key('format') or (options.has_key('metaObj') and len(here.filter_list(options['metaObj']['attrs'],'id','format','=='))>0)">
 			<select class="form-control" id="format" name="format" tal:attributes="title python:here.getZMILangStr('ATTR_FORMAT'); disabled python:['','disabled'][int('format' in here.getObjAttrs().keys() and here.isDisabledAttr(here.getObjAttr('format'),request))]">
+				<option value="" disabled="disabled">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_PARAGRAPH')">Select paragraph</tal:block>... ---</option>
 				<tal:block tal:repeat="textFormat python:here.getTextFormats(request)">
 					<option tal:attributes="value python:textFormat.getId(); selected python:['','selected'][int(
+										(textFormat.getId()==options.get('format','?')) or
 										(textFormat.getId()==request.get('format','?')) or
 										(textFormat.getId()==here.attr('format')) or
 										(textFormat.getId()==here.getTextFormatDefault() and len(here.attr('format'))==0)
@@ -350,47 +356,56 @@ function zmiAlignBtnClick( sender, align) {
 
 		<tal:block tal:replace="nothing">
 		### Character-Format (Bold, Italic, Underline, etc.)
-		@TODO
-		</tal:block>
-		<div class="btn-group pull-left" tal:repeat="charFormats python:[
+		</tal:block
+		><div class="btn-group pull-left" tal:repeat="charFormats python:[
 								[['bold','strong'],
 									['italic','em']],
 								[['sub','sub'],
 									['sup','sup']],
 								[['code','code']],
-								[['anchor','a']],]">
-			<tal:block tal:repeat="charFormat charFormats">
-				<tal:block tal:condition="python:len(charFormat)==0">
-					&nbsp;
-				</tal:block>
-				<tal:block tal:condition="not:python:len(charFormat)==0">
-					<span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%(charFormat[1].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'],request['lang'])"><img tal:attributes="src python:'/misc_/zms/icon_%s.gif'%charFormat[0]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"/></span>
-				</tal:block>
-			</tal:block>
-		</div><!-- .btn-group -->
+								[['anchor','a']],]"
+			><tal:block tal:repeat="charFormat charFormats"
+				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
+				><tal:block tal:condition="not:python:len(charFormat)==0"
+					><span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%(charFormat[1].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'],request['lang'])"
+						><img tal:attributes="src python:'/misc_/zms/icon_%s.gif'%charFormat[0]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"/></span
+				></tal:block
+			></tal:block
+		></div><!-- .btn-group -->
 		<div class="btn-group pull-left">
 			<span class="btn btn-default" tal:attributes="onclick python:'zmiRicheditInsertTab(\'%s\',\'%s\')'%(options['fmName'],options['elName'])"><img tal:attributes="src python:'/misc_/zms/icon_tab.gif'; title python:'Tab'"/></span>
 		</div><!-- .btn-group -->
-		<div class="btn-group pull-left" tal:condition="python:len(here.getCharFormats())>0">
-		<tal:block tal:repeat="charFormat python:here.getCharFormats()">
-			<tal:block tal:condition="python:charFormat.get('btn') is not None">
-				<tal:block tal:condition="python:charFormat.get('btn') is not None">
-					<span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%(charFormat['tag'].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'],request['lang'])"><img tal:attributes="src python:'%s/format_manager/%s'%(here.getDocumentElement().absolute_url(),charFormat['btn']); title python:charFormat['display']"/></span>
-				</tal:block>
-			</tal:block>
-		</tal:block>
-		</div><!-- .btn-group -->
+		<div class="btn-group pull-left" tal:condition="python:len(here.getCharFormats())>0"
+		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
+			><tal:block tal:define="global 
+					btn     python:charFormat.get('btn');
+					js      python:here.dt_html(charFormat.get('js',''),request).strip();
+					attrs   python:here.dt_html(charFormat.get('attrs',''),request).strip();
+					onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%((charFormat['tag']+' '+attrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'],request['lang'])"
+				><tal:block tal:condition="python:btn is not None"
+					><tal:block tal:condition="python:len(js)>0"
+						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%js"></tal:block
+						><tal:block tal:define="global onclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
+					></tal:block
+					><span class="btn btn-default" tal:attributes="onclick onclick"
+						><img tal:attributes="src python:'%s/format_manager/%s'%(here.getDocumentElement().absolute_url(),btn); title python:charFormat['display']"/>
+					</span
+				></tal:block
+			></tal:block
+		></tal:block
+		></div><!-- .btn-group -->
 
 		<tal:block tal:replace="nothing">
 		### Align
 		</tal:block
-		><div class="btn-group pull-left" tal:condition="python:options.has_key('metaObj') and options.has_key('key') and len(here.filter_list(options['metaObj']['attrs'],'id',options['key']+'align','=='))>0"
+		><div class="btn-group btn-radiogroup pull-left" data-value="textalign" tal:condition="python:options.has_key('metaObj') and options.has_key('key') and len(here.filter_list(options['metaObj']['attrs'],'id',options['key']+'align','=='))>0"
 			><tal:block tal:define="global textalign python:here.nvl(here.attr('textalign'),'LEFT',['',None]); aligns python:['left','right','center']"
-				><input type="hidden" name="textalign" tal:attributes="value python:['',textalign][int(textalign is not None)]"
+				><input type="hidden" id="textalign" name="textalign" tal:attributes="value python:['',textalign][int(textalign is not None)]"
 				><tal:block tal:condition="python:not here.isDisabledAttr(here.getObjAttr('textalign'),request)"
 					><tal:block tal:repeat="align aligns"
 						><tal:block tal:define="global selected python:int(str(textalign).lower()==str(align).lower())"
-							><span tal:attributes="class python:' '.join(['btn','btn-textalign','btn-textalign-%s'%align]+[['btn-default','btn-info'][selected]]); onclick python:'zmiAlignBtnClick(this,\'%s\')'%align"><img tal:attributes="src python:'/misc_/zms/icon_align_%s.gif'%align; title python:here.getZMILangStr('ALIGN%i'%(aligns.index(align)+1))"/></span
+							><span tal:attributes="data-value python:align.upper()"
+								><img tal:attributes="src python:'/misc_/zms/icon_align_%s.gif'%align; title python:here.getZMILangStr('ALIGN%i'%(aligns.index(align)+1))"/></span
 						></tal:block
 					></tal:block
 				></tal:block
@@ -398,17 +413,12 @@ function zmiAlignBtnClick( sender, align) {
 		></div><!-- .pull-left -->
 
 		<tal:block tal:replace="nothing">
-		### Display-Type
-		@TODO
-		</tal:block>
-
-		<tal:block tal:replace="nothing">
 		### Richedit
-		</tal:block>
-		<div class="btn-group pull-right" tal:condition="python:len(rteTextFormats)>0 and len(htmlTextFormats)>0">
-			<span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],rteTextFormats[0].getId())"
-				><img src="/misc_/zms/wysiwyg_off.gif" tal:attributes="title python:rteTextFormats[0].getDisplay()"/></span>
-		</div><!-- .pull-left -->
+		</tal:block
+		><div class="btn-group pull-right"
+			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
+				><img src="/misc_/zms/wysiwyg_off.gif" tal:attributes="title python:request['richedit_fmt'].getDisplay()"/></span
+		></div><!-- .pull-left -->
 
 		<div class="clearfix"></div>
 
@@ -417,5 +427,3 @@ function zmiAlignBtnClick( sender, align) {
 		<textarea class="form-control" tal:attributes="id options/elName; name options/elName; cols options/cols; rows options/rows" tal:content="options/value">the text</textarea>
 	</div>
 </div>
-
-</tal:block>

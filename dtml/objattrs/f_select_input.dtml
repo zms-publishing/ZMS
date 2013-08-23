@@ -31,7 +31,7 @@
 ################################################################################
 </dtml-comment>
 <dtml-if "type=='string'">
- <dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST,css=css)">
+ <dtml-var "getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST)">
 
 <dtml-comment>
 ################################################################################
@@ -39,7 +39,7 @@
 ################################################################################
 </dtml-comment>
 <dtml-elif "type=='text'">
- <dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST,css=css)">
+ <dtml-var "getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST)">
 
 <dtml-comment>
 ################################################################################
@@ -47,7 +47,7 @@
 ################################################################################
 </dtml-comment>
 <dtml-elif "type in ['select', 'multiline']">
-  <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
+  <select class="form-control" id="<dtml-var elName>" name="<dtml-var elName>" <dtml-unless enabled>disabled="disabled"</dtml-unless>
    <dtml-if "type=='multiline'">
     multiple="multiple" size="<dtml-var "min(5,len(REQUEST['optpl']))">"
    </dtml-if>>
@@ -85,8 +85,8 @@
  </colgroup>
  <tr valign="top">
  <td>
-  <div class="form-small"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></div>
-  <select class="<dtml-var css>" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')">
+  <label for="<dtml-var elSrcName>"><dtml-var "getZMILangStr('ATTR_AVAILABLE')"></label>
+  <select class="form-control" name="<dtml-var elSrcName>" multiple="multiple" size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elSrcName>','<dtml-var elName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">
@@ -112,8 +112,8 @@
   </div>
  </td>
  <td>
-  <div class="form-small"><dtml-var "getZMILangStr('ATTR_SELECTED')"></div>
-  <select class="<dtml-var css>" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')">
+  <label for="<dtml-var elName>"><dtml-var "getZMILangStr('ATTR_SELECTED')"></label>
+  <select class="form-control" id="<dtml-var elName>" name="<dtml-var elName>" multiple="multiple"  size="6" ondblclick="selectFromMultiselect(this.form,'<dtml-var elName>','<dtml-var elSrcName>')">
     <dtml-in "REQUEST['optpl']">
      <dtml-let optval="_['sequence-item'][0].strip()"
                opttitle="_['sequence-item'][1].strip()">

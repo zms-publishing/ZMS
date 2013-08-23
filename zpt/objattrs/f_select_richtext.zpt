@@ -3,8 +3,12 @@
 <tal:block tal:define="global
 				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
 				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));
+				dummy0 python:request.set('richedit_fmt',rteTextFormats[0]);
+				dummy0 python:request.set('htmledit_fmt',htmlTextFormats[0]);
 				dummy0 python:request.set('fmName',options['fmName']);
 				dummy0 python:request.set('elName',options['elName']);">
+
+<tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)">
 
 <style>
 .form-richtext div:first-child {
@@ -34,7 +38,6 @@ function zmiRichtextEditorShow( elName, newFormat, callback) {
 }
 
 $(function() {
-	var key = '<tal:block tal:content="options/key"></tal:block>';
 	var wysiwyg = $('#format').val()=='<tal:block tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
 	if(wysiwyg) {
 		$('div[id^="zmiStandardEditor"]').hide();
@@ -46,9 +49,12 @@ $(function() {
 
 <tal:block tal:content="structure python:'</script>'"></tal:block>
 
+</tal:block>
+
 <div tal:attributes="id python:'zmiStandardEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_standard(here,request,options)">zmi_select_richtext_standard</div>
 <div tal:attributes="id python:'zmiRichtextEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_wysiwyg(here,request,options)">zmi_select_richtext_wysiwyg</div>
 
+<tal:block tal:define="dummy0 python:request.set('f_zmiRichtextEditor',False)"></tal:block>
 </tal:block>
 
 <!-- EO objattrs/f_select_richtext -->

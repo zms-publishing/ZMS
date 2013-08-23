@@ -1957,7 +1957,7 @@ $(function() {
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2204,78 +2204,67 @@ return zmscontext.attr('attr_dc_description')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- ZMSNote.renderShort -->
+                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
 
-<tal:block tal:define="global 
-		zmscontext options/zmscontext">
+<dtml-unless "REQUEST.get('ZMSNOTE_JS')">
 
-<tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
-
-<tal:block tal:content="structure python:'<style>'"></tal:block>
+<style>
 div.note {
 	border-left: 1px solid #FCCD64;
 	border-bottom: 1px solid #FCCD64;
 	margin: 8px;
 	padding: 4px;
-	background: #FCFECC url(<tal:block tal:content="python:zmscontext.getMetaobjAttr(zmscontext.meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">zmsnote_bg.gif</tal:block>) top right no-repeat;
+	background: #FCFECC url(<dtml-var "getMetaobjAttr(meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">) top right no-repeat;
 }
-<tal:block tal:content="structure python:'</style>'"></tal:block>
+</style>
 
 <script language="JavaScript">
-
 var firedZMSNoteDiv = false;
 var repeatZMSNoteDiv = false;
 
 function onKeyUpZMSNoteDiv(el) {
-	if (!firedZMSNoteDiv) {
-		firedZMSNoteDiv = true;
-		setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
-	}
-	else {
-		repeatZMSNoteDiv = true;
-	}
+    if (!firedZMSNoteDiv) {
+      firedZMSNoteDiv = true;
+      setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
+    }
+    else  {
+      repeatZMSNoteDiv = true;
+    }
 }
 
 function onChangeZMSNoteDiv(id) {
-	if (repeatZMSNoteDiv) {
-		repeatZMSNoteDiv = false;
-		setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
-	}
-	else {
-		firedZMSNoteDiv = false;
-		repeatZMSNoteDiv = false;
-		var el = $('div#'+id);
-		var v = el.text();
-		el.addClass('zmiTeaserColor');
-		var lang = getZMILang();
-		var params = {};
-		params['lang'] = lang;
-		params['text_'+lang] = v;
-		$.post(id+'/manage_changeProperties',params,function(data){
-			el.removeClass('zmiTeaserColor');
-		},'html');
-	}
+    if (repeatZMSNoteDiv) {
+      repeatZMSNoteDiv = false;
+      setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
+    }
+    else {
+      firedZMSNoteDiv = false;
+      repeatZMSNoteDiv = false;
+      var el = $('div#'+id);
+      var v = el.text();
+      el.addClass('zmiTeaserColor');
+      $.post(id+'/manage_changeProperties',{'lang':'<dtml-var lang>','text_<dtml-var lang>':v},function(data){
+        el.removeClass('zmiTeaserColor');
+      },'html');
+    }
 }
 
 </script>
-
-<tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
-</tal:block>
+<dtml-call "REQUEST.set('ZMSNOTE_JS',True)">
+</dtml-unless>
 
 <div class="note">
-	<div tal:attributes="id python:zmscontext.id" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)" tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
+	<div id="<dtml-var id>" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)"><dtml-var "getText(REQUEST)" newline_to_br></div>
 </div>
 
-</tal:block>
-
-<!-- /ZMSNote.renderShort -->]]>
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="type"><![CDATA[method]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2596,30 +2585,26 @@ zmscontext.attr('text',text)
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- ZMSSqlDb.renderShort -->
+                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
 
-<tal:block tal:define="global 
-		zmscontext options/zmscontext">
-	<h4>
-		<i class="icon-table"></i>
-		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
-	</h4>
-	<ul>
-		<li tal:repeat="table python:filter(lambda x:x['type']=='table',zmscontext.getEntities())">
-			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
-		</li>
-	</ul>
-	<br/>
-</tal:block>
+<dtml-try>
+	<dtml-in "getEntities()" mapping>
+		<dtml-if "type=='table'">
+			<div class="form-small"><a href="<dtml-var absolute_url>/manage_main?qentity=<dtml-var id>" class="zmi"><dtml-var label></div>
+		</dtml-if>
+	</dtml-in>
+<dtml-except>
+	<pre>DATABASE CONNECTION ERROR <a href="&dtml-id;/manage_properties">...</a></pre>
+</dtml-try>
 
-<!-- /ZMSSqlDb.renderShort -->]]>
+<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[zpt]]></item>
+                  <item key="type"><![CDATA[method]]></item>
                 </dictionary>
               </item>
             </list>
@@ -2967,6 +2952,7 @@ zmscontext.attr('text',text)
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
 <span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
 <style>
+<!--
 div.ZMSTable table.ZMSTable tr th,
 div.ZMSTable table.ZMSTable tr td {
 	border:1px solid black;
@@ -2975,6 +2961,7 @@ div.ZMSTable table.ZMSTable tr td {
 	padding:0!important;
 	overflow:hidden!important;
 }
+-->
 </style>
 <script>
 
@@ -3162,14 +3149,11 @@ $()
 --------------------------------------------------------------------------------
 -->
 <tal:block tal:define="global custom python:''
-		+'<td class=\042form-text\042>'+here.getZMILangStr('ATTR_FORMAT')+'</td>'
-		+'<td>'+here.f_selectInput(fmName=request.get('fmName'),elName='tag',value='',type='select',lang_str=here.getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,css='form-element',REQUEST=request)+'</td>'
-		+'<td class=\042form-text\042>'+here.getZMILangStr('ATTR_PARAGRAPH')+'</td>'
-		+'<td>'+here.f_selectTextformat(here,REQUEST=request)+'</td>'">
+		+'<div class=\042pull-left\042>'+here.f_selectInput(fmName=request.get('fmName'),elName='tag',value='',type='select',lang_str=here.getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,REQUEST=request)+'</div>'">
 	<div class="ui-helper-hidden ui-helper-overlay">&nbsp;</div>
 	<div class="ui-helper-hidden">
 		<div id="div_table_cell_editor">
-			<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,css='form-element',wrap='virtual')"></tal:block>
+			<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
 			<div class="control-group">
 				<div class="controls save">
 					<button class="btn btn-primary" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_CHANGE')" onclick="return table_cell_change();">
@@ -3197,6 +3181,16 @@ $()
 <span class="ui-helper-hidden" id="table_type" tal:content="table_type"></span>
 <span class="ui-helper-hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
 <style>
+#table_cell_editor .btn {
+	padding: 0 .3em;
+}
+div.zmi-interface {
+	padding: 0 1em 1em;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #E7ECF0;
+	box-shadow: inset 0 1px 10px rgba(0,0,0,0.075);
+}
 .div_table_cell_editor_parent {
 	position:absolute;
 	background:#FEFEFE;
@@ -3212,7 +3206,7 @@ $()
 	top:0!important;
 	left:0!important;
 	background-color:black!important;
-	width:100%!important;      
+	width:100%!important;
 	height:100%!important;
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40;
 	z-index:9998!important;
@@ -3232,11 +3226,6 @@ img.hbutton {
 	height:8px!important;
 	width:16px!important;
 	border-radius:3px;
-}
-.ZMSTable-buttons {
-	line-height:0.5em;
-	background-color:#EEE;
-	border:2px solid #EEE;
 }
 .ZMSTable-cell {
 	border:1px solid #CCC;
@@ -3262,9 +3251,13 @@ img.hbutton {
 .table_cell_editable.new {
 	background-color:#DFD;
 }
+.table_cell_editable.moved {
+	background-color:#FFF;
+}
 </style>
-<script>
 
+<script>
+// <!--
 var fmName = $('#fmName').text();
 var elName = $('#elName').text();
 var textFormatDefault = $("#textFormatDefault").text();
@@ -3388,7 +3381,7 @@ function table_cell_cancel(event) {
 }
 
 function table_cell_init() {
-	$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").addClass('changed');});
+	$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").addClass('changed').removeClass('changed',1000);});
 	$("form[name="+fmName+"] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
 	$('div[id^=preview_]')
 		.attr('contenteditable','').keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
@@ -3396,43 +3389,40 @@ function table_cell_init() {
 
 function actionBtnClick(el, fct) {
 	var x = 0;
-	var el_td = $($(el).parents("td")[1]);
-	while ( el_td.prev().length > 0) {
+	var $td = $(el).closest("td");
+	while ( $td.prev().length > 0) {
 		x++;
-		el_td = $(el_td.prev()[0]);
+		$td = $td.prev();
 	}
 	var y = 0;
-	var el_tr = $(el_td.parent("tr"));
-	while ( el_tr.prev().length > 0) {
+	var $tr = $($td.parent("tr"));
+	while ( $tr.prev().length > 0) {
 		y++;
-		el_tr = $(el_tr.prev()[0]);
+		$tr = $tr.prev();
 	}
-	var el_tbody = $($(el).parents("tbody")[1]);
-	if (fct.indexOf('_col') > 0) {
-		el_tbody.children().filter(":eq(1)").children().filter(":gt(1)").filter(":not(:last)").html("&nbsp;");
-	}
+	var $tbody = $(el).closest("tbody");
 	//////////////////////////////////////////////////////////////////////////////
 	/// DELETE
 	//////////////////////////////////////////////////////////////////////////////
 	if (fct.indexOf('delete') == 0) {
 		if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 			if (fct.indexOf('delete_col') == 0) {
-				var el_trs = el_tbody.children();
-				for ( var i = 0; i < el_trs.length; i++) {
+				var $trs = $tbody.children();
+				for ( var i = 0; i < $trs.length; i++) {
 					if ( i == table_cell_offs && table_type == 2) {
-						var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
-						el_td.prop("colspan",parseInt(el_td.prop("colspan"))-1);
+						var $td = $($trs[i]).children().filter(":eq("+table_cell_offs+")");
+						$td.prop("colspan",parseInt($td.prop("colspan"))-1);
 					}
 					else {
-						var el_td = $($(el_trs[i]).children().filter(":eq("+x+")")[0]);
-						el_td.remove();
+						var $td = $($trs[i]).children().filter(":eq("+x+")");
+						$td.remove();
 					}
 				}
 				$('#cols').val( parseInt($('#cols').val())-1);
 			}
 			else if (fct.indexOf('delete_row') == 0) {
-				var el_tr = $(el_tbody.children().filter(":eq("+y+")")[0]);
-				el_tr.remove();
+				var $tr = $tbody.children().filter(":eq("+y+")");
+				$tr.remove();
 				$('#rows').val( parseInt($('#rows').val())-1);
 			}
 		}
@@ -3441,27 +3431,27 @@ function actionBtnClick(el, fct) {
 	/// INSERT
 	//////////////////////////////////////////////////////////////////////////////
 	else if (fct.indexOf('insert_col') == 0) {
-		var el_trs = el_tbody.children();
-		for ( var i = 0; i < el_trs.length; i++) {
+		var $trs = $tbody.children();
+		for ( var i = 0; i < $trs.length; i++) {
 			if ( i == table_cell_offs && table_type == 2) {
-				var el_td = $($(el_trs[i]).children().filter(":eq("+table_cell_offs+")")[0]);
-				el_td.attr("colspan",parseInt(el_td.attr("colspan"))+1);
+				var $td = $($trs[i]).children().filter(":eq("+table_cell_offs+")");
+				$td.attr("colspan",parseInt($td.attr("colspan"))+1);
 			}
 			else {
-				var el_tds = $(el_trs[i]).children();
-				var el_td = $(el_tds.filter(":eq("+x+")")[0]);
-				var new_td = insertCell(el_tds[el_tds.length-2]);
-				new_td.insertBefore( el_td);
+				var $tds = $($trs[i]).children();
+				var $td = $tds.filter(":eq("+x+")");
+				var new_td = insertCell($tds[$tds.length-2]);
+				new_td.insertBefore( $td);
 			}
 		}
 		$('#cols').val( parseInt($('#cols').val())+1);
 		table_cell_init();
 	}
 	else if (fct.indexOf('insert_row') == 0) {
-		var el_trs = el_tbody.children();
-		var el_tr = $(el_trs.filter(":eq("+y+")")[0]);
-		var new_tr = insertCell(el_trs[el_trs.length-2]);
-		new_tr.insertBefore( el_tr);
+		var $trs = $tbody.children();
+		var $tr = $trs.filter(":eq("+y+")");
+		var new_tr = insertCell($trs[$trs.length-2]);
+		new_tr.insertBefore( $tr);
 		$('#rows').val( parseInt($('#rows').val())-1);
 		table_cell_init();
 	}
@@ -3477,10 +3467,10 @@ function actionBtnClick(el, fct) {
 		else {
 			target_x = target_x + 1;
 		}
-		var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
-		for ( var i = 0; i < el_trs.length; i++) {
-			var source_td = $($(el_trs[i]).children().filter(":eq("+source_x+")")[0]);
-			var target_td = $($(el_trs[i]).children().filter(":eq("+target_x+")")[0]);
+		var $trs = $tbody.children().filter(":gt(1)").filter(":not(:last)");
+		for ( var i = 0; i < $trs.length; i++) {
+			var source_td = $($trs[i]).children().filter(":eq("+source_x+")");
+			var target_td = $($trs[i]).children().filter(":eq("+target_x+")");
 			moveCell(source_td, target_td);
 		}
 	}
@@ -3493,8 +3483,8 @@ function actionBtnClick(el, fct) {
 		else {
 			target_y = target_y + 1;
 		}
-		var source_tr = $(el_tbody.children().filter(":eq("+source_y+")")[0]);
-		var target_tr = $(el_tbody.children().filter(":eq("+target_y+")")[0]);
+		var source_tr = $tbody.children().filter(":eq("+source_y+")");
+		var target_tr = $tbody.children().filter(":eq("+target_y+")");
 		moveCell(source_tr, target_tr);
 	}
 	else {
@@ -3507,8 +3497,8 @@ function actionBtnClick(el, fct) {
 }
 
 function insertCell(source) {
-	var clone = $(source).clone();
-	$("table.ZMSTable td",clone).each(function() {
+	var $clone = $(source).clone();
+	$("table.ZMSTable th, table.ZMSTable td",$clone).each(function() {
 			// Remove table with inline-links (if exists).
 			$("table",this).remove();
 			$("textarea,input",this).each(function() {
@@ -3522,14 +3512,16 @@ function insertCell(source) {
 						$(this).val( "").css( 'border', '2px solid #00FF00');
 					}
 				});
-			$("div[id^=preview]",this).each(function() {
-					$(this).attr("id","preview_"+table_cell_uid).html( "&nbsp;")
-						.attr('contenteditable','').keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
+			$('div[id^="preview"]',this).each(function() {
+					$(this).attr("id","preview_"+table_cell_uid)
+						.html( "&nbsp;")
+						.attr('contenteditable','')
+						.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
 				});
-			$(this).addClass('new');
+			$(this).addClass('new').removeClass('new',1000);
 			table_cell_uid++;
 		});
-	return clone;
+	return $clone;
 }
 
 function moveCell(source, target) {
@@ -3547,6 +3539,7 @@ function moveCell(source, target) {
 		$(source_preview[j]).html( $(target_preview[j]).html());
 		$(target_preview[j]).html( v);
 	}
+	$("td.table_cell_editable",target).addClass("moved").removeClass("moved",1000);
 }
 
 function onKeyUpZMSTableDivContenteditable() {
@@ -3555,67 +3548,63 @@ function onKeyUpZMSTableDivContenteditable() {
 }
 
 $(function(){
-	$('form[name='+fmName+']').submit( onZMSTableFormSubmit).addClass('form-horizontal');
+	$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
 	table_cell_init();
 });
 
+// -->
 </script>
 
 <img src="/misc_/zms/spacer.gif" alt="" border="0" height="2"/>
 
 <table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
 
-<tr valign="middle">
+<tr>
+	<td style="padding-bottom:1em;">
+	 <div class="checkbox">
+		<label>
+			<tal:block tal:content="structure python:here.getCheckbox(fmName=request['fmName'],elName='colgroup',value=zmscontext.attr('colgroup'),enabled=True,REQUEST=request,css='')"></tal:block>
+			<small>colgroup&nbsp;</small>
+		</label>
+		</div>
+	</td>
+	<td tal:repeat="col_index python:range(table_cols)" style="padding-bottom:0.5em;">
+		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
+			<input class="form-control input-sm" style="display:inline;width:3em;" type="text" size="3" 
+			tal:attributes="name python:'col%i'%col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))];placeholder python:table_widths[col_index];title python: 'Calculated Average-Width = %s'%(table_widths[col_index])" />
+			&#37;
+		</tal:block>
+			&nbsp;
+	</td>
 	<td>&nbsp;</td>
-	<td><img src="/misc_/zms/spacer.gif" width="8" height="1" border="0"></td>
-	<td align="center" tal:repeat="col_index python:range(table_cols)">
-		<table cellspacing="0" cellpadding="0" border="0" class="ZMSTable-buttons">
-		<tr>
-			<td><a href="#" class="vbutton"><img src="/misc_/zms/btn_arr_left.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVELEFT')" border="0" onclick="actionBtnClick(this,'move_col_left')" class="vbutton"/></a></td>
-			<td><a href="#" class="vbutton"><img src="/misc_/zms/btn_arr_right.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVERIGHT')" border="0" onclick="actionBtnClick(this,'move_col_right')" class="vbutton"/></a></td>
-			<td tal:condition="python:col_index>0 or table_type==1"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
-			<td tal:condition="python:col_index>0 or table_type==1"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_COL')"><span onclick="actionBtnClick(this,'delete_col')" class="ui-icon ui-icon-trash"></span></div></td>
-		</tr>
-		</table>
-	</td>
-	<td>
-		<table cellspacing="0" cellpadding="0" border="0" class="ZMSTable-buttons">
-		<tr>
-			<td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"><span onclick="actionBtnClick(this,'insert_col')" class="ui-icon ui-icon-plus"></span></div></td>
-		</tr>
-		</table>
-	</td>
 </tr>
 
 <tr>
-	<td align="right">Colgroup</td>
-	<td tal:content="structure python:here.getCheckbox(fmName=request['fmName'],elName='colgroup',value=zmscontext.attr('colgroup'),enabled=True,REQUEST=request)"></td>
-	<td tal:repeat="col_index python:range(table_cols)" align="center" nowrap="nowrap" tal:attributes="class python:' '.join(['ZMSTable-cell']+[['bottom'],[]][int(col_index==0 and table_type==4)])">
-		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
-			<input style="width:3em" type="text" size="3" tal:attributes="name python:'col%i'%col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]" style="text-align:right;"/>
-			(&Oslash;=<tal:block tal:content="python:table_widths[col_index]"></tal:block>)%
-		</tal:block>
-		<tal:block tal:condition="not:python:zmscontext.attr('colgroup')">
-			&nbsp;
-		</tal:block>
+	<td></td>
+	<td tal:repeat="col_index python:range(table_cols)">
+		<div class="btn-group">
+			<span class="btn" onclick="actionBtnClick(this,'move_col_left')"><i class="icon-caret-left" tal:attributes="title python:here.getZMILangStr('ACTION_MOVELEFT')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'move_col_right')"><i class="icon-caret-right" tal:attributes="title python:here.getZMILangStr('ACTION_MOVERIGHT')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'delete_col')" tal:condition="python:col_index>0 or table_type==1"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_COL')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'insert_col')" tal:condition="python:col_index>0 or table_type==1"><i class="icon-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
+		</div><!-- .btn-group -->
 	</td>
-	<td>&nbsp;</td>
+	<td>
+		<div class="btn-group">
+			<span class="btn" onclick="actionBtnClick(this,'insert_col')"><i class="icon-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
+		</div><!-- .btn-group -->
+	</td>
 </tr>
 
-<tr tal:repeat="row_index python:range(table_rows)" valign="middle">
+<tr tal:repeat="row_index python:range(table_rows)">
 	<td>
-		<table cellspacing="0" cellpadding="0" border="0" class="ZMSTable-buttons">
-		<tr>
-			<td valign="bottom"><a href="#" class="hbutton"><img src="/misc_/zms/btn_arr_up.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEUP')" border="0" onclick="actionBtnClick(this,'move_row_up')" class="hbutton"/></a></td>
-			<td valign="middle" rowspan="2" tal:condition="python:row_index>0 or table_type==3"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
-			<td valign="middle" rowspan="2" tal:condition="python:row_index>0 or table_type==3"><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_ROW')"><span onclick="actionBtnClick(this,'delete_row')" class="ui-icon ui-icon-trash"></span></div></td>
-		</tr>
-		<tr valign="top">
-			<td><a href="#" class="hbutton"><img src="/misc_/zms/btn_arr_down.gif" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEDOWN')" border="0" onclick="actionBtnClick(this,'move_row_down')" class="hbutton"/></a></td>
-		</tr>
-		</table>
+		<div class="btn-group">
+			<span class="btn" onclick="actionBtnClick(this,'move_row_up')" tal:condition="python:row_index>0 or table_type==3"><i class="icon-caret-up" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEUP')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'move_row_down')" tal:condition="python:row_index>0 or table_type==3"><i class="icon-caret-down" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEDOWN')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'delete_row')" tal:condition="python:row_index>0 or table_type==3"><i class="icon-trash" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_ROW')"></i></span>
+			<span class="btn" onclick="actionBtnClick(this,'insert_row')" tal:condition="python:row_index>0 or table_type==3"><i class="icon-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
+		</div><!-- .btn-group -->
 	</td>
-	<td tal:attributes="class python:' '.join(['ZMSTable-cell']+[['right'],[]][int(row_index==0 and table_type==4)])">&nbsp;</td>
 	<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
 		<tal:block tal:define="global 
 				cell python:table_table[row_index][col_index];
@@ -3624,9 +3613,6 @@ $(function(){
 				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
 				cell_format python:['html',cell.get('format')][int(cell_content.find('dtml-')<0)];
 				richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
-			<tal:block tal:condition="python:table_type==4 and row_index==0 and col_index==0">
-				<td style="border-right: solid 1px black;border-bottom: solid 1px black;">&nbsp;</td>
-			</tal:block>
 			<tal:block tal:condition="not:python:table_type==4 and row_index==0 and col_index==0">
 				<td class="ZMSTable-cell" tal:attributes="colspan cell/colspan">
 				<div class="ZMSTable">
@@ -3636,7 +3622,7 @@ $(function(){
 						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
 							<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag"/>
 							<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">
-							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,css='form-element',extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
+							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
 						</div>
 						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]">
 							<tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block>
@@ -3650,21 +3636,14 @@ $(function(){
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<td class="ZMSTable-cell left">&nbsp;</td>
 </tr>
 
-<tr valign="middle">
+<tr>
 	<td>
-		<table cellspacing="0" cellpadding="0" border="0" class="ZMSTable-buttons">
-		<tr valign="middle">
-			<td><img src="/misc_/zms/spacer.gif" alt="" border="0" width="20"/></td>
-			<td><div class="zmi-icon ui-state-default ui-helper-clearfix ui-corner-all" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"><span onclick="actionBtnClick(this,'insert_row')" class="ui-icon ui-icon-plus"></span></div></td>
-		</tr>
-		</table>
+		<div class="btn-group">
+			<span class="btn" onclick="actionBtnClick(this,'insert_row')"><i class="icon-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
+		</div><!-- .btn-group -->
 	</td>
-	<td class="ZMSTable-cell">&nbsp;</td>
-	<td class="ZMSTable-cell top" tal:repeat="col_index python:range(table_cols)">&nbsp;</td>
-	<td class="ZMSTable-cell">&nbsp;</td>
 </tr>
 
 </table><!-- #table_cell_editor -->
@@ -4035,7 +4014,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.10]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4282,25 +4261,8 @@ last_borderstyle = None
 last_bgcolor_border = None
 teaserElmnts = context.getTeaserElements()
 if teaserElmnts:
-  print '<div id="teaser">'
+  print '<div class="ZMSTeaserContainer">'
   for teaserElmnt in teaserElmnts:
-    teaserCntnr = teaserElmnt.getParentNode()
-    borderstyle = teaserCntnr.attr('attr_borderstyle')
-    bgcolor_border = teaserCntnr.attr('attr_bgcolor_border')
-    request.set('bgcolor_title',teaserCntnr.attr('attr_bgcolor_title'))
-    request.set('bgcolor_text',teaserCntnr.attr('attr_bgcolor_text'))
-    if last_borderstyle != borderstyle or \
-       last_bgcolor_border != bgcolor_border or \
-       borderstyle == 2:
-      if last_borderstyle is not None and \
-         last_bgcolor_border is not None:
-        if last_borderstyle != 3:
-          print '</div>'
-      if borderstyle != 3:
-        print '<div class="%s"'%teaserCntnr.meta_id
-        if bgcolor_border:
-          print ' style="background-color:%s;"'%teaserElmnt.get_colormap().get(bgcolor_border,'transparent')
-        print '>'
     if teaserElmnt.meta_id in ['ZMSLinkElement','ZMSFile','ZMSTeaserElement']:
       name = 'pageelement_TeaserElement'
     else:
@@ -4312,13 +4274,7 @@ if teaserElmnts:
     except:
       pass
     print method_result
-    last_borderstyle = borderstyle
-    last_bgcolor_border = bgcolor_border
-  if last_borderstyle is not None and \
-     last_bgcolor_border is not None:
-    if last_borderstyle != 3:
-      print '</div>'
-  print '</div>'
+  print '</div><!-- .ZMSTeaserContainer -->'
 
 return unicode(printed).encode('utf-8')
 
@@ -4399,7 +4355,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.1]]></item>
+          <item key="revision"><![CDATA[1.8.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4468,7 +4424,6 @@ return unicode(printed).encode('utf-8')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="default"><![CDATA[2]]></item>
                   <item key="id"><![CDATA[displaytype]]></item>
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">0</item>
@@ -4576,9 +4531,7 @@ return zmscontext.attr('text')
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- pageelement_TeaserElement -->
 
-	<span tal:omit-tag="" tal:define="global 
-		bgcolor_title python:request.get('bgcolor_title');
-		bgcolor_text  python:request.get('bgcolor_text');
+	<div class="ZMSTeaserElement" tal:define="global 
 		url           python:here.getLinkUrl(here.attr('attr_url'),request);
 		img_src_attr  python:here.attr('attr_img_src');
 		img_src       python:img_src_attr+'?';
@@ -4587,21 +4540,15 @@ return zmscontext.attr('text')
 		title_txt     python:title_url;
 		abstract      python:here.attr('attr_abstract')">
 		
-		<span tal:omit-tag="" tal:define="global styles python:[]">
-			<span tal:omit-tag="" tal:condition="bgcolor_title" tal:define="global styles python:styles+['background-color:'+here.get_colormap().get(bgcolor_title,'transparent')]">
-			</span>
-		</span>
-		<div class="ZMSTeaserElement" tal:attributes="style python:''.join(styles)">
+			<tal:block tal:condition="python:len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')">
+				<tal:block tal:define="global title_url python:title_url[2:-2]; title_txt python:''"></tal:block>
+			</tal:block>
 			
-			<span tal:omit-tag="" tal:condition="python:len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')">
-				<span tal:omit-tag="" tal:define="global title_url python:title_url[2:-2]; title_txt python:''"></span>
-			</span>
-			
-			<span tal:omit-tag="" tal:condition="python:title_txt or img_filename" tal:define="global 
+			<tal:block tal:condition="python:title_txt or img_filename" tal:define="global 
 					displaytype python:here.dctDisplaytype.get(str(here.attr('displaytype')),'left');
 					img         python:'<img class=\042title\042 src=\042'+img_src_attr+'\042 alt=\042'+title_txt+'\042 border=\0420\042/>'">
-					
-				<span tal:omit-tag="" tal:condition="python:displaytype=='top'">
+				
+				<tal:block tal:condition="python:displaytype=='top'">
 					<div class="graphic" tal:condition="python:img_filename">
 						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
@@ -4610,32 +4557,9 @@ return zmscontext.attr('text')
 						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
-				</span>
+				</tal:block>
 				
-				<span tal:omit-tag="" tal:condition="python:displaytype=='right'">
-					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
-						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
-					</div>
-					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
-						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
-					</div>
-					<div class="clearfloating" style="clear:both">&nbsp;</div>
-				</span>
-				
-				<span tal:omit-tag="" tal:condition="python:displaytype=='bottom'">
-					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
-						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
-					</div>
-					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
-						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
-					</div>
-				</span>
-				
-				<span tal:omit-tag="" tal:condition="python:displaytype=='left'">
+				<tal:block tal:condition="python:displaytype=='right'">
 					<div class="graphic" tal:condition="python:img_filename">
 						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
@@ -4645,21 +4569,39 @@ return zmscontext.attr('text')
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
 					<div class="clearfloating" style="clear:both">&nbsp;</div>
-				</span>
+				</tal:block>
 				
-				<span tal:omit-tag="" tal:define="global styles python:[]">
-					<span tal:omit-tag="" tal:condition="bgcolor_text" tal:define="global styles python:styles+['background-color:'+here.get_colormap().get(bgcolor_text,'transparent')]">
-					</span>
-				</span>
-				<div tal:condition="python:len(abstract)+len(url)>0" class="text" tal:attributes="style python:''.join(styles)">
-					<span tal:omit-tag="" tal:content="structure abstract">The abstract</span>
-					<span tal:omit-tag="" tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">The url</span>
+				<tal:block tal:condition="python:displaytype=='bottom'">
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+				</tal:block>
+				
+				<tal:block tal:condition="python:displaytype=='left'">
+					<div class="graphic" tal:condition="python:img_filename">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
+					</div>
+					<div class="title" tal:condition="python:title_txt">
+						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
+					</div>
+					<div class="clearfloating" style="clear:both">&nbsp;</div>
+				</tal:block>
+				
+				<div tal:condition="python:len(abstract)+len(url)>0" class="text">
+					<tal:block tal:content="structure abstract">The abstract</tal:block>
+					<tal:block tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">The url</tal:block>
 				</div>
 				
-			</span>
+			</tal:block>
 			
-		</div>
-	</span>
+	</div>
 
 <!-- /pageelement_TeaserElement -->]]>
                   </item>
@@ -4676,24 +4618,15 @@ return zmscontext.attr('text')
                   <item key="custom"><![CDATA[<!-- ZMSTeaserElement.standard_html -->
 
 <tal:block tal:define="global 
-		zmscontext options/zmscontext;
-		teaserCntnr     python:zmscontext.getParentNode();
-		subclass        python:[teaserCntnr.meta_id];
-		style           python:[];
-		bgcolor_border  python:teaserCntnr.attr('attr_bgcolor_border');
-		bgcolor_title   python:teaserCntnr.attr('attr_bgcolor_title');
-		bgcolor_text    python:teaserCntnr.attr('attr_bgcolor_text')">
-	<div tal:condition="python:request.get('URL','').find('/manage')>0" id="teaser">
-		<tal:block tal:condition="python:bgcolor_border">
-			<tal:block tal:define="global style python:style+['border: 1px solid '+zmscontext.get_colormap().get(bgcolor_border,'black')]"></tal:block>
-		</tal:block>
-		<div tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+		zmscontext options/zmscontext">
+	<div tal:condition="python:request.get('URL').find('/manage')>0" class="ZMSTeaserContainer">
+		<tal:block tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
 			The teaser-element
-		</div>
+		</tal:block>
 	</div>
-	<div tal:condition="python:not (request.get('URL','').find('/manage')>0)" tal:attributes="class python:' '.join(subclass); style python:' '.join(style)" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+	<tal:block  tal:condition="not:python:request.get('URL').find('/manage')>0" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
 		The teaser-element
-	</div>
+	</tal:block >
 </tal:block>
 
 <!-- /ZMSTeaserElement.standard_html -->]]>
@@ -4732,7 +4665,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[1.8.2]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>

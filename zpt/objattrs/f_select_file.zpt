@@ -32,7 +32,7 @@
 			<div class="zmi-input-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',[])"
-					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','ajax_upload')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
+					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.dtml',request,{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
 				the input-file
 			</div>
 

@@ -247,7 +247,6 @@ $(function() {
 			<tr tal:repeat="objAttrId objAttrIds">
 				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId,syncTypes=['*']); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
 					<td class="meta-sort">
-						<img class="grippy" src="/misc_/zms/spacer.gif" />
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
 						<div class="input-append">
 							<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',key:\'attr\',attr_id:\'%s\',\'pos:int\':this.selectedIndex})'%objAttrId">
@@ -332,7 +331,7 @@ $(function() {
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['','zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
 								</div>
 								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="objAttr/custom">custom</textarea>
+									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="objAttr/default">default</textarea>
 								</div>
 							</td>
 						</tal:block>

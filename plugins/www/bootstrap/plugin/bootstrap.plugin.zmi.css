@@ -199,6 +199,11 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 ul.zmi-container li.zmi-item .inactive .contentEditable {
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
 }
+ul.zmi-container.portalClients .center .zmiRenderShort {
+	padding-left:1em;
+	color:#6B9EB8;
+}
+
 table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;
@@ -1026,7 +1031,8 @@ div.right .btn .caret {
 	ul.zmi-container .center .zmiRenderShort {
 		padding-left:3em !important
 	}
-	ul.zmi-container.pages .center .zmiRenderShort {
+	ul.zmi-container.pages .center .zmiRenderShort,
+	ul.zmi-container.portalClients .center .zmiRenderShort {
 		padding-left:2.5em !important
 	}
 	img.grippy {
@@ -1128,10 +1134,6 @@ button.ui-dialog-titlebar-close {
 	background-position: -309px 2px!important;
 	background-repeat:no-repeat!important;
 }
-
-
-
-
 
 .dropdown-header {
 	padding: 3px 13px;

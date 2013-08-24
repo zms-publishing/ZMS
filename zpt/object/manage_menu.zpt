@@ -9,18 +9,26 @@ function zmiToggleClick(toggle, callback) {
 	if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-right"))) {
 		$(toggle).removeClass(zmi_icon_clazz("icon-caret-right")).addClass(zmi_icon_clazz("icon-caret-down")).attr({title:'-'});
 		var href= '';
-		var homeId = $("a.navbar-brand span.zmi-home-id").text();
+		var baseId = $("a.navbar-brand span.zmi-home-id").text();
+		var homeId = baseId;
 		$(toggle).parents(".zmi-page").each(function(){
 				var id = $(this).attr("id");
-				id = id.substr(homeId.length+1);
-				href = '/'+id+href;
+				var elId = id.substr(id.indexOf("_")+1);
+				href = '/'+elId+href;
+				var baseId = id.substr(0,id.indexOf("_"));
+				if (baseId!=homeId) {
+					href = href.replace('/'+baseId+'/','/');
+					href = '/'+baseId+href;
+				}
 			});
 		href = homeId+href;
 		// Set wait-cursor.
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin" title="'+getZMILangStr('MSG_LOADING')+'"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		$(document.body).css( "cursor", "wait");
 		// JQuery.AJAX.get
-		$.get(href+'/manage_ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
+		var id = $container.attr("id");
+		var elId = id.substr(id.indexOf("_")+1);
+		$.get(href+'/manage_ajaxGetChildNodes',{id:elId,lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				$(document.body).css( "cursor", "auto");

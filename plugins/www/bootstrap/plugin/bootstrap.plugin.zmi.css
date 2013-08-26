@@ -218,7 +218,7 @@ table.table.zmi-sortable input {
 
 .col_min {width:1em}
 .col_max {width:100%}
-.row_insert .language_id input {width:36px;}
+.row_insert .language_id input {width:4em;}
 
 .zmi-item img.grippy {
 	position:absolute;
@@ -1233,6 +1233,8 @@ body.zmi.metas .meta-sort .add-on.btn:hover {
 .tabbable .nav-tabs {
 	padding: 0 2em;
 	margin: 0 2em;
+	min-width:900px;
+	overflow:hidden;
 }
 .tabbable .nav-tabs li.active a {
 	background-color: #fff !important;

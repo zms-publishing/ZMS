@@ -46,15 +46,15 @@
 				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
 					<td><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
-					<td><input type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
+					<td><input class="form-control input-sm" type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>
-						<select class="form-control" tal:attributes="name python:'%s_parent'%langId">
+						<select class="form-control input-sm" tal:attributes="name python:'%s_parent'%langId">
 							<option value="" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_PRIMARY')">primary (*)</option>
 							<option tal:repeat="lang langIds" tal:attributes="value lang; selected python:['','selected'][int(langObj.get('parent')==lang)]" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 						</select>
 					</td>
 					<td>
-						<select class="form-control" tal:attributes="name python:'%s_manage'%langId">
+						<select class="form-control input-sm" tal:attributes="name python:'%s_manage'%langId">
 							<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang; selected python:['','selected'][int(langObj.get('manage')==manage_lang)]" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 						</select>
 					</td>
@@ -64,15 +64,15 @@
 	</tal:block>
 	<tr class="row_insert">
 		<td style="text-align:center;padding-top:1em;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
-		<td class="language_id"><input type="text" name="language_id"></td>
-		<td class="language_label"><input type="text" name="language_label"></td>
+		<td class="language_id"><input class="form-control input-sm" type="text" name="language_id" /></td>
+		<td class="language_label"><input class="form-control input-sm" type="text" name="language_label" /></td>
 		<td class="language_parent">
-			<select class="form-control" name="language_parent">
+			<select class="form-control input-sm" name="language_parent">
 				<option tal:repeat="lang langIds" tal:attributes="value lang" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 			</select>
 		</td>
 		<td>
-			<select class="form-control" name="language_manage">
+			<select class="form-control input-sm" name="language_manage">
 				<option tal:repeat="manage_lang python:here.get_manage_langs()" tal:attributes="value manage_lang" tal:content="python:here.getLangStr('LANG',manage_lang)">manage_lang</option>
 			</select>
 		</td>
@@ -96,7 +96,7 @@
 		<col class="col_min sel" />
 		<col class="col key" />
 		<col tal:repeat="langId langIds" 
-			tal:attributes="class python:['col %s'%(langId),'col_max %s'%(langId)][langId==langIds[-1]] " />
+			tal:attributes="class python:'col %s'%(langId)" />
 	</colgroup>
 	<thead>
 	<tr>
@@ -109,12 +109,12 @@
 	<tr tal:repeat="langDict python:here.getLangDict()">
 		<td><input class="form-checkbox" type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
-		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
+		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
 	</tr>
 	<tr>
 		<td style="text-align:center;padding-top:1em;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
-		<td><input type="text" name="_key"></td>
-		<td tal:repeat="langId langIds"><input type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
+		<td><input class="form-control input-sm" type="text" name="_key" /></td>
+		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
 	</tr>
 	</tbody>
 	</table>
@@ -141,7 +141,7 @@
 	<div class="form-group">
 		<label class="col-lg-2 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
 		<div class="col-lg-10">
-			<select class="form-control" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
+			<select class="form-control input-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.langdict.')" onmouseover="zmiExpandConfFiles(this,'.langdict.')">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
 			</select>
 		</div><!-- .col-lg-10 -->

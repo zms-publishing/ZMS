@@ -223,32 +223,6 @@
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsdocument_16x16.gif" type="file">47494638396110001000b30000fc02fc8787aeb7c7e4d6ebfcb5d8faa0a6c4c6e1fbf7fbfcb8dffc547ab484baec8f98b9afb9d17496d4acd0fc7573a521f90401000000002c00000000100010000304691008c158592bbc02ba6747281e8db0781d3886cda024a8bab606f378c53a904d7f77391d6128f80116bac36060301891a2e5d2c03406a24aa981605566a74daee7faa51a100871e7aa1da0d36a40403a4513100ee343d97c0f1d791e0f744c6f697a0f898a8b891d11003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsdocument_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c6c4e4e6e4a4a6a4d4d2d47476749c9a9cbcbabcfcfafc949294acaeacdcdadccccacc7c7a7cd4d6d421f90401000000002c000000001000100003046e1008b110512a3802ba47492826817078dd220ea2322c060a8ea1fb207147d02c86399e1daf4014003b0a5e623060308e80c388c964347380c06a496514a05a16b5e92c60b5dc66f3f1f87ac2d501bb6d7e8fd7ed4703ea583a1f0c740d461e0e7781736e1d0e0e068c8e8d8f4711003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-file-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -265,7 +239,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -275,7 +249,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -322,7 +296,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -332,17 +306,26 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_subject]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[Home]]></item>
+                      <item><![CDATA[Artikel]]></item>
+                      <item><![CDATA[Forum]]></item>
+                      <item><![CDATA[News]]></item>
+                      <item><![CDATA[Resource]]></item>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -352,7 +335,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -419,7 +402,7 @@
           <item key="id"><![CDATA[ZMSDocument]]></item>
           <item key="name"><![CDATA[ZMSDocument]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.2]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -434,32 +417,6 @@
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsfile_16x16.gif" type="file">47494638396110001000b300000402847784b4b5d5fc86a8dad2e8fa626897f9fcfc54a6ec727aa6fc02fcb4b2fc8498c8c8e0f88cb0e094bdefe7eff521f90401000009002c000000001000100003046f30b9d186bd23a4bd9df9e0f330c8c049606a30c1b170cd07cc341920b09cce8aa26d03dd87200028489ca0016010110846e4662173321851dcb4097810ae4585409b0888008caf203ce6981fb4b8b8e076f6ee3d017d836078af0c6b827b097d8081826b84088c8d8e8c8427929311003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsfile_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc848284cccecceceaec646664a4a6a4dcdedc7472749c9a9cfcfafcb4b6b48c8e8cd4d6d47c7a7c6c6a6ce4e2e421f90401000000002c000000001000100003047210a8420baa2580bd55fae0303041c149609a180d8270c5875d4660c37248298ab6c509444850503c1a1c6122267a3c8aaca4acf930148fd24161e0641015820367212a181ede2f43bc216b31bb3027c07df0ee3c8163eeaca20580807b1b0d068606698102041c0d8e8f908e832794950011003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-download-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -471,12 +428,73 @@
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSFile, div.ZMSLinkElement 
+	{ 
+	background-color: #F8F8F8;
+	margin: 4px;
+	}
+
+div.ZMSFile.none, div.ZMSLinkElement.none 
+	{
+	background-color: transparent;
+	border: 2px dashed #eee;
+	}
+
+div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
+	{ 
+	float:left;
+	width:50%
+	}
+
+div.ZMSFile.floatright, div.ZMSLinkElement.floatright 
+	{ 
+	float:right;
+	width:50%
+	}
+
+div.ZMSFile div.title, div.ZMSLinkElement div.title 
+	{
+	font-size:x-small;
+	white-space:nowrap;
+	}
+
+div.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, 
+div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited 
+	{
+	font-weight:bold;
+	font-size:x-small;
+	text-decoration:none;
+	color:black;
+	}
+
+div.ZMSFile div.text, div.ZMSLinkElement div.text 
+	{
+	font-size:xx-small;
+	}
+
+div.ZMSFile div.description, div.ZMSLinkElement div.description 
+	{
+	font-size:x-small;
+	}
+]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="id"><![CDATA[titlealt]]></item>
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -486,7 +504,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -764,7 +782,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -777,32 +795,6 @@ return ''
         <dictionary>
           <item key="__obj_attrs__" type="list">
             <list>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsfolder.gif" type="file">47494638396110001000b30000745e3cb4821cfcfba5efcc65fce973fcfee3d6aa3afcf58afcfec0fc02fc9088608c7e54cc9e34fcda61fcfef7e3b94321f90401000009002c000000001000100003045f30c9496b5a2feb65e57320283c4af7208820a484e66269aaaa61980d78aeeb1952fcc020f061101c8ec8e471f410109ed0e8f3403c48af8483c1406878bf602f61db1d7ccd5e3481c120ecde8371bbd1add3ef5d0620c0effbfd001d820911003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsfolder_disabled.gif" type="file">47494638396110001000b30000fc02fc848684cccacceceaecf4f6f4a4a2a4646264e4e2e4fcfefc7c7e7cbcbabcd4d6d4f4f2f4acaaacfcfafc00000021f90401000000002c000000001000100003046110c8492b482aeb64a5420811124dd02904c130eaa1bd98aaaecc008a6026ecc2b2fb3d5e26354a198f8a466dc06c3a078ccce040ad5aa983e4f4ca3d340a8785784c167b1be19e58ed3317c0bcb8dc0b5e84eff67cb86008f8ff8080061d840011003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[icon-folder-close-alt]]></item>
@@ -821,7 +813,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -831,7 +823,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -878,7 +870,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -888,17 +880,26 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_subject]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[Home]]></item>
+                      <item><![CDATA[Artikel]]></item>
+                      <item><![CDATA[Forum]]></item>
+                      <item><![CDATA[News]]></item>
+                      <item><![CDATA[Resource]]></item>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -908,7 +909,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -976,7 +977,7 @@ return ''
           <item key="id"><![CDATA[ZMSFolder]]></item>
           <item key="name"><![CDATA[ZMSFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.1]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -991,32 +992,6 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsgraphic.gif" type="file">47494638396110001000b30000fa3605eacc1f7987b7bcc284d7d2d1edf5fa3ca7ecfc02fcb6d8fa574f9cc47a7ca4e45c6cfa346876a80598fb8baddf21f90401000007002c0000000010001000030464f0a0476b1527e757baef84f068d2f7218d316ea6870842a37105602b4837616c6d270e072227ebfd8241e2acf36b201f288d00f44026a399a98bc1701886c583b6b3089887587181b0369b07604da390aba38709399d7e47871b80818280792486871911003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsgraphic_disabled.gif" type="file">47494638396110001000b30000fc02fc848284c4c2c4545254eceaec6c6a6ca4a6a4d4d2d47476749c9a9cbcbabc646664fcfafcccceccdcdedc7c7a7c21f90401000000002c00000000100010000304791028436b0d2067c5ba278413189ae49d8cf3248966a09e1860d9cb147872808e4203b64561b1402004a18726d1c10d8ac6836ad9113e8d08c5419961321a0de3c328082f79048142814880119a000874502b040773461e7208fe6a6005710e3c0e7960821a0f0e8d8779900d0b8b0f9596970f93259b9c1911003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-picture]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -1024,6 +999,101 @@ return ''
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[a.fancybox img {
+	padding:1px 1px 21px 1px;
+	background:transparent url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
+	background-color:transparent; 
+}
+
+div.ZMSGraphic_extEdit_action {
+	margin:0px 0px 20px 0px;
+}
+
+a.ZMSGraphic_extEdit_action img {
+	padding:1px 1px 9px 1px;
+	background:transparent url(<dtml-var MISC_ZMS>ico_plus.gif) bottom right no-repeat;
+}
+
+div.ZMSGraphic {
+	background-color: transparent;
+	margin: 4px;
+}
+
+div.ZMSGraphic.left {
+	text-align:left;
+}
+
+div.ZMSGraphic.right {
+	text-align:right;
+}
+
+div.ZMSGraphic.center {
+	text-align:center;
+}
+
+div.ZMSGraphic.floatleft {
+	float:left;
+	margin-right:10px;
+}
+
+div.ZMSGraphic.floatright {
+	float:right;
+	margin-left:10px;
+}
+
+div.ZMSGraphic.center div.graphic {
+	text-align:center;
+	margin:0px auto;
+}
+
+div.graphic.alignleft {
+	float:left;
+	text-align:right;
+}
+
+div.graphic.alignright {
+	float:right;
+	text-align:right;
+}
+
+div.ZMSGraphic div.text {
+	padding: 4px;
+}
+
+/*-- ## FF Patch ## --*/
+div.ZMSGraphic.right div.graphic {
+	width:100% !important; 
+}
+div.ZMSGraphic.right div.graphic img {
+	display:inline !important;
+}
+
+a.zoom img.zoom,
+a.superzoom img.superzoom,
+a.download img.download {
+	width: 26px;
+	height: 21px;
+	background-position:top right;
+	background-repeat:no-repeat;
+	margin:0px;
+	padding:0px;
+}
+a.zoom img.zoom { background-image: url(<dtml-var MISC_ZMS>zoom.gif); }
+a.download img.download { background-image: url(<dtml-var MISC_ZMS>download.gif); }
+a.superzoom img.superzoom { background-image: url(<dtml-var MISC_ZMS>superzoom.gif); }
+]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1223,7 +1293,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1238,13 +1308,40 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[icon-beaker]]></item>
-                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSObject.new, div.ZMSObject.modified {
+	border: 2px dashed blue;
+	background-color: #F0F0FF;
+} 
+div.ZMSObject.deleted {
+	border: 2px dashed red;
+	background-color: #FFF0F0;
+	color: #CCC;
+	text-decoration: line-through;
+}
+.preview.highlight {
+	background: filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
+	background-color: <dtml-var "get_colormap().get('zmiNeutralColorLight1','#E2E3DE')">;
+	cursor:pointer;
+}
+
+span.unicode { 
+	font-family:"Lucida Sans Unicode", "Arial Unicode MS", Arial, Helvetica, sans-serif;
+}
+
+span.highlight { 
+	background-color: yellow;
+	color: black;
+	font-weight: bold;
+}
+]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[constant]]></item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1453,7 +1550,7 @@ return context.str_json(result)
           <item key="id"><![CDATA[ZMSLib]]></item>
           <item key="name"><![CDATA[ZMSLib]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSLibrary]]></item>
         </dictionary>
       </item>
@@ -1468,32 +1565,6 @@ return context.str_json(result)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmslinkcontainer_16x16.gif" type="file">47494638396110001000b300000402048c8e8cc4cac404028434464cacbedce4eaecacaeb4647294fc02fc2c2a34545e64c4d6ec7496b4fcfefc0000ff21f90401000009002c000000001000100003046e30c974820d67ea24d462a00028c2d62d467328400b30da61804cd3b8e314183c53200a022e2039380cc7c6c2b6702d8a0e87e0801b2d104f4e1437c061a10081d401188bb2897015279a94018157e016270324ea754bd44e8bc5657f2d646e2e37557d787f6466771b38692e1211003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmslinkcontainer_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c0000000010001000030474104820861d626af05078a05220cff6300d910848e132e59410c77358ae8bc8447f28064620574848048b9eaae1180c5d068982b05008880c94230a502c1658e2560a3e2ccc85f3b9c005140ec4387c922e0cde0343c1512f48de714470736e66686a707574397c727e748660888f1a446e391211003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-link]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -1501,6 +1572,21 @@ return context.str_json(result)
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSLinkContainer {
+	background-color: #eee;
+}]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Defaults]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1706,7 +1792,7 @@ if align:
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.3]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -1721,32 +1807,6 @@ if align:
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmslinkelement_16x16.gif" type="file">47494638396110001000b30000050305878d93c4c9c5e5eaeb0402849299fa344448acaeb3f7fcf9686e8cfc02fc565f62b2bfdf292a30c6d5eb6876b421f9040100000a002c0000000010001000030477504975820d676a25da72e00134ced62d43c018400b08da310ce013b8e314cc3493342c574072400c8c87c5e310042c2402044220c235128927458aa8ba1e05c690739c0916ae4278ac603818021c013739380aaf2902a08fd75f38817e127c0037620a86851380812e838451517c92001b892e982d1211003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmslinkelement_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8a8cc4c2c4acaeaceceaec5c5a5c9c9a9cd4d2d47c7a7cbcbabcccceccf4f6f4646664949294a4a2a4dcdadc21f90401000000002c000000001000100003047a104820861d626af05038cfa314c8b33d4c43240252bc8c3909447858ef8b4c495d2b064620574848040b422dd1700c862f8344915408888c94430aa02e160206d191b84d95ca472327280f260782629413e7668feb61b12ff0f905330507448584137e050383030681898884853987917f7e7b951a44009c0011003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-link]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -1754,6 +1814,19 @@ if align:
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[/* @see ZMSFile.f_css_defaults */]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1957,7 +2030,7 @@ $(function() {
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2132,7 +2205,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.3]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2147,15 +2220,13 @@ return zmscontext.attr('attr_dc_description')
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsnote.gif" type="file">47494638396110001000b30000a78842fcda0cc4a868fcf274c8a228fcec41c4b982fcf499b89638fcde249cba64dcb21cfcf28cfcee5cfcf6acfcea2d21f9040100000a002c000000001000100003045950c949abbdd4e8cdbb324e288ea2f11da883ae2a6a1a0713cb34439bc2c00c7adfef82cfa0312c128f035c63c96c360a89a0a0f0a416ac8d05010050081ee07038414074bd8f04589d7e04cc13817c4e172030f8bc7e2f8900003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
+                  <item key="custom"><![CDATA[icon-comment-alt]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
+                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2169,17 +2240,6 @@ return zmscontext.attr('attr_dc_description')
                   <item key="name"><![CDATA[Resource: Background]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom"><![CDATA[icon-comment-alt]]></item>
-                  <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2204,67 +2264,78 @@ return zmscontext.attr('attr_dc_description')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- ZMSNote.renderShort -->
 
-<dtml-unless "REQUEST.get('ZMSNOTE_JS')">
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
 
-<style>
+<tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
+
+<tal:block tal:content="structure python:'<style>'"></tal:block>
 div.note {
 	border-left: 1px solid #FCCD64;
 	border-bottom: 1px solid #FCCD64;
 	margin: 8px;
 	padding: 4px;
-	background: #FCFECC url(<dtml-var "getMetaobjAttr(meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">) top right no-repeat;
+	background: #FCFECC url(<tal:block tal:content="python:zmscontext.getMetaobjAttr(zmscontext.meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">zmsnote_bg.gif</tal:block>) top right no-repeat;
 }
-</style>
+<tal:block tal:content="structure python:'</style>'"></tal:block>
 
 <script language="JavaScript">
+
 var firedZMSNoteDiv = false;
 var repeatZMSNoteDiv = false;
 
 function onKeyUpZMSNoteDiv(el) {
-    if (!firedZMSNoteDiv) {
-      firedZMSNoteDiv = true;
-      setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
-    }
-    else  {
-      repeatZMSNoteDiv = true;
-    }
+	if (!firedZMSNoteDiv) {
+		firedZMSNoteDiv = true;
+		setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
+	}
+	else {
+		repeatZMSNoteDiv = true;
+	}
 }
 
 function onChangeZMSNoteDiv(id) {
-    if (repeatZMSNoteDiv) {
-      repeatZMSNoteDiv = false;
-      setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
-    }
-    else {
-      firedZMSNoteDiv = false;
-      repeatZMSNoteDiv = false;
-      var el = $('div#'+id);
-      var v = el.text();
-      el.addClass('zmiTeaserColor');
-      $.post(id+'/manage_changeProperties',{'lang':'<dtml-var lang>','text_<dtml-var lang>':v},function(data){
-        el.removeClass('zmiTeaserColor');
-      },'html');
-    }
+	if (repeatZMSNoteDiv) {
+		repeatZMSNoteDiv = false;
+		setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
+	}
+	else {
+		firedZMSNoteDiv = false;
+		repeatZMSNoteDiv = false;
+		var el = $('div#'+id);
+		var v = el.text();
+		el.addClass('zmiTeaserColor');
+		var lang = getZMILang();
+		var params = {};
+		params['lang'] = lang;
+		params['text_'+lang] = v;
+		$.post(id+'/manage_changeProperties',params,function(data){
+			el.removeClass('zmiTeaserColor');
+		},'html');
+	}
 }
 
 </script>
-<dtml-call "REQUEST.set('ZMSNOTE_JS',True)">
-</dtml-unless>
+
+<tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
+</tal:block>
 
 <div class="note">
-	<div id="<dtml-var id>" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)"><dtml-var "getText(REQUEST)" newline_to_br></div>
+	<div tal:attributes="id python:zmscontext.id" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)" tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
 </div>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
+</tal:block>
+
+<!-- /ZMSNote.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2320,7 +2391,7 @@ zmscontext.commitObj(request)
           <item key="id"><![CDATA[ZMSNote]]></item>
           <item key="name"><![CDATA[ZMSNote]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2333,32 +2404,6 @@ zmscontext.commitObj(request)
         <dictionary>
           <item key="__obj_attrs__" type="list">
             <list>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/png" filename="ZMSRichtext.icon.png" type="file">89504e470d0a1a0a0000000d4948445200000010000000100802000000909168360000000674524e5300ff000000ff89c02f900000016549444154789c8d5031480261187d9e7687e40962e016855260340441e6526b4b5343ad2ecd0e91935be112ad15d2163454e0d624e59282162834a4a78410456777d795745af737fca1e79f466ff9ffefe3bdefbdefb31190a373a3aede63009e8b859dedb54ee9a04f74c5cff014dd0050d31ca94a39717c175b9da07d0e40c3a601e0c24e2eec4c574c3149c424f18882471400b49baf05d3bbb597eb71a0188e3471f1f34f57cca5c9a1cbac04c05fcdead6484d4505bc00d623f300f60faf528b64c6d77e54db0ba13165daafd43faf3367ac8394ccc78bcb00e2b301774072f1bbb47ff3b039eab597f26e56301e9c0224ba6e5926f54654367800fa874937e90abe5485162e3ef1fbac99ea86b5ec3a28baf1d68a95653222b4acb30128eff61e812ecbf4ea7d1d52a5587f07004c6eeb6cf5456305b2c13fdde698f10260f842ac43e702bee05cdfdc5670f4a9698e0ef50f7637d2c9c1e92006031b01f92795e21bdaeb9fe594c8f4f00000000049454e44ae426082</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/png" filename="ZMSRichtext.icon_disabled.png" type="file">89504e470d0a1a0a0000000d4948445200000010000000100802000000909168360000000674524e5300ff000000ff89c02f900000014049444154789c8d51b18ac240107d1e69044911824dfaa085bdbda53f10d0eb2df301e9bc7f38db70fa112784143612ec2c428295dd6e31c64559ac72c5ca26e6f4b857ecee0cefcd9b996d9528d7df6bce395e20cbb2f9c75c8786ba3ccf6bf084100088e8783c2ebf96d3f7a9cabf01b8dd6e007cdff77d3f4dd320088220304dd3344d00524a21c4e2735109343a9dce6ab552ef344d0dc3d86eb7008aa220a2aaa5f3f9ac82d16804208aa2c964e2380e110d87c3c160c018db6c360f330098cd66a7d309c0783ceef7fbdd6e57e5f7fbbd6ddbbbddae29e8f57a7a5cc6d8e1709052aa19f479175c2e1715e8aa752449520f2b072104e79c31d66eb71b55afd7eb838088d4d69f3ac471fcdc0140a3ef7a6db58f07819432cff3df0e9665351d743dd7759ff65dc7fda7894853ff60572d8561f88ad140ab44f94faac20fb4e6ab0a5e01d83e0000000049454e44ae426082</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[icon-file-text-alt]]></item>
@@ -2546,7 +2591,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSRichtext]]></item>
           <item key="name"><![CDATA[ZMSRichtext]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.1]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2561,19 +2606,6 @@ zmscontext.attr('text',text)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmssqldb.gif" type="file">47494638396112001000b30000337270754b39707170007e9c558b7e009ab501a9e9b4572efe152eff00ffa19367bed216dfbe65fed965a7a7a7e5e5e521f90401000009002c000000001200100000045930c949abbd983ae1ba93ce500c44d53d4f071a2c603aa89a38ace1ce1e9ce6452b290c8682b339200e0780f2e66834180210627af8689c5029d53ae1288620e42140b40acee7496ec18e66d4ec85fb3d8bcfdfe8347dcf8f00003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-building]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -2585,26 +2617,30 @@ zmscontext.attr('text',text)
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<dtml-comment>--// BO renderShort //--</dtml-comment>
+                  <item key="custom"><![CDATA[<!-- ZMSSqlDb.renderShort -->
 
-<dtml-try>
-	<dtml-in "getEntities()" mapping>
-		<dtml-if "type=='table'">
-			<div class="form-small"><a href="<dtml-var absolute_url>/manage_main?qentity=<dtml-var id>" class="zmi"><dtml-var label></div>
-		</dtml-if>
-	</dtml-in>
-<dtml-except>
-	<pre>DATABASE CONNECTION ERROR <a href="&dtml-id;/manage_properties">...</a></pre>
-</dtml-try>
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+	<h4>
+		<i class="icon-table"></i>
+		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
+	</h4>
+	<ul>
+		<li tal:repeat="table python:filter(lambda x:x['type']=='table',zmscontext.getEntities())">
+			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
+		</li>
+	</ul>
+	<br/>
+</tal:block>
 
-<dtml-comment>--// EO renderShort //--</dtml-comment>]]>
+<!-- /ZMSSqlDb.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[method]]></item>
+                  <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
             </list>
@@ -2633,7 +2669,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSqlDb]]></item>
           <item key="name"><![CDATA[ZMSSqlDb]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -2646,32 +2682,6 @@ zmscontext.attr('text',text)
         <dictionary>
           <item key="__obj_attrs__" type="list">
             <list>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmssysfolder.gif" type="file">47494638396110001000b30000aa9d88d1b375fdfcc8f5e0a1fdf1a9fdfeede6cb87fdf8b7fdfed8ff00ffbbb69eb9b097e0c483fde89efdfefaedd48c21f90401000009002c000000001000100003045f30c9496b5a2feb65e57320283c4af7208820a484e66269aaaa61980d78aeeb1952fcc020f061101c8ec8e471f410109ed0e8f3403c48af8483c1406878bf602f61db1d7ccd5e3481c120ecde8371bbd1add3ef5d0620c0effbfd001d820911003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmssysfolder_disabled.gif" type="file">47494638396110001000b30000ff00ffbdbebde4e2e4f4f3f4f9faf9cecdceacabacf0eff0fdfefdb9bab9dbdadbe8e9e8f9f8f9d3d2d3fdfcfd78787821f90401000000002c000000001000100003046110c8492b482aeb64a5420811124dd02904c130eaa1bd98aaaecc008a6026ecc2b2fb3d5e26354a198f8a466dc06c3a078ccce040ad5aa983e4f4ca3d340a8785784c167b1be19e58ed3317c0bcb8dc0b5e84eff67cb86008f8ff8080061d840011003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[icon-folder-close]]></item>
@@ -2847,7 +2857,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSysFolder]]></item>
           <item key="name"><![CDATA[ZMSSysFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.3]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -2862,32 +2872,6 @@ zmscontext.attr('text',text)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmstable.gif" type="file">47494638396112001000f700000000845e6190606493636796656a9a676d9e6970a26b74a56d77a86f7aac7578a3767ca6727cae7880ab7a83b07d89b67f8ebcff00ff8080808195c3849bca87a1d287a9dc8aa8d98caedf92bcef94bff2b0d7ffc2e1ffc6e3ffcee6ffd1e8ffe4edf5e8eff7f3f9fffeffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000011002c00000000120010000008920023081c48b020410d16122a5cb89081c00c00224a9c38d161040c14334ab47881040909233c4a00415282070f122c56101952c4c8921f502610484182cd9b387122103841a4881020467af820a1030709070442100934e850941c36483020f041ceab370b0874f0f3254a0f46256c904a406003a042891a953a56c200810bb06215205081ddbb78f30630c8b7af5fbe0101003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmstable_disabled.gif" type="file">47494638396112001000f700005c5c5c6565656767676a6a6a6d6d6d7070707373737676767979797b7b7b7c7c7c7e7e7eff00ff8080808282828585858a8a8a8e8e8e9494949999999e9e9ea4a4a4a9a9a9b5b5b5b7b7b7cfcfcfdbdbdbdddddde1e1e1e3e3e3ebebebedededf7f7f7fefefeffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f9040100000c002c00000000120010000008920019081c48b020410c15122a5cb87081c00b00224a9c38d121030b14334ab45841848806213c36f040b201070e0d2c52101912c4c8921d502a1038a181cd9b38712210284124880f1e4672e8d060838606070446100934e850941a323430201042ceab370b087cf0f3254a0e461b64904a40a003a042891a953ab6c100810bb06215203081ddbb78f30630c8b7af5fbe0101003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-table]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -2895,6 +2879,30 @@ zmscontext.attr('text',text)
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[table.ZMSTable th {
+	background-color:#DDEFFC; 
+}
+
+table.ZMSTable td {
+	background-color:#EEEEEE; 
+}
+
+body.print table.ZMSTable th, 
+body.print table.ZMSTable td {
+	background-color:transparent; 
+}]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -3274,7 +3282,7 @@ function onZMSTableFormSubmit() {
 	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
 	for ( var i=0; i < el_trs.length; i++) {
 		xml += '<'+'item type="list"><'+'list>\n';
-		var el_tds = $(el_trs[i]).children().filter(":gt(1)").filter(":not(:last)");
+		var el_tds = $(el_trs[i]).children().filter(":gt(0)").filter(":not(:last)");
 		for ( var j=0; j < el_tds.length; j++) {
 			xml += '<'+'item type="dictionary"><'+'dictionary>\n';
 			var colspan = $(el_tds[j]).prop("colspan");
@@ -3329,11 +3337,8 @@ function table_cell_edit(el_td) {
 	}
 	// Open cell editor.
 	/*
-	$('#div_table_cell_editor').dialog({
+	zmiModal('#div_table_cell_editor',{
 			title:getZMILangStr('ATTR_COL')+': '+getZMILangStr('BTN_EDIT'),
-			width:'auto',
-			height:'auto',
-			modal:true,
 			close: function(event, ui) {
 					table_cell_cancel(event);
 				}
@@ -3636,6 +3641,7 @@ $(function(){
 			</tal:block>
 		</tal:block>
 	</tal:block>
+	<td></td>
 </tr>
 
 <tr>
@@ -4014,7 +4020,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.0]]></item>
+          <item key="revision"><![CDATA[2.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4029,32 +4035,6 @@ if key.startswith('table_'):
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsteasercontainer_16x16.gif" type="file">47494638396110001000b30000040284c48e0c848284fcee84fcfebcfc02fcfcd25cfcfe9c4c4e4c6c6e6cfcf274fcfeecfce26cfcfe84fcfed4fcfaac21f90401000005002c0000000010001000030470b084496b2858aecdfbba58e08c23408e5348ac00d102cf1a7cd273dc407edf62200483460eb018361a01422011381e8dcec061091c2800d701c0aa685219608636cce8229960433aac062e259680c13001bf256b867c694f64e2134c010802190502098989540985868f217790907711003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsteasercontainer_disabled_16x16.gif" type="file">47494638396110001000b300004c4e4c848284d4d6d4eceaece4e2e4f4f6f4fc02fcdcdedcf4f2f46c6e6c8c8e8cdcdadcfcfafceceeece4e6e40000ff21f90401000006002c000000001000100003046bd0a849ab3258b2cd3bbb98e225de14220c92a86cf17d1252206ab2a688a8040ad2d824204d97500c068801f098ec298a474742493d3a8b87c582b0486cb584ab62cb2d8317c6a7c4a210082684700213d0dadb4fae3ac47e4e000119060140367e0981828a7c738b8e7b11003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-bullhorn]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -4062,6 +4042,24 @@ if key.startswith('table_'):
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSTeaserContainer {
+	width:150px;
+	font-size:x-small;
+	padding:1px;
+	margin-bottom:10px;
+}]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4355,7 +4353,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.2]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4370,32 +4368,6 @@ return unicode(printed).encode('utf-8')
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsteaserelement_16x16.gif" type="file">47494638396110001000b30000040284c48e0cfcf88cfcfed5fcca54fcf173fcfaacfcfeedfce270fc02fcfcfe84fcee84fcfebdfcd664fcfe9cfcfefc21f90401000009002c000000001000100003045330c949eb0c38eb40c3f960787052309c27809e64123030c0c832dc0686a303bca23b378182073810158a2072d85bde168502404a8dde10588434abbd36b05f44b8d1726d020d72d95222acd9a537dc35af2722003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsteaserelement_disabled_16x16.gif" type="file">47494638396110001000b30000fc02fc8c8e8ccccecce4e6e4f4f2f4dcdadceceeecfcfafce4e2e4d4d6d4eceaecf4f6f4dcdedc0000ff0000ff0000ff21f90401000000002c000000001000100003045110c849eb0c38eb40c3f960787092179a200904c44178f0d2aa6cfb62eeb2d0c60d6384d745a130183284e2713850049c5084f3522820aa81ab1541b37ab5576e6713282430164b40a04a8fdde9363c1d01003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-bullhorn]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -4403,6 +4375,31 @@ return unicode(printed).encode('utf-8')
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom">
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSTeaserElement img.title {
+	border: none;
+}
+
+div.ZMSTeaserElement div.title a:link,
+div.ZMSTeaserElement div.title a:visited,
+div.ZMSTeaserElement div.title {
+	font-weight:bold;
+	text-decoration:none;
+	color:black;
+	padding: 2px;
+	display: block;
+}]]></data>
+                  </item>
+                  <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS: Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4665,7 +4662,7 @@ return zmscontext.attr('text')
           <item key="id"><![CDATA[ZMSTeaserElement]]></item>
           <item key="name"><![CDATA[ZMSTeaserElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.8.2]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSTeaserElement]]></item>
         </dictionary>
       </item>
@@ -4678,32 +4675,6 @@ return zmscontext.attr('text')
         <dictionary>
           <item key="__obj_attrs__" type="list">
             <list>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmstextarea_16x16.gif" type="file">47494638396110001000b300000402847784b4b5d5fc87a8d9d3e8fb62689754a6ecf8fcfc727aa6fc02fc91b9e9bcbec48498c8c6e0f9a4b8f8e7eff521f90401000009002c000000001000100003046a30b9416b45296777ba7f4f130c5aa278e8d12006a39dc722cf031204da901e602338988cee00281a0104024e887a109c84c64ac3e81c8dd260a2fa383c93529f3600ba16058231081a460b0a1a32614647c33308b6d46dd720a4513e7c6f7e088687880877258c8d0911003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmstextarea_disabled_16x16.gif" type="file">47494638396110001000f700006666666b6b6b7373737b7b7bff00ff8181818c8c8c9d9d9da5a5a5bbbbbbcececed7d7d7dddddde3e3e3ebebebfafafa00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90401000004002c00000000100010000708900009244040b060c1020412264cf0a0a143070e161440a050a0c38b0f181438704021828609428a3c50a0a4478c0f203650900061c28f0f38cae4d8a0c10085072e4274509301839b0973c69cc9d12750020652eeecc9608102010a0d4024ca51c1d3a84b1bf8746a156ac2023c458ab51a4061819a5a9b5a5d5b36e1009f5bd7ae05a07080ddbb78edd2adc8b76fc280003b</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[icon-align-left]]></item>
@@ -4838,7 +4809,7 @@ $(function() {
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[1.4.0]]></item>
+          <item key="revision"><![CDATA[2.0.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -244,11 +244,12 @@
 			files = (typeof this.files == 'string') ? [this.files] : this.files,
 			callback = arguments[1] || this.callback;
  		this.selectors = arguments[0] || this.selectors;
-	// Do not load files if they are not needed
+		
+		// Do not load files if they are not needed
 		if(this.isNeeded() !== true) {
 			return this;
 		}
-	
+		
 		// Store Load callback
 		// This will be called when all files have finished loading
 		this.tmp_callback.push( callback);
@@ -262,7 +263,7 @@
 			return this;
 		}
 		
-	// Load each file specified for this plugin
+		// Load each file specified for this plugin
 		var getFile = function(file){that.getFile(file);};
 		var that = this;
 		for(var i=0;i<files.length;i++){

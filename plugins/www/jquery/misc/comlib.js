@@ -1,4 +1,4 @@
-                                                                           /**
+/**
  * Returns language.
  */
 function getZMILang() {
@@ -31,8 +31,12 @@ function getZMIConfProperty(key, defaultValue) {
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	}
+	var url = zmiParams['URL'];
+	if (url.indexOf('/content/')>0) {
+		url = url.substr(0,url.indexOf('/content/')+'/content/'.length);
+	}
 	return $.ajax({
-		url: 'getConfProperty',
+		url: url+'getConfProperty',
 		data: data,
 		datatype: 'text',
 		async: false

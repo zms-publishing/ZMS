@@ -98,8 +98,8 @@ $(function() {
 				$(this).parents('.inner').dialog('close');
 				return false;
 			});
-		$('#updateFilter').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
-		$('#updateProcess').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
+		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER')});
+		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES')});
 	});
 
 </script>
@@ -377,10 +377,10 @@ $(function() {
 				</th>
 				<th>
 					<div class="btn-group">
-						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertFilter').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertFilter',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$('#acquireObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireObj',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',(title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 					</div>
 				</th>
@@ -456,10 +456,10 @@ $(function() {
 			</th>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertProcess').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertProcess',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$('#acquireObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireObj',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 				</div>
 			</th>

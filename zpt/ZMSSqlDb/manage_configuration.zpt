@@ -77,8 +77,7 @@ $(function() {
 				$(this).parents('.inner').dialog('close');
 				return false;
 			});
-		var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
-		$('#updateEntity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',maxHeight:maxHeight});
+		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE')});
 	});
 
 // #############################################################################
@@ -487,7 +486,7 @@ function mms_normalize_rows(el_tbody) {
 </div><!-- #importConf -->
 
 	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+		<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 	</div>
 	<br/>
 	<div class="accordion-group" tal:repeat="table tables">

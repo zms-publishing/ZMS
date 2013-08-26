@@ -508,7 +508,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           if metaObj[ 'type'] == 'ZMSResource':
             return pattern%'%sico_class.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSLibrary':
-            return pattern%'%sico_library.gif'%self.MISC_ZMS
+            return self.zmi_icon(self,name='icon-beaker')
           elif metaObj[ 'type'] == 'ZMSPackage':
             return pattern%'%sico_package.gif'%self.MISC_ZMS
           elif metaObj[ 'type'] == 'ZMSRecordSet':

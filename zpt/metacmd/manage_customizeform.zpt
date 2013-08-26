@@ -43,7 +43,7 @@ $(function() {
 				$(this).parents('.inner').dialog('close');
 				return false;
 			});
-		$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto',minWidth:800});
+		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800});
 });
 
 </script>
@@ -217,9 +217,9 @@ $(function() {
 			</th>
 			<th colspan="3">
 				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 				</div>
 			</th>

@@ -132,8 +132,8 @@ $(function() {
 			function() {
 					$(this).removeClass('active');
 				});
-		$('#updateActivity').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
-		$('#updateTransition').dialog({modal:true,title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});
+		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE')});
+		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE')});
 	});
 
 </script>
@@ -352,7 +352,7 @@ $(function() {
 			</div>
 			<div class="pull-left" style="padding-left:5em;">
 				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$('#importConf').dialog({modal:true,title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 					<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
 					<a class="btn btn-inverse" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
 				</div>
@@ -369,7 +369,7 @@ $(function() {
 	<tr>
 		<th tal:attributes="colspan python:2+len(activityIds)" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertActivity').dialog({modal:true,title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal($('#insertActivity',{title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
 			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-tag')"></tal:block> Activities
 		</th>
@@ -420,7 +420,7 @@ $(function() {
 	<tr>
 		<th colspan="3" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="$('#insertTransition').dialog({modal:true,title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal($('#insertTransition',{title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
 			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block> Transitions
 		</th>

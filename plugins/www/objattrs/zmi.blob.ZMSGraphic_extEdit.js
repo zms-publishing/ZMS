@@ -14,10 +14,62 @@ var ZMSGraphic_action = null;
 var ZMSGraphic_act_width = null;
 var ZMSGraphic_act_height = null;
 
+function ZMSGraphic_extEdit_initialize() {
+	if (typeof self.ZMSGraphic_extEdit_initialized != "undefined") {
+		return;
+	}
+	self.ZMSGraphic_extEdit_initialized = true;
+	pluginUI("body",function() {
+			$("#ZMSGraphic_extEdit_width").keyup(function(){
+					var w = parseInt($(this).val());
+					if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+						var v = w/ZMSGraphic_act_width;
+						var h = Math.round(v*ZMSGraphic_act_height);
+						$("#ZMSGraphic_extEdit_height").val(h);
+					}
+					var h = $("#ZMSGraphic_extEdit_height").val();
+					$ZMSGraphic_img.attr({'width':w,'height':h});
+				});
+			$("#ZMSGraphic_extEdit_height").keyup(function(){
+					var h = parseInt($(this).val());
+					if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+						var v = h/ZMSGraphic_act_height;
+						var w = Math.round(v*ZMSGraphic_act_width);
+						$("#ZMSGraphic_extEdit_width").val(w);
+					}
+					var w = $("#ZMSGraphic_extEdit_width").val();
+					$ZMSGraphic_img.attr({'width':w,'height':h});
+				});
+			$("#ZMSGraphic_extEdit_vslider").slider({
+				orientation: "vertical",
+				range: "min",
+				min: 0,
+				max: 100,
+				slide: function(event, ui) {
+					var v = ui.value;
+					$("#ZMSGraphic_extEdit_perc").html(v+'%');
+					var w = Math.round(v*ZMSGraphic_act_width/100);
+					var h = Math.round(v*ZMSGraphic_act_height/100);
+					$('input#ZMSGraphic_extEdit_width').val(w);
+					$('input#ZMSGraphic_extEdit_height').val(h);
+					$ZMSGraphic_img.attr({'width':w,'height':h});
+				}
+			});
+			$ZMSGraphic_buttons = $('img[id^=ZMSGraphic_extEdit_]');
+			for ( var i = 0; i < $ZMSGraphic_buttons.length; i++) {
+				var $ZMSGraphic_button = $($ZMSGraphic_buttons[i]);
+				$ZMSGraphic_button.attr('title',$ZMSGraphic_button.attr('alt'));
+			}
+			$ZMSGraphic_buttons.css('cursor','pointer');
+			$ZMSGraphic_buttons.click(ZMSGraphic_extEdit_clickedAction);
+	});
+}
+
 /**
  * Start image-editor.
  */
 function ZMSGraphic_extEdit_action( elName, elParams, pil) {
+	ZMSGraphic_extEdit_initialize();
 	if (typeof pil != 'undefined') {
 		ZMSGraphic_pil = pil;
 	}
@@ -67,16 +119,11 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			$("#ZMSGraphic_extEdit_perc").html(v+'%');
 			
 			// Show dialog
-			$('#ZMSGraphic_extEdit_actions')
+			zmiModal($('#ZMSGraphic_extEdit_actions')
 				.addClass('zmiNeutralColorWhite')
 				.css({padding:'10px',backgroundColor:'#FFF'})
-				.dialog({
-					'modal':true,
-					'height':'auto',
-					'width':'auto',
-					'resizable':false,
-					'title':getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
-					'beforeClose':function(event, ui) {
+				,{title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
+					beforeClose:function(event, ui) {
 						$('div#ZMSGraphic_extEdit_image').html('');
 						changeJcropAvailability(false);
 					}
@@ -234,48 +281,3 @@ function ZMSGraphic_extEdit_changedSelection(c) {
 		ZMSGraphic_cropcoords = c;
 	}
 }
-
-$(function () {
-	$("#ZMSGraphic_extEdit_width").keyup(function(){
-			var w = parseInt($(this).val());
-			if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-				var v = w/ZMSGraphic_act_width;
-				var h = Math.round(v*ZMSGraphic_act_height);
-				$("#ZMSGraphic_extEdit_height").val(h);
-			}
-			var h = $("#ZMSGraphic_extEdit_height").val();
-			$ZMSGraphic_img.attr({'width':w,'height':h});
-		});
-	$("#ZMSGraphic_extEdit_height").keyup(function(){
-			var h = parseInt($(this).val());
-			if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-				var v = h/ZMSGraphic_act_height;
-				var w = Math.round(v*ZMSGraphic_act_width);
-				$("#ZMSGraphic_extEdit_width").val(w);
-			}
-			var w = $("#ZMSGraphic_extEdit_width").val();
-			$ZMSGraphic_img.attr({'width':w,'height':h});
-		});
-	$("#ZMSGraphic_extEdit_vslider").slider({
-		orientation: "vertical",
-		range: "min",
-		min: 0,
-		max: 100,
-		slide: function(event, ui) {
-			var v = ui.value;
-			$("#ZMSGraphic_extEdit_perc").html(v+'%');
-			var w = Math.round(v*ZMSGraphic_act_width/100);
-			var h = Math.round(v*ZMSGraphic_act_height/100);
-			$('input#ZMSGraphic_extEdit_width').val(w);
-			$('input#ZMSGraphic_extEdit_height').val(h);
-			$ZMSGraphic_img.attr({'width':w,'height':h});
-		}
-	});
-	$ZMSGraphic_buttons = $('img[id^=ZMSGraphic_extEdit_]');
-	for ( var i = 0; i < $ZMSGraphic_buttons.length; i++) {
-		var $ZMSGraphic_button = $($ZMSGraphic_buttons[i]);
-		$ZMSGraphic_button.attr('title',$ZMSGraphic_button.attr('alt'));
-	}
-	$ZMSGraphic_buttons.css('cursor','pointer');
-	$ZMSGraphic_buttons.click(ZMSGraphic_extEdit_clickedAction);
-});

@@ -244,7 +244,7 @@ $(function() {
 			<tr>
 		</thead>
 		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
-			<tr tal:repeat="objAttrId objAttrIds">
+			<tr tal:repeat="objAttrId objAttrIds" tal:attributes="class python:' '.join([]+[[],['zmi-selected']][int(objAttrId==request.get('attr_id'))])">
 				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId,syncTypes=['*']); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
 					<td class="meta-sort">
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
@@ -295,6 +295,9 @@ $(function() {
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 								<tal:block tal:condition="python:objAttr.get('custom')">
 									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
+									<a tal:attributes="href python:'%s/manage_main'%objAttr['custom'].absolute_url()" target="_blank">
+										<img tal:attributes="src python:objAttr['custom'].icon; title python:objAttr['custom'].meta_type" />
+									</a>
 									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank">
 										<img tal:attributes="src python:here.getMimeTypeIconSrc(objAttr['custom'].content_type); title python:objAttr['custom'].content_type" />
 										<tal:block tal:content="python:[fname,fname[:11]+'...'][int(len(fname)>11)]">FILE NAME</tal:block>
@@ -331,7 +334,7 @@ $(function() {
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['','zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
 								</div>
 								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])"><tal:block tal:condition="python:objAttr.get('default',None)" tal:content="objAttr/default">default</tal:block></textarea>
+									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
 								</div>
 							</td>
 						</tal:block>
@@ -435,7 +438,7 @@ $(function() {
 			</th>
 			<th colspan="2">
 				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="$('#insertObj').dialog({modal:true,title:$(this).attr('title'),height:'auto',width:'auto'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiIframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,width:'480',height:'640',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiIframe('manage_main_import',{lang:getZMILang()},{iframe:true,width:'480',height:'640',title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>

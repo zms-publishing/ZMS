@@ -20,10 +20,15 @@ var zmiParams = {};
 
 $(function(){
 	var href = self.location.href;
+	var base_url = href;
 	// Parse params (?) and pseudo-params (#).
 	var delimiter_list = ['?','#'];
 	for (var h = 0; h < delimiter_list.length; h++) {
 		var delimiter = delimiter_list[h];
+		var i = base_url.indexOf(delimiter);
+		if (i > 0) {
+			base_url = base_url.substr(0,i);
+		}
 		var i = href.indexOf(delimiter);
 		if (i > 0) {
 			var query_string = href.substr(i+1);
@@ -45,6 +50,7 @@ $(function(){
 			}
 		}
 	}
+	zmiParams['URL'] = base_url;
 	if (typeof zmiParams['zmi-debug'] != "undefined") {
 		zmiToggleDebug(true);
 	}
@@ -167,17 +173,51 @@ function zmiWriteDebug(s) {
 	}
 }
 
+var zmiCursor = [];
+function zmiSetCursorWait(s) {
+	if (zmiCursor.length == 0) {
+		$("body").css("cursor","wait");
+	}
+	zmiCursor.push(s);
+	zmiWriteDebug(">>>> " + zmiCursor.join(" > "));
+}
+
+function zmiSetCursorAuto() {
+	zmiWriteDebug("<<<< " + zmiCursor.join(" > "));
+	zmiCursor.pop();
+	if (zmiCursor.length == 0) {
+		$("body").css("cursor","auto");
+	}
+}
+
 function pluginLanguage() {
 	return getZMILangStr('LOCALE',{'nocache':""+new Date()});
 }
 
+function pluginUI(s, c) {
+	zmiSetCursorWait("pluginUI");
+	$.plugin('ui',{
+		files: [
+				getZMIConfProperty('jquery.ui'),
+				getZMIConfProperty('zmi.ui')
+		]});
+	$.plugin('ui').get(s,function(){
+			zmiSetCursorAuto("pluginUI");
+			c();
+		});
+}
+
 function pluginUIDatepicker(s, c) {
+	zmiSetCursorWait("pluginUIDatepicker");
 	var lang = pluginLanguage();
 	$.plugin('ui_datepicker',{
 		files: [
 				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js'
 		]});
-	$.plugin('ui_datepicker').get(s,c);
+	pluginUI(s,function() {
+			zmiSetCursorAuto("pluginUIDatepicker");
+			$.plugin('ui_datepicker').get(s,c);
+		});
 }
 
 function zmiAutocompleteDefaultFormatter(l, q) {

@@ -80,8 +80,7 @@ $(function(){
 									+ '</div><!-- #zmi-single-line-edit -->';
 								$('#zmi-single-line-edit').remove();
 								$('body').append(html);
-								$('#zmi-single-line-edit').dialog({
-									modal:true,
+								zmiModal('#zmi-single-line-edit',{
 									resizable:true,
 									title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
 									resize: function( event, ui ) {
@@ -121,43 +120,55 @@ $(function(){
 		.attr( "title", "Double-click to edit!");
 
 	// Sortable
-	$("ul.zmi-container.zmi-sortable").sortable({
-		delay:500,
-		forcePlaceholderSize:true,
-		handle:'img.grippy',
-		placeholder: "ui-state-highlight",
-		revert: true,
-		start: function(event, ui) {
-				var el = $(".zmi-container .zmi-item");
-				$(el).removeClass("highlight");
-				self.zmiSortableRownum = false;
-				var c = 1;
-				$(".zmi-sortable > li").each(function() {
-						if ($(this).attr("id") == ui.item.attr("id")) {
-							self.zmiSortableRownum = c;
-						}
-						c++;
-					});
-			},
-		stop: function(event, ui) {
-				var pos = $(this).position();
-				if (self.zmiSortableRownum) {
-					var c = 1;
-					$(".zmi-sortable > li").each(function() {
-							if ($(this).attr("id") == ui.item.attr("id")) {
-								if(self.zmiSortableRownum != c) {
-									var id = ui.item.attr("id");
-									var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
-									$.get(href,function(result){
-											var message = eval('('+result+')');
-											zmiShowMessage(pos,message,"alert-success");
-										});
-								}
+	$("ul.zmi-container.zmi-sortable img.grippy").mouseover(function() {
+		if (typeof self.zmiUlSortableInitialized == "undefined") {
+			self.zmiUlSortableInitialized = true;
+			pluginUI("ul.zmi-container.zmi-sortable",function() {
+				$("ul.zmi-container.zmi-sortable").sortable({
+					delay:500,
+					forcePlaceholderSize:true,
+					handle:'img.grippy',
+					placeholder: "ui-state-highlight",
+					revert: true,
+					start: function(event, ui) {
+							zmiWriteDebug('ul.zmi-container.zmi-sortable: start');
+							var el = $(".zmi-container .zmi-item");
+							$(el).removeClass("highlight");
+							self.zmiSortableRownum = false;
+							var c = 1;
+							$(".zmi-sortable > li").each(function() {
+									if ($(this).attr("id") == ui.item.attr("id")) {
+										self.zmiSortableRownum = c;
+									}
+									c++;
+								});
+							zmiWriteDebug('ul.zmi-container.zmi-sortable: start - self.zmiSortableRownum='+self.zmiSortableRownum);
+						},
+					stop: function(event, ui) {
+							zmiWriteDebug('ul.zmi-container.zmi-sortable: stop');
+							var pos = $(this).position();
+							if (self.zmiSortableRownum) {
+								zmiWriteDebug('ul.zmi-container.zmi-sortable: stop - self.zmiSortableRownum='+self.zmiSortableRownum);
+								var c = 1;
+								$(".zmi-sortable > li").each(function() {
+										if ($(this).attr("id") == ui.item.attr("id")) {
+											if(self.zmiSortableRownum != c) {
+												var id = getZMIActionContextId(ui.item);
+												var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+												zmiWriteDebug('ul.zmi-container.zmi-sortable: stop - href='+href);
+												$.get(href,function(result){
+														var message = eval('('+result+')');
+														zmiShowMessage(pos,message,"alert-success");
+													});
+											}
+										}
+										c++;
+									});
 							}
-							c++;
-						});
-				}
-				self.zmiSortableRownum = false;
+							self.zmiSortableRownum = false;
+						}
+					});
+				});
 			}
 		});
 	// Checkboxes
@@ -317,13 +328,7 @@ function zmiInitInputFields(container) {
 						if ($('#zmiDialog').length==0) {
 							$('body').append('<div id="zmiDialog"></div>');
 						}
-						$('#zmiDialog').dialog({
-								autoOpen: false,
-								title: getZMILangStr('CAPTION_WARNING'),
-								closeText: getZMILangStr('BTN_CLOSE'),
-								height: 'auto',
-								width: 'auto'
-							}).html(''
+						zmiModal($('#zmiDialog').html(''
 								+ '<div class="alert alert-error">'
 									+ '<h4>'+zmi_icon("icon-warning-sign")+' '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
 									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
@@ -331,8 +336,10 @@ function zmiInitInputFields(container) {
 								+ '<div class="form-group">'
 									+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
 									+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
-								+ '</div>'
-							).dialog('open');
+								+ '</div>'),{
+								title: getZMILangStr('CAPTION_WARNING'),
+								closeText: getZMILangStr('BTN_CLOSE')
+							});
 					}
 				}
 				return b;
@@ -454,40 +461,47 @@ function zmiInitInputFields(container) {
 					}
 				});
 			// Date-Picker
-			pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
-				$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
-				$('input.datepicker',context).datepicker({
-						showWeek: true
-					});
-				$('input.datetimepicker',context).datepicker({
-						constrainInput: false,
-						showWeek: true,
-						beforeShow: function(input, inst) {
-								var v = $(input).val();
-								var e = '';
-								var i = v.indexOf(' ');
-								if ( i > 0) {
-									e = v.substr(i+1);
-									v = v.substr(0,i);
-								}
-								$(inst).data("inputfield",input);
-								$(inst).data("extra",e);
-							},
-						onClose: function(dateText, inst) {
-								if (dateText) {
-									var input = $(inst).data("inputfield");
-									var e = $(inst).data("extra");
-									if (e && !dateText.endsWith(" "+e)) {
-										$(input).val(dateText+" "+e);
+			$("input.datepicker,input.datetimepicker",this)
+			.each(function() {
+				$(this).closest("div").addClass("input-group");
+				$(this).before('<span class="input-group-addon">'+zmi_icon("icon-calendar")+'</span>');
+			})
+			.mouseover(function(){
+				if (typeof self.zmiUlDatePickerInitialized == "undefined") {
+					self.zmiUlDatePickerInitialized = true;
+					pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
+						$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
+						$('input.datepicker',context).datepicker({
+								showWeek: true
+							});
+						$('input.datetimepicker',context).datepicker({
+								constrainInput: false,
+								showWeek: true,
+								beforeShow: function(input, inst) {
+										var v = $(input).val();
+										var e = '';
+										var i = v.indexOf(' ');
+										if ( i > 0) {
+											e = v.substr(i+1);
+											v = v.substr(0,i);
+										}
+										$(inst).data("inputfield",input);
+										$(inst).data("extra",e);
+									},
+								onClose: function(dateText, inst) {
+										if (dateText) {
+											var input = $(inst).data("inputfield");
+											var e = $(inst).data("extra");
+											if (e && !dateText.endsWith(" "+e)) {
+												$(input).val(dateText+" "+e);
+											}
+										}
 									}
-								}
-							}
+							});
 					});
+				}
 			});
-			$("input.datepicker,input.datetimepicker",this).each(function() {
-					$(this).closest("div").addClass("input-group");
-					$(this).before('<span class="input-group-addon">'+zmi_icon("icon-calendar")+'</span>');
-				});
+			// Richedit
 			if ($("div.zmi-richtext",this).length > 0) {
 				$(this).submit(function() {
 						zmiRichtextOnSubmitEventHandler();
@@ -622,6 +636,23 @@ function zmiRelativateUrls(s,page_url) {
 }
 
 /**
+ * Open modal
+ */
+function zmiModal(s, opt) {
+	pluginUI(s,function() {
+			var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
+			var closeText = getZMILangStr('BTN_CLOSE');
+			opt["modal"] = typeof opt["modal"] == "undefined" ? true : opt["modal"];
+			opt["maxHeight"] = typeof opt["maxHeight"] == "undefined" ? maxHeight : opt["maxHeight"];
+			opt["closeText"] = typeof opt["closeText"] == "undefined" ? closeText : opt["closeText"];
+			opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
+			opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
+			$(s).dialog(opt);
+			$('.ui-widget-overlay').height($(document).height()).width($(document).width());
+		});
+}
+
+/**
  * Open link in iframe (jQuery UI Dialog).
  */
 function zmiIframe(href, data, opt) {
@@ -633,16 +664,13 @@ function zmiIframe(href, data, opt) {
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
+	zmiWriteDebug("zmiIframe:url="+url);
 	var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
 		$('#zmiIframe').html('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
-		opt["modal"] = true;
 		opt['maxHeight'] = maxHeight;
-		opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
-		opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
-		$('#zmiIframe').dialog(opt);
-		$('.ui-widget-overlay').height($(document).height()).width($(document).width());
+		zmiModal('#zmiIframe',opt);
 	}
 	else {
 		$.get( href, data, function(result) {
@@ -655,17 +683,13 @@ function zmiIframe(href, data, opt) {
 					self.location.href = href;
 				}
 				else {
-					opt["modal"] = true;
 					opt['maxHeight'] = maxHeight;
-					opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
-					opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
 					$('#zmiIframe').html(result);
 					var title = $('#zmiIframe div.zmi').attr("title");
 					if (typeof title != "undefined" && title) {
 						opt["title"] = title;
 					}
-					$('#zmiIframe').dialog(opt);
-					$('.ui-widget-overlay').height($(document).height()).width($(document).width());
+					zmiModal('#zmiIframe',opt);
 				}
 			});
 	}
@@ -1002,19 +1026,17 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
 	href += '&elValue='+escape(elValue);
-	if ( selectedText) {
+	if ( typeof selectedText == "string") {
 		href += '&selectedText=' + escape( selectedText);
 	}
 	if ($('#zmiDialog').length==0) {
 		$('body').append('<div id="zmiDialog"></div>');
 	}
-	$('#zmiDialog').dialog({
-			autoOpen: false,
+	zmiModal($('#zmiDialog')
+		.html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>'),{
 			title: title,
-			closeText: getZMILangStr('BTN_CLOSE'),
-			height: 'auto',
-			width: 'auto'
-		}).html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>').dialog('open');
+			closeText: getZMILangStr('BTN_CLOSE')
+		});
 	return false;
 }
 
@@ -1058,49 +1080,56 @@ function zmiRecordSetDeleteRow(fmName, qIndex) {
 
 $(function() {
 	// Sortable
-	var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
-		ui.children().each(function() {
-			$(this).width($(this).width());
-		});
-		return ui;
-	};
-	$("table.zmi-sortable tbody").sortable({
-		delay:500,
-		forcePlaceholderSize:true,
-		handle:'img.grippy',
-		helper:fixHelper,
-		placeholder: "ui-state-highlight",
-		revert: true,
-		start: function(event, ui) {
-				self.zmiSortableRownum = false;
-				var c = 1;
-				$("table.zmi-sortable > tbody > tr").each(function() {
-						if ($(this).attr("id") == ui.item.attr("id")) {
-							self.zmiSortableRownum = c;
-						}
-						c++;
+	$("table.zmi-sortable tbody img.grippy").mouseover(function() {
+		if (typeof self.zmiTableSortableInitialized == "undefined") {
+			self.zmiTableSortableInitialized = true;
+			pluginUI("ul.zmi-container.zmi-sortable",function() {
+				var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
+					ui.children().each(function() {
+						$(this).width($(this).width());
 					});
-			},
-		stop: function(event, ui) {
-				var pos = $(this).position();
-				if (self.zmiSortableRownum) {
-					var c = 1;
-					$("table.zmi-sortable > tbody > tr").each(function() {
-							if ($(this).attr("id") == ui.item.attr("id")) {
-								if(self.zmiSortableRownum != c) {
-									var id = ui.item.attr("id");
-									var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
-									var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
-									self.location.href = href;
-								}
+					return ui;
+				};
+				$("table.zmi-sortable tbody").sortable({
+					delay:500,
+					forcePlaceholderSize:true,
+					handle:'img.grippy',
+					helper:fixHelper,
+					placeholder: "ui-state-highlight",
+					revert: true,
+					start: function(event, ui) {
+							self.zmiSortableRownum = false;
+							var c = 1;
+							$("table.zmi-sortable > tbody > tr").each(function() {
+									if ($(this).attr("id") == ui.item.attr("id")) {
+										self.zmiSortableRownum = c;
+									}
+									c++;
+								});
+						},
+					stop: function(event, ui) {
+							var pos = $(this).position();
+							if (self.zmiSortableRownum) {
+								var c = 1;
+								$("table.zmi-sortable > tbody > tr").each(function() {
+										if ($(this).attr("id") == ui.item.attr("id")) {
+											if(self.zmiSortableRownum != c) {
+												var id = ui.item.attr("id");
+												var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
+												var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
+												self.location.href = href;
+											}
+										}
+										c++;
+									});
 							}
-							c++;
-						});
-				}
-				self.zmiSortableRownum = false;
+							self.zmiSortableRownum = false;
+						}
+					});
+				});
 			}
-		});
 	});
+});
 
 // ############################################################################
 // ### zmiDisableInteractions

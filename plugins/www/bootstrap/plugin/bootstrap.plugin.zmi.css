@@ -836,7 +836,7 @@ table.table.zmi-sortable input {
 .ZMSRecordSet .table tr th .btn-group,
 .ZMSRecordSet .table tr td .btn-group {
 	white-space:nowrap !important;
-	min-width:72px;
+	min-width:8em;
 }
 .ZMSRecordSet .table tr th .split-left,
 .ZMSRecordSet .table tr td .split-left,

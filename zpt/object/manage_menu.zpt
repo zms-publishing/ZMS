@@ -13,9 +13,9 @@ function zmiToggleClick(toggle, callback) {
 		var homeId = baseId;
 		$(toggle).parents(".zmi-page").each(function(){
 				var id = $(this).attr("id");
-				var elId = id.substr(id.indexOf("_")+1);
+				var elId = id.substr(id.lastIndexOf("_")+1);
 				href = '/'+elId+href;
-				var baseId = id.substr(0,id.indexOf("_"));
+				var baseId = id.substr(0,id.lastIndexOf("_"));
 				if (baseId!=homeId) {
 					href = href.replace('/'+baseId+'/','/');
 					href = '/'+baseId+href;

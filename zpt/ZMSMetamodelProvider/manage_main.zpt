@@ -331,7 +331,7 @@ $(function() {
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['','zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
 								</div>
 								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])" tal:content="default">default</textarea>
+									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[[],['zmi-element-disabled']][isMetaDictAttr])"><tal:block tal:condition="python:objAttr.get('default',None)" tal:content="objAttr/default">default</tal:block></textarea>
 								</div>
 							</td>
 						</tal:block>

@@ -135,7 +135,7 @@ function zmiFormSubmit(sender,d) {
 		<td class="meta-id"><input type="text" name="_id"></td>
 		<td class="meta-name"><input type="text" name="_name"></td>
 		<td class="meta-type">
-			<select name="_type">
+			<select class="form-control" name="_type">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>

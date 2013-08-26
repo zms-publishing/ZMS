@@ -643,6 +643,7 @@ tr.row_insert td.meta-sort {
 .zmi.metas td.meta-multilang,
 .zmi.metas td.meta-repetitive {
 	text-align:center;
+	padding-top:0.9em;
 }
 #zmi-single-line-edit textarea {
 	font-family:"Courier New", Courier, monospace;

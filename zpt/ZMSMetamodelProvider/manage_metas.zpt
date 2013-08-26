@@ -105,13 +105,13 @@ function zmiFormSubmit(sender,d) {
 			</div>
 		</td>
 		<td class="meta-id">
-			<input class="form-control" type="text" tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; value python:metadictAttr['id']">
+			<input class="form-control input-sm" type="text" tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; value python:metadictAttr['id']" />
 		</td>
 		<td class="meta-name">
-			<input class="form-control" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']">
+			<input class="form-control input-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']" />
 		</td>
 		<td class="meta-type">
-			<select class="form-control" tal:attributes="name python:'attr_type_%s'%metadictAttr['id']">
+			<select class="form-control input-sm" tal:attributes="name python:'attr_type_%s'%metadictAttr['id']">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
@@ -119,32 +119,32 @@ function zmiFormSubmit(sender,d) {
 			</select>
 		</td>
 		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
-			<td colspan="4"><div class="single-line"><textarea tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']; title python:'%s (%s)'%(metadictAttr['id'],metadictAttr['type'])" tal:content="python:metadictAttr['custom']"></textarea></div></td>
+			<td colspan="4"><div class="single-line"><textarea class="form-control input-sm" tal:attributes="name python:'attr_custom_%s'%metadictAttr['id']; title python:'%s (%s)'%(metadictAttr['id'],metadictAttr['type'])" tal:content="python:metadictAttr['custom']"></textarea></div></td>
 		</tal:block>
 		<tal:block tal:condition="not:python:metadictAttr['type'] in ['method']">
-			<td><input class="form-control" type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1"></td>
-			<td><input class="form-control" type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1"></td>
-			<td><input class="form-control" type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1"></td>
-			<td><div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']"><textarea tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea></div></td>
+			<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1" /></td>
+			<td class="meta-multilang"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1" /></td>
+			<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1" /></td>
+			<td><div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']"><textarea class="form-control input-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea></div></td>
 		</tal:block>
 		</tal:block>
 	</tr>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
-		<td class="meta-id"><input class="form-control" type="text" name="_id"></td>
-		<td class="meta-name"><input class="form-control" type="text" name="_name"></td>
+		<td class="meta-sort" style="padding:0.95em !important;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+		<td class="meta-id"><input class="form-control input-sm" type="text" name="_id" /></td>
+		<td class="meta-name"><input class="form-control input-sm" type="text" name="_name" /></td>
 		<td class="meta-type">
-			<select class="form-control" name="_type">
+			<select class="form-control input-sm" name="_type">
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
 				<option tal:repeat="meta_type python:here.getMetaobjIds(excl_ids=['ZMS'])" tal:attributes="value meta_type" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
 			</select>
 		</td>
-		<td class="meta-mandatory"><input class="form-control" type="checkbox" name="_mandatory:int" value="1"></td>
-		<td class="meta-multilang"><input class="form-control" type="checkbox" name="_multilang:int" value="1"></td>
-		<td class="repetitive"><input class="form-control" type="checkbox" name="_repetitive:int" value="1"></td>
+		<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1" /></td>
+		<td class="meta-multilang"><input type="checkbox" name="_multilang:int" value="1" /></td>
+		<td class="meta-repetitive"><input type="checkbox" name="_repetitive:int" value="1" /></td>
 		<td>&nbsp;</td>
 	</tr>
 	</tbody>

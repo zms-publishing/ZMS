@@ -353,7 +353,7 @@ $(function() {
 				<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1"/></td>
 				<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" name="_custom:int" value="1"/></td>
 				<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_multilang:int" value="1" checked="checked"/></td>
-				<td class="repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_repetitive:int" value="1"/></td>
+				<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" name="_repetitive:int" value="1"/></td>
 				<td>&nbsp;</td>
 			</tr>
 		</tbody>

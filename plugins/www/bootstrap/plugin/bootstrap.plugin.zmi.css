@@ -1154,8 +1154,10 @@ li.zmi-item .btn.split-left:hover {
 	color:#222;
 }
 li.zmi-item span.zmi-ids {
-	position: absolute;
+	/* position: absolute; */
+	display:inline-block;
 	margin: 6px;
+	vertical-align:middle;
 }
 .zmi-manage-main-change {
 	color:#888;

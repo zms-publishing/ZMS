@@ -274,14 +274,16 @@ form.form-insert a.accordion-toggle {
 }
 ul.zmi-container > .zmi-item > .center {
 	float:left;
-	width:600px!important;
+	/* width:600px!important; */
+	width:80% !important;
 }
 ul.zmi-container {
-	width:800px!important;
+	/* width:800px!important; */
+	width:98% !important;
 }
 ul.zmi-container > .zmi-item > .right {
 	float:left;
-	width:200px!important;
+	/* width:200px!important; */
 }
 ul.zmi-container .zmi-item .clearboth {
 	float:none;

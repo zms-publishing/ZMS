@@ -523,7 +523,6 @@ div.single-line.input-append {
 	width:100%;
 }
 div.single-line textarea {
-	height:28px;
 	overflow:hidden;
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
@@ -567,16 +566,16 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		background-color: #f9f9f9 !important;
 	}
 	.zmi.metas .horizontal-group .meta_name input {
-		width:8.1em;
+		width:8.5em;
 	}
 	.zmi.metas .horizontal-group .meta_revision input {
-		width:13.2em
+		width:14.2em
 	}
 	.zmi.metas .horizontal-group .meta_type select {
-		width:12.9em
+		width:14.2em
 	}
 	.zmi.metas .horizontal-group .meta_package select {
-		width:19.2em;
+		width:14.5em;
 	}
 	.zmi.ZMSSqlDb .filters label,
 	.zmi.ZMSSqlDb .filters input,
@@ -593,11 +592,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas table.table-striped td.meta-type select,
 .zmi.metas table.meta-access textarea  {
 	width:160px;
-}
-.zmi.customizelanguages select.form-control,
-.zmi.metas select.form-control {
-	padding: 4px 8px 4px 4px !important;
-	height:auto  !important;
 }
 .zmi.metas .form-group.meta_id div,
 .zmi.metas .form-group.meta_name div,
@@ -643,7 +637,7 @@ tr.row_insert td:first-child {
 	color:#999;
 }
 tr.row_insert td.meta-sort {
-	padding: 0.9em 1.2em !important;
+	padding: 0.9em 1.6em !important;
 }
 .zmi.metas td.meta-mandatory,
 .zmi.metas td.meta-multilang,

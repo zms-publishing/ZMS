@@ -420,7 +420,6 @@ form.form-horizontal {
 form.form-horizontal.form-insert {
 	margin:0;
 }
-
 .zmi.properties .accordion-group {
 	background-color: #fff;
 	padding:1em;
@@ -429,19 +428,32 @@ form.form-horizontal.form-insert {
 	padding:0.5em 0;
 	margin:0.5em 0;
 }
-
+.zmi.properties .accordion-body.container .accordion-inner {
+	margin:0;
+}
+.zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading {
+	padding:0.5em 0;
+}
 .zmi.properties form.form-horizontal {
 	background-color: transparent;
 	padding: 0;
 }
 .zmi.properties form.form-horizontal .accordion-group {
-width: 100%;
-background-color: #fff;
+	width: 100%;
+	background-color: #fff;
+}
+.zmi.properties form.form-horizontal .accordion-group.zmi-container {
+	width: 100%;
+	background-color:transparent;
 }
 .zmi.properties form.form-horizontal .accordion-body.container {
 	margin-left: -1em;
 	max-width:2600px !important;
 	width:100% !important;
+	background-color: #fff;
+}
+.zmi.properties form.form-horizontal .accordion-body.container .zmiRenderShort {
+	padding: 1em;
 	background-color: #fff;
 }
 .zmi.properties form.form-horizontal .accordion-body.container .accordion-inner {
@@ -575,7 +587,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	.zmi.ZMSSqlDb .filters select {
 		display: block;
 	}
+
+
 }
+
+
 .zmi.metas table.table-striped td.meta-id input,
 .zmi.metas table.table-striped td.meta-name input,
 .zmi.metas table.table-striped td.meta-type select,
@@ -1074,6 +1090,16 @@ div.right .btn .caret {
 	.zmi.properties .accordion-group {
 		width:100%;
 	}
+	.zmi.properties .accordion-group.zmi-container {
+		width:100%;
+		padding:0;
+	}
+	.zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-body.container {
+		margin-left: 0;
+	}
+	.zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading {
+		padding-left:1em;
+	}
 	.zmi.properties .zmi-richtext .zmiNeutralColorMedium0 {
 		min-width:100% !important;
 	}
@@ -1105,7 +1131,10 @@ div.right .btn .caret {
 	div.zmi-action .dropdown-submenu>a:after {
 		display: none;
 	}
-
+	.zmi.properties form.form-horizontal .accordion-group {
+		width: 78.75%;
+		background-color: #fff;
+	}
 }
 
 .ui-dialog .ui-dialog-title {

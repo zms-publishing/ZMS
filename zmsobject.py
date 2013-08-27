@@ -506,17 +506,17 @@ class ZMSObject(ZMSItem.ZMSItem,
         metaObj = self.getMetaobj( obj_type)
         if metaObj:
           if metaObj[ 'type'] == 'ZMSResource':
-            return pattern%'%sico_class.gif'%self.MISC_ZMS
+            return self.zmi_icon(self,name='icon-asterisk')
           elif metaObj[ 'type'] == 'ZMSLibrary':
             return self.zmi_icon(self,name='icon-beaker')
           elif metaObj[ 'type'] == 'ZMSPackage':
-            return pattern%'%sico_package.gif'%self.MISC_ZMS
+            return self.zmi_icon(self,name='icon-suitcase')
           elif metaObj[ 'type'] == 'ZMSRecordSet':
-            return pattern%'%sico_sqldb.gif'%self.MISC_ZMS
+            return self.zmi_icon(self,name='icon-list')
           elif metaObj[ 'type'] == 'ZMSReference':
-            return pattern%'%sico_linkcontainer.gif'%self.MISC_ZMS
-          return pattern%'%sico_document.gif'%self.MISC_ZMS
-      return pattern%'%s/p_/broken'
+            return self.zmi_icon(self,name='icon-link')
+          return self.zmi_icon(self,name='icon-file-alt')
+      return self.zmi_icon(self,name='icon-warning-sign')
 
 
     # --------------------------------------------------------------------------

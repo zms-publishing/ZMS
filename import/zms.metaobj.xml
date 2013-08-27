@@ -1605,19 +1605,19 @@ return context.str_json(result)
 	<div class="col-lg-5" tal:content="structure python:zmscontext.getObjInput('align',request)">the align-input</div>
 </div>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered zmi-sortable">
 <tr>
-	<td> &nbsp; </td>
+	<td>&nbsp;</td>
 	<td>
-		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</span>
-		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> PMID)</span>
+		<label for="_url" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</label>
+		<small>(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> PMID)</small>
 	</td>
 	<td>
-		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_TITLE')">Title*</span>
-		<span class="form-small">(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> &quot;Medline&quot;)</span>
+		<label for="_title" tal:content="structure python:here.getZMILangStr('ATTR_TITLE')">Title*</label>
+		<small>(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> &quot;Medline&quot;)</small>
 	</td>
 	<td colspan="2">
-		<span class="form-label" tal:content="structure python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span>
+		<label for="_description" tal:content="structure python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</label>
 	</td>
 </tr>
 
@@ -1632,7 +1632,11 @@ return context.str_json(result)
 	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=12,rows=3,value='',enabled=1,REQUEST=request)"><textarea/></td>
-	<td><button class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></button></td>
+	<td>
+		<button class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_ADD')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
+			<tal:block tal:content="structure python:here.getZMILangStr('BTN_ADD')"></tal:block>
+		</button>
+	</td>
 </tr>
 
 <!--
@@ -1643,14 +1647,16 @@ return context.str_json(result)
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', None)"></tal:block>
 <tal:block tal:define="global childNodes python:zmscontext.getObjChildren('e',request)">
 <tr tal:repeat="childNode childNodes">
-	<td>
+	<td class="meta-sort">
 		<div class="input-append">
-			<select class="form-small" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
+			<select class="zmi-sort" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
 				<tal:block tal:repeat="seqindex python:range(len(childNodes))">
 					<option tal:attributes="selected python:['','selected'][int(seqindex==childNodes.index(childNode))]" tal:content="python:seqindex+1">seqindex+1</option>
 				</tal:block>
 			</select>
-			<span class="add-on btn" tal:attributes="onclick python:'confirmDeleteBtnOnClick(\'manage_deleteObjs?ids:list=%s&preview=preview\')'%childNode.id; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+			<span class="add-on btn" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_deleteObjs?ids:list=%s&lang=%s&preview=%s\'}'%(childNode.id,request['lang'],request['preview']); title python:here.getZMILangStr('BTN_DELETE')">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+			</span>
 		</div><!-- .input-append -->
 	</td>
 	<td tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request)"><input/></td>
@@ -2961,13 +2967,16 @@ body.print table.ZMSTable td {
 <span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
 <style>
 <!--
-div.ZMSTable table.ZMSTable tr th,
-div.ZMSTable table.ZMSTable tr td {
-	border:1px solid black;
-	width:5em!important;
-	height:.2em!important;
+table.ZMSTable tr th,
+table.ZMSTable tr td {
+	border:1px solid #999;
+	width:2em!important;
+	height:.1em!important;
 	padding:0!important;
 	overflow:hidden!important;
+}
+div.checkbox {
+	float:left;
 }
 -->
 </style>
@@ -3023,116 +3032,71 @@ $()
 
 </script>
 
-<table cellspacing="0" cellpadding="1" border="0" width="100%">
-<colgroup>
-	<col width="20%" />
-	<col width="80%" />
-</colgroup>
-<tr valign="top">
-	<td class="form-label" tal:content="structure python:'%s &times; %s%s'%(here.getZMILangStr('ATTR_COLS'),here.getZMILangStr('ATTR_ROWS'),here.FORM_LABEL_MANDATORY)">Cols x Rows*</td>
-	<td class="form-element"><tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)"></tal:block> &times; <tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='rows',value='3',size=2)"></tal:block></td>
-</tr>
-<tr valign="top">
-	<td rowspan="5" class="form-label" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</td>
-	<td>
-		<table>
-		<tr>
-			<td></td>
-			<td style="border-bottom:1px solid #CCC;text-align:center;" tal:content="python:'%i %s'%(3,here.getZMILangStr('ATTR_COLS'))">n cols</td>
-		</tr>
-		<tr>
-			<td valign="middle" rowspan="3"><input type="radio" name="type:int" value="1" checked="checked"></td>
-			<td>
-				<div class="ZMSTable">
-					<table class="ZMSTable">
-					<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					</table>
-				</div>
-			</td>
-			<td style="border-left:1px solid #CCC;vertical-align:middle;" tal:content="python:'%i %s'%(3,here.getZMILangStr('ATTR_ROWS'))">n rows</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
-		<table>
-		<tr>
-			<td valign="middle"><input type="radio" name="type:int" value="2"></td>
-			<td>
-				<div class="ZMSTable">
-					<table class="ZMSTable">
-					<tr><th colspan="3">&nbsp;</th></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
-		<table>
-		<tr>
-			<td valign="middle"><input type="radio" name="type:int" value="3"></td>
-			<td>
-				<div class="ZMSTable">
-					<table class="ZMSTable">
-					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
-		<table>
-		<tr>
-			<td valign="middle"><input type="radio" name="type:int" value="4"></td>
-			<td>
-				<div class="ZMSTable">
-					<table class="ZMSTable">
-					<tr><td>&nbsp;</td><th>&nbsp;</th><th>&nbsp;</th></tr>
-					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
-		<table>
-		<tr>
-			<td></td>
-			<td style="border-bottom:1px solid #CCC;text-align:center;" tal:content="python:here.getZMILangStr('ATTR_CUSTOM')">custom</td>
-		</tr>
-		<tr>
-			<td valign="middle"><input type="radio" name="type:int" value="5"></td>
-			<td>
-				<div class="ZMSTable">
-					<table class="ZMSTable">
-					<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
-					<tr><td>&nbsp;</td><th>&nbsp;</th><td>&nbsp;</td></tr>
-					<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
+<div class="form-group">
+	<label class="col-sm-3 col-md-2 control-label mandatory" tal:content="structure python:here.getZMILangStr('ATTR_COLS')">Cols</label>
+	<div class="col-sm-9 col-md-10">
+		<tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)"></tal:block>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 col-md-2 control-label mandatory" tal:content="structure python:here.getZMILangStr('ATTR_ROWS')">Rows</label>
+	<div class="col-sm-9 col-md-10">
+		<tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='rows',value='3',size=2)"></tal:block>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 col-md-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
+	<div class="form-group col-sm-9 col-md-10">
+
+		<div class="checkbox" title="Type 1">
+			<input type="radio" name="type:int" value="1" checked="checked" />
+			<table class="ZMSTable">
+				<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+			</table>
+		</div>
+
+		<div class="checkbox" title="Type 2">
+			<input type="radio" name="type:int" value="2" />
+			<table class="ZMSTable">
+				<tr><th colspan="3">&nbsp;</th></tr>
+				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+			</table>
+		</div>
+
+		<div class="checkbox" title="Type 3">
+			<input type="radio" name="type:int" value="3" />
+			<table class="ZMSTable">
+				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+			</table>
+		</div>
+
+		<div class="checkbox" title="Type 4">
+			<input type="radio" name="type:int" value="4" />
+			<table class="ZMSTable">
+				<tr><td>&nbsp;</td><th>&nbsp;</th><th>&nbsp;</th></tr>
+				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
+			</table>
+		</div>
+
+		<div class="checkbox" title="Type 5: Custom">
+			<input type="radio" name="type:int" value="5" />
+			<table class="ZMSTable">
+				<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
+				<tr><td>&nbsp;</td><th>&nbsp;</th><td>&nbsp;</td></tr>
+				<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
+			</table>
+		</div>
+
+	</div>
+</div>
 
 </tal:block>
 

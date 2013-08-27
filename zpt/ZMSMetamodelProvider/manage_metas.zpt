@@ -95,7 +95,6 @@ function zmiFormSubmit(sender,d) {
 	<tr tal:repeat="metadictAttrId metadictAttrIds">
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
-			<img class="grippy" src="/misc_/zms/spacer.gif">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']">
 			<div class="input-append">
 				<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
@@ -131,7 +130,7 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="meta-sort" style="padding:0.95em !important;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+		<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td class="meta-id"><input class="form-control input-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control input-sm" type="text" name="_name" /></td>
 		<td class="meta-type">

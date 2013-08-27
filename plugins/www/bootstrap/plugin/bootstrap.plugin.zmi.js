@@ -367,6 +367,7 @@ function zmiInitInputFields(container) {
 								var item = $(this).attr('data-value');
 								if (val == "") {
 									val = item;
+									$input.val(val);
 								}
 								if (item==val) {
 									$(this).addClass("btn-info");
@@ -639,6 +640,7 @@ function zmiRelativateUrls(s,page_url) {
  * Open modal
  */
 function zmiModal(s, opt) {
+	zmiSetCursorWait("zmiModal");
 	pluginUI(s,function() {
 			var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 			var closeText = getZMILangStr('BTN_CLOSE');
@@ -648,7 +650,11 @@ function zmiModal(s, opt) {
 			opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
 			opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
 			$(s).dialog(opt);
+			// minor CSS fixes for jQuery UI Dialog...
 			$('.ui-widget-overlay').height($(document).height()).width($(document).width());
+			$('.ui-dialog-buttonpane').css('backgroundColor','white');
+			$('.ui-dialog-buttonpane .ui-button').removeClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only');
+			zmiSetCursorAuto("zmiModal");
 		});
 }
 
@@ -656,8 +662,9 @@ function zmiModal(s, opt) {
  * Open link in iframe (jQuery UI Dialog).
  */
 function zmiIframe(href, data, opt) {
+	zmiSetCursorWait("zmiIframe");
 	if ($('#zmiIframe').length==0) {
-		$('body').append('<div id="zmiIframe"></div>');
+		$('body').append('<div id="zmiIframe" class="ui-helper-hidden"></div>');
 	}
 	// Debug
 	var url = href + "?";
@@ -671,6 +678,7 @@ function zmiIframe(href, data, opt) {
 		$('#zmiIframe').html('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
 		opt['maxHeight'] = maxHeight;
 		zmiModal('#zmiIframe',opt);
+		zmiSetCursorAuto("zmiIframe");
 	}
 	else {
 		$.get( href, data, function(result) {
@@ -690,6 +698,7 @@ function zmiIframe(href, data, opt) {
 						opt["title"] = title;
 					}
 					zmiModal('#zmiIframe',opt);
+					zmiSetCursorAuto("zmiIframe");
 				}
 			});
 	}
@@ -872,13 +881,16 @@ function zmiActionExecute(sender, label, target) {
 				width:800,
 				open:function(event,ui) {
 					zmiInitInputFields($('#zmiIframe'));
+					if($('#zmiIframe .form-control').length==0) {
+						$('#addInsertBtn').click();
+					}
 				},
 				close:function(event,ui) {
 					$('#manage_addProduct').remove();
 				},
 				buttons:[
-						{text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
-						{text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn', click: function() { $(this).dialog("close");}}
+						{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
+						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn', click: function() { $(this).dialog("close");}}
 				]
 			});
 	}

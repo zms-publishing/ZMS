@@ -189,7 +189,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-checkbox form-control', extra=''):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-control', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -201,7 +201,7 @@ class ObjInputs:
     html.append('<input ')
     html.append(' type="hidden"')
     html.append(' name="%s"'%elName)
-    html.append(' value="%s"'%str(value))
+    html.append(' value="%s"'%str(_globals.nvl(value,0)))
     html.append(' />')
     html.append('<input ')
     if type(elId) is str:

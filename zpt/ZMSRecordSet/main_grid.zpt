@@ -95,7 +95,13 @@
 					<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 				</tal:block>
 			</tal:block>
-			<tal:block tal:condition="python:metaObjAttr['type']!='url'">
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['boolean']">
+				<i tal:condition="python:elValue" class="icon-ok"></i>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime']">
+				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%metaObjAttr['type']).upper())">elValue</tal:block>
+			</tal:block>
+			<tal:block tal:condition="not:python:metaObjAttr['type'] in ['boolean','date','datetime','url']">
 				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 			</tal:block>
 		</td>

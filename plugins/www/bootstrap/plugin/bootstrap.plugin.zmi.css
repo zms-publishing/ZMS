@@ -1174,7 +1174,7 @@ li.zmi-item span.zmi-ids {
 	/* position: absolute; */
 	display:inline-block;
 	margin: 6px;
-	vertical-align:middle;
+	vertical-align:top;
 }
 .zmi-manage-main-change {
 	color:#888;

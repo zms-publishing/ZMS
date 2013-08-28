@@ -16,18 +16,14 @@ function onFormSubmit(fm) {
 
 <tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">
 
-<form class="form-horizontal" name="form0" method="get" onsubmit="return onFormSubmit(this)" style="background-color:transparent;">
-	<div class="form-group">
-		<div class="col-10">
-			<select class="form-element form-control" id="task_type" name="task_type">
-				<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
-				<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
-				<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
-			</select>
-		</div>
-		<div class="col-2">
-			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
-		</div>
+<form class="form-horizontal form-inline" role="form" name="form0" method="get" onsubmit="return onFormSubmit(this)" style="background-color:transparent;">
+	<div class="form-group col-sm-12">
+		<select class="form-control" style="width:80%;" id="task_type" name="task_type">
+			<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
+			<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
+			<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
+		</select>
+		<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
 	</div><!-- .form-group -->
 </form>
 

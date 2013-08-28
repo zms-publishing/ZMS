@@ -11,20 +11,20 @@
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label" for="raw" tal:content="python:here.getZMILangStr('ATTR_SEARCHTERM')">searchterm</label>
-		<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='searchform',elName='raw',value=request.get('raw',''))">the value</div><!-- .col-lg-10 -->
+		<label class="col-sm-3 col-md-2 control-label" for="raw" tal:content="python:here.getZMILangStr('ATTR_SEARCHTERM')">searchterm</label>
+		<div class="col-sm-6 col-md-4" tal:content="structure python:here.getTextInput(fmName='searchform',elName='raw',value=request.get('raw',''))">the value</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:define="global optpl python:map(lambda x: [x,here.getZMILangStr(x)], ['AND','OR'])">
-		<label class="col-lg-2 control-label" for="option" tal:content="python:here.getZMILangStr('ATTR_OPTION')">option</label>
-		<div class="col-lg-10" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='option',value=request.get('search_meta_types',[]),type='select',lang_str='ATTR_OPTION',required=True,enabled=True,css='form-element form-control',optpl=optpl,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+		<label class="col-sm-3 col-md-2  control-label" for="option" tal:content="python:here.getZMILangStr('ATTR_OPTION')">option</label>
+		<div class="col-sm-6 col-md-4" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='option',value=request.get('search_meta_types',[]),type='select',lang_str='ATTR_OPTION',required=True,enabled=True,css='form-element form-control',optpl=optpl,REQUEST=request)">the control</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:define="global optpl python:map(lambda x: [x,here.display_type(request,x)], here.getMetaobjIds(excl_ids=['ZMS']))">
-		<label class="col-lg-2 control-label" for="search_meta_types:list" tal:content="python:here.getZMILangStr('ATTR_TYPE')">type</label>
-		<div class="col-lg-10" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',required=False,enabled=True,css='form-element form-control',optpl=optpl,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+		<label class="col-sm-3 col-md-2 control-label" for="search_meta_types:list" tal:content="python:here.getZMILangStr('ATTR_TYPE')">type</label>
+		<div class="col-sm-6 col-md-4" tal:content="structure python:here.f_selectInput(here,fmName='searchform',elName='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',required=False,enabled=True,css='form-element form-control',optpl=optpl,REQUEST=request)">the control</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<div class="col-lg-2">&nbsp;</div>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2 control-label">&nbsp;</label>
+		<div class="col-sm-6 col-md-4">
 			<button type="submit" class="btn btn-primary">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>

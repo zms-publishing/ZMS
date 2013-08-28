@@ -70,7 +70,7 @@ function setProgressbox(selector) {
 		selector = $(selector);
 	}
 	selector.html(
-			'<img src="<dtml-var MISC_ZMS>loading_16x16.gif" alt="<dtml-var "getZMILangStr('MSG_LOADING')">" title="<dtml-var "getZMILangStr('MSG_LOADING')">" border="0" align="absmiddle"/> '+
+			'<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+
 			'<dtml-var "getZMILangStr('MSG_LOADING')"> '
 		);
 }

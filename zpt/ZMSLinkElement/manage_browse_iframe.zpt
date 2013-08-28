@@ -250,7 +250,7 @@ function zmiToggleClick(toggle) {
 			});
 		href = homeId+href;
 		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><img src="/misc_/zms/loading_16x16.gif" alt="'+getZMILangStr('MSG_LOADING')+'" title="'+getZMILangStr('MSG_LOADING')+'" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		$(document.body).css( "cursor", "wait");
 		// JQuery.AJAX.get
 		$.get(href+'/manage_ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),get_permissions:'True',get_restricted:'True'},function(data){

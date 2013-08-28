@@ -102,7 +102,7 @@ function zmiExpandObject(id,abs_url,meta_id) {
 	if ($img.attr("title").length==1) {
 		var $div = $("#div_"+id+"_children");
 		if ($img.attr("title")=="+") {
-			$div.html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING')).show("normal");
+			$div.html('<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')).show("normal");
 			$img.attr({src:"/misc_/zms/mi.gif",title:"-"});
 			var href = abs_url + "/ajaxGetChildNodes";
 			$.get(href,{lang:getZMILang()},function(result) {
@@ -174,7 +174,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 							zmiResizeObject();
 							var href = self.location.href;
 							href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
-							$('#myDiv').html('<img src="/misc_/zms/loading_16x16.gif" alt="" border="0" align="absmiddle"/> '+getZMILangStr('MSG_LOADING'));
+							$('#myDiv').html('<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
 							$.get(href,{lang:getZMILang()},function(result) {
 									var html = zmiAddPages(result,false);
 									$("#myDiv").html(html);

@@ -1150,8 +1150,6 @@ $(function() {
 var zmiDisableInteractionsAllowed = true;
 
 $(function() {
-	// preload image
-	new Image().src = "/misc_/zms/loading_16x16.gif";
 	// Disable
 	$(window).unload(function() {zmiDisableInteractions(true)});
 });
@@ -1178,7 +1176,7 @@ function zmiDisableInteractions(b) {
 	$('#zmi-overlay').height($doc.height());
 	// Create progress-box.
 	$(document.body).append('<div id="zmi-progressbox">'
-			+ '<img src="/misc_/zms/loading_16x16.gif" border="0" align="absmiddle"> ' + getZMILangStr('MSG_LOADING')
+			+ '<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;' + getZMILangStr('MSG_LOADING')
 		+ '</div>');
 	var $div = $("#zmi-progressbox");
 	$div.css({top:($(window).height()-$div.prop('offsetHeight'))/2,left:($doc.width()-$div.prop('offsetWidth'))/2});

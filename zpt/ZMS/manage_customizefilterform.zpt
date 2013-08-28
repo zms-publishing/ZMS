@@ -30,7 +30,16 @@ select.zmi-sort {
 	font-size:14px;
 }
 .filterName {
-	font-weight:bold;
+	padding-left:0.4em;
+}
+.filterSelect {
+	text-align: center;
+}
+.filterSelect input {
+	margin-top:1.75em;
+}
+.filterProcesses {
+	margin:1em;
 }
 .filterDelimiter {
 	background-color:#D0D0FF;
@@ -38,6 +47,8 @@ select.zmi-sort {
 	border-radius:5px;
 	margin:.1em;
 	max-width:20em;
+	min-width:10em;
+	overflow:hidden;
 	text-align:center;
 	padding:2px 4px 2px 4px;
 }
@@ -52,18 +63,25 @@ select.zmi-sort {
 	padding:2px 4px 2px 4px;
 }
 .filterProcessFile {
+	text-align:left;
 	background-color:white;
 	border:1px #CCC solid;
 	border-radius:5px;
 	font-weight:normal;
-	margin:.1em;
-	padding:2px 4px 2px 4px;
-	font-size:smaller;
+	padding: 4px 1em;
+	min-width: 10em;
+	max-width:20em;
+	min-width:10em;
+	overflow:hidden;
 }
 .layoutTable th, .layoutTable td {
 	padding:0;
 	vertical-align:middle;
-	border:0;
+	border:0 !important;
+	text-align:center;
+}
+.layoutTable td {
+	padding:0 !important;
 }
 </style>
 
@@ -380,7 +398,7 @@ $(function() {
 						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertFilter',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireObj',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',(title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 					</div>
 				</th>
@@ -389,14 +407,14 @@ $(function() {
 		<tbody>
 			<tr tal:repeat="filterId filterIds">
 			<tal:block tal:define="global filter python:here.getFilter(filterId)">
-				<td>
+				<td class="filterSelect">
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
 				<td>
-					<a class="filterName" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
+					<h3 class="filterName"><a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')"></tal:block>
 						<tal:block tal:content="filter/name">the filter-name</tal:block>
-					</a>
+					</a></h3>
 					<div class="filterProcesses">
 						<table class="layoutTable">
 						<tr><td><div class="filterDelimiter">
@@ -407,12 +425,12 @@ $(function() {
 							<tal:block tal:condition="python:filter['format']!='import'">
 								<tal:block tal:content="filter/format">the format</tal:block>
 							</tal:block>
-						</div></td></tr>
+						</div><i class="icon-long-arrow-down center"></i></td></tr>
 						<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
 							<tal:block tal:define="global process python:here.getProcess(filterProcess['id'])">
-								<td><div class="filterProcess" tal:content="process/name">the process-name</div></td>
+								<td><div class="filterProcess" tal:content="process/name">the process-name</div><i class="icon-long-arrow-down center"></i></td>
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
-									<td><img src="/misc_/zms/spacer.gif" alt="" border="0" tal:attributes="style python:'background-color:#CCC\073width:50px\073height:1px'"/></td>
+									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
 									<td><div class="filterProcessFile">
 										<a tal:attributes="href filterProcess/file_href; title python:filterProcess['file_content_type']" target="_blank">
 											<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>

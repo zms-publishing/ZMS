@@ -2277,16 +2277,6 @@ return zmscontext.attr('attr_dc_description')
 
 <tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
 
-<tal:block tal:content="structure python:'<style>'"></tal:block>
-div.note {
-	border-left: 1px solid #FCCD64;
-	border-bottom: 1px solid #FCCD64;
-	margin: 8px;
-	padding: 4px;
-	background: #FCFECC url(<tal:block tal:content="python:zmscontext.getMetaobjAttr(zmscontext.meta_id,'zmsnote_bg.gif')['custom'].absolute_url()">zmsnote_bg.gif</tal:block>) top right no-repeat;
-}
-<tal:block tal:content="structure python:'</style>'"></tal:block>
-
 <script language="JavaScript">
 
 var firedZMSNoteDiv = false;
@@ -2328,7 +2318,7 @@ function onChangeZMSNoteDiv(id) {
 <tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
 </tal:block>
 
-<div class="note">
+<div class="note alert alert-warning">
 	<div tal:attributes="id python:zmscontext.id" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)" tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
 </div>
 

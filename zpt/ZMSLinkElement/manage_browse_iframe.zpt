@@ -33,9 +33,9 @@ div.restricted a {
 }
 </style>
 
-<script>
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+
 function selectObject(absolute_url,anchor,is_page,titlealt) {
-	//--confirm('selectObject('+absolute_url+';'+anchor+';'+is_page+';'+titlealt+')');
 	var url = absolute_url;
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != '') {
@@ -61,9 +61,7 @@ function selectObject(absolute_url,anchor,is_page,titlealt) {
 	}
 	self.parent.zmiDialogClose('zmiDialog');
 }
-</script>
 
-<script>
 /**
  *
  */
@@ -250,7 +248,7 @@ function zmiToggleClick(toggle) {
 			});
 		href = homeId+href;
 		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+		$container.append( '<'+'div id="loading" class="zmi-page"><'+'i class="icon-spinner icon-spin"><'+'/i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		$(document.body).css( "cursor", "wait");
 		// JQuery.AJAX.get
 		$.get(href+'/manage_ajaxGetChildNodes',{id:$container.attr("id").substr(homeId.length+1),lang:getZMILang(),get_permissions:'True',get_restricted:'True'},function(data){
@@ -285,8 +283,8 @@ function zmiToggleClick(toggle) {
 							}
 						}
 						var html = '';
-						html += '<ol id="'+page_id+'" class="zmi-page">';
-						html += '<div class="';
+						html += '<'+'ol id="'+page_id+'" class="zmi-page">';
+						html += '<'+'div class="';
 						if (!page.getAttribute("permissions")) {
 							html += 'restricted ';
 						}
@@ -296,9 +294,9 @@ function zmiToggleClick(toggle) {
 							html += 'active ';
 						}
 						html += '">';
-						html += '<img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)"> ';
-						html += '<input type="radio" onclick="selectObject(\''+page_absolute_url+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"> ';
-						html += '<a target="_blank" href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)"> ';
+						html += '<'+'img class="toggle pl" src="/misc_/zms/spacer.gif" title="+" onclick="zmiToggleClick(this)"> ';
+						html += '<'+'input type="radio" onclick="selectObject(\''+page_absolute_url+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"> ';
+						html += '<'+'a target="_blank" href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)"> ';
 						html += page_display_icon+' ';
 						html += page_titlealt+' ';
 						html += '<'+'/a>';
@@ -317,7 +315,7 @@ function zmiFollowHref(anchor) {
 	self.window.parent.manage_main.location.href=$(anchor).attr("href");
 	return false;
 }
-</script>
+<tal:block tal:content="structure python:'</script>'"></tal:block>
 
 <span id="BASE0" class="zmi-helper-hidden" tal:content="request/BASE0">BASE0</span>
 <span id="SERVER_URL" class="zmi-helper-hidden" tal:content="request/SERVER_URL">SERVER_URL</span>

@@ -131,6 +131,10 @@ $(function() {
 			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>
+		<i title="Language" tal:condition="python:len(here.getLangIds())>1" 
+			tal:attributes="title python:here.getLanguageLabel(request['lang'])" 
+			style="color:#999;cursor:pointer" class="icon-flag"></i>
+		<tal:block tal:content="python:here.getLanguageLabel(request['lang'])">the language</tal:block>
 	</div>
 	<tal:block tal:content="structure python:'</ol><!-- #%s_%s -->'%(childNode.getHome().id,childNode.id)"></tal:block>
 	<div>

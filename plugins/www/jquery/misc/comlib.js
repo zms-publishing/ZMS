@@ -49,28 +49,30 @@ function getZMIConfProperty(key, defaultValue) {
 var zmiExpandConfFilesProgress = false;
 function zmiExpandConfFiles(el, pattern) {
 	if (!zmiExpandConfFilesProgress) {
-		if ( el.options.length <=1) {
+		if ( $("option",el).length==1) {
 			zmiExpandConfFilesProgress = true;
 			// Set wait-cursor.
-			$(document.body).css( "cursor", "wait");
+			zmiSetCursorWait("zmiExpandConfFiles");
+			var first = null;
+			if ( $("option",el).length==1) {
+				first = $("option:first",el).html();
+				$("option:first",el).html(getZMILangStr('MSG_LOADING'));
+			}
 			// JQuery.AJAX.get
-			$.get( 'getConfFiles',
-				{id:el.id,pattern:pattern},
-					function(data) {
-						// Reset wait-cursor.
-						$(document.body).css( "cursor", "auto");
-						//
-						var select = document.getElementById('init');
+			$.get( 'getConfFiles',{pattern:pattern},function(data) {
+						if (first!=null) {
+							$("option:first",el).html(first);
+						}
 						var items = $("item",data);
 						for (var i = 0; i < items.length; i++) {
 							var item = $(items[i]);
 							var value = item.attr("key");
 							var label = item.text();
-							var option = new Option( label, value);
-							select.options[ select.length] = option;
+							$(el).append('<option value="'+value+'">'+label+'</option>');
 						}
-						select.selectedIndex = 0;
 						zmiExpandConfFilesProgress = false;
+						// Reset wait-cursor.
+						zmiSetCursorAuto("zmiExpandConfFiles");
 					});
 		}
 	}

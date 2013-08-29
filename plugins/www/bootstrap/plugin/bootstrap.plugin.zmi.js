@@ -641,21 +641,53 @@ function zmiRelativateUrls(s,page_url) {
  */
 function zmiModal(s, opt) {
 	zmiSetCursorWait("zmiModal");
-	pluginUI(s,function() {
-			var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
-			var closeText = getZMILangStr('BTN_CLOSE');
-			opt["modal"] = typeof opt["modal"] == "undefined" ? true : opt["modal"];
-			opt["maxHeight"] = typeof opt["maxHeight"] == "undefined" ? maxHeight : opt["maxHeight"];
-			opt["closeText"] = typeof opt["closeText"] == "undefined" ? closeText : opt["closeText"];
-			opt["height"] = typeof opt["height"] == "undefined" ? "auto" : opt["height"];
-			opt["width"] = typeof opt["width"] == "undefined" ? "auto" : opt["width"];
-			$(s).dialog(opt);
-			// minor CSS fixes for jQuery UI Dialog...
-			$('.ui-widget-overlay').height($(document).height()).width($(document).width());
-			$('.ui-dialog-buttonpane').css('backgroundColor','white');
-			$('.ui-dialog-buttonpane .ui-button').removeClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only');
-			zmiSetCursorAuto("zmiModal");
-		});
+	if (typeof opt == "undefined") {
+		$("#zmiModal").modal(opt);
+	}
+	else if ($(s).length > 0 && typeof opt == "object") {
+		var buttons = opt['buttons'];
+		var html = ''
+			+'<div class="modal fade" id="zmiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+			+'<div class="modal-dialog">'
+			+'<div class="modal-content">'
+			+'<div class="modal-header">'
+			+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+			+'<h4 class="modal-title">'+opt['title']+'</h4>'
+			+'</div>'
+			+'<div class="modal-body">'+$(s).html()+'</div>'
+			+'<div class="modal-footer"></div>'
+			+'</div>'
+			+'</div><!-- /.modal-content -->'
+			+'</div><!-- /.modal-dialog -->'
+			+'</div><!-- /.modal -->';
+		$("#zmiModal").remove();
+		$("body").append(html);
+		if (typeof buttons == 'object') {
+			for (var i = 0; i < buttons.length; i++) {
+				var button = buttons[i];
+				$('#zmiModal .modal-footer').append('<button type="button">'+button['text']+'</button> ');
+				var $button = $('#zmiModal .modal-footer button:last');
+				for (var k in button) {
+					var v = button[k];
+					if (typeof v == "function") {
+						v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#zmiModal").modal("hide")');
+						$button.on(k,eval("("+v+")"));
+					}
+					else {
+						$button.attr(k,v);
+					}
+				}
+			}
+		}
+		if (typeof opt['open'] == 'function') {
+			$("#zmiModal").on('shown.bs.modal',opt['open']);
+		}
+		if (typeof opt['close'] == 'function') {
+			$("#zmiModal").on('hidden.bs.modal',opt['close']);
+		}
+		$("#zmiModal").modal();
+	}
+	zmiSetCursorAuto("zmiModal");
 }
 
 /**
@@ -663,9 +695,8 @@ function zmiModal(s, opt) {
  */
 function zmiIframe(href, data, opt) {
 	zmiSetCursorWait("zmiIframe");
-	if ($('#zmiIframe').length==0) {
-		$('body').append('<div id="zmiIframe" class="ui-helper-hidden"></div>');
-	}
+	$('#zmiIframe').remove();
+	$('body').append('<div id="zmiIframe" class="ui-helper-hidden"></div>');
 	// Debug
 	var url = href + "?";
 	for (var k in data) {

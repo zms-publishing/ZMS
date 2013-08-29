@@ -130,7 +130,7 @@ def initialize(context):
           print "automated combination of external CSS:",gen
           fileobj = open(translate_path(confdict.get('zmi.all')),'w')
           for key in gen:
-            fn = translate_path(confdict.get('zmi.%s'%key))
+            fn = translate_path(confdict.get(key))
             fh = open(fn,'r')
             fc = fh.read()
             fh.close()

@@ -783,11 +783,15 @@ class FilterManager:
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE') and key == 'obj':
-        id = delFilter(self, id)
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+        ids = REQUEST.get('ids',[])
+        for id in ids:
+          delFilter(self, id)
+        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       elif btn == 'delete' and key == 'attr':
-        pid = delFilterProcess(self, id, pid)
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+        ids = REQUEST.get('ids',[])
+        for id in ids:
+          delFilterProcess(self, id, pid)
+        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       
       # Export.
       # -------

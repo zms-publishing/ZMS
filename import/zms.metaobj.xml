@@ -1945,12 +1945,8 @@ $(function() {
 -->
 <div class="form-group controls-row" id="tr_attr_ref">
 	<label class="col-sm-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
-	<div class="form-inline col-sm-10">
-		<div class="input-group">
-			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
-			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</tal:block>
-		</div>
-	</div>
+	<div class="form-inline col-sm-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
+	<div class="form-inline col-sm-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
 </div>
 <!--
 ################################################################################
@@ -2387,7 +2383,7 @@ zmscontext.commitObj(request)
           <item key="id"><![CDATA[ZMSNote]]></item>
           <item key="name"><![CDATA[ZMSNote]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.0]]></item>
+          <item key="revision"><![CDATA[2.1.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

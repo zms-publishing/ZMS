@@ -361,6 +361,27 @@ body.manage-menu .zmi-helper-clickable {
 body.manage-menu .zmi-helper-clickable:hover {
 	color:#FFF;
 }
+body.manage-menu .dropdown-menu > li > a {
+	clear: both;
+	color: #CCCCCC !important;
+	display: block;
+	font-size: 13px;
+	padding: 3px 8px 3px 0;
+	white-space: nowrap;
+}
+body.manage-menu .dropdown-menu {
+	background-color: #222;
+	border: 1px solid #888;
+	color: #000;
+	left: -100px;
+	position: absolute;
+	min-width: 110px;
+}
+body.manage-menu .dropdown-menu > li > a:focus,
+body.manage-menu .dropdown-menu > li > a:hover {
+	background-color:transparent !important;
+	color:#fff !important;
+}
 
 /*  Font Awesome styles: prevent resetting by CK Editor
     ------------------------------------------------------- */

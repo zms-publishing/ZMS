@@ -1204,8 +1204,7 @@ ul.zmi-container li.zmi-item div.zmiRenderShort {
 }
 #zmi-header .navbar-nav.pull-right {
 	width:auto;
-	margin-top:4px;
-	margin-bottom:0px !important;
+	margin:4px 0 !important;
 }
 @media (max-width: 420px) {
 	#zmi-header .navbar-brand {

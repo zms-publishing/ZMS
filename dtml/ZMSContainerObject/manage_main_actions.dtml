@@ -1,4 +1,0 @@
-<dtml-in actions>
-<option value="<dtml-var sequence-item html_quote>"><dtml-var sequence-key html_quote></option>
-</dtml-in>
-

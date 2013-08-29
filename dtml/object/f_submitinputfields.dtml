@@ -122,13 +122,6 @@
    <td colspan="2">
     <div class="form-element">
     <dtml-var version_object_state>
-    <dtml-let actions="filtered_workflow_actions()">
-     <dtml-if actions>
-      <select class="form-small" style="background-color:#FE6666;color:#FFFFFF;" onchange="zmiActionChoose(this,'<dtml-var id>','<dtml-var "getSortId()">')">
-       <dtml-var "manage_main_actions(_,_,actions=actions,REQUEST=REQUEST)">
-      </select>
-     </dtml-if>
-    </dtml-let>
     (<dtml-if "getObjProperty('created_dt',REQUEST) and getObjProperty('created_uid',REQUEST)">
      <dtml-var "getZMILangStr('ATTR_CREATED')">:
      <dtml-var "getLangFmtDate(getObjProperty('created_dt',REQUEST))">

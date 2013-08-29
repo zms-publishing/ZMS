@@ -745,7 +745,6 @@ class AccessManager(AccessableContainer):
     # Management Interface.
     # ---------------------
     manage_users = PageTemplateFile('zpt/ZMS/manage_users', globals())
-    manage_users_sitemap = HTMLFile('dtml/ZMS/manage_users_sitemap', globals())
 
     ############################################################################
     #  AccessManager.manage_roleProperties:

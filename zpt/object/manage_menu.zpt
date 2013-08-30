@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<script>
-//<!--
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+
 function zmiToggleClick(toggle, callback) {
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-right"))) {
 		$(toggle).removeClass(zmi_icon_clazz("icon-caret-right")).addClass(zmi_icon_clazz("icon-caret-down")).attr({title:'-'});
-		var href= '';
-		var baseId = $("a.navbar-brand span.zmi-home-id").text();
-		var homeId = baseId;
+		var href = '';
+		var homeId = null;
 		$(toggle).parents(".zmi-page").each(function(){
-				var id = $(this).attr("id");
-				var elId = id.substr(id.lastIndexOf("_")+1);
-				href = '/'+elId+href;
-				var baseId = id.substr(0,id.lastIndexOf("_"));
-				if (baseId!=homeId) {
-					href = href.replace('/'+baseId+'/','/');
-					href = '/'+baseId+href;
+				var dataId = $(this).attr("data-id");
+				var dataHomeId = $(this).attr("data-home-id");
+				if (homeId == null) {
+					homeId = dataHomeId;
+				}
+				if (homeId != dataHomeId) {
+					href = '/'+dataHomeId+'/'+homeId+href;
+					homeId = dataHomeId;
+				}
+				else {
+					href = '/'+dataId+href;
 				}
 			});
-		href = homeId+href;
+		if (homeId != null && !href.indexOf('/'+homeId)==0) {
+			href = '/'+homeId+href;
+		}
 		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin" title="'+getZMILangStr('MSG_LOADING')+'"/> '+getZMILangStr('MSG_LOADING')+'<'+'/div>');
-		$(document.body).css( "cursor", "wait");
+		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
-		var id = $container.attr("id");
-		var elId = id.substr(id.indexOf("_")+1);
-		$.get(href+'/manage_ajaxGetChildNodes',{id:elId,lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
+		zmiWriteDebug('zmiToggleClick:'+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
+		$.get(href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
-				$(document.body).css( "cursor", "auto");
-				// Get object-id.
-				var id = $("pages",data).attr("id").replace(/\./,"_").replace(/\-/,"_");
 				// Get and iterate pages.
 				var pages = $("pages",data).children("page");
 				if ( pages.length == 0) {
@@ -42,14 +42,15 @@ function zmiToggleClick(toggle, callback) {
 				else {
 					for (var i = 0; i < pages.length; i++) {
 						var page = pages[i];
-						var page_id = $(page).attr("id").replace(/\./,"_").replace(/\-/,"_");
+						var page_home_id = $(page).attr("home_id");
+						var page_id = $(page).attr("id").substr(page_home_id.length+1);
 						var page_absolute_url = $(page).attr("absolute_url");
 						var page_meta_type = $(page).attr("meta_id");
 						var page_titlealt = $(page).attr("titlealt");
 						var page_display_icon = $(page).attr("display_icon");
 						var html = '';
-						html += '<ol id="'+page_id+'" class="zmi-page '+page_meta_type+'">';
-						html += '<div class="';
+						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
+						html += '<'+'div class="';
 						if (!page.getAttribute("permissions")) {
 							html += 'restricted ';
 						}
@@ -60,7 +61,7 @@ function zmiToggleClick(toggle, callback) {
 						}
 						html += '">';
 						html += zmi_icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
-						html += '<a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
+						html += '<'+'a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
 						html += page_display_icon+' ';
 						html += page_titlealt;
 						html += '<'+'/a> ';
@@ -83,7 +84,8 @@ function zmiFollowHref(anchor) {
 	return false;
 }
 function zmiRefresh() {
-	var href = self.window.parent.manage_main.location.href;
+	var href = self.window.location.href;
+	href = self.window.parent.manage_main.location.href;
 	var homeId = $("a.brand").text().basicTrim();
 	if (href.indexOf(homeId)<0) {
 		href = self.window.location.href;
@@ -116,7 +118,7 @@ function frmresize(r) {
 	parent.document.getElementsByTagName('frameset')[0].cols= colval;
 }
 
-</script>
+<tal:block tal:content="structure python:'</script>'"></tal:block>
 
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'manage-menu',here.meta_id])">
 
@@ -134,7 +136,7 @@ function frmresize(r) {
 </div><!-- #zmi-header -->
 
 <div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]"
-	><tal:block tal:content="structure python:'<ol id=\042%s_%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
+	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
 	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
 		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"
 			></tal:block><a 
@@ -166,7 +168,7 @@ function frmresize(r) {
 			</ul>
 		</span><!-- .dropdown -->
 	</div>
-	<tal:block tal:content="structure python:'</ol><!-- #%s_%s -->'%(childNode.getHome().id,childNode.id)"></tal:block>
+	<tal:block tal:content="structure python:'</ol>'"></tal:block>
 	<div>
 		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
 	</div>

@@ -318,6 +318,7 @@ function zmiToggleClick(toggle) {
 	}
 	else if ($(toggle).hasClass("mi")) {
 		$(toggle).removeClass("mi").addClass("pl").attr({title:'+'});
+		zmiSetCursorAuto("zmiToggleClick");
 	}
 }
 function zmiFollowHref(anchor) {

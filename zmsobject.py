@@ -1043,6 +1043,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST)).replace('"','&quot;').replace('<','&lt;')
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
+      xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST,deep=0))
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))

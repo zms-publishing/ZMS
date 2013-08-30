@@ -25,7 +25,7 @@ function zmi_icon_selector(name) {
 
 $(function(){
 
-	zmiWriteDebug("BO bootstrap.plugin.zmi");
+	zmiSetCursorWait("bootstrap.plugin.zmi");
 
 	// Sitemap
 	var $icon_sitemap = $('#zmi-header a '+zmi_icon_selector("icon-sitemap"));
@@ -243,7 +243,7 @@ $(function(){
 			zmiSwitchBlobButtons(elName);
 		});
 
-	zmiWriteDebug("EO bootstrap.plugin.zmi");
+	zmiSetCursorAuto("EO bootstrap.plugin.zmi");
 
 });
 
@@ -262,6 +262,7 @@ function zmiUnlockForm(form_id) {
  * Init input_fields
  */ 
 function zmiInitInputFields(container) {
+	zmiSetCursorWait("zmiInitInputFields");
 	$('form.form-horizontal',container)
 		.submit(function() {
 				var b = true;
@@ -325,20 +326,17 @@ function zmiInitInputFields(container) {
 					var form_dt = new Date(parseFloat(form_id)*1000);
 					var checkLock = new Date(change_dt).getTime() > form_dt.getTime();
 					if (checkLock) {
-						if ($('#zmiDialog').length==0) {
-							$('body').append('<div id="zmiDialog"></div>');
-						}
-						zmiModal($('#zmiDialog').html(''
-								+ '<div class="alert alert-error">'
-									+ '<h4>'+zmi_icon("icon-warning-sign")+' '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
-									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
-								+ '</div>'
-								+ '<div class="form-group">'
-									+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
-									+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
-								+ '</div>'),{
-								title: getZMILangStr('CAPTION_WARNING'),
-								closeText: getZMILangStr('BTN_CLOSE')
+						zmiModal(null,{
+								body:''
+									+ '<div class="alert alert-error">'
+										+ '<h4>'+zmi_icon("icon-warning-sign")+' '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
+										+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
+									+ '</div>'
+									+ '<div class="form-group">'
+										+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
+										+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
+									+ '</div>',
+								title: getZMILangStr('CAPTION_WARNING')
 							});
 					}
 				}
@@ -509,6 +507,7 @@ function zmiInitInputFields(container) {
 					});
 			}
 		});
+	zmiSetCursorAuto("zmiInitInputFields");
 }
 
 /**
@@ -639,38 +638,44 @@ function zmiRelativateUrls(s,page_url) {
 /**
  * Open modal
  */
+var zmiModalStack = [];
 function zmiModal(s, opt) {
 	zmiSetCursorWait("zmiModal");
 	if (typeof opt == "undefined") {
-		$("#zmiModal").modal(opt);
+		var id = zmiModalStack[zmiModalStack.length-1];
+		zmiWriteDebug("zmiModal:"+s+"(id="+id+")");
+		$('#'+id).modal(s);
 	}
-	else if ($(s).length > 0 && typeof opt == "object") {
-		var buttons = opt['buttons'];
+	else if (typeof opt == "object") {
+		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null?zmiModalStack.length:$(s).attr('id')):opt['id'];
+		zmiModalStack.push(id);
+		zmiWriteDebug("zmiModal:init(id="+id+")");
 		var html = ''
-			+'<div class="modal fade" id="zmiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+			+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true">'
 			+'<div class="modal-dialog">'
 			+'<div class="modal-content">'
 			+'<div class="modal-header">'
 			+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
 			+'<h4 class="modal-title">'+opt['title']+'</h4>'
 			+'</div>'
-			+'<div class="modal-body">'+$(s).html()+'</div>'
+			+'<div class="modal-body">'+(s==null?opt['body']:$(s).html())+'</div>'
 			+'<div class="modal-footer"></div>'
 			+'</div>'
 			+'</div><!-- /.modal-content -->'
 			+'</div><!-- /.modal-dialog -->'
 			+'</div><!-- /.modal -->';
-		$("#zmiModal").remove();
+		$('#'+id).remove();
 		$("body").append(html);
+		var buttons = opt['buttons'];
 		if (typeof buttons == 'object') {
 			for (var i = 0; i < buttons.length; i++) {
 				var button = buttons[i];
-				$('#zmiModal .modal-footer').append('<button type="button">'+button['text']+'</button> ');
-				var $button = $('#zmiModal .modal-footer button:last');
+				$('#'+id+' .modal-footer').append('<button type="button">'+button['text']+'</button> ');
+				var $button = $('#'+id+' .modal-footer button:last');
 				for (var k in button) {
 					var v = button[k];
 					if (typeof v == "function") {
-						v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#zmiModal").modal("hide")');
+						v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#'+id+'").modal("hide")');
 						$button.on(k,eval("("+v+")"));
 					}
 					else {
@@ -679,13 +684,33 @@ function zmiModal(s, opt) {
 				}
 			}
 		}
-		if (typeof opt['open'] == 'function') {
-			$("#zmiModal").on('shown.bs.modal',opt['open']);
-		}
-		if (typeof opt['close'] == 'function') {
-			$("#zmiModal").on('hidden.bs.modal',opt['close']);
-		}
-		$("#zmiModal").modal();
+		$('#'+id)
+			.on('show.bs.modal',function(){
+					zmiWriteDebug("zmiModal:show(id="+zmiModalStack[zmiModalStack.length-1]+")");
+					if (typeof opt['beforeOpen'] == 'function') {
+						opt['beforeOpen'](this);
+					}
+				})
+			.on('shown.bs.modal',function(){
+					zmiWriteDebug("zmiModal:shown(id="+zmiModalStack[zmiModalStack.length-1]+")");
+					if (typeof opt['open'] == 'function') {
+						opt['open'](this);
+					}
+				})
+			.on('hide.bs.modal',function(){
+					zmiWriteDebug("zmiModal:hide(id="+zmiModalStack[zmiModalStack.length-1]+")");
+					if (typeof opt['beforeClose'] == 'function') {
+						opt['beforeClose'](this);
+					}
+				})
+			.on('hidden.bs.modal',function(){
+					zmiWriteDebug("zmiModal:hidden(id="+zmiModalStack[zmiModalStack.length-1]+")");
+					if (typeof opt['close'] == 'function') {
+						opt['close'](this);
+					}
+					zmiModalStack.pop();
+				})
+			.modal();
 	}
 	zmiSetCursorAuto("zmiModal");
 }
@@ -695,20 +720,16 @@ function zmiModal(s, opt) {
  */
 function zmiIframe(href, data, opt) {
 	zmiSetCursorWait("zmiIframe");
-	$('#zmiIframe').remove();
-	$('body').append('<div id="zmiIframe" class="ui-helper-hidden"></div>');
 	// Debug
 	var url = href + "?";
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
 	zmiWriteDebug("zmiIframe:url="+url);
-	var maxHeight = $(window).height()-$("#zmi-header").outerHeight()-$("#zmi-footer").outerHeight();
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
-		$('#zmiIframe').html('<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>');
-		opt['maxHeight'] = maxHeight;
-		zmiModal('#zmiIframe',opt);
+		opt['body'] = '<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>';
+		zmiModal(null,opt);
 		zmiSetCursorAuto("zmiIframe");
 	}
 	else {
@@ -722,13 +743,14 @@ function zmiIframe(href, data, opt) {
 					self.location.href = href;
 				}
 				else {
-					opt['maxHeight'] = maxHeight;
-					$('#zmiIframe').html(result);
-					var title = $('#zmiIframe div.zmi').attr("title");
-					if (typeof title != "undefined" && title) {
-						opt["title"] = title;
+					opt['body'] = result;
+					if (typeof opt['title'] == "undefined") {
+						var title = $("div.zmi",result).attr("title");
+						if (typeof title != "undefined" && title) {
+							opt['title'] = title;
+						}
 					}
-					zmiModal('#zmiIframe',opt);
+					zmiModal(null,opt);
 					zmiSetCursorAuto("zmiIframe");
 				}
 			});
@@ -908,11 +930,12 @@ function zmiActionExecute(sender, label, target) {
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center"><div class="zmiRenderShort"><div class="form-label">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		zmiIframe(target,data,{
+				id:'zmiIframeAddDialog',
 				title:getZMILangStr('BTN_INSERT')+': '+label,
 				width:800,
 				open:function(event,ui) {
-					zmiInitInputFields($('#zmiIframe'));
-					if($('#zmiIframe .form-control').length==0) {
+					zmiInitInputFields($('#zmiIframeAddDialog'));
+					if($('#zmiIframeAddDialog .form-control').length==0) {
 						$('#addInsertBtn').click();
 					}
 				},
@@ -1072,13 +1095,9 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	if ( typeof selectedText == "string") {
 		href += '&selectedText=' + escape( selectedText);
 	}
-	if ($('#zmiDialog').length==0) {
-		$('body').append('<div id="zmiDialog"></div>');
-	}
-	zmiModal($('#zmiDialog')
-		.html('<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>'),{
-			title: title,
-			closeText: getZMILangStr('BTN_CLOSE')
+	zmiModal(null,{
+			body: '<iframe src="'+href+'" style="width:100%; min-width:'+getZMIConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+getZMIConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>',
+			title: title
 		});
 	return false;
 }
@@ -1088,8 +1107,9 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
 }
 
 function zmiDialogClose(id) {
-	$('#'+id).dialog('close');
-	$('body').remove('#'+id);
+	zmiSetCursorWait("zmiDialogClose::"+id);
+	zmiModal("hide");
+	zmiSetCursorAuto("zmiDialogAuto::"+id);
 }
 
 // ############################################################################
@@ -1181,6 +1201,8 @@ $(function() {
 var zmiDisableInteractionsAllowed = true;
 
 $(function() {
+	// preload image
+	// new Image().src = "/misc_/zms/loading_16x16.gif";
 	// Disable
 	$(window).unload(function() {zmiDisableInteractions(true)});
 });

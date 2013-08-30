@@ -1944,9 +1944,9 @@ $(function() {
 ################################################################################
 -->
 <div class="form-group controls-row" id="tr_attr_ref">
-	<label class="col-sm-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
-	<div class="form-inline col-sm-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
-	<div class="form-inline col-sm-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
+	<div class="form-inline col-sm-5 col-md-5 col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
+	<div class="form-inline col-sm-5 col-md-5 col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
 </div>
 <!--
 ################################################################################
@@ -2143,32 +2143,32 @@ return zmscontext.attr('attr_dc_description')
 		ref           python:zmscontext.attr('attr_url');
 		align         python:zmscontext.attr('align');
 		abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8')">
-  <tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
-    <tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
-  </tal:block>
-  <tal:block tal:condition="python:align in [ 'LEFT_FLOAT']">
-    <tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
-  </tal:block>
-  <tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']">
-    <tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
-  </tal:block>
-  <div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
-       tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
-    <div class="title" tal:condition="python:title.lower()!='medline' and title">
-      <img tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="url" align="absmiddle" />
-      <a tal:condition="python:zmscontext.attr('attr_type')=='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt" target="_blank">The titlealt</a>
-      <a tal:condition="python:zmscontext.attr('attr_type')!='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt">The titlealt</a>
-    </div>
-    <div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">
-      The title
-    </div>
-    <div tal:condition="python:abstract" class="description" tal:content="structure abstract">
-      The abstract
-    </div>
-    <a tal:condition="python:title.lower()=='medline'" 
-      tal:attributes="href python:zmscontext.getLinkUrl(ref,request)"
-      target="_blank"><img  tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="Medline" align="absmiddle" /></a>
-  </div>
+	<tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+		<tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'LEFT_FLOAT']">
+		<tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']">
+		<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+	</tal:block>
+	<div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
+			tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
+		<div class="title" tal:condition="python:title.lower()!='medline' and title">
+			<img tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="url" align="absmiddle" />
+			<a tal:condition="python:zmscontext.attr('attr_type')=='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt" target="_blank">The titlealt</a>
+			<a tal:condition="python:zmscontext.attr('attr_type')!='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt">The titlealt</a>
+		</div>
+		<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">
+			The title
+		</div>
+		<div tal:condition="python:abstract" class="description" tal:content="structure abstract">
+			The abstract
+		</div>
+		<a tal:condition="python:title.lower()=='medline'" 
+			tal:attributes="href python:zmscontext.getLinkUrl(ref,request)"
+			target="_blank"><img  tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="Medline" align="absmiddle" /></a>
+	</div>
 </tal:block>
 
 <!-- /ZMSLinkElement.standard_html -->]]>
@@ -2207,7 +2207,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.0]]></item>
+          <item key="revision"><![CDATA[2.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

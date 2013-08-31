@@ -51,10 +51,12 @@ function zmiToggleClick(toggle, callback) {
 						var html = '';
 						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
 						html += '<'+'div class="';
-						if (!page.getAttribute("permissions")) {
+						/*
+						if ($(page).attr("permissions")) {
 							html += 'restricted ';
 						}
-						if (page.getAttribute("active")== "0") {
+						*/
+						if ($(page).attr("active")== "0") {
 							html += 'inactive ';
 						} else {
 							html += 'active ';

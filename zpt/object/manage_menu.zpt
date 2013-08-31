@@ -107,16 +107,19 @@ function zmiRefresh() {
 		};
 	zmiToggleClick($('.toggle').removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")),fn);
 }
-$(function() {
-		zmiRefresh();
-	});
-
 function frmresize(r) {
 	var frmwidth = parseInt(parent.document.getElementsByTagName('frameset')[0].cols);
 	frmwidth = frmwidth + r
 	var colval = frmwidth + ",*";
-	parent.document.getElementsByTagName('frameset')[0].cols= colval;
+	parent.document.getElementsByTagName('frameset')[0].cols=colval;
+	$.cookies.set('zmi_menu_frmsize',colval, { expires: 365 })
 }
+$(function() {
+	zmiRefresh();
+	if ( $.cookies.get('zmi_menu_frmsize') ) {
+		parent.document.getElementsByTagName('frameset')[0].cols = $.cookies.get('zmi_menu_frmsize');
+	};
+});
 
 <tal:block tal:content="structure python:'</script>'"></tal:block>
 

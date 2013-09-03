@@ -120,7 +120,7 @@ function zmiFormSubmit(sender,d) {
 		.submit();
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				$(this).parents('.inner').dialog('close');
 				return false;

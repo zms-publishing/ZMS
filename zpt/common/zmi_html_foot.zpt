@@ -1,0 +1,8 @@
+<!-- common/zmi_html_foot -->
+
+<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
+<tal:block tal:repeat="src python:map(lambda x:here.getConfProperty(x),here.getConfProperty('bootstrap.libs').split(','))">
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
+</tal:block>
+
+<!-- /common/zmi_html_foot -->

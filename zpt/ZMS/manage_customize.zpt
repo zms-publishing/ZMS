@@ -7,7 +7,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
-$(function() {
+$ZMI.registerReady(function(){
 		// Select tab.
 		var $tabs_left = $("div.tabs-left");
 		var anchor = $("a:first",$tabs_left).attr("href");

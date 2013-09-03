@@ -562,7 +562,7 @@ function elFileChange(el) {
 	}
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 	$("#file_"+getZMILang()).change( function() { elFileChange(this); } );
 });
 
@@ -1932,7 +1932,7 @@ initAttrRef = function() {
 		});
 	};
 
-$(function() {
+$ZMI.registerReady(function(){
 	$("input#attr_ref").change(initAttrRef).change();
 });
 
@@ -2444,7 +2444,7 @@ span.mouseover {
 
 <script>
 
-$(function() {
+$ZMI.registerReady(function(){
 	if($("form#form0 input[name=session_id]").length==0) {
 		$("form#form0").append('<input type="hidden" name="session_id" tal:attributes="value session_id"/>');
 	}
@@ -3502,7 +3502,7 @@ function onKeyUpZMSTableDivContenteditable() {
 	$textarea.val($(this).html());
 }
 
-$(function(){
+$ZMI.registerReady(function(){
 	$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
 	table_cell_init();
 });
@@ -3861,7 +3861,7 @@ if key.startswith('table_'):
 	<tal:block tal:condition="python:sortable and request.get('ZMSTable.standard_html',True)">
 		<script type="text/javascript" tal:attributes="src python:'%sjquery.tablesorter.min.js'%resourceurl"></script>
 		<script type="text/javascript">
-			$(function() {
+			$ZMI.registerReady(function(){
 				$(".ZMSTable.sortable").tablesorter({ 
 						widgets: ["zebra"],
 						widgetOptions:{
@@ -4698,7 +4698,7 @@ function onZMSTextareaFormSubmit() {
 	return b;
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 	$('#text_'+getZMILang()).parent('form').submit(onZMSTextareaFormSubmit);
 });
 

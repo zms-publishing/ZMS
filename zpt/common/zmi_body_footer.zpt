@@ -11,4 +11,6 @@
 	<div class="clearfix"></div><!-- .clearfix -->
 </div><!-- #zmi-footer -->
 
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+
 <!-- /common/zmi_body_footer -->

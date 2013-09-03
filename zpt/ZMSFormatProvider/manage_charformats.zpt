@@ -6,44 +6,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		var $fm = $(sender).closest("form");
-		var html = '';
-		for (var i in d) {
-			$('input[name="' + i + '"]',$fm).remove();
-			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'">';
-		}
-		$fm
-			.append(html)
-			.submit();
-	}
-}
-
-$(function(){
-	$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),height:'auto',width:'auto'})
-});
-
-</script>
-
 <tal:block tal:define="global
 		action python:'manage_changeCharformat';
 		formats python:here.getCharFormats()">
@@ -201,6 +163,45 @@ $(function(){
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
+
+<script>
+
+/**
+ * Export xml.
+ */
+function zmiExportBtnClick(sender) {
+	var fm = $(sender).parents("form")[0];
+	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	$('input[name="ids:list"]:checked',fm).each(function(){
+			href += '&'+$(this).attr("name")+'='+$(this).val();
+		});
+	window.open(href);
+	return false;
+}
+
+/**
+ * Delete object.
+ */
+function zmiDeleteObjBtnClick(sender,d) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		var $fm = $(sender).closest("form");
+		var html = '';
+		for (var i in d) {
+			$('input[name="' + i + '"]',$fm).remove();
+			html += '<input type="hidden" name="' + i + '" value="' + d[i] +'">';
+		}
+		$fm
+			.append(html)
+			.submit();
+	}
+}
+
+$ZMI.registerReady(function(){
+	$('#editObj').dialog({modal:true,title:getZMILangStr('BTN_EDIT'),height:'auto',width:'auto'})
+});
+
+</script>
+
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 </html>

@@ -250,7 +250,7 @@ function extractString(s, start, end) {
 	return s;
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 	if($("<dtml-var jquery_context> input[name=session_id]").length==0) {
 		$("<dtml-var jquery_context>").append('<input type="hidden" name="session_id" value="<dtml-var session_id>"/>');
 	}
@@ -288,8 +288,6 @@ $(function() {
 <dtml-var "attr('text')">
 </dtml-if>
 </textarea>
-
-<dtml-unless is_zpt><dtml-var f_submitBtn></dtml-unless>
 
 </dtml-let>
 

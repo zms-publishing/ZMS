@@ -211,7 +211,7 @@ function zmiRichtextSyncDataToView(id) {
 	}
 }
 
-$(function() {
+$ZMI.registerReady(function() {
 	zmiRichtextInit('<dtml-var "REQUEST.get('elName')">');
 });
 

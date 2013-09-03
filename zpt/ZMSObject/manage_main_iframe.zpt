@@ -14,7 +14,7 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <script tal:condition="python:not bnobody">
-	$(function() {
+	$ZMI.registerReady(function(){
 			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
 				if (parent.$.fancybox) {
 					parent.$.fancybox.close();
@@ -57,7 +57,7 @@
 
 <div style="clear:both;">&nbsp;</div>
 <!--</div>--><!-- #zmi-tab -->
-<!--<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>-->
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>
 </tal:block>

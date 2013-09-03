@@ -17,7 +17,7 @@ function CKEditor_uploadMediaDone() {
 		else if (typeof data["file"] != "undefined") {
 			html = '<a href="'+data["file"]["absolute_url"]+'" target="_blank" class="file">'+data["file"]["filename"]+'</a>';
 		}
-		zmiWriteDebug("[CKEditor_uploadMediaDone] html="+html);
+		$ZMI.writeDebug("[CKEditor_uploadMediaDone] html="+html);
 		var element = CKEDITOR.dom.element.createFromHtml(html);
 		CKEditor_editor.insertElement(element);
 		CKEditor_editor = null;
@@ -80,7 +80,7 @@ CKEDITOR.dialog.add( 'mediabuttonDlg', function( editor )
 		onOk : function()
 		{
 			if ($("div#mediaDialog input[name=file]").val()) {
-				zmiWriteDebug("[onOk] submit");
+				$ZMI.writeDebug("[onOk] submit");
 				$("div#mediaDialog form").submit();
 			}
 		}

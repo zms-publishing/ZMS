@@ -335,7 +335,7 @@
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
-$(function() {
+$ZMI.registerReady(function(){
 		if (typeof zmiParams['qsLdapKey'] != "undefined" && typeof zmiParams['qsLdapValue'] != "undefined") {
 			zmiModal('#insertUser .inner',{title:getZMILangStr('BTN_INSERT')});
 		}

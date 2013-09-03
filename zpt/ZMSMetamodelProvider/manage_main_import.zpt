@@ -111,5 +111,6 @@ body.import .btn {
 
 </tal:block>
 
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>

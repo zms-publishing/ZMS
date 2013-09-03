@@ -5,13 +5,15 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<tal:block tal:repeat="href python:map(lambda x:here.getConfProperty(x),here.getConfProperty('zmi.css').split(','))">
-		<link tal:condition="href" rel="stylesheet" type="text/css" tal:attributes="href href" />
+		<link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="href python:href.replace('ZMS_ROOT',here.getDocumentElement().absolute_url())"/>
 	</tal:block>
-	<link rel="stylesheet" type="text/css" tal:attributes="href python:'%s/f_css_defaults'%here.getDocumentElement().absolute_url()" />
-	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
-	<tal:block tal:repeat="src python:map(lambda x:here.getConfProperty(x),here.getConfProperty('bootstrap.libs').split(','))">
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
-	</tal:block>
+	<link type="text/css" rel="stylesheet" tal:attributes="href python:'%s/f_css_defaults'%here.getDocumentElement().absolute_url()" />
+	<tal:block tal:define="global stylesheets python:here.getStylesheets()"
+		><tal:block tal:repeat="i python:range(len(stylesheets))"
+			><link type="text/css" tal:attributes="rel python:['','alternate '][int(i>0)]+'stylesheet'; href python:stylesheets[i].absolute_url()" />
+		</tal:block
+	></tal:block>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
 </head>
 
 <!-- /common/zmi_html_head -->

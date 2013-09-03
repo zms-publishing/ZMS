@@ -365,13 +365,13 @@ class ObjAttrs:
       #-- ID-Fields.
       if inputtype == 'identifier':
         if value == '': value = 'e%i'%self.getSequence().nextVal()
-        return '<div class="form-element"><code><input type="hidden" name="%s" value="%s">%s</code></div>'%(elName,value,value)
+        return '<div class="form-control-static"><code><input type="hidden" name="%s" value="%s">%s</code></div>'%(elName,value,value)
       
       #-- Richtext-Fields.
       elif inputtype == 'richtext':
         REQUEST.set('data',value)
         form_fixed = False
-        css = 'form-element form-control'
+        css = 'form-control'
         wrap = 'virtual'
         filteredMetaObjAttrs = filter( lambda x: x['id']=='format', metaObj['attrs'])
         if len(filteredMetaObjAttrs) == 1:
@@ -393,7 +393,7 @@ class ObjAttrs:
         ltxt = str(value).lower()
         form_fixed = form_fixed or ( ltxt.find( '<form') >= 0 or ltxt.find( '<input') >= 0 or ltxt.find( '<script') >= 0)
         if form_fixed:
-          css = 'form-fixed form-control'
+          css = 'form-control form-fixed'
           wrap = 'off'
         if disabled: 
           css += '-disabled'
@@ -429,7 +429,7 @@ class ObjAttrs:
       
       #-- Text-Fields.
       elif inputtype in [ 'text', 'xml']:
-        css = 'form-element form-control'
+        css = 'form-control'
         wrap = 'virtual'
         if inputtype in ['xml']:
           css = 'form-fixed'
@@ -447,20 +447,20 @@ class ObjAttrs:
       
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete','multiautocomplete']:
-        css = 'form-element form-control'
+        css = 'form-control'
         if disabled: css += '-disabled'
         return self.f_selectAutocomplete(self,fmName=fmName,elName=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled,css=css,REQUEST=REQUEST)
       
       #-- Select-Fields.
       elif inputtype in ['multiselect','select']:
-        css = 'form-element form-control'
+        css = 'form-control'
         if disabled: css += '-disabled'
         optpl = self.getObjOptions(obj_attr,REQUEST)
         return self.getSelect(fmName,elName,value,inputtype,lang_str,mandatory,optpl,enabled,REQUEST,css)
       
       #-- Input-Fields.
       else: 
-        css = 'form-element form-control'
+        css = 'form-control'
         if disabled: css += '-disabled'
         if datatype in _globals.DT_DATETIMES:
           size = 12

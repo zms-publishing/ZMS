@@ -19,6 +19,7 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from App.special_dtml import HTMLFile
+from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
@@ -107,9 +108,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())
     zmi_manage_tabs_message = PageTemplateFile('zpt/common/zmi_manage_tabs_message', globals())
-    zmi_body_footer = PageTemplateFile('zpt/common/zmi_body_footer', globals())
-    zmi_body_header = PageTemplateFile('zpt/common/zmi_body_header', globals())
     zmi_html_head = PageTemplateFile('zpt/common/zmi_html_head', globals())
+    zmi_body_header = PageTemplateFile('zpt/common/zmi_body_header', globals())
+    zmi_body_footer = PageTemplateFile('zpt/common/zmi_body_footer', globals())
+    zmi_html_foot = PageTemplateFile('zpt/common/zmi_html_foot', globals())
     zmi_pagination = PageTemplateFile('zpt/common/zmi_pagination', globals())
     zmi_tabs = PageTemplateFile('zpt/common/zmi_tabs', globals())
     zmi_tabs_sub = PageTemplateFile('zpt/common/zmi_tabs_sub', globals())
@@ -123,12 +125,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
     f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
-    f_css_defaults = HTMLFile('dtml/object/f_css_defaults', globals()) # CSS: Default StyleSheet (WAI)
-    f_submitInputFields = HTMLFile('dtml/object/f_submitinputfields', globals())
-    f_submitBtn = HTMLFile('dtml/object/f_submitbtn', globals())
     zmi_form_section_begin = HTMLFile('dtml/object/zmi_form_section_begin', globals())
     zmi_form_section_end = HTMLFile('dtml/object/zmi_form_section_end', globals())
-    f_collectionBtn = HTMLFile('dtml/object/f_collectionbtn', globals())
     f_xstandard_browseImages = HTMLFile('dtml/object/f_xstandard_browseimages', globals())
     f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals())
     preview_html = PageTemplateFile('zpt/object/preview', globals())
@@ -149,6 +147,36 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.id = id
       self.sort_id = _globals.format_sort_id(sort_id)
       self.ref_by = []
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.f_css_defaults:
+    # --------------------------------------------------------------------------
+    def f_css_defaults(self, REQUEST):
+      """ ZMSObject.f_css_defaults """
+      return self.zmi_css_defaults(REQUEST)
+
+    def zmi_css_defaults(self, REQUEST):
+      """ ZMSObject.zmi_css_defaults """
+      RESPONSE = REQUEST.RESPONSE
+      RESPONSE.setHeader('Last-Modified',DateTime(self.getConfProperty('last_modified')-10000).toZone('GMT+1').rfc822())
+      if not RESPONSE.headers.has_key('cache-control'):
+        RESPONSE.setHeader('Cache-Control','public, max-age=3600')
+      REQUEST.RESPONSE.setHeader('Content-Type','text/css')
+      l = []
+      for metaObjId in self.getMetaobjIds(sort=0):
+        metaObj = self.getMetaobj(metaObjId)
+        for metaObjAttr in filter(lambda x: x['type']=='css' or x['id']=='f_css_defaults', metaObj['attrs']):
+            id = metaObjAttr['id']
+            s = '%s.%s'%(metaObjId,id)
+            l.append('/* %s */'%('#'*len(s)))
+            l.append('/* %s */'%(s))
+            l.append('/* %s */'%('#'*len(s)))
+            try:
+              l.append(self.dt_html(str(self.getMetaobjAttr(metaObjId,id).get('custom','')),REQUEST))
+            except:
+              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[f_css_defaults]: %s"%s))
+      return '\n'.join(l)
 
 
     # --------------------------------------------------------------------------
@@ -868,47 +896,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff(reqBuffId,value,REQUEST)
-
-
-    ############################################################################
-    ###  
-    ###  Object-actions of management interface
-    ### 
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getMetaobjZMI:
-    # 
-    #  Returns ZMI from method 'manage_main' for meta-object specified by given Id.
-    # --------------------------------------------------------------------------
-    def getMetaobjZMI(self, id, REQUEST):
-      metaObj = self.getMetaobj(id)
-      for metaObjAttr in metaObj['attrs']:
-        if metaObjAttr['id']=='manage_main':
-          value = metaObjAttr['custom']
-          fmName = REQUEST.get('fmName','form0')
-          REQUEST.set('fmName',fmName)
-          html = []
-          if REQUEST.get('ZMS_INSERT',None) is not None:
-            fmAction = '%s/manage_addZMSCustom'%REQUEST['URL1'][len(REQUEST['BASE0']):]
-            html.append('<form name="%s" action="%s" method="post" enctype="multipart/form-data">\n'%(fmName,fmAction))
-            html.append('<input type="hidden" name="meta_id" value="%s">\n'%id)
-            html.append('<input type="hidden" name="id" value="%s">\n'%REQUEST.get('id','e'))
-            html.append('<input type="hidden" name="_sort_id:int" value="%i">\n'%REQUEST.get('_sort_id'))
-            html.append('<input type="hidden" name="ZMS_INSERT" value="%s">\n'%REQUEST.get('ZMS_INSERT'))
-          else:
-            fmAction = 'manage_changeProperties'
-            html.append('<form name="%s" action="%s" method="post" enctype="multipart/form-data">\n'%(fmName,fmAction))
-          REQUEST.set('ZMS_ACTION',fmAction)
-          try:
-            value = _globals.dt_html(self,value,REQUEST)
-          except:
-            value = _globals.writeError(self,'[getMetaobjZMI]')
-          html.append(self.f_submitInputFields(self,REQUEST))
-          html.append(value)
-          html.append('</form>\n')
-          return ''.join(html)
-      return None
 
 
     ############################################################################

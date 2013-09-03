@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 try: # Zope >= 2.13.0
   from OFS.userfolder import UserFolder
@@ -285,7 +284,7 @@ class AccessableObject:
     #
     #  Change user.
     ############################################################################
-    manage_userForm = HTMLFile('dtml/ZMS/manage_user', globals())
+    manage_userForm = PageTemplateFile('zpt/ZMS/manage_user', globals())
     def manage_user(self, btn, lang, REQUEST, RESPONSE):
       """ AccessManager.manage_user """
       message = ''

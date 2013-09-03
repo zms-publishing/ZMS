@@ -83,10 +83,10 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	zmiModal("#ZMSGraphic_extEdit_actions",{
 			title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
 			open:function() {
-					zmiWriteDebug("BO open");
+					$ZMI.writeDebug("BO open");
 					$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
 						function(data) {
-							zmiWriteDebug("BO getTempBlobjPropertyUrl");
+							$ZMI.writeDebug("BO getTempBlobjPropertyUrl");
 							var result = eval('('+data+')');
 							ZMSGraphic_act_width = result['width'];
 							ZMSGraphic_act_height = result['height'];
@@ -141,13 +141,13 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 									zmiSetCursorAuto("ZMSGraphic_extEdit_action");
 							});
 					});
-					zmiWriteDebug("EO open");
+					$ZMI.writeDebug("EO open");
 				},
 				beforeClose:function() {
-					zmiWriteDebug("BO beforeClose");
+					$ZMI.writeDebug("BO beforeClose");
 					$('div#ZMSGraphic_extEdit_image').html('');
 					changeJcropAvailability(false);
-					zmiWriteDebug("EO beforeClose");
+					$ZMI.writeDebug("EO beforeClose");
 				}
 		});
 }
@@ -198,7 +198,7 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
  * Apply changes.
  */
 function ZMSGraphic_extEdit_apply() {
-	zmiWriteDebug("ZMSGraphic_extEdit_apply:"+ZMSGraphic_action);
+	$ZMI.writeDebug("ZMSGraphic_extEdit_apply:"+ZMSGraphic_action);
 	// Preview
 	if (ZMSGraphic_action == 'preview') {
 		var params = {'action':ZMSGraphic_action};
@@ -255,7 +255,7 @@ function ZMSGraphic_extEdit_apply() {
 		}
 	}
 	// Close dialog.
-	zmiWriteDebug("ZMSGraphic_extEdit_apply: Close dialog");
+	$ZMI.writeDebug("ZMSGraphic_extEdit_apply: Close dialog");
 	zmiModal("hide");
 	return false;
 }

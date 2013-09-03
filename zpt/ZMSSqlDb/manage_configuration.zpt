@@ -72,7 +72,7 @@ function onAttrTypeChange( el) {
 	$("tr[id=tr_"+column_type+"_"+column_id+"]").removeClass('ui-helper-hidden');
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				$(this).parents('.inner').dialog('close');
 				return false;

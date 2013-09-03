@@ -32,7 +32,7 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
 <script type="text/javascript">
-$(function() {
+$ZMI.registerReady(function(){
 	if ($("textarea#text").length == 0) {
 		$("#editor").hide();
 	}

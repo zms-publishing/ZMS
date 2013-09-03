@@ -19,6 +19,7 @@
 # Imports.
 from DateTime.DateTime import DateTime
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
@@ -60,9 +61,9 @@ class ZMSItem(
     # Templates.
     # ----------
     f_bodyContent = HTMLFile('dtml/object/f_bodycontent', globals()) # Template: Body-Content / Element
-    manage = HTMLFile('dtml/object/manage', globals())
-    manage_workspace = HTMLFile('dtml/object/manage', globals()) # ZMI Manage
-    manage_main = HTMLFile('dtml/ZMSObject/manage_main', globals())
+    manage = PageTemplateFile('zpt/object/manage', globals())
+    manage_workspace = PageTemplateFile('zpt/object/manage', globals())
+    manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_tabs = HTMLFile('dtml/object/manage_tabs', globals()) # ZMI Tabulators
     manage_bodyTop = HTMLFile('dtml/object/manage_bodytop', globals()) # ZMI bodyTop
     manage_page_request = HTMLFile('dtml/object/manage_page_request', globals()) # ZMI Page Request

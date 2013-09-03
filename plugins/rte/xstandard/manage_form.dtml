@@ -216,7 +216,7 @@ function zmiRichtextSyncDataToView(id) {
 	// do nothing
 }
 
-$(function() {
+$ZMI.registerReady(function() {
 	zmiRichtextInit('<dtml-var "REQUEST.get('elName')">');
 });
 

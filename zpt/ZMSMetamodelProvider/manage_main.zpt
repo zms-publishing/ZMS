@@ -6,100 +6,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-
-/**
- *
- */
-function zmiEnableBtnClick(sender) {
-	var $container = $(sender).closest("span");
-	var id = $container.attr("id");
-	var enabled = $container.hasClass("enabled")?0:1;
-		// Set wait-cursor.
-		$(document.body).css( "cursor", "wait");
-		// JQuery.AJAX.get
-		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+enabled,function(data) {
-			// Reset wait-cursor.
-			$(document.body).css( "cursor", "auto");
-			// Get object-id.
-			var enabled = $("result",data).attr("enabled");
-			if (enabled=="1") {
-				$container.addClass("enabled");
-				$('.enabled-toggle',$container).removeClass("icon-check-empty").addClass("icon-check");
-			}
-			else {
-				$container.removeClass("enabled");
-				$('.enabled-toggle',$container).removeClass("icon-check").addClass("icon-check-empty");
-			}
-		});
-}
-
-/**
- * Export xml.
- */
-function zmiExportBtnClick(sender) {
-	var $fm = $(sender).closest("form");
-	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="ids:list"]:checked',$fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
-	return false;
-}
-
-/**
- * Delete object.
- */
-function zmiDeleteObjBtnClick(sender,d) {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		zmiFormSubmit(sender,d);
-	}
-}
-
-/**
- * Submit form with given parameters.
- */
-function zmiFormSubmit(sender,d) {
-	var $fm = $(sender).closest("form");
-	var html = '';
-	for (var i in d) {
-		$('input[name="' + i + '"]',$fm).remove();
-		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
-	}
-	$fm
-		.append(html)
-		.submit();
-}
-
-/**
- * Populate type.
- */
-function zmiPopulateTypeSelect(sender) {
-	if ( sender.options.length <= 1) {
-		var selectedValue = '';
-		if ( sender.options.length == 1) {
-			selectedValue = sender.options[0].value;
-		}
-		sender.options.length = 0;
-		$("select#populate_type option").each(function() {
-				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
-					addOption( sender, $(this).text(), $(this).val(), selectedValue);
-				}
-			});
-	}
-}
-
-$(function() {
-		$("table input[name='ids:list']")
-			.change(zmiActionButtonsRefresh)
-			;
-		$("select[name=_type],select[name^=attr_type_]")
-			.focus(function(){zmiPopulateTypeSelect(this)})
-			.hover(function(){zmiPopulateTypeSelect(this)});
-	});
-
-</script>
-
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
@@ -494,6 +400,102 @@ $(function() {
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
+
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+
+<script>
+
+/**
+ *
+ */
+function zmiEnableBtnClick(sender) {
+	var $container = $(sender).closest("span");
+	var id = $container.attr("id");
+	var enabled = $container.hasClass("enabled")?0:1;
+		// Set wait-cursor.
+		$(document.body).css( "cursor", "wait");
+		// JQuery.AJAX.get
+		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+enabled,function(data) {
+			// Reset wait-cursor.
+			$(document.body).css( "cursor", "auto");
+			// Get object-id.
+			var enabled = $("result",data).attr("enabled");
+			if (enabled=="1") {
+				$container.addClass("enabled");
+				$('.enabled-toggle',$container).removeClass("icon-check-empty").addClass("icon-check");
+			}
+			else {
+				$container.removeClass("enabled");
+				$('.enabled-toggle',$container).removeClass("icon-check").addClass("icon-check-empty");
+			}
+		});
+}
+
+/**
+ * Export xml.
+ */
+function zmiExportBtnClick(sender) {
+	var $fm = $(sender).closest("form");
+	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	$('input[name="ids:list"]:checked',$fm).each(function(){
+			href += '&'+$(this).attr("name")+'='+$(this).val();
+		});
+	window.open(href);
+	return false;
+}
+
+/**
+ * Delete object.
+ */
+function zmiDeleteObjBtnClick(sender,d) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+		zmiFormSubmit(sender,d);
+	}
+}
+
+/**
+ * Submit form with given parameters.
+ */
+function zmiFormSubmit(sender,d) {
+	var $fm = $(sender).closest("form");
+	var html = '';
+	for (var i in d) {
+		$('input[name="' + i + '"]',$fm).remove();
+		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
+	}
+	$fm
+		.append(html)
+		.submit();
+}
+
+/**
+ * Populate type.
+ */
+function zmiPopulateTypeSelect(sender) {
+	if ( sender.options.length <= 1) {
+		var selectedValue = '';
+		if ( sender.options.length == 1) {
+			selectedValue = sender.options[0].value;
+		}
+		sender.options.length = 0;
+		$("select#populate_type option").each(function() {
+				if (sender.name != '_type' || !$(this).hasClass('deprecated')) {
+					addOption( sender, $(this).text(), $(this).val(), selectedValue);
+				}
+			});
+	}
+}
+
+$ZMI.registerReady(function(){
+		$("table input[name='ids:list']")
+			.change(zmiActionButtonsRefresh)
+			;
+		$("select[name=_type],select[name^=attr_type_]")
+			.focus(function(){zmiPopulateTypeSelect(this)})
+			.hover(function(){zmiPopulateTypeSelect(this)});
+	});
+
+</script>
+
 </body>
 </html>

@@ -1,6 +1,13 @@
 /*
  * @see http://nicolas.rudas.info/jQuery/getPlugin/
  */
+ 
+/**
+ *
+ */
+$(function(){
+		$ZMI.runReady();
+	});
 
 /*
  * Defaults
@@ -52,10 +59,10 @@ $(function(){
 	}
 	zmiParams['URL'] = base_url;
 	if (typeof zmiParams['zmi-debug'] != "undefined") {
-		zmiToggleDebug(true);
+		$ZMI.toggleDebug(true);
 	}
 
-	zmiWriteDebug("BO jquery.plugin.extensions");
+	$ZMI.writeDebug("BO jquery.plugin.extensions");
 
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
@@ -144,7 +151,7 @@ $(function(){
 		$.plugin('zmi_highlight').get('body',function(){});
 	}
 
-	zmiWriteDebug("EO jquery.plugin.extensions");
+	$ZMI.writeDebug("EO jquery.plugin.extensions");
 
 });
 
@@ -152,7 +159,7 @@ $(function(){
 /**
  * Debug
  */
-function zmiToggleDebug(b) {
+ZMI.prototype.toggleDebug = function(b) {
 	var $div = $("div#zmi-debug");
 	if ($div.length==0) {
 		$("body").append('<div id="zmi-debug"></div>');
@@ -165,7 +172,7 @@ function zmiToggleDebug(b) {
 		$div.css("display","none");
 	}
 }
-function zmiWriteDebug(s) {
+ZMI.prototype.writeDebug = function(s) {
 	var $div = $("div#zmi-debug");
 	if ($div.css("display")!="none") {
 		var d = new Date();
@@ -179,11 +186,11 @@ function zmiSetCursorWait(s) {
 		$("body").css("cursor","wait");
 	}
 	zmiCursor.push(s);
-	zmiWriteDebug(">>>> " + zmiCursor.join(" > "));
+	$ZMI.writeDebug(">>>> " + zmiCursor.join(" > "));
 }
 
 function zmiSetCursorAuto() {
-	zmiWriteDebug("<<<< " + zmiCursor.join(" > "));
+	$ZMI.writeDebug("<<<< " + zmiCursor.join(" > "));
 	zmiCursor.pop();
 	if (zmiCursor.length == 0) {
 		$("body").css("cursor","auto");

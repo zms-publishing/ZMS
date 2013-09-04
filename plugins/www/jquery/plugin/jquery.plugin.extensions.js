@@ -171,14 +171,14 @@ ZMI.prototype.toggleDebug = function(b) {
 	else {
 		$div.css("display","none");
 	}
-}
+};
 ZMI.prototype.writeDebug = function(s) {
 	var $div = $("div#zmi-debug");
 	if ($div.css("display")!="none") {
 		var d = new Date();
 		$div.html("<code>["+(d)+'...'+(d.getMilliseconds())+"] "+s+'</code><br/>'+$div.html());
 	}
-}
+};
 
 var zmiCursor = [];
 function zmiSetCursorWait(s) {
@@ -317,18 +317,6 @@ function pluginAutocomplete(s, c) {
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.css']
 	});
 	$.plugin('autocomplete').get(s,c);
-}
-
-
-/**
- * jQuery Editable Combobox (jEC)
- * @see http://code.google.com/p/jquery-jec/
- */
-function pluginJEC(s, c) {
-	$.plugin('jec',{
-		files: ['/++resource++zms_/jquery/jec/jquery.jec.min-0.5.2.js']
-	});
-	$.plugin('jec').get(s,c);
 }
 
 

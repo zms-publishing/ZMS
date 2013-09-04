@@ -1,0 +1,17 @@
+<tal:block tal:define="global obs python:[]">
+
+	<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int(request.form.has_key('descendant_langs'))]">
+		<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
+			<tal:block tal:condition="python:ob.inObjStates([request['task_type']],request) and
+					(ob.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request) or
+					(len(ob.getWfStates(request))>0 and ob.isVersionContainer() and ob.hasObjModifiedChildren(request)))">
+				<tal:block tal:define="global dummy0 python:obs.append(ob)"></tal:block>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+
+	<form class="form-horizontal" method="get" tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
+		zmi_manage_main_grid
+	</form>
+
+</tal:block>

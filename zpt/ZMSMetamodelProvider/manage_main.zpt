@@ -180,7 +180,7 @@
 					<tal:block tal:condition="python:objAttr['type'] not in ['interface']">
 						<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 						<td class="meta-name"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-						<tal:block tal:condition="python:objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
+						<tal:block tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
 							<td colspan="5" class="meta-code">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 								<div class="single-line" 
@@ -209,6 +209,12 @@
 										<tal:block tal:content="python:[fname,fname[:11]+'...'][int(len(fname)>11)]">FILE NAME</tal:block>
 									</a>
 								</tal:block>
+							</td>
+						</tal:block>
+						<tal:block tal:condition="python:objAttr['type'] in ['Folder']">
+							<td colspan="5" class="meta-resource">
+								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
+								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 							</td>
 						</tal:block>
 						<tal:block tal:condition="python:objAttr['type'] not in ['method','py','resource','zpt']+here.valid_zopetypes">

@@ -60,10 +60,6 @@ class ObjTypes:
     f_xstandard_styles = HTMLFile('dtml/objattrs/f_xstandard_styles', globals())
     f_xstandard_css = HTMLFile('dtml/objattrs/f_xstandard_css', globals())
 
-    # Object.
-    # -------
-    f_selectObject = HTMLFile('dtml/objattrs/f_select_object', globals()) 
-
     # File.
     # -----
     f_selectFile = PageTemplateFile('zpt/objattrs/f_select_file', globals()) 

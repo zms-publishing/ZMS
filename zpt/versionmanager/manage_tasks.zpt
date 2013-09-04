@@ -6,24 +6,21 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-function onFormSubmit(fm) {
-	var b = true;
-	b = b && !disallowBlank(fm.elements['task_type'],"<dtml-var "getZMILangStr('MSG_REQUIRED')%getZMILangStr('ATTR_DISPLAY')">",false);
-	return b;
-}
-</script>
-
 <tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">
 
-<form class="form-horizontal form-inline" role="form" name="form0" method="get" onsubmit="return onFormSubmit(this)" style="background-color:transparent;">
-	<div class="form-group col-sm-12">
-		<select class="form-control" style="width:80%;" id="task_type" name="task_type">
-			<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
-			<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
-			<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
-		</select>
-		<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
+<form class="form-horizontal form-inline" role="form" name="form0" method="get" style="background-color:transparent;">
+	<div class="form-group task_type">
+		<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="task_type"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">the task-type</span></label>
+		<div class="col-sm-9 col-md-9 col-lg-9">
+			<select class="form-control" id="task_type" name="task_type">
+				<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
+				<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
+				<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
+			</select>
+		</div>
+		<div class="col-sm-1 col-md-1 col-lg-1">
+			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_DISPLAY')">Display</button>
+		</div>
 	</div><!-- .form-group -->
 </form>
 

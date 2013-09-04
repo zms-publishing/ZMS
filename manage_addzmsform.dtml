@@ -9,12 +9,11 @@
 	<dtml-in "[
 			'/++resource++zms_/bootstrap/css/bootstrap.min.css',
 			'/++resource++zms_/bootstrap/css/font-awesome.min.css',
-			'/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css',
-			'/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.10.0.custom.css']">
+			'/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css']">
 		<link rel="stylesheet" type="text/css" href="<dtml-var sequence-item>"/>
 	</dtml-in>
-	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/jquery-all.min.js"></script>
-	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
 </head>
 
 <script language="JavaScript">
@@ -194,10 +193,10 @@ function formOnSubmit(fm) {
 
 	<div class="form-group">
 		<div class="col-xs-9 col-sm-offset-3  radio">
-			<label><input type="radio" name="initialization:int" value="0" checked="checked" /> None</label>
+			<label><input type="radio" name="initialization:int" value="0"/> None</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  radio">
-			<label><input type="radio" name="initialization:int" value="1" /> with default content</label>
+			<label><input type="radio" name="initialization:int" value="1" checked="checked" /> with default content</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  radio">
 			<label><input type="radio" name="initialization:int" value="3" /> with ZMS2Go content</label>

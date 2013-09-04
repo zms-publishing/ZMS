@@ -115,7 +115,6 @@ class VersionItem:
 
     # Management Interface.
     # ---------------------
-    version_object_state = HTMLFile('dtml/versionmanager/version_object_state',globals())
     zmi_version_object_state = PageTemplateFile('zpt/versionmanager/zmi_version_object_state',globals())
 
 
@@ -1299,10 +1298,10 @@ class VersionManagerContainer:
 
     # Management Interface.
     # ---------------------
-    task_wf = HTMLFile('dtml/versionmanager/tasklist0', globals()) 
-    task_zmsnote = HTMLFile('dtml/versionmanager/tasklist1', globals()) 
-    task_untranslated = HTMLFile('dtml/versionmanager/tasklist2', globals()) 
-    task_changed_by_date = HTMLFile('dtml/versionmanager/tasklist3', globals()) 
+    task_wf = PageTemplateFile('zpt/versionmanager/task_wf', globals()) 
+    task_zmsnote = PageTemplateFile('zpt/versionmanager/task_zmsnote', globals()) 
+    task_untranslated = PageTemplateFile('zpt/versionmanager/task_untranslated', globals()) 
+    task_changed_by_date = PageTemplateFile('zpt/versionmanager/task_changed_by_date', globals()) 
 
 
     """

@@ -54,7 +54,7 @@
 	<div>
 		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
 	</div>
-</div>
+</div><!-- .zmi-sitemap -->
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 <tal:block tal:content="structure python:'<script>'"></tal:block>
@@ -82,7 +82,7 @@ function zmiToggleClick(toggle, callback) {
 				}
 			});
 		if (homeId != null && !href.indexOf('/'+homeId)==0) {
-			href = '/'+homeId+href;
+			href = homeId+href;
 		}
 		// Set wait-cursor.
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
@@ -152,12 +152,16 @@ function zmiRefresh() {
 	var $ol = $("ol:first");
 	var id = $ol.attr("data-id");
 	var homeId = $ol.attr("data-home-id");
+	$ZMI.writeDebug('zmiRefresh: id='+id+'; homeId='+homeId);
 	var href = self.window.parent.manage_main.location.href;
 	if (href.indexOf('?')>0) {
 		href = href.substr(0,href.indexOf('?'));
 	}
+	$ZMI.writeDebug('zmiRefresh: href.0='+href);
 	href = href.substr(0,href.lastIndexOf('/'));
+	$ZMI.writeDebug('zmiRefresh: href.1='+href);
 	href = href.substr(href.indexOf(homeId)+homeId.length+1);
+	$ZMI.writeDebug('zmiRefresh: href.2='+href);
 	var ids = href.split('/');
 	var fn = function() {
 			if (ids.length > 0) {
@@ -184,9 +188,11 @@ function frmresize(r) {
 }
 $ZMI.registerReady(function(){
 	zmiRefresh();
-	if ( $.cookies.get('zmi_menu_frmsize') ) {
-		parent.document.getElementsByTagName('frameset')[0].cols = $.cookies.get('zmi_menu_frmsize');
-	};
+	runPluginCookies(function() {
+			if ( $.cookies.get('zmi_menu_frmsize') ) {
+				parent.document.getElementsByTagName('frameset')[0].cols = $.cookies.get('zmi_menu_frmsize');
+			};
+		});
 });
 
 <tal:block tal:content="structure python:'</script>'"></tal:block>

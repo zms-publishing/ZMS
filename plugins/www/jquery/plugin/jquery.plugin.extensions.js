@@ -2,13 +2,6 @@
  * @see http://nicolas.rudas.info/jQuery/getPlugin/
  */
  
-/**
- *
- */
-$(function(){
-		$ZMI.runReady();
-	});
-
 /*
  * Defaults
  */
@@ -61,6 +54,8 @@ $(function(){
 	if (typeof zmiParams['zmi-debug'] != "undefined") {
 		$ZMI.toggleDebug(true);
 	}
+
+	$ZMI.runReady();
 
 	$ZMI.writeDebug("BO jquery.plugin.extensions");
 

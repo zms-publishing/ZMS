@@ -60,7 +60,7 @@
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 
 function zmiToggleClick(toggle, callback) {
-	zmiWriteDebug('zmiToggleClick: '+($(toggle).length)+';callback='+(typeof callback));
+	$ZMI.writeDebug('zmiToggleClick: '+($(toggle).length)+';callback='+(typeof callback));
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-right"))) {
@@ -87,7 +87,7 @@ function zmiToggleClick(toggle, callback) {
 		// Set wait-cursor.
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
-		zmiWriteDebug('zmiToggleClick:'+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
+		$ZMI.writeDebug('zmiToggleClick:'+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
 		$.get(href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
@@ -130,7 +130,7 @@ function zmiToggleClick(toggle, callback) {
 					}
 				}
 				if (typeof callback == 'function') {
-					zmiWriteDebug('zmiToggleClick: callback()');
+					$ZMI.writeDebug('zmiToggleClick: callback()');
 					callback();
 				}
 			});
@@ -138,7 +138,7 @@ function zmiToggleClick(toggle, callback) {
 	else if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-down"))) {
 		$(toggle).removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")).attr({title:'+'});
 		if (typeof callback == 'function') {
-			zmiWriteDebug('zmiToggleClick: callback()');
+			$ZMI.writeDebug('zmiToggleClick: callback()');
 			callback();
 		}
 	}
@@ -163,13 +163,13 @@ function zmiRefresh() {
 			if (ids.length > 0) {
 				var id = ids[0];
 				ids = ids.slice(1,ids.length);
-				zmiWriteDebug("zmiRefesh.fn: id="+id);
+				$ZMI.writeDebug("zmiRefesh.fn: id="+id);
 				if ($('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length==0) {
 					homeId = id;
 					id = ids[0];
 					ids = ids.slice(1,ids.length);
 				}
-				zmiWriteDebug("zmiRefesh.fn: ##="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
+				$ZMI.writeDebug("zmiRefesh.fn: ##="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				zmiToggleClick($('*[data-id="'+id+'"][data-home-id="'+homeId+'"] .toggle'),arguments.callee);
 			}
 		};

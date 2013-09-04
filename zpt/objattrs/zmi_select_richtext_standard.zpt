@@ -85,8 +85,8 @@ function tagSelectedText( aTag, eTag, bMayHaveChanged) {
 				newText = aTag + selText + eTag + trailingBlanks;
 			}
 			if (bMayHaveChanged && input.value.indexOf(selText)==0) {
-				zmiWriteDebug("input.value='"+input.value+"'");
-				zmiWriteDebug("selText='"+selText+"'");
+				$ZMI.writeDebug("input.value='"+input.value+"'");
+				$ZMI.writeDebug("selText='"+selText+"'");
 				if (input.value==selText) {
 					input.value = newText;
 				}

@@ -88,7 +88,7 @@ function getRelativeUrl(path, url) {
 
 function zmiRichtextResize(id) {
 	var newHeight = $("div#zmiRichtextEditor"+id).height()-20;
-	zmiWriteDebug("xstandard.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
+	$ZMI.writeDebug("xstandard.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
 	$('object[name^=editor_'+id+']').css("height",newHeight);
 }
 

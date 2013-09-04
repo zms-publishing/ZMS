@@ -238,7 +238,7 @@ function zmiToggleClick(toggle) {
 	zmiSetCursorWait("zmiToggleClick");
 	var $container = $(toggle).parents('ol:first');
 	var checked = $('input:radio:checked').val();
-	zmiWriteDebug("zmiToggleClick:checked="+checked);
+	$ZMI.writeDebug("zmiToggleClick:checked="+checked);
 	$(".zmi-page",$container).remove();
 	if ($(toggle).hasClass("pl")) {
 		$(toggle).removeClass("pl").addClass("mi").attr({title:'-'});
@@ -262,7 +262,7 @@ function zmiToggleClick(toggle) {
 			href = '/'+homeId+href;
 		}
 		// JQuery.AJAX.get
-		zmiWriteDebug('zmiToggleClick:'+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
+		$ZMI.writeDebug('zmiToggleClick:'+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
 		$.get(href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),get_permissions:'True',get_restricted:'True'},function(data){
 				// Get and iterate pages.
 				var pages = $("pages",data).children("page");

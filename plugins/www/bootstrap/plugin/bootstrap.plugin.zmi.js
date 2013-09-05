@@ -648,69 +648,72 @@ function zmiModal(s, opt) {
 	}
 	else if (typeof opt == "object") {
 		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null?zmiModalStack.length:$(s).attr('id')):opt['id'];
-		zmiModalStack.push(id);
-		$ZMI.writeDebug("zmiModal:init(id="+id+")");
-		var html = ''
-			+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true">'
-			+'<div class="modal-dialog">'
-			+'<div class="modal-content">'
-			+'<div class="modal-header">'
-			+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
-			+'<h4 class="modal-title">'+opt['title']+'</h4>'
-			+'</div>'
-			+'<div class="modal-body">'+(s==null?opt['body']:$(s).html())+'</div>'
-			+'<div class="modal-footer"></div>'
-			+'</div>'
-			+'</div><!-- /.modal-content -->'
-			+'</div><!-- /.modal-dialog -->'
-			+'</div><!-- /.modal -->';
-		$('#'+id).remove();
-		$("body").append(html);
-		var buttons = opt['buttons'];
-		if (typeof buttons == 'object') {
-			for (var i = 0; i < buttons.length; i++) {
-				var button = buttons[i];
-				$('#'+id+' .modal-footer').append('<button type="button">'+button['text']+'</button> ');
-				var $button = $('#'+id+' .modal-footer button:last');
-				for (var k in button) {
-					var v = button[k];
-					if (typeof v == "function") {
-						v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#'+id+'").modal("hide")');
-						$button.on(k,eval("("+v+")"));
-					}
-					else {
-						$button.attr(k,v);
+		var body = s==null?opt['body']:$(s).html();
+		if (typeof id!="undefined" && typeof body!="undefined") {
+			zmiModalStack.push(id);
+			$ZMI.writeDebug("zmiModal:init(id="+id+")");
+			var html = ''
+				+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true">'
+				+'<div class="modal-dialog">'
+				+'<div class="modal-content">'
+				+'<div class="modal-header">'
+				+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+				+'<h4 class="modal-title">'+opt['title']+'</h4>'
+				+'</div>'
+				+'<div class="modal-body">'+body+'</div>'
+				+'<div class="modal-footer"></div>'
+				+'</div>'
+				+'</div><!-- /.modal-content -->'
+				+'</div><!-- /.modal-dialog -->'
+				+'</div><!-- /.modal -->';
+			$('#'+id).remove();
+			$("body").append(html);
+			var buttons = opt['buttons'];
+			if (typeof buttons == 'object') {
+				for (var i = 0; i < buttons.length; i++) {
+					var button = buttons[i];
+					$('#'+id+' .modal-footer').append('<button type="button">'+button['text']+'</button> ');
+					var $button = $('#'+id+' .modal-footer button:last');
+					for (var k in button) {
+						var v = button[k];
+						if (typeof v == "function") {
+							v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#'+id+'").modal("hide")');
+							$button.on(k,eval("("+v+")"));
+						}
+						else {
+							$button.attr(k,v);
+						}
 					}
 				}
 			}
+			$('#'+id)
+				.on('show.bs.modal',function(){
+						$ZMI.writeDebug("zmiModal:show(id="+zmiModalStack[zmiModalStack.length-1]+")");
+						if (typeof opt['beforeOpen'] == 'function') {
+							opt['beforeOpen'](this);
+						}
+					})
+				.on('shown.bs.modal',function(){
+						$ZMI.writeDebug("zmiModal:shown(id="+zmiModalStack[zmiModalStack.length-1]+")");
+						if (typeof opt['open'] == 'function') {
+							opt['open'](this);
+						}
+					})
+				.on('hide.bs.modal',function(){
+						$ZMI.writeDebug("zmiModal:hide(id="+zmiModalStack[zmiModalStack.length-1]+")");
+						if (typeof opt['beforeClose'] == 'function') {
+							opt['beforeClose'](this);
+						}
+					})
+				.on('hidden.bs.modal',function(){
+						$ZMI.writeDebug("zmiModal:hidden(id="+zmiModalStack[zmiModalStack.length-1]+")");
+						if (typeof opt['close'] == 'function') {
+							opt['close'](this);
+						}
+						zmiModalStack.pop();
+					})
+				.modal();
 		}
-		$('#'+id)
-			.on('show.bs.modal',function(){
-					$ZMI.writeDebug("zmiModal:show(id="+zmiModalStack[zmiModalStack.length-1]+")");
-					if (typeof opt['beforeOpen'] == 'function') {
-						opt['beforeOpen'](this);
-					}
-				})
-			.on('shown.bs.modal',function(){
-					$ZMI.writeDebug("zmiModal:shown(id="+zmiModalStack[zmiModalStack.length-1]+")");
-					if (typeof opt['open'] == 'function') {
-						opt['open'](this);
-					}
-				})
-			.on('hide.bs.modal',function(){
-					$ZMI.writeDebug("zmiModal:hide(id="+zmiModalStack[zmiModalStack.length-1]+")");
-					if (typeof opt['beforeClose'] == 'function') {
-						opt['beforeClose'](this);
-					}
-				})
-			.on('hidden.bs.modal',function(){
-					$ZMI.writeDebug("zmiModal:hidden(id="+zmiModalStack[zmiModalStack.length-1]+")");
-					if (typeof opt['close'] == 'function') {
-						opt['close'](this);
-					}
-					zmiModalStack.pop();
-				})
-			.modal();
 	}
 	zmiSetCursorAuto("zmiModal");
 }

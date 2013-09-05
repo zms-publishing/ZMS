@@ -11,19 +11,19 @@
 
  <!-- E-Mail -->
 	<div class="form-group email">
-		<label tal:attributes="class python:'col-sm-2 col-md-2 col-lg-2 control-label'+['',' mandatory'][int(here.getConfProperty('EmailMandatory','')!='')]" for="email"><span tal:content="structure python:here.getZMILangStr('ATTR_EMAIL')">the label</span></label>
-		<div class="col-sm-10 col-md-10 col-lg-10"><tal:block tal:content="structure python:here.getTextInput(fmName='form0',elName='email',size=25,value=here.getUserAttr(request['AUTHENTICATED_USER'],'email',''))"></tal:block></div>
+		<label tal:attributes="class python:'col-sm-2 control-label'+['',' mandatory'][int(here.getConfProperty('EmailMandatory','')!='')]" for="email"><span tal:content="structure python:here.getZMILangStr('ATTR_EMAIL')">the label</span></label>
+		<div class="col-sm-10"><tal:block tal:content="structure python:here.getTextInput(fmName='form0',elName='email',size=25,value=here.getUserAttr(request['AUTHENTICATED_USER'],'email',''))"></tal:block></div>
 	</div><!-- .form-group -->
 
  <!-- Password -->
 <tal:block tal:condition="not:python:here.getUserFolder().meta_type=='LDAPUserFolder' and request['AUTHENTICATED_USER'].getId() in here.getUserFolder().getUserNames()">
 	<div class="form-group email">
-		<label class="col-sm-2 col-md-2 col-lg-2 control-label" for="password"><span tal:content="structure python:here.getZMILangStr('ATTR_PASSWORD')">the label</span></label>
-		<div class="col-sm-10 col-md-10 col-lg-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='password')"></tal:block></div>
+		<label class="col-sm-2 control-label" for="password"><span tal:content="structure python:here.getZMILangStr('ATTR_PASSWORD')">the label</span></label>
+		<div class="col-sm-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='password')"></tal:block></div>
 	</div><!-- .form-group -->
 	<div class="form-group email">
-		<label class="col-sm-2 col-md-2 col-lg-2 control-label" for="confirm"><span tal:content="structure python:here.getZMILangStr('ATTR_CONFIRM')">the label</span></label>
-		<div class="col-sm-10 col-md-10 col-lg-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='confirm')"></tal:block></div>
+		<label class="col-sm-2 control-label" for="confirm"><span tal:content="structure python:here.getZMILangStr('ATTR_CONFIRM')">the label</span></label>
+		<div class="col-sm-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='confirm')"></tal:block></div>
 	</div><!-- .form-group -->
 </tal:block>
 

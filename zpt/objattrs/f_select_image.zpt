@@ -29,7 +29,7 @@
 				<tr>
 					<td style="width:35px;padding-left:1em;vertical-align:top;">
 						<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_preview" src="/misc_/zms/arrow_in.png" tal:attributes="alt python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))"/></div>
-						<div class="ZMSGraphic_extEdit_action"><img id="ZMSGraphic_extEdit_crop" src="/misc_/zms/image_crop.png" alt="Crop image"/></div>
+						<div class="ZMSGraphic_extEdit_action"><span class="btn btn-default"><i id="ZMSGraphic_extEdit_crop" class="icon-crop" title="Crop image"></i></span></div>
 						<div id="ZMSGraphic_extEdit_vslider" class="slider" style="height:100px;"></div><br/>
 						<div id="ZMSGraphic_extEdit_perc" class="perc form-control-static" style="margin-left:-0.3em"></div>
 						<div><img src="/misc_/zms/spacer.gif" alt="" border="0" width="30" height="1"/></div>

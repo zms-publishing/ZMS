@@ -72,10 +72,10 @@ class ZMSTextformatManager:
     # --------------------------------------------------------------------------
     def getRichtextFormatIds(self):
       ids = []
-      filepath = package_home(globals())+'/plugins/rte/'
+      filepath = os.sep.join(package_home(globals()),'plugins','rte')
       for filename in os.listdir(filepath):
-        path = filepath + os.sep + filename
-        if os.path.isdir(path):
+        path = os.sep.join(filepath,filename)
+        if os.path.isdir(path) and len(os.listdir(path)) > 0:
           ids.append(filename)
       return ids
 

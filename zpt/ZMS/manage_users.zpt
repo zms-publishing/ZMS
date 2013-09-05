@@ -30,22 +30,22 @@
 			<input type="hidden" name="key" value="attr">
 			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 			<div class="form-group">
-				<label for="node" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_NODE')">Node</span></label>
-				<div class="col-lg-10" tal:content="structure python:here.getUrlInput(fmName='insertNodeForm',elName='node',elTextName='',size=25,value='{$}',enabled=True,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+				<label for="node" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_NODE')">Node</span></label>
+				<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='insertNodeForm',elName='node',elTextName='',size=25,value='{$}',enabled=True,REQUEST=request)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<input tal:condition="python:not multilang" type="hidden" name="langs:list" tal:attributes="value python:here.getLangIds()[0]">
 			<div tal:condition="python:multilang" class="form-group">
-				<label for="langs" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_LANGS')">Languages</span></label>
-				<div class="col-lg-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='langs',value=[],type='multiselect',lang_str='ATTR_LANGS',required=1,css='form-element',optpl=langs_optpl,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+				<label for="langs" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_LANGS')">Languages</span></label>
+				<div class="col-sm-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='langs',value=[],type='multiselect',lang_str='ATTR_LANGS',required=1,css='form-element',optpl=langs_optpl,REQUEST=request)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="roles" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
-				<div class="col-lg-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='roles',value=[],type='multiselect',lang_str='ATTR_ROLES',required=1,css='form-element',optpl=roles_optpl,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+				<label for="roles" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
+				<div class="col-sm-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='roles',value=[],type='multiselect',lang_str='ATTR_ROLES',required=1,css='form-element',optpl=roles_optpl,REQUEST=request)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-10">
+				<div class="col-sm-10">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Save</button>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
@@ -62,34 +62,34 @@
 	<tal:block tal:condition="python:userFolder.meta_type=='LDAPUserFolder'" tal:define="global userObj python:here.findUser(request['id'])">
 		<tal:block tal:condition="python:userObj" tal:define="global userDetails python:userFolder.getUserDetails(encoded_dn=userObj['dn'],format='dictionary')">
 			<div class="form-group" tal:repeat="schema python:userFolder.getLDAPSchema()">
-				<label tal:attributes="for python:schema[0]" class="col-lg-2 control-label"><span tal:content="python:schema[1]">the label</span></label>
-				<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=unicode(userObj.get(schema[0],''),'latin-1').encode('utf-8'),enabled=False)">the value</div><!-- .col-lg-10 -->
+				<label tal:attributes="for python:schema[0]" class="col-sm-2 control-label"><span tal:content="python:schema[1]">the label</span></label>
+				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=unicode(userObj.get(schema[0],''),'latin-1').encode('utf-8'),enabled=False)">the value</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 		</tal:block>
 		<div class="form-group">
-			<div class="col-lg-10">
+			<div class="col-sm-10">
 				<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 				&nbsp;&nbsp;
 				<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-			</div><!-- .col-lg-10 -->
+			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 	</tal:block>
 	<tal:block tal:condition="python:userFolder.meta_type=='User Folder'">
 		<div class="form-group">
-			<label for="password" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .col-lg-10 -->
+			<label for="password" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="confirm" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .col-lg-10 -->
+			<label for="confirm" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="email" tal:attributes="class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(request['id'],'email',''))">the control</div><!-- .col-lg-10 -->
+			<label for="email" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(request['id'],'email',''))">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="profile" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(request['id'],'profile',''),enabled=True,REQUEST=request)">the control</div><!-- .col-lg-10 -->
+			<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(request['id'],'profile',''),enabled=True,REQUEST=request)">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<div class="controls save">
@@ -207,25 +207,25 @@
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 		<div class="form-group">
-			<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=15,value='')">the control</div><!-- .col-lg-10 -->
+			<label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="newPassword" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newPassword')">the control</div><!-- .col-lg-10 -->
+			<label for="newPassword" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newPassword')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="newConfirm" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newConfirm')">the control</div><!-- .col-lg-10 -->
+			<label for="newConfirm" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='newConfirm')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<label for="newEmail" tal:attributes="class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newEmail',size=15,value='')">the control</div><!-- .col-lg-10 -->
+			<label for="newEmail" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newEmail',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<div class="col-lg-10">
+			<div class="col-sm-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-			</div><!-- .col-lg-10 -->
+			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 	</form>
 	</div><!-- .inner -->
@@ -288,13 +288,13 @@
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 		<div class="form-group">
-			<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-			<div class="col-lg-10" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .col-lg-10 -->
+			<label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<div class="col-lg-10">
+			<div class="col-sm-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
-			</div><!-- .col-lg-10 -->
+			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 	</div><!-- .inner -->
 </div><!-- #insertRole -->

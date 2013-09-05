@@ -122,27 +122,16 @@ function zmiRichtextInit(id) {
 				zmiRichtextOnSubmitEventHandler();
 				return true;
 			});
-		CKEDITOR.config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
-		CKEDITOR.config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
-		CKEDITOR.config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
 
-////////////////////////////////////////////////////////////////////////////////
-// Contents-CSS
-////////////////////////////////////////////////////////////////////////////////
-CKEDITOR.config.contentsCss = [];
-$("link[rel=stylesheet]").each(function() {
-		CKEDITOR.config.contentsCss.push($(this).attr("href"));
-	});
-CKEDITOR.config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
-<dtml-in "REQUEST.get('CKEDITOR_config_contentsCss',[])">
-CKEDITOR.config.contentsCss.push('<dtml-var sequence-item>');
-</dtml-in>
+		ZMI.prototype.CKEDITOR_editorConfig = function( config ) {
+				config.height = <dtml-var "getConfProperty('plugin.rte.ckeditor.Height',400)">;
+				config.language = '<dtml-var "['EN','DE'][lang=='ger']">';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Import XStandard styles
 ////////////////////////////////////////////////////////////////////////////////
 <dtml-if "'xstandard_styles' in getAbsoluteHome().objectIds() and REQUEST.get('ZMS_THIS').getParentNode() is not None">
-CKEDITOR.config.format_tags = '';
+				config.format_tags = '';
 <dtml-let xml_styles="xmlParse(getXmlHeader()+xstandard_styles(_,_,meta_id=REQUEST.get('ZMS_INSERT',REQUEST.get('ZMS_THIS').getParentNode().meta_id)))">
 <dtml-in "xmlNodeSet(xml_styles,'style')">
 <dtml-let xml_style=sequence-item
@@ -164,21 +153,36 @@ CKEDITOR.config.format_tags = '';
 		></dtml-in
 		><dtml-call "style_attrs.append((style_attrs_nodeName,style_attrs_nodeValue))"
 	></dtml-let
-></dtml-in
->
-CKEDITOR.config.format_tags += (CKEDITOR.config.format_tags.length==0?'':';')+'<dtml-var style_id>';
-CKEDITOR.config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
+></dtml-in>
+				config.format_tags += (config.format_tags.length==0?'':';')+'<dtml-var style_id>';
+				config.format_<dtml-var style_id> = { name : '<dtml-var style_name>', element : '<dtml-var style_element>' , attributes : { <dtml-var "' , '.join(map(lambda x: '\'%s\' : \'%s\''%x, style_attrs))"> } };
 </dtml-let
 ></dtml-in
 ></dtml-let
-></dtml-if
->
+><dtml-else>
+				config.format_tags = '<dtml-var "getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div')">';
+</dtml-if>
+
+////////////////////////////////////////////////////////////////////////////////
+// Contents-CSS
+////////////////////////////////////////////////////////////////////////////////
+				config.contentsCss = [];
+				$("link[rel=stylesheet]").each(function() {
+						config.contentsCss.push($(this).attr("href"));
+					});
+				config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
+<dtml-in "REQUEST.get('CKEDITOR_config_contentsCss',[])">
+				config.contentsCss.push('<dtml-var sequence-item>');
+</dtml-in>
+
 ////////////////////////////////////////////////////////////////////////////////
 
 <dtml-if "REQUEST.get('CKEDITOR_config_toolbar')">
 // Toolbar
-CKEDITOR.config.toolbar_ZMSConfigToolbar = <dtml-var "str_json(REQUEST.get('CKEDITOR_config_toolbar'))">;
+				config.toolbar_ZMSConfigToolbar = <dtml-var "str_json(REQUEST.get('CKEDITOR_config_toolbar'))">;
 </dtml-if>
+
+			};
 
 		loadCkeditor( 'editor_'+id, {
 			<dtml-if "getConfProperty('plugin.rte.ckeditor.Config','')">

@@ -22,24 +22,7 @@ function ZMSGraphic_extEdit_initialize() {
 	ZMSGraphic_extEdit_initialized = true;
 	zmiSetCursorWait("ZMSGraphic_extEdit_initialize");  
 	pluginUI("body",function() {
-			/*
-			$("#ZMSGraphic_extEdit_vslider").slider({
-				orientation: "vertical",
-				range: "min",
-				min: 0,
-				max: 100,
-				slide: function(event, ui) {
-					var v = ui.value;
-					$("#ZMSGraphic_extEdit_perc").html(v+'%');
-					var w = Math.round(v*ZMSGraphic_act_width/100);
-					var h = Math.round(v*ZMSGraphic_act_height/100);
-					$('input#ZMSGraphic_extEdit_width').val(w);
-					$('input#ZMSGraphic_extEdit_height').val(h);
-					$ZMSGraphic_img.attr({'width':w,'height':h});
-				}
-			});
-			*/
-			$ZMSGraphic_buttons = $('img[id^=ZMSGraphic_extEdit_]');
+			$ZMSGraphic_buttons = $('i[id^=ZMSGraphic_extEdit_],img[id^=ZMSGraphic_extEdit_]');
 			for ( var i = 0; i < $ZMSGraphic_buttons.length; i++) {
 				var $ZMSGraphic_button = $($ZMSGraphic_buttons[i]);
 				$ZMSGraphic_button.attr('title',$ZMSGraphic_button.attr('alt'));
@@ -55,6 +38,7 @@ function ZMSGraphic_extEdit_initialize() {
  */
 function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	zmiSetCursorWait("ZMSGraphic_extEdit_action");
+	ZMSGraphic_extEdit_initialize();
 	if (typeof pil != 'undefined') {
 		ZMSGraphic_pil = pil;
 	}
@@ -69,10 +53,10 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	}
 	zmiRegisterParams(elName,ZMSGraphic_params);
 	if (!ZMSGraphic_pil) {
-		var $elCrop = $($('img#ZMSGraphic_extEdit_crop').parents('div')[0]);
+		var $elCrop = $($('#ZMSGraphic_extEdit_crop').parents('div')[0]);
 		$elCrop.hide();
 	}
-	var $elPreview = $($('img#ZMSGraphic_extEdit_preview').parents('div')[0]);
+	var $elPreview = $($('#ZMSGraphic_extEdit_preview').parents('div')[0]);
 	var togglePreview = $('input:checkbox#generate_preview_'+elName).length > 0;
 	if (togglePreview) {
 		$elPreview.show();

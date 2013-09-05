@@ -18,15 +18,15 @@
 			<input type="hidden" name="key" value="obj"/>
 			<div class="form-group meta_id">
 				<label for="_meta_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div><input type="text" id="_meta_id" name="_meta_id" class="form-control input-sm" /></div>
+				<div class="col-lg-10"><input type="text" id="_meta_id" name="_meta_id" class="form-control input-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group meta_name">
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div><input type="text" id="_meta_name" name="_meta_name" class="form-control input-sm" />
+				<div class="col-lg-10"><input type="text" id="_meta_name" name="_meta_name" class="form-control input-sm" />
 			</div><!-- .form-group -->
 			<div class="form-group meta_type">
 				<label for="_meta_type" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
-				<div>
+				<div class="col-lg-10">
 					<select class="form-control" id="_meta_type" name="_meta_type" class="form-control input-sm" >
 						<tal:block tal:repeat="objtype python:here.valid_objtypes">
 							<option tal:attributes="value objtype" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
@@ -35,9 +35,9 @@
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-lg-10">
+				<div class="col-lg-12">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-lg-12 -->
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->

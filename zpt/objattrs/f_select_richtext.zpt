@@ -19,8 +19,8 @@
 	margin-bottom:.1em;
 }
 .form-richtext span.btn {
-	padding-left:0.2em;
-	padding-right:0.2em;
+	padding-left:.5em;
+	padding-right:.5em;
 }
 </style>
 

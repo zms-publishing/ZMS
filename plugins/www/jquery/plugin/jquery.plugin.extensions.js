@@ -150,6 +150,12 @@ $(function(){
 
 });
 
+/**
+ * Physical Path
+ */
+ZMI.prototype.getPhysicalPath = function() {
+	return $('meta[name="physical_path"]').attr('content');
+}
 
 /**
  * Debug

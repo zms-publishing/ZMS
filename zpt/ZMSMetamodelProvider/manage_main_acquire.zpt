@@ -58,7 +58,7 @@
 
 <tal:block tal:condition="python:request.get('section')!='acquire'">
 		<div class="form-group">
-			<select class="form-control" size="15" id="aq_ids" name="aq_ids:list" multiple="multiple">
+			<select class="form-control alert alert-info" size="15" id="aq_ids" name="aq_ids:list" multiple="multiple">
 				<tal:block tal:repeat="acquireObj acquireObjs">
 					<option tal:attributes="value python:acquireObj[1]" tal:content="python:acquireObj[2]">acquireObj</option>
 				</tal:block>

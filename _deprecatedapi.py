@@ -57,6 +57,9 @@ class DeprecatedAPI:
 
   f_bo_area = '' 
   f_eo_area = '' 
+  f_submitBtn = '' 
+  def zmi_form_section_begin(self, *args, **kwargs): return ''
+  def zmi_form_section_end(self, *args, **kwargs): return ''
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.getTitleimage

@@ -22,12 +22,7 @@ function ZMSGraphic_extEdit_initialize() {
 	ZMSGraphic_extEdit_initialized = true;
 	zmiSetCursorWait("ZMSGraphic_extEdit_initialize");  
 	pluginUI("body",function() {
-			$ZMSGraphic_buttons = $('i[id^=ZMSGraphic_extEdit_],img[id^=ZMSGraphic_extEdit_]');
-			for ( var i = 0; i < $ZMSGraphic_buttons.length; i++) {
-				var $ZMSGraphic_button = $($ZMSGraphic_buttons[i]);
-				$ZMSGraphic_button.attr('title',$ZMSGraphic_button.attr('alt'));
-			}
-			$ZMSGraphic_buttons.css('cursor','pointer');
+			$ZMSGraphic_buttons = $('span[id^=ZMSGraphic_extEdit_]');
 			$ZMSGraphic_buttons.click(ZMSGraphic_extEdit_clickedAction);
 			zmiSetCursorAuto("ZMSGraphic_extEdit_initialize");
 	});

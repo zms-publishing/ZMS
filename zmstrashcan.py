@@ -53,7 +53,7 @@ class ZMSTrashcan(ZMSContainerObject):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-        'manage','manage_main','manage_workspace',
+        'manage','manage_main','manage_container','manage_workspace',
         'manage_eraseObjs','manage_moveObjUp','manage_moveObjDown','manage_cutObjects',
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_userForm','manage_user',

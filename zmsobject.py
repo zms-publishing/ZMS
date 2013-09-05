@@ -125,8 +125,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
     f_headline = HTMLFile('dtml/object/f_headline', globals()) # ZMI Headline
     f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
-    zmi_form_section_begin = HTMLFile('dtml/object/zmi_form_section_begin', globals())
-    zmi_form_section_end = HTMLFile('dtml/object/zmi_form_section_end', globals())
     f_xstandard_browseImages = HTMLFile('dtml/object/f_xstandard_browseimages', globals())
     f_xstandard_browseFiles = HTMLFile('dtml/object/f_xstandard_browsefiles', globals())
     preview_html = PageTemplateFile('zpt/object/preview', globals())

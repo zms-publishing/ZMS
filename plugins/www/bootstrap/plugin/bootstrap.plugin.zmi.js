@@ -25,7 +25,7 @@ function zmi_icon_selector(name) {
 
 $(function(){
 
-	zmiSetCursorWait("bootstrap.plugin.zmi");
+	zmiSetCursorWait("BO bootstrap.plugin.zmi");
 
 	// Sitemap
 	var $icon_sitemap = $('#zmi-header a '+zmi_icon_selector("icon-sitemap"));
@@ -158,7 +158,7 @@ $(function(){
 												$ZMI.writeDebug('ul.zmi-container.zmi-sortable: stop - href='+href);
 												$.get(href,function(result){
 														var message = eval('('+result+')');
-														zmiShowMessage(pos,message,"alert-success");
+														$ZMI.showMessage(pos,message,"alert-success");
 													});
 											}
 										}
@@ -232,7 +232,7 @@ $(function(){
 			})
 		;
 	// Inputs
-	zmiInitInputFields($("body"));
+	$ZMI.initInputFields($("body"));
 	$(".zmi-image,.zmi-file").each(function() {
 			$(this).addClass("span5");
 			var elName = $(this).attr("id");
@@ -261,7 +261,7 @@ function zmiUnlockForm(form_id) {
 /**
  * Init input_fields
  */ 
-function zmiInitInputFields(container) {
+ZMI.prototype.initInputFields = function(container) {
 	zmiSetCursorWait("zmiInitInputFields");
 	$('form.form-horizontal',container)
 		.submit(function() {
@@ -513,7 +513,7 @@ function zmiInitInputFields(container) {
 /**
  * Show message
  */
-function zmiShowMessage(pos, message, context) {
+ZMI.prototype.showMessage = function(pos, message, context) {
 	$(".alert").remove();
 	var html = ''
 		+ '<div class="alert'+(typeof context=='undefined'?'':' '+context)+'" style="position:absolute;left:'+pos.left+'px;top:'+pos.top+'px;">'
@@ -937,7 +937,8 @@ function zmiActionExecute(sender, label, target) {
 				title:getZMILangStr('BTN_INSERT')+': '+label,
 				width:800,
 				open:function(event,ui) {
-					zmiInitInputFields($('#zmiIframeAddDialog'));
+					$ZMI.runReady();
+					$ZMI.initInputFields($('#zmiIframeAddDialog'));
 					if($('#zmiIframeAddDialog .form-control').length==0) {
 						$('#addInsertBtn').click();
 					}

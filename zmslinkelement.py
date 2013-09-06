@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import sys

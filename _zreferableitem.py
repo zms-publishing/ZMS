@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator

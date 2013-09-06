@@ -57,8 +57,6 @@ class ObjTypes:
     f_selectRichtext = PageTemplateFile('zpt/objattrs/f_select_richtext', globals())
     zmi_select_richtext_standard = PageTemplateFile('zpt/objattrs/zmi_select_richtext_standard', globals())
     zmi_select_richtext_wysiwyg = PageTemplateFile('zpt/objattrs/zmi_select_richtext_wysiwyg', globals())
-    f_xstandard_styles = HTMLFile('dtml/objattrs/f_xstandard_styles', globals())
-    f_xstandard_css = HTMLFile('dtml/objattrs/f_xstandard_css', globals())
 
     # File.
     # -----

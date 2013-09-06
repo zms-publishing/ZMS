@@ -20,7 +20,6 @@
 from AccessControl import AuthEncoding
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
-from App.special_dtml import HTMLFile
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from cStringIO import StringIO

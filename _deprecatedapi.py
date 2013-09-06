@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 import warnings
 # Product Imports.
 import _globals
@@ -60,6 +59,15 @@ class DeprecatedAPI:
   f_submitBtn = '' 
   def zmi_form_section_begin(self, *args, **kwargs): return ''
   def zmi_form_section_end(self, *args, **kwargs): return ''
+
+  # ----------------------------------------------------------------------------
+  #  DeprecatedAPI.f_headline
+  # ----------------------------------------------------------------------------
+  def f_headline(self, *args, **kwargs):
+    warnings.warn('Using <%s @ %s>.f_headline is deprecated.'%(self.meta_id,self.absolute_url()),
+                   DeprecationWarning, 
+                   stacklevel=2)
+    return '<h2>%s</h2><div>%s</div>'%(kwargs.get('headline',''),kwargs.get('extra','')) 
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.getTitleimage

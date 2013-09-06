@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 from App.Common import package_home
 import OFS.misc_
 import copy
@@ -27,6 +26,7 @@ import zope.interface
 import IZMSLocale
 import _fileutil
 import _globals
+import _msexcelutil
 import _xmllib
 
 
@@ -694,11 +694,8 @@ class MultiLanguageManager:
             item['key'] = id
             if id in ids or len(ids) == 0:
               value.append(item)
-          REQUEST.set('context',self)
-          REQUEST.set('value',value)
-          tmplt = HTMLFile('dtml/ZMS/manage_exportlanguages', globals())
-          export = tmplt(self,REQUEST)
-          return export
+          meta = ['key']+self.getLangIds()
+          return _msexcelutil.export(self,value,meta)
         
         # Import.
         # -------

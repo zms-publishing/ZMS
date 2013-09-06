@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from App.special_dtml import HTMLFile
 import Globals
 import time
 import urllib

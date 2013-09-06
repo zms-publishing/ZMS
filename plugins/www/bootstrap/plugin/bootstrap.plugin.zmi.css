@@ -264,12 +264,20 @@ ul.zmi-container .zmi-item .clearboth {
 	float:none;
 	clear:both;
 }
+ul.zmi-container .zmi-item.pageelement .center {
+	background-color:white!important;
+	min-height:4em;
+}
+ul.zmi-container .zmi-item .center .zmiRenderShort {
+	border-left:none !important;
+	border-right:none !important;
+	border-bottom:none !important;
+	border-top:1px dotted #ccc !important;
+}
 ul.zmi-container .zmi-item.pageelement .center .zmiRenderShort {
 	border:1px solid white;
 	padding:3px 6px 3px 1.5em;
 	overflow:hidden;
-	background-color:white!important;
-	min-height:3.5em;
 }
 ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:1.5em;
@@ -977,7 +985,7 @@ div.right a:hover,
 div.right a:focus {
 	text-decoration:none;
 }
-ul.zmi-container > li.zmi-item > div.center .zmiRenderShort {
+.zmi-item .center .zmiRenderShort {
 border-left:none !important;
 border-right:none !important;
 border-bottom:none !important;

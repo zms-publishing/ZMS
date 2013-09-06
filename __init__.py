@@ -124,43 +124,68 @@ def initialize(context):
             if not stat.S_ISDIR(mode):
               registerImage(filepath,file)
         
-        # automated combination of external CSS
-        gen = confdict.get('zmi.css.gen','').split(',')
-        if gen[0] != '':
-          print "automated combination of external CSS:",gen
-          fileobj = open(translate_path(confdict.get('zmi.all')),'w')
-          for key in gen:
-            fn = translate_path(confdict.get(key))
-            fh = open(fn,'r')
-            fc = fh.read()
-            fh.close()
-            s0 = len(fc)
-            # Pack
-            fc = fc.strip()
-            fc = re.sub( '/\*((.|\n|\r|\t)*?)\*/', '', fc)
-            while True:
-              done = False
-              for k in ['=','+','{','}','(',';',',',':']:
-                for sk in [' ','\n']:
-                  while fc.find(sk+k)>=0:
-                    fc=fc.replace(sk+k,k)
-                    done = True
-                  while k+sk not in [') ','}\n'] and fc.find(k+sk)>=0:
-                    fc=fc.replace(k+sk,k)
-                    done = True
-              d = ['\t','','  ',' ','\n\n','\n',';}','}']
-              for i in range(len(d)/2):
-                k = d[i*2]
-                v = d[i*2+1]
-                while fc.find(k) >= 0:
-                  fc = fc.replace(k,v)
-                  done = True
-              if not done:
-                break
-            s1 = len(fc)
-            print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
-            fileobj.write(fc)
-          fileobj.close()
+        # automated minification
+        confkeys = confdict.keys()
+        for confkey in filter(lambda x:x.startswith('gen.') and x+'.include' in confkeys,confkeys):
+          gen = confdict.get(confkey+'.include').split(',')
+          if gen[0] != '':
+            print "automated minification:",confkey,confdict.get(confkey)
+            fileobj = open(translate_path(confdict.get(confkey)),'w')
+            for key in gen:
+              fn = translate_path(confdict.get(key))
+              fh = open(fn,'r')
+              fc = fh.read()
+              fh.close()
+              l0 = len(fc)
+              if fn.find('.min.') > 0 or fn.find('-min.') > 0:
+                print "add",fn,"(",l0,"Bytes)"
+              else:
+                # Pack
+                s0 = []
+                s1 = []
+                s2 = []
+                s3 = []
+                if fn.endswith('.js'):
+                  s0 = [ \
+                      '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', \
+                      '//( |-|\$)((.|\r|\t)*?)\n', \
+                    ]
+                  s1 = ['=','+','-','(',')',';',',',':','&','|']
+                  s2 = []
+                  s2 = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
+                elif fn.endswith('.css'):
+                  s0 = [ \
+                      '/\*((.|\n|\r|\t)*?)\*/', \
+                    ]
+                  s1 = ['=','+','{','}','(',';',',',':']
+                  s2 = [') ','}\n']
+                  s3 = ['\t','','  ',' ','\n\n','\n',';}','}']
+                fc = fc.strip()
+                for s in s0:
+                  fc = re.sub( s, '', fc)
+                while True:
+                  done = False
+                  for k in s1:
+                    for sk in [' ','\n']:
+                      while fc.find(sk+k)>=0:
+                        fc=fc.replace(sk+k,k)
+                        done = True
+                      while k+sk not in s2 and fc.find(k+sk)>=0:
+                        fc=fc.replace(k+sk,k)
+                        done = True
+                  d = s3
+                  for i in range(len(d)/2):
+                    k = d[i*2]
+                    v = d[i*2+1]
+                    while fc.find(k) >= 0:
+                      fc = fc.replace(k,v)
+                      done = True
+                  if not done:
+                    break
+                l1 = len(fc)
+                print "add",fn,"(Packed:",l0,"->",l1,"Bytes)"
+              fileobj.write(fc)
+            fileobj.close()
         
         # automated generation of language JavaScript
         from xml.dom import minidom
@@ -204,49 +229,6 @@ def initialize(context):
               fileobj.write('\'')
           fileobj.write('};')
           fileobj.close()
-        
-        # automated combination of external JavaScript
-        for category in ['jquery','bootstrap']:
-          gen = confdict.get('%s.libs.gen'%category,'').split(',')
-          if gen[0] != '':
-            print "%s automated combination of external JavaScript:"%category,gen
-            fileobj = open(translate_path(confdict.get('%s.all'%category)),'w')
-            for key in gen:
-              fn = translate_path(confdict.get(key))
-              fh = open(fn,'r')
-              fc = fh.read()
-              fh.close()
-              s0 = len(fc)
-              if fn.endswith('.min.js'):
-                print "add",fn,"(",s0,"Bytes)"
-              else:
-                # Pack
-                fc = fc.strip()
-                fc = re.sub( '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', '', fc)
-                fc = re.sub( '//( |-|\$)((.|\r|\t)*?)\n', '', fc)
-                while True:
-                  done = False
-                  for k in ['=','+','-','(',')',';',',',':','&','|']:
-                    for sk in [' ','\n']:
-                      while fc.find(sk+k)>=0:
-                        fc=fc.replace(sk+k,k)
-                        done = True
-                      while fc.find(k+sk)>=0:
-                        fc=fc.replace(k+sk,k)
-                        done = True
-                  d = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
-                  for i in range(len(d)/2):
-                    k = d[i*2]
-                    v = d[i*2+1]
-                    while fc.find(k) >= 0:
-                      fc = fc.replace(k,v)
-                      done = True
-                  if not done:
-                    break
-                s1 = len(fc)
-                print "add",fn,"(Packed:",s0,"->",s1,"Bytes)"
-              fileobj.write(fc)
-            fileobj.close()
     
     except:
         """If you can't register the product, dump error. 

@@ -18,7 +18,6 @@
 
 # Imports.
 from App.Common import package_home
-from App.special_dtml import HTMLFile
 from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import os

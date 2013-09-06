@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 from Products.PythonScripts import PythonScript
 import copy
 import string

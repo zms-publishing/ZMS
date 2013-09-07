@@ -194,7 +194,12 @@ ul.zmi-container li.ui-state-highlight {
 	clear:both;
 }
 ul.zmi-container.zmi-sortable li.ui-state-highlight {
-	height:1em;
+	min-height: 4em;
+	margin-bottom: 0;
+	width: 80%;
+	border: 0;
+	background: #428bca;
+	border-radius: 0;
 }
 ul.zmi-container li.zmi-item .inactive .contentEditable {
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40

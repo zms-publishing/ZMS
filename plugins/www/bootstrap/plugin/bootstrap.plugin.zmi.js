@@ -713,6 +713,7 @@ function zmiModal(s, opt) {
 						zmiModalStack.pop();
 					})
 				.modal();
+			$('#'+id+' .modal-dialog').css('transform','translate('+(zmiModalStack.length*2)+'em,'+(zmiModalStack.length*2)+'em)');
 		}
 	}
 	zmiSetCursorAuto("zmiModal");

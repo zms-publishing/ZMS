@@ -60,7 +60,8 @@ class ZMSItem(
 
     # Templates.
     # ----------
-    f_bodyContent = HTMLFile('dtml/object/f_bodycontent', globals()) # Template: Body-Content / Element
+    zmi_body_content = PageTemplateFile('zpt/object/zmi_body_content', globals())
+    f_bodyContent = zmi_body_content
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())

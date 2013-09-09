@@ -98,31 +98,6 @@ def getDescLangs(self, id, langs):
   return obs
 
 
-# ------------------------------------------------------------------------------
-#  _multilangmanager.setLangMethod:
-# 
-#  Set/add DTML-Method (e.g. index_lang.html) for specified language.
-# ------------------------------------------------------------------------------
-def setLangMethod(self, id, raw):
-  # delete method (if already exists)
-  delLangMethod(self, id)
-  # add method
-  title = '*** DO NOT DELETE OR MODIFY ***'
-  self.manage_addDTMLMethod(id,title,raw)
-
-
-# ------------------------------------------------------------------------------
-#  _multilangmanager.delLangMethod:
-# 
-#  Delete DTML-Method (e.g. index_lang.html) for specified language.
-# ------------------------------------------------------------------------------
-def delLangMethod(self, id):
-  try: 
-    self.manage_delObjects(ids=[id])
-  except:
-    pass
-
-
 ################################################################################
 ################################################################################
 ###
@@ -504,27 +479,6 @@ class MultiLanguageManager:
       attr_languages[lang]['parent'] = parent
       attr_languages[lang]['manage'] = newManage
       self.setLangs( attr_languages)
-      
-      #-- Set/Add Standard DTML-Methods.
-      self.setLangMethods(lang)
-
-
-    # --------------------------------------------------------------------------
-    #  MultiLanguageManager.setLangMethods: 
-    # 
-    #  Set/Add Standard DTML-Methods.
-    # --------------------------------------------------------------------------
-    def setLangMethods(self, lang):
-      pageexts = ['.html']
-      if 'attr_pageext' in self.getObjAttrs().keys():
-        obj_attr = self.getObjAttr('attr_pageext')
-        if obj_attr.has_key('keys') and len(obj_attr.get('keys')) > 0:
-          pageexts = obj_attr.get('keys')
-      for pageext in pageexts:
-        setLangMethod(self,'index_%s%s'%(lang,pageext),'<dtml-var index_html>')
-        setLangMethod(self,'sitemap_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'sitemap\')"><dtml-var index_html>')
-        setLangMethod(self,'index_print_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'print\')"><dtml-var index_html>')
-        setLangMethod(self,'search_%s%s'%(lang,pageext),'<dtml-call "REQUEST.set(\'op\',\'search\')"><dtml-var index_html>')
 
 
     # --------------------------------------------------------------------------
@@ -533,22 +487,9 @@ class MultiLanguageManager:
     #  Delete language.
     # --------------------------------------------------------------------------
     def delLanguage(self, lang):
-      
-      #-- Delete language.
       attr_languages = self.getLangs()
       del attr_languages[lang]
       self.setLangs( attr_languages)
-      
-      #-- Delete Standard DTML-Methods.
-      pageexts = ['.html']
-      if 'attr_pageext' in self.getObjAttrs().keys():
-        obj_attr = self.getObjAttr('attr_pageext')
-        pageexts = obj_attr.get('keys',pageexts)
-      for pageext in pageexts:
-        delLangMethod(self,'index_%s%s'%(lang,pageext))
-        delLangMethod(self,'sitemap_%s%s'%(lang,pageext))
-        delLangMethod(self,'index_print_%s%s'%(lang,pageext))
-        delLangMethod(self,'search_%s%s'%(lang,pageext))
 
 
     ############################################################################

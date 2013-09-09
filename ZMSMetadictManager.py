@@ -346,11 +346,6 @@ class ZMSMetadictManager:
             id = self.moveMetadictAttr( oldId, pos)
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%oldId),(pos+1))
           
-          ##### Page-Extension ####
-          if id == 'attr_pageext':
-            for langId in self.getLangIds():
-              self.setLangMethods( langId)
-            
           ##### SYNCHRONIZE ####
           self.synchronizeObjAttrs()
         

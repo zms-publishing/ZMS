@@ -1,0 +1,16 @@
+<form class="form-horizontal" method="get">
+	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<div class="form-group">
+		<label class="control-label" for="raw" tal:content="python:here.getZMILangStr('ATTR_SEARCHTERM')">searchterm</label>
+		<div tal:content="structure python:here.getTextInput(fmName='searchform',elName='raw',value=request.get('raw',''))">the value</div>
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="control-label">&nbsp;</label>
+		<div>
+			<button type="submit" class="btn btn-primary">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+				<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
+			</button>
+		</div>
+	</div>
+</form>

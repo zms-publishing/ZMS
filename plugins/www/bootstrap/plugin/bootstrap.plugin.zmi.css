@@ -344,6 +344,15 @@ body.manage-menu .zmi-sitemap ol {
 body.manage-menu .navbar-brand {
 	font-size:100% !important;
 }
+body.browse_iframe .toggle {
+	font-size:120%;
+	vertical-align:bottom;
+	width:12px;
+	margin-right:2px;
+	text-align:center;
+	display:inline-block;
+	cursor:pointer;
+}
 body.manage-menu .toggle {
 	color:#CCCCCC;
 	font-size:120%;

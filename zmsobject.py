@@ -1020,6 +1020,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         restricted = self.hasRestrictedAccess()
       xml += '<page'
       xml += " absolute_url=\"%s\""%str(self.absolute_url())
+      xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
       xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST)).replace('"','&quot;').replace('<','&lt;')

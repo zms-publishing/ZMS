@@ -19,6 +19,7 @@
 # Imports.
 from App.Common import package_home
 from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Image import Image
 from sys import *
 import copy
@@ -482,9 +483,12 @@ class ZMS(
     f_index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
     f_inactive_html = HTMLFile('dtml/ZMS/f_inactive', globals()) # inactive_html
     f_headDoctype = HTMLFile('dtml/ZMS/f_headdoctype', globals()) # Template: DOCTYPE
-    f_bodyContent_Sitemap = HTMLFile('dtml/ZMS/f_bodycontent_sitemap', globals()) # Template: Sitemap
-    f_bodyContent_Search = HTMLFile('dtml/ZMS/f_bodycontent_search', globals()) # Template: Search
-    f_bodyContent_NotFound = HTMLFile('dtml/ZMS/f_bodycontent_notfound', globals()) # Template: Not Found
+    zmi_body_content_sitemap = PageTemplateFile('zpt/ZMS/zmi_bodycontent_sitemap', globals())
+    zmi_body_content_search = PageTemplateFile('zpt/ZMS/zmi_bodycontent_search', globals())
+    zmi_body_content_not_found = PageTemplateFile('zpt/ZMS/zmi_bodycontent_not_found', globals())
+    f_bodyContent_Sitemap = zmi_body_content_sitemap
+    f_bodyContent_Search = zmi_body_content_search
+    f_bodyContent_NotFound = zmi_body_content_not_found
     f_headTitle = HTMLFile('dtml/ZMS/f_headtitle', globals()) # Head.Title
     f_headMeta_DC = HTMLFile('dtml/ZMS/f_headmeta_dc', globals()) # Head.Meta.DC
     f_headMeta_Locale = HTMLFile('dtml/ZMS/f_headmeta_locale', globals()) # Head.Locale (Content-Type & Charset)

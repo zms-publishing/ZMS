@@ -1,0 +1,11 @@
+<tal:block tal:define="global skin python:request.get('ZMS_SKIN',request.get('op','index'))">
+	<tal:block tal:condition="python:skin=='index'">
+		<tal:block tal:content="structure python:here.getBodyContent(request)">the body-content</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:skin=='sitemap'">
+		<tal:block tal:content="structure python:here.zmi_body_content_sitemap(here,request)">the body-content for sitemap</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:skin=='search'">
+		<tal:block tal:content="structure python:here.zmi_body_content_search(here,request)">the body-content for search</tal:block>
+	</tal:block>
+</tal:block>

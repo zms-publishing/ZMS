@@ -1,0 +1,2 @@
+@TODO: sitemap
+<tal:block tal:content="structure request">the request</tal:block>

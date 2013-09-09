@@ -454,6 +454,9 @@ form.form-horizontal {
 form.form-horizontal.form-insert {
 	margin:0;
 }
+.system table.zopeobjects i {
+	margin-left:3px;
+}
 .zmi.properties .accordion-group {
 	background-color: #fff;
 	padding:1em;

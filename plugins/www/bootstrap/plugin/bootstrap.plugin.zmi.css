@@ -1223,11 +1223,11 @@ li.zmi-item span.zmi-ids {
 .zmi-manage-main-change {
 	color:#888;
 	font-size:11px;
-	margin:5px 0 0 8px;
+	margin:2px 0 0 8px;
 }
 
 ul.zmi-container li.zmi-item div.zmiRenderShort {
-	min-height:54px;
+	min-height:60px;
 }
 .zmi ul.main-nav {
 	max-height: auto;

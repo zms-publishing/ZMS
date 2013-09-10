@@ -14,3 +14,14 @@
 		</div>
 	</div>
 </form>
+
+<tal:block tal:condition="python:request.has_key('raw')" tal:define="global
+			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
+			qres python:here.submitCatalogQuery(qs,request.get('search_order_by',1),request.get('search_meta_types',[]),request.get('search_clients',1),request);
+			obs python:map(lambda x:x['ob'],qres)">
+	<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+	<p tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"></p>
+	<tal:block tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
+		zmi_manage_main_grid
+	</tal:block>
+</tal:block>

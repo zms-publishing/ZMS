@@ -1206,7 +1206,7 @@ div.right .btn .caret {
 		background-color: #fff;
 	}
 	.ZMSLinkContainer.zmi.properties form.form-horizontal .accordion-group {
-		width: 100%;
+		width: 100% !important;
 	}
 }
 

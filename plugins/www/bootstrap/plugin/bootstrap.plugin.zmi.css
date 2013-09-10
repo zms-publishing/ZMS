@@ -334,6 +334,20 @@ body.manage-menu .zmi-page {
 	white-space:nowrap;
 	overflow:hidden;
 }
+body.browse_iframe .zmi-preview {
+	background-color:white;
+	padding:1em;
+	position:absolute;
+	filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80;
+	max-width:40em;
+	border:1px dotted black;
+}
+body.browse_iframe .zmi-preview .zmiRenderShort {
+	zoom: 0.6;-moz-transform:scale(0.6);
+}
+body.browse_iframe .zmi-sitemap > div,
+body.browse_iframe .zmi-sitemap ul, 
+body.browse_iframe .zmi-sitemap ol,
 body.manage-menu .zmi-sitemap > div,
 body.manage-menu .zmi-sitemap ul, 
 body.manage-menu .zmi-sitemap ol {
@@ -1190,6 +1204,9 @@ div.right .btn .caret {
 	.zmi.properties form.form-horizontal .accordion-group {
 		width: 78.75%;
 		background-color: #fff;
+	}
+	.ZMSLinkContainer.zmi.properties form.form-horizontal .accordion-group {
+		width: 100%;
 	}
 }
 

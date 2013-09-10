@@ -1628,10 +1628,10 @@ return context.str_json(result)
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
 <tr class="row_insert">
-	<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
-	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
-	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
-	<td tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=12,rows=3,value='',enabled=1,REQUEST=request)"><textarea/></td>
+	<td style="width:3em" class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+	<td class="col-sm-3" tal:content="structure python:here.getUrlInput(fmName='form0',elName='_url',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
+	<td class="col-sm-3" tal:content="structure python:here.getTextInput(fmName='form0',elName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
+	<td class="col-sm-3" tal:content="structure python:here.getTextArea(fmName='form0',elName='_description',cols=12,rows=3,value='',enabled=1,REQUEST=request)"><textarea/></td>
 	<td>
 		<button class="btn btn-info" name="btn" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_ADD')" onclick="processMultiselectsOnFormSubmit(); self.btnClicked=this.value;">
 			<tal:block tal:content="structure python:here.getZMILangStr('BTN_ADD')"></tal:block>
@@ -2952,7 +2952,6 @@ body.print table.ZMSTable td {
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
 <span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
 <style>
-<!--
 table.ZMSTable tr th,
 table.ZMSTable tr td {
 	border:1px solid #999;
@@ -2964,12 +2963,17 @@ table.ZMSTable tr td {
 div.checkbox {
 	float:left;
 }
--->
 </style>
 <script>
 
-var fmName = $('#fmName').text();
-var textFormatDefault = $("#textFormatDefault").text();
+var fmName;
+var textFormatDefault;
+
+$ZMI.registerReady(function() {
+		fmName = $('#fmName').text();
+		textFormatDefault = $("#textFormatDefault").text();
+		$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
+	});
 
 function onZMSTableFormSubmit() {
 	var xml = '';
@@ -3012,9 +3016,6 @@ function onZMSTableFormSubmit() {
 	$("#table_table").val( xml);
 	return onFormSubmit(fmName);
 }
-
-$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
-$()
 
 </script>
 
@@ -3215,15 +3216,28 @@ img.hbutton {
 </style>
 
 <script>
-// <!--
-var fmName = $('#fmName').text();
-var elName = $('#elName').text();
-var textFormatDefault = $("#textFormatDefault").text();
-var richedit_fmt = $('#richedit_fmt').text();
-var table_type = parseInt($('#table_type').text());
-var table_cell_uid = $('#table_cell_uid').text();
-var table_cell_id = '';
-var table_cell_offs = 2;
+
+var fmName;
+var elName;
+var textFormatDefault;
+var richedit_fmt;
+var table_type;
+var table_cell_uid;
+var table_cell_id;
+var table_cell_offs;
+
+$ZMI.registerReady(function() {
+		fmName = $('#fmName').text();
+		elName = $('#elName').text();
+		textFormatDefault = $("#textFormatDefault").text();
+		richedit_fmt = $('#richedit_fmt').text();
+		table_type = parseInt($('#table_type').text());
+		table_cell_uid = $('#table_cell_uid').text();
+		table_cell_id = '';
+		table_cell_offs = 2;
+		$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
+		table_cell_init();
+	});
 
 function onZMSTableFormSubmit() {
 	var xml = '';
@@ -3501,11 +3515,6 @@ function onKeyUpZMSTableDivContenteditable() {
 	var $textarea = $("textarea",$(this).prev());
 	$textarea.val($(this).html());
 }
-
-$ZMI.registerReady(function(){
-	$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
-	table_cell_init();
-});
 
 // -->
 </script>
@@ -3970,7 +3979,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.2]]></item>
+          <item key="revision"><![CDATA[2.0.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

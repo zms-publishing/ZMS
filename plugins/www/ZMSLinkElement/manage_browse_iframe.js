@@ -1,104 +1,57 @@
+/**
+ * Select object.
+ */
 function selectObject(physical_path,anchor,is_page,titlealt) {
-	$ZMI.writeDebug('selectObject: physical_path='+physical_path+',anchor='+anchor);
+	$ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor);
 	var url = physical_path;
 	var title = titlealt;
-	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != '') {
-		if (typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
-			var fm = self.parent.document.forms[zmiParams['fmName']];
-			if ( fm) {
-				var path = getInternalUrl(url);
-				self.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
-			}
-			else {
-				self.parent.selectObject(url,title);
-			}
-		}
-	}
-	else {
-		if ((''+$('#type').val()).indexOf('dtml')==0) {
-			url = "<" + "dtml-var \"getLinkUrl('" + getInternalUrl(url) + "',REQUEST)\">";
+	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
+			&& typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
+		var path = getInternalUrl(url);
+		var fm = self.window.parent.document.forms[zmiParams['fmName']];
+		if ( fm) {
+			self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
 		}
 		else {
 			url = getRelativeUrl(url,anchor);
+			self.window.parent.selectObject(url,title);
 		}
-		self.parent.selectObject(url,title);
 	}
-	self.parent.zmiDialogClose('zmiDialog');
+	else {
+		url = getRelativeUrl(url,anchor);
+		self.window.parent.selectObject(url,title);
+	}
+	self.window.parent.zmiDialogClose('zmiDialog');
+	$ZMI.writeDebug('EO selectObject: url='+url+',title='+title);
 }
 
 /**
  * Returns internal url in {$...}-notation.
  */
-function getInternalUrl(url) {
+function getInternalUrl(physical_path) {
+	$ZMI.writeDebug('BO getInternalUrl: physical_path='+physical_path);
 	var content = "/content";
-	var base_url = $('#BASE0').text();
-	var currntPath = $('#absolute_url').text();
-	var targetPath = url;
-	currntPath = currntPath.substring( base_url.length);
-	targetPath = targetPath.substring( base_url.length);
-	var currntHome = currntPath;
-	if ( currntHome.indexOf( content) >= 0) {
-		currntHome = currntHome.substring( 0, currntHome.indexOf( content));
-	}
-	else {
-		currntPath = content + currntPath;
-		currntHome = "";
-	}
-	var targetHome = targetPath;
-	if ( targetHome.indexOf( content) >= 0) {
-		targetHome = targetHome.substring( 0, targetHome.indexOf( content));
-	}
-	else {
-		targetPath = content + targetPath;
-		targetHome = "";
-	}
-	var j = targetHome.indexOf( "/");
-	if ( currntHome.indexOf( targetHome + "/") == 0) {
-		targetHome = targetHome.substring( j+1);
-	}
-	else {
-		if ( j == 0)
-			targetHome = targetHome.substring( j+1);
-		while ( currntHome.length > 0 && targetHome.length > 0) {
-			var i = currntHome.indexOf( "/");
-			var j = targetHome.indexOf( "/");
-			if ( i < 0) {
-				currntElmnt = currntHome;
-			}
-			else {
-				currntElmnt = currntHome.substring( 0, i);
-			}
-			if ( j < 0) {
-				targetElmnt = targetHome;
-			}
-			else {
-				targetElmnt = targetHome.substring( 0, j);
-			}
-			if ( currntElmnt != targetElmnt) {
-				break;
-			}
-			if ( i < 0) {
-				currntHome = '';
-			}
-			else {
-				currntHome = currntHome.substring( i+1);
-			}
-			if ( j < 0) {
-				targetHome = '';
-			}
-			else {
-				targetHome = targetHome.substring( j+1);
-			}
+	var currntPath = $ZMI.getPhysicalPath();
+	var currntHome = currntPath.substr(1,currntPath.indexOf(content)-1);
+	currntPath = currntPath.substr(currntPath.indexOf(content)+content.length+1);
+	var targetPath = physical_path;
+	var targetHome = targetPath.substr(1,targetPath.indexOf(content)-1);
+	targetPath = targetPath.substr(targetPath.indexOf(content)+content.length+1);
+	while (true) {
+		var cid = currntHome.indexOf('/')>0?currntHome.substr(0,currntHome.indexOf('/')):currntHome;
+		var tid = targetHome.indexOf('/')>0?targetHome.substr(0,targetHome.indexOf('/')):targetHome;
+		if (cid.length == 0 || tid.length == 0 || cid != tid) {
+			break;
 		}
+		currntHome = currntHome.substr(cid.length+1);
+		targetHome = targetHome.substr(tid.length+1);
 	}
-	var path = targetPath.substring( targetPath.indexOf( content) + content.length);
-	if (path.indexOf("/")==0) {
-		path = path.substring(1);
-	}
+	var path = targetPath;
 	if ( currntHome != targetHome) {
 		path = targetHome + "@" + path;
 	}
 	path = "{$" + path + "}";
+	$ZMI.writeDebug('EO getInternalUrl: path='+path);
 	return path;
 }
 
@@ -169,9 +122,13 @@ function getRelativeUrl(physical_path, anchor) {
 	return url;
 }
 
+/**
+ * Click toggle.
+ */
 function zmiToggleClick(toggle, callback) {
 	$ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
 	var $container = $(toggle).parents("ol:first");
+	var checked = $('input:radio:checked').val(); 
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-right"))) {
 		$(toggle).removeClass(zmi_icon_clazz("icon-caret-right")).addClass(zmi_icon_clazz("icon-caret-down")).attr({title:'-'});
@@ -200,7 +157,7 @@ function zmiToggleClick(toggle, callback) {
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
 		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
-		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
+		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),get_permissions:'True',get_restricted:'True'},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				// Get and iterate pages.
@@ -215,8 +172,8 @@ function zmiToggleClick(toggle, callback) {
 						var page_id = $(page).attr("id").substr(page_home_id.length+1);
 						var page_absolute_url = $(page).attr("absolute_url");
 						var page_physical_path = $(page).attr("physical_path");
-						var page_is_page = $(page).attr("is_page");
-						var page_is_pageelement = $(page).attr("is_pageelement");
+						var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
+						var page_is_pageelement = $(page).attr("is_pageelement")=='1' || $(page).attr("is_pageelement")=='True';
 						var page_meta_type = $(page).attr("meta_id");
 						var page_titlealt = $(page).attr("titlealt");
 						var page_display_icon = $(page).attr("display_icon");
@@ -242,9 +199,14 @@ function zmiToggleClick(toggle, callback) {
 						}
 						html += '">';
 						html += zmi_icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
-						html += '<'+'input type="radio" value=\''+page_absolute_url+'\' onclick="selectObject(\''+page_physical_path+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"/> ';
+						html += '<'+'input type="radio" name="id" value=\''+page_absolute_url+'\' onclick="selectObject(\''+page_physical_path+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"/> ';
+						if (page_is_pageelement) {
+							html += '<span onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
+						}
 						html += '<'+'a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
-						html += page_display_icon+' ';
+						if (!page_is_pageelement) {
+							html += page_display_icon+' ';
+						}
 						html += page_titlealt;
 						html += '<'+'/a> ';
 						html += '<'+'/div>';
@@ -252,8 +214,10 @@ function zmiToggleClick(toggle, callback) {
 						$container.append(html);
 					}
 				}
+				if (typeof checked != "undefined") { 
+					$('input:radio[value="'+checked+'"]').prop("checked","checked"); 
+				} 
 				if (typeof callback == 'function') {
-					$ZMI.writeDebug('zmiToggleClick: callback()');
 					callback();
 				}
 			});
@@ -261,15 +225,41 @@ function zmiToggleClick(toggle, callback) {
 	else if ($(toggle).hasClass(zmi_icon_clazz("icon-caret-down"))) {
 		$(toggle).removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")).attr({title:'+'});
 		if (typeof callback == 'function') {
-			$ZMI.writeDebug('zmiToggleClick: callback()');
 			callback();
 		}
 	}
 }
+
+/**
+ * Preview.
+ */
+function zmiPreview(sender) {
+	var data_id = $(sender).parents('.zmi-page').attr('data-id');
+	if($('#zmi_preview_'+data_id).length > 0) {
+		$('#zmi_preview_'+data_id).remove();
+	}
+	else {
+		var coords = zmiGetCoords(sender);
+		var abs_url = $(sender).parent('div').children('input').val();
+		$.get(abs_url+'/renderShort',{lang:getZMILang(),preview:'preview'},function(data){
+				$('div.zmi-preview').remove();
+				$('body').append('<div id="zmi_preview_'+data_id+'" class="zmi-preview">'+data+'</div><!-- #zmi-preview -->');
+				$('div.zmi-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+			});
+	}
+}
+
+/**
+ * Follow link.
+ */
 function zmiFollowHref(anchor) {
 	self.window.parent.manage_main.location.href=$(anchor).attr("href");
 	return false;
 }
+
+/**
+ * Refresh.
+ */
 function zmiRefresh() {
 	$("ol:not(:first)").remove();
 	$('.toggle').removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right"))
@@ -279,37 +269,44 @@ function zmiRefresh() {
 	$ZMI.writeDebug('zmiRefresh: id='+id+'; homeId='+homeId);
 	var physical_path = $('span[name=physical_path]').text();
 	var href = physical_path;
-	if (typeof href == "undefined") {
+	if (typeof href == "undefined" || href == "") {
 		href = $ZMI.getPhysicalPath();
 	}
 	$ZMI.writeDebug('zmiRefresh: href.0='+href);
 	href = href.substr(href.indexOf(homeId));
 	$ZMI.writeDebug('zmiRefresh: href.1='+href);
 	var ids = href.split('/');
+	var id = null;
 	var fn = function() {
 			if (ids.length > 0) {
-				var id = ids[0];
+				var old_id = id;
+				var old_homeId = homeId;
+				id = ids[0];
 				$ZMI.writeDebug("zmiRefesh.id= "+id);
 				ids = ids.slice(1,ids.length);
 				$ZMI.writeDebug("zmiRefesh.ids= "+ids.length);
-				$ZMI.writeDebug("zmiRefesh.fn.1: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if (id == homeId) {
+					$ZMI.writeDebug("zmiRefesh.fn.1: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 					id = 'content'
 					if (ids.length > 0 && ids[0] == id) {
 						ids = ids.slice(1,ids.length);
 					}
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.2: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if ($('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length==0) {
+					$ZMI.writeDebug("zmiRefesh.fn.2: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 					homeId = id;
 					id = ids[0];
 					ids = ids.slice(1,ids.length);
 				}
 				$ZMI.writeDebug("zmiRefesh.fn.3: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
+				// Remove other than selected
+				if (old_id != null) {
+					$('*[data-id="'+old_id+'"][data-home-id="'+old_homeId+'"] *[data-id!="'+id+'"][data-home-id="'+homeId+'"]').remove();
+					$('*[data-id="'+old_id+'"][data-home-id="'+old_homeId+'"] .toggle').removeClass(zmi_icon_clazz("icon-caret-down")).addClass(zmi_icon_clazz("icon-caret-right")).attr({title:'+'});
+				}
 				zmiToggleClick($('*[data-id="'+id+'"][data-home-id="'+homeId+'"] .toggle'),arguments.callee);
 			}
-			else if (typeof physical_path != 'undefined') {
-				var id = physical_path.split('/').pop();
+			else if (typeof physical_path != "undefined" && physical_path != "") {
 				$('*[data-id="'+id+'"][data-home-id="'+homeId+'"] input').prop('checked','checked');
 			}
 		};

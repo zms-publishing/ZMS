@@ -363,7 +363,7 @@ function storeCaret( textEl) {
 								[['sub','icon-subscript'],
 								['sup','icon-superscript']],
 								[['code','icon-code']],
-								[['anchor','icon-link']],]"
+								[['a','icon-link']],]"
 			><tal:block tal:repeat="charFormat charFormats"
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
 				><tal:block tal:condition="not:python:len(charFormat)==0"

@@ -21,7 +21,30 @@
 			obs python:map(lambda x:x['ob'],qres)">
 	<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 	<p tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"></p>
-	<tal:block tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
-		zmi_manage_main_grid
+	<p tal:condition="python:len(obs)==0" tal:content="python:here.getZMILangStr('SEARCH_NORESULTS')">No results</p>
+	<tal:block tal:condition="python:len(obs)>0" tal:define="global
+			size python:len(obs);
+			pageSize python:10;
+			pageIndex python:request.get('pageIndex',0);
+			pageStart python:pageIndex*pageSize;
+			pageEnd python:min(pageStart+pageSize,size)">
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		<tal:block tal:repeat="pageIndex python:range(pageEnd-pageStart)">
+			<tal:block tal:define="global ob python:obs[pageStart+pageIndex]; id python:ob.id; renderShort python:len(request.get('raw',''))>0">
+				<div class="search-result-item">
+					<div class="search-title">
+						<a tal:attributes="href python:'%s#ZMS_HIGHLIGHT=raw&raw=%s'%(ob.getHref2IndexHtml(request),request['raw'])" tal:content="python:ob.getTitle(request)">the title</a>
+					</div>
+					<ul class="search-breadcrumb" tal:define="global childNodes python:here.breadcrumbs_obj_path()">
+						<li tal:repeat="childNode childNodes" tal:attributes="class python:' '.join([['','active'][int(childNode==childNodes[-1])]])">
+							<tal:block tal:condition="python:childNode==childNodes[-1]" tal:content="structure python:childNode.display_icon(request,zpt=True)">the icon</tal:block>
+							<a tal:attributes="href python:'%s#ZMS_HIGHLIGHT=raw&raw=%s'%(childNode.getHref2IndexHtml(request),request['raw'])" tal:content="python:childNode.getTitlealt(request)">the titlealt</a>
+						</li>
+					</ul>
+					<div class="search-description" tal:content="python:here.search_quote(here.getDCDescription(request))">the description</div>
+				</div><!-- .search-result-item -->
+			</tal:block>
+		</tal:block>
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 	</tal:block>
 </tal:block>

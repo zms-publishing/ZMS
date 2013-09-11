@@ -147,22 +147,24 @@ def initialize(context):
                 s3 = []
                 if fn.endswith('.js'):
                   s0 = [ \
+                      '\$ZMI\.writeDebug\((.*?)\);', \
                       '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', \
                       '//( |-|\$)((.|\r|\t)*?)\n', \
                     ]
                   s1 = ['=','+','-','(',')',';',',',':','&','|']
                   s2 = []
-                  s2 = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
+                  s3 = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',',';\n',';','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
                 elif fn.endswith('.css'):
                   s0 = [ \
                       '/\*((.|\n|\r|\t)*?)\*/', \
                     ]
                   s1 = ['=','+','{','}','(',';',',',':']
                   s2 = [') ','}\n']
-                  s3 = ['\t','','  ',' ','\n\n','\n',';}','}']
+                  s3 = ['\t',' ','  ',' ','\n\n','\n',';}','}']
                 fc = fc.strip()
                 for s in s0:
-                  fc = re.sub( s, '', fc)
+                  l1 = len(fc)
+                  fc = re.sub(s,'',fc)
                 while True:
                   done = False
                   for k in s1:
@@ -178,6 +180,7 @@ def initialize(context):
                     k = d[i*2]
                     v = d[i*2+1]
                     while fc.find(k) >= 0:
+                      l1 = len(fc)
                       fc = fc.replace(k,v)
                       done = True
                   if not done:

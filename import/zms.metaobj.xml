@@ -1309,7 +1309,56 @@ a.superzoom img.superzoom { background-image: url(<dtml-var MISC_ZMS>superzoom.g
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[/*
+ ###############################################################################
+ ##### Sitemap 
+ ###############################################################################
+ */
+.sitemap ol.zmi-page {
+	padding-left:1em;
+}
+.sitemap ol.zmi-page * {
+	color:#333;
+}
+.sitemap .toggle {
+	font-size:120%;
+	vertical-align:bottom;
+	width:12px;
+	margin-right:2px;
+	text-align:center;
+	display:inline-block;
+	cursor:pointer;
+}
+
+/*
+ ###############################################################################
+ ##### Search 
+ ###############################################################################
+ */
+h4.search-results-header {
+	margin: 30px 0 10px 0;
+	font-weight:bold;
+	font-size:medium;
+}
+p.search-results-caption {
+	margin-bottom: 20px;
+}
+
+.search-breadcrumb {
+	margin-bottom: 4px;
+	list-style: none;
+}
+
+.search-breadcrumb > li {
+	display: inline-block;
+}
+
+.search-breadcrumb > li + li:before {
+	padding: 0 0;
+	color: #cccccc;
+	content: "/\00a0";
+}
+
 .pagination {
 	display: inline-block;
 	padding-left: 0;
@@ -1408,24 +1457,7 @@ a.superzoom img.superzoom { background-image: url(<dtml-var MISC_ZMS>superzoom.g
 }
 .search-result-item .search-breadcrumb * {
 	color:#008054!important;
-}
-.search-result-item .search-breadcrumb {
-	clear:left;
-	padding: .2em 0em .2em 0;
-	margin-bottom: 0px !important;
-	list-style-type:disc;
-}
-.search-result-item .search-breadcrumb li {
-	white-space:nowrap;
-	padding-right:1em;
-	margin-left:1em;
-	margin-right:.5em;
-	float:left;
-}
-.search-result-item .search-breadcrumb li:last-child {
-	float:none;
-}
-]]></data>
+}]]></data>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -1641,7 +1673,7 @@ return context.str_json(result)
           <item key="id"><![CDATA[ZMSLib]]></item>
           <item key="name"><![CDATA[ZMSLib]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.0]]></item>
+          <item key="revision"><![CDATA[2.0.1]]></item>
           <item key="type"><![CDATA[ZMSLibrary]]></item>
         </dictionary>
       </item>

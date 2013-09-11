@@ -13,7 +13,7 @@
 			><link type="text/css" tal:attributes="rel python:['','alternate '][int(i>0)]+'stylesheet'; href python:stylesheets[i].absolute_url()" />
 		</tal:block
 	></tal:block>
-	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty('plugins.zmi.js')"></script>
 </head>
 
 <!-- /common/zmi_html_head -->

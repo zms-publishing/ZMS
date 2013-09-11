@@ -878,6 +878,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         #-- Get value.
         ob = self
         fct = REQUEST.get('ZMS_SKIN','index')
+        fct = {'sitemap':'index','search':'index'}.get(fct,fct)
         if fct == 'index' and 'index_html' in self.objectIds():
           value = self.absolute_url()
           if REQUEST.get('lang','') != '': 

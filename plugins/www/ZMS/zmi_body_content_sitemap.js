@@ -1,5 +1,14 @@
+function pluginBootstrapFontawesome(s, c) {
+	$.plugin('bootstrap.fontawesome',{
+		files: [
+				$ZMI.getConfProperty('zmi.bootstrap.fontawesome')
+		]});
+	$.plugin('bootstrap.fontawesome').get(s,function(){
+			c();
+		});
+}
+
 function zmiToggleClick(toggle, callback) {
-	$ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
 	var $container = $(toggle).parents("ol:first");
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-right"))) {
@@ -29,7 +38,7 @@ function zmiToggleClick(toggle, callback) {
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
 		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
-		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:'0,ZMSTrashcan',get_permissions:'True',get_restricted:'True'},function(data){
+		$.get(base+href+'/ajaxGetChildNodes',{lang:getZMILang(),'meta_types:int':0},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				// Get and iterate pages.
@@ -42,36 +51,24 @@ function zmiToggleClick(toggle, callback) {
 						var page = pages[i];
 						var page_home_id = $(page).attr("home_id");
 						var page_id = $(page).attr("id").substr(page_home_id.length+1);
-						var page_absolute_url = $(page).attr("absolute_url");
+						var page_index_html = $(page).attr("index_html");
 						var page_meta_type = $(page).attr("meta_id");
 						var page_titlealt = $(page).attr("titlealt");
 						var page_display_icon = $(page).attr("display_icon");
 						var html = '';
-						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
-						html += '<'+'div class="';
-						/*
-						if ($(page).attr("permissions")) {
-							html += 'restricted ';
-						}
-						*/
-						if ($(page).attr("active")== "0") {
-							html += 'inactive ';
-						} else {
-							html += 'active ';
-						}
-						html += '">';
+						html += '<ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
+						html += '<div>';
 						html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
-						html += '<'+'a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
+						html += '<a href="'+page_index_html+'">';
 						html += page_display_icon+' ';
 						html += page_titlealt;
-						html += '<'+'/a> ';
-						html += '<'+'/div>';
-						html += '<'+'/ol>';
+						html += '</a> ';
+						html += '</div>';
+						html += '</ol>';
 						$container.append(html);
 					}
 				}
 				if (typeof callback == 'function') {
-					$ZMI.writeDebug('zmiToggleClick: callback()');
 					callback();
 				}
 			});
@@ -79,7 +76,6 @@ function zmiToggleClick(toggle, callback) {
 	else if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
 		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
 		if (typeof callback == 'function') {
-			$ZMI.writeDebug('zmiToggleClick: callback()');
 			callback();
 		}
 	}
@@ -102,54 +98,31 @@ function zmiRefresh() {
 	catch(e) {
 		$ZMI.writeDebug('zmiRefresh: cannot get physical-path from parent - ' + e);
 	}
-	$ZMI.writeDebug('zmiRefresh: href.0='+href);
 	href = href.substr(href.indexOf(homeId));
-	$ZMI.writeDebug('zmiRefresh: href.1='+href);
 	var ids = href.split('/');
 	var fn = function() {
 			if (ids.length > 0) {
 				var id = ids[0];
-				$ZMI.writeDebug("zmiRefesh.id= "+id);
 				ids = ids.slice(1,ids.length);
-				$ZMI.writeDebug("zmiRefesh.ids= "+ids.length);
-				$ZMI.writeDebug("zmiRefesh.fn.1: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if (id == homeId) {
 					id = 'content'
 					if (ids.length > 0 && ids[0] == id) {
 						ids = ids.slice(1,ids.length);
 					}
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.2: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if ($('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length==0) {
 					homeId = id;
 					id = ids[0];
 					ids = ids.slice(1,ids.length);
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.3: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				zmiToggleClick($('*[data-id="'+id+'"][data-home-id="'+homeId+'"] .toggle'),arguments.callee);
 			}
 		};
 	fn();
 }
 
-function frmresize(r) {
-	var frmwidth = 224;
-	var frmset = parent.document.getElementsByTagName('frameset');
-	if (typeof r != "undefined") {
-		var frmwidth = parseInt(frmset[0].cols);
-		frmwidth = frmwidth + r
-	}
-	var colval = frmwidth + ",*";
-	frmset[0].cols=colval;
-	$.cookies.set('zmi_menu_frmsize',colval, { expires: 365 })
-}
-
-$ZMI.registerReady(function(){
-	zmiRefresh();
-	runPluginCookies(function() {
-			if ( $.cookies.get('zmi_menu_frmsize') ) {
-				parent.document.getElementsByTagName('frameset')[0].cols = $.cookies.get('zmi_menu_frmsize');
-			};
+$(function(){
+	pluginBootstrapFontawesome('body',function(){
+			zmiRefresh();
 		});
 });
-

@@ -49,9 +49,6 @@ CKEDITOR.editorConfig = function( config ) {
   // @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
   config.extraPlugins = 'linkbutton,mediabutton,tableresize';
 
-  // skins
-  //config.skin = getZMIConfProperty("CKEDITOR.config.skin","kama");
-
   //  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
   config.toolbar = 'ZMSBasicToolbar';
   config.toolbar_ZMSBasicToolbar =[

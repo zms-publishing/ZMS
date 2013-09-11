@@ -20,11 +20,11 @@ function ZMSGraphic_extEdit_initialize() {
 		return;
 	}
 	ZMSGraphic_extEdit_initialized = true;
-	zmiSetCursorWait("ZMSGraphic_extEdit_initialize");  
+	$ZMI.setCursorWait("ZMSGraphic_extEdit_initialize");  
 	pluginUI("body",function() {
 			$ZMSGraphic_buttons = $('span[id^=ZMSGraphic_extEdit_]');
 			$ZMSGraphic_buttons.click(ZMSGraphic_extEdit_clickedAction);
-			zmiSetCursorAuto("ZMSGraphic_extEdit_initialize");
+			$ZMI.setCursorAuto("ZMSGraphic_extEdit_initialize");
 	});
 }
 
@@ -32,7 +32,7 @@ function ZMSGraphic_extEdit_initialize() {
  * Start image-editor.
  */
 function ZMSGraphic_extEdit_action( elName, elParams, pil) {
-	zmiSetCursorWait("ZMSGraphic_extEdit_action");
+	$ZMI.setCursorWait("ZMSGraphic_extEdit_action");
 	ZMSGraphic_extEdit_initialize();
 	if (typeof pil != 'undefined') {
 		ZMSGraphic_pil = pil;
@@ -117,7 +117,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 										}
 									}).slider("value",v);
 									$(".perc").html(v+'%');
-									zmiSetCursorAuto("ZMSGraphic_extEdit_action");
+									$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
 							});
 					});
 					$ZMI.writeDebug("EO open");

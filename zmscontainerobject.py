@@ -136,14 +136,6 @@ class ZMSContainerObject(
     manage_tasks = PageTemplateFile('zpt/versionmanager/manage_tasks', globals())
 
 
-    # Sitemap.
-    # --------
-    sitemap_layout0 = HTMLFile('dtml/ZMSContainerObject/sitemap/version0', globals())
-    sitemap_layout1 = HTMLFile('dtml/ZMSContainerObject/sitemap/version1', globals())
-    sitemap_layout2 = HTMLFile('dtml/ZMSContainerObject/sitemap/version2', globals())
-    sitemap_layout3 = HTMLFile('dtml/ZMSContainerObject/sitemap/version3', globals())
-
-
     # Role Manager.
     # -------------
     def manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):

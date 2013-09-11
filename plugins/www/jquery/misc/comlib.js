@@ -1,49 +1,4 @@
 /**
- * Returns language.
- */
-function getZMILang() {
-	if (typeof zmiParams['lang'] == 'undefined') {
-		zmiParams['lang'] = zmiLangStr['lang'];
-	}
-	return zmiParams['lang'];
-}
-
-/**
- * Returns language-string.
- */
-function getZMILangStr(key, data) {
-	if (typeof data == "undefined") {
-		data = {};
-	}
-	data['key'] = key; // @TODO
-	if (typeof zmiLangStr[key] == 'undefined') {
-		zmiLangStr[key] = key
-	}
-	return zmiLangStr[key];
-}
-
-/**
- * Returns conf-property.
- */
-function getZMIConfProperty(key, defaultValue) {
-	var data  = {}
-	data['key'] = key;
-	if (typeof defaultValue != "undefined") {
-		data['default'] = defaultValue;
-	}
-	var url = zmiParams['URL'];
-	if (url.indexOf('/content/')>0) {
-		url = url.substr(0,url.indexOf('/content/')+'/content/'.length);
-	}
-	return $.ajax({
-		url: url+'getConfProperty',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
-}
-
-/**
  * Returns configuration-files.
  */
 var zmiExpandConfFilesProgress = false;
@@ -52,7 +7,7 @@ function zmiExpandConfFiles(el, pattern) {
 		if ( $("option",el).length==1) {
 			zmiExpandConfFilesProgress = true;
 			// Set wait-cursor.
-			zmiSetCursorWait("zmiExpandConfFiles");
+			$ZMI.setCursorWait("zmiExpandConfFiles");
 			var first = null;
 			if ( $("option",el).length==1) {
 				first = $("option:first",el).html();
@@ -72,7 +27,7 @@ function zmiExpandConfFiles(el, pattern) {
 						}
 						zmiExpandConfFilesProgress = false;
 						// Reset wait-cursor.
-						zmiSetCursorAuto("zmiExpandConfFiles");
+						$ZMI.setCursorAuto("zmiExpandConfFiles");
 					});
 		}
 	}

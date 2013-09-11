@@ -479,7 +479,6 @@ class ZMS(
     # Interface.
     # ----------
     index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
-    not_found_html = HTMLFile('dtml/ZMS/not_found', globals()) # index_html
     f_index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
     f_inactive_html = HTMLFile('dtml/ZMS/f_inactive', globals()) # inactive_html
     f_headDoctype = HTMLFile('dtml/ZMS/f_headdoctype', globals()) # Template: DOCTYPE
@@ -492,7 +491,6 @@ class ZMS(
     f_headTitle = HTMLFile('dtml/ZMS/f_headtitle', globals()) # Head.Title
     f_headMeta_DC = HTMLFile('dtml/ZMS/f_headmeta_dc', globals()) # Head.Meta.DC
     f_headMeta_Locale = HTMLFile('dtml/ZMS/f_headmeta_locale', globals()) # Head.Locale (Content-Type & Charset)
-    f_sitemap = HTMLFile('dtml/ZMS/f_sitemap', globals()) # f_sitemap
     f_standard_html_request = HTMLFile('dtml/ZMS/f_standard_html_request', globals()) # f_standard_html_request
     f_standard_html_header = HTMLFile('dtml/ZMS/f_standard_html_header', globals()) # f_standard_html_header
     f_standard_html_footer = HTMLFile('dtml/ZMS/f_standard_html_footer', globals()) # f_standard_html_footer
@@ -500,7 +498,6 @@ class ZMS(
     headMeta = HTMLFile('dtml/ZMS/headmeta', globals()) # Head.Meta
     headCStyleSheet = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Reference
     headCSS = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Referenz
-    search_nav_html = HTMLFile('dtml/ZMS/search_nav', globals()) # search_nav_html
 
     # Enumerations.
     # -------------

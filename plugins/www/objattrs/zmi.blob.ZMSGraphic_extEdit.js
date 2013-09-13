@@ -63,6 +63,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
 			open:function() {
 					$ZMI.writeDebug("BO open");
+					$("#zmiModalZMSGraphic_extEdit_actions .modal-dialog").css({width:800});
 					$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
 						function(data) {
 							$ZMI.writeDebug("BO getTempBlobjPropertyUrl");
@@ -95,12 +96,25 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 												var w = $("input#ZMSGraphic_extEdit_width").val();
 												$ZMSGraphic_img.attr({'width':w,'height':h});
 											});
+									var v = Math.round(100*w/ZMSGraphic_act_width);
 									// Image
-									$('div#ZMSGraphic_extEdit_image').css({'width':ZMSGraphic_act_width,'height':ZMSGraphic_act_height});
-									$('div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+w+'" height="'+h+'" alt="" border="0">');
+									var canvasMax = 600;
+									var canvasHeight = ZMSGraphic_act_height;
+									var canvasWidth = ZMSGraphic_act_width;
+									if (canvasWidth > canvasMax || canvasHeight > canvasMax) {
+										if (canvasWidth > canvasMax) {
+											canvasHeight = Math.round(canvasHeight*canvasMax/canvasWidth);
+											canvasWidth = canvasMax;
+										}
+										else {
+											canvasWidth = Math.round(canvasWidth*canvasMax/canvasHeight);
+											canvasHeight = canvasMax;
+										}
+									}
+									$('div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});
+									$('div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
 									$ZMSGraphic_img = $('div#ZMSGraphic_extEdit_image img');
 									// Slider
-									var v = Math.round(100*w/ZMSGraphic_act_width);
 									$(".slider").slider({
 										orientation: "vertical",
 										range: "min",
@@ -113,7 +127,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 												var h = Math.round(v*ZMSGraphic_act_height/100);
 												$('input#ZMSGraphic_extEdit_width').val(w);
 												$('input#ZMSGraphic_extEdit_height').val(h);
-												$ZMSGraphic_img.attr({'width':w,'height':h});
+												$ZMSGraphic_img.attr({width:v+'%'});
 										}
 									}).slider("value",v);
 									$(".perc").html(v+'%');
@@ -196,7 +210,10 @@ function ZMSGraphic_extEdit_apply() {
 	// Crop
 	else if (ZMSGraphic_action == 'crop') {
 		var c = ZMSGraphic_cropcoords;
-		var params = {'action':ZMSGraphic_action,'x0:int':c.x,'y0:int':c.y,'x1:int':c.x2,'y2:int':c.y2};
+		var canvasWidth = $('div#ZMSGraphic_extEdit_image').css('width');
+		canvasWidth = parseInt(canvasWidth.substr(0,canvasWidth.length-2));
+		var v = parseInt($('input#ZMSGraphic_extEdit_width').val())/canvasWidth;
+		var params = {'action':ZMSGraphic_action,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
 		for (var i in ZMSGraphic_params) {
 			params[i] = ZMSGraphic_params[i];
 		}

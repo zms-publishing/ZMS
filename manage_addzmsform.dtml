@@ -13,6 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="<dtml-var sequence-item>"/>
 	</dtml-in>
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
 	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
 </head>
 

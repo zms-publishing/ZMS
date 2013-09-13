@@ -133,7 +133,7 @@ $(function(){
 								$(".zmi-sortable > li").each(function() {
 										if ($(this).attr("id") == ui.item.attr("id")) {
 											if(self.zmiSortableRownum != c) {
-												var id = getZMIActionContextId(ui.item);
+												var id = $ZMI.actionList.getContextId(ui.item);
 												var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
 												$ZMI.writeDebug('ul.zmi-container.zmi-sortable: stop - href='+href);
 												$.get(href,function(result){
@@ -154,8 +154,7 @@ $(function(){
 	// Checkboxes
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
-				selectCheckboxes($(this).attr("form"),$(this).prop("checked"));
-				zmiActionButtonsRefresh($(this));
+				zmiToggleSelectionButtonClick(this,$(this).prop("checked"));
 			});
 	$(".zmi-container .right input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
@@ -197,15 +196,15 @@ $(function(){
 				$button.append($ZMI.icon("icon-chevron-down"));
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
 			})
-		.focus( function(evt) { zmiActionOver(this,"focus"); })
+		.focus( function(evt) { $ZMI.actionList.over(this,"focus"); })
 		.hover( function(evt) {
-				zmiActionOver(this,"mouseover");
+				$ZMI.actionList.over(this,"mouseover");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
 				$($ZMI.icon_selector("icon-chevron-down"),$button).show();
 			},
 			function(evt) {
-				zmiActionOut(this,"mouseout");
+				$ZMI.actionList.out(this,"mouseout");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
@@ -506,117 +505,6 @@ ZMI.prototype.showMessage = function(pos, message, context) {
 }
 
 /**
- * Un-/select checkboxes.
- * @see jquery.plugin.zmi.js
- */
-function selectCheckboxes(fm, v) {
-	if (typeof v == 'undefined') {
-		v = !$(':checkbox:not([name~=active])',fm).prop('checked');
-	}
-	$(':checkbox:not([name~=active])',fm).prop('checked',v).change();
-}
-
-
-// #############################################################################
-// ### ZMI Pathcropping
-// #############################################################################
-
-/**
- * @see jquery.plugin.zmi.js
- */
-function zmiRelativateUrl(path, url) {
-	var protocol = self.location.href;
-	protocol = protocol.substr(0,protocol.indexOf(":")+3);
-	var server_url = self.location.href;
-	server_url = server_url.substr(protocol.length);
-	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
-	var currntPath = null;
-	if (path.indexOf(server_url)==0) {
-		currntPath = path.substr(server_url.length+1);
-	}
-	else if (path.indexOf('/')==0) {
-		currntPath = path.substr(1);
-	}
-	var targetPath = null;
-	if (url.indexOf(server_url)==0) {
-		targetPath = url.substr(server_url.length+1);
-	}
-	else if (url.indexOf('/')==0) {
-		targetPath = url.substr(1);
-	}
-	if (currntPath == null || targetPath == null) {
-		return url;
-	}
-	while ( currntPath.length > 0 && targetPath.length > 0) {
-		var i = currntPath.indexOf( '/');
-		var j = targetPath.indexOf( '/');
-		if ( i < 0) {
-			currntElmnt = currntPath;
-		}
-		else {
-			currntElmnt = currntPath.substring( 0, i);
-		}
-		if ( j < 0) {
-			targetElmnt = targetPath;
-		}
-		else {
-			targetElmnt = targetPath.substring( 0, j);
-		}
-		if ( currntElmnt != targetElmnt) {
-			break;
-		}
-		if ( i < 0) {
-			currntPath = '';
-		}
-		else {
-			currntPath = currntPath.substring( i + 1);
-		}
-		if ( j < 0) {
-			targetPath = '';
-		}
-		else {
-			targetPath = targetPath.substring( j + 1);
-		}
-	}
-	while ( currntPath.length > 0) {
-		var i = currntPath.indexOf( '/');
-		if ( i < 0) {
-			currntElmnt = currntPath;
-			currntPath = '';
-		}
-		else {
-			currntElmnt = currntPath.substring( 0, i);
-			currntPath = currntPath.substring( i + 1);
-		}
-		targetPath = '../' + targetPath;
-	}
-	url = './' + targetPath;
-	return url;
-}
-
-/**
- * @see jquery.plugin.zmi.js
- */
-function zmiRelativateUrls(s,page_url) {
-	var splitTags = ['<a href="','<img src="'];
-	for ( var h = 0; h < splitTags.length; h++) {
-	var splitTag = splitTags[h];
-		var vSplit = s.split(splitTag);
-		var v = vSplit[0];
-		for ( var i = 1; i < vSplit.length; i++) {
-			var j = vSplit[i].indexOf('"');
-			var url = vSplit[i].substring(0,j);
-			if (url.indexOf('./')<0) {
-				url = zmiRelativateUrl(page_url,url);
-			}
-			v += splitTag + url + vSplit[i].substring(j);
-		}
-		s = v;
-	}
-	return s;
-}
-
-/**
  * Open modal
  */
 var zmiModalStack = [];
@@ -746,7 +634,10 @@ function zmiIframe(href, data, opt) {
 // ### ZMI Action-Lists
 // #############################################################################
 
-function getZMIActionContextId(el) {
+ZMIActionList = function() {};
+$ZMI.actionList = new ZMIActionList();
+
+ZMIActionList.prototype.getContextId = function(el) {
 	var context = $(el).hasClass("zmi-item")?$(el):$(el).parents("li.zmi-item");
 	var context_id = $(context).attr("id");
 	return typeof context_id == "undefined" || context_id == ""?"":context_id.replace(/zmi_item_/gi,"");
@@ -757,14 +648,14 @@ function getZMIActionContextId(el) {
  *
  * @param el
  */
-function zmiActionOver(el, evt) {
+ZMIActionList.prototype.over = function(el, evt) {
 	$("button.split-left",el).css({visibility:"visible"});
 	// Exit.
 	if($("button.split-left",el).length==0 || $("ul.dropdown-menu",el).length>0) return;
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
 	// Build action and params.
-	var context_id = getZMIActionContextId(el);
+	var context_id = this.getContextId(el);
 	var action = self.location.href;
 	action = action.substr(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
@@ -806,7 +697,6 @@ function zmiActionOver(el, evt) {
 		else {
 			// Edit action
 			$("button.split-left",el).click(function() {
-					var context_id = getZMIActionContextId(this);
 					var action = self.location.href;
 					action = action.substr(0,action.lastIndexOf("/"));
 					action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
@@ -815,7 +705,7 @@ function zmiActionOver(el, evt) {
 					return false;
 				});
 			//
-			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 		}
 		for (var i = 2; i < actions.length; i++) {
 			var optlabel = actions[i][0];
@@ -871,7 +761,7 @@ function zmiActionOver(el, evt) {
 					opticon = $ZMI.icon("icon-sort-down");
 				}
 				var html = '';
-				html += '<li><a href="javascript:zmiActionExecute($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += '<li><a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);
@@ -885,14 +775,14 @@ function zmiActionOver(el, evt) {
  *
  * @param el
  */
-function zmiActionOut(el, evt) {
+ZMIActionList.prototype.out = function(el, evt) {
 	$("button.split-left",el).css({visibility:"hidden"});
 }
 
 /**
  *  Execute action.
  */
-function zmiActionExecute(sender, label, target) {
+ZMIActionList.prototype.exec = function(sender, label, target) {
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
 	$("input[name='custom']").val(label);
@@ -908,7 +798,7 @@ function zmiActionExecute(sender, label, target) {
 				data[$input.attr('name')] = $input.val();
 			}
 		}
-		var id_prefix = getZMIActionContextId(sender);
+		var id_prefix = this.getContextId(sender);
 		if (typeof id_prefix != 'undefined' && id_prefix != '') {
 			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
 		}
@@ -938,7 +828,7 @@ function zmiActionExecute(sender, label, target) {
 		var $div = $el.parents("div.right");
 		$("input[name='ids:list']",$div).prop("checked",true);
 		zmiActionButtonsRefresh(sender);
-		if (zmiConfirmAction($fm,target,label)) {
+		if (this.confirm($fm,target,label)) {
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
 			$fm.submit();
@@ -951,43 +841,13 @@ function zmiActionExecute(sender, label, target) {
 }
 
 /**
- * Get descendant languages.
- */
-function zmiGetDescendantLanguages() {
-	var base = self.location.href;
-	base = base.substr(0,base.lastIndexOf('/'));
-	var langs = eval('('+$.ajax({
-		url: base+'/getDescendantLanguages',
-		data:{id:getZMILang()},
-		datatype:'text',
-		async: false
-		}).responseText+')');
-	if (langs.length > 1) {
-		var labels = '';
-		for ( var i = 0; i < langs.length; i++) {
-			if (labels.length>0) {
-				labels += ', ';
-			}
-			labels += $.ajax({
-				url: 'getLanguageLabel',
-				data:{id:langs[i]},
-				datatype:'text',
-				async: false
-				}).responseText;
-		}
-		return ' '+getZMILangStr('MSG_CONFIRM_DESCENDANT_LANGS').replace("%s",langs);
-	}
-	return '';
-}
-
-/**
  * Confirm execution of action from select.
  *
  * @param fm
  * @param target
  * @param label
  */
-function zmiConfirmAction(fm, target, label) {
+ZMIActionList.prototype.confirm = function(fm, target, label) {
 	var b = true;
 	var i = $("input[name='ids:list']:checkbox:checked").length;
 	if (target.indexOf("../") == 0) {
@@ -999,7 +859,7 @@ function zmiConfirmAction(fm, target, label) {
 	else if (target.indexOf("manage_cutObjects") >= 0) {
 		var msg = getZMILangStr('MSG_CONFIRM_CUTOBJS');
 		msg = msg.replace("%i",""+i);
-		msg += zmiGetDescendantLanguages();
+		msg += $ZMI.getDescendantLanguages();
 		b = i > 0 && confirm(msg);
 	}
 	else if (target.indexOf("manage_eraseObjs") >= 0) {
@@ -1010,7 +870,7 @@ function zmiConfirmAction(fm, target, label) {
 	else if (target.indexOf("manage_deleteObjs") >= 0) {
 		var msg = getZMILangStr('MSG_CONFIRM_TRASHOBJS');
 		msg = msg.replace("%i",""+i);
-		msg += zmiGetDescendantLanguages();
+		msg += $ZMI.getDescendantLanguages();
 		b = i > 0 && confirm(msg);
 	}
 	else if (target.indexOf("manage_undoObjs") >= 0) {
@@ -1056,12 +916,16 @@ function zmiActionButtonsRefresh(sender,evt) {
  * This method (un-)checks all id-checkboxes on page and refreshs the buttons.
  *
  * @param sender
- * @param v		Boolean value for new (un-)checked state.
+ * @param v Boolean value for new (un-)checked state.
  */
-function zmiToggleSelectionButtonClick(sender) 
-{
-	var fm = $(sender).parents('form');
-	selectCheckboxes(fm,!$('input[type=checkbox]',fm).attr('checked'));
+function zmiToggleSelectionButtonClick(sender,v) {
+	var $fm = $(sender).parents('form');
+	var $inputs = $('input:checkbox:not([name~="active"])',$fm);
+	if (typeof v == "undefined") {
+		v = !$inputs.prop('checked');
+	}
+	$inputs.prop('checked',v).change();
+	zmiActionButtonsRefresh(sender);
 }
 
 /**
@@ -1198,7 +1062,7 @@ $(function() {
 
 function zmiEnableInteractions(b) {
 	// Set wait-cursor.
-	$(document.body).css( 'cursor', 'auto');
+	$ZMI.setCursorAuto("zmiEnableInteractions");
 	// Create semi-transparent overlay
 	$("div#overlay").remove();
 	// Create progress-box.
@@ -1212,12 +1076,12 @@ function zmiDisableInteractions(b) {
 	}
 	var $doc = $(document);
 	// Set wait-cursor.
-	$(document.body).css( 'cursor', 'wait');
+	$ZMI.setCursorWait("zmiDisableInteractions");
 	// Create semi-transparent overlay
-	$(document.body).append('<div id="zmi-overlay"></div>');
+	$("body").append('<div id="zmi-overlay"></div>');
 	$('#zmi-overlay').height($doc.height());
 	// Create progress-box.
-	$(document.body).append('<div id="zmi-progressbox">'
+	$("body").append('<div id="zmi-progressbox">'
 			+ '<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;' + getZMILangStr('MSG_LOADING')
 		+ '</div>');
 	var $div = $("#zmi-progressbox");

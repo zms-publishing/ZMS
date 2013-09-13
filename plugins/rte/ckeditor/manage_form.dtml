@@ -43,16 +43,12 @@ function zmiStandardOnSubmitEventHandler() {
 		var elName = zmiRichtextElNames[e];
 		var el = document.getElementById('zmiStandardEditor'+elName);
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-			try {
-				var data = $('#'+elName).val();
-				var instance = CKEDITOR.instances['editor_'+elName];
-				if (instance) {
-					instance.setData(data,function() {
-							instance.focus();
-						});
-				}
-			}
-			catch(er) {
+			var data = $('#'+elName).val();
+			var instance = CKEDITOR.instances['editor_'+elName];
+			if (instance) {
+				instance.setData(data,function() {
+						instance.focus();
+					});
 			}
 		}
 	}
@@ -63,17 +59,12 @@ function zmiRichtextOnSubmitEventHandler() {
 		var elName = zmiRichtextElNames[e];
 		var el = document.getElementById('zmiRichtextEditor'+elName);
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
-			try {
-				// Get value from editor.
-				var data = CKEDITOR.instances['editor_'+elName].getData();
-				// Relativate urls.
-				data = zmiRelativateUrls(data,'<dtml-var "getVersionContainer().absolute_url()">');
-				// Assign value to textarea.
-				$('#'+elName).val( data);
-			}
-			catch(er) {
-				$('#'+elName).val( $('#alternate_'+elName).val());
-			}
+			// Get value from editor.
+			var data = CKEDITOR.instances['editor_'+elName].getData();
+			// Relativate urls.
+			data = $ZMI.relativateUrls('<dtml-var "getVersionContainer().absolute_url()">',data);
+			// Assign value to textarea.
+			$('#'+elName).val( data);
 		}
 	}
 }

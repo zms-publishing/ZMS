@@ -1,6 +1,7 @@
 <!-- BO objattrs/f_select_richtext -->
 
 <tal:block tal:define="global
+				elName options/elName;
 				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
 				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));
 				dummy0 python:request.set('richedit_fmt',rteTextFormats[0]);
@@ -51,8 +52,26 @@ $ZMI.registerReady(function() {
 
 </tal:block>
 
-<div tal:attributes="id python:'zmiStandardEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_standard(here,request,options)">zmi_select_richtext_standard</div>
-<div tal:attributes="id python:'zmiRichtextEditor%s'%options['elName']" tal:content="structure python:here.zmi_select_richtext_wysiwyg(here,request,options)">zmi_select_richtext_wysiwyg</div>
+<div tal:attributes="id python:'zmiStandardEditor%s'%elName" tal:content="structure python:here.zmi_select_richtext_standard(here,request,options)">zmi_select_richtext_standard</div>
+<div tal:attributes="id python:'zmiRichtextEditor%s'%elName" tal:content="structure python:here.zmi_select_richtext_wysiwyg(here,request,options)">zmi_select_richtext_wysiwyg</div>
+
+<tal:block tal:define="global metaObjAttrId python:'resources';">
+	<tal:block tal:condition="python:not request.has_key('ZMS_INSERT') and metaObjAttrId in here.getMetaobjAttrIds(here.meta_id)">
+		<tal:block tal:define="global
+				metaObjAttr python:here.getMetaobjAttr(here.meta_id,metaObjAttrId);
+				elLabel python:here.getObjAttrLabel(metaObjAttr);
+				dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+[metaObjAttrId])">
+						<div class="form-group"  tal:attributes="id python:'tr_%s'%(elName)">
+							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
+								<span tal:content="elLabel">the label</span>
+							</label>
+							<div class="col-sm-10">
+								<input class="btn btn-file" type="file" tal:attributes="name python:'resource_%s'%elName"/>
+							</div><!-- .col-lg-10 -->
+						</div><!-- .form-group -->
+		</tal:block>
+	</tal:block>
+</tal:block>
 
 <tal:block tal:define="dummy0 python:request.set('f_zmiRichtextEditor',False)"></tal:block>
 </tal:block>

@@ -43,7 +43,6 @@ $(function(){
 			}
 		}
 	}
-	zmiParams['URL'] = base_url;
 	if (typeof zmiParams['zmi-debug'] != "undefined") {
 		$ZMI.toggleDebug(true);
 	}
@@ -251,7 +250,7 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	}
-	var url = zmiParams['URL'];
+	var url = this.getPhysicalPath();
 	if (url.indexOf('/content/')>0) {
 		url = url.substr(0,url.indexOf('/content/')+'/content/'.length);
 	}

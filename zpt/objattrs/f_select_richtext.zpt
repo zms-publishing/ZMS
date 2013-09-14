@@ -12,17 +12,25 @@
 <tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)">
 
 <style>
-.form-richtext div:first-child {
-	background-color:#f8f8f8;
-}
-.form-richtext .pull-left {
-	margin-right:.5em;
-	margin-bottom:.1em;
-}
-.form-richtext span.btn {
-	padding-left:.5em;
-	padding-right:.5em;
-}
+	.form-richtext select#format {
+		max-width: 180px;
+	}
+	.form-richtext .pull-left {
+		margin-right:.5em;
+		margin-bottom:.1em;
+	}
+	.form-richtext span.btn {
+		padding-left:.5em;
+		padding-right:.5em;
+	}
+	.form-richtext textarea {
+		margin-top:.3em;
+	}
+	@media (max-height:600px) {
+		textarea {
+			max-height:12em;
+		}
+	}
 </style>
 
 <tal:block tal:content="structure python:'<script>'"></tal:block>

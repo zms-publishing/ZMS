@@ -3227,7 +3227,7 @@ function onZMSTableFormSubmit() {
 --------------------------------------------------------------------------------
 -->
 <tal:block tal:define="global custom python:''
-		+'<div class=\042pull-left\042>'+here.f_selectInput(fmName=request.get('fmName'),elName='tag',value='',type='select',lang_str=here.getZMILangStr('ATTR_FORMAT'),required=1,options=['th','td'],enabled=True,REQUEST=request)+'</div>'">
+		+'<div class=\042pull-left\042>'+here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=['th','td'])+'</div>'">
 	<div class="ui-helper-hidden ui-helper-overlay">&nbsp;</div>
 	<div class="ui-helper-hidden">
 		<div id="div_table_cell_editor">
@@ -4098,7 +4098,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[2.0.3]]></item>
+          <item key="revision"><![CDATA[2.0.4]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

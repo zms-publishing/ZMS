@@ -1,5 +1,0 @@
-<dtml-try
-><dtml-var bodyContent
-><dtml-except
-><dtml-var "getBodyContent(REQUEST)"
-></dtml-try>

@@ -110,7 +110,6 @@ class ZMSSqlDb(ZMSObject):
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
-        'manage_exportexcel',
         )
     __administratorPermissions__ = (
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
@@ -134,7 +133,6 @@ class ZMSSqlDb(ZMSObject):
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
     manage_sql = PageTemplateFile('zpt/ZMSSqlDb/manage_sql', globals())
     manage_configuration = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration', globals())
-    manage_exportexcel = HTMLFile('dtml/ZMSSqlDb/manage_exportexcel', globals())
 
 
     # Valid Types.

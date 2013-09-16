@@ -36,11 +36,11 @@
 			<input tal:condition="python:not multilang" type="hidden" name="langs:list" tal:attributes="value python:here.getLangIds()[0]">
 			<div tal:condition="python:multilang" class="form-group">
 				<label for="langs" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_LANGS')">Languages</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='langs',value=[],type='multiselect',lang_str='ATTR_LANGS',required=1,css='form-element',optpl=langs_optpl,REQUEST=request)">the control</div><!-- .col-sm-10 -->
+				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='langs',value=[],lang_str='ATTR_LANGS',options=langs_optpl)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="roles" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.f_selectInput(here,fmName='insertNodeForm',elName='roles',value=[],type='multiselect',lang_str='ATTR_ROLES',required=1,css='form-element',optpl=roles_optpl,REQUEST=request)">the control</div><!-- .col-sm-10 -->
+				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-sm-10">

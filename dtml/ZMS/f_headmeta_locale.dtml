@@ -1,3 +1,0 @@
-<dtml-call "REQUEST.set('ZMS_CHARSET',REQUEST.get('ZMS_CHARSET','utf-8'))"
-><dtml-call "RESPONSE.setHeader('Content-Type', 'text/html; charset=%s'%ZMS_CHARSET)"
-><meta http-equiv="Content-Type" content="text/html; charset=<dtml-var ZMS_CHARSET>"/>

@@ -1,0 +1,2 @@
+<!DOCTYPE html>
+<tal:block tal:content="structure python:'<html lang="en" %s>'%here.getConfProperty('ZMS.html_attrs','')"></tal:block>

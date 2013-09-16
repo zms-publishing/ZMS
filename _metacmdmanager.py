@@ -29,30 +29,21 @@ import _objattrs
 # Example code.
 # -------------
 
-dtmlMethodWithExecExampleCode = \
-  '<dtml-comment>\n' + \
-  '# Example code:\n' + \
-  '</dtml-comment>\n' + \
-  '\n' + \
-  '<dtml-call expr="REQUEST.set(\'message\',\'This is %s\'%meta_type)">\n' + \
-  '<dtml-return message>\n' + \
-  ''
-
-dtmlMethodWithoutExecExampleCode = \
-  '<dtml-comment>\n' + \
-  '# Example code:\n' + \
-  '</dtml-comment>\n' + \
-  '\n' + \
-  '<dtml-var manage_page_header>\n' + \
-  '<head>\n' + \
-  ' <title>$$NAME$$</title>\n' + \
-  '</head>\n' + \
-  '<dtml-var "manage_tabs(_,_,my_manage_options=[{\'label\':\'$$NAME$$\',\'action\':\'\'}])">\n' + \
-  '<dtml-var manage_page_header>\n' + \
-  ''
-
 pageTemplateExampleCode = \
-  ''
+  '<!DOCTYPE html>\n' + \
+  '<html lang="en">\n' + \
+  '<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>\n' + \
+  '<body class="zmi">\n' + \
+  '<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>\n' + \
+  '<div id="zmi-tab">\n' + \
+  '<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>\n' + \
+  '<div style="clear:both;">&nbsp;</div>\n' + \
+  '</div><!-- #zmi-tab -->\n' + \
+  '<script>\n' + \
+  '</script>\n' + \
+  '<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>\n' + \
+  '</body>\n' + \
+  '</html>\n'
 
 pyScriptExampleCode = \
   '# Example code:\n' + \
@@ -202,18 +193,7 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
         newMethod = getattr(portalMaster,newId).meta_type
     if newId in self.objectIds():
       self.manage_delObjects(ids=[newId])
-    if newMethod == 'DTML Method':
-      self.manage_addDTMLMethod(newId,newTitle)
-      if newData is None:
-        if newExec:
-          newData = dtmlMethodWithExecExampleCode
-        else:
-          newData = dtmlMethodWithoutExecExampleCode
-        newData = newData.replace('$$NAME$$',newName)
-    elif newMethod == 'DTML Document':
-      self.manage_addDTMLDocument(newId,newTitle)
-      if newData is None: newData = dtmlMethodExampleCode
-    elif newMethod == 'Page Template':
+    if newMethod == 'Page Template':
       self.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=newId,title=newTitle,text=pageTemplateExampleCode)
     elif newMethod == 'Script (Python)':
       PythonScript.manage_addPythonScript(self,newId)

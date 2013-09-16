@@ -358,10 +358,6 @@ class ObjAttrs:
       #-- Mandatory
       mandatory = obj_attr.get('mandatory',0)
       
-      #-- Repetitive-Fields.
-      if obj_attr.get('repetitive',0):
-        return self.f_selectRepetitive(self,ob=self,fmName=fmName,elName=elName,value=value,obj_attr=obj_attr,REQUEST=REQUEST) 
-      
       #-- ID-Fields.
       if inputtype == 'identifier':
         if value == '': value = 'e%i'%self.getSequence().nextVal()
@@ -398,10 +394,6 @@ class ObjAttrs:
         if disabled: 
           css += '-disabled'
         return self.f_selectRichtext(self,ob=self,fmName=fmName,elName=elName,cols=50,rows=15,value=value,key=obj_attr['id'],metaObj=metaObj,enabled=enabled,lang=lang,lang_str=lang_str,REQUEST=REQUEST,css=css,wrap=wrap)
-      
-      #-- Color-Fields.
-      elif inputtype == 'color':
-        return self.f_selectColor(self,ob=self,fmName=fmName,elName=elName,value=value,key=obj_attr['id'],lang_str=lang_str,mandatory=mandatory,REQUEST=REQUEST)
       
       #-- Image-Fields.
       elif inputtype == 'image':

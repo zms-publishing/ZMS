@@ -1,5 +1,0 @@
-<dtml-var "getStylesheet()(content,REQUEST)">
-body {
-	background-image:url(<dtml-var spacer_gif>)!important;
-	background-color:white!important;
-}

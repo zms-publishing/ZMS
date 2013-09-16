@@ -172,7 +172,14 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-control', maxlen=30):
-    return self.f_selectInput(self,fmName=fmName,elName=elName,value=value,type=inputtype,lang_str=lang_str,required=required,optpl=optpl,maxlen=maxlen,enabled=enabled,css=css,REQUEST=REQUEST)
+    if inputtype in ['select','multiline']:
+      return self.zmi_input_select(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
+    elif inputtype in ['multiselect']:
+      return self.zmi_input_multiselect(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
+    elif type in ['text']:
+      return self.getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST)
+    else:
+      return self.getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST)
 
 
   # ----------------------------------------------------------------------------

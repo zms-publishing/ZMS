@@ -65,12 +65,51 @@ class ZMSItem(
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
-    manage_tabs = HTMLFile('dtml/object/manage_tabs', globals()) # ZMI Tabulators
-    manage_bodyTop = HTMLFile('dtml/object/manage_bodytop', globals()) # ZMI bodyTop
-    manage_page_request = HTMLFile('dtml/object/manage_page_request', globals()) # ZMI Page Request
-    manage_page_header = HTMLFile('dtml/object/manage_page_header', globals()) # ZMI Page Header
-    manage_page_footer = HTMLFile('dtml/object/manage_page_footer', globals()) # ZMI Page Footer
-    manage_main_iframe = HTMLFile('dtml/ZMSObject/manage_main_iframe', globals()) # ZMI Iframe
+    manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
+    manage_page_header = PageTemplateFile('zpt/deprecated/manage_page_header', globals())
+    manage_tabs = PageTemplateFile('zpt/deprecated/manage_tabs', globals())
+    manage_page_footer = PageTemplateFile('zpt/deprecated/manage_page_footer', globals())
+
+    # --------------------------------------------------------------------------
+    #  ZMSItem.manage_page_request:
+    #
+    #  @param REQUEST
+    # --------------------------------------------------------------------------
+    def manage_page_request(self, *args, **kwargs):
+      request = self.REQUEST
+      RESPONSE = request.RESPONSE
+      SESSION = request.SESSION
+      if not request.get('HTTP_ACCEPT_CHARSET'):
+        request.set('HTTP_ACCEPT_CHARSET','%s;q=0.7,*;q=0.7'%request.get('ZMS_CHARSET','utf-8'))
+      RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime()-10000).toZone('GMT+1').rfc822())
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      request.set( 'preview','preview')
+      request.set( 'ZMS_THIS',self.getSelf())
+      request.set( 'ZMS_ROOT',self.getDocumentElement().absolute_url())
+      request.set( 'ZMS_COMMON','%s/common'%self.getHome().absolute_url())
+      request.set( 'ZMI_TIME',DateTime().timeTime())
+      request.set( 'ZMS_CHARSET',request.get('ZMS_CHARSET','utf-8'))
+      RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
+      request.set('MSIE',request.get('HTTP_USER_AGENT','').find('MSIE')>=0)
+      if (request.get('ZMS_PATHCROPPING',False) or self.getConfProperty('ZMS.pathcropping',0)==1) and request.get('export_format','')=='':
+        base = request.get('BASE0','')
+        if request['ZMS_ROOT'].startswith(base):
+          request.set( 'ZMS_ROOT',request['ZMS_ROOT'][len(base):])
+          request.set( 'ZMS_COMMON',request['ZMS_COMMON'][len(base):])
+      if not request.get( 'lang'):
+        request.set( 'lang',self.getPrimaryLanguage())
+      if not request.get( 'manage_lang'):
+        request.set('manage_lang',SESSION.get('manage_lang',self.get_manage_lang()))
+      SESSION.set('manage_lang',request['manage_lang'])
+      if not request.get('manage_tabs_message'):
+        request.set( 'manage_tabs_message',self.updateVersion(request['lang'],request)+self.getConfProperty('ZMS.manage_tabs_message',''))
+      if request['lang'] not in self.getLanguages(request):
+        request.set('lang',self.getLanguages(request)[0])
+        request.set('manage_lang',self.get_manage_lang())
+      if request['manage_lang'] not in self.getLocale().get_manage_langs():
+        request.set('manage_lang','eng')
+
 
     # --------------------------------------------------------------------------
     #  ZMSItem.display_icon:

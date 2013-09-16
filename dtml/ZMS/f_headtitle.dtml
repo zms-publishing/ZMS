@@ -1,7 +1,0 @@
-<dtml-if "REQUEST.get('op','')=='search'">
-<title><dtml-var "getLangStr('SEARCH_HEADER',lang)"> - [<dtml-var "getTitle(REQUEST)">]</title>
-<dtml-elif "REQUEST.get('op','')=='sitemap'">
-<title>Sitemap - [<dtml-var "getTitle(REQUEST)">]</title>
-<dtml-else>
-<title><dtml-var "getTitle(REQUEST)"></title>
-</dtml-if>

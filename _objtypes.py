@@ -40,17 +40,14 @@ def getHref2Zoom(self, img, REQUEST):
 
 class ObjTypes:
 
-    # Repetitive (Files/Images).
-    # --------------------------
-    f_selectRepetitive = HTMLFile('dtml/objattrs/f_select_repetitive', globals())
-
     # Autocomplete.
     # -------------
     f_selectAutocomplete = HTMLFile('dtml/objattrs/f_select_autocomplete', globals())
 
     # String, Text, Select, Multiple-Select.
     # --------------------------------------
-    f_selectInput = HTMLFile('dtml/objattrs/f_select_input', globals())
+    zmi_input_multiselect = PageTemplateFile('zpt/objattrs/zmi_input_multiselect', globals())
+    zmi_input_select = PageTemplateFile('zpt/objattrs/zmi_input_select', globals())
 
     # Richtext.
     # ---------
@@ -65,10 +62,6 @@ class ObjTypes:
     # Image.
     # ------
     f_selectImage = PageTemplateFile('zpt/objattrs/f_select_image', globals()) 
-
-    # Colors.
-    # -------
-    f_selectColor = HTMLFile('dtml/objattrs/f_select_color', globals())
 
     ############################################################################
     #  dctDisplaytype :

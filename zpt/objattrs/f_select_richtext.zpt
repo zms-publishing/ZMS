@@ -64,11 +64,11 @@ $ZMI.registerReady(function() {
 <div tal:attributes="id python:'zmiRichtextEditor%s'%elName" tal:content="structure python:here.zmi_select_richtext_wysiwyg(here,request,options)">zmi_select_richtext_wysiwyg</div>
 
 <tal:block tal:define="global metaObjAttrId python:'resources';">
-	<tal:block tal:condition="python:not request.has_key('ZMS_INSERT') and metaObjAttrId in here.getMetaobjAttrIds(here.meta_id)">
-		<tal:block tal:define="global
-				metaObjAttr python:here.getMetaobjAttr(here.meta_id,metaObjAttrId);
-				elLabel python:here.getObjAttrLabel(metaObjAttr);
-				dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+[metaObjAttrId])">
+	<tal:block tal:condition="python:metaObjAttrId in here.getMetaobjAttrIds(request.get('ZMS_INSERT',here.meta_id))" tal:define="global
+			dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+[metaObjAttrId])">
+			<tal:block tal:define="global
+					metaObjAttr python:here.getMetaobjAttr(request.get('ZMS_INSERT',here.meta_id),metaObjAttrId);
+					elLabel python:here.getObjAttrLabel(metaObjAttr)">
 						<div class="form-group"  tal:attributes="id python:'tr_%s'%(elName)">
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 								<span tal:content="elLabel">the label</span>
@@ -77,7 +77,7 @@ $ZMI.registerReady(function() {
 								<input class="btn btn-file" type="file" tal:attributes="name python:'resource_%s'%elName"/>
 							</div><!-- .col-lg-10 -->
 						</div><!-- .form-group -->
-		</tal:block>
+			</tal:block>
 	</tal:block>
 </tal:block>
 

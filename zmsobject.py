@@ -123,7 +123,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     f_recordset_init = HTMLFile('dtml/object/f_recordset_init', globals()) # ZMI RecordSet::Init
     f_recordset_nav = HTMLFile('dtml/object/f_recordset_nav', globals()) # ZMI RecordSet::Navigation
-    f_breadcrumbs = HTMLFile('dtml/object/f_breadcrumbs', globals()) # ZMI Breadcrumbs
     preview_html = PageTemplateFile('zpt/object/preview', globals())
     preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())
     f_api_html = PageTemplateFile('zpt/object/f_api', globals())

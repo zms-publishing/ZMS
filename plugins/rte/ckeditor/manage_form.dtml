@@ -187,6 +187,7 @@ function zmiRichtextInit(id) {
 			on:{
 				instanceReady: function(ev) {
 						zmiRichtextResize(id);
+						$('span.cke_button_label.cke_button__source_label').html('');
 					}
 				}
 			});

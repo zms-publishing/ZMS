@@ -18,7 +18,6 @@
 
 # Imports.
 from App.Common import package_home
-from App.special_dtml import HTMLFile
 try: # Zope >= 2.13.0
   from OFS.role import RoleManager
 except: 
@@ -118,10 +117,6 @@ class ZMSContainerObject(
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
         )
-
-    # Interface.
-    # ----------
-    pageelement_TOC = HTMLFile('dtml/ZMSContainerObject/pageelement_toc', globals())
 
     # Management Interface.
     # ---------------------

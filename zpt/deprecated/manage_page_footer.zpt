@@ -1,0 +1,8 @@
+<!-- deprecated/manage_page_footer -->
+
+<tal:block tal:content="structure python:'</div><!-- #zmi-tab -->'">the tab-endtag</tal:block>
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_html_head</tal:block>
+<tal:block tal:content="structure python:'</body>'">the body-endtag</tal:block>
+<tal:block tal:content="structure python:'</html>'">the html-endtag</tal:block>
+
+<!-- /deprecated/manage_page_footer -->

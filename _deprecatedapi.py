@@ -57,8 +57,12 @@ class DeprecatedAPI:
   f_bo_area = '' 
   f_eo_area = '' 
   f_submitBtn = '' 
-  def zmi_form_section_begin(self, *args, **kwargs): return ''
-  def zmi_form_section_end(self, *args, **kwargs): return ''
+  def zmi_form_section_begin(self, *args, **kwargs):
+    return ''
+  def zmi_form_section_end(self, *args, **kwargs):
+    return ''
+  def f_selectInput(self, *args, **kwargs):
+    return here.getSelect(fmName=kwargs['fmName'],elName=kwargs['elName'],value=kwargs['value'],inputtype=kwargs['inputtype'],lang_str=kwargs['lang_str'],required=kwargs['required'],optpl=kwargs['optpl'],enabled=kwargs['enabled'],REQUEST=self.REQUEST)
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.f_headline

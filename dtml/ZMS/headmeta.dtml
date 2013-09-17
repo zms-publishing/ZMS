@@ -1,4 +1,0 @@
-<dtml-try><dtml-var headTitle><dtml-except><dtml-var f_headTitle></dtml-try>
-<dtml-try><dtml-var headMeta_Locale><dtml-except><dtml-var f_headMeta_Locale></dtml-try>
-<dtml-try><dtml-var headMeta_DC><dtml-except><dtml-var f_headMeta_DC></dtml-try>
-<dtml-try><dtml-var headMeta_Spec><dtml-except></dtml-try>

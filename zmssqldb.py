@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
@@ -123,11 +122,7 @@ class ZMSSqlDb(ZMSObject):
 
     # Management Interface.
     # ---------------------
-    actions = HTMLFile('dtml/ZMSSqlDb/actions', globals())
     input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
-    input_details = HTMLFile('dtml/ZMSSqlDb/input_details', globals())
-    browse_db = HTMLFile('dtml/ZMSSqlDb/browse_db', globals())
-    intersection_sql = HTMLFile('dtml/ZMSSqlDb/intersection_sql', globals())
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())

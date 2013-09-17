@@ -494,10 +494,10 @@ class ZMS(
     f_standard_html_request = HTMLFile('dtml/ZMS/f_standard_html_request', globals()) # f_standard_html_request
     f_standard_html_header = HTMLFile('dtml/ZMS/f_standard_html_header', globals()) # f_standard_html_header
     f_standard_html_footer = HTMLFile('dtml/ZMS/f_standard_html_footer', globals()) # f_standard_html_footer
-    headScript = HTMLFile('dtml/ZMS/headscript', globals()) # Head.Script
-    headMeta = HTMLFile('dtml/ZMS/headmeta', globals()) # Head.Meta
-    headCStyleSheet = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Reference
-    headCSS = HTMLFile('dtml/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Referenz
+    headScript = PageTemplateFile('zpt/ZMS/headscript', globals()) # Head.Script
+    headMeta = PageTemplateFile('zpt/ZMS/headmeta', globals()) # Head.Meta
+    headCStyleSheet = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Reference
+    headCSS = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Referenz
 
     # Enumerations.
     # -------------

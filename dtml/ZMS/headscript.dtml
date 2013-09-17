@@ -1,9 +1,0 @@
-<dtml-if "hasattr(getHome(),'headScript')"
-><dtml-with "getHome()"
-><dtml-var headScript
-></dtml-with
-><dtml-else>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.version')">"></script>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.version')">"></script>
-<script type="text/javascript" charset="UTF-8" src="<dtml-var "getConfProperty('jquery.plugin.extensions')">"></script>
-</dtml-if>

@@ -9,9 +9,5 @@
       name="zms_"
       directory="plugins/www"
       />
-  <browser:resourceDirectory
-      name="zms_etc_"
-      directory="etc/www"
-      />
 
 </configure>

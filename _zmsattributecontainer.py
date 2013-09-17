@@ -22,7 +22,7 @@ __doc__ = """ZMS product module."""
 __version__ = '0.1' 
 
 # Imports.
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 import urllib
 import time
@@ -71,7 +71,7 @@ class ZMSAttributeContainer(
 
   # Management Interface.
   # ---------------------
-  manage_propertiesForm = HTMLFile('dtml/objattrs/manage_propertiesform', globals())
+  manage_propertiesForm = PageTemplateFile('zpt/objattrs/manage_propertiesform', globals())
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

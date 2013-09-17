@@ -439,16 +439,12 @@ class ObjAttrs:
       
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete','multiautocomplete']:
-        css = 'form-control'
-        if disabled: css += '-disabled'
-        return self.f_selectAutocomplete(self,fmName=fmName,elName=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled,css=css,REQUEST=REQUEST)
+        return self.zmi_input_autocomplete(self,name=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled)
       
       #-- Select-Fields.
       elif inputtype in ['multiselect','select']:
-        css = 'form-control'
-        if disabled: css += '-disabled'
         optpl = self.getObjOptions(obj_attr,REQUEST)
-        return self.getSelect(fmName,elName,value,inputtype,lang_str,mandatory,optpl,enabled,REQUEST,css)
+        return self.getSelect(fmName,elName,value,inputtype,lang_str,mandatory,optpl,enabled,REQUEST)
       
       #-- Input-Fields.
       else: 

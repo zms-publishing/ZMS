@@ -62,13 +62,17 @@ function zmiAutocompleteDefaultFormatter(l, q) {
 }
 
 function zmiAutocomplete(s, o) {
-	$(s).autocomplete(o)
-	.data( "autocomplete" )._renderItem = function( ul, item ) {
-			return $( "<li></li>" )
-				.data( "item.autocomplete", item )
-				.append( "<a>" + item.label + "</a>" )
-				.appendTo( ul );
-	};
+	$ZMI.setCursorWait("zmiAutocomplete");
+	pluginUI(s,function() {
+		$ZMI.setCursorAuto("zmiAutocomplete");
+		$(s).autocomplete(o)
+		.data("ui-autocomplete")._renderItem = function( ul, item ) {
+				return $( "<li></li>" )
+					.data( "item.autocomplete", item )
+					.append( "<a>" + item.label + "</a>" )
+					.appendTo( ul );
+			};
+	});
 }
 
 

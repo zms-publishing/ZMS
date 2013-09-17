@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
 import _confmanager
@@ -42,7 +41,7 @@ class ObjTypes:
 
     # Autocomplete.
     # -------------
-    f_selectAutocomplete = HTMLFile('dtml/objattrs/f_select_autocomplete', globals())
+    zmi_input_autocomplete = PageTemplateFile('zpt/objattrs/zmi_input_autocomplete', globals())
 
     # String, Text, Select, Multiple-Select.
     # --------------------------------------
@@ -54,6 +53,14 @@ class ObjTypes:
     f_selectRichtext = PageTemplateFile('zpt/objattrs/f_select_richtext', globals())
     zmi_select_richtext_standard = PageTemplateFile('zpt/objattrs/zmi_select_richtext_standard', globals())
     zmi_select_richtext_wysiwyg = PageTemplateFile('zpt/objattrs/zmi_select_richtext_wysiwyg', globals())
+
+    # Displaytype.
+    # ------------
+    zmi_displaytype_top = PageTemplateFile('zpt/objattrs/zmi_displaytype_top', globals())
+    zmi_displaytype_right = PageTemplateFile('zpt/objattrs/zmi_displaytype_right', globals())
+    zmi_displaytype_bottom = PageTemplateFile('zpt/objattrs/zmi_displaytype_bottom', globals())
+    zmi_displaytype_left = PageTemplateFile('zpt/objattrs/zmi_displaytype_left', globals())
+    zmi_displaytype_export = PageTemplateFile('zpt/objattrs/zmi_displaytype_export', globals())
 
     # File.
     # -----
@@ -110,7 +117,7 @@ class ObjTypes:
         try:
           export_format = int( REQUEST.get('export_format'))
         except:
-          displaytype = 'export_format'
+          displaytype = 'export'
       
       # Image.
       # ------
@@ -230,8 +237,8 @@ class ObjTypes:
             imgtag = '<a href="%s" class="fancybox">%s</a>'%(imgzoomobj.getHref(REQUEST),imgtag)
       
       # Build <html>-presentation.
-      dtml = HTMLFile('dtml/objattrs/displaytype/displaytype_%s'%displaytype, globals())
-      html = dtml(self 
+      renderer = getattr(self,'zmi_displaytype_%s'%displaytype)
+      html = renderer(self 
           ,ob=self 
           ,img=imgtag 
           ,text=text 
@@ -240,8 +247,7 @@ class ObjTypes:
           ,height=height
           ,width=width
           ,align=align
-          ,float=align.find( '_FLOAT') >= 0
-          ,REQUEST=REQUEST)
+          ,float=align.find( '_FLOAT') >= 0)
       
       # Return <html>-presentation.
       return html

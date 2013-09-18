@@ -439,6 +439,7 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .center h1 small{display:inline-block;margin-top:0.5em;line-height:1.75em;font-size:small;color:#666666;font-style:italic}
 .center .form-label{padding:.5em;font-size:large}
 .form-help{min-height:20px;background-color:rgb(245,245,245);border:1px solid rgb(227,227,227);border-radius:3px;margin-bottom:20px;box-shadow:0px 1px 1px rgba(0,0,0,0.05) inset;padding:9px}
+.ui-autocomplete-input{background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat}
 .form-small{font-size:smaller}
 select.form-small{width:auto;font-size:12px}
 .nav-tabs{margin-bottom:0;margin-top:1em}

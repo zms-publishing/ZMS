@@ -212,6 +212,20 @@ class VersionItem:
 
 
     # --------------------------------------------------------------------------
+    #  VersionItem.getVersionNr
+    #  
+    #  Returns version-nr.
+    # --------------------------------------------------------------------------
+    def getVersionNr(self, d=None):
+        if d is None:
+            d= {
+                'master_version':self.attr('master_version'),
+                'major_version':self.attr('major_version'),
+                'minor_version':self.attr('minor_version'),
+                }
+        return 'v.%i.%i.%i'%(d.get('master_version',0),d.get('major_version',0),d.get('minor_version',0))
+
+    # --------------------------------------------------------------------------
     #  VersionItem.getVersionItems
     #  
     #  Returns all version-items.

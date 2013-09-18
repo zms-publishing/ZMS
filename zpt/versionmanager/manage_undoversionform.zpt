@@ -13,12 +13,33 @@
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
 	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
 
-@TODO: implement here
+	<tal:block tal:define="global
+			size python:len(change_history);
+			pageSize python:request.get('qsize',10);
+			pageIndex python:request.get('pageIndex',0);
+			pageStart python:pageIndex*pageSize;
+			pageEnd python:min(pageStart+pageSize,size)">
 
-	change_history=<tal:block tal:content="change_history"></tal:block>
-	<tal:block tal:repeat="change_item change_history">
-		change_item=<tal:block tal:content="change_item"></tal:block>
-	</tal:block>
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+
+	<ul class="zmi-container">
+		<li class="zmi-item" tal:repeat="change_item python:change_history[pageStart:pageEnd]">
+			<div class="center">
+			</div><!-- .center -->
+			<div class="right">
+				<div class="zmi-manage-main-change">
+					<tal:block tal:content="python:here.getLangFmtDate(change_item['version_dt'],request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
+					<tal:block tal:content="python:change_item['version_uid']">version_uid</tal:block>
+					<tal:block tal:content="python:here.getVersionNr(change_item)">version_nr</tal:block>
+				</div><!-- .zmi-manage-main-change -->
+			</div><!-- .right -->
+			<div class="clearboth"></div>
+		</li>
+	</ul><!-- .zmi-container -->
+
+		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
+
+</tal:block>
 
 </form><!-- .form-horizontal -->
 

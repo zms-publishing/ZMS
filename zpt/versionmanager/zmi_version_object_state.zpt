@@ -65,7 +65,7 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:block
 ><tal:block tal:condition="python:here.getHistory()"
-	><tal:block tal:content="python:'v.%i.%i.%i'%(here.attr('master_version'),here.attr('major_version'),here.attr('minor_version'))">v.#.#.#</tal:block
+	><tal:block tal:content="python:here.getVersionNr()">v.#.#.#</tal:block
 	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_live_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_LIVE')"></tal:block
 	><tal:block tal:condition="python:request.get('ZMS_VERSION_%s'%id,'').find(str(here.version_work_id))>=0" tal:content="python:'- %s'%here.getZMILangStr('TAB_PREVIEW')"></tal:block
 ></tal:block

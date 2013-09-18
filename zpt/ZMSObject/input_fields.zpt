@@ -15,15 +15,17 @@
 				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block
 			></a>
-			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="pull-left">
+				<tal:block tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
+				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+			</div>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<div class="form-group">
 					<div class="col-sm-12">
-						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block
-						><tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')"
+						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')"
 							><span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 						</tal:block>
 						<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,

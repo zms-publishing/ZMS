@@ -1067,7 +1067,7 @@ ZMI.prototype.enableInteractions = function(b) {
 	$("div#progressbox").remove();
 }
 
-ZMI.prototype.disableInteractions(b) {
+ZMI.prototype.disableInteractions = function(b) {
 	if (!b || !zmiDisableInteractionsAllowed) {
 		zmiDisableInteractionsAllowed = true;
 		return;

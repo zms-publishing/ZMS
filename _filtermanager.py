@@ -18,7 +18,7 @@
 
 # Imports.
 from App.Common import package_home
-from App.special_dtml import HTMLFile
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -617,7 +617,7 @@ class FilterManager:
 
     # Management Interface.
     # ---------------------
-    manage_importexportDebugFilter = HTMLFile('dtml/ZMSContainerObject/manage_importexportdebugfilter', globals())
+    manage_importexportDebugFilter = PageTemplateFile('zpt/ZMSContainerObject/manage_importexportdebugfilter', globals())
 
 
     # --------------------------------------------------------------------------

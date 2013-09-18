@@ -18,7 +18,6 @@
 
 # Imports.
 from DateTime.DateTime import DateTime
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
@@ -61,7 +60,6 @@ class ZMSItem(
     # Templates.
     # ----------
     zmi_body_content = PageTemplateFile('zpt/object/zmi_body_content', globals())
-    f_bodyContent = zmi_body_content
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
@@ -75,28 +73,32 @@ class ZMSItem(
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def manage_page_request(self, *args, **kwargs):
+    def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
-      RESPONSE = request.RESPONSE
-      SESSION = request.SESSION
-      if not request.get('HTTP_ACCEPT_CHARSET'):
-        request.set('HTTP_ACCEPT_CHARSET','%s;q=0.7,*;q=0.7'%request.get('ZMS_CHARSET','utf-8'))
-      RESPONSE.setHeader('Expires',DateTime(DateTime().timeTime()-10000).toZone('GMT+1').rfc822())
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
       request.set( 'preview','preview')
       request.set( 'ZMS_THIS',self.getSelf())
-      request.set( 'ZMS_ROOT',self.getDocumentElement().absolute_url())
-      request.set( 'ZMS_COMMON','%s/common'%self.getHome().absolute_url())
+      request.set( 'ZMS_DOCELMNT',self.breadcrumbs_obj_path()[0])
+      request.set( 'ZMS_ROOT',request['ZMS_DOCELMNT'].absolute_url())
+      request.set( 'ZMS_COMMON',getattr(self,'common',self.getHome()).absolute_url())
       request.set( 'ZMI_TIME',DateTime().timeTime())
       request.set( 'ZMS_CHARSET',request.get('ZMS_CHARSET','utf-8'))
-      RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
-      request.set('MSIE',request.get('HTTP_USER_AGENT','').find('MSIE')>=0)
+      if not request.get('HTTP_ACCEPT_CHARSET'):
+        request.set('HTTP_ACCEPT_CHARSET','%s;q=0.7,*;q=0.7'%request['ZMS_CHARSET'])
       if (request.get('ZMS_PATHCROPPING',False) or self.getConfProperty('ZMS.pathcropping',0)==1) and request.get('export_format','')=='':
         base = request.get('BASE0','')
         if request['ZMS_ROOT'].startswith(base):
           request.set( 'ZMS_ROOT',request['ZMS_ROOT'][len(base):])
           request.set( 'ZMS_COMMON',request['ZMS_COMMON'][len(base):])
+    
+    def manage_page_request(self, *args, **kwargs):
+      request = self.REQUEST
+      RESPONSE = request.RESPONSE
+      SESSION = request.SESSION
+      self.zmi_page_request()
+      RESPONSE.setHeader('Expires',DateTime(request['ZMI_TIME']-10000).toZone('GMT+1').rfc822())
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
       if not request.get( 'lang'):
         request.set( 'lang',self.getPrimaryLanguage())
       if not request.get( 'manage_lang'):
@@ -109,6 +111,14 @@ class ZMSItem(
         request.set('manage_lang',self.get_manage_lang())
       if request['manage_lang'] not in self.getLocale().get_manage_langs():
         request.set('manage_lang','eng')
+
+    def f_standard_html_request(self, *args, **kwargs):
+      request = self.REQUEST
+      self.zmi_page_request()
+      if not request.get( 'lang'):
+        request.set( 'lang',self.getLanguage(request))
+      if not request.get( 'manage_lang'):
+        request.set( 'manage_lang',self.getLanguage(request))
 
 
     # --------------------------------------------------------------------------

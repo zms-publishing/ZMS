@@ -103,6 +103,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # ZPT Templates.
     # --------------
+    zmi_navbar_brand = PageTemplateFile('zpt/common/zmi_navbar_brand', globals())
     zmi_icon = PageTemplateFile('zpt/common/zmi_icon', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())

@@ -9,26 +9,28 @@
 <script>
 
 function onExportFormatChange(el) {
-  var v = $(el).val();
-  if ( v == '1') {
-    $('#div_charset').show( 'normal');
-  }
-  else {
-    $('#div_charset').hide( 'normal');
-  }
-  if ( isNaN(v)) {
-    $('#div_debug').show( 'normal');
-  }
-  else {
-    $('#div_debug').hide( 'normal');
-  }
+	var v = $(el).val();
+	if ( v == '1') {
+		$('#div_charset').show( 'normal');
+	}
+	else {
+		$('#div_charset').hide( 'normal');
+	}
+	if ( isNaN(v)) {
+		$('#div_debug').show( 'normal');
+	}
+	else {
+		$('#div_debug').hide( 'normal');
+	}
 }
 
 </script>
 
 <tal:block tal:define="global
 		filterIds python:here.getFilterIds();
-		filters python:map(lambda x: here.getFilter(x), filterIds);
+		filters python:filter(lambda x: here.meta_id in x['meta_types']
+				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),filter.get('roles',[])))>0)
+				,map(lambda x: here.getFilter(x), filterIds));
 		importFilters python:filter(lambda x: len(here.intersection_list([x['format']],['import']))>0, filters);
 		exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0, filters)">
 
@@ -39,6 +41,17 @@ function onExportFormatChange(el) {
 		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
 		<div class="col-lg-10">
 			<input class="btn btn-file" name="file" type="file" />
+		</div><!-- .col-lg-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group" tal:condition="python:len(importFilters)>0">
+		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
+		<div class="col-lg-10">
+			<select class="form-control" name="filter" onchange="onExportFormatChange(this);">
+				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
+				<tal:block tal:repeat="importFilter importFilters">
+					<option tal:attributes="value importFilter/id" tal:content="importFilter/name">filter</option>
+				</tal:block>
+			</select>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
@@ -54,14 +67,44 @@ function onExportFormatChange(el) {
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
 	<div class="form-group">
 		<label class="col-lg-2 control-label mandatory" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
-		<div class="col-lg-10">
-			<select class="form-control" name="export_format" onchange="onExportFormatChange(this);" style="max-width:21em">
+		<div class="col-lg-5">
+			<select class="form-control" name="export_format" onchange="onExportFormatChange(this);">
 				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
 				<option value="2">XML</option>
 				<option value="4">XML (incl. embedded objects)</option>
 				<option value="0">ZEXP</option>
 				<option value="1">HTML (<tal:block tal:content="python:here.getZMILangStr('ATTR_STATIC')">static</tal:block>)</option>
+				<option value="" tal:condition="python:len(exportFilters)>0">----- <tal:block tal:content="python:here.getZMILangStr('TAB_FILTER')">filter</tal:block> -----</option>
+				<tal:block tal:repeat="exportFilter exportFilters">
+					<option tal:attributes="value exportFilter/id" tal:content="exportFilter/name">filter</option>
+				</tal:block>
 			</select>
+		</div><!-- .col-lg-5 -->
+		<div id="div_charset" class="col-lg-3 ui-helper-hidden">
+			<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ZMS_CHARSET',value='utf-8',inputtype='select',lang_str='Encoding',required=1,optpl=here.enumManager.getValues('charset'), enabled=1, REQUEST=request)"></tal:block>
+		</div><!-- .col-lg-3 -->
+		<div id="div_debug" class="col-lg-2 ui-helper-hidden">
+			<tal:block tal:condition="python:'zms_log' in here.getDocumentElement().objectIds()">
+				<input type="checkbox" name="debug:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('debug',1)==1)]">
+				Debug
+			</tal:block>
+		</div><!-- .col-lg-2 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
+		<div class="col-lg-10">
+			<div>
+				<input type="radio" name="download:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('download',1)==1)]" onclick="this.form.target='_blank'" />
+				Download to local machine
+			</div>
+			<div>
+				<input type="radio" name="download:int" value="0" tal:attributes="checked python:['','checked'][int(request.get('download',1)==0)]" onclick="this.form.target='_blank'" />
+				Save to file on server
+			</div>
+			<div>
+				<input type="checkbox" name="preview" value="preview">
+				Preview
+			</div>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">

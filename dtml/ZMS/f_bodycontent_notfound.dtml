@@ -1,7 +1,0 @@
-<h2>Site Error</h2>
-<p>An error was encountered while looking up this internal resource.</p>
-<p><strong>Internal resource not found</strong></p>
-Sorry, the requested internal resource has moved or does not exist anymore.
-<p><b>Resource:</b> <dtml-var "REQUEST.form.get('url')"></p>
-<hr noshade="noshade"/>
-<p>If the error persists please contact the <a href="mailto:<dtml-var "encrypt_ordtype(getConfProperty('ZMSAdministrator.email',''))">">site maintainer</a>. Thank you for your patience.</p>

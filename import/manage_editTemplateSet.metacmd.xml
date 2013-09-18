@@ -230,10 +230,7 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 	<div class="navbar navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container" style="overflow:hidden;height:2em;">
-				<a class="brand" href="#" onclick="window.open('http://www.zms-publishing.com');" tal:attributes="title python:'%s - ZOPE2-based contentmanagement system for science, technology and medicine'%here.zms_version()">
-					<span class="product">ZMS2</span>
-					<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
-				</a>
+				<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 				<ul class="nav pull-right">
 					<li><a href="manage_main" target="_top"><i class="icon-signout"></i><tal:block tal:content="python:unicode(here.getZMILangStr('BACK'),'utf-8')">Back</tal:block></a></li>
 				</ul>

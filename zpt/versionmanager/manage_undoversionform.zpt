@@ -6,34 +6,21 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<style>
-.form-help {
-	margin:1em!important;
-	background-color:#EEE;
-}
-div#zmi-tab > form {
-	margin:0 1em 1em 1em!important;
-}
-div#zmi-tab > form > table {
-	margin-bottom:1em!important;
-}
-div.zmi-form-section.ui-widget-content.ui-corner-all {
-	background:transparent!important;
-	border:transparent!important;
-}
-.zmiNeutralColorLight0 {
-	background-color:#fdfdfd!important;
-}
-.zmiNeutralColorLight1 {
-	background-color:#eeeeee!important;
-}
-.zmiHSep,
-.zmiNeutralColorMedium0,
-.zmiNeutralColorWhite {
-	background:transparent!important;
-}
-</style>
-<tal:block tal:content="structure python:unicode(here.manage_UndoVersionFormDTML(here,request)).encode('latin-1')">manage_UndoVersionFormDTML</tal:block>
+<form class="form-horizontal" tal:define="global
+		level python:here.getLevel();
+		obj_versions python:here.getObjVersions();
+		change_history python:here.attr('change_history')">
+	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
+	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
+
+@TODO: implement here
+
+	change_history=<tal:block tal:content="change_history"></tal:block>
+	<tal:block tal:repeat="change_item change_history">
+		change_item=<tal:block tal:content="change_item"></tal:block>
+	</tal:block>
+
+</form><!-- .form-horizontal -->
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

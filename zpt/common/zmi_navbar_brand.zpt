@@ -1,0 +1,4 @@
+<a class="navbar-brand" href="#" onclick="window.open('http://www.zms-publishing.com');" title="ZMS3 - ZOPE2-based contentmanagement system for science, technology and medicine">
+	<span class="product">ZMS3</span>
+	<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
+</a>

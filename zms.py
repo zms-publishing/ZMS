@@ -478,30 +478,25 @@ class ZMS(
 
     # Interface.
     # ----------
-    index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
-    f_index_html = HTMLFile('dtml/ZMS/index', globals()) # index_html
-    f_inactive_html = HTMLFile('dtml/ZMS/f_inactive', globals()) # inactive_html
+    index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
+    f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
+    zmi_bodycontent_inactive = PageTemplateFile('zpt/ZMS/zmi_bodycontent_inactive', globals())
     zmi_body_content_sitemap = PageTemplateFile('zpt/ZMS/zmi_bodycontent_sitemap', globals())
     zmi_body_content_search = PageTemplateFile('zpt/ZMS/zmi_bodycontent_search', globals())
     zmi_body_content_not_found = PageTemplateFile('zpt/ZMS/zmi_bodycontent_not_found', globals())
-    f_bodyContent_Sitemap = zmi_body_content_sitemap
-    f_bodyContent_Search = zmi_body_content_search
-    f_bodyContent_NotFound = zmi_body_content_not_found
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
     f_headTitle = PageTemplateFile('zpt/ZMS/f_headtitle', globals()) # Head.Title
-    f_headMeta_DC = PageTemplateFile('zpt/ZMS/f_headmeta_dc', globals()) # Head.Meta.DC
+    f_headMeta_DC = PageTemplateFile('zpt/ZMS/f_headmeta_dc', globals()) # Head.Meta.DC (Dublic-Core))
     f_headMeta_Locale = PageTemplateFile('zpt/ZMS/f_headmeta_locale', globals()) # Head.Locale (Content-Type & Charset)
-    f_standard_html_request = HTMLFile('dtml/ZMS/f_standard_html_request', globals()) # f_standard_html_request
-    f_standard_html_header = HTMLFile('dtml/ZMS/f_standard_html_header', globals()) # f_standard_html_header
-    f_standard_html_footer = HTMLFile('dtml/ZMS/f_standard_html_footer', globals()) # f_standard_html_footer
+    f_standard_html_header = PageTemplateFile('zpt/ZMS/f_standard_html_header', globals())
+    f_standard_html_footer = PageTemplateFile('zpt/ZMS/f_standard_html_footer', globals())
     headScript = PageTemplateFile('zpt/ZMS/headscript', globals()) # Head.Script
     headMeta = PageTemplateFile('zpt/ZMS/headmeta', globals()) # Head.Meta
-    headCStyleSheet = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Reference
-    headCSS = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Template_L1: CSS-Referenz
+    headCStyleSheet = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Head.CStyleSheet
+    headCSS = PageTemplateFile('zpt/ZMS/headcstylesheet', globals()) # Head.CSS
 
     # Enumerations.
     # -------------
-    browse_enum = HTMLFile('dtml/ZMS/browse_enum', globals()) 
     enumManager = _enummanager.EnumManager()
 
 

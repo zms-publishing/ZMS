@@ -391,7 +391,11 @@ class Exportable(_filtermanager.FilterItem):
         html += '<title>%s</title>\n'%self.getTitle(REQUEST)
         html += '</head>\n'
         html += '<body>\n'
-      html += self.printHtml( level, _globals.MySectionizer(), REQUEST, deep)
+      print_html = self.printHtml( level, _globals.MySectionizer(), REQUEST, deep)
+      try:
+        html += print_html
+      except:
+        html += _globals.writeError(self,"[toXhtml]: can't append printHtml")
       if REQUEST.has_key( 'ZMS_PAGE_HTML_FOOTER'):
         html += getattr( self, REQUEST.get( 'ZMS_PAGE_HTML_FOOTER'))( self, REQUEST)
       else:

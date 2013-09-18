@@ -22,9 +22,10 @@ $(function(){
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {
+			var $single_line = $(this);
 			var $textarea = $('textarea',this);
 			$textarea.prop({rows:1,wrap:'off'});
-			if ($(this).hasClass("zmi-nodes")) {
+			if ($single_line.hasClass("zmi-nodes")) {
 				$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 			}
 			if ($("span.input-group-addon",this).length==0) {
@@ -43,24 +44,23 @@ $(function(){
 							case 1:
 								var html = '';
 								html = html
-									+ '<div id="zmi-single-line-edit">'
+									+ '<div id="zmi-single-line-edit" class="inner">'
 										+ '<form class="form-horizontal" name="zmi-single-line-form">';
-								if ($(this).closest("div.single-line").hasClass("zmi-nodes")) {
+								if ($single_line.hasClass("zmi-nodes")) {
 									html = html
 											+ '<div class="col-lg-10">'
 												+ '<div class="input-group">'
-													+ '<input type="text" name="zmi-nodespicker-url-input" class="url-input">'
+													+ '<input class="form-control" type="text" name="zmi-nodespicker-url-input" class="url-input">'
 													+ '<span class="input-group-addon" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
 												+ '</div><!-- .input-append -->'
 											+ '</div><!-- .col-lg-10 -->';
 								}
 								html = html
-											+ '<textarea style="width:98%" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
+											+ '<textarea class="form-control" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
 										+ '</form>'
 									+ '</div><!-- #zmi-single-line-edit -->';
-								$('#zmi-single-line-edit').remove();
-								$('body').append(html);
-								zmiModal('#zmi-single-line-edit',{
+								zmiModal(null,{
+									body:html,
 									resizable:true,
 									title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
 									resize: function( event, ui ) {

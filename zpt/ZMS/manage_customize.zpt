@@ -32,6 +32,7 @@ $ZMI.registerReady(function(){
 		<li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
 		<li><a href="#History" data-toggle="tab">History</a></li>
 		<li><a href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
+		<li><a href="#Instance" data-toggle="tab">Instance</a></li>
 	</ul>
 	<div class="tab-content">
 
@@ -369,7 +370,7 @@ $ZMI.registerReady(function(){
 						<input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" />
 					</div>
 					<div class="pull-left">
-						<div class="input-append zmi-nodes">
+						<div class="single-line input-append zmi-nodes">
 							<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 						</div>
 					</div>
@@ -416,6 +417,26 @@ $ZMI.registerReady(function(){
 				<div class="col-sm-4">&nbsp;</div>
 				<div class="col-sm-8">
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+				</div>
+			</div><!-- .form-group -->
+		</form>
+		</div>
+
+		<div class="tab-pane" id="Instance">
+		<form class="form-horizontal" name="InstanceForm">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+			<input type="hidden" name="key" value="Instance" />
+			<legend>Instance</legend>
+			<div class="form-group">
+				<label class="col-sm-4 control-label" for="pil">ZMS Version</label>
+				<div class="col-sm-8">
+					<p class="form-control-static" tal:content="python:here.zms_version()">zms_version</p>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label class="col-sm-4 control-label" for="pil">Product Home</label>
+				<div class="col-sm-8">
+					<p class="form-control-static" tal:content="python:here.getPRODUCT_HOME()">PROCUCT_HOME</p>
 				</div>
 			</div><!-- .form-group -->
 		</form>

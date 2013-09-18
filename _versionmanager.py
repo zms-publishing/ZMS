@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import copy
@@ -1043,9 +1042,7 @@ class VersionItem:
     #
     #  Undo version changes.
     ############################################################################
-    manage_VersionLangModified = HTMLFile('dtml/versionmanager/manage_versionlangmodified', globals())
     manage_UndoVersionForm = PageTemplateFile('zpt/versionmanager/manage_undoversionform', globals())
-    manage_UndoVersionFormDTML = HTMLFile('dtml/versionmanager/manage_undoversionform_dtml', globals())
     def manage_UndoVersion(self, lang, REQUEST):
       """ VersionItem.manage_UndoVersion """
       message = ''

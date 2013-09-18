@@ -156,7 +156,7 @@ $ZMI.registerReady(function(){
 			<div class="form-group">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
 				<div class="col-lg-10">
-					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.filter.')" onmouseover="zmiExpandConfFiles(this,'.filter.')">
+					<select class="form-control" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.filter.')" onmouseover="zmiExpandConfFiles(this,'.filter.')">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 					</select>
 				</div><!-- .col-lg-10 -->
@@ -178,11 +178,11 @@ $ZMI.registerReady(function(){
 			<div class="horizontal-group">
 				<div class="form-group inpId">
 					<label for="inpId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-					<div class="col-lg-10"><input type="text" id="inpId" name="inpId" tal:attributes="value filter/id"/></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><input class="form-control" type="text" id="inpId" name="inpId" tal:attributes="value filter/id"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group inpName">
 					<label for="inpName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-					<div class="col-lg-10"><input type="text" id="inpName" name="inpName" tal:attributes="value filter/name"/></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><input class="form-control" type="text" id="inpName" name="inpName" tal:attributes="value filter/name"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group">
 					<div class="controls save">
@@ -196,7 +196,7 @@ $ZMI.registerReady(function(){
 				<div class="form-group inpFormat">
 					<label for="inpFormat" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">Format</span></label>
 					<div class="col-lg-10">
-						<select id="inpFormat" name="inpFormat">
+						<select class="form-control" id="inpFormat" name="inpFormat">
 						<tal:block tal:repeat="format python:[
 								['import', 'Import' ],
 								['export', 'Export' ],
@@ -212,7 +212,7 @@ $ZMI.registerReady(function(){
 				<div class="form-group inpContentType">
 					<label for="inpContentType" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 					<div class="col-lg-10">
-						<select id="inpContentType" name="inpContentType">
+						<select class="form-control" id="inpContentType" name="inpContentType">
 							<tal:block tal:repeat="content_type python:here.enumManager.getValues('content_type')">
 								<option tal:attributes="value python:content_type[0]; selected python:['','selected'][int(content_type[0]==filter.get('content_type'))]" tal:content="python:content_type[1]">the content-type</option>
 							</tal:block>
@@ -224,12 +224,12 @@ $ZMI.registerReady(function(){
 			<div class="horizontal-group">
 				<div class="form-group inpDescription">
 					<label for="inpDescription" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</span></label>
-					<div class="col-lg-10"><textarea name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><textarea class="form-control" name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group inpRoles">
 					<label for="inpDescription" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
 					<div class="col-lg-10">
-						<select id="inpRoles" name="inpRoles:list" multiple="multiple">
+						<select class="form-control" id="inpRoles" name="inpRoles:list" multiple="multiple">
 							<tal:block tal:repeat="role python:here.userdefined_roles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%role.upper(); lang_str python:here.getZMILangStr(lang_key)">
 								<option tal:attributes="value role; selected python:['','selected'][int(role in filter.get('roles',[]))]" tal:content="python:[lang_str,role][int(lang_key==lang_str)]">the role</option>
 							</tal:block></tal:block>
@@ -239,7 +239,7 @@ $ZMI.registerReady(function(){
 				<div class="form-group inpMetaTypes">
 					<label for="inpDescription" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</span></label>
 					<div class="col-lg-10">
-						<select id="inpMetaTypes" name="inpMetaTypes:list" multiple="multiple">
+						<select class="form-control" id="inpMetaTypes" name="inpMetaTypes:list" multiple="multiple">
 							<tal:block tal:repeat="meta_id python:here.getMetaobjIds()">
 								<option tal:attributes="value meta_id; selected python:['','selected'][int(meta_id in filter.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_id)">the meta-type</option>
 							</tal:block>
@@ -311,11 +311,11 @@ $ZMI.registerReady(function(){
 			<div class="horizontal-group">
 				<div class="form-group inpId">
 					<label for="inpId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-					<div class="col-lg-10"><input type="text" id="inpId" name="inpId" tal:attributes="value process/id"/></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><input class="form-control" type="text" id="inpId" name="inpId" tal:attributes="value process/id"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group inpName">
 					<label for="inpName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-					<div class="col-lg-10"><input type="text" id="inpName" name="inpName" tal:attributes="value process/name"/></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><input class="form-control" type="text" id="inpName" name="inpName" tal:attributes="value process/name"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group">
 					<div class="controls save">
@@ -328,7 +328,7 @@ $ZMI.registerReady(function(){
 			<div class="horizontal-group">
 				<div class="form-group inpCommand">
 					<label for="inpCommand" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_COMMANDLINE')">Commandline</span></label>
-					<div class="col-lg-10"><textarea id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div><!-- .col-lg-10 -->
+					<div class="col-lg-10"><textarea class="form-control" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 			</div><!-- .horizontal-group -->
 			<div style="clear:both;">&nbsp;</div>
@@ -342,11 +342,11 @@ $ZMI.registerReady(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input type="text" id="newId" name="newId" value="AC_"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control" type="text" id="newId" name="newId" value="AC_"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-lg-10">
@@ -364,16 +364,16 @@ $ZMI.registerReady(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input type="text" id="newId" name="newId" value="TR_"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control" type="text" id="newId" name="newId" value="TR_"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newType">
 				<label for="newType" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-lg-10">
-					<select name="newType">
+					<select class="form-control" name="newType">
 						<tal:block tal:repeat="meta_type python:['External Method','process','Script (Python)']">
 							<option tal:attributes="value meta_type" tal:content="python:meta_type.capitalize()">the meta_type</option>
 						</tal:block>

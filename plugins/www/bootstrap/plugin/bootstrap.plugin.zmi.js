@@ -1054,13 +1054,11 @@ $(function() {
 var zmiDisableInteractionsAllowed = true;
 
 $(function() {
-	// preload image
-	// new Image().src = "/misc_/zms/loading_16x16.gif";
-	// Disable
-	$(window).unload(function() {zmiDisableInteractions(true)});
+	// Disable on unload
+	$(window).unload(function() {$ZMI.disableInteractions(true)});
 });
 
-function zmiEnableInteractions(b) {
+ZMI.prototype.enableInteractions = function(b) {
 	// Set wait-cursor.
 	$ZMI.setCursorAuto("zmiEnableInteractions");
 	// Create semi-transparent overlay
@@ -1068,8 +1066,8 @@ function zmiEnableInteractions(b) {
 	// Create progress-box.
 	$("div#progressbox").remove();
 }
-  
-function zmiDisableInteractions(b) {
+
+ZMI.prototype.disableInteractions(b) {
 	if (!b || !zmiDisableInteractionsAllowed) {
 		zmiDisableInteractionsAllowed = true;
 		return;

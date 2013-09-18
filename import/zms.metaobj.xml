@@ -1006,7 +1006,7 @@ return ''
                   <item key="custom">
                     <data content_type="text/css" filename="default.css" type="file"><![CDATA[a.fancybox img {
 	padding:1px 1px 21px 1px;
-	background:transparent url(<dtml-var MISC_ZMS>zoom.gif) bottom right no-repeat;
+	background:transparent url(/misc_/zms/zoom.gif) bottom right no-repeat;
 	background-color:transparent; 
 }
 
@@ -1016,7 +1016,7 @@ div.ZMSGraphic_extEdit_action {
 
 a.ZMSGraphic_extEdit_action img {
 	padding:1px 1px 9px 1px;
-	background:transparent url(<dtml-var MISC_ZMS>ico_plus.gif) bottom right no-repeat;
+	background:transparent url(/misc_/zms/ico_plus.gif) bottom right no-repeat;
 }
 
 div.ZMSGraphic {
@@ -1083,9 +1083,9 @@ a.download img.download {
 	margin:0px;
 	padding:0px;
 }
-a.zoom img.zoom { background-image: url(<dtml-var MISC_ZMS>zoom.gif); }
-a.download img.download { background-image: url(<dtml-var MISC_ZMS>download.gif); }
-a.superzoom img.superzoom { background-image: url(<dtml-var MISC_ZMS>superzoom.gif); }
+a.zoom img.zoom { background-image: url(/misc_/zms/zoom.gif); }
+a.download img.download { background-image: url(/misc_/zms/download.gif); }
+a.superzoom img.superzoom { background-image: url(/misc_/zms/superzoom.gif); }
 ]]></data>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
@@ -2172,15 +2172,15 @@ ref = zmscontext.attr('attr_ref')
 if ref.startswith('{$') and ref.endswith('}'):
     ref_obj = zmscontext.getLinkObj(ref)
     if ref_obj:
-        return zmscontext.MISC_ZMS+'internal_link.gif'
+        return '/misc_/zms/internal_link.gif'
     else:
-        return zmscontext.MISC_ZMS+'internal_link_broken.gif'
+        return '/misc_/zms/internal_link_broken.gif'
 elif ref.startswith('mailto:'):
-    return zmscontext.MISC_ZMS+'mail_link.gif'
+    return '/misc_/zms/mail_link.gif'
 elif title.lower()=='medline':
-    return zmscontext.MISC_ZMS+'pubmed_small.gif'
+    return '/misc_/zms/pubmed_small.gif'
 else:
-    return zmscontext.MISC_ZMS+'external_link.gif'
+    return '/misc_/zms/external_link.gif'
 
 # --// EO attr_img_src //--
 ]]>
@@ -4365,7 +4365,7 @@ return unicode(printed).encode('utf-8')
 		zmscontext options/zmscontext">
 	<div class="form-small" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)">
 		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang'])">
-			<img tal:attributes="src python:'%sinternal_link.gif'%zmscontext.MISC_ZMS; title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)" alt="Internal link"/>
+			<img tal:attributes="src python:'/misc_/zms/internal_link.gif'; title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)" alt="Internal link"/>
 		</a>
 		<tal:block tal:define="global 
 				url      python:zmscontext.getLinkUrl(teaserElmnt.attr('attr_url'));

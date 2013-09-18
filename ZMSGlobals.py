@@ -599,7 +599,7 @@ class ZMSGlobals:
     @rtype: C{string}
     """
     def getMimeTypeIconSrc(self, mt):
-      return self.MISC_ZMS + _mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
+      return'/misc_/zms/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
 
 
     ############################################################################

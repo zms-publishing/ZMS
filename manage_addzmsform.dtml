@@ -1,5 +1,4 @@
-<dtml-call "REQUEST.set('MISC_ZMS','misc_/zms/')"
-><dtml-call "misc_.zms['initutil'].setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))"
+<dtml-call "misc_.zms['initutil'].setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))"
 ><!DOCTYPE HTML>
 <html lang="en">
 <head>

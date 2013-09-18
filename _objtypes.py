@@ -145,7 +145,7 @@ class ObjTypes:
           s_url = getHref2Zoom(self,imghires,REQUEST)
           imgtag = ''
           imgtag += '<div class="caption">'
-          imgtag += '<a href="%s"><img src="%smime_type.image_basic.gif" title="%s" border="0" align="middle" /></a>&nbsp;'%(s_url,self.MISC_ZMS,imghires.getContentType())
+          imgtag += '<a href="%s"><img src="/misc_/zms/mime_type.image_basic.gif" title="%s" border="0" align="middle" /></a>&nbsp;'%(s_url,imghires.getContentType())
           imgtag += '<a href="%s">%s</a>&nbsp;'%(s_url,imghires.filename)
           imgtag += '<b>(%s)</b>'%self.getDataSizeStr(imghires.get_size())
           imgtag += '</div>'

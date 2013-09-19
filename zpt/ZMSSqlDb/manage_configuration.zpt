@@ -37,13 +37,14 @@ select.zmi-sort {
 	text-align: left;
 }
 .form-horizontal .form-group .col-lg-2.control-label.mandatory span {
-	padding: 0px 3px;
-	border: 1px solid silver;
-	background:none !important;
+	font-weight:bold;
 }
 .column-description,
 .column-datatype {
 	color:#999;
+}
+.form-horizontal .accordion-inner {
+	margin-left:2.3em;
 }
 
 </style>
@@ -77,7 +78,7 @@ $ZMI.registerReady(function(){
 				$(this).parents('.inner').dialog('close');
 				return false;
 			});
-		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE')});
+		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'), width:'90%'});
 	});
 
 // #############################################################################
@@ -164,55 +165,43 @@ function mms_normalize_rows(el_tbody) {
 	<div id="updateEntity" class="inner">
 		<form class="form-horizontal" action="manage_changeConfiguration" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-			<div class="horizontal-group">
-				<div class="form-group">
-					<label class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span>
-						<input type="hidden" name="id" tal:attributes="value request/id"/>
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
-							<tal:block tal:content="table/id">table-id</tal:block>
-						</a>
-					</span></label>
-				</div><!-- .form-group -->
-				<div class="form-group">
-					<label for="label" class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" name="label" tal:attributes="value python:table.get('label','')">
-					</div><!-- .col-lg-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group">
-					<label class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
-					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
-						<select name="type">
-							<tal:block tal:repeat="type python:['','table','intersection','hidden']">
-								<option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">the type</option>
-							</tal:block>
-						</select>
-					</div><!-- .col-lg-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group">
-					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
-					</div><!-- .col-lg-10 -->
-				</div><!-- .form-group -->
-			</div><!-- .horizontal-group -->
+			<input type="hidden" name="id" tal:attributes="value request/id"/>
+			<div>
+				<label class="control-label col-xs-2">
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+						<tal:block tal:content="table/id">table-id</tal:block>
+					</a>
+				</label>
+				<input class="form-control input-sm" type="text" name="label" tal:attributes="value python:table.get('label','');title python:here.getZMILangStr('ATTR_DISPLAY')" style="margin-left:5px;display:inline;width:12em" />
+				<select class="form-control input-sm" name="type" tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" style="width:12em;display:inline" >
+					<tal:block tal:repeat="type python:['','table','intersection','hidden']"
+						><option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">the type</option>
+					</tal:block>
+				</select>
+
+				<div class="controls save pull-right">
+					<button type="submit" name="btn" class="btn btn-primary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn btn-default btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+				</div><!-- .controls -->
+			</div>
 			<div style="clear:both;">&nbsp;</div>
 	<div class="form-group">
-		<label class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span>Interface</span></label>
-		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
-			<div class="single-line"><textarea name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
-		</div><!-- .col-lg-10 -->
+		<label class="col-xs-2 control-label"><span>Interface</span></label>
+		<div class="col-xs-10">
+			<div class="single-line"><textarea class="form-control input-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
+		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<label class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span>Filter</span></label>
-		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
-			<div class="single-line"><textarea name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
-		</div><!-- .col-lg-10 -->
+		<label class="col-xs-2 control-label"><span>Filter</span></label>
+		<div class="col-xs-10">
+			<div class="single-line"><textarea class="form-control input-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
+		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
+	<div style="clear:both;">&nbsp;</div>
 	<div class="form-group">
-		<label class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</span></label>
-		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+		<label class="col-xs-2 control-label"><span tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</span></label>
+		<div class="col-xs-10">
 			<table class="table table-striped table-bordered meta-access" tal:define="global access python:table.get('access',{})">
 			<tr>
 				<td style="width:6.8em"><strong tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">Access</strong></td>
@@ -471,11 +460,11 @@ function mms_normalize_rows(el_tbody) {
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
 		<div class="form-group">
-			<label for="file" class="col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label">
+			<label for="file" class="col-xs-3 col-lg-2 control-label">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
-			<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
+			<div class="col-xs-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<div class="col-lg-12">
@@ -506,10 +495,10 @@ function mms_normalize_rows(el_tbody) {
 			<div class="accordion-inner">
 				<tal:block tal:repeat="column table/columns">
 					<div class="form-group">
-						<label tal:attributes="class python:' '.join(['col-xs-3 col-sm-3 col-md-3 col-lg-2 control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
+						<label tal:attributes="class python:' '.join(['col-xs-3 col-lg-2 control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
 							<span><tal:block tal:content="repeat/column/number">number</tal:block>. <tal:block tal:content="column/label">column-label</tal:block></span>
 						</label>
-						<div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+						<div class="col-xs-9 col-lg-10">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:content="python: column.get('description','')">column-description</span>

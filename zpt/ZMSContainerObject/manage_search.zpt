@@ -15,8 +15,8 @@
 		<div class="col-sm-6 col-md-4" tal:content="structure python:here.getTextInput(fmName='searchform',elName='raw',value=request.get('raw',''))">the value</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:define="global optpl python:map(lambda x: [x,here.getZMILangStr(x)], ['AND','OR'])">
-		<label class="col-sm-3 col-md-2 control-label mandatory" for="option" tal:content="python:here.getZMILangStr('ATTR_OPTION')">option</label>
-		<div class="col-sm-6 col-md-4" tal:content="structure python:here.zmi_input_select(here,name='option',value=request.get('search_meta_types',[]),type='select',lang_str='ATTR_OPTION',options=optpl)">the control</div>
+		<label class="col-sm-3 col-md-2 control-label" for="option" tal:content="python:here.getZMILangStr('ATTR_OPTION')">option</label>
+		<div class="col-sm-6 col-md-4" tal:content="structure python:here.zmi_input_select(here,name='option',value=request.get('option','and'),type='select',lang_str='ATTR_OPTION',options=optpl)">the control</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:define="global optpl python:map(lambda x: [x,here.display_type(request,x)], here.getMetaobjIds(excl_ids=['ZMS']))">
 		<label class="col-sm-3 col-md-2 control-label" for="search_meta_types:list" tal:content="python:here.getZMILangStr('ATTR_TYPE')">type</label>

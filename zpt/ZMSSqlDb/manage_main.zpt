@@ -92,7 +92,7 @@
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
-			<div class="accordion-inner">
+			<div class="accordion-inner" style="margin-left:2.3em;">
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
@@ -107,35 +107,35 @@
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
 			</a>
 			<label class="control-label" for="qentity" tal:content="python:here.getZMILangStr('ATTR_TABLE')">Table</label>
-			<select class="form-control" id="qentity" name="qentity" onchange="this.form.submit()">
+			<select class="form-control input-sm" id="qentity" name="qentity" onchange="this.form.submit()">
 				<tal:block tal:repeat="table tables">
 					<option tal:attributes="value table/id; selected python:['','selected'][int(table['id'].upper()==sessqentity['id'].upper())]" tal:content="table/label">table</option>
 				</tal:block>
 			</select>
 			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
-			<input id="qsize" class="input-mini " type="text" name="qsize:int" tal:attributes="value request/qsize" />
+			<input class="form-control input-sm" size="2" id="qsize" class="input-mini " type="text" name="qsize:int" tal:attributes="value request/qsize" />
 			<label class="control-label" for="qfilters" tal:content="python:here.getZMILangStr('ATTR_FILTER')" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))">Filter</label>
-			<input id="qfilters" class="input-mini" type="text" name="qfilters:int" tal:attributes="value request/qfilters" />
+			<input class="form-control input-sm" size="2" id="qfilters" class="input-mini" type="text" name="qfilters:int" tal:attributes="value request/qfilters" />
 
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 
 		<div id="attrProperties" class="accordion-body collapse in">
-			<div class="accordion-inner">
+			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request['qfilters'])">
-					<select class="form-control" tal:attributes="name python:'filterattr%i'%filterIndex">
+					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column sessqentity/columns">
 							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
 					<!-- CAVE: UNFINISHED / FILTER STILL NOT WORKING -->
-					<select class="form-control" tal:attributes="name python:'filterop%i'%filterIndex">
+					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
 						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
 							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex,'').lower()]" tal:content="python:op">op</option>
 						</tal:block>
 					</select>
-					<input class="input-xlarge" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
+					<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
 				</div><!-- .form-group -->
 				<div class="form-group">
 					<div class="col-lg-12">
@@ -146,9 +146,9 @@
 						<button type="submit" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
 							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 						</button>
+						&nbsp;<a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code" class="zmi">&middot;&middot;&middot;</a>
 					</div>
-					<div class="form-label" style="height:0.2em;"><a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code" class="zmi">&middot;&middot;&middot;</a></div>
-					<div id="manage_main_div_sql" class="well" style="display:none;background-color:#f5f5e5;padding:10px;margin: 12px 0;font-family:'Courier New', Courier;" tal:content="structure python:cntSlctStmnt.replace('\n','<br>')">cntSlctStmnt</div>
+					<div id="manage_main_div_sql" class="well" style="display:none;padding:1em;margin: 1em 1em 0;font-family:'Courier New', Courier;" tal:content="structure python:cntSlctStmnt.replace('\n','<br>')">cntSlctStmnt</div>
 				</div>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->

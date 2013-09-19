@@ -1340,6 +1340,6 @@ body.tasks .zmi-container .center .contentEditable {
 	padding-left: 0 !important;
 }
 
-body.search .col-lg-10 .form-control {
-	max-width:30em;
+body.search .form-multiselect select{
+	height:8.5em;
 }

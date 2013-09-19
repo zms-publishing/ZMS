@@ -20,11 +20,11 @@
 	</div><!-- .form-group -->
 	<div class="form-group" tal:define="global optpl python:map(lambda x: [x,here.display_type(request,x)], here.getMetaobjIds(excl_ids=['ZMS']))">
 		<label class="col-sm-3 col-md-2 control-label" for="search_meta_types:list" tal:content="python:here.getZMILangStr('ATTR_TYPE')">type</label>
-		<div class="col-sm-6 col-md-4" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
+		<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
 		<label class="col-sm-3 col-md-2 control-label">&nbsp;</label>
-		<div class="col-sm-9 col-md-10">
+		<div class="col-sm-6 col-md-4">
 			<button type="submit" class="btn btn-primary">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>

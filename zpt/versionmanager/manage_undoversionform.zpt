@@ -6,10 +6,11 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" tal:define="global
+<form class="form-horizontal" onsubmit="return false" tal:define="global
 		level python:here.getLevel();
-		obj_versions python:here.getObjVersions();
-		change_history python:here.attr('change_history')">
+		obj_versions python:[];
+		change_history python:here.attr('change_history')[::-1]">
+
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
 	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
 
@@ -22,20 +23,48 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-	<ul class="zmi-container">
-		<li class="zmi-item" tal:repeat="change_item python:change_history[pageStart:pageEnd]">
-			<div class="center">
-			</div><!-- .center -->
-			<div class="right">
-				<div class="zmi-manage-main-change">
-					<tal:block tal:content="python:here.getLangFmtDate(change_item['version_dt'],request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
-					<tal:block tal:content="python:change_item['version_uid']">version_uid</tal:block>
-					<tal:block tal:content="python:here.getVersionNr(change_item)">version_nr</tal:block>
-				</div><!-- .zmi-manage-main-change -->
-			</div><!-- .right -->
-			<div class="clearboth"></div>
-		</li>
-	</ul><!-- .zmi-container -->
+		<div class="accordion-body collapse container in">
+			<div class="accordion-inner">
+				<ul class="zmi-container">
+					<tal:block tal:repeat="change_item python:change_history[pageStart:pageEnd]">
+						<tal:block tal:repeat="obj_version python:here.getObjVersions()">
+							<tal:block tal:define="global childNode python:obj_version.aq_parent; dummy0 python:request.set('ZMS_VERSION_%s'%childNode.id,obj_version.id)">
+								<li tal:condition="python:childNode.attr('master_version')==change_item.get('master_version',0) and childNode.attr('major_version')==change_item.get('major_version',0)" tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())])">
+									<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+										tal:content="structure python:childNode.renderShort(request)">
+										the rendered child-node
+									</div><!-- .center -->
+									<div class="right">
+										<span class="zmi-ids">
+											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id"/> <strong tal:content="python:here.getVersionNr(change_item)">version_nr</strong>
+										</span>
+										<div class="zmi-manage-main-change">
+											<tal:block tal:content="python:here.getLangFmtDate(change_item['version_dt'],request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
+											<tal:block tal:content="python:change_item['version_uid']">version_uid</tal:block>
+										</div><!-- .zmi-manage-main-change-hack -->
+									</div><!-- .right -->
+									<div class="clearboth"></div>
+								</li>
+							</tal:block>
+						</tal:block>
+					</tal:block>
+					<li class="zmi-item pageelement">
+						<div class="center">&nbsp;</div><!-- .center -->
+						<div class="right" style="padding:.5em;">
+							<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
+							</button>
+							<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
+							</button>
+						</div><!-- .right -->
+						<div class="clearboth"></div>
+					</li>
+				</ul><!-- .zmi-container -->
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body.collapse.container.in -->
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 

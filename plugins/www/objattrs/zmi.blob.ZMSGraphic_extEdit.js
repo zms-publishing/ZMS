@@ -61,9 +61,9 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	}
 	zmiModal("#ZMSGraphic_extEdit_actions",{
 			title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
+			width:800,
 			open:function() {
 					$ZMI.writeDebug("BO open");
-					$("#zmiModalZMSGraphic_extEdit_actions .modal-dialog").css({width:800});
 					$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
 						function(data) {
 							$ZMI.writeDebug("BO getTempBlobjPropertyUrl");

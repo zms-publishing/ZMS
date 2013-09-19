@@ -15,10 +15,12 @@
 	</div><!-- .pull-left -->
 	<div class="pull-left">
 		<label>&nbsp;</label><br/>
-		<input class="btn btn-default btn-sm" type="submit" value="&gt;" tal:attributes="onclick python:'return selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" /><br/>
-		<input class="btn btn-default btn-sm" type="submit" value="&raquo;" tal:attributes="onclick python:'return selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" /><br/>
-		<input class="btn btn-default btn-sm" type="submit" value="&laquo;" tal:attributes="onclick python:'return selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" /><br/>
-		<input class="btn btn-default btn-sm" type="submit" value="&lt;" tal:attributes="onclick python:'return selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" /><br/>
+		<div class="btn-group-vertical">
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-angle-right')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-right')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-left')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-angle-left')"></button>
+		</div><!-- .btn-group-vertical -->
 	</div><!-- .pull-left -->
 	<div class="pull-left">
 		<label tal:attributes="for name" tal:content="python:here.getZMILangStr('ATTR_SELECTED')">Selected</label>

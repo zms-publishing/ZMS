@@ -19,6 +19,18 @@ $(function(){
 		}
 	}
 
+	// Well
+	$("p.well").each(function() {
+			var $prev = $(this).prev();
+			if($prev[0].nodeName.toLowerCase()=='legend') {
+				$prev.html($ZMI.icon(name='icon-info-sign')+' '+$prev.html());
+				$($ZMI.icon_selector(),$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
+			}
+			else {
+				$(this).show();
+			}
+		});
+
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {
@@ -564,6 +576,9 @@ function zmiModal(s, opt) {
 					})
 				.on('shown.bs.modal',function(){
 						$ZMI.writeDebug("zmiModal:shown(id="+zmiModalStack[zmiModalStack.length-1]+")");
+						if (typeof opt["width"] != "undefined") {
+							$("#"+id+" .modal-dialog").css({width:opt["width"]});
+						}
 						if (typeof opt['open'] == 'function') {
 							opt['open'](this);
 						}
@@ -802,11 +817,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		if (typeof id_prefix != 'undefined' && id_prefix != '') {
 			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
 		}
-		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center"><div class="zmiRenderShort"><div class="form-label">' + getZMILangStr('BTN_INSERT')+': '+label + '</div></div></div></li>').insertAfter($el.parents(".zmi-item"));
+		var title = $ZMI.icon('icon-plus-sign')+' '+getZMILangStr('BTN_INSERT')+': '+label;
+		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		zmiIframe(target,data,{
 				id:'zmiIframeAddDialog',
-				title:getZMILangStr('BTN_INSERT')+': '+label,
+				title:title,
 				width:800,
 				open:function(event,ui) {
 					$ZMI.runReady();

@@ -1265,30 +1265,18 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.getBodyContent:
     # --------------------------------------------------------------------------
-    def _getBodyContent2(self, REQUEST):
-      l = []
-      v = self.metaobj_manager.renderTemplate( self)
-      if self.getType()=='ZMSTeaserElement':
-        l.append('<div ')
-        l.append(' class="%s"'%self.getType())
-        if REQUEST.has_key('bgcolor_text'):
-          l.append(' style="background-color:%s"'%self.get_colormap().get(REQUEST.get('bgcolor_text'),'transparent'))
-        l.append('>\n')
-        l.append(v)
-        l.append('</div>\n')
-      else:
-        l.append(v)
-      return ''.join(l)
-
-    def _getBodyContent(self, REQUEST):
-      html = self._getBodyContent2( REQUEST)
-      if _globals.isPreviewRequest(REQUEST) and \
-         (REQUEST.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1) and \
-         not self.isPage():
-        ids = ['contentEditable',self.id,REQUEST.get('lang')]
+    def _getBodyContentContentEditable(self, html):
+      request = self.REQUEST    
+      if _globals.isPreviewRequest(request) and \
+         (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1):
+        ids = ['contentEditable',self.id,request['lang']]
         css = ['contentEditable']
         html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
       return html
+
+    def _getBodyContent(self, REQUEST):
+      rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
+      return rtn
 
     security.declareProtected('View', 'getBodyContent')
     def getBodyContent(self, REQUEST, forced=False):
@@ -1319,13 +1307,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       html = ''
       try:
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          html = self.getTitlealt(REQUEST)
-          html = '<div class="contentEditable form-label" id="contentEditable_%s_%s">%s</div>'%(self.id,REQUEST['lang'],html)
+          html = self._getBodyContentContentEditable(self.getTitlealt(REQUEST))
         elif 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
-          html = self.attr('renderShort')
+          html = self._getBodyContentContentEditable(self.attr('renderShort'))
         else:
           html = self._getBodyContent(REQUEST)
-        html = '<div class="zmiRenderShort">%s</div><!-- .zmiRenderShort -->'%html
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:

@@ -697,7 +697,7 @@ class ZMSLinkElement(ZMSContainerObject):
           if ref_obj is not None:
             rtn += ref_obj._getBodyContent( REQUEST)
         else:
-          rtn += self._getBodyContent2( REQUEST)
+          rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
 
 

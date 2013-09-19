@@ -1,7 +1,3 @@
-body.zmi {
-	padding-left:0 !important;
-	padding-right:0 !important;
-}
 .navbar-brand {
 	max-width:500px;
 	text-align:left;
@@ -22,6 +18,9 @@ body.zmi {
 	color:#08c;
 }
 .zmi-manage-main-change {
+	display:none;
+}
+p.well {
 	display:none;
 }
 .zmi-helper-hidden, .ui-helper-hidden {
@@ -73,7 +72,8 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	width:100%;
 	height:100%;
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
-	}
+}
+
 #zmi-progressbox {
 	padding:20px 40px 20px 40px;
 	background-color:#FFF;
@@ -90,12 +90,10 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	border-radius:0 !important;
 }
 #zmi-footer {
-	/* position:fixed; */
 	left:0px;
 	bottom:0px;
 	height:26px;
 	width:100%;
-	background:#fff;
 	padding:0.5em;
 	font-size:11px !important;
 }
@@ -123,27 +121,15 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .center h1 small {
 	display:inline-block;
 	margin-top:0.5em;
-	line-height:1.75em;
+	line-height:1.5em;
 	font-size:small;
-	color:#666666;
-	font-style:italic;
 }
 
-.center .form-label {
-	padding:.5em;
-	font-size:large;
-}
-.form-help {
-	min-height:20px;
-	background-color:rgb(245,245,245);
-	border:1px solid rgb(227,227,227);
-	border-radius:3px;
-	margin-bottom:20px;
-	box-shadow:0px 1px 1px rgba(0, 0, 0, 0.05) inset;
-	padding:9px;
-}
 .ui-autocomplete-input {
 	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
+}
+.form-multiselect .pull-left {
+	padding-right:.5em;
 }
 .form-small {
 	font-size:smaller;
@@ -207,7 +193,7 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 ul.zmi-container li.zmi-item .inactive .contentEditable {
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
 }
-ul.zmi-container.portalClients .center .zmiRenderShort {
+ul.zmi-container.portalClients .center .contentEditable {
 	padding-left:1em;
 	color:#6B9EB8;
 }
@@ -237,19 +223,20 @@ table.table.zmi-sortable img.grippy {
 }
 tr.zmi-selected td, tr.zmi-selected td,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
-ul.zmi-container > li.zmi-item.zmi-selected > div.center .zmiRenderShort,
+ul.zmi-container > li.zmi-item.zmi-selected > div.center .contentEditable,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
 	background-color:#ffc!important;
 }
 tr.zmi-highlighted td, tr.zmi-highlighted td,
 ul.zmi-container > li.zmi-item.zmi-highlighted > div.center,
-ul.zmi-container > li.zmi-item.zmi-highlighted > div.center .zmiRenderShort,
+ul.zmi-container > li.zmi-item.zmi-highlighted > div.center .contentEditable,
 ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a {
 	background-color:#08c!important;
 	color:#fff!important;
 }
-#manage_addProduct .zmiRenderShort {
-	padding: 0.1em 0.5em;
+#manage_addProduct .center {
+	padding:.5em;
+	font-size:large;
 }
 
 form.form-insert a.accordion-toggle {
@@ -257,16 +244,13 @@ form.form-insert a.accordion-toggle {
 }
 ul.zmi-container > .zmi-item > .center {
 	float:left;
-	/* width:600px!important; */
 	width:80% !important;
 }
 ul.zmi-container {
-	/* width:800px!important; */
 	width:98% !important;
 }
 ul.zmi-container > .zmi-item > .right {
 	float:left;
-	/* width:200px!important; */
 }
 ul.zmi-container .zmi-item .clearboth {
 	float:none;
@@ -276,19 +260,19 @@ ul.zmi-container .zmi-item.pageelement .center {
 	background-color:white!important;
 	min-height:4em;
 }
-ul.zmi-container .zmi-item .center .zmiRenderShort {
+ul.zmi-container .zmi-item .center .contentEditable {
 	border-left:none !important;
 	border-right:none !important;
 	border-bottom:none !important;
 	border-top:1px dotted #ccc !important;
 }
-ul.zmi-container .zmi-item.pageelement .center .zmiRenderShort {
+ul.zmi-container .zmi-item.pageelement .center > * {
+	padding-left:.8em;
+}
+ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 	border:1px solid white;
 	padding:3px 6px 3px 1.5em;
 	overflow:hidden;
-}
-ul.zmi-container .zmi-item.pageelement .center > * {
-	padding-left:1.5em;
 }
 .properties .form-group.activity input.form-element.datetimepicker {
 	width:12.7em !important;
@@ -345,7 +329,7 @@ body.browse_iframe .zmi-preview {
 	max-width:40em;
 	border:1px dotted black;
 }
-body.browse_iframe .zmi-preview .zmiRenderShort {
+body.browse_iframe .zmi-preview .contentEditable {
 	zoom: 0.6;-moz-transform:scale(0.6);
 }
 body.browse_iframe .zmi-sitemap > div,
@@ -468,7 +452,7 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	height:2.7em;
 	margin-left:0;
 }
-ul.zmi-container.pages .zmi-item .zmiRenderShort {
+ul.zmi-container.pages .zmi-item .contentEditable {
 	padding-left:1.0em !important
 }
 form.form-horizontal {
@@ -515,7 +499,7 @@ form.form-horizontal.form-insert {
 	width:100% !important;
 	background-color: #fff;
 }
-.zmi.properties form.form-horizontal .accordion-body.container .zmiRenderShort {
+.zmi.properties form.form-horizontal .accordion-body.container .contentEditable {
 	padding: 1em;
 	background-color: #fff;
 }
@@ -733,6 +717,8 @@ div.zmi-nodes span {
 	color:#333;
 	background-color:#f5f5f5;
 	border-color:#ccc;
+	max-width:30em!important;
+	overflow:hidden;
 }
 .btn-file {
 	background-color:#eee;
@@ -1019,16 +1005,12 @@ div.right a:hover,
 div.right a:focus {
 	text-decoration:none;
 }
-.zmi-item .center .zmiRenderShort {
+.zmi-item .center .contentEditable {
 border-left:none !important;
 border-right:none !important;
 border-bottom:none !important;
 border-top:1px dotted #ccc !important;
 }
-ul.zmi-container > li.zmi-item > div.center .zmiRenderShort div.form-label {
-min-height:35px;
-}
-
 div.right .btn .caret {
  /* margin-top: 4px; */
 }
@@ -1102,11 +1084,11 @@ div.right .btn .caret {
 	.right span.zmi-ids {
 		display:none !important;
 	}
-	ul.zmi-container .center .zmiRenderShort {
+	ul.zmi-container .center .contentEditable {
 		padding-left:3em !important
 	}
-	ul.zmi-container.pages .center .zmiRenderShort,
-	ul.zmi-container.portalClients .center .zmiRenderShort {
+	ul.zmi-container.pages .center .contentEditable,
+	ul.zmi-container.portalClients .center .contentEditable {
 		padding-left:2.5em !important
 	}
 	img.grippy {
@@ -1258,7 +1240,7 @@ li.zmi-item span.zmi-ids {
 	margin:2px 0 0 8px;
 }
 
-ul.zmi-container li.zmi-item div.zmiRenderShort {
+ul.zmi-container li.zmi-item div.contentEditable {
 	min-height:60px;
 }
 .zmi ul.main-nav {
@@ -1354,7 +1336,7 @@ body.tasks table.table ul.breadcrumb {
 	padding: 0 0 1em 0;
 	background: transparent;
 }
-body.tasks .zmi-container .center .zmiRenderShort {
+body.tasks .zmi-container .center .contentEditable {
 	padding-left: 0 !important;
 }
 

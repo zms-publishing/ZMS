@@ -196,7 +196,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='form-control', extra=''):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra=''):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):

@@ -55,7 +55,7 @@ $(function(){
 
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
-		$('.contentEditable,.zmiRenderShort')
+		$('.contentEditable')
 			.mouseover( function(evt) {
 				$(this).addClass('preview').addClass('highlight'); 
 			})
@@ -75,8 +75,10 @@ $(function(){
 				var parents = $(this).parents('.contentEditable');
 				for ( var i = 0; i <= parents.length; i++) {
 					var pid;
+          $ZMI.writeDebug("pid="+pid);
 					if ( i==parents.length) {
 						pid = $(this).attr('id');
+            $ZMI.writeDebug("pid.1="+pid);
 					}
 					else {
 						var $el = $(parents[parents.length-i-1]);
@@ -86,7 +88,9 @@ $(function(){
 							}
 						}
 						pid = $el.attr('id');
+            $ZMI.writeDebug("pid.2="+pid);
 					}
+          $ZMI.writeDebug("pid="+pid);
 					if (pid.length > 0) {
 						if (lang == null) {
 							lang = pid.substr(pid.lastIndexOf('_')+1);
@@ -251,11 +255,13 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		data['default'] = defaultValue;
 	}
 	var url = this.getPhysicalPath();
+	this.writeDebug(url);
 	if (url.indexOf('/content/')>0) {
-		url = url.substr(0,url.indexOf('/content/')+'/content/'.length);
+		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
 	}
+	this.writeDebug(url+'/getConfProperty');
 	return $.ajax({
-		url: url+'getConfProperty',
+		url: url+'/getConfProperty',
 		data: data,
 		datatype: 'text',
 		async: false

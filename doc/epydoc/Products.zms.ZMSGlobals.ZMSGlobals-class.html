@@ -68,6 +68,44 @@
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPRODUCT_HOME"></a><span class="summary-sig-name">getPRODUCT_HOME</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns home-folder of this Product.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code class="link">object</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#createBlobInContext" class="summary-sig-name">createBlobInContext</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">blob</span>,
+        <span class="summary-sig-arg">container</span>)</span><br />
+      Creates a new Zope native-representative (Image/File) of given blob 
+      in container.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><a href="Products.zms._blobfields.MyFile-class.html" 
       class="link">MyFile</a></span>
     </td><td class="summary">
@@ -75,7 +113,8 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#FileFromData" class="summary-sig-name">FileFromData</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">data</span>,
-        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">''</span>)</span><br />
+        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">content_type</span>=<span class="summary-sig-default">None</span>)</span><br />
       Creates a new instance of a file from given data.</td>
           <td align="right" valign="top">
             
@@ -95,8 +134,31 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#ImageFromData" class="summary-sig-name">ImageFromData</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">data</span>,
-        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">''</span>)</span><br />
+        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">content_type</span>=<span class="summary-sig-default">None</span>)</span><br />
       Creates a new instance of an image from given data.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#inline_if" class="summary-sig-name">inline_if</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cond</span>,
+        <span class="summary-sig-arg">v1</span>,
+        <span class="summary-sig-arg">v2</span>)</span><br />
+      Inline conditional:
+- Java: cond?v1:v2
+- Python &gt;2.5: v1 if cond else v2</td>
           <td align="right" valign="top">
             
             
@@ -166,11 +228,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>list</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="encrypt_schemes"></a><span class="summary-sig-name">encrypt_schemes</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#encrypt_schemes" class="summary-sig-name">encrypt_schemes</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Available encryption-schemes.</td>
           <td align="right" valign="top">
             
             
@@ -242,26 +305,6 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#get_diff" class="summary-sig-name">get_diff</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">v1</span>,
-        <span class="summary-sig-arg">v2</span>,
-        <span class="summary-sig-arg">datatype</span>=<span class="summary-sig-default">'string'</span>)</span><br />
-      Renders diff of two values in HTML.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#string_maxlen" class="summary-sig-name">string_maxlen</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">s</span>,
         <span class="summary-sig-arg">maxlen</span>=<span class="summary-sig-default">20</span>,
@@ -279,12 +322,34 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>string</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#url_quote" class="summary-sig-name">url_quote</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">safe</span>=<span class="summary-sig-default">'/'</span>)</span><br />
+      Replace special characters in string using the %xx escape.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="url_quote"></a><span class="summary-sig-name">url_quote</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">s</span>)</span></td>
+          <td><span class="summary-sig"><a name="http_import"></a><span class="summary-sig-name">http_import</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">url</span>,
+        <span class="summary-sig-arg">method</span>=<span class="summary-sig-default">'GET'</span>,
+        <span class="summary-sig-arg">auth</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">parse_qs</span>=<span class="summary-sig-default">0</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -300,12 +365,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#http_import" class="summary-sig-name">http_import</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#url_append_params" class="summary-sig-name">url_append_params</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">url</span>,
-        <span class="summary-sig-arg">method</span>=<span class="summary-sig-default">'GET'</span>,
-        <span class="summary-sig-arg">auth</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">parse_qs</span>=<span class="summary-sig-default">0</span>)</span><br />
-      Send Http-Request and return Response-Body.</td>
+        <span class="summary-sig-arg">dict</span>,
+        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'&amp;amp;'</span>)</span><br />
+      Append params from dict to given url.</td>
           <td align="right" valign="top">
             
             
@@ -317,32 +381,16 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>string</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="url_append_params"></a><span class="summary-sig-name">url_append_params</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">url</span>,
-        <span class="summary-sig-arg">dict</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="url_inherit_params"></a><span class="summary-sig-name">url_inherit_params</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#url_inherit_params" class="summary-sig-name">url_inherit_params</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">url</span>,
         <span class="summary-sig-arg">REQUEST</span>,
-        <span class="summary-sig-arg">exclude</span>=<span class="summary-sig-default">[]</span>)</span></td>
+        <span class="summary-sig-arg">exclude</span>=<span class="summary-sig-default">[]</span>,
+        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'&amp;amp;'</span>)</span><br />
+      Inerits params from request to given url.</td>
           <td align="right" valign="top">
             
             
@@ -398,7 +446,8 @@
         <tr>
           <td><span class="summary-sig"><a name="js_quote"></a><span class="summary-sig-name">js_quote</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">text</span>,
-        <span class="summary-sig-arg">charset</span>=<span class="summary-sig-default">None</span>)</span></td>
+        <span class="summary-sig-arg">charset</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Replace special characters in string for javascript.</td>
           <td align="right" valign="top">
             
             
@@ -410,12 +459,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>Boolean</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="isPreviewRequest"></a><span class="summary-sig-name">isPreviewRequest</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">REQUEST</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#isPreviewRequest" class="summary-sig-name">isPreviewRequest</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">REQUEST</span>)</span><br />
+      Checks if given request is preview.</td>
           <td align="right" valign="top">
             
             
@@ -468,85 +518,9 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="nodes2html"></a><span class="summary-sig-name">nodes2html</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">nodes</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#writeStdout" class="summary-sig-name">writeStdout</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">info</span>)</span><br />
       Write to standard-out (only allowed for development-purposes!).</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="tree_parents"></a><span class="summary-sig-name">tree_parents</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">l</span>,
-        <span class="summary-sig-arg">i</span>=<span class="summary-sig-default">'id'</span>,
-        <span class="summary-sig-arg">r</span>=<span class="summary-sig-default">'idId'</span>,
-        <span class="summary-sig-arg">v</span>=<span class="summary-sig-default">''</span>,
-        <span class="summary-sig-arg">deep</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">reverse</span>=<span class="summary-sig-default">1</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="str_item"></a><span class="summary-sig-name">str_item</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">i</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>MyImage</code></span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#createThumbnail" class="summary-sig-name">createThumbnail</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">maxdim</span>=<span class="summary-sig-default">100</span>,
-        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
-      Creates thumbnail of given image.</td>
           <td align="right" valign="top">
             
             
@@ -562,9 +536,14 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getZipArchive" class="summary-sig-name">getZipArchive</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">f</span>)</span><br />
-      Extract files from zip-archive and return list of extracted files.</td>
+          <td><span class="summary-sig"><a name="tree_parents"></a><span class="summary-sig-name">tree_parents</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">l</span>,
+        <span class="summary-sig-arg">i</span>=<span class="summary-sig-default">'id'</span>,
+        <span class="summary-sig-arg">r</span>=<span class="summary-sig-default">'idId'</span>,
+        <span class="summary-sig-arg">v</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">deep</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">reverse</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Returns parents for linked list.</td>
           <td align="right" valign="top">
             
             
@@ -580,10 +559,115 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#buildZipArchive" class="summary-sig-name">buildZipArchive</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="str_json"></a><span class="summary-sig-name">str_json</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">i</span>)</span><br />
+      Returns a json-string representation of the object.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>string</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="str_item"></a><span class="summary-sig-name">str_item</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">i</span>)</span><br />
+      Returns a string representation of the item.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pilutil"></a><span class="summary-sig-name">pilutil</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns util with PIL functions.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getZipArchive"></a><span class="summary-sig-name">getZipArchive</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="extractZipArchive"></a><span class="summary-sig-name">extractZipArchive</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="buildZipArchive"></a><span class="summary-sig-name">buildZipArchive</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">files</span>,
-        <span class="summary-sig-arg">get_data</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Pack ZIP-Archive and return data.</td>
+        <span class="summary-sig-arg">get_data</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_response_headers"></a><span class="summary-sig-name">set_response_headers</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fn</span>,
+        <span class="summary-sig-arg">mt</span>=<span class="summary-sig-default">'application/octet-stream'</span>)</span><br />
+      Set content-type and -disposition to response-headers.</td>
           <td align="right" valign="top">
             
             
@@ -754,10 +838,11 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getLangFmtDate"></a><span class="summary-sig-name">getLangFmtDate</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#getLangFmtDate" class="summary-sig-name">getLangFmtDate</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">t</span>,
         <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">fmt_str</span>=<span class="summary-sig-default">'SHORTDATETIME_FMT'</span>)</span></td>
+        <span class="summary-sig-arg">fmt_str</span>=<span class="summary-sig-default">'SHORTDATETIME_FMT'</span>)</span><br />
+      Formats date in locale-format</td>
           <td align="right" valign="top">
             
             
@@ -769,7 +854,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>struct_time</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -777,7 +862,8 @@
         <span class="summary-sig-arg">s</span>,
         <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">fmt_str</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">recflag</span>=<span class="summary-sig-default">None</span>)</span></td>
+        <span class="summary-sig-arg">recflag</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Parse date in locale-format</td>
           <td align="right" valign="top">
             
             
@@ -789,39 +875,14 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>int</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="compareDate"></a><span class="summary-sig-name">compareDate</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">t0</span>,
-        <span class="summary-sig-arg">t1</span>,
-        <span class="summary-sig-arg">accuracy_time</span>=<span class="summary-sig-default">1</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr bgcolor="#e8f0f8" >
-  <th colspan="2" class="group-header"
-    >&nbsp;&nbsp;&nbsp;&nbsp;PIL (Python Imaging Library)</th></tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>MyImage</code></span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_resize" class="summary-sig-name">pil_img_resize</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">size</span>,
-        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'resize'</span>,
-        <span class="summary-sig-arg">sffx</span>=<span class="summary-sig-default">'none'</span>,
-        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
-      Returns a resized copy of an image.</td>
+        <span class="summary-sig-arg">t1</span>)</span><br />
+      Compare two dates.</td>
           <td align="right" valign="top">
             
             
@@ -833,35 +894,14 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>MyImage</code></span>
+      <span class="summary-type"><code>int</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_crop" class="summary-sig-name">pil_img_crop</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">box</span>,
-        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
-      Returns a rectangular region from the current image.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>MyImage</code></span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#pil_img_rotate" class="summary-sig-name">pil_img_rotate</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">img</span>,
-        <span class="summary-sig-arg">direction</span>,
-        <span class="summary-sig-arg">qual</span>=<span class="summary-sig-default">75</span>)</span><br />
-      Returns rotated version of the current image.</td>
+          <td><span class="summary-sig"><a name="daysBetween"></a><span class="summary-sig-name">daysBetween</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">t0</span>,
+        <span class="summary-sig-arg">t1</span>)</span><br />
+      Calculate days between two dates.</td>
           <td align="right" valign="top">
             
             
@@ -893,7 +933,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>string</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -937,7 +977,8 @@
           <td><span class="summary-sig"><a name="localfs_write"></a><span class="summary-sig-name">localfs_write</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">filename</span>,
         <span class="summary-sig-arg">v</span>,
-        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>)</span><br />
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
       Writes file to local file-system.</td>
           <td align="right" valign="top">
             
@@ -976,26 +1017,9 @@
           <td><span class="summary-sig"><a name="localfs_readPath"></a><span class="summary-sig-name">localfs_readPath</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">filename</span>,
         <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">False</span>,
-        <span class="summary-sig-arg">recursive</span>=<span class="summary-sig-default">False</span>)</span><br />
+        <span class="summary-sig-arg">recursive</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
       Reads path from local file-system.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="localfs_command"></a><span class="summary-sig-name">localfs_command</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">command</span>)</span><br />
-      Executes command in local file-system.</td>
           <td align="right" valign="top">
             
             
@@ -1094,7 +1118,7 @@
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#concat_list" class="summary-sig-name">concat_list</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">l1</span>,
         <span class="summary-sig-arg">l2</span>)</span><br />
-      Concatinates two lists (l1 + l2).</td>
+      Concatenates two lists (l1 + l2).</td>
           <td align="right" valign="top">
             
             
@@ -1130,7 +1154,7 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#distinct_list" class="summary-sig-name">distinct_list</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">l</span>,
-        <span class="summary-sig-arg">i</span>)</span><br />
+        <span class="summary-sig-arg">i</span>=<span class="summary-sig-default">None</span>)</span><br />
       Returns distinct values of given field from list.</td>
           <td align="right" valign="top">
             
@@ -1149,7 +1173,7 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#sort_list" class="summary-sig-name">sort_list</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">l</span>,
-        <span class="summary-sig-arg">qorder</span>,
+        <span class="summary-sig-arg">qorder</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">qorderdir</span>=<span class="summary-sig-default">'asc'</span>,
         <span class="summary-sig-arg">ignorecase</span>=<span class="summary-sig-default">1</span>)</span><br />
       Sorts list by given field.</td>
@@ -1170,7 +1194,8 @@
         <tr>
           <td><span class="summary-sig"><a name="string_list"></a><span class="summary-sig-name">string_list</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">s</span>,
-        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'\n'</span>)</span></td>
+        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'\n'</span>)</span><br />
+      Split string by given separator and trim items.</td>
           <td align="right" valign="top">
             
             
@@ -1182,7 +1207,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>list</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -1191,7 +1216,8 @@
         <span class="summary-sig-arg">i</span>=<span class="summary-sig-default">'id'</span>,
         <span class="summary-sig-arg">r</span>=<span class="summary-sig-default">'idId'</span>,
         <span class="summary-sig-arg">v</span>=<span class="summary-sig-default">''</span>,
-        <span class="summary-sig-arg">deep</span>=<span class="summary-sig-default">0</span>)</span></td>
+        <span class="summary-sig-arg">deep</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Returns children for linked list.</td>
           <td align="right" valign="top">
             
             
@@ -1224,11 +1250,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>list</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="copy_list"></a><span class="summary-sig-name">copy_list</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#copy_list" class="summary-sig-name">copy_list</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">l</span>)</span><br />
       Copies list l.</td>
           <td align="right" valign="top">
@@ -1282,6 +1308,24 @@
 <tr bgcolor="#e8f0f8" >
   <th colspan="2" class="group-header"
     >&nbsp;&nbsp;&nbsp;&nbsp;Operators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>type</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#operator_absattr" class="summary-sig-name">operator_absattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Returns absolute-attribute of given value.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>type</code></span>
@@ -1346,7 +1390,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.ZMSGlobals.ZMSGlobals-class.html#operator_delitem" class="summary-sig-name">operator_delitem</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">a</span>)</span><br />
+        <span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>)</span><br />
       Delete key from python-dictionary.</td>
           <td align="right" valign="top">
             
@@ -1513,6 +1558,13 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="security"></a><span class="summary-name">security</span> = <code title="ClassSecurityInfo()">ClassSecurityInfo()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="PAGES"></a><span class="summary-name">PAGES</span> = <code title="0">0</code><br />
       virtual meta_type for all Pages (Containers)
     </td>
@@ -1553,6 +1605,31 @@
     <span class="table-header">Method Details</span></td>
 </tr>
 </table>
+<a name="createBlobInContext"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createBlobInContext</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">blob</span>,
+        <span class="sig-arg">container</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Creates a new Zope native-representative (Image/File) of given blob in
+  container.</p>
+  <dl class="fields">
+    <dt>Returns: <code class="link">object</code></dt>
+        <dd>New instance of Zope-object.</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="FileFromData"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1562,7 +1639,8 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">FileFromData</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">data</span>,
-        <span class="sig-arg">filename</span>=<span class="sig-default">''</span>)</span>
+        <span class="sig-arg">filename</span>=<span class="sig-default">''</span>,
+        <span class="sig-arg">content_type</span>=<span class="sig-default">None</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -1591,7 +1669,8 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">ImageFromData</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">data</span>,
-        <span class="sig-arg">filename</span>=<span class="sig-default">''</span>)</span>
+        <span class="sig-arg">filename</span>=<span class="sig-default">''</span>,
+        <span class="sig-arg">content_type</span>=<span class="sig-default">None</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -1608,6 +1687,40 @@
     <dt>Returns: <a href="Products.zms._blobfields.MyImage-class.html" 
       class="link">MyImage</a></dt>
         <dd>New instance of image.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inline_if"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inline_if</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">cond</span>,
+        <span class="sig-arg">v1</span>,
+        <span class="sig-arg">v2</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Inline conditional:
+- Java: cond?v1:v2
+- Python &gt;2.5: v1 if cond else v2
+
+@param v1: 1st argument
+@type v1: C{any}
+@param v2: 2nd argument
+@type v2: C{any}
+@rtype: C{any}
+
+</pre>
+  <dl class="fields">
   </dl>
 </td></tr></table>
 </div>
@@ -1697,6 +1810,27 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="encrypt_schemes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encrypt_schemes</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Available encryption-schemes.</p>
+  <dl class="fields">
+    <dt>Returns: <code>list</code></dt>
+        <dd>list of encryption-scheme ids</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="encrypt_password"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1779,36 +1913,6 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="get_diff"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_diff</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">v1</span>,
-        <span class="sig-arg">v2</span>,
-        <span class="sig-arg">datatype</span>=<span class="sig-default">'string'</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Renders diff of two values in HTML.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>v1</code></strong> (<code>any</code>) - Value #1</li>
-        <li><strong class="pname"><code>v2</code></strong> (<code>any</code>) - Value #2</li>
-        <li><strong class="pname"><code>datatype</code></strong> (<code>string</code>) - Datatype</li>
-    </ul></dd>
-    <dt>Returns: <code>string</code></dt>
-        <dd>Diff rendered in HTML.</dd>
-  </dl>
-</td></tr></table>
-</div>
 <a name="string_maxlen"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1841,35 +1945,89 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="http_import"></a>
+<a name="url_quote"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">http_import</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">url</span>,
-        <span class="sig-arg">method</span>=<span class="sig-default">'GET'</span>,
-        <span class="sig-arg">auth</span>=<span class="sig-default">None</span>,
-        <span class="sig-arg">parse_qs</span>=<span class="sig-default">0</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url_quote</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">string</span>,
+        <span class="sig-arg">safe</span>=<span class="sig-default">'/'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Send Http-Request and return Response-Body.</p>
+  <p>Replace special characters in string using the %xx escape. Letters, 
+  digits, and the characters '_.-' are never quoted. By default, this 
+  function is intended for quoting the path section of the URL. The 
+  optional safe parameter specifies additional characters that should not 
+  be quoted, its default value is '/'.</p>
+  <dl class="fields">
+    <dt>Returns: <code>string</code></dt>
+        <dd>the quoted string</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="url_append_params"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url_append_params</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">url</span>,
+        <span class="sig-arg">dict</span>,
+        <span class="sig-arg">sep</span>=<span class="sig-default">'&amp;amp;'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Append params from dict to given url.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>url</code></strong> (<code>string</code>) - Remote-URL</li>
-        <li><strong class="pname"><code>method</code></strong> (<code>string</code>, values are GET or POST) - Method</li>
-        <li><strong class="pname"><code>auth</code></strong> (<code>string</code>) - Authentication</li>
-        <li><strong class="pname"><code>parse_qs</code></strong> (<code>int</code>, values are 0 or 1) - Parse Query-String</li>
+        <li><strong class="pname"><code>url</code></strong> (<code>string</code>) - Url</li>
+        <li><strong class="pname"><code>dict</code></strong> (<code>dict</code>) - dictionary of params (key/value pairs)</li>
     </ul></dd>
     <dt>Returns: <code>string</code></dt>
-        <dd>Response-Body</dd>
+        <dd>New url</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="url_inherit_params"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url_inherit_params</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">url</span>,
+        <span class="sig-arg">REQUEST</span>,
+        <span class="sig-arg">exclude</span>=<span class="sig-default">[]</span>,
+        <span class="sig-arg">sep</span>=<span class="sig-default">'&amp;amp;'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Inerits params from request to given url.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>url</code></strong> (<code>string</code>) - Url</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+    </ul></dd>
+    <dt>Returns: <code>string</code></dt>
+        <dd>New url</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1927,6 +2085,31 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="isPreviewRequest"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isPreviewRequest</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">REQUEST</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Checks if given request is preview.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+    </ul></dd>
+    <dt>Returns: <code>Boolean</code></dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="getDataSizeStr"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1975,6 +2158,31 @@
         <li><strong class="pname"><code>mt</code></strong> (<code>string</code>) - MIME-Type (e.g. image/gif, text/xml).</li>
     </ul></dd>
     <dt>Returns: <code>string</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="operator_absattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">operator_absattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">v</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns absolute-attribute of given value.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>v</code></strong> (<code>any</code>) - Value</li>
+    </ul></dd>
+    <dt>Returns: <code>type</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -2069,7 +2277,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">operator_delitem</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">a</span>)</span>
+        <span class="sig-arg">a</span>,
+        <span class="sig-arg">b</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2311,7 +2520,7 @@
     </td>
   </tr></table>
   
-  <p>Parses default-stylesheet and returns elements.</p>
+  <p>Parses default-stylesheet and returns elements. @deprecated</p>
   <dl class="fields">
     <dt>Returns: <code>dict</code></dt>
         <dd>Elements</dd>
@@ -2332,7 +2541,7 @@
     </td>
   </tr></table>
   
-  <p>Parses default-stylesheet and returns color-map.</p>
+  <p>Parses default-stylesheet and returns color-map. @deprecated</p>
   <dl class="fields">
     <dt>Returns: <code>dict</code></dt>
         <dd>Color-map</dd>
@@ -2411,7 +2620,7 @@
     </td>
   </tr></table>
   
-  <p>Concatinates two lists (l1 + l2).</p>
+  <p>Concatenates two lists (l1 + l2).</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
@@ -2458,7 +2667,7 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">distinct_list</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">l</span>,
-        <span class="sig-arg">i</span>)</span>
+        <span class="sig-arg">i</span>=<span class="sig-default">None</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2484,7 +2693,7 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">sort_list</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">l</span>,
-        <span class="sig-arg">qorder</span>,
+        <span class="sig-arg">qorder</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">qorderdir</span>=<span class="sig-default">'asc'</span>,
         <span class="sig-arg">ignorecase</span>=<span class="sig-default">1</span>)</span>
   </h3>
@@ -2532,175 +2741,29 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="createThumbnail"></a>
+<a name="copy_list"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">createThumbnail</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">img</span>,
-        <span class="sig-arg">maxdim</span>=<span class="sig-default">100</span>,
-        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy_list</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">l</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
   </tr></table>
   
-  <p>Creates thumbnail of given image.</p>
+  <p>Copies list l.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
-        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
+        <li><strong class="pname"><code>l</code></strong> (<code>list</code>) - List</li>
     </ul></dd>
-    <dt>Returns: <code>MyImage</code></dt>
-        <dd>Thumbnail</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="pil_img_resize"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_resize</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">img</span>,
-        <span class="sig-arg">size</span>,
-        <span class="sig-arg">mode</span>=<span class="sig-default">'resize'</span>,
-        <span class="sig-arg">sffx</span>=<span class="sig-default">'none'</span>,
-        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Returns a resized copy of an image. The size argument gives the 
-  requested size in pixels, as a 2-tuple: (width, height).</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
-        <li><strong class="pname"><code>size</code></strong> (<code>tuple</code>) - Size 2-tuple: (width, height)</li>
-        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
-        <li><strong class="pname"><code>mode</code></strong> - Mode</li>
-    </ul></dd>
-    <dt>Returns: <code>MyImage</code></dt>
-        <dd>Resized image</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="pil_img_crop"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_crop</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">img</span>,
-        <span class="sig-arg">box</span>,
-        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Returns a rectangular region from the current image. The box is a 
-  4-tuple defining the left, upper, right, and lower pixel coordinate.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
-        <li><strong class="pname"><code>box</code></strong> (<code>tuple</code>), <strong class="pname"><code>Box</code></strong>, <strong class="pname"><code>4-tuple</code></strong> - (left, upper, right, bottom)</li>
-        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
-    </ul></dd>
-    <dt>Returns: <code>MyImage</code></dt>
-        <dd>Cropped image</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="pil_img_rotate"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">pil_img_rotate</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">img</span>,
-        <span class="sig-arg">direction</span>,
-        <span class="sig-arg">qual</span>=<span class="sig-default">75</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Returns rotated version of the current image. Direction is a simple 
-  string defining either left (=90 degree rotation clockwise), right (-90 
-  degree) or 180.</p>
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>img</code></strong> (<code>MyImage</code>) - Image</li>
-        <li><strong class="pname"><code>direction</code></strong>, <strong class="pname"><code>string</code></strong> - left, right, 180</li>
-        <li><strong class="pname"><code>qual</code></strong> - JPEG quality (default: 75)</li>
-        <li><strong class="pname"><code>box</code></strong> (<code>string</code>)</li>
-    </ul></dd>
-    <dt>Returns: <code>MyImage</code></dt>
-        <dd>Rotated image</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="getZipArchive"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getZipArchive</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">f</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Extract files from zip-archive and return list of extracted files.</p>
-  <dl class="fields">
     <dt>Returns: <code>list</code></dt>
-        <dd>Extracted files (binary)</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="buildZipArchive"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">buildZipArchive</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">files</span>,
-        <span class="sig-arg">get_data</span>=<span class="sig-default">True</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Pack ZIP-Archive and return data.</p>
-  <dl class="fields">
-    <dt>Returns: <code>string</code></dt>
-        <dd>ZIP-archive (binary)</dd>
+        <dd>Copy of list.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2750,7 +2813,7 @@
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Filepath</li>
         <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Access mode</li>
-        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>)</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
     </ul></dd>
     <dt>Returns: <code>string</code> or <code>filestream_iterator</code></dt>
         <dd>Contents of file</dd>
@@ -2906,6 +2969,36 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="getLangFmtDate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getLangFmtDate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">t</span>,
+        <span class="sig-arg">lang</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">fmt_str</span>=<span class="sig-default">'SHORTDATETIME_FMT'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Formats date in locale-format</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>t</code></strong> (<code>struct_time</code>) - Datetime</li>
+        <li><strong class="pname"><code>lang</code></strong> (<code>string</code>) - Locale</li>
+        <li><strong class="pname"><code>fmt_str</code></strong> - Format-String, possible values SHORTDATETIME_FMT (default), 
+          SHORTDATE_FMT, DATETIME_FMT, DATE_FMT, DateTime, Day, Month, 
+          ISO8601, RFC2822</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -2935,7 +3028,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Jun 04 14:16:23 2009
+    Generated by Epydoc 3.0.1 on Thu Sep 19 15:12:27 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

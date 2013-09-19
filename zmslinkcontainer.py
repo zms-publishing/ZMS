@@ -217,8 +217,7 @@ class ZMSLinkContainer(ZMSContainerObject):
           map(lambda x: x.renderShort(REQUEST), 
             filter(lambda x: x.isCommitted(REQUEST), 
               self.getChildNodes(REQUEST,['ZMSLinkElement']))))
-        html = '<div class="contentEditable" id="contentEditable_%s_%s">%s</div>'%(self.id,REQUEST['lang'],html)
-        html = '<div class="zmiRenderShort">%s</div><!-- .zmiRenderShort -->'%html
+        html = self._getBodyContentContentEditable(html)
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
       except:

@@ -358,8 +358,8 @@ function storeCaret( textEl) {
 		### Character-Format (Bold, Italic, Underline, etc.)
 		</tal:block
 		><div class="btn-group pull-left" tal:repeat="charFormats python:[
-								[['bold','icon-bold'],
-								['italic','icon-italic']],
+								[['strong','icon-bold'],
+								['em','icon-italic']],
 								[['sub','icon-subscript'],
 								['sup','icon-superscript']],
 								[['code','icon-code']],

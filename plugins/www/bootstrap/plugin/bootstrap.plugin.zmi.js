@@ -23,8 +23,8 @@ $(function(){
 	$("p.well").each(function() {
 			var $prev = $(this).prev();
 			if($prev[0].nodeName.toLowerCase()=='legend') {
-				$prev.html($ZMI.icon(name='icon-info-sign')+' '+$prev.html());
-				$($ZMI.icon_selector(),$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
+				$prev.html('<span>'+$prev.html()+'</span>');
+				$('span',$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
 			}
 			else {
 				$(this).show();

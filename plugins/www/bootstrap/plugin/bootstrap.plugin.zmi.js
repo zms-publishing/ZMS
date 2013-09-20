@@ -582,6 +582,7 @@ function zmiModal(s, opt) {
 						if (typeof opt['open'] == 'function') {
 							opt['open'](this);
 						}
+						$ZMI.initInputFields($("#"+id));
 					})
 				.on('hide.bs.modal',function(){
 						$ZMI.writeDebug("zmiModal:hide(id="+zmiModalStack[zmiModalStack.length-1]+")");
@@ -826,7 +827,6 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				width:800,
 				open:function(event,ui) {
 					$ZMI.runReady();
-					$ZMI.initInputFields($('#zmiIframeAddDialog'));
 					if($('#zmiIframeAddDialog .form-control').length==0) {
 						$('#addInsertBtn').click();
 					}

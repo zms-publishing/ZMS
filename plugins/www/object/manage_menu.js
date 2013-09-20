@@ -49,15 +49,13 @@ function zmiToggleClick(toggle, callback) {
 						var html = '';
 						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
 						html += '<'+'div class="';
-						/*
-						if ($(page).attr("permissions")) {
-							html += 'restricted ';
-						}
-						*/
 						if ($(page).attr("active")== "0") {
 							html += 'inactive ';
 						} else {
 							html += 'active ';
+						}
+						if ($(page).attr("restricted")=="True") {
+							html += 'restricted" title= "Login Required';
 						}
 						html += '">';
 						html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';

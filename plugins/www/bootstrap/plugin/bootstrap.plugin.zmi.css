@@ -378,10 +378,12 @@ body.manage-menu #zmi-header {
 body.manage-menu a {
 	color:#FFF
 }
-body.manage-menu div.restricted a,
 body.manage-menu .zmi-sitemap .inactive a,
 body.manage-menu .zmi-helper-clickable {
 	color:#999;
+}
+body.manage-menu div.restricted > a > i {
+	color:orange;
 }
 body.manage-menu .zmi-helper-clickable:hover {
 	color:#FFF;

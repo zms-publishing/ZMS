@@ -41,8 +41,8 @@
 
 	<tal:block tal:define="global
 			query python:here.query(resSlctStmnt,encoding=encoding);
-			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],query['columns']));
-			dummy0 python:metaObjAttrs.extend(query['columns']);
+			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],sessqentity['columns']));
+			dummy0 python:metaObjAttrs.extend(sessqentity['columns']);
 			dummy0 python:res.extend(query['records'])">
 	</tal:block>
 
@@ -76,7 +76,9 @@
 	</tal:block>
 </tal:block>
 
-<form method="get" class="form-horizontal" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
+<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
+
+<form method="get" class="form-horizontal">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
@@ -155,10 +157,14 @@
 	</div><!-- .accordion-group -->
 </form>
 
-
-<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res)">
-	metaobj_recordset_main_grid
+<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
+	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=res,records=res)">
+		metaobj_recordset_main_grid
+	</tal:block>
 </tal:block>
+
+</tal:block>
+
 <tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.input_form(entity=sessqentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
 	metaobj_recordset_input_fields
 </tal:block>

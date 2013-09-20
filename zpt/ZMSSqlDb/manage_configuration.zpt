@@ -58,6 +58,7 @@ function zmiFormSubmit(sender,d) {
 	var $fm = $(sender).closest("form");
 	var html = '';
 	for (var i in d) {
+		$ZMI.writeDebug(i);
 		$('input[name="' + i + '"]',$fm).remove();
 		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
 	}
@@ -74,11 +75,11 @@ function onAttrTypeChange( el) {
 }
 
 $ZMI.registerReady(function(){
+		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'), width:'90%'});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
-				$(this).parents('.inner').dialog('close');
+				zmiModal("hide");
 				return false;
 			});
-		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'), width:'90%'});
 	});
 
 // #############################################################################
@@ -179,7 +180,6 @@ function mms_normalize_rows(el_tbody) {
 						><option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">the type</option>
 					</tal:block>
 				</select>
-
 				<div class="controls save pull-right">
 					<button type="submit" name="btn" class="btn btn-primary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-default btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
@@ -189,13 +189,13 @@ function mms_normalize_rows(el_tbody) {
 	<div class="form-group">
 		<label class="col-xs-2 control-label"><span>Interface</span></label>
 		<div class="col-xs-10">
-			<div class="single-line"><textarea class="form-control input-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
+			<div class="single-line"><textarea title="Interface" class="form-control input-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
 		<label class="col-xs-2 control-label"><span>Filter</span></label>
 		<div class="col-xs-10">
-			<div class="single-line"><textarea class="form-control input-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
+			<div class="single-line"><textarea title="Filter" class="form-control input-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div style="clear:both;">&nbsp;</div>
@@ -229,9 +229,10 @@ function mms_normalize_rows(el_tbody) {
 				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 			</thead>
 			<tbody>
-				<tr tal:repeat="column table/columns">
+				<tal:block tal:repeat="column table/columns">
+				<tr tal:attributes="class python:' '.join([[],['zmi-selected']][int(column['id']==request.get('attr_id'))])">
 					<td>
-						<select class="zmi-sort"  tal:attributes="name python:'attr_index_%s:int'%column['id']; onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':%s,key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
+						<select class="zmi-sort"  tal:attributes="name python:'attr_index_%s:int'%column['id']; onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':\'%s\',key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
 							<option tal:repeat="i python:range(0,len(table['columns']))" tal:attributes="selected python:['','selected'][int(i==table['columns'].index(column))]" tal:content="python:i+1">i+1</option>
 						</select>
 					</td>
@@ -243,7 +244,7 @@ function mms_normalize_rows(el_tbody) {
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 					</td>
 					<td><input class="form-control input-xs" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
-					<td><input class="form-control input-xs" tal:attributes="name python:'attr_display_%s:int'%column['id']" value="1" type="checkbox"/></td>
+					<td><input class="form-control input-xs" tal:attributes="name python:'attr_display_%s:int'%column['id']; checked python:['','checked'][int(not column.get('hide',0))]" value="1" type="checkbox"/></td>
 					<td>
 						<select class="form-control input-xs" tal:attributes="name python:'attr_type_%s'%column['id']" onchange="onAttrTypeChange(this)">
 							<option value=""></option>
@@ -331,7 +332,7 @@ function mms_normalize_rows(el_tbody) {
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>C.Options</td>
-							<td><div class="zmi-single-line-edit"><textarea class="form-control input-xs" tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:column.get('fk',{}).get('options','')"></textarea></div></td>
+							<td><div class="zmi-single-line-edit"><textarea class="form-control input-xs" tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:'\n'.join(map(lambda x:x[0],column.get('fk',{}).get('options',[])))"></textarea></div></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multiselect ###########################################################
@@ -433,6 +434,7 @@ function mms_normalize_rows(el_tbody) {
 						</table>
 					</td>
 				</tr>
+				</tal:block>
 				<tr class="row_insert">
 					<td><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 					<td><input class="form-control input-xs" name="attr_id" type="text"/></td>
@@ -488,7 +490,8 @@ function mms_normalize_rows(el_tbody) {
 			<div class="pull-left">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
-					<tal:block tal:content="table/id">table-id</tal:block>
+					<tal:block tal:content="table/label">table-label</tal:block>
+					(<tal:block tal:content="table/id">table-id</tal:block>)
 				</a>
 			</div>
 			<div class="clearfix"></div>
@@ -498,7 +501,10 @@ function mms_normalize_rows(el_tbody) {
 				<tal:block tal:repeat="column table/columns">
 					<div class="form-group">
 						<label tal:attributes="class python:' '.join(['col-xs-3 col-lg-2 control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
-							<span><tal:block tal:content="repeat/column/number">number</tal:block>. <tal:block tal:content="column/label">column-label</tal:block></span>
+							<span>
+								<tal:block tal:content="repeat/column/number">number</tal:block>. 
+								<tal:block tal:content="column/label">column-label</tal:block>
+							</span>
 						</label>
 						<div class="col-xs-9 col-lg-10">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>

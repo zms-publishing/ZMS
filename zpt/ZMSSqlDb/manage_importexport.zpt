@@ -9,7 +9,7 @@
 <script>
 </script>
 
-<form class="form-horizontal" name="importForm" action="manage_import" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
+<form class="form-horizontal" action="manage_import" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
 	<div class="form-group">
@@ -25,7 +25,7 @@
 	</div>
 </form>
 
-<form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get" onsubmit="return onExportFormSubmit(this)">
+<form class="form-horizontal" action="manage_export" target="_blank" method="get">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
 	<div class="form-group">

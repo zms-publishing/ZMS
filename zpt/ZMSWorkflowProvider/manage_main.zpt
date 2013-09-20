@@ -121,8 +121,10 @@ function zmiFormSubmit(sender,d) {
 }
 
 $ZMI.registerReady(function(){
+		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE')});
+		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE')});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
-				$(this).parents('.inner').dialog('close');
+				zmiModal("hide");
 				return false;
 			});
 		$('table.zmi-sortable tr').hover(
@@ -132,8 +134,6 @@ $ZMI.registerReady(function(){
 			function() {
 					$(this).removeClass('active');
 				});
-		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE')});
-		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE')});
 	});
 
 </script>

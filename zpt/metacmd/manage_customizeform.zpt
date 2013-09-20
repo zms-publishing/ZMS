@@ -252,11 +252,11 @@ function zmiDeleteObjBtnClick(sender,d) {
 }
 
 $ZMI.registerReady(function(){
+		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
-				$(this).parents('.inner').dialog('close');
+				zmiModal("hide");
 				return false;
 			});
-		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800});
 });
 
 </script>

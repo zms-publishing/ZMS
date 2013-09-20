@@ -4,7 +4,7 @@
 			row options/row;
 			entity options/entity">
 
-<form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data" tal:define="global primary_key request/primary_key; qcharset python:request.get('qcharset','utf-8')">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
 	<input type="hidden" id="action" name="action" tal:attributes="value action">
@@ -24,13 +24,63 @@
 					dummy0 python:here.operator_setitem(metaObjAttr,'id',metaObjAttr['id'].lower());
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label']">
-			<div class="form-group">
+			<div class="form-group" tal:define="global elValue python:row.get(elName); done python:[]">
 				<label tal:attributes="for elName; class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
 					<span tal:content="elLabel">the label</span>
 				</label>
-				<div class="col-lg-10" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=row.get(elName),REQUEST=request)">
-					the control
+
+				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
+					<input type="hidden" tal:attributes="name elName; value elValue"/>
+					<p class="form-control-static" tal:content="elValue">the value</p>
+					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-lg-10 -->
+
+				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
+					<tal:block tal:define="global options python:[];">
+						<tal:block tal:condition="python:not done and metaObjAttr['fk'].get('options')">
+							<tal:block tal:define="dummy0 python:options.extend(metaObjAttr['fk']['options'])"></tal:block>
+						</tal:block>
+						<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=options)">the control</tal:block>
+						<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
+					</tal:block>
+				</div><!-- .col-lg-10 -->
+
+				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
+					<tal:block tal:define="global options python:[];">
+						<tal:block tal:condition="python:not done and metaObjAttr['multiselect'].get('tablename')">
+							<tal:block tal:define="global
+									value python:[];
+									optpl python:[];
+									intersection python:here.getEntity(metaObjAttr['multiselect']['tablename']);
+									src python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')==entity['id'],intersection['columns'])[0];
+									dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],intersection['columns'])[0];">
+								<tal:block tal:define="global sql python:''
+											+ 'SELECT ' + dst['id'] + ' AS dst_id FROM ' + intersection['id'] + ' '
+											+ 'WHERE ' + src['id'] + '=' + here.sql_quote__(entity['id'],primary_key,row.get(primary_key))">
+									<tal:block tal:repeat="r python:here.query(sql)['records']">
+										<input type="hidden" tal:attributes="name python:'old_%s:list'%elName; value python:r['dst_id'];" tal:define="dummy0 python:value.append(r['dst_id'])"/>
+									</tal:block>
+								</tal:block>
+								<tal:block tal:define="global sql python:''
+											+ 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue '
+											+ 'FROM ' + dst['fk'].get('tablename') + ' ';">
+									<tal:block tal:repeat="r python:here.query(sql)['records']">
+										<tal:block tal:define="dummy0 python:optpl.append([unicode(str(r['qkey']),qcharset).encode('utf-8'),unicode(str(r['qvalue']),qcharset).encode('utf-8')])"></tal:block>
+									</tal:block>
+								</tal:block>
+								<tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=value,lang_str=elLabel,options=optpl)">the control</tal:block>
+								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
+							</tal:block>
+						</tal:block>
+					</tal:block>
+				</div><!-- .col-lg-10 -->
+
+				<div class="col-lg-10" tal:condition="python:not done">
+					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=elValue,REQUEST=request)">
+						the control
+					</tal:block>
+				</div><!-- .col-lg-10 -->
+
 			</div><!-- .form-group -->
 			</tal:block>
 		</tal:block>

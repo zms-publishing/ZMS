@@ -428,7 +428,7 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi.preview_top #zmi-header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 #zmi-overlay{background-color:black;display:block;position:absolute;top:0;left:0;width:100%;height:100%;filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 #zmi-progressbox{padding:20px 40px 20px 40px;background-color:#FFF;color:black;position:absolute}
-.zmi ul.main-nav{margin-top:0.5em;padding-left:1em;max-height:2.65em}
+.zmi ul.main-nav{margin-top:0.5em;padding-left:1em;}
 .zmi .navbar-inner{border-radius:0 !important}
 #zmi-footer{left:0px;bottom:0px;height:26px;width:100%;background:#fff;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
@@ -667,7 +667,7 @@ div.right .btn .caret{}
  .navbar-brand .slogan{display:none}
  .navbar-nav>li{float:left}
  #zmi-logo{display:none}
- .zmi ul.main-nav{font-size:13px;max-height:none;margin:0px;padding:0.5em}
+ .zmi ul.main-nav{font-size:13px;margin:0px;padding:0.5em}
  .zmi .main-nav li{margin:1px}
  .zmi .main-nav li a{line-height:1.25em;padding:0.5em 0.7em 0.6em 0.7em;border:0px}
  .zmi .main-nav li a:hover{border-radius:4px;background-color:#0088cc;border:0px;color:#fff}
@@ -698,7 +698,6 @@ li.zmi-item .btn.split-left:hover{color:#222}
 li.zmi-item span.zmi-ids{display:inline-block;margin:6px;vertical-align:top}
 .zmi-manage-main-change{color:#888;font-size:11px;margin:2px 0 0 8px}
 ul.zmi-container li.zmi-item div.zmiRenderShort{min-height:60px}
-.zmi ul.main-nav{max-height:auto}
 .nav>li>a{padding:8px 10px 7px 10px;font-size:14px}
 #zmi-header .navbar-nav.pull-right{width:auto;margin:4px 0 !important}
 @media(max-width:420px){#zmi-header .navbar-brand{display:none}

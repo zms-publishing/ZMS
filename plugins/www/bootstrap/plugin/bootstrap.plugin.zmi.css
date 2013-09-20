@@ -84,7 +84,6 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi ul.main-nav {
 	margin-top:0.5em;
 	padding-left:1em;
-	max-height: 2.65em;
 }
 .zmi .navbar-inner {
 	border-radius:0 !important;
@@ -1108,7 +1107,6 @@ div.right .btn .caret {
 	}
 	.zmi ul.main-nav {
 		font-size: 13px;
-		max-height: none;
 		margin: 0px;
 		padding: 0.5em;
 	}
@@ -1245,9 +1243,6 @@ li.zmi-item span.zmi-ids {
 
 ul.zmi-container li.zmi-item div.contentEditable {
 	min-height:60px;
-}
-.zmi ul.main-nav {
-	max-height: auto;
 }
 .nav>li>a {
 	padding: 8px 10px 7px 10px;

@@ -232,22 +232,40 @@
 							<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
 							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
 							<td class="meta-default">
-								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
-									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join(['zmi-element-key']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
-								</div>
-								<div class="zmi-element-default" tal:condition="python:objAttr['type'] in ['boolean']">
-									<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])">
-										<tal:block tal:repeat="option python:[True,False]">
-											<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(objAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
-										</tal:block>
-									</select>
-								</div>
-								<div class="single-line" tal:condition="python:objAttr['type'] in ['constant']">
-									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
-								</div>
-								<div class="single-line zmi-element-default" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
-								</div>
+								<tal:block tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
+									<div class="pull-left" tal:content="structure python:here.zmi_icon(name='icon-key')"></div>
+									<div class="pull-left">
+										<div class="single-line">
+											<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
+										</div><!-- .single-line -->
+									</div><!-- .pull-left -->
+								</tal:block>
+								<tal:block tal:condition="python:objAttr['type'] in ['boolean']">
+									<div class="pull-left" tal:content="structure python:here.zmi_icon(name='icon-beaker')"></div>
+									<div class="pull-left">
+										<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])">
+											<tal:block tal:repeat="option python:[True,False]">
+												<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(objAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
+											</tal:block>
+										</select>
+									</div>
+								</tal:block>
+								<tal:block tal:condition="python:objAttr['type'] in ['constant']">
+									<div class="pull-left" tal:content="structure python:here.zmi_icon(name='icon-beaker')"></div>
+									<div class="pull-left">
+										<div class="single-line">
+											<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
+										</div><!-- .single-line -->
+									</div><!-- .pull-left -->
+								</tal:block>
+								<tal:block tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
+									<div class="pull-left" tal:content="structure python:here.zmi_icon(name='icon-beaker')"></div>
+									<div class="pull-left">
+										<div class="single-line">
+											<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
+										</div><!-- .single-line -->
+									</div><!-- .pull-left -->
+								</tal:block>
 							</td>
 						</tal:block>
 					</tal:block>

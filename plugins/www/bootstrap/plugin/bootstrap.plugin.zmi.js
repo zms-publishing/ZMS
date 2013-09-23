@@ -43,9 +43,9 @@ $(function(){
 			if ($("span.input-group-addon",this).length==0) {
 				$(this).addClass("input-group");
 				if ($textarea.attr('data-style')) {
-					$(this).append('<span class="input-group-addon" title="Click for Code Popup or Dbl-Click for Zope Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
+					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Zope Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
 				} else {
-					$(this).append('<span class="input-group-addon">...</span>');
+					$(this).append('<span class="input-group-addon btn btn-default">...</span>');
 				};
 				var clicks, timer, delay;
 				clicks=0;delay=500;timer=null;
@@ -63,7 +63,7 @@ $(function(){
 											+ '<div class="col-lg-10">'
 												+ '<div class="input-group">'
 													+ '<input class="form-control" type="text" name="zmi-nodespicker-url-input" class="url-input">'
-													+ '<span class="input-group-addon" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
+													+ '<span class="input-group-addon btn btn-default" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
 												+ '</div><!-- .input-append -->'
 											+ '</div><!-- .col-lg-10 -->';
 								}

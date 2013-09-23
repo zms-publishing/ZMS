@@ -668,11 +668,15 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas .zmi-element-disabled {
 	background:#EEE!important;
 }
-.zmi.metas .zmi-element-key {
-	background:url(/misc_/zms/btn_key.gif) 3px 3px no-repeat;
+.zmi.metas .meta-default i {
+	position:relative;
+	top:4px;
+	left:20px;
+	z-index:9999;
 }
-.zmi.metas .zmi-element-default {
-	background:url(/misc_/zms/ico_default.gif) 3px 3px no-repeat;
+.zmi.metas .meta-default textarea, 
+.zmi.metas .meta-default select {
+	padding-left:24px;
 }
 .zmi.metas .enabled a {
 	font-weight:bold;

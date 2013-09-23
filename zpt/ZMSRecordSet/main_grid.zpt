@@ -85,7 +85,7 @@
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
-				elValue python:record.get(metaObjAttr['id'])">
+				elValue python:here.operator_getitem(record,metaObjAttr['id'],ignorecase=True)">
 		<td class="data">
 			<tal:block tal:condition="python:metaObjAttr['type']=='url'" tal:define="global target python:here.getLinkObj(elValue)">
 				<tal:block tal:condition="python:target is not None">

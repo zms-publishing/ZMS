@@ -1,8 +1,9 @@
 <tal:block tal:define="global
-			action options/action;
-			qindex options/qindex;
-			row options/row;
-			entity options/entity">
+			action python:'update';
+			qindex request/qindex;
+			row python:res[int(request['qindex'])];
+			encoding python:getattr(here,'charset','utf-8');
+			entity sessqentity">
 
 <form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data" tal:define="global primary_key request/primary_key; qcharset python:request.get('qcharset','utf-8')">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
@@ -20,12 +21,13 @@
 			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
 		</div><!-- accordion-heading -->
 		<tal:block tal:repeat="metaObjAttr entity/columns">
-			<tal:block tal:define="global
+			<tal:block tal:condition="python:not metaObjAttr.has_key('details')" tal:define="global
 					dummy0 python:here.operator_setitem(metaObjAttr,'id',metaObjAttr['id'].lower());
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label']">
 			<div class="form-group" tal:define="global elValue python:row.get(elName); done python:[]">
 				<label tal:attributes="for elName; class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
+					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
 				</label>
 
@@ -45,35 +47,36 @@
 					</tal:block>
 				</div><!-- .col-lg-10 -->
 
-				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
-					<tal:block tal:define="global options python:[];">
-						<tal:block tal:condition="python:not done and metaObjAttr['multiselect'].get('tablename')">
-							<tal:block tal:define="global
+				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]"
+					><tal:block tal:define="global options python:[];"
+						><tal:block tal:condition="python:not done and metaObjAttr['multiselect'].get('tablename')"
+							><tal:block tal:define="global
 									value python:[];
 									optpl python:[];
 									intersection python:here.getEntity(metaObjAttr['multiselect']['tablename']);
 									src python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')==entity['id'],intersection['columns'])[0];
-									dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],intersection['columns'])[0];">
-								<tal:block tal:define="global sql python:''
+									dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],intersection['columns'])[0];"
+								><tal:block tal:define="global sql python:''
 											+ 'SELECT ' + dst['id'] + ' AS dst_id FROM ' + intersection['id'] + ' '
-											+ 'WHERE ' + src['id'] + '=' + here.sql_quote__(entity['id'],primary_key,row.get(primary_key))">
-									<tal:block tal:repeat="r python:here.query(sql)['records']">
-										<input type="hidden" tal:attributes="name python:'old_%s:list'%elName; value python:r['dst_id'];" tal:define="dummy0 python:value.append(r['dst_id'])"/>
-									</tal:block>
-								</tal:block>
-								<tal:block tal:define="global sql python:''
+											+ 'WHERE ' + src['id'] + '=' + here.sql_quote__(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True))"
+									><tal:block tal:repeat="r python:here.query(sql,encoding=encoding)['records']"
+										><input type="hidden" tal:attributes="name python:'old_%s:list'%elName; value python:r['dst_id'];" tal:define="dummy0 python:value.append(r['dst_id'])"
+									/></tal:block
+								></tal:block
+								><tal:block tal:define="global sql python:''
 											+ 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue '
-											+ 'FROM ' + dst['fk'].get('tablename') + ' ';">
-									<tal:block tal:repeat="r python:here.query(sql)['records']">
-										<tal:block tal:define="dummy0 python:optpl.append([unicode(str(r['qkey']),qcharset).encode('utf-8'),unicode(str(r['qvalue']),qcharset).encode('utf-8')])"></tal:block>
-									</tal:block>
-								</tal:block>
-								<tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=value,lang_str=elLabel,options=optpl)">the control</tal:block>
-								<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-							</tal:block>
-						</tal:block>
-					</tal:block>
-				</div><!-- .col-lg-10 -->
+											+ 'FROM ' + dst['fk'].get('tablename') + ' ';"
+									><!-- sql=<tal:block tal:content="sql"></tal:block>
+									--><tal:block tal:repeat="r python:here.query(sql,encoding=encoding)['records']"
+										><tal:block tal:define="dummy0 python:optpl.append([unicode(str(r['qkey']),qcharset).encode('utf-8'),unicode(str(r['qvalue']),qcharset).encode('utf-8')])"></tal:block
+									></tal:block
+								></tal:block
+								><tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=value,lang_str=elLabel,options=optpl)">the control</tal:block
+								><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
+							></tal:block
+						></tal:block
+					></tal:block
+				></div><!-- .col-lg-10 -->
 
 				<div class="col-lg-10" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=elValue,REQUEST=request)">
@@ -85,12 +88,77 @@
 			</tal:block>
 		</tal:block>
 	</div><!-- .accordion-group -->
+
 	<div class="form-group">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
+
+	<tal:block tal:condition="python:action!='insert'">
+		<tal:block tal:repeat="metaObjAttr entity/columns">
+			<tal:block tal:condition="python:metaObjAttr.has_key('details')" tal:define="global
+					dummy0 python:here.operator_setitem(metaObjAttr,'id',metaObjAttr['id'].lower());
+					elName python:metaObjAttr['id'];
+					elLabel python:metaObjAttr['label'];">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" href="#" tal:content="elLabel">the heading</a>
+					</div><!-- accordion-heading -->
+
+								<tal:block tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);">
+
+									<tal:block tal:condition="python:details['type']=='table'">
+										<tal:block tal:define="global
+												sql python:''
+														+ 'SELECT a.* '
+														+ 'FROM ' + metaObjAttr['details']['tablename'] + ' a '
+														+ 'WHERE a.' + metaObjAttr['details']['fk'] + '=' + here.sql_quote__(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True))"
+												><!-- sql=<tal:block tal:content="sql"></tal:block>
+											--><tal:block tal:define="global
+														r python:here.query(sql,encoding=encoding)['records'];
+														metaObjAttrIds python:map(lambda x:x['id'],details['columns']);
+														metaObjAttrs python:details['columns'];">
+												<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
+													<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r)">
+														metaobj_recordset_main_grid
+													</tal:block>
+												</tal:block>
+											</tal:block>
+										</tal:block>
+									</tal:block>
+
+									<tal:block tal:condition="python:details['type']=='intersection'">
+										<tal:block tal:define="global
+												dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],details['columns'])[0];
+												dstentity python:here.getEntity(dst['fk']['tablename']);
+												sql python:''
+														+ 'SELECT a.* '
+														+ 'FROM ' + dstentity['id'] + ' a '
+														+ 'INNER JOIN ' + metaObjAttr['details']['tablename'] + ' b ON a.' + filter(lambda x:x.get('pk'),dstentity['columns'])[0]['id'] + ' = b.' + dst['id'] + ' '
+														+ 'WHERE b.' + metaObjAttr['details']['fk'] + '=' + here.sql_quote__(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True))"
+												><!-- sql=<tal:block tal:content="sql"></tal:block>
+											--><tal:block tal:define="global
+														r python:here.query(sql,encoding=encoding)['records'];
+														metaObjAttrIds python:map(lambda x:x['id'],dstentity['columns']);
+														metaObjAttrs python:dstentity['columns'];">
+												<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
+													<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r)">
+														metaobj_recordset_main_grid
+													</tal:block>
+												</tal:block>
+											</tal:block>
+										</tal:block>
+									</tal:block>
+
+								</tal:block>
+
+				</div><!-- .accordion-group -->
+			</tal:block>
+		</tal:block>
+	</tal:block>
+
 </form><!-- .form-horizontal -->
 
 </tal:block>

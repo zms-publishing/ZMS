@@ -508,9 +508,30 @@ function mms_normalize_rows(el_tbody) {
 						</label>
 						<div class="col-xs-9 col-lg-10">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
+							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
-							(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
+							<tal:block tal:condition="python:column.get('details')">
+								<span class="column-datatype" tal:define="global
+										intersection python:here.getEntity(column['details']['tablename']);
+										dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id'],intersection['columns'])[0];
+										dstentity python:here.getEntity(dst['fk']['tablename']);
+										">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+									<tal:block tal:content="column/details/fk">the intersection-fk</tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+									<tal:block tal:content="dst/id">the details-fk</tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+								</span>
+							</tal:block>
+							<tal:block tal:condition="not:python:column.get('details')">
+								(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
+							</tal:block>
 						</div><!-- .col-lg-10 -->
 					</div><!-- .form-group -->
 				</tal:block>

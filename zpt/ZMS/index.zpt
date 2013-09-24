@@ -9,22 +9,22 @@
 ><tal:block tal:replace="nothing">
 ### Avoid duplicate content under same url.
 </tal:block
-><tal:block tal:condition="python:not done and here.getDeclId()!=here.id and (request['URL'].endswith(here.getDeclId()+'/index_html') or request['URL'].endswith(id+'/index_html'))"
+><tal:block tal:condition="python:not done and here.getDeclId()!=here.id and (request['URL'].endswith(here.getDeclId()+'/index_html') or request['URL'].endswith(here.id+'/index_html'))"
 	><tal:block tal:define="global
 			dummy0 python:request.set('ZMS_INDEX_HTML',1);
-			dummy0 python:request.RESPONSE.redirect(here.getHref2IndexHtml(REQUEST),301);
+			dummy0 python:request.RESPONSE.redirect(here.getHref2IndexHtml(request),301);
 			dummy0 python:done.append(True)"></tal:block
 ></tal:block
 
 ><tal:block tal:condition="python:not done and getattr(here.getHome(),'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None) is not None"
 	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
-	><tal:block tal:content="structure python:getattr(here.getHome(),'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None)(here,request)">skin_ext</tal:block
+	><tal:block tal:content="structure python:getattr(here,'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None)(here,request)">skin_ext</tal:block
 	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
 ></tal:block
 
 ><tal:block tal:condition="python:not done and getattr(here.getHome(),'standard_html',None)"
 	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
-	><tal:block tal:content="structure python:getattr(here.getHome(),'standard_html',None)(here,request)">standard_html</tal:block
+	><tal:block tal:content="structure python:getattr(here,'standard_html',None)(here,request)">standard_html</tal:block
 	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
 ></tal:block
 
@@ -60,7 +60,7 @@
 	><tal:block tal:condition="python:not done and (here.isPreviewRequest(request) or here.getDocumentElement().isActive(request))"
 		><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
 		><tal:block tal:condition="python:getattr(here.getHome(),'standard_html_request',None) is not None"
-			><tal:block tal:content="structure python:here.getattr(here.getHome(),'standard_html_request',None)(here,request)">standard_html_request</tal:block
+			><tal:block tal:content="structure python:here.getattr(here,'standard_html_request',None)(here,request)">standard_html_request</tal:block
 		></tal:block
 		><tal:block tal:content="structure python:here.f_standard_html_header(here,request)">f_standard_html_request</tal:block
 		><tal:block tal:condition="python:here.isPreviewRequest(request) or here.isActive(request)"

@@ -562,13 +562,15 @@ class ZMSGlobals:
       operator.setitem(a,b,c)
       return a
 
-    def operator_getitem(self, a, b, ignorecase=True):
+    def operator_getitem(self, a, b, c=None, ignorecase=True):
       """
       Retrieves value for key from python-dictionary.
       @param a: Dictionary
       @type a: C{dict}
       @param b: Key
       @type b: C{any}
+      @param c: Default-Value
+      @type c: C{any}
       @rtype: C{any}
       """
       if ignorecase and type(b) is str:
@@ -576,7 +578,9 @@ class ZMSGlobals:
           return operator.getitem(a,b.upper())
         elif b.lower() in a.keys():
           return operator.getitem(a,b.lower())
-      return operator.getitem(a,b)
+      if b in a.keys():
+        return operator.getitem(a,b)
+      return c
 
     def operator_delitem(self, a, b):
       """

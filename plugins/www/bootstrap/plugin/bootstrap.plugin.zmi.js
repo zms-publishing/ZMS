@@ -254,7 +254,7 @@ function zmiUnlockForm(form_id) {
  */ 
 ZMI.prototype.initInputFields = function(container) {
 	$ZMI.setCursorWait("BO zmiInitInputFields");
-	$('form.form-horizontal',container)
+	$('form.form-horizontal:not(.form-initialized)',container)
 		.submit(function() {
 				var b = true;
 				// Button
@@ -336,6 +336,8 @@ ZMI.prototype.initInputFields = function(container) {
 			})
 		.each(function() {
 			var context = this;
+			$(this).addClass('form-initialized');
+			// Button-Clicked
 			$('input[type="submit"],button[type="submit"]',context)
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
@@ -602,6 +604,7 @@ function zmiModal(s, opt) {
 		}
 	}
 	$ZMI.setCursorAuto("zmiModal");
+	return false;
 }
 
 /**
@@ -609,6 +612,8 @@ function zmiModal(s, opt) {
  */
 function zmiIframe(href, data, opt) {
 	$ZMI.setCursorWait("zmiIframe");
+	data = typeof data == "undefined" ? {} : data;
+	opt = typeof opt == "undefined" ? {} : opt;
 	// Debug
 	var url = href + "?";
 	for (var k in data) {
@@ -644,6 +649,7 @@ function zmiIframe(href, data, opt) {
 				}
 			});
 	}
+	return false;
 }
 
 // #############################################################################

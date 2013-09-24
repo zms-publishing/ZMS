@@ -16,10 +16,10 @@
 	<div class="pull-left">
 		<label>&nbsp;</label><br/>
 		<div class="btn-group-vertical">
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-angle-right')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-right')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-left')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-angle-left')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-angle-right')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-right')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-left')"></button>
+			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-angle-left')"></button>
 		</div><!-- .btn-group-vertical -->
 	</div><!-- .pull-left -->
 	<div class="pull-left">

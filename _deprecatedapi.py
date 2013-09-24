@@ -18,6 +18,7 @@
 
 # Imports.
 import warnings
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
 import _globals
 import _zreferableitem
@@ -57,6 +58,7 @@ class DeprecatedAPI:
   f_bo_area = '' 
   f_eo_area = '' 
   f_submitBtn = '' 
+  f_bodyContent = PageTemplateFile('zpt/object/zmi_body_content', globals())
   def zmi_form_section_begin(self, *args, **kwargs):
     return ''
   def zmi_form_section_end(self, *args, **kwargs):

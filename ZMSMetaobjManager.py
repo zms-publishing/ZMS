@@ -225,18 +225,20 @@ class ZMSMetaobjManager:
 
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
       value = []
+      export_ids = []
       for id in ids:
         metaObj = self.getMetaobj( id)
+        export_ids.append(id)
         if metaObj['type'] == 'ZMSPackage':
           for pkgMetaObjId in self.getMetaobjIds():
               pkgMetaObj = self.getMetaobj( pkgMetaObjId)
               if pkgMetaObj[ 'package'] == metaObj[ 'id']:
-                ids.append( pkgMetaObjId)
+                export_ids.append( pkgMetaObjId)
       keys = self.model.keys()
       keys.sort()
       revision = '0.0.0'
       for id in keys:
-        if id in ids or len(ids) == 0:
+        if id in export_ids or len(export_ids) == 0:
           ob = copy.deepcopy(self.__get_metaobj__(id))
           revision = ob.get( 'revision', revision)
           attrs = []
@@ -256,9 +258,10 @@ class ZMSMetaobjManager:
               del ob[key]
           # Value.
           value.append({'key':id,'value':ob})
-      # XML.
       if len(value)==1:
         value = value[0]
+      # XML.
+      if len(ids)==1:
         filename = '%s-%s.metaobj.xml'%(ids[0],revision)
       else:
         filename = 'export.metaobj.xml'

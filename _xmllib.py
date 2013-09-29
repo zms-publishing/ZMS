@@ -488,7 +488,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       if value.content_type.find( 'text/') == 0:
         xml.append( '<![CDATA[%s]]>'%str(value.data))
       else:
-        xml.append( _globals.bin2hex(value.data))
+        xml.append( _globals.bin2hex(str(value.data)))
       xml.append( '</%s>'%tagname)
     
     # Dictionaries

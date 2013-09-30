@@ -165,9 +165,9 @@ class ZMSObject(ZMSItem.ZMSItem,
             l.append('/* %s */'%(s))
             l.append('/* %s */'%('#'*len(s)))
             try:
-              l.append(self.dt_html(str(self.getMetaobjAttr(metaObjId,id).get('custom','')),REQUEST))
+              l.append(self.attr(id))
             except:
-              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[f_css_defaults]: %s"%s))
+              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[zmi_css_defaults]: %s"%s))
       return '\n'.join(l)
 
 

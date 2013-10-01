@@ -670,14 +670,21 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background:#EEE!important;
 }
 .zmi.metas .meta-default i {
-	position:relative;
-	top:4px;
-	left:20px;
-	z-index:9999;
+	position: absolute;
+	top: 8px;
+	left: 6px;
+	color: #999;
 }
-.zmi.metas .meta-default textarea, 
-.zmi.metas .meta-default select {
+.zmi.metas .meta-default .input-group .form-control {
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.zmi.metas .meta-default textarea {
 	padding-left:24px;
+}
+.zmi.metas .meta-default select {
+	font-family: "Courier New",Courier,monospace;
+	padding-left:20px;
 }
 .zmi.metas .enabled a {
 	font-weight:bold;

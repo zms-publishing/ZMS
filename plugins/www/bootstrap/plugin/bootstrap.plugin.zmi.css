@@ -457,7 +457,8 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	margin-left:0;
 }
 ul.zmi-container.pages .zmi-item .contentEditable {
-	padding-left:1.0em !important
+	padding-left:1.0em !important;
+	font-size:large;
 }
 form.form-horizontal {
 	background-color:#fff;

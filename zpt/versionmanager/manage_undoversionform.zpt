@@ -23,7 +23,7 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-		<div class="accordion-body collapse container in">
+		<div class="accordion-body collapse container in" style="background-color:inherit;">
 			<div class="accordion-inner">
 				<ul class="zmi-container">
 					<tal:block tal:repeat="change_item python:change_history[pageStart:pageEnd]">

@@ -132,7 +132,12 @@ function zmiFormSubmit(sender,d) {
 			<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1" /></td>
 			<td class="meta-multilang"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1" /></td>
 			<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1" /></td>
-			<td><div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']"><textarea class="form-control input-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea></div></td>
+			<td>
+				<div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
+					<textarea class="form-control input-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>
+				</div>
+			</td>
 		</tal:block>
 		</tal:block>
 	</tr>

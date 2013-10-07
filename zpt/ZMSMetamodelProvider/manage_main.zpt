@@ -233,7 +233,6 @@
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['boolean']">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-beaker')">icon</tal:block>
 									<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])">
 										<tal:block tal:repeat="option python:[True,False]">
 											<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(objAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
@@ -241,11 +240,9 @@
 									</select>
 								</div>
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['constant']">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-beaker')">icon</tal:block>
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="objAttr/custom">custom</textarea>
 								</div>
 								<div class="single-line" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-beaker')">icon</tal:block>
 									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
 								</div>
 							</td>

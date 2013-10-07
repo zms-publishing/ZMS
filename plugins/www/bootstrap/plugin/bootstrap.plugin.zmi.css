@@ -666,6 +666,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas option.deprecated {
 	color:#CCC;
 }
+.zmi-element-default {
+	background:#FFE!important;
+}
 .zmi.metas .zmi-element-disabled {
 	background:#EEE!important;
 }

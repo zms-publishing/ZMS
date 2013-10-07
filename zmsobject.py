@@ -165,7 +165,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             l.append('/* %s */'%(s))
             l.append('/* %s */'%('#'*len(s)))
             try:
-              l.append(self.attr(id))
+              l.append(self.attr(s))
             except:
               l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[zmi_css_defaults]: %s"%s))
       return '\n'.join(l)

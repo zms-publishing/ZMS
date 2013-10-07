@@ -317,15 +317,6 @@ class MediaDb(
       threshold = 2 << 16 # 128 kb
       local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
       fsize = os.path.getsize( local_filename)
-      try:
-        mt, enc = _globals.guess_contenttype( local_filename)
-      except:
-        mt, enc = 'content/unknown', ''
-      REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
-      REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
-      REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
-      REQUEST.RESPONSE.setHeader('Cache-Control', 'no-cache')
-      REQUEST.RESPONSE.setHeader('Pragma', 'no-cache')
       if fsize < threshold or REQUEST.RESPONSE is None:
         try:
           f = open( local_filename, 'rb')
@@ -334,6 +325,13 @@ class MediaDb(
           f.close()
       else:
         data = filestream_iterator( local_filename, 'rb')
+      try:
+        mt, enc = _globals.guess_contenttype( local_filename, data)
+      except:
+        mt, enc = 'content/unknown', ''
+      REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
+      REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
+      REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
       return data
 
 

@@ -91,7 +91,18 @@ function pluginCkeditor(s, c) {
 function loadCkeditor(id, opt) {
 	var instance = CKEDITOR.instances[id];
 	if(instance){
-		instance.destroy();
+		try {
+			CKEDITOR.remove(instance);
+		}
+		catch (e) {
+		}
+		try {
+			if ($.browser.msie) {
+				instance.destroy();
+			}
+		}
+		catch (e) {
+		}
 	}
 	CKEDITOR.replace(id, opt);
 }

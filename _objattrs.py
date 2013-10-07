@@ -654,6 +654,9 @@ class ObjAttrs:
         metaObjAttr = None
         try:
           if key not in objAttrs.keys():
+            if key.find('.')>0:
+              meta_id = key[:key.find('.')]
+              key = key[key.find('.')+1:]
             metaObjAttr = self.getMetaobjAttr( meta_id, key, syncTypes=['*'])
         except:
           _globals.writeError( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))

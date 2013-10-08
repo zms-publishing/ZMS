@@ -512,21 +512,23 @@ function mms_normalize_rows(el_tbody) {
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
 							<tal:block tal:condition="python:column.get('details')">
-								<span class="column-datatype" tal:define="global
-										intersection python:here.getEntity(column['details']['tablename']);
-										dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id'],intersection['columns'])[0];
-										dstentity python:here.getEntity(dst['fk']['tablename']);
-										">
+								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
 									<tal:block tal:content="column/details/fk">the intersection-fk</tal:block>
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
 									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
-									<tal:block tal:content="dst/id">the details-fk</tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
-									<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+									<tal:block tal:on-error="python:'ERROR'" tal:define="global
+											intersection python:here.getEntity(column['details']['tablename']);
+											dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id'],intersection['columns'])[0];
+											dstentity python:here.getEntity(dst['fk']['tablename']);
+											">
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+										<tal:block tal:content="dst/id">the details-fk</tal:block>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+									</tal:block>
 								</span>
 							</tal:block>
 							<tal:block tal:condition="not:python:column.get('details')">

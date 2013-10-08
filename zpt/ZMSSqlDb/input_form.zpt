@@ -27,18 +27,18 @@
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label']">
 			<div class="form-group" tal:define="global elValue python:row.get(elName); done python:[]">
-				<label tal:attributes="for elName; class python:' '.join(['col-lg-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
+				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
 				</label>
 
-				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
 					<input type="hidden" tal:attributes="name elName; value elValue"/>
 					<p class="form-control-static" tal:content="elValue">the value</p>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-9 col-md-10 -->
 
-				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
 					<tal:block tal:define="global options python:[];">
 						<tal:block tal:condition="python:not done and metaObjAttr['fk'].get('options')">
 							<tal:block tal:define="dummy0 python:options.extend(metaObjAttr['fk']['options'])"></tal:block>
@@ -46,9 +46,9 @@
 						<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=options)">the control</tal:block>
 						<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 					</tal:block>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-9 col-md-10 -->
 
-				<div class="col-lg-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]"
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]"
 					><tal:block tal:define="global options python:[];"
 						><tal:block tal:condition="python:not done and metaObjAttr['multiselect'].get('tablename')"
 							><tal:block tal:define="global
@@ -77,13 +77,13 @@
 							></tal:block
 						></tal:block
 					></tal:block
-				></div><!-- .col-lg-10 -->
+				></div><!-- .col-sm-9 col-md-10 -->
 
-				<div class="col-lg-10" tal:condition="python:not done">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=elValue,REQUEST=request)">
 						the control
 					</tal:block>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-9 col-md-10 -->
 
 			</div><!-- .form-group -->
 			</tal:block>
@@ -94,7 +94,7 @@
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 
 	<tal:block tal:condition="python:action!='insert'">

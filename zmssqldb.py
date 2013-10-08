@@ -725,6 +725,7 @@ class ZMSSqlDb(ZMSObject):
         primary_key.append(None)
         #-- Set environment.
         SESSION.set('qentity_%s'%self.id,tablename)
+        REQUEST.set('qentity',tablename)
         REQUEST.set('tabledef',tabledef)
         REQUEST.set('grid_cols',tablecols)
         REQUEST.set('primary_key',primary_key[0])
@@ -753,6 +754,7 @@ class ZMSSqlDb(ZMSObject):
           q = 'AND '
         whereClause = []
         for i in range(SESSION['qfilters_%s'%self.id]):
+          print i
           filterattr='filterattr%i'%i
           filterop='filterop%i'%i
           filtervalue='filtervalue%i'%i

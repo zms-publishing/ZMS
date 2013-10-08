@@ -13,13 +13,13 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
-		<div class="col-lg-10">
-			<input class="form-control btn btn-file" name="file" type="file" />
-		</div><!-- .col-lg-10 -->
+		<label class="col-sm-3 col-md-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
+		<div class="col-sm-9 col-md-10">
+			<input class="btn btn-file" name="file" type="file" />
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 		</div>
 	</div>
@@ -29,8 +29,8 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="ids:list"><span tal:content="python:here.getZMILangStr('ATTR_TABLE')">table</span></label>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2  control-label mandatory" for="ids:list"><span tal:content="python:here.getZMILangStr('ATTR_TABLE')">table</span></label>
+		<div class="col-sm-9 col-md-10">
 			<tal:block tal:define="global 
 					entities python:here.getEntities();
 					value python:map(lambda x:x['id'],entities);
@@ -39,10 +39,10 @@
 					multiselect
 				</tal:block>
 			</tal:block>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
 		</div>
 	</div>

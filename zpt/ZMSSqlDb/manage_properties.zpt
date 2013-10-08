@@ -13,8 +13,8 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
+		<div class="col-sm-9 col-md-10">
 			<select class="form-control" name="connection_id">
 				<option value="">--- Select Connection Id ---</option>
 				<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
@@ -23,25 +23,25 @@
 					</option>
 				</tal:block>
 			</select>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="max_rows"><span>Max. Rows</span></label>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2 control-label mandatory" for="max_rows"><span>Max. Rows</span></label>
+		<div class="col-sm-9 col-md-10">
 			<input class="form-control" type="text" class="input-mini" name="max_rows:int" tal:attributes="value python:getattr(here,'max_rows',999)" />
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="charset"><span>Charset</span></label>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2 control-label mandatory" for="charset"><span>Charset</span></label>
+		<div class="col-sm-9 col-md-10">
 			<tal:block tal:content="structure python:here.getSelect(fmName='form0',elName='charset',value=getattr(here,'charset',''),inputtype='select',lang_str='Charset',required=1,optpl=here.enumManager.getValues('charset'),enabled=1,REQUEST=request)">select</tal:block>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="model"><span>Model</span></label>
-		<div class="col-lg-10">
+		<label class="col-sm-3 col-md-2 control-label mandatory" for="model"><span>Model</span></label>
+		<div class="col-sm-9 col-md-10">
 			<textarea class="form-control" rows="20" name="model" tal:content="python:here.getModelContainer().raw">raw</textarea>
-		</div><!-- .col-lg-10 -->
+		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">
 		<div class="controls save">

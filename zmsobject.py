@@ -174,9 +174,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.title:
     # --------------------------------------------------------------------------
-    def title(self, REQUEST={}):
+    def title(self):
       try:
-        return self.getObjProperty('title', REQUEST)
+        return self.attr('title')
       except:
         return 'ZMS'
 

@@ -168,7 +168,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               l.append(self.attr(s))
             except:
               l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[zmi_css_defaults]: %s"%s))
-      return '\n'.join(l)
+      return '\n'.join(map(lambda x:str(x),l))
 
 
     # --------------------------------------------------------------------------

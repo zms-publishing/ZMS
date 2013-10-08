@@ -393,7 +393,7 @@ function mms_normalize_rows(el_tbody) {
 								</tr>
 								<tal:block tal:define="global ts python:column.get('multimultiselect',{}).get('tables',[])">
 									<tal:block tal:repeat="ti python:range(len(ts))">
-										<tr tal:define="global t python:ts[i]">
+										<tr tal:define="global t python:ts[ti]">
 											<td></td>
 											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
 											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); value python:t.get('tablename','')">" size="5"/></td>

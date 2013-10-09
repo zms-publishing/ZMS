@@ -435,6 +435,14 @@ class ZMSSqlDb(ZMSObject):
       columns = self.getEntity( tableName)['columns']
       column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
       column['id'] = column['id'].lower()
+      # Text
+      stereotype = column.get('text')
+      if stereotype not in ['',None]:
+        column['type'] = 'text'
+      # Richtext
+      stereotype = column.get('richtext')
+      if stereotype not in ['',None]:
+        column['type'] = 'richtext'
       # Select
       stereotype = column.get('fk')
       if stereotype not in ['',None]:
@@ -449,7 +457,7 @@ class ZMSSqlDb(ZMSObject):
         elif stereotype.has_key('tablename'):
           sql = []
           sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
-          if fk.has_key('lazy') and row:
+          if stereotype.has_key('lazy') and row:
             value = self.operator_getitem(row,columnName,ignorecase=True)
             if value:
               where = []

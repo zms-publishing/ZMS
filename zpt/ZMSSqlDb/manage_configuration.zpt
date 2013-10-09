@@ -240,7 +240,7 @@ function mms_normalize_rows(el_tbody) {
 						<input type="hidden" name="attr_ids:list" tal:attributes="value column/id"/>
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 						<span class="column-id" tal:content="column/id">column-id</span>
-						<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
+						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python: here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 					</td>
 					<td><input class="form-control input-xs" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
@@ -313,10 +313,6 @@ function mms_normalize_rows(el_tbody) {
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>A.Displayfield</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
-						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
-							<td>A.Maxlen</td>
-							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_maxlen_%s'%column['id']; value python:column.get('fk',{}).get('maxlen','25')"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>A.Editable</td>
@@ -396,10 +392,10 @@ function mms_normalize_rows(el_tbody) {
 										<tr tal:define="global t python:ts[ti]">
 											<td></td>
 											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); value python:t.get('tablename','')">" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')">" size="5"/></td >
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')">" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')">" size="5"/></td>
+											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); value python:t.get('tablename','')" size="5"/></td>
+											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')" size="5"/></td >
+											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')" size="5"/></td>
+											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')" size="5"/></td>
 											<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1"/></td>
 											<td style="text-align:center;" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_display_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('display')==1)]" value="1"/></td>
 										</tr>
@@ -510,7 +506,7 @@ function mms_normalize_rows(el_tbody) {
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
-							<span class="column-description" tal:content="python: column.get('description','')">column-description</span>
+							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 							<tal:block tal:condition="python:column.get('details')">
 								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>

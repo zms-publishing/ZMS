@@ -46,6 +46,12 @@ select.zmi-sort {
 .form-horizontal .accordion-inner {
 	margin-left:2.3em;
 }
+.accordion-group a {
+	font-weight:bold;
+}
+.accordion-group.inactive a, .accordion-group.inactive label span {
+	color:#AAA;
+}
 
 </style>
 
@@ -170,7 +176,8 @@ function mms_normalize_rows(el_tbody) {
 			<div>
 				<label class="control-label col-xs-2">
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+						<tal:block tal:condition="python:table['type']!='intersection'" tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+						<tal:block tal:condition="python:table['type']=='intersection'" tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
 						<tal:block tal:content="table/id">table-id</tal:block>
 					</a>
 				</label>
@@ -240,7 +247,7 @@ function mms_normalize_rows(el_tbody) {
 						<input type="hidden" name="attr_ids:list" tal:attributes="value column/id"/>
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 						<span class="column-id" tal:content="column/id">column-id</span>
-						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python: here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
+						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 					</td>
 					<td><input class="form-control input-xs" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
@@ -296,7 +303,7 @@ function mms_normalize_rows(el_tbody) {
 						##### Fk ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
-							<td>A.Tablename</td>
+							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']">
 									<option value=""></option>
@@ -315,16 +322,8 @@ function mms_normalize_rows(el_tbody) {
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
-							<td>A.Editable</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_fk_editable_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('editable')==1)]" value="1"/></td>
-						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
-							<td>A.Lazy</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy')==1)]" value="1"/></td>
-						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>B.MySQL-Set</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset')==1)]" value="1"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>C.Options</td>
@@ -334,7 +333,7 @@ function mms_normalize_rows(el_tbody) {
 						##### Multiselect ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
-							<td>A.Tablename</td>
+							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']">
 									<option value=""></option>
@@ -345,16 +344,16 @@ function mms_normalize_rows(el_tbody) {
 							</td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
-							<td>A.Foreign Key</td>
+							<td>A.Foreign Key <tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block></td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multiselect_fk_%s'%column['id']; value python:column.get('multiselect',{}).get('fk','')"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
 							<td>A.Lazy</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy')==1)]" value="1"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
 							<td>B.MySQL-Set</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset')==1)]" value="1"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multimultiselect ###########################################################
@@ -478,14 +477,16 @@ function mms_normalize_rows(el_tbody) {
 		<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 	</div>
 	<br/>
-	<div class="accordion-group" tal:repeat="table tables">
+	<tal:block tal:repeat="table tables">
+	<div tal:attributes="class python:' '.join(['accordion-group']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%table['id']">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 			</a>
 			<div class="pull-left">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+					<tal:block tal:condition="python:table['type']!='intersection'" tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+					<tal:block tal:condition="python:table['type']=='intersection'" tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
 					<tal:block tal:content="table/label">table-label</tal:block>
 					(<tal:block tal:content="table/id">table-id</tal:block>)
 				</a>
@@ -507,27 +508,47 @@ function mms_normalize_rows(el_tbody) {
 							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
+							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
+								<span class="column-datatype">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk']['fieldname'])"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+									<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
+									(<tal:block tal:content="column/fk/displayfield">the fk-displayfield</tal:block>)
+								</span>
+							</tal:block>
+							<tal:block tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
+								<span class="column-datatype">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['multiselect']['fk'])"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
+									<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
+									<tal:block tal:on-error="python:'ERROR'" tal:define="global
+											intersection python:here.getEntity(column['multiselect']['tablename']);
+											dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id'],intersection['columns'])[0];
+											dstentity python:here.getEntity(dst['fk']['tablename']);
+											">
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
+									</tal:block>
+								</span>
+							</tal:block>
 							<tal:block tal:condition="python:column.get('details')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
-									<tal:block tal:content="column/details/fk">the intersection-fk</tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['details']['fk'])"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
 									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
 											intersection python:here.getEntity(column['details']['tablename']);
 											dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id'],intersection['columns'])[0];
 											dstentity python:here.getEntity(dst['fk']['tablename']);
 											">
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
-										<tal:block tal:content="dst/id">the details-fk</tal:block>
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right')"></tal:block>
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
 										<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
 								</span>
 							</tal:block>
-							<tal:block tal:condition="not:python:column.get('details')">
+							<tal:block tal:condition="not:python:column.get('datatype')=='?'">
 								(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 							</tal:block>
 						</div><!-- .col-lg-10 -->
@@ -536,6 +557,7 @@ function mms_normalize_rows(el_tbody) {
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
+	</tal:block>
 
 </form>
 

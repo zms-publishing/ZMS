@@ -188,6 +188,30 @@ function processMultiselectsOnFormSubmit() {
   }
 }
 
+//------------------------------------------------------------------- 
+// removeFromMultiselect 
+//------------------------------------------------------------------- 
+function removeFromMultiselect(src) { 
+	var selected = new Array(); 
+	var index = 0; 
+	while (index < src.options.length) { 
+		if (src.options[index].selected) { 
+			selected[index] = src.options[index].selected; 
+		} 
+		index++; 
+	}
+	index = 0; 
+	var count = 0; 
+	while (index < selected.length) { 
+		if (selected[index]) 
+			src.options[count] = null; 
+		else 
+			count++; 
+		index++; 
+	} 
+	sortOptions(src); 
+}
+
 //-------------------------------------------------------------------
 // appendToMultiselect
 //-------------------------------------------------------------------

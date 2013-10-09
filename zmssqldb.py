@@ -431,9 +431,85 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntityColumn:
     # --------------------------------------------------------------------------
-    def getEntityColumn(self, tableName, columnName):
+    def getEntityColumn(self, tableName, columnName, row=None):
       columns = self.getEntity( tableName)['columns']
-      return filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0]
+      column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
+      column['id'] = column['id'].lower()
+      # Select
+      stereotype = column.get('fk')
+      if stereotype not in ['',None]:
+        options = []
+        if stereotype.has_key('mysqlset'):
+         for r in self.query( 'DESCRIBE %s %s'%(tableName,columnName))['records']:
+           rtype = r['type']
+           for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
+             options.append([i,i])
+        elif stereotype.has_key('options'):
+          options.extend(stereotype['options'])
+        elif stereotype.has_key('tablename'):
+          sql = []
+          sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
+          if fk.has_key('lazy') and row:
+            value = self.operator_getitem(row,columnName,ignorecase=True)
+            if value:
+              where = []
+              if type(value) is not list:
+                value = [value]
+              for i in value:
+                where.append( stereotype['fieldname'] + '=' + + self.sql_quote__(stereotype.get('tablename'),stereotype.get('fieldname'),value))
+              sql.append( 'WHERE ' + ' OR '.join(where))
+          sql.append( 'ORDER BY ' + str(stereotype.get('sort',2)))
+          qcharset = self.REQUEST.get('qcharset','utf-8')
+          for r in self.query('\n'.join(sql))['records']:
+            qkey = str(r['qkey'])
+            qvalue = str(r['qvalue'])
+            try:
+              qkey =unicode(qkey,qcharset).encode('utf-8')
+              qvalue = unicode(qvalue,qcharset).encode('utf-8')
+            except:
+              pass
+            options.append([qkey,qvalue])
+        column['options'] = options
+      # Multiselect
+      stereotype = column.get('multiselect')
+      if stereotype not in ['',None]:
+        value = []
+        options = []
+        intersection = self.getEntity(stereotype['tablename'])
+        primary_key = self.getEntityPK(tableName)
+        src = filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename').upper()==tableName.upper(),intersection['columns'])[0]
+        dst = filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename').upper()!=tableName.upper(),intersection['columns'])[0]
+        if row:
+          sql = '' \
+            + 'SELECT ' + dst['id'] + ' AS dst_id ' \
+            + 'FROM ' + intersection['id'] + ' ' \
+            + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
+          for r in self.query(sql)['records']:
+            value.append(r['dst_id'])
+        sql = '' \
+          + 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue ' \
+          + 'FROM ' + dst['fk'].get('tablename') + ' '
+        if stereotype.has_key('lazy') and row:
+          value = self.operator_getitem(row,columnName,ignorecase=True)
+          if value:
+            where = []
+            if type(value) is not list:
+              value = [value]
+            for i in value:
+              where.append( fk.get('fieldname') + '=' + + self.sql_quote__(fk.get('tablename'),fk.get('fieldname'),value))
+            sql.append( 'WHERE ' + ' OR '.join(where))
+        for r in self.query(sql)['records']:
+          qkey = str(r['qkey'])
+          qvalue = str(r['qvalue'])
+          try:
+            qkey =unicode(qkey,qcharset).encode('utf-8')
+            qvalue = unicode(qvalue,qcharset).encode('utf-8')
+          except:
+            pass
+          options.append([qkey,qvalue])
+        column['value'] = value
+        column['options'] = options
+      return column
 
 
     # --------------------------------------------------------------------------
@@ -754,7 +830,6 @@ class ZMSSqlDb(ZMSObject):
           q = 'AND '
         whereClause = []
         for i in range(SESSION['qfilters_%s'%self.id]):
-          print i
           filterattr='filterattr%i'%i
           filterop='filterop%i'%i
           filtervalue='filtervalue%i'%i

@@ -354,7 +354,7 @@ $ZMI.registerReady(function(){
 				<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 			</div>
 		</div>
-		<div class="pull-right">
+		<div class="pull-right container">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		</div>
 	</div><!-- .row.container -->

@@ -38,6 +38,7 @@ $ZMI.registerReady(function(){
 	}
 	else {
 		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
+		$("textarea#text").hide();
 		editor = ace.edit("editor");
 		var content_type = null;
 		if ($("input#content_type")) {

@@ -252,7 +252,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 }
 
 $ZMI.registerReady(function(){
-		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800});
+		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");
 				return false;

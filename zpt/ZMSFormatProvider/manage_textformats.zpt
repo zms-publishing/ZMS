@@ -59,6 +59,7 @@
 			<div class="form-group">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
 		</form>
@@ -196,7 +197,11 @@ function zmiDeleteObjBtnClick(sender,d) {
 }
 
 $ZMI.registerReady(function(){
-	zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT')})
+		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true})
+		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+				zmiModal("hide");
+				return false;
+			});
 });
 
 </script>

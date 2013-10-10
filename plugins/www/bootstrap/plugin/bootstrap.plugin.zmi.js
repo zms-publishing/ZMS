@@ -22,12 +22,14 @@ $(function(){
 	// Well
 	$("p.well").each(function() {
 			var $prev = $(this).prev();
-			if($prev[0].nodeName.toLowerCase()=='legend') {
-				$prev.html('<span>'+$prev.html()+'</span>');
-				$('span',$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
-			}
-			else {
-				$(this).show();
+			if (typeof $prev != 'undefined' && $prev.length > 0) {
+				if($prev[0].nodeName.toLowerCase()=='legend') {
+					$prev.html('<span>'+$prev.html()+'</span>');
+					$('span',$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
+				}
+				else {
+					$(this).show();
+				}
 			}
 		});
 
@@ -532,6 +534,9 @@ function zmiModal(s, opt) {
 	else if (typeof opt == "object") {
 		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null?zmiModalStack.length:$(s).attr('id')):opt['id'];
 		var body = s==null?opt['body']:$(s).html();
+		if (s!=null && opt['remove']==true) {
+			$(s).remove();
+		}
 		if (typeof id!="undefined" && typeof body!="undefined") {
 			zmiModalStack.push(id);
 			$ZMI.writeDebug("zmiModal:init(id="+id+")");

@@ -29,6 +29,10 @@ import _objattrs
 # Example code.
 # -------------
 
+dtmlMethodWithExecExampleCode = '<!-- @deprecated -->'
+
+dtmlMethodWithoutExecExampleCode = '<!-- @deprecated -->'
+
 pageTemplateExampleCode = \
   '<!DOCTYPE html>\n' + \
   '<html lang="en">\n' + \
@@ -193,7 +197,19 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
         newMethod = getattr(portalMaster,newId).meta_type
     if newId in self.objectIds():
       self.manage_delObjects(ids=[newId])
-    if newMethod == 'Page Template':
+    if newMethod == 'DTML Method': 
+      self.manage_addDTMLMethod(newId,newTitle) 
+      if newData is None: 
+        if newExec: 
+          newData = dtmlMethodWithExecExampleCode 
+        else: 
+          newData = dtmlMethodWithoutExecExampleCode 
+      newData = newData.replace('$$NAME$$',newName) 
+    elif newMethod == 'DTML Document': 
+      self.manage_addDTMLDocument(newId,newTitle) 
+      if newData is None:
+        newData = dtmlMethodExampleCode 
+    elif newMethod == 'Page Template':
       self.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=newId,title=newTitle,text=pageTemplateExampleCode)
     elif newMethod == 'Script (Python)':
       PythonScript.manage_addPythonScript(self,newId)

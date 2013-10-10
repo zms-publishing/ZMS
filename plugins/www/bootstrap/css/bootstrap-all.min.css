@@ -508,7 +508,7 @@ ul.zmi-container .zmi-item .zmi-action .split-left{width:160px;visibility:hidden
 .checkbox.split-left{height:1em}
 .checkbox.split-left input{margin:.2em .5em 0 0}
 .zmi-action .btn.split-left,.zmi-action .btn.split-right{background-color:#eee;border-color:#eee;color:#333;font-weight:bold;height:2.7em;margin-left:0}
-ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;font-size:large;}
+ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;font-size:large}
 form.form-horizontal{background-color:#fff;margin-left:2em;margin-right:2em;padding:0.5em}
 form.form-horizontal.form-insert{margin:0}
 .system table.zopeobjects i{margin-left:3px}
@@ -559,7 +559,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
 .zmi.metas input[type="file"]{display:inline-block}
 .zmi.metas table.meta-access{margin:4em 0 0}
 .zmi.metas option.deprecated{color:#CCC}
+.zmi-element-default{background:#FFE!important}
 .zmi.metas .zmi-element-disabled{background:#EEE!important}
+.zmi.metas .meta-default i{position:absolute;top:8px;left:6px;color:#999}
+.zmi.metas .meta-default .input-group .form-control{border-top-left-radius:3px;border-bottom-left-radius:3px}
+.zmi.metas .meta-default textarea{padding-left:24px}
+.zmi.metas .meta-default select{font-family:"Courier New",Courier,monospace;padding-left:20px}
 .zmi.metas .enabled a{font-weight:bold}
 .ui-helper-clickable.icon-check{margin-right:0.2em;color:#08c}
 .ui-helper-clickable.icon-check-empty{margin-right:0.3em;color:#08c}

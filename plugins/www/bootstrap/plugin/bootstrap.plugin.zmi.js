@@ -100,7 +100,7 @@ $(function(){
 		.dblclick( function(evt) {
 			var href = null;
 			if ((href==null || typeof href=="undefined") && $('a '+$ZMI.icon_selector("icon-pencil"),this).length > 0) {
-				href = $('a '+$ZMI.icon_selector("icon-pencil"),this).parents("a:first").attr('href');
+				return $('a '+$ZMI.icon_selector("icon-pencil"),this).parents("a:first").click();
 			}
 			else if ((href==null || typeof href=="undefined")) {
 				href = $('a[target=]',this).attr('href');
@@ -621,7 +621,9 @@ function zmiIframe(href, data, opt) {
 	$ZMI.writeDebug("zmiIframe:url="+url);
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
-		opt['body'] = '<iframe src="' + url + '" width="' + opt['width'] + '" height="' + opt['height'] + '" frameBorder="0"></iframe>';
+		var width = typeof opt['width'] == 'undefined' ? '100%' : opt['width'];
+		var height = typeof opt['height'] == 'undefined' ? '100%' : opt['height'];
+		opt['body'] = '<iframe src="' + url + '" width="' + width + '" height="' + height + '" frameBorder="0"></iframe>';
 		zmiModal(null,opt);
 		$ZMI.setCursorAuto("zmiIframe");
 	}

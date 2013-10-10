@@ -29,7 +29,7 @@
 	<col />
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
-				elType python:metaObjAttr['type']">
+				elType python:metaObjAttr.get('type','string')">
 			<col tal:condition="python:elType in ['int']" width="3em"/>
 			<col tal:condition="python:elType not in ['int']"/>
 		</tal:block>
@@ -42,24 +42,26 @@
 			<span class="checkbox split-left btn">
 				<tal:block tal:content="python:len(filtered_records)">len(filtered_records)</tal:block> / <tal:block tal:content="python:len(records)">len(records)</tal:block>
 			</span>
-			<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu">
-				<li><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
-				<li tal:condition="python:'insert' in actions">
-					<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\')'%(url,request['lang'],''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
-					</a>
-				</li>
-				<li tal:condition="python:'delete' in actions">
-					<a tal:attributes="onclick python:options.get('delete','return zmiRecordSetDeleteRow(\'form0\')')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
-					</a>
-				</li>
-			</ul>
+			<tal:block tal:condition="python:'insert' in actions or 'delete' in actions">
+				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
+					<li tal:condition="python:'insert' in actions">
+						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
+						</a>
+					</li>
+					<li tal:condition="python:'delete' in actions">
+						<a tal:attributes="onclick python:options.get('delete','return zmiRecordSetDeleteRow(\'form0\')')">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+						</a>
+					</li>
+				</ul>
+			</tal:block>
 		</div>
 	</th>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -79,37 +81,40 @@
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
 		<div class="btn-group">
 			<span class="checkbox split-left btn">
-				<input type="checkbox" name="qindices:list" tal:attributes="value qindex" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
+				<input type="checkbox" name="qindices:list" tal:attributes="value python:record.get('__id__',qindex)" onchange="$(this).parents('tr:first').toggleClass('zmi-selected',$(this).prop('checked'))">
 				<tal:block tal:content="python:qindex+1">qindex</tal:block>.
 			</span>
-			<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu">
-				<li tal:condition="python:'update' in actions">
-					<a tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\')'%(url,request['lang'],qindex,''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
-					</a>
-				</li>
-				<li tal:condition="python:'delete' in actions">
-					<a tal:attributes="onclick python:options.get('delete','javascript:return zmiRecordSetDeleteRow(\'form0\',%i)'%qindex)">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
-						<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
-					</a>
-				</li>
-				<tal:block tal:condition="python:'sort' in actions and 'sort_id' in metaObjAttrIds">
-					<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
-					<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
-				</tal:block>
-			</ul>
+			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
+				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li tal:condition="python:'update' in actions">
+						<a tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\',\'_self\')'%(url,request['lang'],qindex,''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
+						</a>
+					</li>
+					<li tal:condition="python:'delete' in actions">
+						<a tal:attributes="onclick python:options.get('delete','javascript:return zmiRecordSetDeleteRow(\'form0\',%i)'%qindex)">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+						</a>
+					</li>
+					<tal:block tal:condition="python:'sort' in actions and 'sort_id' in metaObjAttrIds">
+						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
+						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
+					</tal:block>
+				</ul>
+			</tal:block>
 		</div>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
-				elValue python:here.operator_getitem(record,metaObjAttr['id'],ignorecase=True)">
+				elValue python:here.operator_getitem(record,metaObjAttr['id'],ignorecase=True);
+				elType python:metaObjAttr.get('type','string')">
 		<td class="data">
-			<tal:block tal:condition="python:metaObjAttr['type']=='url'" tal:define="global target python:here.getLinkObj(elValue)">
+			<tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)">
 				<tal:block tal:condition="python:target is not None">
 					<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
 				</tal:block>
@@ -117,13 +122,13 @@
 					<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 				</tal:block>
 			</tal:block>
-			<tal:block tal:condition="python:metaObjAttr['type'] in ['boolean']">
+			<tal:block tal:condition="python:elType in ['boolean']">
 				<i tal:condition="python:elValue" class="icon-ok"></i>
 			</tal:block>
-			<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime']">
-				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%metaObjAttr['type']).upper())">elValue</tal:block>
+			<tal:block tal:condition="python:elType in ['date','datetime']">
+				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
 			</tal:block>
-			<tal:block tal:condition="not:python:metaObjAttr['type'] in ['boolean','date','datetime','url']">
+			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','url']">
 				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 			</tal:block>
 		</td>

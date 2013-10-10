@@ -80,7 +80,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
 ################################################################################
 
 class ZMSSqlDb(ZMSObject):
-                                                           
+
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
     # assertions.
@@ -94,11 +94,12 @@ class ZMSSqlDb(ZMSObject):
     # Management Options.
     # -------------------
     manage_options = ( 
-    {'label': 'TAB_EDIT',        'action': 'manage_main'},
-    {'label': 'TAB_IMPORTEXPORT',    'action': 'manage_importexport'},
+    {'label': 'TAB_EDIT',          'action': 'manage_main'},
+    {'label': 'TAB_IMPORTEXPORT',  'action': 'manage_importexport'},
     {'label': 'TAB_PROPERTIES',    'action': 'manage_properties'},
-    {'label': 'TAB_CONFIGURATION',    'action': 'manage_configuration'},
-    {'label': 'SQL',    'action': 'manage_sql'},
+    {'label': 'TAB_CONFIGURATION', 'action': 'manage_configuration'},
+    {'label': 'SQL',               'action': 'manage_sql'},
+    {'label': 'TAB_PREVIEW',       'action': 'preview_html'}
     )
 
     # Management Permissions.
@@ -122,13 +123,12 @@ class ZMSSqlDb(ZMSObject):
 
     # Management Interface.
     # ---------------------
-    input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
     manage_sql = PageTemplateFile('zpt/ZMSSqlDb/manage_sql', globals())
     manage_configuration = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration', globals())
-
 
     # Valid Types.
     # ------------
@@ -435,6 +435,10 @@ class ZMSSqlDb(ZMSObject):
       columns = self.getEntity( tableName)['columns']
       column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
       column['id'] = column['id'].lower()
+      # Checkbox
+      stereotype = column.get('checkbox')
+      if stereotype not in ['',None]:
+        column['type'] = 'boolean'
       # Text
       stereotype = column.get('text')
       if stereotype not in ['',None]:
@@ -447,13 +451,16 @@ class ZMSSqlDb(ZMSObject):
       stereotype = column.get('fk')
       if stereotype not in ['',None]:
         options = []
+        # Select.MySQLSet
         if stereotype.has_key('mysqlset'):
-         for r in self.query( 'DESCRIBE %s %s'%(tableName,columnName))['records']:
-           rtype = r['type']
-           for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
-             options.append([i,i])
+          for r in self.query( 'DESCRIBE %s %s'%(tableName,columnName))['records']:
+            rtype = r['type']
+            for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
+              options.append([i,i])
+        # Select.Options
         elif stereotype.has_key('options'):
           options.extend(stereotype['options'])
+        # Select.Fk
         elif stereotype.has_key('tablename'):
           sql = []
           sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
@@ -484,37 +491,54 @@ class ZMSSqlDb(ZMSObject):
         value = []
         options = []
         intersection = self.getEntity(stereotype['tablename'])
-        primary_key = self.getEntityPK(tableName)
-        src = filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename').upper()==tableName.upper(),intersection['columns'])[0]
-        dst = filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename').upper()!=tableName.upper(),intersection['columns'])[0]
+        intersection_fk = filter(lambda x:x.get('fk') is not None,intersection['columns'])
+        src = filter(lambda x:x['fk'].has_key('tablename') and x['fk']['tablename'].upper()==tableName.upper(),intersection_fk)[0]
+        dst = None
+        if dst is None: dst = (filter(lambda x:x['fk'].has_key('options'),intersection_fk)+[None])[0]
+        if dst is None: dst = (filter(lambda x:x['fk'].has_key('tablename') and x['fk']['tablename'].upper()!=tableName.upper(),intersection_fk)+[None])[0]
+        # Multiselect.Selected
         if row:
+          primary_key = self.getEntityPK(tableName)
           sql = '' \
             + 'SELECT ' + dst['id'] + ' AS dst_id ' \
             + 'FROM ' + intersection['id'] + ' ' \
             + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
           for r in self.query(sql)['records']:
             value.append(r['dst_id'])
-        sql = '' \
-          + 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue ' \
-          + 'FROM ' + dst['fk'].get('tablename') + ' '
-        if stereotype.has_key('lazy') and row:
-          value = self.operator_getitem(row,columnName,ignorecase=True)
-          if value:
-            where = []
-            if type(value) is not list:
-              value = [value]
-            for i in value:
-              where.append( fk.get('fieldname') + '=' + + self.sql_quote__(fk.get('tablename'),fk.get('fieldname'),value))
-            sql.append( 'WHERE ' + ' OR '.join(where))
-        for r in self.query(sql)['records']:
-          qkey = str(r['qkey'])
-          qvalue = str(r['qvalue'])
-          try:
-            qkey =unicode(qkey,qcharset).encode('utf-8')
-            qvalue = unicode(qvalue,qcharset).encode('utf-8')
-          except:
-            pass
-          options.append([qkey,qvalue])
+        # Multiselect.MySQLSet
+        if dst['fk'].has_key('mysqlset'):
+          for r in self.query( 'DESCRIBE %s %s'%(intersection['id'],dst['fk']['id']))['records']:
+            rtype = r['type']
+            for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
+              options.append([i,i])
+        # Multiselect.Options
+        elif dst['fk'].has_key('options'):
+          options.extend(dst['fk']['options'])
+        # Multiselect.Fk
+        elif dst['fk'].has_key('tablename'):
+          sql = '' \
+            + 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue ' \
+            + 'FROM ' + dst['fk'].get('tablename') + ' '
+          if stereotype.has_key('lazy') and row:
+            value = self.operator_getitem(row,columnName,ignorecase=True)
+            if value:
+              where = []
+              if type(value) is not list:
+                value = [value]
+              for i in value:
+                where.append( fk.get('fieldname') + '=' + + self.sql_quote__(fk.get('tablename'),fk.get('fieldname'),value))
+              sql.append( 'WHERE ' + ' OR '.join(where))
+          for r in self.query(sql)['records']:
+            qkey = str(r['qkey'])
+            qvalue = str(r['qvalue'])
+            try:
+              qkey =unicode(qkey,qcharset).encode('utf-8')
+              qvalue = unicode(qvalue,qcharset).encode('utf-8')
+            except:
+              pass
+            options.append([qkey,qvalue])
+        column['src'] = src
+        column['dst'] = dst
         column['value'] = value
         column['options'] = options
       return column

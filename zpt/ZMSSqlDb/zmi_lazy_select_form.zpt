@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'intersection_form',here.meta_id])">
+
+<tal:block tal:define="global
+		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn']);
+		metaObjAttrs python:[{'id':'value','name':metaObjAttr['label']}];
+		metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);
+		res python:map(lambda x:{'__id__':x[0],'value':x[1]},metaObjAttr['options']);">
+
+<form>
+
+	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=res,records=res,url_params={'qentity':request.get('qentity'),'qcolumn':request.get('qcolumn')},actions=[])">
+		metaobj_recordset_main_grid
+	</tal:block>
+
+	<div class="form-group">
+		<div class="controls save">
+			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiInsertBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+			<button type="submit" name="btn" class="btn btn-default" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+		</div><!-- .col-sm-9 col-md-10 -->
+	</div><!-- .form-group -->
+
+</form>
+
+</tal:block>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+function zmiInsertBtnClick() {
+	$("input:checkbox:checked").each(function() {
+			var value = $(this).val();
+			var $tr = $(this).closest("tr");
+			var label = $("td:last",$tr).text().trim();
+			window.parent.appendToMultiselect('<tal:block tal:content="request/qcolumn">the column</tal:block>',{label:label,value:value});
+		});
+	zmiCloseBtnClick();
+}
+function zmiCloseBtnClick() {
+	window.parent.zmiDialogClose();
+}
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+</body>
+</html>

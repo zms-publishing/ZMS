@@ -192,6 +192,9 @@ function processMultiselectsOnFormSubmit() {
 // removeFromMultiselect 
 //------------------------------------------------------------------- 
 function removeFromMultiselect(src) { 
+	if (typeof src == "string") {
+		src = document.getElementById(src);
+	}
 	var selected = new Array(); 
 	var index = 0; 
 	while (index < src.options.length) { 
@@ -216,11 +219,6 @@ function removeFromMultiselect(src) {
 // appendToMultiselect
 //-------------------------------------------------------------------
 function appendToMultiselect(src, data, defaultSelected) {
-	for ( var i = 0; i < src.options.length; i++) {
-		if ( src.options[i].value == data) {
-			return;
-		}
-	}
 	var label = data;
 	var value = data;
 	if (typeof data == "object") {
@@ -228,6 +226,14 @@ function appendToMultiselect(src, data, defaultSelected) {
 		value = data.value;
 		if (data.orig) {
 			label = data.orig;
+		}
+	}
+	if (typeof src == "string") {
+		src = document.getElementById(src);
+	}
+	for ( var i = 0; i < src.options.length; i++) {
+		if ( src.options[i].value == value) {
+			return;
 		}
 	}
 	if (typeof defaultSelected == "undefined") {

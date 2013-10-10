@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'intersection_form',here.meta_id])">
+
+<tal:block tal:define="global
+		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn']);">
+
+<form>
+
+<tal:block tal:content="structure request"></tal:block>
+
+</form>
+
+</tal:block>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+</body>
+</html>

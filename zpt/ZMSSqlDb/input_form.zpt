@@ -58,9 +58,9 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical">
-								<span class="btn btn-default btn-sm" onclick="" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
-								<span class="btn  btn-default btn-sm" tal:attributes="onclick python:'removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
-								<span class="btn  btn-default btn-sm" tal:attributes="onclick python:'$(\'select[name=%s] option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'zmiIframe(\'zmi_lazy_select_form\',{qentity:\'%s\',qcolumn:\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],metaObjAttr['id'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$(\'select[name=%s] option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
 							</div><!-- .btn-group -->
 						</div><!-- .pull-left -->
 						<div class="clearfix"></div><!-- .clearfix -->
@@ -68,11 +68,6 @@
 					<tal:block condition="not:python:metaObjAttr['multiselect'].get('lazy')">
 						<tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=metaObjAttr['value'],lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
 					</tal:block>
-					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
-
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('checkbox')">
-					<tal:block tal:content="structure python:here.getCheckbox(fmName='form0',elName=elName,value=elValue)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->
 

@@ -92,6 +92,9 @@ ul.performer {
 	background-color:#FFF;
 	background: filter:Alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;
 }
+/* Patch bootstrap */
+.table tbody>tr>td {border-top:0;}
+.table>tbody>tr>td {border-top:1px solid #ddd;}
 </style>
 
 <script>
@@ -338,27 +341,23 @@ $ZMI.registerReady(function(){
 	<input type="hidden" name="key" value="custom"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_WORKFLOW')">well</p>
-	<div class="form-group workflow">
-		<label for="workflow" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
-		<div class="col-lg-10">
-			<div class="pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></div>
-			<div class="pull-left">
-				<div class="single-line input-append zmi-nodes">
-					<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-				</div>
+	<div class="row container">
+		<div class="btn-group pull-left">
+			<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+			<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
+			<a class="btn btn-default" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
+		</div>
+		<label for="workflow" class="control-label pull-left"><span style="padding-left:2em;padding-right:1em;" tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
+		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></span>
+		<div class="col-sm-4">
+			<div class="single-line input-append zmi-nodes">
+				<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 			</div>
-			<div class="pull-left" style="padding-left:5em;">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			</div>
-			<div class="pull-left" style="padding-left:5em;">
-				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
-					<a class="btn btn-inverse" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
-				</div>
-			</div>
-		</div><!-- .col-lg-10 -->
-	</div><!-- .form-group.workflow -->
+		</div>
+		<div class="pull-right">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		</div>
+	</div><!-- .row.container -->
 </form>
 
 <form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
@@ -378,7 +377,7 @@ $ZMI.registerReady(function(){
 	<tal:block tal:repeat="activityId activityIds">
 		<tal:block tal:define="i python:activityIds.index(activityId); activity python:here.getActivity(activityId); activityDetails python:here.getActivityDetails(activityId)">
 			<tr class="zmi-sortable">
-				<td class="ui-toggle">
+				<td class="ui-toggle meta-sort">
 					<div class="input-append">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%activityId">
 							<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
@@ -388,7 +387,7 @@ $ZMI.registerReady(function(){
 				</td>
 				<tal:block tal:repeat="activityId2 activityIds">
 					<tal:block tal:define="i2 python:activityIds.index(activityId2); activity2 python:here.getActivity(activityId2); activityDetails2 python:here.getActivityDetails(activityId2)">
-						<td align="center" tal:attributes="style python:['','padding:0'][int(i!=i2)]"
+						<td tal:attributes="style python:['','padding:0'][int(i!=i2)]"
 							><div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],activity['id'])">
 									<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
@@ -429,7 +428,7 @@ $ZMI.registerReady(function(){
 	<tal:block tal:repeat="transitionId transitionIds">
 		<tal:block tal:define="i python:transitionIds.index(transitionId); transition python:here.getTransition(transitionId); ob python:getattr(here,transition['id'],None)">
 			<tr class="zmi-sortable">
-				<td class="ui-toggle">
+				<td class="ui-toggle meta-sort">
 					<div class="input-append">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%transition['id']">
 							<option tal:repeat="i python:range(0,len(transitionIds))" tal:attributes="selected python:['','selected'][int(i==transitionIds.index(transitionId))]" tal:content="python:i+1">i+1</option>
@@ -440,7 +439,7 @@ $ZMI.registerReady(function(){
 				<td>
 					<table class="layoutTable">
 					<tr>
-						<td style="min-width:166px;">
+						<td style="min-width:176px;">
 							<tal:block tal:repeat="activityId python:transition['from']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity smaller" tal:attributes="title python:activity['id']">
@@ -450,7 +449,7 @@ $ZMI.registerReady(function(){
 								</tal:block>
 							</tal:block>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0" tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['from'])>0)]"/></td>
+						<td style="padding:.5em 0"><img src="/misc_/zms/spacer.gif" alt="" border="0" tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['from'])>0)]"/></td>
 						<td>
 							<div tal:attributes="class python:' '.join(['transition']+[[],['state']][int(ob is None)]+[[],['action']][int(len(transition['from'])+len(transition['to'])==0)])">
 								<tal:block tal:condition="python:ob is not None">
@@ -462,7 +461,7 @@ $ZMI.registerReady(function(){
 								</ul>
 							</div>
 						</td>
-						<td><img src="/misc_/zms/spacer.gif" alt="" border="0"  tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['to'])>0)]"/></td>
+						<td style="padding:.5em 0"><img src="/misc_/zms/spacer.gif" alt="" border="0"  tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['to'])>0)]"/></td>
 						<td>
 							<tal:block tal:repeat="activityId python:transition['to']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">

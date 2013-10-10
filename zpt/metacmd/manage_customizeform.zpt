@@ -29,9 +29,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_exec:int" class="col-sm-3 control-label"><span>Exec.</span></label>
-				<div class="col-sm-9"><input type="checkbox" name="el_exec:int" class="form-control"
-					style="width:auto;-webkit-box-shadow:none;box-shadow: none;margin-left: 8px;"
-					tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></div>
+				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="el_exec:int" tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_icon_clazz" class="col-sm-3 control-label"><span>Icon (Class)</span></label>
@@ -122,9 +120,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-3 control-label" for="_exec"><span>Exec.</span></label>
-				<div class="col-sm-9">
-					<input type="checkbox" name="_exec:int" value="1" checked="checked">
-				</div>
+				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="_exec:int" value="1" checked="checked"></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-sm-9">
@@ -197,7 +193,7 @@
 	<tal:block tal:repeat="metaCmdId metaCmdIds">
 		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId)">
 			<td>
-				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id">
+				<span class="btn btn-default"><input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id"></span>
 			</td>
 			<td>
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id'])">

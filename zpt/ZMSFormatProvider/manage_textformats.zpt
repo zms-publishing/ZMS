@@ -24,9 +24,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_default" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DEFAULT')">Default</span></label>
-				<div class="col-sm-9"><input class="form-control input-sm" type="checkbox" id="new_default" name="new_default" value="1" 
-					tal:attributes="checked python:['','checked'][int(format.getId()==here.getTextFormatDefault())]"
-					style="width:auto;-webkit-box-shadow:none;box-shadow: none;margin-left: 8px;" ></div>
+				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" id="new_default" name="new_default" value="1" tal:attributes="checked python:['','checked'][int(format.getId()==here.getTextFormatDefault())]"></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_tag" class="col-sm-3 control-label"><span>&lt;<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
@@ -144,7 +142,7 @@
 	<tal:block tal:repeat="format formats">
 		<tr>
 			<td style="text-align:center;">
-				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
+				<span class="btn btn-default"><input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" /></span>
 			</td>
 			<td>
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())" target="">

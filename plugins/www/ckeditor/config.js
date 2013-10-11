@@ -59,6 +59,14 @@ CKEDITOR.editorConfig = function( config ) {
      ['Image','Anchor','Table'],
      ['Source','ShowBlocks','Maximize','About']
   ];
+  config.toolbar_ZMSBasicInsertToolbar =[
+     ['Format'],
+     ['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
+     ['Undo','Redo'],
+     [],
+     [],
+     ['ShowBlocks','Maximize','About']
+  ];
 };
 
 CKEDITOR.on( 'dialogDefinition', function( event ) {

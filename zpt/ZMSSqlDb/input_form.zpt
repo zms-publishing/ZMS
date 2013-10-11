@@ -91,7 +91,7 @@
 	<tal:block tal:condition="python:action!='insert'">
 		<tal:block tal:repeat="column entity/columns">
 			<tal:block tal:condition="python:column.has_key('details')" tal:define="global
-					metaObjAttr python:here.getEntityColumn(entity['id'],column['id']);
+					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label'];">
 				<div class="accordion-group">
@@ -101,51 +101,34 @@
 
 								<tal:block tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);">
 
-									<tal:block tal:condition="python:details['type']=='table'">
-										<tal:block tal:define="global
-												sql python:''
-														+ 'SELECT a.* '
-														+ 'FROM ' + metaObjAttr['details']['tablename'] + ' a '
-														+ 'WHERE a.' + metaObjAttr['details']['fk'] + '=' + here.sql_quote__(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True))"
-												><!-- sql=<tal:block tal:content="sql"></tal:block>
-											--><tal:block tal:on-error="python:'ERROR: %s'%sql" tal:define="global
-														r python:here.query(sql,encoding=encoding)['records'];
+									<tal:block tal:condition="python:details['type']!='intersection'">
+											<tal:block tal:define="global
+														r metaObjAttr/value;
 														metaObjAttrIds python:map(lambda x:x['id'],details['columns']);
 														metaObjAttrs python:details['columns'];">
-												<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
-													<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,url_params={'qentity':details['id']})">
-														metaobj_recordset_main_grid
-													</tal:block>
+												<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,url_params={'qentity':details['id']},
+														actions=['insert','update','delete'],
+														insert='return zmiIframe(\'zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+														update='return zmiIframe(\'zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+													)">
+													metaobj_recordset_main_grid
 												</tal:block>
 											</tal:block>
-										</tal:block>
 									</tal:block>
 
 									<tal:block tal:condition="python:details['type']=='intersection'">
-										<tal:block tal:define="global
-												dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],details['columns'])[0];
-												dstentity python:here.getEntity(dst['fk']['tablename']);
-												sql python:''
-														+ 'SELECT a.* '
-														+ 'FROM ' + dstentity['id'] + ' a '
-														+ 'INNER JOIN ' + metaObjAttr['details']['tablename'] + ' b ON a.' + filter(lambda x:x.get('pk'),dstentity['columns'])[0]['id'] + ' = b.' + dst['id'] + ' '
-														+ 'WHERE b.' + metaObjAttr['details']['fk'] + '=' + here.sql_quote__(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True))"
-												><!-- sql=<tal:block tal:content="sql"></tal:block>
-											--><tal:block tal:define="global
-														r python:here.query(sql,encoding=encoding)['records'];
-														metaObjAttrIds python:map(lambda x:x['id'],dstentity['columns']);
-														metaObjAttrs python:dstentity['columns'];">
-												<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
-													<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,
-															actions=['insert','delete'],
-															insert='return zmiIframe(\'zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
-															update='return zmiIframe(\'zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
-														)">
-														metaobj_recordset_main_grid
-													</tal:block>
+											<tal:block tal:define="global
+														r metaObjAttr/value;
+														metaObjAttrIds python:map(lambda x:x['id'],metaObjAttr['dst']['columns']);
+														metaObjAttrs python:metaObjAttr['dst']['columns'];">
+												<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,
+														actions=['insert','update','delete'],
+														insert='return zmiIframe(\'zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
+														update='return zmiIframe(\'zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
+													)">
+													metaobj_recordset_main_grid
 												</tal:block>
 											</tal:block>
-										</tal:block>
 									</tal:block>
 
 								</tal:block>

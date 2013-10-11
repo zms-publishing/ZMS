@@ -4,13 +4,14 @@
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'intersection_form',here.meta_id])">
 
 <tal:block tal:define="global
-		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn']);">
+		row python:{request['qentitypk']:request['qentitypkval']};
+		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn'],row);
+		entity python:here.getEntity(metaObjAttr['details']['tablename']);
+		res metaObjAttr/value">
 
-<form>
-
-<tal:block tal:content="structure request"></tal:block>
-
-</form>
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
+	metaobj_recordset_input_fields
+</tal:block>
 
 </tal:block>
 

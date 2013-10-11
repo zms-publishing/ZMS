@@ -124,6 +124,8 @@ class ZMSSqlDb(ZMSObject):
     # Management Interface.
     # ---------------------
     zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
+    zmi_intersection_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_intersection_form', globals())
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
@@ -432,6 +434,7 @@ class ZMSSqlDb(ZMSObject):
     #  ZMSSqlDb.getEntityColumn:
     # --------------------------------------------------------------------------
     def getEntityColumn(self, tableName, columnName, row=None):
+      encoding = getattr(self,'charset','utf-8')
       columns = self.getEntity( tableName)['columns']
       column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
       column['id'] = column['id'].lower()
@@ -541,6 +544,34 @@ class ZMSSqlDb(ZMSObject):
         column['dst'] = dst
         column['value'] = value
         column['options'] = options
+      # Details
+      stereotype = column.get('details')
+      if stereotype not in ['',None]:
+        details = self.getEntity(stereotype['tablename'])
+        # Details.Intersection
+        if details['type']=='intersection':
+          if row:
+            dst = filter(lambda x:x.get('fk') is not None and x['fk'].has_key('tablename') and x['fk']['tablename']!=tableName,details['columns'])[0]
+            dstentity = self.getEntity(dst['fk']['tablename'])
+            primary_key = self.getEntityPK(tableName)
+            sql = '' \
+              + 'SELECT a.* ' \
+              + 'FROM ' + dstentity['id'] + ' a ' \
+              + 'INNER JOIN ' + stereotype['tablename'] + ' b ON a.' + filter(lambda x:x.get('pk'),dstentity['columns'])[0]['id'] + ' = b.' + dst['id'] + ' ' \
+              + 'WHERE b.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True)) 
+            records = self.query(sql,encoding=encoding)['records']
+            column['value'] = records
+            column['dst'] = dstentity
+        # Details.Table
+        else:
+          if row:
+            primary_key = self.getEntityPK(tableName)
+            sql = '' \
+              + 'SELECT b.* ' \
+              + 'FROM ' + stereotype['tablename'] + ' b ' \
+              + 'WHERE b.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
+            records = self.query(sql,encoding=encoding)['records']
+            column['value'] = records
       return column
 
 

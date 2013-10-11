@@ -126,8 +126,8 @@ function zmiFormSubmit(sender,d) {
 }
 
 $ZMI.registerReady(function(){
-		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),width:800,remove:true});
-		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),width:800,remove:true});
+		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
+		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");
 				return false;
@@ -298,6 +298,7 @@ $ZMI.registerReady(function(){
 		<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
+			<input type="hidden" name="inpType" tal:attributes="value process/type"/>
 			<div class="form-group inpId">
 				<label for="inpId" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-sm-9"><input class="form-control" type="text" id="inpId" name="inpId" tal:attributes="value process/id"/></div>

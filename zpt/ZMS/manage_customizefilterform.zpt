@@ -126,8 +126,8 @@ function zmiFormSubmit(sender,d) {
 }
 
 $ZMI.registerReady(function(){
-		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),'width':'90%'});
-		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES')});
+		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),width:800,remove:true});
+		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),width:800,remove:true});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");
 				return false;
@@ -348,7 +348,7 @@ $ZMI.registerReady(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-9"><input class="form-control" type="text" id="newId" name="newId" value="TR_"/></div>
+				<div class="col-sm-9"><input class="form-control" type="text" id="newId" name="newId"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>

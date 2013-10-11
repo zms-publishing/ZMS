@@ -774,8 +774,8 @@ class FilterManager:
               newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
-        newProcessId = REQUEST.get('newFilterProcessId_%i'%(c+1),'').strip()
-        newProcessFile = REQUEST.get('newFilterProcessFile_%i'%(c+1))
+        newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
+        newProcessFile = REQUEST.get('newFilterProcessFile_%i'%c)
         if newProcessId:
           setFilterProcess(self, id, newProcessId, newProcessFile)
         message = self.getZMILangStr('MSG_CHANGED')
@@ -786,12 +786,13 @@ class FilterManager:
         ids = REQUEST.get('ids',[])
         for id in ids:
           delFilter(self, id)
-        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
+        message = self.getZMILangStr('MSG_DELETED')%len(ids)
       elif btn == 'delete' and key == 'attr':
-        ids = REQUEST.get('ids',[])
+        ids = [REQUEST.get('id')]
         for id in ids:
-          delFilterProcess(self, id, pid)
-        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
+          if id is not None:
+            delFilterProcess(self, id, pid)
+        message = self.getZMILangStr('MSG_DELETED')%len(ids)
       
       # Export.
       # -------
@@ -870,8 +871,10 @@ class FilterManager:
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE'):
-        id = delProcess(self, id)
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+        ids = REQUEST.get('ids',[])
+        for id in ids:
+          delProcess(self, id)
+        message = self.getZMILangStr('MSG_DELETED')%len(ids)
 
       # Export.
       # -------

@@ -124,8 +124,8 @@ function zmiFormSubmit(sender,d) {
 }
 
 $ZMI.registerReady(function(){
-		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',closeText:getZMILangStr('BTN_CLOSE')});
-		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',closeText:getZMILangStr('BTN_CLOSE')});
+		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
+		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");
 				return false;
@@ -354,7 +354,7 @@ $ZMI.registerReady(function(){
 				<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
 			</div>
 		</div>
-		<div class="pull-right container">
+		<div class="pull-left container">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		</div>
 	</div><!-- .row.container -->
@@ -368,7 +368,7 @@ $ZMI.registerReady(function(){
 	<tr>
 		<th tal:attributes="colspan python:2+len(activityIds)" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal($('#insertActivity',{title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertActivity',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
 			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-tag')"></tal:block> Activities
 		</th>
@@ -419,7 +419,7 @@ $ZMI.registerReady(function(){
 	<tr>
 		<th colspan="3" style="vertical-align:middle;">
 			<div class="btn-group">
-				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal($('#insertTransition',{title:$(this).attr('title'),closeText:getZMILangStr('BTN_CLOSE')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-inverse" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertTransition',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
 			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block> Transitions
 		</th>

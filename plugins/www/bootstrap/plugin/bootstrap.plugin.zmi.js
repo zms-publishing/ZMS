@@ -604,6 +604,9 @@ function zmiModal(s, opt) {
 						zmiModalStack.pop();
 					})
 				.modal();
+			if (typeof opt['minWidth'] != 'undefined') {
+				$('#'+id+' .modal-content').css('minWidth',opt['minWidth']);
+			}
 			$('#'+id+' .modal-dialog').css('transform','translate('+(zmiModalStack.length*2)+'em,'+(zmiModalStack.length*2)+'em)');
 		}
 	}

@@ -65,7 +65,7 @@ function uploadBtnClick() {
 	<label class="col-sm-2 control-label" for="command"><span>Command</span></label>
 	<div class="col-sm-10">
 		<input class="form-control" type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
-		<button class="btn btn-default" name="btn" value="Execute">Execute</button>
+		<button class="btn btn-default" name="btn" value="Execute" onclick="uploadBtnClick()">Execute</button>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 

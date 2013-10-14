@@ -7,16 +7,24 @@
 		row python:{request['qentitypk']:request['qentitypkval']};
 		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn'],row);
 		entity python:here.getEntity(metaObjAttr['details']['tablename']);
+		request_form_inherit python:['qcolumn','qentitypk','qentitypkval'];
 		res metaObjAttr/value">
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=request_form_inherit)">
+	metaobj_recordset_input_fields
+</tal:block>
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='insert',qindex=-1,row={},request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
 
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+$ZMI.registerReady(function() {
+		$("#tr_<tal:block tal:content="metaObjAttr/details/fk"></tal:block>").hide();
+	});
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+
 </tal:block>
 
-<tal:block tal:content="structure python:'<script>'"></tal:block>
-<tal:block tal:content="structure python:'</script>'"></tal:block>
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>

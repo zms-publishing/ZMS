@@ -27,7 +27,7 @@
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label'];
 					elValue python:row.get(elName);">
-			<div class="form-group" tal:define="global done python:[]">
+			<div class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
@@ -108,8 +108,8 @@
 														metaObjAttrs python:details['columns'];">
 												<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,url_params={'qentity':details['id']},
 														actions=['insert','update','delete'],
-														insert='return zmiIframe(\'zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
-														update='return zmiIframe(\'zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+														insert='return zmiIframe(\'zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+														update='return zmiIframe(\'zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
 													)">
 													metaobj_recordset_main_grid
 												</tal:block>

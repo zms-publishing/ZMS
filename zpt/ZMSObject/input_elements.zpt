@@ -72,7 +72,7 @@
 							and not (metaObjAttr['id'] in ['displaytype','format'])
 							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
 							and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
-						<div class="form-group"  tal:attributes="id python:'tr_%s'%(elName)">
+						<div class="form-group" tal:attributes="id python:'tr_%s'%(elName)">
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 								<span tal:content="elLabel">the label</span>
 							</label>

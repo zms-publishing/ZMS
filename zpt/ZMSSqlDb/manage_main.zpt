@@ -148,7 +148,7 @@
 						<button type="submit" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
 							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 						</button>
-						&nbsp;<a href="javascript:toggleElement('#manage_main_div_sql');" style="text-decoration:none;" title="Show SQL Code">&middot;&middot;&middot;</a>
+						&nbsp;<a href="javascript:$('#manage_main_div_sql').toggle()" style="text-decoration:none;" title="Show SQL Code">&middot;&middot;&middot;</a>
 					</div>
 					<div id="manage_main_div_sql" class="ui-helper-hidden well" style="padding:1em;margin: 1em 1em 0;"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
 				</div>

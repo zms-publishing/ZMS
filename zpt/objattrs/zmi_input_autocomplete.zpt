@@ -22,7 +22,7 @@ $ZMI.registerReady(function() {
 						},
 						select: function( event, ui ) {
 							if (ui.item) {
-								appendToMultiselect(document.getElementById(id.substr(1)),ui.item,true);
+								$ZMI.appendToMultiselect(document.getElementById(id.substr(1)),ui.item,true);
 								ui.item.value = '';
 							}
 							this.value = '';
@@ -37,7 +37,7 @@ function zmiMultiAutocompleteAddBtnClick(sender) {
 	if ($el.val().length>0) {
 		var v=$el.val();
 		$el.val('');
-		appendToMultiselect(document.getElementById(id.substr(1)),v,true);
+		$ZMI.appendToMultiselect(document.getElementById(id.substr(1)),v,true);
 	}
 }
 </script>

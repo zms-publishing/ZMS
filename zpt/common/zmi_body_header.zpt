@@ -12,7 +12,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="#" onclick="zmiIframe('manage_userForm',{lang:getZMILang()},{'title':$(this).text()})">
+							<a href="#" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{'title':$(this).text()})">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block>
 								<tal:block tal:content="python:here.getZMILangStr('TAB_EDIT')">edit</tal:block>
 						<li>

@@ -114,7 +114,7 @@ $(function(){
 					href += '_iframe';
 					href += '?lang='+lang;
 					href += '&ZMS_NO_BODY=1';
-					zmiIframe(href,{},{});
+					$ZMI.iframe(href,{},{});
 				}
 				else if (self.location.href.indexOf('/manage')>0) {
 					href += '?lang='+lang;

@@ -20,14 +20,12 @@
 			seq_desc_langs python:here.getDescendantLanguages(seq_lang)"
 		><tal:block tal:condition="python:len(seq_desc_langs)>1 and coverage.find('global')>=0"
 			><tal:block tal:condition="python:seq_lang!=request['lang']"
-				><tal:block tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)"
-					><span class="zmi-state" 
-						tal:attributes="onclick python:['','open_frame(\'%s: %s (%s)\',\'%s/manage_VersionLangModified\',\'lang=%s\',440,320,\',resizable=yes,scrollbars=yes\')'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'),here.absolute_url(),request['lang'])][int(here.getHistory())]"
-						><i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i></span
-				></tal:block
-				><tal:block tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)"
-					><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i></span
-				></tal:block
+				><span class="zmi-state" tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)"
+					><i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i
+				></span
+				><span class="zmi-state" tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)"
+					><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i
+				></span
 			></tal:block
 			><tal:block tal:condition="not:python:seq_lang!=request['lang']"
 				><span class="zmi-state"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span

@@ -239,7 +239,7 @@ function zmiPreview(sender) {
 		$('#zmi_preview_'+data_id).remove();
 	}
 	else {
-		var coords = zmiGetCoords(sender);
+		var coords = $ZMI.getCoords(sender);
 		var abs_url = $(sender).parent('div').children('input').val();
 		$.get(abs_url+'/renderShort',{lang:getZMILang(),preview:'preview'},function(data){
 				$('div.zmi-preview').remove();

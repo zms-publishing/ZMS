@@ -1,14 +1,57 @@
-//-------------------------------------------------------------------
- // isBlank(value)
- //   Returns true if value only contains spaces
- //-------------------------------------------------------------------
- function isBlank(val) {
-         if (val == null) { return true; }
-         for (var i=0; i < val.length; i++) {
-                 if ((val.charAt(i) != ' ') && (val.charAt(i) != "\t") && (val.charAt(i) != "\n")) { return false; }
-                 }
-         return true;
-         }
+// /////////////////////////////////////////////////////////////////////////////
+//  Config
+// /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns configuration-files.
+ */
+var zmiExpandConfFilesProgress = false;
+function zmiExpandConfFiles(el, pattern) {
+	if (!zmiExpandConfFilesProgress) {
+		if ( $("option",el).length==1) {
+			zmiExpandConfFilesProgress = true;
+			// Set wait-cursor.
+			$ZMI.setCursorWait("zmiExpandConfFiles");
+			var first = null;
+			if ( $("option",el).length==1) {
+				first = $("option:first",el).html();
+				$("option:first",el).html(getZMILangStr('MSG_LOADING'));
+			}
+			// JQuery.AJAX.get
+			$.get( 'getConfFiles',{pattern:pattern},function(data) {
+						if (first!=null) {
+							$("option:first",el).html(first);
+						}
+						var items = $("item",data);
+						for (var i = 0; i < items.length; i++) {
+							var item = $(items[i]);
+							var value = item.attr("key");
+							var label = item.text();
+							$(el).append('<option value="'+value+'">'+label+'</option>');
+						}
+						zmiExpandConfFilesProgress = false;
+						// Reset wait-cursor.
+						$ZMI.setCursorAuto("zmiExpandConfFiles");
+					});
+		}
+	}
+}
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Inputs
+// /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * isBlank(value)
+ *  Returns true if value only contains spaces
+ */
+function isBlank(val) {
+	if (val == null) { return true; }
+	for (var i=0; i < val.length; i++) {
+		if ((val.charAt(i) != ' ') && (val.charAt(i) != "\t") && (val.charAt(i) != "\n")) { return false; }
+	}
+	return true;
+}
 
  //-------------------------------------------------------------------
  // disallowBlank(input_object[,message[,true]])
@@ -174,24 +217,29 @@ function inputValue(v) {
                  return false;
          }
 
-//-------------------------------------------------------------------
-// processMultiselectsOnFormSubmit
-//-------------------------------------------------------------------
+// /////////////////////////////////////////////////////////////////////////////
+//  Multiselect
+// /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Process multiselects on form-submit:
+ * select options
+ */
 function processMultiselectsOnFormSubmit() {
-  // lazy multiselects (all elements starting with 'src')
-  var mss = $('select[multiple]');
-  for (var i=0; i < mss.length; i++) {
-    var ms = $(mss[i]);
-    if (ms.attr('name').indexOf('zms_mms_src_')!=0) {
-      $('option',ms).prop("selected",true);
-    }
-  }
+	// lazy multiselects (all elements starting with 'src')
+	var mss = $('select[multiple]');
+	for (var i=0; i < mss.length; i++) {
+		var ms = $(mss[i]);
+		if (ms.attr('name').indexOf('zms_mms_src_')!=0) {
+			$('option',ms).prop("selected",true);
+		}
+	}
 }
 
-//------------------------------------------------------------------- 
-// removeFromMultiselect 
-//------------------------------------------------------------------- 
-function removeFromMultiselect(src) { 
+/**
+ * Remove option from multiselect
+ */
+ZMI.prototype.removeFromMultiselect = function(src) { 
 	if (typeof src == "string") {
 		src = document.getElementById(src);
 	}
@@ -215,10 +263,10 @@ function removeFromMultiselect(src) {
 	sortOptions(src); 
 }
 
-//-------------------------------------------------------------------
-// appendToMultiselect
-//-------------------------------------------------------------------
-function appendToMultiselect(src, data, defaultSelected) {
+/**
+ * Append option to multiselect
+ */
+ZMI.prototype.appendToMultiselect = function(src, data, defaultSelected) {
 	var label = data;
 	var value = data;
 	if (typeof data == "object") {

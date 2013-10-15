@@ -1,4 +1,48 @@
 // /////////////////////////////////////////////////////////////////////////////
+//  Cookies
+// /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Toggle cookie.
+ */
+ZMI.prototype.toggleCookie = function(key) {
+	runPluginCookies(function() {
+		try {
+			var value = $.cookies.get(key);
+			if (value==null || value=='0') {
+				$.cookies.set(key,'1');
+			}
+			else {
+				$.cookies.del(key);
+			}
+		}
+		catch(e) {
+		}
+	});
+}
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Dimensions
+// /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns coordinates of given element
+ */
+ZMI.prototype.getCoords = function(theElement, thePosition) {
+	var coords = {x: 0, y: 0};
+	var element = theElement;
+	while (element) {
+		if (thePosition=="relative" && $(element).css("position")=="absolute") {
+			break;
+		}
+		coords.x += element.offsetLeft;
+		coords.y += element.offsetTop;
+		element = element.offsetParent;
+	}
+	return coords;
+}
+
+// /////////////////////////////////////////////////////////////////////////////
 //  Languages
 // /////////////////////////////////////////////////////////////////////////////
 

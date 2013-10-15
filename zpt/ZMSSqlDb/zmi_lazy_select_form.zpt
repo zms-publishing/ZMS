@@ -32,7 +32,7 @@ function zmiInsertBtnClick() {
 			var value = $(this).val();
 			var $tr = $(this).closest("tr");
 			var label = $("td:last",$tr).text().trim();
-			window.parent.appendToMultiselect('<tal:block tal:content="request/qcolumn">the column</tal:block>',{label:label,value:value});
+			window.parent.$ZMI.appendToMultiselect('<tal:block tal:content="request/qcolumn">the column</tal:block>',{label:label,value:value});
 		});
 	zmiCloseBtnClick();
 }

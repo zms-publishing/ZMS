@@ -18,7 +18,6 @@
 
 # Imports.
 from App.Common import package_home
-from App.special_dtml import HTMLFile
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Image import Image
 from sys import *
@@ -288,7 +287,7 @@ def initContent(self, filename, REQUEST):
 ###   
 ################################################################################
 ################################################################################
-manage_addZMSForm = HTMLFile('manage_addzmsform', globals()) 
+manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals()) 
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """ manage_addZMS """
   message = ''

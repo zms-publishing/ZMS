@@ -105,9 +105,6 @@ def initialize(context):
         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
         dummy_permission = 'Add ZMSs'
         
-        # automated registration for util
-        OFS.misc_.misc_.zms['initutil']=_globals.initutil()
-        
         # automated registration of language-dictionary
         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
         

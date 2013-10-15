@@ -3,12 +3,13 @@
 			qindex options/qindex;
 			row options/row;
 			encoding python:getattr(here,'charset','utf-8');
-			entity options/entity">
+			entity options/entity;
+			request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
 
 <form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data" tal:define="global
 		primary_key python:here.getEntityPK(entity['id']).lower();
 		qcharset python:request.get('qcharset','utf-8')">
-	<tal:block tal:repeat="key python:['lang','preview','qentity']+options.get('request_form_inherit',[])">
+	<tal:block tal:repeat="key python:filter(lambda x:x in request.keys(),request_form_inherit)">
 		<input type="hidden" tal:attributes="id key; name key; value python:request[key]"/>
 	</tal:block>
 	<input type="hidden" id="action" name="action" tal:attributes="value action">
@@ -26,8 +27,11 @@
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label'];
-					elValue python:row.get(elName);">
-			<div class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+					elValue python:here.operator_getitem(row,elName,ignorecase=True);">
+
+			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
+			<div tal:condition="not:python:column['id'].lower() in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
@@ -77,6 +81,7 @@
 				</div><!-- .col-sm-9 col-md-10 -->
 
 			</div><!-- .form-group -->
+
 			</tal:block>
 		</tal:block>
 	</div><!-- .accordion-group -->
@@ -94,7 +99,8 @@
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 					elName python:metaObjAttr['id'];
 					elLabel python:metaObjAttr['label'];">
-				<div class="accordion-group">
+
+				<div class="accordion-group" tal:attributes="id python:'tr_%s'%(elName)">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" href="#" tal:content="elLabel">the heading</a>
 					</div><!-- accordion-heading -->
@@ -104,8 +110,8 @@
 									<tal:block tal:condition="python:details['type']!='intersection'">
 											<tal:block tal:define="global
 														r metaObjAttr/value;
-														metaObjAttrIds python:map(lambda x:x['id'],details['columns']);
-														metaObjAttrs python:details['columns'];">
+														metaObjAttrs python:filter(lambda x:not x.get('fk',{}).get('tablename')==entity['id'],details['columns']);
+														metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);">
 												<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,url_params={'qentity':details['id']},
 														actions=['insert','update','delete'],
 														insert='return zmiIframe(\'zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
@@ -119,8 +125,8 @@
 									<tal:block tal:condition="python:details['type']=='intersection'">
 											<tal:block tal:define="global
 														r metaObjAttr/value;
-														metaObjAttrIds python:map(lambda x:x['id'],metaObjAttr['dst']['columns']);
-														metaObjAttrs python:metaObjAttr['dst']['columns'];">
+														metaObjAttrs python:metaObjAttr['dst']['columns'];
+														metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);">
 												<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=r,records=r,
 														actions=['insert','update','delete'],
 														insert='return zmiIframe(\'zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
@@ -134,9 +140,18 @@
 								</tal:block>
 
 				</div><!-- .accordion-group -->
+
 			</tal:block>
 		</tal:block>
 	</tal:block>
+
+<script>
+function zmiIframeClose(id, message) {
+	var pos = $("#tr_"+id).position();
+	$ZMI.showMessage(pos,message,"alert-success");
+	zmiModal("hide");
+}
+</script>
 
 </form><!-- .form-horizontal -->
 

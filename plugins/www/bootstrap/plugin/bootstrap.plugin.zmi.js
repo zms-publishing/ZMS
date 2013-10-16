@@ -264,6 +264,10 @@ ZMI.prototype.initInputFields = function(container) {
 						self.btnClicked==getZMILangStr("BTN_CANCEL")) {
 					return b;
 				}
+				// Richedit
+				if ($(".form-richtext",this).length > 0) {
+					zmiRichtextOnSubmitEventHandler(this);
+				}
 				// Multiple-Selects
 				$('select[multiple="multiple"]',this).each(function() {
 						var name = $(this).attr("name");
@@ -496,12 +500,6 @@ ZMI.prototype.initInputFields = function(container) {
 					});
 				}
 			});
-			// Richedit
-			if ($("div.zmi-richtext",this).length > 0) {
-				$(this).submit(function() {
-						zmiRichtextOnSubmitEventHandler();
-					});
-			}
 		});
 	$ZMI.setCursorAuto("EO zmiInitInputFields");
 }

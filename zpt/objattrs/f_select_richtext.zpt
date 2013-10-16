@@ -47,7 +47,8 @@ function zmiRichtextEditorShow( elName, newFormat, callback) {
 }
 
 $ZMI.registerReady(function() {
-	var wysiwyg = $('#format').val()=='<tal:block tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
+	var format = $('#format').val();
+	var wysiwyg = typeof format=='undefined' || format=='<tal:block tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
 	if(wysiwyg) {
 		$('div[id^="zmiStandardEditor"]').hide();
 	}

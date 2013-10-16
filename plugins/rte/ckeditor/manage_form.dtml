@@ -25,22 +25,9 @@ Fix for can't edit fields of CKEditor in jQuery UI modal dialog
 
 <script type="text/javascript">
 
- var zmiRichtextElNames = new Array();
- <dtml-call "REQUEST.set('count',0)"
- ><dtml-in "getObjAttrs(REQUEST.get('ZMS_INSERT',meta_id)).keys()"
-  ><dtml-let key=sequence-item obj_attr="getObjAttr(key,REQUEST.get('ZMS_INSERT',meta_id))"
-   ><dtml-if "obj_attr.get('type',None)=='richtext'"
-    >zmiRichtextElNames[<dtml-var count>]='<dtml-var "getObjAttrName(obj_attr,lang)">';<dtml-call "REQUEST.set('count',count+1)"
-    ></dtml-if>
-   </dtml-let
- ></dtml-in
- ><dtml-if "count==0"
-  >zmiRichtextElNames[<dtml-var count>]='<dtml-var "REQUEST.get('elName')">';<dtml-call "REQUEST.set('count',count+1)"
- ></dtml-if>
-
-function zmiStandardOnSubmitEventHandler() {
-	for (e in zmiRichtextElNames) {
-		var elName = zmiRichtextElNames[e];
+function zmiStandardOnSubmitEventHandler(fm) {
+	for (var id in CKEDITOR.instances) {
+		var elName = id.substr(id.indexOf('_')+1);
 		var el = document.getElementById('zmiStandardEditor'+elName);
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
 			var data = $('#'+elName).val();
@@ -54,9 +41,9 @@ function zmiStandardOnSubmitEventHandler() {
 	}
 }
 
-function zmiRichtextOnSubmitEventHandler() {
-	for (e in zmiRichtextElNames) {
-		var elName = zmiRichtextElNames[e];
+function zmiRichtextOnSubmitEventHandler(fm) {
+	for (var id in CKEDITOR.instances) {
+		var elName = id.substr(id.indexOf('_')+1);
 		var el = document.getElementById('zmiRichtextEditor'+elName);
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
 			// Get value from editor.

@@ -658,6 +658,12 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	}
 	return false;
 }
+/**
+ * Open link in iframe 2 (OBSOLETE).
+ */
+function zmiIframe(href, data, opt) {
+	$ZMI.iframe(href, data, opt);
+} 
 
 // #############################################################################
 // ### ZMI Action-Lists

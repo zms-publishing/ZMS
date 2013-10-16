@@ -1575,7 +1575,7 @@ class ZMSSqlDb(ZMSObject):
                         d[ xk[0]][ xk[-1]][ xk[1]] = xv
               for i in c:
                 l = d[i].values()
-                l = map( lambda x: (x['index'],x), l)
+                l = map( lambda x: (x.get('index',l.index(x)),x), l)
                 l.sort()
                 l = map( lambda x: x[1], l)
                 for x in l:

@@ -1163,6 +1163,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       
       xml += "</pages>"
       
+      if REQUEST.RESPONSE.getHeader('Location'):
+        del REQUEST.RESPONSE.headers['location']
+      
       return xml
 
 

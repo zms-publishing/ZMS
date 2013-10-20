@@ -6,7 +6,7 @@
 			entity options/entity;
 			request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
 
-<form class="form-horizontal" id="form0" name="form0" action="#" method="post" enctype="multipart/form-data" tal:define="global
+<form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data" tal:define="global
 		primary_key python:here.getEntityPK(entity['id']).lower();
 		qcharset python:request.get('qcharset','utf-8')">
 	<tal:block tal:repeat="key python:filter(lambda x:x in request.keys(),request_form_inherit)">
@@ -93,6 +93,8 @@
 		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 
+</form><!-- .form-horizontal -->
+
 	<tal:block tal:condition="python:action!='insert'">
 		<tal:block tal:repeat="column entity/columns">
 			<tal:block tal:condition="python:column.has_key('details')" tal:define="global
@@ -152,7 +154,5 @@ function zmiIframeClose(id, message) {
 	zmiModal("hide");
 }
 </script>
-
-</form><!-- .form-horizontal -->
 
 </tal:block>

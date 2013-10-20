@@ -658,12 +658,6 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	}
 	return false;
 }
-/**
- * Open link in iframe 2 (OBSOLETE).
- */
-function zmiIframe(href, data, opt) {
-	$ZMI.iframe(href, data, opt);
-} 
 
 // #############################################################################
 // ### ZMI Action-Lists
@@ -840,7 +834,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		var title = $ZMI.icon('icon-plus-sign')+' '+getZMILangStr('BTN_INSERT')+': '+label;
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
-		zmiIframe(target,data,{
+		$ZMI.iframe(target,data,{
 				id:'zmiIframeAddDialog',
 				title:title,
 				width:800,

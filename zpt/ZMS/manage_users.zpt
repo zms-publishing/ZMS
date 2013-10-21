@@ -23,8 +23,8 @@
 		action python:['manage_userProperties','manage_roleProperties'][int(editRole)];
 		multilang python:editUser and len(here.getLangIds())>1">
 
-<div id="insertNode" class="ui-helper-hidden">
-	<div class="inner">
+<div class="ui-helper-hidden">
+	<div id="insertNode" class="inner">
 		<form class="form-horizontal" name="insertNodeForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" tal:attributes="value python:request['id']">
 			<input type="hidden" name="key" value="attr">
@@ -43,7 +43,7 @@
 				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<div class="col-sm-10">
+				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Save</button>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
@@ -74,7 +74,7 @@
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 	</tal:block>
-	<tal:block tal:condition="python:userFolder.meta_type=='User Folder'">
+	<tal:block tal:condition="python:userFolder.meta_type in ['User Folder','Pluggable Auth Service']">
 		<div class="form-group">
 			<label for="password" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
 			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .col-sm-10 -->
@@ -115,7 +115,7 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
-				<th><a class="btn btn-default" href="#" onclick="zmiModal('#insertNode .inner',{title:$(this).attr('title')});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></a></th>
+				<th><a class="btn btn-default" href="#" onclick="zmiModal('#insertNode',{title:$(this).attr('title')});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></a></th>
 				<th tal:attributes="colspan python:[2,3][int(multilang)]" tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</th>
 			</tr>
 		</thead>
@@ -158,8 +158,8 @@
 
 <tal:block tal:condition="python:not request.get('id')">
 
-<div id="insertUser" class="ui-helper-hidden">
-	<div class="inner">
+<div class="ui-helper-hidden">
+	<div id="insertUser" class="inner">
 	<form tal:condition="python:userFolder.meta_type=='LDAPUserFolder'" class="form-horizontal" method="get" enctype="multipart/form-data">
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
@@ -239,7 +239,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th><a class="btn btn-primary" href="#" onclick="zmiModal('#insertUser .inner',{title:$(this).text()});"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+			<th><a class="btn btn-primary" href="#" onclick="zmiModal('#insertUser',{title:$(this).text()});"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 		</tr>
 	</thead>
 	<tbody tal:condition="python:userFolder.meta_type=='LDAPUserFolder'">
@@ -261,7 +261,7 @@
 		</tal:block>
 	</tr>
 	</tbody>
-	<tbody tal:condition="python:userFolder.meta_type=='User Folder'">
+	<tbody tal:condition="python:userFolder.meta_type in ['User Folder','Pluggable Auth Service']">
 		<tr tal:repeat="validUserId python:here.getValidUserids()">
 		<tal:block tal:define="global
 				userObj python:validUserId['localUserFldr'].getUser(validUserId['name']);
@@ -282,8 +282,8 @@
 </form>
 </div>
 
-<div id="insertRole" class="ui-helper-hidden">
-	<div class="inner">
+<div class="ui-helper-hidden">
+	<div id="insertRole" class="inner">
 	<form class="form-horizontal" action="manage_roleProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
@@ -292,7 +292,7 @@
 			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
-			<div class="col-sm-10">
+			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
@@ -307,7 +307,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th><a class="btn btn-primary" href="#" onclick="zmiModal('#insertRole .inner',{title:$(this).text()});"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+		<th><a class="btn btn-primary" href="#" onclick="zmiModal('#insertRole',{title:$(this).text()});"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -337,7 +337,7 @@
 <script>
 $ZMI.registerReady(function(){
 		if (typeof zmiParams['qsLdapKey'] != "undefined" && typeof zmiParams['qsLdapValue'] != "undefined") {
-			zmiModal('#insertUser .inner',{title:getZMILangStr('BTN_INSERT')});
+			zmiModal('#insertUser',{title:getZMILangStr('BTN_INSERT')});
 		}
 	});
 </script>

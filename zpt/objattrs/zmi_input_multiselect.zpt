@@ -7,7 +7,7 @@
 		opts    python:options.get('options',[]);">
 	<div class="pull-left">
 		<label tal:attributes="for srcname" tal:content="python:here.getZMILangStr('ATTR_AVAILABLE')">Available</label>
-		<select class="form-control" multiple="multiple" tal:attributes="name srcname; ondblclick python:'selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)">
+		<select class="form-control" multiple="multiple" tal:attributes="name srcname; ondblclick python:'$ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)">
 			<tal:block tal:repeat="opt opts">
 				<option tal:condition="not:python:str(opt[0]) in value" tal:attributes="value python:opt[0]" tal:content="structure python:opt[1]">the label</option>
 			</tal:block>
@@ -24,7 +24,7 @@
 	</div><!-- .pull-left -->
 	<div class="pull-left">
 		<label tal:attributes="for name" tal:content="python:here.getZMILangStr('ATTR_SELECTED')">Selected</label>
-		<select class="form-control" multiple="multiple" tal:attributes="name name; ondblclick python:'selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)">
+		<select class="form-control" multiple="multiple" tal:attributes="name name; ondblclick python:'$ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)">
 			<tal:block tal:repeat="opt opts">
 				<option tal:condition="python:str(opt[0]) in value" tal:attributes="value python:opt[0]" selected="selected" tal:content="structure python:opt[1]">the label</option>
 			</tal:block>

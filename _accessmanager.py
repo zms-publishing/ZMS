@@ -38,7 +38,7 @@ import _globals
 #
 #  User Folder Meta-Types.
 # ------------------------------------------------------------------------------
-user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder','Group User Folder']
+user_folder_meta_types = ['LDAPUserFolder','User Folder','Simple User Folder','Pluggable Auth Service']
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.role_defs:
@@ -479,7 +479,14 @@ class AccessManager(AccessableContainer):
                   d['localUserFldr'] = userFldr
                   d['name'] = sec_user
                   valid_userids.append(d)
-          elif userFldr.meta_type != 'LDAPUserFolder':
+          elif userFldr.meta_type == 'Pluggable Auth Service':
+            users = userFldr.searchUsers(login='*',id='')
+            for user in users:
+              d = {}
+              d['localUserFldr'] = userFldr
+              d['name'] = user['login']
+              valid_userids.append(d)
+          else:
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
                 if search_term == '' or search_term == userName:

@@ -255,7 +255,7 @@ function zmiUnlockForm(form_id) {
  * Init input_fields
  */ 
 ZMI.prototype.initInputFields = function(container) {
-	$ZMI.setCursorWait("BO zmiInitInputFields");
+	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form.form-horizontal:not(.form-initialized)',container).length+"]");
 	$('form.form-horizontal:not(.form-initialized)',container)
 		.submit(function() {
 				var b = true;
@@ -342,6 +342,9 @@ ZMI.prototype.initInputFields = function(container) {
 			})
 		.each(function() {
 			var context = this;
+			if ($(this).parents(".ui-helper-hidden").length>0) {
+				return;
+			}
 			$(this).addClass('form-initialized');
 			// Button-Clicked
 			$('input[type="submit"],button[type="submit"]',context)
@@ -530,7 +533,7 @@ function zmiModal(s, opt) {
 		$('#'+id).modal(s);
 	}
 	else if (typeof opt == "object") {
-		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null?zmiModalStack.length:$(s).attr('id')):opt['id'];
+		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null && typeof $(s).attr('id')!="undefined"?zmiModalStack.length:$(s).attr('id')):opt['id'];
 		var body = s==null?opt['body']:$(s).html();
 		if (s!=null && opt['remove']==true) {
 			$(s).remove();

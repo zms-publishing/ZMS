@@ -73,6 +73,27 @@ function zmiFormSubmit(sender,d) {
 		.submit();
 }
 
+/**
+ *
+ */
+function zmiChangeTablename(sender, names) {
+	var table_id = $(sender).val();
+	var columns = $("#"+table_id+"-columns span.column-id");
+	for (var i = 0; i < names.length; i++) {
+		var name = names[i];
+		var $input = $('*[name='+name+']');
+		var value = $input.val();
+		var html = '<'+'select class="form-control input-xs" name="'+name+'">';
+		html += '<'+'option value=""><'+'/option>';
+		for (var j = 0; j < columns.length; j++) {
+			var column = $(columns[j]).text().trim();
+			html += '<'+'option value="'+column+'"'+((''+column).toLowerCase()==(''+value).toLowerCase()?' selected="selected"':'')+'>'+column+'<'+'/option>';
+		}
+		html += '<'+'/select>';
+		$input.replaceWith(html);
+	}
+}
+
 function onAttrTypeChange( el) {
 	var column_id = $(el).attr('name').substr( "attr_type_".length);
 	var column_type = $(el).val();
@@ -86,6 +107,7 @@ $ZMI.registerReady(function(){
 				zmiModal("hide");
 				return false;
 			});
+		$('.zmi-tablename').change();
 	});
 
 // #############################################################################
@@ -305,7 +327,7 @@ function mms_normalize_rows(el_tbody) {
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
-								<select class="form-control input-xs" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']">
+								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_fk_fieldname_%s'%column['id'],'attr_fk_displayfield_%s'%column['id'])">
 									<option value=""></option>
 									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
 										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('fk',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
@@ -335,7 +357,7 @@ function mms_normalize_rows(el_tbody) {
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
-								<select class="form-control input-xs" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']">
+								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multiselect_fk_%s'%column['id'])">
 									<option value=""></option>
 									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
 										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('multiselect',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
@@ -480,7 +502,7 @@ function mms_normalize_rows(el_tbody) {
 	<tal:block tal:repeat="table tables">
 	<div tal:attributes="class python:' '.join(['accordion-group']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%table['id']">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 			</a>
 			<div class="pull-left">
@@ -493,7 +515,7 @@ function mms_normalize_rows(el_tbody) {
 			</div>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
-		<div tal:attributes="id table/id; class python:' '.join(['accordion-body','collapse']+[[],['in']][int(table==tables[0])])">
+		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['accordion-body','collapse']+[[],['in']][int(table==tables[0])])">
 			<div class="accordion-inner">
 				<tal:block tal:repeat="column table/columns">
 					<div class="form-group">
@@ -510,15 +532,15 @@ function mms_normalize_rows(el_tbody) {
 							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk']['fieldname'])"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk'].get('fieldname','?'))"></tal:block>
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
 									<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
-									(<tal:block tal:content="column/fk/displayfield">the fk-displayfield</tal:block>)
+									(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
 								</span>
 							</tal:block>
 							<tal:block tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['multiselect']['fk'])"></tal:block>
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['multiselect'].get('fk','?'))"></tal:block>
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
 									<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global

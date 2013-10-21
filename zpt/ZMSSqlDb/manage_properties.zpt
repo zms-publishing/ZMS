@@ -15,14 +15,32 @@
 	<div class="form-group">
 		<label class="col-sm-3 col-md-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
 		<div class="col-sm-9 col-md-10">
-			<select class="form-control" name="connection_id">
-				<option value="">--- Select Connection Id ---</option>
-				<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
-					<option tal:attributes="value python:SQLConnectionID[0]; selected python:['','selected'][int(here.connection_id==SQLConnectionID[0])]">
-						<tal:block tal:content="python:SQLConnectionID[0]">SQLConnectionID</tal:block>
-					</option>
-				</tal:block>
-			</select>
+			<div class="btn-group">
+				<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
+				<button type="button" class="btn btn-default" tal:attributes="onclick python:'window.open($(\'span\',this).attr(\'data-url\')+\'/manage_main\')'">
+					<tal:block tal:repeat="SQLConnectionID python:filter(lambda x:getattr(here,'connection_id','')==x[0],here.SQLConnectionIDs())">
+						<span tal:attributes="data-url python:getattr(here,SQLConnectionID[0]).absolute_url()">
+							<img tal:attributes="src python:getattr(here,SQLConnectionID[0]).icon"/>
+							<tal:block tal:content="python:SQLConnectionID[0]">SQLConnectionID</tal:block>
+						</span>
+					</tal:block>
+				</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
+						<li>
+							<a href="#" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[0]">
+								<span tal:attributes="data-url python:getattr(here,SQLConnectionID[0]).absolute_url()">
+									<img tal:attributes="src python:getattr(here,SQLConnectionID[0]).icon"/>
+									<tal:block tal:content="python:SQLConnectionID[0]">SQLConnectionID</tal:block>
+								</span>
+							</a>
+						</li>
+					</tal:block>
+				</ul>
+			</div>
 		</div><!-- .col-sm-9 col-md-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">

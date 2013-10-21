@@ -488,6 +488,7 @@ class ZMSSqlDb(ZMSObject):
               pass
             options.append([qkey,qvalue])
         column['options'] = options
+      
       # Multiselect
       stereotype = column.get('multiselect')
       if stereotype not in ['',None]:
@@ -544,6 +545,7 @@ class ZMSSqlDb(ZMSObject):
         column['dst'] = dst
         column['value'] = value
         column['options'] = options
+      
       # Details
       stereotype = column.get('details')
       if stereotype not in ['',None]:
@@ -572,6 +574,30 @@ class ZMSSqlDb(ZMSObject):
               + 'WHERE b.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
             records = self.query(sql,encoding=encoding)['records']
             column['value'] = records
+      
+      # Multi-Multiselect
+      stereotype = column.get('multimultiselect')
+      if stereotype not in ['',None]:
+        if stereotype.get('lazy'):
+          pass
+        else:
+          for item in stereotype.get('tables',[]):
+            options = []
+            sql = '' \
+              + 'SELECT ' + item['fieldname'] + ' AS qkey, ' + item['displayfield'] + ' AS qvalue ' \
+              + 'FROM ' + item['tablename'] + ' ' \
+              + 'ORDER BY ' + item['displayfield']
+            for r in self.query(sql)['records']:
+              qkey = str(r['qkey'])
+              qvalue = str(r['qvalue'])
+              try:
+                qkey =unicode(qkey,qcharset).encode('utf-8')
+                qvalue = unicode(qvalue,qcharset).encode('utf-8')
+              except:
+                pass
+              options.append([qkey,qvalue])
+            stereotype['options'] = stereotype.get('options',{})
+            stereotype['options'][item['tablename']] = options
       return column
 
 

@@ -435,6 +435,7 @@ class ZMSSqlDb(ZMSObject):
     # --------------------------------------------------------------------------
     def getEntityColumn(self, tableName, columnName, row=None):
       encoding = getattr(self,'charset','utf-8')
+      qcharset = self.REQUEST.get('qcharset','utf-8')
       columns = self.getEntity( tableName)['columns']
       column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
       column['id'] = column['id'].lower()
@@ -477,7 +478,7 @@ class ZMSSqlDb(ZMSObject):
                 where.append( stereotype['fieldname'] + '=' + + self.sql_quote__(stereotype.get('tablename'),stereotype.get('fieldname'),value))
               sql.append( 'WHERE ' + ' OR '.join(where))
           sql.append( 'ORDER BY ' + str(stereotype.get('sort',2)))
-          qcharset = self.REQUEST.get('qcharset','utf-8')
+          column['valuesql'] = '\n'.join(sql)
           for r in self.query('\n'.join(sql))['records']:
             qkey = str(r['qkey'])
             qvalue = str(r['qvalue'])
@@ -507,6 +508,7 @@ class ZMSSqlDb(ZMSObject):
             + 'SELECT ' + dst['id'] + ' AS dst_id ' \
             + 'FROM ' + intersection['id'] + ' ' \
             + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
+          column['valuesql'] = sql
           for r in self.query(sql)['records']:
             value.append(r['dst_id'])
         # Multiselect.MySQLSet
@@ -532,6 +534,7 @@ class ZMSSqlDb(ZMSObject):
               for i in value:
                 where.append( fk.get('fieldname') + '=' + + self.sql_quote__(fk.get('tablename'),fk.get('fieldname'),value))
               sql.append( 'WHERE ' + ' OR '.join(where))
+          column['valuesql'] = sql
           for r in self.query(sql)['records']:
             qkey = str(r['qkey'])
             qvalue = str(r['qvalue'])
@@ -553,14 +556,15 @@ class ZMSSqlDb(ZMSObject):
         # Details.Intersection
         if details['type']=='intersection':
           if row:
+            primary_key = self.getEntityPK(tableName)
             dst = filter(lambda x:x.get('fk') is not None and x['fk'].has_key('tablename') and x['fk']['tablename']!=tableName,details['columns'])[0]
             dstentity = self.getEntity(dst['fk']['tablename'])
-            primary_key = self.getEntityPK(tableName)
             sql = '' \
               + 'SELECT a.* ' \
               + 'FROM ' + dstentity['id'] + ' a ' \
               + 'INNER JOIN ' + stereotype['tablename'] + ' b ON a.' + filter(lambda x:x.get('pk'),dstentity['columns'])[0]['id'] + ' = b.' + dst['id'] + ' ' \
               + 'WHERE b.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True)) 
+            column['valuesql'] = sql
             records = self.query(sql,encoding=encoding)['records']
             column['value'] = records
             column['dst'] = dstentity
@@ -572,16 +576,18 @@ class ZMSSqlDb(ZMSObject):
               + 'SELECT b.* ' \
               + 'FROM ' + stereotype['tablename'] + ' b ' \
               + 'WHERE b.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
+            column['valuesql'] = sql
             records = self.query(sql,encoding=encoding)['records']
             column['value'] = records
       
       # Multi-Multiselect
       stereotype = column.get('multimultiselect')
       if stereotype not in ['',None]:
-        if stereotype.get('lazy'):
-          pass
-        else:
-          for item in stereotype.get('tables',[]):
+        items = stereotype.get('tables',[])
+        for item in items:
+          if item.get('lazy'):
+            pass
+          else:
             options = []
             sql = '' \
               + 'SELECT ' + item['fieldname'] + ' AS qkey, ' + item['displayfield'] + ' AS qvalue ' \
@@ -598,6 +604,54 @@ class ZMSSqlDb(ZMSObject):
               options.append([qkey,qvalue])
             stereotype['options'] = stereotype.get('options',{})
             stereotype['options'][item['tablename']] = options
+        value = []
+        if row:
+          primary_key = self.getEntityPK(tableName)
+          columns  = []
+          leftjoins = []
+          outerjoins = []
+          for item in items:
+            i = items.index(item)
+            if item['fieldname'].find(item['tablename']+'.') < 0:
+              item['fieldname'] = item['tablename']+'.'+item['fieldname'] 
+            columns.append(item['fieldname']+' AS fk%i'%i)
+            if item['displayfield'].find(item['tablename']+'.') < 0:
+              item['displayfield'] = item['tablename']+'.'+item['displayfield'] 
+            columns.append(item['displayfield']+' AS displayfield%i'%i)
+            join = item['tablename']+' ON '+stereotype['tablename']+'.'+item['fk']+'='+item['fieldname']
+            if item.get('nullable'):
+              outerjoins.append(join)
+            else:
+              leftjoins.append(join)
+          sql = []
+          sql.append('SELECT '+', '.join(columns))
+          sql.append(' FROM '+stereotype['tablename'])
+          if leftjoins:
+            sql.append(' LEFT JOIN '.join(['']+leftjoins))
+          if outerjoins:
+            sql.append(' LEFT OUTER JOIN '.join(['']+outerjoins))
+          sql.append(' WHERE ' + stereotype['tablename'] + '.' + stereotype['fk'] + '=' + self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True)))
+          column['valuesql'] = '\n'.join(sql)
+          for r in self.query('\n'.join(sql))['records']:
+            v = []
+            l = []
+            for item in items:
+              i = items.index(item)
+              qkey = ''
+              qvalue = ''
+              if r['fk%i'%i]:
+                qkey = str(r['fk%i'%i])
+                qvalue = str(r['displayfield%i'%i])
+                try:
+                  qkey =unicode(qkey,qcharset).encode('utf-8')
+                  qvalue = unicode(qvalue,qcharset).encode('utf-8')
+                except:
+                  pass
+              v.append(qkey)
+              l.append(qvalue)
+            value.append(('/'.join(v),'/'.join(l)))
+        column['value']= value
+      
       return column
 
 

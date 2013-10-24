@@ -9,7 +9,7 @@
 		<tal:block tal:repeat="i python:range(len(stylesheets))">
 			<link type="text/css" tal:attributes="
 				rel python:' '.join([]
-						+[[],['alternate']][int(i==0)]
+						+[[],['alternate']][int(i>0)]
 						+['stylesheet']
 					);
 				href python:stylesheets[i].absolute_url().replace(request['BASE0'],'');

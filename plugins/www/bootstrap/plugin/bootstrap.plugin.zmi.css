@@ -637,9 +637,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	.zmi.metas .horizontal-group .meta_package select {
 		width:14.5em;
 	}
-	.zmi.ZMSSqlDb .filters label,
-	.zmi.ZMSSqlDb .filters input,
-	.zmi.ZMSSqlDb .filters select {
+	.zmi.ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
+	.zmi.ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
+	.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
 		display: block;
 	}
 
@@ -804,22 +804,17 @@ table.table.zmi-sortable input {
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;
 }
-.ZMSRecordSet .table input,
-.ZMSRecordSet .table select,
-.ZMSRecordSet .table textarea,
-.ZMSSqlDb .table input,
-.ZMSSqlDb .table select,
-.ZMSSqlDb .table textarea {
+.ZMSRecordSet .table input,   .ZMSSqlDb .table input,
+.ZMSRecordSet .table select,  .ZMSSqlDb .table select,
+.ZMSRecordSet .table textarea,.ZMSSqlDb .table textarea {
 	font-size:11px;
 	padding:0 2px 0 2px;
 	margin:0;
 	height:20px;
 }
 
-.ZMSRecordSet .table tr th,
-.ZMSRecordSet .table tr td,
-.ZMSSqlDb .table tr th,
-.ZMSSqlDb .table tr td {
+.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th,
+.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr td {
 	padding:4px;
 	font-size:11px;
 }
@@ -869,41 +864,41 @@ table.table.zmi-sortable input {
 .ZMSSqlDb .table ul.dropdown-menu i {
 	padding-right:0.5em;
 }
-.zmi.ZMSSqlDb #attrProperties .form-group select,
-.zmi.ZMSSqlDb #attrProperties .form-group input {
+.zmi.ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,
+.zmi.ZMSRecordSet #attrProperties .form-group input,     .zmi.ZMSSqlDb #attrProperties .form-group input {
 	width:167px;
 	float:left;
 }
-.zmi.ZMSSqlDb .accordion-group {
+.zmi.ZMSRecordSet .accordion-group,.zmi.ZMSSqlDb .accordion-group {
 	border:0;
 }
-.zmi.ZMSSqlDb .form-horizontal {
+.zmi.ZMSRecordSet .form-horizontal,.zmi.ZMSSqlDb .form-horizontal {
 	border: 1px solid #e5e5e5;
 	border-radius: 4px;
 }
-.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
+.zmi.ZMSRecordSet .accordion-heading .accordion-toggle,.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
 	padding: 8px 3px 8px 15px;
 }
-.zmi.ZMSSqlDb .accordion-heading.filters {
+.zmi.ZMSRecordSet .accordion-heading.filters,.zmi.ZMSSqlDb .accordion-heading.filters {
 	margin:1em 0;
 }
-.zmi.ZMSSqlDb .filters label,
-.zmi.ZMSSqlDb .filters input,
-.zmi.ZMSSqlDb .filters select {
+.zmi.ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
+.zmi.ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
+.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
 	display: inline-block !important;
 	width: auto !important;
 }
-.zmi.ZMSSqlDb #qentity,
-.zmi.ZMSSqlDb #qsize {
+.zmi.ZMSRecordSet #qentity,.zmi.ZMSSqlDb #qentity,
+.zmi.ZMSRecordSet #qsize,  .zmi.ZMSSqlDb #qsize {
 	margin-right:0.5em;
 }
-.zmi.ZMSSqlDb #attrProperties {
+.zmi.ZMSRecordSet #attrProperties,.zmi.ZMSSqlDb #attrProperties {
 	border:0;
 }
-.zmi.ZMSSqlDb #attrProperties .accordion-inner {
+.zmi.ZMSRecordSet #attrProperties .accordion-inner,.zmi.ZMSSqlDb #attrProperties .accordion-inner {
 	padding-top: 0.5em;
 }
-.zmi.ZMSSqlDb #attrProperties .accordion-inner label {
+.zmi.ZMSRecordSet #attrProperties .accordion-inner label,.zmi.ZMSSqlDb #attrProperties .accordion-inner label {
 	color:#999;
 }
 

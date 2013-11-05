@@ -9,7 +9,8 @@
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
-		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)))">
+		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
+		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x['package'], metaObjs))">
 
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
@@ -108,7 +109,7 @@
 			<label for="obj_package" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span></label>
 			<div>
 				<select class="form-control input-sm" id="obj_package" name="obj_package">
-					<tal:block tal:repeat="metaObjPackage metaObjPackages">
+					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 						<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
 					</tal:block>
 				</select>
@@ -357,25 +358,36 @@
 		</tr>
 	</thead>
 	<tbody>
-	<tal:block tal:repeat="metaObjPackage metaObjPackages">
-		<tr class="zmi-selectable" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
-			<td style="text-align:center;">
-				<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
-			</td>
-			<td colspan="2">
-				<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
+	<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
+		<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
+			<tr class="zmi-selectable" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
+				<td style="text-align:center;">
+					<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
+				</td>
+				<td colspan="2">
+					<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+					</a>
+					<a tal:condition="python:metaObjPackage" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage)">
+						<strong tal:content="metaObjPackage">the id</strong>
+					</a>
+					<tal:block tal:condition="python:not metaObjPackage">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+						<strong>[default package]</strong>
+					</tal:block>
+					<tal:block tal:content="python:metaObj.get('revision',['','0.0.0'][int(len(metaObjPackage)>0)])">the revision</tal:block>
+				</td>
+			</tr>
+		</tal:block>
+		<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
+			<tr class="zmi-selectable">
+				<td>&nbsp;</td>
+				<td colspan="2" style="text-decoration:line-through">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
-				</a>
-				<a tal:condition="python:metaObjPackage" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage)">
 					<strong tal:content="metaObjPackage">the id</strong>
-				</a>
-				<tal:block tal:condition="python:not metaObjPackage">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
-					<strong>[default package]</strong>
-				</tal:block>
-				<tal:block tal:content="python:metaObj.get('revision',['','0.0.0'][int(len(metaObjPackage)>0)])">the revision</tal:block>
-			</td>
-		</tr>
+				</td>
+			</tr>
+		</tal:block>
 		<tal:block tal:repeat="metaObj metaObjs">
 			<tr class="zmi-selectable" tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td style="text-align:center;">

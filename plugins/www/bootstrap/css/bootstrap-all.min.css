@@ -553,7 +553,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
  .zmi.metas .horizontal-group .meta_revision input{width:14.2em}
  .zmi.metas .horizontal-group .meta_type select{width:14.2em}
  .zmi.metas .horizontal-group .meta_package select{width:14.5em}
- .zmi.ZMSSqlDb .filters label,.zmi.ZMSSqlDb .filters input,.zmi.ZMSSqlDb .filters select{display:block}}
+ .zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
 .zmi.metas table.table-striped td.meta-id input,.zmi.metas table.table-striped td.meta-name input,.zmi.metas table.table-striped td.meta-type select,.zmi.metas table.meta-access textarea{width:160px}
 .zmi.metas .form-group.meta_id div,.zmi.metas .form-group.meta_name div,.zmi.metas .form-group.meta_type div,.zmi.metas .form-group.meta_revision div,.zmi.metas .form-group.meta_package div{padding-left:1em}
 .zmi.metas input[type="file"]{display:inline-block}
@@ -582,31 +582,6 @@ div.zmi-nodes span{cursor:pointer}
 .zmi-image-preview{max-width:100px;background:#CCC}
 .zmi-image-generate-preview{font-size:x-small}
 .zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;font-size:x-small}
-.zmiTableRowSelected{background-color:#008!important}
-.zmiTableRowSelected>.form-small{color:white}
-.zmiTableRowOdd{background-color:#FEFEFE}
-.zmiTableRowEven{background-color:#F4F4F4}
-.zmiNeutralColorTrans{background-color:#0f0}
-.zmiNeutralColorWhite{background-color:#fff}
-.zmiNeutralColorBlack{background-color:#000}
-.zmiNeutralColorStrong0{background-color:#CCC}
-.zmiNeutralColorMedium0{background-color:#DDD}
-.zmiNeutralColorLight0{background-color:#EEE}
-.zmiNeutralColorLight1{background-color:#E2E3DE}
-.zmiTeaserColor{background-color:#BEDAFD!important}
-.zmiTeaserColor>.form-small{color:#222}
- 
-.zmi-button{width:20px!important;height:20px!important;padding:0!important;margin:0!important;cursor:pointer}
-img.vbutton,a.vbutton img{width:10px;height:20px}
-img.hbutton,a.hbutton img{width:20px;height:8px}
-a.button img{padding:2px;border:none}
-a.button:hover img,a.button:active img,a.vbutton:hover img,a.vbutton:active img,a.hbutton:hover img,a.hbutton:active img{background-color:#DFF1FF}
-img.button0,a.button img.button0{}
-img.button1,a.button img.button1{background-color:#A3D7FF}
-a.button:hover img.button0,a.button:hover img.button1{background-color:#DFF1FF}
-#loading{color:#08c}
-.zmiHSep{background-color:#B6B4B6;border-bottom:#E6E4E6 solid 1px}
-.zmiVSep{background-color:#B6B6B6;border-right:solid #E6E4E6 1px;height:22px;width:1px}
 body.users #zmi-tab > .pull-left,body.users #zmi-tab > .pull-right{width:50%}
 table.zmi-sortable td{white-space:nowrap}
 table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bottom:0px}
@@ -615,8 +590,8 @@ table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bot
 .pagination > .active > a{font-weight:bold}
 .ZMSRecordSet form{margin-left:2em;margin-right:2em}
 .ZMSRecordSet .table tr td:first-child,.ZMSSqlDb .table tr td:first-child{width:84px}
-.ZMSRecordSet .table input,.ZMSRecordSet .table select,.ZMSRecordSet .table textarea,.ZMSSqlDb .table input,.ZMSSqlDb .table select,.ZMSSqlDb .table textarea{font-size:11px;padding:0 2px 0 2px;margin:0;height:20px}
-.ZMSRecordSet .table tr th,.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr th,.ZMSSqlDb .table tr td{padding:4px;font-size:11px}
+.ZMSRecordSet .table input,.ZMSSqlDb .table input,.ZMSRecordSet .table select,.ZMSSqlDb .table select,.ZMSRecordSet .table textarea,.ZMSSqlDb .table textarea{font-size:11px;padding:0 2px 0 2px;margin:0;height:20px}
+.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th,.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr td{padding:4px;font-size:11px}
 .ZMSRecordSet .table tr th:first-child,.ZMSRecordSet .table tr td:first-child,.ZMSRecordSet .table tr th .btn-group,.ZMSRecordSet .table tr td .btn-group{white-space:nowrap !important;min-width:8em}
 .ZMSRecordSet .table tr th .split-left,.ZMSRecordSet .table tr td .split-left,.ZMSSqlDb .table tr th .split-left,.ZMSSqlDb .table tr td .split-left{font-size:11px;border:1px solid #ccc;margin:0px;background:#DCE3F0;padding:6px;min-width:52px;overflow:hidden;height:28px}
 .ZMSSqlDb .table tr td:first-child .checkbox input{opacity:0.5;width:auto;margin:-2px 0px 0px 0px}
@@ -624,16 +599,16 @@ table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bot
 .ZMSRecordSet .table tr th:first-child .split-right,.ZMSRecordSet .table tr td:first-child .split-right,.ZMSSqlDb .table tr th:first-child .split-right,.ZMSSqlDb .table tr td:first-child .split-right{height:28px;margin:0px;padding:0 0.5em;background-color:#919EB3}
 .ZMSSqlDb .table ul.dropdown-menu{font-size:14px}
 .ZMSSqlDb .table ul.dropdown-menu i{padding-right:0.5em}
-.zmi.ZMSSqlDb #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
-.zmi.ZMSSqlDb .accordion-group{border:0}
-.zmi.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
-.zmi.ZMSSqlDb .accordion-heading .accordion-toggle{padding:8px 3px 8px 15px}
-.zmi.ZMSSqlDb .accordion-heading.filters{margin:1em 0}
-.zmi.ZMSSqlDb .filters label,.zmi.ZMSSqlDb .filters input,.zmi.ZMSSqlDb .filters select{display:inline-block !important;width:auto !important}
-.zmi.ZMSSqlDb #qentity,.zmi.ZMSSqlDb #qsize{margin-right:0.5em}
-.zmi.ZMSSqlDb #attrProperties{border:0}
-.zmi.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
-.zmi.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
+.zmi.ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,.zmi.ZMSRecordSet #attrProperties .form-group input,.zmi.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
+.zmi.ZMSRecordSet .accordion-group,.zmi.ZMSSqlDb .accordion-group{border:0}
+.zmi.ZMSRecordSet .form-horizontal,.zmi.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
+.zmi.ZMSRecordSet .accordion-heading .accordion-toggle,.zmi.ZMSSqlDb .accordion-heading .accordion-toggle{padding:8px 3px 8px 15px}
+.zmi.ZMSRecordSet .accordion-heading.filters,.zmi.ZMSSqlDb .accordion-heading.filters{margin:1em 0}
+.zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:inline-block !important;width:auto !important}
+.zmi.ZMSRecordSet #qentity,.zmi.ZMSSqlDb #qentity,.zmi.ZMSRecordSet #qsize,.zmi.ZMSSqlDb #qsize{margin-right:0.5em}
+.zmi.ZMSRecordSet #attrProperties,.zmi.ZMSSqlDb #attrProperties{border:0}
+.zmi.ZMSRecordSet #attrProperties .accordion-inner,.zmi.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
+.zmi.ZMSRecordSet #attrProperties .accordion-inner label,.zmi.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
 .zmiDivOpaque{background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85}
 li.dropdown-submenu ul.dropdown-menu li a img{margin-right:0.5em}
 div.zmi-action > ul.dropdown-menu{margin-top:-1px;border-top-left-radius:0}
@@ -682,7 +657,6 @@ div.right .btn .caret{}
  .zmi.properties .accordion-group.zmi-container{width:100%;padding:0}
  .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-body.container{margin-left:0}
  .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading{padding-left:1em}
- .zmi.properties .zmi-richtext .zmiNeutralColorMedium0{min-width:100% !important}
  .zmi.properties .form-horizontal label.col-lg-2.control-label,.zmi.properties .form-horizontal .controls{margin-left:0px;width:auto}
  .zmi.properties .form-horizontal .col-lg-2.control-label{float:none;text-align:left}
  .zmi.properties .form-horizontal .form-group.activity .col-lg-2.control-label{float:left}

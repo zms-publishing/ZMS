@@ -344,8 +344,12 @@ function mms_normalize_rows(el_tbody) {
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+							<td>A.Lazy</td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy') in [1,True])]" value="1"/></td>
+						</tr>
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>B.MySQL-Set</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>C.Options</td>
@@ -371,11 +375,11 @@ function mms_normalize_rows(el_tbody) {
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
 							<td>A.Lazy</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
 							<td>B.MySQL-Set</td>
-							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset')==1)]" value="1"/></td>
+							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multimultiselect ###########################################################

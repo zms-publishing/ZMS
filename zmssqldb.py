@@ -126,6 +126,7 @@ class ZMSSqlDb(ZMSObject):
     zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
     zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
     zmi_intersection_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_intersection_form', globals())
+    zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
@@ -475,7 +476,7 @@ class ZMSSqlDb(ZMSObject):
               if type(value) is not list:
                 value = [value]
               for i in value:
-                where.append( stereotype['fieldname'] + '=' + + self.sql_quote__(stereotype.get('tablename'),stereotype.get('fieldname'),value))
+                where.append( stereotype['fieldname'] + '=' + self.sql_quote__(stereotype['tablename'],stereotype['fieldname'],i))
               sql.append( 'WHERE ' + ' OR '.join(where))
           sql.append( 'ORDER BY ' + str(stereotype.get('sort',2)))
           column['valuesql'] = '\n'.join(sql)
@@ -523,8 +524,8 @@ class ZMSSqlDb(ZMSObject):
         # Multiselect.Fk
         elif dst['fk'].has_key('tablename'):
           sql = '' \
-            + 'SELECT ' + dst['fk'].get('fieldname') + ' AS qkey, ' + dst['fk'].get('displayfield') + ' AS qvalue ' \
-            + 'FROM ' + dst['fk'].get('tablename') + ' '
+            + 'SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue ' \
+            + 'FROM ' + dst['fk']['tablename'] + ' '
           if stereotype.has_key('lazy') and row:
             value = self.operator_getitem(row,columnName,ignorecase=True)
             if value:
@@ -532,7 +533,7 @@ class ZMSSqlDb(ZMSObject):
               if type(value) is not list:
                 value = [value]
               for i in value:
-                where.append( fk.get('fieldname') + '=' + + self.sql_quote__(fk.get('tablename'),fk.get('fieldname'),value))
+                where.append( fk['fieldname'] + '=' + self.sql_quote__(fk['tablename'],fk['fieldname'],i))
               sql.append( 'WHERE ' + ' OR '.join(where))
           column['valuesql'] = sql
           for r in self.query(sql)['records']:

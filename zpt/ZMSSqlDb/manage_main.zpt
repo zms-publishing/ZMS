@@ -6,9 +6,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<script>
-</script>
-
 <tal:block tal:define="global
 			entities python:here.getEntities();
 			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
@@ -125,13 +122,12 @@
 		<div id="attrProperties" class="accordion-body collapse in">
 			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
-				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request['qfilters'])">
+				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column entity/columns">
 							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
-					<!-- CAVE: UNFINISHED / FILTER STILL NOT WORKING -->
 					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
 						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
 							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex,'').lower()]" tal:content="python:op">op</option>

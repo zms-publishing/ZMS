@@ -1,6 +1,24 @@
+<tal:block tal:define="global
+		bnobody python:int(request.get('ZMS_NO_BODY','')!='');">
+
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<script tal:condition="python:not bnobody">
+	$ZMI.registerReady(function(){
+			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
+				if (parent.$.fancybox) {
+					parent.$.fancybox.close();
+				}
+				var href = parent.location.href;
+				if (href.indexOf("?") > 0) {
+					href = href.substr(0,href.indexOf("?"));
+				}
+				href += "?" + self.location.href.substr(self.location.href.indexOf("?"));
+				parent.location.href = href;
+			}
+		});
+</script>
 <style>
 	body.import .form-group {
 		margin-bottom: 0.3em;
@@ -102,7 +120,8 @@
 			<div class="col-sm-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div>
-		</div><!-- .form-group -->	</form>
+		</div><!-- .form-group -->
+	</form>
 </tal:block>
 
 </tal:block>
@@ -110,3 +129,5 @@
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>
+
+</tal:block>

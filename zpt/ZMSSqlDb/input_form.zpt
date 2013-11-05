@@ -44,7 +44,20 @@
 				</div><!-- .col-sm-9 col-md-10 -->
 
 				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
-					<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
+					<tal:block condition="python:metaObjAttr['fk'].get('lazy')">
+						<tal:block tal:repeat="option python:[(metaObjAttr['options']+[['','']])[0]]">
+							<div class="pull-left">
+								<input class="lazy" type="hidden" tal:attributes="id metaObjAttr/id; name elName; value python:option[0]"/>
+								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
+							</div><!-- .pull-left -->
+							<div class="pull-left">
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['fk']['tablename'],metaObjAttr['fk']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+							</div><!-- .pull-left -->
+						</tal:block>
+					</tal:block>
+					<tal:block condition="not:python:metaObjAttr['fk'].get('lazy')">
+						<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
+					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->
 
@@ -62,7 +75,7 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{qentity:\'%s\',qcolumn:\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],metaObjAttr['id'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',qcolumn:\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['multiselect']['tablename'],metaObjAttr['multiselect']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
 							</div><!-- .btn-group -->
@@ -85,12 +98,11 @@
 								<label tal:attributes="for python:'%s%i'%(elName,i); class python:' '.join(['control-label']+[[],['mandatory']][int(item.get('nullable') not in ['',None])])" tal:content="structure python:here.getLangStr(item['label'],request['lang'])">the label</label>
 								<div tal:condition="python:item.get('lazy')">
 									<div class="pull-left">
-										<input type="hidden" tal:attributes="id python:'%s%i'%(elName,i)"/>
-										<input type="hidden" tal:attributes="id python:'new_%s%i'%(elName,i)" onchange="$(this).prev('input').val(this.value);"/>
-										<input class="form-control" type="text" tal:attributes="id python:'displayfield_%s%i'%(elName,i)" disabled="disabled"/>
+										<input class="lazy" type="hidden" tal:attributes="id python:'%s%i'%(elName,i)"/>
+										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i)" disabled="disabled"/>
 									</div>
 									<div class="pull-left">
-										<span class="btn btn-default btn-sm" tal:attributes="onclick python:'alert(\'@todo\')'" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+										<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['multimultiselect']['tablename'],metaObjAttr['multimultiselect']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 									</div>
 								</div>
 								<div tal:condition="not:python:item.get('lazy')">
@@ -196,6 +208,22 @@
 	</tal:block>
 
 <script>
+/**
+ *
+ */
+function zmiLazySelect(id, option) {
+	if ($("#"+id).hasClass("lazy")) {
+		$("#"+id).val(option["value"]);
+		$("#label_"+id).val(option["label"]);
+	}
+	else {
+		$ZMI.appendToMultiselect(id, option);
+	}
+}
+
+/**
+ *
+ */
 function zmiIframeClose(id, message) {
 	var pos = $("#tr_"+id).position();
 	$ZMI.showMessage(pos,message,"alert-success");

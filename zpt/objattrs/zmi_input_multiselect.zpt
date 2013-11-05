@@ -3,7 +3,7 @@
 <div class="form-multiselect" tal:define="global 
 		name    python:'%s:list'%options['name'];
 		srcname python:'zms_mms_src_%s:list'%options['name'];
-		value   python:map(lambda x:str(x),options.get('value',[]));
+		value   python:map(lambda x:str(x),here.nvl(options.get('value'),[]));
 		opts    python:options.get('options',[]);">
 	<div class="pull-left">
 		<label tal:attributes="for srcname" tal:content="python:here.getZMILangStr('ATTR_AVAILABLE')">Available</label>

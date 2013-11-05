@@ -32,13 +32,14 @@
 	<div class="accordion-group perc100">
 		<div class="accordion-heading">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
-				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
 			</a>
-			&nbsp;&nbsp;<span tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</span>
+			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
-			<div class="accordion-inner">
+			<div class="accordion-inner" style="margin-left:2.3em;">
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
@@ -48,17 +49,18 @@
 				)
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
-		<div class="accordion-heading" style="margin-top:1em;">
-			<a class="accordion-toggle" data-toggle="collapse" href="#attrProperties">
-				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+		<div class="accordion-heading filters">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
 			</a>
-			<input class="input-sm" size="3" type="text" id="qsize" name="qsize:int" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))" tal:attributes="value request/qsize">
-			<label for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" >Rows</label>
-			<input class="input-sm" size="3" type="text" name="qfilters:int" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))" tal:attributes="value request/qfilters">
-			<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
+			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" >Rows</label>
+			<input class="form-control input-sm" size="3" type="text" id="qsize" name="qsize:int" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))" tal:attributes="value request/qsize">
+			<label class="control-label" tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
+			<input class="form-control input-sm" size="3" type="text" name="qfilters:int" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))" tal:attributes="value request/qfilters">
+			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrProperties" class="accordion-body collapse in">
-			<div class="accordion-inner">
+			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<div class="form-inline" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<div class="form-group">
 						<label class="sr-only" tal:attributes="for python:'filterattr%i'%filterIndex">Filter Index</label>
@@ -73,7 +75,7 @@
 						</div>
 						<div class="form-group">
 							<label class="sr-only" tal:attributes="for python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')">Password</label>
-							<input type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')" />
+							<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')" />
 						</div>
 				</div><!-- .form-inline -->
 				<div class="" style="margin-top:1em">
@@ -106,8 +108,23 @@
 		</tal:block>
 	</tal:block>
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',qindex=-1,row={})">
-	metaobj_recordset_input_fields
+<tal:block tal:condition="python:request.get('action')=='insertForm'">
+	<tal:block tal:define="global row python:{}">
+		<tal:block tal:repeat="metaObjAttr python:here.getMetaobj(here.meta_id)['attrs'][1:]">
+			<tal:block tal:condition="python:metaObjAttr['id']=='sort_id'">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],len(records))"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime'] and metaObjAttr['default']=='{now}'">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],DateTime())"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['identifier']">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],here.getNewId())"></tal:block>
+			</tal:block>
+		</tal:block>
+		<tal:block tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',qindex=-1,row=row)">
+			metaobj_recordset_input_fields
+		</tal:block>
+	</tal:block>
 </tal:block>
 
 </tal:block>

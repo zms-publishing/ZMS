@@ -385,13 +385,9 @@ function mms_normalize_rows(el_tbody) {
 						##### Multimultiselect ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
-							<td>Foreign Key</td>
-							<td><input type="text" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
-						</tr>
-						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
-							<td>Tablename</td>
+							<td>Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
-								<select class="form-control input-xs" tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']">
+								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multimultiselect_fk_%s'%column['id'])">
 									<option value=""></option>
 									<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
 										<option tal:attributes="value value; selected python:['','selected'][int(str(column.get('multimultiselect',{}).get('tablename','')).upper()==value.upper())]" tal:content="value">the value</option>
@@ -400,45 +396,52 @@ function mms_normalize_rows(el_tbody) {
 							</td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
-							<td colspan="2">Tables
-								<table>
-								<tr>
-									<th>&nbsp;</th>
-									<th>FK&nbsp;&nbsp;&nbsp;&nbsp;</th>
-									<th>Tablename</th>
-									<th>Fieldname</th>
-									<th>Displayfield</th>
-									<th>Label</th>
-									<th>Lazy</th>
-									<th align="center" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block></th>
-								</tr>
-								<tal:block tal:define="global ts python:column.get('multimultiselect',{}).get('tables',[])">
-									<tal:block tal:repeat="ti python:range(len(ts))">
-										<tr tal:define="global t python:ts[ti]">
-											<td></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); value python:t.get('tablename','')" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')" size="5"/></td >
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')" size="5"/></td>
-											<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')" size="5"/></td>
-											<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1"/></td>
-											<td style="text-align:center;" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_display_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('display')==1)]" value="1"/></td>
-										</tr>
-									</tal:block>
-								</tal:block>
-								<tr class="row_insert">
-									<td><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
-									<td><input class="form-control input-xs" type="text" name="mms_new_fk"/></td>
-									<td><input class="form-control input-xs" type="text" name="mms_new_tablename"/></td>
-									<td><input class="form-control input-xs" type="text" name="mms_new_fieldname"/></td>
-									<td><input class="form-control input-xs" type="text" name="mms_new_displayfield"/></td>
-									<td><input class="form-control input-xs" type="text" name="mms_new_label"/></td>
-									<td style="text-align:center;"><input type="checkbox" name="mms_new_lazy:int" value="1"/></td>
-									<td style="text-align:center;" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><input type="checkbox" name="mms_new_display:int" value="1" checked="checked"/></td>
-								</tr>
-								</table>
-							</td>
+							<td>Foreign Key</td>
+							<td><input type="text" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
 						</tr>
+						<tal:block tal:define="global
+								mmstablename python:column.get('multimultiselect',{}).get('tablename','');
+								mmsfk python:column.get('multimultiselect',{}).get('fk','');
+								mmsentity python:(filter(lambda x: x['id'].upper()==mmstablename.upper(),here.getEntities())+[None])[0]">
+							<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+								<td colspan="2">Tables
+									<table>
+									<tr>
+										<th>&nbsp;</th>
+										<th>FK&nbsp;&nbsp;&nbsp;&nbsp;</th>
+										<th>Tablename</th>
+										<th>Fieldname</th>
+										<th>Displayfield</th>
+										<th>Label</th>
+										<th>Lazy</th>
+									</tr>
+									<tal:block tal:define="global
+											ts0 python:filter(lambda x:x['id'].upper()!=mmsfk.upper(),mmsentity['columns']);
+											ts1 python:map(lambda x:{'fk':x['id']},ts0);
+											ts python:column.get('multimultiselect',{}).get('tables',ts1);">
+										<tal:block tal:repeat="ti python:range(len(ts))">
+											<tr tal:define="global t python:ts[ti]">
+												<td></td>
+												<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fk_%i_%s'%(ti,column['id']); value python:t.get('fk','')" size="5"/></td>
+												<td>
+													<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tables_tablename_%i_%s'%(ti,column['id']); onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']),'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']))">
+														<option value=""></option>
+														<tal:block tal:repeat="value python:map(lambda x:x['id'],tables)">
+															<option tal:attributes="value value; selected python:['','selected'][int(t.get('tablename','').upper()==value.upper())]" tal:content="value">the value</option>
+														</tal:block>
+													</select>
+												</td>
+												<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_fieldname_%i_%s'%(ti,column['id']); value python:t.get('fieldname','')" size="5"/></td>
+												<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_displayfield_%i_%s'%(ti,column['id']); value python:t.get('displayfield','')" size="5"/></td>
+												<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multimultiselect_tables_label_%i_%s'%(ti,column['id']); value python:t.get('label','')" size="5"/></td>
+												<td style="text-align:center;"><input type="checkbox" tal:attributes="name python:'attr_multimultiselect_tables_lazy_%i_%s:int'%(ti,column['id']); checked python:['','checked'][int(t.get('lazy')==1)]" value="1"/></td>
+											</tr>
+										</tal:block>
+									</tal:block>
+									</table>
+								</td>
+							</tr>
+						</tal:block>
 						<tal:block tal:replace="nothing">
 						##### Pk ###########################################################
 						</tal:block>

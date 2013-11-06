@@ -16,8 +16,8 @@
 	</div><!-- .form-group -->
 	<div class="form-group">
 		<div class="col-lg-10">
-			<button type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_EXECUTE')" tal:content="python:here.getZMILangStr('BTN_EXECUTE')">Execute</button>
-			<button type="reset" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET')" tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</button>
+			<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_EXECUTE')" tal:content="python:here.getZMILangStr('BTN_EXECUTE')">Execute</button>
+			<button type="reset" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')" tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</button>
 		</div>
 	</div>
 </form>

@@ -51,7 +51,7 @@
 								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
 							</div><!-- .pull-left -->
 							<div class="pull-left">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['fk']['tablename'],metaObjAttr['fk']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['fk']['tablename'],metaObjAttr['fk']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 							</div><!-- .pull-left -->
 						</tal:block>
 					</tal:block>
@@ -75,7 +75,7 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',qcolumn:\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['multiselect']['tablename'],metaObjAttr['multiselect']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],metaObjAttr['dst']['fk']['displayfield'],elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
 							</div><!-- .btn-group -->
@@ -98,11 +98,11 @@
 								<label tal:attributes="for python:'%s%i'%(elName,i); class python:' '.join(['control-label']+[[],['mandatory']][int(item.get('nullable') not in ['',None])])" tal:content="structure python:here.getLangStr(item['label'],request['lang'])">the label</label>
 								<div tal:condition="python:item.get('lazy')">
 									<div class="pull-left">
-										<input class="lazy" type="hidden" tal:attributes="id python:'%s%i'%(elName,i)"/>
-										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i)" disabled="disabled"/>
+										<input class="lazy" type="hidden" tal:attributes="id python:'%s%i'%(elName,i); name python:'%s%i'%(elName,i)"/>
+										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
 									</div>
 									<div class="pull-left">
-										<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],item['tablename'].lower(),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+										<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%('%s%i'%(elName,i),item['tablename'].lower(),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 									</div>
 								</div>
 								<div tal:condition="not:python:item.get('lazy')">
@@ -113,12 +113,12 @@
 						<div class="pull-left">
 							<label class="control-label">&nbsp;</label>
 							<div>
-								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'alert(\'@todo\')'" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
 							</div>
 						</div><!-- .pull-left -->
 						<div class="clearfix"></div><!-- .clearfix -->
 						<div class="pull-left">
-							<select class="form-control" tal:attributes="id elName; name python:'%s:list'%(elName)" multiple="multiple">
+							<select class="form-control" tal:attributes="id python:metaObjAttr['id']; name python:'%s:list'%metaObjAttr['id']" multiple="multiple">
 								<tal:block tal:repeat="option metaObjAttr/value">
 									<option tal:attributes="value python:option[0]" selected="selected" tal:content="structure python:option[1]">the option</option>
 								</tal:block>
@@ -208,15 +208,47 @@
 	</tal:block>
 
 <script>
+
 /**
- *
+ * multimultiselect:
+ */
+function zmiMultimultiselect(id) {
+	$ZMI.writeDebug("zmiMultimultiselect: id="+id);
+	var $tr = $("#tr_"+id);
+	$ZMI.writeDebug("zmiMultimultiselect: tr["+$tr.length+"]");
+	var v = Array();
+	var l = Array();
+	$("select,input",$tr).each(function() {
+			if (!($(this).attr("name").indexOf(id)==0||$(this).attr("name").indexOf("label_")==0)) {
+				$ZMI.writeDebug("zmiMultimultiselect: "+$(this).attr("name")+":"+$(this).val());
+				$ZMI.writeDebug("zmiMultimultiselect: "+this.nodeName.toLowerCase());
+				if (this.nodeName.toLowerCase()=="input") {
+					v.push($(this).val());
+					l.push($("#label_"+$(this).attr("id")).text());
+				}
+				else if (this.nodeName.toLowerCase()=="select") {
+					v.push($(this).val());
+					l.push($("option:selected",this).text());
+				}
+				$(this).val("");
+			}
+		});
+	var option = {value:v.join("|"),label:l.join("|")};
+	$ZMI.appendToMultiselect(id, option);
+}
+
+/**
+ * select/multiselect:
+ * callback for zmi_lazy_select_form.
  */
 function zmiLazySelect(id, option) {
+	$ZMI.writeDebug("zmiLazySelect: id="+id+";option="+option);
 	if ($("#"+id).hasClass("lazy")) {
 		$("#"+id).val(option["value"]);
 		$("#label_"+id).val(option["label"]);
 	}
 	else {
+		$ZMI.writeDebug("zmiLazySelect: appendToMultiselect");
 		$ZMI.appendToMultiselect(id, option);
 	}
 }

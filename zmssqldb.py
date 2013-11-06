@@ -471,13 +471,13 @@ class ZMSSqlDb(ZMSObject):
           sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
           if stereotype.has_key('lazy') and row:
             value = self.operator_getitem(row,columnName,ignorecase=True)
+            where = ['1=0']
             if value:
-              where = []
               if type(value) is not list:
                 value = [value]
               for i in value:
                 where.append( stereotype['fieldname'] + '=' + self.sql_quote__(stereotype['tablename'],stereotype['fieldname'],i))
-              sql.append( 'WHERE ' + ' OR '.join(where))
+            sql.append( 'WHERE ' + ' OR '.join(where))
           sql.append( 'ORDER BY ' + str(stereotype.get('sort',2)))
           column['valuesql'] = '\n'.join(sql)
           for r in self.query('\n'.join(sql))['records']:
@@ -523,20 +523,20 @@ class ZMSSqlDb(ZMSObject):
           options.extend(dst['fk']['options'])
         # Multiselect.Fk
         elif dst['fk'].has_key('tablename'):
-          sql = '' \
-            + 'SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue ' \
-            + 'FROM ' + dst['fk']['tablename'] + ' '
+          sql = []
+          sql.append('SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue')
+          sql.append('FROM ' + dst['fk']['tablename'])
           if stereotype.has_key('lazy') and row:
             value = self.operator_getitem(row,columnName,ignorecase=True)
+            where = ['1=0']
             if value:
-              where = []
               if type(value) is not list:
                 value = [value]
               for i in value:
                 where.append( fk['fieldname'] + '=' + self.sql_quote__(fk['tablename'],fk['fieldname'],i))
-              sql.append( 'WHERE ' + ' OR '.join(where))
-          column['valuesql'] = sql
-          for r in self.query(sql)['records']:
+            sql.append( 'WHERE ' + ' OR '.join(where))
+          column['valuesql'] = '\n'.join(sql)
+          for r in self.query('\n'.join(sql))['records']:
             qkey = str(r['qkey'])
             qvalue = str(r['qvalue'])
             try:

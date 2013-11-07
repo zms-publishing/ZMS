@@ -75,7 +75,6 @@ class ZMSItem(
     # --------------------------------------------------------------------------
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
-      request.set( 'preview','preview')
       request.set( 'ZMS_THIS',self.getSelf())
       request.set( 'ZMS_DOCELMNT',self.breadcrumbs_obj_path()[0])
       request.set( 'ZMS_ROOT',request['ZMS_DOCELMNT'].absolute_url())
@@ -99,6 +98,8 @@ class ZMSItem(
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
+      if not request.get( 'preview'):
+        request.set( 'preview','preview')
       if not request.get( 'lang'):
         request.set( 'lang',self.getPrimaryLanguage())
       if not request.get( 'manage_lang'):

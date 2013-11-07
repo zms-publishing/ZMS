@@ -469,7 +469,7 @@ class ZMSSqlDb(ZMSObject):
         elif stereotype.has_key('tablename'):
           sql = []
           sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
-          if stereotype.has_key('lazy') and row:
+          if stereotype.has_key('lazy') and row is not None:
             value = self.operator_getitem(row,columnName,ignorecase=True)
             where = ['1=0']
             if value:
@@ -503,7 +503,7 @@ class ZMSSqlDb(ZMSObject):
         if dst is None: dst = (filter(lambda x:x['fk'].has_key('options'),intersection_fk)+[None])[0]
         if dst is None: dst = (filter(lambda x:x['fk'].has_key('tablename') and x['fk']['tablename'].upper()!=tableName.upper(),intersection_fk)+[None])[0]
         # Multiselect.Selected
-        if row:
+        if row is not None:
           primary_key = self.getEntityPK(tableName)
           sql = '' \
             + 'SELECT ' + dst['id'] + ' AS dst_id ' \
@@ -526,14 +526,13 @@ class ZMSSqlDb(ZMSObject):
           sql = []
           sql.append('SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue')
           sql.append('FROM ' + dst['fk']['tablename'])
-          if stereotype.has_key('lazy') and row:
-            value = self.operator_getitem(row,columnName,ignorecase=True)
+          if stereotype.has_key('lazy') and row is not None:
             where = ['1=0']
             if value:
               if type(value) is not list:
                 value = [value]
               for i in value:
-                where.append( fk['fieldname'] + '=' + self.sql_quote__(fk['tablename'],fk['fieldname'],i))
+                where.append( dst['fk']['fieldname'] + '=' + self.sql_quote__(dst['fk']['tablename'],dst['fk']['fieldname'],i))
             sql.append( 'WHERE ' + ' OR '.join(where))
           column['valuesql'] = '\n'.join(sql)
           for r in self.query('\n'.join(sql))['records']:
@@ -581,7 +580,7 @@ class ZMSSqlDb(ZMSObject):
             records = self.query(sql,encoding=encoding)['records']
             column['value'] = records
       
-      # Multi-Multiselect
+      # Multimultiselect
       stereotype = column.get('multimultiselect')
       if stereotype not in ['',None]:
         items = stereotype.get('tables',[])
@@ -650,7 +649,7 @@ class ZMSSqlDb(ZMSObject):
                   pass
               v.append(qkey)
               l.append(qvalue)
-            value.append(('/'.join(v),'/'.join(l)))
+            value.append(('|'.join(v),' | '.join(l)))
         column['value']= value
       
       return column
@@ -1214,9 +1213,11 @@ class ZMSSqlDb(ZMSObject):
             rowid = r['value']
         except:
           raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Insert]: can\'t get primary-key - sqlStatement=' + sqlStatement))
+      # Update intersections.
+      self.recordSet_UpdateIntersections(tablename, rowid, values)
       # Process blobs now.
       if blobs:
-        self.recordSet_Update(tablename, rowid, blobs, old_values={})
+        self.recordSet_Update(tablename, rowid, blobs)
       return rowid
 
 
@@ -1231,7 +1232,7 @@ class ZMSSqlDb(ZMSObject):
     @return: ID of the row that was updated.
     @rtype: C{any}
     """
-    def recordSet_Update(self, tablename, rowid, values={},old_values={}):
+    def recordSet_Update(self, tablename, rowid, values={}, old_values={}):
       REQUEST = self.REQUEST
       auth_user = REQUEST.get('AUTHENTICATED_USER')
       lang = REQUEST['lang']
@@ -1321,8 +1322,59 @@ class ZMSSqlDb(ZMSObject):
           self.executeQuery( sqlStatement)
         except:
           raise zExceptions.InternalError(_globals.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
+      # Update intersections.
+      self.recordSet_UpdateIntersections(tablename, rowid, values)
       # Return with row-id.
       return rowid
+
+
+    """
+    Update row-intersections in table.
+    @param tablename: Name of the SQL-Table.
+    @type tablename: C{string}
+    @param rowid: ID of the row to be updated.
+    @type rowid: C{any}
+    @param values: Columns (id/value) to be updated.
+    @type values: C{dict}
+    """
+    def recordSet_UpdateIntersections(self, tablename, rowid, values={}):
+      tabledefs = self.getEntities()
+      tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
+      tablecols = tabledef['columns']
+      pk = (map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))+[tablecols[0]['id']])[0]
+      for tablecol in tablecols:
+        id = tablecol['id']
+        column = self.getEntityColumn(tablename,id,row={})
+        # Multiselect
+        if tablecol.get('multiselect'):
+          stereotype = tablecol['multiselect']
+          sql = []
+          sql.append('DELETE FROM %s'%stereotype['tablename'])
+          sql.append('WHERE %s=%s'%(stereotype['fk'],self.sql_quote__(tablename,pk,rowid)))
+          self.executeQuery('\n'.join(sql))
+          for v in _globals.nvl(values.get(id),[]):
+            sql = []
+            c = [(column['src']['id'],rowid),(column['dst']['id'],v)]
+            sql.append('INSERT INTO %s (%s)'%(stereotype['tablename'],' , '.join(map(lambda x:x[0],c))))
+            sql.append('VALUES (%s)'%(' , '.join(map(lambda x:self.sql_quote__(stereotype['tablename'],x[0],x[1]),c))))
+            self.executeQuery('\n'.join(sql))
+        # Multimultiselect
+        elif tablecol.get('multimultiselect'):
+          stereotype = tablecol['multimultiselect']
+          sql = []
+          sql.append('DELETE FROM %s'%stereotype['tablename'])
+          sql.append('WHERE %s=%s'%(stereotype['fk'],self.sql_quote__(tablename,pk,rowid)))
+          self.executeQuery('\n'.join(sql))
+          for v in _globals.nvl(values.get(id),['1|2','4|3']):
+            sql = []
+            items = stereotype.get('tables',[])
+            c = [(stereotype['fk'],rowid)]
+            for item in items:
+              i = items.index(item)
+              c.append((item['fk'],v.split('|')[i]))
+            sql.append('INSERT INTO %s (%s)'%(stereotype['tablename'],' , '.join(map(lambda x:x[0],c))))
+            sql.append('VALUES (%s)'%(' , '.join(map(lambda x:self.sql_quote__(stereotype['tablename'],x[0],x[1]),c))))
+            self.executeQuery('\n'.join(sql))
 
 
     """

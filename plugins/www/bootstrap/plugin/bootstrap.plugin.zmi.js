@@ -285,7 +285,7 @@ ZMI.prototype.initInputFields = function(container) {
 				$('select[multiple="multiple"]',this).each(function() {
 						var name = $(this).attr("name");
 						var form = $(this).parents("form");
-						if ($('select[name="zms_mms_src_'+name+'"]',form).length > 0) {
+						if ($(this).hasClass('form-on-submit-selected')||($('select[name="zms_mms_src_'+name+'"]',form).length>0)) {
 							$("option",this).prop("selected","selected");
 						}
 					});

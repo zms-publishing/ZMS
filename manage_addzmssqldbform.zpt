@@ -11,12 +11,14 @@
 		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']">
 		<div class="form-group"  id="tr_connection_id">
 			<label for="connection_id" class="col-lg-2 control-label mandatory">
-				<span>Connection Id</span>
+				<span>Connection ID</span>
 			</label>
 			<div class="col-lg-10">
 				<div class="btn-group">
 					<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
-					<button type="button" class="btn btn-default" tal:attributes="onclick python:'window.open($(\'span\',this).attr(\'data-url\')+\'/manage_main\')'">
+					<button type="button" class="btn btn-default" 
+						tal:attributes="onclick python:'window.open($(\'span\',this).attr(\'data-url\')+\'/manage_main\')'"
+						tal:content="python:here.getZMILangStr('ACTION_SELECT')%'Connection ID'">Select option
 					</button>
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>

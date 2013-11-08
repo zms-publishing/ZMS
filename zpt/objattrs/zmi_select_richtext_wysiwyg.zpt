@@ -18,6 +18,6 @@
 
 	</div>
 	<div class="col-sm-12 col-md-12 col-lg-12">
-		<tal:block tal:content="structure python:here.getPlugin('rte/'+request['richedit_fmt'].getRichedit()+'/manage_form.dtml',request)">the richtedit</tal:block>
+		<tal:block tal:content="structure python:here.getPlugin('rte/'+request['richedit_fmt'].getRichedit()+'/manage_form.zpt',request)">the richtedit</tal:block>
 	</div>
 </div>

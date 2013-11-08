@@ -35,6 +35,7 @@ select.zmi-sort {
 .form-horizontal .form-group .col-lg-2.control-label {
 	padding-top: 0px;
 	text-align: left;
+	white-space: nowrap;
 }
 .form-horizontal .form-group .col-lg-2.control-label.mandatory span {
 	font-weight:bold;

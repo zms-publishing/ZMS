@@ -1234,9 +1234,11 @@ body.zmi .meta-sort .add-on.btn:hover {
 }
 .tabbable .nav-tabs {
 	padding: 0 2em;
-	margin: 0 2em;
-	min-width:900px;
+	margin: 0 1em;
+	min-width:1000px;
 	overflow:hidden;
+	white-space: nowrap;
+	border:none;
 }
 .tabbable .nav-tabs li.active a {
 	background-color: #fff !important;
@@ -1248,9 +1250,7 @@ body.zmi .meta-sort .add-on.btn:hover {
 .tabbable .tab-pane form {
 	padding:2em;
 	border-radius:4px;
-	border-bottom:1px solid #ccc;
-	border-left:1px solid #ccc;
-	border-right:1px solid #ccc;
+	box-shadow: 0px 0px 1px #888;
 }
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {

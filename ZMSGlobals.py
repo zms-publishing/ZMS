@@ -22,6 +22,7 @@ from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from cStringIO import StringIO
 from types import StringTypes
 from binascii import b2a_base64, a2b_base64
@@ -1456,9 +1457,29 @@ class ZMSGlobals:
           REQUEST.set( k, pars[k])
           pars[k] = v
         # Execute plugin.
-        filename = self.localfs_package_home()+'/plugins/'+path
-        fdata, mt, enc, fsize = _fileutil.readFile( filename, mode='b')
-        rtn = self.dt_html( fdata, REQUEST)
+        filename = os.path.join(self.localfs_package_home(),'plugins',path)
+        if path.endswith('.dtml'):
+          fdata, mt, enc, fsize = _fileutil.readFile( filename, mode='b')
+          rtn = self.dt_html( fdata, REQUEST)
+        else:
+          class StaticPageTemplateFile(PageTemplateFile):
+            def setContext(self,context):
+              self.context = context
+            def pt_getContext(self):
+              root = self.context.getPhysicalRoot()
+              context = self.context
+              c = {'template': self,
+                   'here': context,
+                   'context': context,
+                   'options': {},
+                   'root': root,
+                   'request': getattr(root, 'REQUEST', None),
+                   }
+              return c
+          pt = StaticPageTemplateFile(filename)
+          pt.setContext(self)
+          #rtn = pt( self, REQUEST)
+          rtn = pt.pt_render(extra_context={'here':self,'request':REQUEST})
         # Restore request-parameters.
         for k in pars.keys():
           REQUEST.set( k, pars[k])

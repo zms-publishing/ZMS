@@ -75,10 +75,8 @@ $(function(){
 				var parents = $(this).parents('.contentEditable');
 				for ( var i = 0; i <= parents.length; i++) {
 					var pid;
-          $ZMI.writeDebug("pid="+pid);
 					if ( i==parents.length) {
 						pid = $(this).attr('id');
-            $ZMI.writeDebug("pid.1="+pid);
 					}
 					else {
 						var $el = $(parents[parents.length-i-1]);
@@ -88,9 +86,7 @@ $(function(){
 							}
 						}
 						pid = $el.attr('id');
-            $ZMI.writeDebug("pid.2="+pid);
 					}
-          $ZMI.writeDebug("pid="+pid);
 					if (pid.length > 0) {
 						if (lang == null) {
 							lang = pid.substr(pid.lastIndexOf('_')+1);
@@ -266,4 +262,25 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		datatype: 'text',
 		async: false
 		}).responseText;
+}
+
+/**
+ *Decode HTML-Entities.
+ */
+ZMI.prototype.HTMLDecode = function(str) {
+	var char_names = {
+		'Auml':'\u00C4',
+		'Ouml':'\u00D6',
+		'Uuml':'\u00DC',
+		'auml':'\u00E4',
+		'ouml':'\u00F6',
+		'uuml':'\u00FC',
+		'szlig':'\u00DF'
+		};
+	for (var char_name in char_names) {
+		var char_code = char_names[char_name].toString(16);
+		var re = new RegExp("&"+char_name+";","g");
+		str = str.replace(re,char_code);
+	}
+	return str;
 }

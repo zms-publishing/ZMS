@@ -28,8 +28,18 @@
 		margin: 0 0.8em;
 	}
 	body.import .btn {
-		margin-top: 1em;
 		margin-bottom:1em;
+	}
+	body.import .btn-group legend {
+		display: inline-block !important;
+		width: auto;
+		padding-left: .3em;
+		margin: 0;
+		font-size: 21px;
+		line-height: inherit;
+		color: #333;
+		border: 0;
+		border-bottom: none;
 	}
 </style>
 
@@ -64,9 +74,9 @@
 			</tal:block>
 			<tal:block tal:define="global dummy0 python:packages.sort()"></tal:block>
 			<input type="hidden" name="zms_system:int" tal:attributes="value request/temp_import_zms_system" />
-			<legend tal:content="f/title_or_id">title_or_id</legend>
 			<div class="btn-group">
 				<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+				<legend tal:content="f/title_or_id">title_or_id</legend>
 			</div>
 			<tal:block tal:repeat="package packages">
 				<tal:block tal:define="global package_id python:here.id_quote(package)">

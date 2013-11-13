@@ -6,7 +6,6 @@ function CKEditor_uploadMediaDone() {
 	var response = $('iframe#CKEditor_uploadMedia').contents().text();
 	if (response) {
 		var data = eval("("+response+")");
-		var instance = CKEDITOR.instances['<dtml-var elName>'];
 		var html = '';
 		if (typeof data["imghires"] != "undefined") {
 			html = '<a href="'+data["imghires"]["absolute_url"]+'" class="fancybox"><img src="'+data["image"]["absolute_url"]+'" alt="" class="image"/></a>';

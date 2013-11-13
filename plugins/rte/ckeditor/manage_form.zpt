@@ -135,7 +135,7 @@ function zmiRichtextInit(id) {
 				 map(lambda y:here.id_quote(y['cdata']),here.xmlNodeSet(x,'value'))),
 				 here.xmlNodeSet(style,'attr'))+[None]][0]">
 				config.format_tags += (config.format_tags.length==0?'':';')+'<tal:block tal:content="style_id"></tal:block>';
-				config.format_<dtml-var style_id> = { name : '<tal:block tal:content="style_name"></tal:block>', element : '<tal:block tal:content="style_element"></tal:block>' , attributes : { <tal:block tal:content="python:' , '.join(map(lambda x:'\'%s\':\'%s\''%(x[0],x[1]),style_attrs))"></tal:block> } };
+				config.format_<tal:block tal:content="style_id"></tal:block> = { name : '<tal:block tal:content="style_name"></tal:block>', element : '<tal:block tal:content="style_element"></tal:block>' , attributes : { <tal:block tal:content="python:' , '.join(map(lambda x:'\'%s\':\'%s\''%(x[0],x[1]),style_attrs))"></tal:block> } };
 </tal:block>
 </tal:block>
 </tal:block>

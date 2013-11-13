@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<script language="JavaScript">
-<!--//
+<tal:block tal:content="structure python:'<script>'"></tal:block>
 
   // ************************************************************
   // *** Empty API to display SCORM content in preview mode.
@@ -107,77 +106,71 @@
     }
   }
 
-  function LMSInitialize(parameter )
-  {
-    if (parameter && parameter.length > 0) {
-      errCode = _InvalidArgumentError;
-      return CMIBooleanFalse;
-    }
-    setElement(this.cmi,"cmi.core.student_id","<dtml-var AUTHENTICATED_USER>");
-    setElement(this.cmi,"cmi.core.student_name","<dtml-var AUTHENTICATED_USER>");
-    setElement(this.cmi,"cmi.core.lesson_status","not attempted");
-    // Return CMIBoolean-string.
-    errCode = _NoError;
-    return CMIBooleanTrue;
-  }
+function LMSInitialize(parameter ) {
+	if (parameter && parameter.length > 0) {
+		errCode = _InvalidArgumentError;
+		return CMIBooleanFalse;
+	}
+	var auth_user ="<tal:block tal:content="request/AUTHENTICATED_USER"></tal:block>";
+	setElement(this.cmi,"cmi.core.student_id",auth_user);
+	setElement(this.cmi,"cmi.core.student_name",auth_user);
+	setElement(this.cmi,"cmi.core.lesson_status","not attempted");
+	// Return CMIBoolean-string.
+	errCode = _NoError;
+	return CMIBooleanTrue;
+}
 
-  function LMSGetValue(element )
-  {
-    var value = ""
-    if (element=="cmi.interactions._count")
-    {
-      value = this.cmi_interactions_count;
-      this.cmi_interactions_count++;
-    }
-    else {
-      value = getElement(this.cmi,element);
-    }
-    return value;
-  }
+function LMSGetValue(element ) {
+	var value = ""
+	if (element=="cmi.interactions._count") {
+		value = this.cmi_interactions_count;
+		this.cmi_interactions_count++;
+	}
+	else {
+		value = getElement(this.cmi,element);
+	}
+	return value;
+}
 
-  function LMSSetValue(element, value )
-  {
-    if (!(this.LMSGetValue("cmi.core.lesson_status")=="completed") &&
-        !((this.LMSGetValue("cmi.core.lesson_status")=="passed" ||
-           this.LMSGetValue("cmi.core.lesson_status")=="failed") &&
-          element=="cmi.core.lesson_status" && value=="incomplete"))
-      setElement(this.cmi,element,value);
-    return errCode;
-  }
+function LMSSetValue(element, value ) {
+	if (!(this.LMSGetValue("cmi.core.lesson_status")=="completed") &&
+				!((this.LMSGetValue("cmi.core.lesson_status")=="passed" ||
+				this.LMSGetValue("cmi.core.lesson_status")=="failed") &&
+				element=="cmi.core.lesson_status" && value=="incomplete"))
+			setElement(this.cmi,element,value);
+	return errCode;
+}
 
-  function LMSCommit(parameter )
-  {
-    // Error-Code.
-    if (parameter && parameter.length > 0) {
-      errCode = _InvalidArgumentError;
-    }
-    if (errCode != _NoError) {
-      return CMIBooleanFalse;
-    }
-    // Return CMIBoolean-string.
-    errCode = _NoError;
-    return CMIBooleanTrue;
-  }
+function LMSCommit(parameter ) {
+	// Error-Code.
+	if (parameter && parameter.length > 0) {
+		errCode = _InvalidArgumentError;
+	}
+	if (errCode != _NoError) {
+		return CMIBooleanFalse;
+	}
+	// Return CMIBoolean-string.
+	errCode = _NoError;
+	return CMIBooleanTrue;
+}
 
-  function LMSTerminate(parameter )
-  {
-    // Error-Code.
-    if (parameter && parameter.length > 0) {
-      errCode = _InvalidArgumentError;
-    }
-    if (errCode != _NoError) {
-      return CMIBooleanFalse;
-    }
-    // Return CMIBoolean-string.
-    errCode = _NoError;
-    this.terminated = true;
-    return CMIBooleanTrue;
-  }
+function LMSTerminate(parameter ) {
+	// Error-Code.
+	if (parameter && parameter.length > 0) {
+		errCode = _InvalidArgumentError;
+	}
+	if (errCode != _NoError) {
+		return CMIBooleanFalse;
+	}
+	// Return CMIBoolean-string.
+	errCode = _NoError;
+	this.terminated = true;
+	return CMIBooleanTrue;
+}
 
-  function LMSGetLastError()
-  {
-    return errCode;
-  }
+function LMSGetLastError() {
+	return errCode;
+}
 
   function LMSGetErrorString(errorCode)
   {
@@ -211,89 +204,86 @@
     return errString;
   }
 
-  function LMSGetDiagnostic(errorCode)
-  {
-    var errDiagnostic = "";    
-    if (errCode==_NoError)
-      errDiagnostic = "No error";
-    else if (errCode==_GeneralException)
-      errDiagnostic = "General Exception";
-    else if (errCode==_GeneralInitializationFailure)
-      errDiagnostic = "General Initialization Failure";
-    else if (errCode==_AlreadyInitialized)
-      errDiagnostic = "Already Initialized";
-    else if (errCode==_ContentInstanceTerminated)
-      errDiagnostic = "Content Instance Terminated";
-    else if (errCode==_GeneralTerminationFailure)
-      errDiagnostic = "General Termination Failure";
-    else if (errCode==_TerminationBeforeInitialization)
-      errDiagnostic = "Termination Before Initialization";
-    else if (errCode==_TerminationAfterTermination)
-      errDiagnostic = "Termination After Termination";
-    else if (errCode==_RetrieveDataBeforeInitialization)
-      errDiagnostic = "Retrieve Data Before Initialization";
-    else if (errCode==_RetrieveDataAfterTermination)
-      errDiagnostic = "Retrieve Data After Termination";
-    else if (errCode==_StoreDataBeforeInitialization)
-      errDiagnostic = "Store Data Before Initialization";
-    else if (errCode==_StoreDataAfterTermination)
-      errDiagnostic = "Store Data After Termination";
-    else if (errCode==_CommitBeforeInitialization)
-      errDiagnostic = "Commit Before Initialization";
-    else if (errCode==_CommitAfterInitialization)
-      errDiagnostic = "Commit After Initialization";
-    else if (errCode==_GeneralArgumentError)
-      errDiagnostic = "General Argument Error";
-    else if (errCode==_GeneralGetFailure)
-      errDiagnostic = "General Get Failure";
-    else if (errCode==_GeneralSetFailure)
-      errDiagnostic = "General Set Failure";
-    else if (errCode==_GeneralCommitFailure)
-      errDiagnostic = "General Commit Failure";
-    else if (errCode==_UndefinedDataModelElement)
-      errDiagnostic = "Undefined Data Model Element";
-    else if (errCode==_UnimplementedDataModelElement)
-      errDiagnostic = "Unimplemented Data Model Element";
-    else if (errCode==_DataModelElementValueNotInitialized)
-      errDiagnostic = "Data Model Element Value Not Initialized";
-    else if (errCode==_DataModelElementIsReadOnly)
-      errDiagnostic = "Data Model Element Is Read Only";
-    else if (errCode==_DataModelElementIsWriteOnly)
-      errDiagnostic = "Data Model Element Is Write Only";
-    else if (errCode==_DataModelElementTypeMismatch)
-      errDiagnostic = "Data Model Element Type Mismatch";
-    else if (errCode==_DataModelElementValueOutOfRange)
-      errDiagnostic = "Data Model Element Value Out Of Range";
-    else if (errCode==_DataModelDependencyNotEstablished)
-      errDiagnostic = "Data Model Dependency Not Established";
-    else
-      errDiagnostic = "Unknown errCode="+errCode;
-    return errDiagnostic;
-  }
+function LMSGetDiagnostic(errorCode) {
+	var errDiagnostic = "";    
+	if (errCode==_NoError)
+		errDiagnostic = "No error";
+	else if (errCode==_GeneralException)
+		errDiagnostic = "General Exception";
+	else if (errCode==_GeneralInitializationFailure)
+		errDiagnostic = "General Initialization Failure";
+	else if (errCode==_AlreadyInitialized)
+		errDiagnostic = "Already Initialized";
+	else if (errCode==_ContentInstanceTerminated)
+		errDiagnostic = "Content Instance Terminated";
+	else if (errCode==_GeneralTerminationFailure)
+		errDiagnostic = "General Termination Failure";
+	else if (errCode==_TerminationBeforeInitialization)
+		errDiagnostic = "Termination Before Initialization";
+	else if (errCode==_TerminationAfterTermination)
+		errDiagnostic = "Termination After Termination";
+	else if (errCode==_RetrieveDataBeforeInitialization)
+		errDiagnostic = "Retrieve Data Before Initialization";
+	else if (errCode==_RetrieveDataAfterTermination)
+		errDiagnostic = "Retrieve Data After Termination";
+	else if (errCode==_StoreDataBeforeInitialization)
+		errDiagnostic = "Store Data Before Initialization";
+	else if (errCode==_StoreDataAfterTermination)
+		errDiagnostic = "Store Data After Termination";
+	else if (errCode==_CommitBeforeInitialization)
+		errDiagnostic = "Commit Before Initialization";
+	else if (errCode==_CommitAfterInitialization)
+		errDiagnostic = "Commit After Initialization";
+	else if (errCode==_GeneralArgumentError)
+		errDiagnostic = "General Argument Error";
+	else if (errCode==_GeneralGetFailure)
+		errDiagnostic = "General Get Failure";
+	else if (errCode==_GeneralSetFailure)
+		errDiagnostic = "General Set Failure";
+	else if (errCode==_GeneralCommitFailure)
+		errDiagnostic = "General Commit Failure";
+	else if (errCode==_UndefinedDataModelElement)
+		errDiagnostic = "Undefined Data Model Element";
+	else if (errCode==_UnimplementedDataModelElement)
+		errDiagnostic = "Unimplemented Data Model Element";
+	else if (errCode==_DataModelElementValueNotInitialized)
+		errDiagnostic = "Data Model Element Value Not Initialized";
+	else if (errCode==_DataModelElementIsReadOnly)
+		errDiagnostic = "Data Model Element Is Read Only";
+	else if (errCode==_DataModelElementIsWriteOnly)
+		errDiagnostic = "Data Model Element Is Write Only";
+	else if (errCode==_DataModelElementTypeMismatch)
+		errDiagnostic = "Data Model Element Type Mismatch";
+	else if (errCode==_DataModelElementValueOutOfRange)
+		errDiagnostic = "Data Model Element Value Out Of Range";
+	else if (errCode==_DataModelDependencyNotEstablished)
+		errDiagnostic = "Data Model Dependency Not Established";
+	else
+		errDiagnostic = "Unknown errCode="+errCode;
+	return errDiagnostic;
+}
 
-  function APIClass()
-  {
-    this.version = "1.0";
-    this.cmi = new Array();
-    this.cmi[this.cmi.length] = "cmi.interactions";
-    this.cmi[this.cmi.length] = new Array();
-    this.initialized = false;
-    this.terminated = false;
-    this.Initialize = LMSInitialize;
-    this.GetValue = LMSGetValue;
-    this.SetValue = LMSSetValue;
-    this.Commit = LMSCommit;
-    this.Terminate = LMSTerminate;
-    this.GetLastError = LMSGetLastError;
-    this.GetErrorString = LMSGetErrorString;
-    this.GetDiagnostic = LMSGetDiagnostic;
-    
-  }
+function APIClass() {
+	this.version = "1.0";
+	this.cmi = new Array();
+	this.cmi[this.cmi.length] = "cmi.interactions";
+	this.cmi[this.cmi.length] = new Array();
+	this.initialized = false;
+	this.terminated = false;
+	this.Initialize = LMSInitialize;
+	this.GetValue = LMSGetValue;
+	this.SetValue = LMSSetValue;
+	this.Commit = LMSCommit;
+	this.Terminate = LMSTerminate;
+	this.GetLastError = LMSGetLastError;
+	this.GetErrorString = LMSGetErrorString;
+	this.GetDiagnostic = LMSGetDiagnostic;
+}
 
-  var API_1484_11 = new APIClass();
+var API_1484_11 = new APIClass();
 
-//-->
-</script> 
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+ 
 <frameset rows="46,*" border="0" frameborder="0" framespacing="0">
 	<frame name="navigate" marginheight="1" scrolling="no" noresize="noresize" tal:attributes="src python:'preview_top_html?lang=%s'%request['lang']">
 	<frame name="partner" marginheight="1" tal:attributes="src python:here.getHref2IndexHtml(request)">

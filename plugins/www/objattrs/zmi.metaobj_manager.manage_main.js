@@ -26,28 +26,13 @@ function zmiShowHint(id, type) {
 	}
 	var html = '';
 	if (type == 'image') {
-		html += ''
-			+ '<div class="form-label"><img src="/misc_/PageTemplates/zpt.gif"/> TAL</div>'
-			+ html_quote('<img tal:attributes="src python:zmscontext.attr(\'' + id + '\').getHref(request)"/>')
-			+ '<div class="form-label"><img src="/misc_/OFSP/dtmlmethod.gif"/> DTML</div>'
-			+ html_quote('<img src="<dtml-var "attr(\'' + id + '\').getHref(REQUEST)">"/>')
-			;
+		html += html_quote('<img tal:attributes="src python:zmscontext.attr(\'' + id + '\').getHref(request)"/>');
 	}
 	else if (type == 'file') {
-		html += ''
-			+ '<div class="form-label"><img src="/misc_/PageTemplates/zpt.gif"/> TAL</div>'
-			+ html_quote('<a tal:attributes="href python:zmscontext.attr(\'' + id + '\').getHref(request)"></a>')
-			+ '<div class="form-label"><img src="/misc_/OFSP/dtmlmethod.gif"/> DTML</div>'
-			+ html_quote('<a href="<dtml-var "attr(\'' + id + '\').getHref(REQUEST)">"></a>')
-			;
+		html += html_quote('<a tal:attributes="href python:zmscontext.attr(\'' + id + '\').getHref(request)"></a>');
 	}
 	else {
-		html += ''
-			+ '<div class="form-label"><img src="/misc_/PageTemplates/zpt.gif"/> TAL</div>'
-			+ html_quote('<tal:block tal:content="structure python:zmscontext.attr(\'' + id + '\')">the ' + id + '</tal:block>')
-			+ '<div class="form-label"><img src="/misc_/OFSP/dtmlmethod.gif"/> DTML</div>'
-			+ html_quote('<dtml-var "attr(\'' + id + '\')">')
-			;
+		html += html_quote('<tal:block tal:content="structure python:zmscontext.attr(\'' + id + '\')">the ' + id + '</tal:block>');
 	}
 	$('#zmiPopup').html(html);
 	showFancybox({

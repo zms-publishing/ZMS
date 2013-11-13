@@ -1,0 +1,94 @@
+<!-- BO plugins/fileupload/ajax_upload/input.zpt -->
+
+<tal:block tal:replace="nothing">
+################################################################################
+### Ajax Upload
+###  A file upload script with progress-bar, drag-and-drop.
+###  please refer to http://valums.com/ajax-upload/
+################################################################################
+</tal:block>
+
+<tal:block tal:condition="python:request.get('f_zmiFileUpload',True)">
+<link rel="stylesheet" type="text/css" href="/++resource++zms_/fileupload/ajax_upload/fileuploader.css" />
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/fileupload/ajax_upload/fileuploader.js"></script>
+<tal:block tal:define="dummy0 python:request.set('f_zmiFileUpload',False)"></tal:block>
+</tal:block>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+$ZMI.registerReady(function() {
+		var $fu = $('div#file-uploader-<tal:block tal:content="options/key"></tal:block>')[0];
+		var uploader = new qq.FileUploader({
+				// pass the dom node (ex. $(selector)[0] for jQuery users)
+				element: $fu,
+				// path to server-side upload script
+				action: '<tal:block tal:content="python:'%s/preloadObjProperty'%context.absolute_url()"></tal:block>',
+				// additional data to send, name-value pairs
+				params: {
+					lang:$ZMI.getZMILang(),
+					key:'<tal:block tal:content="options/key"></tal:block>',
+					session_id:'<tal:block tal:content="python:request.SESSION.getId()"></tal:block>',
+					form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>',
+					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>',</tal:block>
+					dataRequestKey:'qqfile',
+					filenameUnescape:'1'
+				},
+				// validation
+				// ex. ['jpg', 'jpeg', 'png', 'gif'] or []
+				allowedExtensions: <tal:block tal:content="python:REQUEST.get('ZMS_ALLOWED_EXTENSIONS',[])"></tal:block>,
+				// each file size limit in bytes
+				// this option isn't supported in all browsers
+				sizeLimit: 0, // max size
+				minSizeLimit: 0, // min size
+				
+				// set to true to output server response to console
+				debug: false,
+				
+				// events
+				// you can return false to abort submit
+				onSubmit: function(id, fileName){
+					$('input[name=btn][type=submit]').attr("disabled","disabled");
+					$('ul.qq-upload-list').html('');
+				},
+				onProgress: function(id, fileName, loaded, total){},
+				onComplete: function(id, fileName, responseJSON){
+					$.get('getTempBlobjPropertyUrl',{
+							lang:$ZMI.getZMILang(),
+							key:'<tal:block tal:content="options/key"></tal:block>',
+							session_id:'<tal:block tal:content="python:request.SESSION.getId()"></tal:block>',
+							form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
+						},
+						function(data) {
+							$('input[name=btn][type=submit]').removeAttr("disabled");
+							$('input[name=file-uploader-modified-<tal:block tal:content="options/key"></tal:block>]').val(new Date());
+							var img = eval('('+data+')');
+							var elParams = '';
+							elParams += 'lang'+$ZMI.getZMILang();
+							elParams += '&key='<tal:block tal:content="options/key"></tal:block>';
+							elParams += '&form_id=<tal:block tal:content="request/ZMI_TIME"></tal:block>';
+							<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">elParams += '&meta_id=<tal:block tal:content="request/ZMS_INSERT"></tal:block>';</tal:block>
+							ZMSGraphic_extEdit_set('<tal:block tal:content="options/elName"></tal:block>', img['src'], img['filename'], img['width'], img['height'],elParams,<tal:block tal:content="python:int(pilutil().enabled())"></tal:block>);
+						}
+					);
+				},
+				onCancel: function(id, fileName){
+				},
+				messages: {
+					// error messages, see qq.FileUploaderBasic for content
+				},
+				showMessage: function(message){
+					alert(message);
+				}
+			});
+	var theme = getZMIConfProperty('zmi.theme','zpt');
+	if (theme == '') { theme = 'zpt'; }
+	if ( theme == '' || theme == 'zpt' ) {
+		$('.qq-upload-button').addClass('btn')
+	} else {
+		$('.qq-upload-button').addClass('ui-button').addClass('ui-state-default').addClass('ui-corner-all');
+	};
+});
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+<input type="text" tal:attributes="name python:'file-uploader-modified-%s'%options['key']" value="" style="display:none;visibility:hidden;">
+<div tal:attributes="id python:'file-uploader-%s'%options['key']"></div>
+
+<!-- EO plugins/fileupload/ajax_upload/input.zpt -->

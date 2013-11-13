@@ -1,0 +1,44 @@
+<!-- BO plugins/fileupload/rad_upload/input.zpt -->
+
+<tal:block tal:replace="nothing">
+################################################################################
+### Rad Upload
+###  Multiple file upload with Drag and Drop
+###  please refer to http://www.radinks.com/upload/dndplus.jar
+################################################################################
+</tal:block>
+
+<tal:block tal:condition="python:not request.has_key('ZMS_INSERT') and request.get('f_zmiFileUpload',True)">
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+
+function uploadCompleted() {
+	self.location.reload();
+}
+
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+<tal:block tal:define="dummy0 python:request.set('f_zmiFileUpload',False)"></tal:block>
+</tal:block>
+
+<tal:block tal:define="global MSIE python:int(request.get('HTTP_USER_AGENT','').find('MSIE')>0)">
+<object tal:attributes="
+		classid python:['','clsid:8AD9C840-044E-11D1-B3E9-00805F499D93'][MSIE];
+		codebase python:['','http://java.sun.com/update/1.5.0/jinstall-1_5-windows-i586.cab#version=1,4,1'][MSIE];
+		type python:[application/x-java-applet;version=1.4.1',''][MSIE]"
+		width= "375"
+		height= "22"
+		style="border: 1px solid #CCC;">
+<param name="archive" value="http://bscw.hoffmannliebenberg.de/pub/bscw.cgi/d881805/dndplus.jar"/>
+<param name="code" value="com.radinks.dnd.DNDAppletPlus"/>
+<param name="name" value="Rad Upload Plus"/>
+<param name="url" tal:attributes="value python:'%s/preloadObjProperty?lang=%s&key=%s&session_id=%s&form_id=%s'%(here.absolute_url(),request['lang'],options['key'],request.SESSION.getId(),str(request['ZMI_TIME']),['','&set:int=1'][int(not request.has_key('ZMS_INSERT'))])"/>
+<param name="message" value="Drag and drop or copy and paste (ctrl-C, ctrl-V) your files"/>
+<param name="name" value="Rad Upload Plus"/>
+<param name="max_upload" tal:attributes="value python:options.get('elMaxlength')" tal:condition="python:options.has_key('elMaxlength')"/>
+<param name="encode_path" value="no"/>
+<param name="translate_path" value="no"/>
+<param name="full_path" value="no"/>
+<param name="props_file" tal:attributes="value python:context.getConfProperty('ZMS.input.rad_upload.conf','/++resource++zms_/rad_upload/rad_upload.conf')"/>
+</object>
+</tal:block>
+
+<!-- BO plugins/fileupload/rad_upload/input.zpt -->

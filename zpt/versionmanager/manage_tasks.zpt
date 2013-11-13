@@ -29,7 +29,7 @@
 	<tal:block tal:condition="python:request['task_type']=='TASK_ZMSNOTE'" tal:content="structure python:here.task_zmsnote(here,request)">task_zmsnote</tal:block>
 	<tal:block tal:condition="python:request['task_type']=='TASK_UNTRANSLATED'" tal:content="structure python:here.task_untranslated(here,request)"></tal:block>
 	<tal:block tal:condition="python:request['task_type']=='TASK_CHANGED_BY_DATE'" tal:content="structure python:here.task_changed_by_date(here,request)">task_changed_by_date</tal:block>
-	<tal:block tal:condition="python:request['task_type'] not in ids" tal:content="structure python:here.task_wf(here,request)"><dtml-var task_wf></tal:block>
+	<tal:block tal:condition="python:request['task_type'] not in ids" tal:content="structure python:here.task_wf(here,request)">task_wf</tal:block>
 </tal:block>
 </div>
 </tal:block>

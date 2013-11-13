@@ -1432,57 +1432,41 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    def getPlugin( self, path, REQUEST, pars={}):
+    def getPlugin( self, path, options={}):
       """
       Executes plugin.
       @param path: the plugin path in $ZMS_HOME/plugins/
       @type path: C{string}
-      @param REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @param pars: the request parameters
-      @type pars: C{dict}
-      @return: Result of the execution or error-message
+      @param options: the options
+      @type options: C{dict}
       """
-      
       # Check permissions.
       request = self.REQUEST
       authorized = path.find('..') < 0
       if not authorized:
         raise zExceptions.Unauthorized
-      
+      # Execute plugin.
       try:
-        # Set request-parameters.
-        for k in pars.keys():
-          v = REQUEST.get( k, None)
-          REQUEST.set( k, pars[k])
-          pars[k] = v
-        # Execute plugin.
+        class StaticPageTemplateFile(PageTemplateFile):
+          def setEnv(self,context,options):
+            self.context = context
+            self.options  = options
+          def pt_getContext(self):
+            root = self.context.getPhysicalRoot()
+            context = self.context
+            options = self.options
+            c = {'template': self,
+                 'here': context,
+                 'context': context,
+                 'options': options,
+                 'root': root,
+                 'request': getattr(root, 'REQUEST', None),
+                 }
+            return c
         filename = os.path.join(self.localfs_package_home(),'plugins',path)
-        if path.endswith('.dtml'):
-          fdata, mt, enc, fsize = _fileutil.readFile( filename, mode='b')
-          rtn = self.dt_html( fdata, REQUEST)
-        else:
-          class StaticPageTemplateFile(PageTemplateFile):
-            def setContext(self,context):
-              self.context = context
-            def pt_getContext(self):
-              root = self.context.getPhysicalRoot()
-              context = self.context
-              c = {'template': self,
-                   'here': context,
-                   'context': context,
-                   'options': {},
-                   'root': root,
-                   'request': getattr(root, 'REQUEST', None),
-                   }
-              return c
-          pt = StaticPageTemplateFile(filename)
-          pt.setContext(self)
-          #rtn = pt( self, REQUEST)
-          rtn = pt.pt_render(extra_context={'here':self,'request':REQUEST})
-        # Restore request-parameters.
-        for k in pars.keys():
-          REQUEST.set( k, pars[k])
+        pt = StaticPageTemplateFile(filename)
+        pt.setEnv(self,options)
+        rtn = pt.pt_render(extra_context={'here':self,'request':self.REQUEST})
       except:
         rtn = _globals.writeError( self, '[getPlugin]')
       return rtn

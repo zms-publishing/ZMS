@@ -4136,12 +4136,12 @@ for ob in obs:
     elif subob.getType() == 'ZMSTeaserElement':
       temp.append( subob)
   for teaserElmnt in temp:
-    penetrance = teaserElmnt.getObjProperty('attr_penetrance',request)
+    penetrance = teaserElmnt.attr('attr_penetrance')
     if ( penetrance in [0,'this',''] and context == ob) or \
        ( penetrance in [1,'sub_nav'] and context.meta_id in ['ZMS','ZMSFolder']) or \
        ( penetrance in [2,'sub_all']):
       teaserElmnts.insert( 0, teaserElmnt)
-  abort_penetrance = ob.getObjProperty('attr_zmsteasercontainer_abort_penetrance',request) not in ['',0]
+  abort_penetrance = ob.attr('attr_zmsteasercontainer_abort_penetrance') not in ['',0]
   if abort_penetrance:
     break
 teaserElmnts.reverse()
@@ -4253,9 +4253,9 @@ return unicode(printed).encode('utf-8')
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[<dtml-let
   teaserCntnr="this()"
-  bgcolor_border="teaserCntnr.getObjProperty('attr_bgcolor_border',REQUEST)"
-  bgcolor_title="teaserCntnr.getObjProperty('attr_bgcolor_title',REQUEST)"
-  bgcolor_text="teaserCntnr.getObjProperty('attr_bgcolor_text',REQUEST)"
+  bgcolor_border="teaserCntnr.attr('attr_bgcolor_border')"
+  bgcolor_title="teaserCntnr.attr('attr_bgcolor_title')"
+  bgcolor_text="teaserCntnr.attr('attr_bgcolor_text')"
   element="[]">
 
 <dtml-call "element.append('<div class=\'ZMSTeaserElement\' style=\'width:30px;\'>')">
@@ -4276,7 +4276,7 @@ return unicode(printed).encode('utf-8')
 <dtml-comment> ##### Border-Style 1=SOLID ##### </dtml-comment>
    <td>
     <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="1"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==1"> checked="checked"</dtml-if>/>
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="1"<dtml-if "attr('attr_borderstyle')==1"> checked="checked"</dtml-if>/>
      <dtml-var "getZMILangStr('OPT_AB_SOLID')">&nbsp;
     </div>
    </td>
@@ -4293,7 +4293,7 @@ return unicode(printed).encode('utf-8')
 <dtml-comment> ##### Border-Style 2=SINGLE ##### </dtml-comment>
    <td>
     <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==2"> checked="checked"</dtml-if>/>
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "attry('attr_borderstyle')==2"> checked="checked"</dtml-if>/>
      <dtml-var "getZMILangStr('OPT_AB_SINGLE')">&nbsp;
     </div>
    </td>
@@ -4314,7 +4314,7 @@ return unicode(printed).encode('utf-8')
 <dtml-comment> ##### Border-Style 3=NONE ##### </dtml-comment>
    <td>
     <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="3"<dtml-if "getObjProperty('attr_borderstyle',REQUEST)==3"> checked="checked"</dtml-if>/>
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="3"<dtml-if "attr('attr_borderstyle')==3"> checked="checked"</dtml-if>/>
      <dtml-var "getZMILangStr('OPT_AB_NONE')">&nbsp;
     </div>
    </td>

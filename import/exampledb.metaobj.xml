@@ -4,7 +4,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_dept -->
 
   <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
-  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(attr(getMetaobj(meta_id)['attrs'][0]['id']))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_dept -->]]></item>
 <item key="enabled" type="int">0</item>
@@ -112,7 +112,7 @@
 <item key="dtml"><![CDATA[<!-- BO bodyContentZMSCustom_emp -->
 
   <p class="heading2"><dtml-var "getTitlealt(REQUEST)"></p>
-  <p class="description"><dtml-var "len(getObjProperty(getMetaobj(meta_id)['attrs'][0]['id'],REQUEST))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
+  <p class="description"><dtml-var "len(attr(getMetaobj(meta_id)['attrs'][0]['id']))"> <dtml-var "getLangStr('ATTR_RECORDS',lang)"></p>
 
 <!-- EO bodyContentZMSCustom_emp -->]]></item>
 <item key="enabled" type="int">0</item>

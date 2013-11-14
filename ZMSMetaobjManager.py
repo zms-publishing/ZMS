@@ -739,11 +739,6 @@ class ZMSMetaobjManager:
           newType = 'method'
       if newType in [ 'DTML Method', 'DTML Document', 'method', 'py', 'zpt']:
         newCustom = newCustom.replace('\r','')
-      if type(newCustom) is str and len(newCustom) > 0:
-        message = _globals.dt_parse( self, newCustom)
-        if len( message) > 0:
-          attr['errors'] = message
-          message = '<div class="ui-state-error ui-corner-all">DTML-Error in '+newId+'<br>'+message+'</div>'
       # Handle methods and interfaces.
       if newType in ['method']:
         if oldId is not None and id+'.'+oldId in self.objectIds():

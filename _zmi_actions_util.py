@@ -156,7 +156,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       ob_manage_access = container.getMetaobjAttr(meta_id,'manage_access',syncTypes=['*'])
       if ob_manage_access is not None:
         try:
-          ob_access = _globals.dt_html(container,ob_manage_access['custom'],REQUEST)
+          ob_access = container.dt_exec(ob_manage_access['custom'])
         except:
           _globals.writeError( container, '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True

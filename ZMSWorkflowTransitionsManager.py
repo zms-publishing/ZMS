@@ -53,10 +53,6 @@ class ZMSWorkflowTransitionsManager:
       newTo = []
     elif type(newTo) is str:
       newTo = [newTo]
-    # Parse Dtml.
-    message = _globals.dt_parse(self,newDtml)
-    if len( message) > 0:
-      message = '<div style="color:red; background-color:yellow; ">%s</div>'%message
     # Values.
     newValues = {}
     newValues['name'] = newName

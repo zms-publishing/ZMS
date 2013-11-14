@@ -227,18 +227,6 @@ class ZMSGlobals:
       """
       return int(v)
 
-    def dt_html(self, value, REQUEST):
-      """
-      Execute given DTML-snippet.
-      @param value: DTML-snippet
-      @type value: C{string}
-      @param REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @return: Result of the execution or None
-      @rtype: C{any}
-      """
-      return _globals.dt_html(self,value,REQUEST)
-
 
     def encrypt_schemes(self):
       """
@@ -1431,6 +1419,79 @@ class ZMSGlobals:
     #  PLUGINS
     #
     ############################################################################
+
+    def dt_exec(self, v):
+      """
+      Try to execute given value.
+      """
+      if v.find('<dtml-') >= 0:
+        return self.dt_html(v,self.REQUEST)
+      elif v.startswith('##'):
+        return self.dt_py(v)
+      return v
+
+    def dt_html(self, value, REQUEST):
+      """
+      Execute given DTML-snippet.
+      @param value: DTML-snippet
+      @type value: C{string}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: Result of the execution or None
+      @rtype: C{any}
+      """
+      import DocumentTemplate.DT_HTML
+      i = 0
+      while True:
+        i = value.find( '<dtml-', i)
+        if i < 0:
+          break
+        j = value.find( '>', i)
+        if j < 0:
+          break
+        if value[ j-1] == '/':
+          value = value[ :j-1] + value[ j:]
+        i = j
+      value = re.sub( '<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
+      value = re.sub( '</dtml-var>', '', value)
+      dtml = DocumentTemplate.DT_HTML.HTML(value)
+      value = dtml( self, REQUEST)
+      return value
+
+    def dt_py( self, script, kw={}):
+      """
+      Execute given Python-script.
+      @param script: Python-script
+      @type script: C{string}
+      @param kw: additional options
+      @type kw: C{dict}
+      @return: Result of the execution or None
+      @rtype: C{any}
+      """
+      from Products.PythonScripts.PythonScript import PythonScript
+      id = '~temp'
+      header = []
+      header.append('## Script (Python) "%s"'%id)
+      header.append('##bind container=container')
+      header.append('##bind context=context')
+      header.append('##bind namespace=')
+      header.append('##bind script=script')
+      header.append('##bind subpath=traverse_subpath')
+      header.append('##parameters='+','.join(kw.keys()))
+      header.append('##title=')
+      header.append('##')
+      header.append('')
+      data = '\n'.join(header)+script
+      ps = PythonScript("~temp")
+      ps.write(data)
+      bound_names = {
+          'traverse_subpath':[],
+          'container':self,
+          'context':self,
+          'script':ps,
+        }
+      args = ()
+      return ps._exec(bound_names,args,kw)
 
     def getPlugin( self, path, options={}):
       """

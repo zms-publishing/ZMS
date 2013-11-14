@@ -514,7 +514,7 @@ class ZReferableItem:
         metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*'])
         if type(metaObjAttr) is dict:
           REQUEST.set( 'ref_id', url)
-          return self.dt_html( metaObjAttr['custom'], REQUEST)
+          return self.dt_exec( metaObjAttr['custom'])
       ob = self.getPortalMaster()
     ob = self.getLinkObj(url,REQUEST)
     if ob is not None:

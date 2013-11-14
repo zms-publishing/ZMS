@@ -191,8 +191,6 @@ def recurseFolder(self, root, path, id, REQUEST, RESPONSE):
                       ob_id = ob.id()
                     except:
                       ob_id = str(ob.id)
-                    #if ob.meta_type in [ 'DTML Document', 'DTML Method']:
-                    #    ob = Products.zms._globals.dt_html(self,ob.raw,REQUEST)
                     content_type = getattr(ob,'content_type','application/octet-stream')
                     if content_type == 'application/octet-stream':
                       content_type = guess_content_type( ob_id)

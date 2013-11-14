@@ -1189,7 +1189,8 @@ a.superzoom img.superzoom { background-image: url(/misc_/zms/superzoom.gif); }
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
+                  <item key="default"><![CDATA[##
+return context.getTextFormatDefault()]]></item>
                   <item key="id"><![CDATA[format]]></item>
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">0</item>
@@ -3737,7 +3738,7 @@ weights = map(lambda x: 1, range( ncols))
 for row in table:
     i = 0
     for cell in row:
-        weight = len(zmscontext.re_sub('<(.*?)>', '',zmscontext.dt_html(cell.get('content',''),REQUEST)))
+        weight = len(zmscontext.re_sub('<(.*?)>', '',zmscontext.dt_exec(cell.get('content',''))))
         weights[i] = weights[i] + weight
         i += 1
 return map(lambda x: int((x*100.0)/sum(weights)), weights)
@@ -3894,7 +3895,7 @@ if key.startswith('table_'):
 							pattern       python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
-							col_text      python:zmscontext.dt_html(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request),request)">
+							col_text      python:zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request))">
 						<tal:block tal:condition="python:tag in ['td','th']">
 							<tal:block tal:content="structure python:'<%s%s>'%(tag,['',' colspan=\042%i\042'%colspan][int(colspan>1)])"></tal:block>
 								<tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>
@@ -4293,7 +4294,7 @@ return unicode(printed).encode('utf-8')
 <dtml-comment> ##### Border-Style 2=SINGLE ##### </dtml-comment>
    <td>
     <div class="form-element">
-     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "attry('attr_borderstyle')==2"> checked="checked"</dtml-if>/>
+     <input class="form-radio" type="radio" name="attr_borderstyle:int" value="2"<dtml-if "attr('attr_borderstyle')==2"> checked="checked"</dtml-if>/>
      <dtml-var "getZMILangStr('OPT_AB_SINGLE')">&nbsp;
     </div>
    </td>
@@ -4686,7 +4687,8 @@ return zmscontext.attr('text')
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="default"><![CDATA[<dtml-return "getTextFormatDefault()">]]></item>
+                  <item key="default"><![CDATA[##
+return context.getTextFormatDefault()]]></item>
                   <item key="id"><![CDATA[format]]></item>
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">0</item>

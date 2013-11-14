@@ -966,7 +966,7 @@ class ZMSSqlDb(ZMSObject):
       if len(tabledefs) > 0:
         tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
         tablecols = tabledef['columns']
-        tablefilter = self.dt_html(tabledef.get('filter',''),REQUEST)
+        tablefilter = self.dt_exec(tabledef.get('filter',''))
         #-- WHERE
         q = 'WHERE '
         if ''.join(REQUEST.get('sqlStatement',[])).upper().find(q) > 0:

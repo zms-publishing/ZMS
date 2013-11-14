@@ -379,8 +379,8 @@ function storeCaret( textEl) {
 		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
 			><tal:block tal:define="global 
 					btn     python:charFormat.get('btn');
-					js      python:here.dt_html(charFormat.get('js',''),request).strip();
-					attrs   python:here.dt_html(charFormat.get('attrs',''),request).strip();
+					js      python:here.dt_exec(charFormat.get('js','')).strip();
+					attrs   python:here.dt_exec(charFormat.get('attrs','')).strip();
 					onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%((charFormat['tag']+' '+attrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'],request['lang'])"
 				><tal:block tal:condition="python:btn is not None"
 					><tal:block tal:condition="python:len(js)>0"

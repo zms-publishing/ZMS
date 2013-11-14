@@ -338,47 +338,6 @@ def objectTree(self, clients=False):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_globals.dt_html:
-
-Process dtml.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def dt_html(self, value, REQUEST): 
-  import DocumentTemplate.DT_HTML
-  i = 0
-  while True:
-    i = value.find( '<dtml-', i)
-    if i < 0:
-      break
-    j = value.find( '>', i)
-    if j < 0:
-      break
-    if value[ j-1] == '/':
-      value = value[ :j-1] + value[ j:]
-    i = j
-  value = re.sub( '</dtml-var>', '', value)
-  dtml = DocumentTemplate.DT_HTML.HTML(value)
-  value = dtml( self, REQUEST)
-  return value
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_globals.dt_parse:
-
-Parse and validate dtml.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def dt_parse(self, value):
-  message = ''
-  try:
-    import DocumentTemplate.DT_HTML
-    dtml = DocumentTemplate.DT_HTML.HTML(value)
-    dtml.cook()
-  except:
-    writeError( self, '[dt_parse]')
-    message += str(sys.exc_value)
-  return message
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.form_quote
 
 Remove <form>-tags for Management Interface.
@@ -391,7 +350,7 @@ def form_quote(text, REQUEST):
     rtn = re.sub( '</form(.*?)>', '</noform\\1>', rtn)
   return rtn
 
-  
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.qs_append:
 

@@ -80,7 +80,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
         if ob.meta_type in [ 'DTML Document', 'DTML Method']:
           try:
             html = ob.raw
-            html = _globals.dt_html( self, html, REQUEST)
+            html = self.dt_html( html, REQUEST)
             html = localHtml( ob, html)
             html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html)
             ob = html

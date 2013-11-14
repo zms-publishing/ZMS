@@ -512,7 +512,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':
-            value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
+            value = self.dt_html(metaObjAttr.get('custom',''))
           elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
             value = metaObjAttr['py'](zmscontext=self)
           else:

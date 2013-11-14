@@ -1254,7 +1254,7 @@ class VersionManagerContainer:
         tDtml = transition.get('dtml','')
         if len(tDtml) > 0:
           if tType == 'DTML Method':
-            return _globals.dt_html(self, tDtml, REQUEST) 
+            return self.dt_html(tDtml, REQUEST) 
           if tType == 'Page Template':
             return transition['ob'](zmscontext=self) 
           elif tType == 'Script (Python)':

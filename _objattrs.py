@@ -133,7 +133,7 @@ def getobjattr(self, obj, obj_attr, lang):
         v = default.copy()
       else:
         if type( default) is str and len( default) > 0:
-          default = _globals.dt_html( self, str( default), self.REQUEST)
+          default = self.dt_exec(default)
         v = default
   return v
 
@@ -270,7 +270,7 @@ class ObjAttrs:
         opts = []
         obj_attropts = obj_attr['options']
         if type(obj_attropts) is list:
-          dtml = ''.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)/2)))
+          v = ''.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)/2)))
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0],REQUEST):
             ob = self.getLinkObj(obj_attropts[0],REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)
@@ -278,9 +278,9 @@ class ObjAttrs:
             res = map(lambda x: {'key':x['key'],'value':x.get('value',x.get('value_%s'%REQUEST['lang']))},res)
             res = self.sort_list(res,'value','asc')
             opts = map(lambda x: [x['key'],x['value']],res)
-          elif dtml.find('<dtml')>=0:
+          elif v.find('<dtml-') >= 0 or v.startswith('##'):
             try:
-              opts = _globals.dt_html(self,dtml,REQUEST)
+              opts = self.dt_exec(v)
             except:
               opts = _globals.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
           else:
@@ -372,7 +372,7 @@ class ObjAttrs:
         filteredMetaObjAttrs = filter( lambda x: x['id']=='format', metaObj['attrs'])
         if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
-            default = _globals.dt_html( self, str( filteredMetaObjAttrs[0].get('default','')), REQUEST)
+            default = self.dt_exec(str( filteredMetaObjAttrs[0].get('default','')))
             if default:
               fmt = default
             else:
@@ -670,12 +670,12 @@ class ObjAttrs:
               value = metaObjAttr['zpt'](zmscontext=self)
               value = unicode(value).encode('utf-8')
             else:
-              value = _globals.dt_html(self,metaObjAttr.get('name',''),REQUEST)
+              value = self.dt_exec(metaObjAttr.get('name',''))
           except:
             value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
         elif metaObjAttr is not None and metaObjAttr['type'] == 'method':
           try:
-            value = _globals.dt_html(self,metaObjAttr.get('custom',''),REQUEST)
+            value = self.dt_exec(metaObjAttr.get('custom',''))
           except:
             value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
         elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
@@ -699,10 +699,9 @@ class ObjAttrs:
           objAttr = objAttrs[key]
           datatype = objAttr['datatype_key']
           value = self.getObjAttrValue( objAttr, REQUEST)
-          if datatype == _globals.DT_TEXT and  type(value) in StringTypes and value.find('<dtml-') >= 0:
+          if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##')):
             try:
-              value = _globals.re_sub(self,'<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
-              value = _globals.dt_html(self,value,REQUEST)
+              value = self.dt_exec(value)
             except:
               value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
         

@@ -708,68 +708,42 @@ class ZMSGlobals:
       @return: Elements
       @rtype: C{dict}
       """
-      REQUEST = self.REQUEST
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'parse_stylesheet'
-      try:
-        value = self.fetchReqBuff( reqBuffId, REQUEST)
-        return value
-      except:
-        
-        stylesheet = self.getStylesheet()
-        if stylesheet.meta_type in ['DTML Document','DTML Method']:
-          data = stylesheet.raw
-        elif stylesheet.meta_type in ['File']:
-          data = stylesheet.data
-        data = re.sub( '/\*(.*?)\*/', '', data)
-        value = {}
-        for elmnt in data.split('}'):
-          i = elmnt.find('{')
-          keys = elmnt[:i].strip()
-          v = elmnt[i+1:].strip()
-          for key in keys.split(','):
-            key = key.strip()
-            if len(key) > 0:
-              value[key] = value.get(key,'') + v
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, value, REQUEST)
-
+      stylesheet = self.getStylesheet()
+      if stylesheet.meta_type in ['DTML Document','DTML Method']:
+        data = stylesheet.raw
+      elif stylesheet.meta_type in ['File']:
+        data = stylesheet.data
+      data = re.sub( '/\*(.*?)\*/', '', data)
+      value = {}
+      for elmnt in data.split('}'):
+        i = elmnt.find('{')
+        keys = elmnt[:i].strip()
+        v = elmnt[i+1:].strip()
+        for key in keys.split(','):
+          key = key.strip()
+          if len(key) > 0:
+            value[key] = value.get(key,'') + v
+      colormap = {}
+      for key in value.keys():
+        if key.startswith('.') and \
+           key.find('Color') > 0 and \
+           key.find('.cms') < 0 and \
+           key.find('.zmi') < 0:
+          for elmnt in value[key].split(';'):
+            i = elmnt.find(':')
+            if i > 0:
+              elmntKey = elmnt[:i].strip().lower()
+              elmntValue = elmnt[i+1:].strip().lower()
+              if elmntKey == 'color' or elmntKey == 'background-color':
+                colormap[key[1:]] = elmntValue
+      self.setConfProperty('ZMS.colormap',colormap)
+      return colormap
 
     def get_colormap(self):
-      """
-      Parses default-stylesheet and returns color-map.
-      @deprecated
-      @return: Color-map
-      @rtype: C{dict}
-      """
-      REQUEST = self.REQUEST
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'get_colormap'
-      try:
-        forced = True
-        value = self.fetchReqBuff( reqBuffId, REQUEST, forced)
-        return value
-      except:
-        stylesheet = self.parse_stylesheet()
-        value = {}
-        for key in stylesheet.keys():
-          if key.find('.') == 0 and \
-             key.find('Color') > 0 and \
-             key.find('.cms') < 0 and \
-             key.find('.zmi') < 0:
-            for elmnt in stylesheet[key].split(';'):
-              i = elmnt.find(':')
-              if i > 0:
-                elmntKey = elmnt[:i].strip().lower()
-                elmntValue = elmnt[i+1:].strip().lower()
-                if elmntKey == 'color' or elmntKey == 'background-color':
-                  value[key[1:]] = elmntValue
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, value, REQUEST)
+      colormap = self.getConfProperty('ZMS.colormap',None)
+      if colormap is None:
+        colormap = self.parse_stylesheet()
+      return colormap
 
     #)
 

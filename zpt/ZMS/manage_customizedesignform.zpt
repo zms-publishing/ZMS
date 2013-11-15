@@ -29,7 +29,18 @@
 	</div>
 	<div class="form-group" style="margin-top:1em;">
 		<div class="col-lg-12">
-			<textarea class="form-control" style="font-family:courier" name="stylesheet:text" wrap="off" rows="15" tal:content="structure python:str((filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">stylesheet</textarea>
+			<div class="pull-left" style="width:10%">
+				&nbsp;
+				<tal:block tal:repeat="key python:here.get_colormap().keys()">
+					<div tal:attributes="title key; class key" style="max-width:5em;font-size:smaller;padding:6px;overflow:hidden;border:1px solid #CCC;" tal:content="key">&nbsp;</div><!-- .pull-left -->
+				</tal:block>
+			</div><!-- .pull-left -->
+			<div class="pull-left" style="width:90%">
+					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='stylesheet:text',ob=(filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">
+						ACE Editor
+					</tal:block>
+			</div><!-- .pull-left -->
+			<div class="clearfix"></div><!-- .clearfix -->
 		</div><!-- .col-lg-12 -->
 	</div><!-- .form-group -->
 	<div class="form-group col-lg-12">

@@ -282,6 +282,27 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 #zmiIframe .form-group.activity input.form-element.datetimepicker {
 	width:8.4em !important;
 }
+
+.horizontal-group .form-group {
+	float:left;
+	margin-right:0.5em;
+}
+.horizontal-group .mandatory span {
+	background: none !important;
+	padding-left: 0 !important;
+}
+.horizontal-group .controls {
+	margin-left: 0px;
+}
+.horizontal-group .form-group label {
+	float:none;
+	width:auto;
+	text-align:left;
+}
+.horizontal-group .controls.save {
+	margin-top:2.1em;
+}
+
 .form-horizontal label.col-sm-3.control-label,
 .form-horizontal label.col-md-3.control-label,
 .form-horizontal label.col-lg-3.control-label,
@@ -295,7 +316,7 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 /* overwrite jquery-ui with bootstrap-defaults */
 	display: block;
 	width: 100%;
-	padding: 8px 12px;
+	padding: 6px 12px;
 	font-size: 14px;
 	line-height: 1.428571429;
 	color: #555;

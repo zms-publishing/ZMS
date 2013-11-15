@@ -684,6 +684,7 @@ class ConfManager(
           data = REQUEST.get('stylesheet')
           title = css.title
           css.manage_edit(data,title)
+          self.parse_stylesheet()
           message = self.getZMILangStr('MSG_CHANGED')
         #-- Sitemap.
         if REQUEST.has_key('attr_layoutsitemap'):

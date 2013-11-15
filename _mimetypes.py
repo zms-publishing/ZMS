@@ -22,7 +22,7 @@
 application_epub = "mime_type.application_epub+zip.gif"
 application_msaccess = "mime_type.application_msaccess.gif"
 application_mspowerpoint = "mime_type.application_mspowerpoint.gif"
-application_msword = "mime_type.application_msword.gif"
+application_docx = "mime_type.application_docx.png"
 application_octet_stream = "mime_type.application_octet_stream.gif"
 application_pdf = "mime_type.application_pdf.gif"
 application_rtf = "mime_type.application_rtf.gif"
@@ -33,7 +33,6 @@ application_x_excel = "mime_type.application_x_excel.gif"
 application_x_x509_ca_cert = "mime_type.application_x_x509_ca_cert.gif"
 application_visio = "mime_type.application_visio.gif"
 application_zip = "mime_type.application_zip.gif"
-application_docx = "mime_type.application_docx.gif"
 application_pptx = "mime_type.application_pptx.gif"
 application_xlsx = "mime_type.application_xlsx.gif"
 audio_basic = "mime_type.audio_basic.gif"
@@ -60,7 +59,7 @@ dctMimeType = {
 	,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
 	,'application/vnd.openxmlformats-officedocument.presentationml.presentation':application_pptx
 	,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':application_xlsx
-	,'application/msword':application_msword
+	,'application/msword':application_docx
 	,'application/octet-stream':application_octet_stream
 	,'application/pdf':application_pdf
 	,'application/rtf':application_rtf

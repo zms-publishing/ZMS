@@ -51,6 +51,7 @@ def syncType( self, id, attr, forced=False):
          container = getattr( container, ob_id)
       ob_id = attr['id'].split('/')[-1]
       ob = getattr( container, ob_id)
+      attr['ob'] = ob
       if ob.meta_type in [ 'DTML Method', 'DTML Document']:
         attr['custom'] = ob.raw
       elif ob.meta_type in [ 'Folder']:
@@ -68,6 +69,7 @@ def syncType( self, id, attr, forced=False):
     else:
       ob = getattr(self,id+'.'+attr_id,None)
       if ob is not None:
+        attr['ob'] = ob
         if attr['type'] == 'method':
           attr['custom'] = ob.raw
         elif attr['type'] == 'py':

@@ -168,13 +168,15 @@
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
 							<div class="single-line" 
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
-									ob python:[getattr(here,'%s.%s'%(metaObj['id'],objAttr['id']),None), getattr(here.getHome(),objAttr['id'],None)][zopetype]">
-								<textarea class="form-control input-sm" 
-									tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
-											class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
-											data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 6px 6px no-repeat no-repeat';
-											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
-									tal:content="objAttr/name">name</textarea>
+									ob python:objAttr['ob']">
+								<tal:block tal:condition="python:ob is not None">
+									<textarea class="form-control input-sm" 
+										tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
+												data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 6px 6px no-repeat no-repeat';
+												data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+										tal:content="objAttr/name">name</textarea>
+								</tal:block>
 							</div>
 						</td>
 					</tal:block>
@@ -186,13 +188,13 @@
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 								<div class="single-line" 
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
-										ob python:[getattr(here,'%s.%s'%(metaObj['id'],objAttr['id']),None), getattr(here.getHome(),objAttr['id'],None)][zopetype]">
-									<textarea class="form-control input-sm" 
-										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
-											class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
-											data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
-											data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
-										tal:content="objAttr/custom">custom</textarea>
+										ob python:objAttr['ob']">
+										<textarea class="form-control input-sm" 
+											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
+												data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
+												data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+											tal:content="objAttr/custom">custom</textarea>
 								</div>
 							</td>
 						</tal:block>
@@ -202,9 +204,11 @@
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 								<tal:block tal:condition="python:objAttr.get('custom')">
 									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
-									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank" style="text-decoration:none;">
-										<tal:block tal:content="python:[fname,fname[:11]+'...'][int(len(fname)>11)]">FILE NAME</tal:block>
-									</a>
+									<tal:block tal:condition="python:objAttr['custom'] is not None">
+										<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank" style="text-decoration:none;">
+											<tal:block tal:content="fname">FILE NAME</tal:block>
+										</a>
+									</tal:block>
 								</tal:block>
 							</td>
 						</tal:block>

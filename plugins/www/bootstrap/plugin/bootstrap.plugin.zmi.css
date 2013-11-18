@@ -637,8 +637,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		margin-right:0.5em;
 	}
 	.zmi.metas .horizontal-group .controls.save {
-		margin-top:2.1em;
-		
+		margin-top:1.7em;
+		margin-left:2.1em;
 	}
 	.zmi.metas .horizontal-group .meta_name input,
 	.zmi.metas .horizontal-group .meta_revision input,
@@ -680,6 +680,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas .form-group.meta_revision div,
 .zmi.metas .form-group.meta_package div {
 	padding-left:1em;
+}
+.zmi.metas .meta-code,
+.zmi.metas .meta-resource {
+	overflow:hidden;
 }
 .zmi.metas input[type="file"] {
 	display: inline-block;

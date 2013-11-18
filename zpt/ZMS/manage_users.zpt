@@ -203,7 +203,7 @@
 		</table>
 		</tal:block>
 	</form>
-	<form tal:condition="python:userFolder.meta_type=='User Folder'" class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
+	<form tal:condition="python:userFolder.meta_type in ['User Folder','Pluggable Auth Service']" class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 		<div class="form-group">
@@ -221,6 +221,18 @@
 		<div class="form-group">
 			<label for="newEmail" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
 			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newEmail',size=15,value='')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group" tal:condition="python:userFolder.meta_type in ['Pluggable Auth Service']">
+			<label for="userAdderPluginId" class="col-sm-2 control-label mandatory"><span>User-Adder-Plugin</span></label>
+			<div class="col-sm-10">
+				<select class="form-control" name="userAdderPluginId">
+					<tal:block tal:repeat="userAdderPluginId python:userFolder.plugins.getAllPlugins('IUserAdderPlugin')['active']">
+						<tal:block tal:define="global userAdderPlugin python:getattr(userFolder,userAdderPluginId)">
+							<option tal:attributes="value userAdderPluginId" tal:content="python:userAdderPlugin.title_or_id()">the user-adder-plugin</option>
+						</tal:block>
+					</tal:block>
+				</select>
+			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<div class="col-sm-10">

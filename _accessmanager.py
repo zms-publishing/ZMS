@@ -88,7 +88,13 @@ def insertUser(self, newId, newPassword, newEmail, REQUEST):
   # ----------
   newRoles =  []
   newDomains =  []
-  userFldr.userFolderAddUser(newId,newPassword,newRoles,newDomains)
+  if userFldr.meta_type == 'User Folder':
+    userFldr.userFolderAddUser(newId,newPassword,newRoles,newDomains)
+  elif userFldr.meta_type == 'Pluggable Auth Service':
+    userAdderPluginId = REQUEST.get('userAdderPluginId')
+    userAdderPlugin = getattr(userFldr,userAdderPluginId)
+    userAdderPlugin.doAddUser(newId,newPassword)
+  
   userObj = userFldr.getUser(newId)
   if userObj is not None:
     

@@ -143,8 +143,8 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-3 control-label" for="file" tal:content="python:here.getZMILangStr('OR')">or</label>
-				<div class="col-sm-9">
-					<select id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metacmd.')" onmouseover="zmiExpandConfFiles(this,'.metacmd.')">
+				<div class="col-sm-8">
+					<select id="init" class="form-control" name="init" onfocus="zmiExpandConfFiles(this,'.metacmd.')" onmouseover="zmiExpandConfFiles(this,'.metacmd.')">
 						<option value="">--- <tal:block tal:content="python:here.getZMILangStr('BTN_INIT')">Init</tal:block>... ---</option>
 					</select>
 				</div>

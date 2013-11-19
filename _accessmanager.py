@@ -77,36 +77,6 @@ def role_permissions(self, role):
   return permissions
 
 # ------------------------------------------------------------------------------
-#  _accessmanager.insertUser:
-# ------------------------------------------------------------------------------
-def insertUser(self, newId, newPassword, newEmail, REQUEST):
-  id = ''
-  lang = REQUEST['lang']
-  userFldr = self.getUserFolder()
-  
-  # Init user.
-  # ----------
-  newRoles =  []
-  newDomains =  []
-  if userFldr.meta_type == 'User Folder':
-    userFldr.userFolderAddUser(newId,newPassword,newRoles,newDomains)
-  elif userFldr.meta_type == 'Pluggable Auth Service':
-    userAdderPluginId = REQUEST.get('userAdderPluginId')
-    userAdderPlugin = getattr(userFldr,userAdderPluginId)
-    userAdderPlugin.doAddUser(newId,newPassword)
-  
-  userObj = userFldr.getUser(newId)
-  if userObj is not None:
-    
-    # Set user.
-    # ---------
-    self.setUserAttr(userObj,'email',newEmail)
-    id = getUserId(userObj)
-
-  return id
-
-
-# ------------------------------------------------------------------------------
 #  _accessmanager.deleteUser:
 # ------------------------------------------------------------------------------
 def deleteUser(self, id):
@@ -120,13 +90,6 @@ def deleteUser(self, id):
   
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
-  
-  # Delete user from User-Folder.
-  userFldr = self.getUserFolder()
-  if userFldr.meta_type != 'LDAPUserFolder':
-    userObj = userFldr.getUser(id)
-    if userObj is not None:
-      userFldr.userFolderDelUsers([id])
 
 
 ################################################################################
@@ -486,7 +449,7 @@ class AccessManager(AccessableContainer):
                   d['name'] = sec_user
                   valid_userids.append(d)
           elif userFldr.meta_type == 'Pluggable Auth Service':
-            users = userFldr.searchUsers(login='*',id='')
+            users = userFldr.searchUsers(login=search_term,id='')
             for user in users:
               d = {}
               d['localUserFldr'] = userFldr
@@ -495,7 +458,7 @@ class AccessManager(AccessableContainer):
           else:
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
-                if search_term == '' or search_term == userName:
+                if search_term == '' or search_term.find(userName) >= 0:
                   d = {}
                   d['localUserFldr'] = userFldr
                   d['name'] = userName
@@ -860,28 +823,17 @@ class AccessManager(AccessableContainer):
       # Insert.
       # -------
       if btn == self.getZMILangStr('BTN_INSERT'):
-        if key=='obj':
-          #-- Insert user.
-          newId = REQUEST.get('newId','').strip()
-          newPassword = REQUEST.get('newPassword','').strip()
-          newConfirm = REQUEST.get('newConfirm','').strip()
-          newEmail = REQUEST.get('newEmail','').strip()
-          id = insertUser(self,newId,newPassword,newEmail,REQUEST)
-          #-- Assemble message.
-          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
-        elif key=='attr':
-          #-- Insert local user.
-          langs = REQUEST.get('langs',[])
-          if not type(langs) is list: langs = [langs]
-          roles = REQUEST.get('roles',[])
-          if not type(roles) is list: roles = [roles]
-          node = REQUEST.get('node')
-          ob = self.getLinkObj(node,REQUEST)
-          docElmnt = ob.getDocumentElement()
-          node = docElmnt.getRefObjPath(ob)
-          docElmnt.setLocalUser(id, node, roles, langs)
-          #-- Assemble message.
-          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
+        langs = REQUEST.get('langs',[])
+        if not type(langs) is list: langs = [langs]
+        roles = REQUEST.get('roles',[])
+        if not type(roles) is list: roles = [roles]
+        node = REQUEST.get('node')
+        ob = self.getLinkObj(node,REQUEST)
+        docElmnt = ob.getDocumentElement()
+        node = docElmnt.getRefObjPath(ob)
+        docElmnt.setLocalUser(id, node, roles, langs)
+        #-- Assemble message.
+        message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
       
       # Change.
       # -------

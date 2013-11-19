@@ -43,6 +43,7 @@ $(function(){
 			}
 		}
 	}
+	zmiParams['base_url'] = base_url;
 	if (typeof zmiParams['zmi-debug'] != "undefined") {
 		$ZMI.toggleDebug(true);
 	}

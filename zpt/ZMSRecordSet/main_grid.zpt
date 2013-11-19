@@ -81,7 +81,7 @@
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds">
 		<div class="btn-group">
 			<span class="checkbox split-left btn">
-				<input name="qindices:list" tal:attributes="type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)">
+				<input tal:attributes="name python:['qindices:list','qindex'][int('select' in actions)]; type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)">
 				<tal:block tal:content="python:qindex+1">qindex</tal:block>.
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">

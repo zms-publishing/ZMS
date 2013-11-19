@@ -471,7 +471,7 @@ ul.zmi-container{width:98% !important}
 ul.zmi-container > .zmi-item > .right{float:left}
 ul.zmi-container .zmi-item .clearboth{float:none;clear:both}
 ul.zmi-container .zmi-item.pageelement .center{background-color:white!important;min-height:4em}
-ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important}
+ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important;padding-top:0.2em;}
 ul.zmi-container .zmi-item.pageelement .center > *{padding-left:.8em}
 ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid white;padding:3px 6px 3px 1.5em;overflow:hidden}
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}

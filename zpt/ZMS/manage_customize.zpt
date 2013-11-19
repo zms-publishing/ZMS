@@ -251,7 +251,7 @@ $ZMI.registerReady(function(){
 				<tal:block tal:condition="python:request.get('btn')=='Purge'">
 					<strong>UserFolder</strong>
 					Purge local users<br/>
-					<tal:block tal:content="structure python:here.purgeLocalUsers(request=request)">purgeLocalUsers</tal:block>
+					<tal:block tal:content="structure python:here.purgeLocalUsers()">purgeLocalUsers</tal:block>
 				</tal:block>
 				<tal:block tal:condition="python:request.get('btn')=='Reindex'">
 					<strong>Catalog</strong>

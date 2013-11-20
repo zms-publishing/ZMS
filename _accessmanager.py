@@ -411,50 +411,39 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def getValidUserids(self, search_term='', without_node_check=True):
       local_userFldr = self.getUserFolder()
-      valid_userids = []
-      c = 0
+      columns = None
+      records = []
+      c = [{'id':'name','name':'Name'}]
       for userFldr in self.getUserFolders():
         doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
         if doc_elmnts:
-          doc_elmnt = doc_elmnts[0]
-          sec_users = doc_elmnt.getConfProperty('ZMS.security.users')
           if userFldr.meta_type == 'LDAPUserFolder':
-            if c == 0:
+            if search_term != '':
               search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              exact = False
-              if search_term == '':
-                search_terms = sec_users.keys()
-                exact = True
-              else:
-                search_terms = [search_term]
-              for st in search_terms:
-                users = userFldr.findUser(search_param=search_param,search_term=st)
-                for user in users:
-                  name = user[search_param]
-                  if not exact or name == st:
-                    d = {}
-                    d['localUserFldr'] = userFldr
-                    d['name'] = name
-                    for extra in ['givenName','sn']:
-                      try: d[extra] = user[extra]
-                      except: pass
-                    valid_userids.append(d)
-            else:
-              node_prefix = '{$%s@'%self.getHome().id
-              for sec_user in sec_users:
-                nodes = doc_elmnt.getUserAttr(sec_user,'nodes')
-                if str(nodes).find(node_prefix) >= 0:
-                  d = {}
-                  d['localUserFldr'] = userFldr
-                  d['name'] = sec_user
-                  valid_userids.append(d)
+              encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
+              users = userFldr.findUser(search_param=search_param,search_term=search_term)
+              for user in users:
+                name = user[search_param]
+                d = {}
+                d['localUserFldr'] = userFldr
+                d['name'] = name
+                for extra in ['givenName','sn','dn','ou']:
+                  try: 
+                    d[extra] = unicode(user[extra],encoding).encode('utf-8')
+                    c.append({'id':extra,'name':extra.capitalize()})
+                  except: pass
+                records.append(d)
+                if columns is None:
+                  columns = c
+                c = []
           elif userFldr.meta_type == 'Pluggable Auth Service':
-            users = userFldr.searchUsers(login=search_term,id='')
-            for user in users:
-              d = {}
-              d['localUserFldr'] = userFldr
-              d['name'] = user['login']
-              valid_userids.append(d)
+            if search_term != '':
+              users = userFldr.searchUsers(login=search_term,id='')
+              for user in users:
+                d = {}
+                d['localUserFldr'] = userFldr
+                d['name'] = user['login']
+                records.append(d)
           else:
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
@@ -462,9 +451,10 @@ class AccessManager(AccessableContainer):
                   d = {}
                   d['localUserFldr'] = userFldr
                   d['name'] = userName
-                  valid_userids.append(d)
-          c += 1
-      return valid_userids
+                  records.append(d)
+      if columns is None:
+        columns = c
+      return {'columns':columns,'records':records}
   
   
     # --------------------------------------------------------------------------

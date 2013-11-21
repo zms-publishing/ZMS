@@ -21,7 +21,6 @@
 
 application_epub = "mime_type.application_epub+zip.gif"
 application_msaccess = "mime_type.application_msaccess.gif"
-application_mspowerpoint = "mime_type.application_mspowerpoint.gif"
 application_docx = "mime_type.application_docx.png"
 application_octet_stream = "mime_type.application_octet_stream.gif"
 application_pdf = "mime_type.application_pdf.gif"
@@ -29,12 +28,11 @@ application_rtf = "mime_type.application_rtf.gif"
 application_sh = "mime_type.application_sh.gif"
 application_shockwave_flash = "mime_type.application_shockwave_flash.gif"
 application_x_director = "mime_type.application_x_director.gif"
-application_x_excel = "mime_type.application_x_excel.gif"
 application_x_x509_ca_cert = "mime_type.application_x_x509_ca_cert.gif"
 application_visio = "mime_type.application_visio.gif"
 application_zip = "mime_type.application_zip.gif"
-application_pptx = "mime_type.application_pptx.gif"
-application_xlsx = "mime_type.application_xlsx.gif"
+application_pptx = "mime_type.application_pptx.png"
+application_xlsx = "mime_type.application_xlsx.png"
 audio_basic = "mime_type.audio_basic.gif"
 audio_midi = "mime_type.audio_midi.gif"
 content_unknown = "mime_type.application_octet_stream.gif"
@@ -52,10 +50,10 @@ video_basic = "mime_type.video_basic.gif"
 
 dctMimeType = {
 	 'application/epub+zip':application_epub
-	,'application/mspowerpoint':application_mspowerpoint
+	,'application/mspowerpoint':application_pptx
 	,'application/vnd.ms-access':application_msaccess
-	,'application/vnd.ms-excel':application_x_excel
-	,'application/vnd.ms-powerpoint':application_mspowerpoint
+	,'application/vnd.ms-excel':application_xlsx
+	,'application/vnd.ms-powerpoint':application_pptx
 	,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
 	,'application/vnd.openxmlformats-officedocument.presentationml.presentation':application_pptx
 	,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':application_xlsx
@@ -65,7 +63,7 @@ dctMimeType = {
 	,'application/rtf':application_rtf
 	,'application/vnd.visio':application_visio
 	,'application/x-director':application_x_director
-	,'application/x-excel':application_x_excel
+	,'application/x-excel':application_xlsx
 	,'application/x-gtar':application_zip
 	,'application/x-gzip':application_zip
 	,'application/x-pdf':application_pdf

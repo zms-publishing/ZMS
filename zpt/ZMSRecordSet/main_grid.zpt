@@ -122,13 +122,22 @@
 					<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 				</tal:block>
 			</tal:block>
+			<tal:block tal:condition="python:elType in ['html']">
+				<tal:block tal:content="structure elValue">the value</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:elType in ['object']">
+				<a tal:attributes="href python:'%s/manage_main'%elValue.absolute_url()" target="_blank">
+					<img tal:attributes="src python:elValue.icon"/>
+					<tal:block tal:content="python:elValue.title_or_id()">the title or id</tal:block>
+				</a>
+			</tal:block>
 			<tal:block tal:condition="python:elType in ['boolean']">
 				<i tal:condition="python:elValue" class="icon-ok"></i>
 			</tal:block>
 			<tal:block tal:condition="python:elType in ['date','datetime']">
 				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
 			</tal:block>
-			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','url']">
+			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','html','object','url']">
 				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
 			</tal:block>
 		</td>

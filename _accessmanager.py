@@ -409,7 +409,8 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_term='', without_node_check=True):
+    def getValidUserids(self, search_term='', without_node_check=True, exact=False):
+      encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       local_userFldr = self.getUserFolder()
       columns = None
       records = []
@@ -417,46 +418,71 @@ class AccessManager(AccessableContainer):
       for userFldr in self.getUserFolders():
         doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
         if doc_elmnts:
+          users = []
           if userFldr.meta_type == 'LDAPUserFolder':
             if search_term != '':
-              search_param = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
-              users = userFldr.findUser(search_param=search_param,search_term=search_term)
-              for user in users:
-                name = user[search_param]
-                d = {}
-                d['localUserFldr'] = userFldr
-                d['name'] = name
-                for extra in ['givenName','sn','dn','ou']:
-                  try: 
-                    d[extra] = unicode(user[extra],encoding).encode('utf-8')
-                    c.append({'id':extra,'name':extra.capitalize()})
-                  except: pass
-                records.append(d)
-                if columns is None:
-                  columns = c
-                c = []
+              login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+              if exact and login_attr == 'dn':
+                users.append(userFldr.getUserByDN(name))
+              else:
+                users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
           elif userFldr.meta_type == 'Pluggable Auth Service':
             if search_term != '':
-              users = userFldr.searchUsers(login=search_term,id='')
-              for user in users:
-                d = {}
-                d['localUserFldr'] = userFldr
-                d['name'] = user['login']
-                records.append(d)
+              login_attr = 'login'
+              users.extend(userFldr.searchUsers(login=search_term,id=''))
           else:
+            login_attr = 'name'
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
                 if search_term == '' or search_term.find(userName) >= 0:
-                  d = {}
-                  d['localUserFldr'] = userFldr
-                  d['name'] = userName
-                  records.append(d)
+                  users.append({'name':userName})
+          for user in users:
+            d = {}
+            d['localUserFldr'] = userFldr
+            d['name'] = user[login_attr]
+            for extra in user.keys():
+              if extra == 'pluginid':
+                pluginid = user[extra]
+                plugin = getattr(userFldr,pluginid)
+                d['plugin'] = plugin
+                editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
+                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s (%s)'%(plugin.title_or_id(),plugin.meta_type),plugin.icon)
+                t = 'html'
+              else:
+                v = unicode(user[extra],encoding).encode('utf-8')
+                t = 'string'
+              d[extra] = v
+              if extra in ['pluginid','givenName','sn','dn','ou'] and  len(filter(lambda x:x['id']==extra,c))==0:
+                  c.append({'id':extra,'name':extra.capitalize(),'type':t})
+            if exact and user[login_attr].lower() == search_term.lower():
+              return d
+            records.append(d)
+      if exact:
+        return None
       if columns is None:
         columns = c
       return {'columns':columns,'records':records}
   
   
+    # --------------------------------------------------------------------------
+    #  AccessManager.findUser:
+    # --------------------------------------------------------------------------
+    def findUser(self, name):
+      encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
+      user = self.getValidUserids(search_term=name,exact=True)
+      if user is not None:
+        user['details'] = []
+        userFldr = user['localUserFldr']
+        if userFldr.meta_type == 'LDAPUserFolder':
+          details = userFldr.getUserDetails(encoded_dn=user['dn'],format='dictionary')
+          for schema in userFldr.getLDAPSchema():
+            name = schema[0]
+            label = schema[1]
+            value = unicode(user.get(name,''),encoding).encode('utf-8')
+            user['details'].append({'name':name,'label':label,'value':value})
+      return user
+
+
     # --------------------------------------------------------------------------
     #  AccessManager.setUserAttr:
     # --------------------------------------------------------------------------
@@ -559,26 +585,6 @@ class AccessManager(AccessableContainer):
       # Grant public access.
       self.synchronizePublicAccess()
 
-
-    # --------------------------------------------------------------------------
-    #  AccessManager.findUser:
-    # --------------------------------------------------------------------------
-    def findUser(self, name):
-      for userFldr in self.getUserFolders():
-        userObj = None
-        if userFldr.meta_type=='LDAPUserFolder':
-          if self.getConfProperty('LDAPUserFolder.login_attr','') == 'dn':
-            userObj = userFldr.getUserByDN(name)
-          else:
-            ldapUsersObjs = userFldr.findUser(search_param=userFldr.getProperty('_login_attr'),search_term=name)
-            if len(ldapUsersObjs) == 1:
-              userObj = ldapUsersObjs[0]
-              userObj['__id__'] = userObj[userFldr.getProperty( '_login_attr' )]
-        else:
-          userObj = userFldr.getUser(name)
-        if userObj is not None:
-          return userObj
-      return None
 
     # --------------------------------------------------------------------------
     #  AccessManager.getUserFolder:

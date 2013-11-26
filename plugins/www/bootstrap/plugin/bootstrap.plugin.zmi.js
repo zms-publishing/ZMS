@@ -617,7 +617,7 @@ function zmiModal(s, opt) {
 						}
 						zmiModalStack.pop();
 					})
-				.modal();
+				.modal(opt['modal']);
 			if (typeof opt['minWidth'] != 'undefined') {
 				$('#'+id+' .modal-content').css('minWidth',opt['minWidth']);
 			}
@@ -643,10 +643,10 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
-	$ZMI.writeDebug("zmiIframe:url="+url);
+	$ZMI.writeDebug("$ZMI.iframe:url="+url);
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
-		var width = typeof opt['width'] == 'undefined' ? '100%' : opt['width'];
+		var width = '100%';
 		var height = typeof opt['height'] == 'undefined' ? '100%' : opt['height'];
 		opt['body'] = '<iframe src="' + url + '" width="' + width + '" height="' + height + '" frameBorder="0"></iframe>';
 		zmiModal(null,opt);
@@ -654,6 +654,7 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	}
 	else {
 		$.get( href, data, function(result) {
+				$ZMI.writeDebug("$ZMI.iframe:result="+result);
 				var $result = $(result);
 				if ($("div#system_msg",$result).length>0) {
 					var manage_tabs_message = $("div#system_msg",$result).text();

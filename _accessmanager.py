@@ -77,6 +77,22 @@ def role_permissions(self, role):
   return permissions
 
 # ------------------------------------------------------------------------------
+#  _accessmanager.updateUserPassword:
+# ------------------------------------------------------------------------------
+def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
+  if password!='******' and password==confirm:
+    userFldr = user['localUserFldr']
+    if userFldr.meta_type == 'User Folder':
+      roles = userFldr.getUser(id).getRoles()
+      domains = userFldr.getUser(id).getDomains()
+      userFldr.userFolderEditUser(id, password, roles, domains)
+    elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
+      user['plugin'].updateUserPassword(id, password)
+    self.setUserAttr(id,'forceChangePassword',forceChangePassword)
+    return True
+  return False
+
+# ------------------------------------------------------------------------------
 #  _accessmanager.deleteUser:
 # ------------------------------------------------------------------------------
 def deleteUser(self, id):
@@ -262,29 +278,19 @@ class AccessableObject:
       # -------
       if btn == self.getZMILangStr('BTN_SAVE'):
         id = getUserId(REQUEST['AUTHENTICATED_USER'])
-        userObj = self.findUser(id)
+        user = self.findUser(id)
         password = REQUEST.get('password','******')
         confirm = REQUEST.get('confirm','')
-        if password!='******' and password==confirm:
-          for userFldr in self.getUserFolders():
-            if id in userFldr.getUserNames():
-              try:
-                roles = userObj.getRoles()
-                domains = userObj.getDomains()
-                userFldr.userFolderEditUser(id, password, roles, domains)
-                message += self.getZMILangStr('ATTR_PASSWORD') + ': '
-              except: 
-                message += _globals.writeError(self,'[manage_user]: can\'t change password')
-              break
-        self.setUserAttr(userObj,'email',REQUEST.get('email','').strip())
+        if updateUserPassword(self,user,password,confirm):
+          message += self.getZMILangStr('ATTR_PASSWORD') + ': '
+        self.setUserAttr(user,'email',REQUEST.get('email','').strip())
         #-- Assemble message.
         message += self.getZMILangStr('MSG_CHANGED')
       
-      #-- Build json.
-      RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      return self.str_json(message)
+      # Return with message.
+      if RESPONSE:
+        message = urllib.quote(message)
+        return RESPONSE.redirect('manage_userForm?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 
 ################################################################################
@@ -439,14 +445,18 @@ class AccessManager(AccessableContainer):
           for user in users:
             d = {}
             d['localUserFldr'] = userFldr
+            d['__id__'] = user[login_attr]
             d['name'] = user[login_attr]
+            d['roles'] = []
+            d['domains'] = []
             for extra in user.keys():
               if extra == 'pluginid':
                 pluginid = user[extra]
                 plugin = getattr(userFldr,pluginid)
                 d['plugin'] = plugin
                 editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
-                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s (%s)'%(plugin.title_or_id(),plugin.meta_type),plugin.icon)
+                container = userFldr.aq_parent
+                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/> %s</a>'%(editurl,'%s (%s)'%(plugin.title_or_id(),plugin.meta_type),plugin.icon,container.id)
                 t = 'html'
               else:
                 v = unicode(user[extra],encoding).encode('utf-8')
@@ -471,11 +481,22 @@ class AccessManager(AccessableContainer):
       encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       user = self.getValidUserids(search_term=name,exact=True)
       if user is not None:
-        user['details'] = []
         userFldr = user['localUserFldr']
+        # Change password?
+        if userFldr.meta_type == 'User Folder':
+          user['password'] = True
+        elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
+          user['password'] = True
+        # Details (from LDAP schema)?
+        user['details'] = []
+        ldapUserFldr = None
         if userFldr.meta_type == 'LDAPUserFolder':
-          details = userFldr.getUserDetails(encoded_dn=user['dn'],format='dictionary')
-          for schema in userFldr.getLDAPSchema():
+          ldapUserFldr = userFldr
+        elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'LDAP Multi Plugin':
+          ldapUserFldr = getattr(user['plugin'],'acl_users')
+        if ldapUserFldr is not None:
+          details = ldapUserFldr.getUserDetails(encoded_dn=user['dn'],format='dictionary')
+          for schema in ldapUserFldr.getLDAPSchema():
             name = schema[0]
             label = schema[1]
             value = unicode(user.get(name,''),encoding).encode('utf-8')
@@ -834,18 +855,13 @@ class AccessManager(AccessableContainer):
       # Change.
       # -------
       elif btn == self.getZMILangStr('BTN_SAVE'):
-        userObj = self.findUser(id)
         if key=='obj':
-          password = REQUEST.get('password','******')
-          confirm = REQUEST.get('confirm','')
-          if password!='******' and password==confirm:
-            try:
-              userFldr = self.getUserFolder()
-              roles = userObj.getRoles()
-              domains = userObj.getDomains()
-              userFldr.userFolderEditUser(id, password, roles, domains)
-            except: 
-              _globals.writeError(self,'[manage_user]: can\'t change password')
+          user = self.findUser(id)
+          if user.get('password')==True:
+            password = REQUEST.get('password','******')
+            confirm = REQUEST.get('confirm','')
+            forceChangePassword = REQUEST.get('forceChangePassword',0)
+            updateUserPassword(self,user,password,confirm,forceChangePassword)
           self.setUserAttr(id,'email',REQUEST.get('email','').strip())
           self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
         elif key=='attr':

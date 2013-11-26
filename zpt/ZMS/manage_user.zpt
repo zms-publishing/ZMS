@@ -1,37 +1,46 @@
-<tal:block tal:define="global
-		dummy0 python:request.set('fmName',request.get('fmName','form0'));
-		dummy0 python:here.manage_page_request(here,request)">
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'user',here.meta_id])">
 
-<iframe id="iframe0" name="iframe0" stc="" style="display:none" onload="iframe0Load(this)"></iframe>
-<form name="form0" class="form-horizontal" action="manage_user" target="iframe0" method="post" onsubmit="return form0Submit(this);">
+<form name="form0" class="form-horizontal" action="manage_user" method="post" onsubmit="return form0Submit(this);">
 
 <tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
 <input type="hidden" name="lang" tal:attributes="value request/lang"/>
 
- <!-- E-Mail -->
-	<div class="form-group email">
-		<label tal:attributes="class python:'col-sm-2 control-label'+['',' mandatory'][int(here.getConfProperty('EmailMandatory','')!='')]" for="email"><span tal:content="structure python:here.getZMILangStr('ATTR_EMAIL')">the label</span></label>
-		<div class="col-sm-10"><tal:block tal:content="structure python:here.getTextInput(fmName='form0',elName='email',size=25,value=here.getUserAttr(request['AUTHENTICATED_USER'],'email',''))"></tal:block></div>
+<tal:block tal:define="global userObj python:here.findUser(request['AUTHENTICATED_USER'].getId())">
+<tal:block tal:condition="python:userObj is not None">
+	<legend><tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_USER'),userObj['name'])">User: Id</tal:block></legend>
+	<div class="form-group" tal:repeat="userObjDetail userObj/details">
+				<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
+				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=userObjDetail['value'],enabled=False)">the value</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-
- <!-- Password -->
-<tal:block tal:condition="not:python:here.getUserFolder().meta_type=='LDAPUserFolder' and request['AUTHENTICATED_USER'].getId() in here.getUserFolder().getUserNames()">
-	<div class="form-group email">
-		<label class="col-sm-2 control-label" for="password"><span tal:content="structure python:here.getZMILangStr('ATTR_PASSWORD')">the label</span></label>
-		<div class="col-sm-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='password')"></tal:block></div>
+	<tal:block tal:condition="python:userObj.get('password')==True">
+		<div class="form-group">
+			<label for="password" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<label for="confirm" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+	</tal:block>
+	<div class="form-group" tal:condition="python:len(filter(lambda x:x['name'] in ['mail','email'],userObj['details']))==0">
+		<label for="email" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+		<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(userObj['name'],'email',''))">the control</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-	<div class="form-group email">
-		<label class="col-sm-2 control-label" for="confirm"><span tal:content="structure python:here.getZMILangStr('ATTR_CONFIRM')">the label</span></label>
-		<div class="col-sm-10"><tal:block tal:content="structure python:here.getPasswordInput(fmName='form0',elName='confirm')"></tal:block></div>
+	<div class="form-group">
+		<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
+		<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(userObj['name'],'profile',''),enabled=False,REQUEST=request)">the control</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<div class="controls save">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		</div>
 	</div><!-- .form-group -->
 </tal:block>
-
-		<div class="form-group">
-			<div class="controls save">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			</div>
-		</div><!-- .form-group -->
+</tal:block>
 
 </form>
 
@@ -51,17 +60,6 @@ function form0Submit(fm) {
 	return b;
 }
 
-function iframe0Load(sender) {
-	var text = $(sender).contents().text();
-	if (text.trim().length > 0) {
-		var v = eval('('+text+')').trim();
-		if (v.length > 0) {
-			alert(v);
-			self.location.reload();
-		}
-	}
-}
-
 $ZMI.registerReady(function(){
 	$('.form-control:password')
 		.val('******')
@@ -79,4 +77,6 @@ $ZMI.registerReady(function(){
 
 </script>
 
-</tal:block>
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+</body>
+</html>

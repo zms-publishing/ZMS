@@ -471,13 +471,18 @@ ul.zmi-container{width:98% !important}
 ul.zmi-container > .zmi-item > .right{float:left}
 ul.zmi-container .zmi-item .clearboth{float:none;clear:both}
 ul.zmi-container .zmi-item.pageelement .center{background-color:white!important;min-height:4em}
-ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important;padding-top:0.2em;}
+ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important;padding-top:0.2em}
 ul.zmi-container .zmi-item.pageelement .center > *{padding-left:.8em}
 ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid white;padding:3px 6px 3px 1.5em;overflow:hidden}
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}
 #zmiIframe .form-group.activity input.form-element.datetimepicker{width:8.4em !important}
+.horizontal-group .form-group{float:left;margin-right:0.5em}
+.horizontal-group .mandatory span{background:none !important;padding-left:0 !important}
+.horizontal-group .controls{margin-left:0px}
+.horizontal-group .form-group label{float:none;width:auto;text-align:left}
+.horizontal-group .controls.save{margin-top:2.1em}
 .form-horizontal label.col-sm-3.control-label,.form-horizontal label.col-md-3.control-label,.form-horizontal label.col-lg-3.control-label,.form-horizontal label.col-sm-2.control-label,.form-horizontal label.col-md-2.control-label,.form-horizontal label.col-lg-2.control-label{font-weight:normal;color:#75A7C0}
-.form-horizontal .col-lg-10 .form-control{display:block;width:100%;padding:8px 12px;font-size:14px;line-height:1.428571429;color:#555}
+.form-horizontal .col-lg-10 .form-control{display:block;width:100%;padding:6px 12px;font-size:14px;line-height:1.428571429;color:#555}
 .form-horizontal .col-lg-10 input[type="checkbox"]{width:auto;margin:0}
 .form-horizontal .form-group.activity .col-lg-10{padding-left:2em}
 .form-horizontal .form-group.activity{margin-bottom:7px !important}
@@ -547,7 +552,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
 .zmi.metas .horizontal-group label{width:auto;float:none;text-align:left}
 @media(min-width:767px){.zmi.metas .horizontal-group,.zmi.metas .horizontal-group .controls{white-space:nowrap;margin-left:0}
  .zmi.metas .horizontal-group .meta_name,.zmi.metas .horizontal-group .meta_revision,.zmi.metas .horizontal-group .meta_type,.zmi.metas .horizontal-group .meta_package{float:left;margin-right:0.5em}
- .zmi.metas .horizontal-group .controls.save{margin-top:2.1em}
+ .zmi.metas .horizontal-group .controls.save{margin-top:1.7em;margin-left:2.1em}
  .zmi.metas .horizontal-group .meta_name input,.zmi.metas .horizontal-group .meta_revision input,.zmi.metas .horizontal-group .meta_type select,.zmi.metas .horizontal-group .meta_package select{background-color:#f9f9f9 !important}
  .zmi.metas .horizontal-group .meta_name input{width:8.5em}
  .zmi.metas .horizontal-group .meta_revision input{width:14.2em}
@@ -556,6 +561,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
  .zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
 .zmi.metas table.table-striped td.meta-id input,.zmi.metas table.table-striped td.meta-name input,.zmi.metas table.table-striped td.meta-type select,.zmi.metas table.meta-access textarea{width:160px}
 .zmi.metas .form-group.meta_id div,.zmi.metas .form-group.meta_name div,.zmi.metas .form-group.meta_type div,.zmi.metas .form-group.meta_revision div,.zmi.metas .form-group.meta_package div{padding-left:1em}
+.zmi.metas .meta-code,.zmi.metas .meta-resource{overflow:hidden}
 .zmi.metas input[type="file"]{display:inline-block}
 .zmi.metas table.meta-access{margin:4em 0 0}
 .zmi.metas option.deprecated{color:#CCC}

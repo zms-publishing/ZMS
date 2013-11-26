@@ -571,11 +571,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       if portalMaster and self.getConfProperty('Portal.Master',''):
         try:
           thisHome = self.getHome()
-          masterHome = getattr(thisHome,self.getConfProperty('Portal.Master',''))
-          masterDocElmnt = masterHome.content
-          obj_item = masterDocElmnt.breadcrumbs_obj_path()
-          obj_item.extend(rtn)
-          rtn = obj_item
+          masterHome = getattr(thisHome,self.getConfProperty('Portal.Master',''),None)
+          if masterHome is not None:
+            masterDocElmnt = masterHome.content
+            obj_item = masterDocElmnt.breadcrumbs_obj_path()
+            obj_item.extend(rtn)
+            rtn = obj_item
         except:
           _globals.writeError( self, '[breadcrumbs_obj_path]: An unexpected error occured while handling portal master!')
       return rtn

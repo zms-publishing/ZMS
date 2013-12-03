@@ -108,6 +108,20 @@ def deleteUser(self, id):
   self.delUserAttr(id)
 
 
+# ------------------------------------------------------------------------------
+#  _accessmanager.UserFolderIAddUserPluginWrapper:
+# ------------------------------------------------------------------------------
+class UserFolderIAddUserPluginWrapper:
+
+  def __init__(self, userFldr):
+    self.userFldr = userFldr
+
+  def doAddUser( self, login, password ):
+    roles =  []
+    domains =  []
+    self.userFldr.userFolderAddUser(login,password,roles,domains)
+
+
 ################################################################################
 ################################################################################
 ###
@@ -608,6 +622,20 @@ class AccessManager(AccessableContainer):
 
 
     # --------------------------------------------------------------------------
+    #  AccessManager.getUserAdderPlugin:
+    # --------------------------------------------------------------------------
+    def getUserAdderPlugin(self):
+      userFldr = self.getUserFolder()
+      if userFldr.meta_type == 'User Folder':
+        return UserFolderIAddUserPluginWrapper(userFldr)
+      elif userFldr.meta_type == 'Pluggable Auth Service':
+        for plugin_id in userFldr.plugins.getAllPlugins('IUserAdderPlugin')['active']:
+          plugin = getattr(userFldr,plugin_id)
+          return plugin
+      return None
+
+
+    # --------------------------------------------------------------------------
     #  AccessManager.getUserFolder:
     # --------------------------------------------------------------------------
     def getUserFolder(self):
@@ -618,6 +646,7 @@ class AccessManager(AccessableContainer):
         if portalMaster is not None:
           userFldr = portalMaster.getUserFolder()
         else:
+          # Create default user-folder.
           userFldr = UserFolder()
           homeElmnt._setObject(userFldr.id, userFldr)
       else:
@@ -837,9 +866,22 @@ class AccessManager(AccessableContainer):
       if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         id = ''
       
+      # Add.
+      # ----
+      if btn == self.getZMILangStr('BTN_ADD'):
+        newId = REQUEST.get('newId','')
+        newPassword = REQUEST.get('newPassword','')
+        newConfirm = REQUEST.get('newConfirm','')
+        newEmail = REQUEST.get('newEmail','')
+        userAdderPlugin = self.getUserAdderPlugin()
+        userAdderPlugin.doAddUser( newId, newPassword)
+        self.setUserAttr( newId, 'email', newEmail)
+        #-- Assemble message.
+        message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
+      
       # Insert.
       # -------
-      if btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == self.getZMILangStr('BTN_INSERT'):
         langs = REQUEST.get('langs',[])
         if not type(langs) is list: langs = [langs]
         roles = REQUEST.get('roles',[])

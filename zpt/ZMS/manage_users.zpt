@@ -7,6 +7,9 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <script>
+function zmiModalAddUserOpen(context) {
+	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});
+}
 function zmiModalInsertUserOpen(context) {
 	$("#insertUserForm input:radio",context)
 		.change(function() {
@@ -19,6 +22,7 @@ function zmiModalInsertUserOpen(context) {
 
 <tal:block tal:define="global
 		userFolder python:here.getUserFolder();
+		userAdderPlugin python:here.getUserAdderPlugin();
 		userNames python:here.sort_list(here.getConfProperty('ZMS.security.users',{}).keys());
 		valid_roles python:here.difference_list(here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
@@ -176,6 +180,36 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:condition="python:not request.get('id')">
 
 <div class="ui-helper-hidden">
+	<div id="addUser" class="inner">
+		<form id="addUserForm" class="form-horizontal" action="manage_userProperties" method="get" enctype="multipart/form-data">
+		<input type="hidden" name="key" value="obj">
+		<input type="hidden" name="lang" tal:attributes="value request/lang">
+		<div class="form-group">
+			<label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='addUserForm',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<label for="newPassword" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='addUserForm',elName='newPassword')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<label for="newConfirm" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='addUserForm',elName='newConfirm')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<label for="newEmail" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
+			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='addUserForm',elName='newEmail',size=15,value='')">the control</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<div class="controls save">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ADD')" tal:content="python:here.getZMILangStr('BTN_ADD')">Add</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group -->
+		</form>
+	</div><!-- .inner -->
+</div><!-- #addUser -->
+
+<div class="ui-helper-hidden">
 	<div id="insertUser" class="inner">
 		<form id="insertUserForm" class="form-horizontal" method="get" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
@@ -197,7 +231,13 @@ function zmiModalInsertUserOpen(context) {
 					res valid_userids/records;
 					filtered_res python:filter(lambda x:x['name'] not in userNames,res);
 					dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',x['name']),res)">
-				<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=metaObjAttrs,filtered_records=filtered_res,records=res,actions=['select'])">
+				<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+						metaObjAttrIds=metaObjAttrIds,
+						metaObjAttrs=metaObjAttrs,
+						filtered_records=filtered_res,
+						records=res,
+						actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
+						insert='zmiModalAddUserOpen();')">
 					metaobj_recordset_main_grid
 				</tal:block>
 			</tal:block>
@@ -213,7 +253,7 @@ function zmiModalInsertUserOpen(context) {
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th><a class="btn btn-primary" tal:attributes="href python:'?lang=%s&search_term='%request['lang']"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
+			<th><a class="btn btn-primary" tal:attributes="href python:'?lang=%s&search_term='%request['lang']"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block></a></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -245,7 +285,7 @@ function zmiModalInsertUserOpen(context) {
 		<div class="form-group">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
-			</div><!-- .col-sm-10 -->
+			</div><!-- .controls.save -->
 		</div><!-- .form-group -->
 	</div><!-- .inner -->
 </div><!-- #insertRole -->

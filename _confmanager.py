@@ -437,6 +437,24 @@ class ConfManager(
 
 
     """
+    Returns property from request.
+    
+    @param key: The key.
+    @type key: C{string}
+    @param default: The default-value.
+    @type default: C{any}
+    @rtype: C{any}
+    """
+    def getReqProperty(self, key, default=None, REQUEST=None):
+      """ ConfManager.getReqProperty """
+      if REQUEST is not None:
+          authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
+          if not authorized:
+              raise zExceptions.Unauthorized
+      return REQUEST.get(key,default)
+
+
+    """
     Returns property from configuration.
     
     @param key: The key.

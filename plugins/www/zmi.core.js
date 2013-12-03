@@ -243,6 +243,29 @@ function getZMILangStr(key, data) {
 }
 
 /**
+ * Returns request-property.
+ */
+ZMI.prototype.getReqProperty = function(key, defaultValue) {
+	var data  = {}
+	data['key'] = key;
+	if (typeof defaultValue != "undefined") {
+		data['default'] = defaultValue;
+	}
+	var url = this.getPhysicalPath();
+	this.writeDebug(url);
+	if (url.indexOf('/content/')>0) {
+		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+	}
+	this.writeDebug(url+'/getConfProperty');
+	return $.ajax({
+		url: url+'/getReqProperty',
+		data: data,
+		datatype: 'text',
+		async: false
+		}).responseText;
+}
+
+/**
  * Returns conf-property.
  */
 ZMI.prototype.getConfProperty = function(key, defaultValue) {

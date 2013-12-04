@@ -417,7 +417,7 @@ function storeCaret( textEl) {
 		</tal:block
 		><div class="btn-group pull-right"
 			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
-				><img src="/misc_/zms/wysiwyg_off.gif" tal:attributes="title python:request['richedit_fmt'].getDisplay()"/></span
+				><img class="desaturate" tal:attributes="src python:'/++resource++zms_/img/%s.ico'%request['richedit_fmt'].getRichedit(); title python:'%s (%s)'%(request['richedit_fmt'].getDisplay(),request['richedit_fmt'].getRichedit().upper())"/></span
 		></div><!-- .pull-left -->
 
 		<div class="clearfix"></div>

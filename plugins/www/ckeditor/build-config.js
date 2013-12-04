@@ -1,4 +1,4 @@
-﻿
+
 /**
  * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -38,8 +38,8 @@ var CKBUILDER_CONFIG = {
 		'filebrowser' : 1,
 		'floatingspace' : 1,
 		'format' : 1,
-		'htmlwriter' : 1,
 		'horizontalrule' : 1,
+		'htmlwriter' : 1,
 		'wysiwygarea' : 1,
 		'image' : 1,
 		'indentlist' : 1,
@@ -70,12 +70,12 @@ var CKBUILDER_CONFIG = {
 		'listblock' : 1,
 		'indent' : 1,
 		'fakeobjects' : 1,
-		'menubutton' : 1,
+		'menubutton' : 1
 		'find' : 1,
 		'showblocks' : 1
 	},
 	languages : {
 		'en' : 1,
-		'de' : 1,
+		'de' : 1
 	}
 };

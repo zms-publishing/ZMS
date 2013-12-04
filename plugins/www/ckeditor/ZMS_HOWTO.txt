@@ -1,0 +1,11 @@
+HOWTO: install ckeditor in zms-distribution
+================================================================================
+1.) Download from http://ckeditor.com
+2.) extract to /ckeditor.
+2.a) Remove /ckeditor/samples.
+3.a) Remove all languages except de.js and en.js from /ckeditor/lang.
+3.b) /ckeditor/build-config.js: remove all languages except 'de.js' and 'en.js'.
+4.) /ckeditor/build-config.js: add 'find' and 'showblocks' to plugins.
+5.a) Copy /ckeditor/lang to /ckeditor/lingua.
+5.b) /ckeditor/ckeditor.js: replace '"lang/"' by '"lingua/"'
+6.) /ckeditor/config.js: overwrite with file from zms-distribution

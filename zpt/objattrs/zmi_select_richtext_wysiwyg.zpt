@@ -11,7 +11,7 @@
 		</tal:block>
 		<div class="btn-group pull-right">
 			<span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
-				><img src="/misc_/zms/wysiwyg_hover.gif" tal:attributes="title python:request['htmledit_fmt'].getDisplay()"/></span>
+				><img tal:attributes="src python:'/++resource++zms_/img/%s.ico'%request['richedit_fmt'].getRichedit(); title python:'%s (%s)'%(request['htmledit_fmt'].getDisplay(),request['richedit_fmt'].getRichedit().upper())"/></span>
 		</div><!-- .pull-left -->
 
 		<div class="clearfix"></div>

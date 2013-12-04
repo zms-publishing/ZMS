@@ -1,0 +1,44 @@
+<tal:block tal:replace="nothing">
+################################################################################
+###  TinyMCE
+###  please refer to http://www.tinymce.com/
+################################################################################
+</tal:block>
+
+<textarea tal:attributes="id python:'editor_%s'%request['elName']; name python:'editor_%s'%request['elName']"></textarea>
+
+<tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
+
+<script type="text/javascript" src="/++resource++zms_/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+
+function zmiStandardOnSubmitEventHandler(fm) {
+	$ZMI.writeDebug("[zmiStandardOnSubmitEventHandler]");
+	for (var edId in tinyMCE.editors) {
+		$ZMI.writeDebug("[zmiStandardOnSubmitEventHandler]: edId="+edId);
+		tinyMCE.editors[edId].save();
+	}
+}
+
+function zmiRichtextInit(id) {
+	$ZMI.writeDebug("[zmiRichtextInit]: id="+id);
+	$("textarea#editor_"+id).val($("textarea#"+id).val());
+	tinymce.init({
+		selector: "textarea#editor_"+id,
+		plugins: [
+			"searchreplace visualblocks code fullscreen",
+			"table paste"
+		]
+	});
+}
+
+</script>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+$ZMI.registerReady(function() {
+	zmiRichtextInit('<tal:block tal:content="request/elName"></tal:block>');
+});
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+
+<tal:block tal:define="dummy0 python:request.set('f_zmiRichtextOnSubmitEventHandler',False)"></tal:block>
+</tal:block>

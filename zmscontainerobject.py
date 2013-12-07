@@ -626,8 +626,10 @@ class ZMSContainerObject(
           else: 
             css.append( 'inactive')
             css.append( ob.meta_id + '0')
-          if ob.getObjProperty( 'attr_dc_accessrights_restricted', REQUEST):
+          if ob.attr( 'attr_dc_accessrights_restricted'):
             css.append( 'restricted')
+          if len(ob.filteredChildNodes(REQUEST,self.PAGES))>0:
+            css.append( 'childpages')
           items.append('<li')
           items.append(' class="%s"'%(' '.join(css)))
           items.append('>')

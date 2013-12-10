@@ -432,18 +432,72 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSSqlDb.getEntityQuery:
+    # --------------------------------------------------------------------------
+    def getEntityQuery(self, tableName, query):
+      columns = self.getEntity(tableName)['columns']
+      q = []
+      for r in query['records']:
+        d = {}
+        for k in r.keys():
+          column = self.getEntityColumn(tableName,k,r)
+          d[k] =  column.get('value',r[k])
+        q.append(d)
+      return q
+
+
+    # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntityColumn:
     # --------------------------------------------------------------------------
     def getEntityColumn(self, tableName, columnName, row=None):
+      request = self.REQUEST
+      lang = request.get('lang',self.getPrimaryLanguage())
       encoding = getattr(self,'charset','utf-8')
       qcharset = self.REQUEST.get('qcharset','utf-8')
       columns = self.getEntity( tableName)['columns']
       column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
       column['id'] = column['id'].lower()
+      column['label'] = self.getLangStr(column['label'],lang)
       # Checkbox
       stereotype = column.get('checkbox')
       if stereotype not in ['',None]:
         column['type'] = 'boolean'
+      # Blob
+      stereotype = column.get('blob')
+      if stereotype not in ['',None]:
+        value = None
+        column['type'] = stereotype['type']
+        if row is not None:
+          primary_key = self.getEntityPK(tableName)
+          rowid = self.sql_quote__(tableName,primary_key,self.operator_getitem(row,primary_key,ignorecase=True))
+          class BlobWrapper:
+            def __init__(self, tableName, columnName, rowid, blob):
+              self.tableName = tableName
+              self.columnName = columnName
+              self.rowid = rowid
+              self.blob = blob
+            getHref__roles__=None
+            def getHref(self,request):
+              return 'get_blob?tablename=%s&id=%s&rowid=%s'%(self.tableName,self.columnName,rowid)
+            getContentType__roles__=None
+            def getContentType(self):
+              return self.blob.getContentType()
+            getFilename__roles__ = None
+            def getFilename(self):
+              return self.blob.filename
+            getWidth__roles__ = None
+            def getWidth(self):
+              return self.blob.getWidth()
+            getHeight__roles__ = None
+            def getHeight(self):
+              return self.blob.getHeight()
+            get_size__roles__ = None
+            def get_size(self):
+              return self.blob.get_size()
+          blob = self._get_blob(tableName,columnName,rowid)
+          if blob is not None:
+            value = BlobWrapper(tableName,columnName,rowid,blob)
+        column['value'] = value
       # Text
       stereotype = column.get('text')
       if stereotype not in ['',None]:
@@ -1274,10 +1328,10 @@ class ZMSSqlDb(ZMSObject):
           elif values.get('blob_%s'%id,None) is not None and values.get('blob_%s'%id).filename:
             data = values.get('blob_%s'%id,None)
             file = self.FileFromData( data, data.filename)
-            xml = file.toXml()
             if remote is None:
-              value = self._set_blob(tablename=tablename,id=id,rowid=rowid,xml=xml)
+              value = self._set_blob(tablename=tablename,id=id,rowid=rowid,file=file)
             else:
+              xml = file.toXml()
               value = self.http_import(self.url_append_params(remote+'/set_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}),method='POST')
             c.append({'id':id,'value':value})
           consumed = True
@@ -1458,9 +1512,10 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
-    #  ZMSSqlDb.set_blob:
+    #  ZMSSqlDb._set_blob:
     # --------------------------------------------------------------------------
-    def _set_blob( self, tablename, id, rowid=None, xml=None):
+    def _set_blob( self, tablename, id, rowid=None, file=None, xml=None):
+      print "ZMSSqlDb._set_blob",tablename,id
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
@@ -1468,7 +1523,8 @@ class ZMSSqlDb(ZMSObject):
       column = self.getEntityColumn( tablename, id)
       blob = column['blob']
       path = blob['path']
-      file = self.parseXmlString( xml)
+      if file is None and xml is not None:
+        file = self.parseXmlString( xml)
       # Normalize filename (crop path in local-fs)
       filename = file.filename
       i = max( filename.rfind('/'), filename.rfind('\\'))
@@ -1511,11 +1567,9 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
-    #  ZMSSqlDb.get_blob:
+    #  ZMSSqlDb._get_blob:
     # --------------------------------------------------------------------------
-    security.declareProtected('View', 'get_blob')
-    def get_blob( self, tablename, id, rowid, REQUEST, RESPONSE):
-      """ ZMSSqlDb.get_blob """
+    def _get_blob( self, tablename, id, rowid, REQUEST=None):
       data = ''
       tabledefs = self.getEntities()
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
@@ -1533,9 +1587,23 @@ class ZMSSqlDb(ZMSObject):
         for r in self.query( sqlStatement)['records']:
           filename = r['v']
           data = self.localfs_read( path+filename, REQUEST=REQUEST)
+          if blob['type'] == 'image':
+            return self.ImageFromData(data,filename)
+          else:
+            return self.FileFromData(data,filename)
       except:
-        raise zExceptions.InternalError(_globals.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement))
-      return data
+        _globals.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement)
+      return None
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSSqlDb.get_blob:
+    # --------------------------------------------------------------------------
+    security.declareProtected('View', 'get_blob')
+    def get_blob( self, tablename, id, rowid, REQUEST=None, RESPONSE=None):
+      """ ZMSSqlDb.get_blob """
+      blob = self._get_blob( tablename, id, rowid, REQUEST)
+      return blob.getData()
 
 
     ############################################################################

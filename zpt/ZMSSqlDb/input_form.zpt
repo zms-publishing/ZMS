@@ -28,8 +28,8 @@
 			<tal:block tal:condition="python:not column.has_key('details')" tal:define="global
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 					elName python:metaObjAttr['id'];
-					elLabel python:metaObjAttr['label'];
-					elValue python:here.operator_getitem(row,elName,ignorecase=True);">
+					elLabel python:here.metaObjAttr['label'];
+					elValue python:here.operator_getitem(row,elName,ignorecase=True)">
 
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
 			<div tal:condition="not:python:column['id'].lower() in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
@@ -156,7 +156,7 @@
 				##### Default ##########################################################
 				</tal:block>
 				<div class="col-sm-9 col-md-10" tal:condition="python:not done">
-					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=elValue,REQUEST=request)">the control</tal:block>
+					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=metaObjAttr.get('value',elValue),REQUEST=request)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->
 

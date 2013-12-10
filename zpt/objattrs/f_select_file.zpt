@@ -12,7 +12,7 @@
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']">
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0">
 
-		<tal:block tal:condition="python:value">
+		<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 			<div class="btn-group">
 				<a class="btn btn-default" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
 					<img tal:attributes="src python:here.getMimeTypeIconSrc(value.getContentType()); title python:value.getContentType()"/>

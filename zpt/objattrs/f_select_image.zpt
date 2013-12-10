@@ -58,7 +58,7 @@
 
 	<div class="pull-left">
 
-		<tal:block tal:condition="python:value">
+		<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 			<div class="pull-left">
 				<div class="btn-group">
 					<a class="btn btn-default" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
@@ -114,7 +114,7 @@
 
 	<div class="pull-right">
 
-		<tal:block tal:condition="python:value">
+		<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 				<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
@@ -122,7 +122,7 @@
 			</div>
 		</tal:block>
 
-		<tal:block tal:condition="python:not value">
+		<tal:block tal:condition="not:python:value is not None and here.operator_gettype(value) is not str">
 			<div class="zmi-image-info">
 				<a tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
 				<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:''">the dimensions</span>

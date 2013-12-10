@@ -835,6 +835,12 @@ table.table.zmi-sortable input {
 	margin-left:2em;
 	margin-right:2em;
 }
+.ZMSRecordSet a.thumbnail {
+	max-width:3.0em!important;
+	max-height:3.0em!important;
+	padding:.2em!important;
+	margin:0!important;
+}
 .ZMSRecordSet .table tr td:first-child,
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;

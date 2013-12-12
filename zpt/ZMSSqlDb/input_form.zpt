@@ -28,7 +28,7 @@
 			<tal:block tal:condition="python:not column.has_key('details')" tal:define="global
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 					elName python:metaObjAttr['id'];
-					elLabel python:here.metaObjAttr['label'];
+					elLabel python:metaObjAttr['label'];
 					elValue python:here.operator_getitem(row,elName,ignorecase=True)">
 
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>

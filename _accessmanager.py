@@ -82,6 +82,7 @@ def role_permissions(self, role):
 def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
   if password!='******' and password==confirm:
     userFldr = user['localUserFldr']
+    id = user['name']
     if userFldr.meta_type == 'User Folder':
       roles = userFldr.getUser(id).getRoles()
       domains = userFldr.getUser(id).getDomains()

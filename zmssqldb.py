@@ -432,18 +432,21 @@ class ZMSSqlDb(ZMSObject):
 
 
     # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getEntityQuery:
+    #  ZMSSqlDb.getEntityRecordHandler
     # --------------------------------------------------------------------------
-    def getEntityQuery(self, tableName, query):
-      columns = self.getEntity(tableName)['columns']
-      q = []
-      for r in query['records']:
-        d = {}
-        for k in r.keys():
-          column = self.getEntityColumn(tableName,k,r)
-          d[k] =  column.get('value',r[k])
-        q.append(d)
-      return q
+    def getEntityRecordHandler(self, tableName):
+      class EntityRecordHandler:
+        def __init__(self, parent, tableName):
+          self.parent = parent 
+          self.tableName = tableName
+        __call____roles__ = None
+        def __call__(self, r):
+          d = {}
+          for k in r.keys():
+            column = self.parent.getEntityColumn(self.tableName,k,r)
+            d[k] =  column.get('value',r[k])
+          return d
+      return EntityRecordHandler(self,tableName)
 
 
     # --------------------------------------------------------------------------

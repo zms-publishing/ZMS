@@ -40,7 +40,7 @@
 			query python:here.query(resSlctStmnt,encoding=encoding);
 			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],entity['columns']));
 			dummy0 python:metaObjAttrs.extend(map(lambda x:here.getEntityColumn(entity['id'],x),metaObjAttrIds));
-			dummy0 python:res.extend(here.getEntityQuery(entity['id'],query))">
+			dummy0 python:res.extend(query['records'])">
 	</tal:block>
 
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
@@ -154,7 +154,7 @@
 </form>
 
 <tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
-	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=res,records=res,url_params={'qentity':request.get('qentity')})">
+	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=res,records=res,url_params={'qentity':request.get('qentity')},record_handler=here.getEntityRecordHandler(entity['id']))">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>

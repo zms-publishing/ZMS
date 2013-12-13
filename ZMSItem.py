@@ -100,18 +100,13 @@ class ZMSItem(
       RESPONSE.setHeader('Content-Type', 'text/html;charset=%s'%request['ZMS_CHARSET'])
       if not request.get( 'preview'):
         request.set( 'preview','preview')
-      if not request.get( 'lang'):
-        request.set( 'lang',self.getPrimaryLanguage())
-      if not request.get( 'manage_lang'):
-        request.set('manage_lang',SESSION.get('manage_lang',self.get_manage_lang()))
-      SESSION.set('manage_lang',request['manage_lang'])
+      langs = self.getLanguages(request)
+      if request.get('lang') not in langs:
+        request.set('lang',langs[0])
+      if request.get('manage_lang') not in self.getLocale().get_manage_langs():
+        request.set('manage_lang',self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message',self.updateVersion(request['lang'],request)+self.getConfProperty('ZMS.manage_tabs_message',''))
-      if request['lang'] not in self.getLanguages(request):
-        request.set('lang',self.getLanguages(request)[0])
-        request.set('manage_lang',self.get_manage_lang())
-      if request['manage_lang'] not in self.getLocale().get_manage_langs():
-        request.set('manage_lang','eng')
 
     def f_standard_html_request(self, *args, **kwargs):
       request = self.REQUEST

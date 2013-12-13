@@ -144,8 +144,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.f_css_defaults:
     # --------------------------------------------------------------------------
-    def f_css_defaults(self, REQUEST):
+    def f_css_defaults(self, REQUEST=None):
       """ ZMSObject.f_css_defaults """
+      if REQUEST is None:
+        REQUEST = self.REQUEST
       return self.zmi_css_defaults(REQUEST)
 
     def zmi_css_defaults(self, REQUEST):

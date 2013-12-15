@@ -11,6 +11,9 @@
 			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
 				<textarea id="text" tal:attributes="name name" class="X_ui-helper-hidden" tal:content="ob/raw" style="width:100%;height:200px;font-size:smaller;font-family:monospace;">The object</textarea>
 			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type in ['File']">
+				<textarea id="text" tal:attributes="name name" class="X_ui-helper-hidden" tal:content="ob/data" style="width:100%;height:200px;font-size:smaller;font-family:monospace;">The object</textarea>
+			</tal:block>
 			<tal:block tal:condition="python:ob.meta_type in ['Page Template','Script (Python)']">
 				<textarea id="text" tal:attributes="name name" class="X_ui-helper-hidden" tal:content="ob/read" style="width:100%;height:200px;;font-size:smaller;font-family:monospace;">The object</textarea>
 			</tal:block>

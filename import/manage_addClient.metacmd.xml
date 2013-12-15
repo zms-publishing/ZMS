@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
-  <item key="custom"/>
   <item key="data"><![CDATA[# Import a standard function, and get the HTML request and response objects.
 from Products.PythonScripts.standard import html_quote
 request = container.REQUEST
@@ -8,11 +8,10 @@ RESPONSE =  request.RESPONSE
 
 print context.manage_page_header(context,request)
 print context.manage_tabs(context,request)
-print context.f_headline(context,headline='Insert client...')
-print '<form method="post" enctype="multipart/form-data">'
+print '<form classs="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print context.zmi_form_section_begin(context,request)
+print '<legend>Insert client...</legend>'
 
 # --- Insert client.
 # ---------------------------------
@@ -33,37 +32,36 @@ if request.form.get('btn')==context.getZMILangStr('BTN_INSERT'):
 # --- Display initial insert form.
 # ---------------------------------
 else:
-	print '<tr valign="middle">'
-	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_ID'))
-	print '<td class="form-element"><input class="form-element" name="id" type="text" size="25"></td>'
-	print '</tr>'
-	print '<tr valign="middle">'
-	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_TITLE'))
-	print '<td class="form-element"><input class="form-element" name="title" type="text" size="50"></td>'
-	print '</tr>'
-	print '<tr valign="middle">'
-	print '<td class="form-label">%s</td>'%(context.getZMILangStr('ATTR_TITLEALT'))
-	print '<td class="form-element"><input class="form-element" name="titlealt" type="text" size="80"></td>'
-	print '</tr>'
-	print '<tr valign="middle">'
-	print '<td>&nbsp;</td>'
-	print '<td>'
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_INSERT')
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_CANCEL')
-	print '</td>'
-	print '</tr>'
+	print '<div class="form-group">'
+	print '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(context.getZMILangStr('ATTR_ID'))
+	print '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25"></div>'
+	print '</div>'
+	print '<div class="form-group">'
+	print '<label for="title" class="col-sm-3 control-label mandatory">%s</label>'%(context.getZMILangStr('ATTR_TITLE'))
+	print '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50"></div>'
+	print '</div>'
+	print '<div class="form-group">'
+	print '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(unicode(context.getZMILangStr('ATTR_TITLEALT'),'utf-8'))
+	print '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80"></div>'
+	print '</div>'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_INSERT'),'utf-8'),unicode(context.getZMILangStr('BTN_INSERT'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div>'
 
 # ---------------------------------
 
-print context.zmi_form_section_end(context,request)
 print '</form>'
 print context.manage_page_footer(context,request)
 
 return printed
 ]]>
   </item>
-  <item key="description"/>
+  <item key="description"></item>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"></item>
   <item key="id"><![CDATA[manage_addClient]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

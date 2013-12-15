@@ -111,8 +111,8 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-3 control-label mandatory" for="_type"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
-						<div class="col-sm-9">
-					<select name="_type">
+				<div class="col-sm-9">
+					<select class="form-control" name="_type">
 						<option value="Script (Python)">Script (Python)</option>
 						<option value="Page Template">Page Template</option>
 					</select>

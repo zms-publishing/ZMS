@@ -421,7 +421,8 @@ class ZMS(
       opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
       opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
-      opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
+      if not self.getAutocommit() or self.getHistory():
+        opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
       opts.append({'label': 'TAB_CONFIGURATION','action': 'manage_customize'})
       opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
       opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'})

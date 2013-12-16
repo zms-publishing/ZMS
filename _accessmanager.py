@@ -108,7 +108,6 @@ def deleteUser(self, id):
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
 
-
 # ------------------------------------------------------------------------------
 #  _accessmanager.UserFolderIAddUserPluginWrapper:
 # ------------------------------------------------------------------------------
@@ -116,11 +115,21 @@ class UserFolderIAddUserPluginWrapper:
 
   def __init__(self, userFldr):
     self.userFldr = userFldr
+    self.id = userFldr.id
+    self.meta_type = userFldr.meta_type
+    self.icon = userFldr.icon
 
+  absolute_url__roles__ = None
+  def absolute_url( self):
+    return self.userFldr.absolute_url()
+  
   def doAddUser( self, login, password ):
     roles =  []
     domains =  []
     self.userFldr.userFolderAddUser(login,password,roles,domains)
+  
+  def removeUser( self, login):
+    self.userFldr.userFolderDelUsers([login])
 
 
 ################################################################################
@@ -914,10 +923,14 @@ class AccessManager(AccessableContainer):
       
       # Delete.
       # -------
-      elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
+      elif btn in ['delete', 'remove', self.getZMILangStr('BTN_DELETE')]:
         if key=='obj':
           #-- Delete user.
           deleteUser(self,id)
+          #-- Remove user.
+          if btn == 'remove':
+            userAdderPlugin = self.getUserAdderPlugin()
+            userAdderPlugin.removeUser( id)
           id = ''
           #-- Assemble message.
           message = self.getZMILangStr('MSG_DELETED')%int(1)

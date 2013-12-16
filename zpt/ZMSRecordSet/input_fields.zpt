@@ -59,19 +59,21 @@
 								fkMetaObjRecordSet python:fkContainer.attr(fkMetaObjAttrIdRecordSet);
 								fkMetaObjIdId python:here.getMetaobjAttrIdentifierId(fkContainer.meta_id)">
 							<tal:block tal:repeat="fkMetaObjRecord fkMetaObjRecordSet">
-								<tal:block tal:define="global dummy0 python:fkContainer.metaobj_record_summary(metaObj=fkMetaObj,row=fkMetaObjRecord,REQUEST=request)">
-									<tal:block tal:define="global dummy0 python:options.append((here.string_maxlen(request['summary'],50),fkMetaObjRecord[fkMetaObjIdId]))"></tal:block>
+								<tal:block tal:define="global
+										fkMetaObjAttrs python:filter(lambda x:x['type']=='string' and fkMetaObjRecord.get(x['id'],'')!='',fkMetaObj['attrs']);
+										fkSummary python:', '.join(map(lambda x:str(fkMetaObjRecord.get(x['id'])),fkMetaObjAttrs))">
+									<tal:block tal:define="global dummy0 python:options.append((here.string_maxlen(fkSummary,50),fkMetaObjRecord[fkMetaObjIdId]))"></tal:block>
 								</tal:block>
 							</tal:block>
 							<tal:block tal:define="global dummy0 python:options.sort()"></tal:block>
-							<div class="input-append">
+							<div class="input-group">
 								<select class="form-control" tal:attributes="name python:metaObjAttr['id']">
 									<option tal:condition="python:not metaObjAttr.get('mandatory',0)" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%metaObjAttr['name']"></option>
 									<tal:block tal:repeat="option options">
 										<option tal:attributes="value python:option[1]; selected python:['','selected'][int(str(option[1])==str(row.get(metaObjAttr['id'])))]" tal:content="python:option[0]"></option>
 									</tal:block>
 								</select>
-								<a class="add-on btn zmi-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val()'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'])"><tal:block tal:content="structure python:here.zmi_icon(name='icon-eject')"></tal:block></a>
+								<span class="input-group-addon ui-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s\'+($(\'select[name=%s]\').val().length==0?\'\':\'&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val())'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'],metaObjAttr['id'])"><tal:block tal:content="structure python:here.zmi_icon(name='icon-eject')"></tal:block></span>
 							</div><!-- .input-append -->
 						</tal:block>
 					</tal:block>

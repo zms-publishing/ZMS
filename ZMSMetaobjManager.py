@@ -250,7 +250,7 @@ class ZMSMetaobjManager:
             for key in ['keys','custom','default']:
               if attr.has_key(key) and not attr[key]:
                 del attr[key]
-            for key in ['sync','py','zpt']:
+            for key in ['sync','ob','py','zpt']:
               if attr.has_key(key):
                 del attr[key]
             attrs.append( attr)

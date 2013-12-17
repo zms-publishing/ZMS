@@ -4329,6 +4329,7 @@ return zmscontext.attr('text')
 
 	<div class="ZMSTeaserElement" tal:define="global 
 		url           python:here.getLinkUrl(here.attr('attr_url'),request);
+		target_url    python:['_self','_blank'][here.attr('attr_url').rfind('://')>0];
 		img_src_attr  python:here.attr('attr_img_src');
 		img_src       python:img_src_attr+'?';
 		img_filename  python:img_src[img_src.rfind('/')+1:img_src.find('?')];
@@ -4346,22 +4347,22 @@ return zmscontext.attr('text')
 				
 				<tal:block tal:condition="python:displaytype=='top'">
 					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
 					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure title_txt">The title</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
 				</tal:block>
 				
 				<tal:block tal:condition="python:displaytype=='right'">
 					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
 					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure title_txt">The title</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
 					<div class="clearfloating" style="clear:both">&nbsp;</div>
@@ -4369,22 +4370,22 @@ return zmscontext.attr('text')
 				
 				<tal:block tal:condition="python:displaytype=='bottom'">
 					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure title_txt">The title</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
 					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
 				</tal:block>
 				
 				<tal:block tal:condition="python:displaytype=='left'">
 					<div class="graphic" tal:condition="python:img_filename">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure img">The image</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure img">The image</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure img">The image</span>
 					</div>
 					<div class="title" tal:condition="python:title_txt">
-						<a tal:condition="python:url" tal:attributes="href url; title title_url" tal:content="structure title_txt">The title</a>
+						<a tal:condition="python:url" tal:attributes="href url; title title_url; target target_url" tal:content="structure title_txt">The title</a>
 						<span tal:condition="python:not url" tal:omit-tag="" tal:content="structure title_txt">The title</span>
 					</div>
 					<div class="clearfloating" style="clear:both">&nbsp;</div>

@@ -80,11 +80,14 @@
 	</select>
 
 	<legend>
-		<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
-			<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block> 
-			<tal:block tal:content="python:metaObj['name']">Name</tal:block>
-		</a>
+		<span tal:attributes="id metaObj/id">
+			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+				<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
+				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block> 
+				<tal:block tal:content="python:metaObj['name']">Name</tal:block>
+			</a>
+			<i tal:attributes="class python:' '.join(['zms_system-toggle','ui-helper-clickable','icon-refresh']+[['silver'],['black']][int(metaObj.get('zms_system'))])" title="default (auto-refresh)" onclick="zmiZmsSystemBtnClick(this)"></i>
+		</span>
 	</legend>
 	<div class="horizontal-group">
 		<div class="form-group meta_name">
@@ -379,6 +382,7 @@
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong>[default package]</strong>
 					</tal:block>
+					<i tal:condition="python:metaObj.get('zms_system')" class="icon-refresh" title="default (auto-refresh)"></i>
 					<tal:block tal:content="python:metaObj.get('revision',['','0.0.0'][int(len(metaObjPackage)>0)])">the revision</tal:block>
 				</td>
 			</tr>
@@ -401,9 +405,10 @@
 				<td>
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj['enabled']==True])">
 						<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
-						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][metaObj['enabled']==True])" onclick="zmiEnableBtnClick(this)"></i>
+						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][metaObj['enabled']==True])" onclick="zmiEnabledBtnClick(this)"></i>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank" tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" tal:content="metaObj/name">the name</a>
+						<i tal:attributes="class python:' '.join(['zms_system-toggle','ui-helper-clickable','icon-refresh']+[['silver'],['black']][int(metaObj.get('zms_system'))])" title="default (auto-refresh)" onclick="zmiZmsSystemBtnClick(this)"></i>
 						<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)
 					</span>
@@ -427,25 +432,51 @@
 /**
  *
  */
-function zmiEnableBtnClick(sender) {
-	var $container = $(sender).closest("span");
+function zmiEnabledBtnClick(sender) {
+	var $sender = $(sender);
+	var $container = $sender.closest("span");
 	var id = $container.attr("id");
-	var enabled = $container.hasClass("enabled")?0:1;
+	var b = $container.hasClass("enabled")?0:1;
 		// Set wait-cursor.
-		$(document.body).css( "cursor", "wait");
+		$ZMI.setCursorWait("zmiEnabledBtnClick");
 		// JQuery.AJAX.get
-		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+enabled,function(data) {
+		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setEnabled:int="+b,function(data) {
 			// Reset wait-cursor.
-			$(document.body).css( "cursor", "auto");
+			$ZMI.setCursorAuto("zmiEnabledBtnClick");
 			// Get object-id.
-			var enabled = $("result",data).attr("enabled");
-			if (enabled=="1") {
+			var b = $("result",data).attr("enabled");
+			if (b=="1") {
 				$container.addClass("enabled");
 				$('.enabled-toggle',$container).removeClass("icon-check-empty").addClass("icon-check");
 			}
 			else {
 				$container.removeClass("enabled");
 				$('.enabled-toggle',$container).removeClass("icon-check").addClass("icon-check-empty");
+			}
+		});
+}
+
+/**
+ *
+ */
+function zmiZmsSystemBtnClick(sender) {
+	var $sender = $(sender);
+	var $container = $sender.closest("span");
+	var id = $container.attr("id");
+	var b = $sender.hasClass("black")?0:1;
+		// Set wait-cursor.
+		$ZMI.setCursorWait("zmiZmsSystemBtnClick");
+		// JQuery.AJAX.get
+		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setZms_system:int="+b,function(data) {
+			// Reset wait-cursor.
+			$ZMI.setCursorAuto("zmiZmsSystemBtnClick");
+			// Get object-id.
+			var b = $("result",data).attr("zms_system");
+			if (b=="1") {
+				$sender.removeClass("silver").addClass("black");
+			}
+			else {
+				$sender.removeClass("black").addClass("silver");
 			}
 		});
 }

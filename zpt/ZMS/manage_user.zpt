@@ -47,13 +47,29 @@
 <script>
 function form0Submit(fm) {
 	var b = true;
+	$(".has-error",fm).removeClass("has-error");
 	if (self.btnClicked==getZMILangStr('BTN_SAVE')) {
 		if (fm.elements['password'] && fm.elements['confirm']) {
 			b = b && !disallowBlank(fm.elements['password'],getZMILangStr('MSG_REQUIRED').replace(/\%s/gi,getZMILangStr('ATTR_PASSWORD')),false);
 			b = b && !disallowBlank(fm.elements['confirm'],getZMILangStr('MSG_REQUIRED').replace(/\%s/gi,getZMILangStr('ATTR_CONFIRM')),false);
-			if (fm.elements['password'].value!=fm.elements['confirm'].value) {
-				b = false;
+			var $password = $("input[name=password]",fm);
+			var $confirm = $("input[name=confirm]",fm);
+			if ($password.val()!=$confirm.val()) {
+				var $controlGroup = $confirm.parents(".form-group");
+				$controlGroup.addClass("has-error");
 				alert(getZMILangStr('ATTR_PASSWORD')+'<>'+getZMILangStr('ATTR_CONFIRM')+'!');
+				b = false;
+			}
+			var password_regexp = $ZMI.getConfProperty('zms.password.regexp','');
+			var password_hint = $ZMI.getConfProperty('zms.password.hint','');
+			if (password_regexp.length>0) {
+				var re = new RegExp(password_regexp,"g");
+				if (!$password.val().match(re)) {
+					var $controlGroup = $password.parents(".form-group");
+					$controlGroup.addClass("has-error");
+					alert(password_hint);
+					b = false;
+				}
 			}
 		}
 	}
@@ -61,6 +77,11 @@ function form0Submit(fm) {
 }
 
 $ZMI.registerReady(function(){
+	var password_regexp = $ZMI.getConfProperty('zms.password.regexp','');
+	var password_hint = $ZMI.getConfProperty('zms.password.hint','');
+	$('.form-control[name=password]:password')
+		.attr('title',password_hint)
+		.tooltip({html:true,placement:'bottom'});
 	$('.form-control:password')
 		.val('******')
 		.focus(function() {

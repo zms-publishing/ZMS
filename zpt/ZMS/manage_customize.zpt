@@ -141,6 +141,8 @@ $ZMI.registerReady(function(){
 				{'key':'ZMS.blobfields.accept_ranges','title':'Http-Header Accept-Ranges for blob-fields','desc':'Http-Header Accept-Ranges for blob-fields.','datatype':'string','default':'bytes'},
 				{'key':'ZMS.compactview.pagecount.min','title':'Compact-view','desc':'ZMS can display object-lists longer than specified parameter as compact-view.','datatype':'string'},
 				{'key':'ZMS.locale.amount.unit','title':'Currency unit for amount-types','desc':'The currency unit used for amount-types.','datatype':'string','default':'EUR'},
+				{'key':'ZMS.password.regexp','title':'Password Regular Expression','desc':'Regular Expression for validation of new passwords.','datatype':'string','default':''},
+				{'key':'ZMS.password.hint','title':'Password Hint','desc':'Hint for validation of new passwords.','datatype':'string','default':''},
 				{'key':'ZMS.pathhandler','title':'Declarative URLs','desc':'ZMS can use declarative URLs based on DC.Identifier.Url.Node (or DC.Title.Alt).','datatype':'boolean'},
 				{'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0}, 
 				{'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
@@ -165,7 +167,6 @@ $ZMI.registerReady(function(){
 				{'key':'ZCatalog.portalClients','title':'Search portal-clients','desc':'Allow search in portal-clients','datatype':'boolean','default':1},
 				{'key':'ZCatalog.TextIndexNG','title':'Search binaries with TextIndexNG','desc':'Use TextIndexNG for catalog-indexing of binaries.','datatype':'boolean'},
 				{'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
-				{'key':'zmi.theme','title':'ZMI Theme','desc':'Classic DTML-Jquery-UI or new ZPT-bootstrap theme','datatype':'string','options':['dtml','zpt'],'default':'zpt'},
 				];
 			res_keys python:map(lambda x: x['key'],here.sort_list(res,'title','asc'))">
 			<div class="form-group">

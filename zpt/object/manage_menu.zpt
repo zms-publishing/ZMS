@@ -4,7 +4,7 @@
 
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'manage-menu',here.meta_id])">
 
-<div id="zmi-header">
+<div id="zmi-sitemap-header">
 	<div class="navbar" style="position: static;">
 				<a class="navbar-brand zmi-helper-clickable" target="_blank" tal:attributes="href python:'%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
@@ -16,7 +16,7 @@
 					<i class="icon-angle-right" title="Move To Right" onclick="frmresize(30)" style="color:#aaa">&nbsp;</i>
 				</div>
 	</div><!-- .navbar -->
-</div><!-- #zmi-header -->
+</div><!-- #zmi-sitemap-header -->
 
 <div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]"
 	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block

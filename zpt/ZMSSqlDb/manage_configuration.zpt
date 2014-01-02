@@ -274,7 +274,7 @@ function mms_normalize_rows(el_tbody) {
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 					</td>
 					<td><input class="form-control input-xs" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
-					<td><input class="form-control input-xs" tal:attributes="name python:'attr_display_%s:int'%column['id']; checked python:['','checked'][int(not column.get('hide',0))]" value="1" type="checkbox"/></td>
+					<td><input tal:attributes="name python:'attr_display_%s:int'%column['id']; checked python:['','checked'][int(not column.get('hide',0))]" value="1" type="checkbox"/></td>
 					<td>
 						<select class="form-control input-xs" tal:attributes="name python:'attr_type_%s'%column['id']" onchange="onAttrTypeChange(this)">
 							<option value=""></option>
@@ -464,7 +464,7 @@ function mms_normalize_rows(el_tbody) {
 					<td><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 					<td><input class="form-control input-xs" name="attr_id" type="text"/></td>
 					<td><input class="form-control input-xs" name="attr_label" type="text"/></td>
-					<td><input class="form-control input-xs" name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
+					<td><input name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
 					<td>
 						<select class="form-control input-xs" name="attr_type">
 							<option value=""></option>

@@ -131,14 +131,14 @@
 
 	<table class="table table-striped table-bordered zmi-sortable">
 		<colgroup>
-			<col width="6em"/>
-			<col/>
-			<col/>
-			<col/>
-			<col width="1em"/>
-			<col width="1em"/>
-			<col width="1em"/>
-			<col width="100%"/>
+			<col style="width:6em" />
+			<col />
+			<col />
+			<col />
+			<col style="width:1em" />
+			<col style="width:1em" />
+			<col style="width:1em" />
+			<col style="width:100%" />
 		</colgroup>
 		<thead>
 			<tr>

@@ -81,18 +81,28 @@ function zmiFormSubmit(sender,d) {
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METADICT')">well</p>
 
 	<table class="table table-striped table-bordered zmi-sortable">
+	<colgroup>
+		<col style="width:6em" />
+		<col />
+		<col />
+		<col />
+		<col style="width:1em" />
+		<col style="width:1em" />
+		<col style="width:1em" />
+		<col style="width:100%" />
+	</colgroup>
 	<thead>
 	<tr>
 		<th class="meta-sort">
-				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
-				</div>
+			<div class="btn-group" style="width:6em;">
+				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+			</div>
 		</th>
 		<th class="meta-id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 		<th class="meta-name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 		<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
-		<th class="meta-mandatory"  tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
+		<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
 		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
 		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block></th>
 		<th></th>
@@ -132,7 +142,7 @@ function zmiFormSubmit(sender,d) {
 			<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('mandatory',0)==1)]" value="1" /></td>
 			<td class="meta-multilang"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('multilang',0)==1)]" value="1" /></td>
 			<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]" value="1" /></td>
-			<td>
+			<td class="meta-default">
 				<div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
 					<textarea class="form-control input-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>

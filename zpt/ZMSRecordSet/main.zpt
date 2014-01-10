@@ -63,7 +63,6 @@
 			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<div class="form-inline" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<div class="form-group">
-						<label class="sr-only" tal:attributes="for python:'filterattr%i'%filterIndex">Filter Index</label>
 						<select style="min-width:17em;" class="pull-left form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 							<option value="" tal:content="python:'--- %s ---'%(here.getZMILangStr('ACTION_SELECT')%('%s%i'%(here.getZMILangStr('ATTR_FILTER'),filterIndex+1)))">--- Select filter ---</option>
 							<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -74,7 +73,6 @@
 						</select>
 						</div>
 						<div class="form-group">
-							<label class="sr-only" tal:attributes="for python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')">Password</label>
 							<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),'')" />
 						</div>
 				</div><!-- .form-inline -->

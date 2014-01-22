@@ -961,6 +961,23 @@ table.table.zmi-sortable input {
 	color:#999;
 }
 
+#insertUserForm .ZMSRecordSet {
+    overflow: hidden;
+	margin-left: -15px;
+	padding-left: 1px;
+}
+#insertUserForm .ZMSRecordSet .pagination {
+	margin-left: 0;
+}
+#insertUserForm .ZMSRecordSet table div.btn-group span.split-left {
+    overflow:visible  
+ }
+#insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input {
+    margin:-2px 0 0 4px;
+    float:left;
+}
+
+
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Image
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

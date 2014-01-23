@@ -160,7 +160,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       l = []
       for metaObjId in self.getMetaobjIds(sort=0):
         metaObj = self.getMetaobj(metaObjId)
-        for metaObjAttr in filter(lambda x: x['type']=='css' or x['id']=='f_css_defaults', metaObj['attrs']):
+        for metaObjAttr in filter(lambda x: x['type']=='css' or x['id']=='f_css_defaults', metaObj.get('attrs',[])):
             id = metaObjAttr['id']
             s = '%s.%s'%(metaObjId,id)
             l.append('/* %s */'%('#'*len(s)))

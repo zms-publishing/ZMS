@@ -47,7 +47,12 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
-					<li tal:condition="python:len(filtered_records)"><a href="#" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block> <tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block></a></li>
+					<li tal:condition="python:len(filtered_records)>0 and not 'select' in actions">
+						<a href="#" onclick="zmiToggleSelectionButtonClick(this)">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block>
+							<tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block>
+						</a>
+					</li>
 					<li tal:condition="python:'insert' in actions">
 						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
@@ -76,7 +81,7 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tr tal:define="global qindex python:pageStart+rindex; record python:records[qindex]" tal:attributes="id python:'tr_%i'%qindex">
+<tr tal:define="global qindex python:pageStart+rindex; record python:filtered_records[qindex]" tal:attributes="id python:'tr_%i'%qindex">
 <tal:block tal:condition="python:options.has_key('record_handler')">
 	<tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
 </tal:block>

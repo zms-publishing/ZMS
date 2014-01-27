@@ -128,6 +128,13 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	padding: 1em 0 1em 1.8em;
 	margin-bottom: 0px !important;
 }
+.zmi ol, .zmi ul, .zmi li, .zmi p, .zmi sup, .zmi sub,
+.zmi table, .zmi tr, .zmi th, .zmi td {
+	color:#333;
+}
+.zmi a {
+	color:#08c;
+}
 .zmi ul.breadcrumb li {
 	white-space:nowrap;
 }
@@ -409,7 +416,7 @@ body.browse_iframe .toggle {
 	cursor:pointer;
 }
 body.manage-menu .toggle {
-	color:#CCCCCC;
+	color:#CCC;
 	font-size:120%;
 	vertical-align:bottom;
 	width:12px;
@@ -428,7 +435,7 @@ body.manage-menu #zmi-header {
 	background-color: transparent !important;
 }
 body.manage-menu a {
-	color:#FFF
+	color:#FFF;
 }
 body.manage-menu .zmi-sitemap .inactive a,
 body.manage-menu .zmi-helper-clickable {
@@ -442,7 +449,7 @@ body.manage-menu .zmi-helper-clickable:hover {
 }
 body.manage-menu .dropdown-menu > li > a {
 	clear: both;
-	color: #CCCCCC !important;
+	color: #CCC!important;
 	display: block;
 	font-size: 13px;
 	padding: 3px 8px 3px 0;

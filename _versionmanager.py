@@ -223,7 +223,7 @@ class VersionItem:
                 'major_version':self.attr('major_version'),
                 'minor_version':self.attr('minor_version'),
                 }
-        return 'v.%i.%i.%i'%(d.get('master_version',0),d.get('major_version',0),d.get('minor_version',0))
+        return 'v.%s.%s.%s'%(str(d.get('master_version',0)),str(d.get('major_version',0)),str(d.get('minor_version',0)))
 
     # --------------------------------------------------------------------------
     #  VersionItem.getVersionItems

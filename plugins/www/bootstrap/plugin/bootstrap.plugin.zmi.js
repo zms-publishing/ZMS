@@ -875,9 +875,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 	}
 	else {
 		var $div = $el.parents("div.right");
-		$("input[name='ids:list']",$div).prop("checked",true);
+		var $input = $("input[name='ids:list']",$div);
+		$input.prop("checked",true);
 		zmiActionButtonsRefresh(sender);
 		if (this.confirm($fm,target,label)) {
+			var id_prefix = $input.val().replace(/\d*$/gi,'');
+			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
 			$fm.submit();

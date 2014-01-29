@@ -480,6 +480,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             icon = icon[ len( BASEPATH1):]
         if icon.startswith( '/'):
           icon = icon[1:]
+        if icon.startswith('<'):
+          icon = 'misc_/zms/ico_document.gif'
         return icon
       except:
         _globals.writeError( self, '[icon]: An unexpected error occured!')

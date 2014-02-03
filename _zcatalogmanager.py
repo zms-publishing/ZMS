@@ -198,7 +198,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  Encodes given string.
     # --------------------------------------------------------------------------
     def search_encode(self, s):
-      return _globals.umlaut_quote(s)
+      return _globals.umlaut_quote(self, s)
 
 
     # --------------------------------------------------------------------------

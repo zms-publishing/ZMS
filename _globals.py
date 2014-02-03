@@ -177,13 +177,16 @@ umlautMapping = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.umlaut_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def umlaut_quote(s, mapping={}):
-  if type(s) is not unicode:
-    s = unicode(s,'utf-8')
-  map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
-  for key in mapping.keys():
-    s = s.replace(key,mapping[key])
-  s = s.encode('utf-8')
+def umlaut_quote(self, s, mapping={}):
+  try:
+    if type(s) is not unicode:
+      s = unicode(s,'utf-8')
+    map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
+    for key in mapping.keys():
+      s = s.replace(key,mapping[key])
+    s = s.encode('utf-8')
+  except:
+    writeError(self,'[umlaut_quote]')
   return s
 
 

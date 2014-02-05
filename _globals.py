@@ -273,23 +273,6 @@ def unencode( p, enc='utf-8'):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_globals.id_quote:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def id_quote(s, mapping={
-		'\x20':'_',
-		'-':'_',
-		'/':'_',
-}):
-  s = umlaut_quote(s,mapping)
-  valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
-  s = filter( lambda x: ord(x) in valid, s)
-  while len(s) > 0 and s[0] == '_':
-    s = s[1:]
-  s = s.lower()
-  return s
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.strip_int:
 
 Strips numeric part from string.

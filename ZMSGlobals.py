@@ -446,7 +446,11 @@ class ZMSGlobals:
       return url+anchor
 
 
-    def id_quote(self, s):
+    def id_quote(self, s, mapping={
+            '\x20':'_',
+            '-':'_',
+            '/':'_',
+    }):
       """
       Converts given string to identifier (removes special-characters and 
       replaces German umlauts).
@@ -455,7 +459,13 @@ class ZMSGlobals:
       @return: Identifier
       @rtype: C{string}
       """
-      return _globals.id_quote(s)
+      s = _globals.umlaut_quote(self, s, mapping)
+      valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
+      s = filter( lambda x: ord(x) in valid, s)
+      while len(s) > 0 and s[0] == '_':
+          s = s[1:]
+      s = s.lower()
+      return s
 
 
     def get_id_prefix(self, s):

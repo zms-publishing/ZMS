@@ -140,10 +140,6 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
             metaObj = container.getMetaobj( metaObjId)
             if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
               meta_ids.append( metaObj['id'])
-        elif objAttr['id']=='e' and meta_id in metaObjIds:
-          metaObj = container.getMetaobj( meta_id)
-          if metaObj['enabled'] == 1:
-            meta_ids.append( meta_id)
         elif meta_id in metaObjIds:
           meta_ids.append( meta_id)
         else:

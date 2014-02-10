@@ -73,6 +73,9 @@
 		<tal:block tal:define="global 
 				elLabel python:metaObjAttr['name']">
 		<th>
+			<tal:block tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'asc'==request['qorderdir']"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')"><i class="icon-sort-by-attributes"></i></a></tal:block>
+			<tal:block tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'desc'==request['qorderdir']"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"><i class="icon-sort-by-attributes-alt"></i></a></tal:block>
+			<tal:block tal:condition="python:metaObjAttr['id']!=request.get('qorder')"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"><i class="icon-resize-vertical"></i></a></tal:block>
 			<tal:block tal:content="elLabel">elLabel</tal:block>
 		</th>
 		</tal:block>
@@ -81,7 +84,7 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tr tal:define="global qindex python:pageStart+rindex; record python:filtered_records[qindex]" tal:attributes="id python:'tr_%i'%qindex">
+<tr tal:define="global index python:pageStart+rindex; record python:filtered_records[index]; qindex python:records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
 <tal:block tal:condition="python:options.has_key('record_handler')">
 	<tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
 </tal:block>
@@ -90,7 +93,7 @@
 		<div class="btn-group">
 			<span class="checkbox split-left btn">
 				<input tal:attributes="name python:['qindices:list','qindex'][int('select' in actions)]; type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)" />
-				<tal:block tal:content="python:qindex+1">qindex</tal:block>.
+				<tal:block tal:content="python:index+1">index</tal:block>.
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
 				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">

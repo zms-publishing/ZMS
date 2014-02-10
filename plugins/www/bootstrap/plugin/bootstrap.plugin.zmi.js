@@ -705,7 +705,7 @@ ZMIActionList.prototype.over = function(el, evt) {
 	$(document.body).css( "cursor", "wait");
 	// Build action and params.
 	var context_id = this.getContextId(el);
-	var action = self.location.href;
+	var action = zmiParams['base_url'];
 	action = action.substr(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
@@ -832,6 +832,13 @@ ZMIActionList.prototype.out = function(el, evt) {
  *  Execute action.
  */
 ZMIActionList.prototype.exec = function(sender, label, target) {
+	var id_prefix = this.getContextId(sender);
+	if (typeof id_prefix != 'undefined' && id_prefix != '') {
+		id_prefix = id_prefix.replace(/\d/gi,'');
+	}
+	else {
+		id_prefix = 'e';
+	}
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
 	$("input[name='custom']").val(label);
@@ -847,10 +854,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				data[$input.attr('name')] = $input.val();
 			}
 		}
-		var id_prefix = this.getContextId(sender);
-		if (typeof id_prefix != 'undefined' && id_prefix != '') {
-			data['id_prefix'] = id_prefix.replace(/\d/gi,'');
-		}
+		data['id_prefix'] = id_prefix;
 		var title = $ZMI.icon('icon-plus-sign')+' '+getZMILangStr('BTN_INSERT')+': '+label;
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
@@ -879,7 +883,6 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		$input.prop("checked",true);
 		zmiActionButtonsRefresh(sender);
 		if (this.confirm($fm,target,label)) {
-			var id_prefix = $input.val().replace(/\d*$/gi,'');
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$fm.attr("action",target);
 			$fm.attr("method","POST");

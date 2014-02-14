@@ -316,8 +316,9 @@ class PathHandler:
               zms_skin = l[:i]
               zms_ext = l[j+1:]
               if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap,mobile').split(',')):
-                access = (auth_user is None and self.hasPublicAccess()) or \
-                         (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])
+                access = True
+                #--access = (auth_user is None and self.hasPublicAccess()) or \
+                #--         (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])
                 if access:
                   self.REQUEST.set('ZMS_SKIN',zms_skin)
                   self.REQUEST.set('ZMS_EXT',zms_ext)

@@ -9,20 +9,22 @@
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 	<div class="accordion-group">
-	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 		<div class="accordion-heading attr_last_modified"
 			><a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified"
 				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block
 			></a>
+			<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="pull-left">
 				<tal:block tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
 				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 			</div>
 			<div class="clearfix"></div>
+			</tal:block>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner">
+				<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 				<div class="form-group">
 					<div class="col-sm-12">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')"
@@ -44,83 +46,80 @@
 					<label class="col-sm-2 control-label" for="attr_active_end"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
 					<div class="col-sm-4 col-md-3 col-lg-3"><tal:block tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</tal:block></div>
 				</div>
-					<tal:block tal:define="global options python:[]">
-						<tal:block tal:condition="python:request.get('ZMS_INSERT')" tal:define="global
-								parent_coverage python:here.getDCCoverage(request)">
-							<tal:block tal:condition="python:parent_coverage.startswith('local')">
-								<tal:block tal:define="global
-									dummy0 python:request.set('coverage',parent_coverage);
-									dummy0 python:options.append(parent_coverage)"></tal:block>
-							</tal:block>
-							<tal:block tal:condition="not:python:parent_coverage.startswith('local')">
-								<tal:block tal:define="global
-									dummy0 python:request.set('coverage','global.'+request['lang']);
-									dummy0 python:options.append('global.'+request['lang']);
-									dummy0 python:options.append('local.'+request['lang'])"></tal:block>
-							</tal:block>
-						</tal:block>
-						<tal:block tal:condition="not:python:request.get('ZMS_INSERT')" tal:define="global
-								coverage python:here.getDCCoverage(request);
-								coverage_lang python:coverage[coverage.find('.')+1:];">
-							<tal:block tal:condition="not:python:request['lang']==coverage_lang">
-								<tal:block tal:define="global
-									dummy0 python:request.set('coverage',coverage);
-									dummy0 python:options.append(coverage)"></tal:block>
-							</tal:block>
-							<tal:block tal:condition="python:request['lang']==coverage_lang">
-								<tal:block tal:define="global
-									dummy0 python:request.set('coverage',coverage);
-									dummy0 python:options.append('global.'+coverage_lang);
-									dummy0 python:options.append('local.'+coverage_lang)"></tal:block>
-							</tal:block>
-						</tal:block>
-						<tal:block tal:condition="not:python:len(options)>1">
+				</tal:block>
+				<tal:block tal:define="global options python:[]">
+					<tal:block tal:condition="python:request.get('ZMS_INSERT')" tal:define="global
+							parent_coverage python:here.getDCCoverage(request)">
+						<tal:block tal:condition="python:parent_coverage.startswith('local')">
 							<tal:block tal:define="global
-								dummy0 python:request.set('coverage',options[0])"></tal:block>
+								dummy0 python:request.set('coverage',parent_coverage);
+								dummy0 python:options.append(parent_coverage)"></tal:block>
 						</tal:block>
+						<tal:block tal:condition="not:python:parent_coverage.startswith('local')">
+							<tal:block tal:define="global
+								dummy0 python:request.set('coverage','global.'+request['lang']);
+								dummy0 python:options.append('global.'+request['lang']);
+								dummy0 python:options.append('local.'+request['lang'])"></tal:block>
+						</tal:block>
+					</tal:block>
+					<tal:block tal:condition="not:python:request.get('ZMS_INSERT')" tal:define="global
+							coverage python:here.getDCCoverage(request);
+							coverage_lang python:coverage[coverage.find('.')+1:];">
+						<tal:block tal:condition="not:python:request['lang']==coverage_lang">
+							<tal:block tal:define="global
+								dummy0 python:request.set('coverage',coverage);
+								dummy0 python:options.append(coverage)"></tal:block>
+						</tal:block>
+						<tal:block tal:condition="python:request['lang']==coverage_lang">
+							<tal:block tal:define="global
+								dummy0 python:request.set('coverage',coverage);
+								dummy0 python:options.append('global.'+coverage_lang);
+								dummy0 python:options.append('local.'+coverage_lang)"></tal:block>
+						</tal:block>
+					</tal:block>
+					<tal:block tal:condition="not:python:len(options)>1">
 						<tal:block tal:define="global
-								coverage request/coverage;
-								seq_lang python:coverage[coverage.find('.')+1:];
-								seq_desc_langs python:here.getDescendantLanguages(seq_lang)">
-							<tal:block tal:condition="python:len(seq_desc_langs)>1">
-							<div class="form-group coverage" tal:condition="python:'attr_dc_coverage' in objAttrs.keys()">
-								<label class="col-sm-2 control-label" for="attr_dc_coverage"><span tal:content="structure python:here.getZMILangStr('ATTR_DC_COVERAGE')">the label</span></label>
-								<div class="col-sm-4 col-md-3 col-lg-3">
-								<img name="coverageBtn" tal:attributes="src python:'/misc_/zms/btn_multilang%i.gif'%int(coverage.find('global.')==0); title python:here.getZMILangStr('ATTR_MULTILANG')" align="absmiddle"/>
-								<label for="attr_dc_coverage" tal:content="python:['local','global'][int(here.getParentLanguage(seq_lang)=='')]">the label</label>
-								<tal:block tal:condition="python:request['lang']==seq_lang">
-									<input type="hidden" name="attr_dc_coverage" tal:attributes="value coverage"/>
-									<tal:block tal:condition="python:len(seq_desc_langs)>1 and len(options)>1">
-										<input id="attr_dc_coverage" type="checkbox"
-											tal:attributes="
-												checked python:['','checked'][int(coverage.find('global.')==0)];
-												title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"
-											onclick="if (this.checked) { coverageBtn.src='/misc_/zms/btn_multilang1.gif'; $('input[name=attr_dc_coverage]').val('global.'+getZMILang()); } else { coverageBtn.src='/misc_/zms/btn_multilang0.gif'; $('input[name=attr_dc_coverage]').val('local.'+getZMILang()); }"/>
-									</tal:block>
-									<tal:block tal:condition="not:python:len(seq_desc_langs)>1 and len(options)>1">
-										<input id="attr_dc_coverage" type="checkbox" disabled="disabled"
-											tal:attributes="
-												checked python:['','checked'][int(coverage.find('global.')==0)];
-												title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
-									</tal:block>
+							dummy0 python:request.set('coverage',options[0])"></tal:block>
+					</tal:block>
+					<tal:block tal:define="global
+							coverage request/coverage;
+							seq_lang python:coverage[coverage.find('.')+1:];
+							seq_desc_langs python:here.getDescendantLanguages(seq_lang)">
+						<tal:block tal:condition="python:len(seq_desc_langs)>=1">
+						<div class="form-group coverage" tal:condition="python:'attr_dc_coverage' in objAttrs.keys()">
+							<label class="col-sm-2 control-label" for="attr_dc_coverage"><span tal:content="structure python:here.getZMILangStr('ATTR_DC_COVERAGE')">the label</span></label>
+							<div class="col-sm-4 col-md-3 col-lg-3">
+							<img name="coverageBtn" tal:attributes="src python:'/misc_/zms/btn_multilang%i.gif'%int(coverage.find('global.')==0); title python:here.getZMILangStr('ATTR_MULTILANG')" align="absmiddle"/>
+							<label for="attr_dc_coverage" tal:content="python:['local','global'][int(here.getParentLanguage(seq_lang)=='')]">the label</label>
+							<tal:block tal:condition="python:request['lang']==seq_lang">
+								<input type="hidden" name="attr_dc_coverage" tal:attributes="value coverage"/>
+								<tal:block tal:condition="python:len(seq_desc_langs)>1 and len(options)>1">
+									<input id="attr_dc_coverage" type="checkbox"
+										tal:attributes="
+											checked python:['','checked'][int(coverage.find('global.')==0)];
+											title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"
+										onclick="if (this.checked) { coverageBtn.src='/misc_/zms/btn_multilang1.gif'; $('input[name=attr_dc_coverage]').val('global.'+getZMILang()); } else { coverageBtn.src='/misc_/zms/btn_multilang0.gif'; $('input[name=attr_dc_coverage]').val('local.'+getZMILang()); }"/>
 								</tal:block>
-								<tal:block tal:condition="not:python:request['lang']==seq_lang">
+								<tal:block tal:condition="not:python:len(seq_desc_langs)>1 and len(options)>1">
 									<input id="attr_dc_coverage" type="checkbox" disabled="disabled"
 										tal:attributes="
 											checked python:['','checked'][int(coverage.find('global.')==0)];
 											title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
 								</tal:block>
-								</div>
+							</tal:block>
+							<tal:block tal:condition="not:python:request['lang']==seq_lang">
+								<input id="attr_dc_coverage" type="checkbox" disabled="disabled"
+									tal:attributes="
+										checked python:['','checked'][int(coverage.find('global.')==0)];
+										title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
+							</tal:block>
 							</div>
-							</tal:block>
-							<tal:block tal:condition="not:python:len(seq_desc_langs)>1">
-							  <input type="hidden" name="attr_dc_coverage" tal:attributes="value coverage"/>
-							</tal:block>
+						</div>
 						</tal:block>
 					</tal:block>
+				</tal:block>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
-	</tal:block>
 
 		<div id="tabProperties" class="accordion-body">
 			<div class="accordion-inner">

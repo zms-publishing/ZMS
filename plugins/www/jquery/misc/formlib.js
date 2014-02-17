@@ -332,7 +332,7 @@ ZMI.prototype.selectAllFromMultiselect = function(fm, srcElName, dstElName) {
 		src.options[index].selected = true;
 		index++;
 	}
-	selectFromMultiselect(fm,srcElName,dstElName);
+	this.selectFromMultiselect(fm,srcElName,dstElName);
 	return false;
 }
 

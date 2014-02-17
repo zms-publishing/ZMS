@@ -135,6 +135,12 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi a {
 	color:#08c;
 }
+.zmi a.btn-primary {
+	color:#fff;
+}
+.zmi a.btn-default {
+	color:#000;
+}
 .zmi ul.breadcrumb li {
 	white-space:nowrap;
 }

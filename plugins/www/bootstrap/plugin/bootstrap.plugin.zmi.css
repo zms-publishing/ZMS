@@ -1340,6 +1340,7 @@ body.zmi .meta-sort .add-on.btn:hover {
 	padding:2em;
 	border-radius:4px;
 	box-shadow: 0px 0px 1px #888;
+	min-height: 320px;
 }
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {

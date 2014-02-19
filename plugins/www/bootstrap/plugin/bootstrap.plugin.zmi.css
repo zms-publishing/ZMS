@@ -1209,7 +1209,7 @@ div.right .btn .caret {
 		display: none;
 	}
 	.zmi.properties form.form-horizontal .accordion-group {
-		width: 78.75%;
+		/* width: 78.75%; */
 		background-color: #fff;
 	}
 	.ZMSLinkContainer.zmi.properties form.form-horizontal .accordion-group {

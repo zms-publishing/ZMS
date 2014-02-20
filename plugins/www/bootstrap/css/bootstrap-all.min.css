@@ -588,6 +588,7 @@ div.zmi-nodes span{cursor:pointer}
 .zmi-image-preview{max-width:100px;background:#CCC}
 .zmi-image-generate-preview{font-size:x-small}
 .zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;font-size:x-small}
+.zmi.customize #Custom table td.nowrap {min-width:92px}
 body.users #zmi-tab > .pull-left,body.users #zmi-tab > .pull-right{width:50%}
 table.zmi-sortable td{white-space:nowrap}
 table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bottom:0px}

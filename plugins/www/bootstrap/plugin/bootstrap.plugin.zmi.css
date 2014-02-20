@@ -829,7 +829,9 @@ div.zmi-nodes span {
 	padding-right:0.5em;
 	font-size:x-small;
 }
-
+.zmi.customize #Custom table td.nowrap {
+	min-width:92px;
+}
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Users-Form
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

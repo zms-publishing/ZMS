@@ -139,7 +139,6 @@ class ZMSCustom(ZMSContainerObject):
         opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
-        print self, self.getAutocommit(), self.getHistory()
         opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
       if pc:
         opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})

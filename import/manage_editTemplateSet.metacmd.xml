@@ -1,21 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
-  <item key="custom"/>
-  <item key="data"><![CDATA[<xhtml tal:omit-tag="" tal:condition="python:not request.has_key('omitHtml')">
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-	<head>
-		<title>ZMS | Edit Template-Set</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-		<link rel="stylesheet" type="text/css" tal:attributes="href python:'%s/f_css_defaults'%here.getDocumentElement().absolute_url()" />
-		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/css/font-awesome.css" />
-		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.css" />
-		<link rel="stylesheet" type="text/css" href="/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/jquery-ui-1.10.0.custom.css" />
-		<tal:block tal:repeat="key python:here.getConfProperty('bootstrap.libs').split(',')">
-			<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty(key)"></script>
-		</tal:block>
-	</head>
+  <item key="data"><![CDATA[<tal:block tal:condition="python:not request.has_key('omitHtml')">
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
 <!--
 ################################################################################
@@ -32,19 +21,16 @@
 ### Frame: Left // Template List
 ################################################################################ 
 -->
-<body tal:condition="python:request.get('frameleft')">
+<body class="zmi preview_top" tal:condition="python:request.get('frameleft')">
 <div>
 
 <style type="text/css">
 .tab-pane {
 	padding:.5em;
 }
-ul {
-	margin-left:.7em;
-}
-body {
-	margin:0px;
-	overflow-x:hidden;
+div.container {
+	margin:0;
+	padding:0;
 }
 div.pointer {
 	cursor:pointer;
@@ -77,7 +63,7 @@ div.strong span {
 ///// Resize iframe
 ////////////////////////////////////////////////////////////////////////////////
 
-$(function() {
+$ZMI.registerReady(function(){
 	initIframe();
 	$(window).resize(function() {
 		initIframe();
@@ -89,7 +75,7 @@ function initIframe() {
 	if (ta.length > 0) {
 		var innerHeight = $(document).height();
 		var pos = ta.offset();
-		var newHeight =innerDims.height-pos.top-25;
+		var newHeight =innerHeight-pos.top-25;
 		ta.css('height',newHeight);
 	}
 }
@@ -199,47 +185,26 @@ function handleObjectValues(result) {
 	return html;
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 	$.get("",{omitHtml:1,objectValues:""},function(result) {
 			$("#tabs-0").html($("#tabs-0").html()+handleObjectValues(result));
 			initClick($("#tabs-0 div.container div"));
 		});
-	$( "#tabs" ).tabs();
 });
-
-function handleShowFancybox(s, st, defaultHtml, title, text) {
-	if ($(s).length == 0) {
-		$("#tabs-1").append(defaultHtml);
-	}
-	$(st).text(text);
-	pluginFancybox(s,function() {
-		$.fancybox({
-				'href':s,
-				'title':title,
-				'autoDimensions':true,
-				'autoScale':false,
-				'transitionIn':'fade',
-				'transitionOut':'fade'
-			});
-	});
-}
 
 </script>
 
 <div id="zmi-header">
-	<div class="navbar navbar-inverse">
-		<div class="navbar-inner">
-			<div class="container" style="overflow:hidden;height:2em;">
-				<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
-				<ul class="nav pull-right">
-					<li><a href="manage_main" target="_top"><i class="icon-signout"></i><tal:block tal:content="python:unicode(here.getZMILangStr('BACK'),'utf-8')">Back</tal:block></a></li>
-				</ul>
-			</div><!-- .container -->
-		</div><!-- .navbar-inner -->
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
+		<div class="pull-right">
+			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
+				<tal:block tal:content="python:here.getZMILangStr('BACK')">back</tal:block>
+			</a>
+			&nbsp;
+		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
-
-<div class="tabbable">
 
 <ul class="main-nav nav nav-tabs">
 	<li class="active"><a href="#tabs-0" data-toggle="tab"><i></i>Templates</a></li>
@@ -297,7 +262,7 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 	</div><!-- #tabs-2 -->
 </div><!-- .tab-content -->
 
-</div><!-- .tabbable -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 
 <!--
@@ -305,7 +270,7 @@ function handleShowFancybox(s, st, defaultHtml, title, text) {
 ### Frame: Bottom // Code
 ################################################################################ 
 -->
-<body tal:condition="python:request.get('framebottom')">
+<body class="zmi preview_top" tal:condition="python:request.get('framebottom')">
 	<span tal:omit-tag="" tal:condition="python:request.get('path')">
 
 <span tal:condition="python:request.has_key('path')" tal:define="global ob python:here.getHome()">
@@ -435,7 +400,7 @@ function getObjectDetails() {
 		});
 }
 
-$(function() {
+$ZMI.registerReady(function(){
 	$("textarea.form-element,input.form-element,select.form-element")
 		.keydown( function (evt) { custAutoChange(this); })
 		.keyup( function (evt) { custAutoChange(this); })
@@ -458,43 +423,43 @@ $(function() {
 var snippets_arr = {};
 snippets_arr["Page Template"] = {};
 snippets_arr["Page Template"]["snippet_bodyContent"] = {title:'Body-Content', raw: 
-				'<'+'div id="content" tal'+':content="structure here/bodyContentZMSLib_page">\n'+
+				'&lt;'+'div id="content" tal'+':content="structure here/bodyContentZMSLib_page">\n'+
 				'\tthe body-content\n'+
-				'<'+'/div><'+'-- #content -->'};
+				'&lt;'+'/div>&lt;'+'-- #content -->'};
 snippets_arr["Page Template"]["snippet_docTitle"] = {title:'Document-Title', raw: 
-				'<'+'div id="title" tal'+':content="python:here.getTitle(request)">\n'+
+				'&lt;'+'div id="title" tal'+':content="python:here.getTitle(request)">\n'+
 				'\tthe title\n'+
-				'<'+'/div><!'+'-- #title -->'};
+				'&lt;'+'/div>&lt;!'+'-- #title -->'};
 snippets_arr["Page Template"]["snippet_macroNav"] = {title:'Macro-Navigation', raw: 
-				'<'+'nav tal'+':condition="python:here.getLevel()>0"\n'+
+				'&lt;'+'nav tal'+':condition="python:here.getLevel()>0"\n'+
 				'\t\ttal'+':content="structure\n'+
 				' python:here.getParentByLevel(1).getNavItems(here,request,\n'+
 				'  {\'add_self\':False,\'deep\':True,\'complete\':False})">\n'+
-				'\t<'+'ul>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t<'+'/ul>\n'+
-				'<'+'/nav><!'+'-- #macro -->'};
+				'\t&lt;'+'ul>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t&lt;'+'/ul>\n'+
+				'&lt;'+'/nav>&lt;!'+'-- #macro -->'};
 snippets_arr["Page Template"]["snippet_menuNav"] = {title:'Menu-Navigation', raw: 
-				'<'+'nav id="menu" tal'+':content="structure\n'+
+				'&lt;'+'nav id="menu" tal'+':content="structure\n'+
 				' python:here.getDocumentElement().getNavItems(here,request,\n'+
 				'  {\'add_self\':False,\'deep\':False,\'complete\':False})">\n'+
-				'\t<'+'ul>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t\t<'+'li><'+'a href="">Lorem ipsum<'+'/a><'+'/li>\n'+
-				'\t<'+'/ul>\n'+
-				'<'+'/nav><!'+'-- #menu -->'};
+				'\t&lt;'+'ul>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t&lt;'+'/ul>\n'+
+				'&lt;'+'/nav>&lt;!'+'-- #menu -->'};
 snippets_arr["Page Template"]["snippet_microNav"] = {title:'Micro-Navigation', raw: 
-				'<'+'nav id="micro">\n'+
-				'\t<'+'span tal'+':omit-tag="" tal'+':repeat="item context/breadcrumbs_obj_path">\n'+
-				'\t\t&raquo; <'+'a tal'+':attributes="href python:item.getHref2IndexHtml(request)"\n'+
-				'\t\ttal'+':content="python:item.getTitlealt(request)">the item<'+'/a>\n'+
-				'\t<'+'/span>\n'+
-				'<'+'/nav><'+'-- #micro -->'};
+				'&lt;'+'nav id="micro">\n'+
+				'\t&lt;'+'span tal'+':omit-tag="" tal'+':repeat="item context/breadcrumbs_obj_path">\n'+
+				'\t\t&raquo; &lt;'+'a tal'+':attributes="href python:item.getHref2IndexHtml(request)"\n'+
+				'\t\ttal'+':content="python:item.getTitlealt(request)">the item&lt;'+'/a>\n'+
+				'\t&lt;'+'/span>\n'+
+				'&lt;'+'/nav>&lt;'+'-- #micro -->'};
 
-$(function() {
+$ZMI.registerReady(function(){
 	var undoable_transactions = parseInt($("span#undoable_transactions").text());
 	$("#refresh_btn").show("normal");
 	$("#delete_btn").show("normal");
@@ -518,13 +483,10 @@ $(function() {
 							+ '<'+'pre>the snippet text<'+'pre>'
 						+ '<'+'/div>'
 					+ '<'+'/div>';
-				context.handleShowFancybox(
-						"#snippets_div",
-						"#snippets_div>pre",
-						defaultHtml,
-						snippets_arr[meta_type][i]['title'],
-						snippets_arr[meta_type][i]['raw']
-					);
+				zmiModal(null,{
+						body: '<'+'pre>'+snippets_arr[meta_type][i]['raw']+'<'+'/pre>',
+						title: snippets_arr[meta_type][i]['title']
+					});
 			})
 			.show("normal");
 	}
@@ -556,70 +518,27 @@ function zmiDelBtnClick() {
 
 </script>
 
-<style type="text/css">
-body {
-  background-color:#E8E8E8;
-  background-color:#FFFFFF;
-  margin:0px;
-}
-div#codeheader {
-  border-radius:0px;
-  display:block;
-  width:100%;
-  background-color:#e8e8e8;
-  background-color:#FFFFFF;
-  border-bottom:1px solid #ccc;
-/* silver 
-  background-image: -moz-linear-gradient(center top , #A4A4A4 0px, #B1B1B1 4px, #FFFFFF 22px);
-*/
-  height:28px;
-}
-div#codeheader div.zmi_col_left {
-  padding:0px 0px 0px 12px;
-}
-div#codeheader div.zmi_col_right {
-  padding:2px 0px 0px 0px;
-}
-div.ace_gutter {
-  width:32px !important;
-}
-</style>
+			<div class="pull-left">
+				<div class="btn-group">
+					<span id="refresh_btn" class="btn btn-default" onclick="zmiRefreshBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_REFRESH'),'utf-8')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
+					</span>
+					<span id="undo_btn" class="btn btn-default" onclick="zmiUndoBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_UNDO'),'utf-8')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+					</span>
+					<span id="delete_btn" class="btn btn-default" onclick="zmiDelBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_DELETE'),'utf-8')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+					</span>
+				</div><!-- .btn-group -->
+			</div><!-- .pull-left -->
+			<div class="pull-right">
+				<select id="snippets_select" class="form-control ui-helper-hidden">
+				</select>
+			</div><!-- .pull-right -->
+			<div class="clearfix"></div>
+			<hr/>
 
-		<div id="codeheader" >
-			<table width="100%">
-			<tr>
-				<td>
-					<table>
-					<tr>
-						<td>
-							<img tal:attributes="src ob/icon; title ob/meta_type" align="absmiddle"/>
-							<span class="form-label" tal:content="ob/id">the id</span>
-						</td>
-						<td>
-							<ul class="zmi-icons ui-widget ui-helper-clearfix">
-								<li id="refresh_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_REFRESH'),'utf-8')">
-									<span class="ui-icon ui-icon-arrowrefresh-1-w" onclick="zmiRefreshBtnClick();"></span>
-								</li>
-								<li id="undo_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_UNDO'),'utf-8')">
-									<span class="ui-icon ui-icon-arrowreturn-1-w" onclick="zmiUndoBtnClick();"></span>
-								</li>
-								<li id="delete_btn" class="ui-helper-hidden ui-corner-all ui-state-default" tal:attributes="title python:unicode(here.getZMILangStr('BTN_DELETE'),'utf-8')">
-									<span class="ui-icon ui-icon-trash" onclick="zmiDelBtnClick();"></span>
-								</li>
-							</ul>
-						</td>
-					</tr>
-					</table>
-				</td>
-				<td align="right">
-					<select id="snippets_select" class="ui-helper-hidden">
-					</select>
-				</td>
-			</tr>
-			</table>
-		</div>
-
-		<form onsubmit="return false;">
+		<form class="clearfix" onsubmit="return false;">
 			<div class="ui-helper-hidden">
 				<span id="meta_type" tal:content="ob/meta_type">the meta_type</span>
 				<span id="absolute_url" tal:content="ob/absolute_url">the absolute_url</span>
@@ -629,142 +548,88 @@ div.ace_gutter {
 			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
 				<div class="ui-helper-hidden">
 					<span id="action">manage_edit</span>
-					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
 				</div>
-				<textarea id="text" name="data:text" class="ui-helper-hidden form-element" tal:content="ob/raw" style="width:100%">The object</textarea>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='data:text',ob=ob)">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
 			</tal:block>
 			<tal:block tal:condition="python:ob.meta_type=='File' and (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
 				<div class="ui-helper-hidden">
 					<span id="action">manage_edit</span>
-					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
 				</div>
-				<textarea id="text" name="filedata:text" class="ui-helper-hidden form-element" tal:content="python:unicode(str(ob.data),'utf-8')" style="width:100%">The object</textarea>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='filedata:text',ob=ob)">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
 			</tal:block>
 			<tal:block tal:condition="python:ob.meta_type=='Page Template'">
 				<div class="ui-helper-hidden">
 					<span id="action">pt_editAction</span>
-					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
-					<label for="expand">Expand</label><input id="expand" name="expand:int" class="form-element" tal:attributes="value ob/expand">
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
+					<label for="expand">Expand</label>
+					<input id="expand" name="expand:int" class="form-control" tal:attributes="value ob/expand">
 				</div>
-				<textarea id="text" name="text:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='text:text',ob=ob)">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
 			</tal:block>
 			<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
 				<div class="ui-helper-hidden">
 					<span id="action">ZPythonScriptHTML_editAction</span>
-					<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-					<label for="params">Parameter List</label><input id="params" name="params" class="form-element" tal:attributes="value ob/params">
-					<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" value="python">
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="params">Parameter List</label>
+					<input id="params" name="params" class="form-control" tal:attributes="value ob/params">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" value="python">
 				</div>
-				<textarea id="text" name="body:text" class="ui-helper-hidden form-element" tal:content="ob/read" style="width:100%">The object</textarea>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='body:text',ob=ob)">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
 			</tal:block>
 			<div id="objectDetails"></div>
 			<textarea id="debug" class="ui-helper-hidden"></textarea>
 		</form>
 
-		<form id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
+		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
 			<div class="ui-helper-hidden">
 				<span id="action">manage_upload</span>
-				<label for="title">Title</label><input id="title" name="title" class="form-element" tal:attributes="value ob/title">
-				<label for="content_type">Content-Type</label><input id="content_type" name="content_type" class="form-element" tal:attributes="value ob/content_type">
+				<label for="title">Title</label>
+				<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+				<label for="content_type">Content-Type</label>
+				<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
 			</div>
 			<div id="iframe" class="ui-helper-hidden">
 				<iframe name="postframe" id="postframe"></iframe>
 			</div>
-			<table>
-			<tr>
-				<td class="form-label">Content Type</td>
-				<td class="form-element" tal:content="ob/content_type">the content-type</td>
-			</tr>
-			<tr tal:condition="python:ob.meta_type in ['Image','File'] and ob.content_type.startswith('image/')">
-				<td class="form-label">Preview</td>
-				<td class="form-element">
-					<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);"/>
-				</td>
-			</tr>
-			<tr>
+			<div class="control-group">
+				<label>Content Type</label>
+				<input class="form-control" type="text" value="ob/content_type" disabled="disabled"/>
+			</div><!-- .control-group -->
+			<div class="control-group" tal:condition="python:ob.meta_type in ['Image','File'] and ob.content_type.startswith('image/')">
+				<label>Preview</label>
+				<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
 				<td class="form-label">File Size</td>
-				<td class="form-element" tal:content="python:here.getDataSizeStr(ob.size)">the file-size</td>
-			</tr>
-			<tr>
-				<td class="form-label">File Data</td>
-				<td class="form-element"><input id="file" name="file" type="file" class="form-element"></td>
-			</tr>
-			</table>
+				<input class="form-control" type="text" value="python:here.getDataSizeStr(ob.size)" disabled="disabled"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="file">File Data</label>
+				<input class="form-control" id="file" name="file" type="file"/>
+			</div><!-- .control-group -->
 		</form>
-
-<!--
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+++ Ajax.org Cloud9 Editor
-+++ http://ace.ajax.org
-+++ @see $ZMS_HOME/plugins/www/ace.ajax.org
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
--->
-<div id="editor" class="zmiNeutralColorWhite" style="height: 96%; width: 100%">some text</div>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-css.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-javascript.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
-<script type="text/javascript">
-$(function() {
-	if ($("textarea#text").length == 0) {
-		$("#editor").hide();
-	}
-	else {
-		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
-		var editor = ace.edit("editor");
-		var content_type = null;
-		if ($("input#content_type")) {
-			content_type = $("input#content_type").val();
-		}
-		if (content_type == null) {
-			var absolute_url = $("span#absolute_url").text();
-			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
-			if (id.endsWith(".css")) {
-				content_type = "text/css";
-			}
-			else if (id.endsWith(".js")) {
-				content_type = "text/javascript";
-			}
-			else {
-				content_type = "text/html";
-			}
-		}
-		var Mode = null;
-		if (content_type == "text/html") {
-			Mode = require("ace/mode/html").Mode;
-		}
-		else if (content_type == "text/css" || content_type == "application/x-css") {
-			Mode = require("ace/mode/css").Mode;
-		}
-		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
-			Mode = require("ace/mode/javascript").Mode;
-		}
-		else if (content_type == "text/xml") {
-			Mode = require("ace/mode/xml").Mode;
-		}
-		else if (content_type == "python") {
-			Mode = require("ace/mode/python").Mode;
-		}
-		if (Mode != null) {
-			editor.getSession().setMode(new Mode());
-		}
-		editor.setTheme("ace/theme/eclipse");
-		editor.getSession().setValue($("textarea#text").val());
-		editor.getSession().on("change",function() {
-				custAutoChange($("textarea#text").val(editor.getSession().getValue()));
-			});
-		custAutoSaveArr["text"] = editor.getSession().getValue();
-	}
-});
-</script>
-
 	</div>
 	</span>
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 
 <!--
@@ -772,7 +637,7 @@ $(function() {
 -->
 
 </html>
-</xhtml>
+</tal:block>
 
 <!--
 ################################################################################
@@ -820,8 +685,9 @@ $(function() {
 </tal:block>
 </objectValues>]]>
   </item>
-  <item key="description"/>
+  <item key="description"></item>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"></item>
   <item key="id"><![CDATA[manage_editTemplateSet]]></item>
   <item key="meta_type"><![CDATA[Page Template]]></item>
   <item key="meta_types" type="list">

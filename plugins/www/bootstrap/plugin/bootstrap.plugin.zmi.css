@@ -293,6 +293,7 @@ ul.zmi-container {
 }
 ul.zmi-container > .zmi-item > .right {
 	float:left;
+	width:20% !important;
 }
 ul.zmi-container .zmi-item .clearboth {
 	float:none;

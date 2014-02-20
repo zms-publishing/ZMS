@@ -4,8 +4,14 @@
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'preview_top',here.meta_id])">
 <script>
 	function open_partner(sender,href) {
-		$(".zmi-top-active").removeClass("zmi-top-active");
-		$(sender).addClass("zmi-top-active");
+		var elems = document.getElementsByClassName("zmi-top-active");
+		for (var i=elems.length-1;i>=0;i--) {
+			var elem=elems[i];
+			var classes=elem.className.split(" ");
+			var newClass = classes.splice(classes.indexOf("zmi-top-active"),1).join(" ");
+			elem.className=classes;
+		}
+		sender.className="ui-helper-clickable zmi-top-active";
 		self.parent.partner.location.href = href;
 	}
 </script>
@@ -18,14 +24,14 @@
 				<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="python:': %s'%here.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
 			</a>
 			&nbsp;|&nbsp;<span class="ui-helper-clickable zmi-top-active" tal:attributes="onclick python:'open_partner(this,\'%s/$ZMS_HOME/doc/index.html\')'%here.getDocumentElement().absolute_url()">
-				ZMS API Documentation
+				ZMS API
 			</span>
 			&nbsp;|&nbsp;<span class="ui-helper-clickable" tal:attributes="onclick python:'open_partner(this,\'http://docs.jquery.com\')'">
-				jQuery API Documentation
+				jQuery API
 			</span>
 			&nbsp;|&nbsp;<span class="ui-helper-clickable" tal:attributes="onclick python:'open_partner(this,\'http://getbootstrap.com\')'">
-				Bootstrap API Documentation
-			</span>
+				Bootstrap API
+			</span>&nbsp;&nbsp;
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->

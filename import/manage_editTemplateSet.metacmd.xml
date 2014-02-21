@@ -22,7 +22,6 @@
 ################################################################################ 
 -->
 <body class="zmi preview_top" tal:condition="python:request.get('frameleft')">
-<div>
 
 <style type="text/css">
 .tab-pane {
@@ -226,7 +225,7 @@ $ZMI.registerReady(function(){
 		</div>
 	</div><!-- #tabs-0 -->
 	<div class="tab-pane" id="tabs-1">
-		<iframe border="0" style="padding:0px;margin:0px;overflow:hidden;border:0px !important;width:100%" 
+		<iframe style="padding:0;margin:0;overflow:hidden;border:0!important;width:100%" 
 			tal:attributes="src python:'%s?framebottom=True&lang=%s'%(request.get('URL'),request.get('lang'))"></iframe>
 	</div><!-- #tabs-1 -->
 	<div class="tab-pane" id="tabs-2">
@@ -270,7 +269,7 @@ $ZMI.registerReady(function(){
 ### Frame: Bottom // Code
 ################################################################################ 
 -->
-<body class="zmi preview_top" tal:condition="python:request.get('framebottom')">
+<body class="zmi" tal:condition="python:request.get('framebottom')">
 	<span tal:omit-tag="" tal:condition="python:request.get('path')">
 
 <span tal:condition="python:request.has_key('path')" tal:define="global ob python:here.getHome()">
@@ -292,9 +291,9 @@ var custAutoSaveIntervall = 1000;
 var custAutoSaveArr = {};
 
 function custAutoSave() {
-	$('#debug').val("custAutoSave"+"\n"+$('#debug').val());
+	$ZMI.writeDebug("custAutoSave");
 	// Upload file.
-	if ($(".form-element-modified").attr("type")=="file") {
+	if ($(".form-control-modified").attr("type")=="file") {
 		$('#theuploadform').attr( "action", $("span#absolute_url").text()+"/"+$("span#action").text());
 		$('#theuploadform').attr( "target", "postframe" )
 		$('#theuploadform').submit();
@@ -306,33 +305,33 @@ function custAutoSave() {
 				}
 				src += "?ts=" + escape(new Date());
 				$("img#preview").attr("src",src);
-				$(".form-element-modified").val("");
-				$(".form-element-modified").removeClass("form-element-modified");
+				$(".form-control-modified").val("");
+				$(".form-control-modified").removeClass("form-control-modified");
 				window.parent.parent.preview.location.reload();
 			});
 	}
 	// Submit form.
-	else if ($(".form-element-modified").length > 0) {
-		var els = $("textarea.form-element,input.form-element,select.form-element");
+	else if ($(".form-control-modified").length > 0) {
+		var els = $("textarea#text,input.form-control,select.form-control");
 		var values = {};
 		for (var i = 0; i < els.length; i++) {
 			var $el = $(els[i]);
 			var elid = $el.attr("name");
 			values[elid] = $el.val();
 			custAutoSaveArr[elid] = $el.val();
-			if ($el.hasClass("form-element-modified") && !$el.hasClass("ui-helper-hidden")) {
+			if ($el.hasClass("form-control-modified") && !$el.hasClass("ui-helper-hidden")) {
 				var coords = $el.offset();
 				var html = '<'+'div class="zmiAutoSave zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...<'+'/div>';
 				$("body").append(html);
 			}
 		}
 		// Post form.
-		$('#debug').val("post.1"+$("#absolute_url").text()+"/pt_changePrefs"+"\n"+$('#debug').val());
+		$ZMI.writeDebug("post.1"+$("#absolute_url").text()+"/pt_changePrefs");
 		parent.showProgress(true);
 		$.post($("span#absolute_url").text()+"/"+$("span#action").text(),values,function(result) {
-				$('#debug').val("post.2"+"\n"+$('#debug').val());
+				$ZMI.writeDebug("post.2");
 				$("div.zmiAutoSave").remove();
-				$(".form-element-modified").removeClass("form-element-modified");
+				$(".form-control-modified").removeClass("form-control-modified");
 				window.parent.parent.preview.location.reload();
 				getObjectDetails();
 				window.setTimeout('parent.showProgress(false);',500);
@@ -341,20 +340,20 @@ function custAutoSave() {
 }
 
 function custAutoChange(el) {
+	$ZMI.writeDebug("custAutoChange");
 	var elid = $(el).attr("name");
-	$('#debug').val("custAutoSave("+elid+")"+"\n"+$('#debug').val());
 	if (typeof elid != "undefined" && typeof custAutoSaveArr[elid] != "undefined") {
 		if (custAutoSaveTimeout != null) {
 			window.clearTimeout(custAutoSaveTimeout);
 		}
 		if (custAutoSaveArr[elid] == $(el).val()) {
-			if ($(el).hasClass("form-element-modified")) {
-				$(el).removeClass("form-element-modified");
+			if ($(el).hasClass("form-control-modified")) {
+				$(el).removeClass("form-control-modified");
 			}
 		}
 		else {
-			if (!$(el).hasClass("form-element-modified")) {
-				$(el).addClass("form-element-modified");
+			if (!$(el).hasClass("form-control-modified")) {
+				$(el).addClass("form-control-modified");
 			}
 			custAutoSaveTimeout = window.setTimeout("custAutoSave()",custAutoSaveIntervall);
 		}
@@ -401,7 +400,9 @@ function getObjectDetails() {
 }
 
 $ZMI.registerReady(function(){
-	$("textarea.form-element,input.form-element,select.form-element")
+	//$ZMI.toggleDebug(true);
+	$ZMI.writeDebug("BO registerReady");
+	$("textarea#text,input.form-control,select.form-control")
 		.keydown( function (evt) { custAutoChange(this); })
 		.keyup( function (evt) { custAutoChange(this); })
 		.click( function (evt) { custAutoChange(this); })
@@ -414,6 +415,7 @@ $ZMI.registerReady(function(){
 			})
 	;
 	getObjectDetails();
+	$ZMI.writeDebug("EO registerReady");
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -476,13 +478,6 @@ $ZMI.registerReady(function(){
 				var meta_type = $("span#meta_type").text();
 				var i = $(this).val();
 				$(this).val("");
-				var context = window.parent;
-				var defaultHtml = ''
-					+ '<'+'div class="ui-helper-hidden">'
-						+ '<'+'div id="snippets_div">'
-							+ '<'+'pre>the snippet text<'+'pre>'
-						+ '<'+'/div>'
-					+ '<'+'/div>';
 				zmiModal(null,{
 						body: '<'+'pre>'+snippets_arr[meta_type][i]['raw']+'<'+'/pre>',
 						title: snippets_arr[meta_type][i]['title']
@@ -521,10 +516,10 @@ function zmiDelBtnClick() {
 			<div class="pull-left">
 				<div class="btn-group">
 					<span id="refresh_btn" class="btn btn-default" onclick="zmiRefreshBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_REFRESH'),'utf-8')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block>
 					</span>
 					<span id="undo_btn" class="btn btn-default" onclick="zmiUndoBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_UNDO'),'utf-8')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
 					</span>
 					<span id="delete_btn" class="btn btn-default" onclick="zmiDelBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_DELETE'),'utf-8')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
@@ -596,7 +591,6 @@ function zmiDelBtnClick() {
 				<!-- /ACE Editor -->
 			</tal:block>
 			<div id="objectDetails"></div>
-			<textarea id="debug" class="ui-helper-hidden"></textarea>
 		</form>
 
 		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">

@@ -231,7 +231,7 @@ $ZMI.registerReady(function(){
 			</thead>
 			<tbody>
 				<tr tal:repeat="conf_key conf_keys" tal:attributes="class python:['','zmi-selected'][int(conf_key==request.get('conf_key'))]">
-					<td class="nowrap"">
+					<td class="nowrap">
 						<div class="btn-group">
 							<a class="btn btn-default" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block></a>
 							<a class="btn btn-default" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>

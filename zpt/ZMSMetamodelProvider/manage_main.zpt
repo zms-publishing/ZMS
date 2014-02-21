@@ -168,7 +168,7 @@
 						<td colspan="7" class="meta-interface">
 							<input type="hidden" tal:attributes="name python:'attr_id_%s'%objAttr['id']; value python:objAttr['id']"/>
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
-							<div class="single-line" tal:condition="python:objAttr.get('ob') is not None" 
+							<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None" 
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 									<textarea class="form-control input-sm" 
 										tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
@@ -185,7 +185,7 @@
 						<tal:block tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
 							<td colspan="5" class="meta-code">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<div class="single-line" tal:condition="python:objAttr.get('ob') is not None"
+								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 										<textarea class="form-control input-sm" 
 											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
@@ -421,6 +421,16 @@
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
+
+/**
+ *
+ */
+function zmiCode(sender) {
+	var html = ''
+		+ '<'+'div class="col-lg-10">'
+		+ '<'+'/div>';
+	return html;
+}
 
 /**
  *

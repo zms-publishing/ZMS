@@ -82,7 +82,7 @@ $ZMI.registerReady(function(){
 		editor.setTheme("ace/theme/eclipse");
 		editor.getSession().setValue($("textarea#text").val());
 		editor.getSession().on("change",function() {
-				$("textarea#text").val(editor.getSession().getValue());
+				$("textarea#text").val(editor.getSession().getValue()).change();
 			});
 	}
 });

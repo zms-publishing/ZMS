@@ -60,6 +60,9 @@ $(function(){
 								html = html
 									+ '<div id="zmi-single-line-edit" class="inner">'
 										+ '<form class="form-horizontal" name="zmi-single-line-form">';
+								if ($single_line.hasClass("zmi-code")) {
+									html += zmiCode(this);
+								}
 								if ($single_line.hasClass("zmi-nodes")) {
 									html = html
 											+ '<div class="col-lg-10">'
@@ -546,7 +549,7 @@ function zmiModal(s, opt) {
 		$('#'+id).modal(s);
 	}
 	else if (typeof opt == "object") {
-		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null && typeof $(s).attr('id')!="undefined"?zmiModalStack.length:$(s).attr('id')):opt['id'];
+		var id = typeof opt['id']=="undefined"?"zmiModal"+(s==null || typeof $(s).attr('id')=="undefined"?zmiModalStack.length:$(s).attr('id')):opt['id'];
 		var body = s==null?opt['body']:$(s).html();
 		if (s!=null && opt['remove']==true) {
 			$(s).remove();

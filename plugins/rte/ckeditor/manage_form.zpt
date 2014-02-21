@@ -76,18 +76,7 @@ function loadCkeditor(id, opt) {
 	$ZMI.writeDebug("[loadCkeditor]: id="+id);
 	var instance = CKEDITOR.instances[id];
 	if(instance){
-		try {
-			CKEDITOR.remove(instance);
-		}
-		catch (e) {
-		}
-		try {
-			if ($.browser.msie) {
-				instance.destroy();
-			}
-		}
-		catch (e) {
-		}
+		instance.destroy();
 	}
 	CKEDITOR.replace(id, opt);
 }

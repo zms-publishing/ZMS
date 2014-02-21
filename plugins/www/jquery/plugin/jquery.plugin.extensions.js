@@ -102,10 +102,10 @@ $(function(){
 
 function pluginFancybox(s, c) {
 	$.plugin('fancybox',{
-		files: ['/++resource++zms_/jquery/fancybox/jquery.easing-1.3.pack.js',
-				'/++resource++zms_/jquery/fancybox/jquery.mousewheel-3.0.4.pack.js',
-				'/++resource++zms_/jquery/fancybox/jquery.fancybox-1.3.4.pack.js',
-				'/++resource++zms_/jquery/fancybox/jquery.fancybox-1.3.4.css']
+		files: [
+				'/++resource++zms_/jquery/fancybox/jquery.mousewheel-3.0.6.pack.js',
+				'/++resource++zms_/jquery/fancybox/jquery.fancybox.pack.js',
+				'/++resource++zms_/jquery/fancybox/jquery.fancybox.css']
 		});
 	$.plugin('fancybox').get(s,c);
 }

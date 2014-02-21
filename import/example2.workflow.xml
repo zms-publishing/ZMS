@@ -103,7 +103,7 @@ auth_user = request['AUTHENTICATED_USER']
 roles = ['ZMSEditor']
 if len(zmscontext.intersection_list(roles, zmscontext.getUserRoles(auth_user)))>0:
   roles = ['ZMSAdministrator']
-mto = zmscontext.getRecipientsByRole(roles,REQUEST)
+mto = zmscontext.getRecipientsByRole(roles,request)
 # Subject
 msubject = '[ZMS-Workflow::%s - %s]: Request for committing my changes'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request))
 # Body
@@ -117,7 +117,7 @@ mbody.append('' \
 for childNode in filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request)):
 	mbody.append('' \
 		+ '- %s '%(zmscontext.display_type(request)) \
-		+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNodes.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] ' \
+		+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] ' \
 		+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt'))) \
 		+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid')) \
 		+ '\n' \
@@ -245,7 +245,7 @@ auth_user = request['AUTHENTICATED_USER']
 roles = ['ZMSEditor']
 if len(zmscontext.intersection_list(roles, zmscontext.getUserRoles(auth_user)))>0:
   roles = ['ZMSAdministrator']
-mto = zmscontext.getRecipientsByRole(roles,REQUEST)
+mto = zmscontext.getRecipientsByRole(roles,request)
 # Subject
 msubject = '[ZMS-Workflow::%s - %s]: Committing your changes was rejecteds'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request))
 # Body
@@ -259,7 +259,7 @@ mbody.append('' \
 for childNode in filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request)):
 	mbody.append('' \
 		+ '- %s '%(zmscontext.display_type(request)) \
-		+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNodes.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] ' \
+		+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] ' \
 		+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt'))) \
 		+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid')) \
 		+ '\n' \

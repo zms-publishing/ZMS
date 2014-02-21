@@ -476,7 +476,6 @@ ul.zmi-container .zmi-item.pageelement .center > *{padding-left:.8em}
 ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid white;padding:3px 6px 3px 1.5em;overflow:hidden}
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}
 #zmiIframe .form-group.activity input.form-element.datetimepicker{width:8.4em !important}
-.horizontal-group .form-group{float:left;margin-right:0.5em}
 .horizontal-group .mandatory span{background:none !important;padding-left:0 !important}
 .horizontal-group .controls{margin-left:0px}
 .horizontal-group .form-group label{float:none;width:auto;text-align:left}

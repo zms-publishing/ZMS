@@ -14,7 +14,7 @@
 .teal {color:#008080}
 .aqua {color:#00FFFF}
 .silver {color:#C0C0C0}
-.white {color:#FFFFFF};
+.white {color:#FFFFFF}
 
 .navbar-brand {
 	max-width:500px;
@@ -325,10 +325,6 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 	width:8.4em !important;
 }
 
-.horizontal-group .form-group {
-	float:left;
-	margin-right:0.5em;
-}
 .horizontal-group .mandatory span {
 	background: none !important;
 	padding-left: 0 !important;

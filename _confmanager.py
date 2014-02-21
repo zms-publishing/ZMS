@@ -187,21 +187,20 @@ class ConfManager(
     def importConf(self, file, REQUEST, createIfNotExists=0):
       message = ''
       filename, xmlfile = self.getConfXmlFile( file)
-      zms_system = 1
       if filename.find('.charfmt.') > 0:
-        self.format_manager.importCharformatXml(xmlfile, REQUEST, zms_system, createIfNotExists)
+        self.format_manager.importCharformatXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.filter.') > 0:
-        _filtermanager.importXml(self, xmlfile, REQUEST, zms_system, createIfNotExists)
+        _filtermanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metadict.') > 0:
-        self.metaobj_manager.importMetadictXml(xmlfile, REQUEST, zms_system, createIfNotExists)
+        self.metaobj_manager.importMetadictXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metaobj.') > 0:
-        self.metaobj_manager.importMetaobjXml(xmlfile, REQUEST, zms_system, createIfNotExists)
+        self.metaobj_manager.importMetaobjXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metacmd.') > 0:
-        _metacmdmanager.importXml(self, xmlfile, REQUEST, zms_system, createIfNotExists)
+        _metacmdmanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.langdict.') > 0:
-        _multilangmanager.importXml(self, xmlfile, REQUEST, zms_system, createIfNotExists)
+        _multilangmanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.textfmt.') > 0:
-        self.format_manager.importTextformatXml(xmlfile, REQUEST, zms_system, createIfNotExists)
+        self.format_manager.importTextformatXml(xmlfile, REQUEST, createIfNotExists)
       xmlfile.close()
       return message
 

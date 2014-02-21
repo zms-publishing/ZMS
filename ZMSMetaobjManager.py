@@ -123,11 +123,10 @@ class ZMSMetaobjManager:
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
 
-    def _importMetaobjXml(self, item, zms_system=0, createIfNotExists=1, createIdsFilter=None):
+    def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
       id = item['key']
       meta_types = self.model.keys()
-      ids = filter( lambda x: self.model[x].get('zms_system',0)==1, meta_types)
-      if (createIfNotExists == 1 or (id in ids and item.get('value').get('package')==self.model.get(id).get('package'))) and \
+      if (createIfNotExists == 1) and \
          (createIdsFilter is None or (id in createIdsFilter)):
         # Register Meta Attributes.
         metadictAttrs = []
@@ -143,12 +142,9 @@ class ZMSMetaobjManager:
         newValue['attrs'] = []
         newValue['id'] = id
         newValue['enabled'] = newValue.get('enabled',item.get('enabled',1))
-        newValue['zms_system'] = item.get('zms_system',zms_system)
         # Delete Object.
         oldAttrs = None
         if id in ids:
-          if zms_system == 1:
-            oldAttrs = self.getMetaobj( id)['attrs']
           self.delMetaobj( id)
         # Set Object.
         self.setMetaobj( newValue)
@@ -172,7 +168,7 @@ class ZMSMetaobjManager:
               oldAttr = oldAttrs[0]
               # Set Attribute.
               if oldAttr['id'] not in attr_ids:
-                self.setMetaobjAttr( id, None, oldAttr['id'], oldAttr['name'], oldAttr['mandatory'], oldAttr['multilang'], oldAttr['repetitive'], oldAttr['type'], oldAttr['keys'], oldAttr['custom'], oldAttr['default'], zms_system)
+                self.setMetaobjAttr( id, None, oldAttr['id'], oldAttr['name'], oldAttr['mandatory'], oldAttr['multilang'], oldAttr['repetitive'], oldAttr['type'], oldAttr['keys'], oldAttr['custom'], oldAttr['default'])
                 attr_ids.append(oldAttr['id'])
               # Deregister Meta Attribute.
               if oldAttr['id'] in metadictAttrs:
@@ -182,7 +178,7 @@ class ZMSMetaobjManager:
               oldAttrs.remove( oldAttrs[0])
           # Set Attribute.
           if attr_id not in attr_ids:
-            self.setMetaobjAttr( id, attr_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault, zms_system)
+            self.setMetaobjAttr( id, attr_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             attr_ids.append(attr_id)
           # Deregister Meta Attribute.
           if attr_id in metadictAttrs:
@@ -209,17 +205,17 @@ class ZMSMetaobjManager:
           newType = 'DTML Method'
           newKeys = []
           newDefault = ''
-          self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault, zms_system)
+          self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault)
       return id
 
-    def importMetaobjXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1, createIdsFilter=None):
+    def importMetaobjXml(self, xml, REQUEST=None, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = self.parseXmlString( xml, mediadbStorable=False)
       if not type(v) is list:
         v = [v]
       for item in v:
-        id = self._importMetaobjXml(item,zms_system,createIfNotExists,createIdsFilter)
+        id = self._importMetaobjXml(itemcreateIfNotExists,createIdsFilter)
         ids.append( id)
       if len( ids) == 1:
         ids = ids[ 0]
@@ -255,7 +251,7 @@ class ZMSMetaobjManager:
                 del attr[key]
             attrs.append( attr)
           ob['__obj_attrs__'] = attrs
-          for key in ['attrs','zms_system','acquired']:
+          for key in ['attrs','acquired']:
             if ob.has_key(key):
               del ob[key]
           # Value.
@@ -458,7 +454,6 @@ class ZMSMetaobjManager:
       ob[ 'attrs'] = ob.get( 'attrs', ob.get( '__obj_attrs__', []))
       ob[ 'acquired'] = ob.get( 'acquired' ,0)
       ob[ 'enabled'] = ob.get( 'enabled', 1)
-      ob[ 'zms_system'] = ob.get( 'zms_system', 0)
       if ob.has_key('__obj_attrs__'):
         del ob['__obj_attrs__']
       obs[ob['id']] = ob
@@ -631,7 +626,7 @@ class ZMSMetaobjManager:
     #
     #  Set/add meta-object attribute with specified values.
     # --------------------------------------------------------------------------
-    def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault='', zms_system=0):
+    def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault=''):
       ob = self.__get_metaobj__(id)
       if ob is None: return
       attrs = copy.copy(ob['attrs'])
@@ -893,7 +888,6 @@ class ZMSMetaobjManager:
           newOb.manage_edit(title=newName,connection_id=connection,arguments=arguments,template=template)
       
       # Assign Attributes to Meta-Object.
-      ob['zms_system'] = int( ob['zms_system'] and (oldId is None or zms_system))
       self.model[id] = ob
       
       # Make persistent.
@@ -936,7 +930,6 @@ class ZMSMetaobjManager:
       ob['attrs'] = cp
       
       # Assign Attributes to Meta-Object.
-      ob['zms_system'] = 0
       self.model[id] = ob
       
       # Make persistent.
@@ -1194,18 +1187,15 @@ class ZMSMetaobjManager:
             if temp_id in temp_folder.objectIds():
               filename = str(getattr( temp_folder, temp_id).title)
               xmlfile = str(getattr( temp_folder, temp_id).data)
-              zms_system = REQUEST.get('zms_system',0)
               temp_folder.manage_delObjects([temp_id])
               immediately = True
             if REQUEST.get('file'):
               f = REQUEST['file']
               filename = f.filename
               xmlfile = f
-              zms_system = 0
             if REQUEST.get('init'):
               file = REQUEST['init']
               filename, xmlfile = self.getConfXmlFile( file)
-              zms_system = 1
             if xmlfile is not None:
               if not immediately:
                 xml = xmlfile.read()
@@ -1217,10 +1207,9 @@ class ZMSMetaobjManager:
                 file = temp_folder.manage_addFile(id=temp_id,title=filename,file=xmlfile)
                 extra['section'] = 'import'
                 extra['temp_import_file_id'] = temp_id
-                extra['temp_import_zms_system:int'] = zms_system
               else:
                 createIdsFilter = REQUEST.get('createIdsFilter')
-                self.importMetaobjXml(xmlfile,zms_system=zms_system,createIdsFilter=createIdsFilter)
+                self.importMetaobjXml(xmlfile,createIdsFilter=createIdsFilter)
                 message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
           
           # Move to.

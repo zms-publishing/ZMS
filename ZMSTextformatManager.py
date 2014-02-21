@@ -44,7 +44,7 @@ class ZMSTextformatManager:
     #  ZMSTextformatManager.importTextformatXml
     # --------------------------------------------------------------------------
 
-    def _importTextformatXml(self, item, zms_system=0, createIfNotExists=1):
+    def _importTextformatXml(self, item, createIfNotExists=1):
       id = item['key']
       dict = item['value']
       dict['default'] = dict.get('default',0)
@@ -56,15 +56,13 @@ class ZMSTextformatManager:
       # Make persistent.
       self.textformats = copy.deepcopy(self.textformats)
 
-    def importTextformatXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
-      if zms_system and not createIfNotExists:
-        return
+    def importTextformatXml(self, xml, REQUEST=None, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
         for item in v:
-          self._importTextformatXml(item,zms_system,createIfNotExists)
+          self._importTextformatXml(item,createIfNotExists)
       else:
-        self._importTextformatXml(v,zms_system,createIfNotExists)
+        self._importTextformatXml(v,createIfNotExists)
 
 
     # --------------------------------------------------------------------------

@@ -168,17 +168,14 @@
 						<td colspan="7" class="meta-interface">
 							<input type="hidden" tal:attributes="name python:'attr_id_%s'%objAttr['id']; value python:objAttr['id']"/>
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
-							<div class="single-line" 
-								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
-									ob python:objAttr['ob']">
-								<tal:block tal:condition="python:ob is not None">
+							<div class="single-line" tal:condition="python:objAttr.get('ob') is not None" 
+								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 									<textarea class="form-control input-sm" 
 										tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
 												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
 												data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 6px 6px no-repeat no-repeat';
-												data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
 										tal:content="objAttr/name">name</textarea>
-								</tal:block>
 							</div>
 						</td>
 					</tal:block>
@@ -188,14 +185,13 @@
 						<tal:block tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
 							<td colspan="5" class="meta-code">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<div class="single-line" 
-									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes;
-										ob python:objAttr['ob']">
+								<div class="single-line" tal:condition="python:objAttr.get('ob') is not None"
+									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 										<textarea class="form-control input-sm" 
 											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
 												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
 												data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
-												data-dblclickhandler python: ['alert(\'Type Error: ob is None\')','window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])][ob is not None]"
+												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
 											tal:content="objAttr/custom">custom</textarea>
 								</div>
 							</td>
@@ -449,31 +445,6 @@ function zmiEnabledBtnClick(sender) {
 			else {
 				$container.removeClass("enabled");
 				$('.enabled-toggle',$container).removeClass("icon-check").addClass("icon-check-empty");
-			}
-		});
-}
-
-/**
- *
- */
-function zmiZmsSystemBtnClick(sender) {
-	var $sender = $(sender);
-	var $container = $sender.closest("span");
-	var id = $container.attr("id");
-	var b = $sender.hasClass("black")?0:1;
-		// Set wait-cursor.
-		$ZMI.setCursorWait("zmiZmsSystemBtnClick");
-		// JQuery.AJAX.get
-		$.get( "manage_ajaxChangeProperties?id="+id+"&lang="+getZMILang()+"&setZms_system:int="+b,function(data) {
-			// Reset wait-cursor.
-			$ZMI.setCursorAuto("zmiZmsSystemBtnClick");
-			// Get object-id.
-			var b = $("result",data).attr("zms_system");
-			if (b=="1") {
-				$sender.removeClass("silver").addClass("black");
-			}
-			else {
-				$sender.removeClass("black").addClass("silver");
 			}
 		});
 }

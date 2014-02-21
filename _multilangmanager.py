@@ -33,7 +33,7 @@ import _xmllib
 # ------------------------------------------------------------------------------
 #  importXml
 # ------------------------------------------------------------------------------
-def _importXml(self, item, zms_system=0, createIfNotExists=1):
+def _importXml(self, item, createIfNotExists=1):
   if createIfNotExists:
     key = item['key']
     lang_dict = self.get_lang_dict()
@@ -43,7 +43,7 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
         lang_dict[key][langId] = item[langId]
     self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
 
-def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+def importXml(self, xml, REQUEST=None, createIfNotExists=1):
   if type(xml) is not str:
     xml = xml.read()
   value = self.parseXmlString(xml)
@@ -73,9 +73,9 @@ def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
           r += 1
   if type(value) is list:
     for item in value:
-      _importXml( self, item, zms_system, createIfNotExists)
+      _importXml( self, item, createIfNotExists)
   else:
-    _importXml( self, value, zms_system, createIfNotExists)
+    _importXml( self, value, createIfNotExists)
 
 
 # ------------------------------------------------------------------------------

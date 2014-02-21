@@ -44,12 +44,9 @@ class ZMSMetadictManager:
     #  ZMSMetadictManager.importMetadictXml
     # --------------------------------------------------------------------------
 
-    def _importMetadictXml(self, item, zms_system=0, createIfNotExists=1):
+    def _importMetadictXml(self, item, createIfNotExists=1):
       id = item['id']
-      metaDicts = self.dict_list(self.metas)
-      ids = metaDicts.keys()
-      ids = filter(lambda x: metaDicts[x].get('zms_system',0)==1,metaDicts.keys())
-      if createIfNotExists == 1 or id in ids:
+      if createIfNotExists == 1:
         newId = id
         newAcquired = 0
         newName = item['name']
@@ -60,20 +57,19 @@ class ZMSMetadictManager:
         newKeys = item.get('keys',[])
         newCustom = item.get('custom','')
         self.setMetadictAttr( None, newId, newAcquired, newName, newType, \
-          newMandatory, newMultilang, newRepetitive, newCustom, newKeys, \
-          zms_system)
+          newMandatory, newMultilang, newRepetitive, newCustom, newKeys)
         for meta_id in item.get('dst_meta_types',[]):
           metaObj = self.getMetaobj( meta_id)
           if metaObj is not None  and id not in self.getMetadictAttrs(meta_id):
             self.setMetaobjAttr(meta_id,None,newId=id,newType=id)
 
-    def importMetadictXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+    def importMetadictXml(self, xml, REQUEST=None, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
         for item in v:
-          self._importMetadictXml(item,zms_system,createIfNotExists)
+          self._importMetadictXml(item,createIfNotExists)
       else:
-        self._importMetadictXml(v,zms_system,createIfNotExists)
+        self._importMetadictXml(v,createIfNotExists)
 
 
     # --------------------------------------------------------------------------
@@ -151,7 +147,7 @@ class ZMSMetadictManager:
     # --------------------------------------------------------------------------
     def setMetadictAttr(self, oldId, newId, newAcquired, newName='', newType='', \
           newMandatory=0, newMultilang=1, newRepetitive=0, newCustom='', \
-          newKeys=[], zms_system=0):
+          newKeys=[]):
       """
       Set/add meta-attribute with specified values.
       @param oldId: Old id
@@ -188,7 +184,6 @@ class ZMSMetadictManager:
       newValues['repetitive'] = newRepetitive
       newValues['keys'] = newKeys
       newValues['custom'] = newCustom
-      newValues['zms_system'] = zms_system
       # Update attribute.
       obs.insert(i,newValues)
       obs.insert(i,newId)
@@ -308,8 +303,6 @@ class ZMSMetadictManager:
               id = metadicts[i*2]
               dict = metadicts[i*2+1].copy()
               if id in ids or len(ids) == 0:
-                if dict.has_key('zms_system'):
-                    del dict['zms_system']
                 dst_meta_types = []
                 for meta_id in self.getMetaobjIds():
                   if id in self.getMetadictAttrs( meta_id):

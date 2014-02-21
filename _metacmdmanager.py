@@ -89,13 +89,10 @@ CONF_METACMDS = "ZMS.custom.commands"
 #  _metacmdmanager.importXml
 # ------------------------------------------------------------------------------
 
-def _importXml(self, item, zms_system=0, createIfNotExists=1):
+def _importXml(self, item, createIfNotExists=1):
 
   id = item['id']
-  metaCmds = getRawMetacmds(self)
-  metaCmds = filter(lambda x: x.get('zms_system',0)==1,metaCmds)
-  ids = map(lambda x: x['id'], metaCmds)
-  if createIfNotExists == 1 or id in ids:
+  if createIfNotExists == 1:
 
     # Delete existing object.
     try: delMetacmd(self, id)
@@ -117,16 +114,16 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     # Return with new id.
     return setMetacmd(self, None, newId, newAcquired, newName, newMethod, \
       newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
-      newNodes, zms_system)
+      newNodes)
 
 
-def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+def importXml(self, xml, REQUEST=None, createIfNotExists=1):
   v = self.parseXmlString(xml)
   if type(v) is list:
     for item in v:
-      id = _importXml(self,item,zms_system,createIfNotExists)
+      id = _importXml(self,item,createIfNotExists)
   else:
-    id = _importXml(self,v,zms_system,createIfNotExists)
+    id = _importXml(self,v,createIfNotExists)
 
 
 # ------------------------------------------------------------------------------
@@ -165,7 +162,7 @@ def delMetacmd(self, id):
 # ------------------------------------------------------------------------------
 def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
       newData=None, newExec=0, newDescription='', newIconClazz='', newMetaTypes=[], \
-      newRoles=['ZMSAdministrator'], newNodes='{$}', zms_system=0):
+      newRoles=['ZMSAdministrator'], newNodes='{$}'):
   obs = copy.deepcopy(getRawMetacmds(self))
 
   # Catalog.
@@ -184,7 +181,6 @@ def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
   new['roles'] = newRoles
   new['nodes'] = newNodes
   new['exec'] = newExec
-  new['zms_system'] = zms_system
   obs.append(new)
   self.setConfProperty( CONF_METACMDS, obs)
 

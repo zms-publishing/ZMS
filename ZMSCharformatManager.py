@@ -46,7 +46,7 @@ class ZMSCharformatManager:
     #  ZMSCharformatManager.importCharformatXml
     # --------------------------------------------------------------------------
 
-    def _importCharformatXml(self, item, zms_system=0, createIfNotExists=1):
+    def _importCharformatXml(self, item, createIfNotExists=1):
       if createIfNotExists == 1:
         newId = self.id_quote(item.get('display',''))
         if len(newId) == 0:
@@ -61,13 +61,13 @@ class ZMSCharformatManager:
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
-    def importCharformatXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+    def importCharformatXml(self, xml, REQUEST=None, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
         for item in v:
-          self._importCharformatXml(item,zms_system,createIfNotExists)
+          self._importCharformatXml(item,createIfNotExists)
       else:
-        self._importCharformatXml(v,zms_system,createIfNotExists)
+        self._importCharformatXml(v,createIfNotExists)
 
 
     # --------------------------------------------------------------------------

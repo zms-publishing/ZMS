@@ -45,7 +45,7 @@ import _globals
 #  importXml
 # ------------------------------------------------------------------------------
 
-def _importXml(self, item, zms_system=0, createIfNotExists=1):
+def _importXml(self, item, createIfNotExists=1):
   itemType = item.get('type')
   itemOb = item.get('value')
   if itemType == 'filter':
@@ -58,11 +58,9 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     newRoles = itemOb.get('roles',[])
     newMetaTypes = itemOb.get('meta_types',[])
     filters = getRawFilters(self)
-    ids = filters.keys()
-    ids = filter( lambda x: filters[x].get('zms_system',0)==1, ids)
-    if createIfNotExists == 1 or newId in ids:
+    if createIfNotExists == 1:
       delFilter(self, newId)
-      setFilter(self, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes, zms_system)
+      setFilter(self, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
       for process in itemOb.get('processes',[]):
         newProcessId = process.get('id')
         newProcessFile = process.get('file')
@@ -74,21 +72,19 @@ def _importXml(self, item, zms_system=0, createIfNotExists=1):
     newType = itemOb.get('type','process')
     newCommand = itemOb.get('command')
     processes = getRawProcesses(self)
-    ids = processes.keys()
-    ids = filter( lambda x: processes[x].get('zms_system',0)==1, ids)
-    if createIfNotExists == 1 or newId in ids:
+    if createIfNotExists == 1:
       delProcess(self, newId)
-      setProcess(self, newId, newAcquired, newName, newType, newCommand, zms_system)
+      setProcess(self, newId, newAcquired, newName, newType, newCommand)
   else:
     _globals.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
 
-def importXml(self, xml, REQUEST=None, zms_system=0, createIfNotExists=1):
+def importXml(self, xml, REQUEST=None, createIfNotExists=1):
   v = self.parseXmlString(xml)
   if type(v) is list:
     for item in v:
-      id = _importXml(self,item,zms_system,createIfNotExists)
+      id = _importXml(self,item,createIfNotExists)
   else:
-    id = _importXml(self,v,zms_system,createIfNotExists)
+    id = _importXml(self,v,createIfNotExists)
 
 # ------------------------------------------------------------------------------
 #  exportXml
@@ -99,14 +95,10 @@ def exportXml(self, REQUEST, RESPONSE):
   for id in self.getFilterIds():
     if id in ids or len(ids) == 0:
       ob = self.getFilter(id).copy()
-      if ob.has_key('zms_system'):
-        del ob['zms_system']
       value.append({'type':'filter','value':ob})
   for id in self.getProcessIds():
     if id in ids or len(ids) == 0:
       ob = self.getProcess(id).copy()
-      if ob.has_key('zms_system'):
-        del ob['zms_system']
       value.append({'type':'process','value':ob})
   # XML.
   if len(value)==1:
@@ -141,7 +133,7 @@ def getRawProcesses(self):
 # 
 #  Set/add process specified by given Id.
 # ------------------------------------------------------------------------------
-def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCommand=None, zms_system=0):
+def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCommand=None):
   if newCommand is None:
     newCommand = ''
     if newType in [ 'Script (Python)']:
@@ -185,7 +177,6 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
   ob['name'] = newName
   ob['type'] = newType
   ob['command'] = newCommand
-  ob['zms_system'] = zms_system
   obs[newId] = ob
   # Set attribute.
   self.setConfProperty('ZMS.filter.processes',obs.copy())
@@ -246,7 +237,7 @@ def getRawFilters(self):
 # 
 #  Set/add filter specified by given Id.
 # ------------------------------------------------------------------------------
-def setFilter(self, newId, newAcquired=0, newName='', newFormat='', newContentType='', newDescription='', newRoles=[], newMetaTypes=[], zms_system=0):
+def setFilter(self, newId, newAcquired=0, newName='', newFormat='', newContentType='', newDescription='', newRoles=[], newMetaTypes=[]):
   # Set.
   obs = getRawFilters(self)
   ob = {}
@@ -257,7 +248,6 @@ def setFilter(self, newId, newAcquired=0, newName='', newFormat='', newContentTy
   ob['description'] = newDescription
   ob['roles'] = newRoles
   ob['meta_types'] = newMetaTypes
-  ob['zms_system'] = zms_system
   obs[newId] = ob
   # Set attribute.
   self.setConfProperty('ZMS.filter.filters',obs.copy())

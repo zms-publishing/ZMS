@@ -60,7 +60,7 @@
 				importObjs python:[]">
 			<tal:block tal:repeat="item xml">
 				<tal:block tal:define="global
-						importObj python:{'id':item['key'],'name':item['value']['name'],'type':item['value']['type'],'package':item['value'].get('package',None),'revision':item['value'].get('revision','0.0.0'),'zms_system':request.get('temp_import_zms_system')}">
+						importObj python:{'id':item['key'],'name':item['value']['name'],'type':item['value']['type'],'package':item['value'].get('package',None),'revision':item['value'].get('revision','0.0.0')}">
 					<tal:block tal:condition="python:importObj['type']=='ZMSPackage' and not importObj['id'] in packages">
 						<tal:block tal:define="global dummy0 python:packages.append(importObj['id'])"></tal:block>
 					</tal:block>
@@ -73,7 +73,6 @@
 				</tal:block>
 			</tal:block>
 			<tal:block tal:define="global dummy0 python:packages.sort()"></tal:block>
-			<input type="hidden" name="zms_system:int" tal:attributes="value request/temp_import_zms_system" />
 			<div class="btn-group">
 				<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
 				<legend tal:content="f/title_or_id">title_or_id</legend>

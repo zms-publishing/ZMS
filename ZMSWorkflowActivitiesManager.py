@@ -91,10 +91,14 @@ class ZMSWorkflowActivitiesManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getActivity(self, id, for_export=False):
     activity = filter(lambda x: x['id']==id, self.getActivities())[0]
-    activity = copy.deepcopy(activity)
     if not for_export:
-      if activity['icon']:
-        activity['icon'] = self.absolute_url()+'/'+id+'.icon'
+      d = {}
+      for key in activity.keys():
+        if key == 'icon' and activity.get('icon'):
+          d[key] = self.absolute_url()+'/'+id+'.icon'
+        else:
+          d[key] = activity[key]
+      activity = d
     return activity
 
 
@@ -141,7 +145,7 @@ class ZMSWorkflowActivitiesManager:
     # Change.
     # -------
     if btn == self.getZMILangStr('BTN_SAVE'):
-      item = self.getActivity(id)
+      item = self.getActivity(id,for_export=True)
       newId = REQUEST.get('inpId').strip()
       newName = REQUEST.get('inpName').strip()
       newIcon = REQUEST.get('inpIcon','')

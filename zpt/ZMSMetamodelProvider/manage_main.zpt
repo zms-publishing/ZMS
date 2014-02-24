@@ -425,10 +425,57 @@
 /**
  *
  */
+function zmiCodeSnippet(sender) {
+	var i = $(sender).val();
+	var name = i.substr(0,i.indexOf("|"));
+	var value = i.substr(i.indexOf("|")+1);
+	var tal = '';
+	if (value=='image') {
+		tal
+			= '&lt;tal:block tal:define="global '+name+' python:zmscontext.attr(\''+name+'\')">\n'
+			+ '\t&lt;img tal:attributes="src python:'+name+'.getHref(request)"/>\n'
+			+ '&lt;/tal:block>';
+	}
+	else if (value=='file') {
+		tal
+			= '&lt;tal:block tal:define="global '+name+' python:zmscontext.attr(\''+name+'\')">\n'
+			+ '\t&lt;a tal:attributes="href python:'+name+'.getHref(request)" target="_blank tal:content="python:'+name+'.getFilename(request)">\n'
+				+ '\t\tthe filename\n'
+			+ '\t&lt;/a>\n'
+			+ '&lt;/tal:block>';
+	}
+	else {
+		tal = '&lt;tal:block tal:content="python:zmscontext.attr(\''+name+'\')">the '+name+'&lt;/tal:block>';
+	}
+	$(sender).val("");
+	zmiModal(null,{
+			body: '<'+'pre>'+tal+'<'+'/pre>',
+			title: 'Snippet: '+i
+		});
+}
+
+/**
+ *
+ */
 function zmiCode(sender) {
-	var html = ''
+	var html = '';
+	html = html
 		+ '<'+'div class="col-lg-10">'
-		+ '<'+'/div>';
+			+ '<'+'div class="input-group">'
+				+ '<'+'select class="form-control" onchange="zmiCodeSnippet(this)">'
+					+ '<'+'option value="">--- Snippets... ---<'+'/option>';
+	var prefix = "attr_type_";
+	$("select[name^="+prefix+"]").each(function() {
+			var $this = $(this);
+			var name = $this.attr("name").substr(prefix.length);
+			var value = $this.val();
+			html = html
+				+ '<'+'option value="'+name+'|'+value+'">'+name+' ('+value+')'+'<'+'/option>';
+		});
+	html = html
+				+ '<'+'/select>'
+			+ '<'+'/div><'+'!-- .input-append -->'
+		+ '<'+'/div><'+'!-- .col-lg-10 -->';
 	return html;
 }
 

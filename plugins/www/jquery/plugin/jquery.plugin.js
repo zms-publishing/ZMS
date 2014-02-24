@@ -269,9 +269,7 @@
 		for(var i=0;i<files.length;i++){
 			(function(){
 				var file = files[i];
-			// For some reason Opera needs a timer here	
-				if($.browser.opera) { setTimeout(function(){ getFile(file); },500); }
-				else {getFile(file); } 
+				getFile(file);
 			})();
 		}
 		

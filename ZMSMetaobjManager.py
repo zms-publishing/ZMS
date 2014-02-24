@@ -124,6 +124,7 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
 
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
+      ids = []
       id = item['key']
       meta_types = self.model.keys()
       if (createIfNotExists == 1) and \
@@ -215,7 +216,7 @@ class ZMSMetaobjManager:
       if not type(v) is list:
         v = [v]
       for item in v:
-        id = self._importMetaobjXml(itemcreateIfNotExists,createIdsFilter)
+        id = self._importMetaobjXml(item,createIfNotExists,createIdsFilter)
         ids.append( id)
       if len( ids) == 1:
         ids = ids[ 0]

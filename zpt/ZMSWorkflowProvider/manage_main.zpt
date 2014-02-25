@@ -351,7 +351,7 @@ $ZMI.registerReady(function(){
 		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></span>
 		<div class="col-xs-3 col-sm-4 col-md-5">
 			<div class="single-line input-append zmi-nodes">
-				<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
+				<textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.operator_getattr(here,'nodes',['{$}']))"></textarea>
 			</div>
 		</div>
 		<div class="container">

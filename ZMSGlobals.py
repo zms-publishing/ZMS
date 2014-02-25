@@ -573,10 +573,9 @@ class ZMSGlobals:
       @rtype: C{any}
       """
       if ignorecase and type(b) is str:
-        if b.upper() in a.keys():
-          return operator.getitem(a,b.upper())
-        elif b.lower() in a.keys():
-          return operator.getitem(a,b.lower())
+        for key in a.keys():
+          if b.upper() == key.upper():
+            return operator.getitem(a,key)
       if b in a.keys():
         return operator.getitem(a,b)
       return c

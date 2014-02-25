@@ -5039,7 +5039,7 @@
     <Cell><Data ss:Type="String">קשור</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">OPT_S_BOLD</Data></Cell>
+    <Cell><Data ss:Type="String">OPT_S_STRONG</Data></Cell>
     <Cell><Data ss:Type="String">Fett</Data></Cell>
     <Cell><Data ss:Type="String">Bold</Data></Cell>
     <Cell><Data ss:Type="String">Vet</Data></Cell>
@@ -5093,7 +5093,7 @@
     <Cell><Data ss:Type="String">תו מיוחד</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">OPT_S_ITALIC</Data></Cell>
+    <Cell><Data ss:Type="String">OPT_S_EM</Data></Cell>
     <Cell><Data ss:Type="String">Kursiv</Data></Cell>
     <Cell><Data ss:Type="String">Italic</Data></Cell>
     <Cell><Data ss:Type="String">Cursief</Data></Cell>

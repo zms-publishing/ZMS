@@ -7,9 +7,6 @@
 <script tal:condition="python:not bnobody">
 	$ZMI.registerReady(function(){
 			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
-				if (parent.$.fancybox) {
-					parent.$.fancybox.close();
-				}
 				var href = parent.location.href;
 				if (href.indexOf("?") > 0) {
 					href = href.substr(0,href.indexOf("?"));

@@ -914,6 +914,9 @@ class AccessManager(AccessableContainer):
             confirm = REQUEST.get('confirm','')
             forceChangePassword = REQUEST.get('forceChangePassword',0)
             updateUserPassword(self,user,password,confirm,forceChangePassword)
+          self.setUserAttr(id,'attrActive',REQUEST.get('attrActive',0))
+          self.setUserAttr(id,'attrActiveStart',self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
+          self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
           self.setUserAttr(id,'email',REQUEST.get('email','').strip())
           self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
         elif key=='attr':

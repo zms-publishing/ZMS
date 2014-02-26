@@ -77,7 +77,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateTimeInput(self, fmName, elName, size, value, enabled, fmt_str, REQUEST, css='form-control', extra=''):
+  def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', REQUEST=None, css='form-control', extra=''):
     manage_lang = self.get_manage_lang()
     html = []
     if not type(value) is str:

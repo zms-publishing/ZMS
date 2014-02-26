@@ -1024,6 +1024,175 @@ function zmiDialogClose(id) {
 }
 
 // ############################################################################
+// ### WYSIWYG-Textareas
+// ############################################################################
+
+/**
+ * @see http://stackoverflow.com/questions/1981088/set-textarea-selection-in-internet-explorer
+ */
+function setInputSelection(e, selection){
+	$ZMI.writeDebug("[setInputSelection]: "+selection.start+"-"+selection.end);
+	e.focus();
+	if(e.setSelectionRange) {
+		e.setSelectionRange(selection.start, selection.end);
+	} else if(e.createTextRange) {
+		e = e.createTextRange();
+		e.collapse(true);
+		e.moveEnd('character', selection.end);
+		e.moveStart('character', selection.start);
+		e.select();
+	}
+}
+
+/**
+ * @see http://stackoverflow.com/questions/7186586/how-to-get-the-selected-text-in-textarea-using-jquery-in-internet-explorer-7
+ */
+function getInputSelection(el) {
+	var start = 0, end = 0, normalizedValue, range,
+	textInputRange, len, endRange;
+	if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
+		start = el.selectionStart;
+		end = el.selectionEnd;
+	} else {
+		range = document.selection.createRange();
+		if (range && range.parentElement() == el) {
+			len = el.value.length;
+			normalizedValue = el.value.replace(/\r\n/g, "\n");
+			// Create a working TextRange that lives only in the input
+			textInputRange = el.createTextRange();
+			textInputRange.moveToBookmark(range.getBookmark());
+			// Check if the start and end of the selection are at the very end
+			// of the input, since moveStart/moveEnd doesn't return what we want
+			// in those cases
+			endRange = el.createTextRange();
+			endRange.collapse(false);
+			if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+				start = end = len;
+			} else {
+				start = -textInputRange.moveStart("character", -len);
+				start += normalizedValue.slice(0, start).split("\n").length - 1;
+				if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+					end = len;
+				} else {
+					end = -textInputRange.moveEnd("character", -len);
+					end += normalizedValue.slice(0, end).split("\n").length - 1;
+				}
+			}
+		}
+	}
+	$ZMI.writeDebug("[getInputSelection]: "+start+"-"+end);
+	return {
+		start: start,
+		end: end
+	};
+}
+
+var selectedInput = null;
+var selectedText = {start:-1,end:-1};
+
+function untagSelected(tag, leftDelimiter, rightDelimiter) {
+	var v = $(selectedInput).val();
+	var pre = v.slice(0,selectedText.start);
+	var range = v.slice(selectedText.start,selectedText.end);
+	var post = v.slice(selectedText.end);
+	while (range.indexOf(" ")==range.length-1) {
+		range = range.slice(0,range.length-1);
+		post = " " + post;
+	}
+	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
+	var startTag = leftDelimiter + tag + rightDelimiter;
+	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter + "$", "gi");
+	var endTag = leftDelimiter + "/" + tagName + rightDelimiter; 
+	var endRe = new RegExp("^" + leftDelimiter + "/" + tag + rightDelimiter, "gi");
+	$ZMI.writeDebug("[untagSelected]: pre='"+pre+"'");
+	$ZMI.writeDebug("[untagSelected]: post='"+post+"'");
+	$ZMI.writeDebug("[untagSelected]: startRe='"+pre.match(startRe)+"' "+startRe);
+	$ZMI.writeDebug("[untagSelected]: endRe='"+post.match(endRe)+"' "+endRe);
+	if (pre.match(startRe)!=null && post.match(endRe)!=null) {
+		var newPre = pre.replace(startRe,'');
+		var newPost = post.replace(endRe,'');
+		$(selectedInput).val(newPre+range+newPost);
+		// Set selection.
+		var offset = newPre.length-pre.length;
+		selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
+		setInputSelection(selectedInput,selectedText);
+		return true;
+	}
+	return false;
+}
+
+function tagSelected(tag, leftDelimiter, rightDelimiter) {
+	var v = $(selectedInput).val();
+	var pre = v.slice(0,selectedText.start);
+	var range = v.slice(selectedText.start,selectedText.end);
+	var post = v.slice(selectedText.end);
+	while (range.indexOf(" ")==range.length-1) {
+		range = range.slice(0,range.length-1);
+		post = " " + post;
+	}
+	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
+	var tagAttrs = tag.indexOf(" ")>0?tag.substr(tag.indexOf(" ")):"";
+	if (tagName == 'a' && range.indexOf('http://') < 0 && range.indexOf('@') < 0) {
+		zmiBrowseObjs('','',getZMILang());
+	} 
+	else {
+		var startTag = leftDelimiter + tagName;
+		if (tagName == 'a') {
+			if (range.indexOf("@")>0)
+				startTag += ' href="mailto:' + range + '"';
+			else if (range.indexOf("http://") < 0)
+				startTag += ' href="http://' + range + '" target="_blank"';
+			else
+			startTag += ' href="' + range + '" target="_blank"';
+		}
+		else {
+			startTag += tagAttrs;
+		}
+		startTag += rightDelimiter; 
+		var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
+		var newRange = startTag + range + endTag; 
+		$ZMI.writeDebug("[tagSelected]: pre='"+pre+"'");
+		$ZMI.writeDebug("[tagSelected]: range='"+range+"'");
+		$ZMI.writeDebug("[tagSelected]: post='"+post+"'");
+		$ZMI.writeDebug("[tagSelected]: newRange='"+newRange+"'");
+		$(selectedInput).val(pre+newRange+post);
+		// Set selection.
+		var offset = startTag.length;
+		selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
+		setInputSelection(selectedInput,selectedText);
+		return true;
+	}
+	return false;
+}
+
+function formatSelected(tag, leftDelimiter, rightDelimiter) {
+	$ZMI.writeDebug("[formatSelected]: tag="+leftDelimiter+tag+rightDelimiter);
+	if (!untagSelected(tag, leftDelimiter, rightDelimiter)) {
+		tagSelected(tag, leftDelimiter, rightDelimiter);
+	}
+}
+
+/**
+ * Set text-format for input.
+ */
+function setTextFormatInput( tag, fmName, elName) {
+	self.fm = document.forms[ fmName];
+	self.el = self.fm.elements[ elName];
+	if (typeof self.el == 'undefined') {
+		self.el = document.getElementsByName(elName)[0];
+	}
+	formatSelected(tag,'<','>');
+}
+
+/**
+ * Store caret.
+ */
+function storeCaret(input) {
+	selectedInput = input;
+	selectedText = getInputSelection(input);
+}
+
+// ############################################################################
 // ### Record-Sets
 // ############################################################################
 

@@ -430,8 +430,7 @@ class ObjAttrs:
           css += '-disabled'
         cols = None
         rows = 5
-        extra = ' onselect="storeCaret(this)"'
-        return self.getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap,extra)
+        return self.getTextArea(fmName,elName,cols,rows,value,enabled,REQUEST,css,wrap)
       
       #-- Boolean-Fields.
       elif inputtype == 'boolean':

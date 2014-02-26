@@ -194,7 +194,7 @@ ZMI.prototype.writeDebug = function(s) {
 	var $div = $("div#zmi-debug");
 	if ($div.css("display")!="none") {
 		var d = new Date();
-		$div.html("<code>["+(d)+'...'+(d.getMilliseconds())+"] "+s+'</code><br/>'+$div.html());
+		$div.html("<code>["+(d)+'...'+(d.getMilliseconds())+"] "+s.replace(/</gi,'&lt;')+'</code><br/>'+$div.html());
 	}
 };
 

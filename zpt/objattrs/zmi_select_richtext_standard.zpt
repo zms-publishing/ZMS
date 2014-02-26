@@ -7,264 +7,13 @@
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-var selectedRange = null;
-var selectedText = "";
-
 /**
  */
 function selectObject(path, title) {
 	if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1) {
 		path = '<'+'dtml-var expr="getLinkUrl(\''+path+'\',REQUEST)"/>';
 	}
-	var fTag = 'a';
-	var aTag = '<'+fTag+' href="'+path+'">';
-	var eTag = '<'+'/'+fTag+'>';
-	tagSelectedText( aTag, eTag, true);
-}
-
-/**
- * Remove tags from given string.
- */
-function untag( s) {
-	return s.replace( /<(..*?)>/g, '');
-}
-
-/**
- * Get tagged index of untagged string in given string.
- */
-function taggedStart( s1, s2) {
-	var r = '';
-	var b = true;
-	for (var i = 0; i < s1.length; i++) {
-		var c = s1.charAt( i);
-		if ( b && c == '<')
-			b = false;
-		else if ( !b && c == '>')
-			b = true;
-		else if ( b)
-			r += c;
-		if ( r == s2)
-			return i;
-	}
-	return -1;
-}
-
-/**
- * Tag selected text.
- */
-function tagSelectedText( aTag, eTag, bMayHaveChanged) {
-	var input = self.el;
-	/* internet explorer */
-	if( typeof document.selection != 'undefined') {
-		if (bMayHaveChanged) {
-			/* Selected range may have changed */
-			while (selectedRange.text.indexOf(selectedText)!=0) {
-				selectedRange.moveStart('character',1);
-			}
-			while (selectedRange.text!=selectedText) {
-				selectedRange.moveEnd('character',-1);
-			}
-		}
-		else {
-			selectedRange = document.selection.createRange();
-		}
-		var selText = selectedRange.text;
-		// Strip trailing blanks
-		var trailingBlanks = '';
-		while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
-			selText = selText.substr( 0, selText.length - 1);
-			trailingBlanks += ' ';
-		}
-		if ( selText.length > 0) {
-			// Apply value
-			var newText;
-			if ( aTag.length > 0 && typeof eTag == 'undefined') {
-				newText = aTag + trailingBlanks;
-			}
-			else {
-				newText = aTag + selText + eTag + trailingBlanks;
-			}
-			if (bMayHaveChanged && input.value.indexOf(selText)==0) {
-				$ZMI.writeDebug("input.value='"+input.value+"'");
-				$ZMI.writeDebug("selText='"+selText+"'");
-				if (input.value==selText) {
-					input.value = newText;
-				}
-				else if (input.value.substr(selText.length).indexOf(selText)<0) {
-					input.value = input.value.replace(selText+trailingBlanks,newText);
-				}
-				else {
-					alert("can't tag selected text");
-				}
-			}
-			else {
-				selectedRange.text = newText;
-				// Set cursor-position
-				selectedRange = document.selection.createRange();
-				selectedRange.moveStart('character', newText.length);
-				selectedRange.select();
-			}
-		}
-	}
-	/* newer gecko-based browsers */
-	else if( typeof input.selectionStart != 'undefined') {
-		var start = self.selectionStart;
-		var end = self.selectionEnd;
-		var inpValue = input.value;
-		var selText = inpValue.substring( start, end);
-		// Strip trailing blanks
-		var trailingBlanks = '';
-		while ( selText.length > 0 && selText.charAt( selText.length - 1) == ' ') {
-			selText = selText.substr( 0, selText.length - 1);
-			trailingBlanks += ' ';
-		}
-		if ( selText.length > 0) {
-			// Apply value
-			var newText;
-			if ( aTag.length > 0 && typeof eTag == 'undefined') {
-				newText = aTag + trailingBlanks;
-			}
-			else {
-				newText = aTag + selText + eTag + trailingBlanks;
-			}
-			input.value = input.value.substr( 0, start) + newText + input.value.substr( end);
-			// Set cursor-position
-			var pos = start + newText.length;
-			input.selectionStart = pos;
-			input.selectionEnd = pos;
-		}
-	}
-}
-
-/**
- * Untag selected text.
- * Returns true if selected text was untagged, false otherwise.
- */
-function untagSelectedText( fTag, fAttrs, ld, rd) {
-  var input = self.el;
-  /* internet explorer */
-  if( typeof document.selection != 'undefined') {
-    var selText = selectedRange.text;
-    var startTag = ld+fTag;
-    var endTag = ld+'/'+fTag+rd;
-    if ( selText.indexOf(startTag) == 0 && selText.lastIndexOf(endTag) == selText.length - endTag.length) {
-      selText = selText.substr( startTag.length + 1, selText.lastIndexOf( endTag) - startTag.length - 1); 
-      /* Apply value */
-      selectedRange.text = selText;
-      return true;
-    }
-    else {
-      selectedRange.moveStart('character', -(startTag.length+1));
-      selectedRange.moveEnd('character', endTag.length);
-      var taggedText = selectedRange.text;
-      if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
-        /* Apply value */
-        selectedRange.text = selText;
-        return true;
-      }
-      else if ( fAttrs.length > 0) {
-        startTag += fAttrs;
-        selectedRange.moveStart('character', -fAttrs.length);
-        var taggedText = selectedRange.text;
-        if ( taggedText.indexOf(startTag) == 0 && taggedText.lastIndexOf(endTag) == taggedText.length - endTag.length) {
-          /* Apply value */
-          selectedRange.text = selText;
-          return true;
-        }
-      }
-    }
-  }
-  /* newer gecko-based browsers */
-  else if( typeof input.selectionStart != 'undefined') {
-    var start = self.selectionStart;
-    var end = self.selectionEnd;
-    var inpValue = input.value;
-    var selText = inpValue.substring( start, end);
-    var tagStart = inpValue.substr( 0, start);
-    var i = tagStart.length;
-    var c = tagStart.charAt( i - 1);
-    if ( c == '>') {
-      /* Handle DTML in a.href */
-      i--;
-      var l = 1;
-      while ( l > 0 && i > 0) {
-        c = tagStart.charAt( i - 1);
-        if ( c == rd)
-          l++;
-        if ( c == ld)
-          l--;
-        i--;
-      }
-      if ( i >= 0) {
-        var tag = tagStart.substr( i);
-        tagStart = tagStart.substr( 0, i);
-        if ( tag.indexOf(ld+fTag) == 0 && tag.indexOf(rd) > 0) {
-          var tagEnd = inpValue.substr( end);
-          if ( tagEnd.indexOf(rd) > 0) {
-            var tag = tagEnd.substr( 0, tagEnd.indexOf(rd) + 1);
-            tagEnd = tagEnd.substr( tagEnd.indexOf(rd) + 1);
-            if ( tag.indexOf(ld+'/'+fTag+rd) == 0) {
-              input.value = tagStart + selText + tagEnd;
-              return true;
-            }
-          }
-        }
-      }
-    }
-  }
-  return false;
-}
-
-/**
- * Set text-format.
- */
-function setTextFormat( fTag, ld, rd, lang) 
-{
-  var fAttrs = '';
-  if (fTag.indexOf( ' ') > 0) {
-    fAttrs = fTag.substring( fTag.indexOf( ' '));
-    fTag = fTag.substring( 0, fTag.indexOf( ' '));
-  }
-  var input = self.el;
-  selectedText = '';
-  /* internet explorer */
-  if( typeof document.selection != 'undefined') {
-    selectedRange = document.selection.createRange();
-    selectedText = selectedRange.text;
-  }
-  /* newer gecko-based browsers */
-  else if( typeof input.selectionStart != 'undefined') {
-    self.selectionStart = input.selectionStart;
-    self.selectionEnd = input.selectionEnd;
-    var start = self.selectionStart;
-    var end = self.selectionEnd
-    selectedText = input.value.substring( start, end);
-  }
-  if ( selectedText.length == 0)
-    return;
-  if ( !untagSelectedText( fTag, fAttrs, ld, rd)) {
-    if (fTag == 'a' && selectedText.indexOf('http://') < 0 && selectedText.indexOf('@') < 0) {
-      zmiBrowseObjs('','',lang);
-    } 
-    else {
-      var aTag = ld
-      aTag += fTag;
-      if (fTag == 'a') {
-        if (selectedText.indexOf("@")>0)
-          aTag += ' href="mailto:' + selectedText + '"';
-        else if (selectedText.indexOf("http://") < 0)
-          aTag += ' href="http://' + selectedText + '" target="_blank"';
-        else
-          aTag += ' href="' + selectedText + '" target="_blank"';
-      }
-      else {
-        aTag += fAttrs;
-      }
-      aTag += rd;
-      var eTag = ld+'/'+fTag+rd;
-      tagSelectedText( aTag, eTag);
-    }
-  }
+	tagSelected('a href="'+path+'"','<','>');
 }
 
 /**
@@ -292,27 +41,6 @@ function zmiRicheditInsertTab( fmName, elName) {
 		var pos = start + insText.length;
 		input.selectionStart = pos;
 		input.selectionEnd = pos;
-	}
-}
-
-/**
- * Set text-format for input.
- */
-function setTextFormatInput( fTag, fmName, elName, lang) {
-	self.fm = document.forms[ fmName];
-	self.el = self.fm.elements[ elName];
-	if (typeof self.el == 'undefined') {
-		self.el = document.getElementsByName(elName)[0];
-	}
-	setTextFormat( fTag, '<', '>', lang);
-}
-
-/**
- * Store caret.
- */
-function storeCaret( textEl) {
-	if (textEl.createTextRange) {
-		textEl.caretPos = document.selection.createRange().duplicate();
 	}
 }
 
@@ -367,7 +95,7 @@ function storeCaret( textEl) {
 			><tal:block tal:repeat="charFormat charFormats"
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
 				><tal:block tal:condition="not:python:len(charFormat)==0"
-					><span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%(charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'],request['lang'])"
+					><span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'])"
 						><i tal:attributes="class python:charFormat[1]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"></i></span
 				></tal:block
 			></tal:block
@@ -381,7 +109,7 @@ function storeCaret( textEl) {
 					btn     python:charFormat.get('btn');
 					js      python:here.dt_exec(charFormat.get('js','')).strip();
 					attrs   python:here.dt_exec(charFormat.get('attrs','')).strip();
-					onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\',\'%s\')'%((charFormat['tag']+' '+attrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'],request['lang'])"
+					onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((charFormat['tag']+' '+attrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
 				><tal:block tal:condition="python:btn is not None"
 					><tal:block tal:condition="python:len(js)>0"
 						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%js"></tal:block
@@ -424,6 +152,6 @@ function storeCaret( textEl) {
 
 	</div>
 	<div class="col-sm-12 col-md-12 col-lg-12">
-		<textarea class="form-control" tal:attributes="id options/elName; name options/elName; cols options/cols; rows options/rows" tal:content="options/value">the text</textarea>
+		<textarea class="form-control" onselect="storeCaret(this)" tal:attributes="id options/elName; name options/elName; cols options/cols; rows options/rows" tal:content="options/value">the text</textarea>
 	</div>
 </div>

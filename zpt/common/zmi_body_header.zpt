@@ -3,7 +3,7 @@
 <div id="zmi-header" tal:define="global actions python:map(lambda x: x.get('action'),here.getDocumentElement().filtered_manage_options())">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
-		<ul class="nav navbar-nav pull-right">
+		<ul class="nav navbar-nav pull-right navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">
 						<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>&nbsp;
@@ -69,7 +69,7 @@
 						</tal:block>
 					</ul>
 				</li><!-- .dropdown -->
-				<li class="dropdown" tal:condition="python:len(here.getLangIds())>1">
+				<li class="dropdown languages" tal:condition="python:len(here.getLangIds())>1">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-flag')"></tal:block>&nbsp;
 						<tal:block tal:content="python:here.getLanguageLabel(request['lang'])">the language</tal:block>
@@ -91,7 +91,7 @@
 						</li>
 					</ul>
 				</li><!-- .dropdown -->
-				<li class="dropdown">
+				<li class="dropdown localisation">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getLocale().getLangStr('LANG',request['manage_lang']))">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block>
 						<b class="caret"></b>

@@ -287,7 +287,7 @@ def initContent(self, filename, REQUEST):
 ###   
 ################################################################################
 ################################################################################
-manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals()) 
+manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """ manage_addZMS """
   message = ''
@@ -511,10 +511,10 @@ class ZMS(
     # --------------------------------------------------------------------------
     #  ZMS.__init__: 
     # --------------------------------------------------------------------------
+    """
+    Constructor.
+    """
     def __init__(self):
-      """
-      Constructor.
-      """
       self.id = 'content'
       file = open(_fileutil.getOSPath(package_home(globals())+'/www/spacer.gif'),'rb')
       self.zmi_logo = Image(id='logo', title='', file=file.read())
@@ -542,10 +542,10 @@ class ZMS(
     # --------------------------------------------------------------------------
     #  ZMS.getDocumentElement
     # --------------------------------------------------------------------------
+    """
+    The root element of the site.
+    """
     def getDocumentElement(self):
-      """
-      The root element of the site.
-      """
       return self
 
     # --------------------------------------------------------------------------
@@ -557,13 +557,10 @@ class ZMS(
         return portalMaster.getAbsoluteHome()
       return self.getHome()
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getHome
-    # --------------------------------------------------------------------------
+    """
+    Returns the home-folder of the site.
+    """
     def getHome(self):
-      """
-      Returns the home-folder of the site.
-      """
       docElmnt = self.getDocumentElement()
       ob = docElmnt
       try:
@@ -580,28 +577,22 @@ class ZMS(
           ob = docElmnt.aq_parent
       return ob
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getTrashcan
-    # --------------------------------------------------------------------------
+    """
+    Returns the trashcan of the site.
+    """
     def getTrashcan(self):
       return self.objectValues(['ZMSTrashcan'])[0]
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getNewId
-    # --------------------------------------------------------------------------
+    """
+    Returns new (unique) Object-ID.
+    """
     def getNewId(self, id_prefix='e'):
-      """
-      Returns new (unique) Object-ID.
-      """
       return '%s%i'%(id_prefix,self.getSequence().nextVal())
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getDCCoverage
-    # --------------------------------------------------------------------------
+    """
+    Returns Dublin-Core Meta-Attribute Coverage.
+    """
     def getDCCoverage(self, REQUEST={}):
-      """
-      Returns Dublin-Core Meta-Attribute Coverage.
-      """
       return 'global.'+self.getPrimaryLanguage()
 
 
@@ -612,13 +603,10 @@ class ZMS(
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getPortalMaster
-    # --------------------------------------------------------------------------
+    """
+    Returns portal-master, none if it does not exist.
+    """
     def getPortalMaster(self):
-      """
-      Returns portal-master, none if it does not exist.
-      """
       v = self.getConfProperty('Portal.Master','')
       if len(v) > 0:
         try:
@@ -627,13 +615,10 @@ class ZMS(
           _globals.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
       return None
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getPortalClients
-    # --------------------------------------------------------------------------
+    """
+    Returns portal-clients, empty list if none exist.
+    """
     def getPortalClients(self):
-      """
-      Returns portal-clients, empty list if none exist.
-      """
       docElmnts = []
       v = self.getConfProperty('Portal.Clients',[])
       if len(v) > 0:
@@ -697,15 +682,11 @@ class ZMS(
     ### 
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMS.getParentNode
-    # --------------------------------------------------------------------------
-    getParentNode__roles__ = None
+    """
+    The parent of this node. 
+    All nodes except root may have a parent.
+    """
     def getParentNode(self): 
-      """
-      The parent of this node. 
-      All nodes except root may have a parent.
-      """
       return None
 
 
@@ -715,13 +696,10 @@ class ZMS(
     ###
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMS.xmlOnStartElement
-    # --------------------------------------------------------------------------
+    """
+    Handler for XML-Builder (_builder.py)
+    """
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
-      """
-      Handler for XML-Builder (_builder.py)
-      """
       _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
       
       # remove all ZMS-objects.

@@ -604,49 +604,6 @@ class ZMS(
       """
       return 'global.'+self.getPrimaryLanguage()
 
-    # --------------------------------------------------------------------------
-    #  ZMS.sendMail
-    # --------------------------------------------------------------------------
-    def sendMail(self, mto, msubject, mbody, REQUEST):
-      """
-      Sends Mail via MailHost.
-      """
-      
-      ##### Get Sender ####
-      auth_user = REQUEST['AUTHENTICATED_USER']
-      mfrom = self.getUserAttr(auth_user,'email',self.getConfProperty('ZMSAdministrator.email',''))
-      
-      ##### Get MailHost ####
-      mailhost = None
-      homeElmnt = self.getHome()
-      if len(homeElmnt.objectValues(['Mail Host'])) == 1:
-        mailhost = homeElmnt.objectValues(['Mail Host'])[0]
-      elif getattr(homeElmnt,'MailHost',None) is not None:
-        mailhost = getattr(homeElmnt,'MailHost',None)
-      
-      ##### Get MessageText ####
-      messageText = ''
-      messageText += 'Content-Type: text/plain; charset=unicode-1-1-utf-8\n'
-      if type(mto) is dict and mto.has_key( 'From'):
-        messageText += 'From: %s\n'%mto['From']
-      else:
-        messageText += 'From: %s\n'%mfrom
-      if type(mto) is dict:
-        for key in ['To','Cc','Bcc']:
-          if mto.has_key( key):
-            messageText += '%s: %s\n'%(key,mto[key])
-      else:
-        messageText += 'To: %s\n'%mto
-      messageText += 'Subject: %s\n\n'%msubject
-      messageText += '%s\n'%mbody
-      
-      ##### Send mail ####
-      try:
-        _globals.writeBlock( self, "[sendMail]: %s"%messageText)
-        mailhost.send(messageText)
-        return 0
-      except:
-        return -1
 
 
     ############################################################################

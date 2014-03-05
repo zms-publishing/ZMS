@@ -226,9 +226,11 @@ $(function(){
 				$button.append($ZMI.icon("icon-chevron-down"));
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
 			})
-		.focus( function(evt) { $ZMI.actionList.over(this,"focus"); })
+		.focus( function(evt) {
+				$ZMI.actionList.over(this,"focus",evt);
+			})
 		.hover( function(evt) {
-				$ZMI.actionList.over(this,"mouseover");
+				$ZMI.actionList.over(this,"mouseover",evt);
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
 				$($ZMI.icon_selector("icon-chevron-down"),$button).show();
@@ -274,6 +276,7 @@ ZMI.prototype.initInputFields = function(container) {
 	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form.form-horizontal:not(.form-initialized)',container).length+"]");
 	$('form.form-horizontal:not(.form-initialized)',container)
 		.submit(function() {
+				$ZMI.writeDebug("form.form-horizontal:not(.form-initialized): submit");
 				var b = true;
 				// Button
 				if(self.btnClicked==getZMILangStr("BTN_BACK") ||
@@ -363,6 +366,7 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 			$(this).addClass('form-initialized');
 			// Button-Clicked
+			$ZMI.writeDebug("BO zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
 			$('input[type="submit"],button[type="submit"]',context)
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
@@ -700,10 +704,11 @@ ZMIActionList.prototype.getContextId = function(el) {
  *
  * @param el
  */
-ZMIActionList.prototype.over = function(el, evt) {
+ZMIActionList.prototype.over = function(el, evt, e) {
 	$("button.split-left",el).css({visibility:"visible"});
 	// Exit.
-	if($("button.split-left",el).length==0 || $("ul.dropdown-menu",el).length>0) return;
+	var $ul = $("ul.dropdown-menu",el);
+	if($("button.split-left",el).length==0 || $ul.length>0) return;
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
 	// Build action and params.
@@ -719,13 +724,14 @@ ZMIActionList.prototype.over = function(el, evt) {
 		// Reset wait-cursor.
 		$(document.body).css( "cursor", "auto");
 		// Exit.
-		if($("ul.dropdown-menu",el).length>0) return;
+		$ul = $("ul.dropdown-menu",el);
+		if($ul.length>0) return;
 		// Get object-id.
 		var value = eval('('+data+')');
 		var id = value['id'].replace(/\./,"_");
 		var actions = value['actions'];
 		$(el).append('<ul class="dropdown-menu"></ul>');
-		var $ul = $("ul.dropdown-menu",el);
+		$ul = $("ul.dropdown-menu",el);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
 		if (startsWithSubmenu) {
 			var html = '';
@@ -819,6 +825,10 @@ ZMIActionList.prototype.over = function(el, evt) {
 				$ul.append(html);
 			}
 		}
+		// Dropup
+		if (e.pageY+$ul.innerHeight()>$(document).innerHeight()) {
+			$(el).addClass("dropup");
+		}
 	});
 }
 
@@ -867,6 +877,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				width:800,
 				open:function(event,ui) {
 					$ZMI.runReady();
+					$('#addInsertBtn').click(function() {
+								$("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();
+							});
+					$('#addCancelBtn').click(function() {
+								zmiModal("hide");
+							});
 					if($('#zmiIframeAddDialog .form-control').length==0) {
 						$('#addInsertBtn').click();
 					}
@@ -875,8 +891,8 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 					$('#manage_addProduct').remove();
 				},
 				buttons:[
-						{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary', click: function() { $("form.form-horizontal").append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">').submit();}},
-						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn', click: function() { $(this).dialog("close");}}
+						{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary'},
+						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn'}
 				]
 			});
 	}

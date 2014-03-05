@@ -12,7 +12,7 @@
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
 					<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
 				</a>
-				<div class="pull-right" style="cursor:pointer;padding:15px;">
+				<div class="pull-right" style="cursor:pointer;padding:8px 12px;">
 					<i class="icon-angle-left" title="Move To Left" onclick="frmresize(-30)" style="color:#aaa;">&nbsp;</i>
 					<i class="icon-ellipsis-horizontal" title="Default" onclick="frmresize()" style="color:#aaa;">&nbsp;</i>
 					<i class="icon-angle-right" title="Move To Right" onclick="frmresize(30)" style="color:#aaa">&nbsp;</i>

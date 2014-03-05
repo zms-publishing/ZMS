@@ -731,6 +731,30 @@ class AccessManager(AccessableContainer):
 
 
     # --------------------------------------------------------------------------
+    #  AccessManager.toggleUserActive:
+    # --------------------------------------------------------------------------
+    def toggleUserActive(self, id):
+      active = self.getUserAttr(id,'attrActive',1)
+      attrActiveStart = self.parseLangFmtDate(self.getUserAttr(id,'attrActiveStart',None))
+      if attrActiveStart is not None:
+        dt = DateTime(time.mktime(attrActiveStart))
+        active = active and dt.isPast()
+      attrActiveEnd = self.parseLangFmtDate(self.getUserAttr(id,'attrActiveEnd',None))
+      if attrActiveEnd is not None:
+        dt = DateTime(time.mktime(attrActiveEnd))
+        active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
+      nodes = self.getUserAttr(id,'nodes',{})
+      for node in nodes.keys():
+        ob = self.getLinkObj(node,self.REQUEST)
+        if ob is not None:
+          if active:
+            roles = nodes[node].get('roles',[])
+            ob.manage_setLocalRoles(id,roles)
+          else:
+            ob.manage_delLocalRoles(userids=[id])
+
+
+    # --------------------------------------------------------------------------
     #  AccessManager.setLocalUser:
     # --------------------------------------------------------------------------
     def setLocalUser(self, id, node, roles, langs):
@@ -908,17 +932,21 @@ class AccessManager(AccessableContainer):
       # -------
       elif btn == self.getZMILangStr('BTN_SAVE'):
         if key=='obj':
+          attrActive = self.getUserAttr(id,'attrActive',1)
+          newAttrActive = REQUEST.get('attrActive',0)
           user = self.findUser(id)
           if user.get('password')==True:
             password = REQUEST.get('password','******')
             confirm = REQUEST.get('confirm','')
             forceChangePassword = REQUEST.get('forceChangePassword',0)
             updateUserPassword(self,user,password,confirm,forceChangePassword)
-          self.setUserAttr(id,'attrActive',REQUEST.get('attrActive',0))
+          self.setUserAttr(id,'attrActive',newAttrActive)
           self.setUserAttr(id,'attrActiveStart',self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
           self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
           self.setUserAttr(id,'email',REQUEST.get('email','').strip())
           self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
+          if attrActive != newAttrActive:
+            self.toggleUserActive(id)
         elif key=='attr':
           pass
         #-- Assemble message.

@@ -219,7 +219,14 @@
 						<tal:block tal:condition="python:objAttr['type'] not in ['method','py','resource','zpt']+here.valid_zopetypes">
 							<td class="meta-type">
 								<select tal:attributes="name python:'attr_type_%s'%objAttrId; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]">
-									<option tal:attributes="value python:objAttr['type']" selected="selected">
+									<option
+											tal:condition="python:objAttr.get('meta_type') in here.getMetadictAttrs()"
+											tal:attributes="value python:objAttr.get('meta_type')" selected="selected">
+										<tal:block tal:content="python:here.getMetadictAttr(objAttr.get('meta_type'))['name']">type</tal:block>
+									</option>
+									<option
+											tal:condition="not:python:objAttr.get('meta_type') in here.getMetadictAttrs()"
+											tal:attributes="value python:objAttr['type']" selected="selected">
 										<tal:block tal:condition="python:objAttr['type'] in here.valid_datatypes" tal:content="python:objAttr['type']">type</tal:block>
 										<tal:block tal:condition="python:objAttr['type'] == '*'" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_CUSTOM')">type</tal:block>
 										<tal:block tal:condition="python:objAttr['type'] in metaObjIds" tal:content="python:here.getMetaobj(objAttr['type'])['name']">type</tal:block>

@@ -10,7 +10,6 @@
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 
-
 <tal:block tal:define="global
 			records python:here.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:filter(lambda x:
@@ -92,7 +91,10 @@
 
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
+	</div><!-- .accordion-group.perc100 -->
+</form>
 
+	<tal:block tal:condition="not:python:action=='insert'">
 		<tal:block tal:repeat="identifier python:map(lambda x: x['id'],filter(lambda x:x['type']=='identifier',metaObjAttrs))">
 			<tal:block tal:repeat="metaObj python:filter(lambda x:x['type']=='ZMSRecordSet',map(lambda x:here.getMetaobj(x),here.getMetaobjIds()))">
 				<tal:block tal:repeat="metaObjAttr python:filter(lambda x:x['type']==meta_id,metaObj['attrs'])">
@@ -126,9 +128,7 @@
 				</tal:block>
 			</tal:block>
 		</tal:block>
-
-	</div><!-- .accordion-group.perc100 -->
-</form>
+	</tal:block>
 
 </tal:block>
 

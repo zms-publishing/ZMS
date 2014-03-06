@@ -822,11 +822,11 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				html += '<li><a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
-				$ul.append(html);
+				$ul.append(html);j
 			}
 		}
 		// Dropup
-		if (e.pageY+$ul.innerHeight()>$(document).innerHeight()) {
+		if ($ul.innerHeight()<$(document).innerHeight() && e.pageY+$ul.innerHeight()>$(document).innerHeight()) {
 			$(el).addClass("dropup");
 		}
 	});

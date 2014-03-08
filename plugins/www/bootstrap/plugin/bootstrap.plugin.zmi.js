@@ -822,7 +822,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				html += '<li><a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
-				$ul.append(html);j
+				$ul.append(html);
 			}
 		}
 		// Dropup

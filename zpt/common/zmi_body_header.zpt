@@ -22,9 +22,9 @@
 							</a>
 						</li>
 						<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
-							<a tal:attributes="href python:'manage_system?lang=%s'%(request['lang'])">
+							<a tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(request.cookies.get('zmi-manage-system',0))))">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-bolt')"></tal:block>
-								<tal:block tal:content="python:'System'">System</tal:block>
+								<tal:block tal:content="python:'Zope'">Zope</tal:block>
 							</a>
 						</li>
 						<li>

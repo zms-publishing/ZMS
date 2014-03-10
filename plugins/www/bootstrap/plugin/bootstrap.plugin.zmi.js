@@ -242,6 +242,21 @@ $(function(){
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
 			})
 		;
+	// Zope
+	runPluginCookies(function() {
+			var key = 'zmi-manage-system';
+			if (typeof zmiParams[key] != 'undefined') {
+				$.cookies.set(key,zmiParams[key])
+			}
+			var value = $.cookies.get(key);
+			var url = zmiParams['base_url'];
+			if (value == '1' && url.indexOf('/manage_system') < 0) {
+				self.location.href = url.substr(0,url.lastIndexOf('/'))+'/manage_system';
+			} else
+			if (value != '1' && url.indexOf('/manage_system') > 0) {
+				self.location.href = url.substr(0,url.lastIndexOf('/'))+'/manage_main';
+			}
+		});
 	// Inputs
 	$ZMI.initInputFields($("body"));
 	$(".zmi-image,.zmi-file").each(function() {

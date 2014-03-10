@@ -218,6 +218,9 @@ ul.zmi-container {
 	margin-top:0;
 	margin-bottom:0;
 }
+ul.zmi-container .contentEditable {
+	cursor:pointer;
+}
 ul.zmi-container li.zmi-item,
 ul.zmi-container li.ui-state-highlight {
 	list-style-type:none;

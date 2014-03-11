@@ -1370,3 +1370,10 @@ body.tasks table.table ul.breadcrumb {
 body.tasks .zmi-container .center .contentEditable {
 	padding-left: 0 !important;
 }
+/* ui datepicker */
+#ui-datepicker-div .ui-widget-header .ui-icon {
+	background-image: url(/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/images/ui-icons_222222_256x240.png);
+}
+#zmiIframeAddDialog #form0 input.hasDatepicker{
+	z-index: 2000;
+}

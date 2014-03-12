@@ -107,6 +107,15 @@ class ZMSItem(
         request.set('manage_lang',self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message',self.updateVersion(request['lang'],request)+self.getConfProperty('ZMS.manage_tabs_message',''))
+      # manage_system
+      if request.form.has_key('zmi-manage-system'):
+        request.SESSION.set('zmi-manage-system',int(request.get('zmi-manage-system')))
+      flag = request.SESSION.get('zmi-manage-system',0)
+      url = request['URL']
+      if flag == 1 and url.rfind('/manage_system') < 0:
+        request.RESPONSE.redirect(url[0:url.rfind('/')]+'/manage_system')
+      elif flag != 1 and url.rfind('/manage_system') > 0:
+        request.RESPONSE.redirect(url[0:url.rfind('/')]+'/manage_main')
 
     def f_standard_html_request(self, *args, **kwargs):
       request = self.REQUEST

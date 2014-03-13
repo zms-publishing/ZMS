@@ -209,13 +209,14 @@ class MediaDb(
     # Management Options.
     # -------------------
     manage_options = (
-      {'label': 'Edit','action': 'acl_mediadb/manage_browse'},
       {'label': 'Properties','action': 'acl_mediadb/manage_properties'},
+      {'label': 'Edit','action': 'acl_mediadb/manage_browse'},
       )
 
     # Management Interface.
     # ---------------------
     manage_browse = PageTemplateFile('zpt/MediaDb/manage_browse', globals())
+    manage_main = PageTemplateFile('zpt/MediaDb/manage_properties', globals())
     manage_properties = PageTemplateFile('zpt/MediaDb/manage_properties', globals())
 
 

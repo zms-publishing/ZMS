@@ -545,6 +545,8 @@ form.form-horizontal.form-insert{margin:0}
 .zmi.properties form.form-horizontal .accordion-group{width:100%;background-color:#fff}
 .zmi.properties form.form-horizontal .accordion-group.zmi-container{width:100%;background-color:transparent}
 .zmi.properties form.form-horizontal .accordion-body.container{margin-left:-1em;max-width:2600px !important;width:100% !important;background-color:#fff}
+.zmi.properties form.form-horizontal .accordion-group .accordion-group.zmi-container .accordion-body.container{margin-left: 0em}
+.properties.zmi form.form-horizontal .accordion-group .accordion-group.zmi-container{padding:1em 0 1em 0}
 .zmi.properties form.form-horizontal .accordion-body.container .contentEditable{padding:1em;background-color:#fff}
 .zmi.properties form.form-horizontal .accordion-body.container .accordion-inner{background-color:#f5f5f5!important;padding:0}
 .zmi.properties form.form-horizontal .accordion-inner ul.zmi-container{width:100% !important}

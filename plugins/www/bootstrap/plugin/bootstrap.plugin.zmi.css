@@ -569,6 +569,12 @@ form.form-horizontal.form-insert {
 	width:100% !important;
 	background-color: #fff;
 }
+.zmi.properties form.form-horizontal .accordion-group .accordion-group.zmi-container .accordion-body.container {
+	margin-left: 0em;
+}
+.properties.zmi form.form-horizontal .accordion-group .accordion-group.zmi-container {
+	padding:1em 0 1em 0;
+}
 .zmi.properties form.form-horizontal .accordion-body.container .contentEditable {
 	padding: 1em;
 	background-color: #fff;

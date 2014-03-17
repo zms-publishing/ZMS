@@ -47,7 +47,7 @@
 	<tal:block tal:define="global 
 				primary_key python:here.getEntityPK(entity['id']).lower();
 				row python:res[int(request['qindex'])];
-				rowid python:row[primary_key];
+				rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
 				message python:[];
 				values python:{}">
 		<tal:block tal:repeat="column python:entity['columns']">

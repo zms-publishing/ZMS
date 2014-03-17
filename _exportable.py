@@ -336,18 +336,6 @@ class Exportable(_filtermanager.FilterItem):
         RESPONSE.redirect( url)
 
 
-    ############################################################################
-    #  Exportable.pub_export:
-    #
-    #  Exports ZMS-object.
-    ############################################################################
-    security.declareProtected('View', 'pub_export')
-    def pub_export(self, export_format, lang, REQUEST, RESPONSE):
-      """ Exportable.pub_export """
-      self.f_standard_html_request( self, REQUEST)
-      return self.manage_export( export_format, lang, REQUEST, RESPONSE)
-
-
     # --------------------------------------------------------------------------
     #  Exportable.getObjToXml:
     #
@@ -359,6 +347,7 @@ class Exportable(_filtermanager.FilterItem):
       if method is not None:
         xml.append( method( context=self))
       return ''.join(xml)
+
 
     # --------------------------------------------------------------------------
     #  Exportable.getObjChildrenToXml:

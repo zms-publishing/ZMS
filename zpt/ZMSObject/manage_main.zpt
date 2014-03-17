@@ -1,5 +1,9 @@
+<tal:block tal:define="global dummy0 python:here.manage_page_request(here,request)"></tal:block>
+<tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1">
+<tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block>
+</tal:block>
+<tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1">
 <tal:block tal:define="global
-  dummy0 python:here.f_standard_html_request(here,request);
   lurl python:request['URL'].replace('?','/').split('/');
   bcontainer python:here.isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)"
 ><tal:block tal:condition="python:bcontainer" tal:content="structure python:here.manage_container(here,request)">manage_container</tal:block
@@ -37,5 +41,5 @@
 </body>
 </html>
 </tal:block>
-
+</tal:block>
 </tal:block>

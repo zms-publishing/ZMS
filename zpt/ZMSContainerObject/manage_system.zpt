@@ -6,10 +6,11 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" method="get" tal:attributes="action python:context.absolute_url()">
+<form class="form-horizontal" method="post" tal:attributes="action python:context.absolute_url()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="preview" tal:attributes="value request/preview"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
+
 <tal:block tal:define="global
 		zmscontext here;
 		SecurityManager modules/AccessControl/getSecurityManager;
@@ -78,7 +79,7 @@
 	<input class="btn btn-default" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
 	<input class="btn btn-default" type="submit" name="manage_cutObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
 	<input class="btn btn-default" type="submit" name="manage_copyObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
-	<input class="btn btn-default" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:request.get('cb_dataValid')"/>
+	<input class="btn btn-default" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:here.cb_dataValid()"/>
 	<input class="btn btn-default" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
 	<input class="btn btn-default" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
 </tal:block>

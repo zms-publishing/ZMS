@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<tal:block tal:define="global dummy0 python:here.manage_page_request(here,request)"></tal:block
+><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
+><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
+><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
@@ -486,3 +489,4 @@ $ZMI.registerReady(function(){
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 </html>
+</tal:block>

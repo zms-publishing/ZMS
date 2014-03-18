@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<tal:block tal:define="global dummy0 python:here.manage_page_request(here,request)"></tal:block
+><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
+><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
+><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'charformats',here.meta_id])">
@@ -13,14 +16,14 @@
 <div class="ui-helper-hidden" tal:condition="python:request.get('id') in map(lambda x: x['id'],formats)">
 	<div id="editObj" class="inner" tal:define="global format python:filter(lambda x: x['id']==request['id'],formats)[0]">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">
 				<label for="new_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_id" name="new_id" tal:attributes="value python:format['id']"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_id" name="new_id" tal:attributes="value python:format['id']" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_display" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_display" name="new_display" tal:attributes="value python:format['display']"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_display" name="new_display" tal:attributes="value python:format['display']" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_btn" class="col-lg-2 control-label"><span>Button</span></label>
@@ -30,17 +33,17 @@
 						<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
 					</tal:block>
 					<tal:block tal:condition="python:not format.get('btn')">
-						&nbsp;<img src="/misc_/zms/spacer.gif" class="zmiVSep" align="absmiddle">&nbsp;
+						&nbsp;<img src="/misc_/zms/spacer.gif" class="zmiVSep" align="absmiddle" />&nbsp;
 					</tal:block>
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_tag" class="col-lg-2 control-label"><span>&lt;<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_tag" name="new_tag" tal:attributes="value python:format['tag']"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_tag" name="new_tag" tal:attributes="value python:format['tag']" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_attrs" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ATTRS')">Attributes</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_attrs" name="new_attrs" tal:attributes="value python:format['attrs']"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="new_attrs" name="new_attrs" tal:attributes="value python:format['attrs']" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_js" class="col-lg-2 control-label"><span>JavaScript</span></label>
@@ -68,14 +71,14 @@
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">
 				<label for="_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="_id" name="_id"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="_id" name="_id" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="_display" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="_display" name="_display"></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="_display" name="_display" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-lg-10">
@@ -89,7 +92,7 @@
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">
 				<label for="file" class="col-lg-2 control-label">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
@@ -210,3 +213,4 @@ $ZMI.registerReady(function(){
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 </html>
+</tal:block>

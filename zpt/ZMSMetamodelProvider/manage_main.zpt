@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<tal:block tal:define="global dummy0 python:here.manage_page_request(here,request)"></tal:block
+><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
+><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
+><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'metas',here.meta_id])">
@@ -23,7 +26,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group meta_name">
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input type="text" id="_meta_name" name="_meta_name" class="form-control input-sm" />
+				<div class="col-lg-10"><input type="text" id="_meta_name" name="_meta_name" class="form-control input-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group meta_type">
 				<label for="_meta_type" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
@@ -150,7 +153,7 @@
 				<th class="meta-multilang" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
 				<th class="meta-repetitive" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block></th>
 				<th></th>
-			<tr>
+			</tr>
 		</thead>
 		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
 			<tr tal:repeat="objAttrId objAttrIds" tal:attributes="class python:' '.join([]+[[],['zmi-selected']][int(objAttrId==request.get('attr_id'))])">
@@ -581,3 +584,4 @@ $ZMI.registerReady(function(){
 
 </body>
 </html>
+</tal:block>

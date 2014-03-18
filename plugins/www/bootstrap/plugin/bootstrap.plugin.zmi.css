@@ -884,19 +884,32 @@ table.table.zmi-sortable input {
 .ZMSSqlDb .table tr td:first-child {
 	width:84px;
 }
-.ZMSRecordSet .table input,   .ZMSSqlDb .table input,
-.ZMSRecordSet .table select,  .ZMSSqlDb .table select,
-.ZMSRecordSet .table textarea,.ZMSSqlDb .table textarea {
+.ZMSRecordSet .table input,
+.ZMSSqlDb .table input,
+.ZMSRecordSet .table select,
+.ZMSSqlDb .table select,
+.ZMSRecordSet .table textarea,
+.ZMSSqlDb .table textarea {
 	font-size:11px;
 	padding:0 2px 0 2px;
 	margin:0;
 	height:20px;
 }
 
-.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th,
-.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr td {
+.ZMSRecordSet .table tr th,
+.ZMSRecordSet .table tr td,
+.ZMSSqlDb .table tr th,
+.ZMSSqlDb .table tr td {
 	padding:4px;
 	font-size:11px;
+}
+.ZMSRecordSet .table tr th.
+.ZMSSqlDb .table tr td {
+	min-width: 3em;
+}
+.ZMSRecordSet .table-hover>tbody>tr:hover>td,
+.ZMSRecordSet .table-hover>tbody>tr:hover>th {
+	background-color: #DCE3F0;
 }
 .ZMSRecordSet .table tr th:first-child,
 .ZMSRecordSet .table tr td:first-child,
@@ -944,22 +957,28 @@ table.table.zmi-sortable input {
 .ZMSSqlDb .table ul.dropdown-menu i {
 	padding-right:0.5em;
 }
-.zmi.ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,
-.zmi.ZMSRecordSet #attrProperties .form-group input,     .zmi.ZMSSqlDb #attrProperties .form-group input {
+.zmi.ZMSRecordSet #attrProperties .form-group select,
+.zmi.ZMSSqlDb #attrProperties .form-group select,
+.zmi.ZMSRecordSet #attrProperties .form-group input,
+.zmi.ZMSSqlDb #attrProperties .form-group input {
 	width:167px;
 	float:left;
 }
-.zmi.ZMSRecordSet .accordion-group,.zmi.ZMSSqlDb .accordion-group {
+.zmi.ZMSRecordSet .accordion-group,
+.zmi.ZMSSqlDb .accordion-group {
 	border:0;
 }
-.zmi.ZMSRecordSet .form-horizontal,.zmi.ZMSSqlDb .form-horizontal {
+.zmi.ZMSRecordSet .form-horizontal,
+.zmi.ZMSSqlDb .form-horizontal {
 	border: 1px solid #e5e5e5;
 	border-radius: 4px;
 }
-.zmi.ZMSRecordSet .accordion-heading .accordion-toggle,.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
+.zmi.ZMSRecordSet .accordion-heading .accordion-toggle,
+.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
 	padding: 8px 3px 8px 15px;
 }
-.zmi.ZMSRecordSet .accordion-heading.filters,.zmi.ZMSSqlDb .accordion-heading.filters {
+.zmi.ZMSRecordSet .accordion-heading.filters,
+.zmi.ZMSSqlDb .accordion-heading.filters {
 	margin:1em 0;
 }
 .zmi.ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,

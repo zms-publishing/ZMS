@@ -316,13 +316,13 @@
 		<tr tal:repeat="action python:['insert','delete']">
 			<td tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())" style="text-align:left">ACTION</td>
 			<td>
-				<tal:block tal:condition="python:action=='insert'"
+				<span class="btn btn-default" tal:condition="python:action=='insert'"
 					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj['enabled']==1),enabled=True, css='')">
 					CHECKBOX
-				</tal:block>&nbsp;
+				</span>
 			</td>
 			<td>
-				<textarea cols="80" rows="1" wrap="virtual"
+				<textarea class="form-control" cols="80" rows="1" wrap="virtual"
 					tal:condition="python:action=='insert'"
 					tal:attributes="name python:'access_%s_custom'%(action)" 
 					tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
@@ -330,8 +330,10 @@
 				</textarea>
 			</td>
 			<td tal:repeat="role roleOptpl">
-				<input type="checkbox" 
-					tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
+				<span class="btn btn-default">
+					<input type="checkbox" 
+						tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
+				</span>
 			</td>
 			<td>&nbsp;</td>
 		</tr>

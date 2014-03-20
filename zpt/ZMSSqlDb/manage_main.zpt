@@ -91,7 +91,7 @@
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
-			<div class="accordion-inner" style="margin-left:2.3em;">
+			<div class="accordion-inner" style="margin-left:1em;">
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
@@ -120,7 +120,7 @@
 		</div><!-- .accordion-heading -->
 
 		<div id="attrProperties" class="accordion-body collapse in">
-			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
+			<div class="accordion-inner" style="margin:1em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">

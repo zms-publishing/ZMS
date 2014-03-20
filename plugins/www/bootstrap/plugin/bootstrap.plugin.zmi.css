@@ -238,11 +238,12 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 ul.zmi-container li.zmi-item .inactive .contentEditable {
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
 }
-ul.zmi-container.portalClients .center .contentEditable {
+ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable {
+	border-top:none !important;
+	font-size:large;
 	padding-left:1em;
 	color:#6B9EB8;
 }
-
 table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;
@@ -843,9 +844,23 @@ div.zmi-nodes span {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-body.users #zmi-tab > .pull-left,
-body.users #zmi-tab > .pull-right {
+.zmi.users #zmi-tab > .pull-left,
+.zmi.users #zmi-tab > .pull-right {
 	width:50%;
+}
+.zmi.users form table {
+	margin-bottom: 0;
+}
+.zmi.users form table th:first-child {
+	width:4em;
+}
+.zmi.users form table th,
+.zmi.users form table td {
+	vertical-align:middle;
+}
+.zmi.users form table .breadcrumb {
+	background-color: transparent !important;
+	padding:0 !important;
 }
 table.zmi-sortable td {
 	white-space:nowrap;
@@ -1154,9 +1169,11 @@ div.right .btn .caret {
 	ul.zmi-container .center .contentEditable {
 		padding-left:3em !important
 	}
-	ul.zmi-container.pages .center .contentEditable,
-	ul.zmi-container.portalClients .center .contentEditable {
+	ul.zmi-container.pages .center .contentEditable {
 		padding-left:2.5em !important
+	}
+	ul.zmi-container.portalClients .center .contentEditable {
+		padding-left:1.45em !important
 	}
 	img.grippy {
 		visibility:hidden;

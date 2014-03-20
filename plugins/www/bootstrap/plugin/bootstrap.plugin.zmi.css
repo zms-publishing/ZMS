@@ -255,7 +255,6 @@ table.table.zmi-sortable select.zmi-sort {
 table.table.zmi-sortable input {
 	margin-bottom:10px;
 }
-
 .col_min {width:1em}
 .col_max {width:100%}
 .row_insert .language_id input {width:4em;}
@@ -1173,7 +1172,7 @@ div.right .btn .caret {
 		padding-left:2.5em !important
 	}
 	ul.zmi-container.portalClients .center .contentEditable {
-		padding-left:1.45em !important
+		padding-left:2em !important
 	}
 	img.grippy {
 		visibility:hidden;

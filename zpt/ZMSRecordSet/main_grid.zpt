@@ -73,10 +73,9 @@
 		<tal:block tal:define="global 
 				elLabel python:metaObjAttr['name']">
 		<th>
-			<tal:block tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'asc'==request['qorderdir']"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')"><i class="icon-sort-by-attributes"></i></a></tal:block>
-			<tal:block tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'desc'==request['qorderdir']"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"><i class="icon-sort-by-attributes-alt"></i></a></tal:block>
-			<tal:block tal:condition="python:metaObjAttr['id']!=request.get('qorder')"><a tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"><i class="icon-resize-vertical"></i></a></tal:block>
-			<tal:block tal:content="elLabel">elLabel</tal:block>
+			<a title="Sort" tal:content="elLabel" tal:condition="python:metaObjAttr['id']!=request.get('qorder')" tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"></a>
+			<a title="Sort" tal:content="structure python:'<i class=\042icon-sort-by-attributes\042></i>&nbsp;%s'%(elLabel)" tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'asc'==request['qorderdir']" tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')"></a>
+			<a title="Sort" tal:content="structure python:'<i class=\042icon-sort-by-attributes-alt\042></i>&nbsp;%s'%(elLabel)" tal:condition="python:metaObjAttr['id']==request.get('qorder') and 'desc'==request['qorderdir']" tal:attributes="href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"></a>
 		</th>
 		</tal:block>
 	</tal:block>

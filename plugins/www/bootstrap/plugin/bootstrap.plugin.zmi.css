@@ -903,9 +903,14 @@ table.table.zmi-sortable input {
 	padding:4px;
 	font-size:11px;
 }
-.ZMSRecordSet .table tr th.
-.ZMSSqlDb .table tr td {
+.ZMSRecordSet .table tr th,
+.ZMSSqlDb .table tr th {
 	min-width: 3em;
+	vertical-align: middle;
+}
+.ZMSRecordSet .table tr th a,
+.ZMSSqlDb .table tr th a {
+	text-decoration:none;
 }
 .ZMSRecordSet .table-hover>tbody>tr:hover>td,
 .ZMSRecordSet .table-hover>tbody>tr:hover>th {

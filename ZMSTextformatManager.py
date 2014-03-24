@@ -116,7 +116,13 @@ class ZMSTextformatManager:
     def getTextFormat(self, id, REQUEST):
       if id in self.textformats:
         i = self.textformats.index(id)
-        return ZMSTextformat.ZMSTextformat(id,self.textformats[i+1],REQUEST)
+        d = self.textformats[i+1]
+        if d.has_key('richedit'):
+          richedit = d['richedit']
+          richtextformatids = self.getRichtextFormatIds()
+          if richedit not in richtextformatids:
+            d['richedit'] = richtextformatids[0]
+        return ZMSTextformat.ZMSTextformat(id,d,REQUEST)
       return None
 
 
@@ -124,7 +130,7 @@ class ZMSTextformatManager:
     #  ZMSTextformatManager.getTextFormats:
     # --------------------------------------------------------------------------
     def getTextFormats(self, REQUEST):
-      l = map( lambda x: ZMSTextformat.ZMSTextformat(self.textformats[x*2],self.textformats[x*2+1],REQUEST), range(len(self.textformats)/2))
+      l = map( lambda x: self.getTextFormat(self.textformats[x*2],REQUEST), range(len(self.textformats)/2))
       l = map( lambda x: (x.getDisplay(), x), l)
       l.sort()
       return map(lambda x: x[1],l)

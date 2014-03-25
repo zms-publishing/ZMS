@@ -826,7 +826,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 			}
 		}
 		// Dropup
-		if ($ul.innerHeight()<$(document).innerHeight() && e.pageY+$ul.innerHeight()>$(document).innerHeight()) {
+		if($ul.innerHeight()<$(document).innerHeight()&&e.pageY>$ul.innerHeight()){
 			$(el).addClass("dropup");
 		}
 	});

@@ -11,8 +11,8 @@ Installing the ZMS Product
         <watch files being decompressed>
 
     Windows users can use WinZip or similar, it can handle tarred 
-    gzip files. Make sure to move the extracted zms 
-    folder to your Zope installation's lib/python/Products-folder.
+    gzip files. Make sure to move the extracted zms folder to
+    your Zope installation's lib/python/Products-folder.
 
     That's all. Do not forget to restart Zope afterwards.
 

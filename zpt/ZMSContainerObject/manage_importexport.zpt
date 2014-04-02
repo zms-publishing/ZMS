@@ -62,7 +62,7 @@ function onExportFormatChange(el) {
 	</div>
 </form>
 
-<form class="form-horizontal" name="exportForm" action="pub_export" target="_blank" method="get">
+<form class="form-horizontal" name="exportForm" action="manage_export" target="_blank" method="get">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
 	<div class="form-group">

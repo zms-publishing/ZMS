@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="data"><![CDATA[idmapping = 'manage_transferContent.mapping'
+abshome = context.breadcrumbs_obj_path()[0].getHome()
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+location = request.get('location','http://www.zms-publishing.com')
+#location = request.get('location','http://www.forschung.unibe.ch/content/richtlinien/drittmittel/index_ger.html')
+
+if request.get('http_import') is not None:
+  url = request.get('http_import')+'?'+'&'.join(map(lambda x:x+'='+request.get(x),filter(lambda x:x!='http_import',request.form.keys())))
+  data = context.http_import(url,method='GET')
+  return data
+
+elif request.get('frameimport') is not None:
+  lang = context.getPrimaryLanguage()
+  export_format = 2 # XML
+  username = request.SESSION.get('manage_transferContent.username',request.get('username'))
+  password = request.SESSION.get('manage_transferContent.password',request.get('password'))
+  request.SESSION.set('manage_transferContent.username',username)
+  request.SESSION.set('manage_transferContent.password',password)
+  auth = {'username':username,'password':password}
+  data = context.http_import(location+'/manage_export?lang=%s&export_format:int=%i'%(lang,export_format),method='POST',auth=auth)
+  class File:
+    pass
+  file = File()
+  file.name = 'temp.zip'
+  file.data = data
+  ob = context.manage_import(file,lang,request)
+  context.writeStdout("### DEBUG "+str(ob))
+  mapping = getattr(abshome,idmapping,None)
+  if mapping is not None:
+    m = mapping()
+    for node in [ob]+ob.getTreeNodes():
+      if node.meta_id in m.keys():
+        d = m[node.meta_id]
+        context.writeStdout("### DEBUG d="+str(d))
+        context.operator_setattr(node,'meta_id',d['meta_id'])
+        for old_attr in d['attrs'].keys():
+          new_attr = d['attrs'][old_attr]
+          for lang_suffix in ['']+map(lambda x:'_%s'%x,context.getLangIds()):
+            for obj_vers in node.getObjVersions():
+              v = context.operator_getattr(obj_vers,'%s%s'%(old_attr,lang_suffix),None)
+              context.writeStdout("### DEBUG v="+str(v))
+              if v is not None:
+                context.operator_getattr(obj_vers,'%s%s'%(new_attr,lang_suffix),v)
+          context.writeStdout("### DEBUG old_attr="+str(old_attr))
+          for child in node.getObjChildren(old_attr,request):
+            old_id = child.id
+            new_id = context.getNewId(new_attr)
+            node.manage_renameObject(id=old_id,new_id=new_id)
+  message = context.getZMILangStr('MSG_IMPORTED')%('<strong>%s</strong>'%(ob.display_type(request)))
+  return request.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+
+elif request.get('frameleft') is not None:
+  html = context.manage_menu(context,request)
+  script = '''
+    <script>
+      var theLocation = null;
+      function setLocation(aLocation) {
+        theLocation = aLocation;
+      }
+      function zmiFollowHref(anchor) {
+        var href = $(anchor).attr("href");
+        href = href.replace('manage_main','manage_transferContent');
+        href += '&location='+theLocation;
+        window.parent.frames["top"].location.href=href;
+        return false;
+      }
+      $(function() {
+          parent.registerCallback(setLocation);
+        });
+    </script>
+    '''
+  html = html.replace('</body>',script+'</body>')
+  print html
+
+elif request.get('frametop') is not None:
+  print '''
+    <!DOCTYPE html>
+    <html lang="en">
+    '''
+  print context.zmi_html_head(context,request)
+  
+  print '''
+    <script>
+      function setLocation(aLocation) {
+        $("input[name=location]").val(aLocation);
+      }
+      $(function() {
+          parent.registerCallback(setLocation);
+          $("#openBtn").click(function() {
+              var location = $("input[name=location]").val();
+              if (location.indexOf("http") == 0) {
+                parent.openLocation(location);
+              }
+            }).click();
+        });
+    </script>
+    <style>
+      body {
+        background:#F5F5F5;
+        overflow: hidden;
+      }
+        .breadcrumb{ margin-bottom:10px;}
+        #zmi-footer {display:none;}
+        #zmi-header .pull-right {display: block;padding-right:1em;margin-top: .8em;}
+        #zmi-header .pull-right a {text-decoration:none;}
+    </style>
+    '''
+
+  print '<div id="zmi-header">'
+  print '<div class="navbar navbar-inverse navbar-fixed-top">'
+  print context.zmi_navbar_brand(context,request)
+  print '<div class="pull-right">'
+  print '&nbsp;|&nbsp;<a href="manage_main?lang=%s" target="_parent">'%request['lang']
+  print unicode(context.getZMILangStr('BACK'),'utf-8')
+  print '</a>'
+  print '&nbsp;'
+  print '</div><!-- .pull-right -->'
+  print '</div><!-- .navbar -->'
+  print '</div><!-- #zmi-header -->'
+
+  print context.zmi_breadcrumbs(context,request)
+
+  print '<form onsubmit="return false" style="margin:0;padding:0 1em 0 1em">'
+  print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+  print '<div class="input-group">'
+  print '<input class="form-control" type="text" name="location" value="'+location+'">'
+  print '<span class="input-group-btn">'
+  print '<button id="openBtn" class="btn btn-primary"><i class="icon-signin" title="Open"></i></button>'
+  print '</span><!-- .input-group-btn -->'
+  print '</div><!-- .input-group -->'
+  print '</form>'
+  print '<br/><br/><br/>'
+
+  print context.zmi_body_footer(context,request)
+  print '</html>'
+
+elif request.get('framepreview') is not None:
+  remote_url = request.get('remote_url')
+  remote_protocol = remote_url[:remote_url.find(':')]+'://'
+  remote_server = remote_url
+  remote_server = remote_server[len(remote_protocol):]
+  remote_server = remote_protocol+remote_server[:max(len(remote_server),remote_server.find('/'))]
+  html = context.http_import(remote_url)
+  html = context.re_sub('src="\\/(.*?)"','src="'+remote_server+'/\\1"',html)
+  html = context.re_sub('<link(.*)href="\\/(.*?)"','<link\\1href="'+remote_server+'/\\2"',html)
+  html = context.re_sub('<a(.*?)href="(.*?)"','<a\\1href="'+request.get('URL')+'?framepreview=True&remote_url=\\2\"',html)
+  print html
+
+elif request.get('framestructure') is not None:
+  remote_url = request.get('remote_url')
+  protocol = remote_url[:remote_url.find('://')+3]
+  remote_url = remote_url[len(protocol):]
+  if len(remote_url.split('/')) > 1 and remote_url.split('/')[-1].find('.') > 0:
+    remote_url = '/'.join(remote_url.split('/')[:-1])
+  remote_url = protocol + remote_url
+  qs = '?lang=%s'%context.getPrimaryLanguage()
+  node = context.http_import(remote_url+'/ajaxGetNode'+qs).replace('&','&amp;').replace('<','&lt;')
+  children = context.http_import(remote_url+'/ajaxGetChildNodes'+qs).replace('&','&amp;').replace('<','&lt;')
+  #node = '"'+remote_url + '/ajaxGetNode'+qs+'"'
+  #children = '"'+remote_url + '/ajaxGetChildNodes'+qs+'"'
+  username = request.SESSION.get('manage_transferContent.username',request['AUTHENTICATED_USER'].getId())
+  password = request.SESSION.get('manage_transferContent.password','')
+  print '''
+    <!DOCTYPE html>
+    <html lang="en">
+      %s
+      <style>
+        * {
+          white-space:nowrap;
+        }
+        body {
+          background:#e1e4eb;
+          padding:.5em!important;
+          font-size:12px;
+        }
+        #ajaxGetObjAttrs {
+          background-color:white;
+          position:absolute;
+          font-size:x-small;
+          padding:1em;
+          border:1px dashed blue;
+        }
+        h4 {
+          color:#888;
+        }
+        form {
+          background:non;
+          padding:.5em!important;
+        }
+        ol {
+          padding-left:.5em;
+        }
+        .control-group {
+          margin-top:2em;
+        }
+      </style>
+      <body>
+        <form action="%s/manage_transferContent" method="get" target="_blank">
+    '''%(context.zmi_html_head(context,request),context.absolute_url())
+  print '''
+          <input type="hidden" name="lang" value="%s"/>
+          <input type="hidden" name="frameimport" value="True"/>
+          <textarea id="node" class="ui-helper-hidden">%s</textarea>
+          <textarea id="children" class="ui-helper-hidden">%s</textarea>
+          <div class="zmi-sitemap"></div>
+          <div class="form-group">
+            <label for="username" class="control-label mandatory"><span>Username</span></label>
+            <div><input class="form-control" type="text" name="username" value="%s"/></div>
+          </div><!-- .form-group -->
+          <div class="form-group">
+            <label for="password" class="control-label mandatory"><span>Password</span></label>
+            <div><input class="form-control" type="password" name="password" value="%s"/></div>
+          </div><!-- .form-group -->
+          <div class="control-group">
+            <button id="importBtn" class="btn btn-primary"><i class="icon-upload-alt"></i> Import</button>
+          </div><!-- .control-group -->
+    '''%(request['lang'],unicode(node,'utf-8'),unicode(children,'utf-8'),username,password)
+  mapping = getattr(abshome,idmapping,None)
+  if mapping is not None:
+    print '''
+      <div class="control-group">
+        <a href="%s/manage_main" target="_blank">Edit %s</a>
+        <div class="form-group">
+          <textarea class="form-control">%s</textarea>
+        </div><!-- .form-group -->
+      </div><!-- .control-group -->
+      '''%(mapping.absolute_url(),idmapping,mapping.read())
+  else:
+    print '''
+      <div class="control-group">
+        <a href="%s/manage_addProduct/PythonScripts/manage_addPythonScript?id=%s" target="_blank">Create %s</a>
+      </div><!-- .control-group -->
+      '''%(abshome.absolute_url(),idmapping,idmapping)
+  print '''
+        </form>
+        %s
+        <script>
+          $(function() {
+              var html = '<h4>Elemente</h4>';
+              var node = $.parseXML($("textarea#node").val());
+              var $node = $(node);
+              html += '<ol class="zmi-page">';
+              $("page",$node).each(function() {
+                  var icon = $(this).attr("display_icon");
+                  html += ''
+                    + '<input type="radio" name="location" value="'+$(this).attr("absolute_url")+'" title="'+$(this).attr("titlealt")+'" data-meta-id="'+$(this).attr("meta_id")+'"/> '
+                    + (icon.indexOf('<')==0?icon:'<img src="'+icon+'"/>')+' '
+                    + '<strong>'+$(this).attr("title")+'</strong>';
+                });
+              var children = $.parseXML($("textarea#children").val());
+              var $children = $(children);
+              $("page",$children).each(function() {
+                  var icon = $(this).attr("display_icon");
+                  html += ''
+                    + '<ol class="zmi-page">'
+                    + '<input type="radio" name="location" value="'+$(this).attr("absolute_url")+'" title="'+$(this).attr("titlealt")+'" data-meta-id="'+$(this).attr("meta_id")+'"/> '
+                    + (icon.indexOf('<')==0?icon:'<img src="'+icon+'"/>')+' '
+                    + $(this).attr("title")
+                    + '</ol><!-- .zmi-page -->';
+                });
+              html += '</ol><!-- .zmi-page -->';
+              $("div.zmi-sitemap").html(html);
+              $("form").submit(function() {
+                  var title = $("input:radio:checked").attr("title");
+                  var location = $("input:radio:checked").val();
+                  return confirm("Import "+title+" from "+location+" to "+self.location.href+"?");
+                });
+              $("input:radio").change(function() {
+                  var meta_id = $(this).attr("data-meta-id");
+                  var remote = $(this).val();
+                  var local_xml = $.ajax({
+                    url: 'ajaxGetObjAttrs',
+                    data:{meta_id:meta_id},
+                    datatype:'xml',
+                    async: false
+                    }).responseText;
+                  var url = '?http_import='+escape(remote+'/ajaxGetObjAttrs');
+                  var remote_xml = $.ajax({
+                    url: url,
+                    data:{meta_id:meta_id},
+                    datatype:'xml',
+                    async: false
+                    }).responseText;
+                  var coords = $ZMI.getCoords(this);
+                  var html = ''
+                    + '<div id="ajaxGetObjAttrs" style="left:'+(coords.x+100)+'px;top:'+(coords.y+20)+'px">'
+                    + '<h4>'+meta_id+'</h4>'
+                    + '<table>'
+                    + '<tr>'
+                    + '<th>Remote</th>'
+                    + '<th>Local</th>'
+                    + '</tr>';
+                  var skip = ['attr_cacheable','active','attr_active_end','attr_active_start','change_dt','change_history','change_uid','created_dt','created_uid','internal_dict','master_version','major_version','minor_version','work_dt','work_uid'];
+                  $("item[key][type=dictionary]",local_xml).each(function() {
+                      var local_id = $(this).attr("key");
+                      var remote_id = $("item[key="+local_id+"][type=dictionary]",remote_xml).length==0?"":local_id;
+                      if ($.inArray(local_id, skip) == -1) {
+                        html += '<tr>'
+                        html += '<td'+(remote_id==local_id?' style="color:green"':'')+'>' + remote_id + '</td>'
+                        html += '<td>' + local_id + '</td>'
+                        html += '</tr>'
+                      }
+                    });
+                  $("item[key][type=dictionary]",remote_xml).each(function() {
+                      var remote_id = $(this).attr("key");
+                      var local_id = $("item[key="+remote_id+"][type=dictionary]",local_xml).length==0?"":remote_id;
+                      if ($.inArray(local_id, skip) == -1 && local_id == "") {
+                        html += '<tr>'
+                        html += '<td'+(local_id==""?' style="color:red"':'')+'>' + remote_id + '</td>'
+                        html += '<td>' + local_id + '</td>'
+                        html += '</tr>'
+                      }
+                    });
+                  html += ''
+                    + '</table>'
+                    + '</div>';
+                  $("#ajaxGetObjAttrs").remove();
+                  $("body").append(html);
+                });
+              $("input:radio:first").prop("checked","checked").change();
+            });
+        </script>
+      </body>
+    </html>
+    '''%(context.zmi_html_foot(context,request))
+
+else:
+  print '<!DOCTYPE html>'
+  print '<html lang="en">'
+  print context.zmi_html_head(context,request)
+
+  print '''
+    <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/%s.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
+    <script>
+      var cb = [];
+      function registerCallback(c) {
+        cb[cb.length] = c;
+      }
+      function openLocation(location) {
+        window.frames["preview"].location.href = "?framepreview=True&remote_url="+location;
+      }
+      $(function() {
+          $("frame[name=preview]").load(function() {
+              var src = window.frames["preview"].location.href;
+              if (src.indexOf("http")==0) {
+                var location = src.substr(src.lastIndexOf("=")+1);
+                window.frames["structure"].location.href = "?framestructure=True&lang="+zmiParams["lang"]+"&remote_url="+location;
+                for (var i = 0; i < cb.length; i++) {
+                  var c = cb[i];
+                  c(location);
+                }
+              }
+            });
+        });
+    </script>
+    '''%request['lang']
+
+  print '<frameset cols="'+str(request.get('manage_menu_width',224))+',*" border="1">'
+  print '<frame name="top" src="%s?frameleft=True&lang=%s"/>'%(request.get('URL'),request['lang'])
+  print '<frameset rows="150,*" border="1">'
+  print '<frame name="left" src="%s?frametop=True&lang=%s&location=%s"/>'%(request.get('URL'),request['lang'],location)
+  print '<frameset cols="*,220" border="1">'
+  print '<frame name="preview"/>'
+  print '<frame name="structure"/>'
+  print '</frameset>'
+  print '</frameset>'
+  print '</frameset>'
+
+  print '</html>'
+
+return printed
+]]>
+  </item>
+  <item key="description"></item>
+  <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-exchange]]></item>
+  <item key="id"><![CDATA[manage_transferContent]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[ZMSDocument]]></item>
+      <item><![CDATA[ZMSFolder]]></item>
+      <item><![CDATA[ZMS]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Transfer content...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+      <item><![CDATA[ZMSEditor]]></item>
+    </list>
+  </item>
+</dictionary>

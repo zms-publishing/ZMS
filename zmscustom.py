@@ -498,23 +498,28 @@ class ZMSCustom(ZMSContainerObject):
     #
     #  Import XML-file.
     ############################################################################
-    def manage_import(self, file, lang, REQUEST, RESPONSE):
+    def manage_import(self, file, lang, REQUEST, RESPONSE=None):
       """ ZMSCustom.manage_import """
+      ob = self
       message = ''
       
       if self.meta_id=='ZMSSysFolder':
         _ziputil.importZip2Zodb( self, file)
-        # Message.
-        message += self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%_fileutil.extractFilename(file.filename))
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%_fileutil.extractFilename(file.filename))
+      
       elif self.getType()=='ZMSRecordSet':
-        message += parseXmlString( self, file)
-      # Import XML-file.
+        message = parseXmlString( self, file)
+      
       else:
-        message += _importable.importFile( self, file, REQUEST, _importable.importContent)
+        ob = _importable.importFile( self, file, REQUEST, _importable.importContent)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%ob.display_type(REQUEST))
       
       # Return with message.
-      message = urllib.quote(message)
-      return REQUEST.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+      if RESPONSE is not None:
+        message = urllib.quote(message)
+        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+      else:
+        return ob
 
 
 # call this to initialize framework classes, which

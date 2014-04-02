@@ -595,11 +595,7 @@ class ZMSMetaobjManager:
           attr = portalMaster.getMetaobjAttr( id, attr_id, syncTypes)
           return attr
       meta_obj = meta_objs.get(id,{})
-      attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__'))
-      if attrs is None:
-        if id == 'ZMSTrashcan':
-          return {}
-        raise zExceptions.InternalError('Can\'t getMetaobjAttr %s.%s'%(str(id),str(attr_id)))
+      attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__',[]))
       for attr in attrs:
         valid_datatype = attr['type'] in self.valid_datatypes
         if attr_id == attr['type'] and not valid_datatype:

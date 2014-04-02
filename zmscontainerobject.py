@@ -35,7 +35,6 @@ import _accessmanager
 import _confmanager
 import _fileutil
 import _globals
-import _importable
 import _objattrs
 import _scormlib
 import _versionmanager
@@ -104,7 +103,6 @@ class ZMSContainerObject(
     ZMSObject,
     RoleManager,
     _accessmanager.AccessableContainer,
-    _importable.Importable,
     _scormlib.SCORMLib,
     _versionmanager.VersionManagerContainer
     ):

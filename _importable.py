@@ -40,8 +40,6 @@ from _blobfields import recurse_uploadRessources, uploadRessources
 #  Process objects after import.
 # ------------------------------------------------------------------------------
 def recurse_importContent(self, folder):
-  message = ''
-  
   # Cleanup.
   for key in ['oRoot','oRootNode','oCurrNode','oParent','dTagStack','dValueStack']:
     try: delattr(self,key)
@@ -57,16 +55,12 @@ def recurse_importContent(self, folder):
   # Process children.
   for ob in self.getChildNodes():
     recurse_importContent(ob,folder)
-  
-  # Return with message.
-  return message
 
 
 # ------------------------------------------------------------------------------
 #  _importable.importContent
 # ------------------------------------------------------------------------------
 def importContent(self, file):
-  message = ''
   
   # Setup.
   catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active',1)
@@ -79,28 +73,27 @@ def importContent(self, file):
   ob = self.parse(StringIO(file.read()),self,1)
   
   # Process objects after import
-  message += recurse_importContent(ob,_fileutil.getFilePath(file.name))
+  recurse_importContent(ob,_fileutil.getFilePath(file.name))
   
   # Cleanup.
   self.setConfProperty('ZMS.CatalogAwareness.active',catalog_awareness)
   
-  # Return with message.
-  return message
+  # Return imported object.
+  return ob
 
 
 # ------------------------------------------------------------------------------
 #  _importable.importFile
 # ------------------------------------------------------------------------------
 def importFile(self, file, REQUEST, handler):
-  message = ''
-
+  
   # Get filename.
   if isinstance(file,ZPublisher.HTTPRequest.FileUpload):
     filename = file.filename
   else: 
     filename = file.name
   _globals.writeBlock( self, '[importFile]: filename='+filename)
-
+  
   # Create temporary folder.
   folder = tempfile.mktemp()
   os.mkdir(folder)
@@ -128,43 +121,13 @@ def importFile(self, file, REQUEST, handler):
   # Import XML-file.
   _globals.writeBlock( self, '[importFile]: filename='+filename)
   f = open(filename, 'r')
-  message += handler(self, f)
+  ob = handler(self, f)
   f.close()
   
   # Remove temporary files.
   _fileutil.remove(folder, deep=1)
   
-  # Return with message.
-  message += self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%_fileutil.extractFilename(filename))
-  return message
-
-
-################################################################################
-################################################################################
-###
-###   class Importable
-###
-################################################################################
-################################################################################
-class Importable:
-
-  ##############################################################################
-  #  Importable.manage_import:
-  #
-  #  Import XML-file.	
-  ##############################################################################
-  def manage_import(self, file, lang, REQUEST, RESPONSE=None):
-    """ Importable.manage_import """
-    message = ''
-    t0 = time.time()
-    
-    # Import XML.
-    message += importFile(self, file, REQUEST, importContent)
-    
-    # Return with message.
-    if RESPONSE:
-      message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-      return REQUEST.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,urllib.quote(message)))
-
+  # Return imported object.
+  return ob
 
 ################################################################################

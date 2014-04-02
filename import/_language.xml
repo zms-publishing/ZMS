@@ -3222,7 +3222,8 @@
     <Cell><Data ss:Type="String">BTN_SLCTALL</Data></Cell>
     <Cell><Data ss:Type="String">Alle auswählen</Data></Cell>
     <Cell><Data ss:Type="String">Select all</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Choisissez tous</Data></Cell>
+    <Cell><Data ss:Type="String">Alle selecteren</Data></Cell>
+    <Cell><Data ss:Type="String">Choisissez tous</Data></Cell>
     <Cell><Data ss:Type="String">Selezionare tutto</Data></Cell>
     <Cell><Data ss:Type="String">Seleccione todos</Data></Cell>
     <Cell><Data ss:Type="String">全选</Data></Cell>
@@ -3237,7 +3238,8 @@
     <Cell><Data ss:Type="String">BTN_SLCTNONE</Data></Cell>
     <Cell><Data ss:Type="String">Nichts auswählen</Data></Cell>
     <Cell><Data ss:Type="String">Select none</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">N'en choisissez aucun</Data></Cell>
+    <Cell><Data ss:Type="String">Niets selecteren</Data></Cell>
+    <Cell><Data ss:Type="String">N'en choisissez aucun</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">No seleccione ninguno</Data></Cell>
     <Cell><Data ss:Type="String">全丿选</Data></Cell>
     <Cell><Data ss:Type="String">همگام کردن</Data></Cell>
@@ -3251,6 +3253,7 @@
     <Cell><Data ss:Type="String">BTN_SYNCHRONIZE</Data></Cell>
     <Cell><Data ss:Type="String">Synchronisieren</Data></Cell>
     <Cell><Data ss:Type="String">Synchronize</Data></Cell>
+    <Cell><Data ss:Type="String">Synchronisieren</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Sincronizzare</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">忌步</Data></Cell>
     <Cell><Data ss:Type="String">لغو کردن</Data></Cell>
@@ -3264,6 +3267,7 @@
     <Cell><Data ss:Type="String">BTN_UNDELETE</Data></Cell>
     <Cell><Data ss:Type="String">Löschen rückgängig</Data></Cell>
     <Cell><Data ss:Type="String">Undelete</Data></Cell>
+    <Cell><Data ss:Type="String">Verwijderen herroepen</Data></Cell>
     <Cell ss:Index="9"/>
     <Cell/>
     <Cell/>
@@ -3351,6 +3355,7 @@
     <Cell><Data ss:Type="String">CAPTION_ADDROLE</Data></Cell>
     <Cell><Data ss:Type="String">Neue Rolle zu %s hinzufügen</Data></Cell>
     <Cell><Data ss:Type="String">Create new role for %s</Data></Cell>
+    <Cell><Data ss:Type="String">Nieuwe rol naar %s toevoegen</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Inserire nuovo ruolo %s</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">创建 %s 的新迌使</Data></Cell>
     <Cell><Data ss:Type="String">ايجاد نقش برای %s</Data></Cell>
@@ -3364,6 +3369,7 @@
     <Cell><Data ss:Type="String">CAPTION_ADDUSER</Data></Cell>
     <Cell><Data ss:Type="String">Neuen Benutzer zu %s hinzufügen</Data></Cell>
     <Cell><Data ss:Type="String">Create new user for %s</Data></Cell>
+    <Cell><Data ss:Type="String">Nieuwe gebruiker naar %s toevoegen</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Inserire nuovo utente %s</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">添加新用户到 %s</Data></Cell>
     <Cell><Data ss:Type="String">ايجاد کاربر جديد برای %s</Data></Cell>
@@ -3377,6 +3383,7 @@
     <Cell><Data ss:Type="String">CAPTION_CHOOSEOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Wählen Sie ein Objekt aus</Data></Cell>
     <Cell><Data ss:Type="String">Please choose an object</Data></Cell>
+    <Cell><Data ss:Type="String">Selecter een object a.t.b.</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Scegliere un oggetto</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">请选忖对象</Data></Cell>
     <Cell><Data ss:Type="String">يک شی را انتخاب کنيد</Data></Cell>
@@ -3535,7 +3542,8 @@
     <Cell><Data ss:Type="String">CAPTION_SELECT</Data></Cell>
     <Cell><Data ss:Type="String">Bitte auswählen</Data></Cell>
     <Cell><Data ss:Type="String">Please select</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Choisissez</Data></Cell>
+    <Cell><Data ss:Type="String">Please select</Data></Cell>
+    <Cell><Data ss:Type="String">Selecteer a.t.b.</Data></Cell>
     <Cell><Data ss:Type="String">Selezionare</Data></Cell>
     <Cell><Data ss:Type="String">Seleccione</Data></Cell>
     <Cell><Data ss:Type="String">选忖</Data></Cell>
@@ -5413,6 +5421,7 @@
     <Cell><Data ss:Type="String">SECONDS</Data></Cell>
     <Cell><Data ss:Type="String">Sekunden</Data></Cell>
     <Cell><Data ss:Type="String">seconds</Data></Cell>
+    <Cell><Data ss:Type="String">seconde</Data></Cell>
     <Cell ss:Index="9"/>
     <Cell/>
     <Cell/>
@@ -5423,6 +5432,7 @@
     <Cell><Data ss:Type="String">SEARCH_YOURQUERY</Data></Cell>
     <Cell><Data ss:Type="String">Ihre Suche nach dem Begriff: '%s'</Data></Cell>
     <Cell><Data ss:Type="String">Your search for: '%s'</Data></Cell>
+    <Cell><Data ss:Type="String">Uw zoek naar: '%s'</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">La ricerca del termine: '%s'</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">%s 濜索结果</Data></Cell>
     <Cell/>
@@ -5695,7 +5705,8 @@
     <Cell><Data ss:Type="String">STATE_NEW</Data></Cell>
     <Cell><Data ss:Type="String">Neu</Data></Cell>
     <Cell><Data ss:Type="String">New</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Nouveau</Data></Cell>
+    <Cell><Data ss:Type="String">Nieuw</Data></Cell>
+    <Cell><Data ss:Type="String">Nouveau</Data></Cell>
     <Cell><Data ss:Type="String">Nuovo</Data></Cell>
     <Cell><Data ss:Type="String">Nuevo</Data></Cell>
     <Cell><Data ss:Type="String">新</Data></Cell>

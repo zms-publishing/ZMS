@@ -562,7 +562,7 @@ function zmiModal(s, opt) {
 			zmiModalStack.push(id);
 			$ZMI.writeDebug("zmiModal:init(id="+id+")");
 			var html = ''
-				+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true">'
+				+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">'
 					+'<div class="modal-dialog">'
 						+'<div class="modal-content">'
 							+'<div class="modal-header">'

@@ -512,7 +512,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             elif metaObjAttr['type'] == 'constant':
               icon_clazz = metaObjAttr.get('custom',None)
             if icon_clazz:
-              return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
+              return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%unicode(icon_title,'utf-8'))
         if key in self.getMetaobjAttrIds( obj_type):
           metaObjAttr = self.getMetaobjAttr( obj_type, key)
           if metaObjAttr is not None and metaObjAttr['type'] == 'method':
@@ -536,7 +536,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           elif metaObj[ 'type'] == 'ZMSReference':
             return self.zmi_icon(self,name='icon-link')
           return self.zmi_icon(self,name='icon-file-alt')
-      return self.zmi_icon(self,name='icon-warning-sign text-danger bg-danger')
+      return self.zmi_icon(self,name='icon-warning-sign text-danger bg-danger',extra='title="%s not found!"'%str(obj_type))
 
 
     # --------------------------------------------------------------------------

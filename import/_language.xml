@@ -3924,7 +3924,7 @@
     <Cell><Data ss:Type="String">MSG_CONFIRM_DELOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Soll Objekt wirklich gelöscht werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to delete this object?</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Voulez-vous vraiment supprimer l\'objet?</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Voulez-vous vraiment supprimer le objet?</Data></Cell>
     <Cell><Data ss:Type="String">Volete cancellare veramente l\'oggetto selezionato?</Data></Cell>
     <Cell><Data ss:Type="String">¿Usted realmente desea suprimir el objeto?</Data></Cell>
     <Cell><Data ss:Type="String">确实覿删除对象志?</Data></Cell>

@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<style>
+.form-inline .form-control {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+.form-inline .form-group {
+	display: inline-block;
+	margin-bottom: 0px;
+	vertical-align: middle;
+}
+</style>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'browse_iframe',here.meta_id])">
 
 <tal:block tal:define="global el python:here.getLinkObj(request.get('elValue'))">
@@ -8,6 +20,25 @@
 		<span class="ui-helper-hidden" name="physical_path" tal:content="python:'/'.join(el.getPhysicalPath())" />
 	</tal:block>
 </tal:block>
+
+<div class="form-inline">
+	<div class="form-group">
+		<label class="sr-only" for="url"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">the label</span></label>
+		<select class="form-control" id="type" name="type">
+			<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
+			<option value="dtml">DTML</option>
+			<option value="file://" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</option>
+			<option value="mailto:" tal:content="python:here.getZMILangStr('ATTR_EMAIL')">mailto</option>
+			<option value="http://">http:</option>
+			<option value="https://">https:</option>
+			<option value="ftp://">ftp:</option>
+		</select>
+	</div><!-- .form-group -->
+	<div class="form-group">
+		<input class="form-control" type="text" name="url" size="25" tal:attributes="value python:request.get('url','')"/>
+	</div><!-- .form-group -->
+	<button class="btn btn-primary" type="submit" name="btn">Ok</button>
+</div><!-- .form-inline -->
 
 <div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]"
 	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block

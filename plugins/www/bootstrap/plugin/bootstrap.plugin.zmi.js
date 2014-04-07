@@ -1033,10 +1033,8 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
 	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
 }
 
-function zmiDialogClose(id) {
-	$ZMI.setCursorWait("zmiDialogClose::"+id);
+function zmiDialogClose() {
 	zmiModal("hide");
-	$ZMI.setCursorAuto("zmiDialogAuto::"+id);
 }
 
 // ############################################################################
@@ -1148,23 +1146,21 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 	}
 	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
 	var tagAttrs = tag.indexOf(" ")>0?tag.substr(tag.indexOf(" ")):"";
-	if (tagName == 'a' && range.indexOf('http://') < 0 && range.indexOf('@') < 0) {
+	$ZMI.writeDebug("[tagSelected]: tagName='"+tagName+"'");
+	$ZMI.writeDebug("[tagSelected]: tagAttrs='"+tagAttrs+"'");
+	if (tagName == 'a' && tagAttrs == '') {
+		if (range.indexOf("@") > 0) {
+			tagAttrs = 'href="mailto:'+range+'"';
+		}
+		else if (range.indexOf("://") > 0) {
+			tagAttrs = 'href="'+range+'" target="_blank"';
+		}
+	}
+	if (tagName == 'a' && tagAttrs == '') {
 		zmiBrowseObjs('','',getZMILang());
 	} 
 	else {
-		var startTag = leftDelimiter + tagName;
-		if (tagName == 'a') {
-			if (range.indexOf("@")>0)
-				startTag += ' href="mailto:' + range + '"';
-			else if (range.indexOf("http://") < 0)
-				startTag += ' href="http://' + range + '" target="_blank"';
-			else
-			startTag += ' href="' + range + '" target="_blank"';
-		}
-		else {
-			startTag += tagAttrs;
-		}
-		startTag += rightDelimiter; 
+		var startTag = leftDelimiter + tagName + tagAttrs + rightDelimiter;
 		var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
 		var newRange = startTag + range + endTag; 
 		$ZMI.writeDebug("[tagSelected]: pre='"+pre+"'");

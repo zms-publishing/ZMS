@@ -3,26 +3,44 @@
  */
 function selectObject(physical_path,anchor,is_page,titlealt) {
 	$ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor);
+	var fm;
 	var url = physical_path;
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
 			&& typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
+		fm = self.window.parent.document.forms[zmiParams['fmName']];
+	}
+	if ( fm) {
 		var path = getInternalUrl(url);
-		var fm = self.window.parent.document.forms[zmiParams['fmName']];
-		if ( fm) {
-			self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
-		}
-		else {
-			url = getRelativeUrl(url,anchor);
-			self.window.parent.selectObject(url,title);
-		}
+		self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
 	}
 	else {
 		url = getRelativeUrl(url,anchor);
 		self.window.parent.selectObject(url,title);
 	}
-	self.window.parent.zmiDialogClose('zmiDialog');
+	self.window.parent.zmiModal("hide");
 	$ZMI.writeDebug('EO selectObject: url='+url+',title='+title);
+}
+
+/**
+ * Select URL.
+ */
+function selectUrl(url) {
+	$ZMI.writeDebug('BO selectUrl: url='+url);
+	var fm;
+	var title = '';
+	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
+			&& typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
+		fm = self.window.parent.document.forms[zmiParams['fmName']];
+	}
+	if ( fm) {
+		self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],url);
+	}
+	else {
+		self.window.parent.selectObject(url,title);
+	}
+	self.window.parent.zmiModal("hide");
+	$ZMI.writeDebug('EO selectUrl');
 }
 
 /**
@@ -313,7 +331,15 @@ function zmiRefresh() {
 	fn();
 }
 
-$ZMI.registerReady(function(){
+$(function(){
+	$("button[name=btn]").click(function() {
+			var type = $("select[name=type]").val();
+			var url = $("input[name=url]").val();
+			if (!url.indexOf(type)==0) {
+				url = type + url;
+			}
+			selectUrl(url);
+		});
 	zmiRefresh();
 });
 

@@ -29,7 +29,7 @@ function zmiToggleClick(toggle, callback) {
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
 		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
-		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,ZMSTrashcan'),get_permissions:'True',get_restricted:'True'},function(data){
+		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,ZMSTrashcan')},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				// Get and iterate pages.

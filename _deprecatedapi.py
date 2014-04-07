@@ -174,49 +174,6 @@ class DeprecatedAPI:
     ob = self.getDocumentElement()
     return '%s/%s/'%(ob.aq_parent.id,self.absolute_url()[len(ob.aq_parent.absolute_url())+1:])
 
-  # ----------------------------------------------------------------------------
-  # DeprecatedAPI.manage_adZMS*
-  # ----------------------------------------------------------------------------
-  def manage_addZMSFolder(self, values={}, REQUEST=None):
-    print "[manage_addZMSFolder]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSFolder',values,REQUEST)
-  def manage_addZMSDocument(self, values={}, REQUEST=None):
-    print "[manage_addZMSDocument]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSDocument',values,REQUEST)
-  def manage_addZMSFile(self, values={}, REQUEST=None):
-    print "[manage_addZMSFile]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSFile',values,REQUEST)
-  def manage_addZMSGraphic(self, values={}, REQUEST=None):
-    print "[manage_addZMSGraphic]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSGraphic',values,REQUEST)
-  def manage_addZMSNote(self, values={}, REQUEST=None):
-    print "[manage_addZMSNote]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSNote',values,REQUEST)
-  def manage_addZMSLinkContainer(self, values={}, REQUEST=None):
-    print "[manage_addZMSLinkContainer]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSLinkContainer',values,REQUEST)
-  def manage_addZMSLinkElement(self, values={}, REQUEST=None):
-    print "[manage_addZMSLinkElement]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSLinkElement',values,REQUEST)
-  def manage_addZMSSqlDb(self, values={}, REQUEST=None):
-    print "[manage_addZMSSqlDb]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSSqlDb',values,REQUEST)
-  def manage_addZMSSysFolder(self, values={}, REQUEST=None):
-    print "[manage_addZMSSysFolder]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSSysFolder',values,REQUEST)
-  def manage_addZMSTable(self, values={}, REQUEST=None):
-    print "[manage_addZMSTable]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSTable',values,REQUEST)
-  def manage_addZMSTeaserContainer(self, values={}, REQUEST=None):
-    print "[manage_addZMSTeaserContainer]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSTeaserContainer',values,REQUEST)
-  def manage_addZMSTeaserElement(self, values={}, REQUEST=None):
-    print "[manage_addZMSTeaserElement]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSTeaserElement',values,REQUEST)
-  def manage_addZMSTextarea(self, values={}, REQUEST=None):
-    print "[manage_addZMSTextarea]: @deprecated!"
-    return self.manage_addZMSCustom('ZMSTextarea',values,REQUEST)
-
   # --------------------------------------------------------------------------
   #  DeprecatedAPI.pil_img_*:
   # --------------------------------------------------------------------------

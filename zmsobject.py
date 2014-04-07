@@ -1001,26 +1001,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.setHeader('Pragma', 'no-cache')
         self.f_standard_html_request( self, REQUEST)
         xml += self.getXmlHeader()
-      users = None
-      if REQUEST.form.get('get_users'):
-        users = self.getUsers(REQUEST)
-      perms = None
-      if REQUEST.form.get('get_permissions'):
-        perms = []
-        perms_optpl = [
-          ['ZMS Administrator',self.getLangStr('ROLE_ZMSADMINISTRATOR',lang)],
-          ['ZMS Editor',self.getLangStr('ROLE_ZMSEDITOR',lang)],
-          ['ZMS Author',self.getLangStr('ROLE_ZMSAUTHOR',lang)],
-          ['ZMS UserAdministrator',self.getLangStr('ROLE_ZMSUSERADMINISTRATOR',lang)],
-          ['ZMS Subscriber',self.getLangStr('ROLE_ZMSSUBSCRIBER',lang)],
-          ]
-        auth_user = REQUEST['AUTHENTICATED_USER']
-        for perm in perms_optpl:
-          if auth_user.has_permission(perm[0],self):
-            perms.append(perm[1])
-      restricted = None
-      if REQUEST.form.get('get_restricted'):
-        restricted = self.hasRestrictedAccess()
       xml += '<page'
       xml += " absolute_url=\"%s\""%str(self.absolute_url())
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
@@ -1036,27 +1016,20 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " meta_id=\"%s\""%(self.meta_id)
       xml += " title=\"%s\""%_globals.html_quote(self.getTitle(REQUEST))
       xml += " titlealt=\"%s\""%_globals.html_quote(self.getTitlealt(REQUEST))
-      if self.isPage() and REQUEST.form.get('has_children', 1):
-        xml += " has_children=\"%s\""%str(int(len(self.getChildNodes(REQUEST,meta_types))>0))
-      if perms is not None:
-        xml += " permissions=\"%s\""%str(','.join(perms))
-      if restricted is not None:
-        xml += " restricted=\"%s\""%str(restricted)
+      xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
       xml += ">"
-      if users:
-        xml += "<users>%s</users>"%self.toXmlString(users)
       if REQUEST.form.get('get_attrs', 1):
         obj_attrs = self.getObjAttrs()
-        for key in filter(lambda x: x not in ['title','titlealt','created_dt','created_uid','attr_dc_coverage','attr_cacheable'],obj_attrs.keys()):
+        for key in filter(lambda x: x not in ['title','titlealt','change_dt','change_uid','change_history','created_dt','created_uid','attr_dc_coverage','attr_cacheable','work_dt','work_uid'],obj_attrs.keys()):
           obj_attr = obj_attrs[ key]
           if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
              obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
              obj_attr['datatype_key'] in _globals.DT_DATETIMES:
-            v = self.getObjProperty(key,REQUEST)
+            v = self.attr(key)
             if v:
               xml += "<%s>%s</%s>"%(key,self.toXmlString(v),key)
           elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
-            v = self.getObjProperty(key,REQUEST)
+            v = self.attr(key)
             if v:
               xml += "<%s>"%key
               xml += "<href>%s</href>"%_globals.html_quote(v.getHref(REQUEST))

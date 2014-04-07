@@ -288,50 +288,44 @@ class MultiLanguageManager:
       return key
 
 
-    """
-    Get id of primary-language
-    """
+    # --------------------------------------------------------------------------
+    # Get id of primary-language
+    # --------------------------------------------------------------------------
     def getPrimaryLanguage(self):
       return self.language_primary
 
-    """
-    Set id of primary-language
-    """
+    # --------------------------------------------------------------------------
+    # Set id of primary-language
+    # --------------------------------------------------------------------------
     def setPrimaryLanguage(self, v):
       self.language_primary = v
 
-
-    """
-    Get language-dictionary
-    """
+    # --------------------------------------------------------------------------
+    # Get language-dictionary
+    # --------------------------------------------------------------------------
     def getLangs(self):
       return getattr(self,'attr_languages',{})
 
-    """
-    Set language-dictionary
-    """
+    # --------------------------------------------------------------------------
+    # Set language-dictionary
+    # --------------------------------------------------------------------------
     def setLangs(self, v):
       self.attr_languages = v.copy()
 
-
-    """
-    Returns label of language specified by ID.
-    """
+    # --------------------------------------------------------------------------
+    # Returns label of language specified by ID.
+    # --------------------------------------------------------------------------
     def getParentLanguage(self, id):
       return self.getLang(id).get('parent')
 
-
-    """
-    Returns label of language specified by ID.
-    """
+    # --------------------------------------------------------------------------
+    # Returns label of language specified by ID.
+    # --------------------------------------------------------------------------
     def getLanguageLabel(self, id):
       return self.getLang(id).get('label',id)
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getParentLanguages: 
-    #
-    #  Returns IDs of parent languages.
+    # Returns IDs of parent languages.
     # --------------------------------------------------------------------------
     def getParentLanguages(self, id):
       obs = []
@@ -347,17 +341,13 @@ class MultiLanguageManager:
           break
       return obs
 
-
     # --------------------------------------------------------------------------
     #  MultiLanguageManager.getLang: 
     # --------------------------------------------------------------------------
     def getLang(self, id):
       return self.getLangs().get(id,{})
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLangTree:
-    #
     #  Returns list of Ids of languages (primary language 1st).
     # --------------------------------------------------------------------------
     def getLangTree(self, base=None):
@@ -370,11 +360,8 @@ class MultiLanguageManager:
           l.extend(self.getLangTree(langId))
       return l
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLangIds:
-    #
-    #  Returns list of Ids of languages (primary language 1st).
+    # Returns list of Ids of languages (primary language 1st).
     # --------------------------------------------------------------------------
     def getLangIds(self, sort=False):
       obs = []
@@ -390,9 +377,8 @@ class MultiLanguageManager:
         return map(lambda ob: ob[1],obs)
       return langs.keys()
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLanguageFromName: 
+    # MultiLanguageManager.getLanguageFromName: 
     # --------------------------------------------------------------------------
     def getLanguageFromName(self, name): 
       lang = None
@@ -407,11 +393,8 @@ class MultiLanguageManager:
             lang = suffix
       return lang
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getLanguage: 
-    #
-    #  Get requested language of specified URL (used by index_html).
+    # Get requested language of specified URL (used by index_html).
     # --------------------------------------------------------------------------
     def getLanguage(self, REQUEST): 
       lang = REQUEST.get('lang',None)
@@ -433,9 +416,8 @@ class MultiLanguageManager:
         lang = self.getPrimaryLanguage()
       return lang
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.getHttpAcceptLanguage: 
+    # MultiLanguageManager.getHttpAcceptLanguage: 
     # --------------------------------------------------------------------------
     def getHttpAcceptLanguage(self, REQUEST): 
       lang = None
@@ -456,11 +438,8 @@ class MultiLanguageManager:
             break
       return lang
 
-
     # --------------------------------------------------------------------------
-    #  MultiLanguageManager.setLanguage: 
-    # 
-    #  Set/add language with specified values.
+    # Set/add language with specified values.
     # --------------------------------------------------------------------------
     def setLanguage(self, lang, label, parent, newManage):
       

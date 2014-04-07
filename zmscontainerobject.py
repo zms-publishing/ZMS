@@ -218,15 +218,13 @@ class ZMSContainerObject(
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSContainerObject.moveObjsToTrashcan
+    # Move objects to trashcan.
+    #
+    # @param ids: List of object-ids.
+    # @type ids: C{list}
+    # @rtype: C{None}
     # --------------------------------------------------------------------------
     def moveObjsToTrashcan(self, ids, REQUEST):
-      """
-      Move objects to trashcan.
-      @param ids: List of object-ids.
-      @type ids: C{list}
-      @rtype: C{None}
-      """
       if self.meta_id == 'ZMSTrashcan':
         return
       trashcan = self.getTrashcan()

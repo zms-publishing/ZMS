@@ -696,9 +696,9 @@ class ZMS(
     ###
     ############################################################################
 
-    """
-    Handler for XML-Builder (_builder.py)
-    """
+    # --------------------------------------------------------------------------
+    # Handler for XML-Builder (_builder.py)
+    # --------------------------------------------------------------------------
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
       _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
       

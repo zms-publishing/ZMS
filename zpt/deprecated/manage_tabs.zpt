@@ -1,7 +1,5 @@
 <!-- deprecated/manage_tabs -->
-
 <tal:block tal:condition="python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>
 <tal:block tal:condition="not:python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=here.filtered_manage_options(),special_options=['manage_users','manage_customize'])">zmi_tabs</tal:block>
 <tal:block tal:content="structure python:'<div id=\042zmi-tab\042'">the tab-starttag</tal:block>
-
 <!-- /deprecated/manage_tabs -->

@@ -96,7 +96,8 @@ ZMI.prototype.getDescendantLanguages = function() {
 /**
  * Relativate url.
  */
-ZMI.prototype.relativateUrl = function(page_abs_url, url) {
+ZMI.prototype.relativateUrl = function(url,anchor) {
+	var page_abs_url = 	$('meta[name="version_container_abs_url"]').attr('content');
 	var protocol = self.location.href;
 	protocol = protocol.substr(0,protocol.indexOf(":")+3);
 	var server_url = self.location.href;
@@ -163,13 +164,17 @@ ZMI.prototype.relativateUrl = function(page_abs_url, url) {
 		targetPath = '../' + targetPath;
 	}
 	url = './' + targetPath;
+	if (typeof anchor != 'undefined') {
+		url += anchor;
+	}
 	return url;
 }
 
 /**
  * Relativate urls.
  */
-ZMI.prototype.relativateUrls = function(page_abs_url,html) {
+ZMI.prototype.relativateUrls = function(html) {
+	var page_abs_url = 	$('meta[name="version_container_abs_url"]').attr('content');
 	var splitTags = ['href="','src="'];
 	for ( var h = 0; h < splitTags.length; h++) {
 		var splitTag = splitTags[h];

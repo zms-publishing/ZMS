@@ -30,7 +30,7 @@ function zmiRichtextOnSubmitEventHandler(fm) {
 			// Decode HTML-Entities.
 			data = $ZMI.HTMLDecode(data);
 			// Relativate urls.
-			data = $ZMI.relativateUrls('<tal:block tal:content="python:here.getVersionContainer().absolute_url()"></tal:block>',data);
+			data = $ZMI.relativateUrls(data);
 			// Assign value to textarea.
 			$('#'+elName).val( data);
 		}

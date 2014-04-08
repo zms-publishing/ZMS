@@ -15,7 +15,7 @@ function selectObject(physical_path,anchor,is_page,titlealt) {
 		self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
 	}
 	else {
-		url = getRelativeUrl(url,anchor);
+		url = $ZMI.relativateUrl(url,anchor);
 		self.window.parent.selectObject(url,title);
 	}
 	self.window.parent.zmiModal("hide");
@@ -71,73 +71,6 @@ function getInternalUrl(physical_path) {
 	path = "{$" + path + "}";
 	$ZMI.writeDebug('EO getInternalUrl: path='+path);
 	return path;
-}
-
-/**
- * Returns relative url.
- */
-function getRelativeUrl(physical_path, anchor) {
-	$ZMI.writeDebug('BO getRelativeUrl: physical_path='+physical_path+',anchor='+anchor);
-	var currntPath = $ZMI.getPhysicalPath();
-	var targetPath = physical_path;
-	while ( currntPath.length > 0 && targetPath.length > 0) {
-		var i = currntPath.indexOf( '/');
-		var j = targetPath.indexOf( '/');
-		if ( i < 0) {
-			currntElmnt = currntPath;
-	}
-		else {
-			currntElmnt = currntPath.substring( 0, i);
-	}
-		if ( j < 0) {
-			targetElmnt = targetPath;
-		}
-		else {
-			targetElmnt = targetPath.substring( 0, j);
-		}
-		if ( currntElmnt != targetElmnt) {
-			break;
-		}
-		if ( i < 0) {
-			currntPath = '';
-		}
-		else {
-			currntPath = currntPath.substring( i + 1);
-		}
-		if ( j < 0) {
-			targetPath = '';
-		}
-		else {
-			targetPath = targetPath.substring( j + 1);
-		}
-	}
-	if ( targetPath.length > 0) {
-		targetPath = targetPath + '/';
-	}
-	while ( currntPath.length > 0) {
-		var i = currntPath.indexOf( '/');
-		if ( i < 0) {
-			currntElmnt = currntPath;
-			currntPath = '';
-		}
-		else {
-			currntElmnt = currntPath.substring( 0, i);
-			currntPath = currntPath.substring( i + 1);
-		}
-		targetPath = '../' + targetPath;
-	}
-	url = './' + targetPath;
-	if ( anchor.length > 1 && anchor.indexOf('#') == 0) {
-		url = url.substring(0,url.substring(0,url.length-2).lastIndexOf( '/')+1);
-	}
-	if ( anchor.indexOf( '/') == 0) {
-		url += anchor.substring( 1);
-	}
-	else {
-		url += 'index_'+getZMILang()+'.html' + anchor;
-	}
-	$ZMI.writeDebug('EO getRelativeUrl: url='+url);
-	return url;
 }
 
 /**

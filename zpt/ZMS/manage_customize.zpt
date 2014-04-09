@@ -393,20 +393,36 @@ $ZMI.registerReady(function(){
 			<legend>Installed Libraries</legend>
 			<p class="well well-small">Further python libraries and products extending ZMS.</p>
 			<div class="form-group">
-			<label class="col-sm-4 control-label" for="pil">
+			<label class="col-sm-4 control-label">
+				<strong><a href="http://lesscss.org" target="_blank">{less}</a> - CSS pre-processor</strong>
+				<input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(len(here.getConfProperty('InstalledProducts.lesscss',''))>0)]" />
+			</label>
+				<div class="col-sm-8">
+					<div class="pull-left">
+						<table class="input-append">
+							<tr>
+								<td>Path.&nbsp;</td>
+								<td><input class="form-control input-sm" type="text" name="lesscss" tal:attributes="value python:here.getConfProperty('InstalledProducts.lesscss','')"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group">
+			<label class="col-sm-4 control-label">
+				<strong><a href="http://www.pythonware.com/products/pil/" target="_blank">PIL</a> - Python Imaging Library</strong>
 				<input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(here.pilutil().enabled())]" />
-				Python Imaging Library (PIL)
 			</label>
 				<div class="col-sm-8">
 					<div class="pull-left" tal:condition="python: here.pilutil().enabled()">
 						<table class="input-append">
 							<tr>
-								<td><p>HighRes with Auto-Thumbnail max.&nbsp;</p></td>
+								<td>HighRes with Auto-Thumbnail max.&nbsp;</td>
 								<td><input class="form-control input-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max',100)" size="4" style="text-align:right" /></td>
 								<td>&nbsp;px</td>
 							</tr>
 							<tr>
-								<td><p>SuperRes with Auto-HighRes max.&nbsp;</p></td>
+								<td>SuperRes with Auto-HighRes max.&nbsp;</td>
 								<td><input class="form-control input-sm" type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600)" size="4" style="text-align:right" /></td>
 								<td>&nbsp;px</td>
 							</tr>

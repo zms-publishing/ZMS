@@ -31,6 +31,8 @@ import Globals
 import OFS.misc_
 import os
 import stat
+import tempfile
+import time
 import urllib
 import zExceptions
 import zope.interface
@@ -39,6 +41,7 @@ from IZMSConfigurationProvider import IZMSConfigurationProvider
 from IZMSNotificationService import IZMSNotificationService
 import IZMSMetamodelProvider, IZMSFormatProvider
 import _globals
+import _exportable
 import _fileutil
 import _filtermanager
 import _mediadb
@@ -493,6 +496,55 @@ class ConfManager(
       self.__attr_conf_dict__ = self.__attr_conf_dict__.copy()
 
 
+    ############################################################################
+    # Compile lesscss.
+    #
+    # Linux: lessc {in} > {out}
+    # Win32: "C:\Program Files (x86)\lessc_0\lessc.exe" {in}
+    # @see http://digitalpbk.com/less-css/less-css-compiler-windows-lesscexe
+    ############################################################################
+    security.declareProtected('ZMS Author', 'compile_lesscss')
+    def compile_lesscss(self):
+      """ ConfManager.compile_lesscss """
+      rtn = []
+      request = self.REQUEST
+      tempfolder = tempfile.mktemp()
+      root = self.getHome()
+      for id in root.objectIds(['Folder']):
+        _exportable.exportFolder( self, root, tempfolder, id, request)
+      path = _fileutil.readPath(tempfolder,data=False)
+      for file in path:
+        filename = file['filename']
+        if filename.endswith('.less'):
+          filepath = file['local_filename']
+          outpath = filepath.replace(filename,filename.replace('.less','.css'))
+          physical_path = outpath[len(tempfolder)+1:].split(os.sep)
+          container = root
+          while container is not None and len(physical_path) > 1:
+            container = getattr(container,physical_path[0],None)
+            physical_path = physical_path[1:]
+          if container is not None:
+            context = getattr(container,physical_path[0],None)
+            if context is not None:
+              t0 = time.time()
+              command = self.getConfProperty('InstalledProducts.lesscss','')
+              command = command.replace('{in}',filepath)
+              command = command.replace('{out}',outpath)
+              _globals.writeBlock( self, '[compile_lesscss]: command=%s'%command)
+              exitVal = os.system(command)
+              if exitVal == 0:
+                exitCode = 'OK'
+                out = open(outpath,'r')
+                filedata = out.read()
+                out.close()
+                context.manage_edit(title=context.title,content_type=context.content_type,filedata=filedata)
+              else:
+                exitCode = 'ERROR'
+              rtn.append('%s [%s] %.2fsecs.'%(filepath[len(tempfolder):],exitCode,time.time()-t0))
+      _fileutil.remove(tempfolder,deep=1)
+      return '\n'.join(rtn)
+
+
     """
     ############################################################################
     ###
@@ -502,8 +554,6 @@ class ConfManager(
     """
 
     ############################################################################
-    #  ConfManager.manage_customizeSystem: 
-    #
     #  Customize system properties.
     ############################################################################
     def manage_customizeSystem(self, btn, key, lang, REQUEST, RESPONSE=None):
@@ -590,6 +640,7 @@ class ConfManager(
       ##### InstalledProducts ####
       elif key == 'InstalledProducts':
         if btn == 'Change':
+          self.setConfProperty('InstalledProducts.lesscss',REQUEST.get('lesscss',''))
           self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',600))
           message = self.getZMILangStr('MSG_CHANGED')

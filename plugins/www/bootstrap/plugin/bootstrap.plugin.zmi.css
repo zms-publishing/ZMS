@@ -80,10 +80,11 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 
 .zmi.preview_top #zmi-header .pull-right {
-	padding-top:0.7em;
+	padding-top:.25em;
+	padding-right:.25em;
 }
 .zmi.preview_top #zmi-header .pull-right * {
-	color:#BBB;
+	color:#ccc;
 }
 .zmi.preview_top #zmi-header .pull-right span.zmi-top-active {
 	color:#FFF;

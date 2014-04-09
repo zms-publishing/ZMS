@@ -3,6 +3,12 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'preview_top',here.meta_id])">
 <script>
+	function compile_lesscss() {
+		$.get("compile_lesscss",function(result){
+				confirm(result);
+				self.parent.partner.location.reload();
+			});
+	}
 	function open_partner(sender,preview) {
 		$(".zmi-top-active").removeClass("zmi-top-active");
 		$(sender).addClass("zmi-top-active");
@@ -32,8 +38,14 @@
 				<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
 			</span>
 			</tal:block>
+			<tal:block tal:condition="python:len(here.getConfProperty('InstalledProducts.lesscss',''))>0">
+				&nbsp;|&nbsp;<span class="btn btn-primary" title="Compile lesscss!" onclick="compile_lesscss(this,false);">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block> {lessc}
+			</span>
+			</tal:block>
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>

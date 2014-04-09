@@ -21,9 +21,16 @@
 ### Frame: Left // Template List
 ################################################################################ 
 -->
-<body class="zmi preview_top" tal:condition="python:request.get('frameleft')">
+<body class="zmi" tal:condition="python:request.get('frameleft')">
 
 <style type="text/css">
+.zmi #zmi-header .pull-right {
+	padding-top:.7em;
+}
+.zmi #zmi-header .pull-right * {
+	color:#ccc;
+}
+
 .tab-pane {
 	padding:.5em;
 }
@@ -80,17 +87,6 @@ function initIframe() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-function showProgress(b) {
-	var $i = $('.nav-tabs li:eq(1) a i');
-	var clazz = 'icon-upload-alt';
-	if (b) {
-		$i.addClass(clazz);
-	}
-	else {
-		$i.removeClass(clazz);
-	}
-}
 
 function selectTab(i) {
 	$('.nav-tabs li:eq('+i+') a').tab('show'); // Select third tab (0-indexed)
@@ -184,7 +180,7 @@ function handleObjectValues(result) {
 	return html;
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 	$.get("",{omitHtml:1,objectValues:""},function(result) {
 			$("#tabs-0").html($("#tabs-0").html()+handleObjectValues(result));
 			initClick($("#tabs-0 div.container div"));
@@ -199,6 +195,7 @@ $ZMI.registerReady(function(){
 		<div class="pull-right">
 			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
 				<tal:block tal:content="python:here.getZMILangStr('BACK')">back</tal:block>
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-signout')"></tal:block>
 			</a>
 			&nbsp;
 		</div><!-- .pull-right -->
@@ -206,7 +203,7 @@ $ZMI.registerReady(function(){
 </div><!-- #zmi-header -->
 
 <ul class="main-nav nav nav-tabs">
-	<li class="active"><a href="#tabs-0" data-toggle="tab"><i></i>Templates</a></li>
+	<li class="active"><a href="#tabs-0" data-toggle="tab"><i></i>Tree</a></li>
 	<li><a href="#tabs-1" data-toggle="tab"><i></i>Edit</a></li>
 	<li><a href="#tabs-2" data-toggle="tab"><i></i>?</a></li>
 </ul>
@@ -286,80 +283,6 @@ $ZMI.registerReady(function(){
 ///// Auto-Save
 ////////////////////////////////////////////////////////////////////////////////
 
-var custAutoSaveTimeout = null;
-var custAutoSaveIntervall = 1000;
-var custAutoSaveArr = {};
-
-function custAutoSave() {
-	$ZMI.writeDebug("custAutoSave");
-	// Upload file.
-	if ($(".form-control-modified").attr("type")=="file") {
-		$('#theuploadform').attr( "action", $("span#absolute_url").text()+"/"+$("span#action").text());
-		$('#theuploadform').attr( "target", "postframe" )
-		$('#theuploadform').submit();
-		//need to get contents of the iframe
-		$("#postframe").load(function(){
-				var src = $("img#preview").attr("src");
-				if (src.lastIndexOf("?") > 0) {
-					src = src.substr(0,src.lastIndexOf("?"));
-				}
-				src += "?ts=" + escape(new Date());
-				$("img#preview").attr("src",src);
-				$(".form-control-modified").val("");
-				$(".form-control-modified").removeClass("form-control-modified");
-				window.parent.parent.preview.location.reload();
-			});
-	}
-	// Submit form.
-	else if ($(".form-control-modified").length > 0) {
-		var els = $("textarea#text,input.form-control,select.form-control");
-		var values = {};
-		for (var i = 0; i < els.length; i++) {
-			var $el = $(els[i]);
-			var elid = $el.attr("name");
-			values[elid] = $el.val();
-			custAutoSaveArr[elid] = $el.val();
-			if ($el.hasClass("form-control-modified") && !$el.hasClass("ui-helper-hidden")) {
-				var coords = $el.offset();
-				var html = '<'+'div class="zmiAutoSave zmiNeutralColorLight0" style="position:absolute;left:'+Math.round(coords.left)+'px;top:'+Math.round(coords.top)+'px;">saving...<'+'/div>';
-				$("body").append(html);
-			}
-		}
-		// Post form.
-		$ZMI.writeDebug("post.1"+$("#absolute_url").text()+"/pt_changePrefs");
-		parent.showProgress(true);
-		$.post($("span#absolute_url").text()+"/"+$("span#action").text(),values,function(result) {
-				$ZMI.writeDebug("post.2");
-				$("div.zmiAutoSave").remove();
-				$(".form-control-modified").removeClass("form-control-modified");
-				window.parent.parent.preview.location.reload();
-				getObjectDetails();
-				window.setTimeout('parent.showProgress(false);',500);
-			});
-	}
-}
-
-function custAutoChange(el) {
-	$ZMI.writeDebug("custAutoChange");
-	var elid = $(el).attr("name");
-	if (typeof elid != "undefined" && typeof custAutoSaveArr[elid] != "undefined") {
-		if (custAutoSaveTimeout != null) {
-			window.clearTimeout(custAutoSaveTimeout);
-		}
-		if (custAutoSaveArr[elid] == $(el).val()) {
-			if ($(el).hasClass("form-control-modified")) {
-				$(el).removeClass("form-control-modified");
-			}
-		}
-		else {
-			if (!$(el).hasClass("form-control-modified")) {
-				$(el).addClass("form-control-modified");
-			}
-			custAutoSaveTimeout = window.setTimeout("custAutoSave()",custAutoSaveIntervall);
-		}
-	}
-}
-
 function getObjectDetails() {
 	$("div#objectDetails").html("");
 	var path = $("span#absolute_path").text();
@@ -399,21 +322,9 @@ function getObjectDetails() {
 		});
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 	//$ZMI.toggleDebug(true);
 	$ZMI.writeDebug("BO registerReady");
-	$("textarea#text,input.form-control,select.form-control")
-		.keydown( function (evt) { custAutoChange(this); })
-		.keyup( function (evt) { custAutoChange(this); })
-		.click( function (evt) { custAutoChange(this); })
-		.change( function (evt) { custAutoChange(this); })
-		.each(function() {
-				var elid = $(this).attr("name");
-				if (typeof elid != "undefined") {
-					custAutoSaveArr[elid] = $(this).val();
-				}
-			})
-	;
 	getObjectDetails();
 	$ZMI.writeDebug("EO registerReady");
 });
@@ -461,12 +372,13 @@ snippets_arr["Page Template"]["snippet_microNav"] = {title:'Micro-Navigation', r
 				'\t&lt;'+'/span>\n'+
 				'&lt;'+'/nav>&lt;'+'-- #micro -->'};
 
-$ZMI.registerReady(function(){
-	var undoable_transactions = parseInt($("span#undoable_transactions").text());
-	$("#refresh_btn").show("normal");
-	$("#delete_btn").show("normal");
-	if (undoable_transactions > 0) {
-		$("#undo_btn").show("normal");
+$(function(){
+	var absolute_url = $("span#absolute_url").text();
+	if (absolute_url.indexOf(".less")>0) {
+		$("#compile_lessc_btn").show();
+	}
+	else {
+		$("#compile_lessc_btn").hide();
 	}
 	var meta_type = $("span#meta_type").text();
 	if (typeof snippets_arr[meta_type] != "undefined") {
@@ -487,44 +399,70 @@ $ZMI.registerReady(function(){
 	}
 });
 
-////////////////////////////////////////////////////////////////////////////////
-
-function zmiRefreshBtnClick() {
-	self.location.reload();
-}
-
-function zmiUndoBtnClick() {
-	var abs_url = $("span#absolute_url").text();
-	self.location.href = abs_url + "/manage_UndoForm";
-}
-
-function zmiDelBtnClick() {
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		var abs_url = $("span#absolute_url").text();
-		var id = abs_url.substr(abs_url.lastIndexOf("/")+1);
-		var values = {"ids:list":id};
-		$.post(abs_url.substr(0,abs_url.lastIndexOf("/"))+"/manage_delObjects",values,function(result) {
-				window.parent.selectTab(0);
-				window.parent.removeContainerDiv(id);
+function zmiSaveBtnClick(btn) {
+	// Upload file.
+	var $file = $("input.form-control:file");
+	if ($file.length > 0) {
+		if ($file.val().length > 0) {
+			$('#theuploadform').attr( "action", $("span#absolute_url").text()+"/"+$("span#action").text());
+			$('#theuploadform').attr( "target", "postframe" )
+			$('#theuploadform').submit();
+			//need to get contents of the iframe
+			$("#postframe").load(function(){
+					var src = $("img#preview").attr("src");
+					if (src.lastIndexOf("?") > 0) {
+						src = src.substr(0,src.lastIndexOf("?"));
+					}
+					src += "?ts=" + escape(new Date());
+					$("img#preview").attr("src",src);
+					$file.val("");
+					window.parent.parent.preview.location.reload();
+				});
+		}
+	}
+	// Submit form.
+	else {
+		var els = $("textarea#text,input.form-control,select.form-control");
+		var values = {};
+		for (var i = 0; i < els.length; i++) {
+			var $el = $(els[i]);
+			var elid = $el.attr("name");
+			values[elid] = $el.val();
+		}
+		// Post form.
+		$ZMI.writeDebug("post.1"+$("#absolute_url").text()+"/pt_changePrefs");
+		$("#save_btn").addClass("btn-danger");
+		$.post($("span#absolute_url").text()+"/"+$("span#action").text(),values,function(result) {
+				$ZMI.writeDebug("post.2");
 				window.parent.parent.preview.location.reload();
+				getObjectDetails();
+			$("#save_btn").removeClass("btn-danger").addClass("btn-success");
+				window.setTimeout('$("#save_btn").removeClass("btn-success");',500);
 			});
 	}
+}
+
+function zmiCompileLesscBtnClick(btn) {
+		$("#compile_lessc_btn").addClass("btn-danger");
+		$.get("compile_lesscss",function(result) {
+				confirm(result);
+				window.parent.parent.preview.location.reload();
+			$("#compile_lessc_btn").removeClass("btn-danger").addClass("btn-success");
+				window.setTimeout('$("#compile_lessc_btn").removeClass("btn-success");',500);
+			});
 }
 
 </script>
 
 			<div class="pull-left">
-				<div class="btn-group">
-					<span id="refresh_btn" class="btn btn-default" onclick="zmiRefreshBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_REFRESH'),'utf-8')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block>
+					<span id="save_btn" class="btn btn-default" onclick="zmiSaveBtnClick(this);" tal:attributes="title python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-save')"></tal:block>
+						<tal:block tal:content="python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')"></tal:block>
 					</span>
-					<span id="undo_btn" class="btn btn-default" onclick="zmiUndoBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_UNDO'),'utf-8')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
+					<span id="compile_lessc_btn" class="btn btn-default" onclick="zmiCompileLesscBtnClick(this);" title="Compile {less}" tal:condition="python:len(here.getConfProperty('InstalledProducts.lesscss',''))>0">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
+						Compile {less}
 					</span>
-					<span id="delete_btn" class="btn btn-default" onclick="zmiDelBtnClick();" tal:attributes="title python:unicode(here.getZMILangStr('BTN_DELETE'),'utf-8')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
-					</span>
-				</div><!-- .btn-group -->
 			</div><!-- .pull-left -->
 			<div class="pull-right">
 				<select id="snippets_select" class="form-control ui-helper-hidden">
@@ -538,7 +476,6 @@ function zmiDelBtnClick() {
 				<span id="meta_type" tal:content="ob/meta_type">the meta_type</span>
 				<span id="absolute_url" tal:content="ob/absolute_url">the absolute_url</span>
 				<span id="absolute_path" tal:content="python:ob.absolute_url()[len(here.getHome().absolute_url()):]">the absolute_path</span>
-				<span id="undoable_transactions" tal:content="python:len(ob.undoable_transactions())">the number of undoable transactions</span>
 			</div>
 			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
 				<div class="ui-helper-hidden">
@@ -593,7 +530,7 @@ function zmiDelBtnClick() {
 			<div id="objectDetails"></div>
 		</form>
 
-		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
+		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/css','application/x-css','application/javascript','application/x-javascript'])">
 			<div class="ui-helper-hidden">
 				<span id="action">manage_upload</span>
 				<label for="title">Title</label>
@@ -604,20 +541,20 @@ function zmiDelBtnClick() {
 			<div id="iframe" class="ui-helper-hidden">
 				<iframe name="postframe" id="postframe"></iframe>
 			</div>
-			<div class="control-group">
-				<label>Content Type</label>
-				<input class="form-control" type="text" value="ob/content_type" disabled="disabled"/>
-			</div><!-- .control-group -->
 			<div class="control-group" tal:condition="python:ob.meta_type in ['Image','File'] and ob.content_type.startswith('image/')">
 				<label>Preview</label>
 				<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);"/>
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<td class="form-label">File Size</td>
-				<input class="form-control" type="text" value="python:here.getDataSizeStr(ob.size)" disabled="disabled"/>
+				<label>Content Type</label>
+				<input class="form-control" type="text" tal:attributes="value ob/content_type" disabled="disabled"/>
 			</div><!-- .control-group -->
 			<div class="control-group">
-				<label for="file">File Data</label>
+				<label>Size</label>
+				<input class="form-control" type="text" tal:attributes="value python:here.getDataSizeStr(ob.size)" disabled="disabled"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="file">Upload</label>
 				<input class="form-control" id="file" name="file" type="file"/>
 			</div><!-- .control-group -->
 		</form>

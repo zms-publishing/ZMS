@@ -26,16 +26,10 @@
 +++ @see $ZMS_HOME/plugins/www/ace.ajax.org
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -->
-<div id="editor" style="height:92%;width:100%;color:#ccc;border:1px solid #ccc;border-radius:4px">ace editor text</div>
+<div id="editor" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">ace editor text</div>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/theme-eclipse.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-html.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-css.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-javascript.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-python.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/mode-xml.js"></script>
 <script type="text/javascript">
-$ZMI.registerReady(function(){
+$(function(){
 	if ($("textarea#text").length == 0) {
 		$("#editor").hide();
 	}
@@ -43,15 +37,15 @@ $ZMI.registerReady(function(){
 		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
 		$("textarea#text").hide();
 		editor = ace.edit("editor");
-		var content_type = null;
-		if ($("input#content_type")) {
-			content_type = $("input#content_type").val();
-		}
-		if (content_type == null) {
+		var content_type = $("input#content_type").val();
+		if (typeof content_type == "undefined" || content_type == null || content_type == '' || content_type == 'text/x-unknown-content-type') {
 			var absolute_url = $("span#absolute_url").text();
 			var id = absolute_url.substr(absolute_url.lastIndexOf("/")+1);
 			if (id.endsWith(".css")) {
 				content_type = "text/css";
+			}
+			else if (id.endsWith(".less")) {
+				content_type = "text/less";
 			}
 			else if (id.endsWith(".js")) {
 				content_type = "text/javascript";
@@ -60,26 +54,27 @@ $ZMI.registerReady(function(){
 				content_type = "text/html";
 			}
 		}
-		var Mode = null;
+		var mode = "text";
 		if (content_type == "text/html") {
-			Mode = require("ace/mode/html").Mode;
+			mode = "html";
 		}
-		else if (content_type == "text/css" || content_type == "application/x-css") {
-			Mode = require("ace/mode/css").Mode;
+		else if (content_type == "text/css" || content_type == "application/css" || content_type == "application/x-css") {
+			mode = "css";
 		}
-		else if (content_type == "text/javascript" || content_type == "application/x-javascript") {
-			Mode = require("ace/mode/javascript").Mode;
+		else if (content_type == "text/less") {
+			mode = "less";
+		}
+		else if (content_type == "text/javascript" || content_type == "application/javascript" || content_type == "application/x-javascript") {
+			mode = "javascript";
 		}
 		else if (content_type == "text/xml") {
-			Mode = require("ace/mode/xml").Mode;
+			mode = "xml";
 		}
 		else if (content_type == "python") {
-			Mode = require("ace/mode/python").Mode;
+			mode = 'python';
 		}
-		if (Mode != null) {
-			editor.getSession().setMode(new Mode());
-		}
-		editor.setTheme("ace/theme/eclipse");
+		editor.setTheme("ace/theme/chrome");
+		editor.getSession().setMode('ace/mode/'+mode);
 		editor.getSession().setValue($("textarea#text").val());
 		editor.getSession().on("change",function() {
 				$("textarea#text").val(editor.getSession().getValue()).change();

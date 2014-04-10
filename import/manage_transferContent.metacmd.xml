@@ -175,7 +175,7 @@ elif request.get('framestructure') is not None:
         body {
           background:#e1e4eb;
           padding:.5em!important;
-          font-size:12px;
+          font-size:13px;
         }
         #ajaxGetObjAttrs {
           background-color:white;

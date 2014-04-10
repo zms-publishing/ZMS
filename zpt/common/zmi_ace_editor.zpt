@@ -1,5 +1,5 @@
-<tal:block tal:define="global name python:options['name']; ob python:options['ob']">
-	<div tal:condition="python:ob is not None" class="form-group" style="height:20em;width:100%">
+<tal:block tal:define="global name python:options['name']; ob python:options['ob']; height python:options.get('height','20em')">
+	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
 		<div class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
 				<img tal:attributes="src ob/icon; alt ob/meta_type"/>

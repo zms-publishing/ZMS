@@ -117,7 +117,8 @@ class ZMSItem(
       if not request.get( 'lang'):
         request.set( 'lang',self.getLanguage(request))
       if not request.get( 'manage_lang'):
-        request.set( 'manage_lang',self.get_manage_lang())
+        # request.set( 'manage_lang',self.get_manage_lang())
+        request.set( 'manage_lang',self.getLanguage(request))
 
 
     # --------------------------------------------------------------------------

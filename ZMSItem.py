@@ -64,9 +64,9 @@ class ZMSItem(
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
-    manage_page_header = PageTemplateFile('zpt/deprecated/manage_page_header', globals())
-    manage_tabs = PageTemplateFile('zpt/deprecated/manage_tabs', globals())
-    manage_page_footer = PageTemplateFile('zpt/deprecated/manage_page_footer', globals())
+    #manage_page_header = PageTemplateFile('zpt/deprecated/manage_page_header', globals())
+    #manage_tabs = PageTemplateFile('zpt/deprecated/manage_tabs', globals())
+    #manage_page_footer = PageTemplateFile('zpt/deprecated/manage_page_footer', globals())
 
     # --------------------------------------------------------------------------
     #  ZMSItem.manage_page_request:

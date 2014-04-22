@@ -120,7 +120,7 @@ class ZMSTextformatManager:
         if d.has_key('richedit'):
           richedit = d['richedit']
           richtextformatids = self.getRichtextFormatIds()
-          if richedit not in richtextformatids:
+          if type(richedit) is str and richedit not in richtextformatids:
             d['richedit'] = richtextformatids[0]
         return ZMSTextformat.ZMSTextformat(id,d,REQUEST)
       return None

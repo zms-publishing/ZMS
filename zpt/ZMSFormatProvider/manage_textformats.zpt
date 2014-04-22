@@ -124,6 +124,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<colgroup>
 		<col width="40"/>
+		<col width="20%"/>
 	</colgroup>
 	<thead>
 		<tr>
@@ -132,7 +133,7 @@
 					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
 				</div>
 			</th>
-			<th>
+			<th colspan="2">
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
@@ -146,14 +147,16 @@
 	<tal:block tal:repeat="format formats">
 		<tr>
 			<td style="text-align:center;">
-				<span class="btn btn-default"><input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" /></span>
+				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
 			<td>
-				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())" target="">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-align-left')"></tal:block>
+				<a style="width:100%;text-align:left;" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId()); class python:['btn btn-default','btn btn-primary'][int(format.getId()==here.getTextFormatDefault())]">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-open',title=here.getZMILangStr('ATTR_RICHEDIT'))" tal:condition="python:format.getRichedit() in here.getRichtextFormatIds()"></tal:block>
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-align-left')" tal:condition="not:python:format.getRichedit() in here.getRichtextFormatIds()"></tal:block>
 					<tal:block tal:content="python:format.getId()">Id</tal:block>
 				</a>
-				<tal:block tal:condition="python:format.getId()==here.getTextFormatDefault()">(Default)</tal:block>
+			</td>
+			<td>
 				<div style="background-color:white;margin:.5em 0;border:1px dotted #ccc" tal:content="structure python:format.renderText(format.getDisplay(),request)">Render</div>
 			</td>
 		</tr>
@@ -199,7 +202,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 	}
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true})
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");

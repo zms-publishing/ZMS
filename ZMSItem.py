@@ -64,9 +64,6 @@ class ZMSItem(
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
-    #manage_page_header = PageTemplateFile('zpt/deprecated/manage_page_header', globals())
-    #manage_tabs = PageTemplateFile('zpt/deprecated/manage_tabs', globals())
-    #manage_page_footer = PageTemplateFile('zpt/deprecated/manage_page_footer', globals())
 
     # --------------------------------------------------------------------------
     #  ZMSItem.manage_page_request:
@@ -116,9 +113,8 @@ class ZMSItem(
       self.zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang',self.getLanguage(request))
-      if not request.get( 'manage_lang'):
-        # request.set( 'manage_lang',self.get_manage_lang())
-        request.set( 'manage_lang',self.getLanguage(request))
+      if not request.get('manage_lang') in self.getLocale().get_manage_langs():
+        request.set( 'manage_lang',self.get_manage_lang())
 
 
     # --------------------------------------------------------------------------

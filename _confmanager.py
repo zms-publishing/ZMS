@@ -392,6 +392,7 @@ class ConfManager(
     customize_manage_options__roles__ = None
     def customize_manage_options(self):
       l = []
+      l.append({'label':'TAB_EDIT','action':'manage_main'})
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
       for ob in self.objectValues():

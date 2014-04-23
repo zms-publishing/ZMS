@@ -439,12 +439,13 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 #zmi-header .slogan{font-size:x-small}
 #zmi-header .navbar{margin:0;height:42px;min-height:42px}
 #zmi-header .navbar-fixed-top .navbar-inner,#zmi-header .navbar-fixed-bottom .navbar-inner{padding:0!important}
-.zmi.preview_top #zmi-header .pull-right{padding-top:0.7em}
-.zmi.preview_top #zmi-header .pull-right *{color:#BBB}
+.zmi.preview_top #zmi-header .pull-right{padding-top:.25em;padding-right:.25em}
+.zmi.preview_top #zmi-header .pull-right *{color:#ccc}
 .zmi.preview_top #zmi-header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 #zmi-overlay{background-color:black;display:block;position:absolute;top:0;left:0;width:100%;height:100%;filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 #zmi-progressbox{padding:20px 40px 20px 40px;background-color:#FFF;color:black;position:absolute}
 .zmi ul.main-nav{margin-top:0.5em;padding-left:1em}
+.zmi.customize .main-nav{min-width:1160px}
 .zmi .navbar-inner{border-radius:0 !important}
 #zmi-footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
@@ -474,7 +475,7 @@ ul.zmi-container .contentEditable{cursor:pointer}
 ul.zmi-container li.zmi-item,ul.zmi-container li.ui-state-highlight{list-style-type:none;float:none;clear:both}
 ul.zmi-container.zmi-sortable li.ui-state-highlight{min-height:4em;margin-bottom:0;width:80%;border:0;background:#428bca;border-radius:0}
 ul.zmi-container li.zmi-item .inactive .contentEditable{filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
-ul.zmi-container.portalClients .center .contentEditable{padding-left:1em;color:#6B9EB8}
+ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable{border-top:none !important;font-size:large;padding-left:1em;color:#6B9EB8}
 table.table tbody tr td.data{white-space:nowrap;overflow:hidden}
 table.table.zmi-sortable select.zmi-sort{direction:rtl;width:4em}
 table.table.zmi-sortable input{margin-bottom:10px}
@@ -545,7 +546,7 @@ form.form-horizontal.form-insert{margin:0}
 .zmi.properties form.form-horizontal .accordion-group{width:100%;background-color:#fff}
 .zmi.properties form.form-horizontal .accordion-group.zmi-container{width:100%;background-color:transparent}
 .zmi.properties form.form-horizontal .accordion-body.container{margin-left:-1em;max-width:2600px !important;width:100% !important;background-color:#fff}
-.zmi.properties form.form-horizontal .accordion-group .accordion-group.zmi-container .accordion-body.container{margin-left: 0em}
+.zmi.properties form.form-horizontal .accordion-group .accordion-group.zmi-container .accordion-body.container{margin-left:0em}
 .properties.zmi form.form-horizontal .accordion-group .accordion-group.zmi-container{padding:1em 0 1em 0}
 .zmi.properties form.form-horizontal .accordion-body.container .contentEditable{padding:1em;background-color:#fff}
 .zmi.properties form.form-horizontal .accordion-body.container .accordion-inner{background-color:#f5f5f5!important;padding:0}
@@ -611,7 +612,11 @@ div.zmi-nodes span{cursor:pointer}
 .zmi-image-generate-preview{font-size:x-small}
 .zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;font-size:x-small}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
-body.users #zmi-tab > .pull-left,body.users #zmi-tab > .pull-right{width:50%}
+.zmi.users #zmi-tab > .pull-left,.zmi.users #zmi-tab > .pull-right{width:50%}
+.zmi.users form table{margin-bottom:0}
+.zmi.users form table th:first-child{width:4em}
+.zmi.users form table th,.zmi.users form table td{vertical-align:middle}
+.zmi.users form table .breadcrumb{background-color:transparent !important;padding:0 !important}
 table.zmi-sortable td{white-space:nowrap}
 table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bottom:0px}
 .pagination{white-space:nowrap}
@@ -621,7 +626,10 @@ table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bot
 .ZMSRecordSet a.thumbnail{max-width:3.0em!important;max-height:3.0em!important;padding:.2em!important;margin:0!important}
 .ZMSRecordSet .table tr td:first-child,.ZMSSqlDb .table tr td:first-child{width:84px}
 .ZMSRecordSet .table input,.ZMSSqlDb .table input,.ZMSRecordSet .table select,.ZMSSqlDb .table select,.ZMSRecordSet .table textarea,.ZMSSqlDb .table textarea{font-size:11px;padding:0 2px 0 2px;margin:0;height:20px}
-.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th,.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr td{padding:4px;font-size:11px}
+.ZMSRecordSet .table tr th,.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr th,.ZMSSqlDb .table tr td{padding:4px;font-size:11px}
+.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th{min-width:3em;vertical-align:middle}
+.ZMSRecordSet .table tr th a,.ZMSSqlDb .table tr th a{text-decoration:none}
+.ZMSRecordSet .table-hover>tbody>tr:hover>td,.ZMSRecordSet .table-hover>tbody>tr:hover>th{background-color:#DCE3F0}
 .ZMSRecordSet .table tr th:first-child,.ZMSRecordSet .table tr td:first-child,.ZMSRecordSet .table tr th .btn-group,.ZMSRecordSet .table tr td .btn-group{white-space:nowrap !important;min-width:8em}
 .ZMSRecordSet .table tr th .split-left,.ZMSRecordSet .table tr td .split-left,.ZMSSqlDb .table tr th .split-left,.ZMSSqlDb .table tr td .split-left{font-size:11px;border:1px solid #ccc;margin:0px;background:#DCE3F0;padding:6px;min-width:52px;overflow:hidden;height:28px}
 .ZMSSqlDb .table tr td:first-child .checkbox input{opacity:0.5;width:auto;margin:-2px 0px 0px 0px}
@@ -678,7 +686,8 @@ div.right .btn .caret{}
  .zmi-item{border-left:0px solid #ddd}
  .right span,.right span.form-small,.right span.zmi-ids{display:none !important}
  ul.zmi-container .center .contentEditable{padding-left:3em !important}
- ul.zmi-container.pages .center .contentEditable,ul.zmi-container.portalClients .center .contentEditable{padding-left:2.5em !important}
+ ul.zmi-container.pages .center .contentEditable{padding-left:2.5em !important}
+ ul.zmi-container.portalClients .center .contentEditable{padding-left:2em !important}
  img.grippy{visibility:hidden}
  .navbar-brand .slogan{display:none}
  .navbar-nav>li{float:left}
@@ -730,3 +739,5 @@ body.tasks .form-horizontal,body.tasks table.table tbody tr td.data{background-c
 body.tasks table.table{background-color:#fff;font-size:smaller}
 body.tasks table.table ul.breadcrumb{margin-left:0;padding:0 0 1em 0;background:transparent}
 body.tasks .zmi-container .center .contentEditable{padding-left:0 !important}
+#ui-datepicker-div .ui-widget-header .ui-icon{background-image:url(/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/images/ui-icons_222222_256x240.png)}
+#zmiIframeAddDialog #form0 input.hasDatepicker{z-index:2000}

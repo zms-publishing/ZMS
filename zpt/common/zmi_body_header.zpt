@@ -14,7 +14,7 @@
 						<li>
 							<a href="#" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block>
-								<tal:block tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">edit</tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">password</tal:block>
 						<li>
 							<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-question-sign')"></tal:block>
@@ -58,7 +58,7 @@
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-wrench')"></tal:block>
 								<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>
 							</li>
-							<li tal:repeat="option python:here.getDocumentElement().customize_manage_options()">
+							<li tal:repeat="option python:here.getDocumentElement().customize_manage_options()[1:]">
 								<a tal:attributes="href python:'%s/%s?lang=%s'%(here.getDocumentElement().absolute_url(),option['action'],request['lang'])">
 									<tal:block tal:content="python:here.getZMILangStr(option['label'])">label</tal:block>
 								</a>

@@ -473,10 +473,22 @@ class AccessManager(AccessableContainer):
             d['name'] = user[login_attr]
             d['roles'] = []
             d['domains'] = []
+            extras = ['pluginid','givenName','sn','dn','ou']
             for extra in user.keys():
               if extra == 'pluginid':
                 pluginid = user[extra]
                 plugin = getattr(userFldr,pluginid)
+                # User ID
+                if plugin.meta_type == 'LDAP Multi Plugin':
+                  for ldapUserFldr in plugin.objectValues('LDAPUserFolder'):
+                     login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
+                     uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
+                     if uid_attr != login_attr:
+                       d['uid'] = user[uid_attr]
+                       if len(filter(lambda x:x['id']=='uid',c))==0:
+                         c.append({'id':'uid','name':'User ID','type':'string'})
+                       c = filter(lambda x:x['id']!=uid_attr,c)
+                       extras = filter(lambda x:x!=uid_attr,extras)
                 d['plugin'] = plugin
                 editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
                 container = userFldr.aq_parent
@@ -486,7 +498,7 @@ class AccessManager(AccessableContainer):
                 v = unicode(user[extra],encoding).encode('utf-8')
                 t = 'string'
               d[extra] = v
-              if extra in ['pluginid','givenName','sn','dn','ou'] and  len(filter(lambda x:x['id']==extra,c))==0:
+              if extra in extras and len(filter(lambda x:x['id']==extra,c))==0:
                   c.append({'id':extra,'name':extra.capitalize(),'type':t})
             if exact and user[login_attr].lower() == search_term.lower():
               return d
@@ -525,6 +537,13 @@ class AccessManager(AccessableContainer):
             label = schema[1]
             value = unicode(user.get(name,''),encoding).encode('utf-8')
             user['details'].append({'name':name,'label':label,'value':value})
+          # User ID
+          login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
+          uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
+          if uid_attr != login_attr:
+            value = unicode(user.get(uid_attr,''),encoding).encode('utf-8')
+            user['details'].append({'name':'uid','label':'User ID','value':value})
+            user['details'] = filter(lambda x:x['name']!=uid_attr,user['details'])
       return user
 
 
@@ -945,6 +964,7 @@ class AccessManager(AccessableContainer):
           self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
           self.setUserAttr(id,'email',REQUEST.get('email','').strip())
           self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
+          self.setUserAttr(id,'uid',REQUEST.get('uid','').strip())
           if attrActive != newAttrActive:
             self.toggleUserActive(id)
         elif key=='attr':

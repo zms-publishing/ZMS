@@ -98,10 +98,16 @@ function zmiModalInsertUserOpen(context) {
 		<label for="source" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_SOURCE')">Source</span></label>
 		<div class="col-sm-10" tal:content="structure userObj/pluginid">the user-pluginid</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-	<div class="form-group" tal:repeat="userObjDetail userObj/details">
+	<tal:block tal:repeat="userObjDetail userObj/details">
+	<tal:block tal:define="userAttr python:here.getUserAttr(userObj,userObjDetail['name'],''); hasError python:userAttr!='' and userAttr!=userObjDetail['value']">
+	<div tal:attributes="class python:' '.join(['form-group']+[[],['has-error']][int(hasError)]); title python:['','ERROR: %s'%str(userAttr)][int(hasError)]">
 		<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
-		<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=userObjDetail['value'],enabled=False)">the value</div><!-- .col-sm-10 -->
+		<div class="col-sm-10">
+			<input tal:attributes="name userObjDetail/name; value userObjDetail/value; class python:'form-control'" disabled="disabled"/>
+		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
+	</tal:block>
+	</tal:block>
 	<div class="form-group activity">
 		<label class="col-sm-2 control-label" for="attrActive"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>
 		<div class="col-sm-10">

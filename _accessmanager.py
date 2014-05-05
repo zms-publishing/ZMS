@@ -484,7 +484,14 @@ class AccessManager(AccessableContainer):
                      login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
                      uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
                      if uid_attr != login_attr:
-                       d['uid'] = user[uid_attr]
+                       uid = user[uid_attr]
+                       try:
+                         if uid.startswith('\x01\x05\x00\x00'):
+                           import binascii
+                           uid = binascii.b2a_hex(buffer(uid))
+                       except:
+                         _globals.writeError(self,'[getValidUserids]: uid_attr=%s'%uid_attr)
+                       d['uid'] = uid
                        if len(filter(lambda x:x['id']=='uid',c))==0:
                          c.append({'id':'uid','name':'User ID','type':'string'})
                        c = filter(lambda x:x['id']!=uid_attr,c)

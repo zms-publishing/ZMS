@@ -890,11 +890,11 @@ class ZMSGlobals:
     Returns a json-string representation of the object.
     @rtype: C{string}
     """
-    def str_json(self, i):
+    def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace'):
       if type(i) is list or type(i) is tuple:
-        return '['+','.join(map(lambda x: self.str_json(x),i))+']'
+        return '['+','.join(map(lambda x: self.str_json(x,encoding,errors),i))+']'
       elif type(i) is dict:
-        return '{'+','.join(map(lambda x: '\'%s\':%s'%(x,self.str_json(i[x])),i.keys()))+'}'
+        return '{'+','.join(map(lambda x: '\'%s\':%s'%(x,self.str_json(i[x],encoding,errors)),i.keys()))+'}'
       elif type(i) is time.struct_time:
         try:
           return '\'%s\''%self.getLangFmtDate(i)
@@ -903,9 +903,9 @@ class ZMSGlobals:
       elif type(i) is int or type(i) is float:
         return str(i)
       elif i is not None:
-        if type(i) is unicode:
+        if type(i) is unicode and encoding is not None:
           import cgi
-          i = cgi.escape(i).encode('ascii', 'xmlcharrefreplace')
+          i = cgi.escape(i).encode(encoding, errors)
         else:
           i = str(i)
         return '\'%s\''%(i.replace('\\','\\\\').replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))

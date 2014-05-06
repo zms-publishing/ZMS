@@ -3834,17 +3834,21 @@ if key.startswith('table_'):
 		table_type    python:zmscontext.attr('type');
 		resourceurl    python:'%s/%s.'%(zmscontext.metaobj_manager.absolute_url(),zmscontext.meta_id)">
 	<tal:block tal:condition="python:sortable and request.get('ZMSTable.standard_html',True)">
-		<script type="text/javascript" tal:attributes="src python:'%sjquery.tablesorter.min.js'%resourceurl"></script>
-		<script type="text/javascript">
-			$ZMI.registerReady(function(){
-				$(".ZMSTable.sortable").tablesorter({ 
-						widgets: ["zebra"],
-						widgetOptions:{
-								zebra:["even", "odd"]
-						}
-				});
+		<tal:block tal:content="structure python:'<script>'"></tal:block>
+			$(function(){
+				$.plugin('tablesorter',{
+					files: ['<tal:block tal:content="resourceurl"></tal:block>.jquery.tablesorter.min.js']
+					});
+				$.plugin('tablesorter').get('.ZMSTable.sortable',function() {
+						$(".ZMSTable.sortable").tablesorter({ 
+								widgets: ["zebra"],
+								widgetOptions:{
+										zebra:["even", "odd"]
+								}
+						});
+					});
 			});
-		</script>
+		<tal:block tal:content="structure python:'</script>'"></tal:block>
 		<tal:block tal:content="structure python:'<style>'"></tal:block>
 			table.ZMSTable.sortable thead tr .header {
 				background-image: url(<tal:block tal:content="resourceurl"></tal:block>small.gif);

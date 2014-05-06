@@ -903,7 +903,7 @@ class ZMSGlobals:
       elif type(i) is int or type(i) is float:
         return str(i)
       elif i is not None:
-        if type(i) is unicode:
+        if type(i) is unicode and not (i.startswith('<') and i.endswith('>')):
           import cgi
           i = cgi.escape(i).encode(encoding, errors)
         else:

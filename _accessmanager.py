@@ -493,7 +493,7 @@ class AccessManager(AccessableContainer):
                          _globals.writeError(self,'[getValidUserids]: uid_attr=%s'%uid_attr)
                        d['uid'] = uid
                        if len(filter(lambda x:x['id']=='uid',c))==0:
-                         c.append({'id':'uid','name':'User ID','type':'string'})
+                         c.append({'id':'uid','name':uid_attr.capitalize(),'type':'string'})
                        c = filter(lambda x:x['id']!=uid_attr,c)
                        extras = filter(lambda x:x!=uid_attr,extras)
                 d['plugin'] = plugin
@@ -548,9 +548,11 @@ class AccessManager(AccessableContainer):
           login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
           uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
           if uid_attr != login_attr:
-            value = unicode(user.get(uid_attr,''),encoding).encode('utf-8')
-            user['details'].append({'name':'uid','label':'User ID','value':value})
-            user['details'] = filter(lambda x:x['name']!=uid_attr,user['details'])
+            name = 'uid'
+            label= uid_attr.capitalize()
+            value = unicode(user.get(name,''),encoding).encode('utf-8')
+            user['details'] = filter(lambda x:x['name'] not in [name,uid_attr],user['details'])
+            user['details'].append({'name':name,'label':label,'value':value})
       return user
 
 

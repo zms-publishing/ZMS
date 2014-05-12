@@ -299,18 +299,26 @@ ZMI.prototype.initInputFields = function(container) {
 				$(".has-error",this).removeClass("has-error");
 				$(".form-group label.control-label.mandatory",this).each(function() {
 						var $label = $(this);
+						var forName = $(this).attr("for");
 						var labelText = $label.text().basicTrim();
 						var $controlGroup = $label.parents(".form-group");
 						var $controls = $("div:first",$controlGroup);
-						var $control = $('input:text,input:file,select:not([name^="zms_mms_src_"])',$controls);
-						$ZMI.writeDebug('submit: '+labelText+' mandatory? ['+$control.length+']');
+						var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+						$ZMI.writeDebug('submit: '+forName+'('+labelText+') mandatory? ['+$control.length+']');
 						$label.attr("title","");
 						$control.attr("title","");
 						if ($control.length==1) {
 							var isBlank = false;
 							var nodeName = $control.prop("nodeName").toLowerCase();
+							var nodeType = $control.prop("type").toLowerCase();
 							if (nodeName=="input") {
 								isBlank = $control.val().basicTrim().length==0;
+								if (isBlank && nodeType=="file") {
+									var name = $control.attr("name");
+									var exists = $('input[name=exists_'+forName+']:hidden',$controlGroup).val();
+									$ZMI.writeDebug('submit: exists='+exists);
+									isBlank = !(exists=='True');
+								}
 							}
 							else if (nodeName=="select") {
 								isBlank = ($("option:selected",$control).length==0) 

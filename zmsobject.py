@@ -291,6 +291,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
           s = sec_no + ' ' + s
+	  s = s.replace(' & ',' &amp; ')
       return s
 
 
@@ -318,6 +319,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
           s = sec_no + ' ' + s
+      s = s.replace(' & ',' &amp; ')
       return s
 
 

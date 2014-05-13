@@ -632,11 +632,11 @@ class ZMSContainerObject(
           items.append('>')
           items.append('<a ')
           items.append(' href="%s"'%ob.getHref2IndexHtml(REQUEST))
-          items.append(' title="%s"'%ob.getTitle(REQUEST).replace(' & ',' &amp; '))
+          items.append(' title="%s"'%ob.getTitle(REQUEST))
           if len(css) > 0:
             items.append(' class="%s"'%(' '.join(css)))
           items.append('>')
-          items.append('<span>%s</span>'%ob.getTitlealt(REQUEST).replace(' & ',' &amp; '))
+          items.append('<span>%s</span>'%ob.getTitlealt(REQUEST))
           items.append('</a>')
           if (max(depth,ob.getLevel()) < opt.get('maxdepth',100)) and \
              ((opt.get('complete',False)) or \

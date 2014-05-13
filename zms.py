@@ -430,6 +430,7 @@ class ZMS(
 
     # Management Permissions.
     # -----------------------
+    zmi_logo__roles__ = None
     __administratorPermissions__ = (
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',

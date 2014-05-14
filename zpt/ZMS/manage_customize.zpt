@@ -129,6 +129,7 @@ $ZMI.registerReady(function(){
 	<tal:block tal:define="global 
 			conf python:here.getConfProperties();
 			conf_keys python:filter(lambda x: not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x=='ZMS.log' and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf.keys());
+			dummy0 python:conf_keys.sort();
 			res python:[
 				{'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
 				{'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
@@ -238,7 +239,10 @@ $ZMI.registerReady(function(){
 						</div>
 					</td>
 					<td><span tal:content="conf_key">the conf_key</span></td>
-					<td><span tal:content="python:here.getConfProperty(conf_key)">the conf_value</span></td>
+					<td>
+						<span tal:condition="not:python:conf_key.endswith('.password')" tal:content="python:here.getConfProperty(conf_key)">the conf_value</span>
+						<span tal:condition="python:conf_key.endswith('.password')">******</span>
+					</td>
 				</tr>
 			</tbody>
 			</table>

@@ -229,7 +229,7 @@
 			);
 			dummy0 python:zmscontext.sendMail(mto, msubject, ''.join(mbody), request);
 			message python:'Sent request for committing your changes.';
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_wfTransitionFinalize',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
 	</tal:block>
 </tal:block>
 
@@ -345,7 +345,7 @@
 			);
 			dummy0 python:zmscontext.sendMail(mto, msubject, ''.join(mbody), request);
 			message python:'Changes have been rejected.';
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_wfTransitionFinalize',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
 	</tal:block>
 </tal:block>
 

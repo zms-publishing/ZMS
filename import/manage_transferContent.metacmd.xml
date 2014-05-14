@@ -16,10 +16,8 @@ if request.get('http_import') is not None:
 elif request.get('frameimport') is not None:
   lang = context.getPrimaryLanguage()
   export_format = 2 # XML
-  username = request.SESSION.get('manage_transferContent.username',request.get('username'))
-  password = request.SESSION.get('manage_transferContent.password',request.get('password'))
-  request.SESSION.set('manage_transferContent.username',username)
-  request.SESSION.set('manage_transferContent.password',password)
+  username = context.getConfProperty('manage_transferContent.username','')
+  password = context.getConfProperty('manage_transferContent.password','')
   auth = {'username':username,'password':password}
   data = context.http_import(location+'/manage_export?lang=%s&export_format:int=%i'%(lang,export_format),method='POST',auth=auth)
   class File:
@@ -160,10 +158,6 @@ elif request.get('framestructure') is not None:
   qs = '?lang=%s'%context.getPrimaryLanguage()
   node = context.http_import(remote_url+'/ajaxGetNode'+qs).replace('&','&amp;').replace('<','&lt;')
   children = context.http_import(remote_url+'/ajaxGetChildNodes'+qs).replace('&','&amp;').replace('<','&lt;')
-  #node = '"'+remote_url + '/ajaxGetNode'+qs+'"'
-  #children = '"'+remote_url + '/ajaxGetChildNodes'+qs+'"'
-  username = request.SESSION.get('manage_transferContent.username',request['AUTHENTICATED_USER'].getId())
-  password = request.SESSION.get('manage_transferContent.password','')
   print '''
     <!DOCTYPE html>
     <html lang="en">
@@ -171,6 +165,10 @@ elif request.get('framestructure') is not None:
       <style>
         * {
           white-space:nowrap;
+        }
+        p {
+          white-space:normal;
+          padding:.5em;
         }
         body {
           background:#e1e4eb;
@@ -207,18 +205,23 @@ elif request.get('framestructure') is not None:
           <textarea id="node" class="ui-helper-hidden">%s</textarea>
           <textarea id="children" class="ui-helper-hidden">%s</textarea>
           <div class="zmi-sitemap"></div>
+    '''%(request['lang'],unicode(node,'utf-8'),unicode(children,'utf-8'))
+  username = context.getConfProperty('manage_transferContent.username')
+  password = context.getConfProperty('manage_transferContent.password')
+  if username is None or password is None:
+    print '''
+          <p class="bg-danger text-danger">Missing conf-properties for manage_transferContent.username and manage_transferContent.password!</p>
+      '''
+  else:
+    print '''
           <div class="form-group">
             <label for="username" class="control-label mandatory"><span>Username</span></label>
-            <div><input class="form-control" type="text" name="username" value="%s"/></div>
-          </div><!-- .form-group -->
-          <div class="form-group">
-            <label for="password" class="control-label mandatory"><span>Password</span></label>
-            <div><input class="form-control" type="password" name="password" value="%s"/></div>
+            <div><input class="form-control" type="text" value="%s" disabled="disabled"/></div>
           </div><!-- .form-group -->
           <div class="control-group">
             <button id="importBtn" class="btn btn-primary"><i class="icon-upload-alt"></i> Import</button>
           </div><!-- .control-group -->
-    '''%(request['lang'],unicode(node,'utf-8'),unicode(children,'utf-8'),username,password)
+      '''%(username)
   mapping = getattr(abshome,idmapping,None)
   if mapping is not None:
     print '''

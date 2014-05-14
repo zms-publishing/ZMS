@@ -38,25 +38,25 @@ function onExportFormatChange(el) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_IMPORT')">Import</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
-		<div class="col-lg-10">
+		<label class="col-md-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">file</span></label>
+		<div class="col-md-5">
 			<input class="btn btn-file" name="file" type="file" />
-		</div><!-- .col-lg-10 -->
+		</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:condition="python:len(importFilters)>0">
-		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
-		<div class="col-lg-10">
+		<label class="col-md-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
+		<div class="col-md-5">
 			<select class="form-control" name="filter" onchange="onExportFormatChange(this);">
 				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
 				<tal:block tal:repeat="importFilter importFilters">
 					<option tal:attributes="value importFilter/id" tal:content="importFilter/name">filter</option>
 				</tal:block>
 			</select>
-		</div><!-- .col-lg-10 -->
+		</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<div class="col-lg-2">&nbsp;</div>
-		<div class="col-lg-10">
+		<div class="col-md-2">&nbsp;</div>
+		<div class="col-md-10">
 			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 		</div>
 	</div>
@@ -66,8 +66,8 @@ function onExportFormatChange(el) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</legend>
 	<div class="form-group">
-		<label class="col-lg-2 control-label mandatory" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
-		<div class="col-lg-5">
+		<label class="col-md-2 control-label mandatory" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
+		<div class="col-md-5">
 			<select class="form-control" name="export_format" onchange="onExportFormatChange(this);">
 				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
 				<option value="2">XML</option>
@@ -79,20 +79,20 @@ function onExportFormatChange(el) {
 					<option tal:attributes="value exportFilter/id" tal:content="exportFilter/name">filter</option>
 				</tal:block>
 			</select>
-		</div><!-- .col-lg-5 -->
-		<div id="div_charset" class="col-lg-3 ui-helper-hidden">
+		</div>
+		<div id="div_charset" class="col-md-3 ui-helper-hidden">
 			<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ZMS_CHARSET',value='utf-8',inputtype='select',lang_str='Encoding',required=1,optpl=here.enumManager.getValues('charset'), enabled=1, REQUEST=request)"></tal:block>
 		</div><!-- .col-lg-3 -->
-		<div id="div_debug" class="col-lg-2 ui-helper-hidden">
+		<div id="div_debug" class="col-md-2 ui-helper-hidden">
 			<tal:block tal:condition="python:'zms_log' in here.getDocumentElement().objectIds()">
 				<input type="checkbox" name="debug:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('debug',1)==1)]">
 				Debug
 			</tal:block>
-		</div><!-- .col-lg-2 -->
+		</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<label class="col-lg-2 control-label" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
-		<div class="col-lg-10">
+		<label class="col-md-2 control-label" for="export_format"><span tal:content="python:here.getZMILangStr('ATTR_OPTIONS')">options</span></label>
+		<div class="col-md-5">
 			<div>
 				<input type="radio" name="download:int" value="1" tal:attributes="checked python:['','checked'][int(request.get('download',1)==1)]" onclick="this.form.target='_blank'" />
 				Download to local machine
@@ -105,11 +105,11 @@ function onExportFormatChange(el) {
 				<input type="checkbox" name="preview" value="preview">
 				Preview
 			</div>
-		</div><!-- .col-lg-10 -->
+		</div>
 	</div><!-- .form-group -->
 	<div class="form-group">
-		<div class="col-lg-2">&nbsp;</div>
-		<div class="col-lg-10">
+		<div class="col-md-2">&nbsp;</div>
+		<div class="col-md-10">
 			<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
 		</div>
 	</div>

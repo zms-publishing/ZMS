@@ -88,7 +88,8 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
       domains = userFldr.getUser(id).getDomains()
       userFldr.userFolderEditUser(id, password, roles, domains)
     elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
-      user['plugin'].updateUserPassword(id, password)
+      user_id = user['uid']
+      user['plugin'].updateUserPassword(user_id, password)
     self.setUserAttr(id,'forceChangePassword',forceChangePassword)
     return True
   return False
@@ -314,7 +315,7 @@ class AccessableObject:
       # Return with message.
       if RESPONSE:
         message = urllib.quote(message)
-        return RESPONSE.redirect('manage_userForm?lang=%s&manage_tabs_message=%s'%(lang,message))
+        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 
 ################################################################################
@@ -467,10 +468,11 @@ class AccessManager(AccessableContainer):
                 if search_term == '' or search_term.find(userName) >= 0:
                   users.append({'name':userName})
           for user in users:
+            login_name = user[login_attr]
             d = {}
             d['localUserFldr'] = userFldr
-            d['__id__'] = user[login_attr]
-            d['name'] = user[login_attr]
+            d['__id__'] = login_name
+            d['name'] = login_name
             d['roles'] = []
             d['domains'] = []
             extras = ['pluginid','givenName','sn','dn','ou']
@@ -479,6 +481,7 @@ class AccessManager(AccessableContainer):
                 pluginid = user[extra]
                 plugin = getattr(userFldr,pluginid)
                 # User ID
+                uid = None
                 if plugin.meta_type == 'LDAP Multi Plugin':
                   for ldapUserFldr in plugin.objectValues('LDAPUserFolder'):
                      login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
@@ -491,11 +494,15 @@ class AccessManager(AccessableContainer):
                            uid = binascii.b2a_hex(buffer(uid))
                        except:
                          _globals.writeError(self,'[getValidUserids]: uid_attr=%s'%uid_attr)
-                       d['uid'] = uid
-                       if len(filter(lambda x:x['id']=='uid',c))==0:
-                         c.append({'id':'uid','name':uid_attr.capitalize(),'type':'string'})
-                       c = filter(lambda x:x['id']!=uid_attr,c)
-                       extras = filter(lambda x:x!=uid_attr,extras)
+                elif plugin.meta_type == 'ZODB User Manager':
+                  uid_attr = 'user_id'
+                  uid = plugin.getUserIdForLogin(login_name)
+                if uid is not None:
+                  d['uid'] = uid
+                  if len(filter(lambda x:x['id']=='uid',c))==0:
+                    c.append({'id':'uid','name':uid_attr.capitalize(),'type':'string'})
+                  c = filter(lambda x:x['id']!=uid_attr,c)
+                  extras = filter(lambda x:x!=uid_attr,extras)
                 d['plugin'] = plugin
                 editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
                 container = userFldr.aq_parent
@@ -530,8 +537,14 @@ class AccessManager(AccessableContainer):
           user['password'] = True
         elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
           user['password'] = True
-        # Details (from LDAP schema)?
+        # Details
         user['details'] = []
+        if user.has_key('uid'):
+          name = 'uid'
+          label = 'User Id'
+          value = user['uid']
+          user['details'].append({'name':name,'label':label,'value':value})
+        # LDAP schema
         ldapUserFldr = None
         if userFldr.meta_type == 'LDAPUserFolder':
           ldapUserFldr = userFldr
@@ -548,11 +561,7 @@ class AccessManager(AccessableContainer):
           login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
           uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
           if uid_attr != login_attr:
-            name = 'uid'
-            label= uid_attr.capitalize()
-            value = unicode(user.get(name,''),encoding).encode('utf-8')
-            user['details'] = filter(lambda x:x['name'] not in [name,uid_attr],user['details'])
-            user['details'].append({'name':name,'label':label,'value':value})
+            user['details'] = filter(lambda x:x['name'] in [uid_attr],user['details'])
       return user
 
 

@@ -126,9 +126,18 @@ function zmiFormSubmit(sender,d) {
 		.submit();
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
 		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
+		$('input.zmi-input-icon-clazz').each(function() {
+				var fn = function() {
+						var $input = $(this);
+						var $formGroup = $input.parents(".form-group");
+						var $i = $("i",$formGroup);
+						$i.replaceWith($ZMI.icon($input.val()));
+					};
+				$(this).change(fn).keyup(fn);
+			});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");
 				return false;
@@ -186,13 +195,24 @@ $ZMI.registerReady(function(){
 				<label for="inpName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
-			<div class="form-group inpIcon">
-				<label for="inpIcon" class="col-lg-2 control-label"><span>Icon</span></label>
+			<div class="form-group inpIconClazz">
+				<label for="inpIconClazz" class="col-lg-2 control-label"><span>Icon</span></label>
+				<div class="col-lg-10">
+					<div class="pull-left">
+						<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
+					</div>
+					<div class="pull-right">
+						<tal:block tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz',''))">the icon</tal:block>
+					</div>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group inpIcon" tal:condition="python:activity.get('icon')">
+				<label for="inpIcon" class="col-lg-2 control-label"><span>&nbsp;</span></label>
 				<div class="col-lg-10">
 					<div class="pull-left">
 						<input class="btn btn-file" type="file" id="inpIcon" name="inpIcon" />
 					</div>
-					<div class="pull-right" tal:condition="python:activity.get('icon')">
+					<div class="pull-right">
 						<div class="zmi-image-preview">
 							<img tal:attributes="src activity/icon"/>
 						</div>
@@ -292,8 +312,19 @@ $ZMI.registerReady(function(){
 				<label for="newName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
+			<div class="form-group newIconClazz">
+				<label for="newIconClazz" class="col-lg-2 control-label"><span>Icon</span></label>
+				<div class="col-lg-10">
+					<div class="pull-left">
+						<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz"/>
+					</div>
+					<div class="pull-right">
+						<tal:block tal:content="structure python:here.zmi_icon(name='')">the icon</tal:block>
+					</div>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
 			<div class="form-group newIcon">
-				<label for="newIcon" class="col-lg-2 control-label"><span>Icon</span></label>
+				<label for="newIcon" class="col-lg-2 control-label"><span>&nbsp;</span></label>
 				<div class="col-lg-10"><input class="btn btn-file" type="file" id="newIcon" name="newIcon" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
@@ -394,6 +425,7 @@ $ZMI.registerReady(function(){
 							><div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],activity['id'])">
 									<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
+									<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 									<tal:block tal:content="python:activity['name']">name</tal:block>
 								</a>
 							</div><tal:block tal:condition="not:python:activityId==activityId2"
@@ -447,6 +479,7 @@ $ZMI.registerReady(function(){
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity smaller" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
+										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>
@@ -470,6 +503,7 @@ $ZMI.registerReady(function(){
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity smaller" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
+										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>

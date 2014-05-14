@@ -90,7 +90,7 @@ def importXml(self, xml, REQUEST):
   for li in range(len(l)/2):
     id = l[li*2]
     i = l[li*2+1]
-    self.setActivity(id=None,newId=id,newName=i['name'],newIcon=i.get('icon'))
+    self.setActivity(id=None,newId=id,newName=i['name'],newIconClazz=i.get('icon_clazz',''),newIcon=i.get('icon'))
   l = v.get('transitions',[])
   for li in range(len(l)/2):
     id = l[li*2]

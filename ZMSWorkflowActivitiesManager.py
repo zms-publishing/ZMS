@@ -39,7 +39,7 @@ class ZMSWorkflowActivitiesManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowActivitiesManager.setActivity
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def setActivity(self, id, newId, newName, newIcon=None):
+  def setActivity(self, id, newId, newName, newIconClazz=None, newIcon=None):
     obs = self.activities
     # Remove exisiting entry.
     if id in obs:
@@ -51,6 +51,7 @@ class ZMSWorkflowActivitiesManager:
     # Values.
     newValues = {}
     newValues['name'] = newName
+    newValues['icon_clazz'] = newIconClazz
     newValues['icon'] = newIcon
     for obj_id in ['%s.icon'%str(id),'%s.icon'%str(newId)]:
       if obj_id in self.objectIds():
@@ -148,13 +149,16 @@ class ZMSWorkflowActivitiesManager:
       item = self.getActivity(id,for_export=True)
       newId = REQUEST.get('inpId').strip()
       newName = REQUEST.get('inpName').strip()
-      newIcon = REQUEST.get('inpIcon','')
-      if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
-        if len(getattr(newIcon,'filename',''))==0:
-          newIcon = item.get('icon',None)
-        else:
-          newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-      id = self.setActivity( item.get('id',None), newId, newName, newIcon)
+      newIconClazz = REQUEST.get('inpIconClazz','').strip()
+      newIcon = None
+      if len(newIconClazz) == 0:
+        newIcon = REQUEST.get('inpIcon','')
+        if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
+          if len(getattr(newIcon,'filename',''))==0:
+            newIcon = item.get('icon',None)
+          else:
+            newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
+      id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_CHANGED')
     
     # Delete.
@@ -169,13 +173,16 @@ class ZMSWorkflowActivitiesManager:
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()
-      newIcon = REQUEST.get('newIcon','')
-      if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
-        if len(getattr(newIcon,'filename',''))==0:
-          newIcon = item.get('icon',None)
-        else:
-          newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
-      id = self.setActivity( item.get('id',None), newId, newName, newIcon)
+      newIconClazz = REQUEST.get('newIconClazz','').strip()
+      newIcon = None
+      if len(newIconClazz) == 0:
+        newIcon = REQUEST.get('newIcon','')
+        if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
+          if len(getattr(newIcon,'filename',''))==0:
+            newIcon = item.get('icon',None)
+          else:
+            newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
+      id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_INSERTED')%id
     
     # Move to.

@@ -3,7 +3,7 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'user',here.meta_id])">
 
-<form name="form0" class="form-horizontal" action="manage_user" method="post" onsubmit="return form0Submit(this);">
+<form name="form0" class="form-horizontal" action="manage_user" target="_parent" method="post" onsubmit="return form0Submit(this);">
 
 <tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
@@ -76,7 +76,7 @@ function form0Submit(fm) {
 	return b;
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 	var password_regexp = $ZMI.getConfProperty('zms.password.regexp','');
 	var password_hint = $ZMI.getConfProperty('zms.password.hint','');
 	$('.form-control[name=password]:password')

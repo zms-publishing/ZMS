@@ -7,6 +7,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
+          <item key="icon_clazz"></item>
           <item key="id"><![CDATA[AC_CHANGED]]></item>
           <item key="name"><![CDATA[Changed]]></item>
         </dictionary>
@@ -14,10 +15,8 @@
       <item><![CDATA[AC_REQUESTED]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="icon" type="image">
-            
-<data width="20" height="20" content_type="image/gif" filename="state_requested.gif" type="image">47494638396114001400b30000b0b0fffefeff4e50b27278a57480b2cad5f48aa8d8b6daffcde5fe55a7edffffa0ed0000cecece646464ffffff00000021f9040100000e002c000000001400140000046dd0c949abbd386b2df66d4ce755a0609c27e1954d101484913574e922442253b51228b4d08b40ac081abe5a4df002a828c79fd4e763e28c48a91284400c240b4994aa0d74bd8e45d87124d7188805e230504f8e596a23ae3ed827340e5b676a7f190388896a5f23146b8d908d11003b</data>
-          </item>
+          <item key="icon"></item>
+          <item key="icon_clazz"><![CDATA[icon-bell text-warning bg-warning]]></item>
           <item key="id"><![CDATA[AC_REQUESTED]]></item>
           <item key="name"><![CDATA[Commit requested]]></item>
         </dictionary>
@@ -25,10 +24,8 @@
       <item><![CDATA[AC_REJECTED]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="icon" type="image">
-            
-<data width="20" height="20" content_type="image/gif" filename="state_rejected.gif" type="image">47494638396114001400c4ff00b0b0fffefeff4e50b27278a57480b2cad5f48aa8d8cde5fe55a7edffffa0cf3001d61901e15947e3604fe46b5be77769e88073fffdfdcecece646464c0c0c000000000000000000000000000000000000000000000000000000000000000000021f90401000014002c000000001400140000057d20258e64699e68aaaec27a4e52eb96b060dc37e1d653101404436a42acf90e048490544c0412c4d88f402d0926ce6251f003e848d7a7d8e954981556ac58bb782c168c05b847162b18110824c2408bae75450a6d11110e0b7e14576a6413830e856e8944145a13070a0d790f86722803a0030b876d9e33678933aa3321003b2e21003b</data>
-          </item>
+          <item key="icon"></item>
+          <item key="icon_clazz"><![CDATA[icon-thumbs-down-alt text-danger bg-danger]]></item>
           <item key="id"><![CDATA[AC_REJECTED]]></item>
           <item key="name"><![CDATA[Commit rejected]]></item>
         </dictionary>
@@ -37,6 +34,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
+          <item key="icon_clazz"><![CDATA[icon-thumbs-up-alt text-info bg-info]]></item>
           <item key="id"><![CDATA[AC_COMMITTED]]></item>
           <item key="name"><![CDATA[Committed]]></item>
         </dictionary>
@@ -45,6 +43,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
+          <item key="icon_clazz"></item>
           <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
           <item key="name"><![CDATA[Rolled back]]></item>
         </dictionary>
@@ -195,10 +194,10 @@
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SEND')">
-	<tal:block tal:define="global
-			mto python:zmscontext.getRecipientsByRole(['ZMSEditor'],request);
-			msubject python:'[ZMS-Workflow::%s - %s]: Request for committing my changes'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
-			mbody python:[];
+	<tal:block tal:define="
+			global mto python:zmscontext.getRecipientsByRole(['ZMSEditor'],request);
+			global msubject python:'[ZMS-Workflow::%s - %s]: Request for committing my changes'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
+			global mbody python:[];
 			dummy0 python:mbody.append(''
 				+ 'Request for committing my changes:\n'
 				+ '%s: \t'%zmscontext.display_type(request)
@@ -210,7 +209,7 @@
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
 					+ '- %s '%(zmscontext.display_type(request))
-					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNodes.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 					+ '\n'
@@ -311,10 +310,10 @@
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SEND')">
-	<tal:block tal:define="global
-			mto python:zmscontext.getRecipientsByRole(['ZMSEditor'],request);
-			msubject python:'[ZMS-Workflow::%s - %s]: Committing your changes was rejected'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
-			mbody python:[];
+	<tal:block tal:define="
+			global mto python:zmscontext.getRecipientsByRole(['ZMSEditor'],request);
+			global msubject python:'[ZMS-Workflow::%s - %s]: Committing your changes was rejected'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
+			global mbody python:[];
 			dummy0 python:mbody.append(''
 				+ 'Committing your changes was rejected.\n'
 				+ '%s: \t'%zmscontext.display_type(request)
@@ -326,7 +325,7 @@
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
 					+ '- %s '%(zmscontext.display_type(request))
-					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNodes.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 					+ '\n'

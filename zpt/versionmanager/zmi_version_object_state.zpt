@@ -45,10 +45,9 @@
 	><tal:block tal:define="global wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)"
 		><img src="/misc_/zms/spacer.gif" alt="" style="border:0;" />
 		<tal:block tal:condition="python:work_uid and work_dt" tal:repeat="wfState wfStates"
-			><tal:block tal:define="global wfActivity python:here.getWfActivity(wfState)"
-				><tal:block tal:condition="python:wfActivity.get('icon') not in ['',None]"
-					><img tal:attributes="src wfActivity/icon; title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))" style="border:0;vertical-align:middle;" 
-				/></tal:block
+			><tal:block tal:define="global wfActivity python:here.getWfActivity(wfState); title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"
+				><img tal:condition="python:wfActivity.get('icon')" tal:attributes="src python:wfActivity.get('icon'); title title" style="vertical-align:middle;"
+				><tal:block tal:condition="python:wfActivity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=wfActivity.get('icon_clazz'),extra='title=\042%s\042'%title)">the icon</tal:block
 			></tal:block
 		></tal:block
 		><span class="zmi-state" tal:condition="python:'STATE_NEW' in objStates"><i class="icon-plus-sign" tal:attributes="title python:here.getZMILangStr('STATE_NEW')"></i></span

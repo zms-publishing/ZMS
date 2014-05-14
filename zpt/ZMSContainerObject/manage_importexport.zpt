@@ -44,7 +44,7 @@ function onExportFormatChange(el) {
 		</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:condition="python:len(importFilters)>0">
-		<label class="col-md-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
+		<label class="col-md-2 control-label" for="filter"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">format</span></label>
 		<div class="col-md-5">
 			<select class="form-control" name="filter" onchange="onExportFormatChange(this);">
 				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>

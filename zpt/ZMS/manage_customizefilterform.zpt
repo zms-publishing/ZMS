@@ -325,9 +325,10 @@ $ZMI.registerReady(function(){
 	<div id="insertFilter" class="inner">
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeFilter" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+			<input type="hidden" name="key" value="obj"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-9"><input class="form-control" type="text" id="newId" name="newId" value="AC_"/></div>
+				<div class="col-sm-9"><input class="form-control" type="text" id="newId" name="newId"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
@@ -336,7 +337,6 @@ $ZMI.registerReady(function(){
 			<div class="form-group">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
 		</form>

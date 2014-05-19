@@ -136,6 +136,8 @@ def xmlInitObjProperty(self, key, value, lang=None):
   datatype = obj_attr['datatype_key']
   
   if value is not None:
+    if type(value) is str:
+      value = value.strip()
     #-- Date-Fields
     if datatype in _globals.DT_DATETIMES:
       if type(value) is str and len(value) > 0:

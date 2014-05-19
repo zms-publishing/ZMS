@@ -1084,15 +1084,24 @@ div.right .version_object_state {
 	float: left;
 	margin: 1px 4px 0px 0px;
 }
+div.right .version_object_state i {
+	font-size: 120%;
+
+}
+div.right .version_object_state i.wf-icon,
+.attr_last_modified i.wf-icon,
+.zmi-state {
+	margin-right: .3em;
+}
 div.right a:hover, 
 div.right a:focus {
 	text-decoration:none;
 }
 .zmi-item .center .contentEditable {
-border-left:none !important;
-border-right:none !important;
-border-bottom:none !important;
-border-top:1px dotted #ccc !important;
+	border-left:none !important;
+	border-right:none !important;
+	border-bottom:none !important;
+	border-top:1px dotted #ccc !important;
 }
 div.right .btn .caret {
  /* margin-top: 4px; */

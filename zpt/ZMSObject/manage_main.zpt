@@ -20,12 +20,12 @@
 
 <tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
 <form class="form-horizontal" id="form0" tal:attributes="name request/fmName" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
-	<input type="hidden" id="id_prefix" name="id_prefix" value="e">
-	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0">
-	<input type="hidden" id="custom" name="custom" value="">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
+	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
+	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']" />
+	<input type="hidden" id="id_prefix" name="id_prefix" value="e" />
+	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0" />
+	<input type="hidden" id="custom" name="custom" value="" />
 	<tal:block tal:define="global dummy0 python:here.initObjChildren(request)"></tal:block>
 	<tal:block tal:content="structure python:here.obj_input_fields(action='Save',meta_id=request.get('ZMS_INSERT',here.meta_id))">
 		the input-fields

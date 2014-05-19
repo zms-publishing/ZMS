@@ -117,13 +117,21 @@ class ObjChildren:
           new_id = self.getNewId(id)
           _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
           if new_id not in self.objectIds():
-            self.manage_renameObject(id=id,new_id=new_id)
+            try:
+              self.manage_renameObject(id=id,new_id=new_id)
+            except:
+              ob = getattr(self,id)
+              ob._setId(new_id) 
       else:
         if not id in ids and len(ids)>0:
           old_id = ids[0]
           _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
           if id not in self.objectIds():
-            self.manage_renameObject(id=old_id,new_id=id)
+            try:
+              self.manage_renameObject(id=old_id,new_id=id)
+            except:
+              ob = getattr(self,old_id)
+              ob._setId(id) 
 
 
     # --------------------------------------------------------------------------

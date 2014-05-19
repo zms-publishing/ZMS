@@ -494,6 +494,8 @@ ZMI.prototype.initInputFields = function(container) {
 			$("input.datepicker,input.datetimepicker",this)
 			.each(function() {
 				$(this).closest("div").addClass("input-group");
+				$(this).closest("div").removeClass("col-sm-10");
+				$(this).closest("div").wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
 				$(this).before('<span class="input-group-addon">'+$ZMI.icon("icon-calendar")+'</span>');
 			})
 			.mouseover(function(){

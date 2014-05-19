@@ -44,25 +44,27 @@ table.table.zmi-sortable tr.zmi-sortable.active .ui-toggle {
 	margin-left:1em;
 	border:1px solid black;
 }
-div.activity {
+div.activity,
+div.transition {
 	white-space: nowrap;
-	border: 1px solid maroon;
-	border-radius:5px;
-	background-color: #FFFFE0;
+	border-radius:4px;
 	padding:2px;
 	text-align:center;
 	margin-top:1px;
 	margin-bottom:1px;
 }
+
+div.activity {
+	border: 1px solid maroon;
+	background-color: #FFFFE0;
+}
+.transitions div.activity {
+	width: 160px;
+	overflow:hidden;
+}
 div.transition {
 	border: 1px solid navy;
-	border-radius:5px;
 	background-color:#D0FFD0;
-	padding-left:2px;
-	padding-right:2px;
-	padding-top:0px;
-	padding-bottom:0px;
-	text-align:center;
 	width: 170px;
 }
 div.transition.state {
@@ -127,29 +129,31 @@ function zmiFormSubmit(sender,d) {
 }
 
 $(function(){
-		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
-		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
-		$('input.zmi-input-icon-clazz').each(function() {
-				var fn = function() {
-						var $input = $(this);
-						var $formGroup = $input.parents(".form-group");
-						var $i = $("i",$formGroup);
-						$i.replaceWith($ZMI.icon($input.val()));
-					};
-				$(this).change(fn).keyup(fn);
-			});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
-				zmiModal("hide");
-				return false;
-			});
-		$('table.zmi-sortable tr').hover(
-			function() {
-					$(this).addClass('active');
-				},
-			function() {
-					$(this).removeClass('active');
-				});
+	zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
+	zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
+	$('input.zmi-input-icon-clazz').each(function() {
+		var fn = function() {
+			var $input = $(this);
+			var $formGroup = $input.parents(".form-group");
+			var $i = $("i",$formGroup);
+			$i.replaceWith($ZMI.icon($input.val()));
+		};
+		$(this).change(fn).keyup(fn);
 	});
+	$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		zmiModal("hide");
+		return false;
+	});
+	$('table.zmi-sortable tr').hover(
+		function() {
+			$(this).addClass('active');
+		},
+		function() {
+			$(this).removeClass('active');
+		}
+	);
+	$('ul.main-nav li').first().removeClass('active');
+});
 
 </script>
 
@@ -244,7 +248,7 @@ $(function(){
 					<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group">
-					<div class="controls save">
+					<div class="controls save col-sm-12">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 					</div><!-- .controls.save -->
@@ -394,7 +398,7 @@ $(function(){
 	</div><!-- .row.container -->
 </form>
 
-<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
+<form class="form-horizontal activities" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
 		activityIds python:here.getActivityIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<table class="table zmi-sortable">
@@ -446,7 +450,7 @@ $(function(){
 	</table>
 </form>
 
-<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
+<form class="form-horizontal transitions" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
 		transitionIds python:here.getTransitionIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<table class="table zmi-sortable">
@@ -474,10 +478,10 @@ $(function(){
 				<td>
 					<table class="layoutTable">
 					<tr>
-						<td style="min-width:176px;">
+						<td style="min-width:160px;">
 							<tal:block tal:repeat="activityId python:transition['from']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
-									<div class="activity smaller" tal:attributes="title python:activity['id']">
+									<div class="activity" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
 										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>
@@ -501,7 +505,7 @@ $(function(){
 						<td>
 							<tal:block tal:repeat="activityId python:transition['to']">
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
-									<div class="activity smaller" tal:attributes="title python:activity['id']">
+									<div class="activity" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
 										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>

@@ -44,7 +44,7 @@ select.zmi-sort {
 .filterDelimiter {
 	background-color:#D0D0FF;
 	border:1px navy solid;
-	border-radius:5px;
+	border-radius:4px;
 	margin:.1em;
 	max-width:20em;
 	min-width:10em;
@@ -55,7 +55,7 @@ select.zmi-sort {
 .filterProcess {
 	background-color:#D0FFD0;
 	border:1px navy solid;
-	border-radius:5px;
+	border-radius:4px;
 	font-weight:normal;
 	margin:.1em;
 	max-width:20em;
@@ -66,18 +66,18 @@ select.zmi-sort {
 	text-align:left;
 	background-color:white;
 	border:1px #CCC solid;
-	border-radius:5px;
+	border-radius:4px;
 	font-weight:normal;
 	padding: 4px 1em;
 	min-width: 10em;
 	max-width:20em;
 	min-width:10em;
 	overflow:hidden;
-	margin-left:1em;
+
 }
 .layoutTable th, .layoutTable td {
 	padding:0;
-	vertical-align:middle;
+	vertical-align:top;
 	border:0 !important;
 	text-align:center;
 }

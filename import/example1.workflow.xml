@@ -95,7 +95,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment"/></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
@@ -179,7 +179,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment"/></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
@@ -295,7 +295,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment"/></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
@@ -562,7 +562,7 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 	<label class="control-label mandatory" for="version_nr"><span>Master-Version</span></label>
-		<div class="controls"><input type="text" name="version_nr" tal:attributes="value python:'%i.*.*'%(zmscontext.attr('master_version')+1)"/></div><!-- .controls -->
+		<div class="controls"><input type="text" name="version_nr" tal:attributes="value python:'%i.*.*'%(zmscontext.attr('master_version')+1)" class="form-control input-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">

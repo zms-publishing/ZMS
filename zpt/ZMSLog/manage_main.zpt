@@ -25,12 +25,12 @@ file(s).
 
 <div class="form-group">
 	<label class="col-sm-2 control-label" for="copy_to_zlog"><span>Copy entries to the event log</span></label>
-	<div class="col-sm-10"><input class="form-control" type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div><!-- .col-lg-10 -->
+	<div class="btn btn-default"><input class="form-control" type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div>
 </div><!-- .form-group -->
 
 <div class="form-group">
 	<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
-	<div class="col-sm-10"><input class="form-control" type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div><!-- .col-lg-10 -->
+	<div class="btn btn-default"><input class="form-control" type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div>
 </div><!-- .form-group -->
 
 <div class="form-group">

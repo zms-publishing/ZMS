@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'customize',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'customize config',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -37,7 +37,7 @@ $ZMI.registerReady(function(){
 	<div class="tab-content">
 
 		<div class="tab-pane active" id="Manager">
-		<form class="form-horizontal" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal row" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 			<input type="hidden" name="key" value="Manager" />
 			<legend>Manager</legend>

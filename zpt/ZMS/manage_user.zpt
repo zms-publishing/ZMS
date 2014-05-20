@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'user',here.meta_id])">
+<body tal:attributes="class python:' '.join(['zmi',request['lang'],'user config',here.meta_id])">
 
 <form name="form0" class="form-horizontal" action="manage_user" target="_parent" method="post" onsubmit="return form0Submit(this);">
 

@@ -113,7 +113,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	margin-top:0.5em;
 	padding-left:1em;
 }
-.zmi.customize .main-nav {
+.zmi.config .main-nav {
 	min-width:1160px
 }
 .zmi .navbar-inner {

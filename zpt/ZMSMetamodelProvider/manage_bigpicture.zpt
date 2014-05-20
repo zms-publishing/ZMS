@@ -8,19 +8,36 @@
 .box {
 	background-color:#CFC;
 	border:1px solid #00C;
-	border-radius:5px;
-	padding:2px;
+	border-radius:4px;
+	padding:0;
 	margin:1em 1em 2em 1em;
-	text-align:center;
-	width:20%;
-	min-width:30em;
+	text-align:left;
+	width:30em;
 	position:relative;
+	cursor:auto;
+}
+.box div {
+	padding:.15em .5em
 }
 .box .id {
 	border-bottom:1px solid #00C;
+	text-align:center;
+	
+}
+.box .type {
+	text-align:center;
+	font-style:italic;
+	color:darkgreen;
 }
 .box .attr {
 	font-size:smaller;
+}
+.attrId {
+	font-weight:bold
+}
+.attrType {
+	color:darkgreen;
+	float:right;
 }
 .box .attr.subobject {
 	background-color:#DFD;
@@ -28,7 +45,7 @@
 .box .ref {
 	padding:2px;
 	position:absolute;
-	left:25em;
+	left:30em;
 	margin-top:-2.5em;
 }
 .box .ref .cardinality {
@@ -40,10 +57,11 @@
 .box .ref .attr {
 	background-color:#FFE;
 	border:1px solid #C00;
-	border-radius:5px;
+	border-radius:4px;
 	padding:2px;
 	min-width:10em;
 	font-size:smaller;
+	margin-top:0.8em
 }
 </style>
 
@@ -55,7 +73,7 @@
 	<legend tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
 	<tal:block tal:repeat="metaObj python:filter(lambda x:x['package']==packageId,metaObjs)">
 		<div class="box">
-			<div class="type">&laquo;<tal:block tal:content="metaObj/type">the type</tal:block>&raquo;</div>
+			<div class="type" tal:content="metaObj/type">the type</div>
 			<div class="id">
 				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block>
 				<tal:block tal:content="metaObj/id">the id</tal:block>
@@ -63,7 +81,7 @@
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
 				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
 					<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])" tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']">
-						<span class="attrType">&laquo;<tal:block tal:content="metaObjAttr/type">the type</tal:block>&raquo;</span>
+						<span class="attrType" tal:content="metaObjAttr/type">the type</span>
 						<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
 						<span class="attrName">(<tal:block tal:content="metaObjAttr/name">the name</tal:block>)</span>
 					</div><!-- .attr -->

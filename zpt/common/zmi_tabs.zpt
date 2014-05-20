@@ -8,7 +8,10 @@
 			filtered_options python:filter(lambda x: len(filter(lambda y: x['action'].startswith(y),special_options))==0,all_options);
 			options python:[filtered_options,current_options][int(len(filter(lambda x: current.startswith(x),special_options))>0)];
 			actions python:map(lambda x: x['action'], options);
-			active python:map(lambda x: int(x['action']==current or x['action'].endswith(here.id+'/'+current) or (current not in actions and current.startswith(x['action']))), options);
+			active python:map(lambda x: int(
+						(x==current and not here.id+'/'+current in actions) or 
+						(x==here.id+'/'+current) or 
+						(current not in actions and current.startswith(x))), actions);
 			noactive python:len(filter(lambda x: x==1, active))<1">
 	<tal:block tal:repeat="i python:range(len(options))">
 		<tal:block tal:define="global option python:options[i]">

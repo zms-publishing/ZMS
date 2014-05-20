@@ -152,7 +152,6 @@ $(function(){
 			$(this).removeClass('active');
 		}
 	);
-	$('ul.main-nav li').first().removeClass('active');
 });
 
 </script>

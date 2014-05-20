@@ -183,7 +183,7 @@ ZMI.prototype.relativateUrls = function(html) {
 		for ( var i = 1; i < vSplit.length; i++) {
 			var j = vSplit[i].indexOf('"');
 			var url = vSplit[i].substring(0,j);
-			if (url.indexOf('./')<0) {
+			if (url.indexOf("://")<0 && url.indexOf("./")<0) {
 				url = this.relativateUrl(page_abs_url,url);
 			}
 			v += splitTag + url + vSplit[i].substring(j);

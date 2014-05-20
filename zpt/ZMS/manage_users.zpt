@@ -22,6 +22,10 @@ function zmiModalAddUserOpen(context) {
 	$("#zmiModaladdUser #newId").val($("#zmiModalinsertUser #search_term").val());
 }
 function zmiModalInsertUserOpen(context) {
+	$(".btn-group")
+		.mouseover( function(evt) {
+				$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
+			});
 	$("#insertUserForm input:radio",context)
 		.change(function() {
 				self.location.href = zmiParams['base_url']
@@ -119,11 +123,11 @@ function zmiModalInsertUserOpen(context) {
 	</div>
 	<div class="form-group activity_start">
 		<label class="col-sm-2 control-label" for="attrActiveStart"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
-		<div class="col-sm-4 col-md-3 col-lg-3"><div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div></div>
+		<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div>
 	</div>
 	<div class="form-group activity_end">
 		<label class="col-sm-2 control-label" for="attrActiveEnd"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
-		<div class="col-sm-4 col-md-3 col-lg-3"><div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div></div>
+		<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div>
 	</div>
 	<tal:block tal:condition="python:userObj.get('password')==True">
 		<div class="form-group">

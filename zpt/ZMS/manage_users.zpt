@@ -19,6 +19,7 @@ a.remove-btn:hover {
 <script>
 function zmiModalAddUserOpen(context) {
 	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});
+	$("#zmiModaladdUser #newId").val($("#zmiModalinsertUser #search_term").val());
 }
 function zmiModalInsertUserOpen(context) {
 	$("#insertUserForm input:radio",context)
@@ -118,11 +119,11 @@ function zmiModalInsertUserOpen(context) {
 	</div>
 	<div class="form-group activity_start">
 		<label class="col-sm-2 control-label" for="attrActiveStart"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
-		<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div>
+		<div class="col-sm-4 col-md-3 col-lg-3"><div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div></div>
 	</div>
 	<div class="form-group activity_end">
 		<label class="col-sm-2 control-label" for="attrActiveEnd"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
-		<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div>
+		<div class="col-sm-4 col-md-3 col-lg-3"><div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT',REQUEST=request)">the control</div></div>
 	</div>
 	<tal:block tal:condition="python:userObj.get('password')==True">
 		<div class="form-group">

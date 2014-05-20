@@ -88,7 +88,7 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
       domains = userFldr.getUser(id).getDomains()
       userFldr.userFolderEditUser(id, password, roles, domains)
     elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
-      user_id = user['uid']
+      user_id = user['user_id']
       user['plugin'].updateUserPassword(user_id, password)
     self.setUserAttr(id,'forceChangePassword',forceChangePassword)
     return True
@@ -453,14 +453,18 @@ class AccessManager(AccessableContainer):
           if userFldr.meta_type == 'LDAPUserFolder':
             if search_term != '':
               login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              if exact and login_attr == 'dn':
-                users.append(userFldr.getUserByDN(name))
-              else:
-                users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
+              users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
           elif userFldr.meta_type == 'Pluggable Auth Service':
             if search_term != '':
               login_attr = 'login'
-              users.extend(userFldr.searchUsers(login=search_term,id=''))
+              for user in userFldr.searchUsers(login=search_term,id=''):
+                plugin = getattr(userFldr,user['pluginid'])
+                append = True
+                if plugin.meta_type == 'ZODB User Manager':
+                  login_name = user[login_attr]
+                  append = search_term == '' or login_name.find(search_term) >= 0
+                if append:
+                  users.append(user)
           else:
             login_attr = 'name'
             for userName in userFldr.getUserNames():
@@ -475,7 +479,7 @@ class AccessManager(AccessableContainer):
             d['name'] = login_name
             d['roles'] = []
             d['domains'] = []
-            extras = ['pluginid','givenName','sn','dn','ou']
+            extras = ['pluginid','givenName','sn','ou']
             for extra in user.keys():
               if extra == 'pluginid':
                 pluginid = user[extra]
@@ -498,15 +502,15 @@ class AccessManager(AccessableContainer):
                   uid_attr = 'user_id'
                   uid = plugin.getUserIdForLogin(login_name)
                 if uid is not None:
-                  d['uid'] = uid
-                  if len(filter(lambda x:x['id']=='uid',c))==0:
-                    c.append({'id':'uid','name':uid_attr.capitalize(),'type':'string'})
+                  d['user_id'] = uid
+                  if len(filter(lambda x:x['id']=='user_id',c))==0:
+                    c.append({'id':'user_id','name':uid_attr.capitalize(),'type':'string'})
                   c = filter(lambda x:x['id']!=uid_attr,c)
                   extras = filter(lambda x:x!=uid_attr,extras)
                 d['plugin'] = plugin
                 editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
                 container = userFldr.aq_parent
-                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/> %s</a>'%(editurl,'%s (%s)'%(plugin.title_or_id(),plugin.meta_type),plugin.icon,container.id)
+                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
                 t = 'html'
               else:
                 v = unicode(user[extra],encoding).encode('utf-8')
@@ -539,10 +543,10 @@ class AccessManager(AccessableContainer):
           user['password'] = True
         # Details
         user['details'] = []
-        if user.has_key('uid'):
-          name = 'uid'
+        if user.has_key('user_id'):
+          name = 'user_id'
           label = 'User Id'
-          value = user['uid']
+          value = user['user_id']
           user['details'].append({'name':name,'label':label,'value':value})
         # LDAP schema
         ldapUserFldr = None
@@ -982,7 +986,7 @@ class AccessManager(AccessableContainer):
           self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
           self.setUserAttr(id,'email',REQUEST.get('email','').strip())
           self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
-          self.setUserAttr(id,'uid',REQUEST.get('uid','').strip())
+          self.setUserAttr(id,'user_id',REQUEST.get('user_id','').strip())
           if attrActive != newAttrActive:
             self.toggleUserActive(id)
         elif key=='attr':

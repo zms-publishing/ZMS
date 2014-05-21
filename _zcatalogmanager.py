@@ -260,14 +260,14 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     def catalogData(self, REQUEST):
       source = ''
+      mt, enc = 'content/unknown', ''
       key = self.zcat_data_key()
       if key is not None:
         file = self.getObjProperty( key, REQUEST)
         if file is not None:
           source = file.getData()
-          mimetype = file.getContentType()
-          encoding = 'utf-8'
-      return source, mimetype, encoding
+          mt, enc = file.getContentType(), 'utf-8'
+      return source, mt, enc
 
 
     ############################################################################

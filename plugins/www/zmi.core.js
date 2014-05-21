@@ -57,11 +57,6 @@ $(function(){
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 		$('.contentEditable')
-			.each(function() {
-					$("a,button,input,select,textarea").click( function(evt) {
-							evt.stopPropagation();
-						});
-				})
 			.mouseover( function(evt) {
 					$(this).addClass('preview').addClass('highlight'); 
 				})

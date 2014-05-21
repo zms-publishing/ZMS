@@ -100,28 +100,24 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 	if (typeof page_abs_url == "undefined") {
 		page_abs_url = $('meta[name="version_container_abs_url"]').attr('content');
 	}
-	var protocol = page_abs_url;
-	protocol = protocol.substr(0,protocol.indexOf(":")+3);
-	var server_url = page_abs_url;
-	server_url = server_url.substr(protocol.length);
-	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
-	var currntPath = null;
-	if (page_abs_url.indexOf(server_url)==0) {
-		currntPath = page_abs_url.substr(server_url.length+1);
+	var getServerUrl = function(url) {
+		if (url.startsWith("/") || url.startsWith(".")) {
+			return "";
+		}
+		var protocol = url;
+		protocol = protocol.substr(0,protocol.indexOf(":")+3);
+		var server_url = url;
+		server_url = server_url.substr(protocol.length);
+		server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
+		return server_url;
 	}
-	else if (page_abs_url.indexOf('/')==0) {
-		currntPath = page_abs_url.substr(1);
-	}
-	var targetPath = null;
-	if (url.indexOf(server_url)==0) {
-		targetPath = url.substr(server_url.length+1);
-	}
-	else if (url.indexOf('/')==0) {
-		targetPath = url.substr(1);
-	}
-	if (currntPath == null || targetPath == null) {
+	var server_url = getServerUrl(url);
+	var page_server_url = getServerUrl(page_abs_url);
+	if (server_url.length > 0 && page_server_url.length > 0 && server_url != page_server_url) {
 		return url;
 	}
+	var currntPath = page_abs_url.substr(page_server_url.length);
+	var targetPath = url.substr(server_url.length);
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		var j = targetPath.indexOf( '/');
@@ -185,7 +181,7 @@ ZMI.prototype.relativateUrls = function(html) {
 		for ( var i = 1; i < vSplit.length; i++) {
 			var j = vSplit[i].indexOf('"');
 			var url = vSplit[i].substring(0,j);
-			if (url.indexOf("://")<0 && url.indexOf("./")<0) {
+			if (url.indexOf("://")<0 && !url.startsWith("./")) {
 				url = this.relativateUrl(page_abs_url,url);
 			}
 			v += splitTag + url + vSplit[i].substring(j);

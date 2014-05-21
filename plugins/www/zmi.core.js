@@ -57,14 +57,22 @@ $(function(){
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 		$('.contentEditable')
+			.each(function() {
+					$("a,button,input,select,textarea").click( function(evt) {
+							evt.stopPropagation();
+						});
+				})
 			.mouseover( function(evt) {
-				$(this).addClass('preview').addClass('highlight'); 
-			})
+					$(this).addClass('preview').addClass('highlight'); 
+				})
 			.mouseout( function(evt) {
-				$(this).removeClass('preview').removeClass('highlight'); 
-			})
+					$(this).removeClass('preview').removeClass('highlight'); 
+				})
 			.click( function(evt) {
 				evt.stopPropagation();
+				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
+					return;
+				}
 				var href = ""+self.location.href;
 				if (href.indexOf('?')>0) {
 					href = href.substr(0,href.indexOf('?'));

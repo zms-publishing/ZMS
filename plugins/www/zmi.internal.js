@@ -96,11 +96,13 @@ ZMI.prototype.getDescendantLanguages = function() {
 /**
  * Relativate url.
  */
-ZMI.prototype.relativateUrl = function(url,anchor) {
-	var page_abs_url = 	$('meta[name="version_container_abs_url"]').attr('content');
-	var protocol = self.location.href;
+ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
+	if (typeof page_abs_url == "undefined") {
+		page_abs_url = $('meta[name="version_container_abs_url"]').attr('content');
+	}
+	var protocol = page_abs_url;
 	protocol = protocol.substr(0,protocol.indexOf(":")+3);
-	var server_url = self.location.href;
+	var server_url = page_abs_url;
 	server_url = server_url.substr(protocol.length);
 	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
 	var currntPath = null;

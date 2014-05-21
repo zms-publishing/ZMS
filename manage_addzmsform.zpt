@@ -103,22 +103,25 @@
 	<legend>Configuration</legend>
 	<div class="form-group">
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="zmslog:int" value="1" checked="checked"/> Add ZMS Log</label>
+			<label><input type="checkbox" name="zmslog:int" value="1" checked="checked"/> Add log</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/> Add Galleria</label>
+			<label><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/> Add galleria</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="specobj_exampledb:int" value="1"/> Add Example Database</label>
+			<label><input type="checkbox" name="specobj_qunit:int" value="1" checked="checked"/> Add qunit test</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="specobj_discussions:int" value="1"/> Add Bulletin Board</label>
+			<label><input type="checkbox" name="specobj_exampledb:int" value="1"/> Add example database</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="specobj_newsletter:int" value="1"/> Add Newsletter</label>
+			<label><input type="checkbox" name="specobj_discussions:int" value="1"/> Add bulletin board</label>
 		</div>
 		<div class="col-xs-9 col-sm-offset-3  checkbox">
-			<label><input type="checkbox" name="specobj_calendar:int" value="1"/> Add Calendar</label>
+			<label><input type="checkbox" name="specobj_newsletter:int" value="1"/> Add newsletter</label>
+		</div>
+		<div class="col-xs-9 col-sm-offset-3  checkbox">
+			<label><input type="checkbox" name="specobj_calendar:int" value="1"/> Add calendar</label>
 		</div>
 	</div>
 

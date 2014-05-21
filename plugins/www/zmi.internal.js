@@ -118,6 +118,8 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 	}
 	var currntPath = page_abs_url.substr(page_server_url.length);
 	var targetPath = url.substr(server_url.length);
+	$ZMI.writeDebug("currntPath="+currntPath);
+	$ZMI.writeDebug("targetPath="+targetPath);
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		var j = targetPath.indexOf( '/');
@@ -161,7 +163,9 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 		}
 		targetPath = '../' + targetPath;
 	}
-	url = './' + targetPath;
+	if (!targetPath.startsWith('/')) {
+		url = './' + targetPath;
+	}
 	if (typeof anchor != 'undefined') {
 		url += anchor;
 	}
@@ -171,8 +175,10 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 /**
  * Relativate urls.
  */
-ZMI.prototype.relativateUrls = function(html) {
-	var page_abs_url = 	$('meta[name="version_container_abs_url"]').attr('content');
+ZMI.prototype.relativateUrls = function(html,page_abs_url) {
+	if (typeof page_abs_url == "undefined") {
+		page_abs_url = $('meta[name="version_container_abs_url"]').attr('content');
+	}
 	var splitTags = ['href="','src="'];
 	for ( var h = 0; h < splitTags.length; h++) {
 		var splitTag = splitTags[h];

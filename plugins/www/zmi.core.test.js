@@ -1,11 +1,21 @@
-test( "zmi.core.js::String.prototype", function() {
-	equal( "  ab c  ".removeWhiteSpaces(), "abc", "removeWhiteSpaces passed!" );
-	equal( "  ab c  ".leftTrim(), "ab c  ", "leftTrim passed!" );
-	equal( "  ab c  ".rightTrim(), "  ab c", "rightTrim passed!" );
-	equal( "  ab c  ".basicTrim(), "ab c", "basicTrim passed!" );
-	equal( "  ab c  ".superTrim(), "ab c", "superTrim passed!" );
-	ok( "abcdefghijk".startsWith("abc"), "startsWith passed!" );
-	ok( !("abcdefghijk".startsWith("xyz")), "!startsWith passed!" );
-	ok( "abcdefghijk".endsWith("ijk"), "endsWith passed!" );
-	ok( !("abcdefghijk".endsWith("xyz")), "!endsWith passed!" );
+test( "zmi.core.js::test.String.prototype", function() {
+	var s0 = "  ab c  ";
+	equal( s0.removeWhiteSpaces(), "abc", "removeWhiteSpaces passed!" );
+	equal( s0.leftTrim(), "ab c  ", "leftTrim passed!" );
+	equal( s0.rightTrim(), "  ab c", "rightTrim passed!" );
+	equal( s0.basicTrim(), "ab c", "basicTrim passed!" );
+	equal( s0.superTrim(), "ab c", "superTrim passed!" );
+	var s1 = "abcdefghijk";
+	ok( s1.startsWith("abc"), "startsWith passed!" );
+	ok( !(s1.startsWith("xyz")), "!startsWith passed!" );
+	ok( s1.endsWith("ijk"), "endsWith passed!" );
+	ok( !(s1.endsWith("xyz")), "!endsWith passed!" );
+});
+
+test( "zmi.core.js::test.Array.prototype", function() {
+	var a0 = ['a','b','c','b',1,2,3];
+	equal( a0.indexOf('b'), 1, "indexOf passed!" );
+	equal( a0.lastIndexOf('b'), 3, "lastIndexOf passed!" );
+	ok( a0.contains('b'), "contains passed!" );
+	ok( !a0.contains('d'), "!contains passed!" );
 });

@@ -703,12 +703,10 @@ class ZMSLinkElement(ZMSContainerObject):
 
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.renderShort:
+    #
+    #  Renders short presentation of link-element.
     # --------------------------------------------------------------------------
-    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
-      """
-      Renders short presentation of link-element.
-      """
       rtn = ''
       ref_obj = self.getRefObj()
       ref = self.getObjProperty('attr_ref',REQUEST)

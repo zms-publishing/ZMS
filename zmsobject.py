@@ -1281,12 +1281,10 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.renderShort:
+    
+    #  Renders short presentation of object.
     # --------------------------------------------------------------------------
-    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
-      """
-      Renders short presentation of object.
-      """
       html = ''
       try:
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:

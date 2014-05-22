@@ -205,12 +205,10 @@ class ZMSLinkContainer(ZMSContainerObject):
 
     # --------------------------------------------------------------------------
     #  ZMSLinkContainer.renderShort:
+    # 
+    # Renders short presentation of link-container.
     # --------------------------------------------------------------------------
-    security.declareProtected('View', 'renderShort')
     def renderShort(self, REQUEST):
-      """
-      Renders short presentation of link-container.
-      """
       html = ''
       try:
         html = ''.join(

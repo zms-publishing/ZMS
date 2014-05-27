@@ -20,7 +20,7 @@
 			var server_url = url;
 			server_url = server_url.substr(protocol.length);
 			server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
-			url = '<tal:block tal:content="python:here.getConfProperty('ASP.ip_or_domain')"></tal:block>'+url.substr(server_url.length);
+			url = protocol+'<tal:block tal:content="python:here.getConfProperty('ASP.ip_or_domain')"></tal:block>'+url.substr(server_url.length);
 		}
 		</tal:block>
 		if (url.indexOf("?") > 0) {
@@ -28,6 +28,7 @@
 		}
 		if (preview) {
 			url += "?preview=preview";
+			// window.location.reload()
 		}
 		self.parent.partner.location.href = url;
 	}
@@ -36,12 +37,14 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<div class="pull-right">
-			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
+			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" target="_parent">
 				<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
 				<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="structure python:': %s'%here.string_maxlen(here.getTitlealt(request).replace(' & ',' &amp; '),25)">: titlealt</tal:block>
 			</a>
-			&nbsp;|&nbsp;<span class="ui-helper-clickable zmi-top-active" onclick="open_partner(this,true);">
-				<tal:block tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</tal:block>
+			&nbsp;|&nbsp;<span class="ui-helper-clickable zmi-top-active">
+				<a tal:attributes="href python:'preview_html?lang=%s'%request.get('lang','ger')" target="_parent"
+					tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview
+				</a>
 			</span>
 			<tal:block tal:condition="python:len(here.getConfProperty('ASP.ip_or_domain',''))>0 or not here.getAutocommit()">
 				&nbsp;|&nbsp;<span class="ui-helper-clickable" onclick="open_partner(this,false);">
@@ -52,7 +55,7 @@
 				&nbsp;|&nbsp;<span class="btn btn-primary" title="Compile lesscss!" onclick="compile_lesscss(this,false);">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block> {lessc}
 			</span>
-			</tal:block>
+			</tal:block>&nbsp;&nbsp;
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
 </div><!-- #zmi-header -->

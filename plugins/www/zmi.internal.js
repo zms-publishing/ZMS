@@ -188,7 +188,7 @@ ZMI.prototype.relativateUrls = function(html,page_abs_url) {
 			var j = vSplit[i].indexOf('"');
 			var url = vSplit[i].substring(0,j);
 			if (url.indexOf("://")<0 && !url.startsWith("./")) {
-				url = this.relativateUrl(page_abs_url,url);
+				url = this.relativateUrl(url,'',page_abs_url);
 			}
 			v += splitTag + url + vSplit[i].substring(j);
 		}

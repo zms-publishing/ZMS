@@ -48,6 +48,8 @@ function zmiModalInsertUserOpen(context) {
 												['ZMSSubscriber',here.getZMILangStr('ROLE_ZMSSUBSCRIBER')],
 												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
 												]">
+<tal:block tal:repeat="role here/userdefined_roles">
+</tal:block>
 
 <tal:block tal:condition="python:request.get('id')" tal:define="global
 		editUser python:request.get('id') not in valid_roles;

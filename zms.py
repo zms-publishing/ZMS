@@ -458,7 +458,7 @@ class ZMS(
         'manage_importexport', 'manage_import', 'manage_export',
         )
     __userAdministratorPermissions__ = (
-        'manage_users', 'manage_userProperties', 'manage_roleProperties',
+        'manage_page_request', 'manage_users', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles', 
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),

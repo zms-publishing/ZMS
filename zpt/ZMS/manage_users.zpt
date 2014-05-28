@@ -49,6 +49,9 @@ function zmiModalInsertUserOpen(context) {
 												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
 												]">
 <tal:block tal:repeat="role here/userdefined_roles">
+	<tal:block tal:condition="python:role not in map(lambda x:x[0],roles_optpl)">
+		<tal:block tal:define="dummy0 python:roles_optpl.append([role,role])"></tal:block>
+	</tal:block>
 </tal:block>
 
 <tal:block tal:condition="python:request.get('id')" tal:define="global

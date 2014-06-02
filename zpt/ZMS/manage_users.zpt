@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<tal:block tal:condition="python:request.has_key('existsUser')"
+	><tal:block tal:define="global
+			search_term python:request.get('existsUser');
+			users python:here.searchUsers(search_term);
+			found python:int(len(filter(lambda x:x==search_term,users))==1)"
+		><tal:block tal:content="found">found</tal:block
+	></tal:block
+></tal:block
+><tal:block tal:condition="not:python:request.has_key('existsUser')"
+><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'users config',here.meta_id])">
@@ -307,12 +316,11 @@ function zmiModalInsertUserOpen(context) {
 	</thead>
 	<tbody>
 	<tal:block tal:repeat="userName userNames">
-	<tal:block tal:define="global userObj python:here.findUser(userName)">
-	<tr>
+	<tr tal:attributes="id userName" class="userName">
 		<td>
 			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)">
-				<span tal:attributes="class python:['','text-danger bg-danger'][int(userObj is None)]">
-					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-user','icon-remove'][int(userObj is None)])"></tal:block>
+				<span>
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-spinner')"></tal:block>
 					<tal:block tal:content="userName">userName</tal:block>
 				</span>
 			</a>
@@ -324,7 +332,6 @@ function zmiModalInsertUserOpen(context) {
 			</tal:block>
 		</td>
 	</tr>
-	</tal:block>
 	</tal:block>
 	</tbody>
 	</table>
@@ -388,8 +395,22 @@ $(function(){
 		if (typeof zmiParams['search_term'] != "undefined") {
 			zmiModal('#insertUser',{title:getZMILangStr('BTN_INSERT'),open:zmiModalInsertUserOpen});
 		}
+		$(".userName").each(function() {
+				var $this = $(this);
+				var id = $this.attr("id");
+				$.get(self.location.href,{existsUser:id},function(result) {
+						if (result=="0") {
+							$("a>span",$this).addClass("text-danger bg-danger");
+							$("a>span>i",$this).attr("class","icon-remove");
+						}
+						else {
+							$("a>span>i",$this).attr("class","icon-user");
+						}
+					});
+			});
 	});
 </script>
 
 </body>
 </html>
+</tal:block>

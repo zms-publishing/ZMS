@@ -437,6 +437,27 @@ class AccessManager(AccessableContainer):
         return role
       return langStr
 
+
+    # --------------------------------------------------------------------------
+    #  AccessManager.searchUsers:
+    # --------------------------------------------------------------------------
+    def searchUsers(self, search_term=''):
+      users = []
+      if search_term != '':
+        for userFldr in self.getUserFolders():
+          doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
+          if doc_elmnts:
+            if userFldr.meta_type == 'LDAPUserFolder':
+              login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+              users.extend(map(lambda x:x[login_attr],userFldr.findUser(search_param=login_attr,search_term=search_term)))
+            elif userFldr.meta_type == 'Pluggable Auth Service':
+              users.extend(map(lambda x:x['login'],userFldr.searchUsers(login=search_term,id='')))
+            else:
+              login_attr = 'login'
+              users.extend(filter(lambda x: x==search_term,userFldr.getUserNames()))
+      return users
+  
+  
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------

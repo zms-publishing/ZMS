@@ -317,7 +317,7 @@
 			<td tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())" style="text-align:left">ACTION</td>
 			<td>
 				<span class="btn btn-default" tal:condition="python:action=='insert'"
-					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj.get('enabled')),enabled=True, css='')">
+					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj.get('enabled',0)),enabled=True, css='')">
 					CHECKBOX
 				</span>
 			</td>

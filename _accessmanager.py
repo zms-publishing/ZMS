@@ -451,7 +451,7 @@ class AccessManager(AccessableContainer):
               login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
               users.extend(map(lambda x:x[login_attr],userFldr.findUser(search_param=login_attr,search_term=search_term)))
             elif userFldr.meta_type == 'Pluggable Auth Service':
-              users.extend(map(lambda x:x['login'],userFldr.searchUsers(login=search_term,id='')))
+              users.extend(map(lambda x:x['login'],userFldr.searchUsers(login=search_term,id=None,exact_match=True)))
             else:
               login_attr = 'login'
               users.extend(filter(lambda x: x==search_term,userFldr.getUserNames()))
@@ -461,7 +461,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_term='', without_node_check=True, exact=False):
+    def getValidUserids(self, search_term='', without_node_check=True, exact_match=False):
       encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       local_userFldr = self.getUserFolder()
       columns = None
@@ -478,7 +478,7 @@ class AccessManager(AccessableContainer):
           elif userFldr.meta_type == 'Pluggable Auth Service':
             if search_term != '':
               login_attr = 'login'
-              for user in userFldr.searchUsers(login=search_term,id=''):
+              for user in userFldr.searchUsers(login=search_term,id=None,exact_match=exact_match):
                 plugin = getattr(userFldr,user['pluginid'])
                 append = True
                 if plugin.meta_type == 'ZODB User Manager':
@@ -490,7 +490,9 @@ class AccessManager(AccessableContainer):
             login_attr = 'name'
             for userName in userFldr.getUserNames():
               if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
-                if search_term == '' or search_term.find(userName) >= 0:
+                if (exact_match and search_term==userName) or \
+                   search_term == '' or \
+                   search_term.find(userName) >= 0:
                   users.append({'name':userName})
           for user in users:
             login_name = user[login_attr]
@@ -539,10 +541,10 @@ class AccessManager(AccessableContainer):
               d[extra] = v
               if extra in extras and len(filter(lambda x:x['id']==extra,c))==0:
                   c.append({'id':extra,'name':extra.capitalize(),'type':t})
-            if exact and user[login_attr].lower() == search_term.lower():
+            if exact_match and user[login_attr].lower() == search_term.lower():
               return d
             records.append(d)
-      if exact:
+      if exact_match:
         return None
       if columns is None:
         columns = c
@@ -554,7 +556,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def findUser(self, name):
       encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
-      user = self.getValidUserids(search_term=name,exact=True)
+      user = self.getValidUserids(search_term=name,exact_match=True)
       if user is not None:
         userFldr = user['localUserFldr']
         # Change password?

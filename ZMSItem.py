@@ -66,9 +66,13 @@ class ZMSItem(
     manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
 
     # --------------------------------------------------------------------------
+    #  ZMSItem.zmi_manage_menu:
+    # --------------------------------------------------------------------------
+    def zmi_manage_menu(self, *args, **kwargs):
+      return self.manage_menu(args,kwargs)
+
+    # --------------------------------------------------------------------------
     #  ZMSItem.manage_page_request:
-    #
-    #  @param REQUEST
     # --------------------------------------------------------------------------
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST

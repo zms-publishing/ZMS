@@ -345,6 +345,14 @@ else:
         cb[cb.length] = c;
       }
       function openLocation(location) {
+        var lang = zmiParams["lang"];
+        var index = "index_"+lang+".html";
+        if (!location.endsWith("/"+index)) {
+          if (!location.endsWith("/")) {
+            location += "/";
+          }
+          location += index;
+        }
         window.frames["preview"].location.href = "?framepreview=True&remote_url="+location;
       }
       $(function() {
@@ -352,6 +360,14 @@ else:
               var src = window.frames["preview"].location.href;
               if (src.indexOf("http")==0) {
                 var location = src.substr(src.lastIndexOf("=")+1);
+                var lang = zmiParams["lang"];
+                var index = "index_"+lang+".html";
+                if (!location.endsWith("/"+index)) {
+                  if (!location.endsWith("/")) {
+                    location += "/";
+                  }
+                  location += index;
+                }
                 window.frames["structure"].location.href = "?framestructure=True&lang="+zmiParams["lang"]+"&remote_url="+location;
                 for (var i = 0; i < cb.length; i++) {
                   var c = cb[i];

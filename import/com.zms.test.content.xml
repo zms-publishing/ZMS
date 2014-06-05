@@ -3,6 +3,9 @@
 	<titlealt>
 		<lang><![CDATA[Test]]></lang>
 	</titlealt>
+	<attr_type>
+		<lang><![CDATA[Resource]]></lang>
+	</attr_type>
 	<attr_dc_description>
 		<lang><![CDATA[QUnit is a powerful, easy-to-use JavaScript unit testing framework. It's used by the jQuery, jQuery UI and jQuery Mobile projects and is capable of testing any generic JavaScript code, including itself!]]></lang>
 	</attr_dc_description>

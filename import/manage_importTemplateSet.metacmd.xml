@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
-  <item key="custom"/>
   <item key="data"><![CDATA[# Import a standard function, and get the HTML request and response objects.
 from Products.PythonScripts.standard import html_quote
 request = container.REQUEST
@@ -12,13 +12,17 @@ def absattr(v):
   except:
     return v
 
-print context.manage_page_header(context,request)
-print context.manage_tabs(context,request)
-print context.f_headline(context,headline='<big><img src="%swand.png" align="absmiddle" border="0"/> Import Template-Set...</big>'%context.MISC_ZMS)
-print '<form method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="form_id" value="manage_addMultiUpload"/>'
+print '<!DOCTYPE html>'
+print '<html lang="en">'
+print context.zmi_html_head(context,request)
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'Import template-set...'}])
+print '<div id="zmi-tab">'
+print context.zmi_breadcrumbs(context,request)
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_importTemplateSet"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print context.zmi_form_section_begin(context,request)
+print '<legend>Import template-set...</legend>'
 
 # --- Display contents of zip-file.
 # ---------------------------------
@@ -34,9 +38,10 @@ if request.form.get('btn')==context.getZMILangStr('BTN_IMPORT') and request.form
 		getattr(temp_folder,temp_id).manage_upload(file)
 	else:
 		temp_folder.manage_addFile(id=temp_id,title=file.filename,file=file)
+	print '<table class="table">'
 	print '<tr valign="top">'
-	print '<td class="form-label"><strong><img src="%smime_type.application_zip.gif" alt="" border="0" align="absmiddle"/> %s</strong><br/>(%s, %i %s)</td>'%(context.MISC_ZMS,file.filename,context.getDataSizeStr(getattr(temp_folder,temp_id).size),len(files),context.getZMILangStr('ATTR_OBJECTS'))
-	print '<td class="form-small neutralColorWhite">'
+	print '<td><strong><img src="%smime_type.application_zip.gif" alt="" border="0" align="absmiddle"/> %s</strong><br/>(%s, %i %s)</td>'%(context.MISC_ZMS,file.filename,context.getDataSizeStr(getattr(temp_folder,temp_id).size),len(files),context.getZMILangStr('ATTR_OBJECTS'))
+	print '<td>'
 	root = None
 	standard_html = None
 	for file in context.sort_list(files,'local_filename'):
@@ -71,13 +76,13 @@ if request.form.get('btn')==context.getZMILangStr('BTN_IMPORT') and request.form
 	for base in containers:
 		print '</div>'
 	print '</tr>'
-	print '<tr valign="middle">'
-	print '<td>&nbsp;</td>'
-	print '<td>'
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_IMPORT')
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_CANCEL')
-	print '</td>'
-	print '</tr>'
+	print '</table>'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div><!-- .form-group -->'
 
 # --- Import contents of zip-file.
 # ---------------------------------
@@ -130,14 +135,15 @@ else:
 			if metaObjAttr['type'] in context.metaobj_manager.valid_zopetypes:
 				excl_ids.append( metaObjAttrId)
 	c = 0
+	print '<table class="table">'
 	for ob in context.getHome().objectValues():
 		ob_id = absattr(ob.id)
 		ob_icon = absattr(ob.icon)
 		if ob_id not in excl_ids:
 			if c == 0:
 				print '<tr valign="top">'
-				print '<td class="form-label"><img src="%s" alt="" border="0" align="absmiddle"/> %s</td>'%(context.getHome().icon,context.getHome().id)
-				print '<td class="form-small neutralColorWhite">'
+				print '<td><img src="%s" alt="" border="0" align="absmiddle"/> %s</td>'%(context.getHome().icon,context.getHome().id)
+				print '<td>'
 			print '<div><input type="checkbox" name="ids:list" value="%s" checked="checked"/><img src="%s" alt="" border="0" align="absmiddle"/> %s</div>'%(ob_id,ob_icon,ob_id)
 			c += 1
 	if c > 0:
@@ -146,41 +152,44 @@ else:
 		print '<tr valign="middle">'
 		print '<td>&nbsp;</td>'
 		print '<td>'
-		print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_DELETE')
+		print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_DELETE'),'utf-8'),unicode(context.getZMILangStr('BTN_DELETE'),'utf-8'))
 		print '</td>'
 		print '</tr>'
 		print '<tr valign="middle">'
 		print '<td colspan="2">&nbsp;</td>'
 		print '</tr>'
-	
 	print '<tr valign="top">'
-	print '<td class="form-label"><img src="%smime_type.application_zip.gif" alt="" border="0" align="absmiddle"/> Template-Set</td>'%(context.MISC_ZMS)
-	print '<td class="form-element">'
-	print '<input class="form-element" name="file" type="file" size="25">'
-	print '<div class="form-small zmiNeutralColorWhite">'
+	print '<td><img src="%smime_type.application_zip.gif" alt="" border="0" align="absmiddle"/> Template-Set</td>'%(context.MISC_ZMS)
+	print '<td>'
+	print '<input class="btn btn-file" name="file" type="file" size="25">'
+	print '<div>'
 	print 'You may download a template-set e.g. from <a href="http://www.freecsstemplates.org/css-templates/" target="_blank" class="zmi">http://www.freecsstemplates.org/css-templates/</a>'
 	print '</div>'
 	print '</td>'
 	print '</tr>'
-	print '<tr valign="middle">'
-	print '<td>&nbsp;</td>'
-	print '<td>'
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_IMPORT')
-	print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="%s">'%context.getZMILangStr('BTN_CANCEL')
-	print '</td>'
-	print '</tr>'
+	print '</table>'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div><!-- .form-group -->'
 
 # ---------------------------------
 
-print context.zmi_form_section_end(context,request)
-print '</form>'
-print context.manage_page_footer(context,request)
+print '</form><!-- .form-horizontal -->'
+print '<div style="clear:both;">&nbsp;</div>'
+print '</div><!-- #zmi-tab -->'
+print context.zmi_body_footer(context,request)
+print '</body>'
+print '</html>'
 
 return printed
 ]]>
   </item>
-  <item key="description"/>
+  <item key="description"></item>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-cloud-download]]></item>
   <item key="id"><![CDATA[manage_importTemplateSet]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

@@ -1,131 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
-  <item key="custom"/>
-  <item key="data"><![CDATA[<dtml-comment>
-################################################################################
-# Execute
-################################################################################
-</dtml-comment>
-<dtml-if process>
+  <item key="data"><![CDATA[request = container.REQUEST
+RESPONSE =  request.RESPONSE
 
- <!-- # Init counter: -->
- <dtml-unless count>
-  <dtml-call expr="REQUEST.set('count',0)">
- </dtml-unless>
+def run(here, old, new):
+  c = 0
+  for key in here.getObjAttrs().keys():
+    objAttr = here.getObjAttr(key)
+    if objAttr['datatype'] in ['string','text']:
+      for objVers in here.getObjVersions():
+        for langId in here.getLangIds():
+          objAttrName = here.getObjAttrName(objAttr,langId)
+          objAttrVal = here.operator_getattr(objVers,objAttrName,None)
+          if objAttrVal:
+            try:
+              if len(objAttrVal.split(old))>1:
+                here.operator_setattr(objVers,objAttrName,objAttrVal.replace(old,new))
+                c += 1
+            except:
+              pass
+  for childNode in here.getChildNodes():
+    c += run(childNode,old,new)
+  return c
 
- <!-- # Search and replace: -->
- <dtml-in "getObjAttrs().keys()">
-  <dtml-let key=sequence-item objAttr="getObjAttr(key)">
-   <dtml-if "objAttr['datatype'] in ['string','text']">
-    <dtml-in "getObjVersions()">
-     <dtml-let objVers=sequence-item>
-      <dtml-in "getLangIds()">
-       <dtml-let langId=sequence-item objAttrName="getObjAttrName(objAttr,langId)" objAttrVal="operator_getattr(objVers,objAttrName,None)">
-        <dtml-if objAttrVal>
-         <dtml-try>
-          <dtml-if "len(objAttrVal.split(s_old))>1">
-           <dtml-call "operator_setattr(objVers,objAttrName,objAttrVal.replace(s_old,s_new))">
-           <dtml-call "REQUEST.set('count',REQUEST['count']+len(objAttrVal.split(s_old))-1)">
-          </dtml-if>
-         <dtml-except>
-         </dtml-try>
-        </dtml-if>
-       </dtml-let>
-      </dtml-in>
-     </dtml-let>
-    </dtml-in>
-   </dtml-if>
-  </dtml-let>
- </dtml-in>
+print '<!DOCTYPE html>'
+print '<html lang="en">'
+print context.zmi_html_head(context,request)
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}])
+print '<div id="zmi-tab">'
+print context.zmi_breadcrumbs(context,request)
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_addClient"/>'
+print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<legend>Search+Replace...</legend>'
 
- <!-- # Recurse child-objects: -->
- <dtml-in "getChildNodes(REQUEST)">
-  <dtml-call manage_searchReplace>
- </dtml-in>
+# --- Execute.
+# ---------------------------------
+if request.form.get('btn')==context.getZMILangStr('BTN_EXECUTE'):
+	message = []
+	old = request['old']
+	new = request['new']
+	c = run(context,old,new)
+	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),c))
+	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
- <!-- # Return with message: -->
- <dtml-call expr="REQUEST.set('message','%i Vorkommnisse ersetzt.'%REQUEST['count'])">
- <dtml-return message>
+# --- Display initial insert form.
+# ---------------------------------
+else:
+	print '<div class="form-group">'
+	print '<label for="old" class="col-sm-3 control-label mandatory">Search for</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="old" type="text" size="25" value=""></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="new" class="col-sm-3 control-label mandatory">Replace with</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="new" type="text" size="25" value=""></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div><!-- .form-group -->'
 
-<dtml-comment>
-################################################################################
-# Process execution
-################################################################################
-</dtml-comment>
-<dtml-elif "REQUEST.get('btn','') == ' Ersetzen '">
+# ---------------------------------
 
- <dtml-var manage_page_header>
- </head>
- <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
+print '</form><!-- .form-horizontal -->'
+print '<div style="clear:both;">&nbsp;</div>'
+print '</div><!-- #zmi-tab -->'
+print context.zmi_body_footer(context,request)
+print '</body>'
+print '</html>'
 
-  <div class="form-text">
-    <dtml-var "manage_searchReplace(_,_,process=1)"><br/><br/>
-    [<a href="<dtml-var absolute_url>/manage_main?lang=<dtml-var lang>">Zurück...</a>]
-  </div>
-
- <dtml-var manage_page_footer>
-
-<dtml-comment>
-################################################################################
-# Process cancellation
-################################################################################
-</dtml-comment>
-<dtml-elif "REQUEST.get('btn','') == ' Abbrechen '">
-
- <dtml-call "RESPONSE.redirect('%s/manage_main?lang=%s'%(absolute_url(),lang))">
-
-<dtml-comment>
-################################################################################
-# Form
-################################################################################
-</dtml-comment>
-<dtml-else>
-
- <dtml-var manage_page_header>
- </head>
- <dtml-var "manage_tabs(_,_,my_manage_options=[{'label':'Replace...','action':''}])">
-
-  <div class="form-text">Sie können jedes oder alle Vorkommen von einem Textmuster im aktuellen Objekt und auch allen Unterobjekten suchen und ersetzen.</div>
-  <form name="form0">
-   <input type="hidden" name="preview" value="preview">
-   <input type="hidden" name="lang" value="<dtml-var lang>">
-   <table cellspacing="1" cellpadding="1" border="0">
-   <tr>
-    <td><div class="form-label">Search for:</div></td>
-    <td><input class="form-element" type="text" name="s_old" value="" size="30"></td>
-   </tr>
-   <tr>
-    <td><div class="form-label">Replace by:</div></td>
-    <td><input class="form-element" type="text" name="s_new" value="" size="30"></td>
-   </tr>
-   <tr>
-    <td></td>
-    <td>
-     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value=" Ersetzen ">
-     <input class="ui-button ui-state-default ui-corner-all" type="submit" name="btn" value=" Abbrechen ">
-    </td>
-   </tr>
-   </table>
-  </form>
-
- <dtml-var manage_page_footer>
-
-<dtml-comment>
-################################################################################
-</dtml-comment>
-
-</dtml-if>]]>
+return printed
+]]>
   </item>
-  <item key="description"/>
+  <item key="description"></item>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-random]]></item>
   <item key="id"><![CDATA[manage_searchReplace]]></item>
-  <item key="meta_type"><![CDATA[DTML Method]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">
     <list>
-      <item><![CDATA[ZMSGraphic]]></item>
-      <item><![CDATA[ZMSDocument]]></item>
-      <item><![CDATA[ZMSFolder]]></item>
-      <item><![CDATA[ZMS]]></item>
+      <item><![CDATA[type(ZMSDocument)]]></item>
+      <item><![CDATA[type(ZMSObject)]]></item>
     </list>
   </item>
   <item key="name"><![CDATA[Search+Replace...]]></item>

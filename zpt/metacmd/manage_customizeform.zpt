@@ -24,16 +24,16 @@
 				<div class="col-sm-9"><input type="text" name="el_name" class="form-control input-sm" tal:attributes="value python:metaCmd['name']"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
+				<label for="el_icon_clazz" class="col-sm-3 control-label"><span>Icon</span></label>
+				<div class="col-sm-9"><input type="text" name="el_icon_clazz" class="form-control input-sm zmi-input-icon-clazz" tal:attributes="value python:metaCmd.get('icon_clazz','')"/></div>
+			</div><!-- .form-group -->
+			<div class="form-group">
 				<label for="el_description" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DC_DESCRIPTION')">Description</span></label>
 				<div class="col-sm-9"><input type="text" name="el_description" class="form-control input-sm" tal:attributes="value python:metaCmd['description']"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_exec:int" class="col-sm-3 control-label"><span>Exec.</span></label>
 				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="el_exec:int" tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></span></div>
-			</div><!-- .form-group -->
-			<div class="form-group">
-				<label for="el_icon_clazz" class="col-sm-3 control-label"><span>Icon (Class)</span></label>
-				<div class="col-sm-9"><input type="text" name="el_icon_clazz" class="form-control input-sm" tal:attributes="value python:metaCmd.get('icon_clazz','')"/></div>
 			</div><!-- .form-group -->
 			<!-- ACE Editor -->
 			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=getattr(here,request['id'],None))">ACE Editor</tal:block>
@@ -99,15 +99,15 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 				<label class="col-sm-3 control-label mandatory" for="_id"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-9">
-					<input type="text" name="_id">
-				</div>
+				<div class="col-sm-9"><input class="form-control" type="text" name="_id"></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-sm-3 control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-sm-9">
-					<input type="text" name="_name">
-				</div>
+				<label class="col-sm-3 control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</span></label>
+				<div class="col-sm-9"><input class="form-control" type="text" name="_name"></div>
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="_icon_clazz"><span>Icon</span></label>
+				<div class="col-sm-9"><input type="text" name="_icon_clazz" class="form-control input-sm zmi-input-icon-clazz" value="icon-cogs"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-3 control-label mandatory" for="_type"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
@@ -196,11 +196,10 @@
 				<span class="btn btn-default"><input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id"></span>
 			</td>
 			<td>
-				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id'])">
-					<img tal:attributes="src python:ob.icon; title python:ob.meta_type"/>
-					<tal:block tal:content="python:metaCmd['id']">Id</tal:block>
+				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
+					<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
+					<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
 				</a>
-				(<tal:block tal:content="python:metaCmd['name']">Name</tal:block>)
 			</td>
 			<td>
 				<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">Size</tal:block>

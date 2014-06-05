@@ -458,6 +458,18 @@ ZMI.prototype.initInputFields = function(container) {
 						$label.prepend($ZMI.icon("icon-exclamation"));
 					});
 			}
+				// Icon-Class
+			$('input.zmi-input-icon-clazz',this).each(function() {
+				$(this).parents("div:first").append('<div class="pull-right">'+$ZMI.icon('')+'</div>');
+				$(this).wrap('<div class="pull-left"></div>');
+				var fn = function() {
+					var $input = $(this);
+					var $formGroup = $input.parents(".form-group");
+					var $i = $("i",$formGroup);
+					$i.replaceWith($ZMI.icon($input.val()));
+				};
+				$(this).change(fn).keyup(fn).change();
+			});
 			// Url-Picker
 			$("input.url-input",this).each(function() {
 					var $clone = $(this).clone();

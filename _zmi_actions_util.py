@@ -21,6 +21,7 @@ import _globals
 
 def zmi_actions(container, context, attr_id='e'):
   """
+  Returns list of actions.
   """
   actions = []
   
@@ -228,7 +229,10 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
         hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
         canExecute = canExecute and hasNode
       if canExecute:
-        actions.append((metaCmd['name'],objPath+'manage_executeMetacmd'))
+        l = [metaCmd['name'],objPath+'manage_executeMetacmd']
+        if metaCmd.get('icon_clazz'):
+          l.append(metaCmd.get('icon_clazz'))
+        actions.append(tuple(l))
   
   # Return action list.
   return actions

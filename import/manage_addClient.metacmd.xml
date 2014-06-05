@@ -6,9 +6,14 @@ from Products.PythonScripts.standard import html_quote
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
-print context.manage_page_header(context,request)
-print context.manage_tabs(context,request)
-print '<form classs="form-horizontal" method="post" enctype="multipart/form-data">'
+print '<!DOCTYPE html>'
+print '<html lang="en">'
+print context.zmi_html_head(context,request)
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'Insert client...'}])
+print '<div id="zmi-tab">'
+print context.zmi_breadcrumbs(context,request)
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 print '<legend>Insert client...</legend>'
@@ -23,8 +28,9 @@ if request.form.get('btn')==context.getZMILangStr('BTN_INSERT'):
 	request.set('lang_label',context.getLanguageLabel(request['lang']))
 	zms_inst = context.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
 	zms_inst.setConfProperty('Portal.Master',home.id)
-	for id in context.getMetaobjIds():
-		zms_inst.metaobj_manager.acquireMetaobj(id)
+	if request.get('acquire'):
+		for id in context.getMetaobjIds():
+			zms_inst.metaobj_manager.acquireMetaobj(id)
 	context.setConfProperty('Portal.Clients',context.getConfProperty('Portal.Clients',[])+[request['id']])
 	message.append(context.getZMILangStr('MSG_INSERTED')%request['id'])
 	request.response.redirect(context.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
@@ -34,34 +40,42 @@ if request.form.get('btn')==context.getZMILangStr('BTN_INSERT'):
 else:
 	print '<div class="form-group">'
 	print '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(context.getZMILangStr('ATTR_ID'))
-	print '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25"></div>'
-	print '</div>'
-	print '<div class="form-group">'
-	print '<label for="title" class="col-sm-3 control-label mandatory">%s</label>'%(context.getZMILangStr('ATTR_TITLE'))
-	print '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50"></div>'
-	print '</div>'
+	print '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25" value="client0"></div>'
+	print '</div><!-- .form-group -->'
 	print '<div class="form-group">'
 	print '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(unicode(context.getZMILangStr('ATTR_TITLEALT'),'utf-8'))
-	print '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80"></div>'
-	print '</div>'
+	print '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80" value="Client0 home"></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="title" class="col-sm-3 control-label mandatory">%s</label>'%(context.getZMILangStr('ATTR_TITLE'))
+	print '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50" value="Client0 - Python-based contentmanagement system for science, technology and medicine"></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8'))
+	print '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(context.getZMILangStr('BTN_ACQUIRE'),'utf-8'))
+	print '</div><!-- .form-group -->'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
 	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_INSERT'),'utf-8'),unicode(context.getZMILangStr('BTN_INSERT'),'utf-8'))
 	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
 	print '</div>'
-	print '</div>'
+	print '</div><!-- .form-group -->'
 
 # ---------------------------------
 
-print '</form>'
-print context.manage_page_footer(context,request)
+print '</form><!-- .form-horizontal -->'
+print '<div style="clear:both;">&nbsp;</div>'
+print '</div><!-- #zmi-tab -->'
+print context.zmi_body_footer(context,request)
+print '</body>'
+print '</html>'
 
 return printed
 ]]>
   </item>
   <item key="description"></item>
   <item key="exec" type="int">0</item>
-  <item key="icon_clazz"></item>
+  <item key="icon_clazz"><![CDATA[icon-home]]></item>
   <item key="id"><![CDATA[manage_addClient]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

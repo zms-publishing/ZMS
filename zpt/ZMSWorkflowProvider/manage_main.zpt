@@ -131,15 +131,6 @@ function zmiFormSubmit(sender,d) {
 $(function(){
 	zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
 	zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
-	$('input.zmi-input-icon-clazz').each(function() {
-		var fn = function() {
-			var $input = $(this);
-			var $formGroup = $input.parents(".form-group");
-			var $i = $("i",$formGroup);
-			$i.replaceWith($ZMI.icon($input.val()));
-		};
-		$(this).change(fn).keyup(fn);
-	});
 	$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 		zmiModal("hide");
 		return false;
@@ -201,12 +192,7 @@ $(function(){
 			<div class="form-group inpIconClazz">
 				<label for="inpIconClazz" class="col-lg-2 control-label"><span>Icon</span></label>
 				<div class="col-lg-10">
-					<div class="pull-left">
-						<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
-					</div>
-					<div class="pull-right">
-						<tal:block tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz',''))">the icon</tal:block>
-					</div>
+					<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group inpIcon" tal:condition="python:activity.get('icon')">

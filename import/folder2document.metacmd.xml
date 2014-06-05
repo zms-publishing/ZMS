@@ -5,6 +5,7 @@
 <dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into document.'}))">]]></item>
 <item key="description"/>
 <item key="exec" type="int">0</item>
+<item key="icon_clazz"><![CDATA[icon-file-text-alt]]></item>
 <item key="id"><![CDATA[manage_ZMSFolder2ZMSDocument]]></item>
 <item key="meta_type"><![CDATA[DTML Method]]></item>
 <item key="meta_types" type="list"><list>
@@ -64,6 +65,7 @@ return RESPONSE.redirect(context.url_append_params('%s/manage_main'%context.abso
 ]]></item>
 <item key="description"/>
 <item key="exec" type="int">0</item>
+<item key="icon_clazz"><![CDATA[icon-folder-close-alt]]></item>
 <item key="id"><![CDATA[manage_syncZMSFoldersNDocuments]]></item>
 <item key="meta_type"><![CDATA[Script (Python)]]></item>
 <item key="meta_types" type="list"><list>

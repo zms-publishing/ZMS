@@ -397,7 +397,7 @@ return printed
   </item>
   <item key="description"></item>
   <item key="exec" type="int">0</item>
-  <item key="icon_clazz"><![CDATA[icon-exchange]]></item>
+  <item key="icon_clazz"><![CDATA[icon-exchange text-primary]]></item>
   <item key="id"><![CDATA[manage_transferContent]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

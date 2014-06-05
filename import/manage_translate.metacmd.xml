@@ -203,7 +203,7 @@ function googleTranslateElementInit() {
   </item>
   <item key="description"/>
   <item key="exec" type="int">0</item>
-  <item key="icon_clazz"/>
+  <item key="icon_clazz"><![CDATA[icon-globe text-primary]]></item>
   <item key="id"><![CDATA[manage_translate]]></item>
   <item key="meta_type"><![CDATA[Page Template]]></item>
   <item key="meta_types" type="list">

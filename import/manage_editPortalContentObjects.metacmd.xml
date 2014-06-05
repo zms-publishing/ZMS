@@ -208,6 +208,7 @@ return printed
   </item>
   <item key="description"/>
   <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-edit text-primary]></item>
   <item key="id"><![CDATA[manage_editPortalContentObjects]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

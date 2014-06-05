@@ -10,7 +10,7 @@
 <dtml-return "'%i Objects activated!'%REQUEST['count']">]]></item>
 <item key="description"></item>
 <item key="exec" type="int">1</item>
-<item key="icon_clazz"><![CDATA[icon-globe]]></item>
+<item key="icon_clazz"><![CDATA[icon-globe text-primary]]></item>
 <item key="id"><![CDATA[manage_activateLanguage]]></item>
 <item key="meta_type"><![CDATA[DTML Method]]></item>
 <item key="meta_types" type="list"><list>

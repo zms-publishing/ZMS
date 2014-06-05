@@ -189,7 +189,7 @@ return printed
   </item>
   <item key="description"></item>
   <item key="exec" type="int">0</item>
-  <item key="icon_clazz"><![CDATA[icon-cloud-download]]></item>
+  <item key="icon_clazz"><![CDATA[icon-cloud-download text-primary]]></item>
   <item key="id"><![CDATA[manage_importTemplateSet]]></item>
   <item key="meta_type"><![CDATA[Script (Python)]]></item>
   <item key="meta_types" type="list">

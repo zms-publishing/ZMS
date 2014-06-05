@@ -635,6 +635,8 @@ class ZMSMetaobjManager:
         newCustom = None
       if newType not in ['*','autocomplete','multiautocomplete','multiselect','recordset','select']:
         newKeys = []
+      if newType in self.getMetadictAttrs():
+        newId = newType
       if newType in self.getMetaobjIds(sort=0)+['*']:
         newMultilang = 0
       
@@ -1086,7 +1088,7 @@ class ZMSMetaobjManager:
             newKeys = REQUEST.get('_keys',[])
             newCustom = REQUEST.get('_custom','')
             newDefault = REQUEST.get('_default','')
-            if len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0:
+            if (len(attr_id) > 0 and len(newName) > 0 and len(newType) > 0) or newType in self.getMetadictAttrs():
               message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
               message += self.getZMILangStr('MSG_INSERTED')%attr_id
           elif key == 'obj' and btn == self.getZMILangStr('BTN_SAVE'):

@@ -92,19 +92,27 @@ def importXml(self, xml, REQUEST=None, createIfNotExists=1):
 def exportXml(self, REQUEST, RESPONSE):
   value = []
   ids = REQUEST.get('ids',[])
+  filterIds = []
   for id in self.getFilterIds():
     if id in ids or len(ids) == 0:
       ob = self.getFilter(id).copy()
       value.append({'type':'filter','value':ob})
+      filterIds.append(id)
   for id in self.getProcessIds():
     if id in ids or len(ids) == 0:
       ob = self.getProcess(id).copy()
       value.append({'type':'process','value':ob})
+  # Filename.
+  filename = 'export'
+  if len(filterIds)==1:
+    filename = filterIds[0]
+  elif len(ids)==1:
+    filename = ids[0]
   # XML.
   if len(value)==1:
     value = value[0]
   content_type = 'text/xml; charset=utf-8'
-  filename = 'export.filter.xml'
+  filename = '%s.filter.xml'%filename
   export = self.getXmlHeader() + self.toXmlString(value,1)
   RESPONSE.setHeader('Content-Type',content_type)
   RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
@@ -153,6 +161,12 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
       newCommand += 'return printed\n'
       newCommand += '\n'
       newCommand += '# --// EO '+ newId + ' //--\n'
+    elif newType in [ 'External Method']:
+      newCommand = ''
+      newCommand += '# Example code:\n'
+      newCommand += '\n'
+      newCommand += 'def ' + newId + '( self, request):\n'
+      newCommand += '  return "This is the external method ' + newId + '"\n'
   # Set method.
   container = self.getHome()
   if newType in [ 'DTML Method']:
@@ -170,6 +184,12 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
     newOb.write(newCommand)
     roles=[ 'Manager']
     newOb._proxy_roles=tuple(roles)
+  elif newType in [ 'External Method']:
+    newExternalMethod = INSTANCE_HOME+'/Extensions/'+newId+'.py'
+    _fileutil.exportObj( newCommand, newExternalMethod)
+    if newId not in container.objectIds([newType]):
+      ExternalMethod.manage_addExternalMethod( container, newId, newName, newId, newId)
+    newOb = getattr( container, newId)
   # Set.
   obs = getRawProcesses(self)
   ob = {}
@@ -201,6 +221,11 @@ def delProcess(self, id):
         dtml_method = getattr( container, id, None)
         if dtml_method is not None:
           container.manage_delObjects( ids=[id])
+        if cp[key].get('type','') == 'External Method':
+          try:
+            _fileutil.remove( INSTANCE_HOME+'/Extensions/'+id+'.py')
+          except:
+            pass
     else:
       obs[key] = cp[key]
   # Set attribute.

@@ -106,7 +106,6 @@ def initConf(self, profile, REQUEST):
         self.importConfPackage(filename,REQUEST,createIfNotExists)
       elif filename.find('.xml') > 0:
         self.importConf(filename,REQUEST,createIfNotExists)
-      self.synchronizeObjAttrs()
 
 
 # ------------------------------------------------------------------------------
@@ -165,7 +164,6 @@ class ConfManager(
       for f in files:
         if not f.get('isdir'):
           self.importConf(f,REQUEST,createIfNotExists)
-      self.synchronizeObjAttrs()
 
 
     # --------------------------------------------------------------------------
@@ -205,6 +203,7 @@ class ConfManager(
       elif filename.find('.textfmt.') > 0:
         self.format_manager.importTextformatXml(xmlfile, REQUEST, createIfNotExists)
       xmlfile.close()
+      self.synchronizeObjAttrs()
       return message
 
 

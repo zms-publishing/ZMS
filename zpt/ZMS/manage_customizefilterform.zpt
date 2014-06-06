@@ -141,7 +141,14 @@ $ZMI.registerReady(function(){
 		filterIds python:here.getFilterIds();
 		filters python:map(lambda x: here.getFilter(x), filterIds);
 		processIds python:here.getProcessIds();
-		processes python:map(lambda x: here.getProcess(x), processIds)">
+		processes python:map(lambda x: here.getProcess(x), processIds);
+		filterFormats python:[
+				['import', 'Import' ],
+				['export', 'Export' ],
+				['XML', 'XML-Export' ],
+				['XML_incl_embedded', 'XML-Export (incl. embedded)' ],
+				['XHTML', 'XHTML-Export' ]]+
+				[[],['myXML',getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
@@ -192,13 +199,7 @@ $ZMI.registerReady(function(){
 					<label for="inpFormat" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">Format</span></label>
 					<div class="col-sm-9">
 						<select class="form-control" id="inpFormat" name="inpFormat">
-						<tal:block tal:repeat="format python:[
-								['import', 'Import' ],
-								['export', 'Export' ],
-								['XML', 'XML-Export' ],
-								['XML_incl_embedded', 'XML-Export (incl. embedded)' ],
-								['XHTML', 'XHTML-Export' ]]+
-								[[],['myXML',getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
+						<tal:block tal:repeat="format filterFormats">
 							<option tal:attributes="value python:format[0]; selected python:['','selected'][int(format[0]==filter.get('format'))]" tal:content="python:format[1]">the format</option>
 						</tal:block>
 						</select>
@@ -333,6 +334,26 @@ $ZMI.registerReady(function(){
 			<div class="form-group newName">
 				<label for="newName" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-sm-9"><input class="form-control" type="text" id="newName" name="newName"/></div>
+			</div><!-- .form-group -->
+			<div class="form-group inpFormat">
+				<label for="inpFormat" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">Format</span></label>
+				<div class="col-sm-9">
+					<select class="form-control" id="newFormat" name="newFormat">
+					<tal:block tal:repeat="format filterFormats">
+						<option tal:attributes="value python:format[0]" tal:content="python:format[1]">the format</option>
+					</tal:block>
+					</select>
+				</div>
+			</div><!-- .form-group -->
+			<div class="form-group inpContentType">
+				<label for="inpContentType" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
+				<div class="col-sm-9">
+					<select class="form-control" id="newContentType" name="newContentType">
+						<tal:block tal:repeat="content_type python:here.enumManager.getValues('content_type')">
+							<option tal:attributes="value python:content_type[0]" tal:content="python:content_type[1]">the content-type</option>
+						</tal:block>
+					</select>
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="controls save">

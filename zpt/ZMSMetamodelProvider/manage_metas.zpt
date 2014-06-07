@@ -121,7 +121,11 @@ function zmiFormSubmit(sender,d) {
 				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 			</div>
 			<div class="pull-right">
-				<span class="btn-default" tal:attributes="onclick python:'javascript:confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-info')"></tal:block></span>
+				<tal:block tal:define="
+							meta_ids python:filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds());
+						">
+					<span class="btn-default" tal:attributes="title python:','.join(meta_ids); onmouseover python:'$(this).tooltip({html:true,placement:\'bottom\'})';"><tal:block tal:content="structure python:here.zmi_icon(name='icon-info')"></tal:block></span>
+				</tal:block>
 			</div>
 		</td>
 		<td class="meta-id">

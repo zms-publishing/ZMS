@@ -237,7 +237,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[titlealt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -247,7 +247,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -294,7 +294,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -304,7 +304,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_subject]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -323,7 +323,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
+                  <item key="type"><![CDATA[attr_dc_type]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -333,7 +333,7 @@
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[attr_dc_creator]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -491,7 +491,7 @@ div.ZMSFile div.description, div.ZMSLinkElement div.description
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[titlealt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -501,7 +501,7 @@ div.ZMSFile div.description, div.ZMSLinkElement div.description
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -588,7 +588,7 @@ $ZMI.registerReady(function(){
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -810,7 +810,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[titlealt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -820,7 +820,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -867,7 +867,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -877,7 +877,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_subject]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -896,7 +896,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
+                  <item key="type"><![CDATA[attr_dc_type]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -906,7 +906,7 @@ return ''
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[attr_dc_creator]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1808,7 +1808,7 @@ if align:
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[titlealt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1818,7 +1818,7 @@ if align:
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1998,7 +1998,7 @@ $ZMI.registerReady(function(){
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_creator]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2658,7 +2658,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[titlealt]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2668,7 +2668,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2699,7 +2699,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[text]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4253,9 +4253,9 @@ return unicode(printed).encode('utf-8')
                   <item key="id"><![CDATA[title]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Title]]></item>
+                  <item key="name"><![CDATA[DC.Title]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[string]]></item>
+                  <item key="type"><![CDATA[title]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">

@@ -82,7 +82,7 @@ function zmiFormSubmit(sender,d) {
 
 	<table class="table table-striped table-bordered zmi-sortable">
 	<colgroup>
-		<col style="width:6em" />
+		<col style="width:8em" />
 		<col />
 		<col />
 		<col />
@@ -94,7 +94,7 @@ function zmiFormSubmit(sender,d) {
 	<thead>
 	<tr>
 		<th class="meta-sort">
-			<div class="btn-group" style="width:6em;">
+			<div class="btn-group" style="width:8em;">
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 			</div>
@@ -114,11 +114,14 @@ function zmiFormSubmit(sender,d) {
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
 			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']">
-			<div class="input-append">
+			<div class="input-append pull-left">
 				<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
 				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+			</div>
+			<div class="pull-right">
+				<span class="btn-default" tal:attributes="onclick python:'javascript:confirm(\'@todo\')'; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-info')"></tal:block></span>
 			</div>
 		</td>
 		<td class="meta-id">
@@ -174,8 +177,6 @@ function zmiFormSubmit(sender,d) {
 	<div class="form-group">
 		<div class="controls save">
 			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			&nbsp;
-			<button name="btn" type="submit" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')+'...'" tal:content="python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text()});return false;">Import...</button>
 		</div>
 	</div>
 </form>

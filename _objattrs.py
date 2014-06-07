@@ -270,7 +270,7 @@ class ObjAttrs:
         opts = []
         obj_attropts = obj_attr['options']
         if type(obj_attropts) is list:
-          v = ''.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)/2)))
+          v = '\n'.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)/2)))
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0],REQUEST):
             ob = self.getLinkObj(obj_attropts[0],REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)

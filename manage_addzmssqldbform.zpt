@@ -1,7 +1,7 @@
 <tal:block tal:define="global
 		dummy0 python:request.set('ZMS_INSERT','ZMSSqlDb');
 		dummy0 python:request.set('fmName',request.get('fmName','form0'));
-		dummy0 python:here.manage_page_request(here,request)">
+		dummy0 python:here.zmi_page_request(here,request)">
 	<form class="form-horizontal form-insert" id="form0" name="form0" tal:attributes="action python:'%s/manage_addZMSSqlDb'%request['URL1'][len(request['BASE0']):]" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 		<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">

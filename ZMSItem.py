@@ -47,7 +47,7 @@ class ZMSItem(
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_page_request', 'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_main_iframe' 
+		'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_main_iframe' 
 		)
     __viewPermissions__ = (
 		'manage_menu',
@@ -72,9 +72,9 @@ class ZMSItem(
       return self.manage_menu(args,kwargs)
 
     # --------------------------------------------------------------------------
-    #  ZMSItem.manage_page_request:
+    #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
-    def zmi_page_request(self, *args, **kwargs):
+    def _zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
       request.set( 'ZMS_THIS',self.getSelf())
       request.set( 'ZMS_DOCELMNT',self.breadcrumbs_obj_path()[0])
@@ -90,12 +90,11 @@ class ZMSItem(
           request.set( 'ZMS_ROOT',request['ZMS_ROOT'][len(base):])
           request.set( 'ZMS_COMMON',request['ZMS_COMMON'][len(base):])
     
-    manage_page_request__roles__ = None
-    def manage_page_request(self, *args, **kwargs):
+    def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
       RESPONSE = request.RESPONSE
       SESSION = request.SESSION
-      self.zmi_page_request()
+      self._zmi_page_request()
       RESPONSE.setHeader('Expires',DateTime(request['ZMI_TIME']-10000).toZone('GMT+1').rfc822())
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
@@ -115,7 +114,7 @@ class ZMSItem(
 
     def f_standard_html_request(self, *args, **kwargs):
       request = self.REQUEST
-      self.zmi_page_request()
+      self._zmi_page_request()
       if not request.get( 'lang'):
         request.set( 'lang',self.getLanguage(request))
       if not request.get('manage_lang') in self.getLocale().get_manage_langs():

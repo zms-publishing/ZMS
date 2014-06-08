@@ -90,6 +90,7 @@ class ZMSItem(
           request.set( 'ZMS_ROOT',request['ZMS_ROOT'][len(base):])
           request.set( 'ZMS_COMMON',request['ZMS_COMMON'][len(base):])
     
+    manage_page_request__roles__ = None
     def manage_page_request(self, *args, **kwargs):
       request = self.REQUEST
       RESPONSE = request.RESPONSE

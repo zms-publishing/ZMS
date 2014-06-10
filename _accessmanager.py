@@ -478,12 +478,14 @@ class AccessManager(AccessableContainer):
           elif userFldr.meta_type == 'Pluggable Auth Service':
             if search_term != '':
               login_attr = 'login'
-              for user in userFldr.searchUsers(login=search_term,id=None,exact_match=exact_match):
+              for user in userFldr.searchUsers(login=search_term,id=None):
                 plugin = getattr(userFldr,user['pluginid'])
                 append = True
                 if plugin.meta_type == 'ZODB User Manager':
                   login_name = user[login_attr]
-                  append = search_term == '' or login_name.find(search_term) >= 0
+                  append = search_term == '' or \
+                    (login_name.find(search_term) >= 0 and not exact_match) or \
+                    (login_name == search_term and exact_match)
                 if append:
                   users.append(user)
           else:
@@ -511,25 +513,25 @@ class AccessManager(AccessableContainer):
                 uid = None
                 if plugin.meta_type == 'LDAP Multi Plugin':
                   for ldapUserFldr in plugin.objectValues('LDAPUserFolder'):
-                     login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
-                     uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
-                     if uid_attr != login_attr:
-                       uid = user[uid_attr]
+                     _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
+                     _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
+                     if _uid_attr != _login_attr:
+                       uid = user[_uid_attr]
                        try:
                          if uid.startswith('\x01\x05\x00\x00'):
                            import binascii
                            uid = binascii.b2a_hex(buffer(uid))
                        except:
-                         _globals.writeError(self,'[getValidUserids]: uid_attr=%s'%uid_attr)
+                         _globals.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
                 elif plugin.meta_type == 'ZODB User Manager':
-                  uid_attr = 'user_id'
+                  _uid_attr = 'user_id'
                   uid = plugin.getUserIdForLogin(login_name)
                 if uid is not None:
                   d['user_id'] = uid
                   if len(filter(lambda x:x['id']=='user_id',c))==0:
-                    c.append({'id':'user_id','name':uid_attr.capitalize(),'type':'string'})
-                  c = filter(lambda x:x['id']!=uid_attr,c)
-                  extras = filter(lambda x:x!=uid_attr,extras)
+                    c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
+                  c = filter(lambda x:x['id']!=_uid_attr,c)
+                  extras = filter(lambda x:x!=_uid_attr,extras)
                 d['plugin'] = plugin
                 editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
                 container = userFldr.aq_parent
@@ -555,7 +557,6 @@ class AccessManager(AccessableContainer):
     #  AccessManager.findUser:
     # --------------------------------------------------------------------------
     def findUser(self, name):
-      encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       user = self.getValidUserids(search_term=name,exact_match=True)
       if user is not None:
         userFldr = user['localUserFldr']
@@ -582,13 +583,13 @@ class AccessManager(AccessableContainer):
           for schema in ldapUserFldr.getLDAPSchema():
             name = schema[0]
             label = schema[1]
-            value = unicode(user.get(name,''),encoding).encode('utf-8')
+            value = user.get(name,'')
             user['details'].append({'name':name,'label':label,'value':value})
           # User ID
-          login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
-          uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
-          if uid_attr != login_attr:
-            user['details'] = filter(lambda x:x['name'] not in [uid_attr],user['details'])
+          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
+          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
+          if _uid_attr != _login_attr:
+            user['details'] = filter(lambda x:x['name'] not in [_uid_attr],user['details'])
       return user
 
 
@@ -604,33 +605,10 @@ class AccessManager(AccessableContainer):
       self.setConfProperty('ZMS.security.users',d.copy())
 
     # --------------------------------------------------------------------------
-    #  AccessManager.getLDAPUserAttr:
-    # --------------------------------------------------------------------------
-    def getLDAPUserAttr(self, user, name):
-      user = getUserId(user)
-      userFldr = self.getUserFolder()
-      if userFldr.meta_type == 'LDAPUserFolder':
-        userObj = userFldr.getUserByAttr( userFldr.getProperty( '_login_attr' ), user, pwd=None, cache=1)
-        if userObj is not None:
-          if name in userObj._properties:
-            value = userObj.getProperty( name)
-            return value
-          elif name == 'email':
-            for key in userObj._properties:
-              value = userObj.getProperty( key)
-              if value.find( '@') > 0 and value.rfind( '.') > 0 and value.find( '@') < value.rfind( '.'):
-                return value
-      return None
-
-    # --------------------------------------------------------------------------
     #  AccessManager.getUserAttr:
     # --------------------------------------------------------------------------
     def getUserAttr(self, user, name=None, default=None, flag=0):
       user = getUserId(user)
-      if name not in [ 'nodes']:
-        v = self.getLDAPUserAttr( user, name)
-        if v is not None:
-          return v
       d = self.getConfProperty('ZMS.security.users',{})
       if name is None:
         v = d.get(user,None)

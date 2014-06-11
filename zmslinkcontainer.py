@@ -164,7 +164,7 @@ class ZMSLinkContainer(ZMSContainerObject):
       
       else:
         # Return to parent.
-        return RESPONSE.redirect('%s/manage_main?lang=%s#_%s'%(self.getParentNode().absolute_url(),lang,self.id))
+        return RESPONSE.redirect('%s/manage_main?lang=%s#zmi_item_%s'%(self.getParentNode().absolute_url(),lang,self.id))
 
 
     # --------------------------------------------------------------------------

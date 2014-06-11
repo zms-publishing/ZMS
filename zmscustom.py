@@ -98,7 +98,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
     if redirect_self:
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),obj.id,lang,urllib.quote(message)))
     else:
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
   
   else:
     RESPONSE.redirect('%s/manage_main?lang=%s'%(self.absolute_url(),lang))

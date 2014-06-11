@@ -708,7 +708,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         target_ob = self
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
       target = self.url_append_params( target, { 'lang': lang, 'preview': 'preview',  messagekey: message})
-      target = '%s#_%s'%( target, self.id)
+      target = '%s#zmi_item_%s'%( target, self.id)
       if RESPONSE is not None:
         return RESPONSE.redirect( target)
 
@@ -1201,7 +1201,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent.normalizeSortIds(_globals.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type(REQUEST))
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
 
 
     ############################################################################
@@ -1217,7 +1217,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent.normalizeSortIds(_globals.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type(REQUEST))
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
 
 
     ############################################################################
@@ -1242,7 +1242,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if fmt == 'json':
         return self.str_json(message)
       else:
-        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
 
 
     # --------------------------------------------------------------------------

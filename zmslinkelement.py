@@ -174,7 +174,7 @@ def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
     if redirect_self:
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),obj.id,lang,urllib.quote(message)))
     else:
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
   
   else:
     RESPONSE.redirect('%s/manage_main?lang=%s'%(self.absolute_url(),lang))
@@ -308,7 +308,7 @@ class ZMSLinkElement(ZMSContainerObject):
       
       # Return with message.
       target = self.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})
-      target = '%s#_%s'%( target, self.id)
+      target = '%s#zmi_item_%s'%( target, self.id)
       return RESPONSE.redirect( target)
 
 

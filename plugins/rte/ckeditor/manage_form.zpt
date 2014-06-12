@@ -122,7 +122,7 @@ function zmiRichtextInit(id) {
 		style_element python:(map(lambda x:here.id_quote(x['cdata']),here.xmlNodeSet(style,'elt'  ))+[None])[0];
 		style_attrs   python:map(lambda x:
 				(map(lambda y:here.id_quote(y['cdata']),here.xmlNodeSet(x,'name'))[0],
-				 map(lambda y:here.id_quote(y['cdata']),here.xmlNodeSet(x,'value'))[0]),
+				 map(lambda y:y['cdata'],here.xmlNodeSet(x,'value'))[0]),
 				 here.xmlNodeSet(style,'attr'))">
 				config.format_tags += (config.format_tags.length==0?'':';')+'<tal:block tal:content="style_id"></tal:block>';
 				config.format_<tal:block tal:content="style_id"></tal:block> = {

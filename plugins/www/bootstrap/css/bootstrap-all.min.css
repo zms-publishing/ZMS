@@ -439,13 +439,14 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 #zmi-header .slogan{font-size:x-small}
 #zmi-header .navbar{margin:0;height:42px;min-height:42px}
 #zmi-header .navbar-fixed-top .navbar-inner,#zmi-header .navbar-fixed-bottom .navbar-inner{padding:0!important}
-.zmi.preview_top #zmi-header .pull-right{padding-top:.25em;padding-right:.25em}
+.zmi.preview_top #zmi-header .pull-right{padding-top:.6em;padding-right:.25em}
+.zmi.preview_top #zmi-header .pull-right .btn.btn-primary{margin-top:-.45em}
 .zmi.preview_top #zmi-header .pull-right *{color:#ccc}
 .zmi.preview_top #zmi-header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 #zmi-overlay{background-color:black;display:block;position:absolute;top:0;left:0;width:100%;height:100%;filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 #zmi-progressbox{padding:20px 40px 20px 40px;background-color:#FFF;color:black;position:absolute}
 .zmi ul.main-nav{margin-top:0.5em;padding-left:1em}
-.zmi.customize .main-nav{min-width:1160px}
+.zmi.config .main-nav{min-width:1160px}
 .zmi .navbar-inner{border-radius:0 !important}
 #zmi-footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
@@ -502,7 +503,10 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid
 .horizontal-group .controls{margin-left:0px}
 .horizontal-group .form-group label{float:none;width:auto;text-align:left}
 .horizontal-group .controls.save{margin-top:2.1em}
-.form-horizontal label.col-sm-3.control-label,.form-horizontal label.col-md-3.control-label,.form-horizontal label.col-lg-3.control-label,.form-horizontal label.col-sm-2.control-label,.form-horizontal label.col-md-2.control-label,.form-horizontal label.col-lg-2.control-label{font-weight:normal;color:#75A7C0}
+.form-horizontal label.control-label{font-weight:normal;color:#75A7C0}
+.form-horizontal .has-success label.control-label{font-weight:bold;color:#3C763D}
+.form-horizontal .has-warning label.control-label{font-weight:bold;color:#8A6D3B}
+.form-horizontal .has-error label.control-label{font-weight:bold;color:#A94442}
 .form-horizontal .col-lg-10 .form-control{display:block;width:100%;padding:6px 12px;font-size:14px;line-height:1.428571429;color:#555}
 .form-horizontal .col-lg-10 input[type="checkbox"]{width:auto;margin:0}
 .form-horizontal .form-group.activity .col-lg-10{padding-left:2em}
@@ -659,6 +663,8 @@ div.zmi-action > ul.dropdown-menu li a{padding-left:13px}
 div.right .zmi-ids input[type="checkbox"]{margin-left:3px;margin-top:3px;opacity:0.5}
 div.right span.form-small{display:block;color:#888;margin-left:8px}
 div.right .version_object_state{float:left;margin:1px 4px 0px 0px}
+div.right .version_object_state i{font-size:120%}
+div.right .version_object_state i.wf-icon,.attr_last_modified i.wf-icon,.zmi-state{margin-right:.3em}
 div.right a:hover,div.right a:focus{text-decoration:none}
 .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important}
 div.right .btn .caret{}
@@ -741,3 +747,6 @@ body.tasks table.table ul.breadcrumb{margin-left:0;padding:0 0 1em 0;background:
 body.tasks .zmi-container .center .contentEditable{padding-left:0 !important}
 #ui-datepicker-div .ui-widget-header .ui-icon{background-image:url(/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/images/ui-icons_222222_256x240.png)}
 #zmiIframeAddDialog #form0 input.hasDatepicker{z-index:2000}
+.zmi.zmslog .logitem{margin-top:2em}
+.zmi.zmslog .logitem span.pull-left{padding:0 .5em;font-size:200%;color:#c7254e}
+.zmi.zmslog .logitem code{white-space:pre-wrap !important}

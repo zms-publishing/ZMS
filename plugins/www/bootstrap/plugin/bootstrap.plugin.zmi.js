@@ -278,6 +278,7 @@ ZMI.prototype.initInputFields = function(container) {
 		.submit(function() {
 				$ZMI.writeDebug("form.form-horizontal:not(.form-initialized): submit");
 				var b = true;
+				var context = this;
 				// Button
 				if(self.btnClicked==getZMILangStr("BTN_BACK") ||
 						self.btnClicked==getZMILangStr("BTN_CANCEL")) {
@@ -315,9 +316,12 @@ ZMI.prototype.initInputFields = function(container) {
 								isBlank = $control.val().basicTrim().length==0;
 								if (isBlank && nodeType=="file") {
 									var name = $control.attr("name");
-									var exists = $('input[name=exists_'+forName+']:hidden',$controlGroup).val();
-									$ZMI.writeDebug('submit: exists='+exists);
+									var exists = $('input[name="exists_'+forName+'"]:hidden',$controlGroup).val();
+									$ZMI.writeDebug('submit: exists_'+forName+'='+exists);
 									isBlank = !(exists=='True');
+									var generate_preview = $('input[name="generate_preview_'+forName.replace(/_/,'hires_')+':int"]:checked',context).val();
+									$ZMI.writeDebug('submit: generate_preview_'+forName.replace(/_/,'hires_')+':int='+generate_preview);
+									isBlank &= !(generate_preview=='1');
 								}
 							}
 							else if (nodeName=="select") {

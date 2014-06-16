@@ -187,6 +187,22 @@ class ZMSGlobals:
 
 
     """
+    Inline condition 
+    @param c: condition
+    @type c: C{boolean}
+    @param t: return value if condition is true
+    @type t: C{any}
+    @param f: return value if condition is false
+    @type f: C{any}
+    @rtype: C{any}
+    """
+    def boolint(self, c, t=1, f=0):
+      if c in [1,True,'1','True']:
+        return t
+      return f
+
+
+    """
     Returns its first argument if it is not equal to third argument (None), 
     otherwise it returns its second argument.
     @param a1: 1st argument

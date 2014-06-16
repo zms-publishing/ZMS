@@ -84,7 +84,7 @@
 				c();
 			});
 	}
-	$ZMI.registerReady(function() {
+	$(function() {
 		pluginGalleria('.images',function() {
 				Galleria.loadTheme('<tal:block tal:content="python:'%s/com_zms_jquery_galleria_lib/themes/classic/galleria.classic.js'%zmscontext.getHome().absolute_url()"></tal:block>');
 				$('.images').galleria({height:<tal:block tal:content="python:zmscontext.attr('height')"></tal:block>});

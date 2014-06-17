@@ -149,7 +149,9 @@
 					elValue python:here.attr(metaObjAttrId)"
 				><tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])"
 					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')"
-						><tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)"
+						><tal:block tal:define="global
+									objChildren python:here.getObjChildren(metaObjAttr['id'],request);
+									hasChildren python:len(objChildren)>0"
 							><div class="accordion-heading">
 								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
 									<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>

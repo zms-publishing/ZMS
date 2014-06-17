@@ -534,6 +534,7 @@ body.manage-menu .dropdown-menu > li > a:focus,body.manage-menu .dropdown-menu >
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}
+ul.zmi-container .zmi-item.zmi-nochildren .zmi-action{margin-left:0}
 ul.zmi-container .zmi-item .zmi-action .split-left{width:160px;visibility:hidden;text-align:left}
 .checkbox.split-left{height:1em}
 .checkbox.split-left input{margin:.2em .5em 0 0}

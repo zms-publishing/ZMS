@@ -151,29 +151,22 @@
 					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')"
 						><tal:block tal:define="global objChildren python:here.getObjChildren(metaObjAttr['id'],request)"
 							><div class="accordion-heading">
-								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
-									<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
+									<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>
 									<tal:block tal:content="elLabel">the label</tal:block>
 								</a>
 								<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
 							</div><!-- .accordion-heading -->
 							<tal:block tal:content="structure python:''
-								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','collapse','container']+[[],['in']][int(len(objChildren)>0)]))
+								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren]))
 								+'<div class=\042accordion-inner\042>'"></tal:block>
 							<ul class="zmi-container zmi-sortable">
-								<li tal:condition="python:len(objChildren)==0" class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
+								<li tal:condition="python:hasChildren==0" class="zmi-item zmi-selectable zmi-nochildren" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
 									<div class="center">
-										&nbsp;
-									</div><!-- .center -->
-									<div class="right">
 										<div class="btn-group zmi-action">
 											<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:9990">the sort-id</span>
-											<button class="btn btn-default split-left">
-												&nbsp;
-											</button>
-											<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
-												<span class="caret"></span>
-											</button>
+											<button class="btn btn-default split-left" style="visibility: visible !important;">&nbsp;</button>
+											<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 										</div><!-- .btn-group -->
 									</div><!-- .right -->
 									<div class="clearboth"></div>

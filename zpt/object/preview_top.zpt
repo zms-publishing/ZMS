@@ -33,7 +33,7 @@
 		self.parent.partner.location.href = url;
 	}
 <tal:block tal:content="structure python:'</script>'"></tal:block>
-<div id="zmi-header">
+<header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<div class="pull-right">
@@ -59,7 +59,7 @@
 			</tal:block>
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
-</div><!-- #zmi-header -->
+</header>
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>
 </html>

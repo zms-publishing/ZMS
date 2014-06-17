@@ -8,7 +8,7 @@ $(function(){
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");
 
 	// Sitemap
-	var $icon_sitemap = $('#zmi-header a '+$ZMI.icon_selector("icon-sitemap"));
+	var $icon_sitemap = $('.zmi header a '+$ZMI.icon_selector("icon-sitemap"));
 	if ($icon_sitemap.length > 0) {
 		var $a = $icon_sitemap.closest("a");
 		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
@@ -336,6 +336,16 @@ ZMI.prototype.initInputFields = function(container) {
 									$control.focus();
 								}
 								b = false;
+							}
+							else {
+								var dataExclude = $(this).attr("data-exclude");
+								if (typeof dataExclude != "undefined") {
+									var excludeList = dataExclude.split(",");
+									var v = $control.val();
+									if ($.inArray(v,excludeList)) {
+										$controlGroup.addClass("has-error");
+									}
+								}
 							}
 						}
 					});

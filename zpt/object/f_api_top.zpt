@@ -15,7 +15,7 @@
 		self.parent.partner.location.href = href;
 	}
 </script>
-<div id="zmi-header">
+<header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<div class="pull-right">
@@ -34,6 +34,6 @@
 			</span>&nbsp;&nbsp;
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
-</div><!-- #zmi-header -->
+</header>
 </body>
 </html>

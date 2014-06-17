@@ -24,10 +24,10 @@
 <body class="zmi" tal:condition="python:request.get('frameleft')">
 
 <style type="text/css">
-.zmi #zmi-header .pull-right {
+.zmi header .pull-right {
 	padding-top:.7em;
 }
-.zmi #zmi-header .pull-right * {
+.zmi header .pull-right * {
 	color:#ccc;
 }
 .tab-pane {
@@ -69,7 +69,7 @@ div.strong span {
 .zmi-document-margin {
 	overflow-x:hidden;
 }
-.zmi-footer {
+footer {
 	display:none;
 }
 </style>
@@ -200,7 +200,7 @@ $(function(){
 
 </script>
 
-<div id="zmi-header">
+<header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<div class="pull-right">
@@ -211,7 +211,7 @@ $(function(){
 			&nbsp;
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
-</div><!-- #zmi-header -->
+</header>
 
 <ul class="main-nav nav nav-tabs">
 	<li class="active"><a href="#tabs-0" data-toggle="tab"><i></i>Tree</a></li>

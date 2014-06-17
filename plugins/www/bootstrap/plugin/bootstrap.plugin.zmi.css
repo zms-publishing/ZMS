@@ -59,39 +59,39 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi-helper-clickable, .ui-helper-clickable {
 	cursor:pointer!important;
 }
-#zmi-header {
+.zmi header {
 	background-color:black;
 	height:42px;
 }
-#zmi-header .product {
+.zmi header .product {
 	font-weight:bold;
 }
-#zmi-header .slogan {
+.zmi header .slogan {
 	font-size:x-small;
 }
-#zmi-header .navbar {
+.zmi header .navbar {
 	margin:0;
 	height:42px;
 	min-height:42px;
 }
-#zmi-header .navbar-fixed-top .navbar-inner, 
-#zmi-header .navbar-fixed-bottom .navbar-inner {
+.zmi header .navbar-fixed-top .navbar-inner, 
+.zmi header .navbar-fixed-bottom .navbar-inner {
 	padding:0!important;
 }
 
-.zmi.preview_top #zmi-header .pull-right {
+.zmi.preview_top .zmi header .pull-right {
 	padding-top:.6em;
 	padding-right:.25em;
 }
 
-.zmi.preview_top #zmi-header .pull-right .btn.btn-primary {
+.zmi.preview_top .zmi header .pull-right .btn.btn-primary {
 	margin-top: -.45em;
 }
 
-.zmi.preview_top #zmi-header .pull-right * {
+.zmi.preview_top .zmi header .pull-right * {
 	color:#ccc;
 }
-.zmi.preview_top #zmi-header .pull-right span.zmi-top-active {
+.zmi.preview_top .zmi header .pull-right span.zmi-top-active {
 	color:#FFF;
 	font-weight:bold;
 }
@@ -124,7 +124,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi .navbar-inner {
 	border-radius:0 !important;
 }
-#zmi-footer {
+.zmi footer {
 	left:0px;
 	bottom:0px;
 	height:26px;
@@ -453,7 +453,7 @@ body.manage-menu .ZMSDocument .toggle {
 body.manage-menu {
 	background-color:#404040;
 }
-body.manage-menu #zmi-header {
+body.manage-menu .zmi header {
 	background-color: transparent !important;
 }
 body.manage-menu a {
@@ -1354,18 +1354,18 @@ ul.zmi-container li.zmi-item div.contentEditable {
 	padding: 8px 10px 7px 10px;
 	font-size:14px;
 }
-#zmi-header .navbar-nav.pull-right {
+.zmi header .navbar-nav.pull-right {
 	width:auto;
 	margin:4px 0 !important;
 }
 @media (max-width: 420px) {
-	#zmi-header .navbar-brand {
+	.zmi header .navbar-brand {
 		display:none;
 	}
-	body.manage-menu #zmi-header .navbar-brand {
+	body.manage-menu .zmi header .navbar-brand {
 		display:block !important;
 	}
-	#zmi-header .navbar-nav.pull-right {
+	.zmi header .navbar-nav.pull-right {
 		float:left;
 	}
 }

@@ -102,13 +102,13 @@ elif request.get('frametop') is not None:
         overflow: hidden;
       }
         .breadcrumb{ margin-bottom:10px;}
-        #zmi-footer {display:none;}
-        #zmi-header .pull-right {display: block;padding-right:1em;margin-top: .8em;}
-        #zmi-header .pull-right a {text-decoration:none;}
+        .zmi footer {display:none;}
+        .zmi header .pull-right {display: block;padding-right:1em;margin-top: .8em;}
+        .zmi header .pull-right a {text-decoration:none;}
     </style>
     '''
 
-  print '<div id="zmi-header">'
+  print '<header>'
   print '<div class="navbar navbar-inverse navbar-fixed-top">'
   print context.zmi_navbar_brand(context,request)
   print '<div class="pull-right">'
@@ -118,7 +118,7 @@ elif request.get('frametop') is not None:
   print '&nbsp;'
   print '</div><!-- .pull-right -->'
   print '</div><!-- .navbar -->'
-  print '</div><!-- #zmi-header -->'
+  print '</header>'
 
   print context.zmi_breadcrumbs(context,request)
 

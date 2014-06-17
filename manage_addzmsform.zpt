@@ -10,14 +10,14 @@
 
 <body class="zmi">
 
-<div id="zmi-header">
+<header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<a class="navbar-brand" href="#" onclick="window.open('http://www.zms-publishing.com');" title="ZMS3 - ZOPE2-based contentmanagement system for science, technology and medicine">
 			<span class="product">ZMS3</span>
 			<span class="slogan">ZOPE2-based contentmanagement system for science, technology and medicine</span>
 		</a>
 	</div><!-- .navbar -->
-</div><!-- #zmi-header -->
+</header>
 
 <form class="form-horizontal form-insert" action="manage_addZMS" method="post" onsubmit="return formOnSubmit(this)" style="margin:0 2em; 0; 2em;">
 <input type="hidden" name="preview" value="preview" />
@@ -193,13 +193,13 @@ $ZMI.registerReady(function() {
 </script>
 </form>
 
-<div id="zmi-footer">
+<footer>
 	<div class="pull-left">
 		&#169; <tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block> 
 		<a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
 	</div><!-- .pull-left -->
 	<div class="clearfix"></div><!-- .clearfix -->
-</div><!-- #zmi-footer -->
+</footer>
 
 </body>
 </html>

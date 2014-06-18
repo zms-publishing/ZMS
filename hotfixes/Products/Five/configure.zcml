@@ -1,0 +1,15 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:five="http://namespaces.zope.org/five">
+
+  <include package="Zope2.App" file="configure.zcml" />
+
+  <include file="meta.zcml" />
+  <include file="permissions.zcml" />
+<!--
+  <include package=".component" />
+  <include package=".browser" />
+  <include package=".skin" />
+  <include package=".utilities" />
+  <include package=".viewlet" />
+-->
+</configure>

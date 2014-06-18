@@ -1,0 +1,102 @@
+ZMS: Simplified Content Modelling
+=================================
+
+ZMS (Python-based Content Management System for Science, Technology and Medicine) is a content management solution for the site-based e-publishing. A simple editing interface and flexible content model (multilingualism, metadata, content objects, XML import/export, workflow etc.) is designed for optimal productivity for web sites, documentation and educational content. 
+
+Modularity of the ZMS components and approved production processes turn ZMS into an incomparably rapid tool. The underlying efficiency-oriented publication model is the result of many consulting projects in recent years by HOFFMANN+LIEBENBERG, Berlin.
+
+http://www.zms-publishing.com
+
+Installation
+------------
+
+**(1) Get pip and virtualenv (if not already installed).**
+
+    |   The PyPA recommended tool for installing and managing Python packages:
+    |   https://pip.pypa.io/en/latest/installing.html
+
+    |   The PyPA recommended tool for creating isolated Python environments:
+    |   https://virtualenv.pypa.io/en/latest/virtualenv.html#installation
+
+
+**(2) Setup a Virtual Environment for ZMS3.**
+
+::
+
+$ cd ~
+$ virtualenv ZMS3
+
+       
+**(3) Install ZMS3 Product.**
+
+    |   ZMS3 uses Zope2 as underpinning legacy framework:
+    |   http://zope2.zope.org/about-zope-2/six-reasons-for-using-zope/
+
+::     
+   
+$ ./ZMS3/bin/pip install ZMS3
+
+        *NOTE:* Mac OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before (`more info <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_).
+       
+        You can downgrade these errors to warnings again via:
+
+    ::
+       
+    $ export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
+
+    
+        *NOTE:* If you get pip errors like ``URLError: <urlopen error timed out>`` try:
+        
+    ::      
+    
+    $ ./ZMS3/bin/pip install ZMS3 --timeout 120
+        
+
+        |   *NOTE:* To install PIL (Python Imaging Library) use:
+        |   (because PIL is not hosted at PyPI special ``--allow``-parameters are needed)
+    
+    ::
+    
+    $ ./ZMS3/bin/pip install PIL --allow-external PIL --allow-unverified PIL
+
+     
+**(4) Create ZMS3 Instance (if not exists).**
+
+::     
+
+$ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
+
+        
+**(5) Start ZMS3 Instance.**
+
+::     
+
+$ ./ZMS3/instance/bin/zopectl start
+
+        *NOTE:* If you get zope errors like ``AttributeError: ZopeCtlOptions instance has no attribute 'start_timeout'`` on startup, run upgrade instantly
+        
+    ::
+       
+    $ ./ZMS3/bin/pip uninstall ZMS3
+    $ ./ZMS3/bin/pip install --upgrade ZMS3
+    $ ./ZMS3/instance/bin/zopectl restart
+
+    and finally initialize new instance
+
+    |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
+    |   (replace "localhost" with your system's IP address or domain name if no local installation) 
+    
+    or access existing instance
+    
+    |   http://localhost:8080/myzmsx/content/manage
+    |   (replace "myzmsx" with your instance's Folder-Id if necessary)
+       
+Changelog
+---------
+       
+    https://zmslabs.org/trac/log/ZMS/trunk/
+
+Code
+----
+
+    https://zmslabs.org/trac/browser/ZMS/trunk/

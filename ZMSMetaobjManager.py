@@ -1145,12 +1145,12 @@ class ZMSMetaobjManager:
                 tmpltCustom = []
                 tmpltCustom.append('<!-- %s.%s -->\n'%(id,tmpltId))
                 tmpltCustom.append('\n')
-                tmpltCustom.append('<span tal:omit-tag="" tal:define="global\n')
+                tmpltCustom.append('<tal:block tal:define="global\n')
                 tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
                 if newValue['type'] == 'ZMSRecordSet':
                   tmpltCustom.append('\t<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>\n')
                   tmpltCustom.append('\t<p class="description" tal:content="python:\'%i %s\'%(len(zmscontext.attr(zmscontext.getMetaobj(zmscontext.meta_id)[\'attrs\'][0][\'id\'])),zmscontext.getLangStr(\'ATTR_RECORDS\',request[\'lang\']))">#N records</p>\n')
-                tmpltCustom.append('</span>\n')
+                tmpltCustom.append('</tal:block>\n')
                 tmpltCustom.append('\n')
                 tmpltCustom.append('<!-- /%s.%s -->\n'%(id,tmpltId))
                 tmpltCustom = ''.join(tmpltCustom)

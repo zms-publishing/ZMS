@@ -578,7 +578,8 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SAVE')">
 	<tal:block tal:define="global
-			message python:'Created %i master versions.'%zmscontext.tagObjVersions(attr('master_version')+1,request);
+			dummy0 python:zmscontext.tagObjVersions(zmscontext.attr('master_version')+1,request);
+			message python:'Created Master Version %s.*.* .'%zmscontext.attr('master_version');
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
 	</tal:block>
 </tal:block>
@@ -589,7 +590,8 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
 <tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_CANCEL')">
 	<tal:block tal:define="global
 			message python:'Operation cancelled.';
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))"
+		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':'ERROR: New Master Version can not be created.'}))">>
 	</tal:block>
 </tal:block>
 

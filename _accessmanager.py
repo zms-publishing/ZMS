@@ -58,7 +58,7 @@ role_defs = {
 # ------------------------------------------------------------------------------
 def getUserId(user):
   if type(user) is dict:
-    user = user['__id__']
+    user = user['name']
   elif user is not None and type(user) not in StringTypes:
     user = user.getId()
   return user
@@ -82,14 +82,13 @@ def role_permissions(self, role):
 def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
   if password!='******' and password==confirm:
     userFldr = user['localUserFldr']
-    id = user['name']
+    id = user['user_id_']
     if userFldr.meta_type == 'User Folder':
       roles = userFldr.getUser(id).getRoles()
       domains = userFldr.getUser(id).getDomains()
       userFldr.userFolderEditUser(id, password, roles, domains)
     elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
-      user_id = user['user_id']
-      user['plugin'].updateUserPassword(user_id, password)
+      user['plugin'].updateUserPassword(id, password)
     self.setUserAttr(id,'forceChangePassword',forceChangePassword)
     return True
   return False
@@ -104,7 +103,8 @@ def deleteUser(self, id):
   for node in nodes.keys():
     ob = self.getLinkObj(node)
     if ob is not None:
-      ob.manage_delLocalRoles(userids=[id])
+      user_id = self.getUserAttr(id,'user_id_',id)
+      ob.manage_delLocalRoles(userids=[user_id])
   
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
@@ -444,17 +444,17 @@ class AccessManager(AccessableContainer):
     def searchUsers(self, search_term=''):
       users = []
       if search_term != '':
-        for userFldr in self.getUserFolders():
-          doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
-          if doc_elmnts:
-            if userFldr.meta_type == 'LDAPUserFolder':
-              login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              users.extend(map(lambda x:x[login_attr],userFldr.findUser(search_param=login_attr,search_term=search_term)))
-            elif userFldr.meta_type == 'Pluggable Auth Service':
-              users.extend(map(lambda x:x['login'],userFldr.searchUsers(login=search_term,id=None,exact_match=True)))
-            else:
-              login_attr = 'login'
-              users.extend(filter(lambda x: x==search_term,userFldr.getUserNames()))
+        userFldr = self.getUserFolder()
+        doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
+        if doc_elmnts:
+          if userFldr.meta_type == 'LDAPUserFolder':
+            login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+            users.extend(map(lambda x:x[login_attr],userFldr.findUser(search_param=login_attr,search_term=search_term)))
+          elif userFldr.meta_type == 'Pluggable Auth Service':
+            users.extend(map(lambda x:x['login'],userFldr.searchUsers(login=search_term,id=None,exact_match=True)))
+          else:
+            login_attr = 'login'
+            users.extend(filter(lambda x: x==search_term,userFldr.getUserNames()))
       return users
   
   
@@ -467,85 +467,95 @@ class AccessManager(AccessableContainer):
       columns = None
       records = []
       c = [{'id':'name','name':'Name'}]
-      for userFldr in self.getUserFolders():
-        doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
-        if doc_elmnts:
-          users = []
-          if userFldr.meta_type == 'LDAPUserFolder':
-            if search_term != '':
-              login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-              users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
-          elif userFldr.meta_type == 'Pluggable Auth Service':
-            if search_term != '':
-              login_attr = 'login'
-              for user in userFldr.searchUsers(login=search_term,id=None):
-                plugin = getattr(userFldr,user['pluginid'])
-                append = True
-                if plugin.meta_type == 'ZODB User Manager':
-                  login_name = user[login_attr]
-                  append = search_term == '' or \
-                    (login_name.find(search_term) >= 0 and not exact_match) or \
-                    (login_name == search_term and exact_match)
-                if append:
-                  users.append(user)
+      userFldr = self.getUserFolder()
+      users = []
+      if userFldr.meta_type == 'LDAPUserFolder':
+        if search_term != '':
+          login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+          users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
+      elif userFldr.meta_type == 'Pluggable Auth Service':
+        if search_term != '':
+          login_attr = 'login'
+          for user in userFldr.searchUsers(login=search_term,id=None):
+            plugin = getattr(userFldr,user['pluginid'])
+            append = True
+            if plugin.meta_type == 'ZODB User Manager':
+              login_name = user[login_attr]
+              append = search_term == '' or \
+                (login_name.find(search_term) >= 0 and not exact_match) or \
+                (login_name == search_term and exact_match)
+            if append:
+              users.append(user)
+      else:
+        login_attr = 'name'
+        for userName in userFldr.getUserNames():
+          if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
+            if (exact_match and search_term==userName) or \
+               search_term == '' or \
+               search_term.find(userName) >= 0:
+              users.append({'name':userName})
+      for user in users:
+        login_name = user[login_attr]
+        d = {}
+        d['localUserFldr'] = userFldr
+        d['name'] = login_name
+        d['user_id_'] = login_name
+        d['user_id'] = login_name
+        d['roles'] = []
+        d['domains'] = []
+        extras = ['pluginid','givenName','sn','ou']
+        luf = None
+        plugin = None
+        _uid_attr = None
+        uid = None
+        if userFldr.meta_type == 'LDAPUserFolder':
+          luf = userFldr
+        elif userFldr.meta_type == 'Pluggable Auth Service':
+          pluginid = user['pluginid']
+          plugin = getattr(userFldr,pluginid)
+          if plugin.meta_type == 'LDAP Multi Plugin':
+            for o in plugin.objectValues('LDAPUserFolder'):
+              luf = o
+              break
+        if luf is not None:
+          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',luf.getProperty('_login_attr'))
+          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',luf.getProperty('_uid_attr'))
+          if _uid_attr != _login_attr:
+            uid = user[_uid_attr]
+        elif plugin is not None:
+          _uid_attr = login_name
+          uid = plugin.getUserIdForLogin(_uid_attr)
+        if uid is not None:
+          d['user_id_'] = uid
+          try:
+            if uid.startswith('\x01\x05\x00\x00'):
+              import binascii
+              uid = binascii.b2a_hex(buffer(uid))
+          except:
+            _globals.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
+          d['user_id'] = uid
+          if len(filter(lambda x:x['id']=='user_id',c))==0:
+            c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
+          c = filter(lambda x:x['id']!=_uid_attr,c)
+          extras = filter(lambda x:x!=_uid_attr,extras)
+        for extra in user.keys():
+          if extra == 'pluginid':
+            pluginid = user[extra]
+            plugin = getattr(userFldr,pluginid)
+            d['plugin'] = plugin
+            editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
+            container = userFldr.aq_parent
+            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
+            t = 'html'
           else:
-            login_attr = 'name'
-            for userName in userFldr.getUserNames():
-              if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
-                if (exact_match and search_term==userName) or \
-                   search_term == '' or \
-                   search_term.find(userName) >= 0:
-                  users.append({'name':userName})
-          for user in users:
-            login_name = user[login_attr]
-            d = {}
-            d['localUserFldr'] = userFldr
-            d['__id__'] = login_name
-            d['name'] = login_name
-            d['roles'] = []
-            d['domains'] = []
-            extras = ['pluginid','givenName','sn','ou']
-            for extra in user.keys():
-              if extra == 'pluginid':
-                pluginid = user[extra]
-                plugin = getattr(userFldr,pluginid)
-                # User ID
-                uid = None
-                if plugin.meta_type == 'LDAP Multi Plugin':
-                  for ldapUserFldr in plugin.objectValues('LDAPUserFolder'):
-                     _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
-                     _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
-                     if _uid_attr != _login_attr:
-                       uid = user[_uid_attr]
-                       try:
-                         if uid.startswith('\x01\x05\x00\x00'):
-                           import binascii
-                           uid = binascii.b2a_hex(buffer(uid))
-                       except:
-                         _globals.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
-                elif plugin.meta_type == 'ZODB User Manager':
-                  _uid_attr = 'user_id'
-                  uid = plugin.getUserIdForLogin(login_name)
-                if uid is not None:
-                  d['user_id'] = uid
-                  if len(filter(lambda x:x['id']=='user_id',c))==0:
-                    c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
-                  c = filter(lambda x:x['id']!=_uid_attr,c)
-                  extras = filter(lambda x:x!=_uid_attr,extras)
-                d['plugin'] = plugin
-                editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
-                container = userFldr.aq_parent
-                v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
-                t = 'html'
-              else:
-                v = unicode(user[extra],encoding).encode('utf-8')
-                t = 'string'
-              d[extra] = v
-              if extra in extras and len(filter(lambda x:x['id']==extra,c))==0:
-                  c.append({'id':extra,'name':extra.capitalize(),'type':t})
-            if exact_match and user[login_attr].lower() == search_term.lower():
-              return d
-            records.append(d)
+            v = unicode(user[extra],encoding).encode('utf-8')
+            t = 'string'
+          d[extra] = v
+          if extra in extras and len(filter(lambda x:x['id']==extra,c))==0:
+            c.append({'id':extra,'name':extra.capitalize(),'type':t})
+        if exact_match and user[login_attr].lower() == search_term.lower():
+          return d
+        records.append(d)
       if exact_match:
         return None
       if columns is None:
@@ -592,6 +602,16 @@ class AccessManager(AccessableContainer):
             user['details'] = filter(lambda x:x['name'] not in [_uid_attr],user['details'])
       return user
 
+
+    # --------------------------------------------------------------------------
+    #  AccessManager.getUserName:
+    # --------------------------------------------------------------------------
+    def getUserName(self, uid):
+      d = self.getConfProperty('ZMS.security.users',{})
+      for k in d.keys():
+        if d.get('user_id_',k) == uid:
+          return k
+      return None
 
     # --------------------------------------------------------------------------
     #  AccessManager.setUserAttr:
@@ -691,44 +711,15 @@ class AccessManager(AccessableContainer):
     #  AccessManager.getUserFolder:
     # --------------------------------------------------------------------------
     def getUserFolder(self):
-      homeElmnt = self.getHome()
-      userFldrs = homeElmnt.objectValues(user_folder_meta_types)
-      if len(userFldrs)==0:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          userFldr = portalMaster.getUserFolder()
-        else:
-          # Create default user-folder.
-          userFldr = UserFolder()
-          homeElmnt._setObject(userFldr.id, userFldr)
+      docElmnt = self.breadcrumbs_obj_path()[0]
+      homeElmnt = docElmnt.getHome()
+      if 'acl_users' in homeElmnt.objectIds():
+        userFldr = homeElmnt.acl_users
       else:
-        userFldr = userFldrs[0]
+        # Create default user-folder.
+        userFldr = UserFolder()
+        homeElmnt._setObject(userFldr.id, userFldr)
       return userFldr
-
-
-    # --------------------------------------------------------------------------
-    #  AccessManager.getUserFolders:
-    # --------------------------------------------------------------------------
-    def getUserFolders(self):
-      userFolders = []
-      ob = self
-      depth = 0
-      while True:
-        if depth > sys.getrecursionlimit():
-          raise zExceptions.InternalError("Maximum recursion depth exceeded")
-        depth = depth + 1
-        if ob is None: 
-          break
-        try:
-          localUserFolders = ob.objectValues(user_folder_meta_types)
-          if len(localUserFolders)==1:
-            localUserFolder = localUserFolders[0]
-            if localUserFolder not in userFolders:
-              userFolders.append(localUserFolder)
-          ob = ob.aq_parent
-        except:
-          ob = None
-      return userFolders
 
 
     ############################################################################
@@ -750,8 +741,9 @@ class AccessManager(AccessableContainer):
         userroles = local_role[1]
         if 'Owner' not in userroles:
           if userid not in valid_userids and userid not in invalid_userids:
-            userob = ob.findUser(userid)
-            if userob is None:
+            name = self.getUserName(userid)
+            user = ob.findUser(name)
+            if user is None:
               invalid_userids.append(userid)
             else:
               valid_userids.append(userid)
@@ -789,17 +781,22 @@ class AccessManager(AccessableContainer):
       for node in nodes.keys():
         ob = self.getLinkObj(node,self.REQUEST)
         if ob is not None:
+          user_id = self.getUserAttr(id,'user_id_',id)
           if active:
             roles = nodes[node].get('roles',[])
-            ob.manage_setLocalRoles(id,roles)
+            ob.manage_setLocalRoles(user_id,roles)
           else:
-            ob.manage_delLocalRoles(userids=[id])
+            ob.manage_delLocalRoles(userids=[user_id])
 
 
     # --------------------------------------------------------------------------
     #  AccessManager.setLocalUser:
     # --------------------------------------------------------------------------
     def setLocalUser(self, id, node, roles, langs):
+      
+      # Set user id.
+      user = self.findUser(id)
+      self.setUserAttr(id, 'user_id_', user['user_id_'])
       
       # Insert node to user-properties.
       nodes = self.getUserAttr(id,'nodes',{})
@@ -813,7 +810,8 @@ class AccessManager(AccessableContainer):
       # Set local roles in node.
       ob = self.getLinkObj(node,self.REQUEST)
       if ob is not None:
-        ob.manage_setLocalRoles(id,roles)
+        user_id = self.getUserAttr(id,'user_id_',id)
+        ob.manage_setLocalRoles(user_id,roles)
 
 
     # --------------------------------------------------------------------------
@@ -830,7 +828,8 @@ class AccessManager(AccessableContainer):
       # Delete local roles in node.
       ob = self.getLinkObj(node,self.REQUEST)
       if ob is not None:
-        ob.manage_delLocalRoles(userids=[id])
+        user_id = self.getUserAttr(id,'user_id_',id)
+        ob.manage_delLocalRoles(userids=[user_id])
 
 
     ############################################################################

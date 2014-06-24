@@ -134,6 +134,8 @@ class ZMSContainerObject(
     def manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
       values['meta_id'] = meta_id
       return self.manage_addZMSObject('ZMSCustom',values,REQUEST)
+    def zmi_manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
+      return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
 
     # --------------------------------------------------------------------------

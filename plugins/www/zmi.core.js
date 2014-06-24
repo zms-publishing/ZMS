@@ -56,12 +56,13 @@ $(function(){
 
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
+		$("<style type='text/css'>.contentEditable.zmi-highlight{background-color:#f7f7f9;} </style>").appendTo("head");
 		$('.contentEditable')
 			.mouseover( function(evt) {
-					$(this).addClass('preview').addClass('highlight'); 
+					$(this).addClass('zmi-highlight'); 
 				})
 			.mouseout( function(evt) {
-					$(this).removeClass('preview').removeClass('highlight'); 
+					$(this).removeClass('zmi-highlight'); 
 				})
 			.click( function(evt) {
 				evt.stopPropagation();

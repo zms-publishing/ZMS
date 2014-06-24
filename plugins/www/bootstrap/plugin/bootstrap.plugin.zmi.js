@@ -45,7 +45,7 @@ $(function(){
 			if ($("span.input-group-addon",this).length==0) {
 				$(this).addClass("input-group");
 				if ($textarea.attr('data-style')) {
-					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Zope Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
+					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
 				} else {
 					$(this).append('<span class="input-group-addon btn btn-default">...</span>');
 				};
@@ -282,10 +282,10 @@ function zmiUnlockForm(form_id) {
  * Init input_fields
  */ 
 ZMI.prototype.initInputFields = function(container) {
-	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form.form-horizontal:not(.form-initialized)',container).length+"]");
-	$('form.form-horizontal:not(.form-initialized)',container)
+	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form:not(.form-initialized)',container).length+"]");
+	$('form:not(.form-initialized)',container)
 		.submit(function() {
-				$ZMI.writeDebug("form.form-horizontal:not(.form-initialized): submit");
+				$ZMI.writeDebug("form:not(.form-initialized): submit");
 				var b = true;
 				var context = this;
 				// Button
@@ -397,7 +397,7 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 			$(this).addClass('form-initialized');
 			// Button-Clicked
-			$ZMI.writeDebug("BO zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
+			$ZMI.writeDebug("zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
 			$('input[type="submit"],button[type="submit"]',context)
 				.click(function() {
 						self.btnClicked = $(this).attr("value");

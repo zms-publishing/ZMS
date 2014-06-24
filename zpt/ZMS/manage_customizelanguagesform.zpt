@@ -129,33 +129,40 @@ function zmiFormSubmit(sender,d) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">Dictionary</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANGDICT')">well</p>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-hover zmi-selectable">
 	<colgroup>
-		<col style="width:8em;" />
+		<col width="40"/>
 		<col class="col key" />
-		<col tal:repeat="langId langIds" 
-			tal:attributes="class python:'col %s'%(langId)" />
+		<col tal:repeat="langId langIds" tal:attributes="class python:'col %s'%(langId)" />
 	</colgroup>
 	<thead>
 	<tr>
 		<th>
 			<div class="btn-group">
+				<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+			</div>
+		</th>
+		<th colspan="2" tal:attributes="colspan python:1+len(langIds)">
+			<div class="btn-group">
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importLangDict',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 			</div>
 		</th>
+	</tr>
+	<tr>
+		<th></th>
 		<th tal:content="python:here.getZMILangStr('ATTR_KEY')">Key</th>
 		<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()">
-		<td><input class="form-checkbox" type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
+		<td style="text-align:center;"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
 	</tr>
 	<tr>
-		<td style="text-align:center;padding-top:1em;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+		<td style="text-align:center;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td><input class="form-control input-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
 	</tr>

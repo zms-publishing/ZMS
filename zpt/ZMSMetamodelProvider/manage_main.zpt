@@ -349,7 +349,7 @@
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METAOBJ')">well</p>
-	<table class="table table-striped table-hover table-bordered">
+	<table class="table table-striped table-hover table-bordered zmi-selectable">
 	<colgroup>
 		<col width="40"/>
 	</colgroup>

@@ -434,21 +434,21 @@ img.desaturate{filter:url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.o
 .zmi-helper-hidden,.ui-helper-hidden{display:none}
 textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi-helper-clickable,.ui-helper-clickable{cursor:pointer!important}
-#zmi-header{background-color:black;height:42px}
-#zmi-header .product{font-weight:bold}
-#zmi-header .slogan{font-size:x-small}
-#zmi-header .navbar{margin:0;height:42px;min-height:42px}
-#zmi-header .navbar-fixed-top .navbar-inner,#zmi-header .navbar-fixed-bottom .navbar-inner{padding:0!important}
-.zmi.preview_top #zmi-header .pull-right{padding-top:.6em;padding-right:.25em}
-.zmi.preview_top #zmi-header .pull-right .btn.btn-primary{margin-top:-.45em}
-.zmi.preview_top #zmi-header .pull-right *{color:#ccc}
-.zmi.preview_top #zmi-header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
+.zmi header{background-color:black;height:42px}
+.zmi header .product{font-weight:bold}
+.zmi header .slogan{font-size:x-small}
+.zmi header .navbar{margin:0;height:42px;min-height:42px}
+.zmi header .navbar-fixed-top .navbar-inner,.zmi header .navbar-fixed-bottom .navbar-inner{padding:0!important}
+.zmi.preview_top .zmi header .pull-right{padding-top:.6em;padding-right:.25em}
+.zmi.preview_top .zmi header .pull-right .btn.btn-primary{margin-top:-.45em}
+.zmi.preview_top .zmi header .pull-right *{color:#ccc}
+.zmi.preview_top .zmi header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 #zmi-overlay{background-color:black;display:block;position:absolute;top:0;left:0;width:100%;height:100%;filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 #zmi-progressbox{padding:20px 40px 20px 40px;background-color:#FFF;color:black;position:absolute}
 .zmi ul.main-nav{margin-top:0.5em;padding-left:1em}
 .zmi.config .main-nav{min-width:1160px}
 .zmi .navbar-inner{border-radius:0 !important}
-#zmi-footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
+.zmi footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
 .zmi ol,.zmi ul,.zmi li,.zmi p,.zmi sup,.zmi sub,.zmi table,.zmi tr,.zmi th,.zmi td{color:#333}
 .zmi a{color:#08c}
@@ -522,7 +522,7 @@ body.browse_iframe .toggle{font-size:120%;vertical-align:bottom;width:12px;margi
 body.manage-menu .toggle{color:#CCC;font-size:120%;vertical-align:bottom;width:12px;margin-right:2px;text-align:center;display:inline-block;cursor:pointer}
 body.manage-menu .ZMSDocument .toggle{color:#404040}
 body.manage-menu{background-color:#404040}
-body.manage-menu #zmi-header{background-color:transparent !important}
+body.manage-menu .zmi header{background-color:transparent !important}
 body.manage-menu a{color:#FFF}
 body.manage-menu .zmi-sitemap .inactive a,body.manage-menu .zmi-helper-clickable{color:#999}
 body.manage-menu div.restricted > a > i{color:orange}
@@ -730,10 +730,10 @@ li.zmi-item span.zmi-ids{display:inline-block;margin:6px;vertical-align:top}
 .zmi-manage-main-change{color:#888;font-size:11px;margin:2px 0 0 8px}
 ul.zmi-container li.zmi-item div.contentEditable{min-height:60px}
 .nav>li>a{padding:8px 10px 7px 10px;font-size:14px}
-#zmi-header .navbar-nav.pull-right{width:auto;margin:4px 0 !important}
-@media(max-width:420px){#zmi-header .navbar-brand{display:none}
- body.manage-menu #zmi-header .navbar-brand{display:block !important}
- #zmi-header .navbar-nav.pull-right{float:left}}
+.zmi header .navbar-nav.pull-right{width:auto;margin:4px 0 !important}
+@media(max-width:420px){.zmi header .navbar-brand{display:none}
+ body.manage-menu .zmi header .navbar-brand{display:block !important}
+ .zmi header .navbar-nav.pull-right{float:left}}
 body.zmi.metas .input-group-addon{padding:0px 8px}
 body.zmi select.zmi-sort{direction:rtl;width:3.8em;height:28px !important;padding:4px 2px 4px 6px;color:#555555;vertical-align:middle;background-color:#ffffff;border:1px solid #cccccc;border-radius:4px;border-top-right-radius:0px;border-bottom-right-radius:0px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);-webkit-transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;float:left}
 body.zmi .meta-sort .add-on.btn{color:#888;background:#eee;border-top-left-radius:0;border-bottom-left-radius:0;border:1px solid #ccc;padding:3px 6px}

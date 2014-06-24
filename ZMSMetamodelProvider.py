@@ -23,6 +23,7 @@ import copy
 import zope.interface
 # Product Imports.
 import _confmanager
+import _globals
 import IZMSConfigurationProvider
 import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager
 import ZMSItem
@@ -112,7 +113,7 @@ class ZMSMetamodelProvider(
       
       # otherwise do some 'magic'
       else:
-        print "ZMSMetamodelProvider.__bobo_traverse__: otherwise do some 'magic'"
+        _globals.writeLog(self, "[ZMSMetamodelProvider.__bobo_traverse__]: otherwise do some 'magic'")
         ob = self.getHome().aq_parent
         while ob is not None:
           content = getattr( ob, 'content', None)

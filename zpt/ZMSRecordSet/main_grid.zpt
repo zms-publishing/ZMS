@@ -3,6 +3,7 @@
 <div class="ZMSRecordSet main_grid" tal:define="global
 		metaObjAttrIds options/metaObjAttrIds;
 		metaObjAttrs options/metaObjAttrs;
+		sorted python:'sort_id' in metaObjAttrIds;
 		url python:options.get('url',request['URL']);
 		url_params python:options.get('url_params',{});
 		actions python:options.get('actions',['insert','update','delete','sort']);
@@ -71,9 +72,10 @@
 	</th>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<th tal:define="global elLabel python:metaObjAttr['name']">
-			<a tal:condition="python:metaObjAttr['id']!=request.get('qorder','')" tal:content="elLabel" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"></a>
-			<a tal:condition="python:metaObjAttr['id']==request.get('qorder','') and 'asc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')"></a>
-			<a tal:condition="python:metaObjAttr['id']==request.get('qorder','') and 'desc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes-alt\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')"></a>
+			<span tal:condition="sorted" tal:content="elLabel">the label</span>
+			<a tal:condition="python:not sorted and metaObjAttr['id']!=request.get('qorder','')" tal:content="elLabel" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')">the label</a>
+			<a tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'asc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')">the label</a>
+			<a tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'desc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes-alt\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')">the label</a>
 		</th>
 	</tal:block>
 </tr>
@@ -85,7 +87,7 @@
 	<tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
 </tal:block>
 	<td>
-		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="python:'sort_id' in metaObjAttrIds" />
+		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="sorted" />
 		<div class="btn-group">
 			<span class="checkbox split-left btn">
 				<input tal:attributes="name python:['qindices:list','qindex'][int('select' in actions)]; type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)" />
@@ -96,6 +98,12 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
+					<li tal:condition="python:'insert' in actions">
+						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
+						</a>
+					</li>
 					<li tal:condition="python:'update' in actions">
 						<a tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\',\'_self\')'%(url,request['lang'],qindex,''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>
@@ -108,7 +116,7 @@
 							<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
 						</a>
 					</li>
-					<tal:block tal:condition="python:'sort' in actions and 'sort_id' in metaObjAttrIds">
+					<tal:block tal:condition="sorted">
 						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
 						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
 					</tal:block>

@@ -140,6 +140,7 @@ class ZMSLog(ZMSItem.ZMSItem):
       path = SOFTWARE_HOME
       if REQUEST.has_key('path'):
         path = REQUEST['path']
+      path = path.strip()
       return path
 
     # --------------------------------------------------------------------------

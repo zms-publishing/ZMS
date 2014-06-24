@@ -1318,7 +1318,6 @@ return context.getTextFormatDefault()]]>
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- bodyContentZMSLib_page -->
 
-	<tal:block tal:content="structure here/bodyContent_PagePre">The page-pre-content</tal:block>
 	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
 		childNodes python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
 			<tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
@@ -1330,7 +1329,6 @@ return context.getTextFormatDefault()]]>
 			The body-content
 		</tal:block>
 	</tal:block>
-	<tal:block tal:content="structure here/bodyContent_PagePost">The page-post-content</tal:block>
 
 <!-- /bodyContentZMSLib_page -->]]>
                   </item>

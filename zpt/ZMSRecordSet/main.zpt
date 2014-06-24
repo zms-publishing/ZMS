@@ -50,7 +50,7 @@
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 		<div class="accordion-heading filters">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrZMSRecordSet">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
 			</a>
 			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" >Rows</label>
@@ -59,7 +59,7 @@
 			<input class="form-control input-sm" size="3" type="text" name="qfilters:int" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))" tal:attributes="value request/qfilters">
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
-		<div id="attrProperties" class="accordion-body collapse in">
+		<div id="attrZMSRecordSet" class="accordion-body collapse">
 			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<div class="form-inline" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<div class="form-group">

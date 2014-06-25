@@ -33,13 +33,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Subscript,Superscript';
 
 	// Set the most common block elements.
-	try {
-		$ZMI.CKEDITOR_editorConfig(config);
-	}
-	catch(e) {
-		config.format_tags = 'p;h2;h3';
-	}
-
+	$ZMI.CKEDITOR_editorConfig(config);
 
 	// Make dialogs simpler.
 	config.removeDialogTabs = 'image:advanced;link:advanced';

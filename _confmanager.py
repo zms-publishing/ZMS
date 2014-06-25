@@ -684,6 +684,12 @@ class ConfManager(
     ###
     ############################################################################
     """
+    
+    def get_zmi_logo(self, REQUEST=None, RESPONSE=None):
+      """ get_zmi_logo """
+      if self.zmi_logo is not None:
+        return self.zmi_logo.data
+      return ''
 
     ############################################################################
     #  ConfManager.manage_customizeDesign: 
@@ -765,7 +771,7 @@ class ConfManager(
       # -------
       elif btn == self.getZMILangStr('BTN_UPLOAD'):
         #-- ZMI Logo.
-        self.zmi_logo = Image(id='logo', title='', file='')
+        self.zmi_logo = Image(id='zmi_logo', title='', file='')
         self.zmi_logo.manage_upload(REQUEST['file'],REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')
       

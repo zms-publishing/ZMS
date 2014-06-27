@@ -78,24 +78,24 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi header .navbar-fixed-bottom .navbar-inner {
 	padding:0!important;
 }
-
-.zmi.preview_top .zmi header .pull-right {
-	padding-top:.6em;
+.zmi.preview_top .navbar .pull-right {
+	padding-top:.8em;
 	padding-right:.25em;
 }
-
-.zmi.preview_top .zmi header .pull-right .btn.btn-primary {
+.zmi.preview_top .navbar .pull-right .btn.btn-primary {
 	margin-top: -.45em;
 }
-
-.zmi.preview_top .zmi header .pull-right * {
-	color:#ccc;
+.zmi.preview_top .navbar .pull-right * {
+	color:#aaa;
+	text-decoration:none;
+}
+.zmi.preview_top .navbar .pull-right a:hover {
+	color:#fff;
 }
 .zmi.preview_top .zmi header .pull-right span.zmi-top-active {
 	color:#FFF;
 	font-weight:bold;
 }
-
 #zmi-overlay {
 	background-color:black;
 	display:block;
@@ -106,14 +106,12 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	height:100%;
 	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40
 }
-
 #zmi-progressbox {
 	padding:20px 40px 20px 40px;
 	background-color:#FFF;
 	color:black;
 	position:absolute
 }
-
 .zmi ul.main-nav {
 	margin-top:0.5em;
 	padding-left:1em;
@@ -524,6 +522,10 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
 	visibility:hidden;
 	text-align:left;
+}
+ul.zmi-container .zmi-item.zmi-nochildren .zmi-action .split-left {
+	width:auto;
+	padding-right:.5em
 }
 .checkbox.split-left {
 	height:1em;
@@ -1144,8 +1146,8 @@ div.right .btn .caret {
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
 		color: #333;
 	}
-	.navbar-inverse .navbar-nav .open .dropdown-menu>li.devider {
-		background-color: #e5e5e5;
+	.navbar-inverse .navbar-nav .open .dropdown-menu .devider {
+		background-color: #e5e5e5 !important;
 	}
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover,
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:focus {
@@ -1153,8 +1155,7 @@ div.right .btn .caret {
 		text-decoration: none;
 		background-color: #428bca;
 	}
-	
-	
+
 	ul.zmi-container {
 		padding:0em; 
 	}
@@ -1214,43 +1215,45 @@ div.right .btn .caret {
 	#zmi-logo {
 		display: none;
 	}
-	.zmi ul.main-nav {
-		font-size: 13px;
-		margin: 0px;
-		padding: 0.5em;
+	.zmi ul.breadcrumb {
+		padding: 1em 0 1em 1em;
+	}
+	.zmi nav ul.main-nav.nav.nav-tabs {
+		width: 101%;
+		padding:0;
+		padding-left: 0;
+		margin:-1px 0 0 -1px;
+		min-width:0;
 	}
 	.zmi .main-nav li {
-		margin:1px;
+		margin: 1px;
+		display: none;
+		float:none;
 	}
-	.zmi .main-nav li a {
-		line-height:1.25em;
-		padding:0.5em 0.7em 0.6em 0.7em;
-		border:0px;
+	.zmi .main-nav li.active {
+		display: block !important;
 	}
-	.zmi .main-nav li a:hover {
-		border-radius:4px;
-		background-color: #0088cc;
-		border:0px;
-		color:#fff;
-	}
-	.zmi .main-nav a:focus {
-		outline: none none;
-		outline-offset: 0px;
+	.zmi .nav-tabs>li>a,
+	.zmi .nav-tabs>li>a:hover, 
+	.zmi .nav-tabs>li>a.active,
+	.zmi .nav-tabs>li>a.active:hover {
+		border-radius: 0 !important;
+		border:0;
+		padding:.5em 1em;
+		cursor: pointer;
 	}
 	.zmi .main-nav li.active a {
-		border:0px;
-		border-radius:4px;
-		font-weight:normal;
-		background-color: #0088cc !important;
-		color:#fff;
+	display: block !important;
+	background-color: #0088cc !important;
+	color:#fff !important;
 	}
 	.zmi .main-nav li.active a:hover {
-		background-color: #888 !important;
-		color:#fff;
+	background-color: #888 !important;
 	}
-	.zmi.properties .form-horizontal {
+	.zmi .form-horizontal {
 		margin-left:0;
 		margin-right:0;
+		padding: 1em;
 	}
 	.zmi.properties .accordion-group {
 		width:100%;
@@ -1286,7 +1289,9 @@ div.right .btn .caret {
 }
 
 @media (min-width: 767px) {
-
+	.zmi nav #toggle_zmitabs {
+		display: none;
+	}
 	div.zmi-action .dropdown-submenu>.dropdown-menu {
 		left: -160px;
 	}

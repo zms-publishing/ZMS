@@ -439,9 +439,10 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi header .slogan{font-size:x-small}
 .zmi header .navbar{margin:0;height:42px;min-height:42px}
 .zmi header .navbar-fixed-top .navbar-inner,.zmi header .navbar-fixed-bottom .navbar-inner{padding:0!important}
-.zmi.preview_top .zmi header .pull-right{padding-top:.6em;padding-right:.25em}
-.zmi.preview_top .zmi header .pull-right .btn.btn-primary{margin-top:-.45em}
-.zmi.preview_top .zmi header .pull-right *{color:#ccc}
+.zmi.preview_top .navbar .pull-right{padding-top:.8em;padding-right:.25em}
+.zmi.preview_top .navbar .pull-right .btn.btn-primary{margin-top:-.45em}
+.zmi.preview_top .navbar .pull-right *{color:#aaa;text-decoration:none}
+.zmi.preview_top .navbar .pull-right a:hover{color:#fff}
 .zmi.preview_top .zmi header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 #zmi-overlay{background-color:black;display:block;position:absolute;top:0;left:0;width:100%;height:100%;filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 #zmi-progressbox{padding:20px 40px 20px 40px;background-color:#FFF;color:black;position:absolute}
@@ -536,6 +537,7 @@ ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}
 ul.zmi-container .zmi-item.zmi-nochildren .zmi-action{margin-left:0}
 ul.zmi-container .zmi-item .zmi-action .split-left{width:160px;visibility:hidden;text-align:left}
+ul.zmi-container .zmi-item.zmi-nochildren .zmi-action .split-left{width:auto;padding-right:.5em}
 .checkbox.split-left{height:1em}
 .checkbox.split-left input{margin:.2em .5em 0 0}
 .zmi-action .btn.split-left,.zmi-action .btn.split-right{background-color:#eee;border-color:#eee;color:#333;font-weight:bold;height:2.7em;margin-left:0}
@@ -676,7 +678,7 @@ div.right .btn .caret{}
  .navbar-nav .localisation .dropdown-menu{right:0;left:auto}
  .navbar-nav .open .dropdown-menu>li>a,.navbar-nav .open .dropdown-menu .dropdown-header{padding:3px 20px}
  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a{color:#333}
- .navbar-inverse .navbar-nav .open .dropdown-menu>li.devider{background-color:#e5e5e5}
+ .navbar-inverse .navbar-nav .open .dropdown-menu .devider{background-color:#e5e5e5 !important}
  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover,.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:focus{color:#fff;text-decoration:none;background-color:#428bca}
  
  
@@ -699,14 +701,14 @@ div.right .btn .caret{}
  .navbar-brand .slogan{display:none}
  .navbar-nav>li{float:left}
  #zmi-logo{display:none}
- .zmi ul.main-nav{font-size:13px;margin:0px;padding:0.5em}
- .zmi .main-nav li{margin:1px}
- .zmi .main-nav li a{line-height:1.25em;padding:0.5em 0.7em 0.6em 0.7em;border:0px}
- .zmi .main-nav li a:hover{border-radius:4px;background-color:#0088cc;border:0px;color:#fff}
- .zmi .main-nav a:focus{outline:none none;outline-offset:0px}
- .zmi .main-nav li.active a{border:0px;border-radius:4px;font-weight:normal;background-color:#0088cc !important;color:#fff}
- .zmi .main-nav li.active a:hover{background-color:#888 !important;color:#fff}
- .zmi.properties .form-horizontal{margin-left:0;margin-right:0}
+ .zmi ul.breadcrumb{padding:1em 0 1em 1em}
+ .zmi nav ul.main-nav.nav.nav-tabs{width:101%;padding:0;padding-left:0;margin:-1px 0 0 -1px;min-width:0}
+ .zmi .main-nav li{margin:1px;display:none;float:none}
+ .zmi .main-nav li.active{display:block !important}
+ .zmi .nav-tabs>li>a,.zmi .nav-tabs>li>a:hover,.zmi .nav-tabs>li>a.active,.zmi .nav-tabs>li>a.active:hover{border-radius:0 !important;border:0;padding:.5em 1em;cursor:pointer}
+ .zmi .main-nav li.active a{display:block !important;background-color:#0088cc !important;color:#fff !important}
+ .zmi .main-nav li.active a:hover{background-color:#888 !important}
+ .zmi .form-horizontal{margin-left:0;margin-right:0;padding:1em}
  .zmi.properties .accordion-group{width:100%}
  .zmi.properties .accordion-group.zmi-container{width:100%;padding:0}
  .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-body.container{margin-left:0}
@@ -716,7 +718,8 @@ div.right .btn .caret{}
  .zmi.properties .form-horizontal .form-group.activity .col-lg-2.control-label{float:left}
  .zmi.properties .form-horizontal .form-group.activity .col-lg-10{padding-left:4em}
  .zmi-image,.zmi-file{min-width:95%}}
-@media(min-width:767px){div.zmi-action .dropdown-submenu>.dropdown-menu{left:-160px}
+@media(min-width:767px){.zmi nav #toggle_zmitabs{display:none}
+ div.zmi-action .dropdown-submenu>.dropdown-menu{left:-160px}
  div.zmi-action .dropdown-submenu>a:after{display:none}
  .zmi.properties form.form-horizontal .accordion-group{background-color:#fff}
  .ZMSLinkContainer.zmi.properties form.form-horizontal .accordion-group{width:100% !important}}

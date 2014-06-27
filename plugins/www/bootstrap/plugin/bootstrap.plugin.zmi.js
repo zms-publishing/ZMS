@@ -33,6 +33,14 @@ $(function(){
 			}
 		});
 
+	// Main Menu Toggle
+	$('.zmi .main-nav li.active').click(function() {
+		if ( $(window).width() < 767) {
+			event.preventDefault();
+			$('.zmi .main-nav li:not(.active)').toggle();
+		}
+	});
+
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {

@@ -766,6 +766,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	params['context_id'] = context_id;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
+		$ZMI.writeDebug("[ZMIActionList.over]: data="+data);
 		// Reset wait-cursor.
 		$(document.body).css( "cursor", "auto");
 		// Exit.
@@ -777,8 +778,12 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 		var actions = value['actions'];
 		$(el).append('<ul class="dropdown-menu"></ul>');
 		$ul = $("ul.dropdown-menu",el);
+		$ZMI.writeDebug("[ZMIActionList.over]: "+actions[1][0]);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
+		$ZMI.writeDebug("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
+		var o = 1;
 		if (startsWithSubmenu) {
+			var o = 2;
 			var html = '';
 			var opticon = '';
 			if (actions[1].length > 2) {
@@ -810,7 +815,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 			//
 			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 		}
-		for (var i = 2; i < actions.length; i++) {
+		for (var i = o; i < actions.length; i++) {
 			var optlabel = actions[i][0];
 			var optvalue = actions[i][1];
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {

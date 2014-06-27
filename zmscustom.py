@@ -414,6 +414,7 @@ class ZMSCustom(ZMSContainerObject):
           self.setObjStateModified(REQUEST)
           
           metaObj = self.getMetaobj(self.meta_id)
+          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
           res_abs = self.recordSet_Init(REQUEST)
           if action == 'insert':
             row = {}
@@ -472,12 +473,13 @@ class ZMSCustom(ZMSContainerObject):
                 row['sort_id'] = new_sort_id
               else:
                 row['sort_id'] = row['sort_id']*10
-            # Normalize sort-ids.
+            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
+          # Normalize sort-ids.
+          if 'sort_id' in metaObjAttrIds:
             res_abs = self.sort_list(res_abs,'sort_id')
             for i in range(len(res_abs)):
               row = res_abs[i]
               row['sort_id'] = i+1
-            message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
           self.setObjProperty(metaObj['attrs'][0]['id'],res_abs,lang)
           
           ##### VersionManager ####

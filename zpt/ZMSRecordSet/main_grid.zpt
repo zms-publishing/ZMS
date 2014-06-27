@@ -99,7 +99,7 @@
 				</button>
 				<ul class="dropdown-menu">
 					<li tal:condition="python:'insert' in actions">
-						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join([[],['&sort_id:int=%i'%(index+1)]][sorted]+map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 						</a>

@@ -110,7 +110,7 @@
 	<tal:block tal:define="global records request/res_abs; row python:{}">
 		<tal:block tal:repeat="metaObjAttr python:here.getMetaobj(here.meta_id)['attrs'][1:]">
 			<tal:block tal:condition="python:metaObjAttr['id']=='sort_id'">
-				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],len(records))"></tal:block>
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],request.get('sort_id',len(records)))"></tal:block>
 			</tal:block>
 			<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime'] and metaObjAttr['default']=='{now}'">
 				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],DateTime())"></tal:block>

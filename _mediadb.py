@@ -118,7 +118,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   c = 0
   t = 0
   mediadb = self.getMediaDb()
-  path = mediadb.location
+  path = mediadb.getLocation()
   filenames = mediadb.valid_filenames()
   for filename in os.listdir(path):
     if filename not in filenames:
@@ -226,7 +226,14 @@ class MediaDb(
     def __init__(self, location):
       self.id = 'acl_mediadb'
       self.location = location
-      _fileutil.mkDir(location)
+      _fileutil.mkDir(self.getLocation())
+
+
+    # --------------------------------------------------------------------------
+    # MediaDb.getLocation
+    # --------------------------------------------------------------------------
+    def getLocation(self):
+      return self.location.replace('$INSTANCE_HOME',INSTANCE_HOME)
 
 
     # --------------------------------------------------------------------------
@@ -240,8 +247,8 @@ class MediaDb(
     # --------------------------------------------------------------------------
     def getPath(self, REQUEST): 
       path = REQUEST.get('path','')
-      if len(path) < len(self.location):
-        path = self.location
+      if len(path) < len(self.getLocation()):
+        path = self.getLocation()
       return path
 
     # --------------------------------------------------------------------------
@@ -296,7 +303,7 @@ class MediaDb(
       if len( filename) > 0:
         fileext = _fileutil.extractFileExt(file.filename)
         filename = filename[:-(len(fileext)+1)] + '_' + str(time.time()).replace('.','') + '.' + fileext
-        filepath = _fileutil.getOSPath('%s/%s'%(self.location,filename))
+        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
         _fileutil.exportObj(file,filepath)
       return filename
 
@@ -316,7 +323,7 @@ class MediaDb(
     def retrieveFileStreamIterator(self, filename, REQUEST=None):
       filename = filename.replace('..','')
       threshold = 2 << 16 # 128 kb
-      local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
+      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
       fsize = os.path.getsize( local_filename)
       if fsize < threshold or REQUEST.RESPONSE is None:
         try:
@@ -342,7 +349,7 @@ class MediaDb(
     def retrieveFile(self, filename):
       filename = filename.replace('..','')
       try:
-        local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
+        local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
         f = open( local_filename, 'rb')
         data = f.read()
         f.close()
@@ -355,7 +362,7 @@ class MediaDb(
     #	MediaDb.getFileSize
     # --------------------------------------------------------------------------
     def getFileSize(self, filename):
-      local_filename = _fileutil.getOSPath('%s/%s'%(self.location,filename))
+      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
       fsize = os.path.getsize( local_filename)
       return fsize
 
@@ -365,7 +372,7 @@ class MediaDb(
     # --------------------------------------------------------------------------
     def destroyFile(self, filename):
       try:
-        filepath = _fileutil.getOSPath('%s/%s'%(self.location,filename))
+        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
         _fileutil.remove(filepath)
       except:
         pass

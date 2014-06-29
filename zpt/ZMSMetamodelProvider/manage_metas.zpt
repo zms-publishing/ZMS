@@ -94,7 +94,7 @@ function zmiFormSubmit(sender,d) {
 	<thead>
 	<tr>
 		<th class="meta-sort">
-			<div class="btn-group" style="width:8em;">
+			<div class="btn-group" style="width:6em;">
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 			</div>
@@ -113,23 +113,19 @@ function zmiFormSubmit(sender,d) {
 	<tr tal:repeat="metadictAttrId metadictAttrIds">
 		<tal:block tal:define="global metadictAttr python:here.getMetadictAttr(metadictAttrId)">
 		<td class="meta-sort">
-			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']">
-			<div class="input-append pull-left">
+			<input type="hidden" name="old_ids:list" tal:attributes="value python:metadictAttr['id']" />
+			<div class="input-append">
 				<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%metadictAttrId">
 					<option tal:repeat="i python:range(0,len(metadictAttrIds))" tal:attributes="selected python:['','selected'][int(i==metadictAttrIds.index(metadictAttrId))]" tal:content="python:i+1">i+1</option>
 				</select>
 				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 			</div>
-			<div class="pull-right">
-				<tal:block tal:define="
-							meta_ids python:filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds());
-						">
-					<span class="btn-default" tal:attributes="title python:','.join(meta_ids); onmouseover python:'$(this).tooltip({html:true,placement:\'bottom\'})';"><tal:block tal:content="structure python:here.zmi_icon(name='icon-info')"></tal:block></span>
-				</tal:block>
-			</div>
 		</td>
-		<td class="meta-id">
-			<input class="form-control input-sm" type="text" tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; value python:metadictAttr['id']" />
+		<td class="meta-id" tal:define="meta_ids python:filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds());">
+			<input class="form-control input-sm" type="text" 
+				tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; 
+					value python:metadictAttr['id']; 
+					title python:'Used by: ' + ', '.join(meta_ids);" />
 		</td>
 		<td class="meta-name">
 			<input class="form-control input-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']" />

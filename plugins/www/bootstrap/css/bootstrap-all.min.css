@@ -542,8 +542,9 @@ ul.zmi-container .zmi-item.zmi-nochildren .zmi-action .split-left{width:auto;pad
 .checkbox.split-left input{margin:.2em .5em 0 0}
 .zmi-action .btn.split-left,.zmi-action .btn.split-right{background-color:#eee;border-color:#eee;color:#333;font-weight:bold;height:2.7em;margin-left:0}
 ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;font-size:large}
-form.form-horizontal{background-color:#fff;margin-left:2em;margin-right:2em;padding:0.5em}
-form.form-horizontal.form-insert{margin:0}
+.zmi form.form-horizontal{background-color:#fff;margin-left:1.5em;margin-right:1.5em;padding:0.5em}
+.zmi form.form-horizontal.form-insert{margin:0}
+.zmi legend{margin-bottom:.35em;border-bottom:none;color:#888}
 .system table.zopeobjects i{margin-left:3px}
 .zmi.properties .accordion-group{background-color:#fff;padding:1em}
 .zmi.properties .accordion-group .accordion-inner{padding:0.5em 0;margin:0.5em 0}
@@ -715,7 +716,7 @@ div.right .btn .caret{}
  .zmi.properties .form-horizontal .form-group.activity .col-lg-2.control-label{float:left}
  .zmi.properties .form-horizontal .form-group.activity .col-lg-10{padding-left:4em}
  .zmi-image,.zmi-file{min-width:95%}
- #zmiIframeAddDialog .modal-dialog{max-width:90% !important;-webkit-transform:translate(3%,2em) !important;transform:translate(3%,2em) !important}}}
+ #zmiIframeAddDialog .modal-dialog{max-width:90% !important;-webkit-transform:translate(3%,2em) !important;transform:translate(3%,2em) !important}}
 @media(min-width:767px){.zmi nav #toggle_zmitabs{display:none}
  div.zmi-action .dropdown-submenu>.dropdown-menu{left:-160px}
  div.zmi-action .dropdown-submenu>a:after{display:none}

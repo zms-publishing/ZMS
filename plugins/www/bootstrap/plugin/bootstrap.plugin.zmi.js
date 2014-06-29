@@ -34,10 +34,11 @@ $(function(){
 		});
 
 	// Main Menu Toggle
-	$('.zmi .main-nav li.active').click(function() {
+	$('.zmi .main-nav li.active a').click(function(event) {
 		if ( $(window).width() < 767) {
 			event.preventDefault();
 			$('.zmi .main-nav li:not(.active)').toggle();
+			return false;
 		}
 	});
 

@@ -1155,7 +1155,9 @@ div.right .btn .caret {
 		text-decoration: none;
 		background-color: #428bca;
 	}
-
+	div#zmi-tab {
+		background-color: #fff !important;
+	}
 	ul.zmi-container {
 		padding:0em; 
 	}
@@ -1165,20 +1167,27 @@ div.right .btn .caret {
 	.zmi.main form {
 		margin:0px;
 	}
-	ul.zmi-container > li > div.right {
+	ul.zmi-container > li.zmi-item > div.right {
 		position: absolute;
+		float:right;
+		width: 100% !important;
+		text-align: right;
 	}
 	ul.zmi-container .zmi-item .zmi-action {
 		margin-left:0px;
 	}
+	ul.zmi-container .zmi-item .zmi-action .btn {
+		border-radius: 0;
+	}
 	ul.zmi-container .zmi-item .zmi-action .split-left	{
-		display:none !important;
+		width: 238px;
 	}
 	.zmi-manage-main-change {
 		display:none !important;
 	}
 	.zmi-item .dropdown-menu {
-		margin-left:2em;
+		margin-left:0em;
+		text-align: left;
 	}	
 	ul.zmi-container {
 		width: 100% !important;
@@ -1194,15 +1203,6 @@ div.right .btn .caret {
 	.right span.zmi-ids {
 		display:none !important;
 	}
-	ul.zmi-container .center .contentEditable {
-		padding-left:3em !important
-	}
-	ul.zmi-container.pages .center .contentEditable {
-		padding-left:2.5em !important
-	}
-	ul.zmi-container.portalClients .center .contentEditable {
-		padding-left:2em !important
-	}
 	img.grippy {
 		visibility:hidden;
 	}
@@ -1217,6 +1217,8 @@ div.right .btn .caret {
 	}
 	.zmi ul.breadcrumb {
 		padding: 1em 0 1em 1em;
+		background: #ddd;
+		border-radius:0;
 	}
 	.zmi nav ul.main-nav.nav.nav-tabs {
 		width: 101%;
@@ -1239,8 +1241,9 @@ div.right .btn .caret {
 	.zmi .nav-tabs>li>a.active:hover {
 		border-radius: 0 !important;
 		border:0;
-		padding:.5em 1em;
+		padding:.8em 1em;
 		cursor: pointer;
+		max-height:42px;
 	}
 	.zmi .main-nav li.active a {
 	display: block !important;
@@ -1286,6 +1289,13 @@ div.right .btn .caret {
 	.zmi-image,.zmi-file {
 		min-width:95%;
 	}
+	#zmiIframeAddDialog .modal-dialog {
+		max-width:90% !important;
+		-webkit-transform: translate(3%, 2em) !important;
+		transform: translate(3%, 2em) !important;
+	}
+}
+	
 }
 
 @media (min-width: 767px) {

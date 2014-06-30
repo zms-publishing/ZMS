@@ -210,7 +210,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  Returns configuration-files from $ZMS_HOME/import-Folder
     # --------------------------------------------------------------------------
-    security.declareProtected('View', 'ZMS Administrator')
+    security.declareProtected('ZMS Administrator', 'getConfFiles')
     def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
       """
       ConfManager.getConfFiles

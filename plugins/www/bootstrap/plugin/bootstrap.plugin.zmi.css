@@ -1178,6 +1178,9 @@ div.right .btn .caret {
 		width: 100% !important;
 		text-align: right;
 	}
+	.zmi-children ul.zmi-container > li.zmi-item > div.right {
+		width: 93% !important;
+	}
 	ul.zmi-container .zmi-item .zmi-action {
 		margin-left:0px;
 	}

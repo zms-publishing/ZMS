@@ -1214,10 +1214,10 @@ class ZMSGlobals:
       return fdata
 
 
+    """
+    Set content-type and -disposition to response-headers.
+    """
     def set_response_headers(self, fn, mt='application/octet-stream'):
-      """
-      Set content-type and -disposition to response-headers.
-      """
       REQUEST = self.REQUEST
       RESPONSE = REQUEST.RESPONSE
       RESPONSE.setHeader('Content-Type', mt)
@@ -1228,10 +1228,10 @@ class ZMSGlobals:
           RESPONSE.setHeader('Accept-Ranges', accept_ranges)
 
 
+    """
+    Writes file to local file-system.
+    """
     def localfs_write(self, filename, v, mode='b', REQUEST=None):
-      """
-      Writes file to local file-system.
-      """
       _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
       
       # Get absolute filename.
@@ -1255,10 +1255,10 @@ class ZMSGlobals:
       _fileutil.exportObj( v, filename, mode)
 
 
+    """
+    Removes file from local file-system.
+    """
     def localfs_remove(self, path, deep=0):
-      """
-      Removes file from local file-system.
-      """
       _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
       
       # Get absolute filename.
@@ -1282,12 +1282,11 @@ class ZMSGlobals:
       _fileutil.remove( path, deep)
 
 
-    security.declareProtected('View', 'localfs_readPath')
+    """
+    Reads path from local file-system.
+    @rtype: C{list}
+    """
     def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
-      """
-      Reads path from local file-system.
-      @rtype: C{list}
-      """
       try:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:

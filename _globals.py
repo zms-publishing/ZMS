@@ -395,6 +395,21 @@ def triggerEvent(self, name, preview=False, REQUEST=None):
     if metaObjAttr is not None:
       v = self.getObjProperty(name,REQUEST)
       l.append( v)
+    for metaObjId in self.getMetaobjIds():
+      metaObj = self.getMetaobj(metaObjId)
+      if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
+        metaObjAttr = self.getMetaobjAttr( metaObjId, name, syncTypes=['*'])
+        if metaObjAttr is not None:
+          v = None
+          if metaObjAttr['type'] == 'method':
+            v = self.dt_exec(metaObjAttr.get('custom',''))
+          elif metaObjAttr['type'] == 'py':
+            v = metaObjAttr['py'](zmscontext=self)
+          elif metaObjAttr['type'] == 'zpt':
+            v = metaObjAttr['zpt'](zmscontext=self)
+            v = unicode(value).encode('utf-8')
+          if v is not None:
+            l.append(v)
     ob = self
     ob_ids = []
     while ob is not None:

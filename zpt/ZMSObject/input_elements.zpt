@@ -8,11 +8,12 @@
 			objAttrs python:here.getObjAttrs(metaObj['id'])"
 		><tal:block tal:repeat="metaObjAttrId metaObjAttrIds"
 			><tal:block tal:define="global 
-					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
-					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
-					elLabel python:here.getObjAttrLabel(metaObjAttr);
-					elValue python:here.attr(metaObjAttrId)"
+					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)"
 				><tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[]) and metaObjAttr['type'] not in here.metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']"
+				><tal:block tal:define="global 
+						elName python:here.getObjAttrName(metaObjAttr,request['lang']);
+						elLabel python:here.getObjAttrLabel(metaObjAttr);
+						elValue python:here.attr(metaObjAttrId)"
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
 						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
 						<div class="accordion-heading">
@@ -79,6 +80,7 @@
 							<div class="col-sm-10" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->
 						</div><!-- .form-group -->
 					</tal:block>
+				</tal:block>
 				</tal:block>
 			</tal:block>
 		</tal:block>

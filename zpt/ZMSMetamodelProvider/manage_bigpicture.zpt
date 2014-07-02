@@ -5,6 +5,7 @@
 <form class="form-horizontal">
 
 <style>
+
 .box {
 	background-color:#CFC;
 	border:1px solid #00C;
@@ -15,19 +16,42 @@
 	width:30em;
 	position:relative;
 	cursor:auto;
+
 }
+p {
+	float:left;
+	margin-left:-.5em;
+}
+
+ol.objlist {
+	position: fixed;
+	right: 20px;
+	border: 1px solid silver;
+	border-radius: 4px;
+	padding: .5em 3em;
+	background: #fff;
+	box-shadow: 0px 0px 20px silver;
+}
+
 .box div {
 	padding:.15em .5em
 }
-.box .id {
+.box .objid {
 	border-bottom:1px solid #00C;
 	text-align:center;
-	
 }
-.box .type {
+.box .objid a {
+	font-weight:bold;
+	color:black;
+	text-decoration:none;
+}
+.box .objtype {
 	text-align:center;
 	font-style:italic;
 	color:darkgreen;
+}
+.box .objname {
+	color:darkred;
 }
 .box .attr {
 	font-size:smaller;
@@ -71,19 +95,34 @@
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds)">
 
 	<legend tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
+	<ol class="objlist">
+		<li tal:repeat="metaObj python:filter(lambda x:x['package']==packageId,metaObjs)">
+			<a tal:attributes="href python:'#%s'%(metaObj.get('id',''))" tal:content="metaObj/name">the name</a>
+		</li>
+	</ol>
+
 	<tal:block tal:repeat="metaObj python:filter(lambda x:x['package']==packageId,metaObjs)">
-		<div class="box">
-			<div class="type" tal:content="metaObj/type">the type</div>
-			<div class="id">
+		<p tal:content="repeat/metaObj/number">1</p>
+		<div class="box" tal:attributes="id metaObj/id">
+			<div class="objtype" tal:content="metaObj/type">the type</div>
+			<div class="objid">
 				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block>
-				<tal:block tal:content="metaObj/id">the id</tal:block>
+				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])" tal:content="metaObj/id">the id</a>
+				<span class="objname">
+					= <tal:block 
+						tal:define="l python:request.get('manage_lang','ger');
+									n python:metaObj.get('name','');
+									nstr python:here.getZMILangStr(n,l);
+									tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
+						tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name</tal:block>
+				</span>
 			</div>
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
 				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
 					<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])" tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']">
 						<span class="attrType" tal:content="metaObjAttr/type">the type</span>
 						<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
-						<span class="attrName">(<tal:block tal:content="metaObjAttr/name">the name</tal:block>)</span>
+						<span class="attrName">(<tal:block tal:content="metaObjAttr/name" tal:condition="python:metaObjAttr['type'] not in ['hint']">the name</tal:block>)</span>
 					</div><!-- .attr -->
 					<div class="ref" tal:condition="python:metaObjAttr['type'] in ['*']+metaObjIds">
 						<table cellspacing="0" cellpadding="0" border="0">

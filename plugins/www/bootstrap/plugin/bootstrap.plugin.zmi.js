@@ -1088,8 +1088,15 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	return false;
 }
 
-function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue) {
+function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
 	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
+	if (typeof elTitle != "undefined") {
+		$('form[name='+fmName+'] input[name^=title]').each(function() {
+				if ($(this).val()=='') {
+					$(this).val(elTitle);
+				} 
+			});
+	}
 }
 
 function zmiDialogClose() {

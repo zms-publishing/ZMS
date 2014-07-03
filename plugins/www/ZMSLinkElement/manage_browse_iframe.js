@@ -2,7 +2,8 @@
  * Select object.
  */
 function selectObject(physical_path,anchor,is_page,titlealt) {
-	$ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor);
+	$ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
+	confirm('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
 	var fm;
 	var url = physical_path;
 	var title = titlealt;
@@ -12,7 +13,7 @@ function selectObject(physical_path,anchor,is_page,titlealt) {
 	}
 	if ( fm) {
 		var path = getInternalUrl(url);
-		self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path);
+		self.window.parent.zmiBrowseObjsApplyUrlValue(zmiParams['fmName'],zmiParams['elName'],path,titlealt);
 	}
 	else {
 		url = $ZMI.relativateUrl(url,anchor);
@@ -27,6 +28,7 @@ function selectObject(physical_path,anchor,is_page,titlealt) {
  */
 function selectUrl(url) {
 	$ZMI.writeDebug('BO selectUrl: url='+url);
+	confirm('BO selectUrl: url='+url);
 	var fm;
 	var title = '';
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''

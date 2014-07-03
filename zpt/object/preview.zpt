@@ -7,5 +7,4 @@
 	<frame name="partner" marginheight="1" tal:attributes="src python:here.getHref2IndexHtml(request)">
 </frameset>
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/object/preview.js"></script>
 </html>

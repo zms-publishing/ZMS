@@ -249,9 +249,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   
   ### Init ZMS object-model.
   conf = 'zms'
-  if REQUEST.get('initialization',0) == 3:
-    conf = 'zms2go'
-  _confmanager.initConf(obj, conf, REQUEST)
   
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default', REQUEST)
@@ -314,25 +311,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       initContent(obj,'content.default.zip',REQUEST)
     elif REQUEST.get('initialization',0)==3:
       initContent(obj,'zms2go.default.zip',REQUEST)
-    
-    ##### E-Learning components ####
-    if REQUEST.get('initialization',0)==2:
-      # Create Home.
-      lcmsHomeElmnt = initTheme(homeElmnt,'lcms.zexp','lcms',REQUEST)
-      # Create LCMS.
-      titlealt = 'LCMS'
-      title = 'Learning Content Management System'
-      lcms = initZMS(lcmsHomeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
-      lcms.setLanguage('eng', 'English', 'ger', 'eng')
-      # Init configuration.
-      _confmanager.initConf(lcms, 'lcms', REQUEST)
-      _confmanager.initConf(obj, 'lms', REQUEST)
-      # Register Portal/Client.
-      lcms.setConfProperty('Portal.Master',homeElmnt.id)
-      obj.setConfProperty('Portal.Clients',[lcmsHomeElmnt.id])
-      # Init content.
-      initContent(lcms,'lcms.default.xml',REQUEST)
-      initContent(obj,'lms.default.zip',REQUEST)
     
     ##### Configuration ####
     

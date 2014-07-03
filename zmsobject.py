@@ -272,7 +272,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def getTitle( self, REQUEST):
       s = self.getObjProperty('title',REQUEST)
-      if len(s) == 0:
+      if s is None or len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
           offs = 1
@@ -285,13 +285,13 @@ class ZMSObject(ZMSItem.ZMSItem,
                   s = v
                   break
               c = c + 1
-      if len(s) == 0:
+      if s is None or len(s) == 0:
         s = self.display_type(REQUEST)
       if self.isPage():
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
           s = sec_no + ' ' + s
-	  s = s.replace(' & ',' &amp; ')
+      s = s.replace(' & ',' &amp; ')
       return s
 
 
@@ -300,9 +300,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def getTitlealt( self, REQUEST):
       s = self.getObjProperty('titlealt',REQUEST)
-      if len(s) == 0: 
+      if s is None or len(s) == 0: 
         s = self.display_type(REQUEST)
-      if len(s) == 0:
+      if s is None or len(s) == 0:
         if self.isPage():
           metaObjAttrs = self.getMetaobj( self.meta_id).get( 'attrs', [])
           offs = 0
@@ -506,25 +506,12 @@ class ZMSObject(ZMSItem.ZMSItem,
         obj_type = self.meta_id
       if obj_type in self.getMetaobjIds( sort=0):
         if zpt:
-          metaObjAttr = self.getMetaobjAttr( obj_type, 'icon_clazz')
-          if metaObjAttr is not None:
-            icon_clazz = None
-            if metaObjAttr['type'] == 'py':
-              icon_clazz = metaObjAttr['py'](zmscontext=self)
-            elif metaObjAttr['type'] == 'constant':
-              icon_clazz = metaObjAttr.get('custom',None)
-            if icon_clazz:
-              return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%unicode(icon_title,'utf-8'))
-        if key in self.getMetaobjAttrIds( obj_type):
-          metaObjAttr = self.getMetaobjAttr( obj_type, key)
-          if metaObjAttr is not None and metaObjAttr['type'] == 'method':
-            value = self.dt_html(metaObjAttr.get('custom',''))
-          elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
-            value = metaObjAttr['py'](zmscontext=self)
-          else:
-            value = metaObjAttr.get( 'custom', None)
-          if value is not None and type(value) is not str:
-            return pattern%value.absolute_url()
+          icon_clazz = self.evalMetaobjAttr( '%s.%s'%(obj_type,'icon_clazz'))
+          if icon_clazz is not None:
+            return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%unicode(icon_title,'utf-8'))
+        value = self.evalMetaobjAttr( '%s.%s'%(obj_type,key)) 
+        if value is not None and type(value) is not str:
+          return pattern%value.absolute_url()
         metaObj = self.getMetaobj( obj_type)
         if metaObj:
           if metaObj[ 'type'] == 'ZMSResource':

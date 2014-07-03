@@ -583,6 +583,40 @@ class ZMSMetaobjManager:
 
 
     # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.evalMetaobjAttr
+    # --------------------------------------------------------------------------
+    def evalMetaobjAttr(self, id, attr_id, zmscontext=None, options={}):
+      def call(fn):
+        if options:
+          return fn(zmscontext=zmscontext,options=options)
+        else:
+          return fn(zmscontext=zmscontext)
+      value = None
+      metaObjAttr = self.getMetaobjAttr( id, attr_id, syncTypes=['*'])
+      if metaObjAttr is not None:
+        if metaObjAttr['type'] == 'interface':
+          if metaObjAttr.get('py') is not None:
+            value = call(metaObjAttr['py'])
+          elif metaObjAttr.get('zpt') is not None:
+            value = call(metaObjAttr['zpt'])
+            value = unicode(value).encode('utf-8')
+          else:
+            value = zmscontext.dt_exec(metaObjAttr.get('name',''))
+        elif metaObjAttr['type'] == 'method':
+          value = zmscontext.dt_exec(metaObjAttr.get('custom',''))
+        elif metaObjAttr['type'] == 'py':
+          value = call(metaObjAttr['py'])
+        elif metaObjAttr['type'] == 'zpt':
+          value = call(metaObjAttr['zpt'])
+          value = unicode(value).encode('utf-8')
+        elif metaObjAttr['type'] == 'constant':
+          value = metaObjAttr.get('custom','')
+        elif metaObjAttr['type'] == 'resource':
+          value = metaObjAttr.get('custom',None)
+      return value
+
+
+    # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjAttr:
     # 
     #  Get attribute for meta-object specified by attribute-id.

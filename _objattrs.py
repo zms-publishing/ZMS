@@ -18,6 +18,7 @@
 
 # Imports.
 from DateTime.DateTime import DateTime
+from OFS.Image import Image, File
 from types import StringTypes
 import ZPublisher.HTTPRequest
 import datetime
@@ -593,7 +594,7 @@ class ObjAttrs:
           value = obj_default
       
       #-- Url-Fields
-      elif datatype == _globals.DT_URL and value.startswith('{$') and not value.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
+      elif datatype == _globals.DT_URL and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         try:
           old = value
           value = self.validateLinkObj(value)
@@ -652,65 +653,29 @@ class ObjAttrs:
         value = self.fetchReqBuff( reqBuffId, REQUEST, forced)
         return value
       except:
-        meta_id = REQUEST.get('ZMS_INSERT',self.meta_id)
-        objAttrs = self.getObjAttrs()
-        metaObjAttr = None
         try:
-          if key not in objAttrs.keys():
-            if key.find('.')>0:
-              meta_id = key[:key.find('.')]
-              key = key[key.find('.')+1:]
-            metaObjAttr = self.getMetaobjAttr( meta_id, key, syncTypes=['*'])
-        except:
-          _globals.writeError( self, "[getObjProperty]: Can't get attribute from meta-objects: %s.%s"%(self.meta_id,key))
+          objAttrs = self.getObjAttrs()
           
-        #-- Special attributes.
-        if metaObjAttr is not None and metaObjAttr['type'] == 'interface':
-          try:
-            if metaObjAttr.get('py') is not None:
-              value = metaObjAttr['py'](zmscontext=self)
-            elif metaObjAttr.get('zpt') is not None:
-              value = metaObjAttr['zpt'](zmscontext=self)
-              value = unicode(value).encode('utf-8')
-            else:
-              value = self.dt_exec(metaObjAttr.get('name',''))
-          except:
-            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
-        elif metaObjAttr is not None and metaObjAttr['type'] == 'method':
-          try:
-            value = self.dt_exec(metaObjAttr.get('custom',''))
-          except:
-            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
-        elif metaObjAttr is not None and metaObjAttr['type'] == 'py':
-          try:
-            value = metaObjAttr['py'](zmscontext=self)
-          except:
-            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
-        elif metaObjAttr is not None and metaObjAttr['type'] == 'zpt':
-          try:
-            value = metaObjAttr['zpt'](zmscontext=self)
-            value = unicode(value).encode('utf-8')
-          except:
-            value = _globals.writeError(self,'[getObjProperty]: key=%s[%s]'%(key,metaObjAttr['type']))
-        elif metaObjAttr is not None and metaObjAttr['type'] == 'constant':
-          value = metaObjAttr.get('custom','')
-        elif metaObjAttr is not None and metaObjAttr['type'] == 'resource':
-          value = _blobfields.MyBlobWrapper(metaObjAttr.get('custom',None))
-        
-        #-- Standard attributes.
-        elif key in objAttrs.keys():
-          objAttr = objAttrs[key]
-          datatype = objAttr['datatype_key']
-          value = self.getObjAttrValue( objAttr, REQUEST)
-          if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##')):
-            try:
+          #-- Special attributes.
+          if key not in objAttrs.keys():
+            value = self.evalMetaobjAttr(key)
+            if isinstance(value,Image) or isinstance(value,File):
+              value = _blobfields.MyBlobWrapper(value)
+          
+          #-- Standard attributes.
+          elif key in objAttrs.keys():
+            objAttr = objAttrs[key]
+            datatype = objAttr['datatype_key']
+            value = self.getObjAttrValue( objAttr, REQUEST)
+            if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##')):
               value = self.dt_exec(value)
-            except:
-              value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
+          
+          #-- Undefined attributes.
+          else:
+            value = ''
         
-        #-- Undefined attributes.
-        else:
-          value = ''
+        except:
+          value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff( reqBuffId, value, REQUEST)
@@ -734,6 +699,18 @@ class ObjAttrs:
       elif len(args) == 1 and type(args[0]) is dict:
         for key in args[0].keys():
           self.setObjProperty( key, args[0][key], request.get('lang'))
+
+
+    # --------------------------------------------------------------------------
+    #  ObjAttrs.evalMetaobjAttr
+    # --------------------------------------------------------------------------
+    def evalMetaobjAttr(self, *args, **kwargs):
+      id = self.REQUEST.get('ZMS_INSERT',self.meta_id)
+      attr_id = args[0]
+      if attr_id.find('.')>0:
+        id = attr_id[:attr_id.find('.')]
+        attr_id = attr_id[attr_id.find('.')+1:]
+      return self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=self,options=kwargs)
 
 
     """
@@ -927,7 +904,7 @@ class ObjAttrs:
           v = ''
       
       #-- Text-Fields
-      if datatype == _globals.DT_TEXT:
+      if datatype == _globals.DT_TEXT and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         # Inline-links: getLinkUrl (deprecated!)
         i = -1
         start = '{$'
@@ -937,19 +914,12 @@ class ObjAttrs:
           j = v.find( end, i + 1)
           if i < 0 or j < 0:
             break
-          ref_url = v[i:j+1]
-          ref_obj = self.getLinkObj(ref_url)
-          if ref_obj is not None:
-            # Repair link.
-            ref_url = self.getRefObjPath(ref_obj)
-            v = v[:i] + ref_url + v[j+1:]
-          elif ref_url.find('{$') == 0 and ref_url.find('{$__') < 0:
-            # Broken link.
-            ref_url = '{$__' + ref_url[2:-1] + '__}'
-            v = v[:i] + ref_url + v[j+1:]
+          value = v[i:j+1]
+          value = self.validateLinkObj(value)
+          v = v[:i] + value + v[j+1:]
       
       #-- Url-Fields
-      if datatype == _globals.DT_URL and v.startswith('{$') and not v.startswith('{$__') and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
+      if datatype == _globals.DT_URL and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
         v = self.validateLinkObj(v)
       
       # Hook for custom formatting.

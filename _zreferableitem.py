@@ -421,16 +421,22 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
     if url.startswith('{$') and not url.startswith('{$__'):
-      ref_obj = self.getLinkObj(url)
-      ref_anchor = ''
-      if url.find('#') > 0:
-        ref_anchor = url[url.find('#'):-1]
-      if ref_obj is not None:
-        # Repair link.
-        url = self.getRefObjPath( ref_obj, ref_anchor)
+      # Extension Point
+      ep = self.getConfProperty('ZReferableItem.validateLinkObj','')
+      if ep:
+        url = evalMetaobjAttr(ep,{'url':url})
+      # Default
       else:
-        # Broken link.
-        url = '{$__' + url[2:-1] + '__}'
+        ref_obj = self.getLinkObj(url)
+        ref_anchor = ''
+        if url.find('#') > 0:
+          ref_anchor = url[url.find('#'):-1]
+        if ref_obj is not None:
+          # Repair link.
+          url = self.getRefObjPath( ref_obj, ref_anchor)
+        else:
+          # Broken link.
+          url = '{$__' + url[2:-1] + '__}'
     return url
 
 

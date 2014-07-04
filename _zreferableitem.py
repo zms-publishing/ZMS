@@ -423,7 +423,7 @@ class ZReferableItem:
     if url.startswith('{$') and not url.startswith('{$__'):
       # Extension Point
       ep = self.getConfProperty('ZReferableItem.validateLinkObj','')
-      if ep:
+      if ep != '':
         url = evalMetaobjAttr(ep,{'url':url})
       # Default
       else:

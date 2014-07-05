@@ -496,7 +496,7 @@ class ZReferableItem:
         index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)
       else:
         index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
-        if index_html == '':
+        if not index_html:
           index_html = ob.getHref2IndexHtml(REQUEST)
       return index_html + ref_anchor
     elif isMailLink (url): 

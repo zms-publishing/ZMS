@@ -51,14 +51,16 @@
 			</td>
 			<td>
 				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])"><img tal:attributes="id python:'img_%s1'%metaObjAttr['id']" src="/misc_/zms/pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-				<tal:block tal:content="python:100*len(stat1[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+				<tal:block tal:on-error="string: 0"
+					tal:content="python:100*len(stat1[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
 				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat1[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
 				</ol>
 			</td>
 			<td>
 				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"><img tal:attributes="id python:'img_%s0'%metaObjAttr['id']" src="/misc_/zms/pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-				<tal:block tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+				<tal:block tal:on-error="string: 0"
+					tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
 				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat0[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
 				</ol>

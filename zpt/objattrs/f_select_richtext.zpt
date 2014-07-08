@@ -4,8 +4,8 @@
 				elName options/elName;
 				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
 				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));
-				dummy0 python:request.set('richedit_fmt',rteTextFormats[0]);
-				dummy0 python:request.set('htmledit_fmt',htmlTextFormats[0]);
+				dummy0 python:request.set('richedit_fmt',(rteTextFormats+[None])[0]);
+				dummy0 python:request.set('htmledit_fmt',(htmlTextFormats+[None])[0]);
 				dummy0 python:request.set('fmName',options['fmName']);
 				dummy0 python:request.set('elName',options['elName']);">
 

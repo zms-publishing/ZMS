@@ -143,7 +143,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 		<tal:block tal:replace="nothing">
 		### Richedit
 		</tal:block
-		><div class="btn-group pull-right"
+		><div class="btn-group pull-right" tal:condition="python:request.get('richedit_fmt') is not None"
 			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
 				><i class="icon-eye-open" tal:attributes="title python:'%s (%s)'%(request['richedit_fmt'].getDisplay(),request['richedit_fmt'].getRichedit().upper())"></i></span>
 		</div><!-- .pull-left -->

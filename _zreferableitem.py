@@ -421,22 +421,16 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
     if url.startswith('{$') and not url.startswith('{$__'):
-      # Extension Point
-      ep = self.getConfProperty('ZReferableItem.validateLinkObj','')
-      if ep != '':
-        url = evalMetaobjAttr(ep,{'url':url})
-      # Default
+      ref_obj = self.getLinkObj(url)
+      ref_anchor = ''
+      if url.find('#') > 0:
+        ref_anchor = url[url.find('#'):-1]
+      if ref_obj is not None:
+        # Repair link.
+        url = self.getRefObjPath( ref_obj, ref_anchor)
       else:
-        ref_obj = self.getLinkObj(url)
-        ref_anchor = ''
-        if url.find('#') > 0:
-          ref_anchor = url[url.find('#'):-1]
-        if ref_obj is not None:
-          # Repair link.
-          url = self.getRefObjPath( ref_obj, ref_anchor)
-        else:
-          # Broken link.
-          url = '{$__' + url[2:-1] + '__}'
+        # Broken link.
+        url = '{$__' + url[2:-1] + '__}'
     return url
 
 
@@ -448,7 +442,12 @@ class ZReferableItem:
   def getLinkObj(self, url, REQUEST={}):
     ob = None
     if isInternalLink(url):
-      if not url.startswith('{$__'):
+      # Extension Point
+      ep = self.getConfProperty('ZReferableItem.getLinkObj','')
+      if ep != '':
+        ob = self.evalMetaobjAttr(ep,url=url)
+      # Default
+      elif not url.startswith('{$__'):
         docElmnt = None
         path = url[2:-1]
         i = path.find('#')

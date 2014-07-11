@@ -248,7 +248,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.recreateCatalog(lang)
   
   ### Init ZMS object-model.
-  conf = 'zms'
+  _confmanager.initConf(obj, 'zms', REQUEST)
   
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default', REQUEST)
@@ -648,17 +648,6 @@ class ZMS(
         setattr( self, 'patch', self.zms_patch)
         transaction.commit()
         message += 'Synchronized object-model from patch #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
-      if maintenance:
-        try:
-          self.getTrashcan().run_garbage_collection()
-        except:
-          _globals.writeError( self, '[updateVersion]: can\'t run garbage collection')
-      
-      # Process clients.
-      if message:
-        for portalClient in self.getPortalClients():
-          message += portalClient.updateVersion( lang, REQUEST, False)
-      
       return message
 
 

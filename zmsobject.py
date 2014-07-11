@@ -174,6 +174,24 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.get_oid:
+    # --------------------------------------------------------------------------
+    def get_oid(self):
+      from Shared.DC.xml.ppml import u64 as decodeObjectId
+      oid = decodeObjectId(self._p_oid)
+      return oid
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.find_oid:
+    # --------------------------------------------------------------------------
+    def find_oid(self, oid):
+      from ZODB.utils import p64
+      ob = self._p_jar[p64(oid)]
+      return ob
+
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.title:
     # --------------------------------------------------------------------------
     def title(self):

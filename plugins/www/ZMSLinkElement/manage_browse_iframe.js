@@ -153,11 +153,11 @@ function zmiToggleClick(toggle, callback) {
 						html += '">';
 						html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
 						html += '<'+'input type="radio" name="id" value=\''+page_absolute_url+'\' onclick="selectObject(\''+page_physical_path+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"/> ';
-						if (page_is_pageelement) {
-							html += '<span onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
+						if (!page_is_page) {
+							html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 						}
 						html += '<'+'a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
-						if (!page_is_pageelement) {
+						if (page_is_page) {
 							html += page_display_icon+' ';
 						}
 						html += page_titlealt;
@@ -194,9 +194,16 @@ function zmiPreview(sender) {
 	else {
 		var coords = $ZMI.getCoords(sender);
 		var abs_url = $(sender).parent('div').children('input').val();
-		$.get(abs_url+'/renderShort',{lang:getZMILang(),preview:'preview'},function(data){
+		$.get(abs_url+'/getBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
 				$('div.zmi-preview').remove();
-				$('body').append('<div id="zmi_preview_'+data_id+'" class="zmi-preview">'+data+'</div><!-- #zmi-preview -->');
+				$('body').append(''
+						+'<div id="zmi_preview_'+data_id+'">'
+							+'<div class="zmi-preview">'
+								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()">'+$ZMI.icon("icon-remove")+' '+getZMILangStr('BTN_CLOSE')+'</div>'
+								+data
+							+'</div><!-- .zmi-preview -->'
+						+'</div><!-- #zmi-preview -->'
+					);
 				$('div.zmi-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
 			});
 	}

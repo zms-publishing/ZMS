@@ -45,10 +45,11 @@
 	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
 		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"></tal:block>
 			<input name="id" type="radio" tal:attributes="value python:here.absolute_url()"/>
+			<span tal:condition="python:childNode.isPageElement()" style="cursor:help" onclick="zmiPreview(this)" tal:content="structure python:childNode.display_icon(request)">the icon</span>
 			<a 
 				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
 				onclick="return zmiFollowHref(this)">
-			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+			<tal:block tal:condition="not:python:childNode.isPageElement()" tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>
 	</div>

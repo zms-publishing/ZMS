@@ -43,7 +43,7 @@ class TextFormatObject:
     except:
       levelnfc = parentNode.attr('levelnfc')
       parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)
-      if len(levelnfc) > 0:
+      if levelnfc is not None and len(levelnfc) > 0:
         parent_no = parentNode.getSecNo()
         sectionizer = _globals.MySectionizer(levelnfc)
         siblings = parentNode.filteredChildNodes( self.REQUEST)
@@ -52,7 +52,7 @@ class TextFormatObject:
           level = 0
           if sibling.isPageElement():
             format = sibling.attr('format')
-            if format.find('headline') == 0:
+            if format is not None and format.find('headline') == 0:
               level = int(format[len(_globals.id_prefix(format)):])-1
           elif sibling.isPage():
             level = 1

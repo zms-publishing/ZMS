@@ -121,11 +121,14 @@ function zmiFormSubmit(sender,d) {
 				<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 			</div>
 		</td>
-		<td class="meta-id" tal:define="meta_ids python:filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds());">
+		<td class="meta-id">
+			<tal:block tal:on-error="python: request.set('meta_id_usage','ERROR Missing Referenced Meta-Objects')"
+				tal:define="meta_ids python:request.set('meta_id_usage',', '.join(filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds())));">
+			</tal:block>
 			<input class="form-control input-sm" type="text" 
 				tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; 
 					value python:metadictAttr['id']; 
-					title python:'Used by: ' + ', '.join(meta_ids);" />
+					title python:'Used by: ' + request.get('meta_id_usage','Unknown')" />
 		</td>
 		<td class="meta-name">
 			<input class="form-control input-sm" type="text" tal:attributes="name python:'attr_name_%s'%metadictAttr['id']; value python:metadictAttr['name']" />

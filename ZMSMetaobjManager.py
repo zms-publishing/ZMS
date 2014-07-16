@@ -744,7 +744,8 @@ class ZMSMetaobjManager:
           self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
         elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
-        newCustom = ''
+        if not ob['type'] == 'ZMSRecordSet':
+          newCustom = ''
       
       attr = {}
       attr['sync'] = False

@@ -397,6 +397,45 @@ class ZMSCustom(ZMSContainerObject):
       return export
 
 
+    # --------------------------------------------------------------------------
+    #  ZMSCustom.getEntityRecordHandler
+    # --------------------------------------------------------------------------
+    def getEntityRecordHandler(self, id):
+      class EntityRecordHandler:
+        def __init__(self, parent, id):
+          self.parent = parent 
+          self.id = id
+          self.fk = {}
+          metaObjIds = parent.getMetaobjIds()
+          for k in parent.getMetaobjAttrIds(id):
+            metaObjAttr = parent.getMetaobjAttr(id,k)
+            if metaObjAttr['type'] in metaObjIds:
+              fkMetaObj = parent.getMetaobj(metaObjAttr['type'])
+              fkMetaObjIdId = fkMetaObj['attrs'][0]['id']
+              for fkContainer in parent.getParentNode().getChildNodes(self.parent.REQUEST,metaObjAttr['type']):
+                fkMetaObj = parent.getMetaobj(fkContainer.meta_id);
+                fkMetaObjAttrIdRecordSet = fkMetaObj['attrs'][0]['id'];
+                fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet);
+                fkMetaObjIdId = parent.getMetaobjAttrIdentifierId(fkContainer.meta_id)
+                self.fk[k] = {'fkMetaObj':fkMetaObj,'fkMetaObjRecordSet':fkMetaObjRecordSet,'fkMetaObjIdId':fkMetaObjIdId}
+        __call____roles__ = None
+        def __call__(self, r):
+          d = {}
+          for k in r.keys():
+            v = r[k]
+            if k in self.fk.keys():
+              fk = self.fk[k]
+              fkMetaObj = fk['fkMetaObj']
+              fkMetaObjRecordSet = fk['fkMetaObjRecordSet']
+              fkMetaObjIdId = fk['fkMetaObjIdId']
+              for fkMetaObjRecord in filter(lambda x:x.get(fkMetaObjIdId)==v,fkMetaObjRecordSet):
+                fkMetaObjAttrs = filter(lambda x:x['type']=='string' and fkMetaObjRecord.get(x['id'],'')!='',fkMetaObj['attrs'])
+                v = ', '.join(map(lambda x:str(fkMetaObjRecord.get(x['id'])),fkMetaObjAttrs))
+            d[k] =  v
+          return d
+      return EntityRecordHandler(self,id)
+
+
     ############################################################################
     #  ZMSCustom.manage_changeRecordSet:
     #

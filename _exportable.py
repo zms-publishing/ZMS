@@ -29,6 +29,7 @@ import os
 import re
 import sys
 # Product Imports.
+import _accessmanager
 import _blobfields
 import _fileutil
 import _filtermanager
@@ -72,20 +73,19 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
       if ob.meta_type == 'Folder':
         ob_id = ob.id
         exportFolder(self, ob,'%s/%s'%(path,id),ob_id,REQUEST,depth+1)
-      elif ob.meta_type not in [ 'User Folder'] and 'content' not in folder.objectIds(['ZMS']):
+      elif ob.meta_type not in _accessmanager.user_folder_meta_types and 'content' not in folder.objectIds(['ZMS']):
         try:
           ob_id = ob.id()
         except:
           ob_id = str(ob.id)
-        if ob.meta_type in [ 'DTML Document', 'DTML Method']:
+        if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
-            html = ob.raw
-            html = self.dt_html( html, REQUEST)
+            html = ob(ob,REQUEST)
             html = localHtml( ob, html)
             html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html)
             ob = html
           except:
-            pass
+            _globals.writeError( self, "[exportFolder]")
         _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))
 
 
@@ -500,7 +500,7 @@ class Exportable(_filtermanager.FilterItem):
       if obj.meta_id.find('ZMSSys') == 0:
         exportFolder( obj, obj.getParentNode(), path[:path.rfind('/')], obj.id, REQUEST)
       else:
-        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'','index_print':'print','sitemap':'sitemap'})
+        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'index','index_print':'print','sitemap':'sitemap'})
       
       for key in dctOp.keys():
         
@@ -566,7 +566,7 @@ class Exportable(_filtermanager.FilterItem):
         except:
           _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
         
-      # Process DTML-methods of meta-objects.
+      # Process methods of meta-objects.
       for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
         try:
           metadictAttr = self.getMetaobjAttr( obj.meta_id, metadictAttrId)
@@ -575,15 +575,16 @@ class Exportable(_filtermanager.FilterItem):
             if metaObj['type'] == 'ZMSResource':
               for metadictObj in obj.getObjChildren( metadictAttr['id'], REQUEST):
                 for metaObjAttr in metaObj['attrs']:
-                  if metaObjAttr['type'] in [ 'DTML Document', 'DTML Method']:
-                    html = getattr( obj, metaObjAttr['id'])( obj, REQUEST)
+                  if metaObjAttr['type'] in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
+                    ob = getattr( obj, metaObjAttr['id'])
+                    html = ob( obj, REQUEST)
                     html = localHtml( obj, html)
                     filename = '%s/%s'%( path, metaObjAttr['id'])
                     f = open(filename,'w')
                     f.write(html)
                     f.close()
         except:
-          _globals.writeError( self, "[recurse_downloadHtmlPages]: Can't process DTML-method '%s' of meta-object"%metadictAttr)
+          _globals.writeError( self, "[recurse_downloadHtmlPages]: can't process method '%s' of meta-object"%metadictAttr)
       
       # Process children.
       for child in obj.filteredChildNodes(REQUEST,self.PAGES):

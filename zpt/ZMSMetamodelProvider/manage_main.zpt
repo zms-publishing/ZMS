@@ -197,6 +197,14 @@
 												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
 											tal:content="objAttr/custom">custom</textarea>
 								</div>
+								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is None and objAttr['type'] in here.valid_zopetypes">
+										<textarea class="form-control input-sm"
+											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
+												style python:'background: #fee';
+												data-style python:'background: #eee'"
+											tal:content="objAttr/custom">custom</textarea>
+								</div>
 							</td>
 						</tal:block>
 						<tal:block tal:condition="python:objAttr['type'] in ['resource']">

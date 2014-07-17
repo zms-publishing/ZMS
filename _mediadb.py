@@ -324,7 +324,11 @@ class MediaDb(
       filename = filename.replace('..','')
       threshold = 2 << 16 # 128 kb
       local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
-      fsize = os.path.getsize( local_filename)
+      try:
+          fsize = os.path.getsize( local_filename)
+      except:
+          REQUEST.RESPONSE.setStatus(404)
+          return ''
       if fsize < threshold or REQUEST.RESPONSE is None:
         try:
           f = open( local_filename, 'rb')

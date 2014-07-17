@@ -21,6 +21,7 @@ from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
+from zExceptions import NotFound
 import OFS.SimpleItem
 import Acquisition
 import os
@@ -325,10 +326,10 @@ class MediaDb(
       threshold = 2 << 16 # 128 kb
       local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
       try:
-          fsize = os.path.getsize( local_filename)
+        fsize = os.path.getsize( local_filename)
       except:
-          REQUEST.RESPONSE.setStatus(404)
-          return ''
+        fsize = 0
+        raise NotFound
       if fsize < threshold or REQUEST.RESPONSE is None:
         try:
           f = open( local_filename, 'rb')

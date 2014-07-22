@@ -684,6 +684,7 @@ div.right .btn .caret{}
  ul.zmi-container > li > div.center{width:100%}
  .zmi.main form{margin:0px}
  ul.zmi-container > li.zmi-item > div.right{position:absolute;float:right;width:100% !important;text-align:right}
+ .zmi-children ul.zmi-container > li.zmi-item > div.right{width:93% !important}
  ul.zmi-container .zmi-item .zmi-action{margin-left:0px}
  ul.zmi-container .zmi-item .zmi-action .btn{border-radius:0}
  ul.zmi-container .zmi-item .zmi-action .split-left{width:238px}

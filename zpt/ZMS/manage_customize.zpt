@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'customize config',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='customize_config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -193,12 +193,12 @@ $ZMI.registerReady(function(){
 				<label class="col-sm-2 control-label" for="conf_value">Value</label>
 				<div class="col-sm-10">
 					<tal:block tal:condition="python:request.get('conf_key') not in res_keys">
-						<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),'')">
+						<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),'')">
 					</tal:block>
 					<tal:block tal:condition="python:request.get('conf_key') in res_keys">
 						<tal:block tal:define="global res_item python:filter(lambda x: x['key']==request.get('conf_key'),res)[0]">
 							<tal:block tal:condition="python:not (res_item['datatype']=='boolean' or res_item.has_key('options'))">
-								<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
+								<input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
 							</tal:block>
 							<tal:block tal:condition="python:res_item['datatype']=='boolean' and not res_item.has_key('options')">
 								<input type="checkbox" id="conf_value" name="conf_value:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',0)) in [1,True])]">

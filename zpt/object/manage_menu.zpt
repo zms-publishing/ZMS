@@ -2,7 +2,7 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'manage-menu',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='manage-menu')">
 
 <div id="zmi-sitemap-header">
 	<div class="navbar" style="position: static;">

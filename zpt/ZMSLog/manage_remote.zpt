@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'remote',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='remote zmslog')">
 <form class="form-horizontal" action="manage_remote" method="get" enctype = "multipart/form-data" tal:define="global path python:here.getPath(request)">
 
 <script language="JavaScript">

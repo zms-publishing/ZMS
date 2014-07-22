@@ -13,7 +13,7 @@
 	vertical-align: middle;
 }
 </style>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'browse_iframe',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='browse_iframe')">
 
 <tal:block tal:define="global el python:here.getLinkObj(request.get('elValue'))">
 	<tal:block tal:condition="python:el is not None">

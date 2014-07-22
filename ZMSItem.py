@@ -72,6 +72,18 @@ class ZMSItem(
       return self.manage_menu(args,kwargs)
 
     # --------------------------------------------------------------------------
+    #  zmi_body_attrs:
+    # --------------------------------------------------------------------------
+    def zmi_body_class(self, *args, **kwargs):
+      request = self.REQUEST
+      l = ['zmi']
+      l.append(request['lang'])
+      l.extend(map(lambda x:kwargs[x],kwargs.keys()))
+      l.append(self.meta_id)
+      l.extend(request['AUTHENTICATED_USER'].getRolesInContext(self))
+      return ' '.join(l)
+
+    # --------------------------------------------------------------------------
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):

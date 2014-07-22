@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request.get('lang','ger'),'preview_top',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 	function compile_lesscss() {
 		$.get("compile_lesscss",function(result){

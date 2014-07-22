@@ -173,14 +173,54 @@ class ZMSObject(ZMSItem.ZMSItem,
       return '\n'.join(map(lambda x:str(x),l))
 
 
+    ############################################################################
+    #
+    # ZMS Object Index
+    #
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.sync_oids:
+    # --------------------------------------------------------------------------
+    def sync_oids(self):
+      l = []
+      if self.meta_type == 'ZMS':
+        self.aq_parent_oid = None
+      oid = self.get_oid()
+      l.append(oid)
+      for childNode in self.getChildNodes():
+        childNode.set_parent_oid(oid)
+        l.extend(childNode.sync_oids())
+      return l
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.get_parent_oid:
+    # --------------------------------------------------------------------------
+    def get_parent_oid(self):
+      return self.aq_parent_oid
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.set_parent_oid:
+    # --------------------------------------------------------------------------
+    def set_parent_oid(self,parent_oid):
+      self.aq_parent_oid = parent_oid
+      _globals.triggerEvent(self, 'set_parent_oid')
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.unset_parent_oid:
+    # --------------------------------------------------------------------------
+    def unset_parent_oid(self):
+      _globals.triggerEvent(self, 'unset_parent_oid')
+
     # --------------------------------------------------------------------------
     #  ZMSObject.get_oid:
     # --------------------------------------------------------------------------
     def get_oid(self):
       from Shared.DC.xml.ppml import u64 as decodeObjectId
-      oid = decodeObjectId(self._p_oid)
+      oid = None
+      if self._p_oid is not None:
+        oid = decodeObjectId(self._p_oid)
       return oid
-
 
     # --------------------------------------------------------------------------
     #  ZMSObject.find_oid:
@@ -189,6 +229,19 @@ class ZMSObject(ZMSItem.ZMSItem,
       from ZODB.utils import p64
       ob = self._p_jar[p64(oid)]
       return ob
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.find_oid_path:
+    # --------------------------------------------------------------------------
+    def find_oid_path(self, oid):
+      ids = []
+      while True:
+        if not oid:
+          break
+        ob = self.find_oid(oid)
+        ids.insert(0,ob.id)
+        oid = ob.aq_parent_oid
+      return ids
 
 
     # --------------------------------------------------------------------------

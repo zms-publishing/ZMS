@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'design config',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='design config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -34,7 +34,7 @@
 			</tal:block>
 		</div>
 		<div class="col-sm-10">
-			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='stylesheet:text',ob=(filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">
+			<tal:block tal:on-error="string:ERROR: No Stylesheets found!" tal:content="structure python:here.zmi_ace_editor(here,request,name='stylesheet:text',ob=(filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">
 				ACE Editor
 			</tal:block>
 		</div>

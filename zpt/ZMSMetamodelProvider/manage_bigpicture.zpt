@@ -2,7 +2,7 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'analyze',here.meta_id])">
+<body tal:attributes="class python:here.zmi_body_class(id='bigpicture')">
 
 <form class="form-horizontal">
 <tal:block tal:define="global

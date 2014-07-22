@@ -46,6 +46,7 @@ from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
 from zmslog import ZMSLog
+from zmsobject import ZMSObject
 from zmssqldb import ZMSSqlDb
 from zmstrashcan import ZMSTrashcan
 
@@ -53,11 +54,39 @@ __all__= ['ZMS']
 
 
 ################################################################################
+#
+# ZMS Object Index
+#
 ################################################################################
-###
-###  Common Function(s)
-###
+
+import zope.event
+from zope.app.container.contained import ObjectAddedEvent
+from zope.app.container.contained import ObjectMovedEvent
+from zope.app.container.contained import ObjectRemovedEvent
+def subscriber(event):
+  if isinstance(event,ObjectAddedEvent):
+    if isinstance(event.object,ZMSObject):
+      print "ZMS: add", event.object, event.newParent, event.newName
+      if isinstance(event.newParent,ZMSObject):
+        print "ZNS: add set parent-oid", event.newParent.get_oid()
+        event.object.set_parent_oid(event.newParent.get_oid())
+  elif isinstance(event,ObjectMovedEvent):
+    if isinstance(event.object,ZMSObject):
+      print "ZMS: move", event.object, event.newParent, event.newName
+      if isinstance(event.newParent,ZMSObject):
+        print "ZNS: move set parent-oid", event.newParent.get_oid()
+        event.object.set_parent_oid(event.newParent.get_oid())
+  elif isinstance(event,ObjectRemovedEvent):
+    if isinstance(event.object,ZMSObject):
+      print "ZMS: remove", event.object
+      event.object.unset_parent_oid()
+zope.event.subscribers.append(subscriber)
+
+
 ################################################################################
+#
+# Common Function(s)
+#
 ################################################################################
 
 # ------------------------------------------------------------------------------
@@ -278,11 +307,9 @@ def initContent(self, filename, REQUEST):
 
 
 ################################################################################
-################################################################################
-###   
-###   Constructor
-###   
-################################################################################
+#
+# Constructor
+#
 ################################################################################
 manage_addZMSForm = PageTemplateFile('manage_addzmsform', globals())
 def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
@@ -355,6 +382,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Access ####
     obj.synchronizePublicAccess()
     
+    ##### ZMS Object Index #####
+    obj.sync_oids()
+    
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED',manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
@@ -369,11 +399,9 @@ def containerFilter(container):
 
 
 ################################################################################
-################################################################################
-###
-###  Class
-###
-################################################################################
+#
+#  Class
+#
 ################################################################################
 class ZMS(
         ZMSCustom,

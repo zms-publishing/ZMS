@@ -26,7 +26,7 @@
 	form.form-horizontal {margin:0;}
 	#zmi-footer {display:none;}
 </style>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'properties',here.meta_id,here.getType()])">
+<body tal:attributes="class python:here.zmi_body_class(id='properties')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>

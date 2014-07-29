@@ -71,25 +71,23 @@ except:
   from zope.app.container.contained import ObjectMovedEvent
   from zope.app.container.contained import ObjectRemovedEvent
 
-
-
 def subscriber(event):
   if isinstance(event,ObjectAddedEvent):
     if isinstance(event.object,ZMSObject):
       print "ZMS: add", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
-        print "ZNS: add set parent-oid", event.newParent.get_oid()
-        event.object.set_parent_oid(event.newParent.get_oid())
+        _globals.triggerEvent(event.object,"ObjectAdded")
   elif isinstance(event,ObjectMovedEvent):
     if isinstance(event.object,ZMSObject):
       print "ZMS: move", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
-        print "ZNS: move set parent-oid", event.newParent.get_oid()
-        event.object.set_parent_oid(event.newParent.get_oid())
+        _globals.triggerEvent(event.object,"ObjectMoved")
+      elif event.newParent is None:
+        _globals.triggerEvent(event.object,"ObjectRemoved")
   elif isinstance(event,ObjectRemovedEvent):
     if isinstance(event.object,ZMSObject):
       print "ZMS: remove", event.object
-      event.object.unset_parent_oid()
+      _globals.triggerEvent(event.object,"ObjectRemoved")
 zope.event.subscribers.append(subscriber)
 
 
@@ -98,27 +96,6 @@ zope.event.subscribers.append(subscriber)
 # Common Function(s)
 #
 ################################################################################
-
-# ------------------------------------------------------------------------------
-#  ZMS.recurse_cleanArtefacts:
-#
-#  Clean artefacts.
-# ------------------------------------------------------------------------------
-def recurse_cleanArtefacts( self, level=0):
-  from OFS.CopySupport import absattr
-  # Recursion.
-  last_id = None
-  for ob in self.objectValues():
-    if absattr(self.id) == absattr(ob.id):
-      print (" "*level)+"recurse_cleanArtefacts", ob.absolute_url(), ob.meta_type
-      raise zExceptions.InternalError('InfiniteRecursionError')
-    else:
-      try:
-        recurse_cleanArtefacts( ob, level+1)
-      except "InfiniteRecursionError":
-        print (" "*level)+"recurse_cleanArtefacts: clean artefact ", ob.absolute_url(), ob.meta_type
-        self._delObject(absattr(ob.id), suppress_events=True)
-
 
 # ------------------------------------------------------------------------------
 #  ZMS.recurse_updateVersionBuild:
@@ -391,9 +368,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Access ####
     obj.synchronizePublicAccess()
-    
-    ##### ZMS Object Index #####
-    obj.sync_oids()
     
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED',manage_lang)%obj.meta_type

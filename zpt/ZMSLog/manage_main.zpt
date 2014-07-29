@@ -12,25 +12,24 @@
 </legend>
 
 <p class="well">
-This page lists the entries that have been logged in this ZMS instance
-recently.  You can configure how many entries should be kept
+This page lists the entries that have been logged in this Zope instance
+recently. You can configure how many entries should be kept
 and whether the entries should be copied to Zope's event log
 file(s).
 </p>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label" for="keep_entries:int"><span>Number of entries to keep</span></label>
-	<div class="col-sm-10"><input class="form-control" type="text" name="keep_entries:int" size="8" tal:attributes="value python:here.keep_entries"/></div><!-- .col-lg-10 -->
-</div><!-- .form-group -->
-
-<div class="form-group">
-	<label class="col-sm-2 control-label" for="copy_to_zlog"><span>Copy entries to the event log</span></label>
-	<div class="btn btn-default"><input type="checkbox" name="copy_to_zlog" value="copy_to_zlog" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_zlog') in [1,True])]"/></div>
+	<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Lines back in event log</span></label>
+	<div class="col-sm-10">
+		<input class="form-control" type="number" name="tail_event_log_linesback" tal:attributes="value python:getattr(here,'tail_event_log_linesback',100)"/>
+	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
 <div class="form-group">
 	<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
-	<div class="btn btn-default"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div>
+	<div class="col-sm-10">
+		<div class="btn btn-default"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div>
+	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
 <div class="form-group">
@@ -52,28 +51,17 @@ file(s).
 
 <div class="accordion-group perc100">
 	<div class="accordion-heading">
-		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></a>
-		<a class="pull-left accordion-toggle" href="#">Log (most recent first)</a>
+		<a class="pull-left accordion-toggle" href="#"><tal:block tal:content="python:getattr(here,'tail_event_log_linesback',100)">###</tal:block> lines back in event log&nbsp;</a>
+		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
+		<div class="clearfix"></div>
 	</div><!-- .accordion-heading -->
 	<div class="accordion-body">
-		<div class="accordion-inner" tal:define="global
-				size python:len(here.entries); 
-				pageSize python:request.get('qsize',20);
-				pageIndex python:request.get('pageIndex',0);
-				pageStart python:pageIndex*pageSize;
-				pageEnd python:min(pageStart+pageSize,size)">
-			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=20,pageIndex=pageIndex)">zmi_pagination</tal:block>
-			<div tal:repeat="i python:range(pageEnd-pageStart)" class="logitem">
-				<tal:block tal:define="global index python:i+pageStart; entry python:here.entries[index]">
-					<span class="pull-left" tal:content="python:index+1">the index</span>
-					<code tal:content="entry">the entry</code>
-				</tal:block>
-			</div>
-			<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=20,pageIndex=pageIndex)">zmi_pagination</tal:block>
+		<div class="accordion-inner">
+			<pre tal:content="python:'\n'.join(here.tail_event_log(linesback=int(getattr(here,'tail_event_log_linesback',100))))">the tail event-log</pre>
 		</div><!-- accordion-inner -->
 	</div><!-- accordion-body -->
 </div><!-- accordion-group -->
 
 </form>
 </body>
-</html>
+</html>  

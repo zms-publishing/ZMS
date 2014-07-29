@@ -383,22 +383,19 @@ _globals.triggerEvent:
 
 Hook for trigger of custom event (if there is one)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def triggerEvent(self, name, preview=False, REQUEST=None):
+def triggerEvent(self, *args, **kwargs):
   l = []
-  if preview:
-    if REQUEST is not None:
-      try: REQUEST.set('preview','preview')
-      except: REQUEST['preview'] = 'preview'
+  name = args[0]
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
     metaObjAttr = self.getMetaobjAttr( self.meta_id, name)
     if metaObjAttr is not None:
-      v = self.getObjProperty(name,REQUEST)
+      v = self.attr(name)
       l.append( v)
     for metaObjId in self.getMetaobjIds():
       metaObj = self.getMetaobj(metaObjId)
       if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
-        v = self.evalMetaobjAttr('%s.%s'%(metaObjId, name))
+        v = self.evalMetaobjAttr('%s.%s'%(metaObjId, name),kwargs)
         if v is not None:
           l.append(v)
     ob = self
@@ -406,7 +403,7 @@ def triggerEvent(self, name, preview=False, REQUEST=None):
     while ob is not None:
       for ob_id in ob.getHome().objectIds():
         if ob_id not in ob_ids and ob_id.find( name) == 0:
-          v = getattr(self,ob_id)(context=self,REQUEST=REQUEST)
+          v = getattr(self,ob_id)(context=self,REQUEST=self.REQUEST)
           l.append( v)
           ob_ids.append(ob_id)
       ob = ob.getPortalMaster()

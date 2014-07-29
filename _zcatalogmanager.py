@@ -220,14 +220,14 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       
       # Custom hook (overwrite).
       if 'catalogText' in self.getMetaobjAttrIds(self.meta_id):
-        value = self.getObjProperty('catalogText',REQUEST)
+        value = self.attr('catalogText')
         value = search_string(value)
         v += value
       
       else:
         
         ##### Trigger custom catalogText-Contributors (if there is one) ####
-        l = _globals.triggerEvent( self, 'catalogTextContrib', REQUEST=REQUEST)
+        l = _globals.triggerEvent( self, 'catalogTextContrib')
         if l:
           v += ' '.join(l)
         

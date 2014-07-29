@@ -824,7 +824,19 @@ class ConfManager(
     ############################################################################
 
     def getMetaobjManager(self):
-      return self.metaobj_manager
+      metaobj_manager = getattr(self,'metaobj_manager',None)
+      if metaobj_manager is None:
+        class DefaultMetaobjManager:
+          def getMetaobjId(self, name): return None
+          def getMetaobjIds(self, sort=1, excl_ids=[]): return []
+          def getMetaobj(self, id): return None
+          def getMetaobjAttrIds(self, meta_id, types=[]): return []
+          def getMetaobjAttrs(self, meta_id,  types=[]): return []
+          def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']): return None
+          def getMetaobjAttrIdentifierId(self, meta_id): return None
+          def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
+        metaobj_manager = DefaultMetaobjManager()
+      return metaobj_manager
 
     def getMetaobjId(self, name):
       return self.getMetaobjManager().getMetaobjId( name)

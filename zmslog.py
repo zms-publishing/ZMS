@@ -76,9 +76,6 @@ class ZMSLog(ZMSItem.ZMSItem):
     ############################################################################
     def __init__(self, copy_to_stdout=False, logged_entries=[ 'ERROR']):
       self.id = 'zms_log'
-      self.entries = []
-      self.keep_entries = 20
-      self.copy_to_zlog = True
       self.copy_to_stdout = copy_to_stdout
       self.logged_entries = logged_entries
 
@@ -89,24 +86,10 @@ class ZMSLog(ZMSItem.ZMSItem):
     ############################################################################
     def setProperties(self, REQUEST, RESPONSE): 
       """ ZMSLog.setProperties """
-      self.keep_entries = REQUEST.get( 'keep_entries', 20)
-      self.copy_to_zlog = REQUEST.has_key( 'copy_to_zlog')
+      self.tail_event_log_linesback = REQUEST.get('tail_event_log_linesback',100)
       self.copy_to_stdout = REQUEST.has_key( 'copy_to_stdout')
       self.logged_entries = REQUEST.get( 'logged_entries', [])
-      while len( self.entries) > self.keep_entries:
-        self.entries.remove( self.entries[-1])
       return RESPONSE.redirect( REQUEST[ 'HTTP_REFERER'])
-
-    # --------------------------------------------------------------------------
-    #  ZMSLog.getLOG:
-    # --------------------------------------------------------------------------
-    def getLOG(self, REQUEST, RESPONSE): 
-      """ ZMSLog.getLOG """
-      content_type = 'text/plain; charset=utf-8'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      return ''.join( map( lambda x: x+'\n', self.entries))
 
     # --------------------------------------------------------------------------
     #  ZMSLog.hasSeverity:
@@ -118,14 +101,33 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.LOG:
     # --------------------------------------------------------------------------
     def LOG(self, severity, info):
-      while len( self.entries) > self.keep_entries:
-        self.entries.remove( self.entries[-1])
-      self.entries.insert( 0 ,log_time() + ' ' + '%s(%i)'%(severity_string(severity),int(severity)) + '\n' + info)
-      self.entries = copy.copy(self.entries)
-      if getattr( self, 'copy_to_zlog', True):
-        self.LOGGER.log( severity, info)
+      log_severity = severity
+      if log_severity == logging.DEBUG:
+        log_severity = logging.INFO
+      self.LOGGER.log( severity, info)
       if getattr( self, 'copy_to_stdout', True):
         print log_time(), '%s(%i)'%(severity_string(severity),int(severity)), info
+
+    # --------------------------------------------------------------------------
+    #  ZMSLog.getLOG:
+    # --------------------------------------------------------------------------
+    def getLOG(self, REQUEST, RESPONSE=None):
+      """ ZMSLog.getLOG """
+      filename = os.path.join(INSTANCE_HOME,'log','event.log')
+      RESPONSE.setHeader( 'Content-Type','text/plain')
+      RESPONSE.setHeader( 'Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename( filename))
+      file = open( filename, 'r')
+      rtn = file.read() 
+      file.close()
+      return rtn
+
+    # --------------------------------------------------------------------------
+    #  ZMSLog.tail_event_log:
+    # --------------------------------------------------------------------------
+    def tail_event_log(self, linesback=100, returnlist=True):
+      filename = os.path.join(INSTANCE_HOME,'log','event.log')
+      return _fileutil.tail_lines(filename,linesback,returnlist)
+
 
     ############################################################################
     ###

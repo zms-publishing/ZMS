@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <list>
   <item type="dictionary">
     <dictionary>
@@ -16,19 +17,6 @@
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[resource]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom">
-                    <data content_type="image/png" filename="zms_disabled.png" type="file">89504e470d0a1a0a0000000d4948445200000010000000100802000000909168360000000674524e5300ff00ff00ff37581b7d000000d249444154789cb59231128230104517b5b193bd81d239360e930e2b871b98da8e43e50aa1a3cc7002441aa4036e90d861170b1411a5c838fe72376f76f7ff585a6b30d1c4e83500cc860595853c9100008e1fec2166a20424f4b0b5bf0175d75f9c99104c218eafa4b29089121c3f70256729524a504a3902d431e389444229a64c940032e15cba81ef0c014beb2a66a204707c8ae963fd97baeaf38ee971b73e2924d46ba2286f3e4c515571db506f5e5cf2e28aeecab6da1cda6bc7d477e9f71c5aff97bd3cde653cc118b0fefef98c813b398761145238dc920000000049454e44ae426082</data>
-                  </item>
-                  <item key="id"><![CDATA[icon_disabled]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Disabled)]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
@@ -162,6 +150,22 @@
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[zmsindex]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[ZMSIndex]]></item>
+                      <item><![CDATA[ZMSIndexDb]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[ZMSIndex]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[*]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMS.standard_html -->
 
 <tal:block tal:define="global 
@@ -206,7 +210,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.3]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -310,15 +314,6 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[Home]]></item>
-                      <item><![CDATA[Artikel]]></item>
-                      <item><![CDATA[Forum]]></item>
-                      <item><![CDATA[News]]></item>
-                      <item><![CDATA[Resource]]></item>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
@@ -883,15 +878,6 @@ return ''
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[Home]]></item>
-                      <item><![CDATA[Artikel]]></item>
-                      <item><![CDATA[Forum]]></item>
-                      <item><![CDATA[News]]></item>
-                      <item><![CDATA[Resource]]></item>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
@@ -4642,7 +4628,7 @@ $ZMI.registerReady(function(){
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.2]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

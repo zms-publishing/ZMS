@@ -254,9 +254,6 @@ class CopySupport:
       _globals.writeBlock( self, "[manage_pasteObjs]")
       t0 = time.time()
       
-      # Trigger event.
-      _globals.triggerEvent( self, 'beforePasteObjEvt', preview=True, REQUEST=REQUEST)
-      
       # Analyze request
       cp=self._get_cb_copy_data(cb_copy_data=None,REQUEST=REQUEST)
       op=cp[0]
@@ -287,12 +284,6 @@ class CopySupport:
       
       # Sort order (II).
       self.normalizeSortIds()
-      
-      # Trigger event.
-      if op==1:
-        _globals.triggerEvent( self, 'afterMoveObjEvt', preview=True, REQUEST=REQUEST)
-      else:
-        _globals.triggerEvent( self, 'afterCopyObjEvt', preview=True, REQUEST=REQUEST)
       
       # Return with message.
       if RESPONSE is not None:

@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSIndex]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[_index]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Index]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[list]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<tal:block tal:define="zmscontext options/zmscontext">
+<script>
+function zmsIndexReindexBtnClick(sender) {
+  $(sender).closest('form').append('<'+'input type="hidden" name="manage_target" value="'+self.location.href+'"/>');
+}
+function zmsIndexSearchBtnClick(sender) {
+  $(sender).closest('form').attr({action:self.location.href,method:'GET'});
+}
+</script>
+<div class="form-group">
+  <label class="col-sm-2">Index</label>
+  <div class="col-sm-1">
+    <tal:block tal:content="python:len(zmscontext.attr('_index'))">len(_index)</tal:block>
+    <tal:block tal:content="python:zmscontext.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block>
+  </div>
+  <div class="col-sm-1">
+    <button class="btn btn-danger" name="btn" value="reindex" onclick="zmsIndexReindexBtnClick(this)">Reindex</button>
+  </div>
+</div><!-- .form-group -->
+<div class="form-group">
+  <label class="col-sm-2">Id</label>
+  <div class="col-sm-6">
+  <div class="input-group">
+    <input id="search_term" class="form-control" type="text" tal:attributes="value python:request.get('search_term','')" size="15" name="search_term"/>
+    <span class="input-group-btn">
+      <button class="btn btn-primary" name="btn" value="search" onclick="zmsIndexSearchBtnClick(this)">
+        <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">icon-search</tal:block>
+      </button>
+    </span>
+    </div><!-- .input-group -->
+  </div>
+</div><!-- .form-group -->
+<tal:block tal:condition="python:request.has_key('search_term','')">
+<div class="form-group">
+  <label class="col-sm-2">Link-Url</label>
+  <div class="col-sm-6">
+  <div class="input-group" tal:define="ref python:zmscontext.getLinkObj('{$%s}'%request['search_term'],request)">
+    <code tal:condition="python:ref is None">not found</code>
+    <code tal:condition="python:ref is not None"><a tal:attributes="href python:'%s/manage_main'%ref.absolute_url()" target="_blank" tal:content="python:zmscontext.getRefObjPath(ref)">the link-url</a></code>
+    <code tal:content="python:filter(lambda x:x['zmsid']==request['search_term'],zmscontext.attr('_index'))">the index</code>
+    <code tal:content="python:zmscontext.attr('_index')">the index</code>
+  </div>
+</div><!-- .form-group -->
+</tal:block>
+</tal:block>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndex.getLinkObj"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Hook: Get link object
+##
+# --// getLinkObj //--
+
+obj = None
+url = options['url']
+if url.startswith('{$') and url.endswith('}'):
+  url = url[2:-1]
+  zmsid = url.split('/')[-1]
+  docelmnt = zmscontext.getDocumentElement()
+  index = docelmnt.zmsindex.attr('_index')
+  row = filter(lambda x:x['zmsid']==zmsid,index)
+  if len(row)==1:
+    zmspath  = row[0]['zmspath']
+    l = zmspath[1:-1].split('/')
+    obj = container
+    while obj is not None and len(l) > 0:
+      obj = getattr(obj,l[0],None)
+      l = l[1:]
+return obj
+
+# --// /getLinkObj //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[getLinkObj]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Hook: Get link object]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndex.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: On change object
+##
+# --// onChangeObjEvt //--
+
+request = container.REQUEST
+zmscontext.writeStdout('[onChangeObjEvt] '+str(zmscontext)+' '+str(request.get('btn')))
+if zmscontext.meta_id=='ZMSIndex' and request.get('btn')=='reindex':
+  zmscontext.setConfProperty('ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
+  def visit(node):
+    l = []
+    zmsid = node.id
+    zmspath = '%s/'%('/'.join(node.getPhysicalPath()))
+    d = {}
+    d['zmsid'] = zmsid
+    d['zmspath'] = zmspath
+    l.append(d)
+    for childNode in node.getChildNodes():
+      l.extend(visit(childNode))
+    return l
+  index = visit(zmscontext.getDocumentElement())
+  
+  zmscontext.attr('_index',index)
+  zmscontext.commitObj(request,forced=True)
+  zmscontext.writeStdout('[onChangeObjEvt] reindex %i'%len(index))
+
+# --// /onChangeObjEvt //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[onChangeObjEvt]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: On change object]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndex.ObjectAdded"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object added
+##
+# --// ObjectAdded //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectAdded"
+zmscontext.writeStdout("ObjectAdded")
+zmsid = zmscontext.id
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+index = zmsindex.attr('_index')
+index = filter(lambda x:x['zmsid']!=zmsid,index)
+d = {}
+d['zmsid'] = zmsid
+d['zmspath'] = zmspath
+index.append(d)
+zmsindex.attr('_index',index)
+zmsindex.commitObj(request,forced=True)
+return printed
+
+# --// /ObjectAdded //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectAdded]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object added]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndex.ObjectMoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object moved
+##
+# --// ObjectMoved //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectMoved"
+zmscontext.writeStdout("ObjectMoved")
+zmsid = zmscontext.id
+zmspathid = '/%s/'%zmsid
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+index = zmsindex.attr('_index')
+tree = filter(lambda x:x['zmspath'].find(zmspathid)<0,index)
+movedtree = filter(lambda x:x not in tree,index)
+map(lambda x:zmscontext.operator_setitem(x,'zmspath',zmspath+x['zmspath'][x['zmspath'].find(zmspathid)+len(zmspathid):]),movedtree)
+index = tree+movedtree
+zmsindex.attr('_index',index)
+zmsindex.commitObj(request,forced=True)
+return printed
+
+# --// /ObjectMoved //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectMoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object moved]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndex.ObjectRemoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object removed
+##
+# --// ObjectRemoved //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectRemoved"
+zmscontext.writeStdout("ObjectRemoved")
+zmsid = zmscontext.id
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+index = zmsindex.attr('_index')
+index = filter(lambda x:not x['zmspath'].startswith(zmspath),index)
+zmsindex.attr('_index',index)
+zmsindex.commitObj(request,forced=True)
+return printed
+
+# --// /ObjectRemoved //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectRemoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object removed]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[ZMSIndex]]></item>
+          <item key="name"><![CDATA[ZMSIndex]]></item>
+          <item key="package"><![CDATA[com.zms.index]]></item>
+          <item key="revision"><![CDATA[0.0.3]]></item>
+          <item key="type"><![CDATA[ZMSResource]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSIndexDb]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<tal:block tal:define="zmscontext options/zmscontext">
+<script>
+function zmsIndexInitBtnClick(sender) {
+  window.open('zmsindex/ZMSIndexDb_init_');
+  return false;
+}
+function zmsIndexDbBtnClick(sender) {
+  window.open('zmsindex/db/manage_main');
+  return false;
+}
+function zmsIndexReindexBtnClick(sender) {
+  $(sender).closest('form').append('<'+'input type="hidden" name="manage_target" value="'+self.location.href+'"/>');
+}
+function zmsIndexSearchBtnClick(sender) {
+  $(sender).closest('form').attr({action:self.location.href,method:'GET'});
+}
+</script>
+<div class="form-group" tal:condition="not:python:'db' in map(lambda x:x.id,zmscontext.getChildNodes())">
+  <label class="col-sm-2">Index</label>
+  <div class="col-sm-10">
+    <button class="btn btn-success" name="btn" value="init" onclick="zmsIndexInitBtnClick(this)">Init</button>
+  </div>
+</div>
+<tal:block tal:condition="python:'db' in map(lambda x:x.id,zmscontext.getChildNodes())">
+<tal:block tal:define="global index python:zmscontext.db.assemble_query_result(zmscontext.db.execute('SELECT * FROM t_zmsindex'),encoding='utf-8')['records']">
+<div class="form-group">
+  <label class="col-sm-2">Index</label>
+  <div class="col-sm-1">
+    <tal:block tal:content="python:len(index)">len(_index)</tal:block>
+    <tal:block tal:content="python:zmscontext.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block>
+  </div>
+  <div class="col-sm-9">
+    <button class="btn btn-danger" name="btn" value="reindex" onclick="zmsIndexReindexBtnClick(this)">Reindex</button>
+    <button class="btn btn-info" name="btn" value="db" onclick="zmsIndexDbBtnClick(this)">Db</button>
+  </div>
+</div><!-- .form-group -->
+<div class="form-group">
+  <label class="col-sm-2">Id</label>
+  <div class="col-sm-6">
+  <div class="input-group">
+    <input id="search_term" class="form-control" type="text" tal:attributes="value python:request.get('search_term','')" size="15" name="search_term"/>
+    <span class="input-group-btn">
+      <button class="btn btn-primary" name="btn" value="search" onclick="zmsIndexSearchBtnClick(this)">
+        <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">icon-search</tal:block>
+      </button>
+    </span>
+    </div><!-- .input-group -->
+  </div>
+</div><!-- .form-group -->
+</tal:block>
+</tal:block>
+<tal:block tal:condition="python:request.has_key('search_term','')">
+<div class="form-group">
+  <label class="col-sm-2">Link-Url</label>
+  <div class="col-sm-6">
+  <div class="input-group" tal:define="ref python:zmscontext.getLinkObj('{$%s}'%request['search_term'],request)">
+    <code tal:condition="python:ref is None">not found [<tal:block tal:content="python:filter(lambda x:x['zmsid']==request['search_term'],index)">the index</tal:block>]</code>
+    <code tal:condition="python:ref is not None"><a tal:attributes="href python:'%s/manage_main'%ref.absolute_url()" target="_blank" tal:content="python:zmscontext.getRefObjPath(ref)">the link-url</a></code>
+  </div>
+</div><!-- .form-group -->
+</tal:block>
+</tal:block>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[db]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Datasource]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[ZMSSqlDb]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexDb.getLinkObj"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Hook: Get link object
+##
+# --// getLinkObj //--
+
+obj = None
+url = options['url']
+if url.startswith('{$') and url.endswith('}'):
+  zmscontext.writeStdout('####################################################')
+  url = url[2:-1]
+  zmsid = url.split('/')[-1]
+  docelmnt = zmscontext.getDocumentElement()
+  zmsindex = zmscontext.content.zmsindex
+  db = getattr(zmsindex,'db',None)
+  zmscontext.writeStdout('getLinkObj: '+zmsid)
+  if db is not None:
+    da = db.getDA()
+    if da is not None:
+      for x in db.assemble_query_result(db.execute('SELECT zmspath FROM t_zmsindex WHERE zmsid = \'%s\''%zmsid))['records']:
+        zmspath  = x['zmspath']
+        l = zmspath[1:-1].split('/')
+        obj = container
+        while obj is not None and len(l) > 0:
+          obj = getattr(obj,l[0],None)
+          l = l[1:]
+return obj
+
+# --// /getLinkObj //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[getLinkObj]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Hook: Get link object]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexDb.ObjectAdded"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: After copy object
+##
+# --// ObjectAdded //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectAdded"
+zmscontext.writeStdout("ObjectAdded")
+zmsid = zmscontext.id
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+db = getattr(zmsindex,'db',None)
+if db is not None:
+  da = db.getDA()
+  if da is not None:
+    db.execute('INSERT INTO t_zmsindex(zmsid, zmspath) VALUES (?, ?)',(zmsid,zmspath))
+return printed
+
+# --// /ObjectAdded //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectAdded]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object added]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexDb.ObjectMoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: After move object
+##
+# --// ObjectMoved //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectMoved"
+zmscontext.writeStdout("ObjectMoved")
+zmsid = zmscontext.id
+zmspathid = '/%s/'%zmsid
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+db = getattr(zmsindex,'db',None)
+if db is not None:
+  da = db.getDA()
+  if da is not None:
+    for x in db.assemble_query_result(db.execute('SELECT zmsindex,zmspath FROM t_zmsindex WHERE zmspath LIKE ?',['%'+zmspathid+'%']))['records']:
+      zmscontext.writeStdout("ObjectMoved: "+x['zmspath'])
+      db.execute('UPDATE t_zmsindex SET zmspath=? WHERE zmsindex=?',(zmspath+x['zmspath'][x['zmspath'].find(zmspathid)+len(zmspathid):],x['zmsindex']))
+return printed
+
+# --// /ObjectMoved //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectMoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object moved]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexDb.ObjectRemoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object removed
+##
+# --// ObjectRemoved //--
+
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+print "ObjectRemoved"
+zmscontext.writeStdout("ObjectRemoved")
+zmsid = zmscontext.id
+zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
+zmsindex = zmscontext.content.zmsindex
+db = getattr(zmsindex,'db',None)
+if db is not None:
+  da = db.getDA()
+  if da is not None:
+    db.execute('DELETE FROM t_zmsindex WHERE zmspath LIKE ?',(zmspath+'%'))
+return printed
+
+# --// /ObjectRemoved //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[ObjectRemoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object removed]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexDb.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: On change object
+##
+# --// onChangeObjEvt //--
+
+request = container.REQUEST
+zmscontext.writeStdout('[onChangeObjEvt] '+str(zmscontext)+' '+str(request.get('btn')))
+if zmscontext.meta_id=='ZMSIndexDb' and request.get('btn')=='reindex':
+  zmscontext.setConfProperty('ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
+  db = zmscontext.db
+  db.execute('DELETE FROM t_zmsindex')
+  zmscontext.writeStdout('DELETE FROM t_zmsindex')
+  def visit(node):
+    zmsid = node.id
+    zmspath = '%s/'%('/'.join(node.getPhysicalPath()))
+    db.execute('INSERT INTO t_zmsindex(zmsid, zmspath) VALUES (?, ?)',(zmsid,zmspath))
+    node.writeStdout('INSERT INTO t_zmsindex(zmsid, zmspath) VALUES (?, ?)')
+    for childNode in node.getChildNodes():
+      visit(childNode)
+  visit(zmscontext.getDocumentElement())
+
+# --// /onChangeObjEvt //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[onChangeObjEvt]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: On change object]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSIndexDb.standard_html -->
+
+<tal:block tal:define="global
+		zmscontext options/zmscontext">
+</tal:block>
+
+<!-- /ZMSIndexDb.standard_html -->]]>
+                  </item>
+                  <item key="id"><![CDATA[standard_html]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: ZMSIndexDb]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[#!/usr/bin/python
+# -*- coding: latin-1 -*-
+import os
+# Python >= 2.5
+try:
+  import sqlite3 as sqlite
+# Python < 2.5
+except:
+  from pysqlite2 import dbapi2 as sqlite
+
+sql = """
+DROP TABLE t_zmsindex;
+CREATE TABLE t_zmsindex(
+  zmsindex $AUTOINC,
+  zmsid VARCHAR(64) NOT NULL,
+  zmspath VARCHAR(1024) NOT NULL
+);
+"""
+
+def ZMSIndexDb_init_( self):
+  request = self.REQUEST
+  request.set('lang',self.getPrimaryLanguage())
+  printed = []
+  printed.append("[ZMSIndexDb_init_]")
+  self.initObjChildren(self.REQUEST)
+  db = self.db
+  connection_id = getattr(db,'connection_id',None)
+  printed.append("db.connection_id="+str(connection_id))
+  if connection_id is None:
+    # Create folder.
+    db_home = os.path.join(self.Control_Panel.getINSTANCE_HOME(),'var','sqlite')
+    printed.append("db_home="+db_home)
+    if not os.path.exists(db_home):
+      os.makedirs(db_home)
+    
+    # Create SQLite.
+    db = '%s/%s.sqlite'%(db_home,self.id)
+    printed.append("db="+db)
+    if not os.path.exists(db):
+      con = sqlite.connect(db)
+      for s in sql.split(";"):
+        try:
+          # SQLite
+          s = s.replace('$AUTOINC','INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL')
+          # MySql
+          #s = s.replace('$AUTOINC','INT NOT NULL AUTO_INCREMENT PRIMARY KEY')
+          execute(con,s,[])
+          printed.append(str((s,1)))
+        except Exception, exc:
+          printed.append(str((s,exc)))
+      con.commit()
+    
+    # Create ZSQLiteDA
+    root = self.getHome()
+    if self.getPortalMaster() is not None:
+      root = self.getPortalMaster().getHome()
+    new_id = self.id+'_da'
+    if new_id in root.objectIds():
+      printed.append("delete "+new_id)
+      root.manage_delObjects(ids=[new_id])
+    new_title = ''
+    new_connection = self.id+'.sqlite'
+    printed.append("new_id="+new_id)
+    printed.append("new_title="+new_title)
+    printed.append("new_connection="+new_connection)
+    root.manage_addProduct["ZSQLiteDA"].manage_addZSQLiteConnection(id=new_id,title=new_title,connection=new_connection)
+    
+    # Open connection.
+    new_da = getattr(root,new_id)
+    new_da.manage_open_connection()
+    
+    # Apply connection.
+    self.db.connection_id = new_id
+  
+  self.writeStdout('\n'.join(printed))
+  return '\n'.join(printed)
+
+def execute(conn, sql, *args):
+  c = conn.cursor()
+  c.execute(sql)
+  c.close()]]>
+                  </item>
+                  <item key="id"><![CDATA[ZMSIndexDb_init_]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Init Db]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[External Method]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                  <item><![CDATA[ZMSAdministrator]]></item>
+                  <item><![CDATA[ZMSAuthor]]></item>
+                  <item><![CDATA[ZMSEditor]]></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[ZMSIndexDb]]></item>
+          <item key="name"><![CDATA[ZMSIndexDb]]></item>
+          <item key="package"><![CDATA[com.zms.index]]></item>
+          <item key="revision"><![CDATA[0.0.3]]></item>
+          <item key="type"><![CDATA[ZMSResource]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[com.zms.index]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="delete_custom"></item>
+              <item key="insert" type="list">
+                <list>
+                </list>
+              </item>
+              <item key="insert_custom"></item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[com.zms.index]]></item>
+          <item key="name"><![CDATA[com.zms.index]]></item>
+          <item key="package"></item>
+          <item key="revision"><![CDATA[0.0.3]]></item>
+          <item key="type"><![CDATA[ZMSPackage]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+</list>

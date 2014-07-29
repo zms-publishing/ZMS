@@ -395,7 +395,7 @@ class ZMSMetaobjManager:
         ob = self.__get_metaobj__( id)
         if type( ob) is dict and (ob.get('type') == 'ZMSDocument' or ob.get('id') == 'ZMSTeaserContainer'):
           ids = map( lambda x: x['id'], filter( lambda x: x['type']=='*', ob['attrs']))
-          rtnVal = ids == ['e']
+          rtnVal = 'e' in ids
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff( reqBuffId, rtnVal, self.REQUEST)

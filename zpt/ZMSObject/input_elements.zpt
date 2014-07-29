@@ -69,7 +69,9 @@
 							><tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','')"></tal:block
 						></tal:block>
 					</tal:block
-					><tal:block tal:condition="python:metaObjAttr['type'] not in ['?','delimiter','hint','interface','richtext']+metaObjIds+['*']
+					><tal:block tal:condition="python:
+							metaObjAttr['type'] not in ['?','delimiter','hint','interface','richtext']+metaObjIds+['*']
+							and metaObjAttr['type'] in here.metaobj_manager.valid_types
 							and not (metaObjAttr['id'] in ['displaytype','format'])
 							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
 							and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">

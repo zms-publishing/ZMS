@@ -494,7 +494,7 @@ class VersionItem:
       _blobfields.thumbnailImageFields( self, lang, REQUEST)
       
       ##### Trigger custom onChangeObj-Event (if there is one) ####
-      _globals.triggerEvent( self, 'onChangeObjEvt', preview=True, REQUEST=REQUEST)
+      _globals.triggerEvent( self, 'onChangeObjEvt')
       
       ##### Commit or initiate workflow transition ####
       if self.getAutocommit() or forced:
@@ -534,7 +534,7 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeCommitObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'beforeCommitObjChangesEvt', preview=True, REQUEST=REQUEST)
+      _globals.triggerEvent( self, 'beforeCommitObjChangesEvt')
       
       ##### Commit delete. ####
       if self.inObjStates(['STATE_DELETED'],REQUEST):
@@ -626,7 +626,7 @@ class VersionItem:
         self.onSynchronizeObj(REQUEST)
       
       ##### Trigger custom afterCommitObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'afterCommitObjChangesEvt', preview=True, REQUEST=REQUEST)
+      _globals.triggerEvent( self, 'afterCommitObjChangesEvt')
       
       # Return flag for deleted objects.
       return delete
@@ -660,7 +660,7 @@ class VersionItem:
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeRollbackObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'beforeRollbackObjChangesEvt', preview=True, REQUEST=REQUEST)
+      _globals.triggerEvent( self, 'beforeRollbackObjChangesEvt')
       
       ##### Rollback insert. ####
       # Self.
@@ -736,7 +736,7 @@ class VersionItem:
         self.onSynchronizeObj(REQUEST)
       
       ##### Trigger custom afterRollbackObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'afterRollbackObjChangesEvt', preview=True, REQUEST=REQUEST)
+      _globals.triggerEvent( self, 'afterRollbackObjChangesEvt')
       
       # Return flag for deleted objects.
       return delete

@@ -10,22 +10,19 @@
 <form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="key" value="custom"/>
-	<legend tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</legend>
-	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_WORKFLOW')">well</p>
-	<div class="form-group workflow">
-		<label for="workflow" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
-		<div class="col-lg-10">
-			<div class="pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></div>
-			<div class="pull-left">
-				<div class="single-line input-append zmi-nodes">
-					<textarea name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-				</div>
-			</div>
-			<div class="pull-left" style="padding-left:5em;">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			</div>
-		</div><!-- .col-lg-10 -->
-	</div><!-- .form-group.workflow -->
+	<legend>Acquired Workflow</legend>
+	<div class="row container">
+		<label for="workflow" class="control-label pull-left"><span style="padding-right:1em;">aktiv</span></label>
+		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1"></span>
+		<div class="col-xs-3 col-sm-4 col-md-5">
+			<div class="single-line input-append zmi-nodes input-group">
+				<textarea class="form-control" name="nodes" rows="1" wrap="off" title="Knoten">{$}</textarea>
+				<span class="input-group-addon btn btn-default">...</span></div>
+		</div>
+		<div class="container">
+			<button type="submit" name="btn" class="btn btn-primary" value="Speichern">Speichern</button>
+		</div>
+	</div>
 </form>
 
 <div style="clear:both;">&nbsp;</div>

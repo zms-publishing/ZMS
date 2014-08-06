@@ -3242,7 +3242,7 @@ function table_cell_edit(el_td) {
 	$('#zmiRichtextEditor'+elName).hide();
 	$('#zmiStandardEditor'+elName).show();
 	$('#content_editor').val($('#content_'+ table_cell_id).val());
-	$('#tag').val($('#tag_'+ table_cell_id).val());
+	$('select[name="tag"]').val($('#tag_'+ table_cell_id).val());
 	$('#format').val($('#format_'+ table_cell_id).val());
 	if (typeof richedit_fmt != 'undefined') {
 		zmiRichtextSyncDataToView(elName);
@@ -3281,7 +3281,7 @@ function table_cell_change() {
 		}
 	}
 	$('#format_'+ table_cell_id).val($('#format').val());
-	$('#tag_'+ table_cell_id).val($('#tag').val());
+	$('#tag_'+ table_cell_id).val($('select[name="tag"]').val());
 	$('#content_'+ table_cell_id).val($('#content_editor').val());
 	$('#preview_'+ table_cell_id).html($('#content_editor').val());
 	return table_cell_cancel();

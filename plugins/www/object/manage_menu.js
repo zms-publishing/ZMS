@@ -45,6 +45,7 @@ function zmiToggleClick(toggle, callback) {
 						var page_absolute_url = $(page).attr("absolute_url");
 						var page_meta_type = $(page).attr("meta_id");
 						var page_titlealt = $(page).attr("titlealt");
+						var page_type = $(page).attr("attr_dc_type");
 						var page_display_icon = $(page).attr("display_icon");
 						var html = '';
 						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
@@ -53,6 +54,11 @@ function zmiToggleClick(toggle, callback) {
 							html += 'inactive ';
 						} else {
 							html += 'active ';
+						}
+						if (typeof(page_type) != 'undefined') {
+							if ( page_type.length > 0 ) {
+								html += 'type-'+page_type+' ';
+							}
 						}
 						if ($(page).attr("restricted")=="True") {
 							html += 'restricted" title= "Login Required';

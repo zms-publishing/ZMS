@@ -1030,6 +1030,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " title=\"%s\""%_globals.html_quote(self.getTitle(REQUEST))
       xml += " titlealt=\"%s\""%_globals.html_quote(self.getTitlealt(REQUEST))
       xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
+      xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
       xml += ">"
       if REQUEST.form.get('get_attrs', 1):
         obj_attrs = self.getObjAttrs()

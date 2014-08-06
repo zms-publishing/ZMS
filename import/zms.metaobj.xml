@@ -3057,8 +3057,7 @@ function onZMSTableFormSubmit() {
 --- Table-Cell Editor
 --------------------------------------------------------------------------------
 -->
-<tal:block tal:define="global custom python:''
-		+'<div class=\042pull-left\042>'+here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=['th','td'])+'</div>'">
+<tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
 	<div class="ui-helper-hidden ui-helper-overlay">&nbsp;</div>
 	<div class="ui-helper-hidden">
 		<div id="div_table_cell_editor">
@@ -3109,6 +3108,9 @@ div.zmi-interface {
 #div_table_cell_editor {
 	width:65em;
 	margin:1em;
+}
+.celltypes select {
+	width:10em;
 }
 .ui-helper-overlay {
 	position:absolute!important;
@@ -3163,6 +3165,7 @@ img.hbutton {
 .table_cell_editable.moved {
 	background-color:#FFF;
 }
+
 </style>
 
 <script>
@@ -3532,7 +3535,7 @@ function onKeyUpZMSTableDivContenteditable() {
 				<div class="ZMSTable">
 					<table style="width:100%" class="ZMSTable">
 					<tr>
-						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(cell['tag'],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
+						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell['tag']][cell['tag']!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
 						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
 							<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag"/>
 							<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">

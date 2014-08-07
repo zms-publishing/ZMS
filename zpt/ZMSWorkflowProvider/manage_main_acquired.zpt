@@ -13,10 +13,10 @@
 	<legend>Acquired Workflow</legend>
 	<div class="row container">
 		<label for="workflow" class="control-label pull-left"><span style="padding-right:1em;">aktiv</span></label>
-		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1"></span>
+		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]" /></span>
 		<div class="col-xs-3 col-sm-4 col-md-5">
 			<div class="single-line input-append zmi-nodes input-group">
-				<textarea class="form-control" name="nodes" rows="1" wrap="off" title="Knoten">{$}</textarea>
+				<textarea class="form-control" name="nodes" title="Nodes" tal:content="python:'\n'.join(here.operator_getattr(here,'nodes',['{$}']))">{$}</textarea>
 				<span class="input-group-addon btn btn-default">...</span></div>
 		</div>
 		<div class="container">

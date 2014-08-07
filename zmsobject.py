@@ -182,7 +182,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.get_oid:
     # --------------------------------------------------------------------------
     def get_oid(self):
-      from Shared.DC.xml.ppml import u64 as decodeObjectId
+      try:
+        from Shared.DC.xml.ppml import u64 as decodeObjectId
+      except:
+        from ZODB.utils import u64 as decodeObjectId
       oid = None
       if self._p_oid is not None:
         oid = decodeObjectId(self._p_oid)

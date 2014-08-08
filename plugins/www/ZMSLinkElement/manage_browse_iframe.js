@@ -2,8 +2,8 @@
  * Select object.
  */
 function selectObject(physical_path,anchor,is_page,titlealt) {
-	$ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
-	confirm('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
+	// $ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
+	//confirm('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
 	var fm;
 	var url = physical_path;
 	var title = titlealt;

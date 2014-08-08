@@ -20,7 +20,11 @@
 	</div><!-- .navbar -->
 </div><!-- #zmi-sitemap-header -->
 
-<div class="zmi-sitemap" tal:define="global childNode python:here.breadcrumbs_obj_path()[0]"
+<div class="zmi-sitemap"
+	tal:define="masterNode python:here.breadcrumbs_obj_path()[0];
+				clientNode python:here.getDocumentElement();
+				masterAccess python:masterNode.hasAccess(request);
+				global childNode python:masterNode and masterAccess or clientNode"
 	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
 	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
 		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"

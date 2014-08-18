@@ -1,7 +1,6 @@
-<tal:block tal:define="global
-		bnobody python:int(request.get('ZMS_NO_BODY','')!='');">
-
-<!DOCTYPE html>
+<tal:block 
+	tal:define="global bnobody python:int(request.get('ZMS_NO_BODY','')!='');"
+><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <script tal:condition="python:not bnobody">
@@ -40,7 +39,7 @@
 	}
 </style>
 
-<body tal:attributes="class python:here.zmi_body_class(id='metas_import')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas import')">
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);

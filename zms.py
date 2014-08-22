@@ -41,7 +41,7 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+import ZMSMetamodelProvider, ZMSMetacmdProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
@@ -156,6 +156,14 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
     if not self.getAutocommit() and self.isVersionContainer():
       self.syncObjModifiedChildren( REQUEST)
   
+  ##### Build 135: Metacmd-Provider ####
+  if getattr( docElmnt, 'build', '000') < '135':
+      commands = self.getConfProperty('ZMS.custom.commands',[])
+      if len(commands)>0:
+        manager = ZMSMetacmdProvider.ZMSMetacmdProvider(commands)
+        self._setObject( manager.id, manager)
+        self.delConfProperty('ZMS.custom.commands')
+
   # Recursion.
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
     recurse_updateVersionBuild(docElmnt, ob, REQUEST)
@@ -398,7 +406,7 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '134'        # Internal use only, designates object model!
+    zms_build = '135'        # Internal use only, designates object model!
     zms_patch = 'c'          # Internal use only!
 
     # Properties.
@@ -431,7 +439,6 @@ class ZMS(
     __administratorPermissions__ = (
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
-        'manage_changeMetacmds', 'manage_customizeMetacmdForm', 'manage_acquireMetacmdForm',
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (

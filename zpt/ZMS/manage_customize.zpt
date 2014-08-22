@@ -42,7 +42,7 @@ $ZMI.registerReady(function(){
 			<input type="hidden" name="key" value="Manager" />
 			<legend>Manager</legend>
 			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
-					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
+					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSMetacmdProvider','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
 			<div class="col-sm-12">
 				<label for="meta_type">ZMS base-components</label>
 				<div class="form-group">

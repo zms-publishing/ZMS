@@ -45,7 +45,6 @@ import _exportable
 import _fileutil
 import _filtermanager
 import _mediadb
-import _metacmdmanager
 import _multilangmanager
 import _sequence
 import zmslog
@@ -127,7 +126,6 @@ def updateConf(self, REQUEST):
 ################################################################################
 class ConfManager(
     _multilangmanager.MultiLanguageManager,
-    _metacmdmanager.MetacmdManager,
     _filtermanager.FilterManager,
     ):
     zope.interface.implements(
@@ -146,8 +144,6 @@ class ConfManager(
     addZMSSqlDbForm = PageTemplateFile('addzmssqldbform',globals()) 
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize',globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform',globals())
-    manage_customizeMetacmdForm = PageTemplateFile('zpt/metacmd/manage_customizeform',globals()) 
-    manage_acquireMetacmdForm = PageTemplateFile('zpt/metacmd/manage_acquireform',globals()) 
     manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform',globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform',globals())
 
@@ -194,11 +190,11 @@ class ConfManager(
       elif filename.find('.filter.') > 0:
         _filtermanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metadict.') > 0:
-        self.metaobj_manager.importMetadictXml(xmlfile, REQUEST, createIfNotExists)
+        self.getMetaobjManager().importMetadictXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metaobj.') > 0:
-        self.metaobj_manager.importMetaobjXml(xmlfile, REQUEST, createIfNotExists)
+        self.getMetaobjManager().importMetaobjXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.metacmd.') > 0:
-        _metacmdmanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
+        self.getMetacmdManager().importXml(xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.langdict.') > 0:
         _multilangmanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
       elif filename.find('.textfmt.') > 0:
@@ -399,7 +395,6 @@ class ConfManager(
         if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):
           for d in ob.manage_sub_options():
             l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
-      l.append({'label':'TAB_METACMD','action':'manage_customizeMetacmdForm'})
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
       return l
@@ -658,7 +653,7 @@ class ConfManager(
             obj = zmslog.ZMSLog()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
-          elif meta_type in ['ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']:
+          elif meta_type in ['ZMSMetacmdProvider','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']:
             obj = ConfDict.get_constructor(meta_type)()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
@@ -862,6 +857,30 @@ class ConfManager(
 
     def notifyMetaobjAttrAboutValue(self, meta_id, key, value):
       return self.getMetaobjManager().notifyMetaobjAttrAboutValue( meta_id, key, value)
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSMetacmdProvider: delegate
+    ###
+    ############################################################################
+
+    def getMetacmdManager(self):
+      metacmd_manager = getattr(self,'metacmd_manager',None)
+      return metacmd_manager
+
+    def getMetaCmdDescription(self, id=None, name=None):
+       """ getMetaCmdDescription """
+       return self.getMetacmdManager().getMetaCmdDescription(id,name)
+
+    def getMetaCmd(self, id=None, name=None):
+       return self.getMetacmdManager().getMetaCmd(id,name)
+
+    def getMetaCmdIds(self, sort=1):
+       return self.getMetacmdManager().getMetaCmdIds(sort)
+
+    def getMetaCmds(self, sort=True):
+       return self.getMetacmdManager().getMetaCmds(sort)
 
 
     ############################################################################

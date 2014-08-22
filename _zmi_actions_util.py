@@ -208,8 +208,7 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
   auth_user = REQUEST['AUTHENTICATED_USER']
   absolute_url = '/'.join(list(context.getPhysicalPath())+[''])
   
-  for metaCmdId in context.getMetaCmdIds():
-    metaCmd = context.getMetaCmd(metaCmdId)
+  for metaCmd in context.getMetaCmds():
     if (insert_actions and metaCmd['id'].startswith('manage_add')) or \
        (not insert_actions and not metaCmd['id'].startswith('manage_add')):
       canExecute = True

@@ -431,7 +431,7 @@ class ZMS(
     __administratorPermissions__ = (
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
-        'manage_changeMetacmds', 'manage_customizeMetacmdForm',
+        'manage_changeMetacmds', 'manage_customizeMetacmdForm', 'manage_acquireMetacmdForm',
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (

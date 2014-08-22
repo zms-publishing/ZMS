@@ -58,7 +58,9 @@ pyScriptExampleCode = \
   'RESPONSE =  request.RESPONSE\n' + \
   '\n' + \
   '# Return a string identifying this script.\n' + \
-  'print "This is the Python Script %s" % script.getId()\n' + \
+  'print "This is the", script.meta_type, \'"%s"\' % script.getId(),\n' + \
+  'if script.title:\n' + \
+  '    print "(%s)" % html_quote(script.title),\n' + \
   'print "in", container.absolute_url()\n' + \
   'return printed\n' + \
   ''
@@ -251,26 +253,23 @@ class MetacmdObject:
       
       # Execute.
       # --------
-      for metaCmdId in self.getMetaCmdIds():
-        metaCmd = self.getMetaCmd(metaCmdId)
+      for metaCmd in self.getMetaCmds():
         if metaCmd['name'] == custom:
           # Acquire from parent.
           if metaCmd.get('acquired',0) == 1:
-            portalMaster = self.getPortalMaster()
-            if portalMaster is not None:
-              masterDtmlMthd = getattr(portalMaster,metaCmd['id'])
-              ob = getattr(self,metaCmd['id'])
-              if ob.meta_type in [ 'DTML Method', 'DTML Document']:
-                newData = masterDtmlMthd.raw
-                ob.manage_edit(title=ob.title,data=newData)
-              elif ob.meta_type in [ 'Page Template']:
-                newData = masterDtmlMthd.read()
-                newContentType = masterDtmlMthd.content_type
-                ob.pt_edit(newData,content_type=newContentType)
-              elif ob.meta_type in [ 'Script (Python)']:
-                newData = masterDtmlMthd.read()
-                ob.ZPythonScript_setTitle( ob.title)
-                ob.write(newData)
+            src = getattr(metaCmd['home'],metaCmd['id'])
+            ob = getattr(self,metaCmd['id'])
+            if ob.meta_type in [ 'DTML Method', 'DTML Document']:
+              newData = src.raw
+              ob.manage_edit(title=ob.title,data=newData)
+            elif ob.meta_type in [ 'Page Template']:
+              newData = src.read()
+              newContentType = src.content_type
+              ob.pt_edit(newData,content_type=newContentType)
+            elif ob.meta_type in [ 'Script (Python)']:
+              newData = src.read()
+              ob.ZPythonScript_setTitle( ob.title)
+              ob.write(newData)
           # Execute directly.
           if metaCmd.get('exec',0) == 1:
             ob = getattr(self,metaCmd['id'],None)
@@ -345,7 +344,7 @@ class MetacmdManager:
     # --------------------------------------------------------------------------
     #  MetacmdManager.getMetaCmdIds
     #
-    #  Returns list of action-Ids.
+    #  Returns list of action-ids.
     # --------------------------------------------------------------------------
     def getMetaCmdIds(self, sort=1):
       obs = getRawMetacmds(self)
@@ -357,6 +356,31 @@ class MetacmdManager:
         obs = map(lambda x: x[1], obs)
       ids = map(lambda x: x['id'], obs)
       return ids
+
+
+    # --------------------------------------------------------------------------
+    #  MetacmdManager.getMetaCmds
+    #
+    #  Returns list of actions.
+    # --------------------------------------------------------------------------
+    def getMetaCmds(self, sort=True):
+      metaCmds = []
+      portalMasterMetaCmds = None
+      for metaCmd in getRawMetacmds(self):
+        # Acquire from parent.
+        if metaCmd.get('acquired',0)==1:
+          if portalMasterMetaCmds is None:
+            portalMaster = self.getPortalMaster()
+            portalMasterMetaCmds = portalMaster.getMetaCmds()
+          l = filter(lambda x: x['id']==metaCmd['id'], portalMasterMetaCmds)
+          if len(l) > 0:
+            metaCmd = l[0]
+            metaCmd['acquired'] = 1
+        else:
+          metaCmd = metaCmd.copy()
+          metaCmd['home'] = self
+        metaCmds.append(metaCmd)
+      return metaCmds
 
 
     ############################################################################
@@ -372,10 +396,11 @@ class MetacmdManager:
         # Acquire.
         # --------
         if btn == self.getZMILangStr('BTN_ACQUIRE'):
-          newId = REQUEST['aq_id']
-          newAcquired = 1
-          id = setMetacmd(self, None, newId, newAcquired)
-          message = self.getZMILangStr('MSG_INSERTED')%id
+          aq_ids = REQUEST.get('aq_ids',[])
+          for newId in aq_ids:
+            newAcquired = 1
+            setMetacmd(self, None, newId, newAcquired)
+          message = self.getZMILangStr('MSG_INSERTED')%str(len(aq_ids))
         
         # Change.
         # -------
@@ -426,11 +451,10 @@ class MetacmdManager:
         elif btn == self.getZMILangStr('BTN_EXPORT'):
           value = []
           ids = REQUEST.get('ids',[])
-          for metaCmdId in self.getMetaCmdIds():
-            if metaCmdId in ids or len(ids) == 0:
-              metaCmd = self.getMetaCmd(metaCmdId)
+          for metaCmd in self.getMetaCmds():
+            if metaCmd['id'] in ids or len(ids) == 0:
               # Catalog.
-              el_id = metaCmdId
+              el_id = metaCmd['id']
               el_name = metaCmd['name']
               el_description = metaCmd['description']
               el_icon_clazz = metaCmd.get('icon_clazz','')
@@ -438,7 +462,7 @@ class MetacmdManager:
               el_roles = metaCmd['roles']
               el_exec = metaCmd['exec']
               # Object.
-              ob = getattr(self,metaCmdId)
+              ob = getattr(self,metaCmd['id'])
               el_meta_type = ob.meta_type
               if ob.meta_type in ['DTML Method','DTML Document']:
                 el_data = ob.raw

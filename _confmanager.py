@@ -147,6 +147,7 @@ class ConfManager(
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize',globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform',globals())
     manage_customizeMetacmdForm = PageTemplateFile('zpt/metacmd/manage_customizeform',globals()) 
+    manage_acquireMetacmdForm = PageTemplateFile('zpt/metacmd/manage_acquireform',globals()) 
     manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform',globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform',globals())
 

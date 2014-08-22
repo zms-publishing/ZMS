@@ -86,7 +86,9 @@ function zmiModalInsertUserOpen(context) {
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="roles" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
+				<div class="col-sm-10" 
+					tal:define="roles_optpl python:len(filter(lambda r: r in ['Manager','ZMSAdminstrator'], request['AUTHENTICATED_USER'].getRolesInContext(here))) > 0 and roles_optpl or roles_optpl[1:]"
+					tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="controls save">

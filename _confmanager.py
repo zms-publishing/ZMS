@@ -114,7 +114,10 @@ def updateConf(self, REQUEST):
   createIfNotExists = False
   filenames = self.getConfFiles().keys()
   for filename in filenames:
-    self.importConf(filename,REQUEST,createIfNotExists)
+    try:
+      self.importConf(filename,REQUEST,createIfNotExists)
+    except:
+      pass
 
 
 ################################################################################
@@ -880,7 +883,10 @@ class ConfManager(
        return self.getMetacmdManager().getMetaCmdIds(sort)
 
     def getMetaCmds(self, sort=True):
-       return self.getMetacmdManager().getMetaCmds(sort)
+       try:
+          return self.getMetacmdManager().getMetaCmds(sort)
+       except:
+          return []
 
 
     ############################################################################

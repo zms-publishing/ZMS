@@ -1268,7 +1268,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if _globals.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1):
         ids = ['contentEditable',self.id,request['lang']]
-        css = ['contentEditable']
+        css = ['contentEditable', self.meta_id]
         html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
       return html
 

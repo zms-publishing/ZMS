@@ -56,7 +56,6 @@ Read system-configuration from $ZMS_HOME/etc/zms.conf
 class ConfDict:
 
     __confdict__ = None
-    __clazzes__ = {}
 
     @classmethod
     def get(cls):
@@ -74,12 +73,12 @@ class ConfDict:
         return cls.__confdict__
 
     @classmethod
-    def set_constructor(cls, key, clazz):
-      cls.__clazzes__[key] = clazz
-
-    @classmethod
-    def get_constructor(cls, key):
-      return cls.__clazzes__[key]
+    def forName(cls, name):
+      d = name.rfind(".")
+      clazzname = name[d+1:len(name)]
+      mod = __import__(name[0:d], globals(), locals(), [clazzname])
+      clazz = getattr(mod, clazzname)
+      return clazz
 
 
 """
@@ -656,8 +655,8 @@ class ConfManager(
             obj = zmslog.ZMSLog()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
-          elif meta_type in ['ZMSMetacmdProvider','ZMSWorkflowProvider','ZMSWorkflowProviderAcquired']:
-            obj = ConfDict.get_constructor(meta_type)()
+          else:
+            obj = ConfDict.forName(meta_type+'.'+meta_type)()
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
         elif btn == 'Remove':
@@ -870,6 +869,13 @@ class ConfManager(
 
     def getMetacmdManager(self):
       metacmd_manager = getattr(self,'metacmd_manager',None)
+      if metacmd_manager is None:
+        class DefaultManager:
+          def getMetaCmdDescription(self, id=None, name=None): return None
+          def getMetaCmd(self, id=None, name=None): return None
+          def getMetaCmdIds(self, sort=1): return []
+          def getMetaCmds(self, sort=True): return []
+        metacmd_manager = DefaultManager()
       return metacmd_manager
 
     def getMetaCmdDescription(self, id=None, name=None):
@@ -883,10 +889,7 @@ class ConfManager(
        return self.getMetacmdManager().getMetaCmdIds(sort)
 
     def getMetaCmds(self, sort=True):
-       try:
-          return self.getMetacmdManager().getMetaCmds(sort)
-       except:
-          return []
+      return self.getMetacmdManager().getMetaCmds(sort)
 
 
     ############################################################################

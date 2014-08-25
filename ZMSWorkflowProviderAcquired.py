@@ -25,7 +25,6 @@ import zope.interface
 import IZMSConfigurationProvider
 import IZMSWorkflowProvider, ZMSWorkflowProvider
 import ZMSItem
-import _confmanager
 
 
 class ZMSWorkflowProviderAcquired(
@@ -167,5 +166,3 @@ class ZMSWorkflowProviderAcquired(
       return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
 
 ################################################################################
-
-_confmanager.ConfDict.set_constructor('ZMSWorkflowProviderAcquired',ZMSWorkflowProviderAcquired)

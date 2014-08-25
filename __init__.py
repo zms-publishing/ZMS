@@ -45,6 +45,8 @@ import _multilangmanager
 import _mediadb
 import _sequence
 import _zmsattributecontainer
+import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
+import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 
 
 ################################################################################

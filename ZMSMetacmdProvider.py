@@ -19,11 +19,12 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import copy
+import urllib
 import zope.interface
 # Product Imports.
-import _confmanager
 import _globals
 import IZMSMetacmdProvider,IZMSConfigurationProvider
 import ZMSItem
@@ -32,9 +33,7 @@ import ZMSItem
 # Example code.
 # -------------
 
-dtmlMethodWithExecExampleCode = '<!-- @deprecated -->'
-
-dtmlMethodWithoutExecExampleCode = '<!-- @deprecated -->'
+dtmlExampleCode = '<!-- @deprecated -->'
 
 pageTemplateExampleCode = \
   '<!DOCTYPE html>\n' + \
@@ -131,7 +130,7 @@ class ZMSMetacmdProvider(
     """
     
     # ------------------------------------------------------------------------------
-    #  _metacmdmanager.importXml
+    #  ZMSMetacmdProvider.importXml
     # ------------------------------------------------------------------------------
     
     def _importXml(self, item, createIfNotExists=1):
@@ -172,7 +171,7 @@ class ZMSMetacmdProvider(
 
 
     # ------------------------------------------------------------------------------
-    #  _metacmdmanager.delMetacmd:
+    #  ZMSMetacmdProvider.delMetacmd:
     # 
     #  Delete Action specified by given Id.
     # ------------------------------------------------------------------------------
@@ -188,13 +187,14 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands)
       
       # Remove Template.
-      self.manage_delObjects(ids=[id])
+      home = self.aq_parent
+      home.manage_delObjects(ids=[id])
       
       # Return with empty id.
       return ''
 
     # ------------------------------------------------------------------------------
-    #  _metacmdmanager.setMetacmd:
+    #  ZMSMetacmdProvider.setMetacmd:
     #
     #  Set/add Action specified by given Id.
     # ------------------------------------------------------------------------------
@@ -224,38 +224,37 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands)
       
       # Insert Template.
+      home = self
       if id is None:
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
         if newAcquired:
-          portalMaster = self.getPortalMaster()
-          if portalMaster is not None:
-            newMethod = getattr(portalMaster,newId).meta_type
+          home = self.getPortalMaster()
+          newMethod = getattr(home,newId).meta_type
         if newId in self.objectIds():
-          self.manage_delObjects(ids=[newId])
+          home.manage_delObjects(ids=[newId])
         if newMethod == 'DTML Method': 
-          self.manage_addDTMLMethod(newId,newTitle) 
+          home.manage_addDTMLMethod(newId,newTitle) 
           if newData is None: 
-            if newExec: 
-              newData = dtmlMethodWithExecExampleCode 
-            else: 
-              newData = dtmlMethodWithoutExecExampleCode 
-          newData = newData.replace('$$NAME$$',newName) 
+            newData = dtmlExampleCode
         elif newMethod == 'DTML Document': 
-          self.manage_addDTMLDocument(newId,newTitle) 
+          home.manage_addDTMLDocument(newId,newTitle) 
           if newData is None:
-            newData = dtmlMethodExampleCode 
+            newData = dtmlExampleCode 
         elif newMethod == 'Page Template':
-          self.manage_addProduct['PageTemplates'].manage_addPageTemplate(id=newId,title=newTitle,text=pageTemplateExampleCode)
+          ZopePageTemplate.manage_addPageTemplate(home,id=newId,title=newTitle)
+          if newData is None: 
+            newData = pageTemplateExampleCode 
         elif newMethod == 'Script (Python)':
-          PythonScript.manage_addPythonScript(self,newId)
-          if newData is None: newData = pyScriptExampleCode
-    
+          PythonScript.manage_addPythonScript(home,newId)
+          if newData is None:
+            newData = pyScriptExampleCode
+      
       # Rename Template.
       elif id != newId:
-        self.manage_renameObject(id=id,new_id=newId)
-    
+        home.manage_renameObject(id=id,new_id=newId)
+      
       # Update Template.
-      ob = getattr(self,newId,None)
+      ob = getattr(home,newId,None)
       if ob is not None:
         if newAcquired:
           newData = ''
@@ -266,7 +265,7 @@ class ZMSMetacmdProvider(
             ob.pt_edit(newData,content_type=ob.content_type)
           elif ob.meta_type == 'Script (Python)':
             ob.write(newData)
-    
+      
       # Return with new id.
       return newId
 
@@ -486,5 +485,3 @@ class ZMSMetacmdProvider(
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
 
 ################################################################################
-
-_confmanager.ConfDict.set_constructor('ZMSMetacmdProvider',ZMSMetacmdProvider)

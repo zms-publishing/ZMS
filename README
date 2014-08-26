@@ -7,8 +7,10 @@ Modularity of the ZMS components and approved production processes turn ZMS into
 
 http://www.zms-publishing.com
 
-Installation
-------------
+Installation (Linux and Mac OS X)
+---------------------------------
+
+    *NOTE:* For installation on Windows see `special manual <http://www.zms-publishing.com/download/installation_windows/index_ger.html>`_.
 
 **(1) Get pip and virtualenv (if not already installed).**
 
@@ -93,6 +95,20 @@ $ ./ZMS3/instance/bin/zopectl start
        
 Changelog
 ---------
+
+    3.0.2 (2014/08/27)
+
+    * update to bootstrap-3.2.0
+    * made object browser entry node depending on access rights on multisites
+    * added user role as zmi body element css class
+    * added support for $INSTANCE_HOME in mediadb-location
+    * added metacmd-provider
+    * fixed ZMSTable cellformat selection
+    * `more... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2712&stop_rev=2658&limit=200>`_
+
+    3.0.1 (2014/06/25)
+    
+    * `more... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2657&stop_rev=2479&limit=200>`_
        
     https://zmslabs.org/trac/log/ZMS/trunk/
 

@@ -325,7 +325,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     
     ##### Add ZMS ####
     titlealt = 'ZMS home'
-    title = 'ZMS - ZOPE-based contentmanagement system for science, technology and medicine'
+    title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
     
     ##### Default content ####

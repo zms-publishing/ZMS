@@ -206,8 +206,8 @@
 
 	<div class="form-group"
 		tal:define="
-			myusers python:map(lambda u: [context.content.getUserAttr(u, 'email', ''),u],context.content.getUsers(request).keys());
-			myeditors python:filter(lambda u:'ZMSEditor' in context.content.getUserRoles(u[1]),myusers)">
+			myusers python:map(lambda u: [zmscontext.content.getUserAttr(u, 'email', ''),u],zmscontext.content.getUsers(request).keys());
+			myeditors python:filter(lambda u:'ZMSEditor' in zmscontext.content.getUserRoles(u[1]),myusers)">
 		<label style="text-align:left !important" for="recipients" class="col-sm-12 control-label mandatory"><span tal:content="python:here.getZMILangStr('ROLE_ZMSEDITOR')">ROLE_ZMSEDITOR</span></label>
 		<div class="col-sm-12" tal:content="structure python:here.zmi_input_multiselect(here,name='recipients',value=[],lang_str='ROLE_ZMSEDITOR',options=myeditors)">the control</div>
 	</div><!-- .form-group -->
@@ -434,6 +434,7 @@
 ##title=Commit
 ##
 request = zmscontext.REQUEST
+message = ''
 
 ##### Notification ####
 # Recipient
@@ -453,8 +454,17 @@ zmscontext.sendMail(mto, msubject, ''.join(mbody), request)
 ##### Commit ####
 zmscontext.commitObj(request)
 
+##### Purge Cache ####
+try:
+  request.set('preview','')
+  zmscontext.purgecache(zmscontext.getHref2IndexHtml(request))
+  request.set('preview','preview')
+  message += 'Cache purged and '
+except:
+  pass
+
 # Return with message
-message = 'Changes were committed.'
+message += 'Changes were committed.'
 return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransitionFinalize',{
     'lang':request['lang'],
     'custom': request['custom'],
@@ -570,86 +580,6 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
             <list>
             </list>
           </item>
-        </dictionary>
-      </item>
-      <item><![CDATA[createMasterVersion]]></item>
-      <item type="dictionary">
-        <dictionary>
-          <item key="dtml"><![CDATA[<!DOCTYPE html>
-<html lang="en">
-<tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
-<tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
-<div id="zmi-tab">
-<tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>
-
-<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-     +-  F o r m
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==''">
-<form class="form-horizontal" name="form0" method="post">
-	<input type="hidden" name="preview" value="preview"/>
-	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
-	<legend tal:content="request/custom">the headline</legend>
-	<div class="control-group">
-	<label class="control-label mandatory" for="version_nr"><span>Master-Version</span></label>
-		<div class="controls"><input type="text" name="version_nr" tal:attributes="value python:'%i.*.*'%(zmscontext.attr('master_version')+1)" class="form-control input-sm" /><br /></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
-</form>
-</tal:block>
-
-<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-     +-  E x e c u t e
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SAVE')">
-	<tal:block tal:define="global
-			dummy0 python:zmscontext.tagObjVersions(zmscontext.attr('master_version')+1,request);
-			message python:'Neue Master Version %s.*.* erzeugt.'%zmscontext.attr('master_version');
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))"
-		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':'ERROR: Neue Master Version kann aufgrund offener Ãnderungen noch nicht erzeugt werden'}))">
-	</tal:block>
-</tal:block>
-
-<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-     +-  C a n c e l
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_CANCEL')">
-	<tal:block tal:define="global
-			message python:'Operation cancelled.';
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
-	</tal:block>
-</tal:block>
-
-<div style="clear:both;">&nbsp;</div>
-</div><!-- #zmi-tab -->
-<tal:block tal:content="structure python:zmscontext.zmi_body_footer(zmscontext,request)">zmi_body_footer</tal:block>
-</body>
-</html>]]>
-          </item>
-          <item key="from" type="list">
-            <list>
-            </list>
-          </item>
-          <item key="id"><![CDATA[createMasterVersion]]></item>
-          <item key="name"><![CDATA[Neue Master-Version]]></item>
-          <item key="ob"><![CDATA[<ZopePageTemplate at createMasterVersion>]]></item>
-          <item key="performer" type="list">
-            <list>
-              <item><![CDATA[ZMSAdministrator]]></item>
-            </list>
-          </item>
-          <item key="to" type="list">
-            <list>
-            </list>
-          </item>
-          <item key="type"><![CDATA[Page Template]]></item>
         </dictionary>
       </item>
     </list>

@@ -142,7 +142,9 @@ if zmscontext.meta_id=='ZMSIndex' and request.get('btn')=='reindex':
     for childNode in node.getChildNodes():
       l.extend(visit(childNode))
     return l
-  index = visit(zmscontext.getDocumentElement())
+  index = []
+  for docelmnt in [zmscontext.getDocumentElement()]+zmscontext.getPortalClients():
+    index.extend(visit(docelmnt))
   
   zmscontext.attr('_index',index)
   zmscontext.commitObj(request,forced=True)
@@ -589,7 +591,8 @@ if zmscontext.meta_id=='ZMSIndexDb' and request.get('btn')=='reindex':
     node.writeStdout('INSERT INTO t_zmsindex(zmsid, zmspath) VALUES (?, ?)')
     for childNode in node.getChildNodes():
       visit(childNode)
-  visit(zmscontext.getDocumentElement())
+  for docelmnt in [zmscontext.getDocumentElement()]+zmscontext.getPortalClients():
+    visit(docelmnt)
 
 # --// /onChangeObjEvt //--
 ]]>

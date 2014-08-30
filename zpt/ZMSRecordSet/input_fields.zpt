@@ -101,6 +101,8 @@
 					<tal:block tal:repeat="node python:filter(lambda x:x.meta_id==metaObj['id'],here.getParentNode().objectValues(['ZMSCustom']))" tal:define="global
 								elName python:metaObjAttr['id'];
 								elLabel python:metaObj['name']">
+						<div class="form-horizontal">
+						<div class="accordion-group perc100">
 						<div class="accordion-heading">
 							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
@@ -114,16 +116,25 @@
 									records python:node.attr(metaObj['attrs'][0]['id']);
 									filtered_records python:filter(lambda x:x[metaObjAttr['id']]==row[identifier],records);
 									metaObjAttrs python:filter(lambda x:
-											x['id'] not in ['sort_id']
+											x['id'] not in ['__sort_id']
 											and x['custom']
 											and x['type'] in here.metaobj_manager.valid_types
 											and not x['type'] in ['password']
 											,metaObj['attrs'][1:])">
-								<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=here.getMetaobjAttrIds(metaObj['type']),metaObjAttrs=metaObjAttrs,filtered_records=filtered_records,records=records,url='%s/manage_main'%node.absolute_url())">
+								<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+										metaObjAttrIds=here.getMetaobjAttrIds(metaObj['id']),
+										metaObjAttrs=metaObjAttrs,
+										filtered_records=filtered_records,
+										records=records,
+										form_action='%s/manage_changeRecordSet'%node.absolute_url(),
+										input_target=here.url_append_params(request['URL'],{'action':action,'qindex':qindex}),
+										url='%s/manage_main'%node.absolute_url())">
 									metaobj_recordset_main
 								</tal:block>
 							</div><!-- .accordion-inner -->
 						</div><!-- .accordion-body -->
+						</div><!-- .accordion-group -->
+						</div><!-- .form-horizontal -->
 					</tal:block>
 				</tal:block>
 			</tal:block>

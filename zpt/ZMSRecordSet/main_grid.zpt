@@ -1,6 +1,8 @@
 <!-- ZMSRecordSet/main_grid -->
 
 <div class="ZMSRecordSet main_grid" tal:define="global
+		form_action python:options.get('form_action','manage_changeRecordSet');
+		input_target python:options.get('input_target','');
 		metaObjAttrIds options/metaObjAttrIds;
 		metaObjAttrs options/metaObjAttrs;
 		sorted python:'sort_id' in metaObjAttrIds;
@@ -19,11 +21,12 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-<form id="form0" name="form0" action="manage_changeRecordSet" method="post">
+<form action="manage_changeRecordSet" method="post">
 <input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
 <input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
 <input type="hidden" name="action" value=""/>
 <input type="hidden" name="btn" value=""/>
+<input type="hidden" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target"/>
 <input type="hidden" name="form_id" tal:condition="python:request.has_key('ZMI_TIME')" tal:attributes="value request/ZMI_TIME"/>
 <table class="table table-striped table-bordered table-hover zmi-sortable zmi-selectable">
 <colgroup>
@@ -61,7 +64,7 @@
 						</a>
 					</li>
 					<li tal:condition="python:'delete' in actions">
-						<a tal:attributes="onclick python:options.get('delete','return zmiRecordSetDeleteRow(\'form0\')')">
+						<a tal:attributes="onclick python:options.get('delete','return zmiRecordSetDeleteRow(this)')">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
 						</a>
@@ -91,7 +94,7 @@
 		<div class="btn-group">
 			<span class="checkbox split-left btn">
 				<input tal:attributes="name python:['qindices:list','qindex'][int('select' in actions)]; type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)" />
-				<tal:block tal:content="python:index+1">index</tal:block>.
+				<span class="index"><tal:block tal:content="python:index+1">index</tal:block>.</span>
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
 				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
@@ -111,14 +114,14 @@
 						</a>
 					</li>
 					<li tal:condition="python:'delete' in actions">
-						<a tal:attributes="onclick python:options.get('delete','javascript:return zmiRecordSetDeleteRow(\'form0\',%i)'%qindex)">
+						<a tal:attributes="onclick python:options.get('delete','javascript:return zmiRecordSetDeleteRow(this,%i)'%qindex)">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
 						</a>
 					</li>
 					<tal:block tal:condition="sorted">
-						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
-						<li><a href="#"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
+						<li><a tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,-1)'%index)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a></li>
+						<li><a tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,1)'%index)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEDOWN')">Move down</tal:block></a></li>
 					</tal:block>
 				</ul>
 			</tal:block>

@@ -20,7 +20,7 @@
 <tal:block tal:define="global
 			records python:here.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:filter(lambda x:
-					x['id'] not in ['sort_id']
+					x['id'] not in ['__sort_id']
 					and x['custom']
 					and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
 					and not x['type'] in ['password']

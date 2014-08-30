@@ -105,22 +105,6 @@ zope.event.subscribers.append(subscriber)
 def recurse_updateVersionBuild(docElmnt, self, REQUEST):
   message = ''
 
-  ##### Build 131a: ZMS Teaser-Elements: Penetrance ####
-  if getattr( docElmnt, 'build', '000') < '131':
-    try:
-      if self.getType() == 'ZMSTeaserElement':
-        d = { '0': 'this', '1': 'sub_nav', '2': 'sub_all'}
-        for ob_ver in self.getObjVersions():
-          key = 'attr_penetrance'
-          if hasattr( ob_ver, key):
-            try:
-              v = getattr( ob_ver, key)
-              setattr( ob_ver, key, d.get( str( v), v))
-            except:
-              pass
-    except:
-      pass
-  
   ##### Build 132a: Rename logo to zmi_logo ####
   if getattr( docElmnt, 'build', '000') < '132':
     try:
@@ -163,10 +147,6 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
         manager = ZMSMetacmdProvider.ZMSMetacmdProvider(commands)
         self._setObject( manager.id, manager)
         self.delConfProperty('ZMS.custom.commands')
-
-  # Recursion.
-  for ob in self.objectValues( self.dGlobalAttrs.keys()):
-    recurse_updateVersionBuild(docElmnt, ob, REQUEST)
   
   ##### Build 130a: ZMS Standard-Objects ####
   if getattr( docElmnt, 'build', '000') < '130':

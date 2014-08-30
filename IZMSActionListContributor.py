@@ -1,5 +1,5 @@
 ################################################################################
-# IZMSMetacmdProvider.py
+# IZMSActionListContributor.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,31 +18,11 @@
 
 # Imports.
 from zope.interface import Interface
-# Product Imports.
-import IZMSActionListContributor
 
-class IZMSMetacmdProvider(Interface,IZMSActionListContributor.IZMSActionListContributor):
+class IZMSActionListContributor(Interface):
 
-  def getMetaCmdDescription(self, id=None, name=None):
+  def get_actions(self, context):
     """
-    Returns description of meta-command specified by ID.
-    @rtype: C{str}
-    """
-
-  def getMetaCmd(self, id=None, name=None):
-    """
-    Returns action.
-    @rtype: C{dict}
-    """
-
-  def getMetaCmdIds(self, sort=1):
-    """
-    Returns list of action-ids.
-    @rtype: C{list}
-    """
-
-  def getMetaCmds(self, sort=True):
-    """
-    Returns list of actions.
+    Returns actions
     @rtype: C{list}
     """

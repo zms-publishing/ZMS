@@ -546,11 +546,11 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	padding-left:1.0em !important;
 	font-size:large;
 }
-.zmi form.form-horizontal {
+.zmi .form-horizontal {
 	background-color:#fff;
 	margin-left:1.5em;
 	margin-right:1.5em;
-	padding:0.5em
+	padding:0!important;
 }
 .zmi form.form-horizontal.form-insert {
 	margin:0;
@@ -729,14 +729,13 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		width:14.2em
 	}
 	.zmi.metas .horizontal-group .meta_package select {
-		width:14.5em;
+		width:20.5em;
 	}
 	.zmi.ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
 	.zmi.ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
 	.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
 		display: block;
 	}
-
 
 }
 
@@ -1047,7 +1046,7 @@ table.table.zmi-sortable input {
 }
 
 #insertUserForm .ZMSRecordSet {
-    overflow: hidden;
+	overflow: hidden;
 	margin-left: -15px;
 	padding-left: 1px;
 }
@@ -1062,6 +1061,9 @@ table.table.zmi-sortable input {
     float:left;
 }
 
+.ZMSSqlDb .index, .ZMSRecordSet .index {
+	margin-left:2em;
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Image

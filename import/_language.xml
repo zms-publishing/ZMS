@@ -944,7 +944,7 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_CONFIRM</Data></Cell>
-    <Cell><Data ss:Type="String">Wiederholung</Data></Cell>
+    <Cell><Data ss:Type="String">Bestätigung</Data></Cell>
     <Cell><Data ss:Type="String">Confirm</Data></Cell>
     <Cell><Data ss:Type="String">Repetitie</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Conferma</Data></Cell>

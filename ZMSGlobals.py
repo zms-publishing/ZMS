@@ -840,13 +840,13 @@ class ZMSGlobals:
     @return: Sorted list.
     @rtype: C{list}
     """
-    def sort_list(self, l, qorder=None, qorderdir='asc', ignorecase=1):
+    def sort_list(self, l, qorder=None, qorderdir='asc', ignorecase=1): 
       if qorder is None:
         sorted = map(lambda x: (x, x), l)
       elif type(qorder) is str:
         sorted = map(lambda x: (sort_item(x.get(qorder,None)),x),l)
       elif type(qorder) is list:
-        sorted = map(lambda x: (','.join(map(lambda y: sort_item(x[y]), qorder)),x),l)
+        sorted = map(lambda x: (map(lambda y: sort_item(x[y]), qorder),x),l)
       else:
         sorted = map(lambda x: (sort_item(x[qorder]),x),l)
       if ignorecase==1 and len(sorted) > 0 and type(sorted[0][0]) is str:

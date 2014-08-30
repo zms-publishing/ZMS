@@ -292,6 +292,57 @@ function zmiUnlockForm(form_id) {
  */ 
 ZMI.prototype.initInputFields = function(container) {
 	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form:not(.form-initialized)',container).length+"]");
+	$(container)
+		.each(function() {
+			$ZMI.writeDebug("each");
+			var context = this;
+			// Accordion:
+			// highlight default collapse item
+			runPluginCookies(function() {
+					$(".accordion-body").each(function() {
+							var id = $(this).attr('id');
+							if (typeof id != "undefined") {
+								var $toggle = $('a.accordion-toggle[href=\'#'+id+'\']');
+								if ($toggle.length > 0) {
+									var key = 'accordion-body-'+id;
+									var value = $.cookies.get(key);
+									if (value != null) {
+										if ($(this).hasClass('in')) {
+											if (value == '0') {
+												$(this).removeClass('in');
+											}
+										}
+										else {
+											if (value == '1') {
+												$(this).addClass('in');
+											}
+										}
+									}
+								}
+							}
+						});
+					$($ZMI.icon_selector()+":first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
+					$($ZMI.icon_selector()+":first",$(".accordion-body.collapse.in",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
+				});
+			var accordionSetCookie = function(id,value) {
+					var key = 'accordion-body-'+id;
+					$.cookies.set(key,value);
+				};
+			$("a.accordion-toggle",this).click(function(){
+					$(this).blur();
+					var id = $(this).attr('href').substr(1);
+					var $icon = $($ZMI.icon_selector()+":first",this);
+					var showing = $icon.hasClass($ZMI.icon_clazz("icon-caret-down"))?1:0;
+					if (showing) {
+						$icon.removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
+						accordionSetCookie(id,'0');
+					}
+					else {
+						$icon.removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
+						accordionSetCookie(id,'1');
+					}
+				});
+			});
 	$('form:not(.form-initialized)',container)
 		.submit(function() {
 				$ZMI.writeDebug("form:not(.form-initialized): submit");
@@ -437,51 +488,6 @@ ZMI.prototype.initInputFields = function(container) {
 									$(this).addClass("btn-default");
 								}
 							});
-				});
-			// Accordion:
-			// highlight default collapse item
-			runPluginCookies(function() {
-					$(".accordion-body").each(function() {
-							var id = $(this).attr('id');
-							if (typeof id != "undefined") {
-								var $toggle = $('a.accordion-toggle[href=\'#'+id+'\']');
-								if ($toggle.length > 0) {
-									var key = 'accordion-body-'+id;
-									var value = $.cookies.get(key);
-									if (value != null) {
-										if ($(this).hasClass('in')) {
-											if (value == '0') {
-												$(this).removeClass('in');
-											}
-										}
-										else {
-											if (value == '1') {
-												$(this).addClass('in');
-											}
-										}
-									}
-								}
-							}
-						});
-					$($ZMI.icon_selector()+":first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
-					$($ZMI.icon_selector()+":first",$(".accordion-body.collapse.in",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
-				});
-			var accordionSetCookie = function(id,value) {
-					var key = 'accordion-body-'+id;
-					$.cookies.set(key,value);
-				};
-			$("a.accordion-toggle",this).click(function(){
-					this.blur();
-					var id = $(this).attr('href').substr(1);
-					var showing = $($ZMI.icon_selector(),this).hasClass($ZMI.icon_clazz("icon-caret-down"))?1:0;
-					if (showing) {
-						$($ZMI.icon_selector(),this).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
-						accordionSetCookie(id,'0');
-					}
-					else {
-						$($ZMI.icon_selector(),this).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
-						accordionSetCookie(id,'1');
-					}
 				});
 			// Mandatory
 			if ($(this).hasClass('form-insert')) {
@@ -794,16 +800,12 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 		if (startsWithSubmenu) {
 			var o = 2;
 			var html = '';
-			var opticon = '';
-			if (actions[1].length > 2) {
-				if (actions[1][2].indexOf('<')==0) {
-					opticon = actions[1][2];
-				}
-				else {
-					opticon = $ZMI.icon(actions[1][2]);
-				}
+			var action = actions[1];
+			var optlabel = action[0];
+			var opticon = action.length>2?action[2]:'';
+			if (option.indexOf('<')!=0) {
+				opticon = $ZMI.icon(opticon);
 			}
-			var optlabel = actions[1][0];
 			optlabel = optlabel.substr("-----".length);
 			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
 			optlabel = optlabel.basicTrim();
@@ -825,17 +827,14 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 		}
 		for (var i = o; i < actions.length; i++) {
-			var optlabel = actions[i][0];
-			var optvalue = actions[i][1];
+			var action = actions[i];
+			var optlabel = action[0];
+			var optvalue = action[1];
+			var opticon = action.length>2?action[2]:'';
+			var opttitle = action.length>3?action[3]:'';
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
-				var opticon = '';
-				if (actions[i].length > 2) {
-					if (actions[i][2].indexOf('<')==0) {
-						opticon = actions[i][2];
-					}
-					else {
-						opticon = $ZMI.icon(actions[i][2]);
-					}
+				if (opticon.indexOf('<')!=0) {
+					opticon = $ZMI.icon(opticon);
 				}
 				optlabel = optlabel.substr("-----".length);
 				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
@@ -844,14 +843,8 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				$ul.append('<li class="dropdown-header">'+opticon+' '+optlabel+'</li>');
 			}
 			else {
-				var opticon = '';
-				if (actions[i].length > 2) {
-					if (actions[i][2].indexOf('<')==0) {
-						opticon = actions[i][2];
-					}
-					else {
-						opticon = $ZMI.icon(actions[i][2]);
-					}
+				if (opticon.indexOf('<')!=0) {
+					opticon = $ZMI.icon(opticon);
 				}
 				else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
 					opticon = $ZMI.icon("icon-trash");
@@ -878,7 +871,8 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 					opticon = $ZMI.icon("icon-sort-down");
 				}
 				var html = '';
-				html += '<li><a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += '<li title="'+opttitle+'">'
+				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);
@@ -1274,16 +1268,16 @@ function storeCaret(input) {
 // ### Record-Sets
 // ############################################################################
 
-function zmiRecordSetMoveRow(el, qIndex) {
-	var $form = $($(el).parents('form:first'));
+function zmiRecordSetMoveRow(context, qIndex, delta) {
+	var $form = $(context).closest('form');
 	$form.append('<input type="hidden" name="pos:int" value="' + (qIndex+1) + '">');
-	$form.append('<input type="hidden" name="newpos:int" value="' + $(el).val() + '">');
+	$form.append('<input type="hidden" name="newpos:int" value="' + (qIndex+1+delta) + '">');
 	$('input[name="action"]',$form).val('move');
 	$form.submit();
 }
 
-function zmiRecordSetDeleteRow(fmName, qIndex) {
-	var $form = $('form[name="'+fmName+'"]');
+function zmiRecordSetDeleteRow(context, qIndex) {
+	var $form = $(context).closest('form');
 	if (typeof qIndex != "undefined") {
 		var $input = $('input[value="'+qIndex+'"]',$form);
 		$input.prop('checked',true).change();

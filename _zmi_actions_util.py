@@ -231,6 +231,8 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
         l = [metaCmd['name'],objPath+'manage_executeMetacmd']
         if metaCmd.get('icon_clazz'):
           l.append(metaCmd.get('icon_clazz'))
+        if metaCmd.get('title'):
+          l.append(metaCmd.get('title'))
         actions.append(tuple(l))
   
   # Return action list.

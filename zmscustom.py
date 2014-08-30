@@ -266,6 +266,7 @@ class ZMSCustom(ZMSContainerObject):
     @rtype: C{list}
     """
     def recordSet_Init(self, REQUEST):
+      request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
       res_id = metaObj['attrs'][0]['id']
       res = self.getObjProperty(res_id,REQUEST)
@@ -281,6 +282,7 @@ class ZMSCustom(ZMSContainerObject):
     @rtype: C{list}
     """
     def recordSet_Filter(self, REQUEST):
+      request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
       res_id = REQUEST['res_id']
       res_abs = REQUEST['res_abs']
@@ -349,28 +351,51 @@ class ZMSCustom(ZMSContainerObject):
     @return: sorted list of records
     @rtype: C{list}
     """
-    def recordSet_Sort(self, REQUEST):
+    def recordSet_Sort(self, REQUEST=None):
+      request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
-      
-      res = REQUEST['res']
-      qorder = REQUEST.get('qorder','')
-      qorderdir = REQUEST.get('qorderdir','asc')
-      for attr in metaObj['attrs'][1:]:
-        if attr['id'] == 'sort_id':
-          qorder = attr['id']
-        if qorder=='':
-          if attr.get('type','') not in [ 'constant', 'file', 'image', 'resource'] and \
-             attr.get('type','') not in self.getMetaobjIds() and \
-             attr.get('name','') != '' and \
-             attr.get('custom','') != '':
-            qorder = attr['id']
-            if attr.get('type','') in ['date','datetime','time']:
-              qorderdir = 'desc'
-      res = self.sort_list(res,qorder,qorderdir)
-      
-      REQUEST.set('res',res)
-      REQUEST.set('qorder',qorder)
-      REQUEST.set('qorderdir',qorderdir)
+      res = request['res']
+      if 'sort_id' in map(lambda x:x['id'],metaObj['attrs']):
+        l = map(lambda x:(x['sort_id'],x),res)
+        # Sort (FK).
+        for metaObjAttr in metaObj['attrs'][1:]:
+          if metaObjAttr.get('type','') in self.getMetaobjIds():
+            d = {}
+            # FK-id for primary-sort.
+            map(lambda x:self.operator_setitem(d,x.get(metaObjAttr['id']),x.get(metaObjAttr['id'])),res)
+            for fkContainer in self.getParentNode().getChildNodes(request,metaObjAttr['type']):
+              fkMetaObj = self.getMetaobj(fkContainer.meta_id)
+              fkMetaObjAttrIdRecordSet = fkMetaObj['attrs'][0]['id']
+              if 'sort_id' in map(lambda x:x['id'],metaObj['attrs']):
+                fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet)
+                fkMetaObjIdId = self.getMetaobjAttrIdentifierId(fkContainer.meta_id)
+                # FK-sort_id for primary-sort.
+                map(lambda x:self.operator_setitem(d,x.get(fkMetaObjIdId),x.get('sort_id')),fkMetaObjRecordSet)
+            # Add primary-sort.
+            l = map(lambda x:((d.get(x[1].get(metaObjAttr['id'])),x[0]),x[1]),l)
+            break
+        l.sort()
+        res = map(lambda x:x[1],l)
+      else:
+        qorder = request.get('qorder','')
+        qorderdir = 'asc'
+        if qorder == '':
+          skiptypes = [ 'file', 'image']+self.getMetaobjManager().valid_xtypes+self.getMetaobjIds()
+          for attr in metaObj['attrs'][1:]:
+            if attr.get('type','') not in skiptypes and \
+               attr.get('name','') != '' and \
+               attr.get('custom','') != '':
+              qorder = attr['id']
+              if attr.get('type','') in ['date','datetime','time']:
+                qorderdir = 'desc'
+              break
+        if qorder:
+          qorderdir = request.get('qorderdir',qorderdir)
+          res = self.sort_list(res,qorder,qorderdir)
+          request.set('qorder',qorder)
+          request.set('qorderdir',qorderdir)
+        
+      request.set('res',res)
       
       return res
 
@@ -445,6 +470,7 @@ class ZMSCustom(ZMSContainerObject):
       """ ZMSCustom.manage_changeRecordSet """
       message = ''
       messagekey = 'manage_tabs_message'
+      target = REQUEST.get('target','manage_main')
       t0 = time.time()
       
       if btn not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
@@ -455,6 +481,7 @@ class ZMSCustom(ZMSContainerObject):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
           res_abs = self.recordSet_Init(REQUEST)
+          res_abs = self.recordSet_Sort(REQUEST)
           if action == 'insert':
             row = {}
             row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
@@ -499,19 +526,13 @@ class ZMSCustom(ZMSContainerObject):
           elif action == 'move':
             pos = REQUEST['pos']
             newpos = REQUEST['newpos']
-            sibling_sort_ids = map(lambda x: (x+1)*10, range(len(res_abs)))
-            sibling_sort_ids.remove(pos*10)
-            if newpos-1 < len(sibling_sort_ids):
-              new_sort_id = sibling_sort_ids[newpos-1]-1
+            row = res_abs[pos-1]
+            res_abs.remove(row)
+            if newpos < pos:
+              res_abs.insert(newpos-1,row)
             else:
-              new_sort_id = sibling_sort_ids[-1]+1
-            res_abs = self.sort_list(res_abs,'sort_id')
-            for i in range(len(res_abs)):
-              row = res_abs[i]
-              if i == pos - 1:
-                row['sort_id'] = new_sort_id
-              else:
-                row['sort_id'] = row['sort_id']*10
+              res_abs.insert(newpos,row)
+            map(lambda x:self.operator_setitem(x,'sort_id',res_abs.index(x)+1),res_abs)
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
           # Normalize sort-ids.
           if 'sort_id' in metaObjAttrIds:
@@ -530,8 +551,9 @@ class ZMSCustom(ZMSContainerObject):
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
-      message = urllib.quote(message)
-      return REQUEST.RESPONSE.redirect('manage_main?lang=%s&%s=%s'%(lang,messagekey,message))
+      target = self.url_append_params( target, { 'lang':lang})
+      target = self.url_append_params( target, { messagekey:message})
+      return REQUEST.RESPONSE.redirect(target)
 
 
     ############################################################################

@@ -146,9 +146,10 @@ class ZMSMetacmdProvider(
         newId = id
         newAcquired = 0
         newName = item['name']
+        newTitle = item.get('title','')
         newMethod = item['meta_type']
         newExec = item.has_key('exec') and item['exec']
-        newDescription = item['description']
+        newDescription = item.get('description','')
         newIconClazz = item.get('icon_clazz','')
         newMetaTypes = item['meta_types']
         newRoles = item['roles']
@@ -156,7 +157,7 @@ class ZMSMetacmdProvider(
         newData = item['data']
     
         # Return with new id.
-        return self.setMetacmd(None, newId, newAcquired, newName, newMethod, \
+        return self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, \
           newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
@@ -198,7 +199,7 @@ class ZMSMetacmdProvider(
     #
     #  Set/add Action specified by given Id.
     # ------------------------------------------------------------------------------
-    def setMetacmd(self, id, newId, newAcquired, newName='', newMethod=None, \
+    def setMetacmd(self, id, newId, newAcquired, newName='', newTitle='', newMethod=None, \
           newData=None, newExec=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
       
@@ -213,6 +214,7 @@ class ZMSMetacmdProvider(
       new['id'] = newId
       new['acquired'] = newAcquired
       new['name'] = newName
+      new['title'] = newTitle
       new['description'] = newDescription
       new['icon_clazz'] = newIconClazz
       new['meta_types'] = newMetaTypes
@@ -379,6 +381,7 @@ class ZMSMetacmdProvider(
           newId = REQUEST['el_id']
           newAcquired = 0
           newName = REQUEST.get('el_name','').strip()
+          newTitle = REQUEST.get('el_title','').strip()
           newMethod = None
           newData = REQUEST.get('el_data','').strip()
           newExec = REQUEST.get('el_exec',0)
@@ -387,8 +390,8 @@ class ZMSMetacmdProvider(
           newMetaTypes = REQUEST.get('el_meta_types',[])
           newRoles = REQUEST.get('el_roles',[])
           newNodes = REQUEST.get('el_nodes','')
-          id = self.setMetacmd(id, newId, newAcquired, newName, newMethod, \
-            newData, newExec, newDescription, newIconClazz, \
+          id = self.setMetacmd(id, newId, newAcquired, newName, newTitle, \
+            newMethod, newData, newExec, newDescription, newIconClazz, \
             newMetaTypes, newRoles, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
         
@@ -426,6 +429,7 @@ class ZMSMetacmdProvider(
               # Catalog.
               el_id = metaCmd['id']
               el_name = metaCmd['name']
+              el_title = metaCmd.get('title','')
               el_description = metaCmd['description']
               el_icon_clazz = metaCmd.get('icon_clazz','')
               el_meta_types = metaCmd['meta_types']
@@ -441,7 +445,7 @@ class ZMSMetacmdProvider(
               elif ob.meta_type in ['Script (Python)']:
                 el_data = ob.body()
               # Value.
-              value.append({'id':el_id,'name':el_name,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(value)==1:
             value = value[0]
@@ -474,10 +478,11 @@ class ZMSMetacmdProvider(
           newId = REQUEST.get('_id').strip()
           newAcquired = 0
           newName = REQUEST.get('_name').strip()
+          newTitle = REQUEST.get('_title').strip()
           newMethod = REQUEST.get('_type','DTML Method')
           newData = None
           newExec = REQUEST.get('_exec',0)
-          id = self.setMetacmd(None, newId, newAcquired, newName, newMethod, newData, newExec)
+          id = self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, newData, newExec)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Return with message.

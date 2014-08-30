@@ -20,16 +20,20 @@
 				<div class="col-sm-9"><input type="text" name="el_id" class="form-control input-sm" tal:attributes="value python:metaCmd['id']"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="el_name" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</span></label>
-				<div class="col-sm-9"><input type="text" name="el_name" class="form-control input-sm" tal:attributes="value python:metaCmd['name']"/></div>
-			</div><!-- .form-group -->
-			<div class="form-group">
 				<label for="el_icon_clazz" class="col-sm-3 control-label"><span>Icon</span></label>
 				<div class="col-sm-9"><input type="text" name="el_icon_clazz" class="form-control input-sm zmi-input-icon-clazz" tal:attributes="value python:metaCmd.get('icon_clazz','')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="el_description" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_DC_DESCRIPTION')">Description</span></label>
-				<div class="col-sm-9"><input type="text" name="el_description" class="form-control input-sm" tal:attributes="value python:metaCmd['description']"/></div>
+				<label for="el_name" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</span></label>
+				<div class="col-sm-9"><input type="text" name="el_name" class="form-control input-sm" tal:attributes="value python:metaCmd['name']"/></div>
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label for="el_title" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
+				<div class="col-sm-9"><input type="text" name="el_title" class="form-control input-sm" tal:attributes="value python:metaCmd.get('title')"/></div>
+			</div><!-- .form-group -->
+			<div class="form-group">
+				<label for="el_description" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
+				<div class="col-sm-9"><input type="text" name="el_description" class="form-control input-sm" tal:attributes="value python:metaCmd.get('description')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_exec:int" class="col-sm-3 control-label"><span>Exec.</span></label>
@@ -102,12 +106,16 @@
 				<div class="col-sm-9"><input class="form-control" type="text" name="_id"></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
+				<label class="col-sm-3 control-label" for="_icon_clazz"><span>Icon</span></label>
+				<div class="col-sm-9"><input type="text" name="_icon_clazz" class="form-control input-sm zmi-input-icon-clazz" value="icon-cogs"/></div>
+			</div><!-- .form-group -->
+			<div class="form-group">
 				<label class="col-sm-3 control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</span></label>
 				<div class="col-sm-9"><input class="form-control" type="text" name="_name"></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-sm-3 control-label" for="_icon_clazz"><span>Icon</span></label>
-				<div class="col-sm-9"><input type="text" name="_icon_clazz" class="form-control input-sm zmi-input-icon-clazz" value="icon-cogs"/></div>
+				<label class="col-sm-3 control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
+				<div class="col-sm-9"><input class="form-control" type="text" name="_title"></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-3 control-label mandatory" for="_type"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>

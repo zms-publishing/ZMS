@@ -226,7 +226,7 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands)
       
       # Insert Template.
-      home = self
+      home = self.aq_parent
       if id is None:
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
         if newAcquired:

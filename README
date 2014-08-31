@@ -96,6 +96,13 @@ $ ./ZMS3/instance/bin/zopectl start
 Changelog
 ---------
 
+3.0.3 (2014-08-31)
+******************
+
+    * fixed metacmd-manager     
+    * `more in 3.0.3... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2724&stop_rev=2719&limit=200>`_
+
+
 3.0.2 (2014-08-27)
 ******************
    

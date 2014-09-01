@@ -1264,7 +1264,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.getBodyContent:
     # --------------------------------------------------------------------------
     def _getBodyContentContentEditable(self, html):
-      request = self.REQUEST    
+      request = self.REQUEST
       if _globals.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1):
         ids = ['contentEditable',self.id,request['lang']]
@@ -1276,11 +1276,14 @@ class ZMSObject(ZMSItem.ZMSItem,
       rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
       return rtn
 
-    security.declareProtected('View', 'getBodyContent')
-    def getBodyContent(self, REQUEST, forced=False):
+    security.declareProtected('View', 'ajaxGetBodyContent')
+    def ajaxGetBodyContent(self, REQUEST, forced=False):
       """
       HTML presentation in body-content. 
       """
+      return self.getBodyContent(REQUEST,forced)
+
+    def getBodyContent(self, REQUEST, forced=False):
       html = ''
       if forced or self.isVisible( REQUEST):
         html = self._getBodyContent( REQUEST)

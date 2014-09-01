@@ -682,7 +682,7 @@ class ZMSLinkElement(ZMSContainerObject):
       if self.getEmbedType() == 'remote':
         ref = self.getObjProperty('attr_ref',REQUEST)
         try:
-          rtn += self.http_import( ref+'/getBodyContent')
+          rtn += self.http_import( ref+'/ajaxGetBodyContent')
         except:
           rtn += _globals.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
       else:

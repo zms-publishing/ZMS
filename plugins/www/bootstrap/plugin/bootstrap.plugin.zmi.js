@@ -803,7 +803,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 			var action = actions[1];
 			var optlabel = action[0];
 			var opticon = action.length>2?action[2]:'';
-			if (option.indexOf('<')!=0) {
+			if (opticon.indexOf('<')!=0) {
 				opticon = $ZMI.icon(opticon);
 			}
 			optlabel = optlabel.substr("-----".length);

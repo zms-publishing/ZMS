@@ -550,7 +550,7 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	background-color:#fff;
 	margin-left:1.5em;
 	margin-right:1.5em;
-	padding:0!important;
+	padding:0.5em;
 }
 .zmi form.form-horizontal.form-insert {
 	margin:0;

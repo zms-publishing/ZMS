@@ -160,6 +160,7 @@ PACKAGE_DATA.append('*.txt')
 DATA_FILES = [
   (os.path.join(site_packages, 'Products/Five'), ['hotfixes/Products/Five/configure.zcml']),
   (os.path.join(site_packages, 'Products/PageTemplates'), ['hotfixes/Products/PageTemplates/PageTemplate.py']),
+  (os.path.join(site_packages, 'zope/browserresource'), ['hotfixes/zope/browserresource/file.py']),
   (os.path.join(site_packages, 'zdaemon'), ['hotfixes/zdaemon/zdctl.py'])
 ]
 

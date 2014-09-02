@@ -198,7 +198,10 @@ class FileResource(BrowserView, Resource):
         request = self.request
         response = request.response
 
-        etag = getMultiAdapter((self, request), IETag)(file.lmt, file.data)
+        try:
+            etag = getMultiAdapter((self, request), IETag)(file.lmt,file.data)
+        except:
+            etag = ''
 
         setCacheControl(response, self.cacheTimeout)
 

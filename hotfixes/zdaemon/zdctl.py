@@ -281,7 +281,7 @@ class ZDCmd(cmd.Cmd):
         print("help <action> -- Print help for <action>.")
 
     def _start_cond(self, n):
-        if (n > 300):
+        if (n > self.options.start_timeout):
             print('\nProgram took too long to start')
             sys.exit(1)
         return self.zd_pid and not self.zd_testing

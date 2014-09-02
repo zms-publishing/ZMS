@@ -5,11 +5,11 @@
 
   <include file="meta.zcml" />
   <include file="permissions.zcml" />
-<!--
+
   <include package=".component" />
   <include package=".browser" />
   <include package=".skin" />
   <include package=".utilities" />
   <include package=".viewlet" />
--->
+
 </configure>

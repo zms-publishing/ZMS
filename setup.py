@@ -46,7 +46,7 @@ INSTALL_REQUIRES = [
  'zope.site==3.9.2',
  'zope.publisher==3.13.4',
  'zope.untrustedpython',
- 'zope.browserresource==3.10.3', # @see configure.zcml <browser:resourceDirectory> just works with v3.10.3
+ 'zope.browserresource',
  'Zope2==2.13.22',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
  'Products.CMFCore==2.2.8', # @see configure.zcml <cmf:registerDirectory>
 

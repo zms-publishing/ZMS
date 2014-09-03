@@ -25,8 +25,7 @@ README = open(os.path.join(setup_path, 'README')).read()
 #VERSION = __import__("zms").__version__
 VERSION = open(os.path.join(setup_path, 'version.txt')).read()
 if VERSION.find('.REV')>0:
-  print 'Add the revision number to version.txt'
-  sys.exit()
+  raw_input('WARNING: Add the revision number by replacing REV in version.txt.\nPress Enter to continue...')
 else:
   # remove revision and text from version info for PyPI
   VERSION = VERSION.replace('ZMS3','').replace('-','').strip().split('.')

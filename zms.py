@@ -174,7 +174,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
 # ------------------------------------------------------------------------------
 def recurse_updateVersionPatch(docElmnt, self, REQUEST):
   message = ''
-  _confmanager.updateConf(self,REQUEST)
+  #_confmanager.updateConf(self,REQUEST)
   self.getSequence()
   self.synchronizeObjAttrs()
   self.initRoleDefs()

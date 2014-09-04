@@ -45,7 +45,7 @@ INSTALL_REQUIRES = [
  'zope.site==3.9.2',
  'zope.publisher==3.13.4',
  'zope.untrustedpython',
- 'zope.browserresource',
+ 'zope.browserresource==4.0.1', # explicit due to hotfix
  'Zope2==2.13.22',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
  'Products.CMFCore==2.2.8', # @see configure.zcml <cmf:registerDirectory>
 
@@ -101,7 +101,7 @@ INSTALL_REQUIRES = [
  'zope.ptresource',
  'zope.proxy',
  'zope.processlifetime',
- 'zope.pagetemplate',
+ 'zope.pagetemplate==4.0.4', # explicit due to hotfix
  'zope.location',
  'zope.exceptions',
  'zope.deferredimport',
@@ -114,7 +114,7 @@ INSTALL_REQUIRES = [
  'zope.browser',
  'zlog',
  'zexceptions',
- 'zdaemon',
+ 'zdaemon==4.0.0', # explicit due to hotfix
  'tempstorage',
  'pytz',
  'initgroups',

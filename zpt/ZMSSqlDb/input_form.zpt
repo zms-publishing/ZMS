@@ -34,10 +34,12 @@
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
 			<div tal:condition="not:python:column['id'].lower() in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 
+				<tal:block tal:on-error="structure string: <!-- INTERFACE ERROR -->" tal:replace="python:metaObjAttr.get('interface','')">table interface element</tal:block>
+
 				<tal:block tal:replace="nothing">
 				##### Label ############################################################
 				</tal:block>
-				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory') in ['1',1,'True',True])])">
+				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int((metaObjAttr.get('mandatory') in ['1',1,'True',True]) and not metaObjAttr.get('pk'))])">
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
 				</label>

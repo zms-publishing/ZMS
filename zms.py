@@ -41,7 +41,7 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import ZMSMetamodelProvider, ZMSMetacmdProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
@@ -112,7 +112,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       delattr( self, 'logo')
     except:
       pass
-  
+
   ##### Build 133a: Create workflow-managers ####
   if getattr( docElmnt, 'build', '000') < '133':
     if self.meta_type == 'ZMS':
@@ -134,20 +134,12 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
       self.delConfProperty('ZMS.workflow.acquire')
       self.delConfProperty('ZMS.workflow.activities')
       self.delConfProperty('ZMS.workflow.transitions')
-  
+
   ##### Build 134c: Store object-state for modified sub-objects in version-container ####
   if getattr( docElmnt, 'build', '000') < '134':
     if not self.getAutocommit() and self.isVersionContainer():
       self.syncObjModifiedChildren( REQUEST)
-  
-  ##### Build 135: Metacmd-Provider ####
-  if getattr( docElmnt, 'build', '000') < '135':
-      commands = self.getConfProperty('ZMS.custom.commands',[])
-      if len(commands)>0:
-        manager = ZMSMetacmdProvider.ZMSMetacmdProvider(commands)
-        self._setObject( manager.id, manager)
-        self.delConfProperty('ZMS.custom.commands')
-  
+
   ##### Build 130a: ZMS Standard-Objects ####
   if getattr( docElmnt, 'build', '000') < '130':
     if self.meta_type == 'ZMS':
@@ -174,10 +166,10 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
 # ------------------------------------------------------------------------------
 def recurse_updateVersionPatch(docElmnt, self, REQUEST):
   message = ''
-  #_confmanager.updateConf(self,REQUEST)
-  self.getSequence()
-  self.synchronizeObjAttrs()
-  self.initRoleDefs()
+  # _confmanager.updateConf(self,REQUEST)
+  # self.getSequence()
+  # self.synchronizeObjAttrs()
+  # self.initRoleDefs()
   return message
 
 
@@ -185,10 +177,10 @@ def recurse_updateVersionPatch(docElmnt, self, REQUEST):
 #  initTheme:
 # ------------------------------------------------------------------------------
 def initTheme(self, theme, new_id, REQUEST):
-  
+
   filename = _fileutil.extractFilename(theme)
   id = filename[:filename.rfind('.')]
-  
+
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
@@ -198,18 +190,18 @@ def initTheme(self, theme, new_id, REQUEST):
     _fileutil.exportObj( zexp, filepath)
   else:
     packagepath = package_home(globals()) + '/import/' + filename
-    try: 
+    try:
       os.stat(_fileutil.getOSPath(filepath))
     except OSError:
       shutil.copy( packagepath, filepath)
-  
+
   ### Import theme from ZEXP.
   _fileutil.importZexp( self, filename)
-  
+
   ### Assign folder-id.
   if id != new_id:
     self.manage_renameObject( id=id, new_id=new_id)
-  
+
   ### Return new ZMS home instance.
   return getattr( self, new_id)
 
@@ -218,48 +210,48 @@ def initTheme(self, theme, new_id, REQUEST):
 #  initZMS:
 # ------------------------------------------------------------------------------
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
-  
+
   ### Constructor.
   obj = ZMS()
   obj.id = id
   self._setObject(obj.id, obj)
   obj = getattr(self,obj.id)
-  
+
   ### Trashcan.
   trashcan = ZMSTrashcan()
   obj._setObject(trashcan.id, trashcan)
-  
+
   ### Manager.
   manager = ZMSMetamodelProvider.ZMSMetamodelProvider()
   obj._setObject( manager.id, manager)
   manager = ZMSFormatProvider.ZMSFormatProvider()
   obj._setObject( manager.id, manager)
-  
+
   ### Init languages.
   obj.setLanguage(lang,REQUEST['lang_label'],'',manage_lang)
-  
+
   ### Log.
   if REQUEST.get('zmslog'):
     zmslog = ZMSLog( copy_to_stdout=True, logged_entries=[ 'ERROR', 'INFO'])
     obj._setObject(zmslog.id, zmslog)
-  
+
   ### Init Configuration.
   obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
   obj.setConfProperty('ZMS.autocommit',1)
   obj.setConfProperty('ZMS.Version.autopack',2)
-  
+
   ### Init zcatalog.
   obj.recreateCatalog(lang)
-  
+
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'zms', REQUEST)
-  
+
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default', REQUEST)
-  
+
   ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()
-  
+
   ### Init Properties: active, titlealt, title.
   obj.setObjStateNew(REQUEST)
   obj.updateVersion(lang,REQUEST)
@@ -267,7 +259,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setObjProperty('titlealt',titlealt,lang)
   obj.setObjProperty('title',title,lang)
   obj.onChangeObj(REQUEST,forced=1)
-  
+
   ### Return new ZMS instance.
   return obj
 
@@ -291,9 +283,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
   """ manage_addZMS """
   message = ''
   t0 = time.time()
-  
+
   if REQUEST['btn'] == 'Add':
-  
+
     ##### Add Theme ####
     homeElmnt = initTheme(self,REQUEST['theme'],REQUEST['folder_id'],REQUEST)
     if REQUEST.get('mobile',0)==1:
@@ -302,53 +294,53 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       cb_copy_data = tempMobile.manage_cutObjects(tempMobile.objectIds())
       homeElmnt.manage_pasteObjects(cb_copy_data=cb_copy_data)
       homeElmnt.manage_delObjects(ids=[tempId])
-    
+
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
-    
+
     ##### Default content ####
     if REQUEST.get('initialization',0)==1:
       initContent(obj,'content.default.zip',REQUEST)
     elif REQUEST.get('initialization',0)==3:
       initContent(obj,'zms2go.default.zip',REQUEST)
-    
+
     ##### Configuration ####
-    
+
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'com.zms.test', REQUEST)
       # Init content.
       initContent(obj,'com.zms.test.content.xml',REQUEST)
-    
+
     #-- Galleria
     if REQUEST.get('specobj_galleria',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'com.zms.jquery.galleria', REQUEST)
       # Init content.
       initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
-    
+
     #-- Example Database
     if REQUEST.get('specobj_exampledb',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'exampledb', REQUEST)
       # Init content.
       initContent(obj,'exampledb.content.xml',REQUEST)
-    
+
     #-- Bulletin Board
     if REQUEST.get('specobj_discussions',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'discussions', REQUEST)
       # Init content.
       initContent(obj,'discussions.content.xml',REQUEST)
-    
+
     #-- Newsletter
     if REQUEST.get('specobj_newsletter',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'newsletter', REQUEST)
-    
+
     #-- Calendar
     if REQUEST.get('specobj_calendar',0) == 1:
       # Init configuration.
@@ -356,12 +348,12 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Access ####
     obj.synchronizePublicAccess()
-    
+
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED',manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
     RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(),obj.id,urllib.quote(message)))
-  
+
   else:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())
 
@@ -386,7 +378,7 @@ class ZMS(
 
     # Version-Info.
     # -------------
-    zms_build = '135'        # Internal use only, designates object model!
+    zms_build = '134'        # Internal use only, designates object model!
     zms_patch = 'c'          # Internal use only!
 
     # Properties.
@@ -435,7 +427,7 @@ class ZMS(
         'manage_importexport', 'manage_import', 'manage_export',
         )
     __userAdministratorPermissions__ = (
-        'manage_users', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles', 
+        'manage_users', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -494,7 +486,7 @@ class ZMS(
     """
 
     # --------------------------------------------------------------------------
-    #  ZMS.__init__: 
+    #  ZMS.__init__:
     # --------------------------------------------------------------------------
     """
     Constructor.
@@ -507,7 +499,7 @@ class ZMS(
 
 
     # --------------------------------------------------------------------------
-    #  ZMS.initZMS: 
+    #  ZMS.initZMS:
     # --------------------------------------------------------------------------
     def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST):
       return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST)
@@ -550,7 +542,7 @@ class ZMS(
       ob = docElmnt
       try:
         depth = 0
-        while ob.meta_type != 'Folder': 
+        while ob.meta_type != 'Folder':
           if depth > sys.getrecursionlimit():
             raise zExceptions.InternalError('Maximum recursion depth exceeded')
           depth = depth + 1
@@ -651,16 +643,16 @@ class ZMS(
 
 
     ############################################################################
-    ###  
+    ###
     ###   DOM-Methods
-    ### 
+    ###
     ############################################################################
 
     """
-    The parent of this node. 
+    The parent of this node.
     All nodes except root may have a parent.
     """
-    def getParentNode(self): 
+    def getParentNode(self):
       return None
 
 
@@ -675,19 +667,19 @@ class ZMS(
     # --------------------------------------------------------------------------
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
       _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
-      
+
       # remove all ZMS-objects.
       self.manage_delObjects(self.objectIds(self.dGlobalAttrs.keys()))
       # remove all languages.
       for s_lang in self.getLangIds():
         self.delLanguage(s_lang)
-      
+
       self.dTagStack = _globals.MyStack()
       self.dValueStack  = _globals.MyStack()
-      
-      # WORKAROUND! The member variable "aq_parent" does not contain the right 
-      # parent object at this stage of the creation process (it will later on!). 
-      # Therefore, we introduce a special attribute containing the parent 
+
+      # WORKAROUND! The member variable "aq_parent" does not contain the right
+      # parent object at this stage of the creation process (it will later on!).
+      # Therefore, we introduce a special attribute containing the parent
       # object, which will be used by xmlGetParent() (see below).
       self.oParent = None
 

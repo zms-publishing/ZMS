@@ -868,6 +868,14 @@ class ConfManager(
     ############################################################################
 
     def getMetacmdManager(self):
+      ### updateVersion
+      commands = self.getConfProperty('ZMS.custom.commands',[])
+      if len(commands)>0:
+        meta_type = 'ZMSMetacmdProvider'
+        obj = ConfDict.forName(meta_type+'.'+meta_type)(commands)
+        self._setObject( obj.id, obj)
+        self.delConfProperty('ZMS.custom.commands')
+      ###
       metacmd_manager = getattr(self,'metacmd_manager',None)
       if metacmd_manager is None:
         class DefaultManager:

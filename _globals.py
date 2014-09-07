@@ -22,7 +22,6 @@
 # Imports.
 from App.Common import package_home
 from DateTime.DateTime import DateTime
-from httplib import HTTP
 from types import StringTypes
 from traceback import format_exception
 try: # >= Zope-2.10
@@ -493,8 +492,7 @@ def authtobasic(auth, h):
 _globals.http_import:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
-  
-  HTTP_PREFIX = 'http://'
+  import httplib
   
   # Get Query-String.
   qs = ''
@@ -503,11 +501,17 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
     qs = url[i+1:]
     url = url[:i]
   
+  # Get Protocol.
+  protocol = 'http'
+  i = url.find('://')
+  if i > 0:
+    protocol = url[:i]
+  else:
+    url = protocol + url
+  
   # Get Host.
   host = ''
-  servername = url
-  if servername.startswith(HTTP_PREFIX):
-    servername = servername[len(HTTP_PREFIX):]
+  servername = url[len(protocol+'://'):]
   if servername.find('/') > 0:
     servername = servername[:servername.find('/')]
   useproxy = True
@@ -517,13 +521,11 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
       useproxy = False
       break
   if useproxy:
-    host = self.getConfProperty('HTTP.proxy',host)
+    host = self.getConfProperty('%s.proxy'%protocol.upper(),host)
   
   if len( host) == 0:
     # Remove HTTP-Prefix.
-    if url.startswith( HTTP_PREFIX):
-      url = url[ len( HTTP_PREFIX):]
-      
+    url = url[len(protocol+'://'):]      
     i = url.find('/')
     if i > 0:
       host = url[:i]
@@ -532,39 +534,30 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
       host = url
       url = '/'
 
-  # Get Port.
-  i = host.find(':',max(0,host.find('@')))
-  port = 80
-  if i > 0:
-    port = int(host[i+1:])
-    host = host[:i]
-  
   # Open HTTP connection.
-  writeLog( self, "[http_import.%s]: %s:%i --> %s?%s"%(method,host,port,url,qs))
-  req = HTTP(host,port)
+  writeLog( self, "[http_import.%s]: %s --> %s?%s"%(method,servername,url,qs))
+  if protocol == 'http':
+    conn = httplib.HTTPConnection(servername)
+  else:
+    conn = httplib.HTTPSConnection(servername)
   
   # Set request-headers.
-  if method.upper() == 'GET':
-    if len( qs) > 0:
-      qs = '?' + qs
-    req.putrequest( method, url + qs)
-    req.putheader('Host', host)
-    authtobasic(auth,req)
-    req.putheader('Accept', '*/*')
-    req.endheaders()
-  elif method.upper() == 'POST':
-    req.putrequest(method,url)
-    req.putheader('Host', host)
-    authtobasic(auth,req)
-    req.putheader('Accept', '*/*')
-    req.putheader('Content-type', 'application/x-www-form-urlencoded')
-    req.putheader('Content-length', '%d' % len(qs))
-    req.endheaders()
-    # Send query string
-    req.send(qs)
-  
-  # Send request.
-  reply_code, message, headers = req.getreply()
+  headers = {'Host':host,'Accept':'*/*'}
+  if auth is not None:
+    import base64
+    userpass = auth['username']+':'+auth['password']
+    userpass = base64.encodestring(urllib.unquote(userpass)).strip()
+    headers['Authorization'] =  'Basic '+userpass
+  values = {}
+  for x in qs.split('&'):
+    k = x[:x.find('=')]
+    v = x[x.find('=')+1:]
+    values[k] = v
+  values = urllib.urlencode(values)
+  conn.request(method, url, values, headers)
+  response = conn.getresponse()
+  reply_code = response.status
+  message = response.reason
   
   #### get parameter from content
   if reply_code == 404 or reply_code >= 500:
@@ -573,23 +566,15 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
     raise zExceptions.InternalError(error)
   elif reply_code==200:
     # get content
-    f = req.getfile()
-    content = f.read()
-    f.close()
+    data = response.read()
     rtn = None
     if parse_qs:
       try:
         # return dictionary of value lists
-        rtn = cgi.parse_qs(content, keep_blank_values=1, strict_parsing=1)
+        data = cgi.parse_qs(data, keep_blank_values=1, strict_parsing=1)
       except:
-        # return string
-        rtn = content
-    else:
-      # return string
-      rtn = content
-      if port != 80:
-        rtn = rtn.replace( '%s%s/'%(HTTP_PREFIX,host), '%s%s:%i/'%(HTTP_PREFIX,host,port))
-    return rtn
+        writeError(self,'[http_import]: can\'t parse_qs')
+    return data
   else:
     result = '['+str(reply_code)+']: '+str(message)
     writeLog( self, "[http_import.result]: %s"%result)

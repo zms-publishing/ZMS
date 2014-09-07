@@ -615,8 +615,7 @@ div.zmi-nodes span{cursor:pointer}
 .btn-file{background-color:#eee;margin-bottom:0.5em}
 .zmi-image .filename,.zmi-file .filename{color:#08c}
 .zmi-image-preview{max-width:100px;background:#CCC}
-.zmi-image-generate-preview{font-size:x-small}
-.zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;font-size:x-small}
+.zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;color:#888}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
 .zmi.users #zmi-tab > .pull-left,.zmi.users #zmi-tab > .pull-right{width:50%}
 .zmi.users form table{margin-bottom:0}

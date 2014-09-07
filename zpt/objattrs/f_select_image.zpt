@@ -28,7 +28,7 @@
 			 	</tr>
 				<tr>
 					<td style="width:35px;padding-left:1em;vertical-align:top;">
-						<div class="ZMSGraphic_extEdit_action"><span class="btn btn-default" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))"><i class="icon-resize-small"></i></span></div>
+						<div class="ZMSGraphic_extEdit_action"><span class="btn btn-default" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,400)),str(here.getConfProperty(max_generate_preview,400)))"><i class="icon-resize-small"></i></span></div>
 						<div class="ZMSGraphic_extEdit_action"><span class="btn btn-default" id="ZMSGraphic_extEdit_crop" title="Crop image"><i class="icon-crop"></i></span></div>
 						<div id="ZMSGraphic_extEdit_vslider" class="slider" style="height:100px;"></div><br/>
 						<div id="ZMSGraphic_extEdit_perc" class="perc form-control-static" style="margin-left:-0.3em"></div>
@@ -107,7 +107,7 @@
 					tal:condition="can_generate_preview">
 				<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
 				<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
-				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview,100)),str(here.getConfProperty(max_generate_preview,100)))">(max. %ix%ipx)</tal:block>
+				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview,400)),str(here.getConfProperty(max_generate_preview,400)))">(max. %ix%ipx)</tal:block>
 			</div>
 
 	</div><!-- .pull-left -->

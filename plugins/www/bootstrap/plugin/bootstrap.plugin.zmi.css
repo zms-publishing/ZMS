@@ -851,14 +851,11 @@ div.zmi-nodes span {
 	max-width:100px;
 	background:#CCC;
 }
-.zmi-image-generate-preview {
-	font-size:x-small;
-}
 .zmi-image-generate-preview * {
 	float:left;
 	padding-left:0.5em;
 	padding-right:0.5em;
-	font-size:x-small;
+	color:#888;
 }
 .zmi.customize #Custom table td.nowrap {
 	min-width:92px;

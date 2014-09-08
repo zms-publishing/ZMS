@@ -55,46 +55,40 @@ $ ./ZMS3/bin/pip install ZMS3
         
 
         |   *NOTE:* To install PIL (Python Imaging Library) use:
-        |   (because PIL is not hosted at PyPI special ``--allow``-parameters are needed)
+        |   (because PIL is not hosted at PyPI special ``--allow``-parameters are needed for pip>=1.5)
     
     ::
     
     $ ./ZMS3/bin/pip install PIL --allow-external PIL --allow-unverified PIL
 
-     
-**(4) Create ZMS3 Instance (if not exists).**
+
+**(4) Apply needed Hotfixes to the Environment.**
+
+::     
+
+$ ./ZMS3/bin/pip uninstall ZMS3
+$ ./ZMS3/bin/pip install --upgrade ZMS3
+
+**(5) Create ZMS3 Instance.**
 
 ::     
 
 $ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
-
-        
-**(5) Start ZMS3 Instance.**
-
-::     
-
 $ ./ZMS3/instance/bin/zopectl start
-
-        *NOTE:* If you get zope errors like ``AttributeError: ZopeCtlOptions instance has no attribute 'start_timeout'`` on startup, run upgrade instantly
-        
-    ::
-       
-    $ ./ZMS3/bin/pip uninstall ZMS3
-    $ ./ZMS3/bin/pip install --upgrade ZMS3
-    $ ./ZMS3/instance/bin/zopectl restart
 
     and finally initialize new instance
 
     |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
     |   (replace "localhost" with your system's IP address or domain name if no local installation) 
-    
-    or access existing instance
-    
-    |   http://localhost:8080/myzmsx/content/manage
-    |   (replace "myzmsx" with your instance's Folder-Id if necessary)
        
 Changelog
 ---------
+
+3.0.4 (2014-09-08)
+******************
+
+    * fixed update procedure     
+    * `more in 3.0.4... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2736&stop_rev=2720&limit=200>`_
 
 3.0.3 (2014-08-31)
 ******************

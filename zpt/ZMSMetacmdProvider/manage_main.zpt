@@ -200,7 +200,8 @@
 	</thead>
 	<tbody>
 	<tal:block tal:repeat="metaCmdId metaCmdIds">
-		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId)">
+		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId)"
+			tal:on-error="structure string:<!--Error metaCmdId Line 203 -->">
 			<td style="text-align:center;">
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id">
 			</td>

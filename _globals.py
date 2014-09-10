@@ -475,86 +475,57 @@ def unescape(s):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_globals.authtobasic:
-
-Basic Authentication
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def authtobasic(auth, h): 
- """Converts basic auth data into an HTTP header."""
- import base64
- if auth is not None:
-   userpass = auth['username']+':'+auth['password']
-   userpass = base64.encodestring(urllib.unquote(userpass)).strip()
-   h.putheader('Authorization', 'Basic '+userpass)
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.http_import:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=5):
-  import httplib
+def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10):
+  # Parse URL.
+  import urlparse
+  u = urlparse.urlparse(url)
+  writeLog( self, "[http_import.%s]: %s"%(method,str(u)))
+  scheme = u[0]
+  netloc = u[1]
+  path = u[2]
+  query = u[4]
   
-  # Get Query-String.
-  qs = ''
-  i = url.find('?')
-  if i > 0:
-    qs = url[i+1:]
-    url = url[:i]
-  
-  # Get Protocol.
-  protocol = 'http'
-  i = url.find('://')
-  if i > 0:
-    protocol = url[:i]
-  else:
-    url = protocol + url
-  
-  # Get Host.
-  host = ''
-  servername = url[len(protocol+'://'):]
-  if servername.find('/') > 0:
-    servername = servername[:servername.find('/')]
+  # Get Proxy.
   useproxy = True
-  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),self.getConfProperty('HTTP.noproxy','').split(',')))
+  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),self.getConfProperty('%s.noproxy'%scheme.upper(),'').split(',')))
   for noproxyurl in noproxy:
-    if fnmatch.fnmatch(servername,noproxyurl):
+    if fnmatch.fnmatch(netloc,noproxyurl):
       useproxy = False
       break
   if useproxy:
-    host = self.getConfProperty('%s.proxy'%protocol.upper(),host)
-  
-  if len( host) == 0:
-    # Remove HTTP-Prefix.
-    url = url[len(protocol+'://'):]      
-    i = url.find('/')
-    if i > 0:
-      host = url[:i]
-      url = url[i:]
-    else:
-      host = url
-      url = '/'
+    proxy = self.getConfProperty('%s.proxy'%scheme.upper(),'')
+    if len(proxy) > 0:
+      path = '%s://%s%s'%(scheme,netloc,path) 
+      netloc = proxy
 
   # Open HTTP connection.
-  writeLog( self, "[http_import.%s]: %s --> %s?%s"%(method,servername,url,qs))
-  if protocol == 'http':
-    conn = httplib.HTTPConnection(servername)
-  else:
-    conn = httplib.HTTPSConnection(servername)
+  import httplib
+  writeLog( self, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
+  print netloc
+  try:
+    if scheme == 'http':
+      conn = httplib.HTTPConnection(netloc,timeout=timeout)
+    else:
+      conn = httplib.HTTPSConnection(netloc,timeout=timeout)
+  except TypeError: # Python <2.6: urllib and httplib don't expose timeout
+    if scheme == 'http':
+      conn = httplib.HTTPConnection(netloc)
+    else:
+      conn = httplib.HTTPSConnection(netloc)
   
   # Set request-headers.
-  headers = {'Host':host,'Accept':'*/*'}
+  headers = {'Accept':'*/*'}
   if auth is not None:
     import base64
     userpass = auth['username']+':'+auth['password']
     userpass = base64.encodestring(urllib.unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
-  values = {}
-  for x in qs.split('&'):
-    k = x[:x.find('=')]
-    v = x[x.find('=')+1:]
-    values[k] = v
-  values = urllib.urlencode(values)
-  conn.request(method, url, values, headers)
+  if method == 'GET':
+    path += '?' + query
+    query = ''
+  conn.request(method, path, query, headers)
   response = conn.getresponse()
   reply_code = response.status
   message = response.reason

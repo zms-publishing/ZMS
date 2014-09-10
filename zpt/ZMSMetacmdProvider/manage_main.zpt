@@ -185,7 +185,7 @@
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_acquireMetacmdForm',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 				</div>
@@ -200,31 +200,52 @@
 	</thead>
 	<tbody>
 	<tal:block tal:repeat="metaCmdId metaCmdIds">
-		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId)"
-			tal:on-error="structure string:<!--Error metaCmdId Line 203 -->">
+		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId,None)">
 			<td style="text-align:center;">
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id">
 			</td>
 			<td>
-				<tal:block tal:condition="python:metaCmd.get('acquired')">
-					<a tal:attributes="href python:'%s/%s?lang=%s&id=%s'%(here.getPortalMaster().absolute_url(),request['URL'].split('/')[-1],request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
-						<i tal:condition="python:metaCmd.get('acquired')" class="icon-share" title="acquired"></i>
-					</a>
-					<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
-					<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
-				</tal:block>
-				<tal:block tal:condition="not:python:metaCmd.get('acquired')">
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
+				<tal:block tal:condition="ob">
+					<tal:block tal:condition="python:metaCmd.get('acquired')">
+						<a tal:attributes="href python:'%s/%s'%(here.getPortalMaster().absolute_url(),request['URL'].split('/')[-1]); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
+							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
+						</a>
 						<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
 						<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
-					</a>
+					</tal:block>
+					<tal:block tal:condition="not:python:metaCmd.get('acquired')">
+						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
+							<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
+							<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
+						</a>
+					</tal:block>
+				</tal:block>
+				<div class="text-danger bg-danger" tal:condition="not:ob">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%metaCmd['id'])">the warning sign</tal:block>
+					<tal:block tal:condition="python:metaCmd.get('acquired')">
+						<a tal:attributes="href python:'%s/%s'%(here.getPortalMaster().absolute_url(),request['URL'].split('/')[-1])" target="_blank">
+							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
+						</a>
+					</tal:block>
+					<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
+					<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
+				</div>
+			</td>
+			<td>
+				<tal:block tal:condition="ob">
+					<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">Size</tal:block>
+				</tal:block>
+				<tal:block tal:condition="not:ob">
+					N/A 
 				</tal:block>
 			</td>
 			<td>
-				<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">Size</tal:block>
-			</td>
-			<td>
-				<tal:block tal:content="python:here.getLangFmtDate(ob.bobobase_modification_time().timeTime())">Modification-Time</tal:block>
+				<tal:block tal:condition="ob">
+					<tal:block tal:content="python:here.getLangFmtDate(ob.bobobase_modification_time().timeTime())">Modification-Time</tal:block>
+				</tal:block>
+				<tal:block tal:condition="not:ob">
+					N/A 
+				</tal:block>
 			</td>
 		</tr>
 	</tal:block>

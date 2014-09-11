@@ -80,10 +80,13 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
           ob_id = str(ob.id)
         if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
-            html = ob(ob,REQUEST)
-            html = localHtml( ob, html)
-            html = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, html)
-            ob = html
+            if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template']:
+              v = ob(ob,REQUEST)
+            elif ob.meta_type in [ 'Script (Python)']:
+              v = ob()
+            v = localHtml( ob, v)
+            v = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, v)
+            ob = v
           except:
             _globals.writeError( self, "[exportFolder]")
         _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))

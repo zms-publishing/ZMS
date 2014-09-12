@@ -54,6 +54,12 @@ select.zmi-sort {
 	color:#AAA;
 }
 
+.ui-autocomplete {
+	position: absolute;
+	z-index:9999999;
+}
+
+
 </style>
 
 <script>
@@ -78,20 +84,26 @@ function zmiFormSubmit(sender,d) {
  *
  */
 function zmiChangeTablename(sender, names) {
+
 	var table_id = $(sender).val();
 	var columns = $("#"+table_id+"-columns span.column-id");
-	for (var i = 0; i < names.length; i++) {
-		var name = names[i];
-		var $input = $('*[name='+name+']');
-		var value = $input.val();
-		var html = '<'+'select class="form-control input-xs" name="'+name+'">';
-		html += '<'+'option value=""><'+'/option>';
+	if (columns.length>0) {
+		var source = [];
 		for (var j = 0; j < columns.length; j++) {
 			var column = $(columns[j]).text().trim();
-			html += '<'+'option value="'+column+'"'+((''+column).toLowerCase()==(''+value).toLowerCase()?' selected="selected"':'')+'>'+column+'<'+'/option>';
+			source.push(column);
 		}
-		html += '<'+'/select>';
-		$input.replaceWith(html);
+		$ZMI.writeDebug('[zmiChangeTablename]: source='+source.join(','));
+		for (var i = 0; i < names.length; i++) {
+			var name = names[i];
+			var $input = $('*[name='+name+']');
+			var value = $input.val();
+			var html = '<'+'input class="form-control ui-autocomplete-input input-xs" name="'+name+'" value="'+value+'"/>';
+			$input.replaceWith(html);
+			zmiAutocomplete('input[name='+name+']',{
+				source:source
+			});
+		}
 	}
 }
 

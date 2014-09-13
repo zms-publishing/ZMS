@@ -17,15 +17,12 @@
 ################################################################################
 
 # Imports.
-from Products.PageTemplates import ZopePageTemplate
-from Products.PythonScripts import PythonScript
 import urllib
-
 
 ################################################################################
 ################################################################################
 ###
-###   class MetacmdObject
+###   Class
 ###
 ################################################################################
 ################################################################################
@@ -43,56 +40,26 @@ class MetacmdObject:
       
       # Execute.
       # --------
-      for metaCmd in self.getMetaCmds():
-        if metaCmd['name'] == custom:
-          # Acquire from parent.
-          if metaCmd.get('acquired',0) == 1:
-            src = getattr(metaCmd['home'],metaCmd['id'])
-            ob = getattr(self,metaCmd['id'],None)
-            if ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time():
-              newId = metaCmd['id']
-              newTitle = '*** DO NOT DELETE OR MODIFY ***'
-              newMethod = src.meta_type
-              if newId in self.objectIds():
-                self.manage_delObjects(ids=[newId])
-              if newMethod == 'DTML Method': 
-                self.manage_addDTMLMethod(newId,newTitle) 
-              elif newMethod == 'DTML Document': 
-                self.manage_addDTMLDocument(newId,newTitle) 
-              elif newMethod == 'Page Template':
-                ZopePageTemplate.manage_addPageTemplate(self,id=newId,title=newTitle)
-              elif newMethod == 'Script (Python)':
-                PythonScript.manage_addPythonScript(self,newId)
-            ob = getattr(self,metaCmd['id'],None) 
-            if src.meta_type in [ 'DTML Method', 'DTML Document']:
-              newData = src.raw
-              ob.manage_edit(title=ob.title,data=newData)
-            elif src.meta_type in [ 'Page Template']:
-              newData = src.read()
-              newContentType = src.content_type
-              ob.pt_edit(newData,content_type=newContentType)
-            elif src.meta_type in [ 'Script (Python)']:
-              newData = src.read()
-              ob.ZPythonScript_setTitle( ob.title)
-              ob.write(newData)
-          # Execute directly.
-          if metaCmd.get('exec',0) == 1:
-            ob = getattr(self,metaCmd['id'],None)
-            if ob.meta_type in ['DTML Method','DTML Document']:
-              value = ob(self,REQUEST,RESPONSE)
-            elif ob.meta_type == 'Page Template':
-              value = ob()
-            elif ob.meta_type == 'Script (Python)':
-              value = ob()
-            if type(value) is str:
-              message = value
-            elif type(value) is tuple:
-              target = value[0]
-              message = value[1]
-          # Execute redirect.
-          else:
-            params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix'),'ids':REQUEST.get('ids',[])}
-            return RESPONSE.redirect(self.url_append_params(metaCmd['id'],params,sep='&'))
+      metaCmd = self.getMetaCmd(name=custom)
+      if metaCmd is not None:
+        # Execute directly.
+        if metaCmd.get('exec',0) == 1:
+          ob = getattr(self,metaCmd['id'],None)
+          if ob.meta_type in ['DTML Method','DTML Document']:
+            value = ob(self,REQUEST,RESPONSE)
+          elif ob.meta_type == 'Page Template':
+            value = ob()
+          elif ob.meta_type == 'Script (Python)':
+            value = ob()
+          if type(value) is str:
+            message = value
+          elif type(value) is tuple:
+            target = value[0]
+            message = value[1]
+        # Execute redirect.
+        else:
+          params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix'),'ids':REQUEST.get('ids',[])}
+          return RESPONSE.redirect(self.url_append_params(metaCmd['id'],params,sep='&'))
       
       # Return with message.
       message = urllib.quote(message)

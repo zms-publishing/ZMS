@@ -288,17 +288,7 @@ class ZMSMetacmdProvider(
     # Returns action.
     # --------------------------------------------------------------------------
     def getMetaCmd(self, id=None, name=None):
-      obs = []
-      for x in self.commands:
-        # Acquire from parent.
-        if x.get('acquired',0)==1:
-          portalMaster = self.getPortalMaster()
-          if portalMaster is not None:
-            x = portalMaster.getMetaCmd(x['id']) 
-            x['acquired'] = 1
-        else:
-          x = x.copy()
-        obs.append(x)
+      obs = self.getMetaCmds(sort=False)
       # Filter by Id.
       if id is not None:
         obs = filter(lambda x: x['id']==id, obs)
@@ -308,9 +298,39 @@ class ZMSMetacmdProvider(
       # Not found!
       if len(obs) == 0:
         return None
-      ob = obs[0]
-      ob['meta_type'] = getattr(self,ob['id']).meta_type
-      return ob
+      # Create if not exists.
+      metaCmd = obs[0]
+      home = self.aq_parent
+      src = getattr(metaCmd['home'],metaCmd['id'])
+      ob = getattr(home,metaCmd['id'],None)
+      if ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time():
+        newId = metaCmd['id']
+        newTitle = '*** DO NOT DELETE OR MODIFY ***'
+        newMethod = src.meta_type
+        if newId in home.objectIds():
+          home.manage_delObjects(ids=[newId])
+        if newMethod == 'DTML Method': 
+          home.manage_addDTMLMethod(newId,newTitle) 
+        elif newMethod == 'DTML Document': 
+          home.manage_addDTMLDocument(newId,newTitle) 
+        elif newMethod == 'Page Template':
+          ZopePageTemplate.manage_addPageTemplate(home,id=newId,title=newTitle)
+        elif newMethod == 'Script (Python)':
+          PythonScript.manage_addPythonScript(home,newId)
+      ob = getattr(home,metaCmd['id'],None) 
+      if src.meta_type in [ 'DTML Method', 'DTML Document']:
+        newData = src.raw
+        ob.manage_edit(title=ob.title,data=newData)
+      elif src.meta_type in [ 'Page Template']:
+        newData = src.read()
+        newContentType = src.content_type
+        ob.pt_edit(newData,content_type=newContentType)
+      elif src.meta_type in [ 'Script (Python)']:
+        newData = src.read()
+        ob.ZPythonScript_setTitle( ob.title)
+        ob.write(newData)
+      metaCmd['meta_type'] = ob.meta_type
+      return metaCmd
 
 
     # --------------------------------------------------------------------------

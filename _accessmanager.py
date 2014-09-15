@@ -682,7 +682,9 @@ class AccessManager(AccessableContainer):
       for role in role_defs.keys():
         role_def = role_defs[role]
         # Add Local Role.
-        if not role in self.valid_roles(): self._addRole(role)
+        home = self.aq_parent
+        if not role in home.valid_roles():
+            home._addRole(role)
         # Set permissions for Local Role.
         self.manage_role(role_to_manage=role,permissions=role_permissions(self,role))
       
@@ -861,9 +863,11 @@ class AccessManager(AccessableContainer):
       # -------
       if btn == self.getZMILangStr('BTN_INSERT'):
         if key=='obj':
-          #-- Add local role.
           id = REQUEST.get('newId').strip()
-          if id not in self.valid_roles(): self._addRole(role=id,REQUEST=REQUEST)
+          #-- Add local role.
+          home = self.aq_parent
+          if id not in home.valid_roles():
+            home._addRole(role=id,REQUEST=REQUEST)
           #-- Prepare nodes from config-properties.
           security_roles = self.getConfProperty('ZMS.security.roles',{})
           security_roles[id] = {}
@@ -896,7 +900,9 @@ class AccessManager(AccessableContainer):
       elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
         if key=='obj':
           #-- Delete local role.
-          self._delRoles(roles=[id],REQUEST=REQUEST)
+          for home in [self,self.aq_parent]:
+            if id in home.valid_roles():
+              home._delRoles(roles=[id],REQUEST=REQUEST)
           #-- Delete nodes from config-properties.
           security_roles = self.getConfProperty('ZMS.security.roles',{})
           if security_roles.has_key(id): del security_roles[id]

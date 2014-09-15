@@ -49,7 +49,7 @@ function zmiModalInsertUserOpen(context) {
 		userAdderPlugin python:here.getUserAdderPlugin();
 		userDefs python:here.getConfProperty('ZMS.security.users',{});
 		userNames python:here.sort_list(userDefs.keys());
-		valid_roles python:here.difference_list(here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
+		valid_roles python:here.difference_list(here.aq_parent.userdefined_roles()+here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
 		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
 												['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
@@ -186,9 +186,11 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:define="global nodes python:here.getConfProperty('ZMS.security.roles',{}).get(request['id'],{})">
 	<legend><tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block></legend>
 	<div class="form-group">
+		<div class="controls">
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 			&nbsp;&nbsp;
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+		</div>
 	</div><!-- .form-group -->
 </tal:block>
 </tal:block>
@@ -220,9 +222,9 @@ function zmiModalInsertUserOpen(context) {
 				</td>
 				<td>
 					<tal:block tal:repeat="role python:here.difference_list(nodevalue.get('roles',[]),['Authenticated'])">
-						<tal:block tal:define="global str python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(str)" tal:content="python:[str,langstr][int(str!=langstr)]">
+						<tal:block tal:define="global rolestr python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(rolestr);" tal:content="python:[role,langstr][int(rolestr!=langstr)]">
 							Role
-						</tal:block>
+						</tal:block>,
 					</tal:block>
 				</td>
 				</tal:block>

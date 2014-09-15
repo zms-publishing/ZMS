@@ -288,6 +288,7 @@ class ZMSMetacmdProvider(
     # Returns action.
     # --------------------------------------------------------------------------
     def getMetaCmd(self, id=None, name=None):
+      print self,"getMetaCmd",id,name
       obs = self.getMetaCmds(sort=False)
       # Filter by Id.
       if id is not None:
@@ -303,7 +304,7 @@ class ZMSMetacmdProvider(
       home = self.aq_parent
       src = getattr(metaCmd['home'],metaCmd['id'])
       ob = getattr(home,metaCmd['id'],None)
-      if ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time():
+      if src is not None and (ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time()):
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
         newMethod = src.meta_type
@@ -317,19 +318,18 @@ class ZMSMetacmdProvider(
           ZopePageTemplate.manage_addPageTemplate(home,id=newId,title=newTitle)
         elif newMethod == 'Script (Python)':
           PythonScript.manage_addPythonScript(home,newId)
-      ob = getattr(home,metaCmd['id'],None) 
-      if src.meta_type in [ 'DTML Method', 'DTML Document']:
-        newData = src.raw
-        ob.manage_edit(title=ob.title,data=newData)
-      elif src.meta_type in [ 'Page Template']:
-        newData = src.read()
-        newContentType = src.content_type
-        ob.pt_edit(newData,content_type=newContentType)
-      elif src.meta_type in [ 'Script (Python)']:
-        newData = src.read()
-        ob.ZPythonScript_setTitle( ob.title)
-        ob.write(newData)
-      metaCmd['meta_type'] = ob.meta_type
+        ob = getattr(home,metaCmd['id'],None) 
+        if newMethod in [ 'DTML Method', 'DTML Document']:
+          newData = src.raw
+          ob.manage_edit(title=ob.title,data=newData)
+        elif newMethod in [ 'Page Template']:
+          newData = src.read()
+          newContentType = src.content_type
+          ob.pt_edit(newData,content_type=newContentType)
+        elif newMethod in [ 'Script (Python)']:
+          newData = src.read()
+          ob.ZPythonScript_setTitle( ob.title)
+          ob.write(newData)
       return metaCmd
 
 
@@ -370,7 +370,7 @@ class ZMSMetacmdProvider(
             metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
-          metaCmd['home'] = self
+          metaCmd['home'] = self.aq_parent
         metaCmds.append(metaCmd)
       return metaCmds
 

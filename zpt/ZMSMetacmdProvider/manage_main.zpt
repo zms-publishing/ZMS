@@ -175,7 +175,7 @@
 		<col width="40"/>
 	</colgroup>
 	<thead>
-		<tr>
+		<tr tal:condition="python:here.meta_type=='ZMSMetacmdProvider'">
 			<th>
 				<div class="btn-group">
 					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
@@ -205,9 +205,9 @@
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id">
 			</td>
 			<td>
-				<tal:block tal:condition="ob">
+				<tal:block tal:condition="python:ob is not None">
 					<tal:block tal:condition="python:metaCmd.get('acquired')">
-						<a tal:attributes="href python:'%s/%s'%(here.getPortalMaster().absolute_url(),request['URL'].split('/')[-1]); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
+						<a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:]); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
 							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
 						</a>
 						<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
@@ -220,10 +220,10 @@
 						</a>
 					</tal:block>
 				</tal:block>
-				<div class="text-danger bg-danger" tal:condition="not:ob">
+				<div class="text-danger bg-danger" tal:condition="python:ob is None">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%metaCmd['id'])">the warning sign</tal:block>
 					<tal:block tal:condition="python:metaCmd.get('acquired')">
-						<a tal:attributes="href python:'%s/%s'%(here.getPortalMaster().absolute_url(),request['URL'].split('/')[-1])" target="_blank">
+						<a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank">
 							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
 						</a>
 					</tal:block>
@@ -232,18 +232,18 @@
 				</div>
 			</td>
 			<td>
-				<tal:block tal:condition="ob">
+				<tal:block tal:condition="python:ob is not None">
 					<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">Size</tal:block>
 				</tal:block>
-				<tal:block tal:condition="not:ob">
+				<tal:block tal:condition="python:ob is None">
 					N/A 
 				</tal:block>
 			</td>
 			<td>
-				<tal:block tal:condition="ob">
+				<tal:block tal:condition="python:ob is not None">
 					<tal:block tal:content="python:here.getLangFmtDate(ob.bobobase_modification_time().timeTime())">Modification-Time</tal:block>
 				</tal:block>
-				<tal:block tal:condition="not:ob">
+				<tal:block tal:condition="python:ob is None">
 					N/A 
 				</tal:block>
 			</td>

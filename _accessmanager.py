@@ -94,6 +94,24 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
   return False
 
 # ------------------------------------------------------------------------------
+#  _accessmanager.setLocalRoles:
+# ------------------------------------------------------------------------------
+def setLocalRoles(self, id, roles=[]):
+  self.manage_setLocalRoles(id,filter(lambda x: x in self.valid_roles(),roles))
+  if self.meta_type == 'ZMS':
+    home = self.aq_parent
+    setLocalRoles(home,id,roles)
+
+# ------------------------------------------------------------------------------
+#  _accessmanager.delLocalRoles:
+# ------------------------------------------------------------------------------
+def delLocalRoles(self, id):
+  self.manage_delLocalRoles(userids=[id])
+  if self.meta_type == 'ZMS':
+    home = self.aq_parent
+    delLocalRoles(home,id)
+
+# ------------------------------------------------------------------------------
 #  _accessmanager.deleteUser:
 # ------------------------------------------------------------------------------
 def deleteUser(self, id):
@@ -104,7 +122,7 @@ def deleteUser(self, id):
     ob = self.getLinkObj(node)
     if ob is not None:
       user_id = self.getUserAttr(id,'user_id_',id)
-      ob.manage_delLocalRoles(userids=[user_id])
+      delLocalRoles(ob,user_id)
   
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
@@ -738,7 +756,7 @@ class AccessManager(AccessableContainer):
       if ob is None: ob = self
       
       for local_role in ob.get_local_roles():
-        delLocalRoles = False
+        b = False
         userid = local_role[0]
         userroles = local_role[1]
         if 'Owner' not in userroles:
@@ -752,12 +770,12 @@ class AccessManager(AccessableContainer):
           if userid in valid_userids:
             nodes = self.getUserAttr(userid,'nodes',{})
             if len(filter(lambda x: (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id),nodes.keys()))==0:
-              delLocalRoles = True
+              b = True
           elif userid in invalid_userids:
-            delLocalRoles = True
-        if delLocalRoles:
+            b = True
+        if b:
           rtn += ob.absolute_url()+ " " + userid + " " + str(userroles) + "<br/>"
-          ob.manage_delLocalRoles(userids=[userid])
+          delLocalRoles(ob,userid)
       
       # Process subtree.
       for subob in ob.objectValues(ob.dGlobalAttrs.keys()):
@@ -786,9 +804,9 @@ class AccessManager(AccessableContainer):
           user_id = self.getUserAttr(id,'user_id_',id)
           if active:
             roles = nodes[node].get('roles',[])
-            ob.manage_setLocalRoles(user_id,roles)
+            setLocalRoles(ob,user_id,roles)
           else:
-            ob.manage_delLocalRoles(userids=[user_id])
+            delLocalRoles(ob,user_id)
 
 
     # --------------------------------------------------------------------------
@@ -813,7 +831,7 @@ class AccessManager(AccessableContainer):
       ob = self.getLinkObj(node,self.REQUEST)
       if ob is not None:
         user_id = self.getUserAttr(id,'user_id_',id)
-        ob.manage_setLocalRoles(user_id,roles)
+        setLocalRoles(ob,user_id,roles)
 
 
     # --------------------------------------------------------------------------
@@ -831,7 +849,7 @@ class AccessManager(AccessableContainer):
       ob = self.getLinkObj(node,self.REQUEST)
       if ob is not None:
         user_id = self.getUserAttr(id,'user_id_',id)
-        ob.manage_delLocalRoles(userids=[user_id])
+        delLocalRoles(ob,user_id)
 
 
     ############################################################################

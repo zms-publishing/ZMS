@@ -211,7 +211,7 @@ function zmiModalInsertUserOpen(context) {
 					</div>
 				</td>
 				<td>
-					<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
+					<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
 				</td>
 				<td tal:condition="python:multilang">
 					<tal:block tal:repeat="lang python:nodevalue.get('langs',[])">

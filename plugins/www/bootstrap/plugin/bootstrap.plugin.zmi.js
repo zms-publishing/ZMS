@@ -1210,10 +1210,10 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 	$ZMI.writeDebug("[tagSelected]: tagAttrs='"+tagAttrs+"'");
 	if (tagName == 'a' && tagAttrs == '') {
 		if (range.indexOf("@") > 0) {
-			tagAttrs = 'href="mailto:'+range+'"';
+			tagAttrs = ' href="mailto:'+range+'"';
 		}
 		else if (range.indexOf("://") > 0) {
-			tagAttrs = 'href="'+range+'" target="_blank"';
+			tagAttrs = ' href="'+range+'" target="_blank"';
 		}
 	}
 	if (tagName == 'a' && tagAttrs == '') {

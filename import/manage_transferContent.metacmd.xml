@@ -87,6 +87,8 @@ elif request.get('frametop') is not None:
         $("input[name=location]").val(aLocation);
       }
       $(function() {
+          // close the permanent zmi message
+          $(".close").click();
           parent.registerCallback(setLocation);
           $("#openBtn").click(function() {
               var location = $("input[name=location]").val();
@@ -357,8 +359,6 @@ else:
         window.frames["preview"].location.href = "?framepreview=True&remote_url="+location;
       }
       $(function() {
-          // close permanent zmi message
-          $(".close").click();
           $("frame[name=preview]").load(function() {
               var src = window.frames["preview"].location.href;
               if (src.indexOf("http")==0) {

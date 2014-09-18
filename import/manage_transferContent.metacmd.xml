@@ -176,6 +176,7 @@ elif request.get('framestructure') is not None:
           font-size:13px;
         }
         #ajaxGetObjAttrs {
+          opacity:0.6;
           background-color:white;
           position:absolute;
           font-size:x-small;
@@ -356,6 +357,8 @@ else:
         window.frames["preview"].location.href = "?framepreview=True&remote_url="+location;
       }
       $(function() {
+          // close permanent zmi message
+          $(".close").click();
           $("frame[name=preview]").load(function() {
               var src = window.frames["preview"].location.href;
               if (src.indexOf("http")==0) {

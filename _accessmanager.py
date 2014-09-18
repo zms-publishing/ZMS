@@ -97,7 +97,9 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
 #  _accessmanager.setLocalRoles:
 # ------------------------------------------------------------------------------
 def setLocalRoles(self, id, roles=[]):
-  self.manage_setLocalRoles(id,filter(lambda x: x in self.valid_roles(),roles))
+  filtered_roles = filter(lambda x: x in self.valid_roles(),roles)
+  if len(filtered_roles) > 0:
+    self.manage_setLocalRoles(id,filtered_roles)
   if self.meta_type == 'ZMS':
     home = self.aq_parent
     setLocalRoles(home,id,roles)

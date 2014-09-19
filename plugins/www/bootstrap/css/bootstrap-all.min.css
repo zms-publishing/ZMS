@@ -540,7 +540,7 @@ ul.zmi-container .zmi-item.zmi-nochildren .zmi-action .split-left{width:auto;pad
 .checkbox.split-left input{margin:.2em .5em 0 0}
 .zmi-action .btn.split-left,.zmi-action .btn.split-right{background-color:#eee;border-color:#eee;color:#333;font-weight:bold;height:2.7em;margin-left:0}
 ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;font-size:large}
-.zmi form.form-horizontal{background-color:#fff;margin-left:1.5em;margin-right:1.5em;padding:0.5em}
+.zmi .form-horizontal{background-color:#fff;margin-left:1.5em;margin-right:1.5em;padding:0.5em}
 .zmi form.form-horizontal.form-insert{margin:0}
 .zmi legend{margin-bottom:.35em;border-bottom:none;color:#888}
 .system table.zopeobjects i{margin-left:3px}
@@ -586,7 +586,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
  .zmi.metas .horizontal-group .meta_name input{width:8.5em}
  .zmi.metas .horizontal-group .meta_revision input{width:14.2em}
  .zmi.metas .horizontal-group .meta_type select{width:14.2em}
- .zmi.metas .horizontal-group .meta_package select{width:14.5em}
+ .zmi.metas .horizontal-group .meta_package select{width:20.5em}
  .zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
 .zmi.metas table.table-striped td.meta-id input,.zmi.metas table.table-striped td.meta-name input,.zmi.metas table.table-striped td.meta-type select,.zmi.metas table.meta-access textarea{width:160px}
 .zmi.metas .form-group.meta_id div,.zmi.metas .form-group.meta_name div,.zmi.metas .form-group.meta_type div,.zmi.metas .form-group.meta_revision div,.zmi.metas .form-group.meta_package div{padding-left:1em}
@@ -656,6 +656,7 @@ table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bot
 #insertUserForm .ZMSRecordSet .pagination{margin-left:0}
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left{overflow:visible}
 #insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input{margin:-2px 0 0 4px;float:left}
+.ZMSSqlDb .index,.ZMSRecordSet .index{margin-left:2em}
 .zmiDivOpaque{background-color:white;filter:Alpha(opacity=85);-moz-opacity:0.85;opacity:0.85}
 li.dropdown-submenu ul.dropdown-menu li a img{margin-right:0.5em}
 div.zmi-action > ul.dropdown-menu{margin-top:-1px;border-top-left-radius:0}

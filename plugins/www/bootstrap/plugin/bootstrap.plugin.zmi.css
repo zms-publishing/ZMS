@@ -873,7 +873,7 @@ div.zmi-nodes span {
 	margin-bottom: 0;
 }
 .zmi.users form table th:first-child {
-	width:4em;
+	width:6em;
 }
 .zmi.users form table th,
 .zmi.users form table td {
@@ -883,11 +883,11 @@ div.zmi-nodes span {
 	background-color: transparent !important;
 	padding:0 !important;
 }
-table.zmi-sortable td {
+.table.zmi-sortable td {
 	white-space:nowrap;
 }
-table.table.zmi-sortable td img.grippy,
-table.table.zmi-sortable input {
+.table.zmi-sortable td img.grippy,
+.table.zmi-sortable input {
 	margin-bottom:0px;
 }
 
@@ -932,37 +932,31 @@ table.table.zmi-sortable input {
 	height:20px;
 }
 
-.ZMSRecordSet .table tr th,
-.ZMSRecordSet .table tr td,
-.ZMSSqlDb .table tr th,
-.ZMSSqlDb .table tr td {
+.table.zmi-selectable tr th,
+.ZMSRecordSet .table tr td {
 	padding:4px;
 	font-size:11px;
 }
-.ZMSRecordSet .table tr th,
-.ZMSSqlDb .table tr th {
+.table.zmi-selectable tr th {
 	min-width: 3em;
 	vertical-align: middle;
 }
-.ZMSRecordSet .table tr th a,
-.ZMSSqlDb .table tr th a {
+.table tr th a {
 	text-decoration:none;
 }
-.ZMSRecordSet .table-hover>tbody>tr:hover>td,
-.ZMSRecordSet .table-hover>tbody>tr:hover>th {
+.table-hover.zmi-selectable>tbody>tr:hover>td,
+.table-hover.zmi-selectable>tbody>tr:hover>th {
 	background-color: #DCE3F0;
 }
-.ZMSRecordSet .table tr th:first-child,
-.ZMSRecordSet .table tr td:first-child,
-.ZMSRecordSet .table tr th .btn-group,
-.ZMSRecordSet .table tr td .btn-group {
+.table.zmi-selectable tr th:first-child,
+.table.zmi-selectable tr td:first-child,
+.table.zmi-selectable tr th .btn-group,
+.table.zmi-selectable tr td .btn-group {
 	white-space:nowrap !important;
 	min-width:8em;
 }
-.ZMSRecordSet .table tr th .split-left,
-.ZMSRecordSet .table tr td .split-left,
-.ZMSSqlDb .table tr th .split-left,
-.ZMSSqlDb .table tr td .split-left {
+.table.zmi-selectable tr th .split-left,
+.table.zmi-selectable tr td .split-left {
 	font-size:11px;
 	border:1px solid #ccc;
 	margin:0px;
@@ -977,16 +971,12 @@ table.table.zmi-sortable input {
 	width:auto;
 	margin:-2px 0px 0px 0px
 }
-.ZMSRecordSet .table tr th:first-child span:hover ,
-.ZMSRecordSet .table tr td:first-child span:hover ,
-.ZMSSqlDb .table tr td span:hover ,
-.ZMSSqlDb .table tr td span:hover {
+.table.zmi-selectable tr th:first-child span:hover ,
+.table.zmi-selectable tr td:first-child span:hover {
 	color:#000 !important
 }
-.ZMSRecordSet .table tr th:first-child .split-right,
-.ZMSRecordSet .table tr td:first-child .split-right,
-.ZMSSqlDb .table tr th:first-child .split-right,
-.ZMSSqlDb .table tr td:first-child .split-right {
+.table.zmi-selectable tr th:first-child .split-right,
+.table.zmi-selectable tr td:first-child .split-right {
 	height:28px;
 	margin:0px;
 	padding:0 0.5em;

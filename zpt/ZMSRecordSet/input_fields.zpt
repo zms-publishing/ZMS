@@ -36,6 +36,13 @@
 		<div class="accordion-body collapse in" tal:attributes="id python:'input_fields'">
 			<div class="accordion-inner"> 
 
+		<div class="form-group" tal:condition="python:row.has_key('_change_uid')">
+			<label class="col-sm-3 col-md-2 control-label">
+				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">last modified</span>
+			</label>
+			<div class="col-sm-9 col-md-10" tal:content="python:here.getLangFmtDate(row.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(row.get('_change_uid'))">[change_dt] by [change_uid]</div>
+		</div>
+
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 			<tal:block tal:define="global 
 				elName python:metaObjAttr['id'];
@@ -46,7 +53,8 @@
 				</label>
 				<div class="col-sm-9 col-md-10">
 
-					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName),REQUEST=request)">
+					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure 
+							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName,metaObjAttr.get('default','')),REQUEST=request)">
 						the control
 					</tal:block>
 

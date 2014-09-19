@@ -79,8 +79,10 @@ def role_permissions(self, role):
 # ------------------------------------------------------------------------------
 #  _accessmanager.updateUserPassword:
 # ------------------------------------------------------------------------------
-def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
-  if password!='******' and password==confirm:
+def updateUserPassword(self, user, password, confirm):
+  if password!='******':
+    if password != confirm:
+      raise zExceptions.InternalError("Passwort <> Confirm")
     userFldr = user['localUserFldr']
     id = user['user_id_']
     if userFldr.meta_type == 'User Folder':
@@ -89,7 +91,6 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
       userFldr.userFolderEditUser(id, password, roles, domains)
     elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZODB User Manager':
       user['plugin'].updateUserPassword(id, password)
-    self.setUserAttr(id,'forceChangePassword',forceChangePassword)
     return True
   return False
 
@@ -97,9 +98,7 @@ def updateUserPassword(self, user, password, confirm, forceChangePassword=0):
 #  _accessmanager.setLocalRoles:
 # ------------------------------------------------------------------------------
 def setLocalRoles(self, id, roles=[]):
-  filtered_roles = filter(lambda x: x in self.valid_roles(),roles)
-  if len(filtered_roles) > 0:
-    self.manage_setLocalRoles(id,filtered_roles)
+  self.manage_setLocalRoles(id,filter(lambda x: x in self.valid_roles(),roles))
   if self.meta_type == 'ZMS':
     home = self.aq_parent
     setLocalRoles(home,id,roles)
@@ -327,6 +326,7 @@ class AccessableObject:
         password = REQUEST.get('password','******')
         confirm = REQUEST.get('confirm','')
         if updateUserPassword(self,user,password,confirm):
+          self.setUserAttr(id,'forceChangePassword',0)
           message += self.getZMILangStr('ATTR_PASSWORD') + ': '
         self.setUserAttr(user,'email',REQUEST.get('email','').strip())
         #-- Assemble message.
@@ -872,6 +872,7 @@ class AccessManager(AccessableContainer):
     def manage_roleProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
       """ AccessManager.manage_roleProperties """
       message = ''
+      messagekey = 'manage_tabs_message'
       id = REQUEST.get('id','')
       
       # Cancel.
@@ -960,102 +961,104 @@ class AccessManager(AccessableContainer):
     def manage_userProperties(self, btn, key, lang, REQUEST, RESPONSE=None):
       """ AccessManager.manage_userProperties """
       message = ''
+      messagekey = 'manage_tabs_message'
       id = REQUEST.get('id','')
       
-      # Cancel.
-      # -------
-      if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
-        id = ''
-      
-      # Add.
-      # ----
-      if btn == self.getZMILangStr('BTN_ADD'):
-        newId = REQUEST.get('newId','')
-        newPassword = REQUEST.get('newPassword','')
-        newConfirm = REQUEST.get('newConfirm','')
-        newEmail = REQUEST.get('newEmail','')
-        userAdderPlugin = self.getUserAdderPlugin()
-        userAdderPlugin.doAddUser( newId, newPassword)
-        self.setUserAttr( newId, 'email', newEmail)
-        #-- Assemble message.
-        message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
-      
-      # Insert.
-      # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
-        langs = REQUEST.get('langs',[])
-        if not type(langs) is list: langs = [langs]
-        roles = REQUEST.get('roles',[])
-        if not type(roles) is list: roles = [roles]
-        node = REQUEST.get('node')
-        ob = self.getLinkObj(node,REQUEST)
-        docElmnt = ob.getDocumentElement()
-        node = docElmnt.getRefObjPath(ob)
-        docElmnt.setLocalUser(id, node, roles, langs)
-        #-- Assemble message.
-        message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
-      
-      # Change.
-      # -------
-      elif btn == self.getZMILangStr('BTN_SAVE'):
-        if key=='obj':
-          attrActive = self.getUserAttr(id,'attrActive',1)
-          newAttrActive = REQUEST.get('attrActive',0)
-          user = self.findUser(id)
-          if user.get('password')==True:
-            password = REQUEST.get('password','******')
-            confirm = REQUEST.get('confirm','')
-            forceChangePassword = REQUEST.get('forceChangePassword',0)
-            updateUserPassword(self,user,password,confirm,forceChangePassword)
-          self.setUserAttr(id,'attrActive',newAttrActive)
-          self.setUserAttr(id,'attrActiveStart',self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
-          self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
-          self.setUserAttr(id,'email',REQUEST.get('email','').strip())
-          self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
-          self.setUserAttr(id,'user_id',REQUEST.get('user_id','').strip())
-          if attrActive != newAttrActive:
-            self.toggleUserActive(id)
-        elif key=='attr':
-          pass
-        #-- Assemble message.
-        message = self.getZMILangStr('MSG_CHANGED')
-      
-      # Delete.
-      # -------
-      elif btn in ['delete', 'remove', self.getZMILangStr('BTN_DELETE')]:
-        if key=='obj':
-          #-- Delete user.
-          deleteUser(self,id)
-          #-- Remove user.
-          if btn == 'remove':
-            userAdderPlugin = self.getUserAdderPlugin()
-            userAdderPlugin.removeUser( id)
+      try:
+        # Cancel.
+        # -------
+        if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
           id = ''
+        
+        # Add.
+        # ----
+        if btn == self.getZMILangStr('BTN_ADD'):
+          newId = REQUEST.get('newId','')
+          newPassword = REQUEST.get('newPassword','')
+          newConfirm = REQUEST.get('newConfirm','')
+          newEmail = REQUEST.get('newEmail','')
+          userAdderPlugin = self.getUserAdderPlugin()
+          userAdderPlugin.doAddUser( newId, newPassword)
+          self.setUserAttr( newId, 'email', newEmail)
           #-- Assemble message.
-          message = self.getZMILangStr('MSG_DELETED')%int(1)
-        elif key=='attr':
-          #-- Delete local user.
-          node = REQUEST.get('nodekey')
-          try:
-            self.delLocalUser(id, node)
-          except:
-            pass
-          try:
-            docElmnt = self.getDocumentElement()
-            ob = self.getLinkObj(node,REQUEST)
-            if ob is not None:
-              docElmnt = ob.getDocumentElement()
-              node = docElmnt.getRefObjPath(ob)
-            docElmnt.delLocalUser(id, node)
-          except:
+          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
+        
+        # Insert.
+        # -------
+        elif btn == self.getZMILangStr('BTN_INSERT'):
+          langs = REQUEST.get('langs',[])
+          if not type(langs) is list: langs = [langs]
+          roles = REQUEST.get('roles',[])
+          if not type(roles) is list: roles = [roles]
+          node = REQUEST.get('node')
+          ob = self.getLinkObj(node,REQUEST)
+          docElmnt = ob.getDocumentElement()
+          node = docElmnt.getRefObjPath(ob)
+          docElmnt.setLocalUser(id, node, roles, langs)
+          #-- Assemble message.
+          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
+        
+        # Change.
+        # -------
+        elif btn == self.getZMILangStr('BTN_SAVE'):
+          if key=='obj':
+            attrActive = self.getUserAttr(id,'attrActive',1)
+            newAttrActive = REQUEST.get('attrActive',0)
+            user = self.findUser(id)
+            if user.get('password')==True:
+              password = REQUEST.get('password','******')
+              confirm = REQUEST.get('confirm','')
+              updateUserPassword(self,user,password,confirm)
+            self.setUserAttr(id,'forceChangePassword',REQUEST.get('forceChangePassword',0))
+            self.setUserAttr(id,'attrActive',newAttrActive)
+            self.setUserAttr(id,'attrActiveStart',self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
+            self.setUserAttr(id,'attrActiveEnd',self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
+            self.setUserAttr(id,'email',REQUEST.get('email','').strip())
+            self.setUserAttr(id,'profile',REQUEST.get('profile','').strip())
+            self.setUserAttr(id,'user_id',REQUEST.get('user_id','').strip())
+            if attrActive != newAttrActive:
+              self.toggleUserActive(id)
+          elif key=='attr':
             pass
           #-- Assemble message.
-          message = self.getZMILangStr('MSG_DELETED')%int(1)
-      
-      # Invite.
-      # -------
-      elif btn == self.getZMILangStr('BTN_INVITE'):
-        if key=='obj':
+          message = self.getZMILangStr('MSG_CHANGED')
+        
+        # Delete.
+        # -------
+        elif btn in ['delete', 'remove', self.getZMILangStr('BTN_DELETE')]:
+          if key=='obj':
+            #-- Delete user.
+            deleteUser(self,id)
+            #-- Remove user.
+            if btn == 'remove':
+              userAdderPlugin = self.getUserAdderPlugin()
+              userAdderPlugin.removeUser( id)
+            id = ''
+            #-- Assemble message.
+            message = self.getZMILangStr('MSG_DELETED')%int(1)
+          elif key=='attr':
+            #-- Delete local user.
+            nodekeys = REQUEST.get('nodekeys',[])
+            for nodekey in nodekeys:
+              try:
+                self.delLocalUser(id, nodekey)
+              except:
+                _globals.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
+              try:
+                docElmnt = self.getDocumentElement()
+                ob = self.getLinkObj(node,REQUEST)
+                if ob is not None:
+                  docElmnt = ob.getDocumentElement()
+                  node = docElmnt.getRefObjPath(ob)
+                docElmnt.delLocalUser(id, nodekey)
+              except:
+                _globals.writeError(self,'can\'t delLocalUser from docElmnt for nodekey=%s'%nodekey)
+            #-- Assemble message.
+            message = self.getZMILangStr('MSG_DELETED')%int(1)
+        
+        # Invite.
+        # -------
+        elif btn in ['invite', self.getZMILangStr('BTN_INVITE')]:
           email = self.getUserAttr(id,'email','')
           nodekeys = REQUEST.get('nodekeys',[])
           if len(email) > 0 and len(nodekeys) > 0:
@@ -1084,10 +1087,15 @@ class AccessManager(AccessableContainer):
             self.sendMail(mto,msubject,mbody,REQUEST)
             #-- Assemble message.
             message = self.getZMILangStr('MSG_CHANGED')
+        
+      except:
+        message = _globals.writeError(self,"[manage_userProperties]")
+        messagekey = 'manage_tabs_error_message'
       
       # Return with message.
       if RESPONSE:
-        message = urllib.quote(message)
-        return RESPONSE.redirect('manage_users?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+        target = REQUEST.get( 'manage_target', 'manage_users')
+        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        return RESPONSE.redirect(target)
 
 ################################################################################

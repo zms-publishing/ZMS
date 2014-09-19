@@ -195,10 +195,46 @@ function zmiModalInsertUserOpen(context) {
 </tal:block>
 </tal:block>
 
+</form>
+
+<form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="btn" value="">
+	<input type="hidden" name="key" value="attr">
+	<input type="hidden" name="id" tal:attributes="value request/id">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
-				<th><a class="btn btn-default" href="#" onclick="zmiModal('#insertNode',{title:$(this).attr('title')});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></a></th>
+				<th>
+					<div class="btn-group">
+						<span class="btn btn-default split-left" onclick="zmiToggleSelectionButtonClick(this)" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block>
+						</span>
+						<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#" onclick="zmiModal('#insertNode',{title:$(this).attr('title')});">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
+								</a>
+							</li>
+							<li>
+								<a href="#" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','delete');$f.submit();">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+								</a>
+							</li>
+							<li>
+								<a href="#" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','invite');$f.submit();">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-mail-forward')"></tal:block>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
+								</a>
+							</li>
+						</ul><!-- .dropdown-menu -->
+					</div>
+				</th>
 				<th tal:attributes="colspan python:[2,3][int(multilang)]" tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</th>
 			</tr>
 		</thead>
@@ -207,8 +243,27 @@ function zmiModalInsertUserOpen(context) {
 				<tal:block define="global nodevalue python:nodes[nodekey]; target python:here.getLinkObj(nodekey)">
 				<td>
 					<div class="btn-group">
-						<a class="btn btn-default" tal:attributes="href python:'%s?lang=%s&amp;id=%s&amp;nodekey=%s&amp;key=attr&amp;btn=delete'%(action,request['lang'],request['id'],nodekey); title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
-					</div>
+						<span class="btn btn-default split-left">
+							<input name="nodekeys:list" type="checkbox" tal:attributes="value nodekey" />
+						</span>
+						<button class="split-right btn dropdown-toggle" data-toggle="dropdown" style="height:36px;">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','delete');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
+								</a>
+							</li>
+							<li>
+								<a href="#" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','invite');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-mail-forward')"></tal:block>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
+								</a>
+							</li>
+						</ul><!-- .dropdown-menu -->
+					</div><!-- .btn-group -->
 				</td>
 				<td>
 					<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
@@ -234,7 +289,6 @@ function zmiModalInsertUserOpen(context) {
 			</tr>
 		</tbody>
 	</table>
-
 </form>
 
 </tal:block>

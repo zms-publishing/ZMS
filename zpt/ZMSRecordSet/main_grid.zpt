@@ -126,10 +126,13 @@
 				</ul>
 			</tal:block>
 		</div>
+		<tal:block tal:condition="python:'_change_uid' in record.keys()">
+			<tal:block tal:content="structure python:here.zmi_icon(name='icon-info-sign active',extra='title=\042%s\042'%(here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))))">[change_dt] by [change_uid]</tal:block>
+		</tal:block>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 
-				elValue python:here.operator_getitem(record,metaObjAttr['id'],ignorecase=True);
+				elValue python:here.operator_getitem(record,metaObjAttr['id'],metaObjAttr.get('default'),ignorecase=True);
 				elType python:metaObjAttr.get('type','string')">
 		<td class="data">
 			<tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)">
@@ -150,7 +153,7 @@
 				</a>
 			</tal:block>
 			<tal:block tal:condition="python:elType in ['boolean']">
-				<i tal:condition="python:elValue" class="icon-ok"></i>
+				<center><i tal:condition="python:elValue" class="icon-ok"></i></center>
 			</tal:block>
 			<tal:block tal:condition="python:elType in ['image']">
 				<tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str">

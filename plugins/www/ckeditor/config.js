@@ -30,37 +30,37 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
-	config.removeButtons = 'Subscript,Superscript';
+	config.removeButtons = $ZMI.getConfProperty('ckeditor.config.removeButtons','Underline,Subscript,Superscript');
 
 	// Set the most common block elements.
 	$ZMI.CKEDITOR_editorConfig(config);
 
 	// Make dialogs simpler.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+	config.removeDialogTabs = $ZMI.getConfProperty('ckeditor.config.removeDialogTabs','image:advanced;link:advanced');
 
-  // Linkbutton
-  // Mediabutton
-  // @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
-  config.extraPlugins = 'linkbutton,mediabutton,tableresize';
+	// Linkbutton
+	// Mediabutton
+	// @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
+	config.extraPlugins = $ZMI.getConfProperty('ckeditor.config.extraPlugins','linkbutton,mediabutton,tableresize');
 
-  //  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
-  config.toolbar = 'ZMSBasicToolbar';
-  config.toolbar_ZMSBasicToolbar =[
-     ['Format'],
-     ['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
-     ['Undo','Redo'],
-     ['Find','linkbutton','Link','Unlink'],
-     ['Image','Anchor','Table'],
-     ['Source','ShowBlocks','Maximize','About']
-  ];
-  config.toolbar_ZMSBasicInsertToolbar =[
-     ['Format'],
-     ['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
-     ['Undo','Redo'],
-     [],
-     [],
-     ['ShowBlocks','Maximize','About']
-  ];
+	//  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
+	config.toolbar = 'ZMSBasicToolbar';
+	config.toolbar_ZMSBasicToolbar =[
+		['Format'],
+		['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
+		['Undo','Redo'],
+		['Find','linkbutton','Link','Unlink'],
+		['Image','Anchor','Table'],
+		['Source','ShowBlocks','Maximize','About']
+	];
+	config.toolbar_ZMSBasicInsertToolbar =[
+		['Format'],
+		['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
+		['Undo','Redo'],
+		[],
+		[],
+		['ShowBlocks','Maximize','About']
+	];
 };
 
 CKEDITOR.on( 'dialogDefinition', function( event ) {

@@ -2,11 +2,12 @@
 
 <dictionary>
   <item key="data"><![CDATA[idmapping = 'manage_transferContent.mapping'
-abshome = context.breadcrumbs_obj_path()[0].getHome()
+absdoc =  context.breadcrumbs_obj_path()[0]
+abshome = absdoc.getHome()
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
-location = request.get('location','http://www.zms-publishing.com')
-#location = request.get('location','http://www.forschung.unibe.ch/content/richtlinien/drittmittel/index_ger.html')
+# location = request.get('location','http://www.zms-publishing.com')
+location = request.get('location','http://www.forschung.unibe.ch/content/richtlinien/drittmittel/index_ger.html')
 
 if request.get('http_import') is not None:
   url = request.get('http_import')+'?'+'&'.join(map(lambda x:x+'='+request.get(x),filter(lambda x:x!='http_import',request.form.keys())))
@@ -16,10 +17,7 @@ if request.get('http_import') is not None:
 elif request.get('frameimport') is not None:
   lang = context.getPrimaryLanguage()
   export_format = 2 # XML
-  username = context.getConfProperty('manage_transferContent.username','')
-  password = context.getConfProperty('manage_transferContent.password','')
-  auth = {'username':username,'password':password}
-  data = context.http_import(location+'/manage_export?lang=%s&export_format:int=%i'%(lang,export_format),method='POST',auth=auth)
+  data = context.http_import(location+'/pub_export?lang=%s&export_format:int=%i'%(lang,export_format),method='POST')
   class File:
     pass
   file = File()
@@ -52,7 +50,7 @@ elif request.get('frameimport') is not None:
   return request.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 elif request.get('frameleft') is not None:
-  html = context.manage_menu(context,request)
+  html = context.zmi_manage_menu(context,request)
   script = '''
     <script>
       var theLocation = null;
@@ -75,12 +73,9 @@ elif request.get('frameleft') is not None:
   print html
 
 elif request.get('frametop') is not None:
-  print '''
-    <!DOCTYPE html>
-    <html lang="en">
-    '''
+  print '<!DOCTYPE html><html lang="en">'
   print context.zmi_html_head(context,request)
-  
+  print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
   print '''
     <script>
       function setLocation(aLocation) {
@@ -104,9 +99,9 @@ elif request.get('frametop') is not None:
         overflow: hidden;
       }
         .breadcrumb{ margin-bottom:10px;}
-        .zmi footer {display:none;}
-        .zmi header .pull-right {display: block;padding-right:1em;margin-top: .8em;}
-        .zmi header .pull-right a {text-decoration:none;}
+        #zmi-footer {display:none;}
+        #zmi-header .pull-right {display: block;padding-right:1em;margin-top: .8em;}
+        #zmi-header .pull-right a {text-decoration:none;}
     </style>
     '''
 
@@ -120,7 +115,7 @@ elif request.get('frametop') is not None:
   print '&nbsp;'
   print '</div><!-- .pull-right -->'
   print '</div><!-- .navbar -->'
-  print '</header>'
+  print '</header><!-- #zmi-header -->'
 
   print context.zmi_breadcrumbs(context,request)
 
@@ -136,6 +131,7 @@ elif request.get('frametop') is not None:
   print '<br/><br/><br/>'
 
   print context.zmi_body_footer(context,request)
+  print '</body>'
   print '</html>'
 
 elif request.get('framepreview') is not None:
@@ -208,33 +204,17 @@ elif request.get('framestructure') is not None:
           <textarea id="node" class="ui-helper-hidden">%s</textarea>
           <textarea id="children" class="ui-helper-hidden">%s</textarea>
           <div class="zmi-sitemap"></div>
-    '''%(request['lang'],unicode(node,'utf-8'),unicode(children,'utf-8'))
-  username = context.getConfProperty('manage_transferContent.username')
-  password = context.getConfProperty('manage_transferContent.password')
-  if username is None or password is None:
-    print '''
-          <p class="bg-danger text-danger">Missing conf-properties for manage_transferContent.username and manage_transferContent.password!</p>
-      '''
-  else:
-    print '''
-          <div class="form-group">
-            <label for="username" class="control-label mandatory"><span>Username</span></label>
-            <div><input class="form-control" type="text" value="%s" disabled="disabled"/></div>
-          </div><!-- .form-group -->
           <div class="control-group">
             <button id="importBtn" class="btn btn-primary"><i class="icon-upload-alt"></i> Import</button>
           </div><!-- .control-group -->
-      '''%(username)
+    '''%(request['lang'],unicode(node,'utf-8'),unicode(children,'utf-8'))
   mapping = getattr(abshome,idmapping,None)
   if mapping is not None:
     print '''
       <div class="control-group">
         <a href="%s/manage_main" target="_blank">Edit %s</a>
-        <div class="form-group">
-          <textarea class="form-control">%s</textarea>
-        </div><!-- .form-group -->
       </div><!-- .control-group -->
-      '''%(mapping.absolute_url(),idmapping,mapping.read())
+      '''%(mapping.absolute_url(),idmapping)
   else:
     print '''
       <div class="control-group">

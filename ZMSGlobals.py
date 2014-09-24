@@ -340,11 +340,15 @@ class ZMSGlobals:
     @type auth: C{string}
     @param parse_qs: Parse Query-String
     @type parse_qs: C{int}, values are 0 or 1
+    @param timeout: Time-Out [s]
+    @type timeout: C{int}, values in seconds
+    @param headers: Request-Headers
+    @type headers: C{dict}
     @return: Response-Body
     @rtype: C{string}
     """
-    def http_import(self, url, method='GET', auth=None, parse_qs=0):
-      return _globals.http_import( self, url, method, auth, parse_qs)
+    def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+      return _globals.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
 
     """

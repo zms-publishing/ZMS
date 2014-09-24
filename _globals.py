@@ -477,7 +477,7 @@ def unescape(s):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.http_import:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10):
+def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
   # Parse URL.
   import urlparse
   u = urlparse.urlparse(url)
@@ -503,7 +503,6 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10):
   # Open HTTP connection.
   import httplib
   writeLog( self, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
-  print netloc
   try:
     if scheme == 'http':
       conn = httplib.HTTPConnection(netloc,timeout=timeout)
@@ -516,7 +515,6 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10):
       conn = httplib.HTTPSConnection(netloc)
   
   # Set request-headers.
-  headers = {'Accept':'*/*'}
   if auth is not None:
     import base64
     userpass = auth['username']+':'+auth['password']
@@ -865,8 +863,8 @@ class initutil:
       return data
     return None
 
-  def http_import(self, url, method='GET', auth=None, parse_qs=0):
-    return http_import( self, url, method, auth, parse_qs)
+  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+    return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
   def re_sub( self, pattern, replacement, subject, ignorecase=False):
     return re_sub( self, pattern, replacement, subject, ignorecase=False)

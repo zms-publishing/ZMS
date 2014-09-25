@@ -40,6 +40,12 @@
 							</a>
 						</li>
 						<li>
+							<a tal:attributes="href python:'%s/index_%s.html'%(here.absolute_url(),request['lang'])">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-signout')"></tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">Live</tal:block>
+							</a>
+						</li>
+						<li>
 							<a href="manage_zmi_logout">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
 								Logout

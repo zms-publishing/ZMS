@@ -60,16 +60,16 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Action: Edit.
   if context is not None:
-    actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main'))
+    actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main','icon-edit'))
     if context.getLevel() > 0:
       if repetitive or not mandatory:
         #-- Action: Undo.
         can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
         if can_undo:
-          actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs'))
+          actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs','icon-undo'))
         #-- Action: Delete.
         if context.getParentByLevel(1).meta_id == 'ZMSTrashcan':
-          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs'))
+          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs','icon-trash'))
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
@@ -78,18 +78,18 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
             metaObj = container.getMetaobj( context.meta_id)
             can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
           if can_delete:
-            actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs'))
+            actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs','icon-trash'))
         #-- Action: Cut.
         can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_cut:
-          actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects')) 
+          actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects','icon-cut')) 
       #-- Action: Copy.
-      actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects'))
+      actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects','icon-copy'))
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:
-        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp'))
-        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown'))
+        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp','icon-sort-up'))
+        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown','icon-sort-down'))
   
   #-- Action: Paste.
   if repetitive or objChildren==0:
@@ -106,7 +106,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
       except:
         append = False
       if append:
-        actions.append((container.getZMILangStr('BTN_PASTE'),'manage_pasteObjs'))
+        actions.append((container.getZMILangStr('BTN_PASTE'),'manage_pasteObjs','icon-paste'))
   
   #-- Custom Commands.
   actions.extend(zmi_command_actions(context, insert_actions=False, objPath=objPath))

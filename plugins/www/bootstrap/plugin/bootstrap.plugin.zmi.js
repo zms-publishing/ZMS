@@ -846,30 +846,6 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				if (opticon.indexOf('<')!=0) {
 					opticon = $ZMI.icon(opticon);
 				}
-				else if (optvalue.indexOf('manage_del') >= 0 || optvalue.indexOf('manage_erase') >= 0) {
-					opticon = $ZMI.icon("icon-trash");
-				}
-				else if (optvalue.indexOf('manage_main') >= 0) {
-					opticon = $ZMI.icon("icon-edit");
-				}
-				else if (optvalue.indexOf('manage_undo') >= 0) {
-					opticon = $ZMI.icon("icon-undo");
-				}
-				else if (optvalue.indexOf('manage_cut') >= 0) {
-					opticon = $ZMI.icon("icon-cut");
-				}
-				else if (optvalue.indexOf('manage_copy') >= 0) {
-					opticon = $ZMI.icon("icon-copy");
-				}
-				else if (optvalue.indexOf('manage_paste') >= 0) {
-					opticon = $ZMI.icon("icon-paste");
-				}
-				else if (optvalue.indexOf('manage_moveObjUp') >= 0) {
-					opticon = $ZMI.icon("icon-sort-up");
-				}
-				else if (optvalue.indexOf('manage_moveObjDown') >= 0) {
-					opticon = $ZMI.icon("icon-sort-down");
-				}
 				var html = '';
 				html += '<li title="'+opttitle+'">'
 				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';

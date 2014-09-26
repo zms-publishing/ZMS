@@ -16,21 +16,6 @@
 			dummy0 python:done.append(True)"></tal:block
 ></tal:block
 
-><tal:block tal:condition="python:not done and request.get('ZMS_SKIN_HTML') is not None and getattr(here.getHome(),'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None) is not None"
-	><tal:block tal:define="dummy0 python:request.set('ZMS_SKIN_HTML',1)"></tal:block
-	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
-	><tal:block tal:content="structure python:getattr(here,'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None)(here,request)">skin_ext</tal:block
-	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
-></tal:block
-
-><tal:block tal:condition="python:not done and getattr(here.getHome(),'standard_html',None)"
-	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
-	><tal:block tal:content="structure python:getattr(here,'standard_html',None)(here,request)">standard_html</tal:block
-	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
-></tal:block
-
-><tal:block tal:condition="python:not done"
-
 	><tal:block tal:replace="nothing">
 	### Restrict access
 	</tal:block
@@ -54,6 +39,19 @@
 					dummy0 python:done.append(True)"></tal:block
 		></tal:block
 	></tal:block
+
+><tal:block tal:condition="python:not done and request.get('ZMS_SKIN_HTML') is not None and getattr(here.getHome(),'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None) is not None"
+	><tal:block tal:define="dummy0 python:request.set('ZMS_SKIN_HTML',1)"></tal:block
+	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
+	><tal:block tal:content="structure python:getattr(here,'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None)(here,request)">skin_ext</tal:block
+	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
+></tal:block
+
+><tal:block tal:condition="python:not done and getattr(here.getHome(),'standard_html',None)"
+	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
+	><tal:block tal:content="structure python:getattr(here,'standard_html',None)(here,request)">standard_html</tal:block
+	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
+></tal:block
 
 	><tal:block tal:replace="nothing">
 	### Display only active
@@ -79,7 +77,5 @@
 		><tal:block tal:content="structure python:here.zmi_bodycontent_inactive(here,request)">zmi_body_content_inactive</tal:block
 		><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
 	></tal:block
-
-></tal:block
 
 ></tal:block>

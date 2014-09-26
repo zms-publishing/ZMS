@@ -2877,6 +2877,16 @@ body.print table.ZMSTable td {
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[attr_dc_description]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[DC.Description]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="default"><![CDATA[0]]></item>
                   <item key="id"><![CDATA[sortable]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -2891,7 +2901,10 @@ body.print table.ZMSTable td {
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<!--
+                  <item key="name"><![CDATA[<tal:block tal:define="global
+		textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
+
+<!--
 ################################################################################
 ##### Table(Type,Cols,Rows): INSERT
 ################################################################################
@@ -2900,7 +2913,7 @@ body.print table.ZMSTable td {
 <input type="hidden" name="redirect_self:int" value="1"/>
 
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
-<span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
 <style>
 table.ZMSTable tr th,
 table.ZMSTable tr td {
@@ -2919,7 +2932,7 @@ div.checkbox {
 var fmName;
 var textFormatDefault;
 
-$ZMI.registerReady(function() {
+$(function() {
 		fmName = $('#fmName').text();
 		textFormatDefault = $("#textFormatDefault").text();
 		$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
@@ -2985,9 +2998,8 @@ function onZMSTableFormSubmit() {
 
 <div class="form-group">
 	<label class="col-sm-3 col-md-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
-	<div class="form-group col-sm-9 col-md-10">
 
-		<div class="checkbox" title="Type 1">
+		<div class="col-sm-1 checkbox" title="Type 1">
 			<input type="radio" name="type:int" value="1" checked="checked" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
@@ -2996,7 +3008,9 @@ function onZMSTableFormSubmit() {
 			</table>
 		</div>
 
-		<div class="checkbox" title="Type 2">
+		<div class="col-sm-1">&nbsp;</div>
+
+		<div class="col-sm-1 checkbox" title="Type 2">
 			<input type="radio" name="type:int" value="2" />
 			<table class="ZMSTable">
 				<tr><th colspan="3">&nbsp;</th></tr>
@@ -3005,7 +3019,9 @@ function onZMSTableFormSubmit() {
 			</table>
 		</div>
 
-		<div class="checkbox" title="Type 3">
+		<div class="col-sm-1">&nbsp;</div>
+
+		<div class="col-sm-1 checkbox" title="Type 3">
 			<input type="radio" name="type:int" value="3" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -3014,7 +3030,9 @@ function onZMSTableFormSubmit() {
 			</table>
 		</div>
 
-		<div class="checkbox" title="Type 4">
+		<div class="col-sm-1">&nbsp;</div>
+
+		<div class="col-sm-1 checkbox" title="Type 4">
 			<input type="radio" name="type:int" value="4" />
 			<table class="ZMSTable">
 				<tr><td>&nbsp;</td><th>&nbsp;</th><th>&nbsp;</th></tr>
@@ -3023,7 +3041,9 @@ function onZMSTableFormSubmit() {
 			</table>
 		</div>
 
-		<div class="checkbox" title="Type 5: Custom">
+		<div class="col-sm-1">&nbsp;</div>
+
+		<div class="col-sm-1 checkbox" title="Type 5: Custom">
 			<input type="radio" name="type:int" value="5" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
@@ -3032,7 +3052,6 @@ function onZMSTableFormSubmit() {
 			</table>
 		</div>
 
-	</div>
 </div>
 
 </tal:block>
@@ -3084,7 +3103,7 @@ function onZMSTableFormSubmit() {
 
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
 <span class="ui-helper-hidden" id="elName" tal:content="request/elName"></span>
-<span class="ui-helper-hidden" id="textFormatDefault" tal:content="python:here.getTextFormatDefault()"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
 <tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="ui-helper-hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
 <span class="ui-helper-hidden" id="table_type" tal:content="table_type"></span>
 <span class="ui-helper-hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
@@ -3179,7 +3198,7 @@ var table_cell_uid;
 var table_cell_id;
 var table_cell_offs;
 
-$ZMI.registerReady(function() {
+$(function() {
 		fmName = $('#fmName').text();
 		elName = $('#elName').text();
 		textFormatDefault = $("#textFormatDefault").text();
@@ -3528,7 +3547,7 @@ function onKeyUpZMSTableDivContenteditable() {
 				pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 				replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
-				cell_format python:['html',cell.get('format')][int(cell_content.find('dtml-')<0)];
+				cell_format python:[cell.get('format',textFormatDefault),textFormatDefault][int(len(textFormatDefault)>0)];
 				richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
 			<tal:block tal:condition="not:python:table_type==4 and row_index==0 and col_index==0">
 				<td class="ZMSTable-cell" tal:attributes="colspan cell/colspan">
@@ -3574,7 +3593,9 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <input type="hidden" id="table_table" tal:attributes="name python:'table_%s'%request['lang']" value="<list></list>"/>
 <input type="hidden" id="table_colgroup_cols" tal:attributes="name python:'cols_%s'%request['lang']" value="<list></list>"/>
-<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols'])"></tal:block>]]>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols'])"></tal:block>
+
+</tal:block>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
@@ -3936,7 +3957,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.2]]></item>
+          <item key="revision"><![CDATA[3.0.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

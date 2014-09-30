@@ -198,7 +198,7 @@ function zmiModalInsertUserOpen(context) {
 </form>
 
 <form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data" tal:define="
-		nodelist python:filter(lambda x:x['target'] is not None, map(lambda x:{'key':x,'value':nodes[x],'target':here.getLinkObj(x)},nodes.keys()))">
+		nodelist python:map(lambda x:{'key':x,'value':nodes[x],'target':here.getLinkObj(x)},nodes.keys())">
 	<input type="hidden" name="btn" value="">
 	<input type="hidden" name="key" value="attr">
 	<input type="hidden" name="id" tal:attributes="value request/id">
@@ -267,7 +267,11 @@ function zmiModalInsertUserOpen(context) {
 					</div><!-- .btn-group -->
 				</td>
 				<td>
-					<tal:block tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
+					<div class="text-danger bg-danger" tal:condition="python:target is None">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%nodekey)">the warning sign</tal:block>
+						<tal:block tal:content="nodekey">the node-key</tal:block>
+					</div>
+					<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
 				</td>
 				<td tal:condition="python:multilang">
 					<tal:block tal:repeat="lang python:nodevalue.get('langs',[])">

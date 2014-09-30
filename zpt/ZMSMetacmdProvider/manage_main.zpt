@@ -40,7 +40,7 @@
 				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="el_exec:int" tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></span></div>
 			</div><!-- .form-group -->
 			<!-- ACE Editor -->
-			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=getattr(here,request['id'],None))">ACE Editor</tal:block>
+			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=getattr(here,request['id'],None),text=metaCmd['data'])">ACE Editor</tal:block>
 			<!-- /ACE Editor -->
 			<div class="form-group">
 				<table cellpadding="8" style="background: #efefef;font-size: smaller;width: 100%;">
@@ -123,6 +123,7 @@
 					<select class="form-control" name="_type">
 						<option value="Script (Python)">Script (Python)</option>
 						<option value="Page Template">Page Template</option>
+						<option value="External Method">External Method</option>
 					</select>
 				</div>
 			</div><!-- .form-group -->
@@ -216,7 +217,7 @@
 					<tal:block tal:condition="not:python:metaCmd.get('acquired')">
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
 							<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
-							<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
+							<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
 						</a>
 					</tal:block>
 				</tal:block>
@@ -228,22 +229,22 @@
 						</a>
 					</tal:block>
 					<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
-					<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
+					<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
 				</div>
 			</td>
 			<td>
-				<tal:block tal:condition="python:ob is not None">
-					<tal:block tal:content="python:here.getDataSizeStr(ob.get_size())">Size</tal:block>
+				<tal:block tal:condition="python:metaCmd.get('data') is not None">
+					<tal:block tal:content="python:here.getDataSizeStr(len(metaCmd['data']))">the size</tal:block>
 				</tal:block>
-				<tal:block tal:condition="python:ob is None">
+				<tal:block tal:condition="python:metaCmd.get('data') is None">
 					N/A 
 				</tal:block>
 			</td>
 			<td>
-				<tal:block tal:condition="python:ob is not None">
-					<tal:block tal:content="python:here.getLangFmtDate(ob.bobobase_modification_time().timeTime())">Modification-Time</tal:block>
+				<tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is not None">
+					<tal:block tal:content="python:here.getLangFmtDate(metaCmd['bobobase_modification_time'])">the modification-time</tal:block>
 				</tal:block>
-				<tal:block tal:condition="python:ob is None">
+				<tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is None">
 					N/A 
 				</tal:block>
 			</td>
@@ -290,7 +291,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 	}
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
 		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
 				zmiModal("hide");

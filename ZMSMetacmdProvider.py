@@ -18,6 +18,7 @@
 
 
 # Imports.
+from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -26,6 +27,7 @@ import urllib
 import zope.interface
 # Product Imports.
 import _globals
+import _zopeutil
 import IZMSMetacmdProvider,IZMSConfigurationProvider
 import ZMSItem
 
@@ -134,14 +136,14 @@ class ZMSMetacmdProvider(
     # ------------------------------------------------------------------------------
     
     def _importXml(self, item, createIfNotExists=1):
-    
+      
       id = item['id']
       if createIfNotExists == 1:
-    
+        
         # Delete existing object.
         try: self.delMetacmd(id)
         except: pass
-    
+        
         # Initialize attributes of new object.
         newId = id
         newAcquired = 0
@@ -155,7 +157,7 @@ class ZMSMetacmdProvider(
         newRoles = item['roles']
         newNodes = item.get('nodes','{$}')
         newData = item['data']
-    
+        
         # Return with new id.
         return self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, \
           newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
@@ -184,12 +186,11 @@ class ZMSMetacmdProvider(
       if len(old) > 0:
         obs.remove(old[0])
       self.commands = obs
-      # Make persistent.
-      self.commands = copy.deepcopy(self.commands)
+      self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Remove Template.
-      home = self.aq_parent
-      home.manage_delObjects(ids=[id])
+      container = self.getDocumentElement()
+      _zopeutil.removeObject(container,id)
       
       # Return with empty id.
       return ''
@@ -222,51 +223,30 @@ class ZMSMetacmdProvider(
       new['nodes'] = newNodes
       new['exec'] = newExec
       obs.append(new)
-      # Make persistent.
-      self.commands = copy.deepcopy(self.commands)
+      self.commands = copy.deepcopy(self.commands) # Make persistent.
       
-      # Insert Template.
-      home = self.aq_parent
-      if id is None:
-        newTitle = '*** DO NOT DELETE OR MODIFY ***'
-        if newAcquired:
-          home = self.getPortalMaster()
-          newMethod = getattr(home,newId).meta_type
-        if newId in self.objectIds():
-          home.manage_delObjects(ids=[newId])
-        if newMethod == 'DTML Method': 
-          home.manage_addDTMLMethod(newId,newTitle) 
-          if newData is None: 
-            newData = dtmlExampleCode
-        elif newMethod == 'DTML Document': 
-          home.manage_addDTMLDocument(newId,newTitle) 
-          if newData is None:
-            newData = dtmlExampleCode 
+      # Insert Object.
+      container = self.getDocumentElement()
+      if newAcquired:
+        newMethod = getattr(self.getPortalMaster(),newId).meta_type
+        newData = ''
+      newTitle = '*** DO NOT DELETE OR MODIFY ***'
+      if id is None and newData is None:
+        if newMethod in ['DTML Document','DTML Method']:
+          newData = dtmlExampleCode
         elif newMethod == 'Page Template':
-          ZopePageTemplate.manage_addPageTemplate(home,id=newId,title=newTitle)
-          if newData is None: 
-            newData = pageTemplateExampleCode 
+          newData = pageTemplateExampleCode 
         elif newMethod == 'Script (Python)':
-          PythonScript.manage_addPythonScript(home,newId)
-          if newData is None:
-            newData = pyScriptExampleCode
-      
-      # Rename Template.
-      elif id != newId:
-        home.manage_renameObject(id=id,new_id=newId)
-      
-      # Update Template.
-      ob = getattr(home,newId,None)
-      if ob is not None:
-        if newAcquired:
+          newData = pyScriptExampleCode
+        elif newMethod == 'External Method':
           newData = ''
-        if newData is not None:
-          if ob.meta_type in ['DTML Method','DTML Document']:
-            ob.manage_edit(title=ob.title,data=newData)
-          elif ob.meta_type == 'Page Template':
-            ob.pt_edit(newData,content_type=ob.content_type)
-          elif ob.meta_type == 'Script (Python)':
-            ob.write(newData)
+          newData += '# Example code:\n'
+          newData += '\n'
+          newData += 'def ' + newId + '( self):\n'
+          newData += '  return "This is the external method ' + newId + '"\n'
+      _zopeutil.removeObject(container, id)
+      _zopeutil.removeObject(container, newId)
+      _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       
       # Return with new id.
       return newId
@@ -288,7 +268,7 @@ class ZMSMetacmdProvider(
     # Returns action.
     # --------------------------------------------------------------------------
     def getMetaCmd(self, id=None, name=None):
-      print self,"getMetaCmd",id,name
+      
       obs = self.getMetaCmds(sort=False)
       # Filter by Id.
       if id is not None:
@@ -299,37 +279,24 @@ class ZMSMetacmdProvider(
       # Not found!
       if len(obs) == 0:
         return None
-      # Create if not exists.
+      
+      # Refresh Object.
       metaCmd = obs[0]
-      home = self.aq_parent
+      container = self.getDocumentElement()
       src = getattr(metaCmd['home'],metaCmd['id'])
-      ob = getattr(home,metaCmd['id'],None)
+      ob = getattr(container,metaCmd['id'],None)
       if src is not None and (ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time()):
+        newMethod = src.meta_type
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
-        newMethod = src.meta_type
-        if newId in home.objectIds():
-          home.manage_delObjects(ids=[newId])
-        if newMethod == 'DTML Method': 
-          home.manage_addDTMLMethod(newId,newTitle) 
-        elif newMethod == 'DTML Document': 
-          home.manage_addDTMLDocument(newId,newTitle) 
-        elif newMethod == 'Page Template':
-          ZopePageTemplate.manage_addPageTemplate(home,id=newId,title=newTitle)
-        elif newMethod == 'Script (Python)':
-          PythonScript.manage_addPythonScript(home,newId)
-        ob = getattr(home,metaCmd['id'],None) 
-        if newMethod in [ 'DTML Method', 'DTML Document']:
-          newData = src.raw
-          ob.manage_edit(title=ob.title,data=newData)
-        elif newMethod in [ 'Page Template']:
-          newData = src.read()
-          newContentType = src.content_type
-          ob.pt_edit(newData,content_type=newContentType)
-        elif newMethod in [ 'Script (Python)']:
-          newData = src.read()
-          ob.ZPythonScript_setTitle( ob.title)
-          ob.write(newData)
+        newData = _zopeutil.readObject( metaCmd['home'], metaCmd['id'])
+        _zopeutil.removeObject(container, newId, removeFile=False)
+        _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      ob = getattr(container,metaCmd['id'],None)
+      if ob is not None:
+        metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'])
+        metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
+      
       return metaCmd
 
 
@@ -370,7 +337,7 @@ class ZMSMetacmdProvider(
             metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
-          metaCmd['home'] = self.aq_parent
+          metaCmd['home'] = self.getDocumentElement()
         metaCmds.append(metaCmd)
       return metaCmds
 
@@ -455,15 +422,7 @@ class ZMSMetacmdProvider(
               el_meta_types = metaCmd['meta_types']
               el_roles = metaCmd['roles']
               el_exec = metaCmd['exec']
-              # Object.
-              ob = getattr(self,metaCmd['id'])
-              el_meta_type = ob.meta_type
-              if ob.meta_type in ['DTML Method','DTML Document']:
-                el_data = ob.raw
-              elif ob.meta_type in ['Page Template']:
-                el_data = ob.read()
-              elif ob.meta_type in ['Script (Python)']:
-                el_data = ob.body()
+              el_data = _zopeutil.readObject(metaCmd['home'],metaCmd['id'])
               # Value.
               value.append({'id':el_id,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
@@ -502,7 +461,8 @@ class ZMSMetacmdProvider(
           newMethod = REQUEST.get('_type','DTML Method')
           newData = None
           newExec = REQUEST.get('_exec',0)
-          id = self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, newData, newExec)
+          newIconClazz = REQUEST.get('_icon_clazz','')
+          id = self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Return with message.

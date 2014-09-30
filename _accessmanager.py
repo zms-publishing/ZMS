@@ -164,7 +164,7 @@ class AccessableObject:
     # --------------------------------------------------------------------------
     #  AccessableObject.getUsers:
     # --------------------------------------------------------------------------
-    def getUsers(self, REQUEST):
+    def getUsers(self, REQUEST=None):
       users = {}
       d = self.getConfProperty('ZMS.security.users',{})
       for user in d.keys():
@@ -755,7 +755,16 @@ class AccessManager(AccessableContainer):
     # ------------------------------------------------------------------------------
     def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[]):
       rtn = ""
-      if ob is None: ob = self
+      if ob is None: 
+        ob = self
+        d = self.getConfProperty('ZMS.security.users',{})
+        for userid in d.keys():
+          nodes = self.getUserAttr(userid,'nodes',{}) 
+          for node in nodes.keys():
+              target = self.getLinkObj(node)
+              if target is None:
+                self.delLocalUser(userid, node)
+                rtn += userid + ": remove " + node + "<br/>"
       
       for local_role in ob.get_local_roles():
         b = False
@@ -776,7 +785,7 @@ class AccessManager(AccessableContainer):
           elif userid in invalid_userids:
             b = True
         if b:
-          rtn += ob.absolute_url()+ " " + userid + " " + str(userroles) + "<br/>"
+          rtn += ob.absolute_url()+ " " + userid + ": remove " + str(userroles) + "<br/>"
           delLocalRoles(ob,userid)
       
       # Process subtree.
@@ -801,7 +810,7 @@ class AccessManager(AccessableContainer):
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
       nodes = self.getUserAttr(id,'nodes',{})
       for node in nodes.keys():
-        ob = self.getLinkObj(node,self.REQUEST)
+        ob = self.getLinkObj(node)
         if ob is not None:
           user_id = self.getUserAttr(id,'user_id_',id)
           if active:
@@ -830,7 +839,7 @@ class AccessManager(AccessableContainer):
         roles.append('Manager')
       
       # Set local roles in node.
-      ob = self.getLinkObj(node,self.REQUEST)
+      ob = self.getLinkObj(node)
       if ob is not None:
         user_id = self.getUserAttr(id,'user_id_',id)
         setLocalRoles(ob,user_id,roles)
@@ -848,7 +857,7 @@ class AccessManager(AccessableContainer):
       self.setUserAttr(id,'nodes',nodes)
       
       # Delete local roles in node.
-      ob = self.getLinkObj(node,self.REQUEST)
+      ob = self.getLinkObj(node)
       if ob is not None:
         user_id = self.getUserAttr(id,'user_id_',id)
         delLocalRoles(ob,user_id)
@@ -908,7 +917,7 @@ class AccessManager(AccessableContainer):
           security_roles = security_roles.copy()
           self.setConfProperty('ZMS.security.roles',security_roles)
           #-- Set permissions in node.
-          ob = self.getLinkObj(node,REQUEST)
+          ob = self.getLinkObj(node)
           permissions = []
           for role in roles:
             permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
@@ -941,7 +950,7 @@ class AccessManager(AccessableContainer):
           self.setConfProperty('ZMS.security.roles',security_roles)
           #-- Delete permissions in node.
           permissions = []
-          ob = self.getLinkObj(node,REQUEST)
+          ob = self.getLinkObj(node)
           if ob is not None:
             ob.manage_role(role_to_manage=id,permissions=permissions)
         #-- Assemble message.
@@ -991,7 +1000,7 @@ class AccessManager(AccessableContainer):
           roles = REQUEST.get('roles',[])
           if not type(roles) is list: roles = [roles]
           node = REQUEST.get('node')
-          ob = self.getLinkObj(node,REQUEST)
+          ob = self.getLinkObj(node)
           docElmnt = ob.getDocumentElement()
           node = docElmnt.getRefObjPath(ob)
           docElmnt.setLocalUser(id, node, roles, langs)
@@ -1046,7 +1055,7 @@ class AccessManager(AccessableContainer):
                 _globals.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
               try:
                 docElmnt = self.getDocumentElement()
-                ob = self.getLinkObj(node,REQUEST)
+                ob = self.getLinkObj(node)
                 if ob is not None:
                   docElmnt = ob.getDocumentElement()
                   node = docElmnt.getRefObjPath(ob)
@@ -1073,9 +1082,10 @@ class AccessManager(AccessableContainer):
             mbody.append('\n')
             mbody.append('\n%s: %s'%(self.getZMILangStr('ATTR_ID'),id))
             mbody.append('\n')
-            for nodekey in nodekeys:
-              ob = self.getLinkObj(nodekey,REQUEST)
-              mbody.append('\n * '+ob.getTitlealt(REQUEST)+' ['+ob.display_type(REQUEST)+']: '+ob.absolute_url()+'/manage')
+            for node in nodekeys:
+              ob = self.getLinkObj(node)
+              if ob is not None:
+                mbody.append('\n * '+ob.getTitlealt(REQUEST)+' ['+ob.display_type(REQUEST)+']: '+ob.absolute_url()+'/manage')
             mbody.append('\n')
             mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS'))
             mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))

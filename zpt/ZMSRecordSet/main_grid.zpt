@@ -85,15 +85,18 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tr tal:define="global index python:pageStart+rindex; record python:filtered_records[index]; qindex python:records.index(record)" tal:attributes="id python:'tr_%i'%qindex">
+<tr tal:define="global index python:pageStart+rindex; record python:filtered_records[index]; qindex python:records.index(record); name python:['qindices:list','qindex'][int('select' in actions)]; value python:record.get('__id__',qindex)" tal:attributes="id python:'tr_%i'%qindex; class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in map(lambda x:str(x),request.get('qindices',[])))]">
 <tal:block tal:condition="python:options.has_key('record_handler')">
 	<tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
 </tal:block>
-	<td>
+	<td tal:define="global title python:''">
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="sorted" />
-		<div class="btn-group">
+		<tal:block tal:condition="python:'_change_uid' in record.keys()">
+			<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
+		</tal:block>
+		<div class="btn-group" tal:attributes="title title">
 			<span class="checkbox split-left btn">
-				<input tal:attributes="name python:['qindices:list','qindex'][int('select' in actions)]; type python:['checkbox','radio'][int('select' in actions)]; value python:record.get('__id__',qindex)" />
+				<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; value value" />
 				<span class="index"><tal:block tal:content="python:index+1">index</tal:block>.</span>
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
@@ -126,9 +129,6 @@
 				</ul>
 			</tal:block>
 		</div>
-		<tal:block tal:condition="python:'_change_uid' in record.keys()">
-			<tal:block tal:content="structure python:here.zmi_icon(name='icon-info-sign active',extra='title=\042%s\042'%(here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))))">[change_dt] by [change_uid]</tal:block>
-		</tal:block>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 		<tal:block tal:define="global 

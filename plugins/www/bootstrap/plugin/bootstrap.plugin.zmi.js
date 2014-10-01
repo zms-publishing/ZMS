@@ -1,8 +1,3 @@
-function onFormSubmit() {
-	// do nothing
-	return true;
-}
-
 $(function(){
 
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");
@@ -1246,6 +1241,11 @@ function storeCaret(input) {
 
 function zmiRecordSetMoveRow(context, qIndex, delta) {
 	var $form = $(context).closest('form');
+	if (typeof qIndex != "undefined") {
+		var $btnGroup = $(context).closest('.btn-group');
+		var $input = $("input:checkbox:first",$btnGroup);
+		$form.append('<input type="hidden" name="qindex:int" value="' + $input.val() + '">');
+	}
 	$form.append('<input type="hidden" name="pos:int" value="' + (qIndex+1) + '">');
 	$form.append('<input type="hidden" name="newpos:int" value="' + (qIndex+1+delta) + '">');
 	$('input[name="action"]',$form).val('move');
@@ -1255,7 +1255,8 @@ function zmiRecordSetMoveRow(context, qIndex, delta) {
 function zmiRecordSetDeleteRow(context, qIndex) {
 	var $form = $(context).closest('form');
 	if (typeof qIndex != "undefined") {
-		var $input = $('input[value="'+qIndex+'"]',$form);
+		var $btnGroup = $(context).closest('.btn-group');
+		var $input = $("input:checkbox:first",$btnGroup);
 		$input.prop('checked',true).change();
 	}
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {

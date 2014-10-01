@@ -270,7 +270,6 @@ class ZMSCustom(ZMSContainerObject):
       metaObj = self.getMetaobj(self.meta_id)
       res_id = metaObj['attrs'][0]['id']
       res = self.getObjProperty(res_id,REQUEST)
-      REQUEST.set('res_id',res_id)
       REQUEST.set('res_abs',res)
       REQUEST.set('res',res)
       return res
@@ -284,12 +283,10 @@ class ZMSCustom(ZMSContainerObject):
     def recordSet_Filter(self, REQUEST):
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
-      res_id = REQUEST['res_id']
-      res_abs = REQUEST['res_abs']
       res = REQUEST['res']
-      SESSION = REQUEST.SESSION
       
       # Filter (FK).
+      SESSION = REQUEST.SESSION
       filterattr='fk_key'
       filtervalue='fk_val'
       sessionattr='%s_%s'%(filterattr,self.id)
@@ -339,10 +336,7 @@ class ZMSCustom(ZMSContainerObject):
               else:
                 res = self.filter_list(res,attr['id'],SESSION.get(sessionvalue,''))
       
-      REQUEST.set('res_id',res_id)
-      REQUEST.set('res_abs',res_abs)
       REQUEST.set('res',res)
-      
       return res
 
 
@@ -355,6 +349,7 @@ class ZMSCustom(ZMSContainerObject):
       request = self.REQUEST
       metaObj = self.getMetaobj(self.meta_id)
       res = request['res']
+      
       if 'sort_id' in map(lambda x:x['id'],metaObj['attrs']):
         l = map(lambda x:(x['sort_id'],x),res)
         # Sort (FK).
@@ -396,7 +391,6 @@ class ZMSCustom(ZMSContainerObject):
           request.set('qorderdir',qorderdir)
         
       request.set('res',res)
-      
       return res
 
 
@@ -471,6 +465,7 @@ class ZMSCustom(ZMSContainerObject):
       message = ''
       messagekey = 'manage_tabs_message'
       target = REQUEST.get('target','manage_main')
+      params = {'lang':lang}
       t0 = time.time()
       
       if btn not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
@@ -481,7 +476,6 @@ class ZMSCustom(ZMSContainerObject):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
           res_abs = self.recordSet_Init(REQUEST)
-          res_abs = self.recordSet_Sort(REQUEST)
           if action == 'insert':
             row = {}
             row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
@@ -500,6 +494,7 @@ class ZMSCustom(ZMSContainerObject):
                   value = len(res_abs)
                 row[metaObjAttr['id']] = value
             res_abs.append(row)
+            params['qindex'] = len(res_abs)-1
             message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_RECORD')
           elif action == 'update':
             row = res_abs[REQUEST['qindex']]
@@ -517,22 +512,22 @@ class ZMSCustom(ZMSContainerObject):
                   value = len(res_abs)
                 row[metaObjAttr['id']] = value
             res_abs[REQUEST['qindex']] = row
+            params['qindex'] = REQUEST['qindex']
             message = self.getZMILangStr('MSG_CHANGED')
           elif action == 'delete':
+            print REQUEST.get('qindices',[])
             rows = map(lambda x: res_abs[int(x)], REQUEST.get('qindices',[]))
             for row in rows:
               del res_abs[res_abs.index(row)]
             message = self.getZMILangStr('MSG_DELETED')%len(rows)
           elif action == 'move':
+            for row in res_abs:
+              row['sort_id'] = row['sort_id']*10
             pos = REQUEST['pos']
             newpos = REQUEST['newpos']
-            row = res_abs[pos-1]
-            res_abs.remove(row)
-            if newpos < pos:
-              res_abs.insert(newpos-1,row)
-            else:
-              res_abs.insert(newpos,row)
-            map(lambda x:self.operator_setitem(x,'sort_id',res_abs.index(x)+1),res_abs)
+            row = res_abs[REQUEST['qindex']]
+            row['sort_id'] = row['sort_id']+(newpos-pos)*15
+            params['qindex'] = REQUEST['qindex']+(newpos-pos)
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
           # Normalize sort-ids.
           if 'sort_id' in metaObjAttrIds:
@@ -551,8 +546,8 @@ class ZMSCustom(ZMSContainerObject):
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
-      target = self.url_append_params( target, { 'lang':lang})
-      target = self.url_append_params( target, { messagekey:message})
+      params[messagekey] = message
+      target = self.url_append_params( target, params)
       return REQUEST.RESPONSE.redirect(target)
 
 

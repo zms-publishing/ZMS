@@ -91,7 +91,7 @@
 </form>
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']"
-		tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=here.getMetaobjAttrIds(meta_id),metaObjAttrs=metaObjAttrs,filtered_records=request['res'],records=request['res_abs'],record_handler=here.getEntityRecordHandler(meta_id))">
+		tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=here.getMetaobjAttrIds(meta_id),metaObjAttrs=metaObjAttrs,filtered_records=request['res'],records=records,record_handler=here.getEntityRecordHandler(meta_id))">
 	metaobj_recordset_main_grid
 </tal:block>
 <tal:block tal:condition="python:request.get('action')=='updateForm'">

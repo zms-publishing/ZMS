@@ -189,7 +189,7 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Remove Template.
-      container = self.getDocumentElement()
+      container = self.aq_parent
       _zopeutil.removeObject(container,id)
       
       # Return with empty id.
@@ -226,10 +226,12 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Insert Object.
-      container = self.getDocumentElement()
+      container = self.aq_parent
       if newAcquired:
         newMethod = getattr(self.getPortalMaster(),newId).meta_type
         newData = ''
+      if newMethod is None:
+        newMethod = getattr(container,id).meta_type
       newTitle = '*** DO NOT DELETE OR MODIFY ***'
       if id is None and newData is None:
         if newMethod in ['DTML Document','DTML Method']:
@@ -282,7 +284,7 @@ class ZMSMetacmdProvider(
       
       # Refresh Object.
       metaCmd = obs[0]
-      container = self.getDocumentElement()
+      container = self.aq_parent
       src = getattr(metaCmd['home'],metaCmd['id'])
       ob = getattr(container,metaCmd['id'],None)
       if src is not None and (ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time()):
@@ -337,7 +339,7 @@ class ZMSMetacmdProvider(
             metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
-          metaCmd['home'] = self.getDocumentElement()
+          metaCmd['home'] = self.aq_parent
         metaCmds.append(metaCmd)
       return metaCmds
 

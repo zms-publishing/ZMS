@@ -118,7 +118,7 @@ def addPythonScript(container, id, title, data):
   Add Script (Python) to container.
   """
   PythonScript.manage_addPythonScript( container, id)
-  initPermissions(container, id)
   ob = getattr( container, id)
   ob.ZPythonScript_setTitle( title)
   ob.write( data)
+  initPermissions(container, id)

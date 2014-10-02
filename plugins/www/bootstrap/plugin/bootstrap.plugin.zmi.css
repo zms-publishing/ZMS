@@ -403,10 +403,16 @@ body.manage-menu .zmi-page {
 	overflow:hidden;
 }
 body.browse_iframe .zmi-preview {
-	background-color:white;
 	padding:1em;
 	position:absolute;
-	filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: white;
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.6);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 	max-width:40em;
 	border:1px dotted black;
 }

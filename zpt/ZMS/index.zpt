@@ -12,7 +12,7 @@
 ><tal:block tal:condition="python:not done and here.getDeclId()!=here.id and (request['URL'].endswith(here.getDeclId()+'/index_html') or request['URL'].endswith(here.id+'/index_html'))"
 	><tal:block tal:define="global
 			dummy0 python:request.set('ZMS_INDEX_HTML',1);
-			dummy0 python:request.RESPONSE.redirect(here.getHref2IndexHtml(request),301);
+			dummy0 python:request.RESPONSE.redirect(here.getHref2IndexHtml(request,deep=0),301);
 			dummy0 python:done.append(True)"></tal:block
 ></tal:block
 

@@ -3,9 +3,9 @@
 		ob python:options['ob'];
 		text python:options.get('text');
 		height python:options.get('height','20em')">
-	<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']"><tal:block tal:define="global text ob/read"></tal:block></tal:block>
-	<tal:block tal:condition="python:ob.meta_type in ['File']"><tal:block tal:define="global text ob/data"></tal:block></tal:block>
-	<tal:block tal:condition="python:ob.meta_type in ['Page Template','Script (Python)']"><tal:block tal:define="global text ob/read"></tal:block></tal:block>
+	<tal:block tal:condition="python:text is None and ob.meta_type in ['DTML Document','DTML Method']"><tal:block tal:define="global text ob/read"></tal:block></tal:block>
+	<tal:block tal:condition="python:text is None and ob.meta_type in ['File']"><tal:block tal:define="global text ob/data"></tal:block></tal:block>
+	<tal:block tal:condition="python:text is None and ob.meta_type in ['Page Template','Script (Python)']"><tal:block tal:define="global text ob/read"></tal:block></tal:block>
 	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
 		<div class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">

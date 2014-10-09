@@ -2218,13 +2218,14 @@ return zmscontext.attr('attr_dc_description')
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSNote.renderShort -->
 
-<tal:block tal:define="global 
-		zmscontext options/zmscontext">
+<tal:block tal:define="global zmscontext options/zmscontext;
+	ishtml python:zmscontext.attr('text').find('<');
+	id python:zmscontext.id;
+	containerid python:'contentEditable_%s_%s'%(id,request.get('lang','ger'))">
 
 <tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
 
 <script language="JavaScript">
-
 var firedZMSNoteDiv = false;
 var repeatZMSNoteDiv = false;
 
@@ -2258,14 +2259,19 @@ function onChangeZMSNoteDiv(id) {
 		},'html');
 	}
 }
-
 </script>
 
 <tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
 </tal:block>
 
 <div class="note alert alert-warning">
-	<div tal:attributes="id python:zmscontext.id" contentEditable="true" onkeyup="onKeyUpZMSNoteDiv(this)" tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
+	<div 
+		contentEditable="true"
+		onkeyup="onKeyUpZMSNoteDiv(this)" 
+		tal:attributes="id id;
+			contentEditable python:'true' and ishtml<0 or 'false'; 
+			onkeyup python:'onKeyUpZMSNoteDiv(this)' and ishtml<0 or None"
+		tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
 </div>
 
 </tal:block>
@@ -2333,7 +2339,7 @@ zmscontext.commitObj(request)
           <item key="id"><![CDATA[ZMSNote]]></item>
           <item key="name"><![CDATA[ZMSNote]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -286,7 +286,7 @@ class ZMSMetacmdProvider(
       metaCmd = obs[0]
       container = self.aq_parent
       src = getattr(metaCmd['home'],metaCmd['id'])
-      ob = getattr(container,metaCmd['id'],None)
+      ob = _zopeutil.getObject(container,metaCmd['id'])
       if src is not None and (ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time()):
         newMethod = src.meta_type
         newId = metaCmd['id']
@@ -296,6 +296,7 @@ class ZMSMetacmdProvider(
         _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       ob = getattr(container,metaCmd['id'],None)
       if ob is not None:
+        metaCmd['meta_type'] = ob.meta_type
         metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'])
         metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
       
@@ -413,12 +414,14 @@ class ZMSMetacmdProvider(
         elif btn == self.getZMILangStr('BTN_EXPORT'):
           value = []
           ids = REQUEST.get('ids',[])
-          for metaCmd in self.getMetaCmds():
-            if metaCmd['id'] in ids or len(ids) == 0:
+          for id in self.getMetaCmdIds():
+            if id in ids or len(ids) == 0:
+              metaCmd = self.getMetaCmd(id)
               # Catalog.
               el_id = metaCmd['id']
               el_name = metaCmd['name']
               el_title = metaCmd.get('title','')
+              el_meta_type = metaCmd['meta_type']
               el_description = metaCmd['description']
               el_icon_clazz = metaCmd.get('icon_clazz','')
               el_meta_types = metaCmd['meta_types']
@@ -435,7 +438,6 @@ class ZMSMetacmdProvider(
             filename = 'export.metacmd.xml'
           content_type = 'text/xml; charset=utf-8'
           export = self.getXmlHeader() + self.toXmlString(value,1)
-          
           RESPONSE.setHeader('Content-Type',content_type)
           RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
           return export

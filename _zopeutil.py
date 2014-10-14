@@ -38,12 +38,19 @@ def addObject(container, meta_type, id, title, data):
   elif meta_type == 'Script (Python)':
     addPythonScript( container, id, title, data)
 
+def getObject(container, id):
+  """
+  Get Zope-object from container.
+  """
+  ob = getattr(container,id,None)
+  return ob
+
 def readObject(container, id):
   """
   Read Zope-object from container.
   """
   data = None
-  ob = getattr(container,id)
+  ob = getObject(container,id)
   if ob.meta_type in [ 'DTML Method', 'DTML Document']:
     data = ob.raw
   elif ob.meta_type == 'Page Template':

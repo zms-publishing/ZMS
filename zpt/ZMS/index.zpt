@@ -29,7 +29,7 @@
 		><tal:block tal:replace="nothing">--- Redirect to parent ---</tal:block
 		><tal:block tal:condition="python:not done and request['URL'].find('/index_')>request['URL'].find('.html')"
 			><tal:block tal:define="global
-					dummy0 python:RESPONSE.redirect('%s/index_%s.html'%(request['URL1'],request['lang']));
+					dummy0 python:request.RESPONSE.redirect('%s/index_%s.html'%(request['URL1'],request['lang']));
 					dummy0 python:done.append(True)"></tal:block
 		></tal:block
 		><tal:block tal:replace="nothing">--- Raise unauthorized ---</tal:block

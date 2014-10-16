@@ -4,13 +4,13 @@
 		form_action python:options.get('form_action','manage_changeRecordSet');
 		input_target python:options.get('input_target','');
 		metaObjAttrIds options/metaObjAttrIds;
-		metaObjAttrs options/metaObjAttrs;
+		metaObjAttrs python:filter(lambda x:x.get('hide',0)==0,options['metaObjAttrs']);
 		sorted python:'sort_id' in metaObjAttrIds;
 		url python:options.get('url',request['URL']);
 		url_params python:options.get('url_params',{});
 		actions python:options.get('actions',['insert','update','delete','sort']);
-		filtered_records options/filtered_records;
-		records options/records">
+		records python:options['records'];
+		filtered_records python:options.get('filtered_records',records)">
 
 	<tal:block tal:define="global
 			size python:len(filtered_records);
@@ -21,13 +21,16 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-<form action="manage_changeRecordSet" method="post">
+<form method="post" tal:attributes="action form_action">
 <input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
 <input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
 <input type="hidden" name="action" value=""/>
 <input type="hidden" name="btn" value=""/>
 <input type="hidden" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target"/>
 <input type="hidden" name="form_id" tal:condition="python:request.has_key('ZMI_TIME')" tal:attributes="value request/ZMI_TIME"/>
+<tal:block tal:repeat="name python:url_params.keys()">
+<input type="hidden" tal:attributes="name name; value python:url_params[name]"/>
+</tal:block>
 <table class="table table-striped table-bordered table-hover zmi-sortable zmi-selectable">
 <colgroup>
 	<col />

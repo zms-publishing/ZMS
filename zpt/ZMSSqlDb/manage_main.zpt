@@ -43,32 +43,36 @@
 			dummy0 python:res.extend(query['records'])">
 	</tal:block>
 
-<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
-	<tal:block tal:define="global 
-				primary_key python:here.getEntityPK(entity['id']).lower();
-				row python:res[int(request['qindex'])];
-				rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
-				message python:[];
-				values python:{}">
-		<tal:block tal:repeat="column python:entity['columns']">
-			<tal:block tal:define="global python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
-		</tal:block>
-		<tal:block tal:condition="python:request.get('action') in ['insert']">
-			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values)"
-					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
-		</tal:block>
-		<tal:block tal:condition="python:request.get('action') in ['update']">
-			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=rowid,values=values)"
-					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
-		</tal:block>
-		<tal:block tal:condition="python:request.get('action') in ['delete']">
-			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
-					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
-		</tal:block>
-		<tal:block tal:define="global dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
-					'lang':request['lang'],
-					'manage_tabs_message':'<br>'.join(message),
-				}))">
+<tal:block tal:condition="python:
+		(request.get('action') in ['delete']) or
+		(request.get('action') in ['insert','update'] and request.get('btn')==here.getZMILangStr('BTN_SAVE'))">
+	<tal:block tal:repeat="qindex python:request.get('qindices',[[],[request['qindex']]][int(request.has_key('qindex'))])">
+		<tal:block tal:define="
+					primary_key python:here.getEntityPK(entity['id']).lower();
+					row python:res[int(qindex)];
+					rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
+					message python:[];
+					values python:{}">
+			<tal:block tal:repeat="column python:entity['columns']">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:request.get('action') in ['insert']">
+				recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values)"
+						tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:request.get('action') in ['update']">
+				recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=rowid,values=values)"
+						tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:request.get('action') in ['delete']">
+				recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
+						tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
+			</tal:block>
+			<tal:block tal:define="dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
+						'lang':request['lang'],
+						'manage_tabs_message':'<br>'.join(message),
+					}))">
+			</tal:block>
 		</tal:block>
 	</tal:block>
 </tal:block>
@@ -154,7 +158,13 @@
 </form>
 
 <tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
-	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('hide',0)==0,metaObjAttrs),filtered_records=res,records=res,url_params={'qentity':request.get('qentity')},record_handler=here.getEntityRecordHandler(entity['id']))">
+	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+			metaObjAttrIds=metaObjAttrIds,
+			metaObjAttrs=metaObjAttrs,
+			records=res,
+			form_action=request['URL'],
+			url_params={'qentity':request.get('qentity')},
+			record_handler=here.getEntityRecordHandler(entity['id']))">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>

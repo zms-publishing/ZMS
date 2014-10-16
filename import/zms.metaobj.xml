@@ -1810,8 +1810,8 @@ if align:
                   <item key="id"><![CDATA[inferface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<div id="inferface0" tal:define="global 
-		zmscontext options/zmscontext; 
+                  <item key="name"><![CDATA[<div id="inferface0" tal:define="global
+		zmscontext options/zmscontext;
 		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
 		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
 <script type="text/javascript">
@@ -1884,6 +1884,7 @@ initAttrRef = function() {
 
 $ZMI.registerReady(function(){
 	$("input#attr_ref").change(initAttrRef).change();
+	$("#tr_attr_ref_type select").css("width", "100%");
 });
 
 //-->
@@ -1895,8 +1896,12 @@ $ZMI.registerReady(function(){
 -->
 <div class="form-group controls-row" id="tr_attr_ref">
 	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
-	<div class="form-inline col-sm-5 col-md-5 col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</div>
-	<div class="form-inline col-sm-5 col-md-5 col-lg-5" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+	<div class="col-sm-10">
+		<div class="pull-left" style="width:50%">
+			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
+		</div>
+		<div id="tr_attr_ref_type" class="form-inline" style="width:50%;float:right" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+	</div>
 </div>
 <!--
 ################################################################################

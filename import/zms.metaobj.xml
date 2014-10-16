@@ -1903,13 +1903,14 @@ $ZMI.registerReady(function(){
 ##### Embedded Object: PREVIEW
 ################################################################################
 -->
-<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-	<div class="attr_ref_preview" 
+<div class="form-group controls-row" id="tr_attr_preview" tal:condition="not:python:request.get('ZMS_INSERT')">
+<label class="col-sm-2 control-label" for="attr_ref_preview"><span></span></label>
+	<div id="attr_ref_preview" class="col-sm-10 attr_ref_preview"
 		tal:attributes="style python:['background-color:#fff','background-color:#eee'][int(zmscontext.isPage())]"
 		tal:content="structure python:zmscontext.renderShort(request)">
 			renderShort
 	</div>
-</tal:block>
+</div>
 <tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])"></tal:block>
 </div>]]>
                   </item>
@@ -1982,7 +1983,7 @@ $ZMI.registerReady(function(){
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[attr_dc_description]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2105,7 +2106,6 @@ return zmscontext.attr('attr_dc_description')
 	<div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
 			tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
 		<div class="title" tal:condition="python:title.lower()!='medline' and title">
-			<img tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="url" align="absmiddle" />
 			<a tal:condition="python:zmscontext.attr('attr_type')=='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt" target="_blank">The titlealt</a>
 			<a tal:condition="python:zmscontext.attr('attr_type')!='new'" tal:attributes="href python:zmscontext.getLinkUrl(ref,request)" tal:content="structure titlealt">The titlealt</a>
 		</div>
@@ -2157,7 +2157,7 @@ return zmscontext.attr('attr_dc_description')
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

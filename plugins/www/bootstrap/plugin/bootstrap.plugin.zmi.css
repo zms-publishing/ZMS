@@ -505,6 +505,11 @@ body.manage-menu .dropdown-menu > li > a:hover {
 	margin-right:4px !important;
 	font-size: 14px;
 }
+/* Enlarging CKE Format Panel to bootraps preview formats */
+div.cke_panel { 
+	width: 280px !important; 
+}
+
 
 .zmi-container .right li span[class^="glyphicon-"], 
 .zmi-container .right li span[class*=" glyphicon-"],

@@ -30,6 +30,7 @@ from App.ImageFile import ImageFile
 from DateTime.DateTime import DateTime
 import ConfigParser
 import OFS.misc_
+import fnmatch
 import os
 import re
 import stat
@@ -122,6 +123,15 @@ def initialize(context):
             mode = os.stat(filepath)[stat.ST_MODE]
             if not stat.S_ISDIR(mode):
               registerImage(filepath,file)
+        
+        # automated assembly of conf-properties
+        print "automated assembly of conf-properties"
+        l = assembleConfProperties(package_home(globals()),'*.py,*.zpt')
+        d = dict((l[i],l[i+1]) for i in range(0, len(l), 2))
+        keys = d.keys()
+        keys.sort()
+        for key in keys:
+          print key,'=',d[key]
         
         # automated minification
         confkeys = confdict.keys()
@@ -280,5 +290,31 @@ def registerImage(filepath,s):
   icon=ImageFile(filepath,globals())
   icon.__roles__ = None
   OFS.misc_.misc_.zms[s]=icon
+
+def assembleConfProperties(path, pattern):
+  """
+  assemble conf-properties
+  """
+  l = []
+  for file in os.listdir(path):
+    filepath = path+os.sep+file
+    mode = os.stat(filepath)[stat.ST_MODE]
+    if stat.S_ISDIR(mode): 
+      l.extend(assembleConfProperties(filepath,pattern))
+    elif len(filter(lambda x:fnmatch.fnmatch(file,x),pattern.split(',')))>0:
+      f = open(filepath,'r')
+      data = f.read()
+      f.close()
+      sp = data.split('getConfProperty(')
+      if len(sp) > 1:
+        for s in sp[1:]:
+          s = s[:s.find(')')]
+          i = s.find(',')
+          k = s[:i]
+          k = k[k.find('\'')+1:k.rfind('\'')]
+          v = s[i+1:]
+          if k:
+            l.extend([k,v])
+  return l
 
 ################################################################################

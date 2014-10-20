@@ -1031,6 +1031,7 @@ class ZMSMetaobjManager:
         """ ZMSMetaobjManager.manage_changeProperties """
         old_model = copy.deepcopy(self.model)
         message = ''
+        messagekey = 'manage_tabs_message'
         extra = {}
         t0 = time.time()
         id = REQUEST.get('id','').strip()
@@ -1254,7 +1255,7 @@ class ZMSMetaobjManager:
           
           ##### SYNCHRONIZE ####
           sync_id = []
-          for k in self.model.keys():
+          for k in self.getMetaobjIds():
             if old_model.has_key(k):
               d = self.model[k]
               types = self.valid_types
@@ -1275,19 +1276,15 @@ class ZMSMetaobjManager:
         
         # Handle exception.
         except:
-          _globals.writeError(self,"[manage_changeProperties]")
-          error = str( sys.exc_type)
-          if sys.exc_value:
-            error += ': ' + str( sys.exc_value)
-          target = self.url_append_params( target, { 'manage_tabs_error_message':error})
+          message = _globals.writeError(self,"[manage_changeProperties]")
+          messagekey = 'manage_tabs_error_message'
         
         # Return with message.
         if RESPONSE:
-          target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
-          target = self.url_append_params( target, extra)
           if len( message) > 0:
             message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-            target = self.url_append_params( target, { 'manage_tabs_message':message})
+          target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
+          target = self.url_append_params( target, extra)
           if REQUEST.has_key('inp_id_name'):
             target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')
             target += '&inp_name_name=%s'%REQUEST.get('inp_name_name')

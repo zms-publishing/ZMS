@@ -315,7 +315,8 @@ class PathHandler:
               auth_user = self.REQUEST.get('AUTHENTICATED_USER')
               zms_skin = l[:i]
               zms_ext = l[j+1:]
-              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap,mobile').split(',')):
+              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap,mobile').split(',')) and \
+                 zms_ext == self.getPageExt(self.REQUEST)[1:]:
                 access = True
                 #--access = (auth_user is None and self.hasPublicAccess()) or \
                 #--         (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])

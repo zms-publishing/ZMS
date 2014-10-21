@@ -1,3 +1,8 @@
+function onFormSubmit() {
+	// do nothing
+	return true;
+}
+
 $(function(){
 
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");

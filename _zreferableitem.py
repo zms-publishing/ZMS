@@ -44,7 +44,7 @@ def getMedlineLink(url):
 #  _zreferableitem.isMailLink:
 # ------------------------------------------------------------------------------
 def isMailLink(url):
-  rtn = type(url) is str and url.lower().find('mailto:') == 0
+  rtn = type(url) is str and url.lower().startswith('mailto:')
   return rtn
 
 # ------------------------------------------------------------------------------
@@ -503,32 +503,16 @@ class ZReferableItem:
       return prefix + self.encrypt_ordtype(url[len(prefix):])
     return url
 
-
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.getLinkHtml:
-  #
-  #  Resolves internal/external links and returns Html.
+  #  ZReferableItem.tal_anchor:
+  #  
+  #  @param
+  #  @return
   # ----------------------------------------------------------------------------
-  def getLinkHtml( self, url, html='<a href="%s">&raquo;</a>', REQUEST=None):
-    REQUEST = _globals.nvl( REQUEST, self.REQUEST)
-    s = ''
-    ob = self
-    while ob is not None:
-      if html in ob.getMetaobjIds( sort=0):
-        metaObj = ob.getMetaobj( html)
-        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*'])
-        if type(metaObjAttr) is dict:
-          REQUEST.set( 'ref_id', url)
-          return self.dt_exec( metaObjAttr['custom'])
-      ob = self.getPortalMaster()
-    ob = self.getLinkObj(url,REQUEST)
-    if ob is not None:
-      if ob.isActive(REQUEST) and \
-         ob.isVisible(REQUEST):
-        url = ob.getHref2IndexHtml(REQUEST)
-        s = html%url
-    return s
-
+  def tal_anchor(self, href, target='', attrs={}, content=''):
+    filtered_attrs_keys = filter(lambda x: len(x)>0, attrs.keys())
+    str_attrs = map(lambda x:str(x)+'='+str(attrs[x]), filtered_attrs_keys)
+    return '<a href="%s" %s%s>%s</a>'%(href,['',' target="%s"'%target][int(len(target)>0)],str_attrs,content)
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.synchronizeRefs:

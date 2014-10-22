@@ -853,6 +853,7 @@ class AccessManager(AccessableContainer):
     def delLocalUser(self, id, node):
       
       # Delete node from user-properties.
+      node = node.replace(self.getHome().id+'@','')
       nodes = self.getUserAttr(id,'nodes',{})
       if nodes.has_key(node): del nodes[node]
       nodes = nodes.copy()
@@ -1057,7 +1058,7 @@ class AccessManager(AccessableContainer):
                 _globals.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
               try:
                 docElmnt = self.getDocumentElement()
-                ob = self.getLinkObj(node)
+                ob = self.getLinkObj(nodekey)
                 if ob is not None:
                   docElmnt = ob.getDocumentElement()
                   node = docElmnt.getRefObjPath(ob)
@@ -1065,7 +1066,7 @@ class AccessManager(AccessableContainer):
               except:
                 _globals.writeError(self,'can\'t delLocalUser from docElmnt for nodekey=%s'%nodekey)
             #-- Assemble message.
-            message = self.getZMILangStr('MSG_DELETED')%int(1)
+            message = self.getZMILangStr('MSG_DELETED')%int(len(nodekeys))
         
         # Invite.
         # -------

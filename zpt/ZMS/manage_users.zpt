@@ -14,17 +14,6 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
-
-<style>
-a.remove-btn {
-	color: #888;
-	text-decoration:none;
-}
-a.remove-btn:hover {
-	color: #A03F3F !important;
-	text-decoration:none;
-}</style>
-
 <script>
 function zmiModalAddUserOpen(context) {
 	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});

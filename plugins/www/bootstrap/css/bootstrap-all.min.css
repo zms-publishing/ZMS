@@ -457,7 +457,7 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi ul.breadcrumb li.active a{color:black}
 .breadcrumb>li+li:before{padding:0 0 0 6px;color:#888}
 .center h1{padding:0.2em;line-height:1.4em;font-size:x-large;font-weight:normal}
-.center h1 small{display:inline-block;margin-top:0.5em;line-height:1.5em;font-size:small}
+.center h1 small{display:block;margin-top:0.5em;line-height:1.5em;font-size:small}
 .ui-autocomplete-input{background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat}
 .form-multiselect .pull-left{padding-right:.5em}
 .form-multiselect select{height:8.4em}

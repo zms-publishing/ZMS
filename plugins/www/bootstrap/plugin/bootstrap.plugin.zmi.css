@@ -165,7 +165,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	font-weight:normal;
 }
 .center h1 small {
-	display:inline-block;
+	display:block;
 	margin-top:0.5em;
 	line-height:1.5em;
 	font-size:small;

@@ -1306,11 +1306,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       html = ''
       try:
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-        	if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
-        		html = '<h1>%s<small>%s</small></h1>'%(self.getTitle(REQUEST), self.getDCDescription(REQUEST))
-        	else:
-						html = self.getTitlealt(REQUEST)
-        	html = self._getBodyContentContentEditable(html)
+          if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
+            html = '<h1>'
+            html += self.getTitle(REQUEST)
+            if self.getDCDescription(REQUEST):
+              html += '<small>%s</small></h1>'%(self.getDCDescription(REQUEST))
+            html+= '</h1>'
+          else:
+            html = self.getTitlealt(REQUEST)
+          html = self._getBodyContentContentEditable(html)
         elif 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
           html = self._getBodyContentContentEditable(self.attr('renderShort'))
         else:

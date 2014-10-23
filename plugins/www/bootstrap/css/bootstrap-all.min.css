@@ -456,8 +456,10 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi ul.breadcrumb li{white-space:nowrap}
 .zmi ul.breadcrumb li.active a{color:black}
 .breadcrumb>li+li:before{padding:0 0 0 6px;color:#888}
-.center h1{padding:0.2em;line-height:1.4em;font-size:x-large;font-weight:normal}
+.center h1{line-height:1.4em;font-size:x-large;font-weight:normal}
 .center h1 small{display:block;margin-top:0.5em;line-height:1.5em;font-size:small}
+#zmi_item_ .center h1{padding:0.5em 0;margin:0}
+ul.portalClients .zmi-item .center h1{padding:0.5em 0;margin:0}
 .ui-autocomplete-input{background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat}
 .form-multiselect .pull-left{padding-right:.5em}
 .form-multiselect select{height:8.4em}
@@ -475,7 +477,7 @@ ul.zmi-container .contentEditable{cursor:pointer}
 ul.zmi-container li.zmi-item,ul.zmi-container li.ui-state-highlight{list-style-type:none;float:none;clear:both}
 ul.zmi-container.zmi-sortable li.ui-state-highlight{min-height:4em;margin-bottom:0;width:80%;border:0;background:#428bca;border-radius:0}
 ul.zmi-container li.zmi-item .inactive .contentEditable{filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
-ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable{border-top:none !important;font-size:large;padding-left:1em;color:#6B9EB8}
+ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable{border-top:none !important;font-size:large;padding-left:1em;color:#6B9EB8;padding-top:0;margin:0}
 table.table tbody tr td.data{white-space:nowrap;overflow:hidden}
 table.table.zmi-sortable select.zmi-sort{direction:rtl;width:4em}
 table.table.zmi-sortable input{margin-bottom:10px}
@@ -496,6 +498,7 @@ ul.zmi-container .zmi-item.pageelement .center{background-color:white!important;
 ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important;padding-top:0.2em}
 ul.zmi-container .zmi-item.pageelement .center > *{padding-left:.8em}
 ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid white;padding:3px 6px 3px 1.5em;overflow:hidden}
+ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin:0}
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}
 #zmiIframe .form-group.activity input.form-element.datetimepicker{width:8.4em !important}
 .horizontal-group .mandatory span{background:none !important;padding-left:0 !important}
@@ -513,7 +516,7 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid
 .form-horizontal .attr_last_modified{white-space:nowrap;overflow:hidden;color:#888}
 .form-horizontal .attr_last_modified div.pull-left{padding:0 0 0 1em !important;margin:0 !important}
 body.manage-menu .zmi-page{white-space:nowrap;overflow:hidden}
-body.browse_iframe .zmi-preview{background-color:white;padding:1em;position:absolute;filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80;max-width:40em;border:1px dotted black}
+body.browse_iframe .zmi-preview{padding:1em;position:absolute;background:white;background:rgba(255,255,255,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF);ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF)";max-width:40em;border:1px dotted black}
 body.browse_iframe .zmi-preview .contentEditable{zoom:0.6;-moz-transform:scale(0.6)}
 body.browse_iframe .zmi-sitemap > div,body.browse_iframe .zmi-sitemap ul,body.browse_iframe .zmi-sitemap ol,body.manage-menu .zmi-sitemap > div,body.manage-menu .zmi-sitemap ul,body.manage-menu .zmi-sitemap ol{margin-top:0.3em;margin-left:0;padding-left:1em}
 body.manage-menu .navbar-brand{font-size:100% !important}
@@ -530,6 +533,7 @@ body.manage-menu .dropdown-menu > li > a{clear:both;color:#CCC!important;display
 body.manage-menu .dropdown-menu{background-color:#222;border:1px solid #888;color:#000;left:-100px;position:absolute;min-width:110px}
 body.manage-menu .dropdown-menu > li > a:focus,body.manage-menu .dropdown-menu > li > a:hover{background-color:transparent !important;color:#fff !important}
 .cke_reset_all span[class^="glyphicon-"],.cke_reset_all span[class*=" glyphicon-"],.cke_reset_all i[class^="icon-"],.cke_reset_all i[class*=" icon-"]{font-family:FontAwesome !important;margin-right:4px !important;font-size:14px}
+div.cke_panel{width:280px !important}
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}
@@ -619,11 +623,11 @@ div.zmi-nodes span{cursor:pointer}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
 .zmi.users #zmi-tab > .pull-left,.zmi.users #zmi-tab > .pull-right{width:50%}
 .zmi.users form table{margin-bottom:0}
-.zmi.users form table th:first-child{width:4em}
+.zmi.users form table th:first-child{width:6em}
 .zmi.users form table th,.zmi.users form table td{vertical-align:middle}
 .zmi.users form table .breadcrumb{background-color:transparent !important;padding:0 !important}
-table.zmi-sortable td{white-space:nowrap}
-table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bottom:0px}
+.table.zmi-sortable td{white-space:nowrap}
+.table.zmi-sortable td img.grippy,.table.zmi-sortable input{margin-bottom:0px}
 .pagination{white-space:nowrap}
 .pagination-centered{margin:1em 2em}
 .pagination > .active > a{font-weight:bold}
@@ -631,15 +635,15 @@ table.table.zmi-sortable td img.grippy,table.table.zmi-sortable input{margin-bot
 .ZMSRecordSet a.thumbnail{max-width:3.0em!important;max-height:3.0em!important;padding:.2em!important;margin:0!important}
 .ZMSRecordSet .table tr td:first-child,.ZMSSqlDb .table tr td:first-child{width:84px}
 .ZMSRecordSet .table input,.ZMSSqlDb .table input,.ZMSRecordSet .table select,.ZMSSqlDb .table select,.ZMSRecordSet .table textarea,.ZMSSqlDb .table textarea{font-size:11px;padding:0 2px 0 2px;margin:0;height:20px}
-.ZMSRecordSet .table tr th,.ZMSRecordSet .table tr td,.ZMSSqlDb .table tr th,.ZMSSqlDb .table tr td{padding:4px;font-size:11px}
-.ZMSRecordSet .table tr th,.ZMSSqlDb .table tr th{min-width:3em;vertical-align:middle}
-.ZMSRecordSet .table tr th a,.ZMSSqlDb .table tr th a{text-decoration:none}
-.ZMSRecordSet .table-hover>tbody>tr:hover>td,.ZMSRecordSet .table-hover>tbody>tr:hover>th{background-color:#DCE3F0}
-.ZMSRecordSet .table tr th:first-child,.ZMSRecordSet .table tr td:first-child,.ZMSRecordSet .table tr th .btn-group,.ZMSRecordSet .table tr td .btn-group{white-space:nowrap !important;min-width:8em}
-.ZMSRecordSet .table tr th .split-left,.ZMSRecordSet .table tr td .split-left,.ZMSSqlDb .table tr th .split-left,.ZMSSqlDb .table tr td .split-left{font-size:11px;border:1px solid #ccc;margin:0px;background:#DCE3F0;padding:6px;min-width:52px;overflow:hidden;height:28px}
+.table.zmi-selectable tr th,.ZMSRecordSet .table tr td{padding:4px;font-size:11px}
+.table.zmi-selectable tr th{min-width:3em;vertical-align:middle}
+.table tr th a{text-decoration:none}
+.table-hover.zmi-selectable>tbody>tr:hover>td,.table-hover.zmi-selectable>tbody>tr:hover>th{background-color:#DCE3F0}
+.table.zmi-selectable tr th:first-child,.table.zmi-selectable tr td:first-child,.table.zmi-selectable tr th .btn-group,.table.zmi-selectable tr td .btn-group{white-space:nowrap !important;min-width:8em}
+.table.zmi-selectable tr th .split-left,.table.zmi-selectable tr td .split-left{font-size:11px;border:1px solid #ccc;margin:0px;background:#DCE3F0;padding:6px;min-width:52px;overflow:hidden;height:28px}
 .ZMSSqlDb .table tr td:first-child .checkbox input{opacity:0.5;width:auto;margin:-2px 0px 0px 0px}
-.ZMSRecordSet .table tr th:first-child span:hover,.ZMSRecordSet .table tr td:first-child span:hover,.ZMSSqlDb .table tr td span:hover,.ZMSSqlDb .table tr td span:hover{color:#000 !important}
-.ZMSRecordSet .table tr th:first-child .split-right,.ZMSRecordSet .table tr td:first-child .split-right,.ZMSSqlDb .table tr th:first-child .split-right,.ZMSSqlDb .table tr td:first-child .split-right{height:28px;margin:0px;padding:0 0.5em;background-color:#919EB3}
+.table.zmi-selectable tr th:first-child span:hover,.table.zmi-selectable tr td:first-child span:hover{color:#000 !important}
+.table.zmi-selectable tr th:first-child .split-right,.table.zmi-selectable tr td:first-child .split-right{height:28px;margin:0px;padding:0 0.5em;background-color:#919EB3}
 .ZMSSqlDb .table ul.dropdown-menu{font-size:14px}
 .ZMSSqlDb .table ul.dropdown-menu i{padding-right:0.5em}
 .zmi.ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,.zmi.ZMSRecordSet #attrProperties .form-group input,.zmi.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}

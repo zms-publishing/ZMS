@@ -159,7 +159,6 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	color:#888;
 }
 .center h1 {
-	padding:0.2em;
 	line-height:1.4em;
 	font-size:x-large;
 	font-weight:normal;
@@ -169,6 +168,14 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	margin-top:0.5em;
 	line-height:1.5em;
 	font-size:small;
+}
+#zmi_item_ .center h1 {
+	padding:0.5em 0;
+	margin:0;
+}
+ul.portalClients .zmi-item .center h1 {
+	padding: 0.5em 0;
+	margin:0;
 }
 
 .ui-autocomplete-input {
@@ -250,7 +257,10 @@ ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable {
 	font-size:large;
 	padding-left:1em;
 	color:#6B9EB8;
+	padding-top: 0;
+	margin:0;
 }
+
 table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;
@@ -327,6 +337,10 @@ ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 	border:1px solid white;
 	padding:3px 6px 3px 1.5em;
 	overflow:hidden;
+}
+ul.zmi-container .zmi-item.page .center .contentEditable {
+	padding-top: .4em;
+	margin:0;
 }
 .properties .form-group.activity input.form-element.datetimepicker {
 	width:12.7em !important;

@@ -207,6 +207,7 @@ class ZMSMetaobjManager:
           newKeys = []
           newDefault = ''
           self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault)
+      _globals.writeBlock( self, '[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       return id
 
     def importMetaobjXml(self, xml, REQUEST=None, createIfNotExists=1, createIdsFilter=None):
@@ -220,6 +221,7 @@ class ZMSMetaobjManager:
         ids.append( id)
       if len( ids) == 1:
         ids = ids[ 0]
+      _globals.writeBlock( self, '[ZMSMetaobjManager.importMetaobjXml]: ids=%s'%str(ids))
       return ids
 
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
@@ -350,6 +352,10 @@ class ZMSMetaobjManager:
             if master_obs is not None:
               if master_obs.has_key(ob_id):
                 ob = master_obs[ob_id].copy()
+                for k in ob.keys():
+                  v = self.getConfProperty('%s.%s'%(ob_id,k),None)
+                  if v is not None:
+                    ob[k] = v
               else:
                 ob = {'id':ob_id,'type':'ZMSUnknown'}
               ob['acquired'] = acquired
@@ -936,7 +942,7 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def delMetaobjAttr(self, id, attr_id):
       ob = self.__get_metaobj__(id)
-      attrs = copy.copy(ob['attrs'])
+      attrs = copy.copy(ob.get('attrs',[]))
       
       # Delete Attribute.
       cp = []
@@ -994,32 +1000,37 @@ class ZMSMetaobjManager:
     #
     #  Change properties.
     ############################################################################
-    def manage_ajaxChangeProperties(self, id, REQUEST=None, RESPONSE=None):
+    def manage_ajaxChangeProperties(self, id, REQUEST, RESPONSE=None):
       """ MetaobjManager.manage_ajaxChangeProperties """
-      ob = self.__get_metaobj__(id)
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      filename = 'manage_ajaxChangeProperties.xml'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
       xml = self.getXmlHeader()
       xml += '<result '
       xml += ' id="%s"'%id
+      ob = self.__get_metaobj__(id)
+      prefix = 'set'
       for key in REQUEST.form.keys():
-        if key.find('set') == 0:
-          k = key[3:].lower()
+        if key.startswith(prefix):
+          k = key[len(prefix):].lower()
           v = REQUEST.form.get(key)
           if k in ob.keys():
-            ob[k] = v
+            if ob.get('acquired'):
+              self.setConfProperty('%s.%s'%(id,k),v)
+            else:
+              ob[k] = v
             xml += ' %s="%s"'%(k,str(v))
       xml += '/>'
       # Assign Attributes to Meta-Object.
       self.model[id] = ob
       # Make persistent.
       self.model = self.model.copy()
-      return xml
+      # Return with xml
+      if RESPONSE is not None:
+        content_type = 'text/xml; charset=utf-8'
+        filename = 'manage_ajaxChangeProperties.xml'
+        RESPONSE.setHeader('Content-Type',content_type)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+        return xml
 
 
     ############################################################################
@@ -1039,6 +1050,7 @@ class ZMSMetaobjManager:
         REQUEST.set( '__get_metaobjs__', True)
         
         try:
+          sync_id = []
           
           # Delete.
           # -------
@@ -1242,7 +1254,11 @@ class ZMSMetaobjManager:
                 extra['temp_import_file_id'] = temp_id
               else:
                 createIdsFilter = REQUEST.get('createIdsFilter')
-                self.importMetaobjXml(xmlfile,createIdsFilter=createIdsFilter)
+                ids = self.importMetaobjXml(xmlfile,createIdsFilter=createIdsFilter)
+                if type(ids) is list:
+                  sync_id.extend(ids)
+                else:
+                  sync_id.append(ids)
                 message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
           
           # Move to.
@@ -1254,23 +1270,19 @@ class ZMSMetaobjManager:
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id),(pos+1))
           
           ##### SYNCHRONIZE ####
-          sync_id = []
+          types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))
           for k in self.getMetaobjIds():
-            if old_model.has_key(k):
-              d = self.model[k]
-              types = self.valid_types
-              for i in range(len(self.metas)/2):
-                  types.append(self.metas[i*2])
-              valid_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in self.valid_types, d.get('attrs',[])))
-              valid_types_attrs.sort()
-              old_d = old_model[k]
-              old_valid_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in self.valid_types, old_d.get('attrs',[])))
-              old_valid_types_attrs.sort()
-              if valid_types_attrs != old_valid_types_attrs:
+            if k not in sync_id:
+              if old_model.has_key(k):
+                d = self.model[k]
+                types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in types, d.get('attrs',[])))
+                d = old_model[k]
+                old_types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in types, d.get('attrs',[])))
+                if types_attrs != old_types_attrs:
+                  sync_id.append(k)
+              else:
                 sync_id.append(k)
-            else:
-              sync_id.append(k)
-          if sync_id:
+          if len(sync_id) > 0:
             _globals.writeBlock( self, '[ZMSMetaobjManager.manage_changeProperties]: sync_id=%s'%str(sync_id))
             self.synchronizeObjAttrs( sync_id)
         
@@ -1283,7 +1295,8 @@ class ZMSMetaobjManager:
         if RESPONSE:
           if len( message) > 0:
             message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-          target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
+            target = self.url_append_params( target, { messagekey: message})
+          target = self.url_append_params( target, { 'lang': lang, 'id':id, 'attr_id':REQUEST.get('attr_id','')})
           target = self.url_append_params( target, extra)
           if REQUEST.has_key('inp_id_name'):
             target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')

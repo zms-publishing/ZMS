@@ -28,7 +28,6 @@ function selectObject(physical_path,anchor,is_page,titlealt) {
  */
 function selectUrl(url) {
 	$ZMI.writeDebug('BO selectUrl: url='+url);
-	confirm('BO selectUrl: url='+url);
 	var fm;
 	var title = '';
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
@@ -238,36 +237,52 @@ function zmiRefresh() {
 	var ids = href.split('/');
 	var id = null;
 	var fn = function() {
+			$ZMI.writeDebug("zmiRefresh.fn: =======================================");
+			$ZMI.writeDebug("zmiRefresh.fn: ids= "+ids.join(','));
+			var selector = null;
 			if (ids.length > 0) {
+
+				selector = '*[data-home-id="'+homeId+'"]'; 
+				$ZMI.writeDebug('zmiRefresh.fn.0: '+selector+'='+$(selector).length);
+
 				var old_id = id;
 				var old_homeId = homeId;
 				id = ids[0];
-				$ZMI.writeDebug("zmiRefesh.id= "+id);
 				ids = ids.slice(1,ids.length);
-				$ZMI.writeDebug("zmiRefesh.ids= "+ids.length);
+
 				if (id == homeId) {
-					$ZMI.writeDebug("zmiRefesh.fn.1: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
-					id = 'content'
+					id = 'content';
 					if (ids.length > 0 && ids[0] == id) {
 						ids = ids.slice(1,ids.length);
 					}
 				}
-				if ($('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length==0) {
-					$ZMI.writeDebug("zmiRefesh.fn.2: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
+
+				selector = '[data-home-id="'+homeId+'"][data-id="'+id+'"] .toggle';
+				$ZMI.writeDebug('zmiRefresh.fn.3: '+selector+'='+$(selector).length);
+				if ($(selector).length==0) {
 					homeId = id;
-					id = ids[0];
-					ids = ids.slice(1,ids.length);
+					id = 'content';
+					if (ids.length > 0 && ids[0] == id) {
+						ids = ids.slice(1,ids.length);
+					}
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.3: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
+
 				// Remove other than selected
 				if (old_id != null) {
-					$('*[data-id="'+old_id+'"][data-home-id="'+old_homeId+'"] *[data-id!="'+id+'"][data-home-id="'+homeId+'"]').remove();
-					$('*[data-id="'+old_id+'"][data-home-id="'+old_homeId+'"] .toggle').removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
+					selector = '[data-home-id="'+old_homeId+'"][data-id="'+old_id+'"] .zmi-page[data-id!="'+id+'"]';
+					$ZMI.writeDebug('zmiRefresh.fn: Remove other than selected: '+selector+'='+$(selector).length);
+					$(selector).remove();
 				}
-				zmiToggleClick($('*[data-id="'+id+'"][data-home-id="'+homeId+'"] .toggle'),arguments.callee);
+
+				selector = '*[data-home-id="'+homeId+'"][data-id="'+id+'"] .toggle';
+				$ZMI.writeDebug('zmiRefresh.fn.4: '+selector+'='+$(selector).length);
+				$ZMI.writeDebug('zmiRefresh.fn: click(homeId='+homeId+';id='+id+')');
+				zmiToggleClick($(selector),arguments.callee);
 			}
 			else if (typeof physical_path != "undefined" && physical_path != "") {
-				$('*[data-id="'+id+'"][data-home-id="'+homeId+'"] input').prop('checked','checked');
+				selector = '*[data-home-id="'+homeId+'"][data-id="'+id+'"] input:first';
+				$ZMI.writeDebug('zmiRefresh.fn.: check '+selector+'='+$(selector).length);
+				$(selector).prop("checked","checked");
 			}
 		};
 	fn();

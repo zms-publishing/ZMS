@@ -36,7 +36,7 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:define="global
 		userFolder python:here.getUserFolder();
 		userAdderPlugin python:here.getUserAdderPlugin();
-		userDefs python:here.getConfProperty('ZMS.security.users',{});
+		userDefs python:here.getSecurityUsers();
 		userNames python:here.sort_list(userDefs.keys());
 		valid_roles python:here.difference_list(here.aq_parent.userdefined_roles()+here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));

@@ -32,6 +32,37 @@ import zExceptions
 import _confmanager
 import _globals
 
+# ------------------------------------------------------------------------------
+#  _accessmanager.updateVersion:
+# ------------------------------------------------------------------------------
+def updateVersion(root):
+  if not root.REQUEST.get('_accessmanager_updateVersion',False):
+    root.REQUEST.set('_accessmanager_updateVersion',True)
+    if root.getConfProperty('ZMS.security.build',0) == 0:
+      root.setConfProperty('ZMS.security.build',1)
+      userDefs = {} 
+      def visit(docelmnt):
+        d = docelmnt.getConfProperty('ZMS.security.users',{})
+        for name in d.keys():
+          value = d[name]
+          userDef = userDefs.get(name)
+          if userDef is None:
+            userDef = {'nodes':{}}
+            for key in value.keys():
+              if not userDef.has_key(key):
+                userDef[key] = value[key]
+          nodes = value.get('nodes',{})
+          for nodekey in nodes.keys():
+            node = docelmnt.getLinkObj(nodekey)
+            if node is not None:
+              newkey = root.getRefObjPath(node)
+              userDef['nodes'][newkey] = nodes[nodekey]
+          userDefs[name] = userDef
+        docelmnt.delConfProperty('ZMS.security.users')
+        for client in docelmnt.getPortalClients():
+          visit(client)
+      visit(root)
+      root.setConfProperty('ZMS.security.users',userDefs)
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:
@@ -168,7 +199,7 @@ class AccessableObject:
     # --------------------------------------------------------------------------
     def getUsers(self, REQUEST=None):
       users = {}
-      d = self.getConfProperty('ZMS.security.users',{})
+      d = self.getSecurityUsers()
       for user in d.keys():
         roles = self.getUserRoles( user, aq_parent=0)
         langs = self.getUserLangs( user, aq_parent=0)
@@ -459,6 +490,30 @@ class AccessManager(AccessableContainer):
         return role
       return langStr
 
+    # --------------------------------------------------------------------------
+    #  AccessManager.getSecurityUsers:
+    # --------------------------------------------------------------------------
+    def getSecurityUsers(self):
+      userDefs = {}
+      root = self.breadcrumbs_obj_path()[0]
+      d = root.getConfProperty('ZMS.security.users',{})
+      if root == self:
+        userDefs = copy.deepcopy(d)
+      else:
+        prefix = root.getRefObjPath(self)[:-2]
+        for name in d.keys():
+          value = d[name]
+          nodes = value.get('nodes',{})
+          nodekeys = filter(lambda x:x.startswith(prefix), nodes.keys())
+          if len(nodekeys) > 0:
+            userDef = {'nodes':{}}
+            for key in value.keys():
+              if not userDef.has_key(key):
+                userDef[key] = value[key]
+            for nodekey in nodekeys:
+              userDef['nodes'][nodekey] = nodes[nodekey]
+            userDefs[name] = userDef
+      return userDefs
 
     # --------------------------------------------------------------------------
     #  AccessManager.searchUsers:
@@ -629,7 +684,7 @@ class AccessManager(AccessableContainer):
     #  AccessManager.getUserName:
     # --------------------------------------------------------------------------
     def getUserName(self, uid):
-      d = self.getConfProperty('ZMS.security.users',{})
+      d = self.getSecurityUsers()
       for k in d.keys():
         if d.get('user_id_',k) == uid:
           return k
@@ -640,45 +695,32 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def setUserAttr(self, user, name, value):
       user = getUserId(user)
-      d = self.getConfProperty('ZMS.security.users',{})
+      root = self.breadcrumbs_obj_path()[0]
+      d = root.getConfProperty('ZMS.security.users',{})
       i = d.get(user,{})
+      if name == 'nodes' and type(value) is dict:
+        t = {}
+        for nodekey in value.keys():
+          node = self.getLinkObj(nodekey)
+          if node is not None:
+            newkey = root.getRefObjPath(node)
+            t[newkey] = value[nodekey]
+        value = t
       i[name] = value
       d[user] = i.copy()
-      self.setConfProperty('ZMS.security.users',d.copy())
+      root.setConfProperty('ZMS.security.users',d.copy())
 
     # --------------------------------------------------------------------------
     #  AccessManager.getUserAttr:
     # --------------------------------------------------------------------------
-    def getUserAttr(self, user, name=None, default=None, flag=0):
+    def getUserAttr(self, user, name=None, default=None):
       user = getUserId(user)
-      d = self.getConfProperty('ZMS.security.users',{})
+      d = self.getSecurityUsers()
       if name is None:
         v = d.get(user,None)
       else:
         i = d.get(user,{})
         v = i.get(name,default)
-        # Process master.
-        if flag == 0:
-          portalMaster = self.getPortalMaster()
-          if portalMaster is not None:
-            w = portalMaster.getUserAttr(user, name, default, 1)
-            if type(w) in StringTypes:
-              if type(v) in StringTypes:
-                if len(v) == 0:
-                  v = w
-        # Process clients.
-        if flag == 0:
-          for portalClient in self.getPortalClients():
-            w = portalClient.getUserAttr(user, name, default)
-            if type(w) is dict:
-              if v is None:
-                v = w
-              elif type(v) is dict:
-                v = v.copy()
-                for node in w.keys():
-                  ob = portalClient.getLinkObj(node)
-                  newNode = self.getRefObjPath(ob)
-                  v[newNode] = w[node]
       return v
 
     # --------------------------------------------------------------------------
@@ -686,12 +728,13 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def delUserAttr(self, user):
       user = getUserId(user)
-      d = self.getConfProperty('ZMS.security.users',{})
+      root = self.breadcrumbs_obj_path()[0]
+      d = root.getConfProperty('ZMS.security.users',{})
       try:
         del d[user]
-        self.setConfProperty('ZMS.security.users',d)
+        root.setConfProperty('ZMS.security.users',d)
       except:
-        _globals.writeError(self,'[delUserAttr]: user=%s not deleted!'%user)
+        _globals.writeError(root,'[delUserAttr]: user=%s not deleted!'%user)
 
     # --------------------------------------------------------------------------
     #  AccessManager.initRoleDefs:
@@ -735,14 +778,15 @@ class AccessManager(AccessableContainer):
     #  AccessManager.getUserFolder:
     # --------------------------------------------------------------------------
     def getUserFolder(self):
-      docElmnt = self.breadcrumbs_obj_path()[0]
-      homeElmnt = docElmnt.getHome()
-      if 'acl_users' in homeElmnt.objectIds():
-        userFldr = homeElmnt.acl_users
+      root = self.breadcrumbs_obj_path()[0]
+      updateVersion(root)
+      home = root.getHome()
+      if 'acl_users' in home.objectIds():
+        userFldr = home.acl_users
       else:
         # Create default user-folder.
         userFldr = UserFolder()
-        homeElmnt._setObject(userFldr.id, userFldr)
+        home._setObject(userFldr.id, userFldr)
       return userFldr
 
 
@@ -757,9 +801,9 @@ class AccessManager(AccessableContainer):
     # ------------------------------------------------------------------------------
     def purgeLocalUsers(self, ob=None, valid_userids=[], invalid_userids=[]):
       rtn = ""
-      if ob is None: 
+      if ob is None:
         ob = self
-        d = self.getConfProperty('ZMS.security.users',{})
+        d = self.getSecurityUsers()
         for userid in d.keys():
           nodes = self.getUserAttr(userid,'nodes',{}) 
           for node in nodes.keys():
@@ -832,10 +876,12 @@ class AccessManager(AccessableContainer):
       self.setUserAttr(id, 'user_id_', user['user_id_'])
       
       # Insert node to user-properties.
-      nodes = self.getUserAttr(id,'nodes',{})
-      nodes[node] = {'langs':langs,'roles':roles}
-      nodes = nodes.copy()
-      self.setUserAttr(id,'nodes',nodes)
+      root = self.breadcrumbs_obj_path()[0]
+      nodes = root.getUserAttr(id,'nodes',{})
+      ob = self.getLinkObj(node)
+      newkey = root.getRefObjPath(ob)
+      nodes[newkey] = {'langs':langs,'roles':roles}
+      root.setUserAttr(id,'nodes',nodes)
       roles = list(roles)
       if 'ZMSAdministrator' in roles:
         roles.append('Manager')
@@ -853,16 +899,16 @@ class AccessManager(AccessableContainer):
     def delLocalUser(self, id, node):
       
       # Delete node from user-properties.
-      node = node.replace(self.getHome().id+'@','')
-      nodes = self.getUserAttr(id,'nodes',{})
-      if nodes.has_key(node): del nodes[node]
-      nodes = nodes.copy()
-      self.setUserAttr(id,'nodes',nodes)
+      root = self.breadcrumbs_obj_path()[0]
+      nodes = root.getUserAttr(id,'nodes',{})
+      if nodes.has_key(node): 
+        del nodes[node]
+        root.setUserAttr(id,'nodes',nodes)
       
       # Delete local roles in node.
-      ob = self.getLinkObj(node)
+      ob = root.getLinkObj(node)
       if ob is not None:
-        user_id = self.getUserAttr(id,'user_id_',id)
+        user_id = root.getUserAttr(id,'user_id_',id)
         delLocalRoles(ob,user_id)
 
 
@@ -1056,15 +1102,6 @@ class AccessManager(AccessableContainer):
                 self.delLocalUser(id, nodekey)
               except:
                 _globals.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
-              try:
-                docElmnt = self.getDocumentElement()
-                ob = self.getLinkObj(nodekey)
-                if ob is not None:
-                  docElmnt = ob.getDocumentElement()
-                  node = docElmnt.getRefObjPath(ob)
-                docElmnt.delLocalUser(id, nodekey)
-              except:
-                _globals.writeError(self,'can\'t delLocalUser from docElmnt for nodekey=%s'%nodekey)
             #-- Assemble message.
             message = self.getZMILangStr('MSG_DELETED')%int(len(nodekeys))
         

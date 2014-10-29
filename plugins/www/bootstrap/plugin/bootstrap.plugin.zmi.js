@@ -349,8 +349,9 @@ ZMI.prototype.initInputFields = function(container) {
 				var b = true;
 				var context = this;
 				// Button
-				if(self.btnClicked==getZMILangStr("BTN_BACK") ||
-						self.btnClicked==getZMILangStr("BTN_CANCEL")) {
+				if( self.btnClicked==getZMILangStr("BTN_BACK") ||
+						self.btnClicked==getZMILangStr("BTN_CANCEL") ||
+						self.btnClicked==getZMILangStr("BTN_DELETE") ) {
 					return b;
 				}
 				// Richedit

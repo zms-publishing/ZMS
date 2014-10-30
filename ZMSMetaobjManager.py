@@ -352,10 +352,6 @@ class ZMSMetaobjManager:
             if master_obs is not None:
               if master_obs.has_key(ob_id):
                 ob = master_obs[ob_id].copy()
-                for k in ob.keys():
-                  v = self.getConfProperty('%s.%s'%(ob_id,k),None)
-                  if v is not None:
-                    ob[k] = v
               else:
                 ob = {'id':ob_id,'type':'ZMSUnknown'}
               ob['acquired'] = acquired
@@ -431,7 +427,13 @@ class ZMSMetaobjManager:
     #  Returns meta-object specified by id.
     # --------------------------------------------------------------------------
     def getMetaobj(self, id):
-      return _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
+      ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
+      if ob is not None and ob.get('acquired',0) == 1:
+        for k in ob.keys():
+          v = self.getConfProperty('%s.%s'%(id,k),None)
+          if v is not None:
+            ob[k] = v
+      return ob
 
 
     # --------------------------------------------------------------------------

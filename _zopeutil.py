@@ -45,12 +45,14 @@ def getObject(container, id):
   ob = getattr(container,id,None)
   return ob
 
-def readObject(container, id):
+def readObject(container, id, default=None):
   """
   Read Zope-object from container.
   """
-  data = None
+  data = default
   ob = getObject(container,id)
+  if ob is None and default is not None:
+    return default
   if ob.meta_type in [ 'DTML Method', 'DTML Document']:
     data = ob.raw
   elif ob.meta_type == 'Page Template':

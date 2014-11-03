@@ -285,16 +285,16 @@ class ZMSMetacmdProvider(
       # Refresh Object.
       metaCmd = obs[0]
       container = self.aq_parent
-      src = getattr(metaCmd['home'],metaCmd['id'])
-      ob = _zopeutil.getObject(container,metaCmd['id'])
-      if src is not None and (ob is None or ob.bobobase_modification_time() < src.bobobase_modification_time()):
+      src = _zopeutil.getObject(metaCmd['home'],metaCmd['id'])
+      newData = _zopeutil.readObject( metaCmd['home'], metaCmd['id'],'')
+      data = _zopeutil.readObject( container,metaCmd['id'],'')
+      if src is not None and newData != data:
         newMethod = src.meta_type
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
-        newData = _zopeutil.readObject( metaCmd['home'], metaCmd['id'])
         _zopeutil.removeObject(container, newId, removeFile=False)
         _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
-      ob = getattr(container,metaCmd['id'],None)
+      ob = _zopeutil.getObject(container,metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
         metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'])

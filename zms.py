@@ -684,3 +684,19 @@ class ZMS(
       self.oParent = None
 
 ################################################################################
+
+from zope.browserresource.interfaces import IFileResource, IETag
+from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.interface import implementer
+
+from zope.component import adapter
+
+@adapter(IFileResource, IBrowserRequest)
+@implementer(IETag)
+class NoETagAdapter(object):
+
+    def __init__(self, context, request):
+        pass
+
+    def __call__(self, mtime, content):
+        return None

@@ -175,6 +175,7 @@
 								</li><!-- .zmi-item -->
 								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
 									<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())])">
+										<div class="grippy icon-reorder" title="Move"></div>
 										<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 											tal:content="structure python:childNode.renderShort(request)">
 											the rendered child-node
@@ -197,7 +198,6 @@
 												the info child-node
 											</div>
 										</div><!-- .right -->
-										<img class="grippy" src="/misc_/zms/spacer.gif"/>
 										<div class="clearboth"></div>
 									</li><!-- .zmi-item -->
 								</tal:block>

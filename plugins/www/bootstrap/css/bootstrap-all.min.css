@@ -472,6 +472,8 @@ ul.zmi-container{margin:0;padding:0;display:block}
 div#zmi-tab{background-color:#f5f5f5!important;border-bottom:1px solid #ddd}
 div.alert{margin:1em}
 img.grippy{width:6px!important;height:14px!important;background:url(/misc_/zms/grippy.png);vertical-align:middle;cursor:move}
+div.grippy{width:8px!important;height:16px!important;cursor:move;display:inline-block;color:#DDD;font-size:14px;overflow:hidden;position:absolute}
+.zmi-item.ui-sortable-helper{box-shadow:0 0 10px #ccc;background-color:white !important;opacity:.9}
 ul.zmi-container{width:75%;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0}
 ul.zmi-container .contentEditable{cursor:pointer}
 ul.zmi-container li.zmi-item,ul.zmi-container li.ui-state-highlight{list-style-type:none;float:none;clear:both}
@@ -698,7 +700,7 @@ div.right .btn .caret{}
  ul.zmi-container .zmi-item .center{width:100% !important}
  .zmi-item{border-left:0px solid #ddd}
  .right span,.right span.form-small,.right span.zmi-ids{display:none !important}
- img.grippy{visibility:hidden}
+ img.grippy,div.grippy{visibility:hidden}
  .navbar-brand .slogan{display:none}
  .navbar-nav>li{float:left}
  #zmi-logo{display:none}

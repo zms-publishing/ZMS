@@ -18,64 +18,64 @@
 	<input type="hidden" id="custom" name="custom" value="">
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix">
 	<ul class="zmi-container">
-							<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:'zmi_item_'">
-								<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
-                                     tal:content="structure python:childNode.renderShort(request)">
-									<h1>
-										<tal:block tal:content="structure python:here.getTitle(request)">the title</tal:block><br/>
-										<small tal:content="structure python:here.getDCDescription(request)">the description</small>
-									</h1>
-								</div><!-- .center -->
-								<div class="right">
-									<div class="btn-group zmi-action">
-										<span class="zmi-helper-hidden zmi-sort-id">0</span>
-										<button class="btn btn-default split-left">
-											<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-											<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
-										</button>
-										<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
-											<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-										</button>
-									</div><!-- .btn-group -->
-									<span class="zmi-ids">
-										<input type="checkbox" name="active" tal:attributes="title python:here.getZMILangStr('BTN_SLCTALL')+'/'+here.getZMILangStr('BTN_SLCTNONE')"/>
-									</span>
-									<div class="zmi-manage-main-change" tal:content="structure python:here.zmi_manage_main_change(childNode,request)">
-										the info child-node
-									</div>
-								</div><!-- .right -->
-								<div class="clearboth"></div>
-							</li>
+		<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:'zmi_item_'">
+			<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+				tal:content="structure python:childNode.renderShort(request)">
+				<h1>
+					<tal:block tal:content="structure python:here.getTitle(request)">the title</tal:block><br/>
+					<small tal:content="structure python:here.getDCDescription(request)">the description</small>
+				</h1>
+			</div><!-- .center -->
+			<div class="right">
+				<div class="btn-group zmi-action">
+					<span class="zmi-helper-hidden zmi-sort-id">0</span>
+					<button class="btn btn-default split-left">
+						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+						<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+					</button>
+					<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+					</button>
+				</div><!-- .btn-group -->
+				<span class="zmi-ids">
+					<input type="checkbox" name="active" tal:attributes="title python:here.getZMILangStr('BTN_SLCTALL')+'/'+here.getZMILangStr('BTN_SLCTNONE')"/>
+				</span>
+				<div class="zmi-manage-main-change" tal:content="structure python:here.zmi_manage_main_change(childNode,request)">
+					the info child-node
+				</div>
+			</div><!-- .right -->
+			<div class="clearboth"></div>
+		</li>
 	</ul><!-- .zmi-container -->
 	<tal:block tal:repeat="nodelist nodelists">
 		<ul tal:attributes="class python:' '.join(['zmi-container','zmi-sortable',nodelist[0]])" tal:condition="python:len(nodelist[1])>0">
 			<tal:block tal:repeat="childNode python:nodelist[1]">
-									<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable',nodelist[0][:-1]])">
-										<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
-											tal:content="structure python:childNode.renderShort(request)">
-											the rendered child-node
-										</div><!-- .center -->
-										<div class="right">
-											<div class="btn-group zmi-action">
-												<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-												<button class="btn btn-default split-left">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-													<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
-												</button>
-												<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-												</button>
-											</div><!-- .btn-group -->
-											<span class="zmi-ids">
-												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
-											</span>
-											<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
-												the info child-node
-											</div>
-										</div><!-- .right -->
-										<img class="grippy" src="/misc_/zms/spacer.gif" alt="Grippy"/>
-										<div class="clearboth"></div><!-- .clearboth -->
-									</li><!-- .zmi-item -->
+				<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable',nodelist[0][:-1]])">
+					<div class="grippy icon-reorder" title="Move"></div>
+					<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+						tal:content="structure python:childNode.renderShort(request)">
+						the rendered child-node
+					</div><!-- .center -->
+					<div class="right">
+						<div class="btn-group zmi-action">
+							<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
+							<button class="btn btn-default split-left">
+								<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+								<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+							</button>
+							<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+								<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+							</button>
+						</div><!-- .btn-group -->
+						<span class="zmi-ids">
+							<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
+						</span>
+						<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
+							the info child-node
+						</div>
+					</div><!-- .right -->
+					<div class="clearboth"></div><!-- .clearboth -->
+				</li><!-- .zmi-item -->
 			</tal:block>
 		</ul><!-- .zmi-container.zmi-sortable -->
 	</tal:block>

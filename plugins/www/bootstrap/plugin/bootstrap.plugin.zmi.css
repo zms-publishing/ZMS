@@ -218,12 +218,28 @@ div#zmi-tab {
 div.alert {
 	margin:1em;
 }
+/* OBESOLETE: img.grippy */
 img.grippy {
 	width:6px!important;
 	height:14px!important;
 	background:url(/misc_/zms/grippy.png);
 	vertical-align:middle;
 	cursor:move;
+}
+div.grippy {
+	width: 8px!important;
+	height: 16px!important;
+	cursor: move;
+	display: inline-block;
+	color: #DDD;
+	font-size: 14px;
+	overflow: hidden;
+	position: absolute;
+}
+.zmi-item.ui-sortable-helper {
+	box-shadow:0 0 10px #ccc;
+	background-color:white !important;
+	opacity:.9;
 }
 ul.zmi-container {
 	width:75%;
@@ -1225,7 +1241,8 @@ div.right .btn .caret {
 	.right span.zmi-ids {
 		display:none !important;
 	}
-	img.grippy {
+	img.grippy,
+	div.grippy {
 		visibility:hidden;
 	}
 	.navbar-brand .slogan {

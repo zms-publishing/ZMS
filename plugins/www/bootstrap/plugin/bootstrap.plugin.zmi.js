@@ -139,14 +139,14 @@ $(function(){
 		});
 
 	// Sortable
-	$("ul.zmi-container.zmi-sortable img.grippy").mouseover(function() {
+	$("ul.zmi-container.zmi-sortable div.grippy").mouseover(function() {
 		if (typeof self.zmiUlSortableInitialized == "undefined") {
 			self.zmiUlSortableInitialized = true;
 			pluginUI("ul.zmi-container.zmi-sortable",function() {
 				$("ul.zmi-container.zmi-sortable").sortable({
 					delay:500,
 					forcePlaceholderSize:true,
-					handle:'img.grippy',
+					handle:'div.grippy',
 					placeholder: "ui-state-highlight",
 					revert: true,
 					start: function(event, ui) {

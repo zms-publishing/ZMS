@@ -690,7 +690,7 @@ class ZMS(
 # which requires an ETagAdapter to be provided by the application.
 # Sent a patch upstream to lift this requirement, at which point this
 # workaround could be removed:
-#  https://github.com/zopefoundation/zope.browserresource/pull/1/files 
+#  https://github.com/zopefoundation/zope.browserresource/pull/1
 try:
     from zope.browserresource.interfaces import IFileResource, IETag
     from zope.publisher.interfaces.browser import IBrowserRequest

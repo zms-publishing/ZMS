@@ -1005,7 +1005,9 @@ div.ZMSGraphic {
 	background-color: transparent;
 	margin: 4px;
 }
-
+.zmi div.ZMSGraphic {
+	margin:0;
+}
 div.ZMSGraphic.left {
 	text-align:left;
 }
@@ -1277,7 +1279,7 @@ return context.getTextFormatDefault()]]>
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

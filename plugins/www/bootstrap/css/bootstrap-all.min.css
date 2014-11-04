@@ -473,11 +473,11 @@ div#zmi-tab{background-color:#f5f5f5!important;border-bottom:1px solid #ddd}
 div.alert{margin:1em}
 img.grippy{width:6px!important;height:14px!important;background:url(/misc_/zms/grippy.png);vertical-align:middle;cursor:move}
 div.grippy{width:8px!important;height:16px!important;cursor:move;display:inline-block;color:#DDD;font-size:14px;overflow:hidden;position:absolute}
-.zmi-item.ui-sortable-helper{box-shadow:0 0 10px #ccc;background-color:white !important;opacity:.9}
+.zmi-item.ui-sortable-helper{box-shadow:2px 5px 8px #ccc;background-color:white !important;opacity:.9}
 ul.zmi-container{width:75%;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0}
 ul.zmi-container .contentEditable{cursor:pointer}
 ul.zmi-container li.zmi-item,ul.zmi-container li.ui-state-highlight{list-style-type:none;float:none;clear:both}
-ul.zmi-container.zmi-sortable li.ui-state-highlight{min-height:4em;margin-bottom:0;width:80%;border:0;background:#428bca;border-radius:0}
+ul.zmi-container.zmi-sortable li.ui-state-highlight{min-height:4em;margin-bottom:0;width:80%;border:0;background:#D8DEE4;border-radius:0}
 ul.zmi-container li.zmi-item .inactive .contentEditable{filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40}
 ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable{border-top:none !important;font-size:large;padding-left:1em;color:#6B9EB8;padding-top:0;margin:0}
 table.table tbody tr td.data{white-space:nowrap;overflow:hidden}

@@ -237,7 +237,7 @@ div.grippy {
 	position: absolute;
 }
 .zmi-item.ui-sortable-helper {
-	box-shadow:0 0 10px #ccc;
+	box-shadow:2px 5px 8px #ccc;
 	background-color:white !important;
 	opacity:.9;
 }
@@ -262,7 +262,7 @@ ul.zmi-container.zmi-sortable li.ui-state-highlight {
 	margin-bottom: 0;
 	width: 80%;
 	border: 0;
-	background: #428bca;
+	background: #D8DEE4;
 	border-radius: 0;
 }
 ul.zmi-container li.zmi-item .inactive .contentEditable {

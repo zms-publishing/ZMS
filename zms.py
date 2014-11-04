@@ -685,18 +685,30 @@ class ZMS(
 
 ################################################################################
 
-from zope.browserresource.interfaces import IFileResource, IETag
-from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.interface import implementer
+try:
+    from zope.browserresource.interfaces import IFileResource, IETag
+    from zope.publisher.interfaces.browser import IBrowserRequest
+    from zope.interface import implementer
 
-from zope.component import adapter
+    from zope.component import adapter, provideAdapter
 
-@adapter(IFileResource, IBrowserRequest)
-@implementer(IETag)
-class NoETagAdapter(object):
+    @adapter(IFileResource, IBrowserRequest)
+    @implementer(IETag)
+    class NoETagAdapter(object):
 
-    def __init__(self, context, request):
-        pass
+        def __init__(self, context, request):
+            pass
 
-    def __call__(self, mtime, content):
-        return None
+        def __call__(self, mtime, content):
+            return None
+
+        @classmethod
+        def register(cls):
+            provideAdapter(cls)
+
+except ImportError:
+    # zope.browserresource before 3.11.0
+    class NoETagAdapter(object):
+        @classmethod
+        def register(cls):
+            pass

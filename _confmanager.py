@@ -595,14 +595,17 @@ class ConfManager(
       ##### Clients ####
       elif key == 'Clients':
         if btn == 'Change':
+          home = self.getHome()
           s = REQUEST.get('portal_master','').strip()
-          if s != self.getHome().id:
+          if s != home.id:
             self.setConfProperty('Portal.Master',s)
           l = []
-          for s in REQUEST.get('portal_clients','').split('\n'):
-            s = s.strip()
-            if s in self.getHome().objectIds(['Folder']):
-              l.append(s)
+          for id in REQUEST.get('portal_clients',[]):
+            folder = getattr(home,id,None)
+            if folder is not None:
+              for node in folder.objectValues('ZMS'):
+                node.setConfProperty('Portal.Master',home.id)
+                l.append(id)
           self.setConfProperty('Portal.Clients',l)
           message = self.getZMILangStr('MSG_CHANGED')
       

@@ -25,7 +25,7 @@ $ZMI.registerReady(function(){
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
 		<li><a href="#Manager" data-toggle="tab">Manager</a></li>
-		<li><a href="#Portal" data-toggle="tab">Portal</a></li>
+		<li><a href="#Clients" data-toggle="tab">Portal</a></li>
 		<li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
 		<li><a href="#Custom" data-toggle="tab">Miscellaneous</a></li>
 		<li><a href="#Maintenance" data-toggle="tab">Maintenance</a></li>
@@ -73,7 +73,7 @@ $ZMI.registerReady(function(){
 		</form>
 		</div>
 
-		<div class="tab-pane" id="Portal">
+		<div class="tab-pane" id="Clients">
 		<form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 			<input type="hidden" name="key" value="Clients">
@@ -88,7 +88,12 @@ $ZMI.registerReady(function(){
 			<div class="form-group">
 			<label class="col-sm-2 control-label" for="portal_master">Clients</label>
 				<div class="col-sm-10">
-					<textarea class="form-control" name="portal_clients" cols="40" rows="5" wrap="off"  tal:content="python:'\n'.join(here.getConfProperty('Portal.Clients',[]))"></textarea>
+					<tal:block tal:define="
+							home_folders python:here.getHome().objectValues('Folder');
+							client_homes python:filter(lambda x:len(x.objectValues('ZMS'))>0, home_folders);
+							optpl python:map(lambda x:(x.id,x.id),client_homes)">
+						<tal:block tal:content="structure python:here.getSelect(fmName='ClientsForm',elName='portal_clients',value=here.getConfProperty('Portal.Clients',[]),inputtype='multiselect',lang_str='Clients',optpl=optpl,REQUEST=request)">select</tal:block>
+					</tal:block>
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">

@@ -171,7 +171,7 @@ class ObjInputs:
   #	@param css		CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getSelect(self, fmName, elName, value, inputtype, lang_str, required, optpl, enabled, REQUEST, css='form-control', maxlen=30):
+  def getSelect(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, REQUEST=None, css='form-control', maxlen=30):
     if inputtype in ['select','multiline']:
       return self.zmi_input_select(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
     elif inputtype in ['multiselect']:

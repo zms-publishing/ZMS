@@ -357,24 +357,16 @@ def xmlOnUnknownEndTag(self, sTagName):
     #------------
     else:
       value = self.dTagStack.pop()
-      # ZMS < 2.11: titleshort => titlealt
-      if value is None and sTagName == 'titleshort' and 'titlealt' in self.getObjAttrs().keys():
-        sTagName = 'titlealt'
-        tag['name'] = sTagName
-        self.dTagStack.push( tag)
-        self.xmlOnUnknownEndTag( sTagName)
-      # ZMS >= 2.11
-      else:
-        if value is None: value = {'cdata':''}
-        cdata = value.get('cdata','')
-        cdata += '<' + tag['name'] 
-        for attr_name in attrs.keys():
-          attr_value = attrs.get( attr_name)
-          cdata += ' ' + attr_name + '="' + attr_value + '"'
-        cdata += '>' + tag['cdata'] 
-        cdata += '</' + tag['name'] + '>'
-        value['cdata'] = cdata
-        self.dTagStack.push(value)
+      if value is None: value = {'cdata':''}
+      cdata = value.get('cdata','')
+      cdata += '<' + tag['name'] 
+      for attr_name in attrs.keys():
+        attr_value = attrs.get( attr_name)
+        cdata += ' ' + attr_name + '="' + attr_value + '"'
+      cdata += '>' + tag['cdata'] 
+      cdata += '</' + tag['name'] + '>'
+      value['cdata'] = cdata
+      self.dTagStack.push(value)
     
     return 1 # accept matching end tag
   else:

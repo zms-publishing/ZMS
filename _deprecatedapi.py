@@ -38,9 +38,6 @@ def getLinkList_ZMSLinkElement(self, REQUEST=None, allow_none=0):
   dct['title'] = self.getObjProperty('title',REQUEST)
   dct['description'] = self.getObjProperty('attr_dc_description',REQUEST)
   dct['internal'] = _zreferableitem.isInternalLink(ref)
-  medline = dct['title'].lower()=='medline'
-  if medline:
-    dct['url'] = _zreferableitem.getMedlineLink(dct['url'])
   if dct['url'] is not None or allow_none:
     value.append(dct)
   return value

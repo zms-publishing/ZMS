@@ -52,33 +52,18 @@ __all__= ['ZMSGlobals']
 # ------------------------------------------------------------------------------
 #  MD5:
 # ------------------------------------------------------------------------------
-try: # Python >= 2.5
-  import hashlib
+import hashlib
 
-  class MD5DigestScheme:
+class MD5DigestScheme:
 
-    def encrypt(self, pw):
-      enc = hashlib.md5(pw)
-      enc = enc.hexdigest()
-      return enc
+  def encrypt(self, pw):
+    enc = hashlib.md5(pw)
+    enc = enc.hexdigest()
+    return enc
 
-    def validate(self, reference, attempt):
-      compare = self.encrypt(attempt)[:-1]
-      return (compare == reference)
-
-except: # Python < 2.5
-  import md5
-
-  class MD5DigestScheme:
-
-    def encrypt(self, pw):
-      enc = md5.new(pw)
-      enc = enc.hexdigest()
-      return enc
-
-    def validate(self, reference, attempt):
-      compare = self.encrypt(attempt)[:-1]
-      return (compare == reference)
+  def validate(self, reference, attempt):
+    compare = self.encrypt(attempt)[:-1]
+    return (compare == reference)
 
 AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 

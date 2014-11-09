@@ -18,10 +18,7 @@
 
 # Imports.
 from App.Common import package_home
-try: # Zope >= 2.13.0
-  from OFS.role import RoleManager
-except: 
-  from AccessControl.Role import RoleManager
+from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import re

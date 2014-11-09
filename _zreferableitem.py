@@ -28,19 +28,6 @@ import _globals
 import _objattrs
 
 # ------------------------------------------------------------------------------
-#  _zreferableitem.getMedlineLink:
-# ------------------------------------------------------------------------------
-def getMedlineLink(url):
-  try:
-    http_prefix = 'http://'
-    if url.find(http_prefix) == 0:
-      url = url[len(http_prefix):]
-    url = 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%int(url)
-  except:
-    pass
-  return url
-
-# ------------------------------------------------------------------------------
 #  _zreferableitem.isMailLink:
 # ------------------------------------------------------------------------------
 def isMailLink(url):

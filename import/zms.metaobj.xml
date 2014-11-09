@@ -1566,11 +1566,9 @@ return context.str_json(result)
 	<td>&nbsp;</td>
 	<td>
 		<label for="_url" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</label>
-		<small>(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> PMID)</small>
 	</td>
 	<td>
 		<label for="_title" tal:content="structure python:here.getZMILangStr('ATTR_TITLE')">Title*</label>
-		<small>(<tal:block tal:content="python:here.getZMILangStr('OR').lower()">or</tal:block> &quot;Medline&quot;)</small>
 	</td>
 	<td colspan="2">
 		<label for="_description" tal:content="structure python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</label>
@@ -2026,8 +2024,6 @@ if ref.startswith('{$') and ref.endswith('}'):
         return '/misc_/zms/internal_link_broken.gif'
 elif ref.startswith('mailto:'):
     return '/misc_/zms/mail_link.gif'
-elif title.lower()=='medline':
-    return '/misc_/zms/pubmed_small.gif'
 else:
     return '/misc_/zms/external_link.gif'
 
@@ -2055,12 +2051,8 @@ else:
 ##
 # --// BO attr_url //--
 
-title = zmscontext.attr('title')
 ref = zmscontext.attr('attr_ref')
-if title.lower()=='medline':
-  return 'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=%i&dopt=Abstract'%int(ref)
-else:
-  return ref
+return ref
 
 # --// EO attr_url //--
 ]]>
@@ -2122,7 +2114,7 @@ return zmscontext.attr('attr_dc_description')
 	</tal:block>
 	<div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
 			tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
-		<div class="title" tal:condition="python:title.lower()!='medline' and title">
+		<div class="title" tal:condition="title">
 			<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
 		</div>
 		<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">
@@ -2131,9 +2123,6 @@ return zmscontext.attr('attr_dc_description')
 		<div tal:condition="python:abstract" class="description" tal:content="structure abstract">
 			The abstract
 		</div>
-		<a tal:condition="python:title.lower()=='medline'" 
-			tal:attributes="href python:zmscontext.getLinkUrl(ref,request)"
-			target="_blank"><img  tal:attributes="src python:zmscontext.attr('attr_img_src')" border="0" alt="Medline" align="absmiddle" /></a>
 	</div>
 </tal:block>
 

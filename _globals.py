@@ -24,10 +24,7 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from types import StringTypes
 from traceback import format_exception
-try: # >= Zope-2.10
-  from zope.contenttype import guess_content_type
-except: # < Zope-2.10
-  from zope.app.content_types import guess_content_type
+from zope.contenttype import guess_content_type
 import cgi
 import copy
 import fnmatch
@@ -503,16 +500,10 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   # Open HTTP connection.
   import httplib
   writeLog( self, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
-  try:
-    if scheme == 'http':
-      conn = httplib.HTTPConnection(netloc,timeout=timeout)
-    else:
-      conn = httplib.HTTPSConnection(netloc,timeout=timeout)
-  except TypeError: # Python <2.6: urllib and httplib don't expose timeout
-    if scheme == 'http':
-      conn = httplib.HTTPConnection(netloc)
-    else:
-      conn = httplib.HTTPSConnection(netloc)
+  if scheme == 'http':
+    conn = httplib.HTTPConnection(netloc,timeout=timeout)
+  else:
+    conn = httplib.HTTPSConnection(netloc,timeout=timeout)
   
   # Set request-headers.
   if auth is not None:

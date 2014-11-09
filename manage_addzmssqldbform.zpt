@@ -17,7 +17,7 @@
 				<div class="btn-group">
 					<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
 					<button type="button" class="btn btn-default" 
-						tal:attributes="onclick python:'window.open($(\'span\',this).attr(\'data-url\')+\'/manage_main\')'"
+						tal:attributes="onclick python:'var url=$(\'span\',this).attr(\'data-url\')\073if(typeof url!=\'undefined\')window.open(url+\'/manage_main\')'"
 						tal:content="python:here.getZMILangStr('ACTION_SELECT')%'Connection ID'">Select option
 					</button>
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

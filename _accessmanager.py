@@ -303,7 +303,7 @@ class AccessableObject:
           return True
       public = not self.hasRestrictedAccess()
       parent = self.getParentNode()
-      if parent is not None and isinstance( parent, AccessableObject):
+      if parent is not None and parent != self and isinstance( parent, AccessableObject):
         public = public and parent.hasPublicAccess()
       return public
 
@@ -744,9 +744,8 @@ class AccessManager(AccessableContainer):
       for role in role_defs.keys():
         role_def = role_defs[role]
         # Add Local Role.
-        home = self.aq_parent
-        if not role in home.valid_roles():
-            home._addRole(role)
+        if not role in self.valid_roles():
+            self._addRole(role)
         # Set permissions for Local Role.
         self.manage_role(role_to_manage=role,permissions=role_permissions(self,role))
       

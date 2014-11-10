@@ -46,6 +46,7 @@ import _globals
 import _mimetypes
 import _pilutil
 import _xmllib
+import _zopeutil
 
 __all__= ['ZMSGlobals']
 
@@ -1381,7 +1382,23 @@ class ZMSGlobals:
 
     ############################################################################
     #
-    #  PLUGINS
+    #  Zope-Util
+    #
+    ############################################################################
+
+    """
+    Read Zope-object from container.
+    """
+    def readObject(self, ob, default=None):
+      data = default
+      if ob is not None:
+        data= _zopeutil.readObject(ob.aq_parent,absattr(ob.id),default)
+      return data
+
+
+    ############################################################################
+    #
+    #  Plugins
     #
     ############################################################################
 

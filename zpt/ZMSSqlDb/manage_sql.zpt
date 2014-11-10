@@ -11,7 +11,7 @@
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<div class="form-group">
 		<div class="col-lg-10">
-			<textarea class="form-control input-xxlarge perc90" name="el_data:text" cols="50" rows="25" tal:content="python:request.get('el_data','<Enter SQL here...>')">Enter SQL here...</textarea>
+			<textarea class="form-control input-xxlarge perc90" name="el_data:text" cols="50" rows="25" tal:content="python:request.get('el_data','')" placeholder="<Enter SQL here...>"></textarea>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="form-group">

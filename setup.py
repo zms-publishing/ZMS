@@ -3,8 +3,7 @@
 import os
 import sys
 import site
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import setup
 
 # @see https://docs.python.org/2/library/site.html
 # says site.getusersitepackages() "New in version 2.7" but it is still missing at

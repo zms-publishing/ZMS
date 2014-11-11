@@ -1,1 +1,3 @@
-graft hotfixes
+recursive-exclude .settings *
+recursive-exclude hotfixes *
+include AUTHORS

@@ -120,26 +120,6 @@ INSTALL_REQUIRES = [
  'zope.annotation',
  'btrees',
 ]
-  
-PACKAGE_DATA = []
-# Exclude special folders and files
-for dirpath, dirnames, filenames in os.walk('.'):
-  if (
-    '.'                           != dirpath and
-    '.settings'                   not in dirpath and
-    '.svn'                        not in dirpath and
-    'ZMS3.egg-info'               not in dirpath and
-    'dist'                        not in dirpath and
-    'hotfixes'                    not in dirpath
-    ): 
-    if filenames: 
-      for filename in filenames:
-        if filename != '.DS_Store':
-          PACKAGE_DATA.append(dirpath[2:]+'/%s' % filename)
-# Include files from root path (because '.' is exclude above)
-PACKAGE_DATA.append('configure.zcml')
-PACKAGE_DATA.append('*.zpt')
-PACKAGE_DATA.append('*.txt')
 
 CLASSIFIERS = [
   'Framework :: Zope2',
@@ -163,7 +143,6 @@ setup(
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
   package_dir           = {'Products.zms': '.'},
-  package_data          = {'Products.zms': PACKAGE_DATA},
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,

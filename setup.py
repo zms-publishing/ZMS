@@ -22,16 +22,8 @@ setup_path = os.path.dirname(__file__)
 
 README = open(os.path.join(setup_path, 'README')).read()
 
-#VERSION = __import__("zms").__version__
-VERSION = open(os.path.join(setup_path, 'version.txt')).read()
-if VERSION.find('.REV')>0:
-  raw_input('WARNING: Add the revision number by replacing REV in version.txt.\nPress Enter to continue...')
-else:
-  # remove revision and text from version info for PyPI
-  VERSION = VERSION.replace('ZMS3','').replace('-','').strip().split('.')
-  if len(VERSION)==4: VERSION.pop()
-  VERSION = '.'.join(VERSION)
-
+VERSION = open(os.path.join(setup_path, 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
+ 
 # Determined packages are required for a OS Independent installation
 # Binaries for Windows are available at this order(!) and these versions(!) only
 # For Windows Package-Manager "easy_install" MUST BE used, for *nix "pip"

@@ -23,22 +23,18 @@ README = open(os.path.join(setup_path, 'README')).read()
 
 VERSION = open(os.path.join(setup_path, 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
  
-# Determined packages are required for a OS Independent installation
-# Binaries for Windows are available at this order(!) and these versions(!) only
-# For Windows Package-Manager "easy_install" MUST BE used, for *nix "pip"
-# @see http://www.zms-publishing.com/download/probleme/index_ger.html#e5969
 INSTALL_REQUIRES = [
- 'ExtensionClass==2.13.2', # or 'ExtensionClass==4.1a1' for OS != 'win'
- 'Record==2.13.0',
- 'Missing==2.13.1',
- 'Acquisition==2.13.8',
- 'AccessControl==3.0.6',
- 'zope.site==3.9.2',
- 'zope.publisher==3.13.4',
+ 'ExtensionClass',
+ 'Record',
+ 'Missing',
+ 'Acquisition',
+ 'AccessControl',
+ 'zope.site',
+ 'zope.publisher',
  'zope.untrustedpython',
- 'zope.browserresource==4.0.1', # explicit due to hotfix
- 'Zope2==2.13.22',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
- 'Products.CMFCore==2.2.8', # @see configure.zcml <cmf:registerDirectory>
+ 'zope.browserresource>=4.0.2',  # @see https://github.com/zopefoundation/zope.browserresource/pull/1
+ 'Zope2>=2.13.22',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
+ 'Products.CMFCore>=2.2.8',  # @see configure.zcml <cmf:registerDirectory>
 
 # 'PIL==1.1.7', # @see https://pypi.python.org/pypi/PIL/
 # pip (>1.4.1) announces PIL as a insecure and unverifiable file, because PIL is not hosted at PyPI 
@@ -92,7 +88,7 @@ INSTALL_REQUIRES = [
  'zope.ptresource',
  'zope.proxy',
  'zope.processlifetime',
- 'zope.pagetemplate==4.0.4', # explicit due to hotfix
+ 'zope.pagetemplate>=4.0.4',
  'zope.location',
  'zope.exceptions',
  'zope.deferredimport',
@@ -105,7 +101,7 @@ INSTALL_REQUIRES = [
  'zope.browser',
  'zlog',
  'zexceptions',
- 'zdaemon==4.0.0', # explicit due to hotfix
+ 'zdaemon>=4.0.0',
  'tempstorage',
  'pytz',
  'initgroups',
@@ -145,15 +141,6 @@ PACKAGE_DATA.append('configure.zcml')
 PACKAGE_DATA.append('*.zpt')
 PACKAGE_DATA.append('*.txt')
 
-# Hotfixes to get Zope running
-# @see http://www.zms-publishing.com/download/probleme/index_ger.html#e6073
-DATA_FILES = [
-  (os.path.join(site_packages, 'Products/Five'), ['hotfixes/Products/Five/configure.zcml']),
-  (os.path.join(site_packages, 'Products/PageTemplates'), ['hotfixes/Products/PageTemplates/PageTemplate.py']),
-  (os.path.join(site_packages, 'zope/browserresource'), ['hotfixes/zope/browserresource/file.py']),
-  (os.path.join(site_packages, 'zdaemon'), ['hotfixes/zdaemon/zdctl.py'])
-]
-
 CLASSIFIERS = [
   'Framework :: Zope2',
   'Programming Language :: Python :: 2.7',
@@ -177,7 +164,6 @@ setup(
   packages              = ['Products.zms'],
   package_dir           = {'Products.zms': '.'},
   package_data          = {'Products.zms': PACKAGE_DATA},
-  data_files            = DATA_FILES,
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,

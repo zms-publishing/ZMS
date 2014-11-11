@@ -24,7 +24,7 @@ README = open(os.path.join(setup_path, 'README')).read()
 VERSION = open(os.path.join(setup_path, 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
  
 INSTALL_REQUIRES = [
- 'ExtensionClass',
+ 'ExtensionClass>=4.1a1',
  'Record',
  'Missing',
  'Acquisition',

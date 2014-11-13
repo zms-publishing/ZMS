@@ -297,14 +297,18 @@ class AccessableObject:
     #  AccessableObject.hasPublicAccess:
     # --------------------------------------------------------------------------
     def hasPublicAccess(self):
+      public = True
       if 'attr_dc_accessrights_public' in self.getObjAttrs().keys():
         req = {'lang':self.getPrimaryLanguage()}
-        if self.getObjProperty( 'attr_dc_accessrights_public', req) in [ 1, True]:
-          return True
-      public = not self.hasRestrictedAccess()
-      parent = self.getParentNode()
-      if parent is not None and parent != self and isinstance( parent, AccessableObject):
-        public = public and parent.hasPublicAccess()
+        public = public and self.getObjProperty( 'attr_dc_accessrights_public', req) in [ 1, True]
+      if not public:
+        return public
+      nodelist = self.breadcrumbs_obj_path()
+      nodelist.reverse()
+      for node in nodelist:
+        public = public and not node.hasRestrictedAccess()
+        if not public:
+          return public
       return public
 
 

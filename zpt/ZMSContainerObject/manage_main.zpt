@@ -5,6 +5,9 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+<tal:block tal:condition="python:here.meta_id=='ZMSTrashcan'"
+	><tal:block tal:define="garbage_collection python:here.run_garbage_collection()" 
+/></tal:block>
 
 <form class="form-container" tal:define="global 
 			id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];
@@ -12,11 +15,11 @@
 			pageelements python:filter(lambda x: not x.isPage(), childNodes);
 			pages        python:filter(lambda x: x.isPage(), childNodes);
 			nodelists    python:[['pageelements',pageelements],['pages',pages]]">
-	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
-	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-	<input type="hidden" id="_sort_id" name="_sort_id:int" value="">
-	<input type="hidden" id="custom" name="custom" value="">
-	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
+	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
+	<input type="hidden" id="_sort_id" name="_sort_id:int" value="" />
+	<input type="hidden" id="custom" name="custom" value="" />
+	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix" />
 	<ul class="zmi-container">
 		<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:'zmi_item_'">
 			<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"

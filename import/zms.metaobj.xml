@@ -3506,7 +3506,7 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
 
-<tr>
+<tr id="colgrouping">
 	<td style="padding-bottom:1em;">
 	 <div class="checkbox">
 		<label>

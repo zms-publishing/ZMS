@@ -24,20 +24,7 @@
 	padding:10px 0px 0px 15px;
 	position:absolute;
 }
-.zmi-manage-main-toggle {
-	display: block;
-	margin: 6px 0 0 9px;
-	cursor:pointer;
-}
-.zmi-manage-main-toggle .icon-info-sign {
-	color:#888;
-}
-.zmi-manage-main-toggle .icon-info-sign.active {
-	color:#08c;
-}
-.zmi-manage-main-change {
-	display:none;
-}
+
 p.well {
 	display:none;
 }
@@ -1393,12 +1380,24 @@ li.zmi-item span.zmi-ids {
 	margin: 6px;
 	vertical-align:top;
 }
+.zmi-manage-main-toggle {
+	display: inline-block;
+	margin: 0;
+	cursor:pointer;
+}
+.zmi-manage-main-toggle .icon-info-sign {
+	color:#888;
+	vertical-align: text-bottom;
+}
+.zmi-manage-main-toggle .icon-info-sign.active {
+	color:#08c;
+}
 .zmi-manage-main-change {
+	display:none;
 	color:#888;
 	font-size:11px;
-	margin:2px 0 0 8px;
+	margin:2px 0 0 10px;
 }
-
 ul.zmi-container li.zmi-item div.contentEditable {
 	min-height:60px;
 }

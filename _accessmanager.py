@@ -933,82 +933,90 @@ class AccessManager(AccessableContainer):
       messagekey = 'manage_tabs_message'
       id = REQUEST.get('id','')
       
-      # Cancel.
-      # -------
-      if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
-        id = ''
+      try:
+          # Cancel.
+          # -------
+          if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+            id = ''
+          
+          # Insert.
+          # -------
+          if btn == self.getZMILangStr('BTN_INSERT'):
+            if key=='obj':
+              id = REQUEST.get('newId').strip()
+              #-- Add local role.
+              home = self.aq_parent
+              if id not in home.valid_roles():
+                home._addRole(role=id,REQUEST=REQUEST)
+              #-- Prepare nodes from config-properties.
+              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              security_roles[id] = {}
+              security_roles = security_roles.copy()
+              self.setConfProperty('ZMS.security.roles',security_roles)
+              #-- Assemble message.
+              message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_ROLE')
+            elif key=='attr':
+              #-- Insert node to config-properties.
+              node = REQUEST.get('node')
+              roles = REQUEST.get('roles',[])
+              if not type(roles) is list: roles = [roles]
+              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              dict = security_roles.get(id,{})
+              dict[node] = {'roles':roles}
+              security_roles[id] = dict
+              security_roles = security_roles.copy()
+              self.setConfProperty('ZMS.security.roles',security_roles)
+              #-- Set permissions in node.
+              ob = self.getLinkObj(node)
+              permissions = []
+              for role in roles:
+                permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
+              ob.manage_role(role_to_manage=id,permissions=permissions)
+              #-- Assemble message.
+              message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
+          
+          # Delete.
+          # -------
+          elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
+            if key=='obj':
+              #-- Delete local role.
+              for home in [self,self.aq_parent]:
+                if id in home.valid_roles():
+                  home._delRoles(roles=[id],REQUEST=REQUEST)
+              #-- Delete nodes from config-properties.
+              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              if security_roles.has_key(id): del security_roles[id]
+              security_roles = security_roles.copy()
+              self.setConfProperty('ZMS.security.roles',security_roles)
+              id = ''
+            elif key=='attr':
+              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              dict = security_roles.get(id,{})
+              nodekeys = REQUEST.get('nodekeys',[])
+              for nodekey in nodekeys:
+                #-- Delete node from config-properties.
+                if dict.has_key(nodekey):
+                  del dict[nodekey]
+                #-- Delete permissions in node.
+                permissions = []
+                ob = self.getLinkObj(nodekey)
+                if ob is not None:
+                  ob.manage_role(role_to_manage=id,permissions=permissions)
+              security_roles[id] = dict
+              security_roles = security_roles.copy()
+              self.setConfProperty('ZMS.security.roles',security_roles)
+            #-- Assemble message.
+            message = self.getZMILangStr('MSG_DELETED')%int(1)
       
-      # Insert.
-      # -------
-      if btn == self.getZMILangStr('BTN_INSERT'):
-        if key=='obj':
-          id = REQUEST.get('newId').strip()
-          #-- Add local role.
-          home = self.aq_parent
-          if id not in home.valid_roles():
-            home._addRole(role=id,REQUEST=REQUEST)
-          #-- Prepare nodes from config-properties.
-          security_roles = self.getConfProperty('ZMS.security.roles',{})
-          security_roles[id] = {}
-          security_roles = security_roles.copy()
-          self.setConfProperty('ZMS.security.roles',security_roles)
-          #-- Assemble message.
-          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_ROLE')
-        elif key=='attr':
-          #-- Insert node to config-properties.
-          node = REQUEST.get('node')
-          roles = REQUEST.get('roles',[])
-          if not type(roles) is list: roles = [roles]
-          security_roles = self.getConfProperty('ZMS.security.roles',{})
-          dict = security_roles.get(id,{})
-          dict[node] = {'roles':roles}
-          security_roles[id] = dict
-          security_roles = security_roles.copy()
-          self.setConfProperty('ZMS.security.roles',security_roles)
-          #-- Set permissions in node.
-          ob = self.getLinkObj(node)
-          permissions = []
-          for role in roles:
-            permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
-          ob.manage_role(role_to_manage=id,permissions=permissions)
-          #-- Assemble message.
-          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
-      
-      # Delete.
-      # -------
-      elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
-        if key=='obj':
-          #-- Delete local role.
-          for home in [self,self.aq_parent]:
-            if id in home.valid_roles():
-              home._delRoles(roles=[id],REQUEST=REQUEST)
-          #-- Delete nodes from config-properties.
-          security_roles = self.getConfProperty('ZMS.security.roles',{})
-          if security_roles.has_key(id): del security_roles[id]
-          security_roles = security_roles.copy()
-          self.setConfProperty('ZMS.security.roles',security_roles)
-          id = ''
-        elif key=='attr':
-          #-- Delete node from config-properties.
-          node = REQUEST.get('nodekey')
-          security_roles = self.getConfProperty('ZMS.security.roles',{})
-          dict = security_roles.get(id,{})
-          if dict.has_key(node): del dict[node]
-          security_roles[id] = dict
-          security_roles = security_roles.copy()
-          self.setConfProperty('ZMS.security.roles',security_roles)
-          #-- Delete permissions in node.
-          permissions = []
-          ob = self.getLinkObj(node)
-          if ob is not None:
-            ob.manage_role(role_to_manage=id,permissions=permissions)
-        #-- Assemble message.
-        message = self.getZMILangStr('MSG_DELETED')%int(1)
+      except:
+        message = _globals.writeError(self,"[manage_roleProperties]")
+        messagekey = 'manage_tabs_error_message'
       
       # Return with message.
       if RESPONSE:
-        message = urllib.quote(message)
-        return RESPONSE.redirect('manage_users?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+        target = REQUEST.get( 'manage_target', 'manage_users')
+        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        return RESPONSE.redirect(target)
 
 
     ############################################################################

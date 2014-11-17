@@ -3868,7 +3868,7 @@ if key.startswith('table_'):
 					});
 			});
 		<tal:block tal:content="structure python:'</script>'"></tal:block>
-		<tal:block tal:content="structure python:'<style>'"></tal:block>
+		<tal:block tal:content="structure python:'<style type=\042text/css\042>'"></tal:block>
 			table.ZMSTable.sortable thead tr .header {
 				background-image: url(<tal:block tal:content="resourceurl"></tal:block>small.gif);
 				background-repeat: no-repeat;
@@ -3884,22 +3884,30 @@ if key.startswith('table_'):
 		<tal:block tal:content="structure python:'</style>'"></tal:block>
 		<tal:block tal:define="global dummy0 python:request.set('ZMSTable.standard_html',False)"></tal:block>
 	</tal:block>
-	<tal:block tal:condition="python:zmscontext.attr('colgroup')">
-		<tal:block tal:content="structure python:'<style>'"></tal:block>
-			<tal:block tal:repeat="col python:zmscontext.attr('widths')">
-				<tal:block tal:define="col_index repeat/col/index">
-					<tal:block tal:condition="python:col_index<len(cols) and cols[col_index]">
-						table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="python:col_index+1"></tal:block>), 
-						table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr td:nth-child(<tal:block tal:content="python:col_index+1"></tal:block>) 
-							{ width:<tal:block tal:content="python:str(cols[col_index])+'%'"/> }
-					</tal:block>
+	<tal:block tal:condition="python:zmscontext.attr('colgroup')" tal:define="d python:{}">
+		<tal:block tal:repeat="col python:zmscontext.attr('widths')">
+			<tal:block tal:define="col_index repeat/col/index">
+				<tal:block tal:condition="python:col_index<len(cols) and cols[col_index]">
+					<tal:block tal:define="dummy0 python:zmscontext.operator_setitem(d,col_index+1,str(cols[col_index])+'%')"></tal:block>
 				</tal:block>
 			</tal:block>
-		<tal:block tal:content="structure python:'</style>'"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:len(d.keys())>0">
+			<tal:block tal:content="structure python:'<style type=\042text/css\042>'"></tal:block>
+				<tal:block tal:repeat="k python:d.keys()">
+							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="k"></tal:block>), 
+							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr td:nth-child(<tal:block tal:content="k"></tal:block>) 
+								{ width:<tal:block tal:content="python:d[k]"></tal:block> }
+				</tal:block>
+			<tal:block tal:content="structure python:'</style>'"></tal:block>
+		</tal:block>
 	</tal:block>
-	<table tal:attributes="id python:zmscontext.id; class python:' '.join([zmscontext.meta_id]+[[],['sortable']][sortable]); summary python:summary">
-		<caption tal:condition="python:caption" tal:attributes="align align" tal:content="structure caption">The caption</caption>
+  <tal:block tal:condition="python:zmscontext.attr('caption')">
+    <h2 class="small-head" tal:content="caption">Überschrift</h2>
+  </tal:block>
+	<table tal:attributes="id python:zmscontext.id; class python:' '.join(['bs-table']+[[],['sortable']][sortable])">
 		<tal:block tal:repeat="row table">
+			<caption tal:condition="python:caption" tal:attributes="align align" tal:content="structure caption">The caption</caption>
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
 			<tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
 			<tal:block tal:condition="repeat/row/odd"><tal:block tal:define="global tr_class python:'odd'"></tal:block></tal:block>
@@ -3968,7 +3976,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.3]]></item>
+          <item key="revision"><![CDATA[3.0.5]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

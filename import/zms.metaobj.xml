@@ -3903,7 +3903,7 @@ if key.startswith('table_'):
 			<tal:block tal:content="structure python:'</style>'"></tal:block>
 		</tal:block>
 	</tal:block>
-	<table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable bs-table']+[[],['sortable']][sortable])); summary python:summary">
+	<table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable bs-table']+[[],['sortable']][sortable]); summary summary">
 		<caption tal:condition="python:caption" tal:attributes="align align" tal:content="structure caption">The caption</caption>
 		<tal:block tal:repeat="row table">
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
@@ -3975,7 +3975,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.6]]></item>
+          <item key="revision"><![CDATA[3.0.7]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -92,7 +92,7 @@ class ConfDict:
 # ------------------------------------------------------------------------------
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
-def initConf(self, profile, REQUEST):
+def initConf(self, profile):
   _globals.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
   files = self.getConfFiles()
@@ -101,20 +101,20 @@ def initConf(self, profile, REQUEST):
     if label.startswith(profile + '.'):
       _globals.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
-        self.importConfPackage(filename,REQUEST,createIfNotExists)
+        self.importConfPackage(filename,createIfNotExists)
       elif filename.find('.xml') > 0:
-        self.importConf(filename,REQUEST,createIfNotExists)
+        self.importConf(filename,createIfNotExists=createIfNotExists)
 
 
 # ------------------------------------------------------------------------------
 #  _confmanager.updateConf:
 # ------------------------------------------------------------------------------
-def updateConf(self, REQUEST):
+def updateConf(self):
   createIfNotExists = False
   filenames = self.getConfFiles().keys()
   for filename in filenames:
     try:
-      self.importConf(filename,REQUEST,createIfNotExists)
+      self.importConf(filenames)
     except:
       pass
 
@@ -153,7 +153,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
-    def importConfPackage(self, file, REQUEST, createIfNotExists=0):
+    def importConfPackage(self, file, createIfNotExists=0):
       if type( file) is str:
         if file.startswith('http://'):
           file = StringIO( self.http_import(file))
@@ -162,7 +162,7 @@ class ConfManager(
       files = _fileutil.getZipArchive( file)
       for f in files:
         if not f.get('isdir'):
-          self.importConf(f,REQUEST,createIfNotExists)
+          self.importConf(f,createIfNotExists=createIfNotExists)
 
 
     # --------------------------------------------------------------------------
@@ -184,25 +184,29 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.importConf:
     # --------------------------------------------------------------------------
-    def importConf(self, file, REQUEST, createIfNotExists=0):
+    def importConf(self, file, createIfNotExists=0, syncIfNecessary=True):
       message = ''
+      syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
       if filename.find('.charfmt.') > 0:
-        self.format_manager.importCharformatXml(xmlfile, REQUEST, createIfNotExists)
+        self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
       elif filename.find('.filter.') > 0:
-        _filtermanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
+        _filtermanager.importXml(self, xmlfile, createIfNotExists)
       elif filename.find('.metadict.') > 0:
-        self.getMetaobjManager().importMetadictXml(xmlfile, REQUEST, createIfNotExists)
+        self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
+        syncNecessary = True
       elif filename.find('.metaobj.') > 0:
-        self.getMetaobjManager().importMetaobjXml(xmlfile, REQUEST, createIfNotExists)
+        self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
+        syncNecessary = True
       elif filename.find('.metacmd.') > 0:
-        self.getMetacmdManager().importXml(xmlfile, REQUEST, createIfNotExists)
+        self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
       elif filename.find('.langdict.') > 0:
-        _multilangmanager.importXml(self, xmlfile, REQUEST, createIfNotExists)
+        _multilangmanager.importXml(self, xmlfile, createIfNotExists)
       elif filename.find('.textfmt.') > 0:
-        self.format_manager.importTextformatXml(xmlfile, REQUEST, createIfNotExists)
+        self.format_manager.importTextformatXml(xmlfile, createIfNotExists)
       xmlfile.close()
-      self.synchronizeObjAttrs()
+      if syncIfNecessary and syncNecessary:
+        self.synchronizeObjAttrs()
       return message
 
 
@@ -567,10 +571,10 @@ class ConfManager(
           createIfNotExists = 1
           if f:
             filename = f.filename
-            self.importConfPackage( f, REQUEST, createIfNotExists)
+            self.importConfPackage( f, createIfNotExists)
           else:
             filename = REQUEST['init']
-            self.importConfPackage( filename, REQUEST, createIfNotExists)
+            self.importConfPackage( filename, createIfNotExists)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       ##### History ####

@@ -210,7 +210,7 @@ class ZMSMetaobjManager:
       _globals.writeBlock( self, '[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       return id
 
-    def importMetaobjXml(self, xml, REQUEST=None, createIfNotExists=1, createIdsFilter=None):
+    def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = self.parseXmlString( xml, mediadbStorable=False)

@@ -43,7 +43,7 @@ def _importXml(self, item, createIfNotExists=1):
         lang_dict[key][langId] = item[langId]
     self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
 
-def importXml(self, xml, REQUEST=None, createIfNotExists=1):
+def importXml(self, xml, createIfNotExists=1):
   if type(xml) is not str:
     xml = xml.read()
   value = self.parseXmlString(xml)
@@ -626,8 +626,7 @@ class MultiLanguageManager:
             importXml(self,xml=f)
           else:
             filename = REQUEST['init']
-            createIfNotExists = 1
-            self.importConf(filename, REQUEST, createIfNotExists)
+            self.importConf(filename, createIfNotExists=1)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.

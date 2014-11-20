@@ -63,7 +63,7 @@ class ZMSMetadictManager:
           if metaObj is not None  and id not in self.getMetadictAttrs(meta_id):
             self.setMetaobjAttr(meta_id,None,newId=id,newType=id)
 
-    def importMetadictXml(self, xml, REQUEST=None, createIfNotExists=1):
+    def importMetadictXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
         for item in v:
@@ -327,8 +327,7 @@ class ZMSMetadictManager:
               self.importMetadictXml(xml=f)
             else:
               filename = REQUEST['init']
-              createIfNotExists = 1
-              self.importConf(filename, REQUEST, createIfNotExists)
+              self.importConf(filename, createIfNotExists=1)
             message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
           
           # Move to.

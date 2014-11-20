@@ -166,7 +166,7 @@ def recurse_updateVersionBuild(docElmnt, self, REQUEST):
 # ------------------------------------------------------------------------------
 def recurse_updateVersionPatch(docElmnt, self, REQUEST):
   message = ''
-  # _confmanager.updateConf(self,REQUEST)
+  # _confmanager.updateConf(self)
   # self.getSequence()
   # self.synchronizeObjAttrs()
   # self.initRoleDefs()
@@ -244,10 +244,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.recreateCatalog(lang)
 
   ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'zms', REQUEST)
+  _confmanager.initConf(obj, 'zms')
 
   ### Init default-configuration.
-  _confmanager.initConf(obj, 'default', REQUEST)
+  _confmanager.initConf(obj, 'default')
 
   ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()
@@ -311,40 +311,40 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.test', REQUEST)
+      _confmanager.initConf(obj, 'com.zms.test')
       # Init content.
       initContent(obj,'com.zms.test.content.xml',REQUEST)
 
     #-- Galleria
     if REQUEST.get('specobj_galleria',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.jquery.galleria', REQUEST)
+      _confmanager.initConf(obj, 'com.zms.jquery.galleria')
       # Init content.
       initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
 
     #-- Example Database
     if REQUEST.get('specobj_exampledb',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'exampledb', REQUEST)
+      _confmanager.initConf(obj, 'exampledb')
       # Init content.
       initContent(obj,'exampledb.content.xml',REQUEST)
 
     #-- Bulletin Board
     if REQUEST.get('specobj_discussions',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'discussions', REQUEST)
+      _confmanager.initConf(obj, 'discussions')
       # Init content.
       initContent(obj,'discussions.content.xml',REQUEST)
 
     #-- Newsletter
     if REQUEST.get('specobj_newsletter',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'newsletter', REQUEST)
+      _confmanager.initConf(obj, 'newsletter')
 
     #-- Calendar
     if REQUEST.get('specobj_calendar',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'calendar', REQUEST)
+      _confmanager.initConf(obj, 'calendar')
 
     ##### Access ####
     obj.synchronizePublicAccess()

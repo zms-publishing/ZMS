@@ -164,7 +164,7 @@ class ZMSMetacmdProvider(
           newNodes)
 
 
-    def importXml(self, xml, REQUEST=None, createIfNotExists=1):
+    def importXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
         for item in v:
@@ -451,8 +451,7 @@ class ZMSMetacmdProvider(
             self.importXml(xml=f)
           else:
             filename = REQUEST['init']
-            createIfNotExists = 1
-            self.importConf(filename, REQUEST, createIfNotExists)
+            self.importConf(filename, createIfNotExists=1)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
         
         # Insert.

@@ -78,7 +78,7 @@ def _importXml(self, item, createIfNotExists=1):
   else:
     _globals.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
 
-def importXml(self, xml, REQUEST=None, createIfNotExists=1):
+def importXml(self, xml, createIfNotExists=1):
   v = self.parseXmlString(xml)
   if type(v) is list:
     for item in v:
@@ -821,8 +821,7 @@ class FilterManager:
           importXml(self, xml=f)
         else:
           filename = REQUEST['init']
-          createIfNotExists = 1
-          self.importConf(filename, REQUEST, createIfNotExists)
+          self.importConf(filename, createIfNotExists=1)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Insert.
@@ -903,8 +902,7 @@ class FilterManager:
           importXml(self, xml=f)
         else:
           filename = REQUEST['init']
-          createIfNotExists = 1
-          self.importConf(filename, REQUEST, createIfNotExists)
+          self.importConf(filename, createIfNotExists=1)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
 
       # Insert.

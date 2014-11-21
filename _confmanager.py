@@ -114,7 +114,7 @@ def updateConf(self):
   filenames = self.getConfFiles().keys()
   for filename in filenames:
     try:
-      self.importConf(filenames)
+      self.importConf(filename)
     except:
       pass
 

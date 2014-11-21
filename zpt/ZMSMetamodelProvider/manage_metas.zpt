@@ -153,6 +153,13 @@ function zmiFormSubmit(sender,d) {
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
 					<textarea class="form-control input-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS')" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>
 				</div>
+				<div tal:condition="python:metadictAttr['type'] in ['boolean']">
+					<select tal:attributes="name python:'attr_default_%s'%metadictAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small','form-control input-sm'])">
+						<tal:block tal:repeat="option python:[True,False]">
+							<option tal:attributes="value python:int(option); selected python:['','selected'][here.boolint(str(metadictAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
+						</tal:block>
+					</select>
+				</div>
 			</td>
 		</tal:block>
 		</tal:block>

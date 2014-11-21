@@ -253,7 +253,7 @@
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
-								<div class="single-line" tal:condition="python:objAttr['type'] in ['boolean']">
+								<div tal:condition="python:objAttr['type'] in ['boolean']">
 									<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])">
 										<tal:block tal:repeat="option python:[True,False]">
 											<option tal:attributes="value python:int(option); selected python:['','selected'][here.boolint(str(objAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>

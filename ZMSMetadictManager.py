@@ -120,6 +120,7 @@ class ZMSMetadictManager:
       ob['repetitive'] = ob.get('repetitive',0)
       ob['keys'] = ob.get('keys',[])
       ob['custom'] = ob.get('custom','')
+      ob['default'] = ob.get('default','')
       ob['errors'] = ob.get('errors','')
       return ob
 
@@ -147,7 +148,7 @@ class ZMSMetadictManager:
     # --------------------------------------------------------------------------
     def setMetadictAttr(self, oldId, newId, newAcquired, newName='', newType='', \
           newMandatory=0, newMultilang=1, newRepetitive=0, newCustom='', \
-          newKeys=[]):
+          newKeys=[], newDefault=''):
       """
       Set/add meta-attribute with specified values.
       @param oldId: Old id
@@ -184,6 +185,7 @@ class ZMSMetadictManager:
       newValues['repetitive'] = newRepetitive
       newValues['keys'] = newKeys
       newValues['custom'] = newCustom
+      newValues['default'] = newDefault
       # Update attribute.
       obs.insert(i,newValues)
       obs.insert(i,newId)
@@ -252,7 +254,8 @@ class ZMSMetadictManager:
                 newRepetitive = REQUEST.get('attr_repetitive_%s'%oldId, 0)
                 newKeys = self.string_list(REQUEST.get('attr_keys_%s'%oldId,''), '\n')
                 newCustom = REQUEST.get('attr_custom_%s'%oldId, '')
-                self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys)
+                newDefault = REQUEST.get('attr_default_%s'%oldId, '')
+                self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys, newDefault)
             message += self.getZMILangStr('MSG_CHANGED')
             newId = REQUEST['_id'].strip()
             newAcquired = 0

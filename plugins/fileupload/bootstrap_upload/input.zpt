@@ -3,7 +3,7 @@
 <tal:block tal:replace="nothing">
 ################################################################################
 ### Bootstrap Fileupload // AT WORK
-###  please refer to http://jasny.github.io/bootstrap/javascript.html#fileupload
+###  please refer to http://jasny.github.io/bootstrap/javascript/#fileinput
 ################################################################################
 </tal:block>
 
@@ -13,20 +13,18 @@
 <tal:block tal:define="dummy0 python:request.set('f_zmiFileUpload',False)"></tal:block>
 </tal:block>
 
-<div title="WARNING: PROTOTYPE DOES NOT WORK"
-	class="fileupload fileupload-new" data-provides="fileupload">
-	<div class="input-append">
-		<div class="form-control uneditable-input" style="width:180px;float:left;">
-			<i class="icon-file fileupload-exists"></i>
-			<span class="fileupload-preview"></span>
-		</div>
-		<span class="btn btn-primary btn-file">
-			<span class="fileupload-new">Select file</span>
-			<span class="fileupload-exists">Change</span>
-			<input tal:attributes="id options/elName; name options/elName" type="file" />
-		</span>
-		<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+<div  title="WARNING: PROTOTYPE DOES NOT WORK"
+	class="fileinput fileinput-new input-group" data-provides="fileinput">
+	<div class="form-control" data-trigger="fileinput">
+		<i class="icon icon-file glyphicon glyphicon-file fileinput-exists"></i>
+		<span class="fileinput-filename"></span>
 	</div>
+	<span class="input-group-addon btn btn-default btn-file">
+		<span class="fileinput-new">Select file</span>
+		<span class="fileinput-exists">Change</span>
+		<input type="file" name="..." />
+	</span>
+	<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 </div>
 
 <!-- EO plugins/fileupload/bootstrap_upload/input.zpt -->

@@ -1,38 +1,85 @@
 /*!
- * Bootstrap v2.3.1-j6
- *
- * Copyright 2012 Twitter, Inc
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world by @mdo and @fat, extended by @ArnoldDaniels.
+ * Jasny Bootstrap v3.1.0 (http://jasny.github.com/bootstrap)
+ * Copyright 2011-2014 Arnold Daniels.
+ * Licensed under Apache-2.0 (https://github.com/jasny/bootstrap/blob/master/LICENSE)
  */
-.clearfix {
-  *zoom: 1;
+
+.nav-tabs-bottom {
+  border-bottom: 0;
+  border-top: 1px solid #dddddd;
 }
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-  line-height: 0;
+.nav-tabs-bottom > li {
+  margin-bottom: 0;
+  margin-top: -1px;
 }
-.clearfix:after {
-  clear: both;
+.nav-tabs-bottom > li > a {
+  border-radius: 0 0 4px 4px;
 }
-.hide-text {
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
+.nav-tabs-bottom > li > a:hover,
+.nav-tabs-bottom > li > a:focus,
+.nav-tabs-bottom > li.active > a,
+.nav-tabs-bottom > li.active > a:hover,
+.nav-tabs-bottom > li.active > a:focus {
+  border: 1px solid #dddddd;
+  border-top-color: transparent;
 }
-.input-block-level {
-  display: block;
-  width: 100%;
-  min-height: 30px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.nav-tabs-left {
+  border-bottom: 0;
+  border-right: 1px solid #dddddd;
+}
+.nav-tabs-left > li {
+  margin-bottom: 0;
+  margin-right: -1px;
+  float: none;
+}
+.nav-tabs-left > li > a {
+  border-radius: 4px 0 0 4px;
+  margin-right: 0;
+  margin-bottom: 2px;
+}
+.nav-tabs-left > li > a:hover,
+.nav-tabs-left > li > a:focus,
+.nav-tabs-left > li.active > a,
+.nav-tabs-left > li.active > a:hover,
+.nav-tabs-left > li.active > a:focus {
+  border: 1px solid #dddddd;
+  border-right-color: transparent;
+}
+.row > .nav-tabs-left {
+  padding-right: 0;
+  padding-left: 15px;
+  margin-right: -1px;
+  position: relative;
+  z-index: 1;
+}
+.row > .nav-tabs-left + .tab-content {
+  border-left: 1px solid #dddddd;
+}
+.nav-tabs-right {
+  border-bottom: 0;
+  border-left: 1px solid #dddddd;
+}
+.nav-tabs-right > li {
+  margin-bottom: 0;
+  margin-left: -1px;
+  float: none;
+}
+.nav-tabs-right > li > a {
+  border-radius: 0 4px 4px 0;
+  margin-left: 0;
+  margin-bottom: 2px;
+}
+.nav-tabs-right > li > a:hover,
+.nav-tabs-right > li > a:focus,
+.nav-tabs-right > li.active > a,
+.nav-tabs-right > li.active > a:hover,
+.nav-tabs-right > li.active > a:focus {
+  border: 1px solid #dddddd;
+  border-left-color: transparent;
+}
+.row > .nav-tabs-right {
+  padding-left: 0;
+  padding-right: 15px;
 }
 .btn-file {
   overflow: hidden;
@@ -46,87 +93,94 @@
   margin: 0;
   opacity: 0;
   filter: alpha(opacity=0);
-  transform: translate(-300px, 0) scale(4);
   font-size: 23px;
+  height: 100%;
+  width: 100%;
   direction: ltr;
   cursor: pointer;
 }
-.fileupload {
+.fileinput {
   margin-bottom: 9px;
+  display: inline-block;
 }
-.fileupload .uneditable-input {
+.fileinput .form-control {
+  padding-top: 7px;
+  padding-bottom: 5px;
   display: inline-block;
   margin-bottom: 0px;
   vertical-align: middle;
   cursor: text;
 }
-.fileupload .thumbnail {
+.fileinput .thumbnail {
   overflow: hidden;
   display: inline-block;
   margin-bottom: 5px;
   vertical-align: middle;
   text-align: center;
 }
-.fileupload .thumbnail > img {
-  display: inline-block;
-  vertical-align: middle;
+.fileinput .thumbnail > img {
   max-height: 100%;
 }
-.fileupload .btn {
+.fileinput .btn {
   vertical-align: middle;
 }
-.fileupload-exists .fileupload-new,
-.fileupload-new .fileupload-exists {
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
   display: none;
 }
-.fileupload-inline .fileupload-controls {
+.fileinput-inline .fileinput-controls {
   display: inline;
 }
-.fileupload-new .input-append .btn-file {
-  -webkit-border-radius: 0 3px 3px 0;
-  -moz-border-radius: 0 3px 3px 0;
+.fileinput-filename {
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+}
+.form-control .fileinput-filename {
+  vertical-align: bottom;
+}
+.fileinput.input-group {
+  display: table;
+}
+.fileinput.input-group > * {
+  position: relative;
+  z-index: 2;
+}
+.fileinput.input-group > .btn-file {
+  z-index: 1;
+}
+.fileinput-new.input-group .btn-file,
+.fileinput-new .input-group .btn-file {
+  border-radius: 0 4px 4px 0;
+}
+.fileinput-new.input-group .btn-file.btn-xs,
+.fileinput-new .input-group .btn-file.btn-xs,
+.fileinput-new.input-group .btn-file.btn-sm,
+.fileinput-new .input-group .btn-file.btn-sm {
   border-radius: 0 3px 3px 0;
 }
-.thumbnail-borderless .thumbnail {
-  border: none;
-  padding: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+.fileinput-new.input-group .btn-file.btn-lg,
+.fileinput-new .input-group .btn-file.btn-lg {
+  border-radius: 0 6px 6px 0;
 }
-.fileupload-new.thumbnail-borderless .thumbnail {
-  border: 1px solid #ddd;
+.form-group.has-warning .fileinput .fileinput-preview {
+  color: #8a6d3b;
 }
-.control-group.warning .fileupload .uneditable-input {
-  color: #a47e3c;
-  border-color: #a47e3c;
+.form-group.has-warning .fileinput .thumbnail {
+  border-color: #faebcc;
 }
-.control-group.warning .fileupload .fileupload-preview {
-  color: #a47e3c;
+.form-group.has-error .fileinput .fileinput-preview {
+  color: #a94442;
 }
-.control-group.warning .fileupload .thumbnail {
-  border-color: #a47e3c;
+.form-group.has-error .fileinput .thumbnail {
+  border-color: #ebccd1;
 }
-.control-group.error .fileupload .uneditable-input {
-  color: #b94a48;
-  border-color: #b94a48;
+.form-group.has-success .fileinput .fileinput-preview {
+  color: #3c763d;
 }
-.control-group.error .fileupload .fileupload-preview {
-  color: #b94a48;
+.form-group.has-success .fileinput .thumbnail {
+  border-color: #d6e9c6;
 }
-.control-group.error .fileupload .thumbnail {
-  border-color: #b94a48;
-}
-.control-group.success .fileupload .uneditable-input {
-  color: #468847;
-  border-color: #468847;
-}
-.control-group.success .fileupload .fileupload-preview {
-  color: #468847;
-}
-.control-group.success .fileupload .thumbnail {
-  border-color: #468847;
+.input-group-addon:not(:first-child) {
+  border-left: 0;
 }

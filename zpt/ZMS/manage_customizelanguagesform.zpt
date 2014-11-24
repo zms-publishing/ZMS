@@ -88,7 +88,7 @@ function zmiFormSubmit(sender,d) {
 					<td>
 						<select class="form-control input-sm" tal:attributes="name python:'%s_parent'%langId">
 							<option value="" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_PRIMARY')">primary (*)</option>
-							<option tal:repeat="lang langIds" tal:attributes="value lang; selected python:['','selected'][int(langObj.get('parent')==lang)]" tal:content="python:here.getLanguageLabel(lang)">lang</option>
+							<option tal:repeat="lang python:filter(lambda x:x!=langId,langIds)" tal:attributes="value lang; selected python:['','selected'][int(langObj.get('parent')==lang)]" tal:content="python:here.getLanguageLabel(lang)">lang</option>
 						</select>
 					</td>
 					<td>

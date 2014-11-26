@@ -82,7 +82,7 @@ function zmiModalInsertUserOpen(context) {
 			<div class="form-group">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Save</button>
-				</div><!-- .col-sm-10 -->
+				</div><!-- .controls.save -->
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
@@ -166,20 +166,26 @@ function zmiModalInsertUserOpen(context) {
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:condition="python:userName in userNames"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 			&nbsp;&nbsp;
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-		</div>
+		</div><!-- .controls.save -->
 	</div><!-- .form-group -->
 </tal:block>
 </tal:block>
 
 <tal:block tal:condition="editRole">
 <tal:block tal:define="global nodes python:here.getConfProperty('ZMS.security.roles',{}).get(request['id'],{})">
-	<legend><tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block></legend>
+	<legend>
+		<a onclick="self.location.reload()">
+			<tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block>
+		</a>
+	</legend>
 	<div class="form-group">
-		<div class="controls">
-			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
-			&nbsp;&nbsp;
+		<div class="controls save">
+			<tal:block tal:condition="python:len(nodes.keys())==0">
+				<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+				&nbsp;&nbsp;
+			</tal:block>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-		</div>
+		</div><!-- .controls.save -->
 	</div><!-- .form-group -->
 </tal:block>
 </tal:block>

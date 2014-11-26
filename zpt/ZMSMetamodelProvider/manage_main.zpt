@@ -323,7 +323,7 @@
 		</tr>
 		<tr tal:repeat="action python:['insert','delete']">
 			<td nowrap="nowrap">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;	<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
 			</td>
 			<td style="text-align:center">
 				<tal:block tal:condition="python:action=='insert'"

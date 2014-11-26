@@ -76,7 +76,9 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
             ob_access = context.getObjProperty('manage_access',REQUEST)
             can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
             metaObj = container.getMetaobj( context.meta_id)
-            can_delete = can_delete and ((metaObj.get( 'access') is None) or (metaObj.get( 'access', {}).get( 'delete') is None) or (len( container.intersection_list( metaObj.get( 'access').get( 'delete'), context.getUserRoles(auth_user))) > 0))
+            mo_access = metaObj.get('access',{})
+            mo_access_deny = mo_access.get('delete_deny',[])
+            can_delete = can_delete and len( container.intersection_list( mo_access_deny, container.getUserRoles(auth_user))) == 0
           if can_delete:
             actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs','icon-trash'))
         #-- Action: Cut.
@@ -159,16 +161,14 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       can_insert = True
       if objAttr['type']=='*':
         can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), container.getUserRoles(auth_user))) > 0))
-        mo_access = metaObj.get( 'access')
-        if type(mo_access) is dict:
-          mo_access_insert_roles = mo_access.get('insert')
-          if type(mo_access_insert_roles) is list:
-            can_insert = can_insert and len( container.intersection_list( mo_access_insert_roles, container.getUserRoles(auth_user))) > 0
-          mo_access_insert_nodes = container.string_list(mo_access.get('insert_custom','{$}'))
-          sl = []
-          sl.extend(map( lambda x: (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
-          sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))
-          can_insert = can_insert and len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+        mo_access = metaObj.get('access',{})
+        mo_access_deny = mo_access.get('insert_deny',[])
+        can_insert = can_insert and len( container.intersection_list( mo_access_deny, container.getUserRoles(auth_user))) == 0
+        mo_access_insert_nodes = container.string_list(mo_access.get('insert_custom','{$}'))
+        sl = []
+        sl.extend(map( lambda x: (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
+        sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))
+        can_insert = can_insert and len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
       if can_insert:
         if meta_id in container.dGlobalAttrs.keys() and container.dGlobalAttrs[meta_id].has_key('constructor'):
           value = 'manage_addProduct/zms/%s'%container.dGlobalAttrs[meta_id]['constructor']

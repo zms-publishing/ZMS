@@ -297,7 +297,7 @@
 	</div><!-- .form-group -->
 
 	<!-- BO Access -->
-	<table class="table table-striped table-bordered meta-access"
+	<table class="table table-bordered meta-access"
 		tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
 		tal:define="global roleOptpl python:[]"
 		><tal:block tal:repeat="role python:list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())"
@@ -315,19 +315,21 @@
 			></tal:block
 		></tal:block>
 		<tr>
-			<td style="width:6.8em"><strong tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</strong></td>
-			<td tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</td>
-			<td tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</td>
-			<td tal:repeat="role roleOptpl" tal:content="structure python:role[1]">ROLENAME</td>
-			<td style="width:100%;">&nbsp;</td>
+			<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</th>
+			<th tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</th>
+			<th tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
+			<th tal:repeat="role roleOptpl" tal:content="structure python:role[1]">ROLENAME</th>
+			<th style="width:100%;">&nbsp;</th>
 		</tr>
 		<tr tal:repeat="action python:['insert','delete']">
-			<td tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())" style="text-align:left">ACTION</td>
-			<td>
-				<span class="btn btn-default" tal:condition="python:action=='insert'"
-					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=here.boolint(metaObj.get('enabled',0)),enabled=True, css='')">
+			<td nowrap="nowrap">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;	<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
+			</td>
+			<td style="text-align:center">
+				<tal:block tal:condition="python:action=='insert'"
+					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=here.boolint(metaObj.get('enabled',0)))">
 					CHECKBOX
-				</span>
+				</tal:block>
 			</td>
 			<td>
 				<textarea class="form-control" cols="80" rows="1" wrap="virtual"
@@ -337,11 +339,11 @@
 					NODES
 				</textarea>
 			</td>
-			<td tal:repeat="role roleOptpl">
-				<span class="btn btn-default">
-					<input type="checkbox"
-						tal:attributes="name python:'access_%s:list'%(action); value python:role[0]; checked python:['','checked'][(metaObj.get('access',{}).get(action) is None) or (role[0] in metaObj.get('access',{}).get(action,[]))]"/>
-				</span>
+			<td style="text-align:center" tal:repeat="role roleOptpl">
+				<tal:block
+					tal:content="structure python:here.getCheckbox(fmName='form0',elName='access_%s_deny:list'%action,value=role[0] not in metaObj.get('access',{}).get('%s_deny'%action,[]),options=[role[0],''])">
+					CHECKBOX
+				</tal:block>
 			</td>
 			<td>&nbsp;</td>
 		</tr>

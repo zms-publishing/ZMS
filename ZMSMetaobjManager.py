@@ -1093,9 +1093,9 @@ class ZMSMetaobjManager:
             newValue['attrs'] = savedAttrs
             newValue['enabled'] = REQUEST.get('obj_enabled',0)
             newValue['access'] = {
-             'insert': REQUEST.get( 'access_insert', []),
+             'insert_deny': REQUEST.get( 'access_insert_deny', []),
              'insert_custom': REQUEST.get( 'access_insert_custom', ''),
-             'delete': REQUEST.get( 'access_delete', []),
+             'delete_deny': REQUEST.get( 'access_delete_deny', []),
              'delete_custom': REQUEST.get( 'access_delete_custom', ''),
             }
             self.setMetaobj( newValue)

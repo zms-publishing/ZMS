@@ -196,19 +196,19 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra=''):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', options=[0,1]):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
-    checked = str(value) == '1'
-    if elName.find(':int') > 0 and value in [True, False]:
-      value = int(value)
+    if value in [True, False]:
+      value = options[int(value)]
+    checked = str(value) == str(options[1])
     html.append('<input ')
     html.append(' type="hidden"')
     html.append(' name="%s"'%elName)
-    html.append(' value="%s"'%str(_globals.nvl(value,0)))
+    html.append(' value="%s"'%str(_globals.nvl(value,options[0])))
     html.append(' />')
     html.append('<input ')
     if type(elId) is str:
@@ -219,7 +219,7 @@ class ObjInputs:
       html.append(' disabled="disabled"')
     if checked: 
       html.append(' checked="checked"')
-    html.append(' onclick="if (this.checked){$(\'input[name=\\x22%s\\x22]\',this.form).val(1)}else{$(\'input[name=\\x22%s\\x22]\',this.form).val(0)}"'%(elName,elName))
+    html.append(' onclick="if(this.checked){$(this).prev().val(\'%s\')}else{$(this).prev().val(\'%s\')}"'%(options[1],options[0]))
     html.append(' />')
     return ''.join(html)
 

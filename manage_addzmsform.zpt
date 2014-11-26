@@ -86,35 +86,38 @@
     <legend>Initialization</legend>
 
     <div class="form-group">
-        <div class="col-xs-9 col-sm-offset-3  radio">
+        <div class="col-xs-9 col-sm-offset-3 radio">
             <label><input type="radio" name="initialization:int" value="0"/> None</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  radio">
+        <div class="col-xs-9 col-sm-offset-3 radio">
             <label><input type="radio" name="initialization:int" value="1" checked="checked" /> with default content</label>
         </div>
     </div>
 
     <legend>Configuration</legend>
     <div class="form-group">
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="zmslog:int" value="1" checked="checked"/> Add log</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
+            <label><input type="checkbox" name="specobj_index:int" value="1" checked="checked"/> Add object index</label>
+        </div>
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/> Add galleria</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_qunit:int" value="1" checked="checked"/> Add qunit test</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_exampledb:int" value="1"/> Add example database</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_discussions:int" value="1"/> Add bulletin board</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_newsletter:int" value="1"/> Add newsletter</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3  checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_calendar:int" value="1"/> Add calendar</label>
         </div>
     </div>

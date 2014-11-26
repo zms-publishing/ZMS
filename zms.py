@@ -308,6 +308,11 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Configuration ####
 
+    #-- Index
+    if REQUEST.get('specobj_index',0) == 1:
+      # Init configuration.
+      _confmanager.initConf(obj, 'com.zms.index')
+
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:
       # Init configuration.

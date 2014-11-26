@@ -98,7 +98,7 @@ def initConf(self, profile):
   files = self.getConfFiles()
   for filename in files.keys():
     label = files[filename]
-    if label.startswith(profile + '.'):
+    if label.startswith(profile + '.') or label.startswith(profile + '-'):
       _globals.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
         self.importConfPackage(filename,createIfNotExists)

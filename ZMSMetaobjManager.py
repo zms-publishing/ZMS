@@ -241,7 +241,7 @@ class ZMSMetaobjManager:
       for id in keys:
         if id in export_ids or len(export_ids) == 0:
           ob = copy.deepcopy(self.__get_metaobj__(id))
-          revision = ob.get( 'revision', revision)
+          revision = self.getMetaobjRevision(id)
           attrs = []
           for attr in ob['attrs']:
             attr_id = attr['id']
@@ -434,6 +434,21 @@ class ZMSMetaobjManager:
           if v is not None:
             ob[k] = v
       return ob
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.getMetaobjRevision:
+    #
+    #  Returns meta-object-revision specified by id.
+    # --------------------------------------------------------------------------
+    def getMetaobjRevision(self, id):
+      ob = self.getMetaobj(id)
+      if ob is not None and ob.get('type') == 'ZMSPackage':
+        metaobjs = filter(lambda x:x.get('package')==ob['id'],self.__get_metaobjs__().values())
+        revision = max(map(lambda x:x.get('revision','0.0.0'),metaobjs))
+        if revision > ob.get('revision','0.0.0'):
+          ob['revision'] = revision
+      return ob.get('revision','0.0.0')
 
 
     # --------------------------------------------------------------------------
@@ -1087,9 +1102,9 @@ class ZMSMetaobjManager:
             newValue = {}
             newValue['id'] = id
             newValue['name'] = REQUEST.get('obj_name').strip()
-            newValue['revision'] = REQUEST.get('obj_revision').strip()
+            newValue['revision'] = REQUEST.get('obj_revision','').strip()
             newValue['type'] = REQUEST.get('obj_type').strip()
-            newValue['package'] = REQUEST.get('obj_package').strip()
+            newValue['package'] = REQUEST.get('obj_package','').strip()
             newValue['attrs'] = savedAttrs
             newValue['enabled'] = REQUEST.get('obj_enabled',0)
             newValue['access'] = {
@@ -1127,8 +1142,8 @@ class ZMSMetaobjManager:
             # Return with message.
             message += self.getZMILangStr('MSG_CHANGED')
             # Insert attribute.
-            attr_id = REQUEST['attr_id'].strip()
-            newName = REQUEST['attr_name'].strip()
+            attr_id = REQUEST.get('attr_id','').strip()
+            newName = REQUEST.get('attr_name','').strip()
             newMandatory = REQUEST.get('_mandatory',0)
             newMultilang = REQUEST.get('_multilang',0)
             newRepetitive = REQUEST.get('_repetitive',0)

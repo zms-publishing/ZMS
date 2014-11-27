@@ -131,6 +131,16 @@
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[zmsindex]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[ZMSIndex]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[ZMSIndex]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="id"><![CDATA[e]]></item>
                   <item key="keys" type="list">
                     <list>
@@ -145,22 +155,6 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Objects]]></item>
                   <item key="repetitive" type="int">1</item>
-                  <item key="type"><![CDATA[*]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[zmsindex]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[ZMSIndex]]></item>
-                      <item><![CDATA[ZMSIndexDb]]></item>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[ZMSIndex]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[*]]></item>
                 </dictionary>
               </item>
@@ -188,29 +182,29 @@
           </item>
           <item key="access" type="dictionary">
             <dictionary>
-              <item key="delete" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
               <item key="delete_custom"></item>
-              <item key="insert" type="list">
+              <item key="delete_deny" type="list">
                 <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.3]]></item>
+          <item key="revision"><![CDATA[3.0.4]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -4654,23 +4648,23 @@ $ZMI.registerReady(function(){
           </item>
           <item key="access" type="dictionary">
             <dictionary>
-              <item key="delete" type="list">
-                <list>
-                </list>
-              </item>
               <item key="delete_custom"></item>
-              <item key="insert" type="list">
+              <item key="delete_deny" type="list">
                 <list>
                 </list>
               </item>
               <item key="insert_custom"></item>
+              <item key="insert_deny" type="list">
+                <list>
+                </list>
+              </item>
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.0.2]]></item>
+          <item key="revision"><![CDATA[3.0.7]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

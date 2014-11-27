@@ -288,12 +288,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Add Theme ####
     homeElmnt = initTheme(self,REQUEST['theme'],REQUEST['folder_id'],REQUEST)
-    if REQUEST.get('mobile',0)==1:
-      tempId = 'myZMSmobile'
-      tempMobile = initTheme(homeElmnt,'myZMSmobile.zexp',tempId,REQUEST)
-      cb_copy_data = tempMobile.manage_cutObjects(tempMobile.objectIds())
-      homeElmnt.manage_pasteObjects(cb_copy_data=cb_copy_data)
-      homeElmnt.manage_delObjects(ids=[tempId])
 
     ##### Add ZMS ####
     titlealt = 'ZMS home'
@@ -326,30 +320,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       _confmanager.initConf(obj, 'com.zms.jquery.galleria')
       # Init content.
       initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
-
-    #-- Example Database
-    if REQUEST.get('specobj_exampledb',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'exampledb')
-      # Init content.
-      initContent(obj,'exampledb.content.xml',REQUEST)
-
-    #-- Bulletin Board
-    if REQUEST.get('specobj_discussions',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'discussions')
-      # Init content.
-      initContent(obj,'discussions.content.xml',REQUEST)
-
-    #-- Newsletter
-    if REQUEST.get('specobj_newsletter',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'newsletter')
-
-    #-- Calendar
-    if REQUEST.get('specobj_calendar',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'calendar')
 
     ##### Access ####
     obj.synchronizePublicAccess()

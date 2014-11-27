@@ -34,8 +34,8 @@
     <div class="form-group">
         <label class="col-sm-3 col-md-2 control-label mandatory" for="folder_id"><span>Language</span></label>
         <div class="form-inline">
-            <div class="col-xs-4"><input class="form-control input-small" name="lang:required" value="ger" /></div>
-            <div class="col-xs-4"><input class="form-control input-medium" name="lang_label:required" value="Deutsch" /></div>
+            <div class="col-xs-2"><input class="form-control input-small" name="lang:required" value="ger" /></div>
+            <div class="col-xs-2"><input class="form-control input-medium" name="lang_label:required" value="Deutsch" /></div>
         </div>
     </div>
 
@@ -65,19 +65,11 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 col-md-2 control-label" for="mobile">Mobile</label>
-        <div class="col-xs-3">
-            <input class="btn" type="checkbox" name="mobile:int" value="1" onchange="if($(this).prop('checked')){$('#mobile_preview').css('display','block')}else{$('#mobile_preview').css('display','none')}"/>
-        </div>
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-3 col-md-2 control-label" for="preview">Preview</label>
         <div class="col-xs-9">
             <table>
                 <tr>
                     <td><div id="preview"><img style="border-radius: 4px;margin-bottom:.5em;" name="img_theme" src="/misc_/zms/spacer.gif" border="0" width="250" height="160" /></div></td>
-                    <td><div id="mobile_preview" style="display:none"><img style="border-radius: 4px;margin-bottom:.5em;" name="mobile_theme" src="/++resource++zms_/themes/myZMSmobile.jpg" border="0" width="250" height="160" /></div></td>
                 </tr>
             </table>
         </div>
@@ -107,18 +99,6 @@
         </div>
         <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_qunit:int" value="1" checked="checked"/> Add qunit test</label>
-        </div>
-        <div class="col-xs-9 col-sm-offset-3 checkbox">
-            <label><input type="checkbox" name="specobj_exampledb:int" value="1"/> Add example database</label>
-        </div>
-        <div class="col-xs-9 col-sm-offset-3 checkbox">
-            <label><input type="checkbox" name="specobj_discussions:int" value="1"/> Add bulletin board</label>
-        </div>
-        <div class="col-xs-9 col-sm-offset-3 checkbox">
-            <label><input type="checkbox" name="specobj_newsletter:int" value="1"/> Add newsletter</label>
-        </div>
-        <div class="col-xs-9 col-sm-offset-3 checkbox">
-            <label><input type="checkbox" name="specobj_calendar:int" value="1"/> Add calendar</label>
         </div>
     </div>
 

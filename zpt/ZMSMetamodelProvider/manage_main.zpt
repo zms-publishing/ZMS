@@ -98,7 +98,7 @@
 		</div><!-- .form-group -->
 		<div class="form-group meta_revision">
 			<label for="obj_revision" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
-			<div><input class="form-control input-sm" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:metaObj.get('revision','0.0.0')"/></div>
+			<div><input class="form-control input-sm" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/></div>
 		</div><!-- .form-group -->
 		<div class="form-group meta_type">
 			<label for="obj_type" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
@@ -128,8 +128,9 @@
 			</div>
 		</div><!-- .form-group -->
 	</div>
+	<div class="form-group" tal:condition="python:metaObj['acquired'] or metaObj['type']=='ZMSPackage'">&nbsp;</div>
 
-<tal:block tal:condition="python:not metaObj['acquired']">
+<tal:block tal:condition="not:python:metaObj['acquired'] or metaObj['type']=='ZMSPackage'">
 
 	<table class="table table-striped table-bordered zmi-sortable">
 		<colgroup>
@@ -389,17 +390,17 @@
 					<input tal:condition="python:metaObjPackage" type="checkbox" name="ids:list" tal:attributes="value metaObjPackage"/>
 				</td>
 				<td colspan="2">
-					<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
-					</a>
-					<a tal:condition="python:metaObjPackage" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObjPackage)">
+					<tal:block tal:condition="python:metaObjPackage">
+						<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+						</a>
 						<strong tal:content="metaObjPackage">the id</strong>
-					</a>
+					</tal:block>
 					<tal:block tal:condition="python:not metaObjPackage">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong>[default package]</strong>
 					</tal:block>
-					<tal:block tal:content="python:metaObj.get('revision',['','0.0.0'][here.boolint(len(metaObjPackage)>0)])">the revision</tal:block>
+					<tal:block tal:content="python:metaObj.get('revision',['',here.getMetaobjRevision(metaObjPackage)][here.boolint(len(metaObjPackage)>0)])">the revision</tal:block>
 				</td>
 			</tr>
 		</tal:block>
@@ -424,7 +425,7 @@
 						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank"><span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span></a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><span tal:on-error="string:ERROR" tal:replace="metaObj/name">the name</span></a>
-						<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block>
+						<tal:block tal:content="python:here.getMetaobjRevision(metaObj['id'])">the revision</tal:block>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)
 					</span>
 				</td>

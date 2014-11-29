@@ -909,9 +909,12 @@ class ZMSGlobals:
       elif type(i) is int or type(i) is float:
         return str(i)
       elif i is not None:
-        if type(i) is unicode and not (i.strip().startswith('<') and i.strip().endswith('>')):
-          import cgi
-          i = cgi.escape(i).encode(encoding, errors)
+        if type(i) is unicode:
+          if not (i.strip().startswith('<') and i.strip().endswith('>')):
+            import cgi
+            i = cgi.escape(i).encode(encoding, errors)
+          else:
+            i = i.encode(encoding, errors)
         else:
           i = str(i)
         return '\'%s\''%(i.replace('\\','\\\\').replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))

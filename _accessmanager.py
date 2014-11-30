@@ -921,6 +921,7 @@ class AccessManager(AccessableContainer):
     # Management Interface.
     # ---------------------
     manage_users = PageTemplateFile('zpt/ZMS/manage_users', globals())
+    manage_users_sitemap = PageTemplateFile('zpt/ZMS/manage_users_sitemap', globals())
 
     ############################################################################
     #  AccessManager.manage_roleProperties:
@@ -1039,13 +1040,13 @@ class AccessManager(AccessableContainer):
         # Add.
         # ----
         if btn == self.getZMILangStr('BTN_ADD'):
-          newId = REQUEST.get('newId','')
+          id = REQUEST.get('newId','')
           newPassword = REQUEST.get('newPassword','')
           newConfirm = REQUEST.get('newConfirm','')
           newEmail = REQUEST.get('newEmail','')
           userAdderPlugin = self.getUserAdderPlugin()
-          userAdderPlugin.doAddUser( newId, newPassword)
-          self.setUserAttr( newId, 'email', newEmail)
+          userAdderPlugin.doAddUser( id, newPassword)
+          self.setUserAttr( id, 'email', newEmail)
           #-- Assemble message.
           message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
         

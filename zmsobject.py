@@ -764,7 +764,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       declId = ''
       try:
         if self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-          obj_attrs_keys = self.getObjAttrs().keys()
+          obj_attrs_keys = self.getMetaobjAttrIds(self.meta_id)
           for key in [ 'attr_dc_identifier_doi', 'attr_dc_identifier_url_node']:
             if key in obj_attrs_keys:
               declId = self.getObjProperty( key, REQUEST)
@@ -1004,6 +1004,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetNode')
     def ajaxGetNode(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetNode """
+      # print "ajaxGetNode",self
       
       #-- Build xml.
       xml = ''

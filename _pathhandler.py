@@ -127,7 +127,7 @@ class PathHandler:
     # --------------------------------------------------------------------------
     #  PathHandler.__bobo_traverse__
     # --------------------------------------------------------------------------
-    def __bobo_traverse__(self, TraversalRequest, name):        
+    def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
       req = self.REQUEST
@@ -188,7 +188,7 @@ class PathHandler:
           filename = TraversalRequest['path_to_handle'][-1]
           f = self.FileFromData( data, filename, mt)
           f.aq_parent = self
-          f.key = 'None'
+          f.key = name
           f.lang = req.get('lang', self.getPrimaryLanguage())
           return f
         
@@ -303,6 +303,17 @@ class PathHandler:
         # If the object has blob-fields find by filename and display data.
         v = handleBlobAttrs( self, name, req)
         if v is not None: return v
+        
+        # If the object has executable-fields find by name and display data.
+        if name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
+          v = self.attr(name)
+          if v is not None:
+            if type(v) is str:
+              v = self.FileFromData( v, content_type='text/plain;charset=utf-8')
+              v.aq_parent = self
+              v.key = name
+              v.lang = req.get('lang', self.getPrimaryLanguage())
+            return v
         
         # Skins
         if name == TraversalRequest['path_to_handle'][-1]:

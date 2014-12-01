@@ -288,9 +288,8 @@ class AccessableObject:
     # --------------------------------------------------------------------------
     def hasRestrictedAccess(self):
       restricted = False
-      if 'attr_dc_accessrights_restricted' in self.getObjAttrs().keys():
-        req = {'lang':self.getPrimaryLanguage()}
-        restricted = restricted or self.getObjProperty( 'attr_dc_accessrights_restricted', req) in [ 1, True]
+      if 'attr_dc_accessrights_restricted' in self.getMetaobjAttrIds(self.meta_id):
+        restricted = restricted or self.attr( 'attr_dc_accessrights_restricted') in [ 1, True]
       return restricted
 
     # --------------------------------------------------------------------------
@@ -298,17 +297,18 @@ class AccessableObject:
     # --------------------------------------------------------------------------
     def hasPublicAccess(self):
       public = True
-      if 'attr_dc_accessrights_public' in self.getObjAttrs().keys():
-        req = {'lang':self.getPrimaryLanguage()}
-        public = public and self.getObjProperty( 'attr_dc_accessrights_public', req) in [ 1, True]
+      if 'attr_dc_accessrights_public' in self.getMetaobjAttrIds(self.meta_id):
+        public = public and self.attr( 'attr_dc_accessrights_public') in [ 1, True]
       if not public:
         return public
       nodelist = self.breadcrumbs_obj_path()
       nodelist.reverse()
       for node in nodelist:
-        public = public and not node.hasRestrictedAccess()
-        if not public:
-          return public
+        f = getattr(node,'hasRestrictedAccess',None)
+        if f is not None:
+          public = public and not f()
+          if not public:
+            return public
       return public
 
 

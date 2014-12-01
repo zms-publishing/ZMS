@@ -445,7 +445,10 @@ class ZMSMetaobjManager:
       ob = self.getMetaobj(id)
       if ob is not None and ob.get('type') == 'ZMSPackage':
         metaobjs = filter(lambda x:x.get('package')==ob['id'],self.__get_metaobjs__().values())
-        revision = max(map(lambda x:x.get('revision','0.0.0'),metaobjs))
+        try:
+          revision = max(map(lambda x:x.get('revision','0.0.0'),metaobjs))
+        except:
+          revision = '0.0.0'
         if revision > ob.get('revision','0.0.0'):
           ob['revision'] = revision
       return ob.get('revision','0.0.0')

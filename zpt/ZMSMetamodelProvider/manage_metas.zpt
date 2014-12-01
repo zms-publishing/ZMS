@@ -47,7 +47,7 @@ function zmiFormSubmit(sender,d) {
 
 </script>
 
-<div class="ui-helper-hidden">
+<div class="ui-helper-hidden" tal:condition="python:here.getPortalMaster()!=None">
 	<div id="acquireConf" class="inner">
 		<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
@@ -106,7 +106,7 @@ function zmiFormSubmit(sender,d) {
 
 	<table class="table table-striped table-bordered zmi-sortable">
 	<colgroup>
-		<col style="width:9em" />
+		<col style="width:8.25em" />
 		<col />
 		<col />
 		<col />

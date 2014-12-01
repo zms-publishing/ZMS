@@ -44,7 +44,7 @@
 <table class="table table-striped">
 <tbody>
 <tal:block tal:repeat="node nodes">
-	<tr tal:define="target python:here.getLinkObj(node)">
+	<tr tal:define="target python:here.getLinkObj(node)" tal:on-error="structure string: <!-- ERROR: missing nodekey -->">
 		<td>
 			<div class="text-danger bg-danger" tal:condition="python:target is None">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%nodekey)">the warning sign</tal:block>
@@ -53,7 +53,7 @@
 			<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
 		</td>
 		<td>
-			<ul>
+			<ul style="list-style-type: none;padding-left:none;">
 				<tal:block tal:repeat="roleName python:filter(lambda x:node in roleDefs[x].keys(),roleDefs.keys())">
 					<li tal:define="nodevalue python:roleDefs[roleName][node]">
 						<a tal:attributes="href python:'manage_users?id=%s'%roleName">

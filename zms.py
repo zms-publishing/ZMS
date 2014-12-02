@@ -169,7 +169,6 @@ def recurse_updateVersionPatch(docElmnt, self, REQUEST):
   # _confmanager.updateConf(self)
   # self.getSequence()
   # self.synchronizeObjAttrs()
-  # self.initRoleDefs()
   return message
 
 
@@ -495,10 +494,19 @@ class ZMS(
     #  ZMS.getDocumentElement
     # --------------------------------------------------------------------------
     """
-    The root element of the site.
+    The document-element of the site.
     """
     def getDocumentElement(self):
       return self
+
+    # --------------------------------------------------------------------------
+    #  ZMS.getRootElement
+    # --------------------------------------------------------------------------
+    """
+    The root element of the site.
+    """
+    def getRootElement(self):
+      return self.breadcrumbs_obj_path()[0]
 
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome

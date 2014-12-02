@@ -13,7 +13,7 @@
 <tal:block tal:define="global
 		multilang python:len(here.getLangIds())>1;
 		userDefs python:here.getSecurityUsers();
-		roleDefs python:here.getConfProperty('ZMS.security.roles',{});
+		roleDefs python:here.getSecurityRoles();
 		userNames python:here.sort_list(userDefs.keys());
 		valid_roles python:here.difference_list(here.aq_parent.userdefined_roles()+here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
@@ -60,13 +60,7 @@
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-group',title=here.getZMILangStr('ATTR_ROLES'))"></tal:block>
 							<tal:block tal:content="roleName">the role-name</tal:block>
 						</a>
-						(
-						<tal:block tal:repeat="role nodevalue/roles">
-							<tal:block tal:define="global rolestr python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(rolestr);" tal:content="python:[role,langstr][int(rolestr!=langstr)]">
-								Role
-							</tal:block>,
-						</tal:block>
-						)
+						(<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),nodevalue['roles']))">the roles</tal:block>)
 					</li>
 				</tal:block>
 				<tal:block tal:repeat="userName python:filter(lambda x:node in userDefs[x].get('nodes',{}).keys(),userDefs.keys())">
@@ -79,11 +73,7 @@
 						<tal:block tal:condition="multilang">
 							<tal:block tal:content="python:','.join(map(lambda x:here.getLanguageLabel(x),nodevalue.get('langs',[])))">the languages</tal:block> |
 						</tal:block>
-						<tal:block tal:repeat="role python:here.difference_list(nodevalue.get('roles',[]),['Authenticated'])">
-							<tal:block tal:define="global rolestr python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(rolestr);" tal:content="python:[role,langstr][int(rolestr!=langstr)]">
-								Role
-							</tal:block>,
-						</tal:block>
+						<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),here.difference_list(nodevalue.get('roles',[]),['Authenticated'])))">the roles</tal:block>
 						)
 					</li>
 				</tal:block>

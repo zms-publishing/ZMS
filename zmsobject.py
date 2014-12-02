@@ -931,6 +931,19 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.isChild:
+    #
+    #  True if self is child of given object.
+    # --------------------------------------------------------------------------
+    def isChild(self, ob):
+      if ob is not None:
+        path = '/'.join(self.getPhysicalPath())
+        obPath = '/'.join(ob.getPhysicalPath())
+        return path.startswith(obPath)
+      return False
+
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.isAnchestor:
     #
     #  True if self is anchestor of given object.

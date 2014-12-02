@@ -60,6 +60,26 @@ def updateVersion(root):
           visit(client)
       visit(root)
       root.setConfProperty('ZMS.security.users',userDefs)
+    # centralize ZMS.security.roles
+    if root.getConfProperty('ZMS.security.build',0) == 1:
+      root.setConfProperty('ZMS.security.build',2)
+      roleDefs = {}
+      def visit(docelmnt):
+        d = docelmnt.getConfProperty('ZMS.security.roles',{})
+        for name in d.keys():
+          value = d[name]
+          roleDef = roleDefs.get(name,{})
+          for nodekey in value.keys():
+            node = docelmnt.getLinkObj(nodekey)
+            if node is not None:
+              newkey = root.getRefObjPath(node)
+              roleDef[newkey] = value[nodekey]
+          roleDefs[name] = roleDef
+        docelmnt.delConfProperty('ZMS.security.roles')
+        for client in docelmnt.getPortalClients():
+          visit(client)
+      visit(root)
+      root.setConfProperty('ZMS.security.roles',roleDefs)
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.user_folder_meta_types:
@@ -90,19 +110,6 @@ def getUserId(user):
   elif user is not None and type(user) not in StringTypes:
     user = user.getId()
   return user
-
-# ------------------------------------------------------------------------------
-#  _accessmanager.role_permissions:
-#
-#  Role Permissions.
-# ------------------------------------------------------------------------------
-def role_permissions(self, role):
-  permissions = map(lambda x: x['name'],self.permissionsOfRole('Manager'))
-  if role_defs.has_key(role):
-    role_def = role_defs[role]
-    if '*' not in role_def:
-      permissions = role_def
-  return permissions
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.updateUserPassword:
@@ -225,6 +232,7 @@ class AccessableObject:
           roles = self.concat_list(roles,['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])
       except:
         pass
+      root = self.getRootElement()
       nodes = self.getUserAttr(userObj,'nodes',{})
       ob = self
       depth = 0
@@ -232,7 +240,7 @@ class AccessableObject:
         if depth > sys.getrecursionlimit():
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
-        nodekey = self.getRefObjPath(ob)
+        nodekey = root.getRefObjPath(ob)
         if nodekey in nodes.keys():
           roles = self.concat_list(roles,nodes[nodekey]['roles'])
           break
@@ -241,11 +249,11 @@ class AccessableObject:
         else:
           ob = None
       # Resolve security_roles.
-      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      security_roles = self.getSecurityRoles()
       for id in filter(lambda x: x in security_roles.keys(),roles):
         dict = security_roles.get(id,{})
         for v in dict.values():
-          for role in map(lambda x: x.replace( ' ', ''),v.get('roles',[])):
+          for role in map(lambda x: x.replace(' ',''),v.get('roles',[])):
             if role not in roles:
               roles.append( role)
       return roles
@@ -259,6 +267,7 @@ class AccessableObject:
         langs.extend(list(getattr(userObj,'langs',['*'])))
       except:
         pass
+      root = self.getRootElement()
       nodes = self.getUserAttr(userObj, 'nodes', {})
       ob = self
       depth = 0
@@ -266,7 +275,7 @@ class AccessableObject:
         if depth > sys.getrecursionlimit():
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
-        nodekey = self.getRefObjPath(ob)
+        nodekey = root.getRefObjPath(ob)
         if nodekey in nodes.keys():
           langs = nodes[nodekey]['langs']
           break
@@ -385,91 +394,56 @@ class AccessableContainer(AccessableObject):
     #  AccessableContainer.synchronizeRolesAccess:
     # --------------------------------------------------------------------------
     def synchronizeRolesAccess(self):
-      message = []
-      security_roles = self.getConfProperty('ZMS.security.roles',{})
+      _globals.writeLog(self,'[synchronizeRolesAccess]')
+      root = self.getRootElement()
+      l = map(lambda x:(x,[x]), role_defs.keys())
+      security_roles = self.getSecurityRoles()
       for id in security_roles.keys():
         self.manage_role(role_to_manage=id,permissions=[])
-        message.append("id="+id)
         d = security_roles.get(id,{})
-        for node in d.keys():
-          message.append("node="+node)
-          ob = self.getLinkObj(node)
-          if ob is not None:
-            message.append("ob="+ob.absolute_url())
-            roles = d[node]['roles']
-            message.append("roles="+str(roles))
-            permissions = []
-            for role in roles:
-              permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
-            message.append("permissions="+str(permissions))
-            ob.manage_role(role_to_manage=id,permissions=permissions)
-      return '\n'.join(message)
-
-
-    # --------------------------------------------------------------------------
-    #  AccessableContainer.restrictAccess:
-    # --------------------------------------------------------------------------
-    def restrictAccess(self):
-      for lang in self.getLangIds():
-        for key in ['index_%s.html','index_print_%s.html','search_%s.html','sitemap_%s.html']:
-          id = key%lang
-          if hasattr(self,id):
-            ob = getattr(self,id)
-            ob.manage_acquiredPermissions(permissions=['Access contents information','View'])
-            for role in ['Manager']: 
-              ob.manage_role(role_to_manage=role,permissions=role_permissions(ob,role))
+        for nodekey in d.keys():
+          node = root.getLinkObj(nodekey)
+          if self.isChild(node):
+            _globals.writeLog(self,'[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id,nodekey))
+            l.append((id,d[nodekey]['roles']))
+      manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
+      for i in l:
+        _globals.writeLog(self,'[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0],str(i[1])))
+        permissions = []
+        for role in i[1]:
+          role_permissions = role_defs.get(role,[])
+          if '*' in role_permissions:
+            role_permissions = manager_permissions
+          permissions = self.concat_list(permissions,role_permissions)
+        _globals.writeLog(self,'[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0],str(permissions)))
+        self.manage_role(role_to_manage=i[0],permissions=permissions)
 
     # --------------------------------------------------------------------------
     #  AccessableContainer.grantPublicAccess:
     # --------------------------------------------------------------------------
     def grantPublicAccess(self):
-      self.restrictAccess()
-      self.manage_acquiredPermissions(role_permissions(self,'Manager'))
-      security_roles = self.getConfProperty('ZMS.security.roles',{})
-      for role in filter(lambda x: x not in ['Anonymous','Authenticated','Owner','Manager',],self.valid_roles()):
-        permissions = []
-        if self.getLevel() == 0:
-          permissions = role_permissions(self,role)
-        self.manage_role(role_to_manage=role,permissions=permissions)
-      # Anonymous / Authenticated.
-      permissions = []
-      if self.getLevel() == 0:
-        permissions = ['Access contents information','View']
-      self.manage_role(role_to_manage='Anonymous',permissions=permissions)
-      self.manage_role(role_to_manage='Authenticated',permissions=permissions)
+      _globals.writeLog(self,'[grantPublicAccess]')
+      self.synchronizeRolesAccess()
+      manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
+      # activate all acquired permissions
+      self.manage_acquiredPermissions(manager_permissions)
+      # unset access contents information
+      for role_to_manage in ['Anonymous','Authenticated']:
+        self.manage_role(role_to_manage,permissions=[])
 
     # --------------------------------------------------------------------------
     #  AccessableContainer.revokePublicAccess:
     # --------------------------------------------------------------------------
     def revokePublicAccess(self):
-      self.restrictAccess()
-      self.manage_acquiredPermissions([])
-      security_roles = self.getConfProperty('ZMS.security.roles',{})
-      for role in filter(lambda x: x not in ['Anonymous','Authenticated','Owner','Manager',],self.valid_roles()):
-        permissions=role_permissions(self,role)
-        if role in security_roles.keys():
-          permissions = []
-          # Authors & Editors
-          if len(permissions) == 0:
-            ob = self.getParentNode()
-            while ob is not None and len(permissions)==0:
-              permissions = map(lambda x: x['name'], filter(lambda x: x['selected']=='SELECTED',ob.permissionsOfRole(role)))
-              ob = ob.getParentNode()
-          # Subscribers
-          if len(permissions) == 0:
-            security_role = security_roles[role]
-            for node in security_role.keys():
-              ob = self.getLinkObj(node)
-              if ob == self:
-                for node_role in security_role[node]['roles']:
-                  node_role_id = node_role.replace(' ','')
-                  node_role_permissions = role_permissions(self,node_role_id)
-                  permissions = self.concat_list(permissions,node_role_permissions)
-        self.manage_role(role_to_manage=role,permissions=permissions)
-      # Anonymous / Authenticated.
-      permissions=['Access contents information']
-      self.manage_role(role_to_manage='Anonymous',permissions=permissions)
-      self.manage_role(role_to_manage='Authenticated',permissions=permissions)
+      _globals.writeLog(self,'[revokePublicAccess]')
+      self.synchronizeRolesAccess()
+      manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
+      # deactivate all acquired permissions
+      permissions = map(lambda x: x not in ['View'], manager_permissions)
+      self.manage_acquiredPermissions(permissions)
+      # set access contents information
+      for role_to_manage in ['Anonymous','Authenticated']:
+        self.manage_role(role_to_manage,permissions=['Access contents information'])
 
 
 ################################################################################
@@ -492,11 +466,32 @@ class AccessManager(AccessableContainer):
       return langStr
 
     # --------------------------------------------------------------------------
+    #  AccessManager.getSecurityRoles:
+    # --------------------------------------------------------------------------
+    def getSecurityRoles(self):
+      roleDefs = {}
+      root = self.getRootElement()
+      d = root.getConfProperty('ZMS.security.roles',{})
+      if root == self:
+        roleDefs = copy.deepcopy(d)
+      else:
+        prefix = root.getRefObjPath(self)[:-2]
+        for name in d.keys():
+          value = d[name]
+          nodekeys = filter(lambda x:x.startswith(prefix), value.keys())
+          if len(nodekeys) > 0:
+            roleDef = {}
+            for nodekey in nodekeys:
+              roleDef[nodekey] = value[nodekey]
+            roleDefs[name] = roleDef
+      return roleDefs
+
+    # --------------------------------------------------------------------------
     #  AccessManager.getSecurityUsers:
     # --------------------------------------------------------------------------
     def getSecurityUsers(self):
       userDefs = {}
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users',{})
       if root == self:
         userDefs = copy.deepcopy(d)
@@ -696,7 +691,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def setUserAttr(self, user, name, value):
       user = getUserId(user)
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users',{})
       i = d.get(user,{})
       if name == 'nodes' and type(value) is dict:
@@ -709,7 +704,7 @@ class AccessManager(AccessableContainer):
         value = t
       i[name] = value
       d[user] = i.copy()
-      root.setConfProperty('ZMS.security.users',d.copy())
+      root.setConfProperty('ZMS.security.users',d)
 
     # --------------------------------------------------------------------------
     #  AccessManager.getUserAttr:
@@ -722,6 +717,14 @@ class AccessManager(AccessableContainer):
       else:
         i = d.get(user,{})
         v = i.get(name,default)
+        if v is None:
+          userObj = self.findUser(user)
+          if userObj is not None:
+            details = userObj.get('details',[])
+            for detail in filter(lambda x:x['name']==name,details):
+              v = details.get('value',None)
+        if v is None and name == 'email':
+          v = self.getUserAttr(user,'mail')
       return v
 
     # --------------------------------------------------------------------------
@@ -729,35 +732,13 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def delUserAttr(self, user):
       user = getUserId(user)
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users',{})
       try:
         del d[user]
         root.setConfProperty('ZMS.security.users',d)
       except:
         _globals.writeError(root,'[delUserAttr]: user=%s not deleted!'%user)
-
-    # --------------------------------------------------------------------------
-    #  AccessManager.initRoleDefs:
-    #
-    #  Init Role-Definitions and Permission Settings
-    # --------------------------------------------------------------------------
-    def initRoleDefs(self):
-    
-      # Init Roles.
-      for role in role_defs.keys():
-        role_def = role_defs[role]
-        # Add Local Role.
-        if not role in self.valid_roles():
-            self._addRole(role)
-        # Set permissions for Local Role.
-        self.manage_role(role_to_manage=role,permissions=role_permissions(self,role))
-      
-      # Clear acquired permissions.
-      self.manage_acquiredPermissions([])
-      
-      # Grant public access.
-      self.synchronizePublicAccess()
 
 
     # --------------------------------------------------------------------------
@@ -778,7 +759,7 @@ class AccessManager(AccessableContainer):
     #  AccessManager.getUserFolder:
     # --------------------------------------------------------------------------
     def getUserFolder(self):
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       updateVersion(root)
       home = root.getHome()
       if 'acl_users' in home.objectIds():
@@ -876,7 +857,7 @@ class AccessManager(AccessableContainer):
       self.setUserAttr(id, 'user_id_', user['user_id_'])
       
       # Insert node to user-properties.
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       nodes = root.getUserAttr(id,'nodes',{})
       ob = self.getLinkObj(node)
       newkey = root.getRefObjPath(ob)
@@ -899,7 +880,7 @@ class AccessManager(AccessableContainer):
     def delLocalUser(self, id, node):
       
       # Delete node from user-properties.
-      root = self.breadcrumbs_obj_path()[0]
+      root = self.getRootElement()
       nodes = root.getUserAttr(id,'nodes',{})
       if nodes.has_key(node): 
         del nodes[node]
@@ -950,29 +931,27 @@ class AccessManager(AccessableContainer):
               if id not in home.valid_roles():
                 home._addRole(role=id,REQUEST=REQUEST)
               #-- Prepare nodes from config-properties.
-              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              root = self.getRootElement()
+              security_roles = root.getConfProperty('ZMS.security.roles',{})
               security_roles[id] = {}
-              security_roles = security_roles.copy()
-              self.setConfProperty('ZMS.security.roles',security_roles)
+              root.setConfProperty('ZMS.security.roles',security_roles)
               #-- Assemble message.
               message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_ROLE')
             elif key=='attr':
               #-- Insert node to config-properties.
-              node = REQUEST.get('node')
+              root = self.getRootElement()
+              nodekey = REQUEST.get('node')
+              node = self.getLinkObj(nodekey)
               roles = REQUEST.get('roles',[])
               if not type(roles) is list: roles = [roles]
-              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              security_roles = root.getConfProperty('ZMS.security.roles',{})
+              newkey = root.getRefObjPath(node)
               dict = security_roles.get(id,{})
-              dict[node] = {'roles':roles}
+              dict[newkey] = {'roles':roles}
               security_roles[id] = dict
-              security_roles = security_roles.copy()
-              self.setConfProperty('ZMS.security.roles',security_roles)
+              root.setConfProperty('ZMS.security.roles',security_roles)
               #-- Set permissions in node.
-              ob = self.getLinkObj(node)
-              permissions = []
-              for role in roles:
-                permissions = ob.concat_list(permissions,role_permissions(self,role.replace(' ','')))
-              ob.manage_role(role_to_manage=id,permissions=permissions)
+              node.synchronizeRolesAccess()
               #-- Assemble message.
               message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_NODE')
           
@@ -985,13 +964,14 @@ class AccessManager(AccessableContainer):
                 if id in home.valid_roles():
                   home._delRoles(roles=[id],REQUEST=REQUEST)
               #-- Delete nodes from config-properties.
-              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              root = self.getRootElement()
+              security_roles = root.getConfProperty('ZMS.security.roles',{})
               if security_roles.has_key(id): del security_roles[id]
-              security_roles = security_roles.copy()
-              self.setConfProperty('ZMS.security.roles',security_roles)
+              root.setConfProperty('ZMS.security.roles',security_roles)
               id = ''
             elif key=='attr':
-              security_roles = self.getConfProperty('ZMS.security.roles',{})
+              root = self.getRootElement()
+              security_roles = root.getConfProperty('ZMS.security.roles',{})
               dict = security_roles.get(id,{})
               nodekeys = REQUEST.get('nodekeys',[])
               for nodekey in nodekeys:
@@ -999,13 +979,12 @@ class AccessManager(AccessableContainer):
                 if dict.has_key(nodekey):
                   del dict[nodekey]
                 #-- Delete permissions in node.
-                permissions = []
-                ob = self.getLinkObj(nodekey)
-                if ob is not None:
-                  ob.manage_role(role_to_manage=id,permissions=permissions)
+                #-- Set permissions in node.
+                node = self.getLinkObj(nodekey)
+                if node is not None:
+                  node.synchronizeRolesAccess()
               security_roles[id] = dict
-              security_roles = security_roles.copy()
-              self.setConfProperty('ZMS.security.roles',security_roles)
+              root.setConfProperty('ZMS.security.roles',security_roles)
             #-- Assemble message.
             message = self.getZMILangStr('MSG_DELETED')%int(1)
       

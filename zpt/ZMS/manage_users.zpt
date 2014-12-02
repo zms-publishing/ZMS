@@ -41,23 +41,13 @@ function zmiModalInsertUserOpen(context) {
 		userFolder python:here.getUserFolder();
 		userAdderPlugin python:here.getUserAdderPlugin();
 		userDefs python:here.getSecurityUsers();
+		roleDefs python:here.getSecurityRoles();
 		userNames python:here.sort_list(userDefs.keys());
-		valid_roles python:here.difference_list(here.aq_parent.userdefined_roles()+here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
-		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
-												['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
-												['ZMSAuthor',here.getZMILangStr('ROLE_ZMSAUTHOR')],
-												['ZMSSubscriber',here.getZMILangStr('ROLE_ZMSSUBSCRIBER')],
-												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
-												]">
-<tal:block tal:repeat="role valid_roles">
-	<tal:block tal:condition="python:role not in map(lambda x:x[0],roles_optpl)">
-		<tal:block tal:define="dummy0 python:roles_optpl.append([role,role])"></tal:block>
-	</tal:block>
-</tal:block>
+		roles_optpl python:map(lambda x: (x,here.getRoleName(x)),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+roleDefs.keys())">
 
 <tal:block tal:condition="python:request.get('id')" tal:define="global
-		editUser python:request.get('id') not in valid_roles;
+		editUser python:request.get('id') not in here.getRootElement().getSecurityRoles().keys();
 		editRole python:not editUser;
 		action python:['manage_userProperties','manage_roleProperties'][int(editRole)];
 		multilang python:editUser and len(here.getLangIds())>1">
@@ -176,7 +166,7 @@ function zmiModalInsertUserOpen(context) {
 </tal:block>
 
 <tal:block tal:condition="editRole">
-<tal:block tal:define="global nodes python:here.getConfProperty('ZMS.security.roles',{}).get(request['id'],{})">
+<tal:block tal:define="global nodes python:here.getSecurityRoles().get(request['id'],{})">
 	<legend>
 		<a onclick="self.location.reload()">
 			<tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block>
@@ -280,11 +270,7 @@ function zmiModalInsertUserOpen(context) {
 					</tal:block>
 				</td>
 				<td>
-					<tal:block tal:repeat="role python:here.difference_list(nodevalue.get('roles',[]),['Authenticated'])">
-						<tal:block tal:define="global rolestr python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(rolestr);" tal:content="python:[role,langstr][int(rolestr!=langstr)]">
-							Role
-						</tal:block>,
-					</tal:block>
+					<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),here.difference_list(nodevalue.get('roles',[]),['Authenticated'])))">the roles</tal:block>
 				</td>
 				</tal:block>
 			</tr>
@@ -388,11 +374,7 @@ function zmiModalInsertUserOpen(context) {
 			</a>
 			<tal:block tal:define="global nodes python:here.getUserAttr(userName,'nodes',{})">
 				<tal:block tal:condition="python:len(nodes)>0">(
-					<tal:block tal:repeat="role python:here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0)">
-						<tal:block tal:define="global rolestr python:'ROLE_%s'%role.replace(' ','').upper(); langstr python:here.getZMILangStr(rolestr);" tal:content="python:[role,langstr][int(rolestr!=langstr)]">
-							Role
-						</tal:block>,
-					</tal:block>
+					<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0)))">the roles</tal:block>,
 					<tal:block tal:content="python:'%i %s'%(len(nodes),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>
 				)</tal:block>
 			</tal:block>
@@ -436,17 +418,13 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- .pull-right -->
 	<table class="table table-striped table-bordered table-hover">
 	<tbody>
-	<tr tal:repeat="validRole valid_roles">
+	<tr tal:repeat="validRole python:here.sort_list(roleDefs.keys())">
 		<td>
 			<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],validRole)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="validRole">validRole</tal:block></a>
-			<tal:block tal:define="global nodes python:here.getConfProperty('ZMS.security.roles',{}).get(validRole,{})">
-				<tal:block tal:condition="python:len(nodes)>0">(
-					<tal:block tal:content="python:'%i %s'%(len(nodes),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>
-				)</tal:block>
-			</tal:block>
+			(<tal:block tal:content="python:'%i %s'%(len(roleDefs[validRole]),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>)
 		</td>
 	</tr>
-	<tr tal:condition="python:len(valid_roles)<5" tal:repeat="i python:range(5-len(valid_roles))">
+	<tr tal:condition="python:len(roleDefs)<5" tal:repeat="i python:range(5-len(roleDefs))">
 		<td>&nbsp;</td>
 	</tr>
 	</tbody>

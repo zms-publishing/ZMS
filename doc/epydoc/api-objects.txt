@@ -308,7 +308,7 @@ zms.zmsobject.ZMSObject.title	zms.zmsobject.ZMSObject-class.html#title
 zms.ZMSGlobals.ZMSGlobals.get_colormap	zms.ZMSGlobals.ZMSGlobals-class.html#get_colormap
 zms.ZMSGlobals.ZMSGlobals.localfs_remove	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_remove
 zms.zmsobject.ZMSObject.getSortId	zms.zmsobject.ZMSObject-class.html#getSortId
-zms.zmsobject.ZMSObject.isAnchestor	zms.zmsobject.ZMSObject-class.html#isAnchestor
+zms.zmsobject.ZMSObject.isAncestor	zms.zmsobject.ZMSObject-class.html#isAncestor
 zms.ZMSGlobals.ZMSGlobals.localfs_package_home	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_package_home
 zms.zmsobject.ZMSObject.f_display_icon	zms.zmsobject.ZMSObject-class.html#f_display_icon
 zms.zmsobject.ZMSObject.renderShort	zms.zmsobject.ZMSObject-class.html#renderShort
@@ -515,7 +515,7 @@ zms.zmsobject.ZMSObject.title	zms.zmsobject.ZMSObject-class.html#title
 zms.ZMSGlobals.ZMSGlobals.get_colormap	zms.ZMSGlobals.ZMSGlobals-class.html#get_colormap
 zms.ZMSGlobals.ZMSGlobals.localfs_remove	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_remove
 zms.zmsobject.ZMSObject.getSortId	zms.zmsobject.ZMSObject-class.html#getSortId
-zms.zmsobject.ZMSObject.isAnchestor	zms.zmsobject.ZMSObject-class.html#isAnchestor
+zms.zmsobject.ZMSObject.isAncestor	zms.zmsobject.ZMSObject-class.html#isAncestor
 zms.ZMSGlobals.ZMSGlobals.localfs_package_home	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_package_home
 zms.zmsobject.ZMSObject.f_display_icon	zms.zmsobject.ZMSObject-class.html#f_display_icon
 zms.zmsobject.ZMSObject.MISC_ZMS	zms.zmsobject.ZMSObject-class.html#MISC_ZMS
@@ -693,7 +693,7 @@ zms.zmsobject.ZMSObject.title	zms.zmsobject.ZMSObject-class.html#title
 zms.ZMSGlobals.ZMSGlobals.get_colormap	zms.ZMSGlobals.ZMSGlobals-class.html#get_colormap
 zms.ZMSGlobals.ZMSGlobals.localfs_remove	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_remove
 zms.zmsobject.ZMSObject.getSortId	zms.zmsobject.ZMSObject-class.html#getSortId
-zms.zmsobject.ZMSObject.isAnchestor	zms.zmsobject.ZMSObject-class.html#isAnchestor
+zms.zmsobject.ZMSObject.isAncestor	zms.zmsobject.ZMSObject-class.html#isAncestor
 zms.ZMSGlobals.ZMSGlobals.localfs_package_home	zms.ZMSGlobals.ZMSGlobals-class.html#localfs_package_home
 zms.zmsobject.ZMSObject.f_display_icon	zms.zmsobject.ZMSObject-class.html#f_display_icon
 zms.zmsobject.ZMSObject.renderShort	zms.zmsobject.ZMSObject-class.html#renderShort

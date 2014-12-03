@@ -246,7 +246,7 @@ class ZMSLinkElement(ZMSContainerObject):
       embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), self.REQUEST)
       if embed_type in [ 'embed', 'recursive', 'remote']:
         ref_obj = self.getRefObj()
-        if ref_obj is not None and ref_obj.isAnchestor( self):
+        if ref_obj is not None and ref_obj.isAncestor( self):
           embed_type = 'cyclic' # Error!
       return embed_type
 

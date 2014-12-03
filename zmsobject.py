@@ -944,11 +944,11 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.isAnchestor:
+    #  ZMSObject.isAncestor:
     #
-    #  True if self is anchestor of given object.
+    #  True if self is ancestor of given object.
     # --------------------------------------------------------------------------
-    def isAnchestor(self, ob):
+    def isAncestor(self, ob):
       if ob is not None:
         path = '/'.join(self.getPhysicalPath())
         obPath = '/'.join(ob.getPhysicalPath())

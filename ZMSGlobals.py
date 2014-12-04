@@ -1674,6 +1674,25 @@ class ZMSGlobals:
       except:
         return -1
 
+    """
+    Check if feature toggle is set.
+    @rtype: C{boolean}
+    """ 
+    def isFeatureEnabled(self, feature=''):
+    
+      # get conf from current client
+      confprop = self.breadcrumbs_obj_path(False)[0].getConfProperty('ZMS.Features.enabled','')
+      features = confprop.replace(',',';').split(';')
+      # get conf from top master if there is no feature toggle set at client
+      if len(features)==1 and features[0].strip()=='':
+        confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled','')
+        features = confprop.replace(',',';').split(';')
+    
+      if len(filter(lambda ob: ob.strip()==feature.strip(), features))>0:
+        return True
+      else:
+        return False
+
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 Globals.InitializeClass(ZMSGlobals)

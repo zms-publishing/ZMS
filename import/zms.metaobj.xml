@@ -2931,6 +2931,10 @@ table.ZMSTable tr td {
 div.checkbox {
 	float:left;
 }
+/* shift url select modal win to top */
+.modal {
+	z-index:10000;
+}
 </style>
 <script>
 
@@ -3969,7 +3973,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.7]]></item>
+          <item key="revision"><![CDATA[3.0.8]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

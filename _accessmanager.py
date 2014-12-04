@@ -455,6 +455,29 @@ class AccessableContainer(AccessableObject):
 ################################################################################
 class AccessManager(AccessableContainer): 
 
+    # -------------------------------------------------------------------------- 
+    #  AccessManager.initRoleDefs: 
+    # 
+    #  Init Role-Definitions and Permission Settings 
+    # -------------------------------------------------------------------------- 
+    def initRoleDefs(self): 
+      
+      # Init Roles. 
+      manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
+      for role in role_defs.keys(): 
+        role_def = role_defs[role] 
+        # Add Local Role. 
+        if not role in self.valid_roles(): 
+            self._addRole(role) 
+        # Set permissions for Local Role. 
+        role_permissions = role_defs.get(role,[])
+        if '*' in role_permissions:
+          role_permissions = manager_permissions
+        self.manage_role(role_to_manage=role,permissions=role_permissions) 
+      
+      # Grant public access. 
+      self.synchronizePublicAccess() 
+
     # --------------------------------------------------------------------------
     #  AccessManager.getRoleName
     # --------------------------------------------------------------------------

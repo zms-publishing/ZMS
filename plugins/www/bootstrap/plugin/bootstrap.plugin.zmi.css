@@ -867,7 +867,7 @@ div.zmi-nodes span {
 	max-width:30em!important;
 	overflow:hidden;
 }
-.btn-file {
+input.btn.btn-file {
 	background-color:#eee;
 	margin-bottom: 0.5em;
 }

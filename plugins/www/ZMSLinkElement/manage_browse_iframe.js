@@ -55,6 +55,7 @@ function getInternalUrl(physical_path) {
 	currntPath = currntPath.substr(currntPath.indexOf(content)+content.length+1);
 	var targetPath = physical_path;
 	var targetHome = targetPath.substr(1,targetPath.indexOf(content)-1);
+	var home = targetHome;
 	targetPath = targetPath.substr(targetPath.indexOf(content)+content.length+1);
 	while (true) {
 		var cid = currntHome.indexOf('/')>0?currntHome.substr(0,currntHome.indexOf('/')):currntHome;
@@ -66,8 +67,8 @@ function getInternalUrl(physical_path) {
 		targetHome = targetHome.substr(tid.length+1);
 	}
 	var path = targetPath;
-	if ( currntHome != targetHome) {
-		path = targetHome + "@" + path;
+	if ( $ZMI.getConfProperty('ZMS.intenalLinks.home',1)==1 || currntHome != targetHome) {
+		path = (targetHome.length>0?targetHome:home) + "@" + path;
 	}
 	path = "{$" + path + "}";
 	$ZMI.writeDebug('EO getInternalUrl: path='+path);

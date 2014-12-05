@@ -60,13 +60,11 @@
 							<textarea tal:attributes="title python:here.getZMILangStr('ATTR_NODE')" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
 						</div>
 					</td>
-					<td>
+					<td tal:define="roles python:list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())">
 						<select name="el_roles:list" multiple="multiple" class="form-control" style="font-size:inherit;"
-							tal:attributes="size python:min(10,len(here.userdefined_roles()))">
-							<tal:block tal:repeat="role python:here.userdefined_roles()">
-								<tal:block tal:define="global role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)">
-									<option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:[role,role_lang_str][int(role_str!=role_lang_str)]">role</option>
-								</tal:block>
+							tal:attributes="size python:min(10,len(roles))">
+							<tal:block tal:repeat="role roles">
+								<option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:here.getRoleName(role)">role</option>
 							</tal:block>
 						</select>
 					</td>

@@ -133,7 +133,7 @@ class ZReferableItem:
       path = ob.relative_obj_path()
       clientIds = absolute_home(ob).split('/')
       thisIds = absolute_home(self).split('/')
-      if self.getConfProperty('ZMS.intenalLinks.home',1)==1 or clientIds[-1] != thisIds[-1]:
+      if self.getConfProperty('ZMS.internalLinks.home',1)==1 or clientIds[-1] != thisIds[-1]:
         if len(clientIds) <= len(thisIds):
           path = clientIds[-1] + '@' + path
         else:

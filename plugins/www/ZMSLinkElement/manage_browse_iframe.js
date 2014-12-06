@@ -67,7 +67,7 @@ function getInternalUrl(physical_path) {
 		targetHome = targetHome.substr(tid.length+1);
 	}
 	var path = targetPath;
-	if ( $ZMI.getConfProperty('ZMS.intenalLinks.home',1)==1 || currntHome != targetHome) {
+	if ( $ZMI.getConfProperty('ZMS.internalLinks.home',1)==1 || currntHome != targetHome) {
 		path = (targetHome.length>0?targetHome:home) + "@" + path;
 	}
 	path = "{$" + path + "}";

@@ -444,17 +444,11 @@ class ZReferableItem:
         if i > 0:
           clientIds = path[:i].split('/')
           path = path[i+1:]
-          thisHome = self.getHome()
-          clientHome = None
-          if thisHome.aq_parent.id == clientIds[-1]:
-            clientHome = thisHome
-            for j in range(len(clientIds)):
-              if clientHome.aq_parent.id == clientIds[-(j+1)]:
-                clientHome = clientHome.aq_parent
-          elif hasattr(thisHome,clientIds[0]):
-            clientHome = thisHome
-            for j in range(len(clientIds)):
-              clientHome = getattr(clientHome,clientIds[j],None)
+          clientHome = self.getHome()
+          for clientId in clientIds:
+            clientHome = getattr(clientHome,clientId,None)
+            if clientHome is None:
+              break
           if clientHome is not None:
             obs = clientHome.objectValues(['ZMS'])
             if obs:

@@ -174,7 +174,7 @@ function zmiModalInsertUserOpen(context) {
 	</legend>
 	<div class="form-group">
 		<div class="controls save">
-			<tal:block tal:condition="python:len(nodes.keys())==0">
+			<tal:block tal:condition="python:len(here.getRootElement().getSecurityRoles().get(request['id'],{}).keys())==0">
 				<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 				&nbsp;&nbsp;
 			</tal:block>
@@ -398,6 +398,21 @@ function zmiModalInsertUserOpen(context) {
 			<label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
+		<tal:block tal:define="
+			local_roles python:here.getSecurityRoles().keys();
+			roles python:filter(lambda x:x not in local_roles,here.getRootElement().getSecurityRoles().keys())">
+		<div class="form-group" tal:condition="python:len(roles)>0">
+			<label for="newId" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
+			<div class="col-sm-10">
+				<select class="form-control" onclick="$('input#newId').val($(this).val());" onkeyup="$('input#newId').val($(this).val());">
+					<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ROLE')">Select option</tal:block> -----</option>
+					<tal:block tal:repeat="role roles">
+						<option tal:attributes="value role" tal:content="role">the role</option>
+					</tal:block>
+				</select>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		</tal:block>
 		<div class="form-group">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>

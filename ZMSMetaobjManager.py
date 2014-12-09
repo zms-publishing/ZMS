@@ -597,9 +597,7 @@ class ZMSMetaobjManager:
       attrs = []
       ob = self.__get_metaobj__(id)
       if ob is not None:
-        attrs = ob.get('attrs',ob.get('__obj_attrs__'))
-        if attrs is None:
-          raise zExceptions.InternalError('Can\'t getMetaobjAttrIds: %s'%(str(id)))
+        attrs = ob.get('attrs',ob.get('__obj_attrs__',[]))
         if len( types) > 0:
           attrs = filter( lambda x: x['type'] in types, attrs)
       return attrs

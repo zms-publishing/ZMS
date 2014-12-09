@@ -108,7 +108,7 @@ class ZMSMetacmdProvider(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_main', 'manage_main_acquire'
+		'manage_changeMetacmds', 'manage_main', 'manage_main_acquire'
 		)
     __ac_permissions__=(
 		('ZMS Administrator', __administratorPermissions__),

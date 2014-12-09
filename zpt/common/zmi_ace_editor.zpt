@@ -86,10 +86,10 @@ $(function(){
 		if (value.indexOf("<html") == 0) {
 			content_type = "text/html";
 		}
-		if (value.indexOf("<?xml") == 0) {
+		if (value.indexOf("<?xml") == 0 || value.indexOf("tal:") >= 0) {
 			content_type = "text/xml";
 		}
-		if (value.indexOf("#!/usr/bin/python") == 0) {
+		if (value.indexOf("#!/usr/bin/python") == 0 || value.indexOf("## Script (Python)") == 0) {
 			content_type = "python";
 		}
 		var mode = "text";

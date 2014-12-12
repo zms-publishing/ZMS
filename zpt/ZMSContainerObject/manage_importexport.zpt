@@ -31,7 +31,7 @@ function onExportFormatChange(el) {
 	tal:define="global
 		filterIds python:here.getFilterIds();
 		filters python:filter(lambda x: here.meta_id in x['meta_types']
-				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),filter.get('roles',[])))>0)
+				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0)
 				,map(lambda x: here.getFilter(x), filterIds));
 		importFilters python:filter(lambda x: len(here.intersection_list([x['format']],['import']))>0, filters);
 		exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0, filters)">

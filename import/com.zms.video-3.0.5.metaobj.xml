@@ -270,14 +270,14 @@ return zmscontext.attr('title')
 
 <div class="video-wrapper" tal:attributes="class python:'video-wrapper elastic-video %s'%(provider);title title;id id">
 	<tal:block tal:condition="python:img!='' and img!=None"
-		><img tal:attributes="src python:img.getHref(request); 
-			width videoWidth; 
+		><img tal:attributes="src python:img.getHref(request);
+			width videoWidth;
 			height videoHeight;
 			style python:['cursor:pointer','display:none'][img==''];
 			onclick python:'javascript:$(\047#%s img\047).hide()\073$(\047#%s .video\047).show()'%(id,id)"
 	/></tal:block>
-	<iframe tal:condition="python:provider!='fileupload'" 
-		tal:attributes="src python:videoURL%(videoId); width videoWidth; height videoHeight;style python:['display:none',''][img=='' or img==None]"
+	<iframe tal:condition="python:provider!='fileupload'"
+		tal:attributes="src python:videoURL%(videoId); width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0];style python:['display:none',''][img=='' or img==None]"
 		class="video video-iframe"
 		frameborder="0"
 		webkitallowfullscreen=""
@@ -286,7 +286,7 @@ return zmscontext.attr('title')
 	</iframe>
 	<video class="video"
 		tal:condition="python:provider=='fileupload' and videodata!=''"
-		tal:attributes="width videoWidth; height videoHeight; style python:['display:none',''][img=='']"
+		tal:attributes="width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0]; style python:['display:none',''][img=='' or img==None]"
 		controls="">
 		<source src="movie.mp4" type="video/mp4" tal:attributes="src python:videodata.getHref(request)" />
 		ERROR: Your browser does not support the video tag.
@@ -333,8 +333,8 @@ return zmscontext.attr('title')
       <item key="enabled" type="int">1</item>
       <item key="id"><![CDATA[video]]></item>
       <item key="name"><![CDATA[Video]]></item>
-      <item key="package"></item>
-      <item key="revision"><![CDATA[3.0.4]]></item>
+      <item key="package"><![CDATA[com.zms.foundation]]></item>
+      <item key="revision"><![CDATA[3.0.5]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

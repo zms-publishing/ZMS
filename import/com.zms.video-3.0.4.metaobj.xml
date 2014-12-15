@@ -146,24 +146,30 @@ return zmscontext.attr('title')
               <item key="multilang" type="int">0</item>
               <item key="name"><![CDATA[<script>
 	function changeGUI() {
+		$('#tr_videodata').hide();
 		if ( $('#tr_provider select option:selected').val()=='switch' ) {
 			$('#tr_videoHint').hide();
 			$('#tr_videoWidth').hide();
 			$('#tr_videoHeight').hide();
+			$('#tr_videodata').hide();
 		} else {
 			if ( $('#tr_provider select option:selected').val()=='youtube' ) {
 				$('#tr_videoHint').show();
 				} else {
 				$('#tr_videoHint').hide();
 				}
+			if ( $('#tr_provider select option:selected').val()=='fileupload' ) {
+				$('#tr_videodata').show();
+				}
 			$('#tr_videoWidth').show();
 			$('#tr_videoHeight').show();
 			// $('#tr_text_'+getZMILang()).show();
 		};
+
 	};
 	$(document).ready( function() {
 		$('#tr_provider select').change(function() { changeGUI() });
-		changeGUI()
+		changeGUI();
 	});
 </script>]]>
               </item>
@@ -174,7 +180,7 @@ return zmscontext.attr('title')
           <item type="dictionary">
             <dictionary>
               <item key="custom"><![CDATA[<!-- pageelement_videotoc -->
-<!-- DTML-CALL: dtml-var "pageelement_videotoc().encode('utf-8') max="256" -->
+<!-- DTML-CALL: dtml-var "pageelement_videotoc().encode('utf-8')  -->
 
 <div class="video-overview"
 	tal:define="videos python:context.getParentNode().filteredTreeNodes(request,['video'])">
@@ -262,16 +268,16 @@ return zmscontext.attr('title')
 	<strong tal:content="videoWidth">videoWidth</strong> x <strong tal:content="videoHeight">videoHeight</strong> Pixel.
 </div>
 
-<div class="video-wrapper" tal:attributes="class python:'video-wrapper %s'%(provider);title title;id id">
-	<img tal:condition="python:img!=''" 
-		tal:attributes="src python:img.getHref(request); 
+<div class="video-wrapper" tal:attributes="class python:'video-wrapper elastic-video %s'%(provider);title title;id id">
+	<tal:block tal:condition="python:img!='' and img!=None"
+		><img tal:attributes="src python:img.getHref(request); 
 			width videoWidth; 
 			height videoHeight;
 			style python:['cursor:pointer','display:none'][img==''];
 			onclick python:'javascript:$(\047#%s img\047).hide()\073$(\047#%s .video\047).show()'%(id,id)"
-	/>
+	/></tal:block>
 	<iframe tal:condition="python:provider!='fileupload'" 
-		tal:attributes="src python:videoURL%(videoId); width videoWidth; height videoHeight;style python:['display:none',''][img=='']"
+		tal:attributes="src python:videoURL%(videoId); width videoWidth; height videoHeight;style python:['display:none',''][img=='' or img==None]"
 		class="video video-iframe"
 		frameborder="0"
 		webkitallowfullscreen=""
@@ -306,29 +312,29 @@ return zmscontext.attr('title')
       </item>
       <item key="access" type="dictionary">
         <dictionary>
-          <item key="delete_custom"></item>
-          <item key="delete_deny" type="list">
+          <item key="delete" type="list">
             <list>
-              <item></item>
-              <item></item>
-              <item></item>
+              <item><![CDATA[ZMSAdministrator]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSEditor]]></item>
+            </list>
+          </item>
+          <item key="delete_custom"></item>
+          <item key="insert" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSEditor]]></item>
             </list>
           </item>
           <item key="insert_custom"><![CDATA[{$}]]></item>
-          <item key="insert_deny" type="list">
-            <list>
-              <item></item>
-              <item></item>
-              <item></item>
-            </list>
-          </item>
         </dictionary>
       </item>
       <item key="enabled" type="int">1</item>
       <item key="id"><![CDATA[video]]></item>
       <item key="name"><![CDATA[Video]]></item>
       <item key="package"></item>
-      <item key="revision"><![CDATA[3.0.2]]></item>
+      <item key="revision"><![CDATA[3.0.4]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

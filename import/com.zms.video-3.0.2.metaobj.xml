@@ -173,6 +173,68 @@ return zmscontext.attr('title')
           </item>
           <item type="dictionary">
             <dictionary>
+              <item key="custom"><![CDATA[<!-- pageelement_videotoc -->
+<!-- DTML-CALL: dtml-var "pageelement_videotoc().encode('utf-8') max="256" -->
+
+<div class="video-overview"
+	tal:define="videos python:context.getParentNode().filteredTreeNodes(request,['video'])">
+	<style type="text/css">
+		.video-overview .video-wrapper {
+			margin: 1em 0;
+			margin-right: 2em;
+			overflow: hidden;
+			width: 250px;
+			height: 260px;
+			display: block;
+			float: left;
+			background: rgb(23, 97, 161);
+			background: black;
+		}
+		.video-overview .video-wrapper img {
+			max-width:100%;
+		}
+		.video-overview .video-wrapper a {
+			text-decoration:none;
+		}
+		.video-overview .video-wrapper a p {
+			padding:4px 8px;
+			color:white;
+			font-style:italic;
+			font-size:12px;
+			font-weight:normal;
+			line-height:150%;
+		}
+		.video-overview .video-wrapper a p:hover {
+			color:orange;
+		}
+	</style>
+	<tal:block tal:repeat="video videos">
+		<div class="video-wrapper"
+			tal:define="title python:video.attr('title');
+				description python:video.attr('attr_dc_description');
+				img python:video.attr('img')">
+			<a href="#"
+				tal:attributes="title title;href python:video.getHref2IndexHtml(request);"
+				><img tal:condition="python:img!=''"
+					tal:attributes="src python:img.getHref(request);"/>
+				<p class="description" tal:condition="description" tal:content="python:description">description</p>
+			</a>
+		</div>
+	</tal:block>
+</div>
+
+<!-- /pageelement_videotoc -->]]>
+              </item>
+              <item key="id"><![CDATA[pageelement_videotoc]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[TOC]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[Page Template]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
               <item key="custom"><![CDATA[<!-- video.standard_html -->
 <tal:block tal:define="global
   zmscontext options/zmscontext;
@@ -187,14 +249,13 @@ return zmscontext.attr('title')
   videoHeight python:zmscontext.attr('videoHeight');
   videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'http://www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
 
-<style class="text/css" tal:condition="python:request.get('first_video_on_page',True)">
+<style type="text/css" tal:condition="python:request.get('first_video_on_page',True)">
 	.video-wrapper {margin: 1em 0;}
 	.youtube { position: relative; padding-bottom: 55%; padding-top: 15px; height: 0; overflow: hidden;}
 	.youtube iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 	.video-wrapper p.description {font-size:90%;font-style:italic;}
-
-	<tal:block tal:define="first_video_on_page python:request.get('first_video_on_page',False)"></tal:block>
 </style>
+<tal:block tal:define="first_video_on_page python:request.set('first_video_on_page',False)"></tal:block>
 
 <div class="note" tal:condition="python:request.get('URL').find('/manage') > -1">
 	<strong tal:content="title">Titel</strong> - web size:
@@ -267,7 +328,7 @@ return zmscontext.attr('title')
       <item key="id"><![CDATA[video]]></item>
       <item key="name"><![CDATA[Video]]></item>
       <item key="package"></item>
-      <item key="revision"><![CDATA[3.0.0]]></item>
+      <item key="revision"><![CDATA[3.0.2]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

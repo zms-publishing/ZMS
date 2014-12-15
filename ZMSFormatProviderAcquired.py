@@ -54,7 +54,19 @@ class ZMSFormatProviderAcquired(
     ############################################################################
     def __init__(self, textformats=[], charformats=[]):
       self.id = 'format_manager'
-      self.textformats = copy.deepcopy(textformats)
-      self.charformats = copy.deepcopy(charformats)
+
+    def getTextFormatDefault(self):
+      return self.getPortalMaster().getTextFormatDefault()
+  
+    def getTextFormat(self, id, REQUEST):
+      return self.getPortalMaster().getTextFormat(id, REQUEST)
+
+    def getTextFormats(self, REQUEST):
+      textformats = self.getPortalMaster().getTextFormats(REQUEST)
+      return textformats
+
+    def getCharFormats(self):
+      charformats = self.getPortalMaster().getCharFormats()
+      return charformats
 
 ################################################################################

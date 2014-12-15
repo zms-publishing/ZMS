@@ -124,7 +124,7 @@
 	<colgroup>
 		<col width="40"/>
 	</colgroup>
-	<thead>
+	<thead tal:condition="python:here.meta_type.find('Acquired')<0">
 		<tr>
 			<th>
 				<div class="btn-group">

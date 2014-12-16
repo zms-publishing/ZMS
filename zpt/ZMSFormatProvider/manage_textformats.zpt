@@ -36,7 +36,7 @@
 			<div class="form-group">
 				<label for="new_usage" class="col-sm-3 control-label"><span>Usage</span></label>
 				<div class="col-sm-9">
-					<span class="btn btn-default col-sm-12" title="Format is avaliable in following types of editors">
+					<span class="btn btn-default col-sm-12" title="Format is avaliable in these types of editors">
 						<input type="checkbox" id="new_usage" name="new_usage:list" value="standard" tal:attributes="checked python:['','checked'][int('standard' in format.getUsage())]"/>
 						Standard-Editor
 						&nbsp;&nbsp;&nbsp;

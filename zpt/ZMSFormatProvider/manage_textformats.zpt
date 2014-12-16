@@ -19,37 +19,36 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group">
 				<label for="new_id" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-9"><input class="form-control input-sm" type="text" id="new_id" name="new_id" tal:attributes="value python:format.getId()" /></div>
+				<div class="col-sm-4"><input class="form-control input-sm" type="text" id="new_id" name="new_id" tal:attributes="value python:format.getId()" /></div>
+				<label for="new_default" class="col-sm-1 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DEFAULT')">Default</span></label>
+				<div class="col-sm-1"><span class="btn btn-default"><input type="checkbox" id="new_default" name="new_default" value="1" tal:attributes="checked python:['','checked'][int(format.getId()==here.getTextFormatDefault())]" /></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="new_display" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-sm-9"><input class="form-control input-sm" type="text" id="new_display" name="new_display" tal:attributes="value python:format.getDisplay()" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="new_default" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DEFAULT')">Default</span></label>
-				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" id="new_default" name="new_default" value="1" tal:attributes="checked python:['','checked'][int(format.getId()==here.getTextFormatDefault())]" /></span></div>
-			</div><!-- .form-group -->
-			<div class="form-group">
 				<label for="new_tag" class="col-sm-3 control-label"><span>&lt;<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
-				<div class="col-sm-9"><input class="form-control" type="text" id="new_tag" name="new_tag" tal:attributes="value python:format.getTag()" /></div>
+				<div class="col-sm-2"><input class="form-control" type="text" id="new_tag" name="new_tag" tal:attributes="value python:format.getTag()" /></div>
+				<label for="new_tag" class="col-sm-1 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ATTRS')">Attributes</span></label>
+				<div class="col-sm-6"><input class="form-control input-sm" type="text" id="new_attrs" name="new_attrs" tal:attributes="value python:format.getAttrs()" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="new_subtag" class="col-sm-3 control-label"><span>&lt;CR/LF-<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
-				<div class="col-sm-9"><input class="form-control input-sm" type="text" id="new_subtag" name="new_subtag" tal:attributes="value python:format.getSubTag()" /></div>
+				<label for="new_subtag" class="col-sm-3 control-label"><span>&lt;Newline-<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
+				<div class="col-sm-2"><input class="form-control input-sm" type="text" id="new_subtag" name="new_subtag" tal:attributes="value python:format.getSubTag()" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label for="new_attrs" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ATTRS')">Attributes</span></label>
-				<div class="col-sm-9"><input class="form-control input-sm" type="text" id="new_attrs" name="new_attrs" tal:attributes="value python:format.getAttrs()" /></div>
-			</div><!-- .form-group -->
-			<div class="form-group">
-				<label for="new_richedit" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_RICHEDIT')">Richedit</span></label>
-				<div class="col-sm-9">
-					<select class="form-control" id="new_richedit" name="new_richedit">
-					<option value=""></option>
-					<tal:block tal:repeat="rteId python:here.getRichtextFormatIds()">
-						<option tal:attributes="value rteId; selected python:['','selected'][int(rteId==format.getRichedit())]" tal:content="rteId">the rte-id</option>
-					</tal:block>
-					</select>
+				<label for="new_richedit" class="col-sm-3 control-label"><span><tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-open',title=here.getZMILangStr('ATTR_RICHEDIT'))"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ATTR_RICHEDIT')">Richedit</tal:block></span></label>
+				<div class="col-sm-2"><span class="btn btn-default"><input type="checkbox" id="new_richedit" name="new_richedit:int" value="1" tal:attributes="checked python:['','checked'][format.getRichedit()]"/></span></div>
+				<label for="new_usage" class="col-sm-1 control-label"><span>Usage</span></label>
+				<div class="col-sm-4">
+					<span class="btn btn-default">
+						<input type="checkbox" id="new_usage" name="new_usage:list" value="standard" tal:attributes="checked python:['','checked'][int('standard' in format.getUsage())]"/>
+						Standard
+						&nbsp;|&nbsp;
+						<input type="checkbox" id="new_usage" name="new_usage:list" value="wysiwyg" tal:attributes="checked python:['','checked'][int('wysiwyg' in format.getUsage())]"/>
+						WYSIWYG
+					</span>
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
@@ -124,7 +123,7 @@
 	<table class="table table-striped table-bordered table-hover">
 	<colgroup>
 		<col width="40"/>
-		<col width="20%"/>
+		<col width="10%"/>
 	</colgroup>
 	<thead tal:condition="python:here.meta_type.find('Acquired')<0">
 		<tr>
@@ -150,9 +149,9 @@
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
 			<td>
-				<a style="width:100%;text-align:left;" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId()); class python:['btn btn-default','btn btn-primary'][int(format.getId()==here.getTextFormatDefault())]">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-open',title=here.getZMILangStr('ATTR_RICHEDIT'))" tal:condition="python:format.getRichedit() in here.getRichtextFormatIds()"></tal:block>
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-align-left')" tal:condition="not:python:format.getRichedit() in here.getRichtextFormatIds()"></tal:block>
+				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId()); class python:['','text-info bg-info'][int(format.getId()==here.getTextFormatDefault())]">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-open',title=here.getZMILangStr('ATTR_RICHEDIT'))" tal:condition="python:format.getRichedit()"></tal:block>
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-align-left')" tal:condition="not:python:format.getRichedit()"></tal:block>
 					<tal:block tal:content="python:format.getId()">Id</tal:block>
 				</a>
 			</td>

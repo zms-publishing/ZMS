@@ -19,7 +19,6 @@
 # Imports.
 from App.Common import package_home
 import copy
-import os
 import urllib
 # Product Imports.
 import ZMSTextformat
@@ -66,19 +65,6 @@ class ZMSTextformatManager:
 
 
     # --------------------------------------------------------------------------
-    #  ZMSTextformatManager.getRichttextFormatIds:
-    # --------------------------------------------------------------------------
-    def getRichtextFormatIds(self):
-      ids = []
-      filepath = os.sep.join([package_home(globals()),'plugins','rte'])
-      for filename in os.listdir(filepath):
-        path = os.sep.join([filepath,filename])
-        if os.path.isdir(path) and len(os.listdir(path)) > 0:
-          ids.append(filename)
-      return ids
-
-
-    # --------------------------------------------------------------------------
     #  ZMSTextformatManager.delTextformat:
     # --------------------------------------------------------------------------
     def delTextformat(self, id):
@@ -92,7 +78,7 @@ class ZMSTextformatManager:
     # --------------------------------------------------------------------------
     #  ZMSTextformatManager.setTextformat:
     # --------------------------------------------------------------------------
-    def setTextformat(self, id, newId, newDisplay, newZMILang, newTag='', newSubtag='', newAttrs='', newRichedit=0):
+    def setTextformat(self, id, newId, newDisplay, newZMILang, newTag='', newSubtag='', newAttrs='', newRichedit=0, newUsage=[]):
       if id in self.textformats:
         i = self.textformats.index(id)
       else:
@@ -104,6 +90,7 @@ class ZMSTextformatManager:
       dict['subtag'] = newSubtag
       dict['attrs'] = newAttrs
       dict['richedit'] = newRichedit
+      dict['usage'] = newUsage
       self.textformats[i] = newId
       self.textformats[i+1] = dict
       # Make persistent.
@@ -117,11 +104,6 @@ class ZMSTextformatManager:
       if id in self.textformats:
         i = self.textformats.index(id)
         d = self.textformats[i+1]
-        if d.has_key('richedit'):
-          richedit = d['richedit']
-          richtextformatids = self.getRichtextFormatIds()
-          if richedit and richedit not in richtextformatids:
-            d['richedit'] = richtextformatids[0]
         return ZMSTextformat.ZMSTextformat(id,d,REQUEST)
       return None
 
@@ -183,7 +165,8 @@ class ZMSTextformatManager:
         subtag = REQUEST['new_subtag'].strip()
         attrs = REQUEST['new_attrs'].strip()
         richedit = REQUEST.get('new_richedit',0)
-        self.setTextformat(old_id,id,display,self.get_manage_lang(),tag,subtag,attrs,richedit)
+        usage = REQUEST.get('new_usage',[])
+        self.setTextformat(old_id,id,display,self.get_manage_lang(),tag,subtag,attrs,richedit,usage)
         if REQUEST.has_key('new_default'):
           self.setDefaultTextformat(id)
         id = ''

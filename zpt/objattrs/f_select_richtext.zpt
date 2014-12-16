@@ -36,9 +36,9 @@
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 
 /** 
- * Switch Richtext-Editor.
+ * Toggle richtext-editor.
  */
-function zmiRichtextEditorShow( elName, newFormat, callback) {
+function zmiRichtextEditorToggle( elName, newFormat) {
 	if (newFormat) {
 		$('#format').val(newFormat);
 	}

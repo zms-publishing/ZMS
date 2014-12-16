@@ -167,6 +167,7 @@ $ZMI.registerReady(function(){
 				{'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (semicolon separated).','datatype':'string','default':''},
 				{'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
 				{'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
+				{'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':here.getPluginIds(['rte']),'default':'ckeditor'},
 				{'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','ajax_upload','rad_upload','bootstrap_upload']},
 				{'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
 				{'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
@@ -215,7 +216,7 @@ $ZMI.registerReady(function(){
 								<select class="form-control" id="conf_value" name="conf_value">
 									<option></option>
 									<tal:block tal:repeat="option res_item/options">
-										<option tal:attributes="value option; selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),'')==option)]" tal:content="option">option</option>
+										<option tal:attributes="value option; selected python:['','selected'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',''))==option)]" tal:content="option">option</option>
 									</tal:block>
 								</select>
 							</tal:block>

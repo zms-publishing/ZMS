@@ -18,6 +18,7 @@
 
 # Imports.
 import copy
+import re
 # Product Imports.
 import _globals
 
@@ -142,11 +143,8 @@ class ZMSTextformat:
     self.setTag(ob['tag'])
     self.setSubTag(ob['subtag'])
     self.setAttrs(ob['attrs'])
-    richedit = 0
-    if ob.has_key('richedit'):
-      richedit = ob['richedit']
-    self.setRichedit(richedit)
-    
+    self.setRichedit(ob.get('richedit',0))
+    self.setUsage(ob.get('usage',['standard']))
 
   # ----------------------------------------------------------------------------
   #  Get/Set Id.
@@ -212,6 +210,13 @@ class ZMSTextformat:
   # ----------------------------------------------------------------------------
   getAttrs__roles__ = None
   def getAttrs(self): return self.attrs
+  parseAttrs__roles__ = None
+  def parseAttrs(self):
+    d = []
+    l = re.split('(.*?)="(.*?)"',self.attrs)
+    for i in range(len(l)/3):
+      d.append((l[i*3+1],l[i*3+2]))
+    return d
   def setAttrs(self, attrs): self.attrs = attrs
 
   # ----------------------------------------------------------------------------
@@ -219,7 +224,17 @@ class ZMSTextformat:
   # ----------------------------------------------------------------------------
   getRichedit__roles__ = None
   def getRichedit(self): return self.richedit
-  def setRichedit(self, richedit): self.richedit = richedit
+  def setRichedit(self, richedit):
+    if type(richedit) is str and len(richedit) > 0:
+      richedit = 1
+    self.richedit = richedit
+
+  # ----------------------------------------------------------------------------
+  #  Get/Set Usage.
+  # ----------------------------------------------------------------------------
+  getUsage__roles__ = None
+  def getUsage(self): return self.usage
+  def setUsage(self, usage): self.usage = usage
 
   # ----------------------------------------------------------------------------
   #  HTML.

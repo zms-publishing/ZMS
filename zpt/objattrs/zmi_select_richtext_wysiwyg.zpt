@@ -10,7 +10,7 @@
 		### Richedit
 		</tal:block>
 		<div class="btn-group pull-right" tal:condition="python:request.get('htmledit_fmt') is not None"
-			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
+			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
 				><i class="icon-eye-close" tal:attributes="title python:request['htmledit_fmt'].getDisplay()"></i></span>
 		</div><!-- .pull-left -->
 
@@ -18,6 +18,6 @@
 
 	</div>
 	<div class="col-sm-12 col-md-12 col-lg-12">
-		<tal:block tal:content="structure python:here.getPlugin('rte/'+request['richedit_fmt'].getRichedit()+'/manage_form.zpt')">the richedit</tal:block>
+		<tal:block tal:content="structure python:here.getPlugin('rte/'+here.getConfProperty('ZMS.richtext.plugin','ckeditor')+'/manage_form.zpt')">the richedit</tal:block>
 	</div>
 </div>

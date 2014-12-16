@@ -211,6 +211,19 @@ class ConfManager(
 
 
     # --------------------------------------------------------------------------
+    #  ZMSTextformatManager.getPluginIds:
+    # --------------------------------------------------------------------------
+    def getPluginIds(self, path=[]):
+      ids = []
+      filepath = os.sep.join([package_home(globals()),'plugins']+path)
+      for filename in os.listdir(filepath):
+        path = os.sep.join([filepath,filename])
+        if os.path.isdir(path) and len(os.listdir(path)) > 0:
+          ids.append(filename)
+      return ids
+
+
+    # --------------------------------------------------------------------------
     #  Returns configuration-files from $ZMS_HOME/import-Folder
     # --------------------------------------------------------------------------
     security.declareProtected('ZMS Administrator', 'getConfFiles')

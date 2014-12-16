@@ -72,7 +72,8 @@ function zmiRicheditInsertTab( fmName, elName) {
 			<select class="form-control" id="format" name="format" tal:attributes="title python:here.getZMILangStr('ATTR_FORMAT'); disabled python:['','disabled'][int('format' in here.getObjAttrs().keys() and here.isDisabledAttr(here.getObjAttr('format'),request))]">
 				<option value="" disabled="disabled">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_PARAGRAPH')">Select paragraph</tal:block>... ---</option>
 				<tal:block tal:repeat="textFormat python:here.getTextFormats(request)">
-					<option tal:attributes="value python:textFormat.getId(); selected python:['','selected'][int(
+					<option tal:condition="python:'standard' in textFormat.getUsage()"
+								tal:attributes="value python:textFormat.getId(); selected python:['','selected'][int(
 										(textFormat.getId()==options.get('format','?')) or
 										(textFormat.getId()==request.get('format','?')) or
 										(textFormat.getId()==here.attr('format')) or
@@ -144,8 +145,8 @@ function zmiRicheditInsertTab( fmName, elName) {
 		### Richedit
 		</tal:block
 		><div class="btn-group pull-right" tal:condition="python:request.get('richedit_fmt') is not None"
-			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorShow(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
-				><i class="icon-eye-open" tal:attributes="title python:'%s (%s)'%(request['richedit_fmt'].getDisplay(),request['richedit_fmt'].getRichedit().upper())"></i></span>
+			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
+				><i class="icon-eye-open" tal:attributes="title python:'%s (%s)'%(request['richedit_fmt'].getDisplay(),here.getConfProperty('ZMS.richtext.plugin','ckeditor').upper())"></i></span>
 		</div><!-- .pull-left -->
 
 		<div class="clearfix"></div>

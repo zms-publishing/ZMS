@@ -110,21 +110,37 @@ function zmiRichtextInit(id) {
 				config.language = getZMILang()=='ger'?'DE':'EN';
 
 ////////////////////////////////////////////////////////////////////////////////
-// Import XStandard styles
+// Import Custom/XStandard styles
 ////////////////////////////////////////////////////////////////////////////////
+				config.format_tags = 'p';
+<tal:block tal:define="global config_format_tags python:True"></tal:block>
+<tal:block tal:define="formats python:filter(lambda x:'wysiwyg' in x.getUsage(),here.format_manager.getTextFormats(request))" tal:condition="python:len(formats)>0">
+<tal:block tal:define="global config_format_tags python:False" tal:repeat="format formats">
+<tal:block tal:define="global
+		style_id      python:format.getId();
+		style_name    python:format.getDisplay();
+		style_element python:format.getTag();
+		style_attrs   python:format.parseAttrs();">
+				config.format_tags += ';<tal:block tal:content="style_id"></tal:block>';
+				config.format_<tal:block tal:content="style_id"></tal:block> = {
+								name : '<tal:block tal:content="style_name"></tal:block>',
+								element : '<tal:block tal:content="style_element"></tal:block>' ,
+								attributes : { <tal:block tal:content="python:' , '.join(map(lambda x:'%s:\'%s\''%(x[0],x[1]),style_attrs))"></tal:block> } };
+</tal:block>
+</tal:block>
+</tal:block>
 <tal:block tal:condition="python:'xstandard_styles' in here.getAbsoluteHome().objectIds() and request.get('ZMS_THIS').getParentNode() is not None">
-				config.format_tags = '';
-<tal:block tal:define="global styles python:here.xmlParse(here.getXmlHeader()+here.xstandard_styles(meta_id=request.get('ZMS_INSERT',request.get('ZMS_THIS').getParentNode().meta_id)))">
+<tal:block tal:define="global config_format_tags python:False; styles python:here.xmlParse(here.getXmlHeader()+here.xstandard_styles(meta_id=request.get('ZMS_INSERT',request.get('ZMS_THIS').getParentNode().meta_id)))">
 <tal:block tal:repeat="style python:here.xmlNodeSet(styles,'style')">
 <tal:block tal:define="global
-		style_id      python:(map(lambda x:here.id_quote(x['cdata']),here.xmlNodeSet(style,'id'   ))+[None])[0];
+		style_id      python:(map(lambda x:here.id_quote(x['cdata']),here.xmlNodeSet(style,'id'))+[None])[0];
 		style_name    python:(map(lambda x:x['cdata'],here.xmlNodeSet(style,'name' ))+[None])[0];
-		style_element python:(map(lambda x:here.id_quote(x['cdata']),here.xmlNodeSet(style,'elt'  ))+[None])[0];
+		style_element python:(map(lambda x:here.id_quote(x['cdata']),here.xmlNodeSet(style,'elt'))+[None])[0];
 		style_attrs   python:map(lambda x:
 				(map(lambda y:here.id_quote(y['cdata']),here.xmlNodeSet(x,'name'))[0],
 				 map(lambda y:y['cdata'],here.xmlNodeSet(x,'value'))[0]),
 				 here.xmlNodeSet(style,'attr'))">
-				config.format_tags += (config.format_tags.length==0?'':';')+'<tal:block tal:content="style_id"></tal:block>';
+				config.format_tags += ';<tal:block tal:content="style_id"></tal:block>';
 				config.format_<tal:block tal:content="style_id"></tal:block> = {
 								name : '<tal:block tal:content="style_name"></tal:block>',
 								element : '<tal:block tal:content="style_element"></tal:block>' ,
@@ -133,7 +149,7 @@ function zmiRichtextInit(id) {
 </tal:block>
 </tal:block>
 </tal:block>
-<tal:block tal:condition="not:python:'xstandard_styles' in here.getAbsoluteHome().objectIds() and request.get('ZMS_THIS').getParentNode() is not None">
+<tal:block tal:condition="config_format_tags">
 				config.format_tags = $ZMI.getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div');
 </tal:block>
 

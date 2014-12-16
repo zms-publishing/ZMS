@@ -37,7 +37,6 @@ import _enummanager
 import _fileutil
 import _globals
 import _importable
-import _mediadb
 import _objattrs
 import _xmllib
 import _zcatalogmanager
@@ -478,13 +477,6 @@ class ZMS(
     # --------------------------------------------------------------------------
     def initZMS(self, container, id, titlealt, title, lang, manage_lang, REQUEST):
       return initZMS(container, id, titlealt, title, lang, manage_lang, REQUEST)
-
-
-    # --------------------------------------------------------------------------
-    #  ZMS.manage_addMediaDb:
-    # --------------------------------------------------------------------------
-    def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
-      _mediadb.manage_addMediaDb(self, location, REQUEST, RESPONSE)
 
 
     # --------------------------------------------------------------------------

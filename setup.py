@@ -23,6 +23,9 @@ README = open(os.path.join(setup_path, 'README')).read()
 
 VERSION = open(os.path.join(setup_path, 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
  
+DEPENDENCY_LINKS = [
+    "https://zmslabs.org/download/"
+]
 # Determined packages are required for a OS Independent installation
 # Binaries for Windows are available at this order(!) and these versions(!) only
 # For Windows Package-Manager "easy_install" MUST BE used, for *nix "pip"
@@ -37,7 +40,8 @@ INSTALL_REQUIRES = [
  'zope.publisher==3.13.4',
  'zope.untrustedpython',
  'zope.browserresource==4.0.1', # explicit due to hotfix
- 'Zope2==2.13.22',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
+ # 'Zope2==2.13.23',  # @see https://pypi.python.org/pypi/Zope2/2.13.22
+ 'Zope2 == 2.13.23dev', # our own build as zope hasn't released yet
  'Products.CMFCore==2.2.8', # @see configure.zcml <cmf:registerDirectory>
 
 # 'PIL==1.1.7', # @see https://pypi.python.org/pypi/PIL/
@@ -173,6 +177,7 @@ setup(
   url                   = 'http://www.zms-publishing.com',
   #download_url          = 'https://pypi.python.org/packages/source/Z/ZMS3/ZMS3-%s.tar.gz' % VERSION,
   install_requires      = INSTALL_REQUIRES,
+  dependency_links      = DEPENDENCY_LINKS,
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
   package_dir           = {'Products.zms': '.'},

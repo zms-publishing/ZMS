@@ -900,14 +900,16 @@ class ZMSGlobals:
       if type(i) is list or type(i) is tuple:
         return '['+','.join(map(lambda x: self.str_json(x,encoding,errors),i))+']'
       elif type(i) is dict:
-        return '{'+','.join(map(lambda x: '\'%s\':%s'%(x,self.str_json(i[x],encoding,errors)),i.keys()))+'}'
+        return '{'+','.join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors)),i.keys()))+'}'
       elif type(i) is time.struct_time:
         try:
-          return '\'%s\''%self.getLangFmtDate(i)
+          return '"%s"'%self.getLangFmtDate(i)
         except:
           pass
       elif type(i) is int or type(i) is float:
         return str(i)
+      elif type(i) is bool:
+        return str(i).lower()
       elif i is not None:
         if type(i) is unicode:
           if not (i.strip().startswith('<') and i.strip().endswith('>')):
@@ -917,8 +919,8 @@ class ZMSGlobals:
             i = i.encode(encoding, errors)
         else:
           i = str(i)
-        return '\'%s\''%(i.replace('\\','\\\\').replace('\'','\\\'').replace('\n','\\n').replace('\r','\\r'))
-      return '\'\''
+        return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+      return '""'
 
 
     """

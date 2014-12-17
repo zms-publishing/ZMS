@@ -1,0 +1,69 @@
+<!-- BO plugins/fileupload/jquery_upload/input.zpt -->
+
+<input class="btn btn-file fileupload" type="file" tal:attributes="id options/elName; name options/elName;">
+
+<tal:block tal:condition="python:request.get('f_zmiFileUpload',True)">
+<style>
+#upload {
+	padding:4px;
+	font-weight:bold;
+}
+.bar {
+	border: 1px solid black;
+	height: 10px;
+	background: #31B0D5;
+}
+</style>
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+$(function () {
+	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/vendor/jquery.ui.widget.js"/>').appendTo(document.body);
+	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/jquery.iframe-transport.js"/>').appendTo(document.body);
+	$('<'+'script type="text/javascript" src="/++resource++zms_/fileupload/jquery_upload/jquery.fileupload.js"/>').appendTo(document.body);
+	$('.fileupload').each(function() {
+			var elName = $(this).attr('name');
+			$(this).fileupload({
+				// path to server-side upload script
+				url:'<tal:block tal:content="python:'%s/preloadObjProperty'%context.absolute_url()"></tal:block>',
+				// additional data to send, name-value pairs
+				formData: {
+					lang:'<tal:block tal:content="request/lang"></tal:block>'
+					,key:'<tal:block tal:content="options/key"></tal:block>'
+					,dataRequestKey:elName
+					,session_id:'<tal:block tal:content="python:request.SESSION.getId()"></tal:block>'
+					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
+					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
+				},
+				dataType: 'json',
+				add: function (e, data) {
+					$("#upload").remove();
+					data.context = $('<div id="upload"><div class="pull-left">Uploading</div><div class="pull-right bar" style="width: 0%;"></div></div>').insertAfter(this);
+					data.submit();
+				},
+				fail: function (e, data) {
+					$("#upload").addClass("text-danger bg-danger").html(data.errorThrown+": "+data.textStatus);
+				},
+				done: function (e, data) {
+					$('input[name="exists_'+elName+'"]:hidden').val('True');
+					var newsrc = data.result.temp_url;
+					var oldsrc = $("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src');
+					$("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src',newsrc);
+					$("#upload").addClass("text-success bg-success").html(''
+						+ '<a href="javascript:;">'+$ZMI.icon('icon-remove','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</a> '
+						+ '<a href="'+newsrc+'" target="_blank" title="'+data.result.content_type+'">'+data.result.filename+'</a> ('+data.result.size_str+') '
+						);
+				},
+				progressall: function (e, data) {
+					var progress = parseInt(data.loaded / data.total * 100, 10);
+					$('#progress .bar').css(
+						'width',
+						progress + '%'
+					);
+				}
+			});
+		});
+});
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+<tal:block tal:define="dummy0 python:request.set('f_zmiFileUpload',False)"></tal:block>
+</tal:block>
+
+<!-- EO plugins/fileupload/jquery_upload/input.zpt -->

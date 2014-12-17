@@ -1086,7 +1086,8 @@ class ObjAttrs:
     def preloadObjProperty(self, REQUEST, RESPONSE=None):
       """ ObjAttrs.preloadObjProperty """
       content_type = 'text/plain'
-      message = '{"success":true}'
+      message = {}
+      message['success'] = True
       # Additional parameters.
       for qs in REQUEST['QUERY_STRING'].split('&'):
         e = qs.find('=')
@@ -1131,12 +1132,20 @@ class ObjAttrs:
       else:
         file = temp_folder.manage_addFile( id=id, title=filename, file=value)
       
+      if dataRequestKey:
+        message['filename'] = blob.getFilename()
+        message['size_str'] = self.getDataSizeStr(blob.get_size())
+        message['content_type'] = blob.getContentType()
+        message['temp_url'] = '%s/%s'%(temp_folder.absolute_url(),id)
+        message = self.str_json(message)
+      
       if REQUEST.get('set'):
         self.setReqProperty(key,REQUEST)
         message = self.getZMILangStr( 'MSG_UPLOADED')+'('+self.getLangFmtDate(time.time())+')'
       
       # Return with success.
       RESPONSE.setHeader('Content-Type',content_type)
+      print message
       return message
 
 

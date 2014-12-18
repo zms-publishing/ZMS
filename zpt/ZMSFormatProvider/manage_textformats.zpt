@@ -51,7 +51,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group" title="Format forces the text block using the Ricktext Editor">
 				<label for="new_richedit" class="col-sm-3 control-label"><span><tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-open',title=here.getZMILangStr('ATTR_RICHEDIT'))"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ATTR_RICHEDIT')">Richedit</tal:block></span></label>
-				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" id="new_richedit" name="new_richedit:int" value="1" tal:attributes="checked python:['','checked'][format.getRichedit()]"/></span></div>
+				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" id="new_richedit" name="new_richedit:int" value="1" tal:attributes="checked python:['','checked'][str(format.getRichedit())=='1']"/></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group" title="Rendered HTML Code nesting the text block">
 				<div class="col-sm-12">

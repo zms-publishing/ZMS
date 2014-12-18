@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from types import StringTypes
 import copy
 import re
 # Product Imports.
@@ -225,7 +226,7 @@ class ZMSTextformat:
   getRichedit__roles__ = None
   def getRichedit(self): return self.richedit
   def setRichedit(self, richedit):
-    if type(richedit) is str and len(richedit) > 0:
+    if type(richedit) in StringTypes and len(richedit) > 0:
       richedit = 1
     self.richedit = richedit
 

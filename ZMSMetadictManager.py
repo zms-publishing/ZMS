@@ -56,8 +56,9 @@ class ZMSMetadictManager:
         newRepetitive = item.get('repetitive',0)
         newKeys = item.get('keys',[])
         newCustom = item.get('custom','')
+        newDefault = item.get('default','')
         self.setMetadictAttr( None, newId, newAcquired, newName, newType, \
-          newMandatory, newMultilang, newRepetitive, newCustom, newKeys)
+          newMandatory, newMultilang, newRepetitive, newCustom, newKeys, newDefault)
         for meta_id in item.get('dst_meta_types',[]):
           metaObj = self.getMetaobj( meta_id)
           if metaObj is not None  and id not in self.getMetadictAttrs(meta_id):

@@ -7,69 +7,25 @@ Modularity of the ZMS components and approved production processes turn ZMS into
 
 http://www.zms-publishing.com
 
-Installation (Linux and Mac OS X)
----------------------------------
+Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
+------------------------------------------------------
+    
+**(1) Setup ZMS3 Environment**
 
-    *NOTE:* For installation on Windows see `special manual <http://www.zms-publishing.com/download/installation_windows/index_ger.html>`_.
-
-**(1) Get pip and virtualenv (if not already installed).**
-
-    |   The PyPA recommended tool for installing and managing Python packages:
-    |   https://pip.pypa.io/en/latest/installing.html
-
-    |   The PyPA recommended tool for creating isolated Python environments:
-    |   https://virtualenv.pypa.io/en/latest/virtualenv.html#installation
-
-
-**(2) Setup a Virtual Environment for ZMS3.**
-
+    *NOTE*: See Prerequisites and notes below.
+     
 ::
 
 $ cd ~
 $ virtualenv ZMS3
-
-       
-**(3) Install ZMS3 Product.**
-
-    |   ZMS3 uses Zope2 as underpinning legacy framework:
-    |   http://zope2.zope.org/about-zope-2/six-reasons-for-using-zope/
+           
+**(2) Install ZMS3 Product**
 
 ::     
    
-$ ./ZMS3/bin/pip install ZMS3
+$ ./ZMS3/bin/pip install ZMS3 --process-dependency-links
 
-        *NOTE:* Mac OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before (`more info <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_).
-       
-        You can downgrade these errors to warnings again via:
-
-    ::
-       
-    $ export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
-
-    
-        *NOTE:* If you get pip errors like ``URLError: <urlopen error timed out>`` try:
-        
-    ::      
-    
-    $ ./ZMS3/bin/pip install ZMS3 --timeout 120
-        
-
-        |   *NOTE:* To install PIL (Python Imaging Library) use:
-        |   (because PIL is not hosted at PyPI special ``--allow``-parameters are needed for pip>=1.5)
-    
-    ::
-    
-    $ ./ZMS3/bin/pip install PIL --allow-external PIL --allow-unverified PIL
-
-
-**(4) Apply needed Hotfixes to the Environment.**
-
-::     
-
-$ ./ZMS3/bin/pip uninstall ZMS3
-$ ./ZMS3/bin/pip install --upgrade ZMS3
-
-**(5) Create ZMS3 Instance.**
+**(3) Create ZMS3 Instance**
 
 ::     
 
@@ -84,28 +40,38 @@ $ ./ZMS3/instance/bin/zopectl start
 Changelog
 ---------
 
+3.1.0 (YYYY-MM-DD)
+******************
+
+    * Removed dependencies on Python <2.7 and Zope <2.13
+    * Updated to TinyMCE-4.1.5 and CKEditor-4.4.4
+    * Improved integration of ACE Editor
+    * Improved Metacmd-Manager
+    * ...
+    * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2882&stop_rev=2737&limit=200>`_
+
 3.0.4 (2014-09-08)
 ******************
 
-    * fixed update procedure     
-    * `more in 3.0.4... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2736&stop_rev=2720&limit=200>`_
+    * Fixed update procedure     
+    * `more in 3.0.4... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2736&stop_rev=2725&limit=200>`_
 
 3.0.3 (2014-08-31)
 ******************
 
-    * fixed metacmd-manager     
+    * Fixed Metacmd-Manager     
     * `more in 3.0.3... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2724&stop_rev=2719&limit=200>`_
 
 
 3.0.2 (2014-08-27)
 ******************
    
-    * update to bootstrap-3.2.0
-    * made object browser entry node depending on access rights on multisites
-    * added user role as zmi body element css class
-    * added support for $INSTANCE_HOME in mediadb-location
-    * added metacmd-provider
-    * fixed ZMSTable cellformat selection
+    * Updated to bootstrap-3.2.0
+    * Made object browser entry node depending on access rights on multisites
+    * Added user role as zmi body element css class
+    * Added support for $INSTANCE_HOME in mediadb-location
+    * Added Metacmd-Provider
+    * Fixed ZMSTable cellformat selection
     * `more in 3.0.2... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2718&stop_rev=2658&limit=200>`_
 
 3.0.1 (2014-06-25)
@@ -119,3 +85,29 @@ Code
 ----
 
     https://zmslabs.org/trac/browser/ZMS/trunk/
+    
+Prerequisites
+-------------
+
+    |   The PyPA recommended tool for creating isolated Python environments:
+    |   https://virtualenv.pypa.io/en/latest/installation.html
+
+    |   The PyPA recommended tool for installing and managing Python packages:
+    |   https://pip.pypa.io/en/latest/installing.html
+    
+    Update ``pip`` and ``virtualenv``:
+    
+    ::
+    
+    $ pip install -U pip
+    $ pip install -U virtualenv
+    
+    Users of Microsoft Windows have to install a development environment. MinGW (Minimalist GNU for Windows, http://www.mingw.org) provides a complete Open Source programming tool set which is suitable (`more hints <http://www.zms-publishing.com/download/installation_windows/index_ger.html>`_).
+    
+    Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before (`more info <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_). As a workaround you can downgrade these errors to warnings again via:
+
+    ::
+       
+    $ export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
+
+    If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.

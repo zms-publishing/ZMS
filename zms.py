@@ -493,10 +493,63 @@ class ZMS(
     #  Get version.
     # --------------------------------------------------------------------------
     def zms_version(self):
-      file = open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r')
-      rtn = file.read()
+      """
+      Try to obtain the version from package info if installed by pip
+      otherwise read from version.txt and from svnversion
+        
+        1. installed by pip from PyPI
+          (revision 'XXXX' in version.txt - package info of official releases does not contain revision)
+        2. installed by pip from ZMSLabs w/ info by svn
+          (revision 'svn-rXXXX' in package info due to setup.cfg)
+        3. installed by pip from TAR-Ball w/o info by svn
+          (revision 'XXXX' in version.txt due to nightly build - 'svn0' in package info due to setup.cfg)
+        4. deployed to instance/Products
+          (revision 'XXXX' in version.txt, maybe installed but unused package)
+        5. checked out to instance/Products as working copy from svn 
+          (revision 'REV' in version.txt, maybe installed but unused package)
+      """
+      from pkg_resources import WorkingSet, Requirement
+      zms = WorkingSet().find(Requirement.parse('ZMS3'))
+      pth = _fileutil.getOSPath(package_home(globals()))
+      
+      file = open(_fileutil.getOSPath(pth+'/version.txt'),'r')
+      version_txt = file.read()
+      version     = version_txt.strip().split('.')
       file.close()
-      return rtn
+      
+      # return plain version info if it is a deployment specific format like 
+      # ZMS3-3.Y.Z.XXXX.prj-ABCD
+      if len(version)!=4:
+        return version_txt
+      
+      # obtain revision and return formatted version info
+      # ZMS3-3.Y.Z.XXXX
+      else:
+        revision = version.pop()
+        # get revision from pip if running as package
+        if (zms is not None) and ('site-packages' in pth):
+          version_pip = str(zms.version)
+          if ('.svn-r' in version_pip):
+            # leave -r in revision to recognize as snapshot below
+            revision = version_pip.strip().split('.svn',1)[1]        
+        # get revision from svnversion
+        elif (revision == 'REV'):
+          import subprocess
+          version_svn = subprocess.Popen("svnversion",
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            shell=True, cwd=pth, universal_newlines=True)
+          revision = version_svn.communicate()[0].strip()
+        # format revision info
+        if (revision.startswith('export')):
+          revision = ' (unknown build/snapshot)'
+        # at moment there are 4-digits for builds 
+        elif len(revision)==4:
+          revision = ' (build #%s)'%revision
+        # otherwise it is a development snapshot
+        else:
+          revision = ' (snapshot #%s)'%revision.replace('-r','')
+      
+      return '.'.join(version)+revision
 
     # --------------------------------------------------------------------------
     #  ZMS.getDocumentElement

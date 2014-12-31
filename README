@@ -40,7 +40,7 @@ $ ./ZMS3/instance/bin/zopectl start
 Changelog
 ---------
 
-3.1.0 (YYYY-MM-DD)
+3.1.0 (2014-12-31)
 ******************
 
     * Removed dependencies on Python <2.7 and Zope <2.13
@@ -48,7 +48,7 @@ Changelog
     * Improved integration of ACE Editor
     * Improved Metacmd-Manager
     * ...
-    * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2882&stop_rev=2737&limit=200>`_
+    * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2884&stop_rev=2737&limit=200>`_
 
 3.0.4 (2014-09-08)
 ******************

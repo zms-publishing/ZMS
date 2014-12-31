@@ -2,18 +2,16 @@
 The ZMS3 environment consists of an application server based on pegged versions 
 of depending packages (see INSTALL_REQUIRES_CONCRETE below or requirements.txt).
 
-  Use 'pip install ZMS3'
-  to build the environment based on releases at https://pypi.python.org/pypi/
+  Use 'pip install ZMS3 [--process-dependency-links]'
+  to install the environment based on releases at https://pypi.python.org/pypi/
+  (include dependency links for unreleased packages at PyPI)
 
-  Use 'pip install ZMS3 --process-dependency-links'
-  to build the environment including packages which are not released officially yet
-
-  Use 'pip install -U https://zmslabs.org/svn/zmslabs/ZMS/trunk'
-  to build/upgrade the environment fetching the latest development snapshot at ZMSLabs
+  Use 'pip install https://zmslabs.org/download/ZMS3-latest.tar.gz [--process-dependency-links]'
+  to install the environment fetching the latest nightly build at ZMSLabs
   (maybe unstable)
 
   Use 'pip install -r https://zmslabs.org/svn/zmslabs/ZMS/trunk/requirements.txt'
-  to build the environment fetching the latest development snapshots from svn/git-repos
+  to install the environment fetching the latest development snapshots from svn/git-repos
   (maybe unstable)
 
 @see http://gpiot.com/blog/creating-a-python-package-and-publish-it-to-pypi/
@@ -143,26 +141,6 @@ VERSION = VERSION.strip().split('.')
 if len(VERSION)==4: VERSION.pop()
 VERSION = '.'.join(VERSION)
 
-PACKAGE_DATA = []
-# Exclude special folders and files
-for dirpath, dirnames, filenames in os.walk('.'):
-  if (
-    '.'                           != dirpath and
-    '.settings'                   not in dirpath and
-    '.svn'                        not in dirpath and
-    'ZMS3.egg-info'               not in dirpath and
-    'dist'                        not in dirpath and
-    'hotfixes'                    not in dirpath
-    ): 
-    if filenames: 
-      for filename in filenames:
-        if filename != '.DS_Store':
-          PACKAGE_DATA.append(dirpath[2:]+'/%s' % filename)
-# Include files from root path (because '.' is exclude above)
-PACKAGE_DATA.append('configure.zcml')
-PACKAGE_DATA.append('*.zpt')
-PACKAGE_DATA.append('*.txt')
-
 CLASSIFIERS = [
   'License :: OSI Approved :: GNU General Public License (GPL)',
   'Environment :: Web Environment',
@@ -195,7 +173,6 @@ setup(
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
   package_dir           = {'Products.zms': '.'},
-  package_data          = {'Products.zms': PACKAGE_DATA},
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,

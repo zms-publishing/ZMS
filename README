@@ -40,6 +40,11 @@ $ ./ZMS3/instance/bin/zopectl start
 Changelog
 ---------
 
+3.2.0dev (unreleased)
+*********************
+
+    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=2886&limit=200>`_
+
 3.1.0 (2014-12-31)
 ******************
 
@@ -47,8 +52,7 @@ Changelog
     * Updated to TinyMCE-4.1.5 and CKEditor-4.4.4
     * Improved integration of ACE Editor
     * Improved Metacmd-Manager
-    * ...
-    * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2884&stop_rev=2737&limit=200>`_
+    * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2885&stop_rev=2737&limit=200>`_
 
 3.0.4 (2014-09-08)
 ******************

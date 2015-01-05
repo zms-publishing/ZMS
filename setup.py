@@ -7,11 +7,11 @@ of depending packages (see INSTALL_REQUIRES_CONCRETE below or requirements.txt).
   (include dependency links for unreleased packages at PyPI)
 
   Use 'pip install https://zmslabs.org/download/ZMS3-latest.tar.gz [--process-dependency-links]'
-  to install the environment fetching the latest nightly build at ZMSLabs
+  to install the environment fetching the latest nightly build from ZMSLabs
   (maybe unstable)
 
   Use 'pip install -r https://zmslabs.org/svn/zmslabs/ZMS/trunk/requirements.txt'
-  to install the environment fetching the latest development snapshots from svn/git-repos
+  to install the environment fetching the latest development snapshots from SVN/GIT-Repositories
   (maybe unstable)
 
 @see http://gpiot.com/blog/creating-a-python-package-and-publish-it-to-pypi/
@@ -162,11 +162,11 @@ PACKAGE_DATA.append('*.zpt')
 PACKAGE_DATA.append('*.txt')
 
 CLASSIFIERS = [
-  'License :: OSI Approved :: GNU General Public License (GPL)',
-  'Environment :: Web Environment',
+  'Development Status :: 4 - Beta'
   'Framework :: Zope2',
   'Programming Language :: Python :: 2.7',
   'Operating System :: OS Independent',
+  'Environment :: Web Environment',
   'Topic :: Internet :: WWW/HTTP :: Site Management',
   'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
   'Intended Audience :: Education',
@@ -177,6 +177,7 @@ CLASSIFIERS = [
   'Intended Audience :: Information Technology',
   'Intended Audience :: Telecommunications Industry',
   'Intended Audience :: Financial and Insurance Industry',
+  'License :: OSI Approved :: GNU General Public License (GPL)',
 ]
 
 setup(

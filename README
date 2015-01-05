@@ -1,7 +1,7 @@
 ZMS: Simplified Content Modelling
 =================================
 
-ZMS (Python-based Content Management System for Science, Technology and Medicine) is a content management solution for the site-based e-publishing. A simple editing interface and flexible content model (multilingualism, metadata, content objects, XML import/export, workflow etc.) is designed for optimal productivity for web sites, documentation and educational content. 
+ZMS is the Python-based Content Management and E-Publishing System for Science, Technology and Medicine. A simple editing interface and flexible content model (multilingualism, metadata, content objects, XML import/export, workflow etc.) is designed for optimal productivity for web sites, documentation and educational content. 
 
 Modularity of the ZMS components and approved production processes turn ZMS into an incomparably rapid tool. The underlying efficiency-oriented publication model is the result of many consulting projects in recent years by HOFFMANN+LIEBENBERG, Berlin.
 
@@ -10,7 +10,7 @@ http://www.zms-publishing.com
 Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
 ------------------------------------------------------
     
-**(1) Setup ZMS3 Environment**
+**(1) Setup an Environment**
 
     *NOTE*: See Prerequisites and notes below.
      
@@ -19,20 +19,20 @@ Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
 $ cd ~
 $ virtualenv ZMS3
            
-**(2) Install ZMS3 Product**
+**(2) Install the Product**
 
 ::     
    
 $ ./ZMS3/bin/pip install ZMS3 --process-dependency-links
 
-**(3) Create ZMS3 Instance**
+**(3) Create a System Instance**
 
 ::     
 
 $ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
 $ ./ZMS3/instance/bin/zopectl start
 
-    and finally initialize new instance
+    and finally initialize the new ZMS instance via web user interface
 
     |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
     |   (replace "localhost" with your system's IP address or domain name if no local installation) 
@@ -83,8 +83,6 @@ Changelog
     
     * `more in 3.0.1... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2657&stop_rev=2479&limit=200>`_
        
-    https://zmslabs.org/trac/log/ZMS/trunk/
-
 Code
 ----
 

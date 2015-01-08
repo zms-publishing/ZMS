@@ -140,6 +140,7 @@ $ZMI.registerReady(function(){
 			dummy0 python:conf_keys.sort();
 			res python:[
 				{'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
+				{'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http','https']},
 				{'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
 				{'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
 				{'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},

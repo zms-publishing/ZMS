@@ -203,7 +203,6 @@ class ZMSLinkElement(ZMSContainerObject):
     manage_options = ( 
     {'label': 'TAB_EDIT',    'action': 'manage_main'},
     {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
-    {'label': 'TAB_PREVIEW', 'action': 'preview_html'}, # empty string defaults to index_html
     )
 
     # Management Permissions.

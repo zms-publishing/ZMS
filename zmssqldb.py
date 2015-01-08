@@ -99,7 +99,6 @@ class ZMSSqlDb(ZMSObject):
     {'label': 'TAB_PROPERTIES',    'action': 'manage_properties'},
     {'label': 'TAB_CONFIGURATION', 'action': 'manage_configuration'},
     {'label': 'SQL',               'action': 'manage_sql'},
-    {'label': 'TAB_PREVIEW',       'action': 'preview_html'}
     )
 
     # Management Permissions.

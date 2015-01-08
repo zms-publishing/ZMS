@@ -64,13 +64,13 @@
 								</a>
 							</li>
 						</tal:block>
-                        <li class="divider"></li>
-                        <li tal:condition="python:here.getConfProperty('ZMS.logout.href','')==''">
-                            <a href="manage_zmi_logout">
-                                <tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
-                                Logout
-                            </a>
-                        </li>
+						<li class="divider"></li>
+						<li tal:condition="python:here.getConfProperty('ZMS.logout.href','')==''">
+							<a href="manage_zmi_logout">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
+								Logout
+							</a>
+						</li>
 						<li tal:condition="python:here.getConfProperty('ZMS.logout.href','')!=''">
 							<a tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
@@ -115,6 +115,14 @@
 						</li>
 					</ul>
 				</li><!-- .dropdown -->
+				<li>
+					<a tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']"
+						tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</a>
+				</li>
+				<li tal:condition="python:len(here.getConfProperty('ASP.protocol',''))>0 and len(here.getConfProperty('ASP.ip_or_domain',''))>0">
+					<a tal:attributes="href python:'%s://%s%s'%(here.getConfProperty('ASP.protocol'),here.getConfProperty('ASP.ip_or_domain',''),here.getHref2IndexHtml(request)[len(here.getDocumentElement().absolute_url()):])"
+						tal:content="python:here.getZMILangStr('TAB_LIVE')">live</a>
+				</li>
 		</ul><!-- .navbar-nav -->
 	</div><!-- .navbar -->
 	<div id="zmi-logo" tal:condition="python:here.get_zmi_logo()">

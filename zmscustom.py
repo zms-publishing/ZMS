@@ -142,7 +142,6 @@ class ZMSCustom(ZMSContainerObject):
         opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
       if pc:
         opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
-      opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'})
       return tuple(opts)
 
     # Management Permissions.

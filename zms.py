@@ -377,7 +377,6 @@ class ZMS(
         opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
       opts.append({'label': 'TAB_CONFIGURATION','action': 'manage_customize'})
       opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
-      opts.append({'label': 'TAB_PREVIEW',      'action': 'preview_html'})
       return tuple(opts)
 
     # Management Permissions.

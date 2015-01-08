@@ -3846,9 +3846,10 @@ if key.startswith('table_'):
             <dictionary>
               <item key="custom"><![CDATA[<!-- ZMSTable.standard_html -->
 
-<div class="table-responsive" tal:define="global 
+<div class="table-responsive" tal:define="global
 		zmscontext options/zmscontext;
 		Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
+		rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request)); 
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
 		cols          python:zmscontext.attr('cols');
@@ -3926,7 +3927,7 @@ if key.startswith('table_'):
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
 							content       python:[content,newline_to_br(content)][format==''];
-							col_text      python:zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request))">
+							col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)]">
 						<tal:block tal:condition="python:tag in ['td','th']">
 							<tal:block tal:content="structure python:'<%s%s>'%(tag,['',' colspan=\042%i\042'%colspan][int(colspan>1)])"></tal:block>
 								<tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>
@@ -3979,7 +3980,7 @@ if key.startswith('table_'):
       <item key="id"><![CDATA[ZMSTable]]></item>
       <item key="name"><![CDATA[ZMSTable]]></item>
       <item key="package"><![CDATA[com.zms.foundation]]></item>
-      <item key="revision"><![CDATA[3.0.11]]></item>
+      <item key="revision"><![CDATA[3.0.12]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

@@ -53,8 +53,13 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi header .product {
 	font-weight:bold;
 }
-.zmi header .slogan {
+.zmi header .navbar-brand .slogan {
 	font-size:x-small;
+}
+@media (max-width: 992px) {
+	.zmi header .navbar-brand .slogan {
+		display:none;
+	}
 }
 .zmi header .navbar {
 	margin:0;
@@ -1233,9 +1238,6 @@ div.right .btn .caret {
 	div.grippy {
 		visibility:hidden;
 	}
-	.navbar-brand .slogan {
-		display:none;
-	}
 	.navbar-nav>li {
 		float: left;
 	}
@@ -1421,6 +1423,7 @@ ul.zmi-container li.zmi-item div.contentEditable {
 		float:left;
 	}
 }
+
 body.zmi.metas .input-group-addon {
 	padding: 0px 8px;
 }

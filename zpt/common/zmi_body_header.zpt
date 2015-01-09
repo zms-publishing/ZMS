@@ -113,8 +113,12 @@
 					<a tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']"
 						tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</a>
 				</li>
-				<li tal:condition="python:len(here.getConfProperty('ASP.protocol',''))>0 and len(here.getConfProperty('ASP.ip_or_domain',''))>0">
-					<a target="_blank" tal:attributes="href python:'%s://%s%s'%(here.getConfProperty('ASP.protocol'),here.getConfProperty('ASP.ip_or_domain',''),here.getHref2IndexHtml(request)[len(here.getDocumentElement().absolute_url()):])"
+				<li tal:condition="python:len(here.getConfProperty('ASP.ip_or_domain',''))>0 or not here.getAutocommit()"
+					tal:define="protocol python:here.getConfProperty( 'ASP.protocol', request.get('SERVER_URL').split('://')[0] );
+								zmsroot python:here.getDocumentElement().absolute_url();
+								domain python:here.getConfProperty( 'ASP.ip_or_domain',zmsroot.split('://')[1] );
+								node python:here.getHref2IndexHtml(request)">
+					<a target="_blank" tal:attributes="href python:'%s://%s%s'%(protocol, domain ,node[len(zmsroot):].replace('?preview=preview',''))"
 						tal:content="python:here.getZMILangStr('TAB_LIVE')">live</a>
 				</li>
 		</ul><!-- .navbar-nav -->

@@ -481,7 +481,7 @@ class ZReferableItem:
         if not self.getHome() == ob.getHome():
           protocol = ob.getConfProperty('ASP.protocol',None)
           domain = ob.getConfProperty('ASP.ip_or_domain',None)
-          if protcol is not None and domain is not None:
+          if protocol is not None and domain is not None:
             s = '/content/'
             i = index_html.find(s)
             if i > 0:

@@ -125,6 +125,22 @@ class ZMSGlobals:
 
 
     """
+    Returns path to lib/site-packages
+    """
+    def getPACKAGE_HOME( self):
+      from distutils.sysconfig import get_python_lib
+      return get_python_lib()
+
+
+    """
+    Returns path to Instance
+    """
+    def getINSTANCE_HOME( self):
+      INSTANCE_HOME = self.Control_Panel.getINSTANCE_HOME()
+      return INSTANCE_HOME
+
+
+    """
     Creates a new Zope native-representative (Image/File) of given blob in container.
     @return: New instance of Zope-object.
     @rtype: L{object}
@@ -1112,6 +1128,17 @@ class ZMSGlobals:
     """
     def pilutil( self):
       return _pilutil.pilutil(self)
+
+
+    """
+    Returns util to handle zms3.extensions
+    """
+    def extutil(self):
+      if self.isFeatureEnabled('%zms3.extensions%'):
+        import _extutil
+        return _extutil.Extensions()
+      else:
+        return None
 
 
     """

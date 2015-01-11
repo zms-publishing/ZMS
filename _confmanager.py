@@ -662,6 +662,60 @@ class ConfManager(
           self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',600))
           message = self.getZMILangStr('MSG_CHANGED')
+        elif btn == 'Import':
+          if self.isFeatureEnabled('%zms3.extensions%'):
+            zmsext = REQUEST.get('zmsext','')
+            target = 'manage_customize'
+            revobj = self.getMetaobjRevision('zms3.deployment')
+            revreq = '0.2.0'
+            
+            if revobj >= revreq:
+              target = 'manage_deployment'
+              target = self.url_append_params(target, {'zmsext': zmsext})
+              return RESPONSE.redirect(target)
+            isProcessed = False
+            try:
+              ZMSExtension  = self.extutil()
+              filesToImport = ZMSExtension.getFilesToImport(zmsext)
+              if len(filesToImport)>0:
+                for f in filesToImport:
+                  self.importConf(f, createIfNotExists=True, syncIfNecessary=False)
+                self.synchronizeObjAttrs()
+                isProcessed = True
+            except:
+              isProcessed = False
+            if isProcessed:
+              message = self.getZMILangStr('MSG_IMPORTED')%str(ZMSExtension.getFiles(zmsext))
+              target = self.url_append_params(target, {'manage_tabs_message': message})
+            else:
+              message = self.getZMILangStr('MSG_EXCEPTION')
+              target = self.url_append_params(target, {'manage_tabs_error_message': message})
+            return RESPONSE.redirect(target + '#%s'%key)
+        
+      ##### Instance ####
+      elif key == 'Instance':
+        if btn == 'Restart':
+          target = 'manage_customize'
+          
+          if 'ZMANAGED' in os.environ:
+            from Lifetime import shutdown
+            from cgi import escape
+            from _globals import writeBlock
+            try:
+              user = '"%s"' % REQUEST['AUTHENTICATED_USER']
+            except:
+              user = 'unknown user'
+            writeBlock(self, " Restart requested by %s" % user)
+            shutdown(1)
+            message = self.getZMILangStr('ZMS3 instance restarted.')
+            target = self.url_append_params(target, {'manage_tabs_message': message})
+            return """<html>
+            <head><meta HTTP-EQUIV=REFRESH CONTENT="10; URL=%s">
+            </head>
+            <body>Restarting...</body></html>
+            """ % escape(target + '#%s'%key, 1)
+          else:       
+            return "No daemon."
       
       ##### Manager ####
       elif key == 'Manager':
@@ -706,6 +760,8 @@ class ConfManager(
     def get_zmi_logo(self, REQUEST=None, RESPONSE=None):
       """ get_zmi_logo """
       if self.zmi_logo is not None:
+        if RESPONSE is not None:
+          RESPONSE.setHeader('Content-Type', self.zmi_logo.content_type)          
         return self.zmi_logo.data
       return ''
 
@@ -856,6 +912,9 @@ class ConfManager(
         metaobj_manager = DefaultMetaobjManager()
       return metaobj_manager
 
+    def getMetaobjRevision(self, id):
+      return self.getMetaobjManager().getMetaobjRevision( id)
+    
     def getMetaobjId(self, name):
       return self.getMetaobjManager().getMetaobjId( name)
 

@@ -9,10 +9,10 @@ http://www.zms-publishing.com
 
 Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
 ------------------------------------------------------
+
+*NOTE*: See Prerequisites and notes below.
     
 **(1) Setup an Environment**
-
-    *NOTE*: See Prerequisites and notes below.
      
 ::
 
@@ -25,14 +25,14 @@ $ virtualenv ZMS3
    
 $ ./ZMS3/bin/pip install ZMS3 --process-dependency-links
 
-**(3) Create a System Instance**
+**(3) Create an Instance**
 
 ::     
 
 $ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
 $ ./ZMS3/instance/bin/zopectl start
 
-    and finally initialize the new ZMS instance via web user interface
+    and finally initialize the new ZMS3 instance via web user interface
 
     |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
     |   (replace "localhost" with your system's IP address or domain name if no local installation) 
@@ -48,10 +48,11 @@ Changelog
 3.1.0 (2014-12-31)
 ******************
 
-    * Removed dependencies on Python <2.7 and Zope <2.13
+    * Added support for Pluggable Authentication Services
     * Updated to TinyMCE-4.1.5 and CKEditor-4.4.4
     * Improved integration of ACE Editor
     * Improved Metacmd-Manager
+    * Removed dependencies on Python <2.7 and Zope <2.13
     * `more in 3.1.0... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2885&stop_rev=2737&limit=200>`_
 
 3.0.4 (2014-09-08)
@@ -82,7 +83,7 @@ Changelog
 ******************
     
     * `more in 3.0.1... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=2657&stop_rev=2479&limit=200>`_
-       
+
 Code
 ----
 
@@ -91,25 +92,14 @@ Code
 Prerequisites
 -------------
 
-    |   The PyPA recommended tool for creating isolated Python environments:
+    |   ``virtualenv`` is the PyPA recommended tool for creating isolated Python environments:
     |   https://virtualenv.pypa.io/en/latest/installation.html
 
-    |   The PyPA recommended tool for installing and managing Python packages:
+    |   ``pip`` is the PyPA recommended tool for installing and managing Python packages:
     |   https://pip.pypa.io/en/latest/installing.html
-    
-    Update ``pip`` and ``virtualenv``:
-    
-    ::
-    
-    $ pip install -U pip
-    $ pip install -U virtualenv
     
     Users of Microsoft Windows have to install a development environment. MinGW (Minimalist GNU for Windows, http://www.mingw.org) provides a complete Open Source programming tool set which is suitable (`more hints <http://www.zms-publishing.com/download/installation_windows/index_ger.html>`_).
     
-    Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before (`more info <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_). As a workaround you can downgrade these errors to warnings again via:
-
-    ::
-       
-    $ export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
+    Apple OS X running updated Xcode command line tools causes compiler errors rather than warnings used until before. You can `downgrade these errors to warnings <https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/>`_ again.
 
     If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.

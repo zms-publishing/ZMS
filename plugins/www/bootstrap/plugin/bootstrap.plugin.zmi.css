@@ -409,11 +409,13 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 .form-horizontal .form-group.activity {
 	margin-bottom: 7px !important;
 }
+.form-initialized .attr_last_modified,
 .form-horizontal .attr_last_modified {
 	white-space:nowrap;
 	overflow:hidden;
 	color:#888;
 }
+.form-initialized .attr_last_modified div.pull-left,
 .form-horizontal .attr_last_modified div.pull-left {
 	padding:0 0 0 1em !important;
 	margin:0 !important;

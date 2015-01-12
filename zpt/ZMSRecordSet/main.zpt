@@ -30,7 +30,7 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']">
 	<div class="accordion-group perc100">
-		<div class="accordion-heading">
+		<div class="accordion-heading attr_last_modified">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
@@ -39,14 +39,12 @@
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrLastModified" class="accordion-body collapse">
-			<div class="accordion-inner" style="margin-left:2.3em;">
-				(
+			<div class="accordion-inner">
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 				</tal:block>
 				<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 				<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-				)
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 		<div class="accordion-heading filters">
@@ -60,7 +58,7 @@
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrZMSRecordSet" class="accordion-body collapse">
-			<div class="accordion-inner" style="margin:1em 1em 1em 2.3em;padding:1em;background:#DCE3F0;border-radius:4px;">
+			<div class="accordion-inner" style="margin:1em 0 0 0;padding:1em;background:#DCE3F0;border-radius:4px;">
 				<div class="form-inline" tal:repeat="filterIndex python:range(request['qfilters'])">
 					<div class="form-group">
 						<select style="min-width:17em;" class="pull-left form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">

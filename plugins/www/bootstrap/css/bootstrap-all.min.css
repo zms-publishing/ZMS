@@ -511,8 +511,8 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .form-horizontal .col-lg-10 input[type="checkbox"]{width:auto;margin:0}
 .form-horizontal .form-group.activity .col-lg-10{padding-left:2em}
 .form-horizontal .form-group.activity{margin-bottom:7px !important}
-.form-horizontal .attr_last_modified{white-space:nowrap;overflow:hidden;color:#888}
-.form-horizontal .attr_last_modified div.pull-left{padding:0 0 0 1em !important;margin:0 !important}
+.form-initialized .attr_last_modified,.form-horizontal .attr_last_modified{white-space:nowrap;overflow:hidden;color:#888}
+.form-initialized .attr_last_modified div.pull-left,.form-horizontal .attr_last_modified div.pull-left{padding:0 0 0 1em !important;margin:0 !important}
 body.manage-menu .zmi-page{white-space:nowrap;overflow:hidden}
 body.browse_iframe .zmi-preview{padding:1em;position:absolute;background:white;background:rgba(255,255,255,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF);ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF)";max-width:40em;border:1px dotted black}
 body.browse_iframe .zmi-preview .contentEditable{zoom:0.6;-moz-transform:scale(0.6)}

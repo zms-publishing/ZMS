@@ -86,35 +86,40 @@
 							seq_lang python:coverage[coverage.find('.')+1:];
 							seq_desc_langs python:here.getDescendantLanguages(seq_lang)">
 						<tal:block tal:condition="python:len(seq_desc_langs)>=1">
-						<div class="form-group coverage" tal:condition="python:'attr_dc_coverage' in objAttrs.keys()">
-							<label class="col-sm-2 control-label" for="attr_dc_coverage"><span tal:content="structure python:here.getZMILangStr('ATTR_DC_COVERAGE')">the label</span></label>
-							<div class="col-sm-4 col-md-3 col-lg-3">
-							<img name="coverageBtn" tal:attributes="src python:'/misc_/zms/btn_multilang%i.gif'%int(coverage.find('global.')==0); title python:here.getZMILangStr('ATTR_MULTILANG')" align="absmiddle"/>
-							<label for="attr_dc_coverage" tal:content="python:['local','global'][int(here.getParentLanguage(seq_lang)=='')]">the label</label>
-							<tal:block tal:condition="python:request['lang']==seq_lang">
-								<input type="hidden" name="attr_dc_coverage" tal:attributes="value coverage"/>
-								<tal:block tal:condition="python:len(seq_desc_langs)>1 and len(options)>1">
-									<input id="attr_dc_coverage" type="checkbox"
-										tal:attributes="
-											checked python:['','checked'][int(coverage.find('global.')==0)];
-											title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"
-										onclick="if (this.checked) { coverageBtn.src='/misc_/zms/btn_multilang1.gif'; $('input[name=attr_dc_coverage]').val('global.'+getZMILang()); } else { coverageBtn.src='/misc_/zms/btn_multilang0.gif'; $('input[name=attr_dc_coverage]').val('local.'+getZMILang()); }"/>
-								</tal:block>
-								<tal:block tal:condition="not:python:len(seq_desc_langs)>1 and len(options)>1">
-									<input id="attr_dc_coverage" type="checkbox" disabled="disabled"
-										tal:attributes="
-											checked python:['','checked'][int(coverage.find('global.')==0)];
-											title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
-								</tal:block>
-							</tal:block>
-							<tal:block tal:condition="not:python:request['lang']==seq_lang">
-								<input id="attr_dc_coverage" type="checkbox" disabled="disabled"
-									tal:attributes="
-										checked python:['','checked'][int(coverage.find('global.')==0)];
-										title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
-							</tal:block>
+							<div class="form-group coverage" tal:condition="python:'attr_dc_coverage' in objAttrs.keys()">
+								<label class="col-sm-2 control-label" for="attr_dc_coverage"><span tal:content="structure python:here.getZMILangStr('ATTR_DC_COVERAGE')">the label</span></label>
+								<div class="col-sm-10">
+									<tal:block tal:condition="python:request['lang']==seq_lang">
+										<input type="hidden" name="attr_dc_coverage" tal:attributes="value coverage"/>
+										<span class="btn btn-default" tal:condition="python:len(seq_desc_langs)>1 and len(options)>1"
+											><input id="attr_dc_coverage" type="checkbox"
+												tal:attributes="
+													checked python:['','checked'][int(coverage.find('global.')==0)];
+													title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"
+												onclick="if (this.checked) { $('#coverageBtn').css('opacity',1); $('input[name=attr_dc_coverage]').val('global.'+getZMILang()); } else { $('#coverageBtn').css('opacity',0.5); $('input[name=attr_dc_coverage]').val('local.'+getZMILang()); }" />
+										</span>
+										<span class="btn btn-default" tal:condition="not:python:len(seq_desc_langs)>1 and len(options)>1"
+											><input id="attr_dc_coverage" type="checkbox" disabled="disabled"
+												tal:attributes="
+													checked python:['','checked'][int(coverage.find('global.')==0)];
+													title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
+										</span>
+									</tal:block>
+									<tal:block tal:condition="not:python:request['lang']==seq_lang">
+										<span class="btn btn-default"
+											><input id="attr_dc_coverage" type="checkbox" disabled="disabled"
+												tal:attributes="
+													checked python:['','checked'][int(coverage.find('global.')==0)];
+													title python:'%s: %s'%(here.getZMILangStr('ATTR_LANGS'),','.join(seq_desc_langs));"/>
+										</span>
+									</tal:block>
+									<label id="coverageBtn" for="attr_dc_coverage" class="text-muted" tal:attributes="style python:'opacity:%i.5'%int(coverage.find('global.')==0)">
+									<i tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"
+										class="icon icon-globe icon-large text-primary" style="margin: 0 .7em 0 .9em;"></i>
+									<tal:block tal:content="python:['local','global'][int(here.getParentLanguage(seq_lang)=='')]">the label</tal:block>
+								</label>
+								</div>
 							</div>
-						</div>
 						</tal:block>
 					</tal:block>
 				</tal:block>

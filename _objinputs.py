@@ -196,7 +196,7 @@ class ObjInputs:
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', options=[0,1]):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', btn=False, options=[0,1]):
     lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -210,6 +210,8 @@ class ObjInputs:
     html.append(' name="%s"'%elName)
     html.append(' value="%s"'%str(_globals.nvl(value,options[0])))
     html.append(' />')
+    if btn:
+      html.append('<span class="btn btn-default">')
     html.append('<input ')
     if type(elId) is str:
       html.append(' id="%s"'%elId)
@@ -221,6 +223,8 @@ class ObjInputs:
       html.append(' checked="checked"')
     html.append(' onclick="if(this.checked){$(this).prev().val(\'%s\')}else{$(this).prev().val(\'%s\')}"'%(options[1],options[0]))
     html.append(' />')
+    if btn:
+      html.append('</span>')
     return ''.join(html)
 
 

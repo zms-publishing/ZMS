@@ -435,7 +435,7 @@ class ObjAttrs:
       
       #-- Boolean-Fields.
       elif inputtype == 'boolean':
-        return self.getCheckbox(fmName=fmName,elName=elName,elId=obj_attr['id'],value=value,enabled=enabled,hidden=False,REQUEST=REQUEST)
+        return self.getCheckbox(fmName=fmName,elName=elName,elId=obj_attr['id'],value=value,enabled=enabled,hidden=False,btn=True,REQUEST=REQUEST)
       
       #-- Color-Fields.
       elif inputtype == 'color':

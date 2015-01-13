@@ -190,10 +190,11 @@ class ObjInputs:
   #	@param elId
   #	@param value
   #	@param enabled
-  #	@param hidden           Add hidden Input-Field if not enabled
-  #	@param REQUEST  	Http-Request
-  #	@param css		CSS-Class
-  #	@param extra		Extra-Parameters
+  #	@param hidden    Add hidden Input-Field if not enabled
+  #	@param REQUEST   Http-Request
+  #	@param css       CSS-Class
+  #	@param extra     Extra-Parameters
+  # @param btn       Appear as Bootsrap Button
   #	@return String
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', btn=False, options=[0,1]):
@@ -221,7 +222,7 @@ class ObjInputs:
       html.append(' disabled="disabled"')
     if checked: 
       html.append(' checked="checked"')
-    html.append(' onclick="if(this.checked){$(this).prev().val(\'%s\')}else{$(this).prev().val(\'%s\')}"'%(options[1],options[0]))
+    html.append(' onclick="if(this.checked){$(this)%s.prev().val(\'%s\')}else{$(this)%s.prev().val(\'%s\')}"'%(['','.parent()'][btn],options[1],['','.parent()'][btn],options[0]))
     html.append(' />')
     if btn:
       html.append('</span>')

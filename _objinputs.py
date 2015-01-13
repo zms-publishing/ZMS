@@ -183,18 +183,18 @@ class ObjInputs:
 
 
   # ----------------------------------------------------------------------------
-  # 	getCheckbox:
+  #	getCheckbox:
   #
   #	@param fmName
   #	@param elName
   #	@param elId
   #	@param value
   #	@param enabled
-  #	@param hidden    Add hidden Input-Field if not enabled
-  #	@param REQUEST   Http-Request
-  #	@param css       CSS-Class
-  #	@param extra     Extra-Parameters
-  # @param btn       Appear as Bootsrap Button
+  #	@param hidden	Add hidden Input-Field if not enabled
+  #	@param REQUEST	Http-Request
+  #	@param css		CSS-Class
+  #	@param extra	Extra-Parameters
+  #	@param btn		Appear as Bootstrap Button
   #	@return String
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', btn=False, options=[0,1]):

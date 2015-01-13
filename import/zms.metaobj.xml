@@ -146,7 +146,6 @@
                     <list>
                       <item><![CDATA[type(ZMSDocument)]]></item>
                       <item><![CDATA[type(ZMSObject)]]></item>
-                      <item><![CDATA[type(ZMSSection)]]></item>
                       <item><![CDATA[type(ZMSRecordSet)]]></item>
                       <item><![CDATA[type(ZMSReference)]]></item>
                       <item><![CDATA[type(ZMSModule)]]></item>
@@ -332,7 +331,6 @@
                   <item key="keys" type="list">
                     <list>
                       <item><![CDATA[type(ZMSObject)]]></item>
-                      <item><![CDATA[type(ZMSSection)]]></item>
                       <item><![CDATA[type(ZMSRecordSet)]]></item>
                       <item><![CDATA[type(ZMSModule)]]></item>
                     </list>
@@ -897,7 +895,6 @@ return ''
                   <item key="keys" type="list">
                     <list>
                       <item><![CDATA[type(ZMSDocument)]]></item>
-                      <item><![CDATA[type(ZMSSection)]]></item>
                       <item><![CDATA[type(ZMSObject)]]></item>
                       <item><![CDATA[type(ZMSRecordSet)]]></item>
                       <item><![CDATA[type(ZMSModule)]]></item>
@@ -2633,7 +2630,7 @@ zmscontext.attr('text',text)
           <item key="name"><![CDATA[ZMSSection]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
           <item key="revision"><![CDATA[0.0.0]]></item>
-          <item key="type"><![CDATA[ZMSSection]]></item>
+          <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
     </dictionary>

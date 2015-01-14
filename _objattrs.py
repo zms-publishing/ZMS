@@ -986,12 +986,11 @@ class ObjAttrs:
               f = o.data
               filename = getattr( temp_folder, id).title
               mt, enc = _globals.guess_contenttype( filename, f)
-              set, value = True, {'data':f,'filename':filename,'content_type':mt}
+              set, value = True, {'data':str(f),'filename':filename,'content_type':mt}
               if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
                 w = REQUEST['width_%s'%attr]
                 h = REQUEST['height_%s'%attr]
                 if w != int(o.width) or h != int(o.height):
-                  #-- print '_objattrs: resize',o.width,'x',o.height,' to ',w,'x',h
                   value = _blobfields.createBlobField( self, datatype, value)
                   value.width = w
                   value.height = h
@@ -1145,7 +1144,6 @@ class ObjAttrs:
       
       # Return with success.
       RESPONSE.setHeader('Content-Type',content_type)
-      print message
       return message
 
 
@@ -1187,26 +1185,25 @@ class ObjAttrs:
           rtn['lang'] = thumbkey
           rtn['key'] = thumbkey
           rtn['form_id'] = form_id
-        elif action == 'crop':
-          x0 = REQUEST['x0']
-          y0 = REQUEST['y0']
-          x1 = REQUEST['x1']
-          y2 = REQUEST['y2']
-          box = (x0, y0, x1, y2)
-          blob = self.pilutil().crop( orig, box)
+        else:
+          blob = orig
+          if 'resize' in action.split(','):
+            width = REQUEST['width']
+            height = REQUEST['height']
+            size = (width,height)
+            blob = self.pilutil().resize( blob, size)
+            rtn['height'] = height
+            rtn['width'] = width
+          if 'crop' in action.split(','):
+            x0 = REQUEST['x0']
+            y0 = REQUEST['y0']
+            x1 = REQUEST['x1']
+            y2 = REQUEST['y2']
+            box = (x0, y0, x1, y2)
+            blob = self.pilutil().crop( blob, box)
+            rtn['height'] = y2-y0
+            rtn['width'] = x1-x0
           file.manage_upload(blob.getData())
-          rtn['height'] = y2-y0
-          rtn['width'] = x1-x0
-          rtn['filename'] = blob.getFilename()
-          rtn['src'] = src
-        elif action == 'resize':
-          width = REQUEST['width']
-          height = REQUEST['height']
-          size = (width,height)
-          blob = self.pilutil().resize( orig, size)
-          file.manage_upload(blob.getData())
-          rtn['height'] = height
-          rtn['width'] = width
           rtn['filename'] = blob.getFilename()
           rtn['src'] = src
       # Return JSON.

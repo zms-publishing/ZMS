@@ -209,11 +209,18 @@ function ZMSGraphic_extEdit_apply() {
 	}
 	// Crop
 	else if (ZMSGraphic_action == 'crop') {
+		var w = parseInt($('input#ZMSGraphic_extEdit_width').val());
+		var w_orig = parseInt($('input#width_'+ZMSGraphic_elName).val());
+		var h = parseInt($('input#ZMSGraphic_extEdit_height').val());
+		var h_orig = parseInt($('input#height_'+ZMSGraphic_elName).val());
 		var c = ZMSGraphic_cropcoords;
 		var canvasWidth = $('div#ZMSGraphic_extEdit_image').css('width');
 		canvasWidth = parseInt(canvasWidth.substr(0,canvasWidth.length-2));
-		var v = parseInt($('input#ZMSGraphic_extEdit_width').val())/canvasWidth;
-		var params = {'action':ZMSGraphic_action,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
+		var v = canvasWidth/w;
+		if ( w != w_orig || h != h_orig) {
+			ZMSGraphic_action = 'resize,crop';
+		}
+		var params = {'action':ZMSGraphic_action,'width:int':w,'height:int':h,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
 		for (var i in ZMSGraphic_params) {
 			params[i] = ZMSGraphic_params[i];
 		}
@@ -226,10 +233,12 @@ function ZMSGraphic_extEdit_apply() {
 	}
 	// Resize
 	else {
-		var w  = $('input#ZMSGraphic_extEdit_width').val();
-		var h = $('input#ZMSGraphic_extEdit_height').val();
+		var w = parseInt($('input#ZMSGraphic_extEdit_width').val());
+		var w_orig = parseInt($('input#width_'+ZMSGraphic_elName).val());
+		var h = parseInt($('input#ZMSGraphic_extEdit_height').val());
+		var h_orig = parseInt($('input#height_'+ZMSGraphic_elName).val());
 		var v = Math.round(100*w/ZMSGraphic_act_width);
-		if ( w != $('input#width_'+ZMSGraphic_elName).val() || h != $('input#height_'+ZMSGraphic_elName).val()) {
+		if ( w != w_orig || h != h_orig) {
 			if (ZMSGraphic_pil) {
 				var params = {'action':'resize','width:int':w,'height:int':h};
 				for (var i in ZMSGraphic_params) {

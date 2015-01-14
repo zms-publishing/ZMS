@@ -29,8 +29,8 @@
 -->
 <style>
   .ace_editor.fullScreen {
-      height: 100% !important;
-      width: 1250px !important;
+      height: 768px !important;
+      width: 1280px !important;
       border: 0;
       margin: 0;
       position: fixed !important;

@@ -19,10 +19,10 @@ from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
   'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms'],
-  'zms3.deployment': ['0.1.0', 'Deployment Library'],
-  'zms3.app.foo': ['{VERSION}', 'Test Description'],        # Test unavailable Extension
-  'zms3.foo': ['{VERSION}', 'Test Description'],            # Test unavailable Extension
-  'Pillow': ['2.6.1', 'Python Imaging Library (Fork)'],     # Test other Python Package
+  'zms3.deployment': ['0.2.0', 'Deployment Library'],
+# 'zms3.app.foo': ['{VERSION}', 'Test Description'],        # Test unavailable Extension
+# 'zms3.foo': ['{VERSION}', 'Test Description'],            # Test unavailable Extension
+# 'Pillow': ['2.6.1', 'Python Imaging Library (Fork)'],     # Test other Python Package
 }
 
 class Extensions():

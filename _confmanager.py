@@ -665,14 +665,16 @@ class ConfManager(
         elif btn == 'Import':
           if self.isFeatureEnabled('%zms3.extensions%'):
             zmsext = REQUEST.get('zmsext','')
-            target = 'manage_customize'
+            # hand over import to Deployment Library if available
             revobj = self.getMetaobjRevision('zms3.deployment')
             revreq = '0.2.0'
-            
             if revobj >= revreq:
               target = 'manage_deployment'
               target = self.url_append_params(target, {'zmsext': zmsext})
               return RESPONSE.redirect(target)
+            # otherwise import now
+            from _globals import writeError
+            target = 'manage_customize'
             isProcessed = False
             try:
               ZMSExtension  = self.extutil()
@@ -685,11 +687,13 @@ class ConfManager(
             except:
               isProcessed = False
             if isProcessed:
-              message = self.getZMILangStr('MSG_IMPORTED')%str(ZMSExtension.getFiles(zmsext))
+              message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+self.str_item(ZMSExtension.getFiles(zmsext))+'</code>')
               target = self.url_append_params(target, {'manage_tabs_message': message})
             else:
-              message = self.getZMILangStr('MSG_EXCEPTION')
+              message = self.getZMILangStr('MSG_EXCEPTION') 
+              message += ': <code class="alert-danger">%s</code>'%('ZMS.Extension not defined')
               target = self.url_append_params(target, {'manage_tabs_error_message': message})
+              writeError(self, '[ConfManager.manage_customizeSystem] ZMS.Extension not defined')
             return RESPONSE.redirect(target + '#%s'%key)
         
       ##### Instance ####

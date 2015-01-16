@@ -96,7 +96,7 @@ function zmiExpandObject(id,abs_url,meta_id) {
 			$div.html('<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')).show("normal");
 			$img.attr({src:"/misc_/zms/mi.gif",title:"-"});
 			var href = abs_url + "/ajaxGetChildNodes";
-			$.get(href,{lang:getZMILang()},function(result) {
+			$.get(href,{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(result) {
 					var html = zmiAddPages(result,true);
 					if (html.length==0) {
 						$img.attr({src:"/misc_/zms/spacer.gif",title:""}).css({width:"16px",height:"16px"});

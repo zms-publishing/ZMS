@@ -881,6 +881,19 @@ class ZMSObject(ZMSItem.ZMSItem,
       return href
     
     #++
+    def getHref2IndexHtmlInContext(self, context, REQUEST, deep=1):
+      index_html = self.getHref2IndexHtml(REQUEST,deep)
+      if not self.getHome() == context.getHome():
+        protocol = context.getConfProperty('ASP.protocol',None)
+        domain = context.getConfProperty('ASP.ip_or_domain',None)
+        if protocol is not None and domain is not None:
+          s = '/content/'
+          i = index_html.find(s)
+          if i > 0:
+            index_html = protocol + '://' + domain + '/' + index_html[i+len(s):]
+      return index_html
+    
+    #++
     def getHref2IndexHtml(self, REQUEST, deep=1): 
       if not REQUEST.has_key('lang'):
         try: REQUEST.set('lang',self.getLanguage(REQUEST))
@@ -1015,7 +1028,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.ajaxGetNode:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetNode')
-    def ajaxGetNode(self, lang, xml_header=True, meta_types=None, REQUEST=None):
+    def ajaxGetNode(self, context, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetNode """
       # print "ajaxGetNode",self
       
@@ -1040,7 +1053,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
-      xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST,deep=0))
+      xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)
@@ -1079,38 +1092,40 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetParentNodes')
     def ajaxGetParentNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetParentNodes """
-      #-- Build xml.
+      # Get context.
+      context = self
+      for id in REQUEST.get('physical_path','').split('/'):
+        if id and context is not None:
+          context = getattr(context,id,None)
+          if context is None:
+            context = self
+            break
+      # Build xml.
       xml = ''
       if xml_header:
         RESPONSE = REQUEST.RESPONSE
         content_type = 'text/xml; charset=utf-8'
-        filename = 'ajaxGetChildNodes.xml'
+        filename = 'ajaxGetParentNodes.xml'
         RESPONSE.setHeader('Content-Type',content_type)
         RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
         self.f_standard_html_request( self, REQUEST)
         xml += self.getXmlHeader()
-      
+      # Start-tag.
       xml += "<pages"
       for key in REQUEST.form.keys():
         if key.find('get_') < 0 and key not in ['lang','preview','http_referer','meta_types']:
           xml += " %s=\"%s\""%(key,str(REQUEST.form.get(key)))
       xml += " level=\"%i\""%self.getLevel()
       xml += ">\n"
-      
-      ob = self
-      obs = []
-      while ob is not None:
-        obs.insert(0,ob)
-        ob = ob.getParentNode()
-      
+      # Process nodes.
       REQUEST.form['get_attrs'] = REQUEST.form.get('get_attrs', 0)
-      for ob in obs:
-        xml += ob.ajaxGetNode( lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
-      
+      for node in self.breadcrumbs_obj_path():
+        xml += node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+      # End-tag.
       xml += "</pages>"
-      
+      # Return xml.
       return xml
 
 
@@ -1123,8 +1138,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       return self.ajaxGetChildNodes(lang, xml_header, meta_types, REQUEST)
     def ajaxGetChildNodes(self, lang, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetChildNodes """
-      
-      #-- Build xml.
+      # Get context.
+      context = self
+      for id in REQUEST.get('physical_path','').split('/'):
+        if id and context is not None:
+          context = getattr(context,id,None)
+          if context is None:
+            context = self
+            break
+      # Build xml.
       xml = ''
       if xml_header:
         RESPONSE = REQUEST.RESPONSE
@@ -1168,7 +1190,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         obs.extend( self.getPortalClients())
       
       for ob in obs:
-        xml += ob.ajaxGetNode( lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+        xml += ob.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
       
       xml += "</pages>"
       

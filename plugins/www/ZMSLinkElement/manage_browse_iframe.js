@@ -1,11 +1,19 @@
 /**
  * Select object.
  */
-function selectObject(physical_path,anchor,is_page,titlealt) {
-	// $ZMI.writeDebug('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
-	//confirm('BO selectObject: physical_path='+physical_path+',anchor='+anchor+',titlealt='+titlealt);
+function zmiSelectObject(sender) {
+	var absolute_url = $(sender).attr('value');
+	var physical_path = $(sender).attr('data-page-physical-path');
+	var index_html = $(sender).attr('data-index-html');
+	var anchor = $(sender).attr('data-anchor');
+	var is_page = $(sender).attr('data-page-is-page');
+	var titlealt = $(sender).attr('data-page-titlealt');
+	$ZMI.writeDebug('BO zmiSelectObject: absolute_url='+absolute_url+'\nphysical_path='+physical_path+'\nindex_html='+index_html+'\nanchor='+anchor+'\ntitlealt='+titlealt);
 	var fm;
 	var url = physical_path;
+	if (!(absolute_url.indexOf('/')==0) && !(index_html.indexOf('/')==0) && $ZMI.getServerUrl(absolute_url) != $ZMI.getServerUrl(index_html)) {
+		url = index_html;
+	}
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
 			&& typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
@@ -20,7 +28,7 @@ function selectObject(physical_path,anchor,is_page,titlealt) {
 		self.window.parent.selectObject(url,title);
 	}
 	self.window.parent.zmiModal("hide");
-	$ZMI.writeDebug('EO selectObject: url='+url+',title='+title);
+	$ZMI.writeDebug('EO zmiSelectObject: url='+url+',title='+title);
 }
 
 /**
@@ -110,7 +118,7 @@ function zmiToggleClick(toggle, callback) {
 		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
 		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
-		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang()},function(data){
+		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(data){
 				// Reset wait-cursor.
 				$("#loading").remove();
 				// Get and iterate pages.
@@ -124,6 +132,7 @@ function zmiToggleClick(toggle, callback) {
 						var page_home_id = $(page).attr("home_id");
 						var page_id = $(page).attr("id").substr(page_home_id.length+1);
 						var page_absolute_url = $(page).attr("absolute_url");
+						var page_index_html = $(page).attr("index_html");
 						var page_physical_path = $(page).attr("physical_path");
 						var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
 						var page_is_pageelement = $(page).attr("is_pageelement")=='1' || $(page).attr("is_pageelement")=='True';
@@ -150,9 +159,15 @@ function zmiToggleClick(toggle, callback) {
 						} else {
 							html += 'active ';
 						}
-						html += '">';
-						html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
-						html += '<'+'input type="radio" name="id" value=\''+page_absolute_url+'\' onclick="selectObject(\''+page_physical_path+'\',\''+anchor+'\',\''+page_is_page+'\',\''+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'\')"/> ';
+						html += '">'
+							+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' '
+							+ '<'+'input type="radio" name="id" value="'+page_absolute_url+'"'
+							+ ' data-page-physical-path="'+page_physical_path+'"'
+							+ ' data-index-html="'+page_index_html+'"'
+							+ ' data-anchor="'+anchor+'"'
+							+ ' data-page-is-page="'+page_is_page+'"'
+							+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'
+							+ ' onclick="zmiSelectObject(this)"/> ';
 						if (!page_is_page) {
 							html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 						}

@@ -26,11 +26,10 @@
 		<label class="sr-only" for="url"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">the label</span></label>
 		<select class="form-control" id="type" name="type">
 			<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
-			<option value="dtml">DTML</option>
-			<option value="file://" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</option>
-			<option value="mailto:" tal:content="python:here.getZMILangStr('ATTR_EMAIL')">mailto</option>
 			<option value="http://">http:</option>
 			<option value="https://">https:</option>
+			<option value="file://" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</option>
+			<option value="mailto:" tal:content="python:here.getZMILangStr('ATTR_EMAIL')">mailto</option>
 			<option value="ftp://">ftp:</option>
 		</select>
 	</div><!-- .form-group -->
@@ -40,9 +39,7 @@
 	<button class="btn btn-primary" type="submit" name="btn">Ok</button>
 </div><!-- .form-inline -->
 
-<div class="zmi-sitemap"
-	tal:define="accessNodes python:filter(lambda ob: ob.hasAccess(request), here.breadcrumbs_obj_path());
-				childNode python:accessNodes[0]"
+<div class="zmi-sitemap" tal:define="childNode python:here.getRootElement()"
 	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
 	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
 		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"></tal:block>

@@ -96,23 +96,27 @@ ZMI.prototype.getDescendantLanguages = function() {
 /**
  * Relativate url.
  */
+ZMI.prototype.getServerUrl = function(url) {
+	if (url.startsWith("/") || url.startsWith(".")) {
+		return "";
+	}
+	var protocol = url;
+	protocol = protocol.substr(0,protocol.indexOf(":")+3);
+	var server_url = url;
+	server_url = server_url.substr(protocol.length);
+	server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
+	return server_url;
+}
+
+/**
+ * Relativate url.
+ */
 ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 	if (typeof page_abs_url == "undefined") {
 		page_abs_url = $('meta[name="version_container_abs_url"]').attr('content');
 	}
-	var getServerUrl = function(url) {
-		if (url.startsWith("/") || url.startsWith(".")) {
-			return "";
-		}
-		var protocol = url;
-		protocol = protocol.substr(0,protocol.indexOf(":")+3);
-		var server_url = url;
-		server_url = server_url.substr(protocol.length);
-		server_url = protocol + server_url.substr(0,server_url.indexOf("/"));
-		return server_url;
-	}
-	var server_url = getServerUrl(url);
-	var page_server_url = getServerUrl(page_abs_url);
+	var server_url = $ZMI.getServerUrl(url);
+	var page_server_url = $ZMI.getServerUrl(page_abs_url);
 	if (server_url.length > 0 && page_server_url.length > 0 && server_url != page_server_url) {
 		return url;
 	}

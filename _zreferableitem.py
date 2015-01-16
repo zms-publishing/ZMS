@@ -477,15 +477,7 @@ class ZReferableItem:
       else:
         index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
         if not index_html:
-          index_html = ob.getHref2IndexHtml(REQUEST)
-        if not self.getHome() == ob.getHome():
-          protocol = ob.getConfProperty('ASP.protocol',None)
-          domain = ob.getConfProperty('ASP.ip_or_domain',None)
-          if protocol is not None and domain is not None:
-            s = '/content/'
-            i = index_html.find(s)
-            if i > 0:
-              index_html = protocol + '://' + domain + '/' + index_html[i+len(s):]
+          index_html = ob.getHref2IndexHtmlInContext(self,REQUEST)
       return index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'

@@ -573,7 +573,11 @@ $ZMI.registerReady(function() {
       data : {key:'Instance', btn:'Restart', lang:getZMILang()}
     }).done(function(data) {
         $('#BTN_Restart').prop("disabled", true);
-        $('#BTN_Restart').html(data)
+        var spinner = "";
+        if (data!='No daemon.') {
+        	spinner = " <i class='icon-spin icon-spinner'></i>"
+        }
+        $('#BTN_Restart').html(data + spinner)
       });
   });
 });

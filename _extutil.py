@@ -132,7 +132,9 @@ class Extensions():
       Return configuration files found at $LIBS/zms3/{ext}/conf/*.xml
     """
     if ext in self.pkg_names:
-      return self.pkg_confs[self.pkg_names.index(ext)]
+      files = self.pkg_confs[self.pkg_names.index(ext)]
+      files = filter(lambda filename: not filename.endswith('.example.xml') and not filename.endswith('.example.zip'), files)
+      return files
     else:
       return None
       
@@ -174,7 +176,7 @@ class Extensions():
   
   def importExample(self, ext=None, context=None, request=None):
     """
-    
+      Import example file of given extension at given context
     """
     import _fileutil
     import _importable

@@ -143,7 +143,7 @@ class Extensions():
       Return list of configuration files of given extension with full pathnames
     """
     if ext in self.pkg_names:
-      files = self.getFiles(ext)
+      files = self.pkg_confs[self.pkg_names.index(ext)]
       if files:
         filenames = []
         for f in files:
@@ -156,10 +156,11 @@ class Extensions():
     """
       Return an available *.example.xml or *.example.zip file of given extension
     """
-    files = self.getFiles(ext)
-    for filename in files:
-      if filename.endswith('.example.xml') or filename.endswith('.example.zip'):
-        return filename
+    if ext in self.pkg_names:
+      files = self.pkg_confs[self.pkg_names.index(ext)]
+      for filename in files:
+        if filename.endswith('.example.xml') or filename.endswith('.example.zip'):
+          return filename
     return None
   
   def getExampleToImport(self, ext=None):

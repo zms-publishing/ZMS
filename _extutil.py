@@ -19,7 +19,7 @@ from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
   'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms'],
-  'zms3.deployment': ['0.2.0', 'Deployment Library'],
+  'zms3.deployment': ['0.2.1', 'Deployment Library'],
 # 'zms3.app.foo': ['{VERSION}', 'Test Description'],        # Test unavailable Extension
 # 'zms3.foo': ['{VERSION}', 'Test Description'],            # Test unavailable Extension
 # 'Pillow': ['2.6.1', 'Python Imaging Library (Fork)'],     # Test other Python Package
@@ -41,7 +41,10 @@ class Extensions():
   getVersionInstalled__roles__  = None  
   getFiles__roles__             = None  
   getFilesToImport__roles__     = None
-  
+  getExample__roles__           = None  
+  getExampleToImport__roles__   = None
+  importExample__roles__        = None
+      
   def __init__(self):
     self.pkg                    = {}
     self.pkg_names              = []
@@ -68,7 +71,7 @@ class Extensions():
         except:
           confres = None
         if confres:
-          confxml = filter(lambda ob: ob.endswith('.xml'), confres)
+          confxml = filter(lambda ob: ob.endswith('.xml') or ob.endswith('.zip'), confres)
           if len(confxml)>0:
             self.pkg_confs.append(confxml)
           else:
@@ -145,7 +148,40 @@ class Extensions():
           filename = ResourceManager().resource_filename(ext, 'conf/'+f)
           filenames.append(filename)
         return filenames
-
     return []
   
+  def getExample(self, ext=None):
+    """
+      Return an available *.example.xml or *.example.zip file of given extension
+    """
+    files = self.getFiles(ext)
+    for filename in files:
+      if filename.endswith('.example.xml') or filename.endswith('.example.zip'):
+        return filename
+    return None
+  
+  def getExampleToImport(self, ext=None):
+    """
+      Return an available example file of given extension with full pathname
+    """
+    example = self.getExample(ext)
+    if example is not None:
+      files = self.getFilesToImport(ext)
+      for filename in files:
+        if filename.endswith(example):
+          return filename
+    return None
+  
+  def importExample(self, ext=None, context=None, request=None):
+    """
+    
+    """
+    import _fileutil
+    import _importable
+    example = self.getExample(ext)
+    if example is not None:
+      filename = self.getExampleToImport(ext)
+      contents = open(_fileutil.getOSPath(filename),'rb')
+      _importable.importFile(context, contents, request, _importable.importContent)
+      contents.close()
   

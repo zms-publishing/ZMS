@@ -465,9 +465,11 @@ $ZMI.registerReady(function(){
             <table class="input-append">
               <tr tal:condition="python:ZMSExtension.isEnabled(zmsext)"
                 tal:define="extrev python:ZMSExtension.getVersionInstalled(zmsext);
-                            objrev python:context.getMetaobjRevision(zmsext)">
-                <td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''">Import</button></td>
-                <td style="padding-left:1em;"><a tal:attributes="href python:'http://code.zms3.com/%s/downloads/'%zmsext.replace('zms3.',''); title python:'Check for Updates...'" target="_blank"><i class="icon-cloud-download icon-large"></i></a></td>
+                            objrev python:context.getMetaobjRevision(zmsext);
+                            example python:ZMSExtension.getExample(zmsext);
+                            examplelink python:context.getLinkObj(context.getConfProperty('ZMS.Examples','{}'))">
+                <td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''; data-deployment python:context.getMetaobjRevision('zms3.deployment')">Import</button></td>
+                <td><a tal:attributes="href python:'http://code.zms3.com/%s/downloads/'%zmsext.replace('zms3.',''); title python:'Check for Updates...'" target="_blank" style="padding-left:0.7em;text-decoration:none;"><i class="icon-cloud-download icon-large"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" id="BTN_ImportExample" tal:attributes="data-zmsext zmsext"></i></a></td>
               </tr>
               <tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)"
                 tal:define="version python:ZMSExtension.getVersionAvailable(zmsext);">
@@ -519,25 +521,63 @@ $ZMI.registerReady(function(){
           <button type="button" class="btn btn-primary" id="BTN_Restart">Restart</button>
         </div>
       </div><!-- .form-group -->
-      <script type="text/javascript">
-      $ZMI.registerReady(function() {
-        $('#BTN_Restart').click(function() {
-          $.ajax({
-            type : 'POST',
-            url : 'manage_customizeSystem',
-            data : {key:'Instance', btn:'Restart', lang:'ger'}
-          }).done(function(data) {
-              $('#BTN_Restart').prop("disabled", true);
-              $('#BTN_Restart').html(data)
-            });
-        });
-      });
-      </script>
 		</form>
 		</div>
 
 	</div>
 </div>
+
+<script>
+$ZMI.registerReady(function() {
+	$("button[class*='btn btn-primary']").click(function(event) {
+		if ($(this).text()!='Change') {
+	    $(this).html("Installing... <i class='icon-spin icon-spinner'></i>");
+		}
+	});
+	$('#BTN_ImportExample').click(function(event) {
+      var res = confirm("Import Example?\n\nHINT:\nYou can configure the parameter {ZMS.Examples} at ZMS > Configuration > System > Miscellaneous with a link to the desired import destination (default is the instance's root element).");
+      if (res == true) {
+    	  $(this).toggleClass("icon-upload icon-spin icon-spinner");
+        $(this).unbind("click");
+        $(this).unbind("mouseenter");
+        $(this).unbind("mouseleave");
+        $.ajax({
+          type : 'POST',
+          url : 'manage_customizeSystem',
+          data : {key:'InstalledProducts', btn:'ImportExample', zmsext:$('#BTN_ImportExample').data('zmsext'), lang:getZMILang()}
+        }).done(function(data) {
+            if (data == "True") {
+	            $("#BTN_ImportExample").toggleClass("icon-ok-sign icon-spin icon-spinner");
+	            $("#BTN_ImportExample").css("color", "#5cb85c");
+	            $("#BTN_ImportExample").parent().attr("href",$("#BTN_ImportExample").parent().data("link"));
+	            $("#BTN_ImportExample").parent().attr("title","Go to Example...");
+            }
+            else {
+            	$("#BTN_ImportExample").toggleClass("icon-exclamation-sign icon-spin icon-spinner");
+            	$("#BTN_ImportExample").css("color", "#d9534f");
+              $("#BTN_ImportExample").parent().attr("title","An Error occured!");
+            }
+          });
+      }
+  });
+  $("i[class*='icon']").mouseenter(function() {
+	  $(this).css("color", "#3071a9");
+	});
+  $("i[class*='icon']").mouseleave(function() {
+	  $(this).css("color", "#428bca");
+	});  
+  $('#BTN_Restart').click(function() {
+    $.ajax({
+      type : 'POST',
+      url : 'manage_customizeSystem',
+      data : {key:'Instance', btn:'Restart', lang:getZMILang()}
+    }).done(function(data) {
+        $('#BTN_Restart').prop("disabled", true);
+        $('#BTN_Restart').html(data)
+      });
+  });
+});
+</script>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

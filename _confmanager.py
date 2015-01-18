@@ -695,7 +695,26 @@ class ConfManager(
               target = self.url_append_params(target, {'manage_tabs_error_message': message})
               writeError(self, '[ConfManager.manage_customizeSystem] ZMS.Extension not defined')
             return RESPONSE.redirect(target + '#%s'%key)
-        
+        elif btn == 'ImportExample':
+          if self.isFeatureEnabled('%zms3.extensions%'):
+            zmsext = REQUEST.get('zmsext','')
+            target = 'manage_main'
+            ZMSExtension  = self.extutil()
+            isProcessed = False
+            try:
+              if ZMSExtension.getExample(zmsext) is not None:
+                destination = self.getLinkObj(self.getConfProperty('ZMS.Examples',{}))
+                if destination is None:
+                  destination = self.getDocumentElement()
+                ZMSExtension.importExample(zmsext,destination,REQUEST)
+                isProcessed = True
+            except:
+              isProcessed = False
+            if isProcessed:
+              return True
+            else:
+              return False
+
       ##### Instance ####
       elif key == 'Instance':
         if btn == 'Restart':

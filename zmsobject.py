@@ -1342,7 +1342,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       html = ''
       try:
         if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
+          if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument', 'ZMSTrashcan'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
             html = '<h1>'
             html += self.getTitle(REQUEST)
             if self.getDCDescription(REQUEST):

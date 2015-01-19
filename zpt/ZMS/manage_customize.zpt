@@ -451,37 +451,39 @@ $ZMI.registerReady(function(){
 				</div>
 			</div><!-- .form-group -->
 			<tal:block tal:condition="python:here.isFeatureEnabled('%zms3.extensions%')" tal:on-error="string: FEATURE ERROR zms3.extensions">
-				<input type="hidden" name="btn" value="Import" />
-				<tal:block
-					tal:define="ZMSExtension python:here.extutil()"
-					tal:repeat="zmsext python:ZMSExtension.getAll()">
-					<div class="form-group" tal:condition="python:zmsext.startswith('zms3.')">
-						<label class="col-sm-4 control-label">
-							<strong><a tal:attributes="href python:'http://code.zms3.com/%s/'%zmsext.replace('zms3.','')" tal:content="python:zmsext" target="_blank">zms3.extension</a> - <tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
-							<input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" />
-						</label>
-						<div class="col-sm-8">
-							<div class="pull-left">
-								<table class="input-append">
-									<tr tal:condition="python:ZMSExtension.isEnabled(zmsext)"
-										tal:define="extrev python:ZMSExtension.getVersionInstalled(zmsext);
-											objrev python:context.getMetaobjRevision(zmsext);
-											example python:ZMSExtension.getExample(zmsext);
-											examplelink python:context.getLinkObj(context.getConfProperty('ZMS.Examples','{}'))">
-										<td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''; data-deployment python:context.getMetaobjRevision('zms3.deployment')">Import</button></td>
-										<td><a href="#InstalledProducts" style="padding-left:0.7em;text-decoration:none;" title="Update" data-toggle="popover" tal:attributes="data-content python:'Install the latest development version at command line by (maybe unstable)<br /><code>$ %s/bin/pip install -U http://code.zms3.com/%s/get/HEAD.zip</code><br /><small>or check <a href=\'http://code.zms3.com/%s/downloads\' target=\'_blank\'>Downloads/Tags/Branches</a></small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), zmsext.replace('zms3.',''))"><i class="icon-cloud-download icon-large" title="Update Package"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" tal:attributes="data-zmsext zmsext"></i></a></td>
-									</tr>
-									<tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)"
-										tal:define="version python:ZMSExtension.getVersionAvailable(zmsext);">
-										<td><p style="padding-top:7px">Install ZMS3 Python Package at command line by
-										<br /><code tal:content="python:'$ %s/bin/pip install -U http://code.zms3.com/%s/get/%s.zip'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), version)"></code></p></td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div><!-- .form-group -->
-				</tal:block>      
-			</tal:block>	
+			<input type="hidden" name="btn" value="Import" />
+			<tal:block
+        tal:define="ZMSExtension python:here.extutil()"
+        tal:repeat="zmsext python:ZMSExtension.getAll()">
+      <div class="form-group" tal:condition="python:zmsext.startswith('zms3.')">
+        <label class="col-sm-4 control-label">
+          <strong><a tal:attributes="href python:'http://code.zms3.com/%s/'%zmsext.replace('zms3.','')" tal:content="python:zmsext" target="_blank">zms3.extension</a> - <tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+          <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" />
+        </label>
+        <div class="col-sm-8">
+          <div class="pull-left">
+            <table class="input-append">
+              <tr tal:condition="python:ZMSExtension.isEnabled(zmsext)">
+              <tal:block tal:define="
+                  extrev python:ZMSExtension.getVersionInstalled(zmsext);
+                  objrev python:context.getMetaobjRevision(zmsext);
+                  example python:ZMSExtension.getExample(zmsext);
+                  examplelink python:context.getLinkObj(context.getConfProperty('ZMS.Examples','{}'))">
+                <td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''; data-deployment python:context.getMetaobjRevision('zms3.deployment')">Import</button></td>
+                <td><a href="#InstalledProducts" style="padding-left:0.7em;text-decoration:none;" title="Update" data-toggle="popover" tal:attributes="data-content python:'Install the latest development version at command line by (maybe unstable)<br /><code>$ %s/bin/pip install -U http://code.zms3.com/%s/get/HEAD.zip</code><br /><small>or check <a href=\'http://code.zms3.com/%s/downloads\' target=\'_blank\'>Downloads/Tags/Branches</a></small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), zmsext.replace('zms3.',''))"><i class="icon-cloud-download icon-large" title="Update Package"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" tal:attributes="data-zmsext zmsext"></i></a></td>
+              </tal:block>
+              </tr>
+              <tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)"
+                tal:define="version python:ZMSExtension.getVersionAvailable(zmsext);">
+                <td><p style="padding-top:7px">Install ZMS3 Python Package at command line by
+                    <br /><code tal:content="python:'$ %s/bin/pip install -U http://code.zms3.com/%s/get/%s.zip'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), version)"></code></p></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div><!-- .form-group -->
+      </tal:block>      
+      </tal:block>	
 		</form>
 		</div>
 

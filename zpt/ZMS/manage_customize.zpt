@@ -469,7 +469,7 @@ $ZMI.registerReady(function(){
                             example python:ZMSExtension.getExample(zmsext);
                             examplelink python:context.getLinkObj(context.getConfProperty('ZMS.Examples','{}'))">
                 <td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''; data-deployment python:context.getMetaobjRevision('zms3.deployment')">Import</button></td>
-                <td><a tal:attributes="href python:'http://code.zms3.com/%s/downloads/'%zmsext.replace('zms3.',''); title python:'Check for Updates...'" target="_blank" style="padding-left:0.7em;text-decoration:none;"><i class="icon-cloud-download icon-large"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" id="BTN_ImportExample" tal:attributes="data-zmsext zmsext"></i></a></td>
+                <td><a href="#InstalledProducts" style="padding-left:0.7em;text-decoration:none;" title="Update" data-toggle="popover" tal:attributes="data-content python:'Install the latest development version at command line by (maybe unstable)<br /><code>$ %s/bin/pip install -U http://code.zms3.com/%s/get/HEAD.zip</code><br /><small>or check <a href=\'http://code.zms3.com/%s/downloads\' target=\'_blank\'>Downloads/Tags/Branches</a></small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), zmsext.replace('zms3.',''))"><i class="icon-cloud-download icon-large" title="Update Package"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" tal:attributes="data-zmsext zmsext"></i></a></td>
               </tr>
               <tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)"
                 tal:define="version python:ZMSExtension.getVersionAvailable(zmsext);">
@@ -480,7 +480,7 @@ $ZMI.registerReady(function(){
           </div>
         </div>
       </div><!-- .form-group -->
-      </tal:block>
+      </tal:block>      
       </tal:block>	
 		</form>
 		</div>
@@ -527,35 +527,44 @@ $ZMI.registerReady(function(){
 	</div>
 </div>
 
+<style>
+.popover { 
+  max-width : 370px;
+}
+</style>
 <script>
 $ZMI.registerReady(function() {
-	$("button[class*='btn btn-primary']").click(function(event) {
+	$("i[class*='icon-cloud-download']").parent().popover({
+		html: true
+	});  
+	$("button[class*='btn btn-primary']").click(function() {
 		if ($(this).text()!='Change') {
-	    $(this).html("Installing... &#60;i class='icon-spin icon-spinner'&#62;&#60;/i&#62;");
+	    $(this).html("Installing..."+" <"+"i class='icon-spin icon-spinner'"+"><"+"/i"+">");
 		}
-	});
-	$('#BTN_ImportExample').click(function(event) {
+	});	
+	$("i[class*='icon-upload']").click(function() {
+		  var btn = $(this);
       var res = confirm("Import Example?\n\nHINT:\nYou can configure the parameter {ZMS.Examples} at ZMS > Configuration > System > Miscellaneous with a link to the desired import destination (default is the instance's root element).");
       if (res == true) {
-    	  $(this).toggleClass("icon-upload icon-spin icon-spinner");
-        $(this).unbind("click");
-        $(this).unbind("mouseenter");
-        $(this).unbind("mouseleave");
+    	  btn.toggleClass("icon-upload icon-spin icon-spinner");
+    	  btn.unbind("click");
+    	  btn.unbind("mouseenter");
+    	  btn.unbind("mouseleave");
         $.ajax({
           type : 'POST',
           url : 'manage_customizeSystem',
-          data : {key:'InstalledProducts', btn:'ImportExample', zmsext:$('#BTN_ImportExample').data('zmsext'), lang:getZMILang()}
+          data : {key:'InstalledProducts', btn:'ImportExample', zmsext:btn.data('zmsext'), lang:getZMILang()}
         }).done(function(data) {
             if (data == "True") {
-	            $("#BTN_ImportExample").toggleClass("icon-ok-sign icon-spin icon-spinner");
-	            $("#BTN_ImportExample").css("color", "#5cb85c");
-	            $("#BTN_ImportExample").parent().attr("href",$("#BTN_ImportExample").parent().data("link"));
-	            $("#BTN_ImportExample").parent().attr("title","Go to Example...");
+            	btn.toggleClass("icon-ok-sign icon-spin icon-spinner");
+            	btn.css("color", "#5cb85c");
+            	btn.parent().attr("href", btn.parent().data("link"));
+            	btn.parent().attr("title", "Go to Example...");
             }
             else {
-            	$("#BTN_ImportExample").toggleClass("icon-exclamation-sign icon-spin icon-spinner");
-            	$("#BTN_ImportExample").css("color", "#d9534f");
-              $("#BTN_ImportExample").parent().attr("title","An Error occured!");
+            	btn.toggleClass("icon-exclamation-sign icon-spin icon-spinner");
+            	btn.css("color", "#d9534f");
+            	btn.parent().attr("title", "An Error occured!");
             }
           });
       }
@@ -575,9 +584,9 @@ $ZMI.registerReady(function() {
         $('#BTN_Restart').prop("disabled", true);
         var spinner = "";
         if (data!='No daemon.') {
-        	spinner = " &#60;i class='icon-spin icon-spinner'&#62;&#60;/i&#62;"
+        	spinner = " <"+"i class='icon-spin icon-spinner'"+"><"+"/i"+">";
         }
-        $('#BTN_Restart').html(data)
+        $('#BTN_Restart').html(data + spinner)
       });
   });
 });

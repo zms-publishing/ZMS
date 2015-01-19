@@ -531,7 +531,7 @@ $ZMI.registerReady(function(){
 $ZMI.registerReady(function() {
 	$("button[class*='btn btn-primary']").click(function(event) {
 		if ($(this).text()!='Change') {
-	    $(this).html("Installing... <i class='icon-spin icon-spinner'></i>");
+	    $(this).html("Installing... &#60;i class='icon-spin icon-spinner'&#62;&#60;/i&#62;");
 		}
 	});
 	$('#BTN_ImportExample').click(function(event) {
@@ -575,9 +575,9 @@ $ZMI.registerReady(function() {
         $('#BTN_Restart').prop("disabled", true);
         var spinner = "";
         if (data!='No daemon.') {
-        	spinner = " <i class='icon-spin icon-spinner'></i>"
+        	spinner = " &#60;i class='icon-spin icon-spinner'&#62;&#60;/i&#62;"
         }
-        $('#BTN_Restart').html(data + spinner)
+        $('#BTN_Restart').html(data)
       });
   });
 });

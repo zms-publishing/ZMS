@@ -1028,9 +1028,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.ajaxGetNode:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetNode')
-    def ajaxGetNode(self, context, lang, xml_header=True, meta_types=None, REQUEST=None):
+    def ajaxGetNode(self, context=None, lang=None, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetNode """
-      # print "ajaxGetNode",self
+      context = _globals.nvl(context,self)
       
       #-- Build xml.
       xml = ''

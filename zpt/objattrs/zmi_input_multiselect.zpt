@@ -4,7 +4,7 @@
 		name    python:'%s:list'%options['name'];
 		srcname python:'zms_mms_src_%s:list'%options['name'];
 		value   python:map(lambda x:str(x),here.nvl(options.get('value'),[]));
-		opts    python:options.get('options',[]);">
+		opts    python:here.sort_list(options.get('options',[]),0);">
 	<div class="pull-left">
 		<label tal:attributes="for srcname" tal:content="python:here.getZMILangStr('ATTR_AVAILABLE')">Available</label>
 		<select class="form-control" multiple="multiple" tal:attributes="name srcname; ondblclick python:'$ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)">

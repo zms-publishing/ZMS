@@ -269,7 +269,24 @@ ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable {
 	padding-top: 0;
 	margin:0;
 }
-
+ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId {
+	text-align:right;
+	float:right;
+ 	position:absolute;
+	margin:.6em .15em !important;
+	color:#aaa;
+	font-size:12px;
+}
+ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
+	/* For gui testing: primarily prevents hiding anf info button event */
+	display:block !important
+}
+ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
+	float:left;
+}
+ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1 {
+	padding-top:.35em;
+}
 table.table tbody tr td.data {
 	white-space:nowrap;
 	overflow:hidden;

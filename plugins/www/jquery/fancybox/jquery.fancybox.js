@@ -9,6 +9,7 @@
  *
  * Version: 1.3.4 (11/11/2010)
  * Requires: jQuery v1.3+
+ * Fixed for jQuery 2.0+ (11/21/2015) for DOSIS: replaced css-filter processing for ancient IE browsers
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -580,8 +581,14 @@
 
 		_finish = function () {
 			if (!$.support.opacity) {
-				content.get(0).style.removeAttribute('filter');
-				wrap.get(0).style.removeAttribute('filter');
+				try {
+					// for ancient IE browsers
+					content.first().css('filter','');
+					wrap.first().css('filter','');
+				}
+				catch(err) {
+					// do nothing
+				}
 			}
 
 			if (selectedOpts.autoDimensions) {

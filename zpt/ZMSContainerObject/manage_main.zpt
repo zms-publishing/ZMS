@@ -87,8 +87,13 @@
 		<tal:block tal:repeat="childNode python:here.getPortalClients()">
 			<li class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%childNode.id">
 				<div class="center">
-					<div class="contentEditable portalClient" tal:attributes="id python:'contentEditable_%s_%s'%(childNode.getHome().id,request['lang'])" tal:content="structure python:childNode.renderShort(request)">
-						the rendered child-node
+					<div class="contentEditable portalClient" tal:attributes="id python:'contentEditable_%s_%s'%(childNode.getHome().id,request['lang'])">
+						<div style="padding-left:1em;font-size:smaller;" tal:content="structure python:childNode.getHome().id">
+							the home-id
+						</div>
+						<tal:block tal:content="structure python:childNode.renderShort(request)">
+							the rendered child-node
+						</tal:block>
 					</div><!-- .contentEditable -->
 				</div><!-- .center -->
 					<div class="right">

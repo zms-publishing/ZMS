@@ -185,7 +185,7 @@ class MultiLanguageObject:
         value = ['*']
         if REQUEST is not None:
           value = self.getUserLangs(str(REQUEST['AUTHENTICATED_USER']))
-        value = filter(lambda x: ('*' in value) or (x in value), self.getLangIds())
+        value = filter(lambda x: ('*' in value) or (x in value), map(lambda x:x[0],self.getLangTree()))
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         return self.storeReqBuff( reqBuffId, value, REQUEST)

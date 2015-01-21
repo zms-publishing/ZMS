@@ -272,7 +272,6 @@ ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable {
 ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId {
 	text-align:right;
 	float:right;
- 	position:absolute;
 	margin:.6em .15em !important;
 	color:#aaa;
 	font-size:12px;
@@ -283,6 +282,7 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manag
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
 	float:left;
+ 	position:absolute;
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1 {
 	padding-top:.35em;

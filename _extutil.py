@@ -28,7 +28,7 @@ EXTENSIONS = {
   'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA'],
   'Products.ZSQLiteDA': ['0.6.1', 'SQLite database adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA'],
   'Products.ZSQLMethods': ['2.13.4', 'SQL method support', 'https://pypi.python.org/pypi/Products.ZSQLMethods'],
-  'Products.CMFCore': ['2.2.8', 'Provides Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore'],
+  'Products.CMFCore': ['2.2.8', 'Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore'],
   'lesscpy': ['0.10.2', 'Python LESS compiler', 'https://pypi.python.org/pypi/lesscpy'],
 }
 

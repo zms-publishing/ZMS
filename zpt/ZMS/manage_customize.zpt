@@ -543,6 +543,7 @@ $ZMI.registerReady(function(){
 	</div>
 </div>
 
+<tal:block tal:condition="python:here.isFeatureEnabled('%zms3.extensions%')" tal:on-error="structure string:<!--FEATURE ERROR zms3.extensions-->">
 <style>
 .popover { 
   max-width : 100%;
@@ -613,6 +614,7 @@ $ZMI.registerReady(function() {
   });
 });
 </script>
+</tal:block>
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

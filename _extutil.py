@@ -18,11 +18,18 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms'],
-  'zms3.deployment': ['0.2.1', 'Deployment Library'],
-# 'zms3.app.foo': ['{VERSION}', 'Test Description'],        # Test unavailable Extension
-# 'zms3.foo': ['{VERSION}', 'Test Description'],            # Test unavailable Extension
-# 'Pillow': ['2.6.1', 'Python Imaging Library (Fork)'],     # Test other Python Package
+  'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
+  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment'],
+# 'zms3.app.foo': ['{VERSION}', 'Test Description', ''],  # Test unavailable Extension
+# 'zms3.foo': ['1.2.3', 'Test Description', ''],          # Test unavailable Extension 
+# 'Foo': ['0.0.1', 'Test Description', '#'],              # Test unavailable Python Package
+  'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow'],
+  'MySQL-python': ['1.2.5', 'Python interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python'],
+  'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA'],
+  'Products.ZSQLiteDA': ['0.6.1', 'SQLite database adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA'],
+  'Products.ZSQLMethods': ['2.13.4', 'SQL method support', 'https://pypi.python.org/pypi/Products.ZSQLMethods'],
+  'Products.CMFCore': ['2.2.8', 'Provides Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore'],
+  'lesscpy': ['0.10.2', 'Python LESS compiler', 'https://pypi.python.org/pypi/lesscpy'],
 }
 
 class Extensions():
@@ -44,6 +51,7 @@ class Extensions():
   getExample__roles__           = None  
   getExampleToImport__roles__   = None
   importExample__roles__        = None
+  getUrl__roles__               = None
       
   def __init__(self):
     self.pkg                    = {}
@@ -53,13 +61,15 @@ class Extensions():
     self.pkg_ready              = []
     self.pkg_confs              = []
     self.pkg_installed          = []
+    self.pkg_urls               = []
         
     for name, info in sorted(EXTENSIONS.iteritems()):
       self.pkg_names.append(name)
       self.pkg_available.append(info[0])
       self.pkg_hints.append(info[1])
+      self.pkg_urls.append(info[2])
       package = str(WorkingSet().find(Requirement.parse(name))).split()
-      if (name.startswith('zms3.')) and (name in package) and (len(package)==2):
+      if ((name in package) and (len(package)==2)):
         # TODO: **Normalize Versions** acc. to `PEP 440`: http://legacy.python.org/dev/peps/pep-0440/
         # The version specified requires normalization, consider using '3.2.0.dev3' instead of '3.2.0dev3' etc. + 
         # pip v6.0.6 does not append svn revision specified in `setup.cfg` as v1.5.6 before
@@ -111,7 +121,7 @@ class Extensions():
 
   def getVersionAvailable(self, ext=None):
     """
-      Return python package version of given extension available at code.zms3.com
+      Return python package version of given extension configured above
     """
     if ext in self.pkg_names:
       return self.pkg_available[self.pkg_names.index(ext)]
@@ -187,4 +197,13 @@ class Extensions():
       contents = open(_fileutil.getOSPath(filename),'rb')
       _importable.importFile(context, contents, request, _importable.importContent)
       contents.close()
+      
+  def getUrl(self, ext=None):
+    """
+      Return url to package website of given extension if available
+    """    
+    if ext in self.pkg_names:
+      return self.pkg_urls[self.pkg_names.index(ext)]
+    else:
+      return None 
   

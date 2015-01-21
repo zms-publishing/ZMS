@@ -450,14 +450,14 @@ $ZMI.registerReady(function(){
 					<button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
 				</div>
 			</div><!-- .form-group -->
-			<tal:block tal:condition="python:here.isFeatureEnabled('%zms3.extensions%')" tal:on-error="string: FEATURE ERROR zms3.extensions">
+			<tal:block tal:condition="python:here.isFeatureEnabled('%zms3.extensions%')" tal:on-error="structure string:<!--FEATURE ERROR zms3.extensions-->">
 				<input type="hidden" name="btn" value="Import" />
 				<tal:block
 					tal:define="ZMSExtension python:here.extutil()"
 					tal:repeat="zmsext python:ZMSExtension.getAll()">
 					<div class="form-group" tal:condition="python:zmsext.startswith('zms3.')">
 						<label class="col-sm-4 control-label">
-							<strong><a tal:attributes="href python:'http://code.zms3.com/%s/'%zmsext.replace('zms3.','')" tal:content="python:zmsext" target="_blank">zms3.extension</a> - <tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+							<strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext)" tal:content="python:zmsext" target="_blank">zms3.extension</a> - <tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
 							<input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" />
 						</label>
 						<div class="col-sm-8">
@@ -470,18 +470,32 @@ $ZMI.registerReady(function(){
 												example python:ZMSExtension.getExample(zmsext);
 												examplelink python:context.getLinkObj(context.getConfProperty('ZMS.Examples','{}'))">
 											<td><button type="submit" class="btn btn-primary" name="zmsext" tal:content="python:objrev>=extrev and (objrev==extrev and 'Installed v%s'%objrev or 'Modified v%s'%objrev) or (objrev=='0.0.0' and 'Initialize v%s'%extrev or 'Update v%s'%extrev)" tal:attributes="value zmsext; disabled python:objrev>=extrev and 'disabled' or ''; data-deployment python:context.getMetaobjRevision('zms3.deployment')">Import</button></td>
-											<td><a href="#InstalledProducts" style="padding-left:0.7em;text-decoration:none;" title="<strong>Update</strong>" data-toggle="popover" tal:attributes="data-content python:'Install the latest development version at command line by (maybe unstable)<br /><code>$ %s/bin/pip install -U http://code.zms3.com/%s/get/HEAD.zip</code><br /><small>or check <a class=\'icon-bitbucket\' href=\'http://code.zms3.com/%s/downloads\' target=\'_blank\'> Downloads/Tags/Branches</a> at code.zms3.com for available versions</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), zmsext.replace('zms3.',''))"><i class="icon-cloud-download icon-large" title="Update Package"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="padding-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" tal:attributes="data-zmsext zmsext"></i></a></td>
+											<td><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="<strong>Update</strong>" data-toggle="popover" tal:attributes="data-content python:'Install the latest development version at command line by (maybe unstable)<br /><code>$ %s/bin/pip install -U %s/get/HEAD.zip</code><br /><small>or check <a class=\'icon-bitbucket\' href=\'%s/downloads\' target=\'_blank\'> Downloads/Tags/Branches</a> at code.zms3.com for available versions</small>'%(here.getPACKAGE_HOME().split('/lib')[0], ZMSExtension.getUrl(zmsext), ZMSExtension.getUrl(zmsext))"><i class="icon-cloud-download icon-large" title="Update Package"></i></a><a tal:condition="python:(example is not None) and (objrev>=extrev)" tal:attributes="data-link python:(examplelink is not None) and ('%s/manage_main?lang=%s'%(examplelink.absolute_url(),request['lang'])) or ('%s/manage_main?lang=%s'%(context.getDocumentElement().absolute_url(),request['lang'])); title python:'Import Example %s'%example" href="#" style="margin-left:0.7em;text-decoration:none;"><i class="icon-upload icon-large" tal:attributes="data-zmsext zmsext"></i></a></td>
 										</tal:block>
 									</tr>
-									<tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)"
-										tal:define="version python:ZMSExtension.getVersionAvailable(zmsext);">
-										<td><button class="btn" disabled="disabled">Not installed.</button><a href="#InstalledProducts" style="padding-left:0.7em;text-decoration:none;" title="<strong>Setup</strong>" data-toggle="popover" tal:attributes="data-content python:'Install ZMS3 Python Package at command line by<br /><code>$ %s/bin/pip install -U http://code.zms3.com/%s/get/%s.zip</code><br /><small>or check <a class=\'icon-bitbucket\' href=\'http://code.zms3.com/%s/downloads\' target=\'_blank\'> Downloads/Tags/Branches</a> at code.zms3.com for available versions</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext.replace('zms3.',''), version, zmsext.replace('zms3.',''))"><i class="icon-cloud-download icon-large" title="Setup Package"></i></a>
+									<tr tal:condition="python:not ZMSExtension.isEnabled(zmsext)">
+										<td><button class="btn" disabled="disabled">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="<strong>Setup</strong>" data-toggle="popover" tal:attributes="data-content python:'Install ZMS3 Python Package at command line by<br /><code>$ %s/bin/pip install -U %s/get/%s.zip</code><br /><small>or check <a class=\'icon-bitbucket\' href=\'%s/downloads\' target=\'_blank\'> Downloads/Tags/Branches</a> at code.zms3.com for available versions</small>'%(here.getPACKAGE_HOME().split('/lib')[0], ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext), ZMSExtension.getUrl(zmsext))"><i class="icon-cloud-download icon-large" title="Setup Package"></i></a>
 										</td>
 									</tr>
 								</table>
 							</div>
 						</div>
 					</div><!-- .form-group -->
+          <div class="form-group" tal:condition="python:not zmsext.startswith('zms3.')">
+            <label class="col-sm-4 control-label">
+              <strong><a tal:attributes="href python:'%s'%(ZMSExtension.getUrl(zmsext))" tal:content="python:zmsext" target="_blank">python package</a> - <tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" />
+            </label>
+            <div class="col-sm-8">
+              <div class="pull-left">
+                <table class="input-append">
+                <tr>
+                  <td><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="Info" data-toggle="popover" tal:attributes="data-content python:'Install the Python Package at command line by<br /><code>$ %s/bin/pip install -U %s</code><br /><small>or check <a href=\'%s/%s\' target=\'_blank\'> package home</a> at pypi.python.org for more information</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext, ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext)); title python:'<strong>Info about v%s</strong>'%ZMSExtension.getVersionAvailable(zmsext)"><i class="icon-info-sign icon-large" title="Info" style="color:#ccc;" tal:attributes="title python:'Info about v%s'%ZMSExtension.getVersionAvailable(zmsext)" tal:condition="python:ZMSExtension.getVersionAvailable(zmsext)!=ZMSExtension.getVersionInstalled(zmsext)"></i></a></td>
+                </tr>
+                </table>
+              </div>
+            </div>
+          </div><!-- .form-group -->	
 				</tal:block>      
 			</tal:block>	
 		</form>
@@ -539,6 +553,9 @@ $ZMI.registerReady(function() {
 	$("i[class*='icon-cloud-download']").parent().popover({
 		html: true
 	});   
+  $("i[class*='icon-info-sign']").parent().popover({
+	    html: true
+	  }); 
 	$("button[class*='btn btn-primary']").click(function() {
 		if ($(this).text()!='Change') {
 	    $(this).html("Installing..."+" <"+"i class='icon-spin icon-spinner'"+"><"+"/i"+">");
@@ -577,6 +594,9 @@ $ZMI.registerReady(function() {
   $("i[class*='icon']").mouseleave(function() {
 	  $(this).css("color", "#428bca");
 	});  
+  $("i[class*='icon-info-sign']").mouseleave(function() {
+	    $(this).css("color", "#ccc");
+	  });
   $('#BTN_Restart').click(function() {
     $.ajax({
       type : 'POST',

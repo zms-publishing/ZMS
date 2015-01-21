@@ -279,7 +279,7 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId {
 }
 ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
 	/* For gui testing: primarily prevents hiding anf info button event */
-	display:block !important
+	/ * display:block !important; */
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
 	float:left;

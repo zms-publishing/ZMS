@@ -164,6 +164,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         mo_access = metaObj.get('access',{})
         mo_access_deny = mo_access.get('insert_deny',[])
         can_insert = can_insert and len( container.intersection_list( mo_access_deny, container.getUserRoles(auth_user))) == 0
+        can_insert = can_insert or auth_user.has_role('Manager')
         mo_access_insert_nodes = container.string_list(mo_access.get('insert_custom','{$}'))
         sl = []
         sl.extend(map( lambda x: (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))

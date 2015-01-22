@@ -47,9 +47,7 @@ class MetacmdObject:
           ob = getattr(self,metaCmd['id'],None)
           if ob.meta_type in ['DTML Method','DTML Document']:
             value = ob(self,REQUEST,RESPONSE)
-          elif ob.meta_type == 'Page Template':
-            value = ob()
-          elif ob.meta_type == 'Script (Python)':
+          elif ob.meta_type in ['External Method','Page Template','Script (Python)']:
             value = ob()
           if type(value) is str:
             message = value

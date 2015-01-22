@@ -145,15 +145,31 @@ function frmresize(r) {
 	}
 	var colval = frmwidth + ",*";
 	frmset[0].cols=colval;
-	$.cookies.set('zmi_menu_frmsize',colval, { expires: 365 })
+	$.cookies.set('zmi_menu_frmsize',colval, { expires: 365 });
+	// loc = location.origin; 
+	try {
+		localStorage.setItem( 'zmi_menu_frmsize' , colval );
+	} catch(err) {
+		// do nothing
+	}
 }
 
 $ZMI.registerReady(function(){
+	// loc = location.origin; 
 	zmiRefresh();
 	runPluginCookies(function() {
 			if ( $.cookies.get('zmi_menu_frmsize') ) {
 				parent.document.getElementsByTagName('frameset')[0].cols = $.cookies.get('zmi_menu_frmsize');
-			};
+			} else {
+				try {
+					if ( localStorage.getItem( 'zmi_menu_frmsize' ) ) {
+						parent.document.getElementsByTagName('frameset')[0].cols = localStorage.getItem( 'zmi_menu_frmsize' )
+					}
+				} catch(err) {
+					// do nothing
+				}
+			}
+			;
 		});
 });
 

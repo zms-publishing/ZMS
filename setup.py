@@ -114,7 +114,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.processlifetime==2.0.0',
   'zope.proxy==4.1.4',
   'zope.ptresource==3.9.0',
-  'zope.publisher==4.0.0',
+  'zope.publisher==3.13.4',
   'zope.schema==4.4.2',
   'zope.security==4.0.1',
   'zope.sendmail==4.0.0',

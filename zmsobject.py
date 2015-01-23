@@ -884,8 +884,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     def getHref2IndexHtmlInContext(self, context, REQUEST, deep=1):
       index_html = self.getHref2IndexHtml(REQUEST,deep)
       if not self.getHome() == context.getHome():
-        protocol = context.getConfProperty('ASP.protocol',None)
-        domain = context.getConfProperty('ASP.ip_or_domain',None)
+        protocol = self.getConfProperty('ASP.protocol',None)
+        domain = self.getConfProperty('ASP.ip_or_domain',None)
         if protocol is not None and domain is not None:
           s = '/content/'
           i = index_html.find(s)

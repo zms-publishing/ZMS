@@ -168,8 +168,7 @@ $ZMI.registerReady(function(){
 				} catch(err) {
 					// do nothing
 				}
-			}
-			;
+			};
 		});
 });
 

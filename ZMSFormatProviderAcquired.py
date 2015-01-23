@@ -18,6 +18,7 @@
 
 
 # Imports.
+import copy
 import zope.interface
 # Product Imports.
 import IZMSFormatProvider, ZMSFormatProvider
@@ -66,7 +67,11 @@ class ZMSFormatProviderAcquired(
       return textformats
 
     def getCharFormats(self):
-      charformats = self.getPortalMaster().getCharFormats()
+      charformats = copy.deepcopy(self.getPortalMaster().getCharFormats())
+      for charformat in charformats:
+        btn = charformat.get('btn')
+        if type(btn) is str and btn.find('/') < 0:
+          charformat['btn'] = '%s/%s'%(self.getPortalMaster().getFormatManager().absolute_url(),btn)
       return charformats
 
 ################################################################################

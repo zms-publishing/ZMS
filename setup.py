@@ -32,6 +32,7 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.browserresource>4.0.1',   # due to https://github.com/zopefoundation/zope.browserresource/pull/1/files
   'zope.globalrequest',
   'zope.untrustedpython',
+  'zope.publisher==3.13.4',       # due to error on rendering legacy DTML-Methods with zope.publisher==4.0.0
 ]
 
 # Unreleased packages to build the environment

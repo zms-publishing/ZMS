@@ -45,6 +45,11 @@ Changelog
 
     * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=2886&limit=200>`_
 
+3.1.1 (2015-01-24)
+******************
+
+    * Fixed problem on using legacy DTML-Methods
+
 3.1.0 (2014-12-31)
 ******************
 

@@ -169,7 +169,9 @@ ul.portalClients .zmi-item .center h1 {
 	padding: 0.5em 0;
 	margin:0;
 }
-
+ul.portalClients .zmi-item .center small {
+	display:none; 
+}
 .ui-autocomplete-input {
 	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
 }
@@ -1103,6 +1105,20 @@ input.btn.btn-file {
 
 .ZMSSqlDb .index, .ZMSRecordSet .index {
 	margin-left:2em;
+}
+body.zmi .ZMSRecordSet.main_grid form.form-initialized > table thead th div.btn-group span.split-left {
+	max-width:48px;
+	overflow:hidden;#
+}
+body.zmi.properties.ZMSSqlDb form .form-group .form-group {
+	margin-left:0;
+	margin-right:0;
+}
+body.zmi #zmiModalupdateEntity .form-group .col-xs-10 {
+	overflow:hidden;
+}
+body.zmi #zmiModalupdateEntity table td {
+	font-size:11px;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

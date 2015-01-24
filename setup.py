@@ -163,7 +163,7 @@ PACKAGE_DATA.append('*.zpt')
 PACKAGE_DATA.append('*.txt')
 
 CLASSIFIERS = [
-  'Development Status :: 4 - Beta'
+  'Development Status :: 4 - Beta',
   'Framework :: Zope2',
   'Programming Language :: Python :: 2.7',
   'Operating System :: OS Independent',

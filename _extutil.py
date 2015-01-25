@@ -18,18 +18,18 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
-  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment'],
 # 'zms3.app.foo': ['{VERSION}', 'Test Description', ''],  # Test unavailable Extension
 # 'zms3.foo': ['1.2.3', 'Test Description', ''],          # Test unavailable Extension 
 # 'Foo': ['0.0.1', 'Test Description', '#'],              # Test unavailable Python Package
+  'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
+  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment'],
   'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow'],
-  'MySQL-python': ['1.2.5', 'Python interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python'],
+  'MySQL-python': ['1.2.5', 'Python Interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python'],
   'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA'],
-  'Products.ZSQLiteDA': ['0.6.1', 'SQLite database adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA'],
-  'Products.ZSQLMethods': ['2.13.4', 'SQL method support', 'https://pypi.python.org/pypi/Products.ZSQLMethods'],
+  'Products.ZSQLiteDA': ['0.6.1', 'SQLite Database Adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA'],
+  'Products.ZSQLMethods': ['2.13.4', 'SQL Method Support', 'https://pypi.python.org/pypi/Products.ZSQLMethods'],
   'Products.CMFCore': ['2.2.8', 'Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore'],
-  'lesscpy': ['0.10.2', 'Python LESS compiler', 'https://pypi.python.org/pypi/lesscpy'],
+  'lesscpy': ['0.10.2', 'Python LESS Compiler', 'https://pypi.python.org/pypi/lesscpy'],
 }
 
 class Extensions():
@@ -42,6 +42,9 @@ class Extensions():
     @see ZMSGlobals.py line 1118
   """
   getAll__roles__               = None
+  getAllExtensions__roles__     = None
+  getAllProducts__roles__       = None
+  getAllOthers__roles__         = None
   isEnabled__roles__            = None  
   getHint__roles__              = None  
   getVersionAvailable__roles__  = None  
@@ -99,6 +102,27 @@ class Extensions():
       Return all defined extensions
     """
     return self.pkg_names
+
+  def getAllExtensions(self):
+    """
+      Return all zms3.* extensions
+    """
+    pkg = filter(lambda x: x.startswith('zms3.'), self.pkg_names)
+    return pkg
+
+  def getAllProducts(self):
+    """
+      Return all Products.* extensions
+    """
+    pkg = filter(lambda x: x.startswith('Products.'), self.pkg_names)
+    return pkg
+  
+  def getAllOthers(self):
+    """
+      Return all other extensions
+    """
+    pkg = filter(lambda x: not x.startswith('zms3.') and not x.startswith('Products.'), self.pkg_names)
+    return pkg
   
   def isEnabled(self, ext=None):
     """

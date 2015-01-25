@@ -114,10 +114,15 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 #  _objattrs.getobjattr:
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
-  key = self.getObjAttrName(obj_attr,lang)
   v = None
+  key = self.getObjAttrName(obj_attr,lang)
   if key in obj.__dict__.keys():
     v = getattr(obj,key)
+  # Default mono-lingual attributes to primary-lang.
+  if v is None:
+    key = self.getObjAttrName({'id':obj_attr['id'],'multilang':not obj_attr['multilang']},self.getPrimaryLanguage())
+    if key in obj.__dict__.keys():
+      v = getattr(obj,key)
   # Default value.
   if v is None:
     datatype = obj_attr['datatype_key']

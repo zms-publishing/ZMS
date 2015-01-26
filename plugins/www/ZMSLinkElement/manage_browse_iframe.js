@@ -12,7 +12,7 @@ function zmiSelectObject(sender) {
 	var fm;
 	var url = physical_path;
 	if (!(absolute_url.indexOf('/')==0) && !(index_html.indexOf('/')==0) && $ZMI.getServerUrl(absolute_url) != $ZMI.getServerUrl(index_html)) {
-		url = index_html;
+		//url = index_html;
 	}
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
@@ -288,6 +288,7 @@ function zmiRefresh() {
 					selector = '[data-home-id="'+old_homeId+'"][data-id="'+old_id+'"] .zmi-page[data-id!="'+id+'"]';
 					$ZMI.writeDebug('zmiRefresh.fn: Remove other than selected: '+selector+'='+$(selector).length);
 					$(selector).remove();
+					$('[data-home-id="'+old_homeId+'"][data-id="'+old_id+'"] .toggle[title="-"]').removeClass('icon-caret-down').addClass('icon-caret-right').attr('title','+');
 				}
 
 				selector = '*[data-home-id="'+homeId+'"][data-id="'+id+'"] .toggle';

@@ -986,7 +986,10 @@ input.btn.btn-file {
 	margin:0;
 	height:20px;
 }
-
+ZMSSqlDbForm-multimultiselect {
+	position: absolute;
+	right: 34px;
+}
 .table.zmi-selectable tr th,
 .ZMSRecordSet .table tr td {
 	padding:4px;

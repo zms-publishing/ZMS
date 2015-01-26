@@ -615,6 +615,22 @@
     <Cell><Data ss:Type="String">פעיל</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">ATTR_ACTIVITY</Data></Cell>
+    <Cell><Data ss:Type="String">Aktivität</Data></Cell>
+    <Cell><Data ss:Type="String">Activity</Data></Cell>
+    <Cell><Data ss:Type="String">Activiteit</Data></Cell>
+    <Cell><Data ss:Type="String">Activité</Data></Cell>
+    <Cell><Data ss:Type="String">Attività</Data></Cell>
+    <Cell><Data ss:Type="String">Actividad</Data></Cell>
+    <Cell><Data ss:Type="String">活动</Data></Cell>
+    <Cell><Data ss:Type="String">فعالیت</Data></Cell>
+    <Cell><Data ss:Type="String">деятельность</Data></Cell>
+    <Cell><Data ss:Type="String">कार्यकलाप</Data></Cell>
+    <Cell><Data ss:Type="String">نشاط</Data></Cell>
+    <Cell><Data ss:Type="String">hoạt động</Data></Cell>
+    <Cell><Data ss:Type="String">פעילות</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">ATTR_ASC</Data></Cell>
     <Cell><Data ss:Type="String">aufsteigend</Data></Cell>
     <Cell><Data ss:Type="String">ascending</Data></Cell>

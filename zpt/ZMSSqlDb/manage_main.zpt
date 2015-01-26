@@ -87,14 +87,14 @@
 	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<div class="accordion-group perc100">
 		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block>
-				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity"
+				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
+				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			</a>
-			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
-		<div id="attrLastModified" class="accordion-body collapse">
+		<div id="attrActivity" class="accordion-body collapse">
 			<div class="accordion-inner" style="margin-left:1em;">
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">

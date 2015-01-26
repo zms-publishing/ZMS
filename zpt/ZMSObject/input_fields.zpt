@@ -10,19 +10,19 @@
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 	<div class="accordion-group">
 		<div class="accordion-heading attr_last_modified"
-			><a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified"
+			><a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity"
 				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
-				><tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block
+				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
 			<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="pull-left">
-				<tal:block tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
+				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
 				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 			</div>
 			<div class="clearfix"></div>
 			</tal:block>
 		</div><!-- .accordion-heading -->
-		<div id="attrLastModified" class="accordion-body collapse">
+		<div id="attrActivity" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 				<div class="form-group">

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:here.zmi_body_class(id='zcatalog config')">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form class="form-horizontal" action="manage_changeProperties" method="post">
+			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<legend>ZCatalog-Adapter</legend>
+
+<div class="accordion-group perc100" tal:define="zcatalogs python:here.aq_parent.objectValues(['ZCatalog'])" tal:condition="python:len(zcatalogs)>0">
+	<div class="accordion-heading">
+		<a class="accordion-toggle" href="#">Properties</a>
+	</div><!-- .accordion-heading -->
+	<div class="accordion-body">
+		<div class="accordion-inner">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Awareness</span></label>
+				<div class="col-sm-10">
+					<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+
+			<div class="form-group" tal:condition="python:len(here.getPortalClients())>0">
+				<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Clients</span></label>
+				<div class="col-sm-10">
+					<input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+
+			<div class="form-group">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+					<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
+					<button name="btn" type="submit" class="btn btn-default" value="Reindex">Reindex</button>
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+
+		</div><!-- .accordion-inner -->
+	</div><!-- .accordion-body -->
+</div><!-- .accordion-group -->
+
+<div class="accordion-group perc100" tal:define="zcatalogs python:here.aq_parent.objectValues(['ZCatalog'])" tal:condition="python:len(zcatalogs)>0">
+	<div class="accordion-heading">
+		<a class="accordion-toggle" href="#">ZMS base-components</a>
+	</div><!-- .accordion-heading -->
+	<div class="accordion-body">
+		<div class="accordion-inner">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="copy_to_stdout"><span>ZCatalog</span></label>
+				<div class="col-sm-10">
+						<tal:block tal:repeat="si zcatalogs">
+						<div>
+							<label>
+								<span class="btn btn-default">
+									<img tal:attributes="src python:si.icon"/>&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
+								</span>
+								&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" target="_blank" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
+							</label>
+						</div>
+						</tal:block>
+						<div>
+							<button name="btn" type="submit" class="btn btn-default" value="Remove">
+								<span class="icon icon-remove text-danger"></span>
+								Remove
+							</button>
+						</div>
+				</div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+
+		</div><!-- .accordion-inner -->
+	</div><!-- .accordion-body -->
+</div><!-- .accordion-group -->
+
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+
+<script>
+</script>
+
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

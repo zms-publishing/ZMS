@@ -42,7 +42,7 @@ $ZMI.registerReady(function(){
 			<input type="hidden" name="key" value="Manager" />
 			<legend>Manager</legend>
 			<tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
-					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog'
+					+map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSZCatalogAdapter'
 							,'ZMSFormatProvider','ZMSFormatProviderAcquired'
 							,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired'
 							,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
@@ -70,7 +70,10 @@ $ZMI.registerReady(function(){
 			</div><!-- .form-group -->
 			</tal:block>
 			<div class="form-group col-sm-12">
-				<button name="btn" type="submit" class="btn btn-default" value="Remove">Remove</button>
+				<button name="btn" type="submit" class="btn btn-default" value="Remove">
+					<span class="icon icon-remove text-danger"></span>
+					Remove
+				</button>
 			</div>
 			</tal:block>
 		</form>
@@ -268,17 +271,12 @@ $ZMI.registerReady(function(){
 					Purge local users<br/>
 					<tal:block tal:content="structure python:here.purgeLocalUsers()">purgeLocalUsers</tal:block>
 				</tal:block>
-				<tal:block tal:condition="python:request.get('btn')=='Reindex'">
-					<strong>Catalog</strong>
-					<tal:block tal:content="structure python:here.reindexCatalog(request,clients='catalog_portal_clients' in request.form.get('options',[]))">reindexCatalog</tal:block>
-				</tal:block>
 				<tal:block tal:condition="python:request.get('btn')=='Correct'">
 					<strong>Internal links</strong>
 					<tal:block tal:content="structure python:here.synchronizeRefs(clients='internal_links_portal_clients' in request.form.get('options',[]),unify_ids='internal_links_unify_ids' in request.form.get('options',[]))">synchronizeRefs</tal:block>
 				</tal:block>
 				<tal:block tal:condition="python:request.get('btn')=='Change'">
 					<strong>Properties</strong>
-					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.CatalogAwareness.active',request.get('catalog_awareness_active')==1)" tal:content="python:request.get('catalog_awareness_active')">setConfProperty</tal:block>,
 					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.autocorrection',request.get('ZMS_InternalLinks_autocorrection')==1)" tal:content="python:request.get('ZMS_InternalLinks_autocorrection')">setConfProperty</tal:block>,
 					<tal:block tal:define="global dummy0 python:here.setConfProperty('ZMS.InternalLinks.keepsynchron',request.get('ZMS_InternalLinks_keepsynchron')==1)" tal:content="python:request.get('ZMS_InternalLinks_keepsynchron')">setConfProperty</tal:block>,
 				</tal:block>
@@ -304,12 +302,6 @@ $ZMI.registerReady(function(){
 				<td></td>
 				<td></td>
 				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Purge">&nbsp;Purge&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
-			</tr>
-			<tr>
-				<td><label class="col-sm-2 control-label">Catalog</label></td>
-				<td class="controls"><input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>&nbsp;Awareness</td>
-				<td><tal:block tal:condition="has_clients"><input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>&nbsp;Clients</tal:block></td>
-				<td class="controls"><button name="btn" type="submit" class="btn btn-block" value="Reindex">&nbsp;Reindex&nbsp;&raquo;&nbsp;</button></td><!-- .controls -->
 			</tr>
 			<tr>
 				<td><label class="col-sm-2 control-label">Internal links</label></td>

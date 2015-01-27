@@ -18,9 +18,9 @@
 
 # Imports.
 from Products.ZCatalog import CatalogAwareness
-from zope.interface import implements
 import re
 import sys
+import zope.interface
 # Product Imports.
 import _globals
 import IZMSCatalogAdapter
@@ -83,7 +83,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     try:
       
       from textindexng.interfaces import IIndexableContent
-      implements(IIndexableContent)
+      zope.interface.implements(IIndexableContent)
       
       def indexableContent(self, fields):
         from textindexng.content import IndexContentCollector as ICC

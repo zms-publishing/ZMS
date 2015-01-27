@@ -1,5 +1,5 @@
 ################################################################################
-# ZMSMetamodelProvider.py
+# ZMSZCatalogAdapter.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ def intValue(v):
 # ------------------------------------------------------------------------------
 #  addLexicon:
 # ------------------------------------------------------------------------------
-def addLexicon( self, cat):
+def addLexicon( container, cat):
   
   #-- Remove Lexicon
   ids = cat.objectIds( ['ZCTextIndex Lexicon','ZCTextIndex Unicode Lexicon'])
@@ -56,7 +56,7 @@ def addLexicon( self, cat):
     cat.manage_delObjects( ids)
   
   #-- Add Lexicon
-  index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
+  index_type = container.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
   if index_type == 'ZCTextIndex':
     elements = []
     wordSplitter = Empty()
@@ -133,7 +133,7 @@ class ZMSZCatalogAdapter(
     # --------------------------------------------------------------------------
     def search(self, qs, order, clients=False):
       rtn = []
-      if search_query == '':
+      if qs == '':
         return rtn
       
       #-- Process clients.
@@ -157,16 +157,16 @@ class ZMSZCatalogAdapter(
           d = {}
           d['meta_type'] = ['ZMSCustom']
           if zcindex.find('zcat_data')==0:
-            d[zcindex] = search_query
+            d[zcindex] = qs
           else:
-            d[zcindex] = self.search_encode( search_query)
+            d[zcindex] = self.search_encode( qs)
           _globals.writeLog( self, "[searchCatalog]: %s=%s"%(zcindex,d[zcindex]))
           qr = zcatalog(d)
           _globals.writeLog( self, "[searchCatalog]: qr=%i"%len( qr))
           items.extend( qr)
       
       #-- Sort order.
-      if int(search_order_by)==1:
+      if int(order)==1:
         order_by = 'score'
       else:
         order_by = 'time'
@@ -219,13 +219,10 @@ class ZMSZCatalogAdapter(
       REQUEST = self.REQUEST
       for lang in self.getLangIds():
         REQUEST.set('lang',lang)
-        
         #-- Recreate catalog.
         message += self.recreateCatalog(lang)+'<br/>'
-        
         #-- Find items to catalog.
         message += self.reindexCatalogItem(REQUEST)+'<br/>'
-      
       message += 'Catalog %s indexed successfully.'%self.getHome().id
       
       #-- Process clients.
@@ -240,7 +237,7 @@ class ZMSZCatalogAdapter(
 
 
     # --------------------------------------------------------------------------
-    #  ZCatalogManager.recreateCatalog:
+    #  ZMSZCatalogAdapter.recreateCatalog:
     #
     #  Recreates catalog.
     # --------------------------------------------------------------------------
@@ -248,17 +245,18 @@ class ZMSZCatalogAdapter(
       message = ''
       
       #-- Get catalog
+      container = self.getDocumentElement()
       cat_id = 'catalog_%s'%lang
-      zcatalog = getattr(self,cat_id,None)
+      zcatalog = getattr(container,cat_id,None)
       if zcatalog is None:
         cat_title = 'Default catalog'
         vocab_id = 'create_default_catalog_'
         zcatalog = ZCatalog.ZCatalog(cat_id, cat_title, vocab_id, self)
-        self._setObject(zcatalog.id, zcatalog)
-        zcatalog = getattr(self,cat_id,None)
+        container._setObject(zcatalog.id, zcatalog)
+        zcatalog = getattr(container,cat_id,None)
       
       #-- Add lexicon
-      addLexicon( self, zcatalog)
+      addLexicon( container, zcatalog)
       
       #-- Clear catalog
       zcatalog.manage_catalogClear()

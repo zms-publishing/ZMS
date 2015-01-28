@@ -986,7 +986,7 @@ input.btn.btn-file {
 	margin:0;
 	height:20px;
 }
-ZMSSqlDbForm-multimultiselect {
+.ZMSSqlDbForm-multimultiselect .control-group .pull-right .btn-group-vertical {
 	position: absolute;
 	right: 34px;
 }

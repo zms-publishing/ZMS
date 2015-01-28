@@ -31,7 +31,7 @@
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']">
 	<div class="accordion-group perc100">
 		<div class="accordion-heading attr_last_modified">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity"
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>

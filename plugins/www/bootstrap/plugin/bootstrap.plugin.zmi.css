@@ -1062,13 +1062,14 @@ input.btn.btn-file {
 	border: 1px solid #e5e5e5;
 	border-radius: 4px;
 }
-.zmi.ZMSRecordSet .accordion-heading .accordion-toggle,
-.zmi.ZMSSqlDb .accordion-heading .accordion-toggle {
+.zmi.ZMSRecordSet .accordion-group.perc100 .accordion-heading,
+.zmi.ZMSSqlDb  .accordion-group.perc100 .accordion-heading {
 	padding: 8px 3px 8px 15px;
 }
-.zmi.ZMSRecordSet .accordion-heading.filters,
-.zmi.ZMSSqlDb .accordion-heading.filters {
-	margin:1em 0;
+
+.zmi.ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,
+.zmi.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left {
+	padding-top: 6px;
 }
 .zmi.ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
 .zmi.ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,

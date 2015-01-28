@@ -86,11 +86,11 @@
 	<input type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<div class="accordion-group perc100">
-		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity"
+		<div class="accordion-heading attr_last_modified">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
-			</a>
+			></a>
 			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->

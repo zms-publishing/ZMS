@@ -46,8 +46,10 @@
 <tr>
 	<th>
 		<div class="btn-group">
-			<span class="checkbox split-left btn">
-				<tal:block tal:content="python:len(filtered_records)">len(filtered_records)</tal:block> / <tal:block tal:content="python:len(records)">len(records)</tal:block>
+			<span class="checkbox split-left btn"
+				tal:attributes="title python:'%s / %s'%(len(filtered_records),len(records))"
+				tal:content="python:'%s / %s'%(len(filtered_records),len(records))">
+				filtered_records / records
 			</span>
 			<tal:block tal:condition="python:'insert' in actions or 'delete' in actions">
 				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">

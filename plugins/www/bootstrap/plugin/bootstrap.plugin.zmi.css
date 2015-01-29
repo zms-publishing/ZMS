@@ -951,7 +951,9 @@ input.btn.btn-file {
  * +- [ZMI] ZMSSQLDB / ZMSRecordset
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
-
+.nowrap {
+	white-space:nowrap;
+}
 .pagination {
 	white-space:nowrap;
 }

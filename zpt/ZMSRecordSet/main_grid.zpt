@@ -82,8 +82,8 @@
 		<th tal:define="global elLabel python:metaObjAttr['name']">
 			<span tal:condition="sorted" tal:content="elLabel">the label</span>
 			<a tal:condition="python:not sorted and metaObjAttr['id']!=request.get('qorder','')" tal:content="elLabel" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')">the label</a>
-			<a tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'asc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')">the label</a>
-			<a tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'desc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes-alt\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')">the label</a>
+			<a class="nowrap" tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'asc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'desc'},sep='&')">the label</a>
+			<a class="nowrap" tal:condition="python:not sorted and metaObjAttr['id']==request.get('qorder','') and 'desc'==request.get('qorderdir','')" tal:content="structure python:'<i class=\042icon-sort-by-attributes-alt\042></i>&nbsp;%s'%(elLabel)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_ORDERBY'),elLabel);href python:here.url_append_params(url,{'qorder':metaObjAttr['id'],'qorderdir':'asc'},sep='&')">the label</a>
 		</th>
 	</tal:block>
 </tr>

@@ -691,9 +691,9 @@ class ConfManager(
               target = self.url_append_params(target, {'manage_tabs_message': message})
             else:
               message = self.getZMILangStr('MSG_EXCEPTION') 
-              message += ': <code class="alert-danger">%s</code>'%('ZMS.Extension not defined')
+              message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
               target = self.url_append_params(target, {'manage_tabs_error_message': message})
-              writeError(self, '[ConfManager.manage_customizeSystem] ZMS.Extension not defined')
+              writeError(self, '[ConfManager.manage_customizeSystem] No conf files found.')
             return RESPONSE.redirect(target + '#%s'%key)
         elif btn == 'ImportExample':
           if self.isFeatureEnabled('%zms3.extensions%'):

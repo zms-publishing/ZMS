@@ -18,11 +18,13 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-# 'zms3.app.foo': ['{VERSION}', 'Test Description', ''],  # Test unavailable Extension
-# 'zms3.foo': ['1.2.3', 'Test Description', ''],          # Test unavailable Extension 
-# 'Foo': ['0.0.1', 'Test Description', '#'],              # Test unavailable Python Package
-  'zms3.formulator': ['3.2.0dev3', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
+# 'zms3.app.foo': ['{VERSION}', 'Test Description', ''], # Test unavailable Extension
+# 'zms3.themes.foo': ['1.2.3', 'Test Description', '#'], # Test unavailable Theme
+# 'Products.foo': ['{VERSION}', 'Test Description', ''], # Test unavailable Product
+# 'Foo.Python.Package': ['24.11.1', 'Description', '#'], # Test unavailable Other
+  'zms3.formulator': ['3.2.0dev4', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
   'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment'],
+  'zms3.themes.ultima' : ['0.9.0', 'Ultima HTML5 Landing Page', 'http://code.zms3.com/themes.ultima'],
   'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow'],
   'MySQL-python': ['1.2.5', 'Python Interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python'],
   'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA'],
@@ -43,6 +45,7 @@ class Extensions():
   """
   getAll__roles__               = None
   getAllExtensions__roles__     = None
+  getAllThemes__roles__         = None
   getAllProducts__roles__       = None
   getAllOthers__roles__         = None
   isEnabled__roles__            = None  
@@ -54,6 +57,9 @@ class Extensions():
   getExample__roles__           = None  
   getExampleToImport__roles__   = None
   importExample__roles__        = None
+  getTemplates__roles__         = None  
+  getTemplatesToImport__roles__ = None
+  importTemplates__roles__      = None
   getUrl__roles__               = None
       
   def __init__(self):
@@ -107,7 +113,14 @@ class Extensions():
     """
       Return all zms3.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.'), self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.'), self.pkg_names)
+    return pkg
+
+  def getAllThemes(self):
+    """
+      Return all zms3.themes.* extensions
+    """
+    pkg = filter(lambda x: x.startswith('zms3.themes.'), self.pkg_names)
     return pkg
 
   def getAllProducts(self):
@@ -192,9 +205,10 @@ class Extensions():
     """
     if ext in self.pkg_names:
       files = self.pkg_confs[self.pkg_names.index(ext)]
-      for filename in files:
-        if filename.endswith('.example.xml') or filename.endswith('.example.zip'):
-          return filename
+      if files:
+        for filename in files:
+          if filename.endswith('.example.xml') or filename.endswith('.example.zip'):
+            return filename
     return None
   
   def getExampleToImport(self, ext=None):
@@ -221,6 +235,24 @@ class Extensions():
       contents = open(_fileutil.getOSPath(filename),'rb')
       _importable.importFile(context, contents, request, _importable.importContent)
       contents.close()
+      
+  def getTemplates(self, ext=None):
+
+    # TODO: _extutil.getTemplates()
+    
+    return None
+  
+  def getTemplatesToImport(self, ext=None):
+
+    # TODO: _extutil.getTemplatesToImport()
+    
+    return None
+  
+  def importTemplates(self, ext=None, context=None, request=None):
+
+    # TODO: _extutil.importTemplates()
+
+    return None
       
   def getUrl(self, ext=None):
     """

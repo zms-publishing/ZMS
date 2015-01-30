@@ -165,12 +165,12 @@ class ZMSGlobals:
     @return: New instance of file.
     @rtype: L{MyFile}
     """
-    def FileFromData( self, data, filename='', content_type=None):
+    def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
       file = {}
       file['data'] = data
       file['filename'] = filename
       if content_type: file['content_type'] = content_type
-      return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=False)
+      return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=mediadbStorable)
 
 
     """
@@ -182,8 +182,8 @@ class ZMSGlobals:
     @return: New instance of image.
     @rtype: L{MyImage}
     """
-    def ImageFromData( self, data, filename='', content_type=None):
-      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=False)
+    def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
       f.aq_parent = self
       return f
 
@@ -1136,7 +1136,7 @@ class ZMSGlobals:
     def extutil(self):
       if self.isFeatureEnabled('%zms3.extensions%'):
         import _extutil
-        return _extutil.Extensions()
+        return _extutil.ZMSExtensions()
       else:
         return None
 

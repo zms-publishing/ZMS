@@ -34,7 +34,7 @@ EXTENSIONS = {
   'lesscpy': ['0.10.2', 'Python LESS Compiler', 'https://pypi.python.org/pypi/lesscpy'],
 }
 
-class Extensions():
+class ZMSExtensions():
   """
     Utility to handle zms3.extensions
   

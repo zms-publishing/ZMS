@@ -48,6 +48,7 @@ class Extensions():
   getAllThemes__roles__         = None
   getAllProducts__roles__       = None
   getAllOthers__roles__         = None
+  getAllProjspecs__roles__      = None
   isEnabled__roles__            = None  
   getHint__roles__              = None  
   getVersionAvailable__roles__  = None  
@@ -109,18 +110,22 @@ class Extensions():
     """
     return self.pkg_names
 
-  def getAllExtensions(self):
+  def getAllExtensions(self, prj=None):
     """
       Return all zms3.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.'), self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.') and x.find('theme')<0, self.pkg_names)
+    if prj is not None:
+      pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
     return pkg
 
-  def getAllThemes(self):
+  def getAllThemes(self, prj=None):
     """
       Return all zms3.themes.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.themes.'), self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.themes.') or x.find('theme')>=0, self.pkg_names)
+    if prj is not None:
+      pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
     return pkg
 
   def getAllProducts(self):
@@ -136,6 +141,15 @@ class Extensions():
     """
     pkg = filter(lambda x: not x.startswith('zms3.') and not x.startswith('Products.'), self.pkg_names)
     return pkg
+
+  def getAllProjspecs(self, prj=None):
+    """
+      Return all project specific extensions (define parameter ZMS.Project at ZMS > System > Miscelleanous)
+    """
+    if prj is not None:
+      pkg = filter(lambda x: x.startswith('zms3.%s'%prj.lower()), self.pkg_names)
+      return pkg
+    return []
   
   def isEnabled(self, ext=None):
     """

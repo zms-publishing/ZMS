@@ -18,9 +18,13 @@ of depending packages (see INSTALL_REQUIRES_CONCRETE below or requirements.txt).
 @see https://caremad.io/2013/07/setup-vs-requirement/
 """
 import os
+import sys
 from setuptools import setup
 
 setup_path = os.path.dirname(__file__)
+for path in sys.path:
+  if path.endswith('site-packages'):
+    site_packages = path
 
 # Abstract requirements to define the environment
 INSTALL_REQUIRES_ABSTRACT = [
@@ -151,6 +155,7 @@ for dirpath, dirnames, filenames in os.walk('.'):
     '.svn'                        not in dirpath and
     'ZMS3.egg-info'               not in dirpath and
     'dist'                        not in dirpath and
+    'dll'                         not in dirpath and
     'hotfixes'                    not in dirpath
     ): 
     if filenames: 
@@ -161,6 +166,12 @@ for dirpath, dirnames, filenames in os.walk('.'):
 PACKAGE_DATA.append('configure.zcml')
 PACKAGE_DATA.append('*.zpt')
 PACKAGE_DATA.append('*.txt')
+
+DATA_FILES = []
+if sys.platform[:3].lower() == "win":
+  DATA_FILES += [
+    (site_packages, ['dll/pywintypes27.dll','dll/win32file.pyd'])
+  ]
 
 CLASSIFIERS = [
   'Development Status :: 4 - Beta',
@@ -196,6 +207,7 @@ setup(
   packages              = ['Products.zms'],
   package_dir           = {'Products.zms': '.'},
   package_data          = {'Products.zms': PACKAGE_DATA},
+  data_files            = DATA_FILES,
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,

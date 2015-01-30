@@ -46,7 +46,9 @@
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 			<tal:block tal:define="global 
 				elName python:metaObjAttr['id'];
-				elLabel python:metaObjAttr['name']">
+				elLabel python:metaObjAttr['name'];
+				elType python:metaObjAttr.get('type','string');
+				elValue python:row.get(elName,metaObjAttr.get('default',''));">
 			<div class="form-group">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 					<span tal:content="elLabel">the label</span>
@@ -56,6 +58,10 @@
 					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure 
 							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName,metaObjAttr.get('default','')),REQUEST=request)">
 						the control
+					</tal:block>
+					<tal:block tal:condition="python:elType in ['image'] and elValue is not None and here.operator_gettype(elValue) is str">
+						<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
+						<input type="hidden" tal:attributes="value elValue" />
 					</tal:block>
 
 					<tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds" tal:repeat="fkContainer python:here.getParentNode().getChildNodes(request,metaObjAttr['type'])">
@@ -152,5 +158,41 @@
 </tal:block>
 
 	</tal:block>
+
+<script>
+$ZMI.registerReady(function() {
+  $("img[src='data:image/png;base64,']").each(function() {
+    var src = $(this).attr("src");
+    var dat = $(this).data("previewbase64");
+    // switch ID and NAME between input-file and input-hidden
+    // to preserve inline image if not changed
+    if (dat) {
+      $(this).attr('src',src+dat);
+      var input_hidden  = $(this).next("input[type='hidden']");
+      var input_file    = $(this).prev().find('.btn-file');
+      var input_rename  = input_file.attr('id')+'_SWITCHED_TO_HIDDEN';
+      input_hidden.attr('id',input_file.attr('id'));
+      input_hidden.attr('name',input_file.attr('id'));
+      input_file.attr('id',input_rename);
+      input_file.attr('name',input_rename);
+    }
+    else {
+      $(this).next("input[type='hidden']").remove();
+      $(this).remove();
+    }
+  });
+  $('input[type=file]').change(function () {
+		// re-switch ID and NAME between input-file and input-hidden
+		// to allow update of inline image
+		var img_src       = $(this).parent().parent().parent().parent().find("img");
+	  var input_hidden  = img_src.next("input[type='hidden']");
+	  var input_rename  = input_hidden.attr('id');
+		$(this).attr('id',input_rename);
+		$(this).attr('name',input_rename);
+		input_hidden.remove();
+		img_src.remove();
+	});
+});
+</script>
 
 <!-- /ZMSRecordSet/input_fields -->

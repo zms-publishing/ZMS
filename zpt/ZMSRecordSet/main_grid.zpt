@@ -171,6 +171,9 @@
 				<tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str">
 					<a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
 				</tal:block>
+				<tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
+				  <img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
+				</tal:block>
 			</tal:block>
 			<tal:block tal:condition="python:elType in ['date','datetime']">
 				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
@@ -191,5 +194,20 @@
 
 	</tal:block>
 </div>
+
+<script>
+$ZMI.registerReady(function() {
+  $("img[src='data:image/png;base64,']").each(function() {
+    var src = $(this).attr("src");
+    var dat = $(this).data("previewbase64");
+    if (dat) {
+    	$(this).attr('src',src+dat); 
+    }
+    else {
+    	$(this).remove();
+    }
+  });
+});
+</script>
 
 <!-- /ZMSRecordSet/main_grid -->

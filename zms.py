@@ -241,7 +241,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.Version.autopack',2)
 
   ### Init zcatalog.
-  obj.recreateCatalog(lang)
+  ### obj.recreateCatalog(lang)
 
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'zms')

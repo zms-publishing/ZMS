@@ -86,15 +86,15 @@
 	<input type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<div class="accordion-group perc100">
-		<div class="accordion-heading attr_last_modified">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
-				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
-				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
-			></a>
-			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+		<div class="accordion-heading">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrLastModified">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block>
+				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last modified</tal:block>
+			</a>
+			<div class="pull-left" tal:content="python:here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
-		<div id="attrActivity" class="accordion-body collapse">
+		<div id="attrLastModified" class="accordion-body collapse">
 			<div class="accordion-inner" style="margin-left:1em;">
 				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
@@ -171,10 +171,10 @@
 
 </tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])])">
 	metaobj_recordset_input_fields
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='insert',qindex=-1,row={})">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='insert',qindex=-1,row={})">
 	metaobj_recordset_input_fields
 </tal:block>
 

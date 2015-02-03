@@ -45,11 +45,11 @@
 </form>
 
 	<tal:block tal:define="global
-			resSlctStmnt python:'SELECT * FROM '+entity['id']+' WHERE '+' AND '.join(whereClause)+' ORDER BY '+','.join(request['qcolumns']);
-			query python:here.query(resSlctStmnt,encoding=encoding);
 			pk python:here.getEntityPK(entity['id']);
-			metaObjAttrIds python:[pk]+request['qcolumns'];
-			metaObjAttrs python:filter(lambda x:x['id'].upper() in map(lambda x2:x2.upper(),metaObjAttrIds),entity['columns']);
+			resSlctStmnt python:'SELECT '+pk+' , '+','.join(request['qcolumns'])+' AS option FROM '+entity['id']+' WHERE '+' AND '.join(whereClause)+' ORDER BY '+','.join(request['qcolumns']);
+			query python:here.query(resSlctStmnt,encoding=encoding);
+			metaObjAttrIds python:[pk,'option'];
+			metaObjAttrs python:filter(lambda x:x['id'].upper() in map(lambda x2:x2.upper(),metaObjAttrIds),entity['columns'])+[{'id':'option','label':entity['label']}];
 			dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs);
 			res python:query['records'];
 			dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',here.operator_getitem(x,pk,ignorecase=True)),res)">

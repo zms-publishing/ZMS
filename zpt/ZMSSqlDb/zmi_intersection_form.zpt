@@ -15,10 +15,10 @@
 <tal:block tal:condition="python:request.get('action')=='update'">
 </tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=dstentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=['intersection'])">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.manage_zmi_input_form(entity=dstentity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=['intersection'])">
 	metaobj_recordset_input_fields
-</tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.zmi_input_form(entity=dstentity,action='insert',qindex=-1,row={},request_form_inherit=['intersection'])">
+</tal:block
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(entity=dstentity,action='insert',qindex=-1,row={},request_form_inherit=['intersection'])">
 	metaobj_recordset_input_fields
 </tal:block>
 

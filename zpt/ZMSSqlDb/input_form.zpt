@@ -47,7 +47,7 @@
 				<tal:block tal:replace="nothing">
 				##### Auto #############################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
 					<input type="hidden" tal:attributes="name elName; value elValue"/>
 					<p class="form-control-static" tal:content="elValue">the value</p>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
@@ -56,7 +56,7 @@
 				<tal:block tal:replace="nothing">
 				##### Fk ###############################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-fk" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
 					<tal:block tal:condition="python:metaObjAttr['fk'].get('lazy')">
 						<tal:block tal:repeat="option python:[(metaObjAttr['options']+[['','']])[0]]">
 							<div class="pull-left">
@@ -64,7 +64,7 @@
 								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
 							</div><!-- .pull-left -->
 							<div class="pull-left">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['fk']['tablename'],str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['fk']['tablename'],str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 							</div><!-- .pull-left -->
 						</tal:block>
 					</tal:block>
@@ -77,7 +77,7 @@
 				<tal:block tal:replace="nothing">
 				##### Multiselect ######################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multiselect" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
 					<tal:block tal:repeat="value metaObjAttr/value">
 						<input type="hidden" tal:attributes="name python:'old_%s:list'%elName; value value"/>
 					</tal:block>
@@ -91,7 +91,7 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical">
-								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
 								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
 							</div><!-- .btn-group -->
@@ -107,7 +107,7 @@
 				<tal:block tal:replace="nothing">
 				##### Multimultiselect #################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multimultiselect" tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
 					<tal:block tal:define="global
 							elName python:'%s_%s'%(metaObjAttr['multimultiselect']['tablename'],metaObjAttr['multimultiselect']['fk']);
 							items python:metaObjAttr['multimultiselect'].get('tables',[])">
@@ -121,7 +121,7 @@
 										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
 									</div>
 									<div class="pull-left">
-										<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.iframe(\'zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%('%s%i'%(elName,i),item['tablename'].lower(),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+										<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),'%s%i'%(elName,i),item['tablename'].lower(),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 									</div>
 								</div>
 								<div tal:condition="not:python:item.get('lazy')">
@@ -157,7 +157,7 @@
 				<tal:block tal:replace="nothing">
 				##### Default ##########################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-default" tal:condition="python:not done">
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=metaObjAttr.get('value',elValue),REQUEST=request)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->
@@ -203,8 +203,8 @@
 														form_action=request['URL'],
 														url_params={'qentity':details['id']},
 														actions=['insert','update','delete'],
-														insert='return $ZMI.iframe(\'zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
-														update='return $ZMI.iframe(\'zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+														insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+														update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
 													)">
 													metaobj_recordset_main_grid
 												</tal:block>
@@ -223,8 +223,8 @@
 														form_action=request['URL'],
 														url_params={'qentity':details['id']},
 														actions=['insert','update','delete'],
-														insert='return $ZMI.iframe(\'zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
-														update='return $ZMI.iframe(\'zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(entity['id'],details['id'],elLabel),
+														insert='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
+														update='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
 													)">
 													metaobj_recordset_main_grid
 												</tal:block>

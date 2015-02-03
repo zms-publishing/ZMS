@@ -109,6 +109,10 @@ class ZMSSqlDb(ZMSObject):
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
+        'manage_zmi_input_form', 
+        'manage_zmi_details_form',
+        'manage_zmi_intersection_form',
+        'manage_zmi_lazy_select_form',
         )
     __administratorPermissions__ = (
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
@@ -122,10 +126,10 @@ class ZMSSqlDb(ZMSObject):
 
     # Management Interface.
     # ---------------------
-    zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
-    zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
-    zmi_intersection_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_intersection_form', globals())
-    zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())
+    manage_zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
+    manage_zmi_intersection_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_intersection_form', globals())
+    manage_zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSSqlDb/manage_importexport', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
@@ -328,10 +332,13 @@ class ZMSSqlDb(ZMSObject):
     @param max_rows: The maximum number of rows (default: None, unlimited)
     @type max_rows: C{str}
     """
-    def execute(self, sql, params=(), max_rows=None):
+    def execute(self, sql, params=(), max_rows=None, encoding=None):
       da = self.getDA()
       dbc = da._v_database_connection
-      return dbc.execute(sql,params,max_rows)
+      result = dbc.execute(sql,params,max_rows)
+      if encoding:
+        result = self.assemble_query_result(result,encoding)
+      return result
 
 
     """

@@ -36,10 +36,10 @@
 	</tal:block>
 </tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=request_form_inherit)">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.zmi_input_form(entity=entity,action='insert',qindex=-1,row={metaObjAttr['details']['fk']:request['qentitypkval']},request_form_inherit=request_form_inherit)">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='insert',qindex=-1,row={metaObjAttr['details']['fk']:request['qentitypkval']},request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
 

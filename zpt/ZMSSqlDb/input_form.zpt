@@ -47,7 +47,7 @@
 				<tal:block tal:replace="nothing">
 				##### Auto #############################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
 					<input type="hidden" tal:attributes="name elName; value elValue"/>
 					<p class="form-control-static" tal:content="elValue">the value</p>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
@@ -56,7 +56,7 @@
 				<tal:block tal:replace="nothing">
 				##### Fk ###############################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-fk" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
 					<tal:block tal:condition="python:metaObjAttr['fk'].get('lazy')">
 						<tal:block tal:repeat="option python:[(metaObjAttr['options']+[['','']])[0]]">
 							<div class="pull-left">
@@ -77,7 +77,7 @@
 				<tal:block tal:replace="nothing">
 				##### Multiselect ######################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multiselect" tal:condition="python:not done and metaObjAttr.get('multiselect') not in ['',None]">
 					<tal:block tal:repeat="value metaObjAttr/value">
 						<input type="hidden" tal:attributes="name python:'old_%s:list'%elName; value value"/>
 					</tal:block>
@@ -107,7 +107,7 @@
 				<tal:block tal:replace="nothing">
 				##### Multimultiselect #################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multimultiselect" tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
 					<tal:block tal:define="global
 							elName python:'%s_%s'%(metaObjAttr['multimultiselect']['tablename'],metaObjAttr['multimultiselect']['fk']);
 							items python:metaObjAttr['multimultiselect'].get('tables',[])">
@@ -157,7 +157,7 @@
 				<tal:block tal:replace="nothing">
 				##### Default ##########################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10" tal:condition="python:not done">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-defaul" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=metaObjAttr.get('value',elValue),REQUEST=request)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->

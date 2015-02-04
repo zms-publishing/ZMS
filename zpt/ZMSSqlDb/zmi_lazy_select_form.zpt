@@ -26,9 +26,7 @@
 						<tal:block tal:define="global dummy0 python:whereClause.append('%s %s %s'%(request['filterattr%i'%filterIndex],request['filterop%i'%filterIndex],here.sql_quote__(request['qentity'],request['filterattr%i'%filterIndex],request['filtervalue%i'%filterIndex])))"></tal:block>
 					</tal:block>
 					<div class="pull-left"><select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
-						<tal:block tal:repeat="column python:filter(lambda x:x['id'].upper()==request['qcolumns'][filterIndex].upper(),entity['columns'])">
-							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
-						</tal:block>
+						<option tal:attributes="value python:request['qcolumns'][filterIndex]; selected python:'selected'" tal:content="entity/label">column</option>
 					</select></div>
 					<div class="pull-left"><select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
 						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">

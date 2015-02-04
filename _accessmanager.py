@@ -1138,7 +1138,7 @@ class AccessManager(AccessableContainer):
               if ob is not None:
                 mbody.append('\n * '+ob.getTitlealt(REQUEST)+' ['+ob.display_type(REQUEST)+']: '+ob.absolute_url()+'/manage')
             mbody.append('\n')
-            mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS'))
+            mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS').replace('\\n','\n'))
             mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))
             mbody.append('\n-------------------------------')
             mbody = ''.join(mbody)

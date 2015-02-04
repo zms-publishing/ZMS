@@ -39,7 +39,7 @@
 				<tal:block tal:replace="nothing">
 				##### Label ############################################################
 				</tal:block>
-				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int((metaObjAttr.get('mandatory') in ['1',1,'True',True]) and not metaObjAttr.get('pk'))])">
+				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int((metaObjAttr.get('mandatory') in ['1',1,'True',True]) and metaObjAttr.get('auto') in ['',None])])">
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
 				</label>
@@ -48,8 +48,14 @@
 				##### Auto #############################################################
 				</tal:block>
 				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
-					<input type="hidden" tal:attributes="name elName; value elValue"/>
-					<p class="form-control-static" tal:content="elValue">the value</p>
+					<tal:block tal:condition="python:metaObjAttr.get('datatype') in ['datetime']">
+						<input type="hidden" tal:attributes="name elName; value python:DateTime(elValue)"/>
+						<p class="form-control-static" tal:content="python:DateTime(elValue)">the value</p>
+					</tal:block>
+					<tal:block tal:condition="not:python:metaObjAttr.get('datatype') in ['datetime']">
+						<input type="hidden" tal:attributes="name elName; value elValue"/>
+						<p class="form-control-static" tal:content="elValue">the value</p>
+					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->
 
@@ -157,7 +163,7 @@
 				<tal:block tal:replace="nothing">
 				##### Default ##########################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-defaul" tal:condition="python:not done">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-default" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=metaObjAttr.get('value',elValue),REQUEST=request)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div><!-- .col-sm-9 col-md-10 -->

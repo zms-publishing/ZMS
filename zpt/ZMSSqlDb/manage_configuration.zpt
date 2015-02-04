@@ -456,9 +456,9 @@ function mms_normalize_rows(el_tbody) {
 							</tr>
 						</tal:block>
 						<tal:block tal:replace="nothing">
-						##### Pk ###########################################################
+						##### Auto ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('pk'))]">
+						<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('pk') or column.get('datatype') in ['date','datetime'])]">
 							<td>Auto</td>
 							<td>
 								<select tal:attributes="name python:'attr_auto_%s'%column['id']">

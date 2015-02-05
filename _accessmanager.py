@@ -1133,10 +1133,22 @@ class AccessManager(AccessableContainer):
             mbody.append('\n')
             mbody.append('\n%s: %s'%(self.getZMILangStr('ATTR_ID'),id))
             mbody.append('\n')
-            for node in nodekeys:
-              ob = self.getLinkObj(node)
-              if ob is not None:
-                mbody.append('\n * '+ob.getTitlealt(REQUEST)+' ['+ob.display_type(REQUEST)+']: '+ob.absolute_url()+'/manage')
+            nodes = self.getUserAttr(id,'nodes',{})
+            security_roles = self.getSecurityRoles()
+            for nodekey in nodes.keys():
+              if nodekey in nodekeys:
+                node = nodes[nodekey]
+                roles = node.get('roles',[])
+                zms_roles = filter(lambda x:x not in security_roles.keys(),roles)
+                if len(zms_roles) > 0:
+                  target = self.getLinkObj(nodekey)
+                  if target is not None:
+                    mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+', '.join(map(lambda x:self.getRoleName(x),zms_roles))+']: '+target.absolute_url()+'/manage')
+                for security_role in filter(lambda x:x in security_roles.keys(),roles):
+                  for role_nodekey in security_roles[security_role]:
+                    target = self.getLinkObj(role_nodekey)
+                    if target is not None:
+                      mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+self.getRoleName(security_role)+']: '+target.absolute_url()+'/manage')
             mbody.append('\n')
             mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS').replace('\\n','\n'))
             mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))

@@ -323,4 +323,8 @@ function zmiIframeClose(id, message) {
 
 </script>
 
+<!-- interface -->
+<tal:block tal:content="structure python:here.dt_exec(entity.get('interface',''))">the interface</tal:block>
+<!-- /interface -->
+
 </tal:block>

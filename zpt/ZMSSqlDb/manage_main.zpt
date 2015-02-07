@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:here.zmi_body_class(id='main')">
+<body tal:attributes="data-client python:here.getHome().id;id python:'zmsid_%s'%(here.id);class python:here.zmi_body_class(id='properties')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>

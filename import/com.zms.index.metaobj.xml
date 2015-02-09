@@ -88,21 +88,45 @@ function zmsIndexSearchBtnClick(sender) {
 
 obj = None
 url = options['url']
+zmscontext.writeStdout('ZMSIndex.getLinkObj: url='+url)
 if url.startswith('{$') and url.endswith('}'):
+  docelmnt = None
   url = url[2:-1]
-  zmsid = url.split('/')[-1]
-  docelmnt = zmscontext.getDocumentElement()
-  zmsindex = getattr(docelmnt,'zmsindex',None)
-  if zmsindex is not None:
-    index = zmsindex.attr('_index')
-    row = filter(lambda x:x['zmsid']==zmsid,index)
-    if len(row)==1:
-      zmspath  = row[0]['zmspath']
-      l = zmspath[1:-1].split('/')
-      obj = container
-      while obj is not None and len(l) > 0:
-        obj = getattr(obj,l[0],None)
-        l = l[1:]
+  i = url.find('#')
+  if i > 0:
+    url = url[:i]
+  i = url.find('@')
+  if i > 0:
+    clientIds = url[:i].split('/')
+    clientHome = zmscontext.getHome()
+    for clientId in clientIds:
+      clientHome = getattr(clientHome,clientId,None)
+      if clientHome is None:
+        break
+    if clientHome is not None:
+      obs = clientHome.objectValues(['ZMS'])
+      if obs:
+        docelmnt = obs[0]
+    url = url[i+1:]
+  else:
+    docelmnt = zmscontext.getDocumentElement()
+  if len(url) == 0:
+    obj = docelmnt 
+  elif docelmnt is not None:
+    zmsid = url.split('/')[-1]
+    zmscontext.writeStdout('ZMSIndex.getLinkObj: zmsid='+zmsid)
+    zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
+    if zmsindex is not None:
+      index = zmsindex.attr('_index')
+      row = filter(lambda x:x['zmsid']==zmsid,index)
+      if len(row)==1:
+        zmspath  = row[0]['zmspath']
+        zmscontext.writeStdout('ZMSIndex.getLinkObj: zmspath='+zmspath)
+        l = zmspath[1:-1].split('/')
+        obj = docelmnt
+        while obj is not None and len(l) > 0:
+          obj = getattr(obj,l[0],None)
+          l = l[1:]
 return obj
 
 # --// /getLinkObj //--
@@ -292,29 +316,31 @@ return printed
           </item>
           <item key="access" type="dictionary">
             <dictionary>
-              <item key="delete" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
               <item key="delete_custom"></item>
-              <item key="insert" type="list">
+              <item key="delete_deny" type="list">
                 <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
           <item key="id"><![CDATA[ZMSIndex]]></item>
           <item key="name"><![CDATA[ZMSIndex]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.0.4]]></item>
+          <item key="revision"><![CDATA[0.0.6]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -425,24 +451,45 @@ function zmsIndexSearchBtnClick(sender) {
 obj = None
 url = options['url']
 if url.startswith('{$') and url.endswith('}'):
-  zmscontext.writeStdout('####################################################')
+  docelmnt = None
   url = url[2:-1]
-  zmsid = url.split('/')[-1]
-  docelmnt = zmscontext.getDocumentElement()
-  zmsindex = getattr(docelmnt,'zmsindex',None)
-  if zmsindex is not None:
-    db = getattr(zmsindex,'db',None)
-    zmscontext.writeStdout('getLinkObj: '+zmsid)
-    if db is not None:
-      da = db.getDA()
-      if da is not None:
-        for x in db.assemble_query_result(db.execute('SELECT zmspath FROM t_zmsindex WHERE zmsid = \'%s\''%zmsid))['records']:
-          zmspath  = x['zmspath']
-          l = zmspath[1:-1].split('/')
-          obj = container
-          while obj is not None and len(l) > 0:
-            obj = getattr(obj,l[0],None)
-            l = l[1:]
+  i = url.find('#')
+  if i > 0:
+    url = url[:i]
+  i = url.find('@')
+  if i > 0:
+    clientIds = url[:i].split('/')
+    clientHome = zmscontext.getHome()
+    for clientId in clientIds:
+      clientHome = getattr(clientHome,clientId,None)
+      if clientHome is None:
+        break
+    if clientHome is not None:
+      obs = clientHome.objectValues(['ZMS'])
+      if obs:
+        docelmnt = obs[0]
+    url = url[i+1:]
+  else:
+    docelmnt = zmscontext.getDocumentElement()
+  if len(url) == 0:
+    obj = docelmnt 
+  elif docelmnt is not None:
+    zmsid = url.split('/')[-1]
+    zmscontext.writeStdout('ZMSIndexDb.getLinkObj: zmsid='+zmsid)
+    zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
+    if zmsindex is not None:
+      db = getattr(zmsindex,'db',None)
+      if db is not None:
+        da = db.getDA()
+        if da is not None:
+          for x in db.assemble_query_result(db.execute('SELECT zmspath FROM t_zmsindex WHERE zmsid = \'%s\''%zmsid))['records']:
+            zmspath  = x['zmspath']
+            zmscontext.writeStdout('ZMSIndexDb.getLinkObj: zmspath='+zmspath)
+            l = zmspath[1:-1].split('/')
+            obj = docelmnt
+            while obj is not None and len(l) > 0:
+              obj = getattr(obj,l[0],None)
+              l = l[1:]
 return obj
 
 # --// /getLinkObj //--
@@ -734,29 +781,31 @@ def execute(conn, sql, *args):
           </item>
           <item key="access" type="dictionary">
             <dictionary>
-              <item key="delete" type="list">
-                <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
-                </list>
-              </item>
               <item key="delete_custom"></item>
-              <item key="insert" type="list">
+              <item key="delete_deny" type="list">
                 <list>
-                  <item><![CDATA[ZMSAdministrator]]></item>
-                  <item><![CDATA[ZMSAuthor]]></item>
-                  <item><![CDATA[ZMSEditor]]></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
           <item key="id"><![CDATA[ZMSIndexDb]]></item>
           <item key="name"><![CDATA[ZMSIndexDb]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.0.4]]></item>
+          <item key="revision"><![CDATA[0.0.6]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -789,7 +838,7 @@ def execute(conn, sql, *args):
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.0.4]]></item>
+          <item key="revision"><![CDATA[0.0.6]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -28,6 +28,8 @@ import zExceptions
 # Product Imports.
 import _confmanager
 import _globals
+import _xmllib
+
 
 # ------------------------------------------------------------------------------
 #  _accessmanager.updateVersion:
@@ -1161,6 +1163,69 @@ class AccessManager(AccessableContainer):
             #-- Assemble message.
             message = self.getZMILangStr('MSG_CHANGED')
         
+        # Export.
+        # -------
+        elif btn in ['export', self.getZMILangStr('BTN_EXPORT')]:
+          content_type = 'text/xml; charset=utf-8'
+          filename = 'userlist.xml'
+          RESPONSE.setHeader('Content-Type',content_type)
+          RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
+          RESPONSE.setHeader('Pragma', 'no-cache')
+          xml = self.getXmlHeader()
+          xml += '<userlist>'
+          userDefs = self.getSecurityUsers()
+          userNames = userDefs.keys()
+          for userName in userNames:
+            xml += '<user>'
+            xml += '<uid>%s</uid>'%_globals.html_quote(userName)
+            email = self.getUserAttr(userName,'email')
+            if email is not None and email:
+              xml += '<email>%s</email>'%_globals.html_quote(email)
+            nodes = self.getUserAttr(userName,'nodes',{})
+            xml += '<nodelist>'
+            for nodekey in nodes.keys():
+              xml += '<node>'
+              xml += '<nodeid>%s</nodeid>'%nodekey
+              xml += '<langlist>'
+              for langid in nodes.get(nodekey,{}).get('langs',[]):
+                xml += '<lang>%s</lang>'%_globals.html_quote(langid)
+              xml += '</langlist>'
+              xml += '<rolelist>'
+              for roleid in nodes.get(nodekey,{}).get('roles',[]):
+                xml += '<role>%s</role>'%_globals.html_quote(roleid)
+              xml += '</rolelist>'
+              xml += '</node>'
+            xml += '</nodelist>'
+            xml += '</user>'
+          xml += '</userlist>'
+          return xml
+        
+        # Import.
+        # -------
+        elif btn in ['import', self.getZMILangStr('BTN_IMPORT')]:
+          f = REQUEST['file']
+          filename = f.filename
+          dom = _xmllib.parseString(f.read())
+          for userElement in dom.getElementsByTagName('user'):
+            userName = _xmllib.getText(userElement.getElementsByTagName('uid'))
+            email = _xmllib.getText(userElement.getElementsByTagName('email'))
+            if email:
+              self.setUserAttr( userName, 'email', email)
+            for nodeElement in userElement.getElementsByTagName('node'):
+              node = _xmllib.getText(nodeElement.getElementsByTagName('nodeid'))
+              langs = []
+              for langElement in nodeElement.getElementsByTagName('lang'):
+                langs.append(_xmllib.getText(langElement))
+              roles = []
+              for roleElement in nodeElement.getElementsByTagName('role'):
+                roles.append(_xmllib.getText(roleElement))
+              ob = self.getLinkObj(node)
+              docElmnt = ob.getDocumentElement()
+              node = docElmnt.getRefObjPath(ob)
+              docElmnt.setLocalUser(userName, node, roles, langs)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
+      
       except:
         message = _globals.writeError(self,"[manage_userProperties]")
         messagekey = 'manage_tabs_error_message'

@@ -20,6 +20,7 @@
 import pyexpat
 from App.Common import package_home
 from OFS.Image import File
+import xml.dom
 import Globals
 import copy
 import os
@@ -34,6 +35,50 @@ import _fileutil
 
 
 INDENTSTR = '  '
+
+
+"""
+################################################################################
+#
+#  Datatypes
+#
+################################################################################
+"""
+
+# ------------------------------------------------------------------------------
+#  _xmllib.serialize:
+# ------------------------------------------------------------------------------
+def serialize(node):
+  xml = ''
+  if node.nodeType == node.ELEMENT_NODE:
+    xml += '<' + node.nodeName
+    for attribute in node.attributes.keys():
+      xml += ' '+attribute+'="'+node.attributes[attribute].value+'"'
+    xml += '>'
+    for childNode in node.childNodes:
+      xml += serialize(childNode)
+    xml += '</' + node.nodeName
+    xml += '>'
+  return xml
+
+# ------------------------------------------------------------------------------
+#  _xmllib.getText:
+# ------------------------------------------------------------------------------
+def getText(nodelist):
+  rc = []
+  if not isinstance(nodelist,list):
+    nodelist = [nodelist]
+  for node in nodelist:
+    for childNode in node.childNodes:
+      if childNode.nodeType == childNode.TEXT_NODE:
+        rc.append(childNode.data)
+  return str(''.join(rc))
+
+# ------------------------------------------------------------------------------
+#  _xmllib.parseString:
+# ------------------------------------------------------------------------------
+def parseString(s):
+  return xml.dom.minidom.parseString(s)
 
 
 """

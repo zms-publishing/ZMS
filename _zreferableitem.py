@@ -455,7 +455,9 @@ class ZReferableItem:
               docElmnt = obs[0]
         else:
           docElmnt = self.getDocumentElement()
-        if docElmnt is not None:
+        if len(path) == 0:
+          ob = docElmnt
+        elif docElmnt is not None:
           ob = docElmnt.findObjId(path,REQUEST)
     return ob
 

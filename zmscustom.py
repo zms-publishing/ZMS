@@ -477,9 +477,9 @@ class ZMSCustom(ZMSContainerObject):
           res_abs = self.recordSet_Init(REQUEST)
           if action == 'insert':
             row = {}
-            row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
             row['_created_dt'] = _globals.getDateTime( time.time())
-            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
             row['_change_dt'] = _globals.getDateTime( time.time())
             for metaObjAttr in metaObj['attrs'][1:]:
               objAttr = self.getObjAttr(metaObjAttr['id'])

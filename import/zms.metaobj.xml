@@ -2198,11 +2198,27 @@ return zmscontext.attr('attr_dc_description')
                   <item key="id"><![CDATA[text]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Text]]></item>
+                  <item key="name"><![CDATA[Memotext]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
+			  <item type="dictionary">
+				<dictionary>
+				  <item key="id"><![CDATA[interface]]></item>
+				  <item key="mandatory" type="int">0</item>
+				  <item key="multilang" type="int">0</item>
+				  <item key="name"><![CDATA[<script language="JavaScript">
+	$ZMI.registerReady(function(){
+		$('#zmiIframeAddDialog textarea').attr('title','INFO: the note element is just for internal usage - it is not published');
+		$('#zmiIframeAddDialog textarea').attr('placeholder','INFO: the note element is just for internal usage - it is not published');
+	});
+	</script>]]>
+				  </item>
+				  <item key="repetitive" type="int">0</item>
+				  <item key="type"><![CDATA[interface]]></item>
+				</dictionary>
+			  </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[catalogText]]></item>
@@ -2338,7 +2354,7 @@ zmscontext.commitObj(request)
           <item key="id"><![CDATA[ZMSNote]]></item>
           <item key="name"><![CDATA[ZMSNote]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.1]]></item>
+          <item key="revision"><![CDATA[3.0.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

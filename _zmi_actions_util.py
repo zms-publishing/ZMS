@@ -218,6 +218,7 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
         canExecute = canExecute and hasMetaType
       if canExecute:
         hasRole = False
+        hasRole = hasRole or '*' in metaCmd['roles']
         hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
         hasRole = hasRole or auth_user.has_role('Manager')
         canExecute = canExecute and hasRole

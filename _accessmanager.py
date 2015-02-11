@@ -1153,8 +1153,10 @@ class AccessManager(AccessableContainer):
                       mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+self.getRoleName(security_role)+']: '+target.absolute_url()+'/manage')
             mbody.append('\n')
             mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS').replace('\\n','\n'))
-            mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))
-            mbody.append('\n-------------------------------')
+            if len(self.getZMILangStr('WITH_BEST_REGARDS')) < 32:
+                mbody.append('\n-------------------------------')
+                mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))
+                mbody.append('\n-------------------------------')
             mbody = ''.join(mbody)
             #-- Subject
             msubject = '%s (invitation)'%self.getTitlealt(REQUEST)

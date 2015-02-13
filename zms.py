@@ -42,7 +42,7 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired, ZMSZCatalogAdapter
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
@@ -240,9 +240,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit',1)
   obj.setConfProperty('ZMS.Version.autopack',2)
 
-  ### Init zcatalog.
-  ### obj.recreateCatalog(lang)
-
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'zms')
 
@@ -259,6 +256,14 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setObjProperty('titlealt',titlealt,lang)
   obj.setObjProperty('title',title,lang)
   obj.onChangeObj(REQUEST,forced=1)
+
+  ### Init zcatalog.
+  manager = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
+  obj._setObject( manager.id, manager)
+  manager = getattr(obj,manager.id)
+  manager.setIds(['ZMSFolder','ZMSDocument','ZMSFile'])
+  manager.setAttrIds(['title','titlealt','attr_dc_description','standard_html'])
+  manager.reindex_all()
 
   ### Return new ZMS instance.
   return obj
@@ -297,8 +302,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Default content ####
     if REQUEST.get('initialization',0)==1:
       initContent(obj,'content.default.zip',REQUEST)
-    elif REQUEST.get('initialization',0)==3:
-      initContent(obj,'zms2go.default.zip',REQUEST)
 
     ##### Configuration ####
 
@@ -307,6 +310,18 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       # Init configuration.
       _confmanager.initConf(obj, 'com.zms.index')
 
+    #-- Galleria
+    if REQUEST.get('specobj_galleria',0) == 1:
+      # Init configuration.
+      _confmanager.initConf(obj, 'com.zms.jquery.galleria')
+      # Init content.
+      initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
+
+    #-- Search
+    if REQUEST.get('specobj_search',0) == 1:
+      # Init content.
+      initContent(obj,'com.zms.search.content.xml',REQUEST)
+
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:
       # Init configuration.
@@ -314,12 +329,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       # Init content.
       initContent(obj,'com.zms.test.content.xml',REQUEST)
 
-    #-- Galleria
-    if REQUEST.get('specobj_galleria',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.jquery.galleria')
-      # Init content.
-      initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
+    ##### Catalog #####
+    for adapter in obj.getCatalogAdapters():
+      adapter.reindex_all()
 
     ##### Access ####
     obj.synchronizePublicAccess()

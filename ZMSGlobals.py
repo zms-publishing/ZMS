@@ -1442,6 +1442,8 @@ class ZMSGlobals:
         return self.dt_html(v,self.REQUEST)
       elif v.startswith('##'):
         return self.dt_py(v)
+      elif v.find('<tal:') >= 0:
+        return self.dt_tal(v)
       return v
 
     """
@@ -1506,6 +1508,42 @@ class ZMSGlobals:
         }
       args = ()
       return ps._exec(bound_names,args,kw)
+
+    """
+    Execute given TAL-snippet.
+    @param value: TAL-snippet
+    @type value: C{string}
+    @return: Result of the execution or None
+    @rtype: C{any}
+    """
+    def dt_tal(self, text, options={}):
+      class StaticPageTemplateFile(PageTemplateFile):
+        def setText(self,text):
+          self.text = text
+        def setEnv(self,context,options):
+          self.context = context
+          self.options = options
+        def pt_getContext(self):
+          root = self.context.getPhysicalRoot()
+          context = self.context
+          options = self.options
+          c = {'template': self,
+               'here': context,
+               'context': context,
+               'options': options,
+               'root': root,
+               'request': getattr(root, 'REQUEST', None),
+               }
+          return c
+        def _cook_check(self):
+          t = 'text/html'
+          self.pt_edit(self.text, t)
+          self._cook()
+      
+      pt = StaticPageTemplateFile(filename='None')
+      pt.setText(text)
+      pt.setEnv(self,options)
+      return unicode(pt.pt_render(extra_context={'here':self,'request':self.REQUEST})).encode('utf-8')
 
     """
     Executes plugin.

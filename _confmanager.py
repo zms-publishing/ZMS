@@ -39,7 +39,7 @@ import zope.interface
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 from IZMSNotificationService import IZMSNotificationService
-import IZMSMetamodelProvider, IZMSFormatProvider
+import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter
 import _globals
 import _exportable
 import _fileutil
@@ -1022,6 +1022,20 @@ class ConfManager(
 
     def getCharFormats(self):
       return self.getFormatManager().getCharFormats()
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSCatalogAdapter: delegate
+    ###
+    ############################################################################
+
+    def getCatalogAdapters(self):
+      obs = []
+      for ob in self.objectValues():
+        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(zope.interface.providedBy(ob)):
+          obs.append(ob)
+      return obs
 
 
     ############################################################################

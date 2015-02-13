@@ -98,7 +98,10 @@
             <label><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/> Add galleria</label>
         </div>
         <div class="col-xs-9 col-sm-offset-3 checkbox">
-            <label><input type="checkbox" name="specobj_qunit:int" value="1" checked="checked"/> Add qunit test</label>
+            <label><input type="checkbox" name="specobj_search:int" value="1" checked="checked"/> Add search</label>
+        </div>
+        <div class="col-xs-9 col-sm-offset-3 checkbox">
+            <label><input type="checkbox" name="specobj_qunit:int" value="1"/> Add qunit test</label>
         </div>
     </div>
 

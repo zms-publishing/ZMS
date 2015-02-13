@@ -8,6 +8,8 @@
 
 <form class="form-horizontal" action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
 			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+			<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())">
+			<input type="hidden" id="getAttrIds" tal:attributes="value python:','.join(here.getAttrIds())">
 			<legend>ZCatalog-Adapter</legend>
 
 <div class="accordion-group perc100">
@@ -41,7 +43,7 @@
 		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
 		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
 
-	<table class="table" style="width:80%">
+	<table class="table" style="width:80%;border:1px solid #CCC;">
 	<colgroup>
 		<col width="50%"/>
 		<col width="50%"/>
@@ -210,6 +212,18 @@ function toggleMetaobj() {
 			$("td,span",$(this).parents("tr")[0]).addClass("bg-primary");
 		});
 }
+$(function() {
+		var ids = $('#getIds').val().split(",");
+		for (var i = 0; i < ids.length; i++) {
+			$('input[name="ids:list"][value="'+ids[i]+'"]').prop("checked",true);
+		}
+		toggleMetaobj();
+		var attr_ids = $("#getAttrIds").val().split(",");
+		for (var i = 0; i < attr_ids.length; i++) {
+			$('input[name="attr_ids:list"][value="'+attr_ids[i]+'"]').prop("checked",true);
+		}
+		toggleMetaobj();
+	});
 </script>
 
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>

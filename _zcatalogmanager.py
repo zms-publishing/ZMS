@@ -77,47 +77,6 @@ def search_quote(s, maxlen=255, tag='&middot;'):
 ################################################################################
 class ZCatalogItem(CatalogAwareness.CatalogAware):
 
-    """
-    TextIndexNG3
-    """
-    try:
-      
-      from textindexng.interfaces import IIndexableContent
-      zope.interface.implements(IIndexableContent)
-      
-      def indexableContent(self, fields):
-        from textindexng.content import IndexContentCollector as ICC
-        icc = ICC()
-        default_language = self.REQUEST.get('lang',self.getPrimaryLanguage())
-        default_encoding = 'utf-8'
-        
-        for f in fields:
-          v = getattr(self, f, None)
-          if not v: continue
-          
-          if f in ['zcat_data']:
-            
-            # unpack result triple
-            source, mimetype, encoding = v()
-            icc.addBinary(f, source, mimetype, encoding, default_language)
-            
-          elif f in ['zcat_text']:
-            v = v()
-            
-            # accept only a string/unicode string
-            if not isinstance(v, basestring):
-                raise TypeError('Value returned for field "%s" must be string or unicode (got: %s, %s)' % (f, repr(v), type(v)))
-            
-            if isinstance(v, str):
-                v = unicode(v, default_encoding, 'ignore')
-            
-            icc.addContent(f, v, default_language)
-        
-        return icc
-      
-    except:
-      pass
-
     # --------------------------------------------------------------------------
     #  ZCatalogItem.search_quote:
     #
@@ -145,66 +104,6 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
       return self.url_inherit_params(REQUEST['URL'],REQUEST,['qs'])
 
 
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.catalogText:
-    #
-    #  Catalog text.
-    # --------------------------------------------------------------------------
-    def catalogText(self, REQUEST):
-      v = ''
-      
-      # Custom hook (overwrite).
-      if 'catalogText' in self.getMetaobjAttrIds(self.meta_id):
-        value = self.attr('catalogText')
-        value = search_string(value)
-        v += value
-      
-      else:
-        
-        ##### Trigger custom catalogText-Contributors (if there is one) ####
-        l = _globals.triggerEvent( self, 'catalogTextContrib')
-        if l:
-          v += ' '.join(l)
-        
-        # Attributes.
-        for key in filter( lambda x: x.find('_') != 0, self.getObjAttrs().keys()):
-          obj_attr = self.getObjAttr(key)
-          if obj_attr['xml']:
-            datatype = obj_attr['datatype_key']
-            if datatype in _globals.DT_STRINGS or \
-               datatype == _globals.DT_DICT or \
-               datatype == _globals.DT_LIST:
-              value = self.getObjAttrValue(obj_attr,REQUEST)
-              value = search_string(value)
-              # Increase weight of attributes!
-              if obj_attr['id'].find('title') == 0:
-                value = value * 5
-              elif obj_attr['id'].find('attr_dc_') == 0:
-                value = value * 3
-              v += value
-      for ob in filter( lambda x: x.isActive(REQUEST), self.getChildNodes()):
-        if not ob.isCatalogItem():
-          v += ob.catalogText(REQUEST)
-      return v
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.catalogData:
-    #
-    #  Catalog data.
-    # --------------------------------------------------------------------------
-    def catalogData(self, REQUEST):
-      source = ''
-      mt, enc = 'content/unknown', ''
-      key = self.zcat_data_key()
-      if key is not None:
-        file = self.getObjProperty( key, REQUEST)
-        if file is not None:
-          source = file.getData()
-          mt, enc = file.getContentType(), 'utf-8'
-      return source, mt, enc
-
-
     ############################################################################
     ###
     ###  Metadate: Indices / Columns
@@ -212,92 +111,19 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_data_key:
-    # --------------------------------------------------------------------------
-    def zcat_data_key(self):
-      ids = self.getMetaobjAttrIds(self.meta_id,types=[_globals.DT_FILE])
-      if len(ids) == 1:
-        return ids[ 0]
-      return None
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_data:
-    # --------------------------------------------------------------------------
-    def zcat_data( self, lang=None):
-      if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      source, mimetype, encoding = self.catalogData( {'lang':lang})
-      return source, mimetype, encoding
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_text:
-    # --------------------------------------------------------------------------
-    def zcat_text( self, lang=None):
-      if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      req = {'lang':lang}
-      zcat = self.catalogText( req)
-      zcat = self.search_encode( zcat)
-      return zcat
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_date:
-    # --------------------------------------------------------------------------
-    def zcat_date( self, lang=None): 
-      if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      req = {'lang':lang}
-      zcat = self.getObjProperty('attr_dc_date',req)
-      if zcat is None or zcat == '':
-        zcat = self.getObjProperty('change_dt',req)
-        for ob in self.filteredChildNodes( req, self.PAGEELEMENTS):
-          ob_change_dt = ob.getObjProperty('change_dt',req)
-          if ob_change_dt > zcat:
-            zcat = ob_change_dt
-      return zcat
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_title:
-    # --------------------------------------------------------------------------
-    def zcat_title( self, lang=None):
-      if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      req = {'lang':lang}
-      zcat = self.getTitle( req)
-      zcat = self.search_encode( zcat)
-      zcat = self.search_quote( zcat)
-      return zcat
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_summary:
-    # --------------------------------------------------------------------------
-    def zcat_summary( self, lang=None):
-      if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-      req = {'lang':lang}
-      zcat = self.getObjProperty( 'attr_dc_description', req)
-      zcat = self.search_encode( zcat)
-      zcat = self.search_quote( zcat)
-      return zcat
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_url:
+    #  ZCatalogItem.zcat_custom:
     # --------------------------------------------------------------------------
     def zcat_url( self, lang=None):
       if lang is None:
         lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
-      txng_key = self.zcat_data_key()
-      txng_value = None
-      if txng_key is not None:
-        txng_value = self.getObjProperty( txng_key, req)
-      if txng_value is not None:
-        zcat = txng_value.getHref( req)
-        zcat = '/'.join(zcat.split('/')[-2:])
-      else:
-        zcat = 'index_%s.html'%lang
-      return zcat
-
+      xml = ''
+      xml += '<breadcrumbs>'
+      for breadcrumbs in self.breadcrumbs_obj_path():
+        xml += '<breadcrumb>'
+        xml += '</breadcrumb>'
+      xml += '</breadcrumbs>'
+      return xml
 
     # --------------------------------------------------------------------------
     #  ZCatalogItem.synchronizeSearch:
@@ -327,10 +153,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  Returns true if this is a catalog item.
     # --------------------------------------------------------------------------
     def isCatalogItem(self):
-      b = False
-      b = b or (self.isPage() or self.meta_id == 'ZMSFile')
-      b = b or (self.getConfProperty('ZCatalog.TextIndexNG',0)==1 and self.zcat_data_key() is not None)
-      return b
+      return True
 
 
     # --------------------------------------------------------------------------
@@ -422,7 +245,7 @@ class ZCatalogManager:
     #
     #  Submits query to catalog.
     # --------------------------------------------------------------------------
-    def submitCatalogQuery(self, search_query, search_order_by, search_meta_types, search_clients, REQUEST):
+    def submitCatalogQuery(self, search_query, search_order_by, search_meta_types=[], search_clients=False, REQUEST=None):
       rtn = []
       
       # delegate to adapters

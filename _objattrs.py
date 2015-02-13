@@ -284,7 +284,7 @@ class ObjAttrs:
             res = map(lambda x: {'key':x['key'],'value':x.get('value',x.get('value_%s'%REQUEST['lang']))},res)
             res = self.sort_list(res,'value','asc')
             opts = map(lambda x: [x['key'],x['value']],res)
-          elif v.find('<dtml-') >= 0 or v.startswith('##'):
+          elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
             try:
               opts = self.dt_exec(v)
             except:
@@ -672,7 +672,7 @@ class ObjAttrs:
             objAttr = objAttrs[key]
             datatype = objAttr['datatype_key']
             value = self.getObjAttrValue( objAttr, REQUEST)
-            if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##')):
+            if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##') or value.find('<tal:')>=0):
               value = self.dt_exec(value)
           
           #-- Undefined attributes.

@@ -29,11 +29,13 @@ import _globals
 import IZMSCatalogAdapter,IZMSConfigurationProvider
 import ZMSItem
 
+
 # ------------------------------------------------------------------------------
 #  Empty:
 # ------------------------------------------------------------------------------
 class Empty: 
   pass
+
 
 # ------------------------------------------------------------------------------
 #  intValue:
@@ -44,6 +46,7 @@ def intValue(v):
   except:
     i = 0
   return i
+
 
 # ------------------------------------------------------------------------------
 #  addLexicon:
@@ -75,6 +78,119 @@ def addLexicon( container, cat):
       cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
     except:
       pass
+
+
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogAdapter.recreateCatalog:
+# ------------------------------------------------------------------------------
+def recreateCatalog(self, zcm, lang):
+  
+  #-- Create catalog
+  cat_id = 'catalog_%s'%lang
+  if cat_id in self.objectIds():
+    self.manage_delObjects([cat_id])
+  cat_title = 'Default catalog'
+  vocab_id = 'create_default_catalog_'
+  zcatalog = ZCatalog.ZCatalog(cat_id, cat_title, vocab_id, zcm)
+  self._setObject(zcatalog.id, zcatalog)
+  zcatalog = getattr(self,cat_id)
+  
+  #-- Add lexicon
+  addLexicon( self, zcatalog)
+  
+  #-- Add columns
+  for index_name in ['id','meta_id','absolute_url','zcat_url','zcat_custom']:
+    zcatalog.manage_addColumn(index_name)
+  
+  #-- Add Indexes (incl. Columns)
+  index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
+  for attr_id in zcm.getAttrIds():
+    index_name = 'zcat_index_%s'%attr_id
+    extra = None
+    if index_type == 'ZCTextIndex':
+      extra = Empty()
+      extra.doc_attr = index_name
+      extra.index_type = 'Okapi BM25 Rank'
+      extra.lexicon_id = 'Lexicon'
+    else:
+      extra = {}
+      extra['default_encoding'] = 'utf-8'
+      extra['indexed_fields'] = index_name
+      extra['fields'] = [index_name]
+      extra['near_distance'] = 5
+      extra['splitter_casefolding'] = 1
+      extra['splitter_max_len'] = 64
+      extra['splitter_separators'] = '.+-_@'
+      extra['splitter_single_chars'] = 0
+      if index_type == 'TextIndexNG2':
+        extra['use_converters'] = 1
+        extra['use_normalizer'] = ''
+        # setattr(index_extra,'use_stemmer','')
+        extra['use_stopwords'] = ''
+      elif index_type == 'TextIndexNG3':
+        extra['languages'] = (lang,)
+        extra['query_parser'] = 'txng.parsers.en'
+        extra['index_unknown_languages'] = True
+        extra['dedicated_storage'] = True
+        extra['use_stopwords'] = False
+        extra['use_normalizer'] = False
+        extra['use_converters'] = True
+        extra['use_stemmer'] = False
+    zcatalog.manage_addColumn(index_name)
+    zcatalog.manage_addIndex(index_name,index_type,extra)
+
+
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogAdapter.reindex:
+# ------------------------------------------------------------------------------
+def reindex(node, zcm, lang=None):
+  if lang is not None: node.REQUEST.set('lang',lang)
+    
+  #-- Prepare object.
+  for attr_id in zcm.getAttrIds():
+    index_name = 'zcat_index_%s'%attr_id
+    value = node.attr(attr_id)
+    setattr(node,index_name,value)
+  
+  #-- Reindex object.
+  node.default_catalog = 'catalog_%s'%lang
+  node.reindex_object()
+  
+  #-- Unprepare object.
+  for attr_id in zcm.getAttrIds():
+    index_name = 'zcat_index_%s'%attr_id
+    delattr(node,index_name)
+
+
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogAdapter.reindexObject:
+# ------------------------------------------------------------------------------
+def reindexObject(node, zcm, lang=None):
+  
+  #-- Check meta-id.
+  if node.meta_id in zcm.getIds():
+    reindex(node,zcm,lang)
+  
+  #-- Handle parent-nodes.
+  else:
+    parentNode = node.getParentNode()
+    if parentNode is not None:
+      reindexObject(parentNode,zcm,lang)
+
+
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogAdapter.reindexAll:
+# ------------------------------------------------------------------------------
+def reindexAll(node, zcm, lang=None):
+  if lang is not None: node.REQUEST.set('lang',lang)
+  
+  #-- Check meta-id.
+  if node.meta_id in zcm.getIds():
+    reindex(node,zcm,lang)
+  
+  #-- Handle child-nodes.
+  for childNode in node.filteredChildNodes(node.REQUEST):
+    reindexAll(childNode,zcm,lang)
 
 
 ################################################################################
@@ -129,9 +245,59 @@ class ZMSZCatalogAdapter(
       self.id = 'zcatalog_adapter'
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.search_xml:
+    # --------------------------------------------------------------------------
+    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogAdapter.search_xml """
+      # Check constraints.
+      page_index = int(page_index)
+      page_size = int(page_size)
+      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/plain; charset=utf-8'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      # Execute query.
+      clients = self.getConfProperty('ZCatalog.portalClients',1)
+      results = self.search(q,clients)
+      # Assemble xml.
+      xml = self.getXmlHeader()
+      xml += '<response>'
+      xml += '<status>'
+      xml += '<code>1</code>'
+      xml += '<message></message>'
+      xml += '</status>'
+      xml += '<results>'
+      xml += '<pagination>'
+      xml += '<page>%i</page>'%page_index
+      xml += '<abs>%i</abs>'%len(results)
+      xml += '<total>%i</total>'%len(results)
+      xml += '</pagination>'
+      if len(results) > page_size:
+        results = results[page_index*page_size:(page_index+1)*page_size]
+      for result in results:
+        xml += '<result>'
+        for k in result.keys():
+          v = result[k]
+          if k == 'absolute_url':
+            k = 'loc'
+          elif k == 'zcat_custom':
+            k = 'custom'
+          elif k == 'standard_html':
+            k = 'snippet'
+            v = self.search_quote(v) # TODO: better snippet...
+          xml += '<%s>%s</%s>'%(k,v,k)
+        xml += '</result>'
+      xml += '</results>'
+      xml += '</response>'
+      return xml
+
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.search:
     # --------------------------------------------------------------------------
-    def search(self, qs, order, clients=False):
+    def search(self, qs, order=None, clients=False):
       rtn = []
       if qs == '':
         return rtn
@@ -152,24 +318,14 @@ class ZMSZCatalogAdapter(
       
       #-- Get items.
       items = []
-      for zcindex in zcatalog.indexes():
-        if zcindex.find('zcat_')==0:
-          d = {}
-          d['meta_type'] = ['ZMSCustom']
-          if zcindex.find('zcat_data')==0:
-            d[zcindex] = qs
-          else:
-            d[zcindex] = self.search_encode( qs)
-          _globals.writeLog( self, "[searchCatalog]: %s=%s"%(zcindex,d[zcindex]))
-          qr = zcatalog(d)
-          _globals.writeLog( self, "[searchCatalog]: qr=%i"%len( qr))
-          items.extend( qr)
-      
-      #-- Sort order.
-      if int(order)==1:
-        order_by = 'score'
-      else:
-        order_by = 'time'
+      for index in zcatalog.indexes():
+        if index.find('zcat_index_')==0:
+          query = {index:self.search_encode( qs)}
+          qr = zcatalog(query)
+          _globals.writeLog( self, "[searchCatalog]: %s=%i"%(str(query),len(qr)))
+          for item in qr:
+            if item not in items:
+              items.extend( qr)
       
       #-- Process results.
       results = []
@@ -179,26 +335,15 @@ class ZMSZCatalogAdapter(
         # Append to valid results.
         if len(filter(lambda x: x[1]['path']==path, results)) == 0:
           result = {}
+          result['path'] = path
           result['score'] = intValue(item.data_record_score_)
           result['normscore'] = intValue(item.data_record_normalized_score_)
-          result['time'] = getattr(item,'zcat_date',None)
-          result['path'] = path
-          if REQUEST.get('search_ob',True):
-            ob = self.getCatalogPathObject( path)
-            append = ob is not None
-            if append:
-              for o in ob.breadcrumbs_obj_path():
-                append = append and o.isActive(REQUEST)
-            if append:
-              result['ob'] = ob
-              result['url'] = ob.getDeclUrl(REQUEST) + '/' + ob.zcat_url(lang)
-              results.append((result[order_by],result))
-          else:
-            result['title'] = getattr(item,'zcat_title','')
-            result['summary'] = getattr(item,'zcat_summary','')
-            result['zcat_url'] = getattr(item,'zcat_url','')
-            result['url'] = (path + '/' + getattr(item,'zcat_url','')).replace('//','/')
-            results.append((result[order_by],result))
+          for column in zcatalog.schema():
+            k = column
+            if k.find('zcat_index_')==0:
+              k = k[len('zcat_index_'):]
+            result[k] = getattr(item,column,None)
+          results.append((item.data_record_score_,result))
       
       #-- Sort objects.
       results.sort()
@@ -210,176 +355,61 @@ class ZMSZCatalogAdapter(
       #-- Return objects in correct sort-order.
       return rtn
 
+
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.reindex:
+    #  ZMSZCatalogAdapter.reindex_object:
     # --------------------------------------------------------------------------
-    def reindex(self, clients=False):
+    def reindex_object(self, o):
+      pass
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.reindex_all:
+    # --------------------------------------------------------------------------
+    def reindex_all(self, clients=False):
       message = ''
       
       REQUEST = self.REQUEST
-      for lang in self.getLangIds():
+      container = self.getDocumentElement()
+      for lang in container.getLangIds():
         REQUEST.set('lang',lang)
+        
         #-- Recreate catalog.
-        message += self.recreateCatalog(lang)+'<br/>'
+        recreateCatalog(container,self,lang)
+        
         #-- Find items to catalog.
-        message += self.reindexCatalogItem(REQUEST)+'<br/>'
-      message += 'Catalog %s indexed successfully.'%self.getHome().id
+        reindexAll(container,self,lang)
+        
+      message += 'Catalog %s indexed successfully.'%container.getHome().id
       
       #-- Process clients.
       if clients:
-        for portalClient in self.getPortalClients():
-          for ob in portalClient.objectValues():
-            if IZMSCatalogAdapter.IZMSCatalogAdapter in list(zope.interface.providedBy(ob)):
-              message += ob.reindex(clients)
+        for portalClient in container.getPortalClients():
+          for adapter in portalClient.getCatalogAdapters():
+            message += adapter.reindex_all(clients)
       
       # Return with message.
       return message
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.recreateCatalog:
-    #
-    #  Recreates catalog.
+    #  ZMSZCatalogAdapter.ids: getter and setter
     # --------------------------------------------------------------------------
-    def recreateCatalog(self, lang):
-      message = ''
-      
-      #-- Get catalog
-      container = self.getDocumentElement()
-      cat_id = 'catalog_%s'%lang
-      zcatalog = getattr(container,cat_id,None)
-      if zcatalog is None:
-        cat_title = 'Default catalog'
-        vocab_id = 'create_default_catalog_'
-        zcatalog = ZCatalog.ZCatalog(cat_id, cat_title, vocab_id, self)
-        container._setObject(zcatalog.id, zcatalog)
-        zcatalog = getattr(container,cat_id,None)
-      
-      #-- Add lexicon
-      addLexicon( container, zcatalog)
-      
-      #-- Clear catalog
-      zcatalog.manage_catalogClear()
-      
-      #-- Delete indexes from catalog
-      index_names = []
-      l = []
-      l.extend( zcatalog.schema())
-      l.extend( zcatalog.indexes())
-      for index_name in l:
-        if index_name not in index_names and \
-           (index_name.find( 'zcat_') == 0 or index_name == 'meta_id'):
-          try:
-            zcatalog.manage_delColumn( [ index_name])
-          except:
-            _globals.writeError(self,"[recreateCatalog]: Can't delete column '%s' from catalog"%index_name)
-          try:
-            zcatalog.manage_delIndex( [ index_name])
-          except:
-            _globals.writeError(self,"[recreateCatalog]: Can't delete index '%s' from catalog"%index_name)
-          index_names.append( index_name)
-      
-      #-- Get index types.
-      index_types = []
-      for index in zcatalog.Indexes.filtered_meta_types():
-        index_types.append(index['name'])
-      
-      #-- (Re-)create indexes on catalog
-      message += "Create Index: "
-      index_name = 'meta_id'
-      zcatalog.manage_addColumn(index_name)
-      message += index_name
-      # Text (Index & Column)
-      index_name = 'zcat_text'
-      zcatalog.manage_addColumn(index_name)
-      index_type = self.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-      extra = None
-      if index_type == 'ZCTextIndex':
-        extra = Empty()
-        extra.doc_attr = index_name
-        extra.index_type = 'Okapi BM25 Rank'
-        extra.lexicon_id = 'Lexicon'
-      else:
-        extra = {}
-        extra['default_encoding'] = 'utf-8'
-        extra['indexed_fields'] = index_name
-        extra['fields'] = [index_name]
-        extra['near_distance'] = 5
-        extra['splitter_casefolding'] = 1
-        extra['splitter_max_len'] = 64
-        extra['splitter_separators'] = '.+-_@'
-        extra['splitter_single_chars'] = 0
-        if index_type == 'TextIndexNG2':
-          extra['use_converters'] = 1
-          extra['use_normalizer'] = ''
-          # setattr(index_extra,'use_stemmer','')
-          extra['use_stopwords'] = ''
-        elif index_type == 'TextIndexNG3':
-          extra['languages'] = (lang,)
-          extra['query_parser'] = 'txng.parsers.en'
-          extra['index_unknown_languages'] = True
-          extra['dedicated_storage'] = True
-          extra['use_stopwords'] = False
-          extra['use_normalizer'] = False
-          extra['use_converters'] = True
-          extra['use_stemmer'] = False
-      zcatalog.manage_addIndex(index_name,index_type,extra)
-      message += ", "+index_name+"("+index_type+")"
-      # Date (Column)
-      index_name = 'zcat_date'
-      zcatalog.manage_addColumn(index_name)
-      message += ", "+index_name
-      # Title (Column)
-      index_name = 'zcat_title'
-      zcatalog.manage_addColumn(index_name)
-      message += ", "+index_name
-      # Summary (Column)
-      index_name = 'zcat_summary'
-      zcatalog.manage_addColumn(index_name)
-      message += ", "+index_name
-      # Url (Column)
-      index_name = 'zcat_url'
-      zcatalog.manage_addColumn(index_name)
-      message += ", "+index_name
-      # Data (Index)
-      index_type = None
-      for k in [ 'ZCTextIndex', 'TextIndexNG2', 'TextIndexNG3']:
-        if k in index_types:
-          index_type = k
-      if self.getConfProperty('ZCatalog.TextIndexNG',0)==1:
-        index_name = 'zcat_data'
-        extra = {}
-        if index_type == 'ZCTextIndex':
-          extra['doc_attr'] = index_name
-          extra['index_type'] = 'Okapi BM25 Rank'
-          extra['lexicon_id'] = 'Lexicon'
-        else:
-          extra['default_encoding'] = 'utf-8'
-          extra['indexed_fields'] = index_name
-          extra['fields'] = [index_name]
-          extra['near_distance'] = 5
-          extra['splitter_casefolding'] = 1
-          extra['splitter_max_len'] = 64
-          extra['splitter_separators'] = '.+-_@'
-          extra['splitter_single_chars'] = 0
-          if index_type == 'TextIndexNG2':
-            extra['use_converters'] = 1
-            extra['use_normalizer'] = ''
-            extra['use_stopwords'] = ''
-          elif index_type == 'TextIndexNG3':
-            extra['languages'] = (lang,)
-            extra['query_parser'] = 'txng.parsers.en'
-            extra['index_unknown_languages'] = True
-            extra['dedicated_storage'] = True
-            extra['use_stopwords'] = False
-            extra['use_normalizer'] = False
-            extra['use_converters'] = True
-            extra['use_stemmer'] = False
-        zcatalog.manage_addIndex(index_name,index_type,extra)
-        message += ", "+index_name+"("+index_type+")"
-      
-      #-- Return message.
-      return message
+    def getIds(self):
+      return getattr(self,'_ids',[])
+
+    def setIds(self, ids):
+      setattr(self,'_ids',ids)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.attr_ids: getter and setter
+    # --------------------------------------------------------------------------
+    def getAttrIds(self):
+      return getattr(self,'_attr_ids',[])
+
+    def setAttrIds(self, attr_ids):
+      setattr(self,'_attr_ids',attr_ids)
 
 
     ############################################################################
@@ -393,15 +423,17 @@ class ZMSZCatalogAdapter(
         
         # Change.
         # -------
-        if btn == 'Change':
+        if btn == 'Save':
           self.setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)
+          self._ids = REQUEST.get('ids',[])
+          self._attr_ids = REQUEST.get('attr_ids',[])
           message = self.getZMILangStr('MSG_CHANGED')
         
         # Reindex.
         # -------
         elif btn == 'Reindex':
           clients = 'catalog_portal_clients' in REQUEST.get('options',[])
-          message += self.reindex(clients=clients)
+          message += self.reindex_all(clients=clients)
         
         # Remove.
         # -------

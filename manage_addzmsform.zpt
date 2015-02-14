@@ -94,7 +94,7 @@
         <div class="col-xs-9 col-sm-offset-3 checkbox">
             <label><input type="checkbox" name="specobj_index:int" value="1" checked="checked"/> Add object index</label>
         </div>
-        <div class="col-xs-9 col-sm-offset-3 checkbox">
+        <div class="col-xs-9 col-sm-offset-3 checkbox"  tal:replace="structure string: <!-- omitted specobj_galleria:int -->">
             <label><input type="checkbox" name="specobj_galleria:int" value="1" checked="checked"/> Add galleria</label>
         </div>
         <div class="col-xs-9 col-sm-offset-3 checkbox">

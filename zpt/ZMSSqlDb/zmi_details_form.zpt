@@ -10,10 +10,10 @@
 		request_form_inherit python:['qcolumn','qentitypk','qentitypkval',metaObjAttr['details']['fk']];
 		res metaObjAttr/value">
 
-<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')==here.getZMILangStr('BTN_SAVE')">
+<tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')!=here.getZMILangStr('BTN_CANCEL')">
 	<tal:block tal:define="global 
 				primary_key python:here.getEntityPK(entity['id']).lower();
-				row python:res[int(request.get('qindex',0))];
+				row python:(res+[{}])[int(request.get('qindex',0))];
 				rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
 				message python:[];
 				values python:{}">

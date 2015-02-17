@@ -216,6 +216,7 @@
 												actions=['insert','update','delete'],
 												insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
 												update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
+												delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
 											)">
 											metaobj_recordset_main_grid
 									</tal:block
@@ -235,6 +236,7 @@
 												actions=['insert','update','delete'],
 												insert='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
 												update='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
+												delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'delete\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\'})} return false;'%(here.absolute_url(),entity['id'],details['id'],elLabel),
 											)">
 											metaobj_recordset_main_grid
 									</tal:block

@@ -15,37 +15,6 @@
 <form class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 
-	<legend tal:content="python:here.getZMILangStr('ATTR_STYLESHEET')">Stylesheet</legend>
-	<tal:block tal:define="global stylesheets python:here.getStylesheets()">
-	<div class="form-group">
-		<label for="cssId" class="col-sm-2 control-label"><span>CSS</span></label>
-		<div class="col-sm-10">
-			<select style="max-width:21em;" class="form-control" name="cssId" onchange="location.href='?cssId='+this.options[this.selectedIndex].value+'&lang='+getZMILang()">
-				<tal:block tal:repeat="stylesheet stylesheets">
-					<option tal:attributes="value python:stylesheet.id(); selected python:['','selected'][int(request.get('cssId')==stylesheet.id())]" tal:content="python:stylesheet.id()">id</option>
-				</tal:block>
-			</select>
-		</div><!-- .col-sm-10 -->
-	</div>
-	<div class="form-group col-sm-12">
-		<div class="col-sm-2" style="margin-top: 1.4em;">
-			<tal:block tal:repeat="key python:here.get_colormap().keys()">
-					<div tal:attributes="title key; class key" style="font-size:11px;padding:3px;overflow:hidden;border:1px solid #ccc;" tal:content="key">&nbsp;</div><!-- .pull-left -->
-			</tal:block>
-		</div>
-		<div class="col-sm-10">
-			<tal:block tal:on-error="string:ERROR: No Stylesheets found!" tal:content="structure python:here.zmi_ace_editor(here,request,name='stylesheet:text',ob=(filter(lambda x: x.id()==request.get('cssId'),stylesheets)+stylesheets)[0])">
-				ACE Editor
-			</tal:block>
-		</div>
-	</div><!-- .form-group -->
-	<div class="form-group col-sm-12">
-		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		</div><!-- .col-sm-12 -->
-	</div><!-- .form-group -->
-	</tal:block>
-
 	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
 	<div class="form-group">
 		<label for="export_format" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</span></label>

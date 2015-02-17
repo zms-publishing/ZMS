@@ -66,6 +66,26 @@ class ZMSItem(
     manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
 
     # --------------------------------------------------------------------------
+    #  ZMSItem.zmi_manage_css:
+    # --------------------------------------------------------------------------
+    def zmi_manage_css(self, *args, **kwargs):
+      """ ZMSItem.zmi_manage_css """
+      request = self.REQUEST
+      response = request.RESPONSE
+      response.setHeader('Content-Type','text/css')
+      css = []
+      for stylesheet in self.getStylesheets():
+        css.append("/* ######################################################################")
+        css.append("   ### %s"%stylesheet.absolute_url())
+        css.append("   ###################################################################### */")
+        for line in str(stylesheet).split('\n'):
+          if (len(line) > 0 and line[0]>='a' and line[0]<='z') or line.find('#')==0 or line.find('.')==0:
+            css.append(".pageelement .center %s"%line)
+          else:
+            css.append(line)
+      return "\n".join(css)
+
+    # --------------------------------------------------------------------------
     #  ZMSItem.zmi_manage_menu:
     # --------------------------------------------------------------------------
     def zmi_manage_menu(self, *args, **kwargs):

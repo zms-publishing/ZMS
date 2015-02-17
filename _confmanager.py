@@ -843,27 +843,6 @@ class ConfManager(
           _fileutil.remove( filepath)
           temp_folder.manage_delObjects(ids=[temp_id])
       
-      # Save.
-      # -----
-      if btn == self.getZMILangStr('BTN_SAVE'):
-        #-- Stylesheet.
-        if REQUEST.has_key('cssId'):
-          if REQUEST.get('default'):
-            self.setConfProperty('ZMS.stylesheet',REQUEST.get('cssId'))
-          css = self.getStylesheet( REQUEST.get('cssId'))
-          data = REQUEST.get('stylesheet')
-          title = css.title
-          css.manage_edit(data,title)
-          self.parse_stylesheet()
-          message = self.getZMILangStr('MSG_CHANGED')
-        #-- Sitemap.
-        if REQUEST.has_key('attr_layoutsitemap'):
-          if len(REQUEST['attr_layoutsitemap'])>0:
-            self.attr_layoutsitemap = int(REQUEST['attr_layoutsitemap'])
-          elif hasattr(self,'attr_layoutsitemap'):
-            delattr(self,'attr_layoutsitemap')
-          message = self.getZMILangStr('MSG_CHANGED')
-      
       # Upload.
       # -------
       elif btn == self.getZMILangStr('BTN_UPLOAD'):

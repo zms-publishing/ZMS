@@ -6,11 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
-	<tal:block tal:define="global stylesheets python:here.getStylesheets()"
-		><tal:block tal:repeat="i python:range(len(stylesheets))"
-			><link type="text/css" tal:attributes="rel python:['','alternate '][int(i>0)]+'stylesheet'; href python:stylesheets[i].absolute_url()" />
-		</tal:block
-	></tal:block>
+	<link type="text/css" rel="stylesheet" tal:attributes="href python:'%s/zmi_manage_css'%here.getDocumentElement().absolute_url()" />
 	<tal:block tal:repeat="href python:map(lambda x:here.getConfProperty(x),here.getConfProperty('zmi.css').split(','))">
 		<link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="href python:href.replace('ZMS_ROOT',here.getDocumentElement().absolute_url())"/>
 	</tal:block>

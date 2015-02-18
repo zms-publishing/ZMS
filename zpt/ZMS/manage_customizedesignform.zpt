@@ -6,15 +6,8 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<style>
-.colorMap td {
-	border:1px solid #CCC;
-}
-</style>
-
 <form class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-
 	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
 	<div class="form-group">
 		<label for="export_format" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_EXPORT')">Export</span></label>
@@ -32,16 +25,6 @@
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-
-	<legend>Logo (ZMI)</legend>
-	<div class="form-group">
-		<label for="file" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span></label>
-		<div class="col-sm-10">
-			<input class="btn btn-file" name="file" type="file" />
-			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_UPLOAD')" tal:content="python:here.getZMILangStr('BTN_UPLOAD')">Upload</button>
-		</div><!-- .col-sm-10 -->
-	</div><!-- .form-group -->
-
 </form>
 
 <div style="clear:both;">&nbsp;</div>

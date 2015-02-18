@@ -124,10 +124,10 @@
 				</li>
 		</ul><!-- .navbar-nav -->
 	</div><!-- .navbar -->
-	<div id="zmi-logo" tal:condition="python:here.get_zmi_logo()">
-		<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><img tal:attributes="src python:'%s/get_zmi_logo'%here.getDocumentElement().absolute_url(); title python:here.getTitle(request)" alt="ZMI Logo"/></a>
-	</div><!-- #zmi-logo -->
 </header>
+<div id="zmi-logo">
+	<a tal:attributes="href python:here.getHref2IndexHtml({'lang':request['lang']})" target="_top"><span id="zmi-logo-banner" tal:content="python:here.getDocumentElement().getTitle(request)">the title</span></a>
+</div><!-- #zmi-logo -->
 <nav>
 	<tal:block tal:condition="python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>
 	<tal:block tal:condition="not:python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=here.filtered_manage_options(),special_options=['manage_users','manage_customize'])">zmi_tabs</tal:block>

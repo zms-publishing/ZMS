@@ -16,6 +16,23 @@
 .silver {color:#C0C0C0}
 .white {color:#FFFFFF}
 
+#zmi-logo {
+	padding:16px 8px 16px 8px;
+	background-color: #0092C3;
+	background-image: -webkit-linear-gradient(top, #00AEE9 0%, #0092C3 100%);
+	background-image: linear-gradient(to bottom, #00AEE9 0%, #0092C3 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00AEE9', endColorstr='#0092C3', GradientType=0);
+	white-space:nowrap;
+	overflow:hidden;
+}
+#zmi-logo a {
+	padding:8px;
+	color:#FFF;
+	font-size: 18px;
+	text-transform:uppercase;
+}
+
 .navbar-brand {
 	max-width:500px;
 	text-align:left;
@@ -24,7 +41,9 @@
 	padding:10px 0px 0px 15px;
 	position:absolute;
 }
-
+.navbar-brand .slogan {
+	display:none;
+}
 p.well {
 	display:none;
 }

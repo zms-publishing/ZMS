@@ -106,14 +106,6 @@ zope.event.subscribers.append(subscriber)
 def recurse_updateVersionBuild(docElmnt, self, REQUEST):
   message = ''
 
-  ##### Build 132a: Rename logo to zmi_logo ####
-  if getattr( docElmnt, 'build', '000') < '132':
-    try:
-      self.zmi_logo = self.logo
-      delattr( self, 'logo')
-    except:
-      pass
-
   ##### Build 133a: Create workflow-managers ####
   if getattr( docElmnt, 'build', '000') < '133':
     if self.meta_type == 'ZMS':

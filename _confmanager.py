@@ -772,22 +772,6 @@ class ConfManager(
       return message
 
 
-    """
-    ############################################################################
-    ###
-    ###   Configuration-Design
-    ###
-    ############################################################################
-    """
-    
-    def get_zmi_logo(self, REQUEST=None, RESPONSE=None):
-      """ get_zmi_logo """
-      if self.zmi_logo is not None:
-        if RESPONSE is not None:
-          RESPONSE.setHeader('Content-Type', self.zmi_logo.content_type)          
-        return self.zmi_logo.data
-      return ''
-
     ############################################################################
     #  ConfManager.manage_customizeDesign: 
     #
@@ -842,14 +826,6 @@ class ConfManager(
           home.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
           _fileutil.remove( filepath)
           temp_folder.manage_delObjects(ids=[temp_id])
-      
-      # Upload.
-      # -------
-      elif btn == self.getZMILangStr('BTN_UPLOAD'):
-        #-- ZMI Logo.
-        self.zmi_logo = Image(id='zmi_logo', title='', file='')
-        self.zmi_logo.manage_upload(REQUEST['file'],REQUEST)
-        message = self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.
       message = urllib.quote(message)

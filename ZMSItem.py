@@ -78,12 +78,15 @@ class ZMSItem(
         css.append("/* ######################################################################")
         css.append("   ### %s"%stylesheet.absolute_url())
         css.append("   ###################################################################### */")
-        for line in str(stylesheet).split('\n'):
-          if (len(line) > 0 and line[0]>='a' and line[0]<='z') or line.find('#')==0 or line.find('.')==0:
-            css.append(".pageelement .center %s"%line)
-          else:
-            css.append(line)
-      return "\n".join(css)
+        if stylesheet.absolute_url().endwith('zmi.css'):
+          css.append(str(stylesheet))
+        else:
+          for line in str(stylesheet).split('\n'):
+            if (len(line) > 0 and line[0]>='a' and line[0]<='z') or line.find('#')==0 or line.find('.')==0:
+              css.append(".pageelement .center %s"%line)
+            else:
+              css.append(line)
+      return '\n'.join(css)
 
     # --------------------------------------------------------------------------
     #  ZMSItem.zmi_manage_menu:

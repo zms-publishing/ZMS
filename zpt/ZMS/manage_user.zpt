@@ -26,11 +26,11 @@
 			<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 	</tal:block>
-	<div class="form-group" tal:condition="python:len(filter(lambda x:x['name'] in ['mail','email'],userObj['details']))==0">
+	<div id="tr_email" class="form-group" tal:condition="python:len(filter(lambda x:x['name'] in ['mail','email'],userObj['details']))==0">
 		<label for="email" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
 		<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(userObj['name'],'email',''))">the control</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-	<div class="form-group">
+	<div id="tr_profile" class="form-group">
 		<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
 		<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(userObj['name'],'profile',''),enabled=False,REQUEST=request)">the control</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->

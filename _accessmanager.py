@@ -1159,7 +1159,11 @@ class AccessManager(AccessableContainer):
                 mbody.append('\n-------------------------------')
             mbody = ''.join(mbody)
             #-- Subject
-            msubject = '%s (%s)'%(self.getTitlealt(REQUEST),self.getZMILangStr('INVITATION'))
+            titlealt = self.getTitlealt(REQUEST)
+            titlealt = titlealt.replace('&#8203;','')
+            titlealt = titlealt.replace('&nbsp;',' ')
+            titlealt = titlealt.replace('&zwnj;','')
+            msubject = '%s (%s)'%(titlealt,self.getZMILangStr('INVITATION'))
             #-- Send
             self.sendMail(mto,msubject,mbody,REQUEST)
             #-- Assemble message.

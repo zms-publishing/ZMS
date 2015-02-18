@@ -189,63 +189,33 @@
 
 	<div style="margin-top:1em" class="col-sm-12" tal:condition="python:action!='insert'"
 		><tal:block tal:repeat="column entity/columns"
-			><tal:block tal:condition="python:column.has_key('details')" tal:define="global
-					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
-					elName python:metaObjAttr['id'];
-					elLabel python:metaObjAttr['label'];"
-				><div class="accordion-group" tal:attributes="id python:'tr_%s'%(elName)"
-					><div class="accordion-heading"
-						>&nbsp;&nbsp;<a class="accordion-toggle" tal:attributes="href python:'#detailstable_%s'%(elLabel)"
-							><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
-							><tal:block tal:content="elLabel">the heading</tal:block
-						></a>
-					</div><!-- accordion-heading -->
-					<div tal:attributes="id python:'#detailstable_%s'%(elLabel)" class="accordion-body">
-						<tal:block tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);"
-							><tal:block tal:condition="python:details['type']!='intersection'"
-								><tal:block tal:define="global
-												r metaObjAttr/value;
-												metaObjAttrs python:filter(lambda x:not x.get('fk',{}).get('tablename')==entity['id'],details['columns']);
-												metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);"
-									><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-												metaObjAttrIds=metaObjAttrIds,
-												metaObjAttrs=metaObjAttrs,
-												records=r,
-												form_action=request['URL'],
-												url_params={'qentity':details['id']},
-												actions=['insert','update','delete'],
-												insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
-												update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
-												delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),entity['id'],primary_key,here.operator_getitem(row,primary_key,ignorecase=True),metaObjAttr['id'],elLabel),
-											)">
-											metaobj_recordset_main_grid
-									</tal:block
-								></tal:block
-							></tal:block
-							><tal:block tal:condition="python:details['type']=='intersection'"
-								><tal:block tal:define="global
-												r metaObjAttr/value;
-												metaObjAttrs python:metaObjAttr['dst']['columns'];
-												metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);"
-									><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-												metaObjAttrIds=metaObjAttrIds,
-												metaObjAttrs=metaObjAttrs,
-												records=r,
-												form_action=request['URL'],
-												url_params={'qentity':details['id']},
-												actions=['insert','update','delete'],
-												insert='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-												update='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-												delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'delete\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\'})} return false;'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-											)">
-											metaobj_recordset_main_grid
-									</tal:block
-								></tal:block
-							></tal:block
-						></tal:block>
-					</div>
-				</div><!-- .accordion-group -->
-
+			><tal:block tal:condition="python:column.has_key('details')">
+				<div tal:attributes="id python:'div_%s'%(column['id'])"></div>
+				<tal:block tal:content="structure python:'<script>'">script</tal:block>
+					function <tal:block tal:content="column/id">column/id</tal:block>GetAjax() {
+						var $div = $("#div_<tal:block tal:content="column/id">column/id</tal:block>");
+						$div.html('<img src="/misc_/zms/loading.gif" alt="Loading..."/> <tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>');
+						$.ajax({
+							url:"manage_zmi_details_grid",
+							data:{
+								lang:'<tal:block tal:content="request/lang">request/lang</tal:block>',
+								qentity:'<tal:block tal:content="entity/id">entity/id</tal:block>',
+								qcolumn:'<tal:block tal:content="column/id">column/id</tal:block>',
+								qentitypk:'<tal:block tal:content="primary_key">primary_key</tal:block>',
+								qentitypkval:<tal:block tal:content="python:here.operator_getitem(row,primary_key,ignorecase=True)">primary_key/value</tal:block>
+							},
+							error: function (xhr, ajaxOptions, thrownError) {
+								$div.html('<strong>ERROR:</strong> <code>'+xhr+' '+thrownError+'</code>');
+							},
+							success:function(xmlDoc) {
+								$div.html(xmlDoc);
+							}
+						});
+					};
+					$(function() {
+							<tal:block tal:content="column/id">column/id</tal:block>GetAjax();
+						});
+				<tal:block tal:content="structure python:'</script>'">script</tal:block>
 			</tal:block
 		></tal:block
 	></div>
@@ -315,12 +285,13 @@ function zmiLazySelect(id, option) {
 }
 
 /**
- *
+ * Close iframe and get ajax.
  */
 function zmiIframeClose(id, message) {
 	var pos = $("#tr_"+id).position();
 	$ZMI.showMessage(pos,message,"alert-success");
 	zmiModal("hide");
+	setTimeout(id+"GetAjax()",0);
 }
 
 </script>

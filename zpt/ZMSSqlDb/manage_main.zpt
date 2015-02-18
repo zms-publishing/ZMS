@@ -134,7 +134,7 @@
 					</select>
 					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
 						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex,'').lower()]" tal:content="python:op">op</option>
+							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
 						</tal:block>
 					</select>
 					<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />

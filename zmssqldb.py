@@ -110,7 +110,7 @@ class ZMSSqlDb(ZMSObject):
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_zmi_input_form', 
-        'manage_zmi_details_form',
+        'manage_zmi_details_grid', 'manage_zmi_details_form',
         'manage_zmi_intersection_form',
         'manage_zmi_lazy_select_form',
         )
@@ -127,6 +127,7 @@ class ZMSSqlDb(ZMSObject):
     # Management Interface.
     # ---------------------
     manage_zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    manage_zmi_details_grid = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_grid', globals())
     manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
     manage_zmi_intersection_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_intersection_form', globals())
     manage_zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())

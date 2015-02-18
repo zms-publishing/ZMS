@@ -90,8 +90,7 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tr tal:on-error="structure string: <!-- ERROR: trying to include recordset -->"
-	tal:define="global index python:pageStart+rindex;
+<tr tal:define="global index python:pageStart+rindex;
 		record python:filtered_records[index];
 		qindex python:records.index(record);
 		name python:['qindices:list','qindex'][int('select' in actions)];

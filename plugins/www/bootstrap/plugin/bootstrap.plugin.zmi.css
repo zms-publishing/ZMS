@@ -71,6 +71,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 }
 .zmi header .navbar-brand .slogan {
 	font-size:x-small;
+	margin-left:15px;
 }
 @media (max-width: 992px) {
 	.zmi header .navbar-brand .slogan {

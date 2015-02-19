@@ -25,6 +25,7 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00AEE9', endColorstr='#0092C3', GradientType=0);
 	white-space:nowrap;
 	overflow:hidden;
+	display:none;
 }
 #zmi-logo a {
 	padding:8px;
@@ -32,7 +33,6 @@
 	font-size: 18px;
 	text-transform:uppercase;
 }
-
 .navbar-brand {
 	max-width:500px;
 	text-align:left;
@@ -40,9 +40,6 @@
 	float:left;
 	padding:10px 0px 0px 15px;
 	position:absolute;
-}
-.navbar-brand .slogan {
-	display:none;
 }
 p.well {
 	display:none;

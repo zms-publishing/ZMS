@@ -18,20 +18,21 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-# 'zms3.app.foo': ['{VERSION}', 'Test Description', ''], # Test unavailable Extension
-# 'zms3.themes.foo': ['1.2.3', 'Test Description', '#'], # Test unavailable Theme
-# 'Products.foo': ['{VERSION}', 'Test Description', ''], # Test unavailable Product
-# 'Foo.Python.Package': ['24.11.1', 'Description', '#'], # Test unavailable Other
-  'zms3.formulator': ['3.2.0dev4', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator'],
-  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment'],
-  'zms3.themes.ultima' : ['0.9.0', 'Ultima HTML5 Landing Page', 'http://code.zms3.com/themes.ultima'],
-  'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow'],
-  'MySQL-python': ['1.2.5', 'Python Interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python'],
-  'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA'],
-  'Products.ZSQLiteDA': ['0.6.1', 'SQLite Database Adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA'],
-  'Products.ZSQLMethods': ['2.13.4', 'SQL Method Support', 'https://pypi.python.org/pypi/Products.ZSQLMethods'],
-  'Products.CMFCore': ['2.2.8', 'Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore'],
-  'lesscpy': ['0.10.2', 'Python LESS Compiler', 'https://pypi.python.org/pypi/lesscpy'],
+# 'zms3.app.foo': ['{VERSION}', 'Test Description', '', 'more Info'],  # Test unavailable Extension
+# 'zms3.themes.foo': ['1.2.3', 'Test Description', '#', 'more Info'],  # Test unavailable Theme
+# 'Products.foo': ['{VERSION}', 'Test Description', '', ''],           # Test unavailable Product
+# 'Foo.Python.Package': ['24.11.1', 'Description', '#', ''],           # Test unavailable Other
+  'zms3.formulator': ['3.2.0dev4', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator', 'sponsored by UniBE.ch, University of Bern, Switzerland'],
+  'zms3.photodb': ['0.1.0', 'Read EXIF/XMP/IPTC metadata from Photos and manage Image Galleries', 'http://code.zms3.com/photodb', 'developed by christianmeier.info, Dresden, Germany'],
+  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment', 'developed by sntl-publishing.com, Berlin, Germany'],
+  'zms3.themes.ultima': ['0.9.0', 'Ultima HTML5 Landing Page', 'http://code.zms3.com/themes.ultima', 'based on ULTIMA Awesome Landing Page by 8Guild.com, Odessa, Ukraine'],
+  'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow', ''],
+  'MySQL-python': ['1.2.5', 'Python Interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python', ''],
+  'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA', ''],
+  'Products.ZSQLiteDA': ['0.6.1', 'SQLite Database Adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA', ''],
+  'Products.ZSQLMethods': ['2.13.4', 'SQL Method Support', 'https://pypi.python.org/pypi/Products.ZSQLMethods', ''],
+  'Products.CMFCore': ['2.2.8', 'Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore', ''],
+  'lesscpy': ['0.10.2', 'Python LESS Compiler', 'https://pypi.python.org/pypi/lesscpy', ''],
 }
 
 class ZMSExtensions():
@@ -51,6 +52,7 @@ class ZMSExtensions():
   getAllProjspecs__roles__      = None
   isEnabled__roles__            = None  
   getHint__roles__              = None  
+  getInfo__roles__              = None  
   getVersionAvailable__roles__  = None  
   getVersionInstalled__roles__  = None  
   getFiles__roles__             = None  
@@ -68,6 +70,7 @@ class ZMSExtensions():
     self.pkg_names              = []
     self.pkg_available          = []
     self.pkg_hints              = []
+    self.pkg_infos              = []
     self.pkg_ready              = []
     self.pkg_confs              = []
     self.pkg_installed          = []
@@ -77,6 +80,7 @@ class ZMSExtensions():
       self.pkg_names.append(name)
       self.pkg_available.append(info[0])
       self.pkg_hints.append(info[1])
+      self.pkg_infos.append(info[3])
       self.pkg_urls.append(info[2])
       package = str(WorkingSet().find(Requirement.parse(name))).split()
       if ((name in package) and (len(package)==2)):
@@ -167,6 +171,15 @@ class ZMSExtensions():
     """
     if ext in self.pkg_names:
       return self.pkg_hints[self.pkg_names.index(ext)]
+    else:
+      return None
+
+  def getInfo(self, ext=None):
+    """
+      Return info about given extension to display as hover-link-title
+    """
+    if ext in self.pkg_names:
+      return self.pkg_infos[self.pkg_names.index(ext)]
     else:
       return None
 

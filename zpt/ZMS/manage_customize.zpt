@@ -465,7 +465,7 @@ $ZMI.registerReady(function(){
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllExtensions(zmsprj)">
           <div class="form-group">
             <label class="col-sm-4 control-label">
-              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext)" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
@@ -490,7 +490,7 @@ $ZMI.registerReady(function(){
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllThemes(zmsprj)">
           <div class="form-group">
             <label class="col-sm-4 control-label">
-              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext)" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
@@ -515,7 +515,7 @@ $ZMI.registerReady(function(){
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllProducts()">
           <div class="form-group">
             <label class="col-sm-4 control-label">
-              <strong><a tal:attributes="href python:'%s'%(ZMSExtension.getUrl(zmsext))" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
@@ -529,7 +529,7 @@ $ZMI.registerReady(function(){
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllOthers()">
           <div class="form-group">
             <label class="col-sm-4 control-label">
-              <strong><a tal:attributes="href python:'%s'%(ZMSExtension.getUrl(zmsext))" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
@@ -543,7 +543,7 @@ $ZMI.registerReady(function(){
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllProjspecs(zmsprj)">
           <div class="form-group">
             <label class="col-sm-4 control-label">
-              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext)" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">

@@ -20,7 +20,6 @@
 </script>
 <style type="text/css">
 	#zmi-header {display:none;}
-	#zmi-logo {display:none;}
 	.main-nav.nav.nav-tabs {display:none;}
 	ul.breadcrumb {display:none;}
 	form.form-horizontal {margin:0;}

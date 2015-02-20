@@ -305,6 +305,8 @@ ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1 {
 	padding-top:.35em;
+	font-size: large;
+	margin-top: 0;
 }
 table.table tbody tr td.data {
 	white-space:nowrap;

@@ -101,7 +101,7 @@ class ObjTypes:
     #         @imgattr       Object-Attribute <String>
     #         @imghiresattr  Object-Attribute (High-Resolution) <String> 
     #         @imgurl        URL for Image
-    #         @imgthumb      Display image as thumbnail (width limited to 365 pixel)
+    #         @imgthumb      @deprecated
     #         @imgspecial    Special Attributes (for <img>-Tag, e.g. usemap)
     #         @imgclass      CSS Image-Class
     #         @text          String-Object
@@ -110,9 +110,9 @@ class ObjTypes:
     #         @REQUEST       Request-Object
     #    OUT: <html>         String-Object
     ############################################################################
-    def renderDisplaytype(self, displaytype, \
-      imgattr, imghiresattr, imgurl, imgthumb, imgspecial, imgclass, \
-      text, textalign, textclass, REQUEST):
+    def renderDisplaytype(self, displaytype='', \
+      imgattr='', imghiresattr='', imgurl='', imgthumb=None, imgspecial='', imgclass='', \
+      text='', textalign='', textclass='', REQUEST=None):
       
       align = self.getObjProperty('align',REQUEST)
       
@@ -162,22 +162,8 @@ class ObjTypes:
         width = ''
         height = ''
         try:
-          max_width = self.getConfProperty('ZMSGraphic.zmi_max_width',480)
-          i_height = int(img.height)
-          i_width = int(img.width)
-          if imgthumb and i_width > max_width:
-            i_height = int(max_width*i_height/i_width)
-            i_width = max_width
-            imgzoomobj = img
-            imgzoomattr = imgattr
-          height = str(i_height)+'px'
-          width = str(i_width)+'px'
-          try:
-            px2em = float(self.getConfProperty('ZMSGraphic.px2em',''))
-            height = str(i_height/px2em)+'em'
-            width = str(i_width/px2em)+'em'
-          except:
-            pass
+          height = '%ipx'%int(img.height)
+          width = '%ipx'%int(img.width)
         except:
           pass
         
@@ -192,14 +178,6 @@ class ObjTypes:
         imgalt = img.getFilename()
         imgtag = '<img'
         imgtag += ' src="%s"'%imgsrc
-        imgtag += ' style="'
-        if displaytype != 'export_format':
-          if width != '': 
-            imgtag += 'width:%s;'%width
-          if height != '': 
-            imgtag += 'height:%s;'%height
-        imgtag += 'display:block;'
-        imgtag += '"'
         if imgclass is not None and len(imgclass) > 0:
           imgtag += ' class="%s"'%imgclass
         if imgspecial is not None and len(imgspecial) > 0:

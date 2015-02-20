@@ -74,7 +74,6 @@ class ZMSItem(
       response = request.RESPONSE
       response.setHeader('Content-Type','text/css')
       css = []
-      stylestream = stylesheet(self)
       for stylesheet in self.getStylesheets():
         s = stylesheet(self)
         css.append("/* ######################################################################")

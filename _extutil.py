@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ################################################################################
 # _extutil.py
 #
@@ -18,21 +19,78 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-# 'zms3.app.foo': ['{VERSION}', 'Test Description', '', 'more Info'],  # Test unavailable Extension
-# 'zms3.themes.foo': ['1.2.3', 'Test Description', '#', 'more Info'],  # Test unavailable Theme
-# 'Products.foo': ['{VERSION}', 'Test Description', '', ''],           # Test unavailable Product
-# 'Foo.Python.Package': ['24.11.1', 'Description', '#', ''],           # Test unavailable Other
-  'zms3.formulator': ['3.2.0dev4', 'JSON-based HTML-Forms', 'http://code.zms3.com/formulator', 'sponsored by UniBE.ch, University of Bern, Switzerland'],
-  'zms3.photodb': ['0.1.0', 'Read EXIF/XMP/IPTC metadata from Photos and manage Image Galleries', 'http://code.zms3.com/photodb', 'developed by christianmeier.info, Dresden, Germany'],
-  'zms3.deployment': ['0.2.1', 'Deployment Library', 'http://code.zms3.com/deployment', 'developed by sntl-publishing.com, Berlin, Germany'],
-  'zms3.themes.ultima': ['0.9.0', 'Ultima HTML5 Landing Page', 'http://code.zms3.com/themes.ultima', 'based on ULTIMA Awesome Landing Page by 8Guild.com, Odessa, Ukraine'],
-  'Pillow': ['2.7.0', 'Fork of Python Imaging Library', 'https://pypi.python.org/pypi/Pillow', ''],
-  'MySQL-python': ['1.2.5', 'Python Interface to MySQL', 'https://pypi.python.org/pypi/MySQL-python', ''],
-  'Products.ZMySQLDA': ['3.1.1', 'MySQL Database Adapter', 'https://pypi.python.org/pypi/Products.ZMySQLDA', ''],
-  'Products.ZSQLiteDA': ['0.6.1', 'SQLite Database Adapter', 'https://pypi.python.org/pypi/Products.ZSQLiteDA', ''],
-  'Products.ZSQLMethods': ['2.13.4', 'SQL Method Support', 'https://pypi.python.org/pypi/Products.ZSQLMethods', ''],
-  'Products.CMFCore': ['2.2.8', 'Filesystem Directory Views', 'https://pypi.python.org/pypi/Products.CMFCore', ''],
-  'lesscpy': ['0.10.2', 'Python LESS Compiler', 'https://pypi.python.org/pypi/lesscpy', ''],
+  'zms3.app.foo': ['{VERSION}',
+                   'Test Description',
+                   '',
+                   'more Info'],
+  'zms3.themes.foo': ['1.2.3',
+                      'Test Description',
+                      '#',
+                      'more Info'],
+  'Products.foo': ['{VERSION}',
+                   'Test Description',
+                   '',
+                   ''],
+  'Foo.Python.Package': ['24.11.1',
+                         'Description',
+                         '#',
+                         ''],
+  'zms3.formulator': ['3.2.0dev4',
+                      'JSON-based HTML-Forms',
+                      'http://code.zms3.com/formulator',
+                      'sponsored by University of Bern, Switzerland'],
+  'zms3.photodb': ['0.1.0',
+                   'Read EXIF/XMP/IPTC metadata from Photos and manage Image Galleries',
+                   'http://code.zms3.com/photodb',
+                   'developed by Christian Meier, Dresden, Germany'],
+  'zms3.deployment': ['0.2.1',
+                      'Deployment Library',
+                      'http://code.zms3.com/deployment',
+                      'developed by SNTL Publishing, Berlin, Germany'],
+  'zms3.themes.ultima': ['0.9.0',
+                         'Ultima HTML5 Landing Page',
+                         'http://code.zms3.com/themes.ultima',
+                         'based on ULTIMA Awesome Landing Page by 8Guild, Odessa, Ukraine'],
+  'Pillow': ['2.7.0',
+             'Fork of Python Imaging Library',
+             'https://pypi.python.org/pypi/Pillow',
+             'developed by Alex Clark'],
+  'MySQL-python': ['1.2.5',
+                   'Python Interface to MySQL',
+                   'https://pypi.python.org/pypi/MySQL-python',
+                   'developed by Andy Dustman'],
+  'Products.ZMySQLDA': ['3.1.1',
+                        'MySQL Database Adapter',
+                        'https://pypi.python.org/pypi/Products.ZMySQLDA',
+                        'developed by John Eikenberry'],
+  'Products.ZSQLiteDA': ['0.6.1',
+                         'SQLite Database Adapter',
+                         'https://pypi.python.org/pypi/Products.ZSQLiteDA',
+                         'developed by Hajime Nakagami'],
+  'Products.ZSQLMethods': ['2.13.4',
+                           'SQL Method Support',
+                           'https://pypi.python.org/pypi/Products.ZSQLMethods',
+                           'developed by Zope Foundation and Contributors'],
+  'Products.CMFCore': ['2.3.0dev0',
+                       'Filesystem Directory Views',
+                       'https://pypi.python.org/pypi/Products.CMFCore',
+                       'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
+  'lesscpy': ['0.10.2',
+              'Python LESS Compiler',
+              'https://pypi.python.org/pypi/lesscpy',
+              'developed by Jóhann T Maríusson'],
+  'Zope2': ['2.13.23dev0',
+            'Open-source web application server',
+            'https://github.com/zopefoundation/Zope',
+            'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
+  'ZODB': ['4.0.1',
+           'Set of tools for using the Zope Object Database',
+           'https://github.com/zopefoundation/ZODB',
+           'developed by Zope Foundation and Contributors'],
+  'zope.publisher': ['3.13.4',
+                     'Map requests from HTTP/WebDAV clients, web browsers, XML-RPC and FTP clients onto Python objects',
+                     'https://github.com/zopefoundation/zope.publisher',
+                     'developed by Zope Foundation and Contributors']
 }
 
 class ZMSExtensions():
@@ -44,37 +102,38 @@ class ZMSExtensions():
     @see _confmanager.py line 665
     @see ZMSGlobals.py line 1118
   """
-  getAll__roles__               = None
-  getAllExtensions__roles__     = None
-  getAllThemes__roles__         = None
-  getAllProducts__roles__       = None
-  getAllOthers__roles__         = None
-  getAllProjspecs__roles__      = None
-  isEnabled__roles__            = None  
-  getHint__roles__              = None  
-  getInfo__roles__              = None  
-  getVersionAvailable__roles__  = None  
-  getVersionInstalled__roles__  = None  
-  getFiles__roles__             = None  
-  getFilesToImport__roles__     = None
-  getExample__roles__           = None  
-  getExampleToImport__roles__   = None
-  importExample__roles__        = None
-  getTemplates__roles__         = None  
+  getAll__roles__ = None
+  getAllExtensions__roles__ = None
+  getAllThemes__roles__ = None
+  getAllProducts__roles__ = None
+  getAllOthers__roles__ = None
+  getAllProjspecs__roles__ = None
+  getAllFramework__roles__ = None
+  isEnabled__roles__ = None  
+  getHint__roles__ = None  
+  getInfo__roles__ = None  
+  getVersionAvailable__roles__ = None  
+  getVersionInstalled__roles__ = None  
+  getFiles__roles__ = None  
+  getFilesToImport__roles__ = None
+  getExample__roles__ = None  
+  getExampleToImport__roles__ = None
+  importExample__roles__ = None
+  getTemplates__roles__ = None  
   getTemplatesToImport__roles__ = None
-  importTemplates__roles__      = None
-  getUrl__roles__               = None
+  importTemplates__roles__ = None
+  getUrl__roles__ = None
       
   def __init__(self):
-    self.pkg                    = {}
-    self.pkg_names              = []
-    self.pkg_available          = []
-    self.pkg_hints              = []
-    self.pkg_infos              = []
-    self.pkg_ready              = []
-    self.pkg_confs              = []
-    self.pkg_installed          = []
-    self.pkg_urls               = []
+    self.pkg = {}
+    self.pkg_names = []
+    self.pkg_available = []
+    self.pkg_hints = []
+    self.pkg_infos = []
+    self.pkg_ready = []
+    self.pkg_confs = []
+    self.pkg_installed = []
+    self.pkg_urls = []
         
     for name, info in sorted(EXTENSIONS.iteritems()):
       self.pkg_names.append(name)
@@ -83,12 +142,12 @@ class ZMSExtensions():
       self.pkg_infos.append(info[3])
       self.pkg_urls.append(info[2])
       package = str(WorkingSet().find(Requirement.parse(name))).split()
-      if ((name in package) and (len(package)==2)):
+      if ((name in package) and (len(package) == 2)):
         # TODO: **Normalize Versions** acc. to `PEP 440`: http://legacy.python.org/dev/peps/pep-0440/
         # The version specified requires normalization, consider using '3.2.0.dev3' instead of '3.2.0dev3' etc. + 
         # pip v6.0.6 does not append svn revision specified in `setup.cfg` as v1.5.6 before
         # => `zms.zms_version()` have to be adjusted too...
-        self.pkg_installed.append(package[1].replace('.dev','dev'))
+        self.pkg_installed.append(package[1].replace('.dev', 'dev'))
         self.pkg_ready.append(True)
         try:
           confres = ResourceManager().resource_listdir(name, 'conf')
@@ -96,7 +155,7 @@ class ZMSExtensions():
           confres = None
         if confres:
           confxml = filter(lambda ob: ob.endswith('.xml') or ob.endswith('.zip'), confres)
-          if len(confxml)>0:
+          if len(confxml) > 0:
             self.pkg_confs.append(confxml)
           else:
             self.pkg_confs.append(None)
@@ -118,7 +177,7 @@ class ZMSExtensions():
     """
       Return all zms3.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.') and x.find('theme')<0, self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.') and x.find('theme') < 0, self.pkg_names)
     if prj is not None:
       pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
     return pkg
@@ -127,7 +186,7 @@ class ZMSExtensions():
     """
       Return all zms3.themes.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.themes.') or x.find('theme')>=0, self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.themes.') or x.find('theme') >= 0, self.pkg_names)
     if prj is not None:
       pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
     return pkg
@@ -143,7 +202,7 @@ class ZMSExtensions():
     """
       Return all other extensions
     """
-    pkg = filter(lambda x: not x.startswith('zms3.') and not x.startswith('Products.'), self.pkg_names)
+    pkg = filter(lambda x: not x.startswith('zms3.') and not x.startswith('Products.') and x not in self.getAllFramework(), self.pkg_names)
     return pkg
 
   def getAllProjspecs(self, prj=None):
@@ -151,10 +210,17 @@ class ZMSExtensions():
       Return all project specific extensions (define parameter ZMS.Project at ZMS > System > Miscelleanous)
     """
     if prj is not None:
-      pkg = filter(lambda x: x.startswith('zms3.%s'%prj.lower()), self.pkg_names)
+      pkg = filter(lambda x: x.startswith('zms3.%s' % prj.lower()), self.pkg_names)
       return pkg
     return []
-  
+
+  def getAllFramework(self):
+    """
+      Return all framework specific packages
+    """
+    pkg = filter(lambda x: x.startswith('Zope2') or x.startswith('ZODB') or x.find('zope') >= 0, self.pkg_names)
+    return pkg
+
   def isEnabled(self, ext=None):
     """
       Return TRUE if given extension is available as python package in environment
@@ -221,7 +287,7 @@ class ZMSExtensions():
       if files:
         filenames = []
         for f in files:
-          filename = ResourceManager().resource_filename(ext, 'conf/'+f)
+          filename = ResourceManager().resource_filename(ext, 'conf/' + f)
           filenames.append(filename)
         return filenames
     return []
@@ -259,7 +325,7 @@ class ZMSExtensions():
     example = self.getExample(ext)
     if example is not None:
       filename = self.getExampleToImport(ext)
-      contents = open(_fileutil.getOSPath(filename),'rb')
+      contents = open(_fileutil.getOSPath(filename), 'rb')
       _importable.importFile(context, contents, request, _importable.importContent)
       contents.close()
       

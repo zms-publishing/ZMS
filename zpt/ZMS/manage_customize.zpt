@@ -454,6 +454,7 @@ $ZMI.registerReady(function(){
               <li><a href="#tab2" data-toggle="tab"><strong>Themes</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllThemes(zmsprj))), len(ZMSExtension.getAllThemes(zmsprj)))">3 / 7</span></a></li>
 						  <li><a href="#tab3" data-toggle="tab"><strong>Products</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllProducts())), len(ZMSExtension.getAllProducts()))">3 / 7</span></a></li>
 						  <li><a href="#tab4" data-toggle="tab"><strong>Others</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllOthers())), len(ZMSExtension.getAllOthers()))">1 / 3</span></a></li>
+              <li><a href="#tab6" data-toggle="tab"><strong>Framework</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllFramework())), len(ZMSExtension.getAllFramework()))">1 / 3</span></a></li>
 						</ul>
 					</div>
 				</div>
@@ -560,6 +561,20 @@ $ZMI.registerReady(function(){
               </div>
             </div>
           </div><!-- .form-group -->
+        </tal:block>
+        </div>
+        <div class="tab-pane" id="tab6">
+        <tal:block tal:repeat="zmsext python:ZMSExtension.getAllFramework()">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
+            </label>
+            <div class="col-sm-8">
+              <div class="pull-left">
+                  <div style="margin-top:0.5em;"><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button></div>
+              </div>
+            </div>
+          </div><!-- .form-group -->  
         </tal:block>
         </div>
 			</div>

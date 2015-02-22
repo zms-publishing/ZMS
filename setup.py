@@ -30,7 +30,7 @@ for path in sys.path:
 INSTALL_REQUIRES_ABSTRACT = [
   'Zope2==2.13.23dev',            # due to https://github.com/zopefoundation/Zope/pull/13/files
   'ExtensionClass>=4.1a1',        # required by Record-3.0
-  'Products.CMFCore',
+  'Products.CMFCore==2.3.0dev',   # patched to support File Extensions svg, ttf, eot, woff
   'Products.ZSQLiteDA',
   'Products.ZSQLMethods',
   'zope.browserresource>4.0.1',   # due to https://github.com/zopefoundation/zope.browserresource/pull/1/files
@@ -42,6 +42,7 @@ INSTALL_REQUIRES_ABSTRACT = [
 # Unreleased packages to build the environment
 DEPENDENCY_LINKS = [
   'https://zmslabs.org/download/' # https://zmslabs.org/download/Zope2-2.13.23dev.tar.gz
+                                  # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.zip
 ]
 
 # Concrete requirements to build the environment

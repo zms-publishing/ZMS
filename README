@@ -43,7 +43,16 @@ Changelog
 3.2.0dev (unreleased)
 *********************
 
-    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=2886&limit=200>`_
+    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=XXXX&limit=200>`_
+
+3.1.2 (2015-02-25)
+******************
+
+    * Updated standard Theme
+    * Added ZCatalog-Adapter
+    * Improved ZMSSqlDb
+    * Removed ZMS2 artefacts
+    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=XXXX&stop_rev=2886&limit=200>`_
 
 3.1.1 (2015-01-24)
 ******************

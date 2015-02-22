@@ -88,7 +88,7 @@ EXTENSIONS = {
            'https://github.com/zopefoundation/ZODB',
            'developed by Zope Foundation and Contributors'],
   'zope.publisher': ['3.13.4',
-                     'Map requests from HTTP/WebDAV clients, web browsers, XML-RPC and FTP clients onto Python objects',
+                     'Map requests from HTTP/WebDAV/FTP clients, web browsers and XML-RPC onto Python objects',
                      'https://github.com/zopefoundation/zope.publisher',
                      'developed by Zope Foundation and Contributors']
 }

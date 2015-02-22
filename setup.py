@@ -36,13 +36,13 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.browserresource>4.0.1',   # due to https://github.com/zopefoundation/zope.browserresource/pull/1/files
   'zope.globalrequest',
   'zope.untrustedpython',
-  'zope.publisher==3.13.4',       # due to error on rendering legacy DTML-Methods with zope.publisher==4.0.0
+  'zope.publisher==3.13.4',       # due to error on rendering legacy DTML-Methods with zope.publisher>=4.0.0
 ]
 
 # Unreleased packages to build the environment
 DEPENDENCY_LINKS = [
   'https://zmslabs.org/download/' # https://zmslabs.org/download/Zope2-2.13.23dev.tar.gz
-                                  # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.zip
+                                  # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
 ]
 
 # Concrete requirements to build the environment
@@ -63,7 +63,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'Persistence==2.13.2',
   'persistent==4.0.8',
   'Products.BTreeFolder2==2.13.4',
-  'Products.CMFCore==2.2.8',
+  'Products.CMFCore==2.3.0dev',
   'Products.ExternalMethod==2.13.1',
   'Products.GenericSetup==1.7.5',
   'Products.MailHost==2.13.2',

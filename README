@@ -48,8 +48,10 @@ Changelog
 3.1.2 (2015-02-25)
 ******************
 
-    * Updated standard Theme
     * Added ZCatalog-Adapter
+    * Added ZMSTheme changing capabilities
+    * Updated standard Theme
+    * Updated Framework package versions
     * Improved ZMSSqlDb
     * Removed ZMS2 artefacts
     * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=XXXX&stop_rev=2886&limit=200>`_

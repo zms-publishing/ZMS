@@ -83,7 +83,7 @@ EXTENSIONS = {
             'Open-source web application server',
             'https://github.com/zopefoundation/Zope',
             'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
-  'ZODB': ['4.0.1',
+  'ZODB': ['4.1.0',
            'Set of tools for using the Zope Object Database',
            'https://github.com/zopefoundation/ZODB',
            'developed by Zope Foundation and Contributors'],

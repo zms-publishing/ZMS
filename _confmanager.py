@@ -23,6 +23,7 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from OFS.Image import Image
+from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -47,6 +48,7 @@ import _filtermanager
 import _mediadb
 import _multilangmanager
 import _sequence
+import _zopeutil
 import zmslog
 
 
@@ -335,6 +337,18 @@ class ConfManager(
       return None
 
 
+    # --------------------------------------------------------------------------
+    #  ConfManager.getThemes:
+    #
+    #  Returns list of theme-folders.
+    # --------------------------------------------------------------------------
+    def getThemes(self):
+      obs = []
+      for ob in self.getHome().objectValues():
+        if isinstance(ob,Folder) and 'standard_html' in ob.objectIds():
+          obs.append(ob)
+      return obs
+
 
     # --------------------------------------------------------------------------
     #  ConfManager.getResourceFolders:
@@ -344,13 +358,16 @@ class ConfManager(
     def getResourceFolders(self):
       obs = []
       ids = self.getConfProperty('ZMS.resourceFolders','instance,common').split(',')
+      home = self.getHome()
+      if len(self.getConfProperty('ZMS.theme','')) > 0:
+        home = getattr(home,self.getConfProperty('ZMS.theme',''))
       if '*' in ids:
-        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, self.getHome().objectValues(['Folder']))))
+        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder']))))
       for id in ids:
         if id == '*':
-          obs.append(self.getHome())
+          obs.append(home)
         else:
-          container = getattr( self, id, None)
+          container = getattr( home, id, None)
           if container is not None and len(container.objectValues(['ZMS']))==0:
             obs.append(container)
       return obs
@@ -780,56 +797,47 @@ class ConfManager(
     def manage_customizeDesign(self, btn, lang, REQUEST, RESPONSE):
       """ ConfManager.manage_customizeDesign """
       message = ''
-      cssId = REQUEST.get('cssId','')
+      home = self.getHome()
       
-      # Ex-/Import.
-      # -----------
-      if btn in [ self.getZMILangStr('BTN_EXPORT'), self.getZMILangStr('BTN_IMPORT')]:
-        #-- Theme.
-        home = self.getHome()
-        home_id = home.id
-        temp_folder = self.temp_folder
-        # Init exclude-ids.
-        excl_ids = []
-        # Add clients-folders to exclude-ids.
-        for folder in home.objectValues( ['Folder']):
-          if len( folder.objectValues( ['ZMS'])) > 0:
-            excl_ids.append( absattr( folder.id))
-        # Add content-object artefacts to exclude-ids.
-        for metaObjId in self.getMetaobjIds():
-          for metaObjAttrId in self.getMetaobjAttrIds( metaObjId):
-            metaObjAttr = self.getMetaobjAttr(metaObjId,metaObjAttrId)
-            if metaObjAttr['type'] in self.metaobj_manager.valid_zopetypes:
-              excl_ids.append( metaObjAttrId)
-        # Filter ids.
-        ids = filter( lambda x: x not in excl_ids, home.objectIds(self.metaobj_manager.valid_zopetypes))
-        if btn == self.getZMILangStr('BTN_EXPORT'):
-          if home_id in temp_folder.objectIds():
-            temp_folder.manage_delObjects(ids=[home_id])
-          temp_folder.manage_addFolder(id=home_id,title=home.title_or_id())
-          folder = getattr(temp_folder,home_id)
-          home.manage_copyObjects(ids,REQUEST)
-          folder.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
-          return RESPONSE.redirect( self.url_append_params('%s/manage_exportObject'%temp_folder.absolute_url(),{'id':home_id,'download:int':1}))
-        if btn == self.getZMILangStr('BTN_IMPORT'):
-          v = REQUEST['theme']
-          temp_filename = _fileutil.extractFilename( v.filename)
-          temp_id = temp_filename[:temp_filename.rfind('.')]
-          filepath = INSTANCE_HOME+'/import/'+temp_filename
-          _fileutil.exportObj( v, filepath)
-          if temp_id in temp_folder.objectIds():
-            temp_folder.manage_delObjects(ids=[temp_id])
-          temp_folder.manage_importObject( temp_filename)
-          folder = getattr( temp_folder, temp_id)
-          home.manage_delObjects(ids=ids)
-          folder.manage_copyObjects(folder.objectIds(),REQUEST)
-          home.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
-          _fileutil.remove( filepath)
-          temp_folder.manage_delObjects(ids=[temp_id])
+      # Save.
+      # -----
+      if btn == self.getZMILangStr('BTN_SAVE'):
+        id = REQUEST.get('id','')
+        self.setConfProperty('ZMS.theme',id)
+        message = self.getZMILangStr('MSG_CHANGED')
+      
+      # Delete.
+      # -------
+      elif btn == self.getZMILangStr('BTN_DELETE'):
+        ids = REQUEST.get('ids',[])
+        home.manage_delObjects(ids)
+        message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
+      
+      # Import.
+      # -------
+      elif btn == self.getZMILangStr('BTN_IMPORT'):
+        file = REQUEST['file']
+        filename = _fileutil.extractFilename(file.filename)
+        id = filename[:filename.rfind('.')]
+        filepath = INSTANCE_HOME+'/import/'+filename
+        _fileutil.exportObj( file, filepath)
+        home.manage_importObject(filename)
+        _fileutil.remove( filepath)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+filename+'</code>')
+      
+      # Insert.
+      # -------
+      elif btn == self.getZMILangStr('BTN_INSERT'):
+        newId = REQUEST['newId']
+        newTitle = REQUEST['newTitle']
+        home.manage_addFolder(id=newId,title=newTitle)
+        folder = getattr(home,newId)
+        _zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<htmltal:define="zmscontext options/zmscontext">\n</html>')
+        message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.
       message = urllib.quote(message)
-      return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s&cssId=%s'%(lang,message,cssId))
+      return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 
     ############################################################################

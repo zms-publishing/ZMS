@@ -96,6 +96,6 @@
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/manage_search.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 </body>
 </html>

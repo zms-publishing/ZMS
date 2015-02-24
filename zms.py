@@ -2,7 +2,7 @@
 # zms.py
 #
 # This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
+# modify it under the terms of the GNU General Public License           x
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
 #
@@ -19,6 +19,7 @@
 # Imports.
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from OFS.Folder import Folder
 from OFS.Image import Image
 from sys import *
 import copy
@@ -166,13 +167,13 @@ def recurse_updateVersionPatch(docElmnt, self, REQUEST):
 
 
 # ------------------------------------------------------------------------------
-#  initTheme:
+#  importTheme:
 # ------------------------------------------------------------------------------
-def initTheme(self, theme, new_id, REQUEST):
-
+def importTheme(folder, theme):
+  
   filename = _fileutil.extractFilename(theme)
   id = filename[:filename.rfind('.')]
-
+  
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
@@ -186,10 +187,23 @@ def initTheme(self, theme, new_id, REQUEST):
       os.stat(_fileutil.getOSPath(filepath))
     except OSError:
       shutil.copy( packagepath, filepath)
-
+  
   ### Import theme from ZEXP.
-  _fileutil.importZexp( self, filename)
+  print folder, folder.absolute_url(), filename
+  _fileutil.importZexp( folder, filename)
+  
+  return id
 
+
+# ------------------------------------------------------------------------------
+#  initTheme:
+#
+#  @deprecated
+# ------------------------------------------------------------------------------
+def initTheme(self, theme, new_id, REQUEST):
+  
+  id = importTheme(self,theme)
+  
   ### Assign folder-id.
   if id != new_id:
     self.manage_renameObject( id=id, new_id=new_id)
@@ -283,13 +297,19 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
   if REQUEST['btn'] == 'Add':
 
+    ##### Add Home ####
+    homeElmnt = Folder(REQUEST['folder_id'])
+    self._setObject(homeElmnt.id,homeElmnt)
+    homeElmnt = filter(lambda x:x.id==homeElmnt.id,self.objectValues())[0]
+    
     ##### Add Theme ####
-    homeElmnt = initTheme(self,REQUEST['theme'],REQUEST['folder_id'],REQUEST)
+    themeId = importTheme(homeElmnt,REQUEST['theme'])
 
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
+    obj.setConfProperty('ZMS.theme',themeId)
 
     ##### Default content ####
     if REQUEST.get('initialization',0)==1:

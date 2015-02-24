@@ -75,11 +75,22 @@ class ZMSItem(
       response.setHeader('Content-Type','text/css')
       css = []
       for stylesheet in self.getStylesheets():
-        s = stylesheet(self)
         css.append("/* ######################################################################")
         css.append("   ### %s"%stylesheet.absolute_url())
         css.append("   ###################################################################### */")
-        css.append(s)
+        if stylesheet.meta_type in ['DTML Method','DTML Document']:
+          s = stylesheet(self)
+        else:
+          s = str(stylesheet)
+        if stylesheet.absolute_url().endswith('zmi.css'):  
+          css.append(s)  
+        else:  
+          for line in s.split('\n'):
+            line = line.strip()
+            if (len(line) > 0 and line[0]>='a' and line[0]<='z' and line.find(':')<0) or line.find('#')==0 or line.find('.')==0:  
+              css.append(".pageelement .center %s"%line)  
+            else:  
+              css.append(line)
       return '\n'.join(css)
 
     # --------------------------------------------------------------------------

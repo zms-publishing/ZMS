@@ -179,7 +179,12 @@ function toggleMetaobj() {
 	var metaObjAttrs = {};
 	var c = 0;
 	$("form input[name='ids:list']:checked").each(function() {
-			var dataAttrs = $(this).attr("data-attrs").split(",");
+			var dataAttr =[];
+			try {
+				dataAttrs = $(this).attr("data-attrs").split(",");
+			} catch(e) {
+				return;
+			};
 			for (var i = 0; i < dataAttrs.length; i++) {
 				var dataAttr = dataAttrs[i];
 				var metaObjAttr = {

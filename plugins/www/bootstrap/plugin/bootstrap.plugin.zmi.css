@@ -1050,6 +1050,9 @@ input.btn.btn-file {
 .ZMSSqlDb .table ul.dropdown-menu i {
 	padding-right:0.5em;
 }
+.ZMSSqlDb .table ul.dropdown-menu li {
+	cursor:pointer;
+}
 .zmi.ZMSRecordSet #attrProperties .form-group select,
 .zmi.ZMSSqlDb #attrProperties .form-group select,
 .zmi.ZMSRecordSet #attrProperties .form-group input,

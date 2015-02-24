@@ -57,20 +57,6 @@
 		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 		<p tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"></p>
 
-	<!-- @TODO: pagination and rendering -->
-	<tal:block tal:condition="python:request.get('raw') and not request.get('search_meta_types')">
-		<table class="table" tal:define="global dummy0 python:qres.extend(here.submitCatalogQuery(qs,request.get('search_order_by',1),request.get('search_meta_types',[]),request.get('search_clients',1),request))">
-		<tr tal:repeat="qitem qres">
-			<td><tal:block tal:content=qitem/title></tal:block>
-				score=<tal:block tal:content=qitem/score></tal:block>
-				normscore=<tal:block tal:content=qitem/normscore></tal:block>
-				meta_id=<tal:block tal:content=qitem/meta_id></tal:block>
-			</td>
-			<td><tal:block tal:content=qitem/keys></tal:block></td>
-		</tr>
-		</table>
-	</tal:block>
-
 	<!-- @TODO: ZMSIndex-based -->
 	<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
 		<tal:block tal:define="global dummy0 python:qres.extend(map(lambda x: {

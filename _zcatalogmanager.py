@@ -113,14 +113,17 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     # --------------------------------------------------------------------------
     #  ZCatalogItem.zcat_custom:
     # --------------------------------------------------------------------------
-    def zcat_url( self, lang=None):
+    def zcat_custom( self, lang=None):
+      request = self.REQUEST
       if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+        lang = request.get('lang',self.getPrimaryLanguage())
       req = {'lang':lang}
       xml = ''
       xml += '<breadcrumbs>'
-      for breadcrumbs in self.breadcrumbs_obj_path():
+      for breadcrumb in self.breadcrumbs_obj_path():
         xml += '<breadcrumb>'
+        xml += '<loc>%s</loc>'%breadcrumb.getHref2IndexHtml(request)
+        xml += '<title>%s</title>'%breadcrumb.getTitlealt(request)
         xml += '</breadcrumb>'
       xml += '</breadcrumbs>'
       return xml

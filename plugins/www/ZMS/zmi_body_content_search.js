@@ -146,7 +146,7 @@ $(function() {
         var message = $("message",$xml).text();
         var html = "";
         if (code == 0) {
-          $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
+          $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+message);
           $("#search_results .small-head #q").text(q);
         }
         else {
@@ -154,46 +154,52 @@ $(function() {
           abs = abs.length==0?0:parseInt(abs);
           total = $("total",$xml).text();
           total = total.length==0?0:parseInt(total);
-          $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
-          $("#search_results .small-head #q").text(q);
-          var $url = $("result",$xml);
-          var c = 0;
-          var sid = $("results",$xml).attr("id");
-          $url.each(function() {
-              var $this = $(this);
-              var did = $(">id",$this).text();
-              var uid = $(">uid",$this).text();
-              var loc = $(">loc",$this).text();
-              var href = $("custom>href",$this).text();
-              var title = $(">title",$this).text();
-              var breadcrumb = '';
-              var cb = 0;
-              $("custom>breadcrumbs>breadcrumb",$this).each(function() {
-                  var title = $(">title",this).text();
-                  var loc = $(">loc",this).text();
-                  breadcrumb += breadcrumb.length==0?'':' &raquo; '
-                  breadcrumb += '<a href="'+loc+'">'+title+'</a>';
-                });
-              var snippet = $(">snippet",$this).text();
-              html += ''
-                + '<div class="line row'+(c%2==0?" gray":"")+'">'
-                + '<div class="'+(breadcrumb.length==0?'':'has-breadcrumb')+' col-md-8 col-ns-9">'
-                + '<h2><a href="'+loc+'">'+title+'</a></h2>'
-                + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
-                + '<p>'+snippet+'</p>'
-                + '</div>'
-                + '<div class="list-actions col-md-4">'
-                + (href.length==0?'':'<a href="'+href+'"'+onclick+' class="btn btn-turq'+(download.length==0?' botmargin':'')+'">Herunterladen</a>')
-                + '</div>'
-                + '</div><!-- .line.row -->';
-              c++;
-            });
-          // Pagination
-          var fn = function(pageIndex) {
-            var url = window.location.href;
-            return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
+          if (total == 0) {
+            $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
+            $("#search_results .small-head #q").text(q);
           }
-          GetPagination(fn,total,pageSize,pageIndex);
+          else {
+            $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
+            $("#search_results .small-head #q").text(q);
+            var $url = $("result",$xml);
+            var c = 0;
+            var sid = $("results",$xml).attr("id");
+            $url.each(function() {
+                var $this = $(this);
+                var did = $(">id",$this).text();
+                var uid = $(">uid",$this).text();
+                var loc = $(">loc",$this).text();
+                var href = $("custom>href",$this).text();
+                var title = $(">title",$this).text();
+                var breadcrumb = '';
+                var cb = 0;
+                $("custom>breadcrumbs>breadcrumb",$this).each(function() {
+                    var title = $(">title",this).text();
+                    var loc = $(">loc",this).text();
+                    breadcrumb += breadcrumb.length==0?'':' &raquo; '
+                    breadcrumb += '<a href="'+loc+'">'+title+'</a>';
+                  });
+                var snippet = $(">snippet",$this).text();
+                html += ''
+                  + '<div class="line row'+(c%2==0?" gray":"")+'">'
+                  + '<div class="'+(breadcrumb.length==0?'':'has-breadcrumb')+' col-md-8 col-ns-9">'
+                  + '<h2><a href="'+loc+'">'+title+'</a></h2>'
+                  + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
+                  + '<p>'+snippet+'</p>'
+                  + '</div>'
+                  + '<div class="list-actions col-md-4">'
+                  + (href.length==0?'':'<a href="'+href+'"'+onclick+' class="btn btn-turq'+(download.length==0?' botmargin':'')+'">Herunterladen</a>')
+                  + '</div>'
+                  + '</div><!-- .line.row -->';
+                c++;
+              });
+            // Pagination
+            var fn = function(pageIndex) {
+              var url = window.location.href;
+              return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
+            }
+            GetPagination(fn,total,pageSize,pageIndex);
+          }
         }
         $(".line.row:first").replaceWith(html);
       }});

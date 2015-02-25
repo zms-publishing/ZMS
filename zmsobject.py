@@ -1049,7 +1049,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
-      xml += " display_icon=\"%s\""%unicode(self.display_icon(REQUEST)).encode('utf8').replace('"','&quot;').replace('<','&lt;')
+      try:
+        xml += " display_icon=\"%s\""%unicode(self.display_icon(REQUEST)).encode('utf8').replace('"','&quot;').replace('<','&lt;')
+      except:
+        xml += " display_icon=\"&lt;i class=&quot;icon-file-alt-alt&quot;\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)

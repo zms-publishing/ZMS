@@ -1052,7 +1052,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       try:
         xml += " display_icon=\"%s\""%unicode(self.display_icon(REQUEST)).encode('utf8').replace('"','&quot;').replace('<','&lt;')
       except:
-        xml += " display_icon=\"&lt;i class=&quot;icon-file-alt-alt&quot;\""
+        xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)

@@ -18,7 +18,7 @@
 				message python:[];
 				values python:{}">
 		<tal:block tal:repeat="column python:entity['columns']">
-			<tal:block tal:define="global python:here.operator_setitem(values,column['id'],request.get(column['id'].lower(),None))"></tal:block>
+			<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
 			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values)"

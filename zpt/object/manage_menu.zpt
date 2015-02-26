@@ -14,8 +14,8 @@
 				</a>
 				<div class="pull-right" style="cursor:pointer;padding:8px 12px;">
 					<i class="icon-angle-left" title="Move To Left" onclick="frmresize(-30)" style="color:#aaa;">&nbsp;</i>
-					<i class="icon-ellipsis-horizontal" title="Default" onclick="frmresize()" style="color:#aaa;">&nbsp;</i>
-					<i class="icon-angle-right" title="Move To Right" onclick="frmresize(30)" style="color:#aaa">&nbsp;</i>
+					<i class="icon-ellipsis-horizontal" title="Set Default Width" onclick="frmresize()" style="color:#aaa;">&nbsp;</i>
+					<i class="icon-angle-right" title="Move To Right" onclick="frmresize(60)" style="color:#aaa">&nbsp;</i>
 				</div>
 	</div><!-- .navbar -->
 </div><!-- #zmi-sitemap-header -->

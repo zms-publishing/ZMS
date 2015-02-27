@@ -75,7 +75,10 @@ class ZMSItem(
       response.setHeader('Content-Type','text/css')
       css = []
       for stylesheet in self.getStylesheets():
-        s = stylesheet(self)
+        try:
+          s = stylesheet(self)
+        except:
+          s = str(stylesheet)
         css.append("/* ######################################################################")
         css.append("   ### %s"%stylesheet.absolute_url())
         css.append("   ###################################################################### */")

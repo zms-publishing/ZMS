@@ -7,17 +7,25 @@ $(function(){
 
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");
 
-	// Sitemap
-	var $icon_sitemap = $('.zmi header a '+$ZMI.icon_selector("icon-sitemap"));
-	if ($icon_sitemap.length > 0) {
-		var $a = $icon_sitemap.closest("a");
-		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
-			$a.attr('target','_parent');
-		}
-		else {
-			$a.attr('href',$a.attr('href')+'&dtpref_sitemap=1');
-		}
-	}
+	// Toggle: Lang
+	$('.zmi header a.toggle-lang').each(function() {
+			var $a = $(this);
+			if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+				$a.attr('target','_parent');
+				$a.attr('href','manage?lang='+$a.attr('data-language') + '&dtpref_sitemap=1' + '&came_from='+$a.attr('href'));
+			}
+		});
+
+	// Toggle: Sitemap
+	$('.zmi header a.toggle-sitemap').each(function() {
+			var $a = $(this);
+			if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+				$a.attr('target','_parent');
+			}
+			else {
+				$a.attr('href',$a.attr('href')+'&dtpref_sitemap=1');
+			}
+		});
 
 	// Well
 	$("p.well").each(function() {

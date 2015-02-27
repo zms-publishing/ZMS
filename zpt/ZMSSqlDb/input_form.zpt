@@ -61,7 +61,7 @@
 						<p class="form-control-static" tal:content="elValue">the value</p>
 					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
+				</div>
 
 				<tal:block tal:replace="nothing">
 				##### Fk ###############################################################
@@ -82,7 +82,7 @@
 						<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
 					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
+				</div>
 
 				<tal:block tal:replace="nothing">
 				##### Multiselect ######################################################
@@ -112,7 +112,7 @@
 						<tal:block tal:content="structure python:here.zmi_input_multiselect(here,name=elName,value=metaObjAttr['value'],lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
 					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
+				</div>
 
 				<tal:block tal:replace="nothing">
 				##### Multimultiselect #################################################
@@ -162,7 +162,7 @@
 						<div class="clearfix"></div><!-- .clearfix -->
 					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
+				</div>
 
 				<tal:block tal:replace="nothing">
 				##### Default ##########################################################
@@ -170,7 +170,7 @@
 				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-default" tal:condition="python:not done">
 					<tal:block tal:content="structure python:here.getObjAttrInput(fmName='form0',obj_attr=metaObjAttr,value=metaObjAttr.get('value',elValue),REQUEST=request)">the control</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
-				</div><!-- .col-sm-9 col-md-10 -->
+				</div>
 
 			</div><!-- .form-group -->
 
@@ -182,7 +182,7 @@
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .col-sm-9 col-md-10 -->
+		</div>
 	</div><!-- .form-group -->
 
 </form><!-- .form-horizontal -->

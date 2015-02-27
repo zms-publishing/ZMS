@@ -43,19 +43,19 @@
 						</tal:block>
 					</ul>
 				</div><!-- .btn-group -->
-			</div><!-- .col-sm-9 col-md-10 -->
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="max_rows"><span>Max. Rows</span></label>
 			<div class="col-sm-9 col-md-10">
 				<input class="form-control" type="text" class="input-mini" name="max_rows:int" tal:attributes="value python:getattr(here,'max_rows',999)" />
-			</div><!-- .col-sm-9 col-md-10 -->
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="charset"><span>Charset</span></label>
 			<div class="col-sm-9 col-md-10">
 				<tal:block tal:content="structure python:here.getSelect(fmName='form0',elName='charset',value=getattr(here,'charset','utf-8'),inputtype='select',lang_str='Charset',required=1,optpl=here.enumManager.getValues('charset'),enabled=1,REQUEST=request)">select</tal:block>
-			</div><!-- .col-sm-9 col-md-10 -->
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="model"><span>Model</span></label>
@@ -63,7 +63,7 @@
 				<!-- ACE Editor -->
 				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='model',ob=here.getModelContainer())">ACE Editor</tal:block>
 				<!-- /ACE Editor -->
-			</div><!-- .col-sm-9 col-md-10 -->
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group">
 			<div class="controls save">

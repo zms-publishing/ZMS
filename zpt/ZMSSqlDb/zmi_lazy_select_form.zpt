@@ -60,7 +60,7 @@
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiSelectBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_SELECT')" tal:content="python:here.getZMILangStr('BTN_SELECT')">Select</button>
 			<button type="submit" name="btn" class="btn btn-default" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
-		</div><!-- .col-sm-9 col-md-10 -->
+		</div>
 	</div><!-- .form-group -->
 
 <tal:block tal:content="structure python:'<script>'"></tal:block>

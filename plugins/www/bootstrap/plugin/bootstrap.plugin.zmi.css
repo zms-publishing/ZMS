@@ -302,6 +302,9 @@ table.table.zmi-sortable select.zmi-sort {
 table.table.zmi-sortable input {
 	margin-bottom:10px;
 }
+table.table.zmi-sortable .input-group input {
+	margin-bottom:0px;
+}
 .col_min {width:1em}
 .col_max {width:100%}
 .row_insert .language_id input {width:4em;}

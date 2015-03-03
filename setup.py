@@ -124,7 +124,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.publisher==3.13.4',
   'zope.schema==4.4.2',
   'zope.security==4.0.1',
-  'zope.sendmail==4.0.1',
+  'zope.sendmail==3.7.5',
   'zope.sequencesort==4.0.1',
   'zope.site==4.0.0',
   'zope.size==4.1.0',

@@ -103,19 +103,11 @@ function GetPagination(fn, size, pageSize, pageIndex) {
   $(".pagination").replaceWith(html);
 }
 
-/**
- * manage_search.js
- */
-
-$(function() {
-    var q = GetURLParameter("search",null);
-    if (q == null) {
+function zmiBodyContentSearch(q,pageSize,pageIndex) {
+    if (q.length==0) {
       return;
     }
     $("#search_results").show();
-    q = q.trim();
-    var pageSize = 10;
-    var pageIndex = parseInt(GetURLParameter('pageIndex:int','0'));
     $("input[name=search]").val(q).change();
     $(".line.row:first").html('');
     $(".line.row:gt(0)").remove();
@@ -133,12 +125,10 @@ $(function() {
       timeout:5000,
       error: function (xhr, ajaxOptions, thrownError) {
           $("#search_results .small-head").html(''
-            + 'Die Suchfunktion steht vor&uuml;bergehend nicht zur Verf&uuml;gung<hr/> '
+            + getZMILangStr('CAPTION_ERROR')+'<hr/> '
             + '<code>' + xhr.status + ': ' + thrownError + '</code>');
-          // TODO $.get()
       },
       success:function(xmlDoc) {
-        // Filter categories
         var $xml = $(xmlDoc);
         var abs = 0;
         var total = 0;
@@ -202,6 +192,16 @@ $(function() {
           }
         }
         $(".line.row:first").replaceWith(html);
+        if (typeof zmiBodyContentSearchDone == 'function') {
+          zmiBodyContentSearchDone();
+        }
       }});
     return false;
+}
+
+$(function() {
+    var q = GetURLParameter("search","").trim();
+    var pageSize = 10;
+    var pageIndex = parseInt(GetURLParameter('pageIndex:int','0'));
+    return zmiBodyContentSearch(q,pageSize,pageIndex);
   });

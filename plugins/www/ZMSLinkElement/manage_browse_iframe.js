@@ -317,3 +317,73 @@ $(function(){
 	zmiRefresh();
 });
 
+var URLParser = (function (document) {
+	var PROPS = 'protocol hostname host pathname port search hash href'.split(' ');
+	var self = function (url) {
+		this.aEl = document.createElement('a');
+		this.parse(url);
+	};
+	self.prototype.parse = function (url) {
+		this.aEl.href = url;
+		if (this.aEl.host == "") {
+			this.aEl.href = this.aEl.href;
+		}
+        PROPS.forEach(function (prop) {
+            switch (prop) {
+                case 'hash':
+                    this[prop] = this.aEl[prop].substr(1);
+                    break;
+                default:
+                    this[prop] = this.aEl[prop];
+            }
+        }, this);
+        if (this.pathname.indexOf('/') !== 0) {
+            this.pathname = '/' + this.pathname;
+        }
+        this.requestUri = this.pathname + this.search;
+    };
+    self.prototype.toObj = function () {
+        var obj = {};
+        PROPS.forEach(function (prop) {
+            obj[prop] = this[prop];
+        }, this);
+        obj.requestUri = this.requestUri;
+        return obj;
+    };
+    self.prototype.toString = function () {
+        return this.href;
+    };
+    return self;
+})(document);
+
+function zmiBodyContentSearchDone() {
+	$(".line.row").each(function() {
+			var $h2 = $("h2",this);
+			var parser = new URLParser();
+			parser.parse($("a",$h2).attr("href"));
+			var url = parser.toObj();
+			var titlealt = $("a",$h2).text();
+			$h2.html('<input name="id" type="radio" onclick="zmiSelectObject(this);"'
+				+ ' data-page-titlealt="'+titlealt+'"'
+				+ ' data-anchor="'+url['hash']+'"'
+				+ ' data-page-is-page="true"'
+				+ ' data-page-physical-path="'+url['pathname']+'"'
+				+ ' data-index-html="'+url['href']+'"'
+				+ ' value="'+url['href']+'"'
+				+ '/> ' + $h2.html());
+		});
+}
+
+$(function(){
+		// Select tab.
+		var $tabs_left = $("div.tabs-left");
+		var anchor = $("a:first",$tabs_left).attr("href");
+		if (self.location.href.indexOf("#")>0) {
+			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+			if (anchor.indexOf('_')==0) {
+				anchor = anchor.substr(1);
+			}
+			anchor = '#'+anchor;
+		}
+		$("a[href='"+anchor+"']",$tabs_left).tab("show");
+	});

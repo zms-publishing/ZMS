@@ -359,8 +359,18 @@ var URLParser = (function (document) {
 function zmiBodyContentSearchDone() {
 	$(".line.row").each(function() {
 			var $h2 = $("h2",this);
+			var meta_id = $("h2").attr("class");
+			var display_icon = $ZMI.display_icon(meta_id);
+			var $a = $("a",$h2);
+			$a.html(display_icon+' '+$a.html());
+			var href = $a.attr("href");
+			if (href.lastIndexOf(".html")>href.lastIndexOf("/")) {
+				href = href.substr(0,href.lastIndexOf("/"));
+			}
+			href += "/manage_main";
+			$a.attr({href:href,target:"_blank"});
 			var parser = new URLParser();
-			parser.parse($("a",$h2).attr("href"));
+			parser.parse(href);
 			var url = parser.toObj();
 			var titlealt = $("a",$h2).text();
 			$h2.html('<input name="id" type="radio" onclick="zmiSelectObject(this);"'

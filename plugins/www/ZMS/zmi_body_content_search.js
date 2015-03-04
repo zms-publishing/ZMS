@@ -159,6 +159,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 var did = $(">id",$this).text();
                 var uid = $(">uid",$this).text();
                 var loc = $(">loc",$this).text();
+                var meta_id = $(">meta_id",$this).text();
                 var href = $("custom>href",$this).text();
                 var title = $(">title",$this).text();
                 var breadcrumb = '';
@@ -173,7 +174,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 html += ''
                   + '<div class="line row'+(c%2==0?" gray":"")+'">'
                   + '<div class="'+(breadcrumb.length==0?'':'has-breadcrumb')+' col-md-8 col-ns-9">'
-                  + '<h2><a href="'+loc+'">'+title+'</a></h2>'
+                  + '<h2 class="'+meta_id+'"><a href="'+loc+'">'+title+'</a></h2>'
                   + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
                   + '<p>'+snippet+'</p>'
                   + '</div>'

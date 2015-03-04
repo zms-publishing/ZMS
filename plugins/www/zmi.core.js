@@ -247,6 +247,13 @@ function getZMILangStr(key, data) {
 }
 
 /**
+ * Cache Ajax requests.
+ */
+var zmiCache = {};
+ZMI.prototype.getCachedValue = function(k) {return zmiCache[k];}
+ZMI.prototype.setCachedValue = function(k,v) {zmiCache[k]=v;return v;}
+
+/**
  * Returns request-property.
  */
 ZMI.prototype.getReqProperty = function(key, defaultValue) {
@@ -260,7 +267,7 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 	if (url.indexOf('/content/')>0) {
 		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
 	}
-	this.writeDebug(url+'/getConfProperty');
+	this.writeDebug(url+'/getReqProperty');
 	return $.ajax({
 		url: url+'/getReqProperty',
 		data: data,
@@ -290,6 +297,31 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		datatype: 'text',
 		async: false
 		}).responseText;
+}
+
+/**
+ * Returns conf-property.
+ */
+ZMI.prototype.display_icon = function(meta_type) {
+	var k = "display_icon."+meta_type;
+	var v = this.getCachedValue(k);
+	if (typeof v=="undefined") {
+		var data  = {}
+		data['meta_type'] = meta_type;
+		var url = this.getPhysicalPath();
+		this.writeDebug(url);
+		if (url.indexOf('/content/')>0) {
+			url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+		}
+		this.writeDebug(url+'/display_icon');
+		v = $.ajax({
+			url: url+'/display_icon',
+			data: data,
+			datatype: 'text',
+			async: false
+			}).responseText;
+	}
+	return this.setCachedValue(k,v);
 }
 
 /**

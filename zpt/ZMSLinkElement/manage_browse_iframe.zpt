@@ -2,39 +2,51 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
-.tabbable .tab-pane form {
+.zmi.browse_iframe .tabbable .tab-pane form {
 	box-shadow:none;
 	border:none;
+	padding:2em 0em;
 }
-#search .line.row.gray {
+.zmi.browse_iframe #search .line.row.gray {
 	background-color:#f8f8f8;
 }
-#search .line.row p {
+.zmi.browse_iframe #search .line.row p {
 	font-size:x-small;
 }
-#search .line.row h2 {
-	font-size:large;
+.zmi.browse_iframe #search .line.row h2 {
+	font-size:14px;
 	color:#333;
 	margin-bottom:0;
 }
-#search h2 a {
+.zmi.browse_iframe #search h2 a {
 	color:#333!important;
+	font-size:medium;
 }
-#search .breadcrumb {
+.zmi.browse_iframe #search .breadcrumb {
 	font-size:small;
-	padding:0;
+	padding:3px 0 0 0;
 	background:transparent;
 	margin:0;
 }
-.form-inline .form-control {
+.zmi.browse_iframe #search h4 {
+	color:#999;
+}
+.zmi.browse_iframe #search .header.row {
+	display:none;
+}
+.zmi.browse_iframe  .form-inline .form-control {
 	display: inline-block;
 	width: auto;
 	vertical-align: middle;
 }
-.form-inline .form-group {
+.zmi.browse_iframe .form-inline .form-group {
 	display: inline-block;
 	margin-bottom: 0px;
 	vertical-align: middle;
+}
+.zmi.browse_iframe #link .form-inline .form-group {
+	margin-top: 1em;
+	vertical-align:baseline;
 }
 </style>
 <body tal:attributes="class python:here.zmi_body_class(id='browse_iframe')">

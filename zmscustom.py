@@ -497,7 +497,7 @@ class ZMSCustom(ZMSContainerObject):
             message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_RECORD')
           elif action == 'update':
             row = res_abs[REQUEST['qindex']]
-            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getId()
+            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
             row['_change_dt'] = _globals.getDateTime( time.time())
             for metaObjAttr in metaObj['attrs'][1:]:
               objAttr = self.getObjAttr(metaObjAttr['id'])

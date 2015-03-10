@@ -1194,6 +1194,14 @@ div.right .btn .caret {
  /* margin-top: 4px; */
 }
 
+
+/* Fixing bootstrap dropup menu: closing a 2px gap */
+.zmi .dropup .dropdown-menu {
+	margin-bottom: 0px !important;
+	border-bottom-left-radius: 0 !important;
+	border-top-left-radius: 4px !important;
+}
+
 @media (max-width: 767px) {
 	body {
 		padding:0em !important

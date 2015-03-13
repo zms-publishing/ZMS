@@ -849,6 +849,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         parent = self.getParentNode()
         pageext = parent.getPageExt(REQUEST)
         href = parent.getHref2Html( fct, pageext, REQUEST)
+        if href.find('#') > 0:
+          href = href[:href.find('#')]
         href += '#' + self.id
       else:
         href = self.getDeclUrl(REQUEST)+'/'

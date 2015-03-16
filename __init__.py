@@ -46,7 +46,7 @@ import _multilangmanager
 import _mediadb
 import _sequence
 import _zmsattributecontainer
-import ZMSZCatalogAdapter, ZMSCustomCatalogAdapter
+import ZMSZCatalogAdapter
 import ZMSFormatProvider, ZMSFormatProviderAcquired
 import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired

@@ -5,36 +5,91 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+<tal:block tal:define="meta_types python:here.getConnectorMetaTypes(); connectors python:here.getConnectors()">
 
-<form class="form-horizontal" action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
-			<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
-			<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())">
-			<input type="hidden" id="getAttrIds" tal:attributes="value python:','.join(here.getAttrIds())">
-			<legend>ZCatalog-Adapter</legend>
+<div class="help" data-for="catalog_awareness_active">
+<div class="well">
+On every change the content is automatically indexed in the catalog.
+</div>
+</div>
 
-<div class="accordion-group perc100">
-	<div class="accordion-heading">
-		<a class="accordion-toggle" href="#">Properties</a>
-	</div><!-- .accordion-heading -->
-	<div class="accordion-body">
-		<div class="accordion-inner">
+<div class="help" data-for="catalog_model">
+<div class="well">
+Select objects and their attributes from the model to be indexed automatically.<br/>
+Custom indexing can be achieved by adding 'catalog_index' py-attributes to your objects returning a map with the selected attributes:<br/>
+<div style="background-color:#fefefe;border:1px solid #ccc;border-radius:4px;padding:4px;font-family:monospace">
+## Script (Python) "LgFoo.catalog_index"<br/>
+##bind container=container<br/>
+##bind context=context<br/>
+##bind namespace=<br/>
+##bind script=script<br/>
+##bind subpath=traverse_subpath<br/>
+##parameters=zmscontext<br/>
+##title=py: Catalog-Index<br/>
+##<br/>
+return [{<br/>
+<tal:block tal:repeat="attr_id python:here.getAttrIds()">
+&nbsp;&nbsp;&nbsp;'<code><tal:block tal:content="attr_id">the attribute-id</tal:block></code>' : ...<br/>
+</tal:block>
+}]
+</div>
+</div>
+</div>
 
+<script>
+$ZMI.registerReady(function(){
+		// Select tab.
+		var $tabs_left = $("div.tabs-left");
+		var anchor = $("a:first",$tabs_left).attr("href");
+		if (self.location.href.indexOf("#")>0) {
+			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+			if (anchor.indexOf('_')==0) {
+				anchor = anchor.substr(1);
+			}
+			anchor = '#'+anchor;
+		}
+		$("a[href='"+anchor+"']",$tabs_left).tab("show");
+	});
+</script>
+
+<form action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
+<input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+<input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())">
+<input type="hidden" id="getAttrIds" tal:attributes="value python:','.join(here.getAttrIds())">
+<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs">
+		<li>
+			<a tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">
+				<tal:block tal:content="python:here.meta_type">the adapter</tal:block>
+			</a>
+		</li>
+		<li tal:repeat="si connectors">
+			<a tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab">
+				<img tal:attributes="src python:si.icon"/>
+				<tal:block tal:content="python:si.meta_type">the connector</tal:block>
+				<span class="zmi-helper-clickable text-danger" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'; data-id si/id; data-type si/meta_type" onclick="var data_id=$(this).attr('data-id'),data_type=$(this).attr('data-type');$('#'+data_type+' form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+data_id+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Remove\042>').submit();">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+				</span>
+			</a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" tal:attributes="id here/meta_type">
+			<div class="form-horizontal">
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="catalog_awareness_active"><span>Awareness</span></label>
 				<div class="col-sm-10">
 					<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-
 			<div class="form-group" tal:condition="python:len(here.getPortalClients())>0">
 				<label class="col-sm-2 control-label" for="catalog_portal_clients"><span>Clients</span></label>
 				<div class="col-sm-10">
 					<input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>
-				</div><!-- .col-lg-10 -->
+				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-
 			<div class="form-group">
-				<label class="col-sm-2 control-label" for="catalog_portal_clients"><span>Model</span></label>
+				<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
 				<div class="col-sm-10">
 
 <tal:block tal:define="global
@@ -89,7 +144,10 @@
 		<tal:block tal:repeat="metaObj metaObjs">
 			<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td style="text-align:center;">
-					<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id; data-attrs python:','.join(map(lambda x:'%s(%s)'%(x['id'],x['type']),filter(lambda x:x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['*','image','file','delimiter','hint','interface'],metaObj['attrs'])))" onclick="toggleMetaobj()"/>
+					<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id; 
+							data-attrs python:','.join(map(lambda x:'%s(%s)'%(x['id'],x['type']),filter(lambda x:x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['*','image','file','delimiter','hint','interface'],metaObj['attrs'])));
+							checked python:['','checked'][int('catalog_index' in map(lambda x:x['id'],metaObj['attrs']))];
+							disabled python:['','disabled'][int('catalog_index' in map(lambda x:x['id'],metaObj['attrs']))]" onclick="toggleMetaobj()"/>
 				</td>
 				<td>
 					<span tal:on-error="string:ERROR" tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
@@ -119,54 +177,51 @@
 
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>
+				<div class="col-sm-10">
+					<div class="form-group">
+						<select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
+							onchange="if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+							<option value="">Select type to add...</option>
+							<tal:block tal:repeat="meta_type meta_types">
+								<option tal:condition="python:len(filter(lambda x:x.meta_type==meta_type,connectors))==0"  tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
+							</tal:block>
+						</select>
+						<button id="addMetaTypeBtn" style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
+					</div><!-- .form-group -->
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
-					<button name="btn" type="submit" class="btn btn-default" value="Reindex">Reindex</button>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-
-		</div><!-- .accordion-inner -->
-	</div><!-- .accordion-body -->
-</div><!-- .accordion-group -->
-
-<div class="accordion-group perc100" tal:condition="python:len(zcatalogs)>0">
-	<div class="accordion-heading">
-		<a class="accordion-toggle" href="#">ZMS base-components</a>
-	</div><!-- .accordion-heading -->
-	<div class="accordion-body">
-		<div class="accordion-inner">
-
-			<div class="form-group">
-				<label class="col-sm-2 control-label" for="copy_to_stdout"><span>ZCatalog</span></label>
-				<div class="col-sm-10">
-						<tal:block tal:repeat="si zcatalogs">
-						<div>
-							<label>
-								<span class="btn btn-default">
-									<img tal:attributes="src python:si.icon"/>&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
-								</span>
-								&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" target="_blank" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
-							</label>
+			</div><!-- .form-horizontal -->
+		</div><!-- .tab-pane -->
+		<div class="tab-pane" tal:repeat="si connectors" tal:attributes="id si/meta_type">
+			<div class="form-horizontal">
+				<tal:block tal:content="structure python:si.manage_input_form(here,request)">
+					the zmi input-form
+				</tal:block>
+				<div class="form-group">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-10">
+						<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
+						<div class="btn-group">
+							<a class="btn btn-default" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
+							<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Reindex\042>').submit();"><tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block></span>
 						</div>
-						</tal:block>
-						<div>
-							<button name="btn" type="submit" class="btn btn-default" value="Remove">
-								<span class="icon icon-remove text-danger"></span>
-								Remove
-							</button>
-						</div>
-				</div><!-- .col-lg-10 -->
-			</div><!-- .form-group -->
-
-		</div><!-- .accordion-inner -->
-	</div><!-- .accordion-body -->
-</div><!-- .accordion-group -->
-
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
+			</div><!-- .form-horizontal -->
+		</div><!-- .tab-pane -->
+	</div><!-- .tab-content -->
+</div><!-- .tabbable -->
 </form>
 
+</tal:block>
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 
@@ -179,32 +234,34 @@ function toggleMetaobj() {
 	var metaObjAttrs = {};
 	var c = 0;
 	$("form input[name='ids:list']:checked").each(function() {
-			var dataAttr =[];
-			try {
-				dataAttrs = $(this).attr("data-attrs").split(",");
-			} catch(e) {
-				return;
-			};
-			for (var i = 0; i < dataAttrs.length; i++) {
-				var dataAttr = dataAttrs[i];
-				var metaObjAttr = {
-							id:dataAttr.substr(0,dataAttr.indexOf("(")),
-							type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
-						};
-				if (typeof metaObjAttrs[metaObjAttr['id']] == 'undefined') {
-					metaObjAttrs[metaObjAttr['id']] = 0;
+			if(!$(this).prop("disabled")) {
+				var dataAttr =[];
+				try {
+					dataAttrs = $(this).attr("data-attrs").split(",");
+				} catch(e) {
+					return;
+				};
+				for (var i = 0; i < dataAttrs.length; i++) {
+					var dataAttr = dataAttrs[i];
+					var metaObjAttr = {
+								id:dataAttr.substr(0,dataAttr.indexOf("(")),
+								type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
+							};
+					if (typeof metaObjAttrs[metaObjAttr['id']] == 'undefined') {
+						metaObjAttrs[metaObjAttr['id']] = 0;
+					}
+					metaObjAttrs[metaObjAttr['id']]++;
 				}
-				metaObjAttrs[metaObjAttr['id']]++;
+				c++;
 			}
-			c++;
 		});
 	$("table#indexes tr").remove();
 	for (var metaObjAttrId in metaObjAttrs) {
-		if (metaObjAttrs[metaObjAttrId]==c) {
+		if (metaObjAttrs[metaObjAttrId]==c || $.inArray(metaObjAttrId,selected)>=0) {
 			$("table#indexes").append(''
 					+ '<tr>'
 						+ '<td style="text-align:center;">'
-							+ '<input type="checkbox" name="attr_ids:list" '+($.inArray(metaObjAttrId,selected)<0?'':' checked="checked"')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
+							+ '<input type="checkbox" name="attr_ids:list" '+(metaObjAttrs[metaObjAttrId]==c?'':' disabled="disabled"')+($.inArray(metaObjAttrId,selected)<0?'':' checked="checked"')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
 						+ '</td>'
 						+ '<td>'
 							+ '<span>'+metaObjAttrId+'</span> '
@@ -212,9 +269,14 @@ function toggleMetaobj() {
 					+ '</tr>');
 		}
 	}
+	$("table#meta_types *.bg-info").removeClass("bg-info");
 	$("table#meta_types *.bg-primary,table#indexes *.bg-primary").removeClass("bg-primary");
 	$("table#meta_types input:checked,table#indexes input:checked").each(function() {
-			$("td,span",$(this).parents("tr")[0]).addClass("bg-primary");
+			var clazz = "bg-primary";
+			if ($(this).prop("disabled")) {
+				clazz = "bg-info";
+			}
+			$("td,span",$(this).parents("tr")[0]).addClass(clazz);
 		});
 }
 $(function() {

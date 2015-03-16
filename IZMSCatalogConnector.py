@@ -1,5 +1,5 @@
 ################################################################################
-# IZMSCatalogAdapter.py
+# IZMSCatalogConnector.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,10 +19,24 @@
 # Imports.
 from zope.interface import Interface
 
-class IZMSCatalogAdapter(Interface):
+class IZMSCatalogConnector(Interface):
 
-  def search(self, qs, order, clients=False):
-    """
-    Search catalog.
-    @rtype: C{list}
-    """
+    def search(self, qs, order=None):
+      """
+      Search.
+      @param qs query-string
+      @param order
+      @rtype: C{list}
+      """
+
+    def reindex(self):
+      """
+      Reindex.
+      @rtype: C{str}
+      """
+
+    def get_sitemap(self):
+      """
+      Returns sitemap.
+      @rtype: C{list}
+      """

@@ -19,7 +19,6 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.ZCatalog import ZCatalog
 import copy
 import urllib
 import zope.interface
@@ -31,166 +30,45 @@ import ZMSItem
 
 
 # ------------------------------------------------------------------------------
-#  Empty:
+#  updateVersion:
 # ------------------------------------------------------------------------------
-class Empty: 
-  pass
-
-
-# ------------------------------------------------------------------------------
-#  intValue:
-# ------------------------------------------------------------------------------
-def intValue(v):
-  try:
-    i = int(v)
-  except:
-    i = 0
-  return i
-
+def updateVersion(root):
+  if not root.REQUEST.get('ZMSCatalogAdapter_updateVersion',False):
+    root.REQUEST.set('ZMSCatalogAdapter_updateVersion',True)
+    if root.getConfProperty('ZMS.catalog.build',0) == 0:
+      if len(root.getConnectors()) == 0:
+        root.addConnector('ZMSZCatalogConnector')
+      root.setConfProperty('ZMS.catalog.build',1)
 
 # ------------------------------------------------------------------------------
-#  addLexicon:
+#  remove_tags:
 # ------------------------------------------------------------------------------
-def addLexicon( container, cat):
-  
-  #-- Remove Lexicon
-  ids = cat.objectIds( ['ZCTextIndex Lexicon','ZCTextIndex Unicode Lexicon'])
-  if len( ids) > 0:
-    cat.manage_delObjects( ids)
-  
-  #-- Add Lexicon
-  index_type = container.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-  if index_type == 'ZCTextIndex':
-    elements = []
-    wordSplitter = Empty()
-    wordSplitter.group = 'Word Splitter'
-    wordSplitter.name = 'HTML aware splitter'
-    elements.append(wordSplitter)
-    caseNormalizer = Empty()
-    caseNormalizer.group = 'Case Normalizer'
-    caseNormalizer.name = 'Case Normalizer'
-    elements.append(caseNormalizer)
-    stopWords = Empty()
-    stopWords.group = 'Stop Words'
-    stopWords.name = 'Remove listed and single char words'
-    elements.append(stopWords)
-    try:
-      cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
-    except:
-      pass
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogAdapter.recreateCatalog:
-# ------------------------------------------------------------------------------
-def recreateCatalog(self, zcm, lang):
-  
-  #-- Create catalog
-  cat_id = 'catalog_%s'%lang
-  if cat_id in self.objectIds():
-    self.manage_delObjects([cat_id])
-  cat_title = 'Default catalog'
-  vocab_id = 'create_default_catalog_'
-  zcatalog = ZCatalog.ZCatalog(cat_id, cat_title, vocab_id, zcm)
-  self._setObject(zcatalog.id, zcatalog)
-  zcatalog = getattr(self,cat_id)
-  
-  #-- Add lexicon
-  addLexicon( self, zcatalog)
-  
-  #-- Add columns
-  for index_name in ['id','meta_id','absolute_url','zcat_url','zcat_custom']:
-    zcatalog.manage_addColumn(index_name)
-  
-  #-- Add Indexes (incl. Columns)
-  index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-  for attr_id in zcm.getAttrIds():
-    index_name = 'zcat_index_%s'%attr_id
-    extra = None
-    if index_type == 'ZCTextIndex':
-      extra = Empty()
-      extra.doc_attr = index_name
-      extra.index_type = 'Okapi BM25 Rank'
-      extra.lexicon_id = 'Lexicon'
-    else:
-      extra = {}
-      extra['default_encoding'] = 'utf-8'
-      extra['indexed_fields'] = index_name
-      extra['fields'] = [index_name]
-      extra['near_distance'] = 5
-      extra['splitter_casefolding'] = 1
-      extra['splitter_max_len'] = 64
-      extra['splitter_separators'] = '.+-_@'
-      extra['splitter_single_chars'] = 0
-      if index_type == 'TextIndexNG2':
-        extra['use_converters'] = 1
-        extra['use_normalizer'] = ''
-        # setattr(index_extra,'use_stemmer','')
-        extra['use_stopwords'] = ''
-      elif index_type == 'TextIndexNG3':
-        extra['languages'] = (lang,)
-        extra['query_parser'] = 'txng.parsers.en'
-        extra['index_unknown_languages'] = True
-        extra['dedicated_storage'] = True
-        extra['use_stopwords'] = False
-        extra['use_normalizer'] = False
-        extra['use_converters'] = True
-        extra['use_stemmer'] = False
-    zcatalog.manage_addColumn(index_name)
-    zcatalog.manage_addIndex(index_name,index_type,extra)
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogAdapter.reindex:
-# ------------------------------------------------------------------------------
-def reindex(node, zcm, lang=None):
-  if lang is not None: node.REQUEST.set('lang',lang)
-    
-  #-- Prepare object.
-  for attr_id in zcm.getAttrIds():
-    index_name = 'zcat_index_%s'%attr_id
-    value = node.attr(attr_id)
-    setattr(node,index_name,value)
-  
-  #-- Reindex object.
-  node.default_catalog = 'catalog_%s'%lang
-  node.reindex_object()
-  
-  #-- Unprepare object.
-  for attr_id in zcm.getAttrIds():
-    index_name = 'zcat_index_%s'%attr_id
-    delattr(node,index_name)
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogAdapter.reindexObject:
-# ------------------------------------------------------------------------------
-def reindexObject(node, zcm, lang=None):
-  
-  #-- Check meta-id.
-  if node.meta_id in zcm.getIds():
-    reindex(node,zcm,lang)
-  
-  #-- Handle parent-nodes.
-  else:
-    parentNode = node.getParentNode()
-    if parentNode is not None:
-      reindexObject(parentNode,zcm,lang)
-
-
-# ------------------------------------------------------------------------------
-#  ZMSZCatalogAdapter.reindexAll:
-# ------------------------------------------------------------------------------
-def reindexAll(node, zcm, lang=None):
-  if lang is not None: node.REQUEST.set('lang',lang)
-  
-  #-- Check meta-id.
-  if node.meta_id in zcm.getIds():
-    reindex(node,zcm,lang)
-  
-  #-- Handle child-nodes.
-  for childNode in node.filteredChildNodes(node.REQUEST):
-    reindexAll(childNode,zcm,lang)
+def remove_tags(self, s):
+  s = s \
+    .replace('&ndash;','-') \
+    .replace('&nbsp;',' ') \
+    .replace('&ldquo;','') \
+    .replace('&sect;','') \
+    .replace('&Auml;','\xc2\x8e') \
+    .replace('&Ouml;','\xc2\x99') \
+    .replace('&Uuml;','\xc2\x9a') \
+    .replace('&auml;','\xc2\x84') \
+    .replace('&ouml;','\xc2\x94') \
+    .replace('&uuml;','\xc2\x81') \
+    .replace('&szlig;','\xc3\xa1')
+  s = self.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>',' ',s)
+  s = self.re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>',' ',s)
+  s = self.re_sub('<[^>]*>',' ',s)
+  while s.find('\t') >= 0:
+    s = s.replace('\t',' ')
+  while s.find('\n') >= 0:
+    s = s.replace('\n',' ')
+  while s.find('\r') >= 0:
+    s = s.replace('\r',' ')
+  while s.find('  ') >= 0:
+    s = s.replace('  ',' ')
+  s = s.strip()
+  return s
 
 
 ################################################################################
@@ -297,99 +175,20 @@ class ZMSZCatalogAdapter(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.search:
     # --------------------------------------------------------------------------
-    def search(self, qs, order=None, clients=False):
+    def search(self, qs, order=None):
       rtn = []
-      if qs == '':
-        return rtn
-      
-      #-- Process clients.
-      if self.getConfProperty('ZCatalog.portalClients',1) == 1 and clients:
-        for portalClient in self.getPortalClients():
-          for ob in portalClient.objectValues():
-            if IZMSCatalogAdapter.IZMSCatalogAdapter in list(zope.interface.providedBy(ob)):
-              rtn.extend(ob.search(qs,order,clients))
-      
-      #-- Search catalog.
-      REQUEST = self.REQUEST
-      lang = REQUEST['lang']
-      zcatalog = getattr(self,'catalog_%s'%lang)
-      if zcatalog is None:
-        return rtn
-      
-      #-- Get items.
-      items = []
-      for index in zcatalog.indexes():
-        if index.find('zcat_index_')==0:
-          query = {index:self.search_encode( qs)}
-          qr = zcatalog(query)
-          _globals.writeLog( self, "[searchCatalog]: %s=%i"%(str(query),len(qr)))
-          for item in qr:
-            if item not in items:
-              items.extend( qr)
-      
-      #-- Process results.
-      results = []
-      for item in items:
-        data_record_id = item.data_record_id_
-        path = zcatalog.getpath(data_record_id)
-        # Append to valid results.
-        if len(filter(lambda x: x[1]['path']==path, results)) == 0:
-          result = {}
-          result['path'] = path
-          result['score'] = intValue(item.data_record_score_)
-          result['normscore'] = intValue(item.data_record_normalized_score_)
-          for column in zcatalog.schema():
-            k = column
-            if k.find('zcat_index_')==0:
-              k = k[len('zcat_index_'):]
-            result[k] = getattr(item,column,None)
-          results.append((item.data_record_score_,result))
-      
-      #-- Sort objects.
-      results.sort()
-      results.reverse()
-      
-      #-- Append objects.
-      rtn.extend(map(lambda ob: ob[1],results))
-      
-      #-- Return objects in correct sort-order.
+      if len(qs) > 0:
+        for connector in self.getConnectors():
+          rtn.extend(connector.search(qs,order))
       return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.reindex_object:
-    # --------------------------------------------------------------------------
-    def reindex_object(self, o):
-      pass
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_all:
     # --------------------------------------------------------------------------
-    def reindex_all(self, clients=False):
-      message = ''
-      
-      REQUEST = self.REQUEST
-      container = self.getDocumentElement()
-      for lang in container.getLangIds():
-        REQUEST.set('lang',lang)
-        
-        #-- Recreate catalog.
-        recreateCatalog(container,self,lang)
-        
-        #-- Find items to catalog.
-        reindexAll(container,self,lang)
-        
-      message += 'Catalog %s indexed successfully.'%container.getHome().id
-      
-      #-- Process clients.
-      if clients:
-        for portalClient in container.getPortalClients():
-          for adapter in portalClient.getCatalogAdapters():
-            message += adapter.reindex_all(clients)
-      
-      # Return with message.
-      return message
+    def reindex_all(self):
+      for connector in self.getConnectors():
+        connector.reindex()
 
 
     # --------------------------------------------------------------------------
@@ -412,6 +211,63 @@ class ZMSZCatalogAdapter(
       setattr(self,'_attr_ids',attr_ids)
 
 
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.getConnectorMetaTypes
+    # --------------------------------------------------------------------------
+    def getConnectorMetaTypes(self):
+      return ['ZMSZCatalogConnector','ZMSZCatalogSolrConnector']
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.getConnectors
+    # --------------------------------------------------------------------------
+    def getConnectors(self):
+      updateVersion(self)
+      return self.objectValues(self.getConnectorMetaTypes())
+
+    def addConnector(self,meta_type):
+      connector = _confmanager.ConfDict.forName(meta_type+'.'+meta_type)()
+      self._setObject(connector.id, connector)
+      return getattr(self,connector.id)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.get_sitemap
+    #
+    #  @param self
+    #  @param  cb  callback
+    # --------------------------------------------------------------------------
+    def get_sitemap(self, cb):
+      
+      #-- Add node.
+      def add(node):
+        d = {}
+        d['id'] = node.id
+        d['meta_id'] = node.meta_id
+        for attr_id in self.getAttrIds():
+          value = node.attr(attr_id)
+          d[attr_id] = remove_tags(self,value)
+        cb(node,d)
+      
+      #-- Traverse tree.
+      def traverse(node):
+        # Check meta-id.
+        if node.meta_id in self.getIds():
+          add(node)
+        # Handle child-nodes.
+        for childNode in node.filteredChildNodes(node.REQUEST):
+          traverse(childNode)
+      
+      self.REQUEST.set('lang',self.getPrimaryLanguage())
+      traverse(self.getDocumentElement())
+      
+      #-- Process clients.
+      if self.getConfProperty('ZCatalog.portalClients',1) == 1:
+        for portalClient in self.getPortalClients():
+          for adapter in portalClient.getCatalogAdapters():
+            adapter.get_sitemap(cb)
+
+
     ############################################################################
     #  ZMSZCatalogAdapter.manage_changeProperties:
     #
@@ -420,28 +276,34 @@ class ZMSZCatalogAdapter(
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
         """ ZMSZCatalogAdapter.manage_changeProperties: """
         message = ''
+        ids = REQUEST.get('objectIds',[])
         
-        # Change.
-        # -------
-        if btn == 'Save':
+        # Delegate to connectors.
+        # -----------------------
+        for connector in self.getConnectors():
+          message += connector.manage_changeProperties(connector.id in ids, btn, lang, REQUEST)
+        
+        # Add.
+        # ----
+        if btn == 'Add':
+          meta_type = REQUEST['meta_type']
+          connector = self.addConnector(meta_type)
+          message += 'Added '+meta_type
+        
+        # Save.
+        # -----
+        elif btn == 'Save':
           self.setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)
           self._ids = REQUEST.get('ids',[])
           self._attr_ids = REQUEST.get('attr_ids',[])
-          message = self.getZMILangStr('MSG_CHANGED')
-        
-        # Reindex.
-        # -------
-        elif btn == 'Reindex':
-          clients = 'catalog_portal_clients' in REQUEST.get('options',[])
-          message += self.reindex_all(clients=clients)
+          message += self.getZMILangStr('MSG_CHANGED')
         
         # Remove.
         # -------
         elif btn == 'Remove':
-          ids = REQUEST.get('ids',[])
           if len(ids) > 0:
             self.manage_delObjects(ids)
-          message = self.getZMILangStr('MSG_DELETED')%len(ids)
+            message += self.getZMILangStr('MSG_DELETED')%len(ids)
         
         # Return with message.
         message = urllib.quote(message)

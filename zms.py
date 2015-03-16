@@ -2,7 +2,7 @@
 # zms.py
 #
 # This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License           x
+# modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
 #
@@ -269,6 +269,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   manager = getattr(obj,manager.id)
   manager.setIds(['ZMSFolder','ZMSDocument','ZMSFile'])
   manager.setAttrIds(['title','titlealt','attr_dc_description','standard_html'])
+  manager.addConnector('ZMSZCatalogConnector')
   manager.reindex_all()
 
   ### Return new ZMS instance.
@@ -321,13 +322,6 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     if REQUEST.get('specobj_index',0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'com.zms.index')
-
-    #-- Galleria
-    if REQUEST.get('specobj_galleria',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.jquery.galleria')
-      # Init content.
-      initContent(obj,'com.zms.jquery.galleria.content.zip',REQUEST)
 
     #-- Search
     if REQUEST.get('specobj_search',0) == 1:

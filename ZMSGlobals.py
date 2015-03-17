@@ -1704,12 +1704,21 @@ class ZMSGlobals:
     """
     Sends Mail via MailHost.
     """
-    def sendMail(self, mto, msubject, mbody, REQUEST):
-      ##### Get Sender ####
-      auth_user = REQUEST['AUTHENTICATED_USER']
-      mfrom = self.getUserAttr(auth_user,'email',self.getConfProperty('ZMSAdministrator.email',''))
+    def sendMail(self, mto, msubject, mbody, REQUEST=None):
+      from email.mime.multipart import MIMEMultipart
       
-      ##### Get MailHost ####
+      # Check constraints.
+      if type(mto) is str:
+        mto = {'To':mto}
+      if type(mbody) is str:
+        mbody = [{'text':mbody}]
+      
+      # Get sender.
+      if REQUEST is not None:
+        auth_user = REQUEST['AUTHENTICATED_USER']
+        mto['From'] = mto.get('From',self.getUserAttr(auth_user,'email',self.getConfProperty('ZMSAdministrator.email','')))
+      
+      # Get MailHost.
       mailhost = None
       homeElmnt = self.getHome()
       if len(homeElmnt.objectValues(['Mail Host'])) == 1:
@@ -1717,26 +1726,26 @@ class ZMSGlobals:
       elif getattr(homeElmnt,'MailHost',None) is not None:
         mailhost = getattr(homeElmnt,'MailHost',None)
       
-      ##### Get MessageText ####
-      messageText = ''
-      messageText += 'Content-Type: text/plain; charset=unicode-1-1-utf-8\n'
-      if type(mto) is dict and mto.has_key( 'From'):
-        messageText += 'From: %s\n'%mto['From']
-      else:
-        messageText += 'From: %s\n'%mfrom
-      if type(mto) is dict:
-        for key in ['To','Cc','Bcc']:
-          if mto.has_key( key):
-            messageText += '%s: %s\n'%(key,mto[key])
-      else:
-        messageText += 'To: %s\n'%mto
-      messageText += 'Subject: %s\n\n'%msubject
-      messageText += '%s\n'%mbody
+      # Assemble MIME object.
+      mime_msg = MIMEMultipart('related')
+      mime_msg['Subject'] = msubject
+      for k in mto.keys():
+        mime_msg[k] = mto[k]
+      mime_msg.preamble = 'This is a multi-part message in MIME format.'
       
-      ##### Send mail ####
+      # Encapsulate the plain and HTML versions of the message body 
+      # in an 'alternative' part, so message agents can decide 
+      # which they want to display.
+      msgAlternative = MIMEMultipart('alternative')
+      mime_msg.attach(msgAlternative)
+      for ibody in mbody:
+        msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype','plain'), _charset=ibody.get('charset','unicode-1-1-utf-8'))
+        msgAlternative.attach(msg)
+      
+      # Send mail.
       try:
-        _globals.writeBlock( self, "[sendMail]: %s"%messageText)
-        mailhost.send(messageText)
+        _globals.writeBlock( self, "[sendMail]: %s"%mime_msg.as_string())
+        mailhost.send(mime_msg.as_string())
         return 0
       except:
         return -1

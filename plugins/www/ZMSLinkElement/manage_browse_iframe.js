@@ -357,6 +357,7 @@ var URLParser = (function (document) {
 })(document);
 
 function zmiBodyContentSearchDone() {
+	$("#search_results h4:first").hide();
 	$(".line.row").each(function() {
 			var $h2 = $("h2",this);
 			var meta_id = $("h2").attr("class");
@@ -367,8 +368,7 @@ function zmiBodyContentSearchDone() {
 			if (href.lastIndexOf(".html")>href.lastIndexOf("/")) {
 				href = href.substr(0,href.lastIndexOf("/"));
 			}
-			href += "/manage_main";
-			$a.attr({href:href,target:"_blank"});
+			$a.attr({href:href+"/manage_main",target:"_blank"});
 			var parser = new URLParser();
 			parser.parse(href);
 			var url = parser.toObj();

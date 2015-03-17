@@ -2,10 +2,22 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
+.zmi.browse_iframe .nav-pills {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	background-color:white;
+	padding-bottom:5px;
+	z-index:9999;
+}
+.zmi.browse_iframe .tab-content {
+	padding-top:50px;
+}
 .zmi.browse_iframe .tabbable .tab-pane form {
 	box-shadow:none;
 	border:none;
-	padding:2em 0em;
+	padding:1em 0em;
 }
 .zmi.browse_iframe #search .line.row.gray {
 	background-color:#f8f8f8;

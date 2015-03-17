@@ -159,7 +159,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 return $("str[name="+name+"]",$doc).text()+$("arr[name="+name+"]>str",$doc).text();
               }
               var did = $("str[name=id]",$doc).text();
-              var href = $("arr[name=href]>str",$doc).text();
+              var href = $("arr[name=loc]>str",$doc).text();
               var title = $("arr[name=title]>str",$doc).text();
               var snippet = $("arr[name=standard_html]>str",$doc).text();
               if (snippet.length > 200) {

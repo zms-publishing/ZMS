@@ -1,5 +1,5 @@
 ################################################################################
-# ZMSZCatalogSolrConnector.py
+# ZMSZCatalogConnector.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,13 +20,12 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
-import copy
 import urllib
 import zope.interface
 # Product Imports.
-import _confmanager
 import _globals
 import IZMSCatalogConnector
+import ZMSZCatalogAdapter
 import ZMSItem
 
 
@@ -179,17 +178,130 @@ class ZMSZCatalogConnector(
 
 
     # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.search_xml:
+    # --------------------------------------------------------------------------
+    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogConnector.search_xml """
+      # Check constraints.
+      page_index = int(page_index)
+      page_size = int(page_size)
+      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml;charset=utf-8'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      # Execute query.
+      status = 0
+      msg = ''
+      results = []
+      try: 
+        results = self.search(q)
+      except:
+        import sys
+        _globals.writeError(self,'[search_xml]')
+        t,v,tb = sys.exc_info()
+        status = 400
+        msg = v
+      # Assemble xml.
+      xml = self.getXmlHeader()
+      xml += '<response>'
+      xml += '<lst name="responseHeader">'
+      xml += '<int name="status">%i</int>'%status
+      xml += '<lst name="params">'
+      for key in REQUEST.form.keys():
+        xml += '<int name="%s">%s</int>'%(key,str(REQUEST.form[key]))
+      xml += '</lst>'
+      xml += '</lst>'
+      if status > 0:
+        xml += '<lst name="error">'
+        xml += '<int name="msg">%s</int>'%msg
+        xml += '<int name="code">%i</int>'%status
+        xml += '</lst>'
+      else:
+        xml += '<result name="response" numFound="%i" start="%i">'%(len(results),page_index*page_size)
+        if len(results) > page_size:
+          results = results[page_index*page_size:(page_index+1)*page_size]
+        for result in results:
+          xml += '<doc>'
+          for k in result.keys():
+            v = result[k]
+            if k == 'absolute_url':
+              k = 'loc'
+            elif k == 'zcat_custom':
+              k = 'custom'
+            elif k == 'standard_html':
+              v = ZMSZCatalogAdapter.remove_tags(self,v)
+            xml += '<arr name="%s">'%k
+            xml += '<str>%s</str>'%v
+            xml += '</arr>'
+          xml += '</doc>'
+        xml += '</result>'
+      xml += '</response>'
+      return xml
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.suggest_xml:
+    # --------------------------------------------------------------------------
+    def suggest_xml(self, q, limit=5, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogConnector.suggest_xml """
+      # Check constraints.
+      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml;charset=utf-8'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      # Execute query.
+      status = 0
+      msg = ''
+      results = []
+      try: 
+        results = self.suggest(q,limit)
+      except:
+        import sys
+        _globals.writeError(self,'[suggest_xml]')
+        t,v,tb = sys.exc_info()
+        status = 400
+        msg = v
+      # Assemble xml.
+      xml = self.getXmlHeader()
+      xml += '<response>'
+      xml += '<lst name="responseHeader">'
+      xml += '<int name="status">%i</int>'%status
+      xml += '</lst>'
+      if status > 0:
+        xml += '<lst name="error">'
+        xml += '<int name="msg">%s</int>'%msg
+        xml += '<int name="code">%i</int>'%status
+        xml += '</lst>'
+      else:
+        xml += '<lst>'
+        xml += '<lst name="suggestions">'
+        xml += '<int name="numFound">%i</int>'%len(results)
+        xml += '<arr name="suggestion">'
+        for result in results:
+          xml += '<str>%s</str>'%result
+        xml += '</arr>'
+        xml += '</lst>'
+        xml += '</lst>'
+      xml += '</response>'
+      return xml
+
+
+    # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search:
     # --------------------------------------------------------------------------
     def search(self, qs, order=None):
       rtn = []
       
-      #-- Search catalog.
+      # ZCatalog.
       request = self.REQUEST
       lang = request.get('lang',self.getPrimaryLanguage())
       zcatalog = getattr(self,'catalog_%s'%lang)
       
-      #-- Get items.
+      # Find search-results.
       items = []
       for index in zcatalog.indexes():
         if index.find('zcat_index_')==0:
@@ -200,7 +312,7 @@ class ZMSZCatalogConnector(
             if item not in items:
               items.extend( qr)
       
-      #-- Process results.
+      # Process search-results.
       results = []
       for item in items:
         data_record_id = item.data_record_id_
@@ -218,14 +330,37 @@ class ZMSZCatalogConnector(
             result[k] = getattr(item,column,None)
           results.append((item.data_record_score_,result))
       
-      #-- Sort objects.
+      # Sort search-results.
       results.sort()
       results.reverse()
       
-      #-- Append objects.
+      # Append search-results.
       rtn.extend(map(lambda ob: ob[1],results))
       
-      #-- Return objects in correct sort-order.
+      # Return list of search-results in correct sort-order.
+      return rtn
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.suggest:
+    # --------------------------------------------------------------------------
+    def suggest(self, q, limit=5):
+      rtn = []
+      
+      # ZCatalog.
+      request = self.REQUEST
+      lang = request.get('lang',self.getPrimaryLanguage())
+      zcatalog = getattr(self,'catalog_%s'%lang)
+      
+      # Lexicon.
+      lexicon = zcatalog.Lexicon
+      for w in lexicon.words():
+        if w[0] not in ['_','0','1','2','3','4','5','6','7','8','9'] and w.lower().find(q) >= 0 and w not in rtn:
+          rtn.append(w)
+        if len(rtn) >= limit:
+          break
+      
+      # Return list of suggestions.
       return rtn
 
 

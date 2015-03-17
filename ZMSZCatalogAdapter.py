@@ -46,6 +46,7 @@ def updateVersion(root):
 def remove_tags(self, s):
   s = s \
     .replace('&ndash;','-') \
+    .replace('&middot;','.') \
     .replace('&nbsp;',' ') \
     .replace('&ldquo;','') \
     .replace('&sect;','') \
@@ -223,7 +224,11 @@ class ZMSZCatalogAdapter(
     # --------------------------------------------------------------------------
     def getConnectors(self):
       updateVersion(self)
-      return self.objectValues(self.getConnectorMetaTypes())
+      l = self.objectValues(self.getConnectorMetaTypes())
+      l = map(lambda x:(x.id,x),l)
+      l.sort()
+      l = map(lambda x:x[1],l)
+      return l
 
     def addConnector(self,meta_type):
       connector = _confmanager.ConfDict.forName(meta_type+'.'+meta_type)()
@@ -307,6 +312,6 @@ class ZMSZCatalogAdapter(
         
         # Return with message.
         message = urllib.quote(message)
-        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang,message,REQUEST.get('tab')))
 
 ################################################################################

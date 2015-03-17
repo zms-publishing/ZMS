@@ -19,13 +19,12 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import copy
 import urllib
 import zope.interface
 # Product Imports.
-import _confmanager
 import _globals
 import IZMSCatalogConnector
+import ZMSZCatalogAdapter
 import ZMSItem
 
 
@@ -66,6 +65,59 @@ class ZMSZCatalogSolrConnector(
     ############################################################################
     def __init__(self):
       self.id = 'zcatalog_solr_connector'
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogSolrConnector.search_xml:
+    # --------------------------------------------------------------------------
+    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogSolrConnector.search_xml """
+      # Check constraints.
+      page_index = int(page_index)
+      page_size = int(page_size)
+      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml; charset=utf-8'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      # Execute query.
+      p = {}
+      p['q'] = q
+      p['wt'] = 'xml'
+      p['start'] = page_index
+      p['rows'] = page_size
+      p['hl'] = 'true'
+      p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize',200)
+      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl','title,body')
+      p['hl.simple.pre'] = self.getConfProperty('solr.select.hl.simple.pre','<span class="highlight">')
+      p['hl.simple.post'] = self.getConfProperty('solr.select.hl.simple.post','</span>')
+      solr_url = self.getConfProperty('solr.url')
+      url = '%s/%s/select'%(solr_url,self.getAbsoluteHome().id)
+      url = self.url_append_params(url,p,sep='&')
+      result = self.http_import(url,method='GET')
+      return result
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogSolrConnector.suggest_xml:
+    # --------------------------------------------------------------------------
+    def suggest_xml(self, q, REQUEST=None, RESPONSE=None):
+      """ ZMSZCatalogSolrConnector.suggest_xml """
+      # Check constraints.
+      RESPONSE = REQUEST.RESPONSE
+      content_type = 'text/xml; charset=utf-8'
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      # Execute query.
+      p = {}
+      p['q'] = q
+      solr_url = self.getConfProperty('solr.url')
+      url = '%s/%s/suggest'%(solr_url,self.getAbsoluteHome().id)
+      url = self.url_append_params(url,p,sep='&')
+      result = self.http_import(url,method='GET')
+      return result
 
 
     def __get_xml(self, attrs={}):

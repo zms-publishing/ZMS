@@ -1,7 +1,15 @@
+<div class="help" data-for="qsuggest">
+<div class="well">
+see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki.apache.org/solr/Suggester/</a>
+</div>
+</div>
+
+
 <tal:block tal:define="
 		solr_url python:here.getConfProperty('solr.url','http://localhost:8983/solr');
 		admin_url python:'%s/#/%s'%(solr_url,here.getAbsoluteHome().id);
 		select_url python:'%s/%s/select'%(solr_url,here.getAbsoluteHome().id);
+		suggest_url python:'%s/%s/suggest'%(solr_url,here.getAbsoluteHome().id);
 		">
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="solr_url"><span>URL</span></label>
@@ -12,13 +20,26 @@
 		<div class="col-sm-10"><a tal:attributes="href admin_url" target="_blank" tal:content="admin_url">the solr-admin</a></div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2 control-label" for="q"><span>Query</span></label>
+		<label class="col-sm-2 control-label" for="qsearch"><span>Query</span></label>
 		<div class="col-sm-10">
 			<div class="input-group">
-				<input type="text" class="form-control" id="q" name="q" tal:attributes="value python:request.get('q','*')">
+				<input type="text" class="form-control" id="qsearch" name="q" tal:attributes="value python:request.get('q','*')">
 				<span class="input-group-btn">
-					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:window.open(\'%s?q=\'+$(\'#q\').val())'%select_url">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
+					</span>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="qsuggest"><span>Suggest</span></label>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input type="text" class="form-control" id="qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
+				<span class="input-group-btn">
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
 					</span>
 				</span>
 			</div>

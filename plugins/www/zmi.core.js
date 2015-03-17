@@ -152,7 +152,11 @@ $(function(){
  * Physical Path
  */
 ZMI.prototype.getPhysicalPath = function() {
-	return $('meta[name="physical_path"]').attr('content');
+	var physical_path = $('meta[name="physical_path"]').attr('content');
+	if (typeof physical_path == 'undefined') {
+		physical_path = window.location.href;
+	}
+	return physical_path;
 }
 
 /**

@@ -119,8 +119,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
     if (baseurl.indexOf("/content")>0) {
       baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
     }
+    var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
+    var connector = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_connector');
+    var url = baseurl+'/'+adapter+'/'+connector+'/search_xml';
     $.ajax({
-      url:baseurl+"/zcatalog_adapter/search_xml",
+      url:url,
       data:p,
       timeout:5000,
       error: function (xhr, ajaxOptions, thrownError) {
@@ -130,20 +133,17 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
       },
       success:function(xmlDoc) {
         var $xml = $(xmlDoc);
-        var abs = 0;
+        var $response = $("result[name=response]",$xml);
         var total = 0;
-        var code = parseInt($("code",$xml).text());
-        var message = $("message",$xml).text();
+        var status = parseInt($("lst[name=responseHeader] > int[name=status]",$xml).text());
+        var message = "Status: "+status;
         var html = "";
-        if (code == 0) {
+        if (status != 0) {
           $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+message);
           $("#search_results .small-head #q").text(q);
         }
         else {
-          abs = $("abs",$xml).text();
-          abs = abs.length==0?0:parseInt(abs);
-          total = $("total",$xml).text();
-          total = total.length==0?0:parseInt(total);
+          total = parseInt($response.attr("numFound"));
           if (total == 0) {
             $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_NORESULTS'));
             $("#search_results .small-head #q").text(q);
@@ -151,39 +151,41 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
           else {
             $("#search_results .small-head").html(getZMILangStr('SEARCH_YOURQUERY').replace('%s','<span id="q"></span>')+' '+getZMILangStr('SEARCH_RETURNEDRESULTS')+':');
             $("#search_results .small-head #q").text(q);
-            var $url = $("result",$xml);
-            var c = 0;
-            var sid = $("results",$xml).attr("id");
-            $url.each(function() {
-                var $this = $(this);
-                var did = $(">id",$this).text();
-                var uid = $(">uid",$this).text();
-                var loc = $(">loc",$this).text();
-                var meta_id = $(">meta_id",$this).text();
-                var href = $("custom>href",$this).text();
-                var title = $(">title",$this).text();
-                var breadcrumb = '';
-                var cb = 0;
-                $("custom>breadcrumbs>breadcrumb",$this).each(function() {
-                    var title = $(">title",this).text();
-                    var loc = $(">loc",this).text();
-                    breadcrumb += breadcrumb.length==0?'':' &raquo; '
-                    breadcrumb += '<a href="'+loc+'">'+title+'</a>';
-                  });
-                var snippet = $(">snippet",$this).text();
-                html += ''
-                  + '<div class="line row'+(c%2==0?" gray":"")+'">'
-                  + '<div class="'+(breadcrumb.length==0?'':'has-breadcrumb')+' col-md-8 col-ns-9">'
-                  + '<h2 class="'+meta_id+'"><a href="'+loc+'">'+title+'</a></h2>'
-                  + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
-                  + '<p>'+snippet+'</p>'
-                  + '</div>'
-                  + '<div class="list-actions col-md-4">'
-                  + (href.length==0?'':'<a href="'+href+'"'+onclick+' class="btn btn-turq'+(download.length==0?' botmargin':'')+'">Herunterladen</a>')
-                  + '</div>'
-                  + '</div><!-- .line.row -->';
-                c++;
-              });
+            var $docs = $("doc",$response);
+            var $highlighting = $("lst[name=highlighting]",$xml);
+            for (var c = 0; c < $docs.length; c++) {
+              var $doc = $($docs[c]);
+              function getattr(name) {
+                return $("str[name="+name+"]",$doc).text()+$("arr[name="+name+"]>str",$doc).text();
+              }
+              var did = $("str[name=id]",$doc).text();
+              var href = $("arr[name=href]>str",$doc).text();
+              var title = $("arr[name=title]>str",$doc).text();
+              var snippet = $("arr[name=standard_html]>str",$doc).text();
+              if (snippet.length > 200) {
+                snippet = snippet.substr(0,200);
+                while (!snippet.lastIndexOf(" ")==snippet.length-1) {
+                  snippet = snippet.substr(0,snippet.length-2);
+                }
+              }
+              var $hl = $("lst[name="+did+"]",$highlighting);
+              var str = $("arr[name=title]>str",$hl).html();
+              if (typeof str != "undefined" && str.length > 0) {
+                title = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
+              }
+              var str = $("arr[name=body]>str",$hl).html();
+              if (typeof str != "undefined" && str.length > 0) {
+                snippet = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
+              }
+              html += ''
+                + '<div class="line row'+(c%2==0?" gray":"")+'">'
+                + '<div class="col-md-8 col-ns-9">'
+                + '<h2><a href="'+href+'">'+title+'</a></h2>'
+                + '<p>'+snippet+'</p>'
+                + '</div>'
+                + '</div><!-- .line.row -->';
+            }
+            
             // Pagination
             var fn = function(pageIndex) {
               var url = window.location.href;
@@ -193,6 +195,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
           }
         }
         $(".line.row:first").replaceWith(html);
+        // Callback: Done
         if (typeof zmiBodyContentSearchDone == 'function') {
           zmiBodyContentSearchDone();
         }

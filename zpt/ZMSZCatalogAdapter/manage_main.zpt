@@ -42,18 +42,21 @@ $ZMI.registerReady(function(){
 		var $tabs_left = $("div.tabs-left");
 		var anchor = $("a:first",$tabs_left).attr("href");
 		if (self.location.href.indexOf("#")>0) {
-			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
-			if (anchor.indexOf('_')==0) {
-				anchor = anchor.substr(1);
+			var s = self.location.href.substr(self.location.href.indexOf("#")+1);
+			if (s.length > 0) {
+				anchor = '#'+s;
 			}
-			anchor = '#'+anchor;
 		}
 		$("a[href='"+anchor+"']",$tabs_left).tab("show");
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				$("input[name=tab]:hidden").val($(e.target).text().trim());
+			});
 	});
 </script>
 
 <form action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+<input type="hidden" name="tab" value="">
 <input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())">
 <input type="hidden" id="getAttrIds" tal:attributes="value python:','.join(here.getAttrIds())">
 <div class="tabbable tabs-left">
@@ -67,7 +70,7 @@ $ZMI.registerReady(function(){
 			<a tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab">
 				<img tal:attributes="src python:si.icon"/>
 				<tal:block tal:content="python:si.meta_type">the connector</tal:block>
-				<span class="zmi-helper-clickable text-danger" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'; data-id si/id; data-type si/meta_type" onclick="var data_id=$(this).attr('data-id'),data_type=$(this).attr('data-type');$('#'+data_type+' form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+data_id+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Remove\042>').submit();">
+				<span class="zmi-helper-clickable text-danger" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'; data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Remove\042>').submit();">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
 				</span>
 			</a>
@@ -76,6 +79,27 @@ $ZMI.registerReady(function(){
 	<div class="tab-content">
 		<div class="tab-pane active" tal:attributes="id here/meta_type">
 			<div class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<div class="input-group">
+							<select class="form-control" id="meta_type" name="meta_type" 
+									onchange="if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
+								<option value="">Select type to add...</option>
+								<tal:block tal:repeat="meta_type meta_types">
+									<option tal:condition="python:len(filter(lambda x:x.meta_type==meta_type,connectors))==0" tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
+								</tal:block>
+							</select>
+							<span class="input-group-btn">
+								<button id="addMetaTypeBtn" name="btn" type="submit" class="btn btn-default" value="Add">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+								</button>
+							</span>
+						</div>
+					</div><!-- .form-group -->
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="catalog_awareness_active"><span>Awareness</span></label>
 				<div class="col-sm-10">
@@ -178,21 +202,6 @@ $ZMI.registerReady(function(){
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>
-				<div class="col-sm-10">
-					<div class="form-group">
-						<select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
-							onchange="if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
-							<option value="">Select type to add...</option>
-							<tal:block tal:repeat="meta_type meta_types">
-								<option tal:condition="python:len(filter(lambda x:x.meta_type==meta_type,connectors))==0"  tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
-							</tal:block>
-						</select>
-						<button id="addMetaTypeBtn" style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
-					</div><!-- .form-group -->
-				</div><!-- .col-sm-10 -->
-			</div><!-- .form-group -->
-			<div class="form-group">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-10">
 					<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
@@ -208,10 +217,16 @@ $ZMI.registerReady(function(){
 				<div class="form-group">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-10">
-						<button name="btn" type="submit" class="btn btn-primary" value="Save">Save</button>
+						<button name="btn" type="submit" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
+							<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+						</button>
 						<div class="btn-group">
-							<a class="btn btn-default" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
-							<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Reindex\042>').submit();"><tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block></span>
+							<a class="btn btn-default" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block>
+							</a>
+							<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Reindex\042>').submit();">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block>
+							</span>
 						</div>
 					</div><!-- .col-sm-10 -->
 				</div><!-- .form-group -->

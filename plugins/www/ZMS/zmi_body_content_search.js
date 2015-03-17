@@ -159,6 +159,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 return $("str[name="+name+"]",$doc).text()+$("arr[name="+name+"]>str",$doc).text();
               }
               var did = $("str[name=id]",$doc).text();
+              var meta_id = $("arr[name=meta_id]>str",$doc).text();
               var href = $("arr[name=loc]>str",$doc).text();
               var title = $("arr[name=title]>str",$doc).text();
               var snippet = $("arr[name=standard_html]>str",$doc).text();
@@ -180,7 +181,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-md-8 col-ns-9">'
-                + '<h2><a href="'+href+'">'+title+'</a></h2>'
+                + '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
                 + '<p>'+snippet+'</p>'
                 + '</div>'
                 + '</div><!-- .line.row -->';

@@ -248,6 +248,7 @@ class ZMSZCatalogAdapter(
       def add(node):
         d = {}
         d['id'] = node.id
+        d['loc'] = node.absolute_url()
         d['meta_id'] = node.meta_id
         for attr_id in self.getAttrIds():
           value = node.attr(attr_id)

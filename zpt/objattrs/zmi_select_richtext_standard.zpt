@@ -95,10 +95,12 @@ function zmiRicheditInsertTab( fmName, elName) {
 								[['a','icon-link']],]"
 			><tal:block tal:repeat="charFormat charFormats"
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
-				><tal:block tal:condition="not:python:len(charFormat)==0"
-					><span class="btn btn-default" tal:attributes="onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\''),options['fmName'],options['elName'])"
-						><i tal:attributes="class python:charFormat[1]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"></i></span
-				></tal:block
+				><span tal:condition="not:python:len(charFormat)==0"
+					tal:define="fmKey python:charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\'')"
+					class="btn btn-default"
+					tal:attributes="class python:'btn btn-default charFormat-%s'%(fmKey);
+						onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(fmKey,options['fmName'],options['elName'])"
+					><i tal:attributes="class python:charFormat[1]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"></i></span
 			></tal:block
 		></div><!-- .btn-group -->
 		<div class="btn-group pull-left">

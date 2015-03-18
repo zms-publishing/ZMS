@@ -150,7 +150,7 @@ function zmiRichtextInit(id) {
 </tal:block>
 </tal:block>
 <tal:block tal:condition="config_format_tags">
-				config.format_tags = $ZMI.getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;pre;address;div');
+				config.format_tags = $ZMI.getConfProperty('plugin.rte.ckeditor.FormatTags','p;h1;h2;h3;h4;pre;address;div');
 </tal:block>
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -1706,6 +1706,7 @@ class ZMSGlobals:
     """
     def sendMail(self, mto, msubject, mbody, REQUEST=None):
       from email.mime.multipart import MIMEMultipart
+      from email.mime.text import MIMEText
       
       # Check constraints.
       if type(mto) is str:

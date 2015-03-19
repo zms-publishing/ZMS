@@ -499,9 +499,8 @@ class ConfManager(
     def getConfProperty(self, key, default=None, REQUEST=None):
       """ ConfManager.getConfProperty """
       if REQUEST is not None:
-          authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
-          if not authorized:
-              raise zExceptions.Unauthorized
+        import base64
+        key = base64.b64decode(key)
       if OFS.misc_.misc_.zms['confdict'].has_key(key):
           default = OFS.misc_.misc_.zms['confdict'].get(key)
       return self.getConfProperties().get( key, default)

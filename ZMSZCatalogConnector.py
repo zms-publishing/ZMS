@@ -30,7 +30,7 @@ import ZMSItem
 
 
 # ------------------------------------------------------------------------------
-#  intValue:
+#  ZMSZCatalogConnector.intValue:
 # ------------------------------------------------------------------------------
 def intValue(v):
   try:
@@ -41,23 +41,23 @@ def intValue(v):
 
 
 # ------------------------------------------------------------------------------
-#  Empty:
+#  ZMSZCatalogConnector.Empty:
 # ------------------------------------------------------------------------------
 class Empty: 
   pass
 
 
 # ------------------------------------------------------------------------------
-#  addLexicon:
+#  ZMSZCatalogConnector.addLexicon:
 # ------------------------------------------------------------------------------
 def addLexicon( container, cat):
   
-  #-- Remove Lexicon
+  # Remove Lexicon
   ids = cat.objectIds( ['ZCTextIndex Lexicon','ZCTextIndex Unicode Lexicon'])
   if len( ids) > 0:
     cat.manage_delObjects( ids)
   
-  #-- Add Lexicon
+  # Add Lexicon
   index_type = container.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
   if index_type == 'ZCTextIndex':
     elements = []
@@ -80,7 +80,7 @@ def addLexicon( container, cat):
 
 
 # ------------------------------------------------------------------------------
-#  ZMSZCatalogAdapter.recreateCatalog:
+#  ZMSZCatalogConnector.recreateCatalog:
 # ------------------------------------------------------------------------------
 def recreateCatalog(self, zcm, lang):
   
@@ -97,7 +97,7 @@ def recreateCatalog(self, zcm, lang):
   addLexicon( self, zcatalog)
   
   #-- Add columns
-  for index_name in ['id','meta_id','absolute_url','zcat_url','zcat_custom']:
+  for index_name in ['id','meta_id','absolute_url','zcat_column_custom']:
     zcatalog.manage_addColumn(index_name)
   
   #-- Add Indexes (incl. Columns)
@@ -228,7 +228,7 @@ class ZMSZCatalogConnector(
             v = result[k]
             if k == 'absolute_url':
               k = 'loc'
-            elif k == 'zcat_custom':
+            elif k == 'zcat_column_custom':
               k = 'custom'
             elif k == 'standard_html':
               v = ZMSZCatalogAdapter.remove_tags(self,v)
@@ -378,17 +378,25 @@ class ZMSZCatalogConnector(
         #-- Find items to catalog.
         def cb(node,d):
           # Prepare object.
+          extra_column_ids = ['custom']
+          for attr_id in extra_column_ids:
+            attr_name = 'zcat_column_%s'%attr_id
+            value = d.get(attr_id)
+            setattr(node,attr_name,value)
           for attr_id in zcm.getAttrIds():
-            index_name = 'zcat_index_%s'%attr_id
+            attr_name = 'zcat_index_%s'%attr_id
             value = node.attr(attr_id)
-            setattr(node,index_name,value)
+            setattr(node,attr_name,value)
           # Reindex object.
           node.default_catalog = 'catalog_%s'%lang
           node.reindex_object()
           # Unprepare object.
+          for attr_id in extra_column_ids:
+            attr_name = 'zcat_column_%s'%attr_id
+            delattr(node,attr_name)
           for attr_id in zcm.getAttrIds():
-            index_name = 'zcat_index_%s'%attr_id
-            delattr(node,index_name)
+            attr_name = 'zcat_index_%s'%attr_id
+            delattr(node,attr_name)
         zcm.get_sitemap(cb)
 
 

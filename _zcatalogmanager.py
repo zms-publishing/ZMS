@@ -106,27 +106,9 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
 
     ############################################################################
     ###
-    ###  Metadate: Indices / Columns
+    ###  Metadata: Indices / Columns
     ###
     ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.zcat_custom:
-    # --------------------------------------------------------------------------
-    def zcat_custom( self, lang=None):
-      request = self.REQUEST
-      if lang is None:
-        lang = request.get('lang',self.getPrimaryLanguage())
-      req = {'lang':lang}
-      xml = ''
-      xml += '<breadcrumbs>'
-      for breadcrumb in self.breadcrumbs_obj_path():
-        xml += '<breadcrumb>'
-        xml += '<loc>%s</loc>'%breadcrumb.getHref2IndexHtml(request)
-        xml += '<title>%s</title>'%breadcrumb.getTitlealt(request)
-        xml += '</breadcrumb>'
-      xml += '</breadcrumbs>'
-      return xml
 
     # --------------------------------------------------------------------------
     #  ZCatalogItem.synchronizeSearch:

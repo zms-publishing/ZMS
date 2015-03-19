@@ -113,6 +113,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
     $(".line.row:gt(0)").remove();
     var p = {};
     p['q'] = q;
+    p['hl.fragsize'] = 200;
     p['page_size'] = pageSize;
     p['page_index'] = pageIndex;
     var baseurl = zmiParams['base_url'];
@@ -163,8 +164,9 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               var href = $("arr[name=loc]>str",$doc).text();
               var title = $("arr[name=title]>str",$doc).text();
               var snippet = $("arr[name=standard_html]>str",$doc).text();
-              if (snippet.length > 200) {
-                snippet = snippet.substr(0,200);
+              var custom = $("arr[name=custom]>str",$doc).text();
+              if (snippet.length > p['hl.fragsize']) {
+                snippet = snippet.substr(0,p['hl.fragsize']);
                 while (!snippet.lastIndexOf(" ")==snippet.length-1) {
                   snippet = snippet.substr(0,snippet.length-2);
                 }
@@ -178,10 +180,20 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               if (typeof str != "undefined" && str.length > 0) {
                 snippet = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
               }
+              var breadcrumb = '';
+              if (typeof custom != "undefined" && custom.length > 0)
+                var $custom = $("<xml>"+custom+"<xml>");
+                $("custom>breadcrumbs>breadcrumb",$custom).each(function() {
+                  var title = $(">title",this).text();
+                  var loc = $(">loc",this).text();
+                  breadcrumb += breadcrumb.length==0?'':' &raquo; '
+                  breadcrumb += '<a href="'+loc+'">'+title+'</a>';
+                });
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-md-8 col-ns-9">'
                 + '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
+                + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
                 + '<p>'+snippet+'</p>'
                 + '</div>'
                 + '</div><!-- .line.row -->';

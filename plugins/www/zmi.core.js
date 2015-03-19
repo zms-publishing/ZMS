@@ -285,7 +285,7 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
  */
 ZMI.prototype.getConfProperty = function(key, defaultValue) {
 	var data  = {}
-	data['key'] = key;
+	data['key'] = btoa(key);
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	}

@@ -115,6 +115,7 @@ class ZMSZCatalogAdapter(
 		('ZMS Administrator', __administratorPermissions__),
 		)
 
+
     ############################################################################
     #  ZMSZCatalogAdapter.__init__: 
     #
@@ -122,55 +123,6 @@ class ZMSZCatalogAdapter(
     ############################################################################
     def __init__(self):
       self.id = 'zcatalog_adapter'
-
-    # --------------------------------------------------------------------------
-    #  ZMSZCatalogAdapter.search_xml:
-    # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
-      """ ZMSZCatalogAdapter.search_xml """
-      # Check constraints.
-      page_index = int(page_index)
-      page_size = int(page_size)
-      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/plain; charset=utf-8'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      # Execute query.
-      clients = self.getConfProperty('ZCatalog.portalClients',1)
-      results = self.search(q,clients)
-      # Assemble xml.
-      xml = self.getXmlHeader()
-      xml += '<response>'
-      xml += '<status>'
-      xml += '<code>1</code>'
-      xml += '<message></message>'
-      xml += '</status>'
-      xml += '<results>'
-      xml += '<pagination>'
-      xml += '<page>%i</page>'%page_index
-      xml += '<abs>%i</abs>'%len(results)
-      xml += '<total>%i</total>'%len(results)
-      xml += '</pagination>'
-      if len(results) > page_size:
-        results = results[page_index*page_size:(page_index+1)*page_size]
-      for result in results:
-        xml += '<result>'
-        for k in result.keys():
-          v = result[k]
-          if k == 'absolute_url':
-            k = 'loc'
-          elif k == 'zcat_custom':
-            k = 'custom'
-          elif k == 'standard_html':
-            k = 'snippet'
-            v = self.search_quote(v) # TODO: better snippet...
-          xml += '<%s>%s</%s>'%(k,v,k)
-        xml += '</result>'
-      xml += '</results>'
-      xml += '</response>'
-      return xml
 
 
     # --------------------------------------------------------------------------
@@ -180,7 +132,9 @@ class ZMSZCatalogAdapter(
       rtn = []
       if len(qs) > 0:
         for connector in self.getConnectors():
-          rtn.extend(connector.search(qs,order))
+          f = getattr(connector,'search',None)
+          if f is not None:
+            rtn.extend(f(qs,order))
       return rtn
 
 
@@ -212,12 +166,12 @@ class ZMSZCatalogAdapter(
       setattr(self,'_attr_ids',attr_ids)
 
 
-
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.getConnectorMetaTypes
     # --------------------------------------------------------------------------
     def getConnectorMetaTypes(self):
       return ['ZMSZCatalogConnector','ZMSZCatalogSolrConnector']
+
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.getConnectors
@@ -230,6 +184,10 @@ class ZMSZCatalogAdapter(
       l = map(lambda x:x[1],l)
       return l
 
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.addConnector
+    # --------------------------------------------------------------------------
     def addConnector(self,meta_type):
       connector = _confmanager.ConfDict.forName(meta_type+'.'+meta_type)()
       self._setObject(connector.id, connector)
@@ -243,6 +201,7 @@ class ZMSZCatalogAdapter(
     #  @param  cb  callback
     # --------------------------------------------------------------------------
     def get_sitemap(self, cb):
+      request = self.REQUEST
       
       #-- Add node.
       def add(node):
@@ -250,6 +209,33 @@ class ZMSZCatalogAdapter(
         d['id'] = node.id
         d['loc'] = node.absolute_url()
         d['meta_id'] = node.meta_id
+        d['custom'] = d.get('custom',{})
+        d['custom']['breadcrumbs'] = []
+        for obj in filter(lambda x:x.isPage(),node.breadcrumbs_obj_path()[1:-1]):
+          d['custom']['breadcrumbs'].append({
+              '__nodeName__':'breadcrumb',
+              'loc':obj.getHref2IndexHtml(request),
+              'title':obj.getTitlealt(request),
+            })
+        for k in d.keys():
+          v = d[k]
+          if type(v) is dict:
+            def to_xml(o):
+              xml = ''
+              if type(o) is list:
+                for i in o:
+                  xml += '<%s>'%i['__nodeName__']
+                  xml += to_xml(i)
+                  xml += '</%s>'%i['__nodeName__']
+              elif type(o) is dict:
+                for k in filter(lambda x:x!='__nodeName__',o.keys()):
+                  xml += '<%s>'%k
+                  xml += to_xml(o[k])
+                  xml += '</%s>'%k
+              else:
+                xml = str(o)
+              return xml
+            d[k] = '<![CDATA[<%s>%s</%s>]]>'%(k,to_xml(v),k)
         for attr_id in self.getAttrIds():
           value = node.attr(attr_id)
           d[attr_id] = remove_tags(self,value)
@@ -261,7 +247,7 @@ class ZMSZCatalogAdapter(
         if node.meta_id in self.getIds():
           add(node)
         # Handle child-nodes.
-        for childNode in node.filteredChildNodes(node.REQUEST):
+        for childNode in node.filteredChildNodes(request):
           traverse(childNode)
       
       self.REQUEST.set('lang',self.getPrimaryLanguage())

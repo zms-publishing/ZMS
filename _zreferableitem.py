@@ -132,21 +132,17 @@ class ZReferableItem:
     if ob is not None:
       path = ob.relative_obj_path()
       clientIds = absolute_home(ob).split('/')
+      clientIds.reverse()
       thisIds = absolute_home(self).split('/')
+      thisIds.reverse()
+      homeIds = []
+      for id in clientIds:
+        if id not in thisIds:
+          homeIds.insert(0,id)
       if self.getConfProperty('ZMS.internalLinks.home',1)==1 or clientIds[-1] != thisIds[-1]:
-        if len(clientIds) <= len(thisIds):
-          path = clientIds[-1] + '@' + path
-        else:
-          while len(clientIds) > 0 and \
-                len(thisIds) > 0 and \
-                clientIds[0] == thisIds[0]:
-            del thisIds[0]
-            del clientIds[0]
-          s = ''
-          for clientId in clientIds:
-            if len(s) > 0: s = s + '/'
-            s += clientId
-          path = s + '@' + path
+        if len(homeIds)==0:
+          homeIds.append(thisIds[-1])
+        path = '/'.join(homeIds) + '@' + path
       ref = '{$' + path + anchor + '}'
     return ref
 

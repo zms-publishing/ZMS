@@ -206,7 +206,7 @@ print "ObjectAdded"
 zmscontext.writeStdout("ObjectAdded")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   index = zmsindex.attr('_index')
@@ -250,7 +250,7 @@ zmscontext.writeStdout("ObjectMoved")
 zmsid = zmscontext.id
 zmspathid = '/%s/'%zmsid
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   index = zmsindex.attr('_index')
@@ -292,7 +292,7 @@ print "ObjectRemoved"
 zmscontext.writeStdout("ObjectRemoved")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   index = zmsindex.attr('_index')
@@ -322,13 +322,11 @@ return printed
                   <item></item>
                   <item></item>
                   <item></item>
-                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
-                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -340,7 +338,7 @@ return printed
           <item key="id"><![CDATA[ZMSIndex]]></item>
           <item key="name"><![CDATA[ZMSIndex]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.0.6]]></item>
+          <item key="revision"><![CDATA[0.0.7]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -522,7 +520,7 @@ print "ObjectAdded"
 zmscontext.writeStdout("ObjectAdded")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   db = getattr(zmsindex,'db',None)
@@ -563,7 +561,7 @@ zmscontext.writeStdout("ObjectMoved")
 zmsid = zmscontext.id
 zmspathid = '/%s/'%zmsid
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   db = getattr(zmsindex,'db',None)
@@ -605,7 +603,7 @@ print "ObjectRemoved"
 zmscontext.writeStdout("ObjectRemoved")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
+docelmnt = zmscontext.getRootElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
 if zmsindex is not None:
   db = getattr(zmsindex,'db',None)
@@ -787,13 +785,11 @@ def execute(conn, sql, *args):
                   <item></item>
                   <item></item>
                   <item></item>
-                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
-                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -805,7 +801,7 @@ def execute(conn, sql, *args):
           <item key="id"><![CDATA[ZMSIndexDb]]></item>
           <item key="name"><![CDATA[ZMSIndexDb]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.0.6]]></item>
+          <item key="revision"><![CDATA[0.0.7]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -838,7 +834,7 @@ def execute(conn, sql, *args):
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.0.6]]></item>
+          <item key="revision"><![CDATA[0.0.7]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -365,39 +365,59 @@ class ZMSZCatalogConnector(
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogConnector.reindex:
+    #  ZMSZCatalogConnector._update:
     # --------------------------------------------------------------------------
-    def reindex(self):
-      zcm = self.aq_parent
+    def _update(self, node, d):
+      zcm = self.getCatalogAdapter()
+      lang = self.REQUEST.get('lang')
+      # Prepare object.
+      extra_column_ids = ['custom']
+      for attr_id in extra_column_ids:
+        attr_name = 'zcat_column_%s'%attr_id
+        value = d.get(attr_id)
+        setattr(node,attr_name,value)
+      for attr_id in zcm.getAttrIds():
+        attr_name = 'zcat_index_%s'%attr_id
+        value = node.attr(attr_id)
+        setattr(node,attr_name,value)
+      # Reindex object.
+      node.default_catalog = 'catalog_%s'%lang
+      node.reindex_object()
+      # Unprepare object.
+      for attr_id in extra_column_ids:
+        attr_name = 'zcat_column_%s'%attr_id
+        delattr(node,attr_name)
+      for attr_id in zcm.getAttrIds():
+        attr_name = 'zcat_index_%s'%attr_id
+        delattr(node,attr_name)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.reindex_all:
+    # --------------------------------------------------------------------------
+    def reindex_all(self):
+      zcm = self.getCatalogAdapter()
       request = self.REQUEST
       container = self.getDocumentElement()
       for lang in container.getLangIds():
         request.set('lang',lang)
-        #-- Recreate catalog.
+        # Recreate catalog.
         recreateCatalog(container,self.aq_parent,lang)
-        #-- Find items to catalog.
+        # Reindex items to catalog.
         def cb(node,d):
-          # Prepare object.
-          extra_column_ids = ['custom']
-          for attr_id in extra_column_ids:
-            attr_name = 'zcat_column_%s'%attr_id
-            value = d.get(attr_id)
-            setattr(node,attr_name,value)
-          for attr_id in zcm.getAttrIds():
-            attr_name = 'zcat_index_%s'%attr_id
-            value = node.attr(attr_id)
-            setattr(node,attr_name,value)
-          # Reindex object.
-          node.default_catalog = 'catalog_%s'%lang
-          node.reindex_object()
-          # Unprepare object.
-          for attr_id in extra_column_ids:
-            attr_name = 'zcat_column_%s'%attr_id
-            delattr(node,attr_name)
-          for attr_id in zcm.getAttrIds():
-            attr_name = 'zcat_index_%s'%attr_id
-            delattr(node,attr_name)
-        zcm.get_sitemap(cb)
+          self._update(node,d)
+        zcm.get_sitemap(cb,container,recursive=True)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.reindex_node:
+    # --------------------------------------------------------------------------
+    def reindex_node(self, node):
+      zcm = self.getCatalogAdapter()
+      # Reindex item to catalog.
+      def cb(node,d):
+        self._update(node,d)
+      zcm.get_sitemap(cb,node,recursive=True)
 
 
     def get_sitemap(self):
@@ -405,14 +425,14 @@ class ZMSZCatalogConnector(
       Returns sitemap.
       @rtype: C{str}
       """
-      zcm = self.aq_parent
+      zcm = self.getCatalogAdapter()
       request = self.REQUEST
       RESPONSE = request.RESPONSE
-      RESPONSE.setHeader('Content-Type','text/json; charset=utf-8')
+      RESPONSE.setHeader('Content-Type','text/plain; charset=utf-8')
       l = []
       def cb(node,d):
         l.append(d)
-      zcm.get_sitemap(cb)
+      zcm.get_sitemap(cb,self.getDocumentElement(),recursive=True)
       return self.str_json(l)
 
 
@@ -427,8 +447,8 @@ class ZMSZCatalogConnector(
         # Reindex.
         # --------
         if btn == 'Reindex' and selected:
-          self.reindex()
-          message += '%s reindexed\n'%self.id
+          reindex = self.reindex_all()
+          message += '%s reindexed (%s)\n'%(self.id,str(reindex))
         
         # Remove.
         # -------

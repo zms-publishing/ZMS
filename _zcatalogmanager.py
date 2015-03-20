@@ -23,27 +23,6 @@ import sys
 import zope.interface
 # Product Imports.
 import _globals
-import IZMSCatalogAdapter
-
-
-# ------------------------------------------------------------------------------
-#  _zcatalogmanager.search_string:
-#
-#  Search string of given value.
-# ------------------------------------------------------------------------------
-def search_string(v):
-  s = ''
-  if v is not None:
-    if type(v) is str and len(v) > 0:
-      s += v + ' '
-    elif type(v) is list:
-      for i in v:
-        s += search_string(i) + ' '
-    elif type(v) is dict:
-      for k in v.keys():
-        i = v[k]
-        s += search_string(i) + ' '
-  return s
 
 
 # ------------------------------------------------------------------------------
@@ -81,6 +60,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  ZCatalogItem.search_quote:
     #
     #  Remove HTML-Tags.
+    #  @deprecated
     # --------------------------------------------------------------------------
     def search_quote(self, s, maxlen=255, tag='&middot;'):
       return search_quote(s,maxlen,tag)
@@ -90,6 +70,7 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  ZCatalogItem.search_encode:
     #
     #  Encodes given string.
+    #  @deprecated
     # --------------------------------------------------------------------------
     def search_encode(self, s):
       return _globals.umlaut_quote(self, s)
@@ -99,75 +80,10 @@ class ZCatalogItem(CatalogAwareness.CatalogAware):
     #  ZCatalogItem.getCatalogNavUrl:
     #
     #  Returns catalog-navigation url.
+    #  @deprecated
     # --------------------------------------------------------------------------
     def getCatalogNavUrl(self, REQUEST):
       return self.url_inherit_params(REQUEST['URL'],REQUEST,['qs'])
-
-
-    ############################################################################
-    ###
-    ###  Metadata: Indices / Columns
-    ###
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.synchronizeSearch:
-    # --------------------------------------------------------------------------
-    def synchronizeSearch(self, REQUEST, forced=0):
-      if self.getConfProperty('ZMS.CatalogAwareness.active',1) or forced:
-        _globals.writeLog( self, '[synchronizeSearch]')
-        for ref_by in self.getRefByObjs(REQUEST):
-          ref_ob = self.getLinkObj(ref_by,REQUEST)
-          if ref_ob is not None and \
-             ref_ob. meta_type == 'ZMSLinkElement' and \
-             ref_ob.isEmbedded( REQUEST) and not \
-             ref_ob.isEmbeddedRecursive( REQUEST):
-            if not forced or ref_ob.getHome().id != self.getHome().id:
-              ref_ob.synchronizeSearch( REQUEST=REQUEST, forced=forced)
-        lang = REQUEST.get( 'lang', self.getPrimaryLanguage())
-        # Reindex object.
-        ob = self.getCatalogItem()
-        if ob is not None:
-          ob.default_catalog = 'catalog_%s'%lang
-          ob.reindex_object()
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.isCatalogItem:
-    #
-    #  Returns true if this is a catalog item.
-    # --------------------------------------------------------------------------
-    def isCatalogItem(self):
-      return True
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.getCatalogItem:
-    # --------------------------------------------------------------------------
-    def getCatalogItem(self):
-      ob = self
-      while ob is not None:
-        if ob.isCatalogItem():
-          break
-        ob = ob.getParentNode()
-      return ob
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.reindexCatalogItem:
-    #
-    #  Reindex catalog item.
-    # --------------------------------------------------------------------------
-    def reindexCatalogItem(self, REQUEST):
-      message = ''
-      # Process catalog-item.
-      if self.isCatalogItem():
-        self.synchronizeSearch(REQUEST=REQUEST,forced=1)
-      # Recurse.
-      for ob in filter( lambda x: x.isActive(REQUEST), self.filteredChildNodes(REQUEST)):
-        ob.reindexCatalogItem(REQUEST)
-      # Return with message.
-      return message
 
 
 ################################################################################
@@ -181,6 +97,8 @@ class ZCatalogManager:
 
     # --------------------------------------------------------------------------
     #  ZCatalogManager.getCatalogQueryString:
+    #    
+    #  @deprecated
     # --------------------------------------------------------------------------
     def getCatalogQueryString(self, raw, option='AND', only_words=False):
       qs = []
@@ -209,6 +127,7 @@ class ZCatalogManager:
     #  ZCatalogManager.getCatalogPathObject:
     #
     #  Returns object from catalog-path.
+    #  @deprecated
     # --------------------------------------------------------------------------
     def getCatalogPathObject(self, path):
       ob = self.getHome()
@@ -229,15 +148,9 @@ class ZCatalogManager:
     #  ZCatalogManager.submitCatalogQuery:
     #
     #  Submits query to catalog.
+    #  @deprecated
     # --------------------------------------------------------------------------
     def submitCatalogQuery(self, search_query, search_order_by, search_meta_types=[], search_clients=False, REQUEST=None):
-      rtn = []
-      
-      # delegate to adapters
-      for ob in self.getDocumentElement().objectValues():
-        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(zope.interface.providedBy(ob)):
-          rtn.extend(ob.search(search_query, search_order_by))
-      
-      return rtn
+      return self.getCatalogAdapter().search(search_query, search_order_by)
 
 ################################################################################

@@ -143,7 +143,23 @@ class ZMSZCatalogAdapter(
     # --------------------------------------------------------------------------
     def reindex_all(self):
       for connector in self.getConnectors():
-        connector.reindex()
+        connector.reindex_all()
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogAdapter.reindex_node:
+    # --------------------------------------------------------------------------
+    def reindex_node(self, node, forced=False):
+      if self.getConfProperty('ZMS.CatalogAwareness.active',1) or forced:
+        for connector in self.getConnectors():
+          # Check meta-id.
+          nodes = node.breadcrumbs_obj_path()
+          nodes.reverse()
+          for node in nodes:
+            if node.meta_id in self.getIds():
+              print connector, node
+              connector.reindex_node(node)
+              break
 
 
     # --------------------------------------------------------------------------
@@ -200,7 +216,7 @@ class ZMSZCatalogAdapter(
     #  @param self
     #  @param  cb  callback
     # --------------------------------------------------------------------------
-    def get_sitemap(self, cb):
+    def get_sitemap(self, cb, root, recursive):
       request = self.REQUEST
       
       #-- Add node.
@@ -241,23 +257,23 @@ class ZMSZCatalogAdapter(
           d[attr_id] = remove_tags(self,value)
         cb(node,d)
       
-      #-- Traverse tree.
-      def traverse(node):
+      # Traverse tree.
+      def traverse(node,recursive):
         # Check meta-id.
         if node.meta_id in self.getIds():
           add(node)
         # Handle child-nodes.
-        for childNode in node.filteredChildNodes(request):
-          traverse(childNode)
+        if recursive:
+          for childNode in node.filteredChildNodes(request):
+            traverse(childNode,recursive)
       
       self.REQUEST.set('lang',self.getPrimaryLanguage())
-      traverse(self.getDocumentElement())
+      traverse(root,recursive)
       
-      #-- Process clients.
-      if self.getConfProperty('ZCatalog.portalClients',1) == 1:
+      # Process clients.
+      if self.getConfProperty('ZCatalog.portalClients',1) == 1 and recursive:
         for portalClient in self.getPortalClients():
-          for adapter in portalClient.getCatalogAdapters():
-            adapter.get_sitemap(cb)
+          portalClient.getCatalogAdapter().get_sitemap(cb)
 
 
     ############################################################################

@@ -43,7 +43,7 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired, ZMSZCatalogAdapter
+import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
@@ -263,15 +263,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setObjProperty('title',title,lang)
   obj.onChangeObj(REQUEST,forced=1)
 
-  ### Init zcatalog.
-  manager = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
-  obj._setObject( manager.id, manager)
-  manager = getattr(obj,manager.id)
-  manager.setIds(['ZMSFolder','ZMSDocument','ZMSFile'])
-  manager.setAttrIds(['title','titlealt','attr_dc_description','standard_html'])
-  manager.addConnector('ZMSZCatalogConnector')
-  manager.reindex_all()
-
   ### Return new ZMS instance.
   return obj
 
@@ -335,11 +326,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
       # Init content.
       initContent(obj,'com.zms.test.content.xml',REQUEST)
 
-    ##### Catalog #####
-    for adapter in obj.getCatalogAdapters():
-      adapter.reindex_all()
+    # Initialize catalogs.
+    obj.getCatalogAdapter().reindex_all()
 
-    ##### Access ####
+    # Initialize access.
     obj.synchronizePublicAccess()
 
     # Return with message.

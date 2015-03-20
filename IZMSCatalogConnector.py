@@ -29,9 +29,15 @@ class IZMSCatalogConnector(Interface):
       @rtype: C{list}
       """
 
-    def reindex(self):
+    def reindex_all(self):
       """
       Reindex.
+      @rtype: C{str}
+      """
+
+    def reindex_node(self, node):
+      """
+      Reindex single node.
       @rtype: C{str}
       """
 

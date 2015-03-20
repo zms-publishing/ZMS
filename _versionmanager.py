@@ -508,18 +508,9 @@ class VersionItem:
     # --------------------------------------------------------------------------
     def onSynchronizeObj(self, REQUEST):
       _globals.writeLog( self, "[onSynchronizeObj]")
-      #-- Catalog
-      ob = self.getCatalogItem()
-      obs = REQUEST.get('ZMS_SYNCHRONIZE_CATALOG',[])
-      if ob not in obs:
-        obs.append(ob)
-        try:
-          REQUEST.set('ZMS_SYNCHRONIZE_CATALOG',obs)
-        except:
-          REQUEST['ZMS_SYNCHRONIZE_CATALOG'] = obs
-      #-- Access
+      # Access
       self.synchronizePublicAccess()
-      #-- References
+      # References
       self.synchronizeRefToObjs()
       self.synchronizeRefByObjs()
 
@@ -634,10 +625,8 @@ class VersionItem:
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
       _globals.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
-      ##### Synchronize catalog. ####
-      obs = REQUEST.get('ZMS_SYNCHRONIZE_CATALOG',[])
-      for ob in obs:
-        ob.synchronizeSearch(REQUEST)
+      # Synchronize search.
+      self.getCatalogAdapter().reindex_node(self)
       # Return flag for deleted objects.
       return delete
 
@@ -743,10 +732,6 @@ class VersionItem:
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
-      ##### Synchronize catalog. ####
-      obs = REQUEST.get('ZMS_SYNCHRONIZE_CATALOG',[])
-      for ob in obs:
-        ob.synchronizeSearch(REQUEST)
       # Return flag for deleted objects.
       return delete
 

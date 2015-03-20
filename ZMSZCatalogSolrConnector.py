@@ -120,7 +120,8 @@ class ZMSZCatalogSolrConnector(
       return result
 
 
-    def __get_xml(self, attrs={}):
+    def __get_xml(self, node, recursive, attrs={}):
+      zcm = self.getCatalogAdapter()
       xml =  []
       xml.append('<?xml version="1.0"?>')
       xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(attrs[x])),attrs))+'>')
@@ -129,18 +130,35 @@ class ZMSZCatalogSolrConnector(
         for k in d.keys():
           xml.append('<field name="%s">%s</field>'%(k,d[k]))
         xml.append('</doc>')
-      self.aq_parent.get_sitemap(cb)
+      zcm.get_sitemap(cb,node,recursive)
       xml.append('</add>')
       return '\n'.join(xml)
 
 
-    def reindex(self):
-      xml =  self.__get_xml({'commitWithin':1000,'overwrite':'true'})
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogSolrConnector._update:
+    # --------------------------------------------------------------------------
+    def _update(self, xml):
       solr_url = self.getConfProperty('solr.url')
       url = '%s/%s/update'%(solr_url,self.getAbsoluteHome().id)
       url = '%s?%s'%(url,xml)
       result = self.http_import(url,method='POST',headers={'Content-Type':'text/xml;charset=UTF-8'})
-      print result
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogSolrConnector.reindex_all:
+    # --------------------------------------------------------------------------
+    def reindex_all(self):
+      xml =  self.__get_xml(self.getDocumentElement(),recursive=True,attrs={'commitWithin':1000,'overwrite':'true'})
+      self._update(xml)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogSolrConnector.reindex_node:
+    # --------------------------------------------------------------------------
+    def reindex_node(self, node):
+      xml =  self.__get_xml(node,recursive=False,attrs={'commitWithin':1,'overwrite':'true'})
+      self._update(xml)
 
 
     def get_sitemap(self):
@@ -151,7 +169,7 @@ class ZMSZCatalogSolrConnector(
       request = self.REQUEST
       RESPONSE = request.RESPONSE
       RESPONSE.setHeader('Content-Type','text/xml; charset=utf-8')
-      xml =  self.__get_xml()
+      xml =  self.__get_xml(self.getDocumentElement(),recursive=True)
       return xml
 
 
@@ -166,8 +184,8 @@ class ZMSZCatalogSolrConnector(
         # Reindex.
         # --------
         if btn == 'Reindex' and selected:
-          reindex = self.reindex()
-          message += '%s reindexed (%s)\n'%(self.id,reindex)
+          reindex = self.reindex_all()
+          message += '%s reindexed (%s)\n'%(self.id,str(reindex))
           
         # Save.
         # -----

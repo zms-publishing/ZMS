@@ -219,8 +219,8 @@ class ZMSZCatalogAdapter(
     def get_sitemap(self, cb, root, recursive):
       request = self.REQUEST
       
-      #-- Add node.
-      def add(node):
+      # Add node.
+      def get_catalog_index(node):
         d = {}
         d['id'] = node.id
         d['loc'] = node.absolute_url()
@@ -233,6 +233,10 @@ class ZMSZCatalogAdapter(
               'loc':obj.getHref2IndexHtml(request),
               'title':obj.getTitlealt(request),
             })
+        return d
+      
+      # Add node.
+      def add_catalog_index(d):
         for k in d.keys():
           v = d[k]
           if type(v) is dict:
@@ -259,9 +263,14 @@ class ZMSZCatalogAdapter(
       
       # Traverse tree.
       def traverse(node,recursive):
+        # Hook
+        if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
+          for d in node.attr('catalog_index'):
+            add_catalog_index(d)
         # Check meta-id.
         if node.meta_id in self.getIds():
-          add(node)
+          d = get_catalog_index(node)
+          add_catalog_index(d)
         # Handle child-nodes.
         if recursive:
           for childNode in node.filteredChildNodes(request):

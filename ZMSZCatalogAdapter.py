@@ -236,7 +236,7 @@ class ZMSZCatalogAdapter(
         return d
       
       # Add node.
-      def add_catalog_index(d):
+      def add_catalog_index(node,d):
         for k in d.keys():
           v = d[k]
           if type(v) is dict:
@@ -266,11 +266,11 @@ class ZMSZCatalogAdapter(
         # Hook
         if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
           for d in node.attr('catalog_index'):
-            add_catalog_index(d)
+            add_catalog_index(node,d)
         # Check meta-id.
         if node.meta_id in self.getIds():
           d = get_catalog_index(node)
-          add_catalog_index(d)
+          add_catalog_index(node,d)
         # Handle child-nodes.
         if recursive:
           for childNode in node.filteredChildNodes(request):

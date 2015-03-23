@@ -50,13 +50,13 @@ see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki
 		<div class="col-sm-10">
 			<div style="background-color:#fefefe;border:1px solid #ccc;border-radius:4px;padding:4px;font-family:monospace">
 				&lt;field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /><br/>
-				&lt;field name="loc" type="string" indexed="false" stored="true" required="true" multiValued="true" /><br/>
-				&lt;field name="meta_id" type="string" indexed="true" stored="true" required="true" multiValued="true" /><br/>
-				&lt;field name="custom" type="string" indexed="false" stored="true" required="false" multiValued="true" /><br/>
+				&lt;field name="loc" type="string" indexed="false" stored="true" required="true" multiValued="false" /><br/>
+				&lt;field name="meta_id" type="string" indexed="true" stored="true" required="true" multiValued="false" /><br/>
+				&lt;field name="custom" type="string" indexed="false" stored="true" required="false" multiValued="false" /><br/>
 				<tal:block tal:repeat="attr_id python:here.getAttrIds()">
 				&lt;field name="<tal:block tal:content="attr_id">the attribute-id</tal:block>" type="text_general" indexed="true" stored="true" required="true" multiValued="true" /><br/>
 				</tal:block>
-				&lt;field name="all_fields" type="text_general" indexed="true" stored="true" multiValued="true" /><br/>
+				&lt;field name="all_fields" type="text_general" indexed="true" stored="false" multiValued="true" /><br/>
 				<tal:block tal:repeat="attr_id python:here.getAttrIds()">
 				&lt;copyField source="<tal:block tal:content="attr_id">the attribute-id</tal:block>" dest="all_fields"/><br/>
 				</tal:block>

@@ -25,6 +25,8 @@ from DateTime.DateTime import DateTime
 from types import StringTypes
 from traceback import format_exception
 from zope.contenttype import guess_content_type
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 import cgi
 import copy
 import fnmatch
@@ -36,7 +38,6 @@ import sys
 import time
 import urllib
 import zExceptions
-
 
 """ Globals. """
 
@@ -382,6 +383,10 @@ Hook for trigger of custom event (if there is one)
 def triggerEvent(self, *args, **kwargs):
   l = []
   name = args[0]
+  
+  ##### Pass custom event to zope ObjectModifiedEvent event ####
+  notify(ObjectModifiedEvent(self, name))
+
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
     metaObjAttr = self.getMetaobjAttr( self.meta_id, name)

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<style>
+#indexes td {
+	padding:2px;
+}
+</style>
 <body tal:attributes="class python:here.zmi_body_class(id='zcatalog config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
@@ -58,7 +63,7 @@ $ZMI.registerReady(function(){
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 <input type="hidden" name="tab" value="">
 <input type="hidden" id="getIds" tal:attributes="value python:','.join(here.getIds())">
-<input type="hidden" id="getAttrIds" tal:attributes="value python:','.join(here.getAttrIds())">
+<span class="ui-helper-hidden" id="getAttrs" tal:content="python:here.str_json(here.getAttrs())"></span>
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
 		<li>
@@ -242,9 +247,10 @@ $ZMI.registerReady(function(){
 
 <script>
 function toggleMetaobj() {
-	var selected = [];
+	var selected = {};
 	$("table#indexes input:checked").each(function() {
-			selected.push($(this).val());
+			var k = $(this).val();
+			selected[k] = {boost:$('input[name="boost_'+k+'"]').val()};
 		});
 	var metaObjAttrs = {};
 	var c = 0;
@@ -272,14 +278,21 @@ function toggleMetaobj() {
 		});
 	$("table#indexes tr").remove();
 	for (var metaObjAttrId in metaObjAttrs) {
-		if (metaObjAttrs[metaObjAttrId]==c || $.inArray(metaObjAttrId,selected)>=0) {
+		var boost = undefined;
+		if (typeof selected[metaObjAttrId] != 'undefined') {
+			boost = selected[metaObjAttrId].boost;
+		}
+		if (metaObjAttrs[metaObjAttrId]==c || typeof boost != 'undefined') {
 			$("table#indexes").append(''
 					+ '<tr>'
 						+ '<td style="text-align:center;">'
-							+ '<input type="checkbox" name="attr_ids:list" '+(metaObjAttrs[metaObjAttrId]==c?'':' disabled="disabled"')+($.inArray(metaObjAttrId,selected)<0?'':' checked="checked"')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
+							+ '<input type="checkbox" name="attr_ids:list" '+(metaObjAttrs[metaObjAttrId]==c?'':' disabled="disabled"')+(typeof boost=='undefined'?'':' checked="checked"')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
 						+ '</td>'
 						+ '<td>'
 							+ '<span>'+metaObjAttrId+'</span> '
+						+ '</td>'
+						+ '<td>'
+							+ '<input class="form-control" type="text" title="Boost" name="boost_'+metaObjAttrId+'" value="'+(typeof boost=='undefined'?'1.0':boost)+'"/> '
 						+ '</td>'
 					+ '</tr>');
 		}
@@ -300,9 +313,10 @@ $(function() {
 			$('input[name="ids:list"][value="'+ids[i]+'"]').prop("checked",true);
 		}
 		toggleMetaobj();
-		var attr_ids = $("#getAttrIds").val().split(",");
-		for (var i = 0; i < attr_ids.length; i++) {
-			$('input[name="attr_ids:list"][value="'+attr_ids[i]+'"]').prop("checked",true);
+		var attrs = eval("("+$("#getAttrs").html()+")");
+		for (var k in attrs) {
+			$('input[name="attr_ids:list"][value="'+k+'"]').prop("checked",true);
+			$('input[name="boost_'+k+'"]').val(attrs[k].boost);
 		}
 		toggleMetaobj();
 	});

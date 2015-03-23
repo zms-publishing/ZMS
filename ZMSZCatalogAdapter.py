@@ -39,6 +39,15 @@ def updateVersion(root):
       if len(root.getConnectors()) == 0:
         root.addConnector('ZMSZCatalogConnector')
       root.setConfProperty('ZMS.catalog.build',1)
+    elif root.getConfProperty('ZMS.catalog.build',0) == 1:
+      if not hasattr(root,'_attrs'):
+        root._attrs = {}
+        for attr_id in getattr(root,'_attr_ids',[]):
+          root._attrs[attr_id] = {'boost':1.0}
+        if hasattr(root,'_attr_ids'):
+          delattr(root,'_attr_ids')
+      root.setConfProperty('ZMS.catalog.build',2)
+      
 
 # ------------------------------------------------------------------------------
 #  remove_tags:
@@ -176,10 +185,19 @@ class ZMSZCatalogAdapter(
     #  ZMSZCatalogAdapter.attr_ids: getter and setter
     # --------------------------------------------------------------------------
     def getAttrIds(self):
-      return getattr(self,'_attr_ids',[])
+      return self.getAttrs().keys()
 
-    def setAttrIds(self, attr_ids):
-      setattr(self,'_attr_ids',attr_ids)
+    def setAttrIds(self,attr_ids):
+      attrs = self.getAttrs()
+      for attr_id in attr_ids:
+        attrs[attr_id] = {'boost':1.0}
+      self.setAttrs(attrs)
+
+    def getAttrs(self):
+      return getattr(self,'_attrs',{})
+
+    def setAttrs(self, attrs):
+      setattr(self,'_attrs',attrs)
 
 
     # --------------------------------------------------------------------------
@@ -312,7 +330,10 @@ class ZMSZCatalogAdapter(
         elif btn == 'Save':
           self.setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)
           self._ids = REQUEST.get('ids',[])
-          self._attr_ids = REQUEST.get('attr_ids',[])
+          attrs = {}
+          for attr_id in REQUEST.get('attr_ids',[]):
+            attrs[attr_id] = {'boost':float(REQUEST.get('boost_%s'%attr_id,'1.0'))}
+          self._attrs = attrs
           message += self.getZMILangStr('MSG_CHANGED')
         
         # Remove.

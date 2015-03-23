@@ -5,15 +5,20 @@ see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki
 </div>
 
 
-<tal:block tal:define="
+<div id="ZCatalogSolrConnector"  tal:define="
 		solr_url python:here.getConfProperty('solr.url','http://localhost:8983/solr');
-		admin_url python:'%s/#/%s'%(solr_url,here.getAbsoluteHome().id);
-		select_url python:'%s/%s/select'%(solr_url,here.getAbsoluteHome().id);
-		suggest_url python:'%s/%s/suggest'%(solr_url,here.getAbsoluteHome().id);
+		solr_core python:here.getConfProperty('solr.core',here.getAbsoluteHome().id);
+		admin_url python:'%s/#/%s'%(solr_url,solr_core);
+		select_url python:'%s/%s/select'%(solr_url,solr_core);
+		suggest_url python:'%s/%s/suggest'%(solr_url,solr_core);
 		">
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="solr_url"><span>URL</span></label>
 		<div class="col-sm-10"><input type="text" class="form-control" name="solr_url" tal:attributes="value solr_url"></div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="solr_url"><span>Core</span></label>
+		<div class="col-sm-10"><input type="text" class="form-control" name="solr_core" tal:attributes="value solr_core"></div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="admin_url"><span>Admin</span></label>
@@ -25,7 +30,7 @@ see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsearch" name="q" tal:attributes="value python:request.get('q','*')">
 				<span class="input-group-btn">
-					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()">
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogSolrConnector #qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
 					</span>
 				</span>
@@ -38,29 +43,11 @@ see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
 				<span class="input-group-btn">
-					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()">
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogSolrConnector #qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
 					</span>
 				</span>
 			</div>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="col-sm-2 control-label" for="solr_url"><span>Schema</span></label>
-		<div class="col-sm-10">
-			<div style="background-color:#fefefe;border:1px solid #ccc;border-radius:4px;padding:4px;font-family:monospace">
-				&lt;field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /><br/>
-				&lt;field name="loc" type="string" indexed="false" stored="true" required="true" multiValued="false" /><br/>
-				&lt;field name="meta_id" type="string" indexed="true" stored="true" required="true" multiValued="false" /><br/>
-				&lt;field name="custom" type="string" indexed="false" stored="true" required="false" multiValued="false" /><br/>
-				<tal:block tal:repeat="attr_id python:here.getAttrIds()">
-				&lt;field name="<tal:block tal:content="attr_id">the attribute-id</tal:block>" type="text_general" indexed="true" stored="true" required="true" multiValued="true" /><br/>
-				</tal:block>
-				&lt;field name="all_fields" type="text_general" indexed="true" stored="false" multiValued="true" /><br/>
-				<tal:block tal:repeat="attr_id python:here.getAttrIds()">
-				&lt;copyField source="<tal:block tal:content="attr_id">the attribute-id</tal:block>" dest="all_fields"/><br/>
-				</tal:block>
-			</div>
-		</div>
-	</div>
-</tal:block>
+</div>

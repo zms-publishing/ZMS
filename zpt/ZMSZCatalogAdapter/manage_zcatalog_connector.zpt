@@ -1,4 +1,4 @@
-<tal:block tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])" tal:condition="python:len(zcatalogs)>0">
+<div id="ZCatalogConnector" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])" tal:condition="python:len(zcatalogs)>0">
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="zcatalog_objectIds"><span>Catalogs</span></label>
 		<div class="col-sm-10">
@@ -24,7 +24,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsearch" name="q" tal:attributes="value python:request.get('q','*')">
 				<span class="input-group-btn">
-					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#qsearch\').val()},{iframe:true,title:\'ZCatalog: Select\'})'%here.absolute_url()">
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogConnector #qsearch\').val()},{iframe:true,title:\'ZCatalog: Select\'})'%here.absolute_url()">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
 					</span>
 				</span>
@@ -37,11 +37,11 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
 				<span class="input-group-btn">
-					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#qsuggest\').val()},{iframe:true,title:\'ZCatalog: Suggest\'})'%here.absolute_url()">
+					<span class="zmi-helper-clickable btn btn-primary" tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogConnector #qsuggest\').val()},{iframe:true,title:\'ZCatalog: Suggest\'})'%here.absolute_url()">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-external-link')"></tal:block>
 					</span>
 				</span>
 			</div>
 		</div>
 	</div><!-- .form-group -->
-</tal:block>
+</div>

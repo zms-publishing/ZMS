@@ -43,7 +43,7 @@ def updateVersion(root):
       if not hasattr(root,'_attrs'):
         root._attrs = {}
         for attr_id in getattr(root,'_attr_ids',[]):
-          root._attrs[attr_id] = {'boost':1.0}
+          root._attrs[attr_id] = {'boost':1.0,'type':'text'}
         if hasattr(root,'_attr_ids'):
           delattr(root,'_attr_ids')
       root.setConfProperty('ZMS.catalog.build',2)
@@ -190,7 +190,7 @@ class ZMSZCatalogAdapter(
     def setAttrIds(self,attr_ids):
       attrs = self.getAttrs()
       for attr_id in attr_ids:
-        attrs[attr_id] = {'boost':1.0}
+        attrs[attr_id] = {'boost':1.0,'type':'text'}
       self.setAttrs(attrs)
 
     def getAttrs(self):
@@ -274,6 +274,9 @@ class ZMSZCatalogAdapter(
                 xml = str(o)
               return xml
             d[k] = '<![CDATA[<%s>%s</%s>]]>'%(k,to_xml(v),k)
+        lang = node.REQUEST.get('lang')
+        d['id'] = '%s:%s'%(lang,d['id'])
+        d['lang'] = lang
         for attr_id in self.getAttrIds():
           value = node.attr(attr_id)
           d[attr_id] = remove_tags(self,value)

@@ -1,6 +1,14 @@
 <div class="help" data-for="qsuggest">
 <div class="well">
-see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki.apache.org/solr/Suggester/</a>
+<h4>Suggest with facets</h4>
+<p>
+<code>solr.suggest='select?q=*:*&amp;rows=0&amp;facet=true&amp;facet.field=text&amp;facet.prefix=%s&amp;facet.limit=5'</code>
+</p>
+<h4>Suggester - a flexible "autocomplete" component.</h4>
+<p>
+<code>solr.suggest='suggest?q=%s'</code><br/>
+@see <a href="http://wiki.apache.org/solr/Suggester/" target="_blank">http://wiki.apache.org/solr/Suggester/</a>
+</p>
 </div>
 </div>
 

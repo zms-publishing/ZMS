@@ -75,6 +75,7 @@ class ZMSZCatalogSolrConnector(
       """ ZMSZCatalogSolrConnector.search_xml """
       # Check constraints.
       zcm = self.getCatalogAdapter()
+      attrs = zcm.getAttrs()
       page_index = int(page_index)
       page_size = int(page_size)
       REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
@@ -83,7 +84,6 @@ class ZMSZCatalogSolrConnector(
       RESPONSE.setHeader('Content-Type',content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
-      attrs = zcm.getAttrs()
       # Execute query.
       p = {}
       p['q'] = q
@@ -91,10 +91,10 @@ class ZMSZCatalogSolrConnector(
       p['start'] = page_index
       p['rows'] = page_size
       p['defType'] = 'edismax'
-      p['qf'] = ' '.join(map(lambda x:'%s_t^%s'%(x,str(attrs[x].get('boost',1.0))),attrs.keys()))
+      p['qf'] = ' '.join(map(lambda x:'%s^%s'%(self._get_field_name(x),str(attrs[x].get('boost',1.0))),attrs.keys()))
       p['hl'] = 'true'
       p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize',200)
-      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl',','.join(map(lambda x:'%s_t'%x,attrs.keys())))
+      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl',','.join(map(lambda x:self._get_field_name(x),attrs.keys())))
       p['hl.simple.pre'] = self.getConfProperty('solr.select.hl.simple.pre','<span class="highlight">')
       p['hl.simple.post'] = self.getConfProperty('solr.select.hl.simple.post','</span>')
       solr_url = self.getConfProperty('solr.url','http://localhost:8983/solr')
@@ -102,7 +102,7 @@ class ZMSZCatalogSolrConnector(
       url = '%s/%s/select'%(solr_url,solr_core)
       url = self.url_append_params(url,p,sep='&')
       result = self.http_import(url,method='GET')
-      result = self.re_sub('name="(.*?)_t"','name="\\1"',result)
+      result = self.re_sub('name="(.*?)_[ist]"','name="\\1"',result)
       return result
 
 
@@ -119,11 +119,12 @@ class ZMSZCatalogSolrConnector(
       RESPONSE.setHeader('Pragma', 'no-cache')
       # Execute query.
       p = {}
-      p['q'] = q
       solr_url = self.getConfProperty('solr.url','http://localhost:8983/solr')
       solr_core = self.getConfProperty('solr.core',self.getAbsoluteHome().id)
-      url = '%s/%s/suggest'%(solr_url,solr_core)
-      url = self.url_append_params(url,p,sep='&')
+      SOLR_SUGGEST_SELECT = 'select?q=*:*&rows=0&facet=true&facet.field=text&facet.prefix=%s&facet.limit=5'
+      SOLR_SUGGEST_SUGGEST = 'suggest?q=%s'
+      solr_suggest = self.getConfProperty('solr.suggest',SOLR_SUGGEST_SELECT)%q
+      url = '%s/%s/%s'%(solr_url,solr_core,solr_suggest)
       result = self.http_import(url,method='GET')
       return result
 
@@ -144,19 +145,40 @@ class ZMSZCatalogSolrConnector(
       return '\n'.join(xml)
 
 
+    def _get_field_name(self, k):
+      zcm = self.getCatalogAdapter()
+      attrs = zcm.getAttrs()
+      if k not in ['id']:
+        suffix = 's'
+        if k in attrs.keys():
+          attr_type = attrs[k].get('type','text')
+          attr_suffix = {'text':'t','string':'t','select':'s','multiselect':'s','int':'i'}
+          suffix = attr_suffix.get(attr_type,suffix)
+        k = '%s_%s'%(k,suffix)
+      return k
+
+
     def __get_add_xml(self, node, recursive, attrs={}):
       zcm = self.getCatalogAdapter()
+      attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
       xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(attrs[x])),attrs))+'>')
       def cb(node,d):
         xml.append('<doc>')
+        text = []
         for k in d.keys():
           v = d[k]
           if k not in ['id']:
-            if type(v) in (str,unicode):
-              k = '%s_t'%k
+            if k in attrs.keys():
+              if type(v) in (str,unicode):
+                k = '%s_t'%k
+                text.append(v)
+            else:
+              if type(v) in (str,unicode):
+                k = '%s_s'%k
           xml.append('<field name="%s">%s</field>'%(k,v))
+        xml.append('<field name="text">%s</field>'%' '.join(filter(lambda x:len(x)>0,text)))
         xml.append('</doc>')
       zcm.get_sitemap(cb,node,recursive)
       xml.append('</add>')

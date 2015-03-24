@@ -335,7 +335,7 @@ class ZMSZCatalogAdapter(
           self._ids = REQUEST.get('ids',[])
           attrs = {}
           for attr_id in REQUEST.get('attr_ids',[]):
-            attrs[attr_id] = {'boost':float(REQUEST.get('boost_%s'%attr_id,'1.0'))}
+            attrs[attr_id] = {'boost':float(REQUEST.get('boost_%s'%attr_id,'1.0')),'type':REQUEST.get('type_%s'%attr_id,'text')}
           self._attrs = attrs
           message += self.getZMILangStr('MSG_CHANGED')
         

@@ -500,10 +500,10 @@ class AccessManager(AccessableContainer):
       if root == self:
         roleDefs = copy.deepcopy(d)
       else:
-        prefix = root.getRefObjPath(self)[:-2]
+        prefix = root.getRefObjPath(self)[2:-2].split('/')[-1]+'@'
         for name in d.keys():
           value = d[name]
-          nodekeys = filter(lambda x:x.startswith(prefix), value.keys())
+          nodekeys = filter(lambda x:x.find(prefix)>0, value.keys())
           if len(nodekeys) > 0:
             roleDef = {}
             for nodekey in nodekeys:
@@ -521,11 +521,11 @@ class AccessManager(AccessableContainer):
       if root == self:
         userDefs = copy.deepcopy(d)
       else:
-        prefix = root.getRefObjPath(self)[:-2]
+        prefix = root.getRefObjPath(self)[2:-2].split('/')[-1]+'@'
         for name in d.keys():
           value = d[name]
           nodes = value.get('nodes',{})
-          nodekeys = filter(lambda x:x.startswith(prefix), nodes.keys())
+          nodekeys = filter(lambda x:x.find(prefix)>0, nodes.keys())
           if len(nodekeys) > 0:
             userDef = {'nodes':{}}
             for key in value.keys():
@@ -1063,7 +1063,7 @@ class AccessManager(AccessableContainer):
           if not type(roles) is list: roles = [roles]
           node = REQUEST.get('node')
           ob = self.getLinkObj(node)
-          docElmnt = ob.getDocumentElement()
+          docElmnt = ob.getRootElement()
           node = docElmnt.getRefObjPath(ob)
           docElmnt.setLocalUser(id, node, roles, langs)
           #-- Assemble message.
@@ -1227,7 +1227,7 @@ class AccessManager(AccessableContainer):
               for roleElement in nodeElement.getElementsByTagName('role'):
                 roles.append(_xmllib.getText(roleElement))
               ob = self.getLinkObj(node)
-              docElmnt = ob.getDocumentElement()
+              docElmnt = ob.getRootElement()
               node = docElmnt.getRefObjPath(ob)
               docElmnt.setLocalUser(userName, node, roles, langs)
           message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)

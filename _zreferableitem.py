@@ -41,14 +41,6 @@ def isInternalLink(url):
   rtn = type(url) is str and url.startswith('{$') and url.endswith('}')
   return rtn
 
-# ------------------------------------------------------------------------------
-#  _zreferableitem.absolute_home:
-# ------------------------------------------------------------------------------
-def absolute_home(ob):
-  path = list( ob.getHome().getPhysicalPath())[1:]
-  rtn = '/'.join( path)
-  return rtn
-
 
 ################################################################################
 ################################################################################
@@ -130,19 +122,10 @@ class ZReferableItem:
   def getRefObjPath(self, ob, anchor=''):
     ref = ''
     if ob is not None:
-      path = ob.relative_obj_path()
-      clientIds = absolute_home(ob).split('/')
-      clientIds.reverse()
-      thisIds = absolute_home(self).split('/')
-      thisIds.reverse()
-      homeIds = []
-      for id in clientIds:
-        if id not in thisIds:
-          homeIds.insert(0,id)
-      if self.getConfProperty('ZMS.internalLinks.home',1)==1 or clientIds[-1] != thisIds[-1]:
-        if len(homeIds)==0:
-          homeIds.append(thisIds[-1])
-        path = '/'.join(homeIds) + '@' + path
+      ob_path = ob.breadcrumbs_obj_path()
+      homeIds = map(lambda x:x.getHome().id,filter(lambda x:x.meta_id=='ZMS',ob_path))
+      pathIds = map(lambda x:x.id,filter(lambda x:x.meta_id!='ZMS',ob_path))
+      path = '/'.join(homeIds) + '@' + '/'.join(pathIds)
       ref = '{$' + path + anchor + '}'
     return ref
 
@@ -454,7 +437,7 @@ class ZReferableItem:
         if len(path) == 0:
           ob = docElmnt
         elif docElmnt is not None:
-          ob = docElmnt.findObjId(path,REQUEST)
+          ob = docElmnt.findObjId(path,REQUEST)    
     return ob
 
 

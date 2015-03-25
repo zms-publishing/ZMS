@@ -303,7 +303,7 @@ class ZMSZCatalogAdapter(
       # Process clients.
       if self.getConfProperty('ZCatalog.portalClients',1) == 1 and recursive:
         for portalClient in self.getPortalClients():
-          portalClient.getCatalogAdapter().get_sitemap(cb)
+          portalClient.getCatalogAdapter().get_sitemap(cb,portalClient,recursive)
 
 
     ############################################################################

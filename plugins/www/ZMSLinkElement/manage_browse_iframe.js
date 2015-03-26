@@ -62,9 +62,17 @@ function getInternalUrl(physical_path) {
 	var currntHome = currntPath.substr(1,currntPath.indexOf(content)-1);
 	currntPath = currntPath.substr(currntPath.indexOf(content)+content.length+1);
 	var targetPath = physical_path;
-	var targetHome = targetPath.substr(1,targetPath.indexOf(content)-1);
+	var targetHome;
+	if (targetPath.indexOf(content)>0) {
+		targetHome = targetPath.substr(1,targetPath.indexOf(content)-1);
+		targetPath = targetPath.substr(targetPath.indexOf(content)+content.length+1);
+	}
+	else {
+		targetHome = currntHome;
+		targetPath = targetPath.substr(targetPath.indexOf('://')+'://'.length+1);
+		targetPath = targetPath.substr(targetPath.indexOf('/'));
+	}
 	var home = targetHome;
-	targetPath = targetPath.substr(targetPath.indexOf(content)+content.length+1);
 	while (true) {
 		var cid = currntHome.indexOf('/')>0?currntHome.substr(0,currntHome.indexOf('/')):currntHome;
 		var tid = targetHome.indexOf('/')>0?targetHome.substr(0,targetHome.indexOf('/')):targetHome;

@@ -1732,7 +1732,7 @@ if align:
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
-		subclass      python:[];
+		subclass      python:[zmscontext.meta_id];
 		align         python:zmscontext.attr('align')">
   <tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
     <tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>

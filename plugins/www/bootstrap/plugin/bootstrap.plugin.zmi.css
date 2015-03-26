@@ -278,9 +278,12 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId {
 	color:#aaa;
 	font-size:12px;
 }
-ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
-	/* For gui testing: primarily prevents hiding anf info button event */
-	/ * display:block !important; */
+/* Showing clientids only to Managers */
+.zmi ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
+	visibility:hidden;
+}
+.zmi.Manager ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
+	visibility:visible;
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
 	float:left;

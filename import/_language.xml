@@ -4652,6 +4652,22 @@
     <Cell><Data ss:Type="String">עקוב באותו חלון</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">OPT_AT_IFRAME</Data></Cell>
+    <Cell><Data ss:Type="String">Ziel als iFrame einbetten</Data></Cell>
+    <Cell><Data ss:Type="String">embed as iframe</Data></Cell>
+    <Cell><Data ss:Type="String">insluiten als iframe</Data></Cell>
+    <Cell><Data ss:Type="String">intégrer que iframe</Data></Cell>
+    <Cell><Data ss:Type="String">incorporare come iframe</Data></Cell>
+    <Cell><Data ss:Type="String">incrustar como iframe</Data></Cell>
+    <Cell><Data ss:Type="String">嵌入的IFRAME</Data></Cell>
+    <Cell><Data ss:Type="String">iframe کے طور پر سرایت</Data></Cell>
+    <Cell><Data ss:Type="String">вставлять в IFRAME</Data></Cell>
+    <Cell><Data ss:Type="String">iframe के रूप में एम्बेड</Data></Cell>
+    <Cell><Data ss:Type="String">تضمين كما IFRAME</Data></Cell>
+    <Cell><Data ss:Type="String">nhúng như iframe</Data></Cell>
+    <Cell><Data ss:Type="String">להטביע כiframe</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">OPT_A_BOTTOM</Data></Cell>
     <Cell><Data ss:Type="String">Unten</Data></Cell>
     <Cell><Data ss:Type="String">Bottom</Data></Cell>

@@ -789,13 +789,24 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	if($("button.split-left",el).length==0 || $ul.length>0) return;
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
-	// Build action and params.
+	// Initialize.
+	var lang = getZMILang();
 	var context_id = this.getContextId(el);
+	// Edit action
+	$("button.split-left",el).click(function() {
+					var action = self.location.href;
+					action = action.substr(0,action.lastIndexOf("/"));
+					action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
+					action += "?lang=" + lang;
+					self.location.href = action;
+					return false;
+				});
+	// Build action and params.
 	var action = zmiParams['base_url'];
 	action = action.substr(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
-	params['lang'] = getZMILang();
+	params['lang'] = lang;
 	params['context_id'] = context_id;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
@@ -832,16 +843,6 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				});
 		}
 		else {
-			// Edit action
-			$("button.split-left",el).click(function() {
-					var action = self.location.href;
-					action = action.substr(0,action.lastIndexOf("/"));
-					action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
-					action += "?lang=" + getZMILang();
-					self.location.href = action;
-					return false;
-				});
-			//
 			$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
 		}
 		for (var i = o; i < actions.length; i++) {

@@ -69,9 +69,7 @@ $ZMI.registerReady(function(){
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
 		<li>
-			<a tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">
-				<tal:block tal:content="python:here.meta_type">the adapter</tal:block>
-			</a>
+			<a tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">Adapter</a>
 		</li>
 		<li tal:repeat="si connectors">
 			<a tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab">
@@ -261,7 +259,6 @@ function toggleMetaobj() {
 				boost:$('input[name="boost_'+k+'"]').val()};
 		});
 	var metaObjAttrs = {};
-	var c = 0;
 	$("form input[name='ids:list']:checked").each(function() {
 			if(!$(this).prop("disabled")) {
 				var dataAttrs = $(this).attr("data-attrs").split(",");
@@ -269,42 +266,42 @@ function toggleMetaobj() {
 					var dataAttr = dataAttrs[i];
 					var metaObjAttr = {
 								id:dataAttr.substr(0,dataAttr.indexOf("(")),
-								type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1)),
-								count:0
+								type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
 							};
 					if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 						metaObjAttrs[metaObjAttr.id] = metaObjAttr;
 					}
-					metaObjAttrs[metaObjAttr.id].count++;
 				}
-				c++;
 			}
 		});
 	$("table#indexes tr").remove();
+	var metaObjAttrIds = [];
 	for (var metaObjAttrId in metaObjAttrs) {
-		var common = metaObjAttrs[metaObjAttrId].count==c;
+		metaObjAttrIds.push(metaObjAttrId);
+	}
+	metaObjAttrIds.sort();
+	for (var i=0; i < metaObjAttrIds.length; i++) {
+		var metaObjAttrId = metaObjAttrIds[i];
 		var preselected = typeof selected[metaObjAttrId] != 'undefined'
-		if (common || preselected) {
-			var type = metaObjAttrs[metaObjAttrId].type;
-			var boost = 1.0;
-			if (preselected) {
-				type = selected[metaObjAttrId].type;
-				boost = parseFloat(selected[metaObjAttrId].boost);
-			}
-			$("table#indexes").append(''
-					+ '<'+'tr>'
-						+ '<'+'td style="text-align:center;">'
-							+ '<'+'input type="checkbox" name="attr_ids:list" '+(common?'':' disabled="disabled"')+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
-						+ '<'+'/td>'
-						+ '<'+'td>'
-							+ '<'+'span>'+metaObjAttrId+' ('+type+')<'+'/span> '
-							+ '<'+'input type="hidden" name="type_'+metaObjAttrId+'" value="'+type+'"/> '
-						+ '<'+'/td>'
-						+ '<'+'td>'
-							+ '<'+'input class="form-control" type="text" title="Boost" name="boost_'+metaObjAttrId+'" value="'+boost.toFixed(1)+'"/> '
-						+ '<'+'/td>'
-					+ '<'+'/tr>');
+		var type = metaObjAttrs[metaObjAttrId].type;
+		var boost = 1.0;
+		if (preselected) {
+			type = selected[metaObjAttrId].type;
+			boost = parseFloat(selected[metaObjAttrId].boost);
 		}
+		$("table#indexes").append(''
+				+ '<'+'tr>'
+					+ '<'+'td style="text-align:center;">'
+						+ '<'+'input type="checkbox" name="attr_ids:list" '+(preselected?' checked="checked"':'')+'value="'+metaObjAttrId+'" onclick="toggleMetaobj()"/>'
+					+ '<'+'/td>'
+					+ '<'+'td>'
+						+ '<'+'span>'+metaObjAttrId+' ('+type+')<'+'/span> '
+						+ '<'+'input type="hidden" name="type_'+metaObjAttrId+'" value="'+type+'"/> '
+					+ '<'+'/td>'
+					+ '<'+'td>'
+						+ '<'+'input class="form-control" type="text" title="Boost" name="boost_'+metaObjAttrId+'" value="'+boost.toFixed(1)+'"/> '
+					+ '<'+'/td>'
+				+ '<'+'/tr>');
 	}
 	$("table#meta_types *.bg-info").removeClass("bg-info");
 	$("table#meta_types *.bg-primary,table#indexes *.bg-primary").removeClass("bg-primary");

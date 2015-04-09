@@ -232,9 +232,11 @@ class ZMSZCatalogConnector(
               k = 'custom'
             elif k == 'standard_html':
               v = ZMSZCatalogAdapter.remove_tags(self,v)
-              v = '<![CDATA[%s]]>'%v
             xml += '<arr name="%s">'%k
-            xml += '<str>%s</str>'%v
+            if k == 'custom':
+              xml += '<str>%s</str>'%v
+            else:
+              xml += '<str><![CDATA[%s]]></str>'%v
             xml += '</arr>'
           xml += '</doc>'
         xml += '</result>'

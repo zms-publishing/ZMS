@@ -181,7 +181,7 @@ class ZMSZCatalogSolrConnector(
               if type(v) in (str,unicode):
                 name = '%s_s'%k
           xml.append('<field name="%s" boost="%.1f">%s</field>'%(name,boost,v))
-        xml.append('<field name="text">%s</field>'%' '.join(filter(lambda x:len(x)>0,text)))
+        xml.append('<field name="text_t">%s</field>'%' '.join(filter(lambda x:len(x)>0,text)))
         xml.append('</doc>')
       zcm.get_sitemap(cb,node,recursive)
       xml.append('</add>')

@@ -121,7 +121,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
       baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
     }
     var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
-    var connector = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_connector');
+    var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
     var url = baseurl+'/'+adapter+'/'+connector+'/search_xml';
     $.ajax({
       url:url,
@@ -181,7 +181,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 snippet = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
               }
               var breadcrumb = '';
-              if (typeof custom != "undefined" && custom.length > 0)
+              if (typeof custom != "undefined" && custom.length > 0) {
                 var $custom = $("<xml>"+custom+"<xml>");
                 $("custom>breadcrumbs>breadcrumb",$custom).each(function() {
                   var title = $(">title",this).text();
@@ -189,6 +189,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                   breadcrumb += breadcrumb.length==0?'':' &raquo; '
                   breadcrumb += '<a href="'+loc+'">'+title+'</a>';
                 });
+              }
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-md-8 col-ns-9">'

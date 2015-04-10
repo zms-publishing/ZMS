@@ -319,6 +319,8 @@ class ZMSZCatalogAdapter(
         # Delegate to connectors.
         # -----------------------
         for connector in self.getConnectors():
+          if self.getConfProperty('zms.search.adapter.id',self.id)==self.id:
+            self.setConfProperty('zms.search.connector.id',connector.id)
           message += connector.manage_changeProperties(connector.id in ids, btn, lang, REQUEST)
         
         # Add.

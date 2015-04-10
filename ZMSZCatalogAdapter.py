@@ -275,7 +275,7 @@ class ZMSZCatalogAdapter(
               return xml
             d[k] = '<![CDATA[<%s>%s</%s>]]>'%(k,to_xml(v),k)
         lang = node.REQUEST.get('lang')
-        d['id'] = '%s:%s'%(lang,d['id'])
+        d['id'] = '%s_%s'%(d['id'],lang)
         d['lang'] = lang
         for attr_id in self.getAttrIds():
           value = node.attr(attr_id)

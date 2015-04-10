@@ -158,26 +158,29 @@ class ZMSZCatalogSolrConnector(
       return k
 
 
-    def __get_add_xml(self, node, recursive, attrs={}):
+    def __get_add_xml(self, node, recursive, xmlattrs={}):
       zcm = self.getCatalogAdapter()
       attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(attrs[x])),attrs))+'>')
+      xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(xmlattrs[x])),xmlattrs))+'>')
       def cb(node,d):
         xml.append('<doc>')
         text = []
         for k in d.keys():
+          name = k
+          boost = 1.0
           v = d[k]
           if k not in ['id']:
             if k in attrs.keys():
+              boost = attrs[k]['boost']
               if type(v) in (str,unicode):
-                k = '%s_t'%k
+                name = '%s_t'%k
                 text.append(v)
             else:
               if type(v) in (str,unicode):
-                k = '%s_s'%k
-          xml.append('<field name="%s">%s</field>'%(k,v))
+                name = '%s_s'%k
+          xml.append('<field name="%s" boost="%.1f">%s</field>'%(name,boost,v))
         xml.append('<field name="text">%s</field>'%' '.join(filter(lambda x:len(x)>0,text)))
         xml.append('</doc>')
       zcm.get_sitemap(cb,node,recursive)
@@ -214,7 +217,7 @@ class ZMSZCatalogSolrConnector(
     #  ZMSZCatalogSolrConnector.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      xml =  self.__get_add_xml(node,recursive=False,attrs={'overwrite':'true'})
+      xml =  self.__get_add_xml(node,recursive=False,xmlattrs={'overwrite':'true'})
       return self._update(xml)
 
 

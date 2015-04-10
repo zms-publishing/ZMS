@@ -159,12 +159,12 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               function getattr(name) {
                 return $("str[name="+name+"]",$doc).text()+$("arr[name="+name+"]>str",$doc).text();
               }
-              var did = $("str[name=id]",$doc).text();
-              var meta_id = $("arr[name=meta_id]>str",$doc).text();
-              var href = $("arr[name=loc]>str",$doc).text();
-              var title = $("arr[name=title]>str",$doc).text();
-              var snippet = $("arr[name=standard_html]>str",$doc).text();
-              var custom = $("arr[name=custom]>str",$doc).text();
+              var did = getattr("id");
+              var meta_id = getattr("meta_id");
+              var href = getattr("loc");
+              var title = getattr("title");
+              var snippet = getattr("standard_html");
+              var custom = getattr("custom");
               if (snippet.length > p['hl.fragsize']) {
                 snippet = snippet.substr(0,p['hl.fragsize']);
                 while (!snippet.lastIndexOf(" ")==snippet.length-1) {
@@ -172,11 +172,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 }
               }
               var $hl = $("lst[name="+did+"]",$highlighting);
-              var str = $("arr[name=title]>str",$hl).html();
+              var str = getattr("title");
               if (typeof str != "undefined" && str.length > 0) {
                 title = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
               }
-              var str = $("arr[name=body]>str",$hl).html();
+              var str = getattr("body");
               if (typeof str != "undefined" && str.length > 0) {
                 snippet = str.replace(/&lt;/gi,'<').replace(/&gt;/gi,'>');
               }

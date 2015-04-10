@@ -687,26 +687,28 @@ class ZMSObject(ZMSItem.ZMSItem,
                       redirect_self = True
             self.setObjProperty( 'resources', resources, lang)
           
-          ##### Properties #####
-          keys = self.getObjAttrs().keys()
-          for key in keys:
-            if key != 'resources':
-              self.setReqProperty(key,REQUEST)
-          
-          ##### Resource-Objects #####
-          metaObjIds = self.getMetaobjIds(sort=0)
-          keys = self.getMetaobjAttrIds(self.meta_id)
-          for key in keys:
-            objAttr = self.getMetaobjAttr(self.meta_id,key)
-            if objAttr['type'] in metaObjIds and \
-               self.getMetaobj(objAttr['type'])['type'] == 'ZMSResource':
-              for ob in self.getObjChildren(key,REQUEST):
-                REQUEST.set('objAttrNamePrefix',ob.id+'_')
-                ob.manage_changeProperties( lang, REQUEST)
-                REQUEST.set('objAttrNamePrefix','')
+          ##### Primitives #####
+          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
+          for metaObjAttrId in metaObjAttrIds:
+            metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
+            # Primitives.
+            if metaObjAttr['id'] not in ['resources'] and \
+               metaObjAttr['type'] in self.metaobj_manager.valid_types:
+              self.setReqProperty(metaObjAttrId,REQUEST)
           
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
+          
+          ##### Resource-Objects #####
+          metaObjIds = self.getMetaobjIds(sort=0)
+          for metaObjAttrId in metaObjAttrIds:
+            metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
+            if metaObjAttr['type'] in metaObjIds and \
+               self.getMetaobj(metaObjAttr['type'])['type'] == 'ZMSResource':
+              for childNode in self.getObjChildren(metaObjAttrId,REQUEST):
+                REQUEST.set('objAttrNamePrefix',childNode.id+'_')
+                childNode.manage_changeProperties( lang, REQUEST)
+                REQUEST.set('objAttrNamePrefix','')
           
           ##### Message ####
           message = self.getZMILangStr('MSG_CHANGED')

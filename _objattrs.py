@@ -318,6 +318,7 @@ class ObjAttrs:
         if lang is None: 
           lang = self.getPrimaryLanguage()
         attr = '%s_%s'%(attr,lang)
+      attr = self.REQUEST.get('objAttrNamePrefix','') + attr
       return attr
 
     # --------------------------------------------------------------------------
@@ -344,8 +345,7 @@ class ObjAttrs:
       
       #-- NAME
       lang = REQUEST['lang']
-      attr = self.getObjAttrName(obj_attr,lang)
-      elName = self.REQUEST.get('objAttrNamePrefix','') + attr
+      elName = self.getObjAttrName(obj_attr,lang)
       
       #-- INPUTTYPE
       inputtype = obj_attr.get('type','string')
@@ -947,8 +947,7 @@ class ObjAttrs:
       
       #-- DEFINTION
       obj_attr = self.getObjAttr(key)
-      attr = self.getObjAttrName(obj_attr,lang)
-      elName = self.REQUEST.get('objAttrNamePrefix','') + attr
+      elName = self.getObjAttrName(obj_attr,lang)
       
       #-- ENABLED
       enabled = not self.isDisabledAttr(obj_attr,REQUEST)
@@ -975,7 +974,7 @@ class ObjAttrs:
           set, value = True, value
         
         # Delete
-        elif REQUEST.has_key('del_%s'%attr) and int(REQUEST['del_%s'%attr]) == 1:
+        elif REQUEST.has_key('del_%s'%elName) and int(REQUEST['del_%s'%elName]) == 1:
           set, value = True, None
         
         # Preload

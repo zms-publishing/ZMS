@@ -4,8 +4,7 @@
 			meta_id options/meta_id;
 			metaObj python:here.getMetaobj(meta_id);
 			metaObjIds python:here.getMetaobjIds();
-			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-			objAttrs python:here.getObjAttrs(metaObj['id'])"
+			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id'])"
 		><tal:block tal:repeat="metaObjAttrId metaObjAttrIds"
 			><tal:block tal:define="global 
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)"
@@ -64,7 +63,7 @@
 						</div><!-- .accordion-heading -->
 						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
 						<tal:block tal:repeat="childNode python:here.getObjChildren(metaObjAttr['id'],request)"
-							><tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','%s_'%metaObjAttr['id'])"></tal:block
+							><tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','%s_'%childNode.id)"></tal:block
 							><tal:block tal:content="structure python:childNode.obj_input_elements(action=action,meta_id=childNode.meta_id)">obj_input_elements</tal:block
 							><tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','')"></tal:block
 						></tal:block>

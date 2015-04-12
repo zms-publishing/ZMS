@@ -19,22 +19,6 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.app.foo': ['{VERSION}',
-                   'Test Description',
-                   '',
-                   'more Info'],
-  'zms3.themes.foo': ['1.2.3',
-                      'Test Description',
-                      '#',
-                      'more Info'],
-  'Products.foo': ['{VERSION}',
-                   'Test Description',
-                   '',
-                   ''],
-  'Foo.Python.Package': ['24.11.1',
-                         'Description',
-                         '#',
-                         ''],
   'zms3.formulator': ['3.2.0dev5',
                       'JSON-based HTML-Forms',
                       'http://code.zms3.com/formulator',
@@ -90,6 +74,14 @@ EXTENSIONS = {
   'zope.publisher': ['3.13.4',
                      'Map requests from HTTP/WebDAV/FTP clients, web browsers and XML-RPC onto Python objects',
                      'https://github.com/zopefoundation/zope.publisher',
+                     'developed by Zope Foundation and Contributors'],
+  'zope.pagetemplate': ['4.1.0',
+                     'Templating mechanism that achieves a clean separation of presentation and application logic',
+                     'https://github.com/zopefoundation/zope.pagetemplate',
+                     'developed by Zope Foundation and Contributors'],
+  'zope.sendmail': ['3.7.5',
+                     'Send mails using transaction mechanism and queuing',
+                     'https://github.com/zopefoundation/zope.sendmail',
                      'developed by Zope Foundation and Contributors']
 }
 

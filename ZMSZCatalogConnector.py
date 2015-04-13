@@ -233,10 +233,7 @@ class ZMSZCatalogConnector(
             elif k == 'standard_html':
               v = ZMSZCatalogAdapter.remove_tags(self,v)
             xml += '<arr name="%s">'%k
-            if k == 'custom':
-              xml += '<str>%s</str>'%v
-            else:
-              xml += '<str><![CDATA[%s]]></str>'%v
+            xml += '<str>%s</str>'%v
             xml += '</arr>'
           xml += '</doc>'
         xml += '</result>'
@@ -416,11 +413,12 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
+      node.writeLog('[ZMSZCatalogConnector.reindex_node]')
       zcm = self.getCatalogAdapter()
       # Reindex item to catalog.
       def cb(node,d):
         self._update(node,d)
-      zcm.get_sitemap(cb,node,recursive=True)
+      zcm.get_sitemap(cb,node,recursive=False)
 
 
     def get_sitemap(self):

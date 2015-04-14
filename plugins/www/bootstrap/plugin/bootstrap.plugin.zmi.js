@@ -418,7 +418,7 @@ ZMI.prototype.initInputFields = function(container) {
 							if (isBlank) {
 								$controlGroup.addClass("has-error");
 								$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
-								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'right'});
+								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
 								if (b) {
 									$control.focus();
 								}

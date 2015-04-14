@@ -688,19 +688,16 @@ class ZMSObject(ZMSItem.ZMSItem,
             self.setObjProperty( 'resources', resources, lang)
           
           ##### Primitives #####
-          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
-          for metaObjAttrId in metaObjAttrIds:
-            metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
-            # Primitives.
-            if metaObjAttr['id'] not in ['resources'] and \
-               metaObjAttr['type'] in self.metaobj_manager.valid_types:
-              self.setReqProperty(metaObjAttrId,REQUEST)
+          for key in self.getObjAttrs().keys():
+            if key not in ['resources']:
+              self.setReqProperty(key,REQUEST)
           
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
           
           ##### Resource-Objects #####
           metaObjIds = self.getMetaobjIds(sort=0)
+          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
           for metaObjAttrId in metaObjAttrIds:
             metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
             if metaObjAttr['type'] in metaObjIds and \

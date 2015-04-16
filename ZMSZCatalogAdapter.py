@@ -279,11 +279,11 @@ class ZMSZCatalogAdapter(
         d['lang'] = lang
         for attr_id in self.getAttrIds():
           attr_type = self.getAttrs().get(attr_id,{}).get('type','string')
+          value = node.attr(attr_id)
           if attr_type in ['date','datetime']:
             value = self.getLangFmtDate(value,'eng','ISO8601')
           if type(value) in [str,unicode]:
             value = str(value)
-          value = node.attr(attr_id)
           d[attr_id] = remove_tags(self,value)
         cb(node,d)
       

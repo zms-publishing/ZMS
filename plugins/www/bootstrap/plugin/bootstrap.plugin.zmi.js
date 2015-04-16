@@ -926,7 +926,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				open:function(event,ui) {
 					$ZMI.runReady();
 					$('#addInsertBtn').click(function() {
-								var $fm = $("form.form-horizontal");
+								var $fm = $(".modal form.form-horizontal");
 								$("input[name=btn]:hidden",$fm).remove();
 								$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">');
 								$fm.submit();

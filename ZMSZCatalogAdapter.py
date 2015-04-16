@@ -278,7 +278,7 @@ class ZMSZCatalogAdapter(
         d['id'] = '%s_%s'%(d['id'],lang)
         d['lang'] = lang
         for attr_id in self.getAttrIds():
-          attr_type = self.getAttr(attr_id).get('type','string')
+          attr_type = self.getAttrs().get(attr_id,{}).get('type','string')
           if attr_type in ['date','datetime']:
             value = self.getLangFmtDate(value,'eng','ISO8601')
           if type(value) in [str,unicode]:

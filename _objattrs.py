@@ -104,7 +104,7 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
   charset = self.getLang(langId).get('charset','')
   if len(charset) == 0:
     charset = 'latin-1'
-  key = self.getObjAttrName(obj_attr,langId)
+  key = self._getObjAttrName(obj_attr,langId)
   v = getattr(obj_vers,key,None)
   v = utf8(v,charset)
   setattr(obj_vers,key,v)
@@ -115,12 +115,12 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
   v = None
-  key = self.getObjAttrName(obj_attr,lang)
+  key = self._getObjAttrName(obj_attr,lang)
   if key in obj.__dict__.keys():
     v = getattr(obj,key)
   # Default mono-lingual attributes to primary-lang.
   if v is None:
-    key = self.getObjAttrName({'id':obj_attr['id'],'multilang':not obj_attr['multilang']},self.getPrimaryLanguage())
+    key = self._getObjAttrName({'id':obj_attr['id'],'multilang':not obj_attr['multilang']},self.getPrimaryLanguage())
     if key in obj.__dict__.keys():
       v = getattr(obj,key)
   # Default value.
@@ -147,7 +147,7 @@ def getobjattr(self, obj, obj_attr, lang):
 #  _objattrs.setobjattr:
 # ------------------------------------------------------------------------------
 def setobjattr(self, obj, obj_attr, value, lang):
-  key = self.getObjAttrName(obj_attr,lang)
+  key = self._getObjAttrName(obj_attr,lang)
   # Assign value.
   setattr(obj,key,value)
 
@@ -312,13 +312,16 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     #  ObjAttrs.getObjAttrName:
     # --------------------------------------------------------------------------
-    def getObjAttrName(self, obj_attr, lang=None):
+    def _getObjAttrName(self, obj_attr, lang=None):
       attr = obj_attr['id']
       if obj_attr['multilang']:
         if lang is None: 
           lang = self.getPrimaryLanguage()
         attr = '%s_%s'%(attr,lang)
-      attr = self.REQUEST.get('objAttrNamePrefix','') + attr
+      return attr
+
+    def getObjAttrName(self, obj_attr, lang=None):
+      attr = self.REQUEST.get('objAttrNamePrefix','') + self._getObjAttrName(obj_attr, lang)
       return attr
 
     # --------------------------------------------------------------------------
@@ -532,7 +535,7 @@ class ObjAttrs:
       ob = self.getObjVersion(REQUEST)
       
       #-- ATTR
-      attr = self.getObjAttrName(obj_attr,lang)
+      attr = self._getObjAttrName(obj_attr,lang)
       
       #-- Return true if object has specified property, false else.
       return ob.__dict__.get(attr,None) is not None
@@ -609,7 +612,7 @@ class ObjAttrs:
       
       #-- SET?
       if set: 
-        attr = self.getObjAttrName( obj_attr, lang)
+        attr = self._getObjAttrName( obj_attr, lang)
         _globals.writeLog( self, "[_getObjAttrValue]: setattr(%s,%s)"%(attr,str(value)))
         setattr(obj_vers,attr,value)
       

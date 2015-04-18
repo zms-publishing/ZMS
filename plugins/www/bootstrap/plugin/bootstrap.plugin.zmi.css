@@ -212,6 +212,9 @@ div#zmi-tab {
 div.alert {
 	margin:1em;
 }
+.contentEditable.ZMSNote div.alert {
+	margin: 2px 0;
+}
 /* OBESOLETE: img.grippy */
 img.grippy {
 	width:6px!important;

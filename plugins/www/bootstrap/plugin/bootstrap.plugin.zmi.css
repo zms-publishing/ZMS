@@ -210,10 +210,10 @@ div#zmi-tab {
 	border-bottom: 1px solid #ddd;
 }
 div.alert {
-	margin:1em;
+	margin:1em 1.5em;
 }
 .contentEditable.ZMSNote div.alert {
-	margin: 2px 0;
+	margin: 2px 0 !important;
 }
 /* OBESOLETE: img.grippy */
 img.grippy {

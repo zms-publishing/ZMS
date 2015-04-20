@@ -2458,16 +2458,16 @@ span.mouseover {
 ////////////////////////////////////////////////////////////////////////////////
 -->
 
-<script>
+<tal:block tal:content="structure python:'<script>'">script</tal:block>
 
-$ZMI.registerReady(function(){
+$(function(){
 	if($("form#form0 input[name=session_id]").length==0) {
 		$("form#form0").append('<input type="hidden" name="session_id" tal:attributes="value session_id"/>');
 	}
 	$(".zmiRichtextEditorHeadline").hide();
 });
 
-</script>
+<tal:block tal:content="structure python:'</script>'">/script</tal:block>
 
 </tal:block>]]>
                   </item>

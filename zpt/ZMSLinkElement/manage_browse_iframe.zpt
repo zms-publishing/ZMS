@@ -88,7 +88,7 @@
 			<span tal:condition="python:childNode.isPageElement()" style="cursor:help" onclick="zmiPreview(this)" tal:content="structure python:childNode.display_icon(request)">the icon</span>
 			<a 
 				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
-				onclick="return zmiFollowHref(this)">
+				onclick="return zmiSelectObject(this)">
 			<tal:block tal:condition="not:python:childNode.isPageElement()" tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>

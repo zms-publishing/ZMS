@@ -155,58 +155,68 @@
 					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')"
 						><tal:block tal:define="global
 									objChildren python:here.getObjChildren(metaObjAttr['id'],request);
-									hasChildren python:len(objChildren)>0"
-							><div class="accordion-heading">
-								<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
-									<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>
-									<tal:block tal:content="elLabel">the label</tal:block>
-								</a>
-								<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
-							</div><!-- .accordion-heading -->
-							<tal:block tal:content="structure python:''
-								+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren]))
-								+'<div class=\042accordion-inner\042>'"></tal:block>
-							<ul class="zmi-container zmi-sortable">
-								<li tal:condition="python:hasChildren==0" class="zmi-item zmi-selectable zmi-nochildren" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
+									hasChildren python:len(objChildren)>0">
+							<ul class="zmi-container" tal:condition="not:hasChildren">
+								<li class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
 									<div class="center">
+										<label class="control-label" tal:content="elLabel">the label</label>
+									</div><!-- .center -->
+									<div class="right">
 										<div class="btn-group zmi-action">
 											<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:9990">the sort-id</span>
-											<button class="btn btn-default split-left" style="visibility: visible !important;">&nbsp;</button>
-											<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+											<button class="btn btn-default split-left">
+											</button>
+											<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+												<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</tal:block>
+											</button>
 										</div><!-- .btn-group -->
 									</div><!-- .right -->
 									<div class="clearboth"></div>
 								</li><!-- .zmi-item -->
-								<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
-									<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())])">
-										<div class="grippy icon-reorder" title="Move"></div>
-										<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
-											tal:content="structure python:childNode.renderShort(request)">
-											the rendered child-node
-										</div><!-- .center -->
-										<div class="right">
-											<div class="btn-group zmi-action">
-												<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-												<button class="btn btn-default split-left">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-													<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
-												</button>
-												<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
-													<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-												</button>
-											</div><!-- .btn-group -->
-											<span class="zmi-ids">
-												<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
-											</span>
-											<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
-												the info child-node
-											</div>
-										</div><!-- .right -->
-										<div class="clearboth"></div>
-									</li><!-- .zmi-item -->
-								</tal:block>
-							</ul><!-- .zmi-container.zmi-sortable -->
-							<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
+							</ul>
+							<tal:block tal:condition="hasChildren">
+								<div class="accordion-heading">
+									<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
+										<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>
+										<tal:block tal:content="elLabel">the label</tal:block>
+									</a>
+									<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
+								</div><!-- .accordion-heading -->
+								<tal:block tal:content="structure python:''
+									+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren]))
+									+'<div class=\042accordion-inner\042>'"></tal:block>
+								<ul class="zmi-container zmi-sortable">
+									<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
+										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())])">
+											<div class="grippy icon-reorder" title="Move"></div>
+											<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+												tal:content="structure python:childNode.renderShort(request)">
+												the rendered child-node
+											</div><!-- .center -->
+											<div class="right">
+												<div class="btn-group zmi-action">
+													<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
+													<button class="btn btn-default split-left">
+														<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+														<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+													</button>
+													<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+														<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
+													</button>
+													</div><!-- .btn-group -->
+												<span class="zmi-ids">
+													<input type="checkbox" name="ids:list" tal:attributes="value python:childNode.id"/>
+												</span>
+												<div class="zmi-manage-main-change" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
+													the info child-node
+												</div>
+											</div><!-- .right -->
+											<div class="clearboth"></div>
+										</li><!-- .zmi-item -->
+									</tal:block>
+								</ul><!-- .zmi-container.zmi-sortable -->
+								<tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
+							</tal:block>
 						</tal:block>
 					</tal:block>
 				</tal:block>

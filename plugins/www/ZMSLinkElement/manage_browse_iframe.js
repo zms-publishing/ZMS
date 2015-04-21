@@ -2,8 +2,9 @@
  * Select object.
  */
 function zmiSelectObject(sender) {
-	var absolute_url = $(sender).attr('value');
+	var absolute_url = $(sender).attr('href');
 	var physical_path = $(sender).attr('data-page-physical-path');
+	var id = physical_path.substr(physical_path.lastIndexOf('/')+1);
 	var index_html = $(sender).attr('data-index-html');
 	var anchor = $(sender).attr('data-anchor');
 	var is_page = $(sender).attr('data-page-is-page');
@@ -25,7 +26,7 @@ function zmiSelectObject(sender) {
 	}
 	else {
 		url = $ZMI.relativateUrl(url,anchor);
-		self.window.parent.selectObject(url,title);
+		self.window.parent.selectObject(url,title,id);
 	}
 	self.window.parent.zmiModal("hide");
 	$ZMI.writeDebug('EO zmiSelectObject: url='+url+',title='+title);
@@ -97,7 +98,6 @@ function getInternalUrl(physical_path) {
 function zmiToggleClick(toggle, callback) {
 	$ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
 	var $container = $(toggle).parents("ol:first");
-	var checked = $('input:radio:checked').val(); 
 	$container.children(".zmi-page").remove();
 	if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-right"))) {
 		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down")).attr({title:'-'});
@@ -155,8 +155,8 @@ function zmiToggleClick(toggle, callback) {
 							}
 						}
 						var html = '';
-						html += '<'+'ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
-						html += '<'+'div class="';
+						html += '<ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
+						html += '<div class="';
 						/*
 						if ($(page).attr("permissions")) {
 							html += 'restricted ';
@@ -169,30 +169,26 @@ function zmiToggleClick(toggle, callback) {
 						}
 						html += '">'
 							+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' '
-							+ '<'+'input type="radio" name="id" value="'+page_absolute_url+'"'
-							+ ' data-page-physical-path="'+page_physical_path+'"'
-							+ ' data-index-html="'+page_index_html+'"'
-							+ ' data-anchor="'+anchor+'"'
-							+ ' data-page-is-page="'+page_is_page+'"'
-							+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'
-							+ ' onclick="zmiSelectObject(this)"/> ';
 						if (!page_is_page) {
 							html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 						}
-						html += '<'+'a href="'+page_absolute_url+'/manage_main?lang='+getZMILang()+'" onclick="return zmiFollowHref(this)">';
+						html += '<a href="'+page_absolute_url+'"'
+                            + ' data-page-physical-path="'+page_physical_path+'"'
+                            + ' data-index-html="'+page_index_html+'"'
+                            + ' data-anchor="'+anchor+'"'
+                            + ' data-page-is-page="'+page_is_page+'"'
+                            + ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'
+                            + ' onclick="return zmiSelectObject(this)">';
 						if (page_is_page) {
 							html += page_display_icon+' ';
 						}
 						html += page_titlealt;
-						html += '<'+'/a> ';
-						html += '<'+'/div>';
-						html += '<'+'/ol>';
+						html += '</a> ';
+						html += '</div>';
+						html += '</ol>';
 						$container.append(html);
 					}
 				}
-				if (typeof checked != "undefined") { 
-					$('input:radio[value="'+checked+'"]').prop("checked","checked"); 
-				} 
 				if (typeof callback == 'function') {
 					callback();
 				}
@@ -230,14 +226,6 @@ function zmiPreview(sender) {
 				$('div.zmi-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
 			});
 	}
-}
-
-/**
- * Follow link.
- */
-function zmiFollowHref(anchor) {
-	self.window.parent.manage_main.location.href=$(anchor).attr("href");
-	return false;
 }
 
 /**
@@ -303,11 +291,6 @@ function zmiRefresh() {
 				$ZMI.writeDebug('zmiRefresh.fn.4: '+selector+'='+$(selector).length);
 				$ZMI.writeDebug('zmiRefresh.fn: click(homeId='+homeId+';id='+id+')');
 				zmiToggleClick($(selector),arguments.callee);
-			}
-			else if (typeof physical_path != "undefined" && physical_path != "") {
-				selector = '*[data-home-id="'+homeId+'"][data-id="'+id+'"] input:first';
-				$ZMI.writeDebug('zmiRefresh.fn.: check '+selector+'='+$(selector).length);
-				$(selector).prop("checked","checked");
 			}
 		};
 	fn();
@@ -376,19 +359,19 @@ function zmiBodyContentSearchDone() {
 			if (href.lastIndexOf(".html")>href.lastIndexOf("/")) {
 				href = href.substr(0,href.lastIndexOf("/"));
 			}
-			$a.attr({href:href+"/manage_main",target:"_blank"});
 			var parser = new URLParser();
 			parser.parse(href);
 			var url = parser.toObj();
-			var titlealt = $("a",$h2).text();
-			$h2.html('<input name="id" type="radio" onclick="zmiSelectObject(this);"'
-				+ ' data-page-titlealt="'+titlealt+'"'
-				+ ' data-anchor="'+url['hash']+'"'
-				+ ' data-page-is-page="true"'
-				+ ' data-page-physical-path="'+url['pathname']+'"'
-				+ ' data-index-html="'+url['href']+'"'
-				+ ' value="'+url['href']+'"'
-				+ '/> ' + $h2.html());
+			var titlealt = $a.text();
+			$a.attr({
+                'href':url['href'],
+                'data-page-titlealt':titlealt,
+                'data-anchor':url['hash'],
+                'data-page-is-page':'true',
+                'data-page-physical-path':url['pathname'],
+                'data-index-html':url['href']
+                })
+              .click(function() {return zmiSelectObject(this)});
 		});
 }
 

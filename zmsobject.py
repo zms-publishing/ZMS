@@ -692,9 +692,6 @@ class ZMSObject(ZMSItem.ZMSItem,
             if key not in ['resources']:
               self.setReqProperty(key,REQUEST)
           
-          ##### VersionManager ####
-          self.onChangeObj(REQUEST)
-          
           ##### Resource-Objects #####
           metaObjIds = self.getMetaobjIds(sort=0)
           metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
@@ -706,6 +703,9 @@ class ZMSObject(ZMSItem.ZMSItem,
                 REQUEST.set('objAttrNamePrefix',childNode.id+'_')
                 childNode.manage_changeProperties( lang, REQUEST)
                 REQUEST.set('objAttrNamePrefix','')
+          
+          ##### VersionManager ####
+          self.onChangeObj(REQUEST)
           
           ##### Message ####
           message = self.getZMILangStr('MSG_CHANGED')
@@ -747,10 +747,9 @@ class ZMSObject(ZMSItem.ZMSItem,
         for id in ids:
           ob = getattr(ob,id,None)
           if ob is None:
-            if self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-              ob_id = self.getHome().id+'@'+relative_obj_path.split('/')[-1]
-              _globals.writeBlock(self,'[findObjId]: ob_id='+ob_id) 
-              ob = self.synchronizeRefs( ob_id)
+            ob_id = self.getHome().id+'@'+relative_obj_path.split('/')[-1]
+            _globals.writeBlock(self,'[findObjId]: ob_id='+ob_id) 
+            ob = self.synchronizeRefs( ob_id)
             break
       return ob
 

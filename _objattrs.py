@@ -601,14 +601,17 @@ class ObjAttrs:
         except:
           value = obj_default
       
+      #-- Text-Fields
+      elif datatype == _globals.DT_TEXT:
+        old = value
+        value = self.validateInlineLinkObj(value)
+        set = old != value
+      
       #-- Url-Fields
-      elif datatype == _globals.DT_URL and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-        try:
-          old = value
-          value = self.validateLinkObj(value)
-          set = old != value
-        except:
-          _globals.writeError(self,'[_getObjAttrValue]: Unexpected Exception when processing Url-Fields: value=%s!'%str(value))
+      elif datatype == _globals.DT_URL:
+        old = value
+        value = self.validateLinkObj(value)
+        set = old != value
       
       #-- SET?
       if set: 
@@ -912,22 +915,11 @@ class ObjAttrs:
           v = ''
       
       #-- Text-Fields
-      if datatype == _globals.DT_TEXT and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-        # Inline-links: getLinkUrl (deprecated!)
-        i = -1
-        start = '{$'
-        end = '}'
-        while True:
-          i = v.find( start, i + 1)
-          j = v.find( end, i + 1)
-          if i < 0 or j < 0:
-            break
-          value = v[i:j+1]
-          value = self.validateLinkObj(value)
-          v = v[:i] + value + v[j+1:]
+      elif datatype == _globals.DT_TEXT:
+        v = self.validateInlineLinkObj(v)
       
       #-- Url-Fields
-      if datatype == _globals.DT_URL and self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
+      elif datatype == _globals.DT_URL:
         v = self.validateLinkObj(v)
       
       # Hook for custom formatting.

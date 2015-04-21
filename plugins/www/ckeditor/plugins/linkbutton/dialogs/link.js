@@ -234,8 +234,19 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 				editor.insertElement(element);
 			}
 			else {
+				var data_id = url;
+				if (data_id.indexOf("#")>0) {
+					data_id = data_id.substr(data_id.lastIndexOf("#")+1);
+				}
+				else {
+					if (data_id.endsWith("/")) {
+						data_id = data_id.substr(0,data_id.length-1);
+					}
+					data_id = data_id.substr(data_id.lastIndexOf("/")+1);
+				}
+				attributes[ 'data-id' ] = data_id;
 				attributes[ 'data-cke-saved-href' ] = url;
-				// Browser need the "href" fro copy/paste link to work. (#6641)
+				// Browser need the "href" for copy/paste link to work. (#6641)
 				attributes.href = attributes[ 'data-cke-saved-href' ];
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection(),

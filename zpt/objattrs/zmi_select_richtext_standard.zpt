@@ -9,11 +9,15 @@
 
 /**
  */
-function selectObject(path, title) {
-	if (path.indexOf('{$')==0 && path.lastIndexOf('}')==path.length-1) {
-		path = '<'+'dtml-var expr="getLinkUrl(\''+path+'\',REQUEST)"/>';
+function selectObject(href, title, id) {
+	var attrs = [];
+	if (typeof id != 'undefined') {
+		attrs.push('data-id="'+id+'"');
 	}
-	tagSelected('a href="'+path+'"','<','>');
+	if (typeof href != 'undefined') {
+		attrs.push('href="'+href+'"');
+	}
+	tagSelected('a '+attrs.join(' '),'<','>');
 }
 
 /**

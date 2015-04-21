@@ -20,6 +20,7 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
+import re
 import time
 import urllib
 # Product Imports.
@@ -381,12 +382,35 @@ class ZReferableItem:
   """
 
   # ----------------------------------------------------------------------------
+  #  ZReferableItem.validateInlineLinkObj:
+  #
+  #  Validates internal links.
+  # ----------------------------------------------------------------------------
+  def validateInlineLinkObj(self, text):
+    if bool(self.getConfProperty('ZMS.InternalLinks.autocorrection',0)):
+      p = '<a data-id="(.*?)" href="(.*?)">(.*?)<\\/a>'
+      r = re.compile(p)
+      for f in r.findall(text):
+        old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
+        data_id = f[0]
+        href = f[1]
+        title = f[2]
+        ob = self.getLinkObj(url='{$%s}'%data_id)
+        if ob is not None:
+          new = (p.replace('\\','').replace('(.*?)','%s'))%(data_id,self.getRelObjPath(ob),title)
+          if old != new:
+            print old, new
+            text = text.replace(old,new)
+    return text
+
+
+  # ----------------------------------------------------------------------------
   #  ZReferableItem.validateLinkObj:
   #
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if url.startswith('{$') and not url.startswith('{$__'):
+    if bool(self.getConfProperty('ZMS.InternalLinks.autocorrection',0)) and url.startswith('{$') and not url.startswith('{$__'):
       ref_obj = self.getLinkObj(url)
       ref_anchor = ''
       if url.find('#') > 0:

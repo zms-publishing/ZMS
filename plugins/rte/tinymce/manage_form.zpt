@@ -49,10 +49,6 @@ function zmiRichtextInit(id) {
 	});
 }
 
-$ZMI.registerReady(function() {
-	zmiRichtextInit('<tal:block tal:content="request/elName"></tal:block>');
-});
-
 <tal:block tal:content="structure python:'</script>'"></tal:block>
 
 <tal:block tal:define="dummy0 python:request.set('f_zmiRichtextOnSubmitEventHandler',False)"></tal:block>

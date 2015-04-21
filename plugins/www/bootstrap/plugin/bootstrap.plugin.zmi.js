@@ -251,27 +251,18 @@ $(function(){
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$button.append($ZMI.icon("icon-chevron-down"));
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
-				if ($(this).parents("li.zmi-item:first").hasClass("zmi-nochildren")) {
-					$ZMI.actionList.over(this,"each",evt);
-				}
 			})
 		.focus( function(evt) {
-				if (!$(this).parents("li.zmi-item:first").hasClass("zmi-nochildren")) {
-					$ZMI.actionList.over(this,"focus",evt);
-				}
+				$ZMI.actionList.over(this,"focus",evt);
 			})
 		.hover( function(evt) {
-				if (!$(this).parents("li.zmi-item:first").hasClass("zmi-nochildren")) {
-					$ZMI.actionList.over(this,"mouseover",evt);
-				}
+				$ZMI.actionList.over(this,"mouseover",evt);
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
 				$($ZMI.icon_selector("icon-chevron-down"),$button).show();
 			},
 			function(evt) {
-				if (!$(this).parents("li.zmi-item:first").hasClass("zmi-nochildren")) {
-					$ZMI.actionList.out(this,"mouseout");
-				}
+				$ZMI.actionList.out(this,"mouseout");
 				var $button = $('button.btn.split-right.dropdown-toggle',this);
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
@@ -418,7 +409,7 @@ ZMI.prototype.initInputFields = function(container) {
 							if (isBlank) {
 								$controlGroup.addClass("has-error");
 								$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
-								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
+								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'right'});
 								if (b) {
 									$control.focus();
 								}
@@ -558,6 +549,34 @@ ZMI.prototype.initInputFields = function(container) {
 							});
 					}
 				});
+				// Richedit
+				var $richedits = $('div[id^="zmiStandardEditor"]',this);
+				if ($richedits.length > 0) {
+					$richedits.each(function() {
+							var elName = $(this).attr("id").substr("zmiStandardEditor".length);
+							zmiRichtextInit(elName);
+							var v = $("#"+elName).val();
+							function matchAll(source, regexp) {
+								var matches = [];
+								source.replace(regexp, function() {
+										var arr = ([]).slice.call(arguments, 0);
+										var extras = arr.splice(-2);
+										arr.index = extras[0];
+										arr.input = extras[1];
+										matches.push(arr);
+								});
+								return matches.length ? matches : [];
+							}
+							var l = matchAll(v,/<a data-id="(.*?)"(.*?)>(.*?)<\/a>/gi);
+							if (l.length > 0) {
+								var labels = [];
+								for (var i = 0; i < l.length; i++) {
+									labels.push('<span class="label">'+l[i][0]+'</span>');
+								}
+								$(this).siblings(":last").after('<div>Inline-Links: '+labels.join(', ')+'</div>')
+							}
+						});
+				}
 			// Date-Picker
 			$("input.datepicker,input.datetimepicker",this)
 			.each(function() {
@@ -794,13 +813,18 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-					var action = self.location.href;
-					action = action.substr(0,action.lastIndexOf("/"));
-					action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
-					action += "?lang=" + lang;
-					self.location.href = action;
-					return false;
-				});
+			if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
+				var action = self.location.href;
+				action = action.substr(0,action.lastIndexOf("/"));
+				action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
+				action += "?lang=" + lang;
+				self.location.href = action;
+			}
+			else {
+				$('button.btn.split-right.dropdown-toggle',el).click();
+			}
+			return false;
+		});
 	// Build action and params.
 	var action = zmiParams['base_url'];
 	action = action.substr(0,action.lastIndexOf("/"));

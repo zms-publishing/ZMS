@@ -1,10 +1,14 @@
 /**
  * @see http://www.pro4j.de/erstellen-eines-plugins-fur-den-ckeditor-30
+ * @see http://docs.ckeditor.com/#!/guide/plugin_sdk_integration_with_acf
  */
 CKEDITOR.plugins.add('linkbutton', {
 	init : function( editor )
 	{
-		editor.addCommand( 'linkbuttonDlg', new CKEDITOR.dialogCommand( 'linkbuttonDlg' ) );
+		editor.addCommand( 'linkbuttonDlg', new CKEDITOR.dialogCommand( 'linkbuttonDlg', {
+					allowedContent:'a[data-id,href]'
+				}
+		) );
  
 		editor.ui.addButton( 'linkbutton',
 			{

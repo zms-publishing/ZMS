@@ -587,17 +587,10 @@ ul.zmi-container .right div input {
 ul.zmi-container .zmi-item .zmi-action {
 	margin-left:-159px;
 }
-ul.zmi-container .zmi-item.zmi-nochildren .zmi-action {
-	margin-left:0;
-}
 ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
 	visibility:hidden;
 	text-align:left;
-}
-ul.zmi-container .zmi-item.zmi-nochildren .zmi-action .split-left {
-	width:auto;
-	padding-right:.5em
 }
 .checkbox.split-left {
 	height:1em;

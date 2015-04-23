@@ -1,4 +1,5 @@
 var zmiDialog = null;
+var data_id = null;
 
 function showPreviewZMSGraphic(el,src,icon,filename,size) {
 	var html= '';
@@ -29,6 +30,7 @@ function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
 			var titlealt = "";
+			var physical_path = $(this).attr("physical_path");
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = $(this).attr("index_html");
 			var extra = null;
@@ -63,7 +65,7 @@ function zmiAddPages(result, siblings) {
 			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
-			html += '<span onclick="zmiSelectObject(\''+id+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
+			html += '<span onclick="zmiSelectObject(\''+physical_path.substr(physical_path.lastIndexOf("/")+1)+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
 			html += $(this).attr("display_icon");
 			if (extra != null) {
 				html += '<span class="ui-helper-clickable" onmouseover="'+extra+'" onmouseout="hidePreview();">&dArr;</span>';
@@ -113,6 +115,7 @@ function zmiExpandObject(id,abs_url,meta_id) {
 }
 
 function zmiSelectObject(id,abs_url,meta_id) {
+	data_id = id;
 	zmiDialog.getContentElement('info', 'url').setValue(abs_url);
 	zmiDialog.click("ok");
 }
@@ -234,16 +237,6 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 				editor.insertElement(element);
 			}
 			else {
-				var data_id = url;
-				if (data_id.indexOf("#")>0) {
-					data_id = data_id.substr(data_id.lastIndexOf("#")+1);
-				}
-				else {
-					if (data_id.endsWith("/")) {
-						data_id = data_id.substr(0,data_id.length-1);
-					}
-					data_id = data_id.substr(data_id.lastIndexOf("/")+1);
-				}
 				attributes[ 'data-id' ] = data_id;
 				attributes[ 'data-cke-saved-href' ] = url;
 				// Browser need the "href" for copy/paste link to work. (#6641)

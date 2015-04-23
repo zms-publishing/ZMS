@@ -409,7 +409,7 @@ ZMI.prototype.initInputFields = function(container) {
 							if (isBlank) {
 								$controlGroup.addClass("has-error");
 								$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
-								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'right'});
+								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
 								if (b) {
 									$control.focus();
 								}
@@ -1197,16 +1197,18 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 	}
 	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
 	var startTag = leftDelimiter + tag + rightDelimiter;
-	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter + "$", "gi");
+	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter, "gi");
 	var endTag = leftDelimiter + "/" + tagName + rightDelimiter; 
-	var endRe = new RegExp("^" + leftDelimiter + "/" + tag + rightDelimiter, "gi");
+	var endRe = new RegExp(leftDelimiter + "/" + tag + rightDelimiter, "gi");
+	var preMatch = pre.match(startRe);
+	var postMatch = post.match(endRe);
 	$ZMI.writeDebug("[untagSelected]: pre='"+pre+"'");
 	$ZMI.writeDebug("[untagSelected]: post='"+post+"'");
-	$ZMI.writeDebug("[untagSelected]: startRe='"+pre.match(startRe)+"' "+startRe);
-	$ZMI.writeDebug("[untagSelected]: endRe='"+post.match(endRe)+"' "+endRe);
-	if (pre.match(startRe)!=null && post.match(endRe)!=null) {
-		var newPre = pre.replace(startRe,'');
-		var newPost = post.replace(endRe,'');
+	$ZMI.writeDebug("[untagSelected]: startRe='"+preMatch+"' "+startRe);
+	$ZMI.writeDebug("[untagSelected]: endRe='"+postMatch+"' "+endRe);
+	if (preMatch!=null && postMatch!=null) {
+		var newPre = pre.replace(preMatch[preMatch.length-1],'');
+		var newPost = post.replace(postMatch[0],'');
 		$(selectedInput).val(newPre+range+newPost);
 		// Set selection.
 		var offset = newPre.length-pre.length;

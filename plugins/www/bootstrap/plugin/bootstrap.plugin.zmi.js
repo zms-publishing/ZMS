@@ -1207,13 +1207,17 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 	$ZMI.writeDebug("[untagSelected]: startRe='"+preMatch+"' "+startRe);
 	$ZMI.writeDebug("[untagSelected]: endRe='"+postMatch+"' "+endRe);
 	if (preMatch!=null && postMatch!=null) {
-		var newPre = pre.replace(preMatch[preMatch.length-1],'');
-		var newPost = post.replace(postMatch[0],'');
-		$(selectedInput).val(newPre+range+newPost);
-		// Set selection.
-		var offset = newPre.length-pre.length;
-		selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
-		setInputSelection(selectedInput,selectedText);
+    	var preMatch = preMatch[preMatch.length-1];
+    	var postMatch = postMatch[0];
+    	if (pre.endsWith(preMatch) && post.startsWith(postMatch)) {
+    		var newPre = pre.replace(preMatch,'');
+    		var newPost = post.replace(postMatch,'');
+    		$(selectedInput).val(newPre+range+newPost);
+    		// Set selection.
+    		var offset = newPre.length-pre.length;
+    		selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
+    		setInputSelection(selectedInput,selectedText);
+        }
 		return true;
 	}
 	return false;

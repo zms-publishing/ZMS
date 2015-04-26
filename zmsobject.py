@@ -692,6 +692,9 @@ class ZMSObject(ZMSItem.ZMSItem,
             if key not in ['resources']:
               self.setReqProperty(key,REQUEST)
           
+          ##### VersionManager ####
+          self.onChangeObj(REQUEST)
+          
           ##### Resource-Objects #####
           metaObjIds = self.getMetaobjIds(sort=0)
           metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
@@ -703,9 +706,6 @@ class ZMSObject(ZMSItem.ZMSItem,
                 REQUEST.set('objAttrNamePrefix',childNode.id+'_')
                 childNode.manage_changeProperties( lang, REQUEST)
                 REQUEST.set('objAttrNamePrefix','')
-          
-          ##### VersionManager ####
-          self.onChangeObj(REQUEST)
           
           ##### Message ####
           message = self.getZMILangStr('MSG_CHANGED')

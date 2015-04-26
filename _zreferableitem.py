@@ -387,7 +387,6 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    """
     if bool(self.getConfProperty('ZMS.InternalLinks.autocorrection',0)):
       p = '<a data-id="(.*?)" href="(.*?)">(.*?)<\\/a>'
       r = re.compile(p)
@@ -402,7 +401,6 @@ class ZReferableItem:
           if old != new:
             print old, new
             text = text.replace(old,new)
-    """
     return text
 
 
@@ -412,7 +410,6 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    """
     if bool(self.getConfProperty('ZMS.InternalLinks.autocorrection',0)) and url.startswith('{$') and not url.startswith('{$__'):
       ref_obj = self.getLinkObj(url)
       ref_anchor = ''
@@ -424,7 +421,6 @@ class ZReferableItem:
       else:
         # Broken link.
         url = '{$__' + url[2:-1] + '__}'
-    """
     return url
 
 

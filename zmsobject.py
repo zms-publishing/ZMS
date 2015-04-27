@@ -734,27 +734,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.findObjId:
-    #
-    #  Find object by ids given in object path.
-    # --------------------------------------------------------------------------
-    def findObjId(self, relative_obj_path, REQUEST):
-      _globals.writeLog( self, '[findObjId]: relative_obj_path=%s'%relative_obj_path)
-      docElmnt = self.getDocumentElement()
-      ob = docElmnt
-      if len(relative_obj_path) > 0:
-        ids = relative_obj_path.split( '/')
-        for id in ids:
-          ob = getattr(ob,id,None)
-          if ob is None:
-            ob_id = self.getHome().id+'@'+relative_obj_path.split('/')[-1]
-            _globals.writeBlock(self,'[findObjId]: ob_id='+ob_id) 
-            ob = self.synchronizeRefs( ob_id)
-            break
-      return ob
-
-
-    # --------------------------------------------------------------------------
     #  ZMSObject.getDeclId:
     #
     #  Returns declarative id.

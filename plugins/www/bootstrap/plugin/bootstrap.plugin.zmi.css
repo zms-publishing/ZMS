@@ -536,7 +536,7 @@ body.manage-menu .zmi-helper-clickable:hover {
 }
 body.manage-menu .dropdown-menu > li > a {
 	clear: both;
-	color: #CCC!important;
+	color: #CCCCCC !important;
 	display: block;
 	font-size: 13px;
 	padding: 3px 8px 3px 0;
@@ -554,6 +554,10 @@ body.manage-menu .dropdown-menu > li > a:focus,
 body.manage-menu .dropdown-menu > li > a:hover {
 	background-color:transparent !important;
 	color:#fff !important;
+}
+.zmi.manage-menu #loading, 
+.zmi.manage-menu #loading .icon {
+	color: #CCCCCC !important;
 }
 
 /*  Font Awesome styles: prevent resetting by CK Editor

@@ -389,14 +389,15 @@ def triggerEvent(self, *args, **kwargs):
 
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
-    metaObjAttr = self.getMetaobjAttr( self.meta_id, name)
-    if metaObjAttr is not None:
-      v = self.attr(name)
-      l.append( v)
+    v = self.evalMetaobjAttr('%s'%(name),kwargs)
+    writeLog( self, "[triggerEvent]: %s=%s"%(name,str(v)))
+    if v is not None:
+      l.append(v)
     for metaObjId in self.getMetaobjIds():
       metaObj = self.getMetaobj(metaObjId)
       if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
-        v = self.evalMetaobjAttr('%s.%s'%(metaObjId, name),kwargs)
+        v = self.evalMetaobjAttr('%s.%s'%(metaObjId,name),kwargs)
+        writeLog( self, "[triggerEvent]: %s=%s"%('%s.%s'%(metaObjId, name),str(v)))
         if v is not None:
           l.append(v)
     ob = self
@@ -624,6 +625,7 @@ def writeBlock(self, info):
 _globals.writeError:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeError(self, info):
+  t,v='?','?'
   try:
     t,v,tb = sys.exc_info()
     v = str(v)
@@ -638,9 +640,10 @@ def writeError(self, info):
     zms_log = self.zms_log
     if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
+    t = t.__name__.upper()
   except:
     pass
-  return info
+  return '%s: %s <!-- %s -->'%(t,v,info)
 
 """
 ################################################################################

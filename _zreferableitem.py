@@ -509,7 +509,7 @@ class ZReferableItem:
   def tal_anchor(self, href, target='', attrs={}, content=''):
     filtered_attrs_keys = filter(lambda x: len(x)>0, attrs.keys())
     str_attrs = ' '.join( map(lambda x:str(x)+'=\042'+str(attrs[x]+'\042'), filtered_attrs_keys) )
-    return '<a href="%s" %s%s>%s</a>'%(href,['',' target="%s"'%target][int(len(target)>0)],str_attrs,content)
+    return '<a href="%s" %s %s>%s</a>'%(href,['',' target="%s"'%target][int(len(target)>0)],str_attrs,content)
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.synchronizeRefs:

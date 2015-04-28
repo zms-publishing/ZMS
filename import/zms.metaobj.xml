@@ -4171,8 +4171,11 @@ if teaserElmnts:
       name = 'pageelement_TeaserElement'
     else:
       name = 'bodyContentZMSCustom_%s'%teaserElmnt.meta_id
-    method = getattr(teaserElmnt,name)
-    method_result = method(teaserElmnt,request)
+    method = getattr(teaserElmnt,name,None)
+    if method is not None:
+      method_result = method(teaserElmnt,request)
+    else:
+      method_result = teaserElmnt.getBodyContent(request)
     try:
       method_result = unicode(method_result,'utf-8')
     except:

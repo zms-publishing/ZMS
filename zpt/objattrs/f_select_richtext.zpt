@@ -48,7 +48,7 @@ function zmiRichtextEditorToggle( elName, newFormat) {
 
 $ZMI.registerReady(function() {
 	var format = $('#format').val();
-	var wysiwyg = typeof format=='undefined' || format=='<tal:block tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
+	var wysiwyg = typeof format=='undefined' || format=='<tal:block tal:on-error="string:undefined" tal:content="structure python:rteTextFormats[0].getId()"></tal:block>';
 	if(wysiwyg) {
 		$('div[id^="zmiStandardEditor"]').hide();
 	}

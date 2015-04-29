@@ -62,10 +62,14 @@ def parseXmlString(self, file):
 manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
+  message = ''
+  messagekey = 'manage_tabs_message'
+  t0 = time.time()
+  target = self.absolute_url()
   
   if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
     
-    ##### Create ####
+    # Create
     id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
     new_id = self.getNewId(id_prefix)
     obj = ZMSCustom(new_id,_sort_id+1,meta_id)
@@ -79,29 +83,36 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
     redirect_self = redirect_self and not REQUEST.get('btn','') in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]
     
     obj = getattr(self,obj.id)
-    ##### Object State ####
-    obj.setObjStateNew(REQUEST)
-    ##### Init Coverage ####
-    coverage = self.getDCCoverage(REQUEST)
-    if coverage.find('local.')==0:
-      obj.setObjProperty('attr_dc_coverage',coverage)
-    else:
-      obj.setObjProperty('attr_dc_coverage','global.'+lang)
-    ##### Init Properties ####
-    obj.manage_changeProperties(lang,REQUEST,RESPONSE)
-    
-    ##### Normalize Sort-IDs ####
-    self.normalizeSortIds(id_prefix)
+    try:
+      # Object State
+      obj.setObjStateNew(REQUEST)
+      # Init Coverage
+      coverage = self.getDCCoverage(REQUEST)
+      if coverage.find('local.')==0:
+        obj.setObjProperty('attr_dc_coverage',coverage)
+      else:
+        obj.setObjProperty('attr_dc_coverage','global.'+lang)
+      # Change Properties
+      obj.changeProperties(lang)
+      # Normalize Sort-Ids
+      self.normalizeSortIds(id_prefix)
+      # Message
+      message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+    except:
+      message = _globals.writeError(self,"[manage_addZMSCustom]")
+      messagekey = 'manage_tabs_error_message'
+    message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
     
     # Return with message.
-    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
     if redirect_self:
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),obj.id,lang,urllib.quote(message)))
-    else:
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
+      target = '%s/%s'%(target,obj.id)
+    target = REQUEST.get( 'manage_target', '%s/manage_main'%target)
+    target = self.url_append_params( target, { 'lang': lang, messagekey: message})
+    target = '%s#zmi_item_%s'%( target, obj.id)
+    RESPONSE.redirect(target)
   
   else:
-    RESPONSE.redirect('%s/manage_main?lang=%s'%(self.absolute_url(),lang))
+    RESPONSE.redirect('%s/manage_main?lang=%s'%(target,lang))
 
 
 def containerFilter(container):

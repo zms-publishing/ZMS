@@ -604,10 +604,84 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.relative_obj_path:
+    #  ZMSObject.changeProperties:
     # --------------------------------------------------------------------------
-    def relative_obj_path(self):
-      return self.absolute_url()[len(self.getDocumentElement().absolute_url())+1:]
+    def changeProperties(self, lang):
+      request = self.REQUEST
+      
+      ##### Resources #####
+      if 'resources' in self.getMetaobjAttrIds( self.meta_id):
+        resources = self.getObjProperty( 'resources', request)
+        l = map( lambda x: 0, range( len( resources)))
+        for key in self.getObjAttrs().keys():
+          obj_attr = self.getObjAttr( key)
+          el_name = self.getObjAttrName( obj_attr, lang)
+          if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+            el_value = request.get( el_name)
+            if el_value is not None:
+              for i in range( len( resources)):
+                v = resources[ i]
+                if el_value.find( '/'+v.getFilename()) > 0:
+                  l[ i] = l[ i] + 1
+        c = 0 
+        for i in range( len( resources)):
+          v = resources[ c]
+          if l[ i] == 0:
+            del resources[ c]
+          else:
+            src_old = '%s/@%i/%s'%(self.id,i,v.getFilename())
+            src_new = '%s/@%i/%s'%(self.id,c,v.getFilename())
+            for key in self.getObjAttrs().keys():
+              obj_attr = self.getObjAttr( key)
+              el_name = self.getObjAttrName( obj_attr, lang)
+              if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+                el_value = request.get( el_name)
+                if el_value is not None:
+                  el_value = el_value.replace( src_old, src_new)
+                  request.set( el_name, el_value)
+            c = c + 1
+        for key in self.getObjAttrs().keys():
+          obj_attr = self.getObjAttr( key)
+          el_name = self.getObjAttrName( obj_attr, lang)
+          if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+            v = request.get( 'resource_%s'%el_name)
+            if isinstance(v,ZPublisher.HTTPrequest.FileUpload):
+              if len(getattr(v,'filename',''))>0:
+                v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
+                resources.append( v)
+                el_value = request.get( el_name)
+                if el_value is not None:
+                  src_new = '%s/@%i/%s'%(self.absolute_url(),len(resources)-1,v.getFilename())
+                  if v.getContentType().find( 'image/') == 0:
+                    el_value = el_value + '<img src="%s" alt="" border="0" align="absmiddle"/>'%src_new
+                  else:
+                    el_value = el_value + '<a href="%s" target="_blank">%s</a>'%(src_new,v.getFilename())
+                  request.set( el_name, el_value)
+                  redirect_self = True
+        self.setObjProperty( 'resources', resources, lang)
+      
+      ##### Primitives #####
+      for key in self.getObjAttrs().keys():
+        if key not in ['resources']:
+          self.setReqProperty(key,request)
+      
+      ##### VersionManager ####
+      self.onChangeObj(request)
+      
+      ##### Resource-Objects #####
+      metaObjIds = self.getMetaobjIds(sort=0)
+      metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
+      for metaObjAttrId in metaObjAttrIds:
+        metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
+        if metaObjAttr['type'] in metaObjIds and \
+           self.getMetaobj(metaObjAttr['type'])['type'] == 'ZMSResource':
+          for childNode in self.getObjChildren(metaObjAttrId,request):
+            request.set('objAttrNamePrefix',childNode.id+'_')
+            # Object State
+            self.setObjStateModified(request)
+            # Change Properties
+            childNode.changeProperties( lang)
+            request.set('objAttrNamePrefix','')
 
 
     ############################################################################
@@ -617,7 +691,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
     def manage_changeProperties(self, lang, REQUEST, RESPONSE=None):
       """ ZMSObject.manage_changeProperties """
-      
       message = ''
       messagekey = 'manage_tabs_message'
       t0 = time.time()
@@ -632,88 +705,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       
       if REQUEST.get('btn','') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         try:
-          
-          ##### Object State #####
+          # Object State
           self.setObjStateModified(REQUEST)
-          
-          ##### Resources #####
-          if 'resources' in self.getMetaobjAttrIds( self.meta_id):
-            resources = self.getObjProperty( 'resources', REQUEST)
-            l = map( lambda x: 0, range( len( resources)))
-            for key in self.getObjAttrs().keys():
-              obj_attr = self.getObjAttr( key)
-              el_name = self.getObjAttrName( obj_attr, lang)
-              if REQUEST.has_key( el_name) and REQUEST.has_key( 'resource_%s'%el_name):
-                el_value = REQUEST.get( el_name)
-                if el_value is not None:
-                  for i in range( len( resources)):
-                    v = resources[ i]
-                    if el_value.find( '/'+v.getFilename()) > 0:
-                      l[ i] = l[ i] + 1
-            c = 0 
-            for i in range( len( resources)):
-              v = resources[ c]
-              if l[ i] == 0:
-                del resources[ c]
-              else:
-                src_old = '%s/@%i/%s'%(self.id,i,v.getFilename())
-                src_new = '%s/@%i/%s'%(self.id,c,v.getFilename())
-                for key in self.getObjAttrs().keys():
-                  obj_attr = self.getObjAttr( key)
-                  el_name = self.getObjAttrName( obj_attr, lang)
-                  if REQUEST.has_key( el_name) and REQUEST.has_key( 'resource_%s'%el_name):
-                    el_value = REQUEST.get( el_name)
-                    if el_value is not None:
-                      el_value = el_value.replace( src_old, src_new)
-                      REQUEST.set( el_name, el_value)
-                c = c + 1
-            for key in self.getObjAttrs().keys():
-              obj_attr = self.getObjAttr( key)
-              el_name = self.getObjAttrName( obj_attr, lang)
-              if REQUEST.has_key( el_name) and REQUEST.has_key( 'resource_%s'%el_name):
-                v = REQUEST.get( 'resource_%s'%el_name)
-                if isinstance(v,ZPublisher.HTTPRequest.FileUpload):
-                  if len(getattr(v,'filename',''))>0:
-                    v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
-                    resources.append( v)
-                    el_value = REQUEST.get( el_name)
-                    if el_value is not None:
-                      src_new = '%s/@%i/%s'%(self.absolute_url(),len(resources)-1,v.getFilename())
-                      if v.getContentType().find( 'image/') == 0:
-                        el_value = el_value + '<img src="%s" alt="" border="0" align="absmiddle"/>'%src_new
-                      else:
-                        el_value = el_value + '<a href="%s" target="_blank">%s</a>'%(src_new,v.getFilename())
-                      REQUEST.set( el_name, el_value)
-                      redirect_self = True
-            self.setObjProperty( 'resources', resources, lang)
-          
-          ##### Primitives #####
-          for key in self.getObjAttrs().keys():
-            if key not in ['resources']:
-              self.setReqProperty(key,REQUEST)
-          
-          ##### VersionManager ####
-          self.onChangeObj(REQUEST)
-          
-          ##### Resource-Objects #####
-          metaObjIds = self.getMetaobjIds(sort=0)
-          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
-          for metaObjAttrId in metaObjAttrIds:
-            metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)
-            if metaObjAttr['type'] in metaObjIds and \
-               self.getMetaobj(metaObjAttr['type'])['type'] == 'ZMSResource':
-              for childNode in self.getObjChildren(metaObjAttrId,REQUEST):
-                REQUEST.set('objAttrNamePrefix',childNode.id+'_')
-                childNode.manage_changeProperties( lang, REQUEST)
-                REQUEST.set('objAttrNamePrefix','')
-          
-          ##### Message ####
+          # Change Properties
+          self.changeProperties(lang)
+          # Message
           message = self.getZMILangStr('MSG_CHANGED')
-        
         except:
           message = _globals.writeError(self,"[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
-        
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
@@ -721,7 +721,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if redirect_self or target_ob is None:
         target_ob = self
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
-      target = self.url_append_params( target, { 'lang': lang, 'preview': 'preview',  messagekey: message})
+      target = self.url_append_params( target, { 'lang': lang, messagekey: message})
       target = '%s#zmi_item_%s'%( target, self.id)
       if RESPONSE is not None:
         return RESPONSE.redirect( target)

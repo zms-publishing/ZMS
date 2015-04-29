@@ -486,22 +486,28 @@ class VersionItem:
     #  VersionItem.onChangeObj:
     # --------------------------------------------------------------------------
     def onChangeObj(self, REQUEST, forced=False, do_history=True):
-      _globals.writeLog( self, "[onChangeObj]")
-      prim_lang = self.getPrimaryLanguage()
-      lang = REQUEST.get('lang',prim_lang)
-      
-      ##### Trigger thumbnail generation of image fields ####
-      _blobfields.thumbnailImageFields( self, lang, REQUEST)
-      
-      ##### Trigger custom onChangeObj-Event (if there is one) ####
-      _globals.triggerEvent( self, 'onChangeObjEvt')
-      
-      ##### Commit or initiate workflow transition ####
-      if self.getAutocommit() or forced:
-        self.commitObj(REQUEST,forced,do_history)
-      else:
-        self.autoWfTransition(REQUEST)
-      _globals.writeLog( self, "[onChangeObj]: Finished!")
+      try:
+        _globals.writeLog( self, "[onChangeObj]")
+        prim_lang = self.getPrimaryLanguage()
+        lang = REQUEST.get('lang',prim_lang)
+        
+        ##### Trigger thumbnail generation of image fields ####
+        _blobfields.thumbnailImageFields( self, lang, REQUEST)
+        
+        ##### Trigger custom onChangeObj-Event (if there is one) ####
+        _globals.triggerEvent( self, 'onChangeObjEvt')
+        
+        ##### Commit or initiate workflow transition ####
+        if self.getAutocommit() or forced:
+          self.commitObj(REQUEST,forced,do_history)
+        else:
+          self.autoWfTransition(REQUEST)
+        _globals.writeLog( self, "[onChangeObj]: Finished!")
+      except Exception as e:
+        _globals.writeLog( self, "[onChangeObj]: abort transaction")
+        import transaction
+        transaction.abort()
+        raise e
 
     # --------------------------------------------------------------------------
     #  VersionItem.onSynchronizeObj:

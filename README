@@ -43,7 +43,15 @@ Changelog
 3.2.0dev (unreleased)
 *********************
 
-    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3015&limit=200>`_
+    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3103&limit=200>`_
+
+
+3.1.3 (2015-04-29)
+******************
+    * Added Search Connectors (Defaults: ZCatalog, Apache Solr)
+    * Revised  Object Browser for more efficient linking
+    * Added Role- and ClientID-based CSS classes for customizing multisite ZMI
+    * `more in 3.1.3... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3102&stop_rev=3015&limit=200>`_
 
 3.1.2 (2015-02-25)
 ******************

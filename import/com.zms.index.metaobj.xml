@@ -116,7 +116,7 @@ if url.startswith('{$') and url.endswith('}'):
     zmsid = url.split('/')[-1]
     zmscontext.writeStdout('ZMSIndex.getLinkObj: zmsid='+zmsid)
     zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
-    if zmsindex is not None:
+    if zmsindex is not None and zmsindex.meta_id=='ZMSIndex':
       index = zmsindex.attr('_index')
       row = filter(lambda x:x['zmsid']==zmsid,index)
       if len(row)==1:
@@ -206,9 +206,9 @@ print "ObjectAdded"
 zmscontext.writeStdout("ObjectAdded")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndex':
   index = zmsindex.attr('_index')
   index = filter(lambda x:x['zmsid']!=zmsid,index)
   d = {}
@@ -250,9 +250,9 @@ zmscontext.writeStdout("ObjectMoved")
 zmsid = zmscontext.id
 zmspathid = '/%s/'%zmsid
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndex':
   index = zmsindex.attr('_index')
   tree = filter(lambda x:x['zmspath'].find(zmspathid)<0,index)
   movedtree = filter(lambda x:x not in tree,index)
@@ -292,9 +292,9 @@ print "ObjectRemoved"
 zmscontext.writeStdout("ObjectRemoved")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndex':
   index = zmsindex.attr('_index')
   index = filter(lambda x:not x['zmspath'].startswith(zmspath),index)
   zmsindex.attr('_index',index)
@@ -475,7 +475,7 @@ if url.startswith('{$') and url.endswith('}'):
     zmsid = url.split('/')[-1]
     zmscontext.writeStdout('ZMSIndexDb.getLinkObj: zmsid='+zmsid)
     zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
-    if zmsindex is not None:
+    if zmsindex is not None and zmsindex.meta_id=='ZMSIndexDb':
       db = getattr(zmsindex,'db',None)
       if db is not None:
         da = db.getDA()
@@ -520,9 +520,9 @@ print "ObjectAdded"
 zmscontext.writeStdout("ObjectAdded")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndexDb':
   db = getattr(zmsindex,'db',None)
   if db is not None:
     da = db.getDA()
@@ -561,9 +561,9 @@ zmscontext.writeStdout("ObjectMoved")
 zmsid = zmscontext.id
 zmspathid = '/%s/'%zmsid
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndexDb':
   db = getattr(zmsindex,'db',None)
   if db is not None:
     da = db.getDA()
@@ -603,9 +603,9 @@ print "ObjectRemoved"
 zmscontext.writeStdout("ObjectRemoved")
 zmsid = zmscontext.id
 zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getRootElement()
+docelmnt = zmscontext.getDocumentElement()
 zmsindex = getattr(docelmnt,'zmsindex',None)
-if zmsindex is not None:
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndexDb':
   db = getattr(zmsindex,'db',None)
   if db is not None:
     da = db.getDA()

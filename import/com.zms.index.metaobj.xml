@@ -43,7 +43,7 @@ function zmsIndexSearchBtnClick(sender) {
   </div>
 </div><!-- .form-group -->
 <div class="form-group">
-  <label class="col-sm-2">Id</label>
+  <label class="col-sm-2">ZMS-Id</label>
   <div class="col-sm-6">
   <div class="input-group">
     <input id="search_term" class="form-control" type="text" tal:attributes="value python:request.get('search_term','')" size="15" name="search_term"/>
@@ -338,7 +338,7 @@ return printed
           <item key="id"><![CDATA[ZMSIndex]]></item>
           <item key="name"><![CDATA[ZMSIndex]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.0.7]]></item>
+          <item key="revision"><![CDATA[0.0.8]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -393,7 +393,7 @@ function zmsIndexSearchBtnClick(sender) {
   </div>
 </div><!-- .form-group -->
 <div class="form-group">
-  <label class="col-sm-2">Id</label>
+  <label class="col-sm-2">ZMS-Id</label>
   <div class="col-sm-6">
   <div class="input-group">
     <input id="search_term" class="form-control" type="text" tal:attributes="value python:request.get('search_term','')" size="15" name="search_term"/>
@@ -834,7 +834,7 @@ def execute(conn, sql, *args):
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.0.7]]></item>
+          <item key="revision"><![CDATA[0.0.8]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

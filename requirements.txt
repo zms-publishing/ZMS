@@ -41,7 +41,7 @@ ThreadLock==2.13.0
 transaction==1.4.3
 zc.lockfile==1.1.0
 ZConfig==3.0.4
-zdaemon==4.0.1
+zdaemon==4.0.0
 ZEO==4.1.0
 zExceptions==2.13.0
 zLOG==2.12.0

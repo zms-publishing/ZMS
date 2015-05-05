@@ -85,7 +85,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'transaction==1.4.3',
   'zc.lockfile==1.1.0',
   'ZConfig==3.0.4',
-  'zdaemon==4.0.1',
+  'zdaemon==4.0.0', # due to zdaemon>=4.0.1 causes AttributeError: ZopeCtlOptions instance has no attribute 'transcript'
   'ZEO==4.1.0',
   'zExceptions==2.13.0',
   'zLOG==2.12.0',

@@ -325,10 +325,10 @@ class ZMSSqlDb(ZMSObject):
 
     """
     Execute sql-statement.
-    Supports parameter-markers of mxODBCZopeDA.
+    Supports parameter-markers of python DB API.
     @param sql: The sql-statement
     @type sql: C{str}
-    @param params: The values for the parameters.
+    @param params: The values for the parameter-markers.
     @type params: C{tuple}
     @param max_rows: The maximum number of rows (default: None, unlimited)
     @type max_rows: C{str}
@@ -336,10 +336,36 @@ class ZMSSqlDb(ZMSObject):
     def execute(self, sql, params=(), max_rows=None, encoding=None):
       da = self.getDA()
       dbc = da._v_database_connection
-      result = dbc.execute(sql,params,max_rows)
+      c = getattr(dbc,"execute",None)
+      if c is not None:
+        result = dbc.execute(sql,params,max_rows)
+      else:
+        result = dbc.query(self.substitute_params(sql,params),_globals.nvl(max_rows,999))
       if encoding:
         result = self.assemble_query_result(result,encoding)
       return result
+
+
+    """
+    Substitute parameter-markers.
+    @param sql: The sql-statement
+    @type sql: C{str}
+    @param params: The values for the parameter-markers.
+    @type params: C{tuple}
+    """
+    def substitute_params(self, sql, params=()):
+      sql = sql.replace('?','%s')
+      l = []
+      for i in list(params):
+        if i is None:
+          i = "NULL"
+        elif type(i) in [int,float]:
+          i = str(i)
+        else:
+          i = '\'%s\''%str(i)
+        l.append(i)
+      sql = sql%tuple(l)
+      return sql
 
 
     """

@@ -202,7 +202,8 @@ class ZMSContainerObject(
       node.onChangeObj(REQUEST)
       
       # Normalize sort-ids.
-      self.normalizeSortIds(_globals.id_prefix(id))
+      if values.get('normalize_sort_ids',True):
+        self.normalizeSortIds(_globals.id_prefix(id))
       
       # Return object.
       return node

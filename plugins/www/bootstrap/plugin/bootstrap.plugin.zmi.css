@@ -1269,6 +1269,10 @@ div.right .btn .caret {
 	}
 	.zmi-children ul.zmi-container > li.zmi-item > div.right {
 		width: 93% !important;
+		/* obsolete? */
+	}
+	.accordion-group.zmi-container .zmi-children ul.zmi-container > li.zmi-item > div.right {
+		width: 100% !important;
 	}
 	ul.zmi-container .zmi-item .zmi-action {
 		margin-left:0px;

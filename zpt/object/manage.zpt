@@ -1,7 +1,7 @@
 <tal:block tal:define="global 
 		is_sitemap python:request.get('dtpref_sitemap','0')=='1' and not (request.get('dtpref_system','0')=='1' and request['URL'].find('/manage_workspace')>0);
 		is_system python:request.get('dtpref_system','0')=='1';
-		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]);">
+		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang',here.getPrimaryLanguage())+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]);">
 	<tal:block tal:condition="is_sitemap">
 		<!DOCTYPE html>
 		<html lang="en">

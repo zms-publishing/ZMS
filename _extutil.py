@@ -55,7 +55,7 @@ EXTENSIONS = {
                            'SQL Method Support',
                            'https://pypi.python.org/pypi/Products.ZSQLMethods',
                            'developed by Zope Foundation and Contributors'],
-  'Products.CMFCore': ['2.3.0dev0',
+  'Products.CMFCore': ['2.3.0dev',
                        'Filesystem Directory Views',
                        'https://pypi.python.org/pypi/Products.CMFCore',
                        'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
@@ -63,13 +63,17 @@ EXTENSIONS = {
               'Python LESS Compiler',
               'https://pypi.python.org/pypi/lesscpy',
               'developed by Jóhann T Maríusson'],
-  'Zope2': ['2.13.23dev0',
+  'Zope2': ['2.13.23dev',
             'Open-source web application server',
             'https://github.com/zopefoundation/Zope',
             'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
   'ZODB': ['4.1.0',
            'Set of tools for using the Zope Object Database',
            'https://github.com/zopefoundation/ZODB',
+           'developed by Zope Foundation and Contributors'],
+  'ZopeUndo': ['2.12.0',
+           'Used to support the undo log (Prefix object) in a ZEO server, without pulling in all of Zope2',
+           'https://github.com/zopefoundation/ZopeUndo',
            'developed by Zope Foundation and Contributors'],
   'zope.publisher': ['3.13.4',
                      'Map requests from HTTP/WebDAV/FTP clients, web browsers and XML-RPC onto Python objects',
@@ -139,7 +143,7 @@ class ZMSExtensions():
         # The version specified requires normalization, consider using '3.2.0.dev3' instead of '3.2.0dev3' etc. + 
         # pip v6.0.6 does not append svn revision specified in `setup.cfg` as v1.5.6 before
         # => `zms.zms_version()` have to be adjusted too...
-        self.pkg_installed.append(package[1].replace('.dev', 'dev'))
+        self.pkg_installed.append(package[1].replace('.dev', 'dev').replace('dev0', 'dev'))
         self.pkg_ready.append(True)
         try:
           confres = ResourceManager().resource_listdir(name, 'conf')
@@ -210,7 +214,7 @@ class ZMSExtensions():
     """
       Return all framework specific packages
     """
-    pkg = filter(lambda x: x.startswith('Zope2') or x.startswith('ZODB') or x.find('zope') >= 0, self.pkg_names)
+    pkg = filter(lambda x: x.startswith('Zope') or x.startswith('ZODB') or x.find('zope') >= 0, self.pkg_names)
     return pkg
 
   def isEnabled(self, ext=None):

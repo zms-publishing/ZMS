@@ -137,7 +137,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.untrustedpython==4.0.0',
   'zope.viewlet==4.0.0',
   'Zope2==2.13.23dev',
-  'ZopeUndo==4.0',
+  'ZopeUndo==2.12.0', # due to ZEO DisconnectedError on manageUndo
 ]
 
 README = open(os.path.join(setup_path, 'README')).read()

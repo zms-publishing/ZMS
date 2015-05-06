@@ -93,4 +93,4 @@ zope.traversing==4.0.0
 zope.untrustedpython==4.0.0
 zope.viewlet==4.0.0
 Zope2==2.13.23dev
-ZopeUndo==4.0
+ZopeUndo==2.12.0

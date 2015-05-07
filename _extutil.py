@@ -19,7 +19,7 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.0dev5',
+  'zms3.formulator': ['3.2.1dev',
                       'JSON-based HTML-Forms',
                       'https://bitbucket.org/zms3/formulator',
                       'sponsored by University of Bern, Switzerland'],

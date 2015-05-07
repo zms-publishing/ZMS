@@ -40,8 +40,8 @@ $ ./ZMS3/instance/bin/zopectl start
 Changelog
 ---------
 
-3.2.0dev (unreleased)
-*********************
+3.2.0dev (in development)
+*************************
 
     * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3103&limit=200>`_
 

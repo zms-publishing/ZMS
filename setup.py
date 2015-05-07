@@ -36,10 +36,10 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.browserresource>4.0.1',   # due to https://github.com/zopefoundation/zope.browserresource/pull/1/files
   'zope.globalrequest',
   'zope.untrustedpython',
-  'zope.publisher==3.13.4',       # due to error on rendering legacy DTML-Methods with zope.publisher>=4.0.0
+  'zope.publisher==3.13.4',       # due to zope.publisher>=4.0.0 causes errors on rendering legacy DTML-Methods
 ]
 
-# Unreleased packages to build the environment
+# Unreleased packages including custom patches to build the environment
 DEPENDENCY_LINKS = [
   'https://zmslabs.org/download/' # https://zmslabs.org/download/Zope2-2.13.23dev.tar.gz
                                   # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
@@ -137,7 +137,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.untrustedpython==4.0.0',
   'zope.viewlet==4.0.0',
   'Zope2==2.13.23dev',
-  'ZopeUndo==2.12.0', # due to ZEO DisconnectedError on manageUndo
+  'ZopeUndo==2.12.0', # due to ZopeUndo==4.0 causes ZEO DisconnectedError on manageUndo
 ]
 
 README = open(os.path.join(setup_path, 'README')).read()

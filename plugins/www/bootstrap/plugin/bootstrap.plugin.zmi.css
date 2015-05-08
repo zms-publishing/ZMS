@@ -830,8 +830,33 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	display: inline-block;
 }
 .zmi.metas table.meta-access {
-	margin:4em 0 0;
+	margin:2em 0 0;
 }
+.zmi.metas table.meta-access th {
+	height: 88px;
+	vertical-align:bottom !important;
+	border:none !important;
+	border-right:1px solid white;
+	border-left:1px solid white;
+	white-space: nowrap;
+}
+.zmi.metas table.meta-access th.rolename > div {
+	transform:
+	/* Magic Numbers */
+	translate(10px, 0px)
+	/* 45 is really 360 - 45 */
+	rotate(315deg);
+	width: 20px;
+}
+th.rolename > div > span {
+	display:block;
+	padding:0;
+	width:100px;
+	text-overflow: ellipsis;
+	overflow:hidden;
+	font-weight:normal;
+}
+
 .zmi.metas option.deprecated {
 	color:#CCC;
 }

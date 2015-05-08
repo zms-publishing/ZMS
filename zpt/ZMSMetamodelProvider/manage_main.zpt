@@ -319,7 +319,7 @@
 			<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</th>
 			<th tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</th>
 			<th tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
-			<th tal:repeat="role roleOptpl" tal:content="structure python:role[1]">ROLENAME</th>
+			<th tal:repeat="role roleOptpl" class="rolename" tal:attributes="title python:role[1]"><div><span tal:content="structure python:role[1]">ROLENAME</span></div></th>
 			<th style="width:100%;">&nbsp;</th>
 		</tr>
 		<tr tal:repeat="action python:['insert','delete']">
@@ -333,7 +333,7 @@
 				</tal:block>
 			</td>
 			<td>
-				<textarea class="form-control" cols="80" rows="1" wrap="virtual"
+				<textarea class="form-control input-sm" cols="80" rows="1" wrap="virtual"
 					tal:condition="python:action=='insert'"
 					tal:attributes="name python:'access_%s_custom'%(action)"
 					tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">

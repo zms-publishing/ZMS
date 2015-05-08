@@ -855,6 +855,7 @@ th.rolename > div > span {
 	text-overflow: ellipsis;
 	overflow:hidden;
 	font-weight:normal;
+	cursor: default;
 }
 
 .zmi.metas option.deprecated {

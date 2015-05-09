@@ -1135,7 +1135,6 @@ input.btn.btn-file {
 .zmi.ZMSRecordSet #attrProperties .accordion-inner label,.zmi.ZMSSqlDb #attrProperties .accordion-inner label {
 	color:#999;
 }
-
 #insertUserForm .ZMSRecordSet {
 	overflow: hidden;
 	margin-left: -15px;
@@ -1145,15 +1144,17 @@ input.btn.btn-file {
 	margin-left: 0;
 }
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left {
-    overflow:visible  
+	overflow:visible  
  }
 #insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input {
-    margin:-2px 0 0 4px;
-    float:left;
+	margin:-2px 0 0 4px;
+	float:left;
 }
-
 .ZMSSqlDb .index, .ZMSRecordSet .index {
 	margin-left:2em;
+}
+body.zmi .ZMSRecordSet.main_grid table {
+	cursor:pointer;
 }
 body.zmi .ZMSRecordSet.main_grid form.form-initialized > table thead th div.btn-group span.split-left {
 	max-width:48px;

@@ -45,10 +45,12 @@
 
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
 			<tal:block tal:define="global 
+				obj_attr python:here.getObjAttr(metaObjAttr['id']);
 				elName python:metaObjAttr['id'];
 				elLabel python:metaObjAttr['name'];
 				elType python:metaObjAttr.get('type','string');
-				elValue python:row.get(elName,metaObjAttr.get('default',''));">
+				elDefault python:metaObjAttr.get('default','');
+				elValue python:here.formatObjAttrValue(obj_attr,here.operator_getitem(row,elName,elDefault),request['lang']);">
 			<div class="form-group">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 					<span tal:content="elLabel">the label</span>
@@ -56,7 +58,7 @@
 				<div class="col-sm-9 col-md-10">
 
 					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure 
-							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=row.get(elName,metaObjAttr.get('default','')),REQUEST=request)">
+							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=elValue,REQUEST=request)">
 						the control
 					</tal:block>
 					<tal:block tal:condition="python:elType in ['image'] and elValue is not None and here.operator_gettype(elValue) is str">

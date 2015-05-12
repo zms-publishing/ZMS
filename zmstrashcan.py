@@ -153,27 +153,21 @@ class ZMSTrashcan(ZMSContainerObject):
       if forced or \
          last_run is None or \
          _globals.daysBetween(last_run,now)>1:
-        #-- Get days.
-        days = getattr(self,'garbage_collection','2')
-        try: days = int(days)
-        except: return
-        #-- Get IDs.
+        # Get days.
+        days = int(getattr(self,'garbage_collection','2'))
+        # Get IDs.
         ids = []
-        for ob in self.objectValues(self.dGlobalAttrs.keys()):
+        for context in self.objectValues(self.dGlobalAttrs.keys()):
           delete = True
-          for lang in self.getLangIds():
-            req = {'lang':lang,'preview':'preview'}
-            change_dt = ob.getObjProperty('change_dt',req)
-            if change_dt is not None:
-              try: 
-                delete = delete and _globals.daysBetween(change_dt,now)>days
-              except:
-                delete = True
+          try:
+            delete = delete and _globals.daysBetween(context.del_dt,now)>=days
+          except:
+            pass
           if delete:
-            ids.append(ob.id)
-        #-- Delete objects.
+            ids.append(context.id)
+        # Delete objects.
         self.manage_delObjects(ids=ids)
-        #-- Update time-stamp.
+        # Update time-stamp.
         setattr(self,'last_garbage_collection',now)
 
     # --------------------------------------------------------------------------

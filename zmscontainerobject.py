@@ -226,23 +226,14 @@ class ZMSContainerObject(
       if self.meta_id == 'ZMSTrashcan':
         return
       trashcan = self.getTrashcan()
+      # Set deletion-date.
+      for id in ids:
+        context = getattr(self,id)
+        context.del_uid = str(REQUEST.get('AUTHENTICATED_USER',None))
+        context.del_dt = _globals.getDateTime( time.time())
       # Move (Cut & Paste).
-      try:
-        cb_copy_data = self.manage_cutObjects(ids,REQUEST)
-        trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
-      except:
-        if len(ids) > 1:
-          except_ids = []
-          for id in ids:
-            try:
-              cb_copy_data = self.manage_cutObjects([id],REQUEST)
-              trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
-            except:
-              except_ids.append(id)
-        else:
-          except_ids = ids
-        if len(except_ids) > 0:
-          _globals.writeError(self,'[moveObjsToTrashcan]: Unexpected Exception: ids=%s!'%str(except_ids))
+      cb_copy_data = self.manage_cutObjects(ids,REQUEST)
+      trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       trashcan.normalizeSortIds()
       # Sort-IDs.
       self.normalizeSortIds()

@@ -805,10 +805,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
 		display: block;
 	}
-
 }
-
-
 .zmi.metas table.table-striped td.meta-id input,
 .zmi.metas table.table-striped td.meta-name input,
 .zmi.metas table.table-striped td.meta-type select,
@@ -828,6 +825,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 .zmi.metas input[type="file"] {
 	display: inline-block;
+}
+.zmi.metas div.meta-access {
+	overflow-x: scroll;
 }
 .zmi.metas table.meta-access {
 	margin:2em 0 0;
@@ -857,7 +857,6 @@ th.rolename > div > span {
 	font-weight:normal;
 	cursor: default;
 }
-
 .zmi.metas option.deprecated {
 	color:#CCC;
 }

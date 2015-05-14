@@ -298,57 +298,59 @@
 	</div><!-- .form-group -->
 
 	<!-- BO Access -->
-	<table class="table table-bordered meta-access"
-		tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
-		tal:define="global roleOptpl python:[]"
-		><tal:block tal:repeat="role python:list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())"
-			><tal:block
-				tal:define="role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)"
-				tal:condition="python: role not in ['ZMSSubscriber','ZMSUserAdministrator']"
-				><tal:block tal:condition="python:role_str==role_lang_str"
-					><tal:block tal:define="roleappend0 python:roleOptpl.append([role,role])"
+	<div class="meta-access">
+		<table class="table table-bordered meta-access"
+			tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
+			tal:define="global roleOptpl python:[]"
+			><tal:block tal:repeat="role python:list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())"
+				><tal:block
+					tal:define="role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)"
+					tal:condition="python: role not in ['ZMSSubscriber','ZMSUserAdministrator']"
+					><tal:block tal:condition="python:role_str==role_lang_str"
+						><tal:block tal:define="roleappend0 python:roleOptpl.append([role,role])"
+						></tal:block
+					></tal:block
+					><tal:block tal:condition="python:role_str!=role_lang_str"
+						><tal:block tal:define="roleappend1 python:roleOptpl.append([role,role_lang_str])"
+						></tal:block
 					></tal:block
 				></tal:block
-				><tal:block tal:condition="python:role_str!=role_lang_str"
-					><tal:block tal:define="roleappend1 python:roleOptpl.append([role,role_lang_str])"
-					></tal:block
-				></tal:block
-			></tal:block
-		></tal:block>
-		<tr>
-			<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</th>
-			<th tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</th>
-			<th tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
-			<th tal:repeat="role roleOptpl" class="rolename" tal:attributes="title python:role[1]"><div><span tal:content="structure python:role[1]">ROLENAME</span></div></th>
-			<th style="width:100%;">&nbsp;</th>
-		</tr>
-		<tr tal:repeat="action python:['insert','delete']">
-			<td nowrap="nowrap">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
-			</td>
-			<td style="text-align:center">
-				<tal:block tal:condition="python:action=='insert'"
-					tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=here.boolint(metaObj.get('enabled',0)))">
-					CHECKBOX
-				</tal:block>
-			</td>
-			<td>
-				<textarea class="form-control input-sm" cols="80" rows="1" wrap="virtual"
-					tal:condition="python:action=='insert'"
-					tal:attributes="name python:'access_%s_custom'%(action)"
-					tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
-					NODES
-				</textarea>
-			</td>
-			<td style="text-align:center" tal:repeat="role roleOptpl">
-				<tal:block
-					tal:content="structure python:here.getCheckbox(fmName='form0',elName='access_%s_deny:list'%action,value=role[0] not in metaObj.get('access',{}).get('%s_deny'%action,[]),options=[role[0],''])">
-					CHECKBOX
-				</tal:block>
-			</td>
-			<td>&nbsp;</td>
-		</tr>
-	</table>
+			></tal:block>
+			<tr>
+				<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</th>
+				<th tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</th>
+				<th tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
+				<th tal:repeat="role roleOptpl" class="rolename" tal:attributes="title python:role[1]"><div><span tal:content="structure python:role[1]">ROLENAME</span></div></th>
+				<th style="width:100%;">&nbsp;</th>
+			</tr>
+			<tr tal:repeat="action python:['insert','delete']">
+				<td nowrap="nowrap">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
+				</td>
+				<td style="text-align:center">
+					<tal:block tal:condition="python:action=='insert'"
+						tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=here.boolint(metaObj.get('enabled',0)))">
+						CHECKBOX
+					</tal:block>
+				</td>
+				<td>
+					<textarea class="form-control input-sm" cols="80" rows="1" wrap="virtual"
+						tal:condition="python:action=='insert'"
+						tal:attributes="name python:'access_%s_custom'%(action)"
+						tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
+						NODES
+					</textarea>
+				</td>
+				<td style="text-align:center" tal:repeat="role roleOptpl">
+					<tal:block
+						tal:content="structure python:here.getCheckbox(fmName='form0',elName='access_%s_deny:list'%action,value=role[0] not in metaObj.get('access',{}).get('%s_deny'%action,[]),options=[role[0],''])">
+						CHECKBOX
+					</tal:block>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</div>
 	<!-- EO Access -->
 
 </tal:block>

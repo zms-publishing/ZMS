@@ -1185,9 +1185,13 @@ div.zmi-action > ul.dropdown-menu {
 	margin-top:-1px;
 	border-top-left-radius: 0;
 }
-div.zmi-action > ul.dropdown-menu .icon-sort-up,
-div.zmi-action > ul.dropdown-menu .icon-sort-down {
-	margin: 0px -2px 0px 2px;
+div.zmi-action > ul.dropdown-menu .icon-double-angle-up,
+div.zmi-action > ul.dropdown-menu .icon-double-angle-down,
+div.zmi-action > ul.dropdown-menu .icon-caret-right {
+	padding-left: 3px;
+}
+div.zmi-action > ul.dropdown-menu .icon-caret-down {
+	padding-left: 2px;
 }
 div.zmi-action > ul.dropdown-menu li a {
 	padding-left:13px;
@@ -1452,7 +1456,7 @@ button.ui-dialog-titlebar-close {
 .dropdown-header {
 	padding: 3px 13px;
 	font-size: inherit;
-	color: #fff;
+	color: #fff !important;
 	background-color: #818EA2;
 }
 li.zmi-item .btn.split-left,

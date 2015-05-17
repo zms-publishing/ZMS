@@ -90,8 +90,8 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:
-        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp','icon-sort-up'))
-        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown','icon-sort-down'))
+        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp','icon-double-angle-up'))
+        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown','icon-double-angle-down'))
   
   #-- Action: Paste.
   if repetitive or objChildren==0:
@@ -191,7 +191,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Headline.
   if len(actions) > 0:
-    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),'','icon-plus-sign'))
+    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),'','icon-caret-down'))
   
   # Return action list.
   return actions

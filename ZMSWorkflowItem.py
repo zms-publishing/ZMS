@@ -71,11 +71,11 @@ class ZMSWorkflowItem:
           append = append or (len(self.intersection_list(wfStates,wfFrom)) > 0 and len(wfTo) > 0)
           append = append and (len(self.intersection_list(roles,wfPerformer)) > 0 or auth_user.has_permission('Manager',self))
           if append:
-            actions.append((transition['name'],path+'manage_wfTransition'))
+            actions.append((transition['name'],path+'manage_wfTransition','icon-check-empty'))
       
       #-- Headline,
       if len( actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'','icon-share'))
+        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'','icon-caret-down'))
       
       # Return action list.
       return actions

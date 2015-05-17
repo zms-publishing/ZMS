@@ -45,6 +45,7 @@ zdaemon==4.0.0
 ZEO==4.1.0
 zExceptions==2.13.0
 zLOG==2.12.0
+zms3.formulator==3.2.2
 ZODB==4.1.0
 ZODB3==3.11.0
 zope.annotation==4.4.1

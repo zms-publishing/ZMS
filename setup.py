@@ -37,6 +37,7 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.globalrequest',
   'zope.untrustedpython',
   'zope.publisher==3.13.4',       # due to zope.publisher>=4.0.0 causes errors on rendering legacy DTML-Methods
+  'zms3.formulator',
 ]
 
 # Unreleased packages including custom patches to build the environment

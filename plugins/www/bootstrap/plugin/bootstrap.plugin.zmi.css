@@ -1254,8 +1254,6 @@ div.right .btn .caret {
 		margin-top: 2px;
 		background-color: #fff;
 		border: 1px solid rgba(0,0,0,0.15);
-		border-radius: 4px
-		border: 0;
 		-webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
 		box-shadow: 0 6px 12px rgba(0,0,0,0.175);
 	}
@@ -1267,10 +1265,13 @@ div.right .btn .caret {
 	.navbar-nav .open .dropdown-menu .dropdown-header {
 		padding: 3px 20px;
 	}
+	.navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
+		border: none;
+	}
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
 		color: #333;
 	}
-	.navbar-inverse .navbar-nav .open .dropdown-menu .devider {
+	.navbar-inverse .navbar-nav .open .dropdown-menu .divider {
 		background-color: #e5e5e5 !important;
 	}
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover,
@@ -1458,6 +1459,7 @@ button.ui-dialog-titlebar-close {
 	font-size: inherit;
 	color: #fff !important;
 	background-color: #818EA2;
+	border-bottom:1px solid #ffffff;
 }
 li.zmi-item .btn.split-left,
 li.zmi-item .btn.split-right.dropdown-toggle {

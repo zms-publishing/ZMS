@@ -1,6 +1,6 @@
 <tal:block tal:condition="python:options['type']=='multiautocomplete'">
 <script>
-$ZMI.registerReady(function() {
+$(function() {
 			$('.form-multiautocomplete').each(function() {
 					var id = $(this).attr('id');
 					$ZMI.writeDebug('multiautocomplete:'+id);
@@ -33,12 +33,18 @@ $ZMI.registerReady(function() {
 
 function zmiMultiAutocompleteAddBtnClick(sender) {
 	var $el = $(sender).prev("input");
-	var id = $el.attr("id");
+	var id = $el.attr("id").substr(1);
 	if ($el.val().length>0) {
 		var v=$el.val();
 		$el.val('');
-		$ZMI.appendToMultiselect(document.getElementById(id.substr(1)),v,true);
+		$ZMI.appendToMultiselect(document.getElementById(id),v,true);
 	}
+}
+
+function zmiMultiAutocompleteRemoveBtnClick(sender) {
+	var $el = $(sender).prev("select");
+	var id = $el.attr("id");
+	$ZMI.removeFromMultiselect(document.getElementById(id));
 }
 </script>
 <div class="input-group">
@@ -47,39 +53,43 @@ function zmiMultiAutocompleteAddBtnClick(sender) {
 		<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')">icon-plus</tal:block>
 	</span>
 </div><!-- .input-group -->
-<div>
-	<select tal:attributes="id options/name; name options/name" multiple="multiple" class="form-control">
+<div class="input-group">
+	<select tal:attributes="id options/name; name options/name" multiple="multiple" class="form-control form-on-submit-selected">
 		<tal:block tal:repeat="value options/value">
 			<option tal:attributes="value value" selected="selected" tal:content="value">the value</option>
 		</tal:block>
 	</select>
-</div>
+	<span class="input-group-addon ui-helper-clickable" tal:attributes="title python:here.getZMILangStr('BTN_REMOVE'); onclick python:'zmiMultiAutocompleteRemoveBtnClick(this)'">
+		<tal:block tal:content="structure python:here.zmi_icon(name='icon-minus')">icon-minus</tal:block>
+	</span>
+</div><!-- .input-group -->
 </tal:block>
+
 <tal:block tal:condition="python:options['type']=='autocomplete'">
 <script>
-	$ZMI.registerReady(function() {
-			$('.form-autocomplete').each(function() {
-					var id = $(this).attr('id');
-					$ZMI.writeDebug('autocomplete:'+id);
-					var key = $(this).attr('data-key');
-					var meta_id = $(this).attr('data-meta-id');
-					zmiAutocomplete('#'+id,{
-							source: function( request, response) {
-							var term = request.term;
-							var params = {};
-							params.q = term;
-							params.key = key;
-							params.meta_id = meta_id;
-							params.fmt = 'json';
-							$.get( "ajaxGetObjOptions", params, function( data) {
-								if (data.length>0) {
-									response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
-								}
-							});
-						}
-					});
-			});
-	});
+$(function() {
+		$('.form-autocomplete').each(function() {
+				var id = $(this).attr('id');
+				$ZMI.writeDebug('autocomplete:'+id);
+				var key = $(this).attr('data-key');
+				var meta_id = $(this).attr('data-meta-id');
+				zmiAutocomplete('#'+id,{
+						source: function( request, response) {
+						var term = request.term;
+						var params = {};
+						params.q = term;
+						params.key = key;
+						params.meta_id = meta_id;
+						params.fmt = 'json';
+						$.get( "ajaxGetObjOptions", params, function( data) {
+							if (data.length>0) {
+								response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
+							}
+						});
+					}
+				});
+		});
+});
 </script>
 <input type="text" tal:attributes="id options/name; name options/name; value options/value; data-key options/key; data-meta-id here/meta_id" class="form-control form-autocomplete ui-autocomplete-input"/>
 </tal:block>

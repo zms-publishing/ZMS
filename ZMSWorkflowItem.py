@@ -75,7 +75,7 @@ class ZMSWorkflowItem:
       
       #-- Headline,
       if len( actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'','icon-caret-down'))
+        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'workflow-action'))
       
       # Return action list.
       return actions

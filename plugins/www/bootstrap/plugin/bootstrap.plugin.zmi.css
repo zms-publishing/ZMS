@@ -1184,6 +1184,10 @@ li.dropdown-submenu ul.dropdown-menu li a img {
 div.zmi-action > ul.dropdown-menu {
 	margin-top:-1px;
 	border-top-left-radius: 0;
+	min-width:20em;
+}
+div.zmi-action .dropdown-header {
+	cursor:default;
 }
 div.zmi-action > ul.dropdown-menu .icon-double-angle-up,
 div.zmi-action > ul.dropdown-menu .icon-double-angle-down,

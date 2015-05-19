@@ -18,41 +18,41 @@ function zmiScrollToElement(theElement) {
 	window.scrollTo(selectedPosX,selectedPosY);
 }
 
+// escape by Colin Snover
+// Note: if you don't care for (), you can remove it..
+RegExp.escape = function(text) {
+	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
 /**
  * Highlight all occurences of given text.
+ * 
+ * @see http://stackoverflow.com/questions/3241169/highlight-search-terms-select-only-leaf-nodes
  */
-function zmiDoHighlight(text) {
-	var exp = text.replace(/\W/g,'.?');
-	var regexp = new RegExp( "(" + exp + ")", "gi");
-	var el = $('body');
-	$('*',el)
+function htmlReplace($context, exp, newvalue) {
+	newvalue = newvalue.replace(/class="(.*?)"/i,'class="$1 nohighlight"');
+	var regexp = new RegExp(exp, "gi");
+	$('*',$context)
 		.andSelf()
 		.contents()
 		.filter(function(){
+			// nodyType=3 (Text) Represents textual content in an element or attribute
 			return this.nodeType === 3;
 		})
 		.filter(function(){
 			// Only match when contains 'simple string' anywhere in the text
 			return this.nodeValue.match(regexp);
 		})
-		.each(function(){
+		.each(function(i, el){
 			// Do something with this.nodeValue
-			var raw = $(this).parent().html().split("<");
-			var html = raw[0].replace( regexp, "<span class=\"highlight\">$1</span>");
-			for (var i = 1; i < raw.length; i++) {
-				var j = raw[i].indexOf(">");
-				html += "<";
-				if (j<0) {
-					html = html
-						+ raw[i].replace( regexp, "<span class=\"highlight\">$1</span>");
-				}
-				else {
-					html = html
-						+ raw[i].substr(0,j+1)
-						+ raw[i].substr(j+1).replace( regexp, "<span class=\"highlight\">$1</span>");
+			var $parent = $(el).parent();
+			if (!($(el).parents(".nohighlight,a,button,input,select"))) {
+				var data = el.data;
+				if (data = data.replace(regexp, newvalue)) {
+					var wrapper = $("<span>").html(data);
+					$(el).before(wrapper.contents()).remove();
 				}
 			}
-			$(this).parent().html(html);
 		});
 }
 
@@ -60,6 +60,8 @@ function zmiDoHighlight(text) {
  * Init highlight.
  */
 function zmiInitHighlight(s) {
+	var $context = $("body");
+	var newvalue = '<span class=\"highlight\">$1</span>';
 	var raw = s.split(" ");
 	var text1st = null;
 	for (var i = 0; i < raw.length; i++) {
@@ -68,7 +70,7 @@ function zmiInitHighlight(s) {
 			if (text1st == null) {
 				text1st = text;
 			}
-			zmiDoHighlight( text);
+			htmlReplace( $context, text, newvalue);
 		}
 	}
 	if (text1st!=null) {

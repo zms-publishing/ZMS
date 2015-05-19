@@ -36,7 +36,7 @@ def zmi_actions(container, context, attr_id='e'):
     objPath = context.id+'/'
   
   #-- Action: Separator.
-  actions.append(('----- %s -----'%container.getZMILangStr('ACTION_SELECT')%container.getZMILangStr('ATTR_ACTION'),''))
+  actions.append(('----- %s -----'%container.getZMILangStr('ACTION_SELECT')%container.getZMILangStr('ATTR_ACTION'),'select-action'))
   actions.extend(zmi_basic_actions(container, context, objAttr, objChildren, objPath))
   actions.extend(zmi_insert_actions(container, context, objAttr, objChildren, objPath))
   
@@ -191,7 +191,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Headline.
   if len(actions) > 0:
-    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),'','icon-caret-down'))
+    actions.insert(0,('----- %s -----'%container.getZMILangStr('ACTION_INSERT')%container.display_type(REQUEST),'insert-action'))
   
   # Return action list.
   return actions

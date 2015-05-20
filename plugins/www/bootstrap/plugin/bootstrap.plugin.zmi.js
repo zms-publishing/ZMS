@@ -907,7 +907,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 				}
 				event.stopImmediatePropagation();
 				event.stopPropagation();
-			})
+			});
 		$("li:first",$ul)
 			.each(function () {
 					if ($(this).hasClass("dropdown-header")) {

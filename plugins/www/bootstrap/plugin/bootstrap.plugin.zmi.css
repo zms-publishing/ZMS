@@ -127,6 +127,13 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	padding: 1em 0 1em 1.8em;
 	margin-bottom: 0px !important;
 }
+.zmi #zmi-tab > ul.breadcrumb li {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 128px;
+	overflow: hidden;
+}
+
 .zmi ol, .zmi ul, .zmi li, .zmi p, .zmi sup, .zmi sub,
 .zmi table, .zmi tr, .zmi th, .zmi td {
 	color:#333;
@@ -954,6 +961,11 @@ input.btn.btn-file {
 .zmi.customize #Custom table td.nowrap {
 	min-width:92px;
 }
+.customize.config #extwizard ul.nav-pills li,
+.customize.config #InstalledProducts .tab-content .col-sm-8 button.btn {
+	min-width:160px;
+}
+
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Users-Form
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

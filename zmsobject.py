@@ -189,13 +189,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       oid = None
       if self._p_oid is not None:
         oid = decodeObjectId(self._p_oid)
-      return oid
+      return 'oid:%s'%oid
 
     # --------------------------------------------------------------------------
     #  ZMSObject.find_oid:
     # --------------------------------------------------------------------------
     def find_oid(self, oid):
       from ZODB.utils import p64
+      if oid.find(':')>0:
+        oid = oid[oid.find(':')+1:]
       ob = self._p_jar[p64(oid)]
       return ob
 
@@ -1034,6 +1036,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
+      xml += " oid=\"%s\""%(self.get_oid())
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))

@@ -9,10 +9,10 @@
 
 /**
  */
-function selectObject(href, title, id) {
+function selectObject(href, title, oid) {
 	var attrs = [];
-	if (typeof id != 'undefined') {
-		attrs.push('data-id="'+id+'"');
+	if (typeof oid != 'undefined') {
+		attrs.push('data-id="'+oid+'"');
 	}
 	if (typeof href != 'undefined') {
 		attrs.push('href="'+href+'"');
@@ -123,7 +123,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 						><tal:block tal:define="global onclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
 					></tal:block
 					><span class="btn btn-default" tal:attributes="onclick onclick"
-						><img tal:attributes="src btn; title python:charFormat['display']"/>
+						><img tal:attributes="src python:['%s/format_manager/%s'%(here.getDocumentElement().absolute_url(),btn),btn][int(btn.startswith(here.getDocumentElement().absolute_url()))]; title python:charFormat['display']"/>
 					</span
 				></tal:block
 			></tal:block

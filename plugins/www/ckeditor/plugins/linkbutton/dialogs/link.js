@@ -30,7 +30,7 @@ function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
 			var titlealt = "";
-			var physical_path = $(this).attr("physical_path");
+			var uid = $(this).attr("uid");
 			var abs_url = $(this).attr("absolute_url");
 			var link_url = $(this).attr("index_html");
 			var extra = null;
@@ -65,7 +65,7 @@ function zmiAddPages(result, siblings) {
 			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
-			html += '<span onclick="zmiSelectObject(\''+physical_path.substr(physical_path.lastIndexOf("/")+1)+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
+			html += '<span onclick="zmiSelectObject(\''+uid+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
 			html += $(this).attr("display_icon");
 			if (extra != null) {
 				html += '<span class="ui-helper-clickable" onmouseover="'+extra+'" onmouseout="hidePreview();">&dArr;</span>';

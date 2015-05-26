@@ -68,38 +68,6 @@ class ZReferableItem:
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRelativeUrl:
-  # ----------------------------------------------------------------------------
-  def getRelativeUrl(self, path, url, sep='/'):
-    ref = '.'
-    SERVER_URL = self.REQUEST['SERVER_URL']
-    currntPath = path
-    if currntPath.startswith(SERVER_URL):
-      currntPath = currntPath[len(SERVER_URL)+1:]
-    elif currntPath.startswith(sep):
-      currntPath = currntPath[1:]
-    targetPath = url;
-    if targetPath.startswith(SERVER_URL):
-      targetPath = targetPath[len(SERVER_URL)+1:]
-    elif targetPath.startswith(sep):
-      targetPath = targetPath[1:]
-    currntElmnts = currntPath.split(sep)
-    targetElmnts = targetPath.split(sep)
-    i = 0
-    while i < len( currntElmnts) and \
-          i < len( targetElmnts) and \
-          currntElmnts[ i] == targetElmnts[ i]:
-      i = i + 1
-    currntElmnts = currntElmnts[ i:]
-    targetElmnts = targetElmnts[ i:]
-    for currntElmnt in currntElmnts:
-      ref = ref + sep + '..'
-    for targetElmnt in targetElmnts:
-      ref = ref + sep + targetElmnt
-    return ref
-
-
-  # ----------------------------------------------------------------------------
   #  ZReferableItem.getRelObjPath:
   # ----------------------------------------------------------------------------
   def getRelObjPath(self, ob):
@@ -123,11 +91,17 @@ class ZReferableItem:
   def getRefObjPath(self, ob, anchor=''):
     ref = ''
     if ob is not None:
-      ob_path = ob.breadcrumbs_obj_path()
-      homeIds = map(lambda x:x.getHome().id,filter(lambda x:x.meta_id=='ZMS',ob_path))
-      pathIds = map(lambda x:x.id,filter(lambda x:x.meta_id!='ZMS',ob_path))
-      path = '/'.join(homeIds) + '@' + '/'.join(pathIds)
-      ref = '{$' + path + anchor + '}'
+      # Extension Point
+      ep = self.getConfProperty('ZReferableItem.getRefObjPath','')
+      if ep != '':
+        ref = self.evalMetaobjAttr(ep,ob=ob,anchor=anchor)
+      # Default
+      else:
+        ob_path = ob.breadcrumbs_obj_path()
+        homeIds = map(lambda x:x.getHome().id,filter(lambda x:x.meta_id=='ZMS',ob_path))
+        pathIds = map(lambda x:x.id,filter(lambda x:x.meta_id!='ZMS',ob_path))
+        path = '/'.join(homeIds) + '@' + '/'.join(pathIds)
+        ref = '{$' + path + anchor + '}'
     return ref
 
 
@@ -399,7 +373,6 @@ class ZReferableItem:
         if ob is not None:
           new = (p.replace('\\','').replace('(.*?)','%s'))%(data_id,self.getRelObjPath(ob),title)
           if old != new:
-            print old, new
             text = text.replace(old,new)
     return text
 

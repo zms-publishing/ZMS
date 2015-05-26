@@ -2,19 +2,13 @@
  * Select object.
  */
 function zmiSelectObject(sender) {
-	var absolute_url = $(sender).attr('href');
+	var uid = $(sender).attr('data-uid');
 	var physical_path = $(sender).attr('data-page-physical-path');
-	var id = physical_path.substr(physical_path.lastIndexOf('/')+1);
-	var index_html = $(sender).attr('data-index-html');
 	var anchor = $(sender).attr('data-anchor');
-	var is_page = $(sender).attr('data-page-is-page');
 	var titlealt = $(sender).attr('data-page-titlealt');
-	$ZMI.writeDebug('BO zmiSelectObject: absolute_url='+absolute_url+'\nphysical_path='+physical_path+'\nindex_html='+index_html+'\nanchor='+anchor+'\ntitlealt='+titlealt);
+	$ZMI.writeDebug('BO zmiSelectObject: uid='+uid+'\nphysical_path='+physical_path+'\nanchor='+anchor+'\ntitlealt='+titlealt);
 	var fm;
 	var url = physical_path;
-	if (!(absolute_url.indexOf('/')==0) && !(index_html.indexOf('/')==0) && $ZMI.getServerUrl(absolute_url) != $ZMI.getServerUrl(index_html)) {
-		//url = index_html;
-	}
 	var title = titlealt;
 	if (typeof zmiParams['fmName'] != 'undefined' && zmiParams['fmName'] != ''
 			&& typeof zmiParams['elName'] != 'undefined' && zmiParams['elName'] != '') {
@@ -26,7 +20,7 @@ function zmiSelectObject(sender) {
 	}
 	else {
 		url = $ZMI.relativateUrl(url,anchor);
-		self.window.parent.selectObject(url,title,id);
+		self.window.parent.selectObject(url,title,uid);
 	}
 	self.window.parent.zmiModal("hide");
 	$ZMI.writeDebug('EO zmiSelectObject: url='+url+',title='+title);
@@ -137,10 +131,10 @@ function zmiToggleClick(toggle, callback) {
 				else {
 					for (var i = 0; i < pages.length; i++) {
 						var page = pages[i];
+						var page_uid = $(page).attr("uid");
 						var page_home_id = $(page).attr("home_id");
 						var page_id = $(page).attr("id").substr(page_home_id.length+1);
 						var page_absolute_url = $(page).attr("absolute_url");
-						var page_index_html = $(page).attr("index_html");
 						var page_physical_path = $(page).attr("physical_path");
 						var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
 						var page_is_pageelement = $(page).attr("is_pageelement")=='1' || $(page).attr("is_pageelement")=='True';
@@ -173,8 +167,8 @@ function zmiToggleClick(toggle, callback) {
 							html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 						}
 						html += '<a href="'+page_absolute_url+'"'
+                            + ' data-uid="'+page_uid+'"'
                             + ' data-page-physical-path="'+page_physical_path+'"'
-                            + ' data-index-html="'+page_index_html+'"'
                             + ' data-anchor="'+anchor+'"'
                             + ' data-page-is-page="'+page_is_page+'"'
                             + ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'

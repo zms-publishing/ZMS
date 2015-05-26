@@ -179,6 +179,18 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.get_uid:
+    # --------------------------------------------------------------------------
+    def get_uid(self):
+      # Extension Point
+      ep = self.getConfProperty('ZMSObject.get_uid','')
+      if ep != '':
+        id = self.evalMetaobjAttr(ep)
+      else:
+        id = self.id
+      return id
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.get_oid:
     # --------------------------------------------------------------------------
     def get_oid(self):
@@ -1036,7 +1048,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
-      xml += " oid=\"%s\""%(self.get_oid())
+      xml += " uid=\"%s\""%(self.get_uid())
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))

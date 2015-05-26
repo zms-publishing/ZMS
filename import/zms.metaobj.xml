@@ -136,7 +136,7 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMSIndex]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[ZMSIndex]]></item>
+                  <item key="type"><![CDATA[ZMSIndexZCatalog]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -204,7 +204,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.5]]></item>
+          <item key="revision"><![CDATA[3.0.6]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>

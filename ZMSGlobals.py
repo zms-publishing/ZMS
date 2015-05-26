@@ -696,6 +696,21 @@ class ZMSGlobals:
         s = re.compile( pattern).split( subject)
       return map( lambda x: s[x*2+1], range(len(s)/2))
 
+
+    """
+    Return all non-overlapping matches of pattern in string, as a list of strings. 
+    The string is scanned left-to-right, and matches are returned in the order found. 
+    If one or more groups are present in the pattern, return a list of groups; 
+    this will be a list of tuples if the pattern has more than one group. 
+    Empty matches are included in the result unless they touch the beginning of another match
+    """
+    def re_findall( self, pattern, text, ignorecase=False):
+      if ignorecase:
+        r = re.compile( pattern, re.IGNORECASE)
+      else:
+        r = re.compile( pattern)
+      return r.findall(text)
+
     #)
 
 

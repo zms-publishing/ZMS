@@ -581,6 +581,8 @@ class ZMSContainerObject(
           - I{deep} (C{boolean=True}) process child nodes
           - I{complete} (C{boolean=False}) process complete subtree
           - I{maxdepth} (C{int=100}) limits node list to a given depth
+          - I{getrestricted} (C{boolean=True}) get is restricted
+          - I{getchildpages} (C{boolean=True}) get has child-pages
       @return: the Html
       @rtype: C{string}
       """
@@ -612,9 +614,9 @@ class ZMSContainerObject(
           else: 
             css.append( 'inactive')
             css.append( ob.meta_id + '0')
-          if ob.attr( 'attr_dc_accessrights_restricted'):
+          if opt.get('getrestricted',True) and ob.attr( 'attr_dc_accessrights_restricted'):
             css.append( 'restricted')
-          if len(ob.filteredChildNodes(REQUEST,self.PAGES))>0:
+          if opt.get('getchildpages',True) and len(ob.filteredChildNodes(REQUEST,self.PAGES))>0:
             css.append( 'childpages')
           items.append('<li')
           items.append(' class="%s"'%(' '.join(css)))

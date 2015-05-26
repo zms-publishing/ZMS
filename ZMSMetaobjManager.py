@@ -61,7 +61,14 @@ def syncType( self, id, attr, forced=False):
       elif ob.meta_type in [ 'Page Template']:
         attr['custom'] = unicode(ob.read()).encode('utf-8')
       elif ob.meta_type in [ 'Script (Python)']:
-        attr['custom'] = ob.read()
+        data = ob.read()
+        errors = ''
+        lines = data.split('\n')
+        if '## Errors:' in lines:
+          i = lines.index('## Errors:')
+          errors = lines[i+1][2:].strip()
+        attr['custom'] = data
+        attr['errors'] = errors
       elif ob.meta_type in [ 'Z SQL Method']:
         connection = ob.connection_id
         params = ob.arguments_src
@@ -73,8 +80,15 @@ def syncType( self, id, attr, forced=False):
         if attr['type'] == 'method':
           attr['custom'] = ob.raw
         elif attr['type'] == 'py':
+          data = ob.read()
+          errors = ''
+          lines = data.split('\n')
+          if '## Errors:' in lines:
+            i = lines.index('## Errors:')
+            errors = lines[i+1][2:].strip()
           attr['py'] = ob
-          attr['custom'] = ob.read()
+          attr['custom'] = data
+          attr['errors'] = errors
         elif attr['type'] == 'zpt':
           attr['zpt'] = ob
           attr['custom'] = unicode(ob.read()).encode('utf-8')
@@ -83,8 +97,15 @@ def syncType( self, id, attr, forced=False):
             attr['zpt'] = ob
             attr['name'] = unicode(ob.read()).encode('utf-8')
           elif ob.meta_type in [ 'Script (Python)']:
+            data = ob.read()
+            errors = ''
+            lines = data.split('\n')
+            if '## Errors:' in lines:
+              i = lines.index('## Errors:')
+              errors = lines[i+1][2:].strip()
             attr['py'] = ob
-            attr['name'] = ob.read()
+            attr['name'] = data
+            attr['errors'] = errors
           else:
             attr['name'] = ob.raw
         elif attr['type'] == 'resource':
@@ -723,7 +744,7 @@ class ZMSMetaobjManager:
           newCustom += '##bind script=script\n'
           newCustom += '##bind subpath=traverse_subpath\n'
           newCustom += '##parameters='
-          if newType in ['py']: newCustom += 'zmscontext=None'
+          if newType in ['py']: newCustom += 'zmscontext=None,options=None'
           newCustom += '\n'
           newCustom += '##title='
           if newType in ['py']: newCustom += newType+': '

@@ -192,17 +192,18 @@
 								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 										<textarea class="form-control input-sm"
-											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
-												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
+											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:objAttr.get('errors','%s (%s)'%(objAttr['id'],objAttr['type']));
+												class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][int(len(objAttr.get('errors',''))>0)]);
+												style python:'\073'.join([[],['color:#a94442','background:#fee']][int(len(objAttr.get('errors',''))>0)]);
 												data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
 												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
 											tal:content="objAttr/custom">custom</textarea>
 								</div>
 								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is None and objAttr['type'] in here.valid_zopetypes">
 										<textarea class="form-control input-sm"
-											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
+											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'not found: %s (%s)'%(objAttr['id'],objAttr['type']);
 												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
-												style python:'background: #fee';
+												style python:'\073'.join(['color:#a94442','background:#fee']);
 												data-style python:'background: #eee'"
 											tal:content="objAttr/custom">custom</textarea>
 								</div>
@@ -296,6 +297,29 @@
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
+
+	<!-- BO Usage -->
+	<div class="meta-usage" tal:define="l python:[]">
+		<tal:block tal:repeat="metaObj2 metaObjs">
+			<tal:block tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj2['id'])">
+				<tal:block tal:repeat="objAttrId objAttrIds">
+					<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj2['id'],objAttrId); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
+						<tal:block tal:condition="python:
+								(objAttr['type']==metaObj['id']) or 
+								(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
+							<strong tal:condition="python:len(l)==0">Usage:</strong>
+							<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
+							<a tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])" target="_blank" tal:define="dummy0 python:l.append(1)">
+								<tal:block tal:content="structure python:here.display_icon(request,metaObj2['id'],zpt=True)">object-icon</tal:block>
+								<tal:block tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">object-name.attribute-name</tal:block>
+							</a>
+						</tal:block>
+					</tal:block>
+				</tal:block>
+			</tal:block>
+		</tal:block>
+	</div>
+	<!-- EO Usage -->
 
 	<!-- BO Access -->
 	<div class="meta-access">
@@ -586,7 +610,7 @@ function zmiPopulateTypeSelect(sender) {
 	}
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 		$("table input[name='ids:list']")
 			.change(zmiActionButtonsRefresh)
 			;

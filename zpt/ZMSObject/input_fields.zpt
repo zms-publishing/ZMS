@@ -26,13 +26,17 @@
 			<div class="accordion-inner">
 				<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 				<div class="form-group">
-					<div class="col-sm-12">
+					<label class="control-label col-sm-2">
+						<span tal:content="structure python:here.zmi_icon(name='icon-info-sign')">the icon-info-sign</span>
+					</label>
+					<div class="col-sm-8">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')"
 							><span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 						</tal:block>
 						<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
-						<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-					</div><!-- .col-sm-12 -->
+						<span class="get_size"><tal:block tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</tal:block></span>,
+						<span class="get_oid"><tal:block tal:content="python:here.get_oid()">object-id</tal:block></span>
+					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
 				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">
 					<label class="col-sm-2 control-label" for="attrActive"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>

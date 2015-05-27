@@ -45,8 +45,7 @@ function htmlReplace($context, exp, newvalue) {
 		})
 		.each(function(i, el){
 			// Do something with this.nodeValue
-			var $parent = $(el).parent();
-			if (!($(el).parents(".nohighlight,a,button,input,select"))) {
+			if ($(el).parents(".nohighlight,a,button,input").length==0) {
 				var data = el.data;
 				if (data = data.replace(regexp, newvalue)) {
 					var wrapper = $("<span>").html(data);
@@ -70,7 +69,7 @@ function zmiInitHighlight(s) {
 			if (text1st == null) {
 				text1st = text;
 			}
-			htmlReplace( $context, text, newvalue);
+			htmlReplace( $context, "("+text+")", newvalue);
 		}
 	}
 	if (text1st!=null) {

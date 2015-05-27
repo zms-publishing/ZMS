@@ -100,24 +100,6 @@ class ZReferableItem:
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.getRelObjPath:
-  # ----------------------------------------------------------------------------
-  def getRelObjPath(self, ob):
-    ref = '.'
-    currntElmnts = self.getVersionContainer().getPhysicalPath()
-    targetElmnts = ob.getSelf( ).getPhysicalPath()
-    i = 0
-    while i < min(len( currntElmnts),len( targetElmnts)) and \
-          currntElmnts[ i] == targetElmnts[ i]:
-      i = i + 1
-    currntElmnts = currntElmnts[ i:]
-    targetElmnts = targetElmnts[ i:]
-    ref += ''.join(map(lambda x: '/..',currntElmnts))
-    ref += ''.join(map(lambda x: '/'+x,targetElmnts))
-    return ref
-
-
-  # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefObjPath:
   # ----------------------------------------------------------------------------
   def getRefObjPath(self, ob, anchor=''):
@@ -399,13 +381,11 @@ class ZReferableItem:
       for f in r.findall(text):
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
         data_id = f[0]
-        href = f[1]
+        href = self.getLinkUrl(url='{$%s}'%data_id)
         title = f[2]
-        ob = self.getLinkObj(url='{$%s}'%data_id)
-        if ob is not None:
-          new = (p.replace('\\','').replace('(.*?)','%s'))%(data_id,self.getRelObjPath(ob),title)
-          if old != new:
-            text = text.replace(old,new)
+        new = (p.replace('\\','').replace('(.*?)','%s'))%(data_id,href,title)
+        if old != new:
+          text = text.replace(old,new)
     return text
 
 

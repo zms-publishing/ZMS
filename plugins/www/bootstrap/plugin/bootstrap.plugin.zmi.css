@@ -400,7 +400,10 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 #zmiIframe .form-group.activity input.form-element.datetimepicker {
 	width:8.4em !important;
 }
-
+#attrActivity .icon-info-sign {
+	margin-top: -3px;
+	display: block;
+}
 .horizontal-group .mandatory span {
 	background: none !important;
 	padding-left: 0 !important;

@@ -196,16 +196,17 @@ if zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='reindex':
     zmscontext.writeStdout('[onChangeObjEvt] catalog_object %s'%node.url())
     catalog.catalog_object(node, node.url())
     for childNode in node.getChildNodes():
-      childNode.setConfProperty('ZMS.InternalLinks.autocorrection',1)
-      childNode.setConfProperty('ZReferableItem.getRefObjPath','%s.getRefObjPath'%zmscontext.meta_id)
-      childNode.setConfProperty('ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
-      childNode.setConfProperty('ZMSObject.get_uid','%s.get_uid'%zmscontext.meta_id)
       l.extend(visit(childNode))
+    if node.meta_id == 'ZMS':
+      node.setConfProperty('ZMS.InternalLinks.autocorrection',1)
+      node.setConfProperty('ZReferableItem.getRefObjPath','%s.getRefObjPath'%zmscontext.meta_id)
+      node.setConfProperty('ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
+      node.setConfProperty('ZMSObject.get_uid','%s.get_uid'%zmscontext.meta_id)
+      for childNode in node.getPortalClients():
+        l.extend(visit(childNode))
     return l
   
-  index = []
-  for docelmnt in [zmscontext.getDocumentElement()]+zmscontext.getPortalClients():
-    index.extend(visit(docelmnt))
+  index = visit(zmscontext.getDocumentElement())
   zmscontext.writeStdout('[onChangeObjEvt] reindex %i'%len(index))
 
 elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
@@ -266,12 +267,12 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
                 zmscontext.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
     for childNode in node.getChildNodes():
       l.extend(visit(childNode))
+    if node.meta_id == 'ZMS':
+      for childNode in node.getPortalClients():
+        l.extend(visit(childNode))
     return l
   
-  index = []
-  for docelmnt in [zmscontext.getDocumentElement()]+zmscontext.getPortalClients():
-    index.extend(visit(docelmnt))
-  
+  index = visit(zmscontext.getDocumentElement())
   zmscontext.writeStdout('[onChangeObjEvt] resync %i'%len(index))
 
 # --// /onChangeObjEvt //--
@@ -487,7 +488,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.0]]></item>
+          <item key="revision"><![CDATA[0.9.1]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -506,7 +507,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.0]]></item>
+          <item key="revision"><![CDATA[0.9.1]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

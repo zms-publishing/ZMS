@@ -206,7 +206,7 @@ function zmiPreview(sender) {
 	}
 	else {
 		var coords = $ZMI.getCoords(sender);
-		var abs_url = $(sender).parent('div').children('input').val();
+		var abs_url = $(sender).parent('div').children('a').attr('data-page-physical-path');
 		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
 				$('div.zmi-preview').remove();
 				$('body').append(''

@@ -417,10 +417,11 @@
 				</td>
 				<td colspan="2">
 					<tal:block tal:condition="python:metaObjPackage">
+						<tal:block tal:condition="python:metaObj.get('acquired',0)" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')"></tal:block>
 						<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
 						</a>
-						<strong tal:content="metaObjPackage">the id</strong>
+						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><strong tal:on-error="string:ERROR" tal:content="metaObjPackage">the id</strong></a>
 					</tal:block>
 					<tal:block tal:condition="python:not metaObjPackage">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>

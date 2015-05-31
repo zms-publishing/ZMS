@@ -261,7 +261,14 @@ class ZMSMetaobjManager:
       revision = '0.0.0'
       for id in keys:
         if id in export_ids or len(export_ids) == 0:
-          ob = copy.deepcopy(self.__get_metaobj__(id))
+          ob = None
+          context = self
+          while ob is None:
+            ob = context.__get_metaobj__(id)
+            if ob.get('acquired',0):
+              ob = None
+              context = context.getPortalMaster().metaobj_manager
+          ob = copy.deepcopy(ob)
           revision = self.getMetaobjRevision(id)
           attrs = []
           for attr in ob['attrs']:
@@ -1189,7 +1196,13 @@ class ZMSMetaobjManager:
           elif btn == self.getZMILangStr('BTN_COPY'):
             metaOb = self.getMetaobj(id)
             if metaOb.get('acquired',0) == 1:
-              xml = self.getPortalMaster().metaobj_manager.exportMetaobjXml([id])
+              package = metaOb.get('package','')
+              if package:
+                metaPkg = self.getMetaobj(package)
+                if metaPkg.get('acquired',0) == 1:
+                  metaPkg['acquired'] = 0
+                  self.setMetaobj(metaPkg)
+              xml = self.exportMetaobjXml([id])
               self.importMetaobjXml(xml=xml)
               message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%id)
           

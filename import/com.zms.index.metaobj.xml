@@ -216,55 +216,88 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
     ref = base
     for id in path.split('/'):
       if id == '..':
-        ref = ref.getParentNode()
+        parent = ref.getParentNode()
+        if parent is not None:
+          ref = ref.getParentNode()
       elif id not in ['','.'] and id.find('.')<0:
         childNode = getattr(ref,id,None)
         if childNode is None:
           break
         ref = childNode
     return ref
-  
+
+  def handleInline(node,v):	
+    zmscontext.writeStdout('[onChangeObjEvt] handleInline %s'%v)
+    p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
+    for f in node.re_findall(p,v):
+      href = f[1]
+      if href.startswith('.') or href.startswith('/'):
+        if (f[0]+f[2]).find('data-id=') < 0:
+          ref = find_node(node,href)
+          if ref is not None:
+            old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
+            new = '<a data-id="'+ref.get_oid()+'" '+f[0]+'href="'+f[1]+'"'+f[2]+'>'+f[3]+'</a>'
+            zmscontext.writeStdout('[onChangeObjEvt] resync %s=>%s'%(old,new))
+            v = v.replace(old,new)
+    return v
+
+  def handleUrl(node,v):
+    zmscontext.writeStdout('[onChangeObjEvt] handleUrl %s'%v)
+    if v.startswith('{$') and v.endswith('}') \
+       and not (v.startswith('{$__') and v.endswith('__}')) \
+       and not (v.startswith('{$oid:')):
+      ref = find_node(node,v[2:-1].replace('@','/content/'))
+      if ref is not None:
+        old = v
+        new = ref.get_oid()
+        zmscontext.writeStdout('[onChangeObjEvt] resync %s=>%s'%(old,new))
+        v = new
+    return v
+
   def visit(node):
     l = []
     l.append(1)
-    for key in node.getObjAttrs().keys():
-      objAttr = node.getObjAttr(key)
-      datatype = objAttr['datatype']
-      if datatype in ['richtext','string','text','url']:
-        p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
-        lang_suffixes = ['']
-        if objAttr['multilang']:
-          lang_suffixes = map(lambda x:'_%s'%x,zmscontext.getLangIds())
-        for lang_suffix in lang_suffixes:
-          for obj_vers in node.getObjVersions():
-            v = zmscontext.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
-            if v is not None:
-              v = str(v)
-              o = v
-              if datatype in ['richtext','string','text']:
-                for f in node.re_findall(p,v):
-                  href = f[1]
-                  if href.startswith('.') or href.startswith('/'):
-                    if (f[0]+f[2]).find('data-id=') < 0:
-                      ref = find_node(node,href)
-                      if ref is not None:
-                        old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-                        new = '<a data-id="'+ref.get_oid()+'" '+f[0]+'href="'+f[1]+'"'+f[2]+'>'+f[3]+'</a>'
-                        zmscontext.writeStdout('[onChangeObjEvt] resync %s %s=>%s'%(datatype,old,new))
-                        v = v.replace(old,new)
-              elif datatype in ['url']:
-                if v.startswith('{$') and v.endswith('}') \
-                    and not (v.startswith('{$__') and v.endswith('__}')) \
-                    and not (v.startswith('{$oid:')):
-                  ref = find_node(node,v[2:-1].replace('@','/content/'))
-                  if ref is not None:
-                    old = v
-                    new = ref.get_oid()
-                    zmscontext.writeStdout('[onChangeObjEvt] resync %s %s=>%s'%(datatype,old,new))
-                    v = new
-              if o != v:
-                zmscontext.writeStdout('[onChangeObjEvt] resync %s.%s'%(node.url(),key))
-                zmscontext.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+    if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
+      objAttrs = node.getMetaobjAttrs(node.meta_id)
+      key = filter(lambda x:x['type']=='list',objAttrs)[0]['id']
+      for obj_vers in node.getObjVersions():
+        l = zmscontext.operator_getattr(obj_vers,key,[])
+        for r in l:
+          for objAttr in objAttrs:
+            datatype = objAttr['type']
+            if datatype in ['richtext','string','text','url']:
+              v = r.get(objAttr['id'],None)
+              if v is not None:
+                v = str(v)
+                o = v
+                if datatype in ['richtext','string','text']:
+                  v = handleInline(node,v)
+                elif datatype in ['url']:
+                  v = handleUrl(node,v)
+                if o != v:
+                  r[objAttr['id']] = v
+        zmscontext.operator_setattr(obj_vers,key,l)
+    else:
+      for key in node.getObjAttrs().keys():
+        objAttr = node.getObjAttr(key)
+        datatype = objAttr['datatype']
+        if datatype in ['richtext','string','text','url']:
+          lang_suffixes = ['']
+          if objAttr['multilang']:
+            lang_suffixes = map(lambda x:'_%s'%x,zmscontext.getLangIds())
+          for lang_suffix in lang_suffixes:
+            for obj_vers in node.getObjVersions():
+              v = zmscontext.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+              if v is not None:
+                v = str(v)
+                o = v
+                if datatype in ['richtext','string','text']:
+                  v = handleInline(node,v)
+                elif datatype in ['url']:
+                  v = handleUrl(node,v)
+                if o != v:
+                  zmscontext.writeStdout('[onChangeObjEvt] resync %s.%s'%(node.url(),key))
+                  zmscontext.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
     for childNode in node.getChildNodes():
       l.extend(visit(childNode))
     if node.meta_id == 'ZMS':
@@ -472,13 +505,11 @@ return zmscontext.get_oid()
                   <item></item>
                   <item></item>
                   <item></item>
-                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
-                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -490,7 +521,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.2]]></item>
+          <item key="revision"><![CDATA[0.9.3]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -509,7 +540,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.2]]></item>
+          <item key="revision"><![CDATA[0.9.3]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

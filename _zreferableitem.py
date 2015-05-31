@@ -678,8 +678,6 @@ class ZReferableItem:
                 v = r[k]
                 o = v
                 if type(v) is str:
-                  v, m = handleInternalRefs('%s.%s[%i]'%(key,k,c),v)
-                  message += m
                   v, m = handleRelativeRefs('%s.%s[%i]'%(key,k,c),v)
                   message += m
                   if v != o:

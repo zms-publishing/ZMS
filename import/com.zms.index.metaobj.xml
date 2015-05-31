@@ -120,12 +120,12 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
 query = None
 obj = None
 url = options['url']
-zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
+zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: url='+url)
 zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   if url.startswith('{$oid:') and url.endswith('}'):
     oid = url[5:-1]
-    zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: oid='+oid)
+    zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: oid='+oid)
     query = {'get_oid':oid}
   elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
     docelmnt = None
@@ -149,12 +149,12 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
     else:
       docelmnt = zmscontext.getDocumentElement()
     if len(url) == 0:
-      obj = docelmnt 
+      return docelmnt 
     elif docelmnt is not None:
       zmsid = url.split('/')[-1]
-      zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
+      zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
       query = {'id':zmsid}
-zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: query='+str(query))
+zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: query='+str(query))
 ob = zmscontext.ZMSIndexZCatalog_func_(zmscontext,'search',query)
 return ob
 
@@ -472,11 +472,13 @@ return zmscontext.get_oid()
                   <item></item>
                   <item></item>
                   <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
+                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -488,7 +490,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.1]]></item>
+          <item key="revision"><![CDATA[0.9.2]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -507,7 +509,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.1]]></item>
+          <item key="revision"><![CDATA[0.9.2]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -37,6 +37,8 @@ def addObject(container, meta_type, id, title, data):
     addPageTemplate( container, id, title, data)
   elif meta_type == 'Script (Python)':
     addPythonScript( container, id, title, data)
+  elif meta_type == 'Folder':
+    addFolder( container, id, title, data)
 
 def getObject(container, id):
   """
@@ -85,9 +87,13 @@ def initPermissions(container, id):
   """
   ob = getattr( container, id)
   ob._proxy_roles=('Manager')
+  permissions = []
   if id.find( 'manage_') >= 0:
     ob.manage_role(role_to_manage='Authenticated',permissions=['View'])
-    ob.manage_acquiredPermissions([])
+  else:
+    # activate all acquired permissions
+    permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',ob.permissionsOfRole('Manager')))
+  ob.manage_acquiredPermissions(manager_permissions)
 
 def addDTMLMethod(container, id, title, data):
   """
@@ -118,6 +124,7 @@ def addPageTemplate(container, id, title, data):
   """
   Add Page Template to container.
   """
+  print "addPageTemplate",id,title,data
   ZopePageTemplate.manage_addPageTemplate( container, id, title=title, text=data)
   ob = getattr( container, id)
   ob.output_encoding = 'utf-8'
@@ -131,3 +138,10 @@ def addPythonScript(container, id, title, data):
   ob.ZPythonScript_setTitle( title)
   ob.write( data)
   initPermissions(container, id)
+
+def addFolder(container, id, title, data):
+  """
+  Add Folder to container.
+  """
+  container.manage_addFolder(id,title)
+  ob = getattr( container, id)

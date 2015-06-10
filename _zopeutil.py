@@ -124,7 +124,6 @@ def addPageTemplate(container, id, title, data):
   """
   Add Page Template to container.
   """
-  print "addPageTemplate",id,title,data
   ZopePageTemplate.manage_addPageTemplate( container, id, title=title, text=data)
   ob = getattr( container, id)
   ob.output_encoding = 'utf-8'

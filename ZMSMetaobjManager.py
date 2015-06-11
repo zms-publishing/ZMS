@@ -19,6 +19,9 @@
 
 # Imports.
 from zope.interface import implements
+from Products.ExternalMethod import ExternalMethod
+from Products.PageTemplates import ZopePageTemplate
+from Products.PythonScripts import PythonScript
 from cStringIO import StringIO
 import ZPublisher.HTTPRequest
 import copy
@@ -31,7 +34,6 @@ import _blobfields
 import _fileutil
 import _globals
 import _ziputil
-import _zopeutil
 
 
 # ------------------------------------------------------------------------------
@@ -808,8 +810,8 @@ class ZMSMetaobjManager:
       attr['custom'] = newCustom
       attr['default'] = newDefault
       
-      # Handle special methods and interfaces.
-      mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
+      # Parse Dtml for Errors.
+      newOb = None
       message = ''
       if newType in [ 'delimiter', 'hint', 'interface']:
         newCustom = newName
@@ -817,20 +819,42 @@ class ZMSMetaobjManager:
           newType = 'zpt'
         else:
           newType = 'method'
-      if newType in mapTypes.keys()+mapTypes.values():
+      if newType in [ 'DTML Method', 'DTML Document', 'method', 'py', 'zpt']:
         newCustom = newCustom.replace('\r','')
-      mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
-      if newType in mapTypes.keys():
-        oldObId = '%s.%s'%(id,oldId)
-        newObId = '%s.%s'%(id,newId)
-        # Remove Zope-Object (if exists)
-        _zopeutil.removeObject(self, oldObId)
-        _zopeutil.removeObject(self, newObId)
-        # Insert Zope-Object.
-        _zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
+      # Handle methods and interfaces.
+      if newType in ['method']:
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        self.manage_addDTMLMethod( id+'.'+newId, newType, newCustom)
+        newOb = getattr( self, id+'.'+newId)
+        roles=[ 'Manager']
+        newOb._proxy_roles=tuple(roles)
+      # Handle py.
+      if newType in ['py']:
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        PythonScript.manage_addPythonScript( self, id+'.'+newId)
+        newOb = getattr( self, id+'.'+newId)
+        newOb.write(newCustom)
+        roles=[ 'Manager']
+        newOb._proxy_roles=tuple(roles)
+      # Handle zpt.
+      elif newType in ['zpt']:
+        if oldId is not None and id+'.'+oldId in self.objectIds():
+          self.manage_delObjects(ids=[id+'.'+oldId])
+        ZopePageTemplate.manage_addPageTemplate( self, id+'.'+newId, title=newType, text=newCustom)
+        newOb = getattr(self,id+'.'+newId)
+        newOb.output_encoding = 'utf-8'
+      
+      # Restrict access. 
+      if newOb is not None:
+        newOb.manage_acquiredPermissions([])
+        permissions = map(lambda x: x['name'],newOb.permissionsOfRole('Manager'))
+        for role_to_manage in [ 'ZMSAuthor', 'ZMSEditor', 'ZMSAdministrator']:
+          newOb.manage_role(role_to_manage=role_to_manage,permissions=permissions)
       
       # Replace
-      ids = map( lambda x: x['id'], attrs)
+      ids = map( lambda x: x['id'], attrs) # self.getMetaobjAttrIds(id)
       if oldId in ids:
         i = ids.index(oldId)
         attrs[i] = attr
@@ -864,18 +888,77 @@ class ZMSMetaobjManager:
           for ob_id in oldId.split('/')[:-1]:
             oldContainer = getattr(oldContainer,ob_id,None)
           oldObId = oldId.split('/')[-1]
-        # Remove Zope-Object (if exists)
-        _zopeutil.removeObject(container, oldObId)
-        _zopeutil.removeObject(container, newObId)
+        # External Method.
+        if newType == 'External Method':
+          try:
+            _fileutil.remove( INSTANCE_HOME+'/Extensions/'+oldObId+'.py')
+          except:
+            pass
+          newExternalMethod = INSTANCE_HOME+'/Extensions/'+newObId+'.py'
+          _fileutil.exportObj( newCustom, newExternalMethod)
         # Insert Zope-Object.
-        _zopeutil.addObject(container, newType, newObId, newName, newCustom)
-        # Change Zope-Object (special).
-        newOb = _zopeutil.getObject(container, newObId)
-        if newType == 'Folder':
+        if oldId is None or oldId == newId:
+          # Delete existing Zope-Object.
+          if newObId in container.objectIds():
+            if newType in ['External Method', 'Page Template'] or \
+               newType not in self.valid_zopetypes:
+              container.manage_delObjects( ids=[ newObId])
+            # Delete old Zope-Object if type is incompatible.
+            if newObId in container.objectIds() and getattr(container,newObId).meta_type != newType:
+              container.manage_delObjects( ids=[ newObId])
+          # Add new Zope-Object.
+          if newObId not in container.objectIds():
+            if newType == 'DTML Method':
+              container.manage_addDTMLMethod( newObId, newName, newCustom)
+            elif newType == 'DTML Document':
+              container.manage_addDTMLDocument( newObId, newName, newCustom)
+            elif newType == 'External Method':
+              ExternalMethod.manage_addExternalMethod( container, newObId, newName, newId, newId)
+            elif newType == 'Folder':
+              container.manage_addFolder(id=newObId,title=newName)
+            elif newType == 'Page Template':
+              ZopePageTemplate.manage_addPageTemplate( container, newObId, title=newName, text=newCustom)
+              newOb = getattr( container, newObId)
+              newOb.output_encoding = 'utf-8'
+            elif newType == 'Script (Python)':
+              PythonScript.manage_addPythonScript( container, newObId)
+            elif newType == 'Z SQL Method':
+              try:
+                from Products.ZSQLMethods import SQL
+                connection_id = self.SQLConnectionIDs()[0][0]
+                arguments = ''
+                template = ''
+                SQL.manage_addZSQLMethod( container, newObId, newName, connection_id, arguments, template)
+              except:
+                pass
+        # Rename Zope-Object.
+        elif oldId != newId:
+          if oldContainer != container:
+            cb_copy_data = oldContainer.manage_cutObjects( ids=[oldObId])
+            container.manage_pasteObjects( cb_copy_data)
+          if oldObId != newObId:
+            container.manage_renameObject( id=oldObId, new_id=newObId)
+        # Change Zope-Object.
+        newOb = getattr( container, newObId)
+        if newType in [ 'DTML Method', 'DTML Document']:
+          newOb.manage_edit( title=newName, data=newCustom)
+          roles=[ 'Manager']
+          newOb._proxy_roles=tuple(roles)
+          if newId.find( 'manage_') >= 0:
+            newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
+            newOb.manage_acquiredPermissions([])
+        elif newType == 'Folder':
           if isinstance( newCustom, _blobfields.MyFile) and len(newCustom.getData()) > 0:
             newOb.manage_delObjects(ids=newOb.objectIds())
             _ziputil.importZip2Zodb( newOb, newCustom.getData())
           attr['custom'] = ''
+        elif newType == 'Script (Python)':
+          newOb.write(newCustom)
+          roles=[ 'Manager']
+          newOb._proxy_roles=tuple(roles)
+          if newId.find( 'manage_') >= 0:
+            newOb.manage_role(role_to_manage='Authenticated',permissions=['View'])
+            newOb.manage_acquiredPermissions([])
         elif newType == 'Z SQL Method':
           connection = newCustom
           connection = connection[connection.find('<connection>'):connection.find('</connection>')]
